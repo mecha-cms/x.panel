@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'slug' => 'panel',
+    'path' => 'panel',
     'shield' => 'mecha'
 ];

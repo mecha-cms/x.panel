@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i|Roboto+Mono:400,400i,700,700i');
+
 * {
   margin:0;
   padding:0;
@@ -8,15 +10,23 @@
 }
 html {
   background:#fff;
-  font:normal normal 13px/1.5384615384615385em Helmet,FreeSans,sans-serif;
+  font:normal normal 13px/1.5384615384615385em "Roboto",Helmet,FreeSans,sans-serif;
   color:#000;
 }
-a{
+a {
   color:#00a;
   text-decoration:none;
 }
 a:focus,
 a:active {color:#a00}
+blockquote {
+  border-left:4px solid;
+  padding-left:1em;
+}
+code {
+  font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
+  font-size:86%;
+}
 h1 {font-size:240%}
 h2 {font-size:190%}
 h3 {font-size:150%}

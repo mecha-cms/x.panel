@@ -1,0 +1,51 @@
+.tags {
+  display:block;
+  height:2.1538461538461537em;
+  overflow:auto;
+  background:#fff;
+  padding:.25em 0 0;
+  border:1px solid;
+  cursor:text;
+}
+.tags-input,
+.tags-output {
+  display:inline-block;
+  vertical-align:middle;
+  width:auto;
+  height:auto;
+  margin:0;
+  padding:0;
+  background:none;
+  border:0;
+  outline:0;
+  font:inherit;
+  color:inherit;
+  text-align:left;
+  text-shadow:none;
+}
+.tags-input,
+.tags-output span {
+  display:inline-block;
+  background:#f00;
+  color:inherit;
+  margin:0 0 .25em .25em;
+  padding:0 .4375em;
+  cursor:default;
+}
+.tags-input {
+  min-width:10em;
+  background:none;
+  padding-right:0;
+  cursor:inherit;
+  -webkit-box-sizing:padding-box;
+  -moz-box-sizing:padding-box;
+  box-sizing:padding-box;
+}
+.tags-output a {
+  display:inline-block;
+  text-decoration:none;
+  color:#fff;
+  cursor:pointer;
+  margin-left:.4375em;
+}
+.tags-output a:before {content:'\00d7'}
