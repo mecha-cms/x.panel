@@ -18,29 +18,16 @@
                     'Ctrl-J': 'toMatchingTag',
                     'F11': function (cm) {
                         cm.setOption('fullScreen', !cm.getOption('fullScreen'));
-                    },
-                    'Esc': function (cm) {
-                        if (cm.getOption('fullScreen')) {
-                            cm.setOption('fullScreen', false);
-                        }
-                    },
-                    'Ctrl-B': function(cm) {
-                        var s = cm.getSelection(),
-                            t = s.slice(0, 8) === '<strong>' && s.slice(-9) === '</strong>';
-                        cm.replaceSelection(t ? s.slice(8, -9) : '<strong>' + s + '</strong>', 'around');
-                    },
-                    'Ctrl-I': function(cm) {
-                        var s = cm.getSelection(),
-                            t = s.slice(0, 4) === '<em>' && s.slice(-5) === '</em>';
-                        cm.replaceSelection(t ? s.slice(4, -5) : '<em>' + s + '</em>', 'around');
-                    },
-                    'Ctrl-K': function(cm) {
-                        var s = cm.getSelection(),
-                            t = s.slice(0, 6) === '<code>' && s.slice(-7) === '</code>';
-                        cm.replaceSelection(t ? s.slice(6, -7).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&') : '<code>' + s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>', 'around');
                     }
                 },
-                autoCloseTags: true,
+                autoCloseTags: {
+                    whenClosing: true,
+                    whenOpening: true,
+                    dontCloseTags: ["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param",
+                       "source", "track", "wbr"],
+                    indentTags: ["blockquote", "body", "div", "dl", "fieldset", "form", "frameset", "h1", "h2", "h3", "h4",
+                    "h5", "h6", "head", "html", "object", "ol", "select", "table", "tbody", "tfoot", "thead", "tr", "ul"]
+                },
                 autoCloseBrackets: true,
                 styleActiveLine: false
             });
@@ -70,9 +57,12 @@
     }
 
     function apply_TIB(node) {
-        return (new TIB(node, {
+        var t = new TIB(node, {
             max: 12
-        })).create();
+        });
+        t.create();
+        t.input.parentNode.className += (' ' + t.input.className.replace(/(\b|\s+)tags-input(\b|\s+)/g, ""));
+        return t;
     }
 
     form.query = {};

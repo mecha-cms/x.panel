@@ -1,0 +1,27 @@
+---
+title: Panel
+description: GUI for Mecha.
+author: Taufik Nurrohman
+type: Markdown
+version: 1.0.0
+...
+
+### Reserved Variables
+
+ - `$childs`
+ - `$child_very_much`
+ - `$chops`
+ - `$datas`
+ - `$data_very_much`
+ - `$kins`
+ - `$kin_very_much`
+ - `$page`
+ - `$pages`
+ - `$parent`
+ - `$path`
+ - `$sgr`
+ - `$shield_path`
+ - `$state`
+ - `$step`
+
+<!-- block:donate -->

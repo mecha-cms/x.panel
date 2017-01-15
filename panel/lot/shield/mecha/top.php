@@ -7,4 +7,4 @@
     <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
   <body>
-    <?php include __DIR__ . DS . 'header.php'; ?>
+    <?php Shield::get(__DIR__ . DS . 'menu.php'); ?>

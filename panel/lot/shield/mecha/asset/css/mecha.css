@@ -9,8 +9,13 @@
   box-sizing:border-box;
 }
 html {
-  background:#fff;
   font:normal normal 13px/1.5384615384615385em "Roboto",Helmet,FreeSans,sans-serif;
+  background:#000;
+  color:#fff;
+  border-bottom:4px solid transparent;
+}
+body {
+  background:#fff;
   color:#000;
 }
 a {
@@ -19,6 +24,35 @@ a {
 }
 a:focus,
 a:active {color:#a00}
+abbr {
+  border:0;
+  text-decoration:none;
+  cursor:inherit;
+  border-bottom:1px solid transparent;
+}
+abbr[title]:hover {border-bottom-color:inherit}
+b,dt,h1,h2,h3,h4,h5,h6,strong,th {font-weight:bold}
+caption,em,figcaption,i,var {font-style:italic}
+caption,figcaption {text-align:center}
+ins,u {text-decoration:underline}
+del,s {text-decoration:line-through}
+img {
+  max-width:100%;
+  height:auto;
+}
+kbd {
+  display:inline-block;
+  vertical-align:middle;
+  font-size:80%;
+  line-height:1.5em;
+  padding:0 .5em;
+  cursor:pointer;
+}
+mark {
+  background:#ff0;
+  color:inherit;
+}
+article,aside,footer,header,main,nav,section {display:block}
 blockquote {
   border-left:4px solid;
   padding-left:1em;
@@ -88,14 +122,21 @@ hr {border-width:1px 0 0}
   background:#00a;
   color:#fff;
   border-width:0;
-  padding-right:.6em;
-  padding-left:.6em;
+  padding-right:.7em;
+  padding-left:.7em;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  user-select:none;
   cursor:pointer;
 }
 .button:focus,
 .button:active {
   background:#a00;
   color:#fff;
+}
+.button.x {
+  background:#666;
+  cursor:default;
 }
 .select,
 .input[type="color"],
@@ -125,10 +166,48 @@ hr {border-width:1px 0 0}
 .secondary {
   display:table-cell;
   vertical-align:top;
-  padding:1em;
+  padding:0 1em 1em;
+}
+.main:before,
+.secondary:before {
+  content:"";
+  display:table;
 }
 .main {background:#ffa}
 .secondary {width:16em}
+.main:after {
+  content:"";
+  display:table;
+  clear:both;
+}
+.main article {
+  background:#fff;
+  border:1px solid;
+  width:20%;
+  float:left;
+  margin:1em 1em 0 0;
+  padding:1em 1.25em 4em 1.25em;
+  height:22em;
+  position:relative;
+  overflow:hidden;
+}
+.main article h3 {
+  font:inherit;
+  font-weight:bold;
+  margin:0 0 1em;
+}
+.main article section {
+  font-size:90%;
+  overflow:visible;
+}
+.main article footer {
+  position:absolute;
+  right:0;
+  bottom:0;
+  left:0;
+  line-height:3em;
+  padding:0 1.25em;
+}
 .nav ul,
 .nav li {
   margin:0;
@@ -145,10 +224,17 @@ hr {border-width:1px 0 0}
   display:block;
   padding:0 1.25em;
   color:inherit;
+  cursor:pointer;
 }
+.nav .current {font-weight:bold}
 .nav a:focus,
 .nav a:hover {background:#00a}
-.main-footer {margin:4em .5em 0}
+.main section,
+.secondary section {overflow:hidden}
+.main-footer {
+  margin:4em .5em 0;
+  clear:both;
+}
 .search .input {
   display:block;
   width:100%;
@@ -165,7 +251,6 @@ hr {border-width:1px 0 0}
   vertical-align:top;
 }
 .control label {
-  border:1px solid transparent;
   width:8em;
   padding:.25em 1em 0 0;
   height:2.1538461538461537em;
@@ -181,7 +266,3 @@ hr {border-width:1px 0 0}
 .secondary .input,
 .secondary .select,
 .secondary .textarea {background:#afa}
-.main h2:first-child,
-.main form:first-child,
-.main form:first-child fieldset:first-child,
-.secondary h3:first-child {margin-top:0}

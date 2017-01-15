@@ -2,6 +2,6 @@
 title: Control Panel
 description: The default control panel.
 author: Taufik Nurrohman
-type: HTML
+type: Markdown
 version: 1.0.0
 ...

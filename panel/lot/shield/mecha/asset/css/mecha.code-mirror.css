@@ -1,6 +1,7 @@
 .CodeMirror {
   font-family:"Courier New",Courier,"Nimbus Mono L",monospace;
   border:1px solid;
+  cursor:text;
 }
 .cm-keyword {font-weight:bold}
 .cm-comment {font-style:italic}
