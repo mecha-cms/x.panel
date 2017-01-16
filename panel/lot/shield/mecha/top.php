@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="<?php echo $site->direction; ?>" class="<?php echo 'page-' . str_replace('/', ' page-', $url->path); ?>">
+<html dir="<?php echo $site->direction; ?>" class="<?php echo 'path-' . str_replace('/', ' path-', $path); ?>">
   <head>
     <meta charset="<?php echo $site->charset; ?>">
     <meta name="viewport" content="width=device-width">

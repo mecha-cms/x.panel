@@ -76,22 +76,33 @@ if ($sgr === 's' || is_dir($folder)) {
         ]);
     } else if ($sgr === 's') {
         if (!isset($chops[1])) {
-            Shield::abort(); // Is root …
+            Shield::abort(); // Is root page …
+        } else if ($file) {
+            $title = (new Date())->{str_replace('-', '_', $site->language)};
+            Lot::set('page', [
+                new Page(null, [ // New page …
+                    'title' => $title
+                ], '::' . $sgr . '::page'),
+                new Page(null, [
+                    'title' => $title,
+                    'slug' => $chop_e
+                ])
+            ]);
         }
-        if ($file) {
-            $x = new Page($file);
-            Message::info('Editing <strong>' . $x->title . '</strong> page.');
-            Guardian::kick($state['path'] . '/::g::/' . implode('/', $chops)); // Is exists …
-        }
-        Lot::set('page', [
-            new Page(null, [
-                'slug' => $chop_e
-            ], '::' . $sgr . '::page'),
-            new Page
-        ]); // New page …
     } else if ($sgr === 'g') {
         $pages = [[], []];
         if ($files = Get::pages($folder, 'draft,page,archive', $sort[0], $sort[1], 'path')) {
+            if ($q = Request::get('q')) {
+                $files = array_filter($files, function($v) use($q) {
+                    $v = Path::N($v);
+                    foreach (explode(' ', l(urldecode($q))) as $q) {
+                        if (strpos($v, $q) !== false) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+            }
             foreach (Anemon::eat($files)->chunk($chunk, $step) as $v) {
                 $pages[0][] = new Page($v, [], '::' . $sgr . '::page');
                 $pages[1][] = new Page($v);
@@ -104,26 +115,24 @@ if ($sgr === 's' || is_dir($folder)) {
         Lot::set([
             'pager' => [new Elevator($files ?: [], $chunk, $step, $url . '/' . $state['path'] . '/::' . $sgr . '::/' . $path, [
                 'direction' => [
-                    '-1' => 'previous',
-                     '1' => 'next'
+                   '-1' => 'previous',
+                    '0' => false,
+                    '1' => 'next'
                 ],
                 'union' => [
-                    '-2' => [
+                   '-2' => [
                         2 => ['rel' => null, 'classes' => ['button', 'x']]
                     ],
-                    '-1' => [
+                   '-1' => [
                         1 => '&#x276E;',
                         2 => ['rel' => 'prev', 'classes' => ['button']]
                     ],
-                     '0' => [
-                        2 => ['classes' => null, 'css' => ['display' => 'none']]
-                     ],
-                     '1' => [
+                    '1' => [
                         1 => '&#x276F;',
                         2 => ['rel' => 'next', 'classes' => ['button']]
                     ]
                 ]
-            ], '::' . $sgr . '::/page' . Anemon::NS . 'pager')],
+            ], '::' . $sgr . '::pages')],
             'pages' => $pages
         ]);
     }

@@ -13,8 +13,10 @@ version: 1.0.0
  - `$chops`
  - `$datas`
  - `$data_very_much`
+ - `$hash`
  - `$kins`
  - `$kin_very_much`
+ - `$message`
  - `$page`
  - `$pages`
  - `$parent`
@@ -23,5 +25,6 @@ version: 1.0.0
  - `$shield_path`
  - `$state`
  - `$step`
+ - `$token`
 
 <!-- block:donate -->

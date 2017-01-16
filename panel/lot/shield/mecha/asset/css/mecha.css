@@ -1,15 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i|Roboto+Mono:400,400i,700,700i');
 
-* {
-  margin:0;
-  padding:0;
-  font:inherit;
-  -webkit-box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  box-sizing:border-box;
-}
 html {
-  font:normal normal 13px/1.5384615384615385em "Roboto",Helmet,FreeSans,sans-serif;
+  font-family:"Roboto",Helmet,FreeSans,sans-serif;
   background:#000;
   color:#fff;
   border-bottom:4px solid transparent;
@@ -18,41 +10,13 @@ body {
   background:#fff;
   color:#000;
 }
-a {
-  color:#00a;
-  text-decoration:none;
-}
+a {color:#00a}
 a:focus,
 a:active {color:#a00}
-abbr {
-  border:0;
-  text-decoration:none;
-  cursor:inherit;
-  border-bottom:1px solid transparent;
-}
-abbr[title]:hover {border-bottom-color:inherit}
-b,dt,h1,h2,h3,h4,h5,h6,strong,th {font-weight:bold}
-caption,em,figcaption,i,var {font-style:italic}
-caption,figcaption {text-align:center}
-ins,u {text-decoration:underline}
-del,s {text-decoration:line-through}
-img {
-  max-width:100%;
-  height:auto;
-}
-kbd {
-  display:inline-block;
-  vertical-align:middle;
-  font-size:80%;
-  line-height:1.5em;
-  padding:0 .5em;
-  cursor:pointer;
-}
 mark {
   background:#ff0;
   color:inherit;
 }
-article,aside,footer,header,main,nav,section {display:block}
 blockquote {
   border-left:4px solid;
   padding-left:1em;
@@ -61,102 +25,23 @@ code {
   font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
   font-size:86%;
 }
-h1 {font-size:240%}
-h2 {font-size:190%}
-h3 {font-size:150%}
-h4 {font-size:120%}
-h6 {font-size:90%}
-h1,h2,h3,h4 {line-height:1}
-blockquote,
-dl,
-fieldset,
-figcaption,
-figure,
-form,
-h1,h2,h3,h4,h5,h6,
-hr,ol,p,pre,table,ul {margin:1rem 0 0}
-ol,ul,dd {margin-left:2em}
-ol ol,
-ol ul,
-ul ol,
-ul ul {
-  margin-top:0;
-  margin-left:1em;
-}
-ul {list-style:square}
-fieldset,hr {
-  color:inherit;
-  border:1px solid;
-}
-fieldset {padding:1em}
-legend {
-  padding:0 .25em;
-  font-weight:bold;
-}
-legend + fieldset,
-legend + p {margin-top:0}
-hr {border-width:1px 0 0}
 .button,
 .input,
 .select,
 .textarea {
-  display:inline-block;
-  vertical-align:middle;
   background:#fff;
-  border:1px solid;
-  padding:.25em .5em;
-  width:12em;
-  height:2.1538461538461537em;
-  text-align:left;
-}
-.button::-moz-focus-inner,
-.input::-moz-focus-inner {
-  margin:0;
-  padding:0;
-  border:0;
-  outline:0;
+  border-color:inherit;
 }
 .button {
-  width:auto;
-  text-align:center;
   background:#00a;
   color:#fff;
-  border-width:0;
-  padding-right:.7em;
-  padding-left:.7em;
-  -webkit-user-select:none;
-  -moz-user-select:none;
-  user-select:none;
-  cursor:pointer;
 }
 .button:focus,
 .button:active {
   background:#a00;
   color:#fff;
 }
-.button.x {
-  background:#666;
-  cursor:default;
-}
-.select,
-.input[type="color"],
-.input[type="range"] {cursor:pointer}
-.textarea {
-  height:5em;
-  resize:vertical;
-}
-.textarea.expand {height:30em}
-.input[type="checkbox"],
-.input[type="radio"] {
-  margin:0;
-  padding:0;
-  width:auto;
-  height:auto;
-}
-.block {
-  display:block;
-  width:100%;
-}
+.button.x {background:#666}
 .container {
   display:table;
   width:100%;
@@ -180,7 +65,7 @@ hr {border-width:1px 0 0}
   display:table;
   clear:both;
 }
-.main article {
+.main .page {
   background:#fff;
   border:1px solid;
   width:20%;
@@ -191,23 +76,25 @@ hr {border-width:1px 0 0}
   position:relative;
   overflow:hidden;
 }
-.main article h3 {
+.main .page h3 {
   font:inherit;
   font-weight:bold;
   margin:0 0 1em;
 }
-.main article section {
+.main .page section,
+.main .page footer {
   font-size:90%;
   overflow:visible;
 }
-.main article footer {
+.main .page footer {
   position:absolute;
   right:0;
   bottom:0;
   left:0;
   line-height:3em;
-  padding:0 1.25em;
+  padding:0 1em;
 }
+.main .page.parent {box-shadow:inset 0 0 0 4px #def}
 .nav ul,
 .nav li {
   margin:0;
@@ -231,6 +118,10 @@ hr {border-width:1px 0 0}
 .nav a:hover {background:#00a}
 .main section,
 .secondary section {overflow:hidden}
+.secondary .secondary-nav {
+  position:sticky;
+  top:0;
+}
 .main-footer {
   margin:4em .5em 0;
   clear:both;

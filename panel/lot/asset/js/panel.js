@@ -1496,6 +1496,25 @@
 
     var catches = {}, a;
 
+    // <http://stackoverflow.com/a/26556347/1163000>
+    $.ajax = function(form, fn) {
+        var url = form.action,
+            xhr = new XMLHttpRequest(),
+            params = [].filter.call(form.elements, function(el) {
+            return $.is.x(el.checked) || el.checked;
+        }).filter(function(el) {
+            return !!el.name;
+        }).filter(function(el) {
+            return !el.disabled;
+        }).map(function(el) {
+            return encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value);
+        }).join('&');
+        xhr.open('POST', url);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = fn.bind(xhr);
+        xhr.send(params);
+    };
+
     $('form').each(function() {
         a = {};
         $(this).find('button[name],input[name],select[name],textarea[name]').each(function() {
@@ -1508,6 +1527,8 @@
         lot: catches
     };
 
-    $.Language = {};
+    $.Language = {
+        lot: {}
+    };
 
 })(Panel, window, document);
