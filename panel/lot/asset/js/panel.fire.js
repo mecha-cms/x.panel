@@ -33,6 +33,7 @@
                 'xml': 'application/x-httpd-php'
             };
         if (type) {
+            type = type.toLowerCase();
             editor.setOption('mode', aliases[type] || type);
         }
         editor.addKeyMap({
