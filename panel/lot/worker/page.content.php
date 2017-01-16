@@ -60,7 +60,8 @@
           <label for="control-page-content"><?php echo $language->content; ?></label> <span>
 <?php echo Form::textarea('content', $page[0]->content, null, [
     'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
-    'id' => 'control-page-content'
+    'id' => 'control-page-content',
+    'data' => ['type' => l($page[0]->type)]
 ]); ?>
           </span>
         </p>

@@ -30,7 +30,8 @@
           <span>
 <?php echo Form::textarea('content', $page[0]->content, null, [
     'classes' => ['textarea', 'block', 'expand', 'code'],
-    'id' => 'control-language-content'
+    'id' => 'control-language-content',
+    'data' => ['type' => l($page[0]->type)]
 ]); ?>
           </span>
         </p>

@@ -1,5 +1,8 @@
 (function($, win, doc) {
 
+    // Remove that annoying red underline(s)
+    doc.body.spellcheck = false;
+
     var form = $.Form,
         i, j, k = form.lot;
 
@@ -14,12 +17,6 @@
                 matchTags: {
                     bothTags: true
                 },
-                extraKeys: {
-                    'Ctrl-J': 'toMatchingTag',
-                    'F11': function (cm) {
-                        cm.setOption('fullScreen', !cm.getOption('fullScreen'));
-                    }
-                },
                 autoCloseTags: {
                     whenClosing: true,
                     whenOpening: true,
@@ -28,9 +25,22 @@
                     indentTags: ["blockquote", "body", "div", "dl", "fieldset", "form", "frameset", "h1", "h2", "h3", "h4",
                     "h5", "h6", "head", "html", "object", "ol", "select", "table", "tbody", "tfoot", "thead", "tr", "ul"]
                 },
-                autoCloseBrackets: true,
-                styleActiveLine: false
+                autoCloseBrackets: true
             });
+        var type = $(node).data.get('type'),
+            aliases = {
+                'html': 'application/x-httpd-php',
+                'xml': 'application/x-httpd-php'
+            };
+        if (type) {
+            editor.setOption('mode', aliases[type] || type);
+        }
+        editor.addKeyMap({
+            'Ctrl-J': 'toMatchingTag',
+            'F11': function(cm) {
+                cm.setOption('fullScreen', !cm.getOption('fullScreen'));
+            }
+        });
         var display = node.style.display;
         editor.setSize(size.x, size.y);
         $.events.set("resize", win, function() {
