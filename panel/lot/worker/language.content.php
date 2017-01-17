@@ -1,19 +1,20 @@
-<aside class="secondary">
-  <?php Hook::NS('panel.secondary.1.before'); ?>
-  <section class="secondary-language">
-    <h3><?php echo $language->languages; ?></h3>
-    <ul>
-      <?php foreach ($pages[0] as $k => $v): ?>
-      <li class="language-<?php echo $v->slug; ?>"><a href="<?php echo $url . '/' . $state->path . '/::g::/' . $chops[0] . '/' . $v->slug; ?>"><?php echo $pages[1][$k]->title($v->slug); ?></a></li>
-      <?php endforeach; ?>
-    </ul>
-  </section>
-  <?php Hook::NS('panel.secondary.1.after'); ?>
-</aside>
-<main class="main">
-  <?php Hook::NS('panel.main.before'); ?>
-  <section>
-    <form id="form.main" action="" method="post">
+<form id="form.main" action="" method="post">
+  <aside class="secondary">
+    <?php Hook::NS('panel.secondary.1.before'); ?>
+    <section class="secondary-language">
+      <h3><?php echo $language->languages; ?></h3>
+      <ul>
+        <?php foreach ($pages[0] as $k => $v): ?>
+        <li class="language-<?php echo $v->slug; ?>"><a href="<?php echo $url . '/' . $state->path . '/::g::/' . $chops[0] . '/' . $v->slug; ?>"><?php echo $pages[1][$k]->title($v->slug); ?></a></li>
+        <?php endforeach; ?>
+        <li><a href="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops); ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
+      </ul>
+    </section>
+    <?php Hook::NS('panel.secondary.1.after'); ?>
+  </aside>
+  <main class="main">
+    <?php Hook::NS('panel.main.before'); ?>
+    <section>
       <fieldset>
         <legend><?php echo $language->editor; ?></legend>
         <p class="control expand">
@@ -74,8 +75,8 @@
       </p>
       <?php echo Form::hidden('type', $page[0]->type); ?>
       <?php echo Form::hidden('token', $token); ?>
-    </form>
-  </section>
-  <?php Hook::NS('panel.main.after'); ?>
-  <?php Shield::get($shield_path . DS . 'footer.php'); ?>
-</main>
+    </section>
+    <?php Hook::NS('panel.main.after'); ?>
+    <?php Shield::get($shield_path . DS . 'footer.php'); ?>
+  </main>
+</form>

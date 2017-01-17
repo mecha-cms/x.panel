@@ -1496,6 +1496,10 @@
 
     var catches = {}, a;
 
+    function x(s) {
+        return encodeURIComponent(s);
+    }
+
     // <http://stackoverflow.com/a/26556347/1163000>
     $.ajax = function(form, fn) {
         var url = form.action,
@@ -1507,7 +1511,7 @@
         }).filter(function(el) {
             return !el.disabled;
         }).map(function(el) {
-            return encodeURIComponent(el.name) + '=' + encodeURIComponent(el.value);
+            return x(el.name) + '=' + x(el.value);
         }).join('&');
         xhr.open('POST', url);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

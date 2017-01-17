@@ -47,6 +47,7 @@ code {
   width:100%;
   table-layout:fixed;
 }
+.container > form {margin-top:0}
 .main,
 .secondary {
   display:table-cell;
@@ -116,8 +117,14 @@ code {
 .nav .current {font-weight:bold}
 .nav a:focus,
 .nav a:hover {background:#00a}
-.main section,
-.secondary section {overflow:hidden}
+.main section:before,
+.secondary section:before,
+.main section:after,
+.secondary section:after {
+  content:"";
+  display:table;
+  clear:both;
+}
 .secondary .secondary-nav {
   position:sticky;
   top:0;
@@ -150,10 +157,8 @@ code {
 .control.expand,
 .control.expand label + span {display:block}
 .control.expand label {display:none}
-.secondary h3 {
-  font-size:100%;
-  font-weight:bold;
-}
+.secondary h3 {font-size:100%}
+.secondary h4 {font-size:90%}
 .secondary .input,
 .secondary .select,
 .secondary .textarea {background:#afa}

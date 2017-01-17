@@ -1,0 +1,23 @@
+---
+type: YAML
+...
+
+chunk: Per Page
+inherit: Inherit
+
+panel:
+  data:
+    css: CSS
+    js: JavaScript
+    view: Views     # page views plugin
+  fast: Fast
+  faster: Faster
+  fastest: Fastest
+  slow: Slow
+  slower: Slower
+  slowest: Slowest
+  sort:
+    -1: Descending
+     1: Ascending
+
+sort: Sort

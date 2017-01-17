@@ -21,7 +21,7 @@ if ($sgr === 's' || is_dir($folder)) {
         $folder . '.archive'
     ]);
     $parent = $childs = $kins = $datas = [[], []]; // Why “child(s)” and “data(s)”? Please open `lot\language\en-us.page` for info
-    if ($files = Get::pages($folder, 'draft,page,archive', $sort[0], $sort[1], 'path')) {
+    if ($files = Get::pages($folder, 'draft,page,archive', $sort, 'path')) {
         foreach (Anemon::eat($files)->chunk($chunk, 0) as $v) {
             $childs[0][] = new Page($v, [], '::' . $sgr . '::page');
             $childs[1][] = new Page($v);
@@ -39,7 +39,7 @@ if ($sgr === 's' || is_dir($folder)) {
             new Page($file_parent)
         ];
     }
-    if ($parent[0] && ($files = Get::pages($folder_parent, 'draft,page,archive', $sort[0], $sort[1], 'path'))) {
+    if ($parent[0] && ($files = Get::pages($folder_parent, 'draft,page,archive', $sort, 'path'))) {
         $files = array_filter($files, function($v) use($chop_e) {
             return Path::N($v) !== $chop_e;
         });
@@ -54,7 +54,7 @@ if ($sgr === 's' || is_dir($folder)) {
             $n = Path::N($v);
             $datas[0][] = (object) ['slug'=> $n];
             $datas[1][] = (object) [
-                'title' => $language->{$n},
+                'title' => isset($language->panel->data->{$n}) ? $language->panel->data->{$n} : $language->{$n},
                 'slug' => $n
             ];
         }
@@ -91,7 +91,7 @@ if ($sgr === 's' || is_dir($folder)) {
         }
     } else if ($sgr === 'g') {
         $pages = [[], []];
-        if ($files = Get::pages($folder, 'draft,page,archive', $sort[0], $sort[1], 'path')) {
+        if ($files = Get::pages($folder, 'draft,page,archive', $sort, 'path')) {
             if ($q = Request::get('q')) {
                 $files = array_filter($files, function($v) use($q) {
                     $v = Path::N($v);
