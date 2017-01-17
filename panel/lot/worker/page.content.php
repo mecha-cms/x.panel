@@ -9,15 +9,6 @@
       </ul>
     </section>
     <?php endif; ?>
-    <section class="secondary-child">
-      <h3><?php echo $language->childs; ?></h3>
-      <ul>
-        <?php foreach ($childs[0] as $k => $v): ?>
-        <li class="state-<?php echo $v->state; ?>"><a href="<?php echo $v->url; ?>"><?php echo $childs[1][$k]->title; ?></a></li>
-        <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops); ?>" title="<?php echo $language->add; ?>">&#x2795;</a><?php if ($child_very_much): ?> <a href="<?php echo $url . '/' . $state->path . '/::g::/' . implode('/', $chops) . '/2'; ?>" title="<?php echo $language->more; ?>">&#x2026;</a><?php endif; ?></li>
-      </ul>
-    </section>
     <?php if ($kins[0]): ?>
     <section class="secondary-kin">
       <h3><?php echo $language->kins; ?></h3>
@@ -29,6 +20,27 @@
         <li><a href="<?php echo $url . '/' . $state->path . '/::g::/' . Path::D(implode('/', $chops)) . '/2'; ?>" title="<?php echo $language->more; ?>">&#x2026;</a></li>
         <?php endif; ?>
       </ul>
+    </section>
+    <?php endif; ?>
+    <?php if (count($childs[0]) > 0): ?>
+    <section class="secondary-config">
+      <h3><?php echo $language->configs; ?></h3>
+      <section class="secondary-config-sort">
+        <h4><?php echo $language->sort; ?></h4>
+        <p>
+<?php echo Form::radio('sort[0]', $language->panel->sort, isset($parent[0]->sort[0]) ? $parent[0]->sort[0] : (isset($page[1]->sort[0]) ? $page[1]->sort[0] : ""), ['classes' => ['input']]); ?>
+        </p>
+        <h4><?php echo $language->by; ?></h4>
+        <p>
+<?php echo Form::radio('sort[1]', [
+    'time' => $language->time,
+    'slug' => $language->slug,
+    'title' => $language->title
+], isset($parent[0]->sort[1]) ? $parent[0]->sort[1] : (isset($page[1]->sort[1]) ? $page[1]->sort[1] : ""), ['classes' => ['input']]); ?>
+        </p>
+        <h4><?php echo $language->chunk; ?></h4>
+        <p><?php echo Form::number('chunk', isset($parent[0]->chunk) ? $parent[0]->chunk : (isset($page[1]->chunk) ? $page[1]->chunk : $site->chunk), $language->inherit, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 100]); ?></p>
+      </section>
     </section>
     <?php endif; ?>
     <?php Hook::NS('panel.secondary.1.after'); ?>
@@ -122,28 +134,15 @@ echo Form::button('x', 'trash', $language->delete, ['classes' => ['button', 'x-t
       </ul>
     </section>
     <?php endif; ?>
-    <?php if (count($childs[0]) > 0): ?>
-    <section class="secondary-config">
-      <h3><?php echo $language->configs; ?></h3>
-      <section class="secondary-config-sort">
-        <h4><?php echo $language->sort; ?></h4>
-        <p>
-<?php echo Form::radio('sort[0]', array_replace((array) $language->panel->sort, ["" => $language->inherit]), isset($parent[0]->sort[0]) ? $parent[0]->sort[0] : (isset($page[1]->sort[0]) ? $page[1]->sort[0] : ""), ['classes' => ['input']]); ?>
-        </p>
-        <h4><?php echo $language->by; ?></h4>
-        <p>
-<?php echo Form::radio('sort[1]', [
-    'time' => $language->time . ' (' . l($language->panel->slower) . ')',
-    'slug' => $language->slug,
-    'title' => $language->title . ' (' . l($language->panel->slowest) . ')',
-    "" => $language->inherit
-], isset($parent[0]->sort[1]) ? $parent[0]->sort[1] : (isset($page[1]->sort[1]) ? $page[1]->sort[1] : ""), ['classes' => ['input']]); ?>
-        </p>
-        <h4><?php echo $language->chunk; ?></h4>
-        <p><?php echo Form::number('chunk', isset($parent[0]->chunk) ? $parent[0]->chunk : (isset($page[1]->chunk) ? $page[1]->chunk : ""), $language->inherit, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 100]); ?></p>
-      </section>
+    <section class="secondary-child">
+      <h3><?php echo $language->childs; ?></h3>
+      <ul>
+        <?php foreach ($childs[0] as $k => $v): ?>
+        <li class="state-<?php echo $v->state; ?>"><a href="<?php echo $v->url; ?>"><?php echo $childs[1][$k]->title; ?></a></li>
+        <?php endforeach; ?>
+        <li><a href="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops); ?>" title="<?php echo $language->add; ?>">&#x2795;</a><?php if ($child_very_much): ?> <a href="<?php echo $url . '/' . $state->path . '/::g::/' . implode('/', $chops) . '/2'; ?>" title="<?php echo $language->more; ?>">&#x2026;</a><?php endif; ?></li>
+      </ul>
     </section>
-    <?php endif; ?>
     <?php Hook::NS('panel.secondary.2.after'); ?>
   </aside>
 </form>

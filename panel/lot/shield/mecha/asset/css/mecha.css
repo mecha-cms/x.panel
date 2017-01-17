@@ -95,6 +95,7 @@ code {
   line-height:3em;
   padding:0 1em;
 }
+.main .page p:first-child {margin:0}
 .main .page.parent {box-shadow:inset 0 0 0 4px #def}
 .nav ul,
 .nav li {
@@ -125,6 +126,13 @@ code {
   display:table;
   clear:both;
 }
+.secondary-config {
+  background:#fea;
+  padding:1em;
+  margin:1.5em -.5em .5em;
+}
+.secondary-config:first-child {margin-top:.5em}
+.secondary-config h3:first-child {margin-top:0}
 .secondary .secondary-nav {
   position:sticky;
   top:0;
