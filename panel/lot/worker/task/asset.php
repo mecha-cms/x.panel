@@ -28,12 +28,12 @@ Asset::set([
     12.1
 ]);
 
-if ($fn = File::exist($shield_path . DS . 'index.php')) require $fn;
+if ($fn = File::exist($path_shield . DS . 'index.php')) require $fn;
 
 Hook::set('shield.output', function($content) {
     $s = [];
     foreach (get_defined_constants(true)['user'] as $k => $v) {
         $s[] = '$.' . $k . '=' . s(json_encode($v)) . ';';
     }
-    return str_replace('</body>', '<script>!function($){' . implode("", $s) . '$.Language.lot=' . json_encode(Language::get()) . '}(Panel);</script></body>', $content);
+    return preg_replace('#(\/panel\.min\.js(?:\W.+)?"><\/script>)#', '$1<script>!function($){' . str_replace('$', '\\$', implode("", $s)) . '$.Language.lot=' . json_encode(Language::get()) . '}(Panel);</script>', $content);
 }, 1);

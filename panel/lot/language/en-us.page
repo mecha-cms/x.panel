@@ -6,10 +6,6 @@ chunk: Per Page
 inherit: Inherit
 
 panel:
-  data:
-    css: CSS
-    js: JavaScript
-    view: Views     # page views plugin
   fast: Fast
   faster: Faster
   fastest: Fastest

@@ -3,6 +3,7 @@
 $step = $step - 1;
 $sort = $state['sort'];
 $chunk = $state['chunk'];
+$is_r_post = Request::is('post');
 
 Panel::set('page.types.HTML', 'HTML');
 
@@ -14,7 +15,67 @@ Hook::set('::' . $sgr . '::page.url', function($content, $lot) use($state) {
 $folder = LOT . DS . $path;
 $chop_e = end($chops);
 $is_index_view = is_numeric(Path::B($url->path)); // Force index view by appending page offset to the end of URL
-if ($sgr === 's' || is_dir($folder)) {
+
+if (substr($path, -3) === '/d+' || strpos($path, '/d:') !== false) {
+    $data_folder = Path::D($folder);
+    $s = explode('/d:', $path, 2);
+    $lot = ['key' => isset($s[1]) ? To::key($s[1]) : ""];
+    $kins = $page = [[], []];
+    if ($sgr === 's') {
+        if ($is_r_post && !Message::$x) {
+            array_pop($chops);
+            $data_path = $data_folder . DS . $_POST['key'] . '.data';
+            $is_new = !file_exists($data_path);
+            if (!$is_new && $_POST['x'] === 'trash') {
+                File::open($data_path)->renameTo($_POST['key'] . '.trash');
+                Message::success('Data <code>' . $_POST['key'] . '</code> successfully deleted.');
+                Guardian::kick($state['path'] . '/::g::/' . implode('/', $chops));
+            } else {
+                File::write($_POST['content'])->saveTo($data_path, 0600);
+                Message::success('Data <code>' . $_POST['key'] . '</code> successfully ' . ($is_new ? 'created' : 'updated') . '.');
+                Guardian::kick($state['path'] . '/::g::/' . implode('/', $chops) . '/d:' . $_POST['key']);
+            }
+        }
+        Lot::set('data', [
+            new Page(null, $lot, '::' . $sgr . '::data'),
+            new Page(null, $lot, 'data')
+        ]);
+    } else {
+        if (($content = File::open($data_folder . DS . $lot['key'] . '.data')->read(false)) === false) {
+            Shield::abort();
+        } else {
+            $lot['content'] = $content;
+            Lot::set('data', [
+                new Page(null, $lot, '::' . $sgr . '::data'),
+                new Page(null, $lot, 'data')
+            ]);
+        }
+    }
+    if ($files = g($data_folder, 'data')) {
+        $files = array_filter($files, function($v) use($lot) {
+            return Path::N($v) !== $lot['key'];
+        });
+        foreach ($files as $v) {
+            $lot = ['key' => Path::N($v)];
+            $kins[0][] = new Page(null, $lot, '::' . $sgr . '::data');
+            $kins[1][] = new Page(null, $lot, 'data');
+        }
+    }
+    $kin_very_much = $files && count($files) > $chunk;
+    if ($file = File::exist([
+        $data_folder . '.draft',
+        $data_folder . '.page',
+        $data_folder . '.archive'
+    ])) {
+        $page[0] = new Page($file, [], '::' . $sgr . '::page');
+        $page[1] = new Page($file);
+    }
+    Lot::set([
+        'page' => $page,
+        'kins' => $kins,
+        'kin_very_much' => $kin_very_much // TODO
+    ]);
+} else if (is_dir($folder)) {
     $file = File::exist([
         $folder . '.draft',
         $folder . '.page',
@@ -27,7 +88,7 @@ if ($sgr === 's' || is_dir($folder)) {
             $childs[1][] = new Page($v);
         }
     }
-    $child_very_much = count($files) > $chunk;
+    $child_very_much = $files && count($files) > $chunk;
     $folder_parent = Path::D($folder);
     if ($file_parent = File::exist([
         $folder_parent . '.draft',
@@ -48,18 +109,15 @@ if ($sgr === 's' || is_dir($folder)) {
             $kins[1][] = new Page($v);
         }
     }
-    $kin_very_much = count($files) > $chunk;
-    if ($files = glob($folder . DS . '*.data')) {
+    $kin_very_much = $files && count($files) > $chunk;
+    if ($files = g($folder, 'data')) {
         foreach ($files as $v) {
-            $n = Path::N($v);
-            $datas[0][] = (object) ['slug'=> $n];
-            $datas[1][] = (object) [
-                'title' => isset($language->panel->data->{$n}) ? $language->panel->data->{$n} : $language->{$n},
-                'slug' => $n
-            ];
+            $lot = ['key' => Path::N($v)];
+            $datas[0][] = new Page(null, $lot, '::' . $sgr . '::data');
+            $datas[1][] = new Page(null, $lot, 'data');
         }
     }
-    $data_very_much = count($files) > $chunk; // TODO
+    $data_very_much = $files && count($files) > $chunk; // TODO
     Lot::set([
         'parent' => $parent,
         'childs' => $childs,
@@ -78,6 +136,15 @@ if ($sgr === 's' || is_dir($folder)) {
         if (!isset($chops[1])) {
             Shield::abort(); // Is root page …
         } else if ($file) {
+            if ($is_r_post && !Message::$x) {
+                $defaults = [
+                    'title' => false,
+                    'description' => false,
+                    'author' => false,
+                    'type' => false,
+                    'link' => false
+                ];
+            }
             $title = (new Date())->{str_replace('-', '_', $site->language)};
             Lot::set('page', [
                 new Page(null, [ // New page …
@@ -136,6 +203,4 @@ if ($sgr === 's' || is_dir($folder)) {
             'pages' => $pages
         ]);
     }
-} else if ($sgr !== 's' && strpos($path, '/d:') === false) {
-    Shield::abort();
 }

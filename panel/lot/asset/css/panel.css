@@ -180,6 +180,18 @@ label {
 .input.x,
 .select.x,
 .textarea.x {cursor:default}
+.text-left {text-align:left}
+.text-center {text-align:center}
+.text-right {text-align:right}
+.text-justify {text-align:justify}
+.left {float:left}
+.right {float:right}
+.center {
+  float:none;
+  display:inline-block;
+  margin-right:auto;
+  margin-left:auto;
+}
 
 .message {
   padding:.5em 1em;

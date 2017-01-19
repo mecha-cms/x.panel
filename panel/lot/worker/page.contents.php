@@ -2,8 +2,8 @@
   <?php Hook::NS('panel.secondary.1.before'); ?>
   <section class="secondary-search">
     <h3><?php echo $language->search; ?></h3>
-    <form class="search" action="<?php echo $url->current; ?>" method="get">
-      <p><input class="input" name="q" type="text" value="<?php echo Request::get('q', ""); ?>"> <button class="button"><?php echo $language->search; ?></button>
+    <form id="form.secondary.1" class="search" action="<?php echo $url->current; ?>" method="get">
+      <p><?php echo Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]) . ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]); ?></p>
     </form>
   </section>
   <?php if ($parent[0] || count($chops) === 2): ?>
@@ -40,11 +40,12 @@
   <?php endif; ?>
 </aside>
 <main class="main">
+  <?php echo $message; ?>
   <?php Hook::NS('panel.main.before'); ?>
   <section>
-  <?php foreach ($pages[1] as $k => $v): ?>
+    <?php foreach ($pages[1] as $k => $v): ?>
     <?php $s = $pages[0][$k]->url; $has_parent = !!g(LOT . explode('::' . $sgr . '::', $s, 2)[1], 'draft,page,archive', "", false); ?>
-    <article class="page<?php if ($has_parent): ?> parent<?php endif; ?>" id="page-<?php echo $v->id; ?>">
+    <article class="page<?php if ($has_parent): ?> is-parent<?php endif; ?>" id="page-<?php echo $v->id; ?>">
       <header>
         <h3><a href="<?php echo $v->url; ?>" target="_blank"><?php echo $v->title; ?></a></h3>
       </header>
@@ -53,9 +54,13 @@
         <p>
         <?php
 
-        $links = [HTML::a($language->edit, $s)];
+        $links = [
+            HTML::a($language->edit, $s),
+            HTML::a($language->delete, str_replace('::g::', '::r::', $s))
+        ];
+
         if ($has_parent) {
-            $links[] = HTML::a($language->more, $s . '/1');
+            $links[] = HTML::a($language->open, $s . '/1');
         }
 
         echo implode(' &#x00B7; ', $links);
@@ -67,5 +72,5 @@
     <?php endforeach; ?>
   </section>
   <?php Hook::NS('panel.main.after'); ?>
-  <?php Shield::get($shield_path . DS . 'footer.php'); ?>
+  <?php Shield::get(__DIR__ . DS . 'footer.content.php'); ?>
 </main>

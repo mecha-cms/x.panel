@@ -17,5 +17,8 @@
       </li><!--
       <?php endforeach; ?>
     <?php endif; ?>
+    --><li>
+      <a href="">&#x2026;</a>
+    </li><!--
   --></ul>
 </nav>

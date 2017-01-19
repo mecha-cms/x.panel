@@ -8,21 +8,25 @@ version: 1.0.0
 
 ### Reserved Variables
 
- - `$childs`
+ - `$child`
  - `$child_very_much`
+ - `$childs`
  - `$chops`
- - `$datas`
+ - `$data`
  - `$data_very_much`
+ - `$datas`
  - `$hash`
- - `$kins`
+ - `$kin`
  - `$kin_very_much`
+ - `$kins`
  - `$message`
  - `$page`
+ - `$page_very_much`
  - `$pages`
  - `$parent`
  - `$path`
+ - `$path_shield`
  - `$sgr`
- - `$shield_path`
  - `$state`
  - `$step`
  - `$token`

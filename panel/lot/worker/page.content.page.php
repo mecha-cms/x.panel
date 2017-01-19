@@ -1,6 +1,33 @@
 <form id="form.main" action="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops); ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
+    <section class="secondary-author">
+      <h3><?php echo $language->author; ?></h3>
+      <p>
+<?php
+
+if (Extend::exist('user')) {
+    $authors = [];
+    $select = $page[0]->author . "";
+    foreach (g(ENGINE . DS . 'log' . DS . 'user', 'page') as $v) {
+        $v = new User(Path::N($v));
+        $k = User::ID . $v->key;
+        $authors[($v->state !== 1 ? '.' : "") . $k] = $v->author;
+        if ($select === $v->author) {
+            $select = $k;
+        }
+    }
+    echo Form::select('author', $authors, $select, [
+        'classes' => ['select', 'block'],
+        'id' => 'field-author'
+    ]);
+} else {
+    echo Form::text('author', $page[0]->author, User::ID . l($language->user), ['classes' => ['input', 'block']]);
+}
+
+?>
+      </p>
+    </section>
     <?php if ($parent[0]): ?>
     <section class="secondary-parent">
       <h3><?php echo $language->parent; ?></h3>
@@ -44,82 +71,79 @@
     <?php Hook::NS('panel.secondary.1.after'); ?>
   </aside>
   <main class="main">
+    <?php echo $message; ?>
     <?php Hook::NS('panel.main.before'); ?>
-    <section>
-      <?php echo $message; ?>
-      <fieldset>
-        <legend><?php echo $language->editor; ?></legend>
-        <p class="control expand">
-          <label for="control-page-title"><?php echo $language->title; ?></label> <span>
+    <fieldset>
+      <legend><?php echo $language->editor; ?></legend>
+      <p class="field expand">
+        <label for="field-title"><?php echo $language->title; ?></label> <span>
 <?php echo Form::text('title', $page[0]->title, $page[1]->title, [
     'classes' => ['input', 'block'],
-    'id' => 'control-page-title'
+    'id' => 'field-title'
 ]); ?>
-          </span>
-        </p>
-        <p class="control expand">
-          <label for="control-page-slug"><?php echo $language->slug; ?></label> <span>
+        </span>
+      </p>
+      <p class="field expand">
+        <label for="field-slug"><?php echo $language->slug; ?></label> <span>
 <?php echo Form::text('slug', $page[0]->slug, $page[1]->slug, [
     'classes' => ['input', 'block'],
-    'id' => 'control-page-slug'
+    'id' => 'field-slug'
 ]); ?>
-          </span>
-        </p>
-        <div class="control expand p">
-          <label for="control-page-content"><?php echo $language->content; ?></label>
-          <div>
+        </span>
+      </p>
+      <div class="field expand p">
+        <label for="field-content"><?php echo $language->content; ?></label>
+        <div>
 <?php echo Form::textarea('content', $page[0]->content, null, [
     'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
-    'id' => 'control-page-content',
+    'id' => 'field-content',
     'data' => ['type' => $page[0]->type]
 ]); ?>
-          </div>
         </div>
-        <p class="control">
-          <label for="control-page-type"><?php echo $language->type; ?></label> <span>
+      </div>
+      <p class="field">
+        <label for="field-type"><?php echo $language->type; ?></label> <span>
 <?php $types = a(Panel::get('page.types', [])); asort($types); ?>
 <?php echo Form::select('type', $types, $page[0]->type, [
     'classes' => ['select'],
-    'id' => 'control-page-type'
+    'id' => 'field-type'
 ]); ?>
-          </span>
-        </p>
-        <div class="control p">
-          <label for="control-page-description"><?php echo $language->description; ?></label>
-          <div>
-<?php echo Form::textarea('description', $page[0]->description, $page[0]->description, [
-    'classes' => ['textarea', 'block'],
-    'id' => 'control-page-description'
-]); ?>
-          </div>
-        </div>
-        <p class="control">
-          <label for="control-page-kind"><?php echo $language->kind; ?></label> <span>
-<?php $kinds = $page[0]->kind === [0] ? "" : implode(', ', $page[0]->kind); ?>
-<?php echo Form::text('kind', $kinds, 'foo, bar, baz, qux', [
-    'classes' => ['input', 'block', 'query'],
-    'id' => 'control-page-kind'
-]); ?>
-          </span>
-        </p>
-      </fieldset>
-      <p class="control expand">
-        <label for="control-page-x"><?php echo $language->state; ?></label>
-        <span>
-<?php
-
-echo Form::submit('x', 'page', $language->publish, ['classes' => ['button', 'x-page'], 'id' => 'control-page-x:page']) . ' ';
-echo Form::submit('x', 'draft', $language->save, ['classes' => ['button', 'x-draft'], 'id' => 'control-page-x:draft']) . ' ';
-echo Form::submit('x', 'archive', $language->archive, ['classes' => ['button', 'x-archive'], 'id' => 'control-page-x:archive']) . ' ';
-echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'control-page-x:trash']);
-
-?>
         </span>
       </p>
-      <?php echo Form::hidden('token', $token); ?>
-    </section>
+      <div class="field p">
+        <label for="field-description"><?php echo $language->description; ?></label>
+        <div>
+<?php echo Form::textarea('description', $page[0]->description, $page[0]->description, [
+    'classes' => ['textarea', 'block'],
+    'id' => 'field-description'
+]); ?>
+        </div>
+      </div>
+      <p class="field">
+        <label for="field-kind"><?php echo $language->kind; ?></label> <span>
+<?php $kinds = $page[0]->kind === [0] ? "" : implode(', ', $page[0]->kind); ?>
+<?php echo Form::text('kind', $kinds, 'foo, bar, baz', [
+    'classes' => ['input', 'block', 'query'],
+    'id' => 'field-kind'
+]); ?>
+        </span>
+      </p>
+    </fieldset>
     <?php Hook::NS('panel.main.after'); ?>
-    <?php Shield::get($shield_path . DS . 'footer.php'); ?>
+    <?php echo Form::hidden('token', $token); ?>
+    <p class="field expand">
+      <label for="field-x"><?php echo $language->state; ?></label> <span>
+<?php
+
+echo Form::submit('x', 'page', $language->publish, ['classes' => ['button', 'x-page'], 'id' => 'field-x:page']) . ' ';
+echo Form::submit('x', 'draft', $language->save, ['classes' => ['button', 'x-draft'], 'id' => 'field-x:draft']) . ' ';
+echo Form::submit('x', 'archive', $language->archive, ['classes' => ['button', 'x-archive'], 'id' => 'field-x:archive']) . ' ';
+echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'field-x:trash']);
+
+?>
+      </span>
+    </p>
+    <?php Shield::get(__DIR__ . DS . 'footer.content.php'); ?>
   </main>
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.2.before'); ?>
@@ -128,9 +152,9 @@ echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-t
       <h3><?php echo $language->datas; ?></h3>
       <ul>
         <?php foreach ($datas[0] as $k => $v): ?>
-        <li class="data-<?php echo $v->slug; ?>"><a href="<?php echo $url . '/' . $state->path . '/::g::/' . implode('/', $chops) . '/d:' . $v->slug; ?>"><?php echo $datas[1][$k]->title; ?></a></li>
+        <li class="data-<?php echo $v->key; ?>"><a href="<?php echo $url . '/' . $state->path . '/::g::/' . implode('/', $chops) . '/d:' . $v->key; ?>"><?php echo $datas[1][$k]->key; ?></a></li>
         <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops) . '/d:'; ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
+        <li><a href="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops) . '/d+'; ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
       </ul>
     </section>
     <?php endif; ?>
