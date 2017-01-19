@@ -4,8 +4,8 @@ $s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'css' . DS;
 
 Asset::set([
     $s . 'panel.min.css',
-    $s . 'panel.code-mirror.min.css',
-    $s . 'panel.t-i-b.min.css'
+    $state['tools']['code-mirror'] ? $s . 'panel.code-mirror.min.css' : false,
+    $state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.css' : false
 ], [
     10,
     11,
@@ -16,14 +16,16 @@ $s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'js' . DS;
 
 Asset::set([
     $s . 'panel.min.js',
-    $s . 'panel.code-mirror.min.js',
-    $s . 'panel.t-i-b.min.js',
-    $s . 'panel.fire.min.js'
+    $state['tools']['code-mirror'] ? $s . 'panel.code-mirror.min.js' : false,
+    $state['tools']['code-mirror'] ? $s . 'panel.code-mirror.fire.min.js' : false,
+    $state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.js' : false,
+    $state['tools']['t-i-b'] ? $s . 'panel.t-i-b.fire.min.js' : false
 ], [
     10,
     11,
+    11.1,
     12,
-    13
+    12.1
 ]);
 
 if ($fn = File::exist($shield_path . DS . 'index.php')) require $fn;

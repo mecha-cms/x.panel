@@ -6,5 +6,5 @@
     <title>Control Panel</title>
     <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
-  <body>
+  <body spellcheck="false">
     <?php Shield::get(__DIR__ . DS . 'menu.php'); ?>

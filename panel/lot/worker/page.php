@@ -136,6 +136,6 @@ if ($sgr === 's' || is_dir($folder)) {
             'pages' => $pages
         ]);
     }
-} else if ($sgr !== 's') {
+} else if ($sgr !== 's' && strpos($path, '/d:') === false) {
     Shield::abort();
 }

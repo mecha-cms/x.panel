@@ -46,7 +46,7 @@ article,aside,footer,header,main,nav,section {display:block}
 b,dt,h1,h2,h3,h4,h5,h6,strong,th {font-weight:bold}
 caption,em,figcaption,i,var {font-style:italic}
 caption,figcaption {text-align:center}
-code {font-family:monospace}
+code,.code {font-family:monospace}
 ins,u {text-decoration:underline}
 del,s {text-decoration:line-through}
 html {
@@ -79,7 +79,8 @@ figcaption,
 figure,
 form,
 h1,h2,h3,h4,h5,h6,
-hr,ol,p,pre,table,ul {margin:1rem 0 0}
+hr,ol,p,pre,table,ul,
+.p {margin:1rem 0 0}
 ol,ul,dd {margin-left:2em}
 ol ol,
 ol ul,
@@ -89,6 +90,25 @@ ul ul {
   margin-left:1em;
 }
 ul {list-style:square}
+blockquote:first-child,
+dl:first-child,
+fieldset:first-child,
+figcaption:first-child,
+figure:first-child,
+form:first-child,
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child,
+hr:first-child,
+ol:first-child,
+p:first-child,
+pre:first-child,
+table:first-child,
+ul:first-child,
+.p:first-child {margin-top:0}
 fieldset,hr {
   color:inherit;
   border:1px solid;
@@ -99,7 +119,8 @@ legend {
   font-weight:bold;
 }
 legend + fieldset,
-legend + p {margin-top:-.5384615384615384em}
+legend + p,
+legend + .p {margin-top:-.5384615384615384em}
 hr {border-width:1px 0 0}
 
 .button,

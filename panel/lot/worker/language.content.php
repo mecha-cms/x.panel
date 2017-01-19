@@ -26,25 +26,25 @@
 ]); ?>
           </span>
         </p>
-        <p class="control expand">
+        <div class="control expand p">
           <label for="control-language-content"><?php echo $language->content; ?></label>
-          <span>
+          <div>
 <?php echo Form::textarea('content', $page[0]->content, null, [
     'classes' => ['textarea', 'block', 'expand', 'code'],
     'id' => 'control-language-content',
     'data' => ['type' => $page[0]->type]
 ]); ?>
-          </span>
-        </p>
-        <p class="control">
+          </div>
+        </div>
+        <div class="control p">
           <label for="control-language-description"><?php echo $language->description; ?></label>
-          <span>
+          <div>
 <?php echo Form::textarea('description', $page[0]->description, $page[1]->description, [
     'classes' => ['textarea', 'block'],
     'id' => 'control-language-description'
 ]); ?>
-          </span>
-        </p>
+          </div>
+        </div>
         <p class="control">
           <label for="control-language-version"><?php echo $language->version; ?></label>
           <span>
@@ -67,7 +67,7 @@
       <p class="control expand">
         <label for="control-language-x"><?php echo $language->state; ?></label>
         <span>
-<?php echo Form::button('x', 'page', $language->update, [
+<?php echo Form::submit('x', 'page', $language->update, [
     'classes' => ['button', 'x-page'],
     'id' => 'control-language-x'
 ]); ?>

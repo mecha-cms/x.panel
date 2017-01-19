@@ -21,9 +21,9 @@ blockquote {
   border-left:4px solid;
   padding-left:1em;
 }
-code {
+code,.code {
   font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
-  font-size:86%;
+  font-size:90%;
 }
 .button,
 .input,
@@ -47,21 +47,21 @@ code {
   width:100%;
   table-layout:fixed;
 }
-.container > form {margin-top:0}
+.container > form {
+  display:table-row;
+  margin-top:0;
+}
 .main,
 .secondary {
   display:table-cell;
   vertical-align:top;
-  padding:0 1em 1em;
-}
-.main:before,
-.secondary:before {
-  content:"";
-  display:table;
+  padding:1em;
 }
 .main {background:#ffa}
 .secondary {width:16em}
-.main:after {
+.main section + section,
+.secondary section + section {margin-top:1em}
+.main section:after {
   content:"";
   display:table;
   clear:both;
@@ -71,7 +71,7 @@ code {
   border:1px solid;
   width:20%;
   float:left;
-  margin:1em 1em 0 0;
+  margin:0 1em 1em 0;
   padding:1em 1.25em 4em 1.25em;
   height:22em;
   position:relative;
@@ -95,8 +95,7 @@ code {
   line-height:3em;
   padding:0 1em;
 }
-.main .page p:first-child {margin:0}
-.main .page.parent {box-shadow:inset 0 0 0 4px #def}
+.main .page.is-parent {box-shadow:inset 0 0 0 4px #def}
 .nav ul,
 .nav li {
   margin:0;
@@ -118,27 +117,18 @@ code {
 .nav .current {font-weight:bold}
 .nav a:focus,
 .nav a:hover {background:#00a}
-.main section:before,
-.secondary section:before,
-.main section:after,
-.secondary section:after {
-  content:"";
-  display:table;
-  clear:both;
-}
 .secondary-config {
   background:#fea;
   padding:1em;
   margin:1.5em -.5em .5em;
 }
-.secondary-config:first-child {margin-top:.5em}
-.secondary-config h3:first-child {margin-top:0}
+.secondary-config:first-child {margin-top:-.5em}
 .secondary .secondary-nav {
   position:sticky;
   top:0;
 }
 .main-footer {
-  margin:4em .5em 0;
+  margin:3em .5em 0;
   clear:both;
 }
 .search .input {
