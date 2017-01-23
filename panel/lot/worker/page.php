@@ -144,6 +144,7 @@ if (substr($path, -3) === '/d+' || strpos($path, '/d:') !== false) {
                     'type' => false,
                     'link' => false
                 ];
+                Guardian::kick(str_replace('::s::', '::g::', $url->current));
             }
             $title = (new Date())->{str_replace('-', '_', $site->language)};
             Lot::set('page', [
