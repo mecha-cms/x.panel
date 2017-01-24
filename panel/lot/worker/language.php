@@ -8,11 +8,10 @@ foreach (glob(LANGUAGE . DS . '*.page') as $v) {
 
 Lot::set('pages', $pages);
 
-if (!$file = File::exist(LOT . DS . $path . '.page')) {
-    $file = LANGUAGE . DS . $site->language . '.page';
-}
-
-if (!file_exists($file)) {
+if (!$file = File::exist([
+    LOT . DS . $path . '.page',
+    LANGUAGE . DS . $site->language . '.page'
+])) {
     Shield::abort();
 }
 

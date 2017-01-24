@@ -17,37 +17,51 @@ if (!function_exists('fn_f_reset')) {
 
 if (Request::is('post')) {
     // Process special field name …
-    if (isset($_POST['slug'])) {
-        $_POST['slug'] = $s = To::slug($_POST['slug']);
-        if ($s === '--') {
+    $s = Request::post('slug', "");
+    if (Request::is('post', 'slug')) {
+        Request::set('post', 'slug', $s = trim(To::slug($s), '-'));
+        if (!$s) {
+            Request::save('post');
             Message::error('Please fill out the slug field.');
         }
     }
-    if (isset($_POST['key'])) {
-        $_POST['key'] = $s = To::key($_POST['key']);
-        if ($s === '__') {
+    $s = Request::post('key', "");
+    if (Request::is('post', 'key')) {
+        Request::set('post', 'key', $s = trim(To::key($s), '_'));
+        if (!$s) {
+            Request::save('post');
             Message::error('Please fill out the key field.');
         }
     }
-    if (isset($_POST['x'])) {
-        $_POST['x'] = $s = l($_POST['x']);
+    $s = Request::post('x', "");
+    if (Request::is('post', 'x')) {
+        Request::set('post', 'x', $s = l($s));
         if (!Is::these(File::$config['extensions'])->has($s)) {
+            Request::save('post');
             Message::error('Extension <code>' . $s . '</code> is not allowed.');
         }
     }
-    // Sanitize input …
-    $_POST = fn_f_reset($_POST, function($v) {
+    // Remove empty request value(s) …
+    $s = fn_f_reset(Request::post(null, []), function($v) {
         return is_string($v) && !trim($v) || is_array($v) && empty($v) || is_object($v) && empty((array) $v);
     });
+    Request::reset('post')->extend('post', $s);
     // Sanitize by user …
-    if (isset($_POST['::f::']) && is_callable($_POST['::f::'])) {
-        $_POST = call_user_func($_POST['::f::'], $_POST);
+    $s = Request::post('::f::');
+    if ($s && is_callable($s)) {
+        $s = call_user_func($s, Request::post(null, []));
+        Request::reset('post')->extend('post', $s);
     }
     // Process token …
-    if (!isset($_POST['token']) || $_POST['token'] !== Session::get(Guardian::$config['session']['token'])) {
+    $s = Request::post('token');
+    if (!$s || $s !== Session::get(Guardian::$config['session']['token'])) {
         Message::error('Invalid token.');
-        Guardian::kick($url->current);
+        Guardian::kick();
     }
-    // Remove `token` from `$_POST`
-    unset($_POST['token']);
+} else if (Request::is('get')) {
+    // Process token …
+    $s = Request::get('token');
+    if ($s && $s !== Session::get(Guardian::$config['session']['token'])) {
+        Message::error('Invalid token.');
+    }
 }

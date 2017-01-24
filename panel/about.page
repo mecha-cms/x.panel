@@ -9,19 +9,19 @@ version: 1.0.0
 ### Reserved Variables
 
  - `$child`
- - `$child_very_much`
+ - `$is_child_has_step`
  - `$childs`
  - `$chops`
  - `$data`
- - `$data_very_much`
+ - `$is_data_has_step`
  - `$datas`
  - `$hash`
  - `$kin`
- - `$kin_very_much`
+ - `$is_kin_has_step`
  - `$kins`
  - `$message`
  - `$page`
- - `$page_very_much`
+ - `$is_page_has_step`
  - `$pages`
  - `$parent`
  - `$path`

@@ -28,32 +28,32 @@
     <?php Hook::NS('panel.main.before'); ?>
     <fieldset>
       <legend><?php echo $language->editor; ?></legend>
-      <div class="field expand p">
-        <label for="field-content"><?php echo $language->content; ?></label>
+      <div class="f expand p">
+        <label for="f-content"><?php echo $language->content; ?></label>
         <div>
 <?php echo Form::textarea('content', $data[0]->content, $data[0]->content, [
     'classes' => ['textarea', 'block', 'expand', 'code'],
-    'id' => 'field-content'
+    'id' => 'f-content'
 ]); ?>
         </div>
       </div>
-      <p class="field">
-        <label for="field-key"><?php echo $language->key; ?></label> <span>
+      <p class="f">
+        <label for="f-key"><?php echo $language->key; ?></label> <span>
 <?php echo Form::text('key', $data[0]->key, $data[0]->key, [
     'classes' => ['input'],
-    'id' => 'field-key'
+    'id' => 'f-key'
 ]); ?>
         </span>
       </p>
     </fieldset>
-    <?php echo Form::hidden('token', $token); ?>
+    <?php echo Form::token(); ?>
     <?php Hook::NS('panel.main.after'); ?>
-    <p class="field expand">
-      <label for="field-x"><?php echo $language->state; ?></label> <span>
+    <p class="f expand">
+      <label for="f-x"><?php echo $language->state; ?></label> <span>
 <?php
 
-echo Form::submit('x', 'data', $language->{$sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'field-x:data']) . ' ';
-echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'field-x:trash']);
+echo Form::submit('x', 'data', $language->{$sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'f-x:data']) . ' ';
+echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-x:trash']);
 
 ?>
       </span>

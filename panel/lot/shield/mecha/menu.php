@@ -11,7 +11,7 @@
     <?php if ($menus = glob(LOT . DS . '*', GLOB_ONLYDIR)): ?>
       <?php foreach ($menus as $menu): ?>
       <?php $menu = Path::N($menu); ?>
-      <?php $c = strpos($url->path . '/', '::/' . $menu . '/') !== false ? ' current' : ""; ?>
+      <?php $c = strpos($url->path . '/', '::/' . $menu . '/') !== false ? ' is-current' : ""; ?>
       --><li class="nav-<?php echo $menu . $c; ?>">
         <a href="<?php echo $url . '/' . $s . '/::g::/' . $menu; ?>"><?php echo $language->{$menu}; ?></a>
       </li><!--
