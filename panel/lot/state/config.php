@@ -8,6 +8,7 @@ return [
     'shield' => 'mecha',
     'tools' => [
         'code-mirror' => true,
-        't-i-b' => true
+        't-i-b' => true,
+        't-p' => true
     ]
 ];

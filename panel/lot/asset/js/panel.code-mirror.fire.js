@@ -39,14 +39,9 @@
                 cm.setOption('fullScreen', !cm.getOption('fullScreen'));
             }
         });
-        var display = node.style.display;
         editor.setSize(size[0], size[1]);
         $(win).on("resize", function() {
-            node.style.display = "";
-            editor.display.wrapper.style.width = 'auto';
-            size = [$(node).outerWidth(), $(node).outerHeight()];
-            editor.setSize(size[0], size[1]);
-            node.style.display = display;
+            $(editor.display.wrapper).width(0).width($(node).parent().width());
         });
         return editor;
     }

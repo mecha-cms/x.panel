@@ -1,0 +1,94 @@
+.time-picker-input {
+  display: inline-block;
+  position: relative;
+}
+
+.time-picker-calendar {
+  background: #fff;
+  color: #000;
+  border: 1px solid;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 9999;
+  display: none;
+}
+
+.active .time-picker-calendar {
+  display: block;
+}
+
+.time-picker-caption {
+  background: #000;
+  color: #fff;
+  padding: .25em;
+  text-align: center;
+  font: inherit;
+}
+
+.time-picker-caption a {
+  padding: 0 .25em;
+  color: inherit;
+  cursor: pointer;
+}
+
+.time-picker-previous {
+  float: left;
+}
+
+.time-picker-next {
+  float: right;
+}
+
+.time-picker-previous:before {
+  content: '\25C2'
+}
+
+.time-picker-next:before {
+  content: '\25B8'
+}
+
+.time-picker-calendar table {
+  border-collapse: collapse;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.time-picker-calendar th,
+.time-picker-calendar td {
+  width: 2em;
+  padding: .25em;
+}
+
+.time-picker-calendar th {
+  text-align: center;
+}
+
+.time-picker-calendar td {
+  text-align: center;
+  padding: 0;
+}
+
+.time-picker-calendar .time-picker-day {
+  display: block;
+  padding: .25em;
+  cursor: pointer;
+}
+
+.time-picker-day:hover {
+  background: #ff0;
+}
+
+.time-picker-calendar .today .time-picker-day {
+  background: #000;
+  color: #fff;
+}
+
+.time-picker-calendar .active .time-picker-day {
+  background: #ff0;
+}
+
+.time-picker-calendar .x .time-picker-day {
+  cursor: default;
+}

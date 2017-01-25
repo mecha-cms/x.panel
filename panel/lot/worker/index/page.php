@@ -8,7 +8,7 @@ $__is_post = Request::is('post');
 $__is_r = count($__chops) === 1;
 $__is_pages = $__is_r || is_numeric(Path::B($url->path)); // Force index view by appending page offset to the end of URL
 
-Panel::set('page.types.HTML', 'HTML');
+Panel::set('f.types.HTML', 'HTML');
 
 Hook::set('__page.url', function($content, $lot) use($__state) {
     $s = Path::F($lot['path'], LOT);
@@ -78,7 +78,16 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Message::error('exist', [$language->slug, '<code>' . $f . '</code>']);
             }
             if (!Message::$x) {
+                // Create `time.data` file…
                 File::write(date(DATE_WISE))->saveTo($ff . DS . 'time.data');
+                // Create `sort.data` file…
+                if ($s = Request::post('sort')) {
+                    File::write(To::json($s))->saveTo($ff . DS . 'sort.data');
+                }
+                // Create `chunk.data` file…
+                if ($s = Request::post('chunk')) {
+                    File::write($s)->saveTo($ff . DS . 'chunk.data');
+                }
                 Page::data($headers)->saveTo($fff, 0600);
                 Message::success(To::sentence($language->{($x === 'draft' ? 'save' : 'create') . 'ed'}) . ($x === 'draft' ? "" : ' ' . HTML::a($language->view, Page::open($fff)->get('url'), true, ['classes' => ['right']])));
                 Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $f);
@@ -153,6 +162,21 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Message::error('exist', [$language->slug, '<em>' . $ss . '</em>']);
             }
             if (!Message::$x) {
+                // Create `time.data` file…
+                if (!$s = Request::post('time')) {
+                    $s = date(DATE_WISE);
+                } else {
+                    $s = DateTime::createFromFormat('Y/m/d H:i:s', $s)->format(DATE_WISE);
+                }
+                File::write($s)->saveTo($dd . DS . 'time.data');
+                // Create `sort.data` file…
+                if ($s = Request::post('sort')) {
+                    File::write(To::json($s))->saveTo($dd . DS . 'sort.data');
+                }
+                // Create `chunk.data` file…
+                if ($s = Request::post('chunk')) {
+                    File::write($s)->saveTo($dd . DS . 'chunk.data');
+                }
                 Page::open($__file)->data($headers)->save(0600);
                 if ($s !== $ss || $x !== $xx) {
                     File::open($__file)->renameTo($ss . '.' . $xx);

@@ -65,7 +65,7 @@ if (Extend::exist('user')) {
 ], isset($__parents[0]->sort[1]) ? $__parents[0]->sort[1] : (isset($__page[1]->sort[1]) ? $__page[1]->sort[1] : ""), ['classes' => ['input']]); ?>
       </p>
       <h4><?php echo $language->chunk; ?></h4>
-      <p><?php echo Form::number('chunk', isset($__parents[0]->chunk) ? $__parents[0]->chunk : (isset($__page[1]->chunk) ? $__page[1]->chunk : $site->chunk), $language->inherit, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 100]); ?></p>
+      <p><?php echo Form::number('chunk', isset($__parents[0]->chunk) ? $__parents[0]->chunk : (isset($__page[1]->chunk) ? $__page[1]->chunk : ""), $site->chunk, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 100]); ?></p>
     </section>
     <?php endif; ?>
     <?php Hook::NS('panel.secondary.1.after'); ?>
@@ -105,7 +105,7 @@ if (Extend::exist('user')) {
       </div>
       <p class="f">
         <label for="f-type"><?php echo $language->type; ?></label> <span>
-<?php $__types = a(Panel::get('page.types', [])); asort($__types); ?>
+<?php $__types = a(Panel::get('f.types', [])); asort($__types); ?>
 <?php echo Form::select('type', $__types, $__page[0]->type, [
     'classes' => ['select'],
     'id' => 'f-type'
@@ -130,6 +130,17 @@ if (Extend::exist('user')) {
 ]); ?>
         </span>
       </p>
+      <?php if ($__sgr !== 's'): ?>
+      <p class="f">
+        <label for="f-time"><?php echo $language->time; ?></label> <span>
+<?php $__time = (new Date($__page[0]->time))->format('Y/m/d H:i:s'); ?>
+<?php echo Form::text('time', $__time, $__time, [
+    'classes' => ['input', 'date'],
+    'id' => 'f-time'
+]); ?>
+        </span>
+      </p>
+      <?php endif; ?>
     </fieldset>
     <?php Hook::NS('panel.main.after'); ?>
     <?php echo Form::token(); ?>

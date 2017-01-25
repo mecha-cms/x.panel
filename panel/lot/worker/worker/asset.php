@@ -6,12 +6,14 @@ Asset::set([
     $s . 'panel.min.css',
     // $s . 'panel.k.min.css',
     $__state['tools']['code-mirror'] ? $s . 'panel.code-mirror.min.css' : false,
-    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.css' : false
+    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.css' : false,
+    $__state['tools']['t-p'] ? $s . 'panel.t-p.css' : false
 ], [
     10,
     // 11,
     12,
-    13
+    13,
+    14
 ]);
 
 $s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'js' . DS;
@@ -24,7 +26,9 @@ Asset::set([
     $__state['tools']['code-mirror'] ? $s . 'panel.code-mirror.min.js' : false,
     $__state['tools']['code-mirror'] ? $s . 'panel.code-mirror.fire.min.js' : false,
     $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.js' : false,
-    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.fire.min.js' : false
+    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.fire.min.js' : false,
+    $__state['tools']['t-p'] ? $s . 'panel.t-p.min.js' : false,
+    $__state['tools']['t-p'] ? $s . 'panel.t-p.fire.min.js' : false
 ], [
     10,
     10.1,
@@ -33,7 +37,9 @@ Asset::set([
     12,
     12.1,
     13,
-    13.1
+    13.1,
+    14,
+    14.1
 ]);
 
 if ($fn = File::exist($__path_shield . DS . 'index.php')) require $fn;

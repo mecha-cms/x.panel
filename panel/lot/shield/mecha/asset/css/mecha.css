@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i|Roboto+Mono:400,400i,700,700i');
-
 html {
-  font-family:"Roboto",Helmet,FreeSans,sans-serif;
+  font-family:Helmet,FreeSans,sans-serif;
   background:#000;
   color:#fff;
   border-bottom:4px solid transparent;
@@ -22,7 +20,7 @@ blockquote {
   padding-left:1em;
 }
 code,.code {
-  font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
+  font-family:"Courier New",Courier,"Nimbus Mono L",monospace;
   font-size:90%;
 }
 .button,
