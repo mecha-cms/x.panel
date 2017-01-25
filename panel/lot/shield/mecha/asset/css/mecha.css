@@ -71,13 +71,12 @@ code,.code {
   padding-bottom:1em;
   text-align:right;
 }
-.main .main-buttons + section {margin-top:0}
 .main .page {
   background:#fff;
   border:1px solid;
   width:16em;
   float:left;
-  margin:1em 1em 0 0;
+  margin:0 1em 1em 0;
   padding:1em 1.25em 4em 1.25em;
   height:22em;
   position:relative;
@@ -114,8 +113,15 @@ code,.code {
   color:#fff;
   line-height:3em;
 }
-.nav ul {overflow:hidden}
-.nav li {float:left}
+.nav ul:after {
+  content:"";
+  display:table;
+  clear:both;
+}
+.nav li {
+  float:left;
+  position:relative;
+}
 .nav a {
   display:block;
   padding:0 1.25em;
@@ -124,7 +130,30 @@ code,.code {
 }
 .nav .is-current {font-weight:bold}
 .nav a:focus,
-.nav a:hover {background:#00a}
+.nav a:hover,
+.nav li:hover > a {background:#00a}
+.nav ul ul {
+  position:absolute;
+  top:100%;
+  left:0;
+  z-index:9999;
+  background:#000;
+  min-width:10em;
+  box-shadow:0 1px 2px rgba(0,0,0,.4);
+  display:none;
+}
+.nav li:hover > ul {display:block}
+.nav ul ul ul {
+  top:0;
+  left:100%;
+}
+.nav ul ul li {
+  float:none;
+  display:block;
+  font-size:96%;
+  line-height:2.5em;
+}
+.nav ul ul a {padding:0 1em}
 .secondary-config {
   background:#fea;
   padding:1em;
@@ -169,4 +198,12 @@ code,.code {
 .secondary .select,
 .secondary .textarea {background:#afa}
 
+.path-enter {background:#ffa}
+.path-enter body {background:none}
+.path-enter .f label[for="f-enter"] {
+  display:table-cell;
+  visibility:hidden;
+}
+
 .message {background:#ee8}
+.messages + section {margin-top:1em}

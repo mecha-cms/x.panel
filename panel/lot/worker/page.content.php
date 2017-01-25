@@ -1,1 +1,0 @@
-<?php require __DIR__ . DS . 'page.content.' . (substr($path, -3) === '/d+' || strpos($path, '/d:') !== false ? 'd' : 'page') . '.php'; ?>

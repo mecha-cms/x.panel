@@ -1,37 +1,37 @@
-<?php array_pop($chops); ?>
-<form id="form.main" action="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops) . '/d+'; ?>" method="post">
+<?php array_pop($__chops); ?>
+<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . implode('/', $__chops) . '/d+'; ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
-    <?php if ($page[0]): ?>
+    <?php if ($__page[0]): ?>
     <section class="secondary-page">
       <h3><?php echo $language->source; ?></h3>
       <ul>
-        <li class="state-<?php echo $page[0]->state; ?>"><a href="<?php echo $page[0]->url; ?>"><?php echo $page[1]->title; ?></a></li>
+        <li class="state-<?php echo $__page[0]->state; ?>"><a href="<?php echo $__page[0]->url; ?>"><?php echo $__page[1]->title; ?></a></li>
       </ul>
     </section>
     <?php endif; ?>
-    <?php if ($kins[0]): ?>
+    <?php if ($__kins[0]): ?>
     <section class="secondary-kin">
       <h3><?php echo $language->kins; ?></h3>
       <ul>
-        <?php foreach ($kins[0] as $k => $v): ?>
-        <li class="data-<?php echo $v->key; ?>"><a href="<?php echo $url . '/' . $state->path . '/::g::/' . implode('/', $chops) . '/d:' . $v->key; ?>"><?php echo $kins[1][$k]->key; ?></a></li>
+        <?php foreach ($__kins[0] as $k => $v): ?>
+        <li class="data-<?php echo $v->key; ?>"><a href="<?php echo $url . '/' . $__state->path . '/::g::/' . implode('/', $__chops) . '/d:' . $v->key; ?>"><?php echo $__kins[1][$k]->key; ?></a></li>
         <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $state->path . '/::s::/' . implode('/', $chops) . '/d+'; ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
+        <li><a href="<?php echo $url . '/' . $__state->path . '/::s::/' . implode('/', $__chops) . '/d+'; ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
       </ul>
     </section>
     <?php endif; ?>
     <?php Hook::NS('panel.secondary.1.after'); ?>
   </aside>
   <main class="main">
-    <?php echo $message; ?>
+    <?php echo $__message; ?>
     <?php Hook::NS('panel.main.before'); ?>
     <fieldset>
       <legend><?php echo $language->editor; ?></legend>
       <div class="f expand p">
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>
-<?php echo Form::textarea('content', $data[0]->content, $data[0]->content, [
+<?php echo Form::textarea('content', $__data[0]->content, null, [
     'classes' => ['textarea', 'block', 'expand', 'code'],
     'id' => 'f-content'
 ]); ?>
@@ -39,7 +39,7 @@
       </div>
       <p class="f">
         <label for="f-key"><?php echo $language->key; ?></label> <span>
-<?php echo Form::text('key', $data[0]->key, $data[0]->key, [
+<?php echo Form::text('key', $__data[0]->key, $__data[0]->key, [
     'classes' => ['input'],
     'id' => 'f-key'
 ]); ?>
@@ -52,12 +52,15 @@
       <label for="f-x"><?php echo $language->state; ?></label> <span>
 <?php
 
-echo Form::submit('x', 'data', $language->{$sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'f-x:data']) . ' ';
+echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'f-x:data']) . ' ';
 echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-x:trash']);
 
 ?>
       </span>
     </p>
-    <?php Shield::get(__DIR__ . DS . 'footer.content.php'); ?>
+<?php Shield::get([
+    $__path_shield . DS . $site->type . DS . '_footer.php',
+    __DIR__ . DS . '_footer.php'
+]); ?>
   </main>
 </form>

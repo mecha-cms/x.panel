@@ -1,6 +1,6 @@
 (function($, win, doc) {
 
-    var form = $.Form,
+    var form = $.Form, i, j,
         k = form.lot;
 
     function apply_TIB(node) {
@@ -16,7 +16,7 @@
 
     for (i in k) {
         for (j in k[i]) {
-            if ($(k[i][j]).classes.get('query')) {
+            if ($(k[i][j]).hasClass('query')) {
                 if (!form.query[i]) {
                     form.query[i] = {};
                 }

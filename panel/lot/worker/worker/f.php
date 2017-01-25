@@ -22,7 +22,7 @@ if (Request::is('post')) {
         Request::set('post', 'slug', $s = trim(To::slug($s), '-'));
         if (!$s) {
             Request::save('post');
-            Message::error('Please fill out the slug field.');
+            Message::error('void_field', $language->slug, true);
         }
     }
     $s = Request::post('key', "");
@@ -30,7 +30,7 @@ if (Request::is('post')) {
         Request::set('post', 'key', $s = trim(To::key($s), '_'));
         if (!$s) {
             Request::save('post');
-            Message::error('Please fill out the key field.');
+            Message::error('void_field', $language->key, true);
         }
     }
     $s = Request::post('x', "");
@@ -38,7 +38,7 @@ if (Request::is('post')) {
         Request::set('post', 'x', $s = l($s));
         if (!Is::these(File::$config['extensions'])->has($s)) {
             Request::save('post');
-            Message::error('Extension <code>' . $s . '</code> is not allowed.');
+            Message::error('file_x', $s);
         }
     }
     // Remove empty request value(s) …
@@ -55,13 +55,13 @@ if (Request::is('post')) {
     // Process token …
     $s = Request::post('token');
     if (!$s || $s !== Session::get(Guardian::$config['session']['token'])) {
-        Message::error('Invalid token.');
+        Message::error('token');
         Guardian::kick();
     }
 } else if (Request::is('get')) {
     // Process token …
     $s = Request::get('token');
     if ($s && $s !== Session::get(Guardian::$config['session']['token'])) {
-        Message::error('Invalid token.');
+        Message::error('token');
     }
 }

@@ -192,6 +192,23 @@ label {
   margin-right:auto;
   margin-left:auto;
 }
+.path-enter,
+.path-enter body {
+  display:table;
+  padding:0;
+  width:100%;
+  height:100%;
+}
+.path-enter body {
+  display:table-cell;
+  vertical-align:middle;
+}
+.path-enter form {
+  margin:0 auto;
+  max-width:16em;
+}
+.path-enter .f label {width:4em}
+.path-enter .f label[for="f-enter"] {display:none}
 
 .message {
   padding:.5em 1em;

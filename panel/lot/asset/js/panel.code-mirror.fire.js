@@ -4,7 +4,7 @@
         i, j, k = form.lot;
 
     function apply_CodeMirror(node) {
-        var size = $(node).size(),
+        var size = [$(node).outerWidth(), $(node).outerHeight()],
             editor = CodeMirror.fromTextArea(node, {
                 lineNumbers: true,
                 lineWrapping: true,
@@ -24,7 +24,7 @@
                 },
                 autoCloseBrackets: true
             });
-        var type = $(node).data.get('type'),
+        var type = $(node).data('type'),
             aliases = {
                 'html': 'application/x-httpd-php',
                 'xml': 'application/x-httpd-php'
@@ -40,12 +40,12 @@
             }
         });
         var display = node.style.display;
-        editor.setSize(size.x, size.y);
-        $.events.set("resize", win, function() {
+        editor.setSize(size[0], size[1]);
+        $(win).on("resize", function() {
             node.style.display = "";
             editor.display.wrapper.style.width = 'auto';
-            size = $(node).size();
-            editor.setSize(size.x, size.y);
+            size = [$(node).outerWidth(), $(node).outerHeight()];
+            editor.setSize(size[0], size[1]);
             node.style.display = display;
         });
         return editor;
@@ -55,7 +55,7 @@
 
     for (i in k) {
         for (j in k[i]) {
-            if ($(k[i][j]).classes.get('code')) {
+            if ($(k[i][j]).hasClass('code')) {
                 if (!form.editor[i]) {
                     form.editor[i] = {};
                 }

@@ -17,3 +17,21 @@ panel:
      1: Ascending
 
 sort: Sort
+
+
+#. Message
+#. -------
+
+message_info_void: No %{0}% yet.
+
+message_error_exist: %{0}% %{1}% already exists.
+message_error_void_field: Please fill out the <strong>%{0}%</strong> field.
+message_error_token: Invalid token.
+message_error_user_or_pass: Invalid user or pass value.
+
+message_success_user_enter: Logged in.
+message_success_user_exit: Logged out.
+
+_message_void: Contains some %{0}%.
+
+__title: Control Panel
