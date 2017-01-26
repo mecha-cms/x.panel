@@ -1,12 +1,12 @@
-<?php array_pop($__chops); ?>
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . implode('/', $__chops) . '/d+'; ?>" method="post">
+<?php array_pop($__chops); $__path = implode('/', $__chops); ?>
+<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . $__path . '/d+'; ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
     <?php if ($__page[0]): ?>
     <section class="secondary-page">
       <h3><?php echo $language->source; ?></h3>
       <ul>
-        <li class="state-<?php echo $__page[0]->state; ?>"><a href="<?php echo $__page[0]->url; ?>"><?php echo $__page[1]->title; ?></a></li>
+        <li class="x-<?php echo $__page[0]->state; ?>"><?php echo HTML::a($__page[1]->title, $__page[0]->url); ?></li>
       </ul>
     </section>
     <?php endif; ?>
@@ -15,9 +15,9 @@
       <h3><?php echo $language->kins; ?></h3>
       <ul>
         <?php foreach ($__kins[0] as $k => $v): ?>
-        <li class="data-<?php echo $v->key; ?>"><a href="<?php echo $url . '/' . $__state->path . '/::g::/' . implode('/', $__chops) . '/d:' . $v->key; ?>"><?php echo $__kins[1][$k]->key; ?></a></li>
+        <li class="data-<?php echo $v->key; ?>"><?php echo HTML::a($__kins[1][$k]->key, $__state->path . '/::g::/' . $__path . '/d:' . $v->key); ?></li>
         <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $__state->path . '/::s::/' . implode('/', $__chops) . '/d+'; ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path . '/d+', false, ['title' => $language->add]); ?></li>
       </ul>
     </section>
     <?php endif; ?>
@@ -52,8 +52,8 @@
       <label for="f-x"><?php echo $language->state; ?></label> <span>
 <?php
 
-echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'f-x:data']) . ' ';
-echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-x:trash']);
+echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'f-x:data']);
+echo ' ' . Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-x:trash']);
 
 ?>
       </span>

@@ -21,9 +21,9 @@
       <a href="">&#x2026;</a>
       <ul>
         <?php if ($__error = File::exist(ENGINE . DS . 'log' . DS . 'error.log')): ?>
-        <li><a href="<?php echo $url . '/' . $s . '/::g::/error'; ?>"><?php echo $language->error; ?></a></li>
+        <li><a href="<?php echo $url . '/' . $s . '/::g::/error'; ?>"><?php echo $language->errors; ?></a></li>
         <?php endif; ?>
-        <li><a href="<?php echo $url . '/' . $s . '/::g::/exit'; ?>"><?php echo $language->exit; ?></a></li>
+        <li><a href="<?php echo $url . '/' . $s . '/::g::/exit'; ?>"><?php echo $language->log_out; ?></a></li>
       </ul>
     </li><!--
   --></ul>

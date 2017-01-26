@@ -40,6 +40,11 @@ code,.code {
   color:#fff;
 }
 .button.x {background:#666}
+.input:invalid,
+.textarea:invalid {
+  color:#f00;
+  box-shadow:0 0 2px #f00;
+}
 .container {
   display:table;
   width:100%;
@@ -196,12 +201,12 @@ code,.code {
 .secondary .select,
 .secondary .textarea {background:#afa}
 
-.path-enter {background:#ffa}
-.path-enter body {background:none}
-.path-enter .f label[for="f-enter"] {
-  display:table-cell;
-  visibility:hidden;
-}
-
 .message {background:#ee8}
 .messages + section {margin-top:1em}
+
+.path-enter {background:#ffa}
+.path-enter body {background:none}
+.path-enter .f label[for="f-enter"] + span {text-align:center}
+
+.path-404 {background:#ffa}
+.path-404 body {background:none}

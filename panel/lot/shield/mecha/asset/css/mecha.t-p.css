@@ -1,18 +1,18 @@
-.time-picker-calendar {
+.time-picker {
   top:auto;
   bottom:100%;
   margin-bottom:-1px;
   box-shadow:0 1px 2px rgba(0,0,0,.4);
 }
-.time-picker-calendar .active .time-picker-day {
+.time-picker .active {
   background:#def;
   color:inherit;
 }
-.time-picker-calendar .today .time-picker-day {
+.time-picker .today {
   background:#ffa;
   color:inherit;
 }
-.time-picker-calendar .time-picker-day:hover {
+.time-picker .day:hover {
   background:#00a;
   color:#fff;
 }

@@ -3,36 +3,13 @@
     <?php Hook::NS('panel.secondary.1.before'); ?>
     <section class="secondary-author">
       <h3><?php echo $language->author; ?></h3>
-      <p>
-<?php
-
-if (Extend::exist('user')) {
-    $__authors = [];
-    $__select = $__page[0]->author . "";
-    foreach (g(ENGINE . DS . 'log' . DS . 'user', 'page') as $v) {
-        $v = new User(Path::N($v));
-        $k = User::ID . $v->key;
-        $__authors[($v->status !== 1 ? '.' : "") . $k] = $v->author;
-        if ($__select === $v->author) {
-            $__select = $k;
-        }
-    }
-    echo Form::select('author', $__authors, $__select, [
-        'classes' => ['select', 'block'],
-        'id' => 'f-author'
-    ]);
-} else {
-    echo Form::text('author', $__page[0]->author, User::ID . l($language->user), ['classes' => ['input', 'block']]);
-}
-
-?>
-      </p>
+      <p><?php echo Form::text('author', $__page[0]->author, '@' . l($language->user), ['classes' => ['input', 'block']]); ?></p>
     </section>
     <?php if ($__parents[0]): ?>
     <section class="secondary-parent">
       <h3><?php echo $language->{count($__parents[0]) === 1 ? 'parent' : 'parents'}; ?></h3>
       <ul>
-        <li class="state-<?php echo $__parents[0][0]->state; ?>"><a href="<?php echo $__parents[0][0]->url; ?>"><?php echo $__parents[1][0]->title; ?></a></li>
+        <li class="x-<?php echo $__parents[0][0]->state; ?>"><?php echo HTML::a($__parents[1][0]->title, $__parents[0][0]->url); ?></li>
       </ul>
     </section>
     <?php endif; ?>
@@ -41,10 +18,10 @@ if (Extend::exist('user')) {
       <h3><?php echo $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
       <ul>
         <?php foreach ($__kins[0] as $k => $v): ?>
-        <li class="state-<?php echo $v->state; ?>"><a href="<?php echo $v->url; ?>"><?php echo $__kins[1][$k]->title; ?></a></li>
+        <li class="x-<?php echo $v->state; ?>"><?php echo HTML::a($__kins[1][$k]->title, $v->url); ?></li>
         <?php endforeach; ?>
         <?php if ($__is_kin_has_step): ?>
-        <li><a href="<?php echo $url . '/' . $__state->path . '/::g::/' . Path::D($__path) . '/2'; ?>" title="<?php echo $language->more; ?>">&#x2026;</a></li>
+        <li><?php echo HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]); ?></li>
         <?php endif; ?>
       </ul>
     </section>
@@ -89,6 +66,7 @@ if (Extend::exist('user')) {
 <?php echo Form::text('slug', $__page[0]->slug, $__page[1]->slug, [
     'classes' => ['input', 'block'],
     'id' => 'f-slug',
+    'pattern' => '^[a-z\\d-]+$',
     'data' => ['slug-o' => 'title']
 ]); ?>
         </span>
@@ -96,7 +74,7 @@ if (Extend::exist('user')) {
       <div class="f expand p">
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>
-<?php echo Form::textarea('content', $__page[0]->content, null, [
+<?php echo Form::textarea('content', $__page[0]->content, $language->f_content, [
     'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
     'id' => 'f-content',
     'data' => ['type' => $__page[0]->type]
@@ -115,16 +93,24 @@ if (Extend::exist('user')) {
       <div class="f p">
         <label for="f-description"><?php echo $language->description; ?></label>
         <div>
-<?php echo Form::textarea('description', $__page[0]->description, $__page[0]->description, [
+<?php echo Form::textarea('description', $__page[0]->description, $language->f_description($language->page), [
     'classes' => ['textarea', 'block'],
     'id' => 'f-description'
 ]); ?>
         </div>
       </div>
       <p class="f">
+        <label for="f-link"><?php echo $language->link; ?></label> <span>
+<?php echo Form::url('link', $__page[0]->link, $url->protocol, [
+    'classes' => ['input', 'block'],
+    'id' => 'f-link'
+]); ?>
+        </span>
+      </p>
+      <p class="f">
         <label for="f-kind"><?php echo $language->kind; ?></label> <span>
 <?php $__kinds = $__page[0]->kind === [0] ? "" : implode(', ', $__page[0]->kind); ?>
-<?php echo Form::text('kind', $__kinds, 'foo, bar, baz', [
+<?php echo Form::text('kind', $__kinds, $language->f_kind, [
     'classes' => ['input', 'block', 'query'],
     'id' => 'f-kind'
 ]); ?>
@@ -136,14 +122,15 @@ if (Extend::exist('user')) {
 <?php $__time = (new Date($__page[0]->time))->format('Y/m/d H:i:s'); ?>
 <?php echo Form::text('time', $__time, $__time, [
     'classes' => ['input', 'date'],
-    'id' => 'f-time'
+    'id' => 'f-time',
+    'pattern' => '^\\d{4,}\\/\\d{2}\\/\\d{2} \\d{2}:\\d{2}:\\d{2}$'
 ]); ?>
         </span>
       </p>
       <?php endif; ?>
     </fieldset>
-    <?php Hook::NS('panel.main.after'); ?>
     <?php echo Form::token(); ?>
+    <?php Hook::NS('panel.main.after'); ?>
     <p class="f expand">
       <label for="f-x"><?php echo $language->state; ?></label> <span>
 <?php
@@ -182,9 +169,9 @@ if ($__sgr !== 's') {
       <h3><?php echo $language->{count($__datas[0]) === 1 ? 'data' : 'datas'}; ?></h3>
       <ul>
         <?php foreach ($__datas[0] as $k => $v): ?>
-        <li class="data-<?php echo $v->key; ?>"><a href="<?php echo $url . '/' . $__state->path . '/::g::/' . $__path . '/d:' . $v->key; ?>"><?php echo $__datas[1][$k]->key; ?></a></li>
+        <li class="data-<?php echo $v->key; ?>"><?php echo HTML::a($__datas[1][$k]->key, $__state->path . '/::g::/' . $__path . '/d:' . $v->key); ?></li>
         <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $__state->path . '/::s::/' . $__path . '/d+'; ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path . '/d+', false, ['title' => $language->add]); ?></li>
       </ul>
     </section>
     <?php endif; ?>
@@ -193,9 +180,9 @@ if ($__sgr !== 's') {
       <h3><?php echo $language->{count($__childs[0]) === 1 ? 'child' : 'childs'}; ?></h3>
       <ul>
         <?php foreach ($__childs[0] as $k => $v): ?>
-        <li class="state-<?php echo $v->state; ?>"><a href="<?php echo $v->url; ?>"><?php echo $__childs[1][$k]->title; ?></a></li>
+        <li class="x-<?php echo $v->state; ?>"><?php echo HTML::a($__childs[1][$k]->title, $v->url); ?></li>
         <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $__state->path . '/::s::/' . $__path; ?>" title="<?php echo $language->add; ?>">&#x2795;</a><?php if ($__is_child_has_step): ?> <a href="<?php echo $url . '/' . $__state->path . '/::g::/' . $__path . '/2'; ?>" title="<?php echo $language->more; ?>">&#x2026;</a><?php endif; ?></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]); ?><?php if ($__is_child_has_step) echo ' ' . HTML::a('&#x2026;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]); ?></li>
       </ul>
     </section>
     <?php endif; ?>

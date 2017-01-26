@@ -5,7 +5,7 @@
 
     function apply_TP(node, t) {
         var c = TP(node, {
-            dateFormat: 'Y/m/d ' + t
+            format: 'Y/m/d ' + t
         });
         return c;
     }

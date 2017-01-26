@@ -12,7 +12,11 @@ if (!$__file = File::exist([
     LOT . DS . $__path . '.page',
     LANGUAGE . DS . $site->language . '.page'
 ])) {
-    Shield::abort();
+    Shield::abort(PANEL_404);
+}
+
+if ($__sgr === 'g' && Path::N($__file) === 'en-us' && isset($__chops[1]) && $__chops[1] !== 'en-us') {
+    Shield::abort(PANEL_404);
 }
 
 $__page = [
@@ -22,6 +26,43 @@ $__page = [
 
 Lot::set('__page', $__page);
 
+if (Request::is('post') && !Message::$x) {
+    $n = Path::N($__file);
+    if (Request::post('x') === 'trash') {
+        if ($n === 'en-us') {
+            Shield::abort(PANEL_404); // you can’t delete the default language
+        }
+        File::open($__file)->renameTo($n . '.trash');
+        Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $__state['path'] . '/::r::/' . $__path . HTTP::query(['token' => $__token, 'abort' => 1]), false, ['classes' => ['right']]));
+        Guardian::kick(Path::D($url->path));
+    }
+    $s = Request::post('slug');
+    if ($s !== $n && File::exist(LANGUAGE . DS . $s . '.page')) {
+        Request::save('post');
+        Message::error('exist', [$language->locale, '<em>' . $s . '</em>']);
+    }
+    if (!Message::$x) {
+        $headers = [
+            'title' => false,
+            'description' => false,
+            'author' => false,
+            'type' => 'YAML',
+            'version' => '0.0.0',
+            'content' => false
+        ];
+        foreach ($headers as $k => $v) {
+            $headers[$k] = Request::post($k, $v);
+        }
+        if (is_string($headers['description']) && strpos($headers['description'], "\n") !== false) {
+            $headers['description'] = To::json($headers['description']);
+        }
+        $f = LANGUAGE . DS . $s . '.page';
+        Page::data($headers)->saveTo($f, 0600);
+        Message::success(To::sentence($language->{($__sgr === 'g' ? 'update' : 'create') . 'ed'}));
+        Guardian::kick($__state['path'] . '/::g::/' . $__chops[0] . '/' . $s);
+    }
+}
+
 if ($__sgr === 's') {
     Lot::set('__page', [
         new Page(null, [
@@ -30,4 +71,15 @@ if ($__sgr === 's') {
         ], '__language'),
         $__page[1]
     ]);
+} else if ($__sgr === 'r') {
+    if (!Request::get('token')) {
+        Shield::abort(PANEL_404);
+    }
+    $s = Path::B($url->path);
+    if (!$__file = File::exist(LANGUAGE . DS . $s . '.trash')) {
+        Shield::abort(PANEL_404);
+    }
+    File::open($__file)->renameTo($s . '.page');
+    Message::success(To::sentence($language->restoreed));
+    Guardian::kick($__state['path'] . '/::g::/' . $__chops[0] . '/' . $s);
 }

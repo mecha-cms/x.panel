@@ -1,13 +1,13 @@
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . implode('/', $__chops); ?>" method="post">
+<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::' . $__sgr . '::/' . implode('/', $__chops); ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
     <section class="secondary-language">
       <h3><?php echo $language->{count($__kins[0]) === 1 ? 'language' : 'languages'}; ?></h3>
       <ul>
         <?php foreach ($__kins[0] as $k => $v): ?>
-        <li class="language-<?php echo $v->slug; ?>"><a href="<?php echo $url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . $v->slug; ?>"><?php echo $__kins[1][$k]->title($v->slug); ?></a></li>
+        <li class="language-<?php echo $v->slug; ?>"><?php echo HTML::a($__kins[1][$k]->title($v->slug), $__state->path . '/::g::/' . $__chops[0] . '/' . $v->slug); ?></li>
         <?php endforeach; ?>
-        <li><a href="<?php echo $url . '/' . $__state->path . '/::s::/' . implode('/', $__chops); ?>" title="<?php echo $language->add; ?>">&#x2795;</a></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . implode('/', $__chops), false, ['title' => $language->add]); ?></li>
       </ul>
     </section>
     <?php Hook::NS('panel.secondary.1.after'); ?>
@@ -21,7 +21,8 @@
         <label for="f-title"><?php echo $language->title; ?></label> <span>
 <?php echo Form::text('title', $__page[0]->title, $__page[1]->title, [
     'classes' => ['input', 'block'],
-    'id' => 'f-title'
+    'id' => 'f-title',
+    'data' => ['slug-i' => 'locale']
 ]); ?>
         </span>
       </p>
@@ -56,20 +57,34 @@
         <label for="f-slug"><?php echo $language->locale; ?></label> <span>
 <?php echo Form::text('slug', $__page[0]->slug, $__page[1]->slug, [
     'classes' => ['input'],
-    'id' => 'f-slug'
+    'id' => 'f-slug',
+    'pattern' => '^[a-z\\d-]+$',
+    'data' => ['slug-o' => 'locale']
 ]); ?>
         </span>
       </p>
     </fieldset>
-    <?php echo Form::hidden('type', $__page[0]->type); ?>
     <?php echo Form::token(); ?>
     <?php Hook::NS('panel.main.after'); ?>
     <p class="f expand">
       <label for="f-x"><?php echo $language->state; ?></label> <span>
-<?php echo Form::submit('x', 'page', $language->{$__sgr === 's' ? 'create' : 'update'}, [
+<?php
+
+echo Form::submit('x', 'page', $language->{$__sgr === 's' ? 'create' : 'update'}, [
     'classes' => ['button', 'x-page'],
-    'id' => 'f-x'
-]); ?>
+    'id' => 'f-x:page'
+]);
+
+if ($__page[0]->slug !== 'en-us') {
+    if ($__sgr === 'g') {
+        echo ' ' . Form::submit('x', 'trash', $language->delete, [
+            'classes' => ['button', 'x-trash'],
+            'id' => 'f-x:trash'
+        ]);
+    }
+}
+
+?>
       </span>
     </p>
 <?php Shield::get([

@@ -1,9 +1,20 @@
-.time-picker-input {
+.time-picker-target,
+.time-picker,
+.time-picker * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+.time-picker-target {
   display: inline-block;
   position: relative;
 }
 
-.time-picker-calendar {
+.time-picker {
   background: #fff;
   color: #000;
   border: 1px solid;
@@ -11,84 +22,73 @@
   top: 100%;
   left: 0;
   z-index: 9999;
+  line-height: 2em;
+  cursor: default;
   display: none;
 }
 
-.active .time-picker-calendar {
+.time-picker-target.active .time-picker {
   display: block;
 }
 
-.time-picker-caption {
+.time-picker caption {
   background: #000;
   color: #fff;
-  padding: .25em;
+  padding: 0 .5em;
   text-align: center;
-  font: inherit;
 }
 
-.time-picker-caption a {
-  padding: 0 .25em;
+.time-picker caption a {
   color: inherit;
   cursor: pointer;
 }
 
-.time-picker-previous {
+.time-picker caption a {
   float: left;
 }
 
-.time-picker-next {
+.time-picker caption a + a {
   float: right;
 }
 
-.time-picker-previous:before {
+.time-picker caption a:before {
   content: '\25C2'
 }
 
-.time-picker-next:before {
+.time-picker caption a + a:before {
   content: '\25B8'
 }
 
-.time-picker-calendar table {
+.time-picker table {
   border-collapse: collapse;
-  padding: 0;
   width: 100%;
   table-layout: fixed;
 }
 
-.time-picker-calendar th,
-.time-picker-calendar td {
+.time-picker th,
+.time-picker td {
   width: 2em;
-  padding: .25em;
-}
-
-.time-picker-calendar th {
   text-align: center;
 }
 
-.time-picker-calendar td {
-  text-align: center;
-  padding: 0;
+.time-picker th {
+  font-weight: bold;
 }
 
-.time-picker-calendar .time-picker-day {
-  display: block;
-  padding: .25em;
+.time-picker .day:hover {
+  background: #ff0;
   cursor: pointer;
 }
 
-.time-picker-day:hover {
-  background: #ff0;
-}
-
-.time-picker-calendar .today .time-picker-day {
+.time-picker .today {
   background: #000;
   color: #fff;
 }
 
-.time-picker-calendar .active .time-picker-day {
+.time-picker .active {
   background: #ff0;
 }
 
-.time-picker-calendar .x .time-picker-day {
-  cursor: default;
+.time-picker .x {
+  cursor: inherit;
 }

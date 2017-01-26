@@ -1,7 +1,7 @@
 <?php
 
 if ($__sgr !== 'g') {
-    Shield::abort();
+    Shield::abort(PANEL_404);
 }
 
 if (Request::is('post')) {

@@ -17,24 +17,32 @@ if (!function_exists('fn_f_reset')) {
 
 if (Request::is('post')) {
     // Process special field name …
-    $s = Request::post('slug', "");
+    if (Request::is('post', 'time')) {
+        $s = Request::post('time');
+        $format = '#^(\d{4,}/\d{2}/\d{2}|\d{4,}\-\d{2}\-\d{2}) \d{2}:\d{2}:\d{2}$#';
+        if (!is_string($s) || !preg_match($format, $s)) {
+            Request::save('post');
+            Message::error('pattern_field', $language->time);
+        }
+    }
     if (Request::is('post', 'slug')) {
+        $s = Request::post('slug', "");
         Request::set('post', 'slug', $s = trim(To::slug($s), '-'));
         if (!$s) {
             Request::save('post');
             Message::error('void_field', $language->slug, true);
         }
     }
-    $s = Request::post('key', "");
     if (Request::is('post', 'key')) {
+        $s = Request::post('key', "");
         Request::set('post', 'key', $s = trim(To::key($s), '_'));
         if (!$s) {
             Request::save('post');
             Message::error('void_field', $language->key, true);
         }
     }
-    $s = Request::post('x', "");
     if (Request::is('post', 'x')) {
+        $s = Request::post('x', "");
         Request::set('post', 'x', $s = l($s));
         if (!Is::these(File::$config['extensions'])->has($s)) {
             Request::save('post');

@@ -1,6 +1,6 @@
 <?php
 
-$__pass = false;
+$__is_enter = false;
 
 if (!$__user = Cookie::get('Mecha\Panel.user')) {
     // ...
@@ -11,7 +11,7 @@ if (!$__token = File::open(ENGINE . DS . 'log' . DS . 'user' . DS . $__user . DS
 }
 
 if (Cookie::get('Mecha\Panel.token') === $__token) {
-    $__pass = true;
+    $__is_enter = true;
 }
 
 if (
@@ -20,7 +20,7 @@ if (
         strpos($url->path . '/', $__state['path'] . '/') === 0
     ) &&
     (
-        $__pass ||
+        $__is_enter ||
         $url->path === $__state['path'] . '/::g::/enter'
     )
 ) {

@@ -22,6 +22,11 @@ foreach (File::explore(PAGE, true, true) as $k => $v) {
     }
 }
 
+// --ditto
+foreach (g(LANGUAGE, 'trash') as $v) {
+    File::open($v)->delete();
+}
+
 Message::success('user_exit');
 
 Guardian::kick($__state['path'] . '/::g::/enter');
