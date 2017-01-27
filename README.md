@@ -6,7 +6,7 @@ Start
 
  - Make sure you have uploaded the required extensions and plugins.
  - Upload the `panel` folder to `lot\extend` folder.
- - Create a page file in `engine\lot\user` as your user data:
+ - Create a page file in `engine\log\user` as your first user data:
 
    ~~~ .yaml
    ---
