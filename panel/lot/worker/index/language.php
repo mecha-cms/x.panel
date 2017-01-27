@@ -33,11 +33,11 @@ if (Request::is('post') && !Message::$x) {
             Shield::abort(PANEL_404); // you can’t delete the default language
         }
         File::open($__file)->renameTo($n . '.trash');
-        Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $__state['path'] . '/::r::/' . $__path . HTTP::query(['token' => $__token, 'abort' => 1]), false, ['classes' => ['right']]));
+        Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $__state->path . '/::r::/' . $__path . HTTP::query(['token' => $__token, 'abort' => 1]), false, ['classes' => ['right']]));
         Guardian::kick(Path::D($url->path));
     }
     $s = Request::post('slug');
-    if ($s !== $n && File::exist(LANGUAGE . DS . $s . '.page')) {
+    if ($s === 'en-us' || ($s !== $n && File::exist(LANGUAGE . DS . $s . '.page'))) {
         Request::save('post');
         Message::error('exist', [$language->locale, '<em>' . $s . '</em>']);
     }
@@ -59,11 +59,14 @@ if (Request::is('post') && !Message::$x) {
         $f = LANGUAGE . DS . $s . '.page';
         Page::data($headers)->saveTo($f, 0600);
         Message::success(To::sentence($language->{($__sgr === 'g' ? 'update' : 'create') . 'ed'}));
-        Guardian::kick($__state['path'] . '/::g::/' . $__chops[0] . '/' . $s);
+        Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $s);
     }
 }
 
 if ($__sgr === 's') {
+    if (isset($__chops[1])) {
+        Shield::abort(PANEL_404);
+    }
     Lot::set('__page', [
         new Page(null, [
             'type' => 'YAML',
@@ -81,5 +84,5 @@ if ($__sgr === 's') {
     }
     File::open($__file)->renameTo($s . '.page');
     Message::success(To::sentence($language->restoreed));
-    Guardian::kick($__state['path'] . '/::g::/' . $__chops[0] . '/' . $s);
+    Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $s);
 }

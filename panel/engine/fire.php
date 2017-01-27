@@ -16,12 +16,12 @@ if (Cookie::get('Mecha\Panel.token') === $__token) {
 
 if (
     (
-        $url->path === $__state['path'] ||
-        strpos($url->path . '/', $__state['path'] . '/') === 0
+        $url->path === $__state->path ||
+        strpos($url->path . '/', $__state->path . '/') === 0
     ) &&
     (
         $__is_enter ||
-        $url->path === $__state['path'] . '/::g::/enter'
+        $url->path === $__state->path . '/::g::/enter'
     )
 ) {
     require PANEL . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';

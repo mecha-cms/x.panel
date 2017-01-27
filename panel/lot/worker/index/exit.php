@@ -29,4 +29,4 @@ foreach (g(LANGUAGE, 'trash') as $v) {
 
 Message::success('user_exit');
 
-Guardian::kick($__state['path'] . '/::g::/enter');
+Guardian::kick($__state->path . '/::g::/enter');

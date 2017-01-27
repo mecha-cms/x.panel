@@ -27,7 +27,7 @@ if (Request::is('post')) {
             Cookie::set('Mecha\Panel.user', $__user, $c);
             Cookie::set('Mecha\Panel.token', $__token, $c);
             Message::success('user_enter');
-            Guardian::kick($__state['path'] . '/::g::/page');
+            Guardian::kick($__state->path . '/::g::/page');
         } else {
             Message::error('user_or_pass');
         }
@@ -39,7 +39,7 @@ if (Request::is('post')) {
     }
 }
 
-if (Route::is($__state['path'] . '/::g::/enter')) {
+if (Route::is($__state->path . '/::g::/enter')) {
     Hook::set('shield.path', function($path) {
         $base = Path::B($path);
         if ($base === 'page.php') {

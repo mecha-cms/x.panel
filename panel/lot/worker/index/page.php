@@ -1,8 +1,8 @@
 <?php
 
 $__step = $__step - 1;
-$__sort = $__state['sort'];
-$__chunk = $__state['chunk'];
+$__sort = $__state->sort;
+$__chunk = $__state->chunk;
 $__is_get = Request::is('get');
 $__is_post = Request::is('post');
 $__is_r = count($__chops) === 1;
@@ -12,7 +12,7 @@ Panel::set('f.types.HTML', 'HTML');
 
 Hook::set('__page.url', function($content, $lot) use($__state) {
     $s = Path::F($lot['path'], LOT);
-    return rtrim(__url__('url') . '/' . $__state['path'] . '/::g::/' . ltrim(To::url($s), '/'), '/');
+    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($s), '/'), '/');
 });
 
 // `panel/::s::/page` → new page in `lot\page`
@@ -168,6 +168,15 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Message::error('exist', [$language->slug, '<em>' . $ss . '</em>']);
             }
             if (!Message::$x) {
+                Page::open($__file)->data($headers)->save(0600);
+                if ($s !== $ss || $x !== $xx) {
+                    // Rename folder…
+                    if ($s !== $ss) {
+                        File::open(Path::F($__file))->renameTo($ss);
+                    }
+                    // Rename file…
+                    File::open($__file)->renameTo($ss . '.' . $xx);
+                }
                 // Create `time.data` file…
                 if (!$s = Request::post('time')) {
                     $s = date(DATE_WISE);
@@ -182,10 +191,6 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 // Create `chunk.data` file…
                 if ($s = Request::post('chunk')) {
                     File::write($s)->saveTo($dd . DS . 'chunk.data');
-                }
-                Page::open($__file)->data($headers)->save(0600);
-                if ($s !== $ss || $x !== $xx) {
-                    File::open($__file)->renameTo($ss . '.' . $xx);
                 }
                 Message::success(To::sentence($language->updateed) . ($xx === 'draft' ? "" : ' ' . HTML::a($language->view, Page::open($ddd)->get('url'), true, ['classes' => ['right']])));
                 Guardian::kick(Path::D($url->current) . '/' . $ss);
@@ -239,7 +244,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
             }
             Lot::set([
                 '__pages' => $__pages,
-                '__pager' => [new Elevator($__files ?: [], $__chunk, $__step, $url . '/' . $__state['path'] . '/::g::/' . $__path, [
+                '__pager' => [new Elevator($__files ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
                     'direction' => [
                        '-1' => 'previous',
                         '0' => false,

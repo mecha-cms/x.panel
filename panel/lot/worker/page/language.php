@@ -7,7 +7,7 @@
         <?php foreach ($__kins[0] as $k => $v): ?>
         <li class="language-<?php echo $v->slug; ?>"><?php echo HTML::a($__kins[1][$k]->title($v->slug), $__state->path . '/::g::/' . $__chops[0] . '/' . $v->slug); ?></li>
         <?php endforeach; ?>
-        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . implode('/', $__chops), false, ['title' => $language->add]); ?></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__chops[0], false, ['title' => $language->add]); ?></li>
       </ul>
     </section>
     <?php Hook::NS('panel.secondary.1.after'); ?>
