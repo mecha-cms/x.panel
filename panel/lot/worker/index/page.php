@@ -263,7 +263,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
             ]);
         } else {
             if ($__file === $__folder) {
-                Shield::abot(PANEL_404);
+                Shield::abort(PANEL_404);
             }
             Lot::set('__page', [
                 new Page($__file, [], '__page'),
@@ -298,7 +298,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
         }
     } else if ($__sgr === 'r') {
         if (!Request::get('token')) {
-            Shield::abot(PANEL_404);
+            Shield::abort(PANEL_404);
         }
         if (!$__file = File::exist([
             $__folder . '.draft',
@@ -306,7 +306,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
             $__folder . '.archive',
             $__folder . '.trash'
         ])) {
-            Shield::abot(PANEL_404);
+            Shield::abort(PANEL_404);
         }
         $__kick = str_replace('::r::', '::g::', $url->path);
         $__name = Path::B($__folder);
@@ -322,6 +322,6 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
         }
         Guardian::kick(Path::D($__kick) . '/1');
     } else {
-        Shield::abot(PANEL_404);
+        Shield::abort(PANEL_404);
     }
 }

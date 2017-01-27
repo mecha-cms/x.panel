@@ -1,6 +1,6 @@
 /*!
  * =======================================================
- *  SIMPLEST TAGS INPUT BEAUTIFIER
+ *  SIMPLEST TAGS INPUT BEAUTIFIER 2.0.3
  * =======================================================
  *
  *   Author: Taufik Nurrohman
@@ -42,7 +42,7 @@
     (function($) {
 
         // plugin version
-        $.version = '2.0.2';
+        $.version = '2.0.3';
 
         // collect all instance(s)
         $[instance] = {};
@@ -71,6 +71,7 @@
                 values: true,
                 classes: ['tags', 'tags-input', 'tags-output'],
                 text: ['Remove \u201C%s\u201D Tag', 'Duplicate \u201C%s\u201D Tag'],
+                alert: true,
                 update: function() {}
             }, i, output;
 
@@ -166,7 +167,7 @@
             }
             // duplicate tag name, alert!
             if (v in $.tags) {
-                alert(config.text[1].replace(/%s/g, v));
+                if (config.alert) alert(config.text[1].replace(/%s/g, v));
                 return $.reset(), false;
             }
             return $.set(v).update(), false;

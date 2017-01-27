@@ -5,9 +5,9 @@ $s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'css' . DS;
 Asset::set([
     $s . 'panel.min.css',
     // $s . 'panel.k.min.css',
-    $__state['tools']['code-mirror'] ? $s . 'panel.code-mirror.min.css' : false,
-    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.css' : false,
-    $__state['tools']['t-p'] ? $s . 'panel.t-p.min.css' : false
+    $s . 'panel.code-mirror.min.css',
+    $s . 'panel.t-i-b.min.css',
+    $s . 'panel.t-p.min.css'
 ], [
     10,
     // 11,
@@ -23,12 +23,12 @@ Asset::set([
     $s . 'panel.fire.min.js',
     $s . 'panel.k.min.js',
     $s . 'panel.k.fire.min.js',
-    $__state['tools']['code-mirror'] ? $s . 'panel.code-mirror.min.js' : false,
-    $__state['tools']['code-mirror'] ? $s . 'panel.code-mirror.fire.min.js' : false,
-    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.min.js' : false,
-    $__state['tools']['t-i-b'] ? $s . 'panel.t-i-b.fire.min.js' : false,
-    $__state['tools']['t-p'] ? $s . 'panel.t-p.js' : false,
-    $__state['tools']['t-p'] ? $s . 'panel.t-p.fire.min.js' : false
+    $s . 'panel.code-mirror.min.js',
+    $s . 'panel.code-mirror.fire.min.js',
+    $s . 'panel.t-i-b.min.js',
+    $s . 'panel.t-i-b.fire.min.js',
+    $s . 'panel.t-p.js',
+    $s . 'panel.t-p.fire.min.js'
 ], [
     10,
     10.1,

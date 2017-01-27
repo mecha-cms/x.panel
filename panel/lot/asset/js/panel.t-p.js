@@ -58,6 +58,19 @@
         format: 'F j, Y'
         , min: null
         , max: null
+        , languages: {
+          days: {
+            short: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+            , long: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+          }
+          , months: {
+            short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            , long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+          }
+          , DIM: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] // days in month
+            
+          , FDOW: 0 // first day of week
+        }
       }
       , calendarContainer = doc[_createElement]('span')
       , navigationCurrentMonth = doc[_createElement]('span')
@@ -97,7 +110,7 @@
         }
         , i: function () {
           // checks to see if february is a leap year otherwise return the respective # of days
-          return self[_currentMonthView] === 1 && (((self[_currentYearView] % 4 === 0) && (self[_currentYearView] % 100 !== 0)) || (self[_currentYearView] % 400 === 0)) ? 29 : self[_languages].DIM[self[_currentMonthView]];
+          return self[_currentMonthView] === 1 && (((self[_currentYearView] % 4 === 0) && (self[_currentYearView] % 100 !== 0)) || (self[_currentYearView] % 400 === 0)) ? 29 : self[_config][_languages].DIM[self[_currentMonthView]];
         }
       }
     };
@@ -110,13 +123,13 @@
             return (day < 10) ? '0' + day : day;
           }
           , D: function () {
-            return self[_languages].days.short[formats.w()];
+            return self[_config][_languages].days.short[formats.w()];
           }
           , j: function () {
             return dateObj.getDate();
           }
           , l: function () {
-            return self[_languages].days.long[formats.w()];
+            return self[_config][_languages].days.long[formats.w()];
           }
           , w: function () {
             return dateObj.getDay();
@@ -159,17 +172,17 @@
     };
     monthToStr = function (date, short) {
       if (short) {
-        return self[_languages].months.short[date];
+        return self[_config][_languages].months.short[date];
       }
-      return self[_languages].months.long[date];
+      return self[_config][_languages].months.long[date];
     };
     isSpecificDay = function (day, month, year, comparison) {
       return day === comparison && self[_currentMonthView] === month && self[_currentYearView] === year;
     };
     buildWeekdays = function () {
       var weekdayContainer = doc[_createElement]('thead')
-        , FDOW = self[_languages].FDOW
-        , days = self[_languages].days.short;
+        , FDOW = self[_config][_languages].FDOW
+        , days = self[_config][_languages].days.short;
       if (FDOW > 0 && FDOW < days.length) {
         days = [].concat(days.splice(FDOW, days.length), days.splice(0, FDOW));
       }
@@ -186,7 +199,7 @@
         , disabled = ""
         , currentTimestamp;
       // Offset the first day by the specified amount
-      firstOfMonth -= self[_languages].FDOW;
+      firstOfMonth -= self[_config][_languages].FDOW;
       if (firstOfMonth < 0) {
         firstOfMonth += 7;
       }
@@ -194,7 +207,7 @@
       calendarBody[_innerHTML] = "";
       // Add spacer to line up the first day of the month correctly
       for (dayNumber = 0; dayNumber < firstOfMonth; dayNumber++) {
-          row[_innerHTML] += '<td>&nbsp;</td>';
+        row[_innerHTML] += '<td>&nbsp;</td>';
       }
       // Start at 1 since there is no 0th day
       for (dayNumber = 1; dayNumber <= numDays; dayNumber++) {
@@ -223,7 +236,7 @@
       }
       // fill in the rest
       for (dayNumber = 0; dayNumber < 7 - dayCount; dayNumber++) {
-          row[_innerHTML] += '<td>&nbsp;</td>';
+        row[_innerHTML] += '<td>&nbsp;</td>';
       }
       calendarFragment[_appendChild](row);
       calendarBody[_appendChild](calendarFragment);
@@ -334,9 +347,18 @@
       var config, parsedDate;
       self[_config] = {};
       self[_destroy] = destroy;
-      for (config in defaultConfig) {
-        self[_config][config] = instanceConfig[config] || defaultConfig[config];
+      function extend(a, b) {
+          a = a || {};
+          for (var i in b) {
+              if (typeof b[i] === "object") {
+                  a[i] = extend(a[i], b[i]);
+              } else {
+                  a[i] = b[i];
+              }
+          }
+          return a;
       }
+      self[_config] = extend(defaultConfig, instanceConfig);
       self[_target] = element;
       if (self[_target][_value]) {
         parsedDate = Date.parse(self[_target][_value]);
@@ -384,18 +406,6 @@
     }
     , off: function (element, type, listener, useCapture) {
       element[_removeEventListener](type, listener, useCapture);
-    }
-    , languages: {
-      days: {
-        short: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-        , long: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      }
-      , months: {
-        short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        , long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      }
-      , DIM: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] // days in month
-      , FDOW: 0 // first day of week
     }
   };
 })(window, document);

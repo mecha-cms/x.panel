@@ -5,7 +5,9 @@
 
     function apply_TIB(node) {
         var t = new TIB(node, {
-            max: 12
+            max: 12,
+            text: ["", ""],
+            alert: false
         });
         t.create();
         t.input.parentNode.className += (' ' + t.input.className.replace(/(\b|\s+)tags-input(\b|\s+)/g, ""));

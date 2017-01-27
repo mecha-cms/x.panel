@@ -4,15 +4,16 @@ Route::set([$__state['path'] . '/::%s%::/%*%/%i%', $__state['path'] . '/::%s%::/
     extract(Lot::get(null, []));
     $__chops = explode('/', $__path);
     $____DIR__ = Path::D(__DIR__);
-    if (!$__task = File::exist($____DIR__ . DS . 'index' . DS . $__chops[0] . '.php')) {
-        Shield::abort(PANEL_404);
-    }
+    $__task = File::exist($____DIR__ . DS . 'index' . DS . $__chops[0] . '.php');
     $site->type = 'page'; // default is `page`
     $__path_shield = PANEL . DS . 'lot' . DS . 'shield' . DS . $__state['shield'];
     require $____DIR__ . DS . 'worker' . DS . 'extend.php';
     require $____DIR__ . DS . 'worker' . DS . 'extend' . DS . 'plugin.php';
     require $____DIR__ . DS . 'worker' . DS . 'f.php';
     require $____DIR__ . DS . 'worker' . DS . 'asset.php';
+    if (!$__task) {
+        Shield::abort(PANEL_404);
+    }
     $__token = Guardian::token();
     $__hash = Guardian::hash();
     require $__task;

@@ -23,7 +23,7 @@ sort: Sort
 #. -------
 
 message_error: Error.
-
+message_error_duplicate: Duplicate %{0}%.
 message_error_email: Invalid email.
 message_error_exist: %{0}% %{1}% already exists.
 message_errir_ip: Invalid IP.

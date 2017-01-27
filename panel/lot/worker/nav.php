@@ -1,13 +1,6 @@
 <?php $s = Extend::state('panel', 'path', 'panel'); ?>
 <nav class="nav">
   <ul><!--
-    --><li>
-      <?php if (!$url->path || $url->path === $site->path): ?>
-      <span><?php echo $language->home; ?></span>
-      <?php else: ?>
-      <a href="<?php echo $url; ?>"><?php echo $language->home; ?></a>
-      <?php endif; ?>
-    </li><!--
     <?php if ($__menus = glob(LOT . DS . '*', GLOB_ONLYDIR)): ?>
       <?php foreach ($__menus as $__menu): ?>
       <?php $__menu = Path::N($__menu); ?>
@@ -20,6 +13,7 @@
     --><li>
       <a href="">&#x2026;</a>
       <ul>
+        <li><a href="<?php echo $url; ?>" target="_blank"><?php echo $language->view . ' ' . $language->site; ?></a></li>
         <?php if ($__error = File::exist(ENGINE . DS . 'log' . DS . 'error.log')): ?>
         <li><a href="<?php echo $url . '/' . $s . '/::g::/error'; ?>"><?php echo $language->errors; ?></a></li>
         <?php endif; ?>

@@ -131,10 +131,16 @@ code,.code {
   color:inherit;
   cursor:pointer;
 }
-.nav .is-current {font-weight:bold}
 .nav a:focus,
 .nav a:hover,
 .nav li:hover > a {background:#00a}
+.nav .is-current a,
+.nav .is-current a:focus,
+.nav .is-current a:hover {
+  background:none;
+  color:#fbb;
+  font-weight:bold;
+}
 .nav ul ul {
   position:absolute;
   top:100%;
