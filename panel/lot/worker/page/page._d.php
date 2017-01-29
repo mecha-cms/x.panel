@@ -1,5 +1,5 @@
 <?php array_pop($__chops); $__path = implode('/', $__chops); ?>
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . $__path . '/d+'; ?>" method="post">
+<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . $__path . '/d+' . $url->query; ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
     <?php if ($__page[0]): ?>

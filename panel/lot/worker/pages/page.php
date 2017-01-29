@@ -48,7 +48,8 @@
     <?php $p = strpos($__path, '/') !== false ? substr($__path, strpos($__path, '/')) : ""; ?>
     <?php foreach ($__pages[1] as $k => $v): ?>
     <?php $s = $__pages[0][$k]->url; $__is_parent = !!g(LOT . explode('::' . $__sgr . '::', $s, 2)[1], 'draft,page,archive', "", false); ?>
-    <article class="page <?php echo 'on-' . $v->state; ?><?php if ($__is_parent): ?> is-parent<?php endif; ?><?php if ($site->path === ltrim($p . '/' . $v->slug, '/')): ?> as-home<?php endif; ?>" id="page-<?php echo $v->id; ?>">
+    <?php $g = $__pages[0][$k]->path; $gg = Path::X($g); $ggg = Path::D($g); $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg); ?>
+    <article class="page <?php echo 'on-' . $v->state; ?><?php if ($__is_parent): ?> is-parent<?php endif; ?><?php if ($gggg): ?> as-placeholder<?php endif; ?><?php if ($site->path === ltrim($p . '/' . $v->slug, '/')): ?> as-home<?php endif; ?>" id="page-<?php echo $v->id; ?>">
       <header>
         <?php if ($__pages[0][$k]->state === 'draft'): ?>
         <h3><?php echo $v->title; ?></h3>

@@ -7,4 +7,7 @@
     <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
   <body spellcheck="false">
-    <?php Shield::get(__DIR__ . DS . 'nav.php'); ?>
+<?php Shield::get([
+    $__path_shield . DS . 'nav.php',
+    __DIR__ . DS . 'nav.php'
+]); ?>

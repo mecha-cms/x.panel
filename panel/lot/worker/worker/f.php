@@ -16,7 +16,7 @@ if (!function_exists('fn_f_reset')) {
 }
 
 if (Request::is('post')) {
-    // Process special field name …
+    // Process special field name…
     if (Request::is('post', 'time')) {
         $s = Request::post('time');
         $format = '#^(\d{4,}/\d{2}/\d{2}|\d{4,}\-\d{2}\-\d{2}) \d{2}:\d{2}:\d{2}$#';
@@ -73,3 +73,7 @@ if (Request::is('post')) {
         Message::error('token');
     }
 }
+
+$__f = (array) Panel::get('f', []); // hold!
+
+asort($__f);

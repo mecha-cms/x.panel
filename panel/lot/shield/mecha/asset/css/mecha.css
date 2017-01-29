@@ -106,6 +106,10 @@ code,.code {
 .main .page.is-parent {box-shadow:inset 0 0 0 4px #def}
 .main .page.as-home {box-shadow:inset 0 0 0 4px #fed}
 .main .page.on-draft {border-style:dotted}
+.main .page.as-placeholder {
+  border-style:dotted;
+  opacity:.2;
+}
 .nav ul,
 .nav li {
   margin:0;
@@ -130,6 +134,16 @@ code,.code {
   padding:0 1.25em;
   color:inherit;
   cursor:pointer;
+}
+.nav a i {
+  font:inherit;
+  font-weight:bold;
+  background:#d00;
+  color:#fff;
+  float:right;
+  padding:0 .25em;
+  line-height:1.5em;
+  margin:.5em -.5em 0 0;
 }
 .nav a:focus,
 .nav a:hover,
@@ -187,20 +201,20 @@ code,.code {
   table-layout:fixed;
   width:100%;
 }
-.f label,
-.f label + span {
+.f > label,
+.f > label + span {
   display:table-cell;
   vertical-align:top;
 }
-.f label {
+.f > label {
   width:8em;
   padding:.25em 1em 0 0;
   height:2.1538461538461537em;
   text-align:right;
 }
 .f.expand,
-.f.expand label + span {display:block}
-.f.expand label {display:none}
+.f.expand > label + span {display:block}
+.f.expand > label {display:none}
 .secondary h3 {font-size:100%}
 .secondary h4 {font-size:90%}
 .secondary .input,
@@ -212,7 +226,7 @@ code,.code {
 
 .path-enter {background:#ffa}
 .path-enter body {background:none}
-.path-enter .f label[for="f-enter"] + span {text-align:center}
+.path-enter .f > label[for="f-enter"] + span {text-align:center}
 
 .path-404 {background:#ffa}
 .path-404 body {background:none}

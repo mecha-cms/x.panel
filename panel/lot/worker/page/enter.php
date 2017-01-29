@@ -9,7 +9,7 @@
     <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
   <body spellcheck="false">
-    <form id="form.main" action="<?php echo $url->current; ?>" method="post">
+    <form id="form.main" action="<?php echo $url->current . $url->query; ?>" method="post">
       <?php echo $__message; ?>
       <?php Hook::NS('panel.main.before'); ?>
       <fieldset>
@@ -22,6 +22,7 @@
           <label for="f-pass"><?php echo $language->pass; ?></label>
           <span><?php echo Form::password('pass', null, null, ['classes' => ['input', 'block'], 'id' => 'f-pass']); ?></span>
         </p>
+        <?php echo Form::hidden('kick', Request::get('kick', $__state->path . '/::g::/page')); ?>
       </fieldset>
       <?php echo Form::token(); ?>
       <?php Hook::NS('panel.main.after'); ?>

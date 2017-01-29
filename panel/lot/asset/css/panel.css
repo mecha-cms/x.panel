@@ -214,8 +214,8 @@ label {
   margin:0 auto;
   max-width:16em;
 }
-.path-enter .f label {width:4em}
-.path-enter .f label[for="f-enter"] {display:none}
+.path-enter .f > label {width:4em}
+.path-enter .f > label[for="f-enter"] {display:none}
 .path-404,
 .path-404 body {
   margin:0;

@@ -28,5 +28,5 @@ foreach (g(LANGUAGE, 'trash') as $v) {
 }
 
 Message::success('user_exit');
-
+Hook::NS('on.exit');
 Guardian::kick($__state->path . '/::g::/enter');

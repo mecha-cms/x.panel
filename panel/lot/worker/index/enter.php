@@ -4,6 +4,10 @@ if ($__sgr !== 'g') {
     Shield::abort(PANEL_404);
 }
 
+if ($__is_enter) {
+    Guardian::kick($__state->path . '/::g::/page');
+}
+
 if (Request::is('post')) {
     $__user = Request::post('user');
     $__pass = Request::post('pass');
@@ -27,7 +31,8 @@ if (Request::is('post')) {
             Cookie::set('Mecha\Panel.user', $__user, $c);
             Cookie::set('Mecha\Panel.token', $__token, $c);
             Message::success('user_enter');
-            Guardian::kick($__state->path . '/::g::/page');
+            Hook::NS('on.enter');
+            Guardian::kick(Request::post('kick', ""));
         } else {
             Message::error('user_or_pass');
         }

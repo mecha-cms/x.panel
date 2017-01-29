@@ -1,7 +1,7 @@
 (function($, win, doc) {
 
-    var form = $.Form, i, j,
-        k = form.lot;
+    var forms = $.forms, i, j,
+        k = forms.lot;
 
     function apply_TIB(node) {
         var t = new TIB(node, {
@@ -14,15 +14,15 @@
         return t;
     }
 
-    form.query = {};
+    forms.query = {};
 
     for (i in k) {
         for (j in k[i]) {
             if ($(k[i][j]).hasClass('query')) {
-                if (!form.query[i]) {
-                    form.query[i] = {};
+                if (!forms.query[i]) {
+                    forms.query[i] = {};
                 }
-                form.query[i][j] = apply_TIB(k[i][j]);
+                forms.query[i][j] = apply_TIB(k[i][j]);
             }
         }
     }

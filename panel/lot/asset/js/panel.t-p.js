@@ -14,45 +14,53 @@
     , _removeChild = 'removeChild'
     , _replaceChild = 'replaceChild'
     , _innerHTML = 'innerHTML'
-    , _cs = 'cs'
-    , _cr = 'cr'
-    , _cg = 'cg'
     , _classList = 'classList'
-    , _ignite = 'ignite'
-    , _prototype = 'prototype'
     , _destroy = 'destroy'
     , _nodeName = 'nodeName'
     , _innerHTML = 'innerHTML'
     , _currentDayView = 'currentDayView'
     , _currentMonthView = 'currentMonthView'
     , _currentYearView = 'currentYearView'
-    , _selectedDate = 'selectedDate';
-  win.TP = function (selector, config) {
-    "use strict";
-    var elements, createInstance, instances = []
-      , i;
-    TP[_prototype] = TP[_ignite][_prototype];
-    createInstance = function (element) {
-      if (element._TP) {
-        element._TP[_destroy]();
-      }
-      element._TP = new TP[_ignite](element, config);
-      return element._TP;
-    };
-    if (selector[_nodeName]) {
-      return createInstance(selector);
-    }
-    elements = TP[_prototype].$(selector);
-    if (elements.length === 1) {
-      return createInstance(elements[0]);
-    }
-    for (i = 0; i < elements.length; i++) {
-      instances.push(createInstance(elements[i]));
-    }
-    return instances;
-  };
-  TP[_ignite] = function (element, instanceConfig) {
-    'use strict';
+    , _selectedDate = 'selectedDate'
+    , _day = 'day'
+    , _days = 'days'
+    , _month = 'month'
+    , _months = 'months'
+    , _year = 'year'
+    , _current = 'current'
+    , _getFullYear = 'getFullYear'
+    , _getTime = 'getTime'
+    , _getDay = 'getDay'
+    , _getMonth = 'getMonth'
+    , _getDate = 'getDate'
+    , _target = 'target'
+    , _long = 'long'
+    , _short = 'short';
+
+  function cg(element, className) {
+    return element[_classList].contains(className);
+  }
+
+  function cs(element, className) {
+    element[_classList].add(className);
+  }
+
+  function cr(element, className) {
+    element[_classList].remove(className);
+  }
+
+  function each(items, callback) {
+    [].forEach.call(items, callback);
+  }
+
+  function on(element, type, listener, useCapture) {
+    element[_addEventListener](type, listener, useCapture);
+  }
+
+  function off(element, type, listener, useCapture) {
+    element[_removeEventListener](type, listener, useCapture);
+  }
+  win.TP = function (element, instanceConfig) {
     var self = this
       , defaultConfig = {
         format: 'F j, Y'
@@ -89,19 +97,19 @@
     date = {
       current: {
         year: function () {
-          return currentDate.getFullYear();
+          return currentDate[_getFullYear]();
         }
         , month: {
           i: function () {
-            return currentDate.getMonth();
+            return currentDate[_getMonth]();
           }
           , s: function (short) {
-            var month = currentDate.getMonth();
+            var month = currentDate[_getMonth]();
             return monthToStr(month, short);
           }
         }
         , day: function () {
-          return currentDate.getDate();
+          return currentDate[_getDate]();
         }
       }
       , month: {
@@ -123,16 +131,16 @@
             return (day < 10) ? '0' + day : day;
           }
           , D: function () {
-            return self[_config][_languages].days.short[formats.w()];
+            return self[_config][_languages][_days][_short][formats.w()];
           }
           , j: function () {
-            return dateObj.getDate();
+            return dateObj[_getDate]();
           }
           , l: function () {
-            return self[_config][_languages].days.long[formats.w()];
+            return self[_config][_languages][_days][_long][formats.w()];
           }
           , w: function () {
-            return dateObj.getDay();
+            return dateObj[_getDay]();
           }
           , F: function () {
             return monthToStr(formats.n() - 1, 0);
@@ -145,20 +153,20 @@
             return monthToStr(formats.n() - 1, 1);
           }
           , n: function () {
-            return dateObj.getMonth() + 1;
+            return dateObj[_getMonth]() + 1;
           }
           , U: function () {
-            return dateObj.getTime() / 1000;
+            return dateObj[_getTime]() / 1000;
           }
           , y: function () {
             return String(formats.Y()).substring(2);
           }
           , Y: function () {
-            return dateObj.getFullYear();
+            return dateObj[_getFullYear]();
           }
         }
         , formatPieces = format.split("");
-      self.each(formatPieces, function (formatPiece, index) {
+      each(formatPieces, function (formatPiece, index) {
         if (formats[formatPiece] && formatPieces[index - 1] !== '\\') {
           formattedDate += formats[formatPiece]();
         }
@@ -172,9 +180,9 @@
     };
     monthToStr = function (date, short) {
       if (short) {
-        return self[_config][_languages].months.short[date];
+        return self[_config][_languages][_months][_short][date];
       }
-      return self[_config][_languages].months.long[date];
+      return self[_config][_languages][_months][_long][date];
     };
     isSpecificDay = function (day, month, year, comparison) {
       return day === comparison && self[_currentMonthView] === month && self[_currentYearView] === year;
@@ -182,7 +190,7 @@
     buildWeekdays = function () {
       var weekdayContainer = doc[_createElement]('thead')
         , FDOW = self[_config][_languages].FDOW
-        , days = self[_config][_languages].days.short;
+        , days = self[_config][_languages][_days][_short];
       if (FDOW > 0 && FDOW < days.length) {
         days = [].concat(days.splice(FDOW, days.length), days.splice(0, FDOW));
       }
@@ -190,8 +198,8 @@
       calendar[_appendChild](weekdayContainer);
     };
     buildDays = function () {
-      var firstOfMonth = new Date(self[_currentYearView], self[_currentMonthView], 1).getDay()
-        , numDays = date.month.i()
+      var firstOfMonth = new Date(self[_currentYearView], self[_currentMonthView], 1)[_getDay]()
+        , numDays = date[_month].i()
         , calendarFragment = doc.createDocumentFragment()
         , row = doc[_createElement]('tr')
         , dayCount, dayNumber, today = ""
@@ -217,12 +225,12 @@
           row = doc[_createElement]('tr');
           dayCount = 0;
         }
-        today = isSpecificDay(date.current.day(), date.current.month.i(), date.current.year(), dayNumber) ? ' today' : "";
+        today = isSpecificDay(date[_current][_day](), date[_current][_month].i(), date[_current][_year](), dayNumber) ? ' today' : "";
         if (self[_selectedDate]) {
-          selected = isSpecificDay(self[_selectedDate].day, self[_selectedDate].month, self[_selectedDate].year, dayNumber) ? ' active' : "";
+          selected = isSpecificDay(self[_selectedDate][_day], self[_selectedDate][_month], self[_selectedDate][_year], dayNumber) ? ' active' : "";
         }
         if (self[_config].min || self[_config].max) {
-          currentTimestamp = new Date(self[_currentYearView], self[_currentMonthView], dayNumber).getTime();
+          currentTimestamp = new Date(self[_currentYearView], self[_currentMonthView], dayNumber)[_getTime]();
           disabled = "";
           if (self[_config].min && currentTimestamp < self[_config].min) {
             disabled = ' x';
@@ -242,7 +250,7 @@
       calendarBody[_appendChild](calendarFragment);
     };
     updateNavigationCurrentMonth = function () {
-      navigationCurrentMonth[_innerHTML] = date.month.s() + ' ' + self[_currentYearView];
+      navigationCurrentMonth[_innerHTML] = date[_month].s() + ' ' + self[_currentYearView];
     };
     buildMonthNavigation = function () {
       var months = doc[_createElement]('caption')
@@ -266,8 +274,8 @@
     };
     docClick = function (event) {
       var parent;
-      if (event.target !== self[_target] && event.target !== wrapperElement) {
-        parent = event.target[_parentNode];
+      if (event[_target] !== self[_target] && event[_target] !== wrapperElement) {
+        parent = event[_target][_parentNode];
         if (parent !== wrapperElement) {
           while (parent !== wrapperElement) {
             parent = parent[_parentNode];
@@ -280,7 +288,7 @@
       }
     };
     calendarClick = function (event) {
-      var target = event.target
+      var target = event[_target]
         , targetClass = target[_className]
         , currentTimestamp;
       if (targetClass) {
@@ -295,13 +303,13 @@
           updateNavigationCurrentMonth();
           buildDays();
         }
-        else if (target[_nodeName] === 'TD' && !self.cg(target, 'x')) {
+        else if (target[_nodeName] === 'TD' && !cg(target, 'x')) {
           self[_selectedDate] = {
             day: parseInt(target[_innerHTML], 10)
             , month: self[_currentMonthView]
             , year: self[_currentYearView]
           };
-          currentTimestamp = new Date(self[_currentYearView], self[_currentMonthView], self[_selectedDate].day).getTime();
+          currentTimestamp = new Date(self[_currentYearView], self[_currentMonthView], self[_selectedDate][_day])[_getTime]();
           self[_target][_value] = formatDate(self[_config][_format], currentTimestamp);
           close();
           buildDays();
@@ -323,89 +331,65 @@
       return "click";
     };
     bind = function () {
-      self.on(self[_target], getOpenEvent(), open);
-      self.on(calendarContainer, "click", calendarClick);
+      on(self[_target], getOpenEvent(), open);
+      on(calendarContainer, "click", calendarClick);
     };
     open = function () {
-      self.on(doc, "click", docClick);
-      self[_cs](wrapperElement, 'active');
+      on(doc, "click", docClick);
+      cs(wrapperElement, 'active');
     };
     close = function () {
-      self.off(doc, "click", docClick);
-      self[_cr](wrapperElement, 'active');
+      off(doc, "click", docClick);
+      cr(wrapperElement, 'active');
     };
     destroy = function () {
       var parent, element;
-      self.off(doc, "click", docClick);
-      self.off(self[_target], getOpenEvent(), open);
+      off(doc, "click", docClick);
+      off(self[_target], getOpenEvent(), open);
       parent = self[_target][_parentNode];
       parent[_removeChild](calendarContainer);
       element = parent[_removeChild](self[_target]);
       parent[_parentNode][_replaceChild](element, parent);
     };
-    ignite = function () {
-      var config, parsedDate;
-      self[_config] = {};
-      self[_destroy] = destroy;
-      function extend(a, b) {
-          a = a || {};
-          for (var i in b) {
-              if (typeof b[i] === "object") {
-                  a[i] = extend(a[i], b[i]);
-              } else {
-                  a[i] = b[i];
-              }
-          }
-          return a;
+    var parsedDate, extend;
+    extend = function (a, b) {
+      a = a || {};
+      for (var i in b) {
+        if (typeof b[i] === "object") {
+          a[i] = extend(a[i], b[i]);
+        }
+        else {
+          a[i] = b[i];
+        }
       }
-      self[_config] = extend(defaultConfig, instanceConfig);
-      self[_target] = element;
-      if (self[_target][_value]) {
-        parsedDate = Date.parse(self[_target][_value]);
-      }
-      if (parsedDate && !isNaN(parsedDate)) {
-        parsedDate = new Date(parsedDate);
-        self[_selectedDate] = {
-          day: parsedDate.getDate()
-          , month: parsedDate.getMonth()
-          , year: parsedDate.getFullYear()
-        };
-        self[_currentYearView] = self[_selectedDate].year;
-        self[_currentMonthView] = self[_selectedDate].month;
-        self[_currentDayView] = self[_selectedDate].day;
-      }
-      else {
-        self[_selectedDate] = null;
-        self[_currentYearView] = date.current.year();
-        self[_currentMonthView] = date.current.month.i();
-        self[_currentDayView] = date.current.day();
-      }
-      wrap();
-      buildCalendar();
-      bind();
+      return a;
     };
-    ignite();
+    self[_config] = extend(defaultConfig, instanceConfig);
+    self[_target] = element;
+    self[_destroy] = destroy;
+    if (self[_target][_value]) {
+      parsedDate = Date.parse(self[_target][_value]);
+    }
+    if (parsedDate && !isNaN(parsedDate)) {
+      parsedDate = new Date(parsedDate);
+      self[_selectedDate] = {
+        day: parsedDate[_getDate]()
+        , month: parsedDate[_getMonth]()
+        , year: parsedDate[_getFullYear]()
+      };
+      self[_currentYearView] = self[_selectedDate][_year];
+      self[_currentMonthView] = self[_selectedDate][_month];
+      self[_currentDayView] = self[_selectedDate][_day];
+    }
+    else {
+      self[_selectedDate] = null;
+      self[_currentYearView] = date[_current][_year]();
+      self[_currentMonthView] = date[_current][_month].i();
+      self[_currentDayView] = date[_current][_day]();
+    }
+    wrap();
+    buildCalendar();
+    bind();
     return self;
-  };
-  TP[_ignite][_prototype] = {
-    cg: function (element, className) {
-      return element[_classList].contains(className);
-    }
-    , cs: function (element, className) {
-      element[_classList].add(className);
-    }
-    , cr: function (element, className) {
-      element[_classList].remove(className);
-    }
-    , each: function (items, callback) {
-      [].forEach.call(items, callback);
-    }
-    , $: doc.querySelectorAll.bind(doc)
-    , on: function (element, type, listener, useCapture) {
-      element[_addEventListener](type, listener, useCapture);
-    }
-    , off: function (element, type, listener, useCapture) {
-      element[_removeEventListener](type, listener, useCapture);
-    }
   };
 })(window, document);

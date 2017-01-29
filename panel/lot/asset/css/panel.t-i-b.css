@@ -46,7 +46,7 @@
 
 /* fake placeholder */
 .tags-output:empty + .tags-input + span:empty:before {
-  content:attr(data-placeholder);
+  content:attr(placeholder);
   opacity:.5;
   display:block;
   cursor:text;

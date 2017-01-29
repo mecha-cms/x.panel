@@ -32,6 +32,7 @@ Dependency
 
  - Assets
  - Pages
+ - [Tags](https://github.com/mecha-cms/extend.tag)
  - [Users](https://github.com/mecha-cms/extend.user)
 
 ### Plugin

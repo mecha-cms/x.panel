@@ -21,11 +21,11 @@ window.Panel = window.jQuery;
         catches[this.id || this.name || Object.keys(catches).length] = a;
     });
 
-    $.Form = {
+    $.forms = {
         lot: catches
     };
 
-    $.Language = {
+    $.languages = {
         lot: {}
     };
 

@@ -1,4 +1,4 @@
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::' . $__sgr . '::/' . implode('/', $__chops); ?>" method="post">
+<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::' . $__sgr . '::/' . $__path . $url->query; ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
     <section class="secondary-language">

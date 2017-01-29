@@ -32,15 +32,19 @@ if (Request::is('post') && !Message::$x) {
         if ($n === 'en-us') {
             Shield::abort(PANEL_404); // you can’t delete the default language
         }
-        File::open($__file)->renameTo($n . '.trash');
-        Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $__state->path . '/::r::/' . $__path . HTTP::query(['token' => $__token, 'abort' => 1]), false, ['classes' => ['right']]));
-        Guardian::kick(Path::D($url->path));
+        Hook::NS('on.language.reset', [$__file]);
+        if (!Message::$x) {
+            File::open($__file)->renameTo($n . '.trash');
+            Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $__state->path . '/::r::/' . $__path . HTTP::query(['token' => $__token, 'abort' => 1]), false, ['classes' => ['right']]));
+            Guardian::kick(Path::D($url->path));
+        }
     }
     $s = Request::post('slug');
     if ($s === 'en-us' || ($s !== $n && File::exist(LANGUAGE . DS . $s . '.page'))) {
         Request::save('post');
         Message::error('exist', [$language->locale, '<em>' . $s . '</em>']);
     }
+    Hook::NS('on.language.set', [$f]);
     if (!Message::$x) {
         $headers = [
             'title' => false,
@@ -52,9 +56,6 @@ if (Request::is('post') && !Message::$x) {
         ];
         foreach ($headers as $k => $v) {
             $headers[$k] = Request::post($k, $v);
-        }
-        if (is_string($headers['description']) && strpos($headers['description'], "\n") !== false) {
-            $headers['description'] = To::json($headers['description']);
         }
         $f = LANGUAGE . DS . $s . '.page';
         Page::data($headers)->saveTo($f, 0600);

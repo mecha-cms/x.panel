@@ -1,9 +1,9 @@
 (function($, win, doc) {
 
-    var form = $.Form, h, i, j,
-        k = form.lot;
+    var forms = $.forms, h, i, j,
+        k = forms.lot;
 
-    var lot = $.Language.lot,
+    var lot = $.languages.lot,
         languages = {
         days: {
             short: lot.days_short.map(function(v) {
@@ -25,16 +25,16 @@
         return c;
     }
 
-    form.date = {};
+    forms.date = {};
 
     for (i in k) {
         for (j in k[i]) {
             if ($(k[i][j]).hasClass('date')) {
-                if (!form.date[i]) {
-                    form.date[i] = {};
+                if (!forms.date[i]) {
+                    forms.date[i] = {};
                 }
                 h = k[i][j].value.split(' ').pop();
-                form.date[i][j] = apply_TP(k[i][j], h ? ' ' + h : "");
+                forms.date[i][j] = apply_TP(k[i][j], h ? ' ' + h : "");
             }
         }
     }

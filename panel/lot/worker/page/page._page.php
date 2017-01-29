@@ -1,4 +1,4 @@
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::' . $__sgr . '::/' . $__path; ?>" method="post">
+<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::' . $__sgr . '::/' . $__path . $url->query; ?>" method="post">
   <aside class="secondary">
     <?php Hook::NS('panel.secondary.1.before'); ?>
     <section class="secondary-author">
@@ -107,15 +107,16 @@
 ]); ?>
         </span>
       </p>
+      <?php if (Extend::exist('tag')): ?>
       <p class="f">
-        <label for="f-kind"><?php echo $language->kind; ?></label> <span>
-<?php $__kinds = $__page[0]->kind === [0] ? "" : implode(', ', $__page[0]->kind); ?>
-<?php echo Form::text('kind', $__kinds, $language->f_kind, [
+        <label for="f-query"><?php echo $language->query; ?></label> <span>
+<?php echo Form::text('query', implode(', ', $__page[1]->query), $language->f_query, [
     'classes' => ['input', 'block', 'query'],
-    'id' => 'f-kind'
+    'id' => 'f-query'
 ]); ?>
         </span>
       </p>
+      <?php endif; ?>
       <?php if ($__sgr !== 's'): ?>
       <p class="f">
         <label for="f-time"><?php echo $language->time; ?></label> <span>

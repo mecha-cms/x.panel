@@ -65,10 +65,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
             foreach ($headers as $k => $v) {
                 $headers[$k] = Request::post($k, $v);
             }
-            if (is_string($headers['description']) && strpos($headers['description'], "\n") !== false) {
-                $headers['description'] = To::json($headers['description']);
-            }
-            $x = Request::post('x');
+            $x = Request::post('x', 'page');
             $f = Request::post('slug');
             $ff = $__folder . DS . $f;
             $fff = $ff . '.' . $x;
@@ -80,16 +77,17 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Request::save('post');
                 Message::error('exist', [$language->slug, '<em>' . $f . '</em>']);
             }
+            Hook::NS('on.page.set', [$fff]);
             if (!Message::$x) {
                 // Create `time.data` file…
-                File::write(date(DATE_WISE))->saveTo($ff . DS . 'time.data');
+                File::write(date(DATE_WISE))->saveTo($ff . DS . 'time.data', 0600);
                 // Create `sort.data` file…
                 if ($s = Request::post('sort')) {
-                    File::write(To::json($s))->saveTo($ff . DS . 'sort.data');
+                    File::write(To::json($s))->saveTo($ff . DS . 'sort.data', 0600);
                 }
                 // Create `chunk.data` file…
                 if ($s = Request::post('chunk')) {
-                    File::write($s)->saveTo($ff . DS . 'chunk.data');
+                    File::write($s)->saveTo($ff . DS . 'chunk.data', 0600);
                 }
                 Page::data($headers)->saveTo($fff, 0600);
                 Message::success(To::sentence($language->{($x === 'draft' ? 'save' : 'create') . 'ed'}) . ($x === 'draft' ? "" : ' ' . HTML::a($language->view, Page::open($fff)->get('url'), true, ['classes' => ['right']])));
@@ -149,13 +147,10 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
             foreach ($headers as $k => $v) {
                 $headers[$k] = Request::post($k, $v);
             }
-            if (is_string($headers['description']) && strpos($headers['description'], "\n") !== false) {
-                $headers['description'] = To::json($headers['description']);
-            }
             $s = Path::N($__file);
             $ss = Request::post('slug');
             $x = Path::X($__file);
-            $xx = Request::post('x');
+            $xx = Request::post('x', $x);
             $d = Path::D($__file);
             $dd = $d . DS . $ss;
             $ddd = $dd . '.' . $xx;
@@ -167,6 +162,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Request::save('post');
                 Message::error('exist', [$language->slug, '<em>' . $ss . '</em>']);
             }
+            Hook::NS('on.page.set', [Path::D($__file) . DS . $ss . '.' . $xx]);
             if (!Message::$x) {
                 Page::open($__file)->data($headers)->save(0600);
                 if ($s !== $ss || $x !== $xx) {
@@ -183,14 +179,14 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 } else {
                     $s = DateTime::createFromFormat('Y/m/d H:i:s', $s)->format(DATE_WISE);
                 }
-                File::write($s)->saveTo($dd . DS . 'time.data');
+                File::write($s)->saveTo($dd . DS . 'time.data', 0600);
                 // Create `sort.data` file…
                 if ($s = Request::post('sort')) {
-                    File::write(To::json($s))->saveTo($dd . DS . 'sort.data');
+                    File::write(To::json($s))->saveTo($dd . DS . 'sort.data', 0600);
                 }
                 // Create `chunk.data` file…
                 if ($s = Request::post('chunk')) {
-                    File::write($s)->saveTo($dd . DS . 'chunk.data');
+                    File::write($s)->saveTo($dd . DS . 'chunk.data', 0600);
                 }
                 Message::success(To::sentence($language->updateed) . ($xx === 'draft' ? "" : ' ' . HTML::a($language->view, Page::open($ddd)->get('url'), true, ['classes' => ['right']])));
                 Guardian::kick(Path::D($url->current) . '/' . $ss);
@@ -315,6 +311,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
         }
         $__kick = str_replace('::r::', '::g::', $url->path);
         $__name = Path::B($__folder);
+        Hook::NS('on.page.reset', [$__file]);
         if (Message::$x) {
             Guardian::kick($__kick);
         }
