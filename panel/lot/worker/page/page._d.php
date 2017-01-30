@@ -1,7 +1,5 @@
-<?php array_pop($__chops); $__path = implode('/', $__chops); ?>
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::s::/' . $__path . '/d+' . $url->query; ?>" method="post">
+<form id="form.main" action="<?php echo $url->current . $url->query; ?>" method="post">
   <aside class="secondary">
-    <?php Hook::NS('panel.secondary.1.before'); ?>
     <?php if ($__page[0]): ?>
     <section class="secondary-page">
       <h3><?php echo $language->source; ?></h3>
@@ -21,11 +19,9 @@
       </ul>
     </section>
     <?php endif; ?>
-    <?php Hook::NS('panel.secondary.1.after'); ?>
   </aside>
   <main class="main">
     <?php echo $__message; ?>
-    <?php Hook::NS('panel.main.before'); ?>
     <fieldset>
       <legend><?php echo $language->editor; ?></legend>
       <div class="f expand p">
@@ -47,20 +43,15 @@
       </p>
     </fieldset>
     <?php echo Form::token(); ?>
-    <?php Hook::NS('panel.main.after'); ?>
     <p class="f expand">
-      <label for="f-x"><?php echo $language->state; ?></label> <span>
+      <label for="f-state"><?php echo $language->state; ?></label> <span>
 <?php
 
-echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'x-data'], 'id' => 'f-x:data']);
-echo ' ' . Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-x:trash']);
+echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'state-data'], 'id' => 'f-state:data']);
+echo ' ' . Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'state-trash'], 'id' => 'f-state:trash']);
 
 ?>
       </span>
     </p>
-<?php Shield::get([
-    $__path_shield . DS . $site->type . DS . '_footer.php',
-    __DIR__ . DS . '_footer.php'
-]); ?>
   </main>
 </form>

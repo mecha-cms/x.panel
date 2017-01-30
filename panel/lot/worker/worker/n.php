@@ -1,15 +1,15 @@
 <?php
 
-// sn: sub–nav
-$__sn = (array) Panel::get('sn', []);
+// n: nav
+$__n = (array) Panel::get('n', []);
 
 $__o = [];
 
-if (!isset($__sn['error']) || $__sn['error'] !== false) {
+if (!isset($__n['error']) || $__n['error'] !== false) {
     if ($__log = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
         preg_match_all('#^\s*\[(.+?)\]#m', File::open($__log)->read(), $__errors);
         if (!empty($__errors[1])) {
-            $__o['error'] = isset($__sn['error']) && is_array($__sn['error']) ? $__sn['error'] : [
+            $__o['error'] = isset($__n['error']) && is_array($__n['error']) ? $__n['error'] : [
                 'text' => $language->errors,
                 'attributes' => [
                     'href' => $__state->path . '/::g::/error'
@@ -18,31 +18,31 @@ if (!isset($__sn['error']) || $__sn['error'] !== false) {
             ];
         }
     }
-    unset($__sn['error']);
+    unset($__n['error']);
 }
 
-if (!isset($__sn['exit']) || $__sn['exit'] !== false) {
-    $__o['exit'] = isset($__sn['exit']) && is_array($__sn['exit']) ? $__sn['exit'] : [
+if (!isset($__n['exit']) || $__n['exit'] !== false) {
+    $__o['exit'] = isset($__n['exit']) && is_array($__n['exit']) ? $__n['exit'] : [
         'text' => $language->exit,
         'attributes' => [
             'href' => $__state->path . '/::g::/exit'
         ]
     ];
-    unset($__sn['exit']);
+    unset($__n['exit']);
 }
 
-if (!isset($__sn[""]) || $__sn[""] !== false) {
-    $__o[""] = isset($__sn[""]) && is_array($__sn[""]) ? $__sn[""] : [
+if (!isset($__n[""]) || $__n[""] !== false) {
+    $__o[""] = isset($__n[""]) && is_array($__n[""]) ? $__n[""] : [
         'text' => $language->visit . ' ' . $language->site . ' &#x2197;',
         'attributes' => [
             'href' => $url . "",
             'target' => '_blank'
         ]
     ];
-    unset($__sn[""]);
+    unset($__n[""]);
 }
 
-foreach ($__sn as $k => $v) {
+foreach ($__n as $k => $v) {
     if ($v === false) continue;
     $__o[$k] = is_array($v) ? $v : [
         'text' => $language->{$k},
@@ -52,6 +52,6 @@ foreach ($__sn as $k => $v) {
     ];
 }
 
-$__sn = Anemon::eat($__o)->sort([1, 'text'], '?')->vomit(); // hold!
+$__n = Anemon::eat($__o)->sort([1, 'text'], '?')->vomit(); // hold!
 
 unset($__o);

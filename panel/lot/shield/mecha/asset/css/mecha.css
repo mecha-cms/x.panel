@@ -60,7 +60,10 @@ code,.code {
   vertical-align:top;
   padding:1em;
 }
-.main {background:#ffa}
+.main {
+  background:#ffa;
+  padding-bottom:5em;
+}
 .secondary {width:16em}
 .main section + section,
 .secondary section + section {margin-top:1em}
@@ -152,7 +155,7 @@ code,.code {
 .nav .is-current a:focus,
 .nav .is-current a:hover {
   background:none;
-  color:#fbb;
+  color:#fba;
   font-weight:bold;
 }
 .nav ul ul {
@@ -177,12 +180,12 @@ code,.code {
   line-height:2.5em;
 }
 .nav ul ul a {padding:0 1em}
-.secondary-config {
+.secondary-setting {
   background:#fea;
   padding:1em;
   margin:-.5em -.5em .5em;
 }
-.secondary section + .secondary-config {margin-top:1.5em}
+.secondary section + .secondary-setting {margin-top:1.5em}
 .secondary .secondary-nav {
   position:sticky;
   top:1em;

@@ -9,12 +9,12 @@
       </li><!--
       <?php endforeach; ?>
     <?php endif; ?>
-    --><li>
-      <a href="">&#x2026;</a>
-      <?php if ($__sn): ?>
+    --><li class="nav--">
+      <a href="">&#x22EE;</a>
+      <?php if ($__n): ?>
       <ul>
-        <?php foreach ($__sn as $k => $v): ?>
-        <li class="nav--<?php echo strpos($url->path . '/', '::/' . $k . '/') !== false ? ' is-current' : ""; ?>">
+        <?php foreach ($__n as $k => $v): ?>
+        <li class="nav-<?php echo $k . (strpos($url->path . '/', '::/' . $k . '/') !== false ? ' is-current' : ""); ?>">
           <?php if (is_string($v)): ?>
           <?php echo $v; ?>
           <?php else: ?>

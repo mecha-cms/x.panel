@@ -6,12 +6,14 @@ Asset::set([
     $s . 'panel.min.css',
     $s . 'panel.code-mirror.min.css',
     $s . 'panel.t-i-b.min.css',
-    $s . 'panel.t-p.min.css'
+    $s . 'panel.t-p.min.css',
+    $s . 'panel.c-p.min.css'
 ], [
     10,
     11,
     12,
-    13
+    13,
+    14
 ]);
 
 $s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'js' . DS;
@@ -24,7 +26,9 @@ Asset::set([
     $s . 'panel.t-i-b.min.js',
     $s . 'panel.t-i-b.fire.min.js',
     $s . 'panel.t-p.min.js',
-    $s . 'panel.t-p.fire.min.js'
+    $s . 'panel.t-p.fire.min.js',
+    $s . 'panel.c-p.min.js',
+    $s . 'panel.c-p.fire.min.js'
 ], [
     10,
     10.1,
@@ -33,7 +37,9 @@ Asset::set([
     12,
     12.1,
     13,
-    13.1
+    13.1,
+    14,
+    14.1
 ]);
 
 if ($fn = File::exist($__path_shield . DS . 'index.php')) require $fn;

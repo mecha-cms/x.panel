@@ -13,8 +13,8 @@ panel:
   slower: Slower
   slowest: Slowest
   sort:
-    -1: Descending
-     1: Ascending
+    -1: Z &rarr; A
+     1: A &rarr; Z
 
 sort: Sort
 

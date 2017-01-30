@@ -12,7 +12,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     require $__s . 'extend' . DS . 'plugin.php';
     require $__s . DS . 'shield.php';
     require $__s . DS . 'f.php';
-    require $__s . DS . 'sn.php';
+    require $__s . DS . 'n.php';
     require $__s . DS . 'asset.php';
     if (!$__task) {
         Shield::abort(PANEL_404);
@@ -23,7 +23,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     Lot::set([
         '__sgr' => $__sgr,
         '__f' => $__f,
-        '__sn' => $__sn,
+        '__n' => $__n,
         '__path' => $__path,
         '__step' => $__step,
         '__chops' => $__chops,

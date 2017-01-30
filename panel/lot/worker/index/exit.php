@@ -13,9 +13,12 @@ File::open($f . 'token.data')->delete();
 // Delete trash…
 foreach (File::explore(PAGE, true, true) as $k => $v) {
     if ($v === 0) continue;
+    $s = Path::F($k);
+    foreach (g($s, 'trash') as $v) {
+        File::open($v)->delete();
+    }
     if (Path::X($k) === 'trash') {
         File::open($k)->delete();
-        $s = Path::F($k);
         if (Is::D($s)) {
             File::open($s)->delete();
         }

@@ -2,7 +2,7 @@
 
 define('PANEL', __DIR__);
 
-$__state = o(Extend::state(__DIR__));
+$__state = new State(Extend::state(__DIR__), []);
 
 $s = PANEL . DS . 'lot' . DS;
 

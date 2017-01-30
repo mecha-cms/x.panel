@@ -172,6 +172,19 @@ label {
   width:auto;
   height:auto;
 }
+.input[type="color"] {
+  background:none;
+  border:0;
+  padding:0;
+  width:2.1538461538461537em;
+}
+.input[type="file"],
+.input[type="image"],
+.input[type="range"] {
+  background:none;
+  border:0;
+  padding:0;
+}
 .block {
   display:block;
   width:100%;
