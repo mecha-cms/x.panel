@@ -17,32 +17,82 @@ if (!function_exists('fn_f_reset')) {
 
 if (Request::is('post')) {
     // Process special field name…
+    // Electronic mail
+    if (Request::is('post', 'email')) {
+        if ($s = Request::post('email')) {
+            if (!Is::email($s)) {
+                Request::save('post');
+                Message::error('value', $language->email, true);
+            }
+        }
+    }
+    // Internet protocol
+    if (Request::is('post', 'ip')) {
+        if ($s = Request::post('ip', "")) {
+            if (!Is::ip($s)) {
+                Request::save('post');
+                Message::error('value', $language->ip, true);
+            }
+        }
+    }
+    // Object key
+    if (Request::is('post', 'key')) {
+        $s = Request::post('key', "");
+        Request::set('post', 'key', $s = trim(To::key($s), '_'));
+        if ($s === "") {
+            Request::save('post');
+            Message::error('void_field', $language->key, true);
+        }
+    }
+    // Uniform resource locator
+    if (Request::is('post', 'link')) {
+        if ($s = Request::post('link')) {
+            if (strpos($s, '//') === 0) {
+                $s = $url->scheme . ':' . $s;
+            }
+            if (!Is::url($s)) {
+                Request::save('post');
+                Message::error('value', $language->link, true);
+            }
+        }
+    }
+    // File name
+    if (Request::is('post', 'slug')) {
+        $s = Request::post('slug', "");
+        Request::set('post', 'slug', $s = trim(To::slug($s), '-'));
+        if ($s === "") {
+            Request::save('post');
+            Message::error('void_field', $language->slug, true);
+        }
+    }
+    // Time pattern: `YYYY/MM/DD hh:mm:ss`
     if (Request::is('post', 'time')) {
         $s = Request::post('time');
         $format = '#^(\d{4,}/\d{2}/\d{2}|\d{4,}\-\d{2}\-\d{2}) \d{2}:\d{2}:\d{2}$#';
         if (!is_string($s) || !preg_match($format, $s)) {
             Request::save('post');
-            Message::error('pattern_field', $language->time);
+            Message::error('pattern_field', $language->time, true);
         }
     }
-    if (Request::is('post', 'slug')) {
-        $s = Request::post('slug', "");
-        Request::set('post', 'slug', $s = trim(To::slug($s), '-'));
-        if (!$s) {
-            Request::save('post');
-            Message::error('void_field', $language->slug, true);
+    // Uniform resource locator
+    if (Request::is('post', 'url')) {
+        if ($s = Request::post('url')) {
+            if (strpos($s, '//') === 0) {
+                $s = $url->scheme . ':' . $s;
+            }
+            if (!Is::url($s)) {
+                Request::save('post');
+                Message::error('value', $language->url, true);
+            }
         }
     }
-    if (Request::is('post', 'key')) {
-        $s = Request::post('key', "");
-        Request::set('post', 'key', $s = trim(To::key($s), '_'));
-        if (!$s) {
-            Request::save('post');
-            Message::error('void_field', $language->key, true);
-        }
-    }
+    // File extension
     if (Request::is('post', 'x')) {
         $s = Request::post('x', "");
+        if ($s === "") {
+            Request::save('post');
+            Message::error('void_field', $language->extension, true);
+        }
         Request::set('post', 'x', $s = l($s));
         if (!Is::these(File::$config['extensions'])->has($s)) {
             Request::save('post');
@@ -63,6 +113,7 @@ if (Request::is('post')) {
     // Process token …
     $s = Request::post('token');
     if (!$s || $s !== Session::get(Guardian::$config['session']['token'])) {
+        Request::save('post');
         Message::error('token');
         Guardian::kick();
     }

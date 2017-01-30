@@ -6,7 +6,7 @@ $__chunk = $__state->chunk;
 $__is_get = Request::is('get');
 $__is_post = Request::is('post');
 $__is_r = count($__chops) === 1;
-$__is_pages = $__is_r || is_numeric(Path::B($url->path)); // Force index view by appending page offset to the end of URL
+$__is_pages = $__is_r || is_numeric(Path::B($url->path)) ? '/1' : ""; // Force index view by appending page offset to the end of URL
 
 Panel::set('f.types.HTML', 'HTML');
 
@@ -44,7 +44,8 @@ $__seeds = [
     '__is_data_has_step' => false,
     '__is_kin_has_step' => false,
     '__is_page_has_step' => false,
-    '__is_parent_has_step' => false
+    '__is_parent_has_step' => false,
+    '__is_pages' => $__is_pages
 ];
 
 extract(Lot::set($__seeds)->get(null, []));
@@ -77,7 +78,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Request::save('post');
                 Message::error('exist', [$language->slug, '<em>' . $f . '</em>']);
             }
-            Hook::NS('on.page.set', [$fff]);
+            Hook::fire('on.page.set', [$fff]);
             if (!Message::$x) {
                 // Create `time.data` file…
                 File::write(date(DATE_WISE))->saveTo($ff . DS . 'time.data', 0600);
@@ -162,7 +163,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                 Request::save('post');
                 Message::error('exist', [$language->slug, '<em>' . $ss . '</em>']);
             }
-            Hook::NS('on.page.set', [Path::D($__file) . DS . $ss . '.' . $xx]);
+            Hook::fire('on.page.set', [Path::D($__file) . DS . $ss . '.' . $xx]);
             if (!Message::$x) {
                 Page::open($__file)->data($headers)->save(0600);
                 if ($s !== $ss || $x !== $xx) {
@@ -311,7 +312,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
         }
         $__kick = str_replace('::r::', '::g::', $url->path);
         $__name = Path::B($__folder);
-        Hook::NS('on.page.reset', [$__file]);
+        Hook::fire('on.page.reset', [$__file]);
         if (Message::$x) {
             Guardian::kick($__kick);
         }
@@ -327,3 +328,402 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
         Shield::abort(PANEL_404);
     }
 }
+
+
+/**
+ * Field(s)
+ * --------
+ */
+
+// [+] &#x2795;
+// [-] &#x2796;
+// [:] &#x2797;
+// [x] &#x2716;
+
+function panel_f_title() {
+    extract(Lot::get(null, []));
+    echo '<p class="f expand">';
+    echo '<label for="f-title">' . $language->title . '</label>';
+    echo ' <span>';
+    echo Form::text('title', $__page[0]->title, $__page[1]->title, [
+        'classes' => ['input', 'block'],
+        'id' => 'f-title',
+        'data' => ['slug-i' => 'title']
+    ]);
+    echo '</span>';
+    echo '</p>';
+}
+
+function panel_f_slug() {
+    extract(Lot::get(null, []));
+    echo '<p class="f expand">';
+    echo '<label for="f-slug">' . $language->slug . '</label>';
+    echo ' <span>';
+    echo Form::text('slug', $__page[0]->slug, $__page[1]->slug, [
+        'classes' => ['input', 'block'],
+        'id' => 'f-slug',
+        'pattern' => '^[a-z\\d-]+$',
+        'data' => ['slug-o' => 'title']
+    ]);
+    echo '</span>';
+    echo '</p>';
+}
+
+function panel_f_content() {
+    extract(Lot::get(null, []));
+    echo '<div class="f expand p">';
+    echo '<label for="f-content">' . $language->content . '</label>';
+    echo '<div>';
+    echo Form::textarea('content', $__page[0]->content, $language->f_content, [
+        'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
+        'id' => 'f-content',
+        'data' => ['type' => $__page[0]->type]
+    ]);
+    echo '</div>';
+    echo '</div>';
+}
+
+function panel_f_type() {
+    extract(Lot::get(null, []));
+    echo '<p class="f">';
+    echo '<label for="f-type">' . $language->type . '</label>';
+    echo ' <span>';
+    $__types = a(Panel::get('f.types', []));
+    asort($__types);
+    echo Form::select('type', $__types, $__page[0]->type, [
+        'classes' => ['select'],
+        'id' => 'f-type'
+    ]);
+    echo '</span>';
+    echo '</p>';
+}
+
+function panel_f_description() {
+    extract(Lot::get(null, []));
+    echo '<div class="f p">';
+    echo '<label for="f-description">' . $language->description . '</label>';
+    echo '<div>';
+    echo Form::textarea('description', $__page[0]->description, $language->f_description($language->page), [
+        'classes' => ['textarea', 'block'],
+        'id' => 'f-description'
+    ]);
+    echo '</div>';
+    echo '</div>';
+}
+
+function panel_f_link() {
+    extract(Lot::get(null, []));
+    echo '<p class="f">';
+    echo '<label for="f-link">' . $language->link . '</label>';
+    echo ' <span>';
+    echo Form::url('link', $__page[0]->link, $url->protocol, [
+        'classes' => ['input', 'block'],
+        'id' => 'f-link'
+    ]);
+    echo '</span>';
+    echo '</p>';
+}
+
+function panel_f_time() {
+    extract(Lot::get(null, []));
+    if ($__sgr !== 's') {
+        $__time = (new Date($__page[0]->time))->format('Y/m/d H:i:s');
+        echo '<p class="f">';
+        echo '<label for="f-time">' . $language->time . '</label>';
+        echo ' <span>';
+        echo Form::text('time', $__time, $__time, [
+            'classes' => ['input', 'date'],
+            'id' => 'f-time',
+            'pattern' => '^\\d{4,}\\/\\d{2}\\/\\d{2} \\d{2}:\\d{2}:\\d{2}$'
+        ]);
+        echo '</span>';
+        echo '</p>';
+    }
+}
+
+function panel_f_state() {
+    extract(Lot::get(null, []));
+    echo '<p class="f expand">';
+    echo '<label for="f-state">' . $language->state . '</label>';
+    echo ' <span>';
+    if ($__sgr !== 's') {
+        $x = $__page[0]->state;
+        echo Form::submit('x', $x, $language->update, ['classes' => ['button', 'state-' . $x], 'id' => 'f-state:' . $x]);
+        $__states = [
+            'page' => 'publish',
+            'draft' => 'save',
+            'archive' => 'archive',
+            'trash' => 'delete'
+        ];
+        foreach ($__states as $k => $v) {
+            if ($x !== $k) {
+                echo ' ' . Form::submit('x', $k, $language->{$v}, ['classes' => ['button', 'state-' . $k], 'id' => 'f-state:' . $k]);
+            }
+        }
+    } else {
+        echo Form::submit('x', 'page', $language->publish, ['classes' => ['button', 'state-page'], 'id' => 'f-state:page']);
+        echo ' ' . Form::submit('x', 'draft', $language->save, ['classes' => ['button', 'state-draft'], 'id' => 'f-state:draft']);
+    }
+    echo '</span>';
+    echo '</p>';
+}
+
+$__fields = [
+    10 => 'panel_f_title',
+    20 => 'panel_f_slug',
+    30 => 'panel_f_content',
+    40 => 'panel_f_type',
+    50 => 'panel_f_description',
+    60 => 'panel_f_link',
+    70 => 'panel_f_time'
+];
+
+foreach ($__fields as $k => $v) {
+    Hook::set('panel_main_editor', $v, $k);
+}
+
+function panel_main_pages() {
+    extract(Lot::get(null, []));
+    echo '<section class="main-buttons">';
+    echo '<p>';
+    if (Request::get('q')) {
+        echo HTML::a('&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_pages, false, ['classes' => ['button', 'reset']]);
+    } else {
+        echo HTML::a('&#x2795; ' . $language->page, $__state->path . '/::s::/' . $__path, false, ['classes' => ['button', 'set']]);
+    }
+    echo '</p>';
+    echo '</section>';
+    echo '<section class="main-pages">';
+    if ($__pages[0]) {
+        $p = strpos($__path, '/') !== false ? substr($__path, strpos($__path, '/')) : "";
+        foreach ($__pages[1] as $k => $v) {
+            $s = $__pages[0][$k]->url;
+            $__is_parent = !!g(LOT . explode('::' . $__sgr . '::', $s, 2)[1], 'draft,page,archive', "", false);
+            $g = $__pages[0][$k]->path;
+            $gg = Path::X($g);
+            $ggg = Path::D($g);
+            $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg);
+            echo '<article class="page on-' . $v->state . ($__is_parent ? ' is-parent' : "") . ($gggg ? ' as-placeholder' : "") . ($site->path === ltrim($p . '/' . $v->slug, '/') ? ' as-home' : "") . '" id="page-' . $v->id . '">';
+            echo '<header>';
+            if ($__pages[0][$k]->state === 'draft') {
+                echo '<h3>' . $v->title . '</h3>';
+            } else {
+                echo '<h3>' . HTML::a($v->title, $v->url, true) . '</h3>';
+            }
+            echo '</header>';
+            echo '<section>';
+            echo '<p>' . To::snippet($v->description, true, $__state->snippet) . '</p>';
+            echo '</section>';
+            echo '<footer>';
+            echo '<p>';
+
+            $__links = [
+                HTML::a($language->edit, $s),
+                HTML::a($language->delete, str_replace('::g::', '::r::', $s) . HTTP::query(['token' => $__token]))
+            ];
+
+            if ($__is_parent) {
+                $__links[] = HTML::a($language->open, $s . '/1');
+            }
+
+            echo implode(' &#x00B7; ', $__links);
+            echo '</p>';
+            echo '</footer>';
+            echo '</article>';
+        }
+    } else if (!Request::get('q')) {
+        echo '<p>' . $language->message_info_void($language->pages) . '</p>';
+    }
+    echo '</section>';
+}
+
+function panel_main_page() {
+    extract(Lot::get(null, []));
+    echo '<fieldset>';
+    echo '<legend>' . $language->editor . '</legend>';
+    Hook::fire('panel_main_editor');
+    echo '</fieldset>';
+    panel_f_state();
+}
+
+Hook::set('panel_main', 'panel_main_' . $site->type, 10);
+
+function panel_main() {
+    extract(Lot::get(null, []));
+    echo '<main class="main">';
+    echo $__message;
+    Hook::fire('panel_main');
+    echo Form::token();
+    echo '</main>';
+}
+
+function panel_secondary_author() {
+    extract(Lot::get(null, []));
+    echo '<section class="secondary-author">';
+    echo '<h3>' . $language->author . '</h3>';
+    echo '<p>';
+    echo Form::text('author', $__page[0]->author, '@' . l($language->user), ['classes' => ['input', 'block']]);
+    echo '</p>';
+    echo '</section>';
+}
+
+function panel_secondary_search() {
+    extract(Lot::get(null, []));
+    echo '<section class="secondary-search">';
+    echo '<h3>' . $language->search . '</h3>';
+    echo '<form id="form.secondary.1" class="search" action="' . $url->current . '" method="get">';
+    echo '<p>';
+    echo Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]);
+    echo ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]);
+    echo '</p>';
+    echo '</form>';
+    echo '</section>';
+}
+
+function panel_secondary_parent() {
+    extract(Lot::get(null, []));
+    $__r = count($__chops) === 2;
+    if ($__r || $__parents[0]) {
+        echo '<section class="secondary-parent">';
+        echo '<h3>' . $language->{$__r || count($__parents[0]) === 1 ? 'parent' : 'parents'} . '</h3>';
+        echo '<ul>';
+        if ($__r) {
+            echo '<li class="state-page">';
+            echo HTML::a('./', $__state->path . '/::g::/' . $__chops[0] . $__is_pages);
+            echo '</li>';
+        } else {
+            echo '<li class="state-' . $__parents[0][0]->state . '">';
+            echo HTML::a($__parents[1][0]->title, $__parents[0][0]->url . $__is_pages);
+            echo '</li>';
+        }
+        echo '</ul>';
+        echo '</section>';
+    }
+}
+
+function panel_secondary_kin() {
+    extract(Lot::get(null, []));
+    if ($__kins[0]) {
+        echo '<section class="secondary-kin">';
+        echo '<h3>' . $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'} . '</h3>';
+        echo '<ul>';
+        foreach ($__kins[0] as $k => $v) {
+            echo '<li class="state-' . $v->state . '">';
+            echo HTML::a($__kins[1][$k]->title, $v->url . $__is_pages);
+            echo '</li>';
+        }
+        if ($__is_kin_has_step) {
+            echo '<li>';
+            echo HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]);
+            echo '</li>';
+        }
+        echo '</ul>';
+        echo '</section>';
+    }
+}
+
+function panel_secondary_nav() {
+    extract(Lot::get(null, []));
+    echo '<section class="secondary-nav">';
+    echo '<h3>' . $language->navigation . '</h3>';
+    echo '<p>' . $__pager[0] . '</p>';
+    echo '</section>';
+}
+
+function panel_secondary_config() {
+    extract(Lot::get(null, []));
+    if ($__sgr === 'g' && count($__childs[0]) > 0) {
+        echo '<section class="secondary-config">';
+        echo '<h3>' . $language->configs . '</h3>';
+        echo '<h4>' . $language->sort . '</h4>';
+        echo '<p>';
+        echo Form::radio('sort[0]', $language->panel->sort, isset($__parents[0]->sort[0]) ? $__parents[0]->sort[0] : (isset($__page[1]->sort[0]) ? $__page[1]->sort[0] : ""), ['classes' => ['input']]);
+        echo '</p>';
+        echo '<h4>' . $language->by . '</h4>';
+        echo '<p>';
+        echo Form::radio('sort[1]', [
+            'time' => $language->time,
+            'slug' => $language->slug,
+            'title' => $language->title
+        ], isset($__parents[0]->sort[1]) ? $__parents[0]->sort[1] : (isset($__page[1]->sort[1]) ? $__page[1]->sort[1] : ""), ['classes' => ['input']]);
+        echo '</p>';
+        echo '<h4>' . $language->chunk . '</h4>';
+        echo '<p>';
+        echo Form::number('chunk', isset($__parents[0]->chunk) ? $__parents[0]->chunk : (isset($__page[1]->chunk) ? $__page[1]->chunk : ""), $site->chunk, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 100]);
+        echo '</p>';
+        echo '</section>';
+    }
+}
+
+$__fields = $site->type === 'page' ? [
+    10 => 'panel_secondary_author',
+    20 => 'panel_secondary_parent',
+    30 => 'panel_secondary_config'
+] : [
+    10 => 'panel_secondary_search',
+    20 => 'panel_secondary_parent',
+    30 => 'panel_secondary_kin',
+    40 => 'panel_secondary_nav'
+];
+
+foreach ($__fields as $k => $v) {
+    Hook::set('panel_secondary_1', $v, $k);
+}
+
+function panel_secondary_1() {
+    extract(Lot::get(null, []));
+    echo '<aside class="secondary">';
+    Hook::fire('panel_secondary_1');
+    echo '</aside>';
+}
+
+function panel_secondary_data() {
+    extract(Lot::get(null, []));
+    if ($__sgr === 'g') {
+        echo '<section class="secondary-data">';
+        echo '<h3>' . $language->{count($__datas[0]) === 1 ? 'data' : 'datas'} . '</h3>';
+        echo '<ul>';
+        foreach ($__datas[0] as $k => $v) {
+            echo '<li class="data-' . $v->key . '">';
+            echo HTML::a($__datas[1][$k]->key, $__state->path . '/::g::/' . $__path . '/d:' . $v->key);
+            echo '</li>';
+        }
+        echo '<li>' . HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path . '/d+', false, ['title' => $language->add]) . '</li>';
+        echo '</ul>';
+        echo '</section>';
+    }
+}
+
+function panel_secondary_child() {
+    extract(Lot::get(null, []));
+    if (count($__chops) > 1) {
+        echo '<section class="secondary-child">';
+        echo '<h3>' . $language->{count($__childs[0]) === 1 ? 'child' : 'childs'} . '</h3>';
+        echo '<ul>';
+        foreach ($__childs[0] as $k => $v) {
+            echo '<li class="state-' . $v->state . '">' . HTML::a($__childs[1][$k]->title, $v->url) . '</li>';
+        }
+        echo '<li>' . HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]); ?><?php if ($__is_child_has_step) echo ' ' . HTML::a('&#x2026;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) . '</li>';
+        echo '</ul>';
+        echo '</section>';
+    }
+}
+
+$__fields = [
+    10 => 'panel_secondary_data',
+    20 => 'panel_secondary_child'
+];
+
+foreach ($__fields as $k => $v) {
+    Hook::set('panel_secondary_2', $v, $k);
+}
+
+function panel_secondary_2() {
+    echo '<aside class="secondary">';
+    Hook::fire('panel_secondary_2');
+    echo '</aside>';
+}
+
+Hook::set('panel', 'panel_secondary_1', 10);
+Hook::set('panel', 'panel_main', 20);
+Hook::set('panel', 'panel_secondary_2', 30);

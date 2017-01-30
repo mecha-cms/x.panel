@@ -23,12 +23,23 @@ if (!isset($__sn['error']) || $__sn['error'] !== false) {
 
 if (!isset($__sn['exit']) || $__sn['exit'] !== false) {
     $__o['exit'] = isset($__sn['exit']) && is_array($__sn['exit']) ? $__sn['exit'] : [
-        'text' => $language->log_out,
+        'text' => $language->exit,
         'attributes' => [
             'href' => $__state->path . '/::g::/exit'
         ]
     ];
     unset($__sn['exit']);
+}
+
+if (!isset($__sn[""]) || $__sn[""] !== false) {
+    $__o[""] = isset($__sn[""]) && is_array($__sn[""]) ? $__sn[""] : [
+        'text' => $language->visit . ' ' . $language->site . ' &#x2197;',
+        'attributes' => [
+            'href' => $url . "",
+            'target' => '_blank'
+        ]
+    ];
+    unset($__sn[""]);
 }
 
 foreach ($__sn as $k => $v) {

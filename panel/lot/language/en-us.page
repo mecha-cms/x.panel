@@ -23,16 +23,15 @@ sort: Sort
 #. -------
 
 message_error: Error.
-message_error_duplicate: Duplicate %{0}%.
-message_error_email: Invalid email.
+message_error_duplicate: Duplicate <strong>%{0}%</strong>.
 message_error_exist: %{0}% %{1}% already exists.
 message_errir_ip: Invalid IP.
 message_error_max: Maximum %{0}% allowed is %{1}%.
 message_error_min: Minimum %{0}% allowed is %{1}%.
 message_error_pattern_field: Invalid %{0}% pattern.
 message_error_token: Invalid token.
-message_error_url: Invalid URL.
 message_error_user_or_pass: Invalid user or pass value.
+message_error_value: Invalid <strong>%{0}%</strong>.
 message_error_void_field: Please fill out the <strong>%{0}%</strong> field.
 
 message_info_create: %{0}% created.
