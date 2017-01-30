@@ -56,80 +56,76 @@ $__seeds = [
 
 extract(Lot::set($__seeds)->get(null, []));
 
-if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
+if (($__sgr === 's' && substr($__path, -3) === '/d+') || strpos($__path, '/d:') !== false) {
     $__key = explode(':', end($__chops) . ':')[1];
-    $__folder_d = LOT . DS . Path::F(Path::D($__path));
+    $__d_folder = LOT . DS . Path::F(Path::D($__path));
+    $__d_file = File::exist($__d_folder . DS . $__key . '.data');
+    Lot::set('__page', [
+        new Page(null, [], '__data'),
+        new Page(null, [], 'data')
+    ]);
     if ($__file = File::exist([
-        $__folder_d . '.draft',
-        $__folder_d . '.page',
-        $__folder_d . '.archive'
+        $__d_folder . '.draft',
+        $__d_folder . '.page',
+        $__d_folder . '.archive'
     ])) {
-        $__page = [
+        Lot::set('__source', [
             new Page($__file, [], '__page'),
             new Page($__file)
-        ];
-        Lot::set('__page', $__page);
+        ]);
     } else {
         Shield::abort(PANEL_404);
     }
-    $__file_d = File::exist($__folder_d . DS . $__key . '.data');
     if ($__is_post) {
         if (Request::post('x') === 'trash') {
             Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
         }
         $k = Request::post('key');
-        if ($k !== $__key && file_exists($__folder_d . DS . $k . '.data')) {
+        $f = $__d_folder . DS . $k . '.data';
+        if ($k !== $__key && file_exists($f)) {
             Request::save('post');
             Message::error('exist', [$language->key, '<em>' . $k . '</em>']);
         }
-        Hook::NS('on.data.set', [$__file_d]);
+        Hook::NS('on.data.set', [$__d_file]);
         if (!Message::$x) {
-            File::write(Request::post('content', "", false))->saveTo($__folder_d . DS . $k . '.data', 0600);
+            File::write(Request::post('content', "", false))->saveTo($f, 0600);
             if ($k !== $__key) {
-                File::open($__folder_d . DS . $__key . '.data')->delete();
+                File::open($__d_folder . DS . $__key . '.data')->delete();
             }
             Message::success(To::sentence($language->{($__sgr === 's' ? 'create' : 'update') . 'ed'}));
             Guardian::kick($__state->path . '/::g::/' . Path::D($__path) . '/d:' . $k);
         }
-    } else if ($__sgr === 'r') {
-        if (!Request::get('token')) {
-            Shield::abort(PANEL_404);
-        }
-        Hook::NS('on.data.reset', [$__file_d]);
-        if (Message::$x) {
-            Guardian::kick(str_repace('::r::', '::g::', $url->current));
-        }
-        if (Request::get('abort')) {
-            File::open($__folder_d . DS . $__key . '.trash')->renameTo($__key . '.data');
-            Message::success(To::sentence($language->restoreed));
-        } else {
-            File::open($__file_d)->renameTo($__key . '.trash');
-            Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
-        }
-        Guardian::kick($__state->path . '/::g::/' . Path::D($__path));
-    }
-    if ($__sgr === 'g' && $__file_d) {
-        $__ = [
-            'key' => $__key,
-            'content' => file_get_contents($__file_d)
-        ];
-        $__data = [
-            new Page(null, $__, '__data'),
-            new Page(null, $__, 'data')
-        ];
-        Lot::set('__data', $__data);
-    } else if ($__sgr === 's') {
-        if ($__file_d) {
-            Guardian::kick(str_replace('::s::', '::g::', $url->current));
-        }
-        $__ = ['key' => $__key, 'content'];
-        $__data = [
-            new Page(null, $__, '__data'),
-            new Page(null, $__, 'data')
-        ];
-        Lot::set('__data', $__data);
     } else {
-        Shield::abort(PANEL_404);
+        if ($__sgr === 'r') {
+            if (!Request::get('token')) {
+                Shield::abort(PANEL_404);
+            }
+            Hook::NS('on.data.reset', [$__d_file]);
+            if (Message::$x) {
+                Guardian::kick(str_repace('::r::', '::g::', $url->current));
+            }
+            if (Request::get('abort')) {
+                File::open($__d_folder . DS . $__key . '.trash')->renameTo($__key . '.data');
+                Message::success(To::sentence($language->restoreed));
+            } else {
+                File::open($__d_file)->renameTo($__key . '.trash');
+                Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
+            }
+            Guardian::kick($__state->path . '/::g::/' . Path::D($__path));
+        } else if ($__d_file) {
+            if ($__sgr === 'g') {
+                $__ = [
+                    'key' => $__key,
+                    'content' => file_get_contents($__d_file)
+                ];
+                Lot::set('__page', [
+                    new Page(null, $__, '__data'),
+                    new Page(null, $__, 'data')
+                ]);
+            } else if ($__sgr === 's') {
+                Guardian::kick(str_replace('::s::', '::g::', $url->current));
+            }
+        }
     }
 } else {
     if ($__sgr === 's') {
@@ -311,7 +307,7 @@ if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
                         }
                         return false;
                     });
-                    Message::info('search', $__queries);
+                    Message::info('search', '<em>' . $__queries . '</em>');
                 }
                 foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $k => $v) {
                     $__pages[0][] = new Page($v, [], '__page');
@@ -449,7 +445,7 @@ function panel_m_pages() {
             $g = $__pages[0][$k]->path;
             $gg = Path::X($g);
             $ggg = Path::D($g);
-            $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg); // fade the placeholder page
+            $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg); // fade out the placeholder page
             echo '<article class="page on-' . $v->state . ($__is_parent ? ' is-parent' : "") . ($gggg ? ' as-placeholder' : "") . ($site->path === ltrim($p . '/' . $v->slug, '/') ? ' as-home' : "") . '" id="page-' . $v->id . '">';
             echo '<header>';
             if ($__pages[0][$k]->state === 'draft') {
@@ -591,34 +587,57 @@ function panel_f_time() {
     }
 }
 
+function panel_f_key() {
+    extract(Lot::get(null, []));
+    echo '<p class="f">';
+    echo '<label for="f-key">' . $language->key . '</label>';
+    echo ' <span>';
+    echo Form::text('key', $__page[0]->key, $__page[0]->key, [
+        'classes' => ['input'],
+        'id' => 'f-key'
+    ]);
+    echo '</span>';
+    echo '</p>';
+}
+
 function panel_f_state() {
     extract(Lot::get(null, []));
     echo '<p class="f expand">';
     echo '<label for="f-state">' . $language->state . '</label>';
     echo ' <span>';
-    if ($__sgr !== 's') {
-        $x = $__page[0]->state;
-        echo Form::submit('x', $x, $language->update, ['classes' => ['button', 'state-' . $x], 'id' => 'f-state:' . $x]);
-        $__states = [
-            'page' => 'publish',
-            'draft' => 'save',
-            'archive' => 'archive',
-            'trash' => 'delete'
-        ];
-        foreach ($__states as $k => $v) {
-            if ($x !== $k) {
-                echo ' ' . Form::submit('x', $k, $language->{$v}, ['classes' => ['button', 'state-' . $k], 'id' => 'f-state:' . $k]);
-            }
+    if (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false) {
+        echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'state-data'], 'id' => 'f-state:data']);
+        if ($__sgr !== 's') {
+            echo ' ' . Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'state-trash'], 'id' => 'f-state:trash']);
         }
     } else {
-        echo Form::submit('x', 'page', $language->publish, ['classes' => ['button', 'state-page'], 'id' => 'f-state:page']);
-        echo ' ' . Form::submit('x', 'draft', $language->save, ['classes' => ['button', 'state-draft'], 'id' => 'f-state:draft']);
+        if ($__sgr !== 's') {
+            $x = $__page[0]->state;
+            echo Form::submit('x', $x, $language->update, ['classes' => ['button', 'state-' . $x], 'id' => 'f-state:' . $x]);
+            $__states = [
+                'page' => 'publish',
+                'draft' => 'save',
+                'archive' => 'archive',
+                'trash' => 'delete'
+            ];
+            foreach ($__states as $k => $v) {
+                if ($x !== $k) {
+                    echo ' ' . Form::submit('x', $k, $language->{$v}, ['classes' => ['button', 'state-' . $k], 'id' => 'f-state:' . $k]);
+                }
+            }
+        } else {
+            echo Form::submit('x', 'page', $language->publish, ['classes' => ['button', 'state-page'], 'id' => 'f-state:page']);
+            echo ' ' . Form::submit('x', 'draft', $language->save, ['classes' => ['button', 'state-draft'], 'id' => 'f-state:draft']);
+        }
     }
     echo '</span>';
     echo '</p>';
 }
 
-foreach ([
+foreach (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false ? [
+    10 => 'panel_f_content',
+    20 => 'panel_f_key'
+] : [
     10 => 'panel_f_title',
     20 => 'panel_f_slug',
     30 => 'panel_f_content',
@@ -725,11 +744,27 @@ function panel_s_setting() {
     }
 }
 
-foreach ($site->type === 'page' ? [
+function panel_s_source() {
+    extract(Lot::get(null, []));
+    if ($__source[0]) {
+        echo '<section class="secondary-source">';
+        echo '<h3>' . $language->source . '</h3>';
+        echo '<ul>';
+        echo '<li class="state-' . $__source[0]->state . '">';
+        echo HTML::a($__source[1]->title, $__source[0]->url);
+        echo '</li>';
+        echo '</ul>';
+        echo '</section>';
+    }
+}
+
+foreach ($site->type === 'page' ? (substr($__path, -3) === '/d+' || strpos($__path, '/d:') !== false ? [
+    10 => 'panel_s_source'
+] : [
     10 => 'panel_s_author',
     20 => 'panel_s_parent',
     30 => 'panel_s_setting'
-] : [
+]) : [
     10 => 'panel_s_search',
     20 => 'panel_s_parent',
     30 => 'panel_s_kin',

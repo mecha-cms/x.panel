@@ -111,11 +111,9 @@ function panel_s_language() {
     echo '</section>';
 }
 
-$__fields = [
+foreach ([
     10 => 'panel_s_language'
-];
-
-foreach ($__fields as $k => $v) {
+] as $k => $v) {
     Hook::set('panel.s.left', $v, $k);
 }
 
@@ -217,15 +215,13 @@ function panel_f_state() {
     echo '</p>';
 }
 
-$__fields = [
+foreach ([
     10 => 'panel_f_title',
     20 => 'panel_f_content',
     30 => 'panel_f_description',
     40 => 'panel_f_version',
     50 => 'panel_f_slug'
-];
-
-foreach ($__fields as $k => $v) {
+] as $k => $v) {
     Hook::set('panel.m.editor', $v, $k);
 }
 
