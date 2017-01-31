@@ -10,26 +10,7 @@
   </head>
   <body spellcheck="false">
     <form id="form.main" action="<?php echo $url->current . $url->query; ?>" method="post">
-      <?php echo $__message; ?>
-      <?php Hook::NS('panel.main.before'); ?>
-      <fieldset>
-        <legend><?php echo $language->log_in; ?></legend>
-        <p class="f">
-          <label for="f-user"><?php echo $language->user; ?></label>
-          <span><?php echo Form::text('user', null, null, ['classes' => ['input', 'block'], 'id' => 'f-user', 'autofocus' => true]); ?></span>
-        </p>
-        <p class="f">
-          <label for="f-pass"><?php echo $language->pass; ?></label>
-          <span><?php echo Form::password('pass', null, null, ['classes' => ['input', 'block'], 'id' => 'f-pass']); ?></span>
-        </p>
-        <?php echo Form::hidden('kick', Request::get('kick', $__state->path . '/::g::/page')); ?>
-      </fieldset>
-      <?php echo Form::token(); ?>
-      <?php Hook::NS('panel.main.after'); ?>
-      <p class="f expand">
-        <label for="f-enter"><?php echo $language->enter; ?></label>
-        <span><?php echo Form::submit('enter', 1, $language->enter, ['classes' => ['button', 'set'], 'id' => 'f-enter']); ?></span>
-      </p>
+      <?php Hook::fire('panel', [Lot::get(null, [])]); ?>
     </form>
   </body>
 </html>

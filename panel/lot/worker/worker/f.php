@@ -56,6 +56,15 @@ if (Request::is('post')) {
             }
         }
     }
+    // Comma–separated quer(y|ies)
+    if (Request::is('post', 'query')) {
+        if ($s = Request::post('query')) {
+            if (is_string($s)) {
+                $s = array_unique(preg_split('#\s*,\s*#', $s, null, PREG_SPLIT_NO_EMPTY));
+            }
+            Request::set('post', 'query', (array) $s);
+        }
+    }
     // File name
     if (Request::is('post', 'slug')) {
         $s = Request::post('slug', "");

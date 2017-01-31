@@ -9,22 +9,24 @@ version: 1.0.0
 ### Reserved Variables
 
  - `$__child`
- - `$__is_child_has_step`
  - `$__childs`
  - `$__chops`
  - `$__data`
- - `$__is_data_has_step`
  - `$__datas`
+ - `$__f`
  - `$__hash`
- - `$__kin`
+ - `$__is_child_has_step`
+ - `$__is_data_has_step`
  - `$__is_kin_has_step`
+ - `$__is_page_has_step`
+ - `$__is_parent_has_step`
+ - `$__kin`
  - `$__kins`
  - `$__message`
+ - `$__n`
  - `$__page`
- - `$__is_page_has_step`
  - `$__pages`
  - `$__parent`
- - `$__is_parent_has_step`
  - `$__parents`
  - `$__path`
  - `$__path_shield`
@@ -32,6 +34,5 @@ version: 1.0.0
  - `$__state`
  - `$__step`
  - `$__token`
- - `$____DIR__`
 
 <!-- block:donate -->

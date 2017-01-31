@@ -26,8 +26,8 @@ message_error: Error.
 message_error_duplicate: Duplicate %{0}%.
 message_error_exist: %{0}% %{1}% already exists.
 message_errir_ip: Invalid IP.
-message_error_max: Maximum %{0}% allowed is %{1}%.
-message_error_min: Minimum %{0}% allowed is %{1}%.
+message_error_max: Maximum %{0}%: %{1}%.
+message_error_min: Minimum %{0}%: %{1}% %{0}%.
 message_error_pattern_field: Invalid %{0}% pattern.
 message_error_token: Invalid token.
 message_error_user_or_pass: Invalid user or pass value.

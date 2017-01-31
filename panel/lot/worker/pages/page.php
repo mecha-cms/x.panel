@@ -1,4 +1,4 @@
 <!-- eject the right sidebar -->
 <?php Hook::reset('panel', 'panel_s_right'); ?>
 <!-- load the cargo -->
-<?php Hook::fire('panel'); ?>
+<?php Hook::fire('panel', [Lot::get(null, [])]); ?>

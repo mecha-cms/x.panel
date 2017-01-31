@@ -2,6 +2,8 @@
 
 Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__sgr, $__path, $__step = 1) use($__state, $__is_enter) {
     extract(Lot::get(null, []));
+    $__sgr = To::url_decode($__sgr, true);
+    $__path = To::url_decode($__path, true);
     $__path_shield = PANEL . DS . 'lot' . DS . 'shield' . DS . $__state->shield;
     $__chops = explode('/', $__path);
     $____DIR__ = Path::D(__DIR__);
@@ -22,8 +24,6 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     require $__task;
     Lot::set([
         '__sgr' => $__sgr,
-        '__f' => $__f,
-        '__n' => $__n,
         '__path' => $__path,
         '__step' => $__step,
         '__chops' => $__chops,
@@ -32,7 +32,8 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__hash' => $__hash,
         '__path_shield' => $__path_shield,
         '__is_enter' => $__is_enter,
-        '____DIR__' => $____DIR__
+        '__f' => $__f,
+        '__n' => $__n
     ]);
     Shield::attach([
         $__path_shield . DS . $site->type . '.php',
