@@ -19,7 +19,7 @@ if (Request::is('post')) {
     // Process special field name…
     // Electronic mail
     if (Request::is('post', 'email')) {
-        if ($s = Request::post('email')) {
+        if ($s = Request::post('email', "", false)) {
             if (!Is::email($s)) {
                 Request::save('post');
                 Message::error('value', $language->email, true);
@@ -28,7 +28,7 @@ if (Request::is('post')) {
     }
     // Internet protocol
     if (Request::is('post', 'ip')) {
-        if ($s = Request::post('ip', "")) {
+        if ($s = Request::post('ip', "", false)) {
             if (!Is::ip($s)) {
                 Request::save('post');
                 Message::error('value', $language->ip, true);
@@ -37,7 +37,7 @@ if (Request::is('post')) {
     }
     // Object key
     if (Request::is('post', 'key')) {
-        $s = Request::post('key', "");
+        $s = Request::post('key', "", false);
         Request::set('post', 'key', $s = trim(To::key($s), '_'));
         if ($s === "") {
             Request::save('post');
@@ -46,7 +46,7 @@ if (Request::is('post')) {
     }
     // Uniform resource locator
     if (Request::is('post', 'link')) {
-        if ($s = Request::post('link')) {
+        if ($s = Request::post('link', "", false)) {
             if (strpos($s, '//') === 0) {
                 $s = $url->scheme . ':' . $s;
             }
@@ -58,7 +58,7 @@ if (Request::is('post')) {
     }
     // Comma–separated quer(y|ies)
     if (Request::is('post', 'query')) {
-        if ($s = Request::post('query')) {
+        if ($s = Request::post('query', [], false)) {
             if (is_string($s)) {
                 $s = array_unique(preg_split('#\s*,\s*#', $s, null, PREG_SPLIT_NO_EMPTY));
             }
@@ -67,7 +67,7 @@ if (Request::is('post')) {
     }
     // File name
     if (Request::is('post', 'slug')) {
-        $s = Request::post('slug', "");
+        $s = Request::post('slug', "", false);
         Request::set('post', 'slug', $s = trim(To::slug($s), '-'));
         if ($s === "") {
             Request::save('post');
@@ -76,7 +76,7 @@ if (Request::is('post')) {
     }
     // Time pattern: `YYYY/MM/DD hh:mm:ss`
     if (Request::is('post', 'time')) {
-        $s = Request::post('time');
+        $s = Request::post('time', "", false);
         $format = '#^(\d{4,}/\d{2}/\d{2}|\d{4,}\-\d{2}\-\d{2}) \d{2}:\d{2}:\d{2}$#';
         if (!is_string($s) || !preg_match($format, $s)) {
             Request::save('post');
@@ -85,7 +85,7 @@ if (Request::is('post')) {
     }
     // Uniform resource locator
     if (Request::is('post', 'url')) {
-        if ($s = Request::post('url')) {
+        if ($s = Request::post('url', "", false)) {
             if (strpos($s, '//') === 0) {
                 $s = $url->scheme . ':' . $s;
             }
@@ -97,7 +97,7 @@ if (Request::is('post')) {
     }
     // File extension
     if (Request::is('post', 'x')) {
-        $s = Request::post('x', "");
+        $s = Request::post('x', "", false);
         if ($s === "") {
             Request::save('post');
             Message::error('void_field', $language->extension, true);

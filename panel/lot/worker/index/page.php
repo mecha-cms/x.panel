@@ -99,7 +99,7 @@ if ($__is_data) {
         if (Request::post('x') === 'trash') {
             Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
         }
-        $k = Request::post('key');
+        $k = Request::post('key', "", false);
         $f = $__d_folder . DS . $k . '.data';
         if ($k !== $__key && file_exists($f)) {
             Request::save('post');
@@ -842,7 +842,7 @@ function panel_s_data($__lot) {
             echo '</li>';
         }
         $__ = explode('/+/', $__path . '/');
-        echo '<li>' . HTML::a('&#x2795;', $__state->path . '/::s::/' . $__[0] . '/+', false, ['title' => $language->add]) . '</li>';
+        echo '<li>' . HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim($__[0], '/') . '/+', false, ['title' => $language->add]) . '</li>';
         echo '</ul>';
         echo '</section>';
     }
