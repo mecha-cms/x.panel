@@ -148,6 +148,8 @@ if ($__is_data) {
             } else if ($__sgr === 's') {
                 Guardian::kick(str_replace('::s::', '::g::', $url->current));
             }
+        } else if ($__sgr === 'g') {
+            Shield::abort(PANEL_404);
         }
     }
 } else {
