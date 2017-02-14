@@ -1,5 +1,8 @@
 <?php
 
+$__ = explode('/+/', $__path . '/');
+$__key = isset($__[1]) ? To::key(rtrim($__[1], '/')) : null;
+
 $__step = $__step - 1;
 $__sort = $__state->sort;
 $__chunk = $__state->chunk;
@@ -8,31 +11,6 @@ $__is_post = Request::is('post');
 $__is_r = count($__chops) === 1;
 $__is_pages = $__is_r || is_numeric(Path::B($url->path)) ? '/1' : ""; // Force index view by appending page offset to the end of URL
 $__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
-
-Panel::set('f.types.HTML', 'HTML');
-
-Panel::set('f.sorts', [
-    'time' => '<em>time</em>',
-    'slug' => '<em>slug</em>',
-    'update' => '<em>update</em>'
-]);
-
-Hook::set('__page.url', function($content, $lot) use($__state) {
-    $s = Path::F($lot['path'], LOT);
-    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($s), '/'), '/');
-});
-
-// `panel/::s::/page` → new page in `lot\page`
-// `panel/::g::/page` → page(s) view
-// `panel/::s::/page/blog` → new child page for `lot\page\blog`
-// `panel/::g::/page/blog` → edit page of `lot\page\blog`
-
-$__folder = LOT . DS . $__path;
-$__file = File::exist([
-    $__folder . '.draft',
-    $__folder . '.page',
-    $__folder . '.archive'
-], $__folder);
 
 $__seeds = [
     '__child' => [[], []],
@@ -58,19 +36,74 @@ $__seeds = [
 
 extract(Lot::set($__seeds)->get(null, []));
 
+Hook::set('__page.url', function($content, $lot) use($__state) {
+    $s = Path::F($lot['path'], LOT);
+    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($s), '/'), '/');
+});
+
+function fn_tags_set($__path) {
+    if (!Message::$x) {
+        global $language;
+        // Create `kind.data` file…
+        if ($s = Request::post('tags')) {
+            $s = explode(',', $s);
+            $__kinds = [];
+            if (count($s) > 12) {
+                Request::save('post');
+                Message::error('max', [$language->tags, '<strong>12</strong>']);
+            } else {
+                foreach ($s as $v) {
+                    $v = To::slug($v);
+                    if (($id = From::tag($v)) !== false) {
+                        $__kinds[] = $id;
+                    } else {
+                        $__o = 0;
+                        foreach (glob(TAG . DS . '*' . DS . 'id.data', GLOB_NOSORT) as $vv) {
+                            $id = (int) file_get_contents($vv);
+                            if ($id > $__o) $__o = $id;
+                        }
+                        ++$__o;
+                        $__kinds[] = $__o;
+                        $f = TAG . DS . $v . DS;
+                        File::write(date(DATE_WISE))->saveTo($f . 'time.data', 0600);
+                        File::write($__o)->saveTo($f . 'id.data', 0600);
+                        Page::data(['title' => $v])->saveTo($f . '.page', 0600);
+                        Message::info('create', $language->tag . ' <em>' . str_replace('-', ' ', $v) . '</em>');
+                    }
+                }
+                $__kinds = array_unique($__kinds);
+                sort($__kinds);
+                File::write(To::json($__kinds))->saveTo(Path::F($__path) . DS . 'kind.data', 0600);
+            }
+        } else {
+            File::open(Path::F($__path) . DS . 'kind.data')->delete();
+        }
+    }
+}
+
+// `panel/::s::/page` → new page in `lot\page`
+// `panel/::g::/page` → page(s) view
+// `panel/::s::/page/blog` → new child page for `lot\page\blog`
+// `panel/::g::/page/blog` → edit page of `lot\page\blog`
+
+$__folder = LOT . DS . $__path;
+$__file = File::exist([
+    $__folder . '.draft',
+    $__folder . '.page',
+    $__folder . '.archive'
+], $__folder);
+
 if ($__is_data) {
-    $__ = explode('/+/', $__path . '/');
-    $__key = isset($__[1]) ? To::key(rtrim($__[1], '/')) : null;
-    $__d_folder = LOT . DS . $__[0];
-    $__d_file = File::exist($__d_folder . DS . $__key . '.data');
+    $__folder_d = LOT . DS . $__[0];
+    $__file_d = File::exist($__folder_d . DS . $__key . '.data');
     Lot::set('__page', [
         new Page(null, [], '__data'),
         new Page(null, [], 'data')
     ]);
     if ($__file = File::exist([
-        $__d_folder . '.draft',
-        $__d_folder . '.page',
-        $__d_folder . '.archive'
+        $__folder_d . '.draft',
+        $__folder_d . '.page',
+        $__folder_d . '.archive'
     ])) {
         Lot::set('__source', [
             new Page($__file, [], '__page'),
@@ -79,7 +112,7 @@ if ($__is_data) {
     } else {
         Shield::abort(PANEL_404);
     }
-    if ($__files = g($__d_folder, 'data')) {
+    if ($__files = g($__folder_d, 'data')) {
         $__files = array_filter($__files, function($v) use($__key) {
             return Path::N($v) !== $__key;
         });
@@ -100,12 +133,12 @@ if ($__is_data) {
             Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
         }
         $k = Request::post('key', "", false);
-        $f = $__d_folder . DS . $k . '.data';
+        $f = $__folder_d . DS . $k . '.data';
         if ($k !== $__key && file_exists($f)) {
             Request::save('post');
             Message::error('exist', [$language->key, '<em>' . $k . '</em>']);
         }
-        Hook::NS('on.data.set', [$__d_file]);
+        Hook::NS('on.data.set', [$__file_d]);
         if (!Message::$x) {
             $__content = Request::post('content', "", false);
             if (is_array($__content)) {
@@ -113,7 +146,7 @@ if ($__is_data) {
             }
             File::write($__content)->saveTo($f, 0600);
             if ($k !== $__key) {
-                File::open($__d_folder . DS . $__key . '.data')->delete();
+                File::open($__folder_d . DS . $__key . '.data')->delete();
             }
             Message::success(To::sentence($language->{($__sgr === 's' ? 'create' : 'update') . 'ed'}));
             Guardian::kick($__state->path . '/::g::/' . $__[0] . '/+/' . $k);
@@ -123,23 +156,23 @@ if ($__is_data) {
             if (!Request::get('token')) {
                 Shield::abort(PANEL_404);
             }
-            Hook::NS('on.data.reset', [$__d_file]);
+            Hook::NS('on.data.reset', [$__file_d]);
             if (Message::$x) {
                 Guardian::kick(str_repace('::r::', '::g::', $url->current));
             }
             if (Request::get('abort')) {
-                File::open($__d_folder . DS . $__key . '.trash')->renameTo($__key . '.data');
+                File::open($__folder_d . DS . $__key . '.trash')->renameTo($__key . '.data');
                 Message::success(To::sentence($language->restoreed));
             } else {
-                File::open($__d_file)->renameTo($__key . '.trash');
+                File::open($__file_d)->renameTo($__key . '.trash');
                 Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
             }
             Guardian::kick($__state->path . '/::g::/' . $__[0]);
-        } else if ($__d_file) {
+        } else if ($__file_d) {
             if ($__sgr === 'g') {
                 $s = [
                     'key' => $__key,
-                    'content' => file_get_contents($__d_folder . DS . $__key . '.data')
+                    'content' => file_get_contents($__folder_d . DS . $__key . '.data')
                 ];
                 Lot::set('__page', [
                     new Page(null, $s, '__data'),
@@ -179,6 +212,7 @@ if ($__is_data) {
                 Message::error('exist', [$language->slug, '<em>' . $f . '</em>']);
             }
             Hook::fire('on.page.set', [$fff]);
+            fn_tags_set($fff);
             if (!Message::$x) {
                 // Create `time.data` file…
                 File::write(date(DATE_WISE))->saveTo($ff . DS . 'time.data', 0600);
@@ -195,15 +229,9 @@ if ($__is_data) {
                 Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $f);
             }
         }
-        $title = (new Date())->{str_replace('-', '_', $site->language)};
         Lot::set('__page', [
-            new Page(null, [
-                'title' => $title
-            ], '__page'),
-            new Page(null, [
-                'title' => $title,
-                'slug' => end($__chops)
-            ])
+            new Page(null, [], '__page'),
+            new Page
         ]);
         if (!$__is_r) {
             if ($__files = Get::pages($__folder, 'draft,page,archive', $__sort, 'path')) {
@@ -263,7 +291,9 @@ if ($__is_data) {
                 Request::save('post');
                 Message::error('exist', [$language->slug, '<em>' . $ss . '</em>']);
             }
-            Hook::fire('on.page.set', [Path::D($__file) . DS . $ss . '.' . $xx]);
+            $f = Path::D($__file) . DS . $ss . '.' . $xx;
+            Hook::fire('on.page.set', [$f]);
+            fn_tags_set($f);
             if (!Message::$x) {
                 Page::open($__file)->data($headers)->save(0600);
                 if ($s !== $ss || $x !== $xx) {
@@ -440,474 +470,3 @@ if ($__is_data) {
 // [-] &#x2796;
 // [:] &#x2797;
 // [x] &#x2716;
-
-function panel_f_title($__lot) {
-    extract($__lot);
-    echo '<p class="f expand">';
-    echo '<label for="f-title">' . $language->title . '</label>';
-    echo ' <span>';
-    echo Form::text('title', $__page[0]->title, $__page[1]->title, [
-        'classes' => ['input', 'block'],
-        'id' => 'f-title',
-        'data' => ['slug-i' => 'title']
-    ]);
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-function panel_f_slug($__lot) {
-    extract($__lot);
-    echo '<p class="f expand">';
-    echo '<label for="f-slug">' . $language->slug . '</label>';
-    echo ' <span>';
-    echo Form::text('slug', $__page[0]->slug, $__page[1]->slug, [
-        'classes' => ['input', 'block'],
-        'id' => 'f-slug',
-        'pattern' => '^[a-z\\d-]+$',
-        'data' => ['slug-o' => 'title']
-    ]);
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-function panel_f_content($__lot) {
-    extract($__lot);
-    echo '<div class="f expand p">';
-    echo '<label for="f-content">' . $language->content . '</label>';
-    echo '<div>';
-    echo Form::textarea('content', $__page[0]->content, $language->f_content, [
-        'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
-        'id' => 'f-content',
-        'data' => ['type' => $__page[0]->type]
-    ]);
-    echo '</div>';
-    echo '</div>';
-    return $__lot;
-}
-
-function panel_f_type($__lot) {
-    extract($__lot);
-    echo '<p class="f">';
-    echo '<label for="f-type">' . $language->type . '</label>';
-    echo ' <span>';
-    $__types = a(Panel::get('f.types', []));
-    asort($__types);
-    echo Form::select('type', $__types, $__page[0]->type, [
-        'classes' => ['select'],
-        'id' => 'f-type'
-    ]);
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-function panel_f_description($__lot) {
-    extract($__lot);
-    echo '<div class="f p">';
-    echo '<label for="f-description">' . $language->description . '</label>';
-    echo '<div>';
-    echo Form::textarea('description', $__page[0]->description, $language->f_description($language->page), [
-        'classes' => ['textarea', 'block'],
-        'id' => 'f-description'
-    ]);
-    echo '</div>';
-    echo '</div>';
-    return $__lot;
-}
-
-function panel_f_link($__lot) {
-    extract($__lot);
-    echo '<p class="f">';
-    echo '<label for="f-link">' . $language->link . '</label>';
-    echo ' <span>';
-    echo Form::url('link', $__page[0]->link, $url->protocol, [
-        'classes' => ['input', 'block'],
-        'id' => 'f-link'
-    ]);
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-function panel_f_time($__lot) {
-    extract($__lot);
-    if ($__sgr !== 's') {
-        $__time = (new Date($__page[0]->time))->format('Y/m/d H:i:s');
-        echo '<p class="f">';
-        echo '<label for="f-time">' . $language->time . '</label>';
-        echo ' <span>';
-        echo Form::text('time', $__time, $__time, [
-            'classes' => ['input', 'date'],
-            'id' => 'f-time',
-            'pattern' => '^\\d{4,}\\/\\d{2}\\/\\d{2} \\d{2}:\\d{2}:\\d{2}$'
-        ]);
-        echo '</span>';
-        echo '</p>';
-    }
-    return $__lot;
-}
-
-function panel_f_query($__lot) {
-    extract($__lot);
-    echo '<p class="f">';
-    echo '<label for="f-query">' . $language->query . '</label>';
-    echo ' <span>';
-    echo Form::text('query', implode(', ', (array) $__page[0]->query), $language->f_query, [
-        'classes' => ['input', 'block', 'query'],
-        'id' => 'f-query'
-    ]);
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-function panel_f_key($__lot) {
-    extract($__lot);
-    echo '<p class="f">';
-    echo '<label for="f-key">' . $language->key . '</label>';
-    echo ' <span>';
-    echo Form::text('key', $__page[0]->key, $__page[0]->key, [
-        'classes' => ['input'],
-        'id' => 'f-key'
-    ]);
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-function panel_f_state($__lot) {
-    extract($__lot);
-    echo '<p class="f expand">';
-    echo '<label for="f-state">' . $language->state . '</label>';
-    echo ' <span>';
-    if ($__is_data) {
-        echo Form::submit('x', 'data', $language->{$__sgr === 's' ? 'create' : 'update'}, ['classes' => ['button', 'state-data'], 'id' => 'f-state:data']);
-        if ($__sgr !== 's') {
-            echo ' ' . Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'state-trash'], 'id' => 'f-state:trash']);
-        }
-    } else {
-        if ($__sgr !== 's') {
-            $x = $__page[0]->state;
-            echo Form::submit('x', $x, $language->update, ['classes' => ['button', 'state-' . $x], 'id' => 'f-state:' . $x]);
-            $__states = [
-                'page' => 'publish',
-                'draft' => 'save',
-                'archive' => 'archive',
-                'trash' => 'delete'
-            ];
-            foreach ($__states as $k => $v) {
-                if ($x !== $k) {
-                    echo ' ' . Form::submit('x', $k, $language->{$v}, ['classes' => ['button', 'state-' . $k], 'id' => 'f-state:' . $k]);
-                }
-            }
-        } else {
-            echo Form::submit('x', 'page', $language->publish, ['classes' => ['button', 'state-page'], 'id' => 'f-state:page']);
-            echo ' ' . Form::submit('x', 'draft', $language->save, ['classes' => ['button', 'state-draft'], 'id' => 'f-state:draft']);
-        }
-    }
-    echo '</span>';
-    echo '</p>';
-    return $__lot;
-}
-
-foreach ($__is_data ? [
-    10 => 'panel_f_content',
-    20 => 'panel_f_key'
-] : [
-    10 => 'panel_f_title',
-    20 => 'panel_f_slug',
-    30 => 'panel_f_content',
-    40 => 'panel_f_type',
-    50 => 'panel_f_description',
-    60 => 'panel_f_link',
-    70 => 'panel_f_time'
-] as $k => $v) {
-    Hook::set('panel.m.editor', $v, $k);
-}
-
-function panel_m_page($__lot) {
-    extract($__lot);
-    echo '<fieldset>';
-    echo '<legend>' . $language->editor . '</legend>';
-    Hook::fire('panel.m.editor', [$__lot]);
-    echo '</fieldset>';
-    panel_f_state($__lot);
-    return $__lot;
-}
-
-function panel_m_pages($__lot) {
-    extract($__lot);
-    echo '<section class="main-buttons">';
-    echo '<p>';
-    if (Request::get('q')) {
-        $__links = [HTML::a('&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_pages, false, ['classes' => ['button', 'reset']])];
-    } else {
-        $__links = [HTML::a('&#x2795; ' . $language->page, $__state->path . '/::s::/' . $__path, false, ['classes' => ['button', 'set']])];
-    }
-    echo implode(' ', Hook::fire('panel.a.pages', [$__links]));
-    echo '</p>';
-    echo '</section>';
-    echo '<section class="main-pages">';
-    if ($__pages[0]) {
-        $p = strpos($__path, '/') !== false ? substr($__path, strpos($__path, '/')) : "";
-        foreach ($__pages[1] as $k => $v) {
-            $s = $__pages[0][$k]->url;
-            $__is_parent = !!g(LOT . explode('::' . $__sgr . '::', $s, 2)[1], 'draft,page,archive', "", false);
-            $g = $__pages[0][$k]->path;
-            $gg = Path::X($g);
-            $ggg = Path::D($g);
-            $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg); // fade out the placeholder page
-            echo '<article class="page on-' . $v->state . ($__is_parent ? ' is-parent' : "") . ($gggg ? ' as-placeholder' : "") . ($site->path === ltrim($p . '/' . $v->slug, '/') ? ' as-home' : "") . '" id="page-' . $v->id . '">';
-            echo '<header>';
-            if ($__pages[0][$k]->state === 'draft') {
-                echo '<h3>' . $v->title . '</h3>';
-            } else {
-                echo '<h3>' . HTML::a($v->title, $v->url, true) . '</h3>';
-            }
-            echo '</header>';
-            echo '<section>';
-            echo '<p>' . To::snippet($v->description, true, $__state->snippet) . '</p>';
-            echo '</section>';
-            echo '<footer>';
-            echo '<p>';
-
-            $__links = [
-                HTML::a($language->edit, $s),
-                HTML::a($language->delete, str_replace('::g::', '::r::', $s) . HTTP::query(['token' => $__token]))
-            ];
-
-            if ($__is_parent) {
-                $__links[] = HTML::a($language->open, $s . '/1');
-            }
-
-            if ($v->link) {
-                $__links[] = HTML::a($language->link, $v->link, true);
-            }
-
-            echo implode(' &#x00B7; ', Hook::fire('panel.a.page', [$__links, $v]));
-            echo '</p>';
-            echo '</footer>';
-            echo '</article>';
-        }
-    } else if (!Request::get('q')) {
-        echo '<p>' . $language->message_info_void($language->pages) . '</p>';
-    }
-    echo '</section>';
-    return $__lot;
-}
-
-Hook::set('panel.m', 'panel_m_' . $site->type, 10);
-
-function panel_s_author($__lot) {
-    extract($__lot);
-    echo '<section class="secondary-author">';
-    echo '<h3>' . $language->author . '</h3>';
-    echo '<p>';
-    echo Form::text('author', $__page[0]->author, '@' . l($language->user), ['classes' => ['input', 'block']]);
-    echo '</p>';
-    echo '</section>';
-    return $__lot;
-}
-
-function panel_s_search($__lot) {
-    extract($__lot);
-    echo '<section class="secondary-search">';
-    echo '<h3>' . $language->search . '</h3>';
-    echo '<form id="form.secondary.search" class="search" action="' . $url->current . '" method="get">';
-    echo '<p>';
-    echo Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]);
-    echo ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]);
-    echo '</p>';
-    echo '</form>';
-    echo '</section>';
-    return $__lot;
-}
-
-function panel_s_parent($__lot) {
-    extract($__lot);
-    $__r = count($__chops) === 2;
-    if ($__r || $__parents[0]) {
-        echo '<section class="secondary-parent">';
-        echo '<h3>' . $language->{$__r || count($__parents[0]) === 1 ? 'parent' : 'parents'} . '</h3>';
-        echo '<ul>';
-        if ($__r) {
-            echo '<li class="state-page">';
-            echo HTML::a('./', $__state->path . '/::g::/' . $__chops[0] . $__is_pages);
-            echo '</li>';
-        } else {
-            echo '<li class="state-' . $__parents[0][0]->state . '">';
-            echo HTML::a($__parents[1][0]->title, $__parents[0][0]->url . $__is_pages);
-            echo '</li>';
-        }
-        echo '</ul>';
-        echo '</section>';
-    }
-    return $__lot;
-}
-
-function panel_s_kin($__lot) {
-    extract($__lot);
-    if ($__kins[0]) {
-        echo '<section class="secondary-kin">';
-        echo '<h3>' . $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'} . '</h3>';
-        echo '<ul>';
-        foreach ($__kins[0] as $k => $v) {
-            echo '<li class="state-' . $v->state . '">';
-            echo HTML::a($__kins[1][$k]->title, $v->url . $__is_pages);
-            echo '</li>';
-        }
-        if ($__is_kin_has_step) {
-            echo '<li>';
-            echo HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]);
-            echo '</li>';
-        }
-        echo '</ul>';
-        echo '</section>';
-    }
-    return $__lot;
-}
-
-function panel_s_nav($__lot) {
-    extract($__lot);
-    echo '<section class="secondary-nav">';
-    echo '<h3>' . $language->navigation . '</h3>';
-    echo '<p>' . $__pager[0] . '</p>';
-    echo '</section>';
-    return $__lot;
-}
-
-function panel_s_setting($__lot) {
-    extract($__lot);
-    if ($__sgr === 'g' && count($__childs[0]) > 0) {
-        echo '<section class="secondary-setting">';
-        echo '<h3>' . $language->settings . '</h3>';
-        echo '<h4>' . $language->sort . '</h4>';
-        echo '<p>';
-        echo Form::radio('sort[0]', $language->panel->sort, isset($__parents[0]->sort[0]) ? $__parents[0]->sort[0] : (isset($__page[1]->sort[0]) ? $__page[1]->sort[0] : ""), ['classes' => ['input']]);
-        echo '</p>';
-        echo '<h4>' . $language->by . '</h4>';
-        echo '<p>';
-        $__sort = (array) Panel::get('f.sorts', []);
-        echo Form::radio('sort[1]', $__sort, isset($__parents[0]->sort[1]) ? $__parents[0]->sort[1] : (isset($__page[1]->sort[1]) ? $__page[1]->sort[1] : ""), ['classes' => ['input']]);
-        echo '</p>';
-        echo '<h4>' . $language->chunk . '</h4>';
-        echo '<p>';
-        echo Form::number('chunk', isset($__parents[0]->chunk) ? $__parents[0]->chunk : (isset($__page[1]->chunk) ? $__page[1]->chunk : ""), $site->chunk, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 100]);
-        echo '</p>';
-        echo '</section>';
-    }
-    return $__lot;
-}
-
-function panel_s_source($__lot) {
-    extract($__lot);
-    if ($__source[0]) {
-        echo '<section class="secondary-source">';
-        echo '<h3>' . $language->source . '</h3>';
-        echo '<ul>';
-        echo '<li class="state-' . $__source[0]->state . '">';
-        echo HTML::a($__source[1]->title, $__source[0]->url);
-        echo '</li>';
-        echo '</ul>';
-        echo '</section>';
-    }
-    return $__lot;
-}
-
-foreach ($site->type === 'page' ? ($__is_data ? [
-    10 => 'panel_s_source',
-    20 => 'panel_s_data'
-] : [
-    10 => 'panel_s_author',
-    20 => 'panel_s_parent',
-    30 => 'panel_s_setting'
-]) : [
-    10 => 'panel_s_search',
-    20 => 'panel_s_parent',
-    30 => 'panel_s_kin',
-    40 => 'panel_s_nav'
-] as $k => $v) {
-    Hook::set('panel.s.left', $v, $k);
-}
-
-function panel_s_data($__lot) {
-    extract($__lot);
-    if ($__sgr === 'g' || $__is_data) {
-        echo '<section class="secondary-data">';
-        echo '<h3>' . $language->{count($__datas[0]) === 1 ? 'data' : 'datas'} . '</h3>';
-        echo '<ul>';
-        foreach ($__datas[0] as $k => $v) {
-            echo '<li class="data-' . $v->key . '">';
-            echo HTML::a($__datas[1][$k]->title, $v->url);
-            echo '</li>';
-        }
-        $__ = explode('/+/', $__path . '/');
-        echo '<li>' . HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim($__[0], '/') . '/+', false, ['title' => $language->add]) . '</li>';
-        echo '</ul>';
-        echo '</section>';
-    }
-    return $__lot;
-}
-
-function panel_s_child($__lot) {
-    extract($__lot);
-    if (count($__chops) > 1) {
-        echo '<section class="secondary-child">';
-        echo '<h3>' . $language->{count($__childs[0]) === 1 ? 'child' : 'childs'} . '</h3>';
-        echo '<ul>';
-        foreach ($__childs[0] as $k => $v) {
-            $g = $v->path;
-            $gg = Path::X($g);
-            $ggg = Path::D($g);
-            $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg);
-            if ($gggg) continue; // skip the placeholder page
-            echo '<li class="state-' . $v->state . '">' . HTML::a($__childs[1][$k]->title, $v->url) . '</li>';
-        }
-        echo '<li>' . HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]);
-        if ($__is_child_has_step) {
-            echo ' ' . HTML::a('&#x2026;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]);
-        }
-        echo '</li>';
-        echo '</ul>';
-        echo '</section>';
-    }
-    return $__lot;
-}
-
-foreach ([
-    10 => 'panel_s_data',
-    20 => 'panel_s_child'
-] as $k => $v) {
-    Hook::set('panel.s.right', $v, $k);
-}
-
-function panel_s_left($__lot) {
-    extract($__lot);
-    echo '<aside class="secondary">';
-    Hook::fire('panel.s.left', [$__lot]);
-    echo '</aside>';
-    return $__lot;
-}
-
-function panel_m($__lot) {
-    extract($__lot);
-    echo '<main class="main">';
-    echo $__message;
-    Hook::fire('panel.m', [$__lot]);
-    echo Form::token();
-    echo '</main>';
-    return $__lot;
-}
-
-function panel_s_right($__lot) {
-    echo '<aside class="secondary">';
-    Hook::fire('panel.s.right', [$__lot]);
-    echo '</aside>';
-    return $__lot;
-}
-
-Hook::set('panel', 'panel_s_left', 10);
-Hook::set('panel', 'panel_m', 20);
-Hook::set('panel', 'panel_s_right', 30);

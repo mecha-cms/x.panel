@@ -15,8 +15,18 @@ define('PANEL_404', File::exist([
 r(__DIR__ . DS . 'engine' . DS . 'plug', [
     'extend.php',
     'form.php',
+    'get.php',
     'plugin.php',
     'shield.php'
 ], null, Lot::set('__state', $__state)->get(null, []));
+
+Panel::set('f.types.HTML', 'HTML');
+Panel::set('f.types.Markdown', 'Markdown');
+
+Panel::set('f.sorts', [
+    'time' => '<em>time</em>',
+    'slug' => '<em>slug</em>',
+    'update' => '<em>update</em>'
+]);
 
 require __DIR__ . DS . 'engine' . DS . 'fire.php';

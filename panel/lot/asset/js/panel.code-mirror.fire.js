@@ -27,18 +27,24 @@
         var type = $(node).data('type'),
             aliases = {
                 'html': 'application/x-httpd-php',
-                'xml': 'application/x-httpd-php'
+                'xml': 'application/x-httpd-php',
+                'markdown': 'text/x-markdown'
             };
-        if (type) {
-            type = type.toLowerCase();
-            editor.setOption('mode', aliases[type] || type);
-        }
         editor.addKeyMap({
             'Ctrl-J': 'toMatchingTag',
             'F11': function(cm) {
                 cm.setOption('fullScreen', !cm.getOption('fullScreen'));
             }
         });
+        if (type) {
+            type = type.toLowerCase();
+            editor.setOption('mode', aliases[type] || type);
+            if (type === 'markdown') {
+                editor.addKeyMap({
+                    'Enter': 'newlineAndIndentContinueMarkdownList'
+                });
+            }
+        }
         editor.setSize(size[0], size[1]);
         $(win).on("resize", function() {
             $(editor.display.wrapper).width(0).width($(node).parent().width());

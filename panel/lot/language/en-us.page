@@ -13,8 +13,13 @@ panel:
   slower: Slower
   slowest: Slowest
   sort:
-    -1: Z &rarr; A
-     1: A &rarr; Z
+    0:
+      -1: Z &rarr; A
+       1: A &rarr; Z
+    1:
+      time: time
+      slug: slug
+      update: update
 
 sort: Sort
 
@@ -52,6 +57,7 @@ _message_info_void: Contains some %{0}%.
 #. Others
 #. ------
 
+f_title: Title Here
 f_content: Content goes here…
 f_description: Some description about this %{0}% (optional).
 f_query: foo, bar, baz

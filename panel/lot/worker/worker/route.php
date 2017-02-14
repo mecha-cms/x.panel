@@ -6,10 +6,10 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     $__path = To::url_decode($__path, true);
     $__path_shield = PANEL . DS . 'lot' . DS . 'shield' . DS . $__state->shield;
     $__chops = explode('/', $__path);
-    $____DIR__ = Path::D(__DIR__);
-    $__task = File::exist($____DIR__ . DS . 'index' . DS . $__chops[0] . '.php');
+    $__D = Path::D(__DIR__);
+    $__task = File::exist($__D . DS . 'index' . DS . $__chops[0] . '.php');
     $site->type = 'page'; // default is `page`
-    $__s = $____DIR__ . DS . 'worker' . DS;
+    $__s = $__D . DS . 'worker' . DS;
     require $__s . 'extend.php';
     require $__s . 'extend' . DS . 'plugin.php';
     require $__s . DS . 'shield.php';
@@ -37,6 +37,6 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     ]);
     Shield::attach([
         $__path_shield . DS . $site->type . '.php',
-        $____DIR__ . DS . $site->type . '.php'
+        $__D . DS . $site->type . '.php'
     ]);
 }, 1);

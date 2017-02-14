@@ -172,6 +172,11 @@ label {
   width:auto;
   height:auto;
 }
+.input[type="checkbox"] + span,
+.input[type="radio"] + span {
+  display:inline-block;
+  vertical-align:middle;
+}
 .input[type="color"] {
   background:none;
   border:0;
