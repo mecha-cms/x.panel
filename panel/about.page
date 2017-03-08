@@ -20,6 +20,7 @@ version: 1.0.0
  - `$__is_kin_has_step`
  - `$__is_page_has_step`
  - `$__is_parent_has_step`
+ - `$__is_source_has_step`
  - `$__kin`
  - `$__kins`
  - `$__message`
@@ -31,6 +32,8 @@ version: 1.0.0
  - `$__path`
  - `$__path_shield`
  - `$__sgr`
+ - `$__source`
+ - `$__sources`
  - `$__state`
  - `$__step`
  - `$__token`
