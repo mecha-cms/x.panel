@@ -1,22 +1,39 @@
-<aside class="secondary">
+<aside class="s">
+  <section class="s-search">
+    <h3><?php echo $language->search; ?></h3>
+    <form id="form.s.search" class="search" action="<?php echo $url->current; ?>" method="get">
+      <p><?php echo Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]) . ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]); ?></p>
+    </form>
+  </section>
+  <?php if ($__parent[0]): ?>
+  <section class="s-parent">
+    <h3><?php echo $language->parent; ?></h3>
+    <ul>
+      <li><?php echo HTML::a($__parent[1]->title, $__parent[0]->url . '/1'); ?></li>
+    </ul>
+  </section>
+  <?php endif; ?>
   <?php if ($__kins[0]): ?>
-  <section class="secondary-kin">
+  <section class="s-kin">
     <h3><?php echo $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
     <ul>
       <?php foreach ($__kins[0] as $k => $v): ?>
       <li><?php echo HTML::a($__kins[1][$k]->title, $v->url . '/1'); ?></li>
       <?php endforeach; ?>
+      <?php if ($__is_kin_has_step): ?>
+      <li><?php echo HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]); ?></li>
+      <?php endif; ?>
     </ul>
   </section>
   <?php endif; ?>
-  <section class="secondary-nav">
+  <section class="s-nav">
     <h3><?php echo $language->navigation; ?></h3>
     <p><?php echo $__pager[0]; ?></p>
   </section>
 </aside>
-<main class="main">
+<main class="m">
   <?php echo $__message; ?>
-  <section class="main-buttons">
+  <section class="m-buttons">
     <p>
       <?php if (Request::get('q')): ?>
       <?php $__links = [HTML::a('&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_pages, false, ['classes' => ['button', 'reset']])]; ?>
@@ -26,7 +43,7 @@
       <?php echo implode(' ', Hook::fire('panel.a.pages', [$__links])); ?>
     </p>
   </section>
-  <section class="main-pages">
+  <section class="m-pages">
     <?php if ($__pages[0]): ?>
     <?php $p = strpos($__path, '/') !== false ? substr($__path, strpos($__path, '/')) : ""; ?>
     <?php foreach ($__pages[1] as $k => $v): ?>

@@ -28,7 +28,10 @@
             aliases = {
                 'html': 'application/x-httpd-php',
                 'xml': 'application/x-httpd-php',
-                'markdown': 'text/x-markdown'
+                'markdown': {
+                    'name': 'text/x-markdown',
+                    'fencedCodeBlocks': true
+                }
             };
         editor.addKeyMap({
             'Ctrl-J': 'toMatchingTag',

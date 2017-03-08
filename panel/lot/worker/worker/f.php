@@ -108,18 +108,18 @@ if (Request::is('post')) {
             Message::error('file_x', $s);
         }
     }
-    // Remove empty request value(s) …
-    $s = fn_f_reset(Request::post(null, []), function($v) {
-        return is_string($v) && !trim($v) || is_array($v) && empty($v) || is_object($v) && empty((array) $v);
+    // Remove empty request value(s)…
+    $s = fn_f_reset(Request::post(null, [], false), function($v) {
+        return is_string($v) && trim($v) === "" || is_array($v) && empty($v) || is_object($v) && empty((array) $v);
     });
     Request::reset('post')->extend('post', $s);
-    // Sanitize by user …
+    // Sanitize by user…
     $s = Request::post('::f::');
     if ($s && is_callable($s)) {
         $s = call_user_func($s, Request::post(null, []));
         Request::reset('post')->extend('post', $s);
     }
-    // Process token …
+    // Process token…
     $s = Request::post('token');
     if (!$s || $s !== Session::get(Guardian::$config['session']['token'])) {
         Request::save('post');
@@ -127,13 +127,13 @@ if (Request::is('post')) {
         Guardian::kick();
     }
 } else if (Request::is('get')) {
-    // Process token …
+    // Process token…
     $s = Request::get('token');
     if ($s && $s !== Session::get(Guardian::$config['session']['token'])) {
         Message::error('token');
     }
 }
 
-$__f = (array) Panel::get('f', []); // hold!
+$__f = (array) Config::get('panel.f', []); // hold!
 
 asort($__f);

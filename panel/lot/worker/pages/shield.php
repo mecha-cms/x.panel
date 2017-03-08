@@ -1,24 +1,21 @@
-<aside class="secondary">
-  <?php Hook::NS('panel.secondary.1.before'); ?>
-  <section class="secondary-search">
+<aside class="s">
+  <section class="s-search">
     <h3><?php echo $language->search; ?></h3>
     <form id="form.secondary.1" class="search" action="<?php echo $url->current; ?>" method="get">
       <p><?php echo Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]) . ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]); ?></p>
     </form>
   </section>
-  <?php Hook::NS('panel.secondary.1.after'); ?>
-  <section class="secondary-nav">
+  <section class="s-nav">
     <h3><?php echo $language->navigation; ?></h3>
     <p><?php echo $__pager[0]; ?></p>
   </section>
 </aside>
-<main class="main">
-  <section class="main-buttons">
+<main class="m">
+  <section class="m-buttons">
     <p><?php echo HTML::a('&#x2795; ' . $language->shield, $__state->path . '/::s::/' . $__path . '/' . $config->shield, false, ['classes' => ['button', 'set']]); ?></p>
   </section>
   <?php echo $__message; ?>
-  <?php Hook::NS('panel.main.before'); ?>
-  <section class="main-pages">
+  <section class="m-pages">
     <?php if ($__pages[0]): ?>
     <?php foreach ($__pages[1] as $k => $v): ?>
     <?php $s = $__pages[0][$k]->url; ?>
@@ -47,9 +44,4 @@
     <p><?php echo $language->message_info_void($language->shields); ?></p>
     <?php endif; ?>
   </section>
-  <?php Hook::NS('panel.main.after'); ?>
-<?php Shield::get([
-    $__path_shield . DS . $site->type . DS . '_footer.php',
-    __DIR__ . DS . '_footer.php'
-]); ?>
 </main>

@@ -1,7 +1,6 @@
 <?php
 
-// n: nav
-$__n = (array) Panel::get('n', []);
+$__n = (array) Config::get('panel.n', []);
 
 $__o = [];
 

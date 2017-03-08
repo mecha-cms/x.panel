@@ -1,6 +1,5 @@
 <?php
 
-$__kins = [[], []];
 foreach (glob(LANGUAGE . DS . '*.page') as $v) {
     $__kins[0][] = new Page($v, [], '__language');
     $__kins[1][] = new Page($v, [], 'language');

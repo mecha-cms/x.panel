@@ -1,14 +1,5 @@
 <?php
 
-$__step = $__step - 1;
-$__sort = $__state->sort;
-$__chunk = $__state->chunk;
-$__is_get = Request::is('get');
-$__is_post = Request::is('post');
-$__is_r = count($__chops) === 1;
-$__is_pages = $__is_r || is_numeric(Path::B($url->path)); // Force index view by appending page offset to the end of URL
-
-$__pages = [[], []];
 if ($__files = glob(SHIELD . DS . '*', GLOB_ONLYDIR)) {
     foreach ($__files as $v) {
         $v = Shield::info(Path::B($v));
@@ -17,7 +8,37 @@ if ($__files = glob(SHIELD . DS . '*', GLOB_ONLYDIR)) {
     }
 }
 
-$site->type = 'pages';
+$site->is = 'pages';
+
+if (isset($__chops[1])) {
+    $site->is = 'page';
+    if ($__file = File::exist(LOT . DS . $__path)) {
+        if (Is::F($__file)) {
+            $s = [
+                'key' => str_replace(SHIELD . DS . $__chops[1], "", $__file),
+                'content' => file_get_contents($__file)
+            ];
+            $__page = [
+                new Page($__file, $s, '__file'),
+                new Page($__file, $s, 'file')
+            ];
+        } else {
+            Shield::abort(PANEL_404);
+        }
+    } else {
+        Shield::abort(PANEL_404);
+    }
+    Lot::set('__page', $__page);
+    foreach (File::explore(SHIELD . DS . $__chops[1], true, true) as $k => $v) {
+        if ($v === 0) continue;
+        $s = [
+            'key' => str_replace(SHIELD . DS, "", $k)
+        ];
+        $__kins[0][] = new Page($k, $s, '__file');
+        $__kins[1][] = new Page($k, $s, 'file');
+    }
+    Lot::set('__kins', $__kins);
+}
 
 Lot::set([
     '__pages' => $__pages,

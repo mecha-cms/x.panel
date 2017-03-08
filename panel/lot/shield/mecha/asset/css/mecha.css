@@ -45,39 +45,38 @@ code,.code {
   color:#f00;
   box-shadow:0 0 2px #f00;
 }
-.container {
+.c {
   display:table;
   width:100%;
   table-layout:fixed;
 }
-.container > form {
+.c > form {
   display:table-row;
   margin-top:0;
 }
-.main,
-.secondary {
+.m,.s {
   display:table-cell;
   vertical-align:top;
   padding:1em;
 }
-.main {
+.m {
   background:#ffa;
   padding-bottom:5em;
 }
-.secondary {width:16em}
-.main section + section,
-.secondary section + section {margin-top:1em}
-.main section:after {
+.s {width:16em}
+.m section + section,
+.s section + section {margin-top:1em}
+.m section:after {
   content:"";
   display:table;
   clear:both;
 }
-.main .main-buttons {
+.m .m-buttons {
   border-bottom:1px dashed #ee9;
   padding-bottom:1em;
   text-align:right;
 }
-.main .page {
+.m .page {
   background:#fff;
   border:1px solid;
   width:16em;
@@ -88,17 +87,17 @@ code,.code {
   position:relative;
   overflow:hidden;
 }
-.main .page h3 {
+.m .page h3 {
   font:inherit;
   font-weight:bold;
   margin:0 0 1em;
 }
-.main .page section,
-.main .page footer {
+.m .page section,
+.m .page footer {
   font-size:90%;
   overflow:visible;
 }
-.main .page footer {
+.m .page footer {
   position:absolute;
   right:0;
   bottom:0;
@@ -106,39 +105,39 @@ code,.code {
   line-height:3em;
   padding:0 1em;
 }
-.main .page.is-parent {box-shadow:inset 0 0 0 4px #def}
-.main .page.as-home {box-shadow:inset 0 0 0 4px #fed}
-.main .page.on-draft {border-style:dotted}
-.main .page.as-placeholder {
+.m .page.is-parent {box-shadow:inset 0 0 0 4px #def}
+.m .page.as-home {box-shadow:inset 0 0 0 4px #fed}
+.m .page.on-draft {border-style:dotted}
+.m .page.as-placeholder {
   border-style:dotted;
   opacity:.2;
 }
-.nav ul,
-.nav li {
+.n ul,
+.n li {
   margin:0;
   list-style:none;
 }
-.nav {
+.n {
   background:#000;
   color:#fff;
   line-height:3em;
 }
-.nav ul:after {
+.n ul:after {
   content:"";
   display:table;
   clear:both;
 }
-.nav li {
+.n li {
   float:left;
   position:relative;
 }
-.nav a {
+.n a {
   display:block;
   padding:0 1.25em;
   color:inherit;
   cursor:pointer;
 }
-.nav a i {
+.n a i {
   font:inherit;
   font-weight:bold;
   background:#d00;
@@ -148,17 +147,16 @@ code,.code {
   line-height:1.5em;
   margin:.5em -.5em 0 0;
 }
-.nav a:focus,
-.nav a:hover,
-.nav li:hover > a {background:#00a}
-.nav .is-current a,
-.nav .is-current a:focus,
-.nav .is-current a:hover {
+.n a:focus,
+.n a:hover,
+.n li:hover > a {background:#00a}
+.n .is-current a,
+.n .is-current a:focus,
+.n .is-current a:hover {
   background:none;
   color:#fba;
-  font-weight:bold;
 }
-.nav ul ul {
+.n ul ul {
   position:absolute;
   top:100%;
   left:0;
@@ -168,29 +166,29 @@ code,.code {
   box-shadow:0 1px 2px rgba(0,0,0,.4);
   display:none;
 }
-.nav li:hover > ul {display:block}
-.nav ul ul ul {
+.n li:hover > ul {display:block}
+.n ul ul ul {
   top:0;
   left:100%;
 }
-.nav ul ul li {
+.n ul ul li {
   float:none;
   display:block;
   font-size:96%;
   line-height:2.5em;
 }
-.nav ul ul a {padding:0 1em}
-.secondary-setting {
+.n ul ul a {padding:0 1em}
+.s-setting {
   background:#fea;
   padding:1em;
   margin:-.5em -.5em .5em;
 }
-.secondary section + .secondary-setting {margin-top:1.5em}
-.secondary .secondary-nav {
+.s section + .s-setting {margin-top:1.5em}
+.s .s-nav {
   position:sticky;
   top:1em;
 }
-.main-footer {
+.m-footer {
   margin:3em .5em 0;
   clear:both;
 }
@@ -218,18 +216,24 @@ code,.code {
 .f.expand,
 .f.expand > label + span {display:block}
 .f.expand > label {display:none}
-.secondary h3 {font-size:100%}
-.secondary h4 {font-size:90%}
-.secondary .input,
-.secondary .select,
-.secondary .textarea {background:#afa}
+.s h3 {font-size:100%}
+.s h4 {font-size:90%}
+.s .input,
+.s .select,
+.s .textarea {background:#afa}
 
 .message {background:#ee8}
 .messages + section {margin-top:1em}
 
-.path-enter {background:#ffa}
-.path-enter body {background:none}
-.path-enter .f > label[for="f-enter"] + span {text-align:center}
+.p-enter {background:#ffa}
+.p-enter body {background:none}
+.p-enter .f > label[for="f-enter"] + span {text-align:center}
 
-.path-404 {background:#ffa}
-.path-404 body {background:none}
+.p-404 {background:#ffa}
+.p-404 body {background:none}
+
+/* TODO */
+.n-asset,
+.n-cache,
+.n-extend,
+.n-shield {display:none}

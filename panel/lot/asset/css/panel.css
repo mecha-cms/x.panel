@@ -190,6 +190,15 @@ label {
   border:0;
   padding:0;
 }
+.table {
+  width:100%;
+  border-collapse:collapse;
+}
+.table th,
+.table td {
+  text-align:left;
+  vertical-align:top;
+}
 .block {
   display:block;
   width:100%;
@@ -217,36 +226,36 @@ label {
 }
 .message + .message {margin-top:.25em}
 
-.path-enter,
-.path-enter body {
+.p-enter,
+.p-enter body {
   display:table;
   padding:0;
   width:100%;
   height:100%;
 }
-.path-enter body {
+.p-enter body {
   display:table-cell;
   vertical-align:middle;
 }
-.path-enter form {
+.p-enter form {
   margin:0 auto;
   max-width:16em;
 }
-.path-enter .f > label {width:4em}
-.path-enter .f > label[for="f-enter"] {display:none}
-.path-404,
-.path-404 body {
+.p-enter .f > label {width:4em}
+.p-enter .f > label[for="f-enter"] {display:none}
+.p-404,
+.p-404 body {
   margin:0;
   padding:0;
   display:table;
   width:100%;
   height:100%;
 }
-.path-404 body {
+.p-404 body {
   display:table-cell;
   vertical-align:middle;
 }
-.path-404 p {
+.p-404 p {
   font-size:200%;
   font-weight:bold;
   text-align:center;

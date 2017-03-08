@@ -1,6 +1,6 @@
 <?php
 
-Get::plug('zone', function($id = null, $fail = false, $format = '(UTC%1$s) %2$s &ndash; %3$s') {
+Get::plug('zone', function($id = null, $fail = false, $format = '(UTC%{0}%) %{1}% &#x2013; %{2}%') {
     // http://pastebin.com/vBmW1cnX
     $regions = [
         DateTimeZone::AFRICA,
@@ -13,24 +13,22 @@ Get::plug('zone', function($id = null, $fail = false, $format = '(UTC%1$s) %2$s 
         DateTimeZone::INDIAN,
         DateTimeZone::PACIFIC
     ];
-    $zones = [];
-    $zone_offsets = [];
+    $zones = $zones_o = $a = $b = [];
     foreach ($regions as $region) {
         $zones = array_merge($zones, DateTimeZone::listIdentifiers($region));
     }
     foreach ($zones as $zone) {
         $tz = new DateTimeZone($zone);
-        $zone_offsets[$zone] = $tz->getOffset(new DateTime);
+        $zones_o[$zone] = $tz->getOffset(new DateTime);
     }
-    $a = $b = [];
-    foreach ($zone_offsets as $zone => $offset) {
+    foreach ($zones_o as $zone => $offset) {
         $offset_prefix = $offset < 0 ? '-' : '+';
-        $offset_formatted = gmdate('H:i', abs($offset));
-        $pretty_offset = $offset_prefix . $offset_formatted;
+        $offset_f = gmdate('H:i', abs($offset));
+        $offset_pretty = $offset_prefix . $offset_f;
         $t = new DateTimeZone($zone);
         $c = new DateTime(null, $t);
         $current_time = $c->format('g:i A');
-        $text = sprintf($format, $pretty_offset, str_replace('_', ' ', $zone), $current_time);
+        $text = __replace__($format, [$offset_pretty, str_replace('_', ' ', $zone), $current_time]);
         if ($offset < 0) {
             $b[$zone] = $text;
         } else {
@@ -39,9 +37,9 @@ Get::plug('zone', function($id = null, $fail = false, $format = '(UTC%1$s) %2$s 
     }
     asort($a);
     arsort($b);
-    $zone_list = $b + $a;
+    $zones = $b + $a;
     if (isset($id)) {
-        return isset($zone_list[$id]) ? $zone_list[$id] : $fail;
+        return isset($zones[$id]) ? $zones[$id] : $fail;
     }
-    return $zone_list;
+    return $zones;
 });

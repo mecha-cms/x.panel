@@ -1,5 +1,8 @@
 <?php
 
+// Reset all asset(s)…
+Asset::reset();
+
 $s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'css' . DS;
 
 Asset::set([
@@ -52,6 +55,6 @@ if ($__is_enter) {
             }
             $s[] = '$.' . $k . '=' . json_encode($v) . ';';
         }
-        return preg_replace('#(\/panel\.min\.js(?:\W.+)?"><\/script>)#', '$1<script>!function($){' . str_replace('$', '\\$', implode("", $s)) . '$.languages.lot=' . json_encode(Language::get()) . '}(Panel);</script>', $content);
+        return preg_replace('#(\/panel\.fire\.min\.js(?:\W.+)?"><\/script>)#', '$1<script>!function($){' . str_replace('$', '\\$', implode("", $s)) . '$.languages.lot=' . json_encode(Language::get()) . '}(Panel);</script>', $content);
     }, 1);
 }

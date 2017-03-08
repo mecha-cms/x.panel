@@ -1,7 +1,7 @@
-<form id="form.main" action="<?php echo $url . '/' . $__state->path . '/::r::/' . $__path . $url->query; ?>" method="post">
-  <aside class="secondary">
+<form id="form.m.view" action="<?php echo $url . '/' . $__state->path . '/::r::/' . $__path . $url->query; ?>" method="post">
+  <aside class="s">
   </aside>
-  <main class="main">
+  <main class="m">
     <?php echo $__message; ?>
     <fieldset>
       <legend><?php echo $language->editor; ?></legend>
@@ -15,15 +15,12 @@
         </div>
       </div>
     </fieldset>
-    <?php echo Form::token(); ?>
     <p class="f f-state expand">
-      <label for="f-state"><?php echo $language->state; ?></label> <span>
-<?php
-
-echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-state:trash']);
-
-?>
+      <label for="f-state"><?php echo $language->state; ?></label>
+      <span>
+<?php echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-state:trash']); ?>
       </span>
     </p>
+    <?php echo Form::token(); ?>
   </main>
 </form>
