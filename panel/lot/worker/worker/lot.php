@@ -9,10 +9,19 @@ $__chunk = $__state->chunk;
 $__is_get = Request::is('get');
 $__is_post = Request::is('post');
 $__is_r = count($__chops) === 1;
-$__is_pages = $__is_r || is_numeric(Path::B($url->path)) ? '/1' : ""; // Force index view by appending page offset to the end of URL
+$__is_pages = $__sgr === 'g' && ($__is_r || is_numeric(Path::B($url->path)) ? '/1' : ""); // Force index view by appending page offset to the end of URL
 $__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
 
+$__folder = LOT . DS . $__path;
+$__file = File::exist([
+    $__folder . '.draft',
+    $__folder . '.page',
+    $__folder . '.archive'
+], $__folder);
+
 $__seeds = [
+    '__folder' => $__folder,
+    '__file' => $__file,
     '__child' => [[], []],
     '__data' => [[], []],
     '__kin' => [[], []],

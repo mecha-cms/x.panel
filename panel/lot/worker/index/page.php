@@ -10,13 +10,6 @@ Hook::set('__page.url', function($content, $lot) use($__state) {
 // `panel/::s::/page/blog` → new child page for `lot\page\blog`
 // `panel/::g::/page/blog` → edit page of `lot\page\blog`
 
-$__folder = LOT . DS . $__path;
-$__file = File::exist([
-    $__folder . '.draft',
-    $__folder . '.page',
-    $__folder . '.archive'
-], $__folder);
-
 // `.data`
 if ($__is_data) {
     $__folder = LOT . DS . $__[0];
@@ -130,6 +123,10 @@ if ($__is_data) {
 } else {
     if ($__sgr === 's') {
         if ($__is_post && !Message::$x) {
+            $x = Request::post('x', 'page');
+            $f = Request::post('slug');
+            $ff = $__folder . DS . $f;
+            $fff = $ff . '.' . $x;
             $headers = [
                 'title' => false,
                 'description' => false,
@@ -139,12 +136,9 @@ if ($__is_data) {
                 'content' => false
             ];
             foreach ($headers as $k => $v) {
+                if (file_exists($ff . DS . $k . '.data')) continue;
                 $headers[$k] = Request::post($k, $v);
             }
-            $x = Request::post('x', 'page');
-            $f = Request::post('slug');
-            $ff = $__folder . DS . $f;
-            $fff = $ff . '.' . $x;
             if (File::exist([
                 $ff . '.draft',
                 $ff . '.page',
@@ -208,6 +202,13 @@ if ($__is_data) {
             if (Request::post('x') === 'trash') {
                 Guardian::kick(str_replace('::g::', '::r::', $url->current) . HTTP::query(['token' => Request::post('token')]));
             }
+            $s = Path::N($__file);
+            $ss = Request::post('slug');
+            $x = Path::X($__file);
+            $xx = Request::post('x', $x);
+            $d = Path::D($__file);
+            $dd = $d . DS . $ss;
+            $ddd = $dd . '.' . $xx;
             $headers = [
                 'title' => false,
                 'description' => false,
@@ -217,15 +218,9 @@ if ($__is_data) {
                 'content' => false
             ];
             foreach ($headers as $k => $v) {
+                if (file_exists($dd . DS . $k . '.data')) continue;
                 $headers[$k] = Request::post($k, $v);
             }
-            $s = Path::N($__file);
-            $ss = Request::post('slug');
-            $x = Path::X($__file);
-            $xx = Request::post('x', $x);
-            $d = Path::D($__file);
-            $dd = $d . DS . $ss;
-            $ddd = $dd . '.' . $xx;
             if ($s !== $ss && File::exist([
                 $dd . '.draft',
                 $dd . '.page',
