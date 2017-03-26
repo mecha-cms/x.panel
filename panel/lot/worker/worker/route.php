@@ -1,6 +1,6 @@
 <?php
 
-Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__sgr, $__path, $__step = 1) use($__state, $__is_enter) {
+Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__sgr, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
     extract(Lot::get(null, []));
     $__sgr = To::url_decode($__sgr, true);
     $__path = To::url_decode($__path, true);
@@ -34,11 +34,13 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__path' => $__path,
         '__step' => $__step,
         '__chops' => $__chops,
-        '__message' => Message::get(),
+        '__message' => Message::get() ?: Lot::get('message', ""),
         '__token' => $__token,
         '__hash' => $__hash,
         '__path_shield' => $__path_shield,
-        '__is_enter' => $__is_enter,
+        '__user_enter' => $__user_enter,
+        '__user_key' => $__user_key,
+        '__user_token' => $__user_token,
         '__f' => $__f,
         '__n' => $__n
     ]);

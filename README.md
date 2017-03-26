@@ -11,7 +11,9 @@ Start
    ~~~ .yaml
    ---
    author: Taufik Nurrohman
+   type: Markdown
    link: http://mecha-cms.com
+   email: email@domain.com
    status: 1
    ...
 

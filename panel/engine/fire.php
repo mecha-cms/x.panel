@@ -1,11 +1,11 @@
 <?php
 
-$__is_enter = false;
+$__user_enter = $__user_key = $__user_token = null;
 
-if ($__user = Cookie::get('Mecha\Panel.user')) {
-    if ($__token = File::open(ENGINE . DS . 'log' . DS . 'user' . DS . $__user . DS . 'token.data')->get(0)) {
-        if (Cookie::get('Mecha\Panel.token') === $__token) {
-            $__is_enter = true;
+if ($__user_key = Cookie::get('Mecha\Panel.user.key')) {
+    if ($__user_token = File::open(ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key . DS . 'token.data')->get(0)) {
+        if (Cookie::get('Mecha\Panel.user.token') === $__user_token) {
+            $__user_enter = true;
         }
     }
 }
@@ -16,7 +16,7 @@ if (
         strpos($url->path . '/', $__state->path . '/') === 0
     ) &&
     (
-        $__is_enter ||
+        $__user_enter ||
         $url->path === $__state->path . '/::g::/enter'
     )
 ) {

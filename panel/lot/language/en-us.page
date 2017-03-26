@@ -62,4 +62,6 @@ f_content: Content goes here…
 f_description: Some description about this %{0}% (optional).
 f_query: foo, bar, baz
 
+h_page: Configure the default page data here.
+
 __title: Control Panel

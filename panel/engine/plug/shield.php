@@ -3,7 +3,7 @@
 Shield::plug('info', function($id = null) use($config, $language, $url, $__state) {
     $id = $id ?: $config->shield;
     $f = SHIELD . DS . $id . DS;
-    return new Page(File::exist([
+    return Page::_(File::exist([
         // Check whether the localized “about” file is available
         $f . 'about.' . $config->language . '.page',
         // Use the default “about” file if available

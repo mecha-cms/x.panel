@@ -23,8 +23,8 @@ if ($__is_data) {
         ];
     }
     Lot::set('__page', [
-        new Page(null, $s, '__data'),
-        new Page(null, $s, 'data')
+        Page::_(null, $s, '__data'),
+        Page::_(null, $s, 'data')
     ]);
     if ($__s = File::exist([
         $__folder . '.draft',
@@ -32,8 +32,8 @@ if ($__is_data) {
         $__folder . '.archive'
     ])) {
         Lot::set('__source', [
-            new Page($__s, [], '__page'),
-            new Page($__s, [], 'page')
+            Page::_($__s, [], '__page'),
+            Page::_($__s, [], 'page')
         ]);
     } else {
         Shield::abort(PANEL_404);
@@ -47,8 +47,8 @@ if ($__is_data) {
                 'key' => $s,
                 'url' => $__state->path . '/::g::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+/' . $s
             ];
-            $__datas[0][] = new Page(null, $s, '__data');
-            $__datas[1][] = new Page(null, $s, 'data');
+            $__datas[0][] = Page::_(null, $s, '__data');
+            $__datas[1][] = Page::_(null, $s, 'data');
         }
         $__is_data_has_step = /* count($__files) > $__chunk */ false;
         Lot::set([
@@ -109,8 +109,8 @@ if ($__is_data) {
                     ];
                 }
                 Lot::set('__page', [
-                    new Page(null, $s, '__data'),
-                    new Page(null, $s, 'data')
+                    Page::_(null, $s, '__data'),
+                    Page::_(null, $s, 'data')
                 ]);
             } else if ($__sgr === 's') {
                 Guardian::kick(str_replace('::s::', '::g::', $url->current));
@@ -165,14 +165,14 @@ if ($__is_data) {
             }
         }
         Lot::set('__page', [
-            new Page(null, [], '__page'),
-            new Page
+            Page::_(null, [], '__page'),
+            Page::_()
         ]);
         if (!$__is_r) {
             if ($__files = Get::pages($__folder, 'draft,page,archive', $__sort, 'path')) {
                 foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
-                    $__childs[0][] = new Page($v, [], '__page');
-                    $__childs[1][] = new Page($v, [], 'page');
+                    $__childs[0][] = Page::_($v, [], '__page');
+                    $__childs[1][] = Page::_($v, [], 'page');
                 }
                 $__is_child_has_step = count($__files) > $__chunk;
                 Lot::set([
@@ -188,8 +188,8 @@ if ($__is_data) {
                 return Path::N($v) !== $__name;
             });
             foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
-                $__kins[0][] = new Page($v, [], '__page');
-                $__kins[1][] = new Page($v, [], 'page');
+                $__kins[0][] = Page::_($v, [], '__page');
+                $__kins[1][] = Page::_($v, [], 'page');
             }
             $__is_kin_has_step = count($__files) > $__chunk;
             Lot::set([
@@ -266,8 +266,8 @@ if ($__is_data) {
                 return Path::N($v) !== $__name;
             });
             foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
-                $__kins[0][] = new Page($v, [], '__page');
-                $__kins[1][] = new Page($v, [], 'page');
+                $__kins[0][] = Page::_($v, [], '__page');
+                $__kins[1][] = Page::_($v, [], 'page');
             }
             $__is_kin_has_step = count($__files) > $__chunk;
             Lot::set([
@@ -282,8 +282,8 @@ if ($__is_data) {
             $__folder_parent . '.archive'
         ])) {
             $__parent = [
-                new Page($__file_parent, [], '__page'),
-                new Page($__file_parent, [], 'page')
+                Page::_($__file_parent, [], '__page'),
+                Page::_($__file_parent, [], 'page')
             ];
             Lot::set('__parent', $__parent);
         }
@@ -304,8 +304,8 @@ if ($__is_data) {
                     });
                 }
                 foreach (Anemon::eat($__files)->chunk($__chunk, $__step) as $v) {
-                    $__pages[0][] = new Page($v, [], '__page');
-                    $__pages[1][] = new Page($v, [], 'page');
+                    $__pages[0][] = Page::_($v, [], '__page');
+                    $__pages[1][] = Page::_($v, [], 'page');
                 }
                 $__is_page_has_step = count($__files) > $__chunk;
                 Lot::set([
@@ -314,7 +314,7 @@ if ($__is_data) {
                 ]);
             }
             Lot::set([
-                '__pager' => [new Elevator($__files ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
+                '__pager' => [Elevator::_($__files ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
                     'direction' => [
                        '-1' => 'previous',
                         '0' => false,
@@ -345,16 +345,16 @@ if ($__is_data) {
                 $__folder . '.archive'
             ])) {
                 $__page = [
-                    new Page($__file, [], '__page'),
-                    new Page($__file, [], 'page')
+                    Page::_($__file, [], '__page'),
+                    Page::_($__file, [], 'page')
                 ];
             }
 
             Lot::set('__page', $__page);
             if ($__files = Get::pages($__folder, 'draft,page,archive', $__sort, 'path')) {
                 foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
-                    $__childs[0][] = new Page($v, [], '__page');
-                    $__childs[1][] = new Page($v, [], 'page');
+                    $__childs[0][] = Page::_($v, [], '__page');
+                    $__childs[1][] = Page::_($v, [], 'page');
                 }
                 $__is_child_has_step = count($__files) > $__chunk;
                 Lot::set([
@@ -371,8 +371,8 @@ if ($__is_data) {
                         'key' => $s,
                         'url' => $__state->path . '/::g::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+/' . $s
                     ];
-                    $__datas[0][] = new Page(null, $s, '__data');
-                    $__datas[1][] = new Page(null, $s, 'data');
+                    $__datas[0][] = Page::_(null, $s, '__data');
+                    $__datas[1][] = Page::_(null, $s, 'data');
                 }
                 $__is_data_has_step = /* count($__files) > $__chunk */ false;
                 Lot::set([

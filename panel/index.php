@@ -7,7 +7,7 @@
 // e:
 // f: field
 // g:
-// h:
+// h: hint
 // i: icon
 // j:
 // k:
@@ -29,7 +29,7 @@
 
 define('PANEL', __DIR__);
 
-$__state = new State(Extend::state(__DIR__), []);
+$__state = State::_(Extend::state(__DIR__), []);
 
 $s = PANEL . DS . 'lot' . DS;
 

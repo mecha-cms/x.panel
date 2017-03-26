@@ -46,7 +46,7 @@ Asset::set([
 ]);
 
 if ($fn = File::exist($__path_shield . DS . 'index.php')) require $fn;
-if ($__is_enter) {
+if ($__user_enter) {
     Hook::set('shield.output', function($content) {
         $s = [];
         foreach (get_defined_constants(true)['user'] as $k => $v) {

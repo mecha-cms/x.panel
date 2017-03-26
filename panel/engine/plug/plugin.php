@@ -2,7 +2,7 @@
 
 Plugin::plug('info', function($id) use($config, $language, $url, $__state) {
     $f = PLUGIN . DS . $id . DS;
-    return new Page(File::exist([
+    return Page::_(File::exist([
         // Check whether the localized “about” file is available
         $f . 'about.' . $config->language . '.page',
         // Use the default “about” file if available

@@ -61,7 +61,7 @@ code,.code {
 }
 .m {
   background:#ffa;
-  padding-bottom:5em;
+  padding-bottom:4em;
 }
 .s {width:16em}
 .m section + section,
@@ -222,12 +222,25 @@ code,.code {
 .s .select,
 .s .textarea {background:#afa}
 
+.h {font-style:italic}
+
 .message {background:#ee8}
 .messages + section {margin-top:1em}
 
 .p-enter {background:#ffa}
-.p-enter body {background:none}
+.p-enter body,
+.p-enter .m {background:none}
 .p-enter .f > label[for="f-enter"] + span {text-align:center}
+
+.p-set .m {
+  padding-top:4em;
+  padding-bottom:4em;
+}
+.p-set .m form {
+  max-width:50em;
+  margin-right:auto;
+  margin-left:auto;
+}
 
 .p-404 {background:#ffa}
 .p-404 body {background:none}

@@ -3,30 +3,30 @@
 Get::plug('zone', function($id = null, $fail = false, $format = '(UTC%{0}%) %{1}% &#x2013; %{2}%') {
     // http://pastebin.com/vBmW1cnX
     $regions = [
-        DateTimeZone::AFRICA,
-        DateTimeZone::AMERICA,
-        DateTimeZone::ANTARCTICA,
-        DateTimeZone::ASIA,
-        DateTimeZone::ATLANTIC,
-        DateTimeZone::AUSTRALIA,
-        DateTimeZone::EUROPE,
-        DateTimeZone::INDIAN,
-        DateTimeZone::PACIFIC
+        \DateTimeZone::AFRICA,
+        \DateTimeZone::AMERICA,
+        \DateTimeZone::ANTARCTICA,
+        \DateTimeZone::ASIA,
+        \DateTimeZone::ATLANTIC,
+        \DateTimeZone::AUSTRALIA,
+        \DateTimeZone::EUROPE,
+        \DateTimeZone::INDIAN,
+        \DateTimeZone::PACIFIC
     ];
     $zones = $zones_o = $a = $b = [];
     foreach ($regions as $region) {
-        $zones = array_merge($zones, DateTimeZone::listIdentifiers($region));
+        $zones = array_merge($zones, \DateTimeZone::listIdentifiers($region));
     }
     foreach ($zones as $zone) {
-        $tz = new DateTimeZone($zone);
-        $zones_o[$zone] = $tz->getOffset(new DateTime);
+        $tz = new \DateTimeZone($zone);
+        $zones_o[$zone] = $tz->getOffset(new \DateTime);
     }
     foreach ($zones_o as $zone => $offset) {
         $offset_prefix = $offset < 0 ? '-' : '+';
         $offset_f = gmdate('H:i', abs($offset));
         $offset_pretty = $offset_prefix . $offset_f;
-        $t = new DateTimeZone($zone);
-        $c = new DateTime(null, $t);
+        $t = new \DateTimeZone($zone);
+        $c = new \DateTime(null, $t);
         $current_time = $c->format('g:i A');
         $text = __replace__($format, [$offset_pretty, str_replace('_', ' ', $zone), $current_time]);
         if ($offset < 0) {

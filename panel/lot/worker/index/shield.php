@@ -19,8 +19,8 @@ if (isset($__chops[1])) {
                 'content' => file_get_contents($__file)
             ];
             $__page = [
-                new Page($__file, $s, '__file'),
-                new Page($__file, $s, 'file')
+                Page::_($__file, $s, '__file'),
+                Page::_($__file, $s, 'file')
             ];
         } else {
             Shield::abort(PANEL_404);
@@ -34,15 +34,15 @@ if (isset($__chops[1])) {
         $s = [
             'key' => str_replace(SHIELD . DS, "", $k)
         ];
-        $__kins[0][] = new Page($k, $s, '__file');
-        $__kins[1][] = new Page($k, $s, 'file');
+        $__kins[0][] = Page::_($k, $s, '__file');
+        $__kins[1][] = Page::_($k, $s, 'file');
     }
     Lot::set('__kins', $__kins);
 }
 
 Lot::set([
     '__pages' => $__pages,
-    '__pager' => [new Elevator($__files ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
+    '__pager' => [Elevator::_($__files ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
         'direction' => [
            '-1' => 'previous',
             '0' => false,

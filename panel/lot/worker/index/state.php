@@ -14,8 +14,8 @@ $__name = $__is_r ? 'config' : $__chops[1];
 if ($__file = File::exist(STATE . DS . $__name . '.php')) {
     $s = ['content' => File::open($__file)->import()];
     $__page = [
-        new Page($__file, $s, '__state'),
-        new Page($__file, $s, 'state')
+        Page::_($__file, $s, '__state'),
+        Page::_($__file, $s, 'state')
     ];
 }
 

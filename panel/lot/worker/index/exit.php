@@ -1,11 +1,11 @@
 <?php
 
-$__user = Cookie::get('Mecha\Panel.user');
+$__user_key = Cookie::get('Mecha\Panel.user.key');
 
-Cookie::reset('Mecha\Panel.user');
-Cookie::reset('Mecha\Panel.token');
+Cookie::reset('Mecha\Panel.user.key');
+Cookie::reset('Mecha\Panel.user.token');
 
-$f = ENGINE . DS . 'log' . DS . 'user' . DS . $__user . DS;
+$f = ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key . DS;
 
 File::open($f . 'user.data')->delete();
 File::open($f . 'token.data')->delete();
