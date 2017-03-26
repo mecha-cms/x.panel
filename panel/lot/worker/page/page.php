@@ -187,7 +187,7 @@ foreach ([
       <p class="f f-time">
         <label for="f-time"><?php echo $language->time; ?></label>
         <span>
-<?php echo Form::text('time', Date::_($__page[0]->time)->format('Y/m/d H:i:s'), date('Y/m/d H:i:s'), [
+<?php echo Form::text('time', (new Date($__page[0]->time))->format('Y/m/d H:i:s'), date('Y/m/d H:i:s'), [
     'classes' => ['input', 'date'],
     'id' => 'f-time'
 ]); ?>

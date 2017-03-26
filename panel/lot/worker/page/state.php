@@ -39,7 +39,7 @@
         <label for="f-language"><?php echo $language->language; ?></label>
         <?php $__languages = []; ?>
         <?php foreach (glob(LANGUAGE . DS . '*.page') as $v): ?>
-        <?php $__languages[Path::N($v)] = Page::_($v, [], 'language')->title; ?>
+        <?php $__languages[Path::N($v)] = new Page($v, [], 'language')->title; ?>
         <?php endforeach; ?>
         <span>
 <?php echo Form::select('config[language]', $__languages, $__page[0]->content['language'], [

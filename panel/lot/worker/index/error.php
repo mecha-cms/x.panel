@@ -11,10 +11,10 @@ if (Request::is('post')) {
 }
 
 Lot::set('__page', [
-    Page::_($__file, [
+    new Page($__file, [
         'type' => ""
     ], '__page'),
-    Page::_($__file, [
+    new Page($__file, [
         'type' => ""
     ])
 ]);

@@ -2,7 +2,7 @@
 
 Extend::plug('info', function($id) use($config, $language, $url, $__state) {
     $f = EXTEND . DS . $id . DS;
-    return Page::_(File::exist([
+    return new Page(File::exist([
         // Check whether the localized “about” file is available
         $f . 'about.' . $config->language . '.page',
         // Use the default “about” file if available
