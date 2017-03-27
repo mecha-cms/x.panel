@@ -252,7 +252,7 @@ label {
   max-width:16em;
 }
 .p-enter .f > label {width:4em}
-.p-enter .f > label[for="f-enter"] {display:none}
+.p-enter .f > label[for="f-_enter"] {display:none}
 .p-404,
 .p-404 body {
   margin:0;

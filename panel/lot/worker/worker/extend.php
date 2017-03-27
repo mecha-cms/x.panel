@@ -6,4 +6,9 @@ foreach (glob(EXTEND . DS . '*' . DS . '__index.php') as $v) {
     $__extends[$v] = (float) File::open([$s . '__index.stack', $s . 'index.stack'])->get(0, 10);
 }
 asort($__extends);
-foreach (array_keys($__extends) as $v) require $v;
+foreach (array_keys($__extends) as $v) {
+    call_user_func(function() use($v) {
+        extract(Lot::get(null, []));
+        require $v;
+    });
+}

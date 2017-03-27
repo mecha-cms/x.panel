@@ -38,7 +38,8 @@
 <?php echo Form::text('key', $__page[0]->key, null, [
     'classes' => ['input'],
     'id' => 'f-key',
-    'pattern' => '^[a-z\\d_]+$'
+    'pattern' => '^[a-z\\d_]+$',
+    'required' => true
 ]); ?>
         </span>
       </p>
@@ -140,7 +141,8 @@ foreach ([
     'classes' => ['input', 'block'],
     'id' => 'f-slug',
     'data' => ['slug-o' => 'title'],
-    'pattern' => '^[a-z\\d-]+$'
+    'pattern' => '^[a-z\\d-]+$',
+    'required' => true
 ]); ?>
         </span>
       </p>

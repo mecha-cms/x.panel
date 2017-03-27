@@ -21,9 +21,9 @@
             </p>
             <p class="f f-_pass">
               <label for="f-_pass"><?php echo $language->pass; ?></label>
-              <span><?php echo Form::password('_pass', null, null, ['classes' => ['input', 'block'], 'id' => 'f-_pass']); ?></span>
+              <span><?php echo Form::password('_pass', null, Request::restore('post', '_pass_x') ? l($language->new__($language->password)) : null, ['classes' => ['input', 'block'], 'id' => 'f-_pass']); ?></span>
             </p>
-            <?php echo Form::hidden('kick', Request::get('kick', $__state->path . '/::g::/page')); ?>
+            <?php echo Form::hidden('_kick', Request::get('kick', $__state->path . '/::g::/page')); ?>
           </fieldset>
           <p class="f f-_enter expand">
             <label for="f-_enter"><?php echo $language->enter; ?></label>

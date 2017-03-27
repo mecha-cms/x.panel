@@ -28,6 +28,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     }
     $__token = Guardian::token();
     $__hash = Guardian::hash();
+    $__user = User::current();
     require $__task;
     Lot::set([
         '__sgr' => $__sgr,
@@ -38,12 +39,16 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__token' => $__token,
         '__hash' => $__hash,
         '__path_shield' => $__path_shield,
+        '__user' => $__user,
         '__user_enter' => $__user_enter,
         '__user_key' => $__user_key,
         '__user_token' => $__user_token,
         '__f' => $__f,
         '__n' => $__n
     ]);
+    if ($__user && $__sgr === 's' && Request::is('get')) {
+        Request::save('post', 'author', User::ID . $__user->key);
+    }
     Shield::attach([
         $__path_shield . DS . $site->is . '.php',
         $__DIR . DS . $site->is . '.php'

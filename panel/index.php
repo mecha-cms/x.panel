@@ -44,7 +44,8 @@ r(__DIR__ . DS . 'engine' . DS . 'plug', [
     'form.php',
     'get.php',
     'plugin.php',
-    'shield.php'
+    'shield.php',
+    'user.php'
 ], null, Lot::set('__state', $__state)->get(null, []));
 
 Config::set('panel.f.page.types.HTML', 'HTML');

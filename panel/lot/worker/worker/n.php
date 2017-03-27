@@ -32,7 +32,7 @@ if (!isset($__n['exit']) || $__n['exit'] !== false) {
 
 if (!isset($__n[""]) || $__n[""] !== false) {
     $__o[""] = isset($__n[""]) && is_array($__n[""]) ? $__n[""] : [
-        'text' => $language->visit . ' ' . $language->site . ' &#x2197;',
+        'text' => $language->visit . ' ' . $language->site,
         'attributes' => [
             'href' => $url . "",
             'target' => '_blank'

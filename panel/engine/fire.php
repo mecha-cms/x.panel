@@ -17,8 +17,17 @@ if (
     ) &&
     (
         $__user_enter ||
+        $url->path === $__state->path . '/::s::/set' ||
         $url->path === $__state->path . '/::g::/enter'
     )
 ) {
+    if (
+        $url->path === $__state->path . '/::g::/enter' &&
+        file_exists(PANEL . DS . 'lot' . DS . 'worker' . DS . 'index' . DS . 'set.php') &&
+        !glob(ENGINE . DS . 'log' . DS . 'user' . DS . '*.page', GLOB_NOSORT)
+    ) {
+        Message::info('void', $language->users);
+        Guardian::kick($__state->path . '/::s::/set');
+    }
     require PANEL . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';
 }

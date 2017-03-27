@@ -12,6 +12,9 @@ if (Request::is('post')) {
     $__user_key = Request::post('_key');
     $__user_pass = Request::post('_pass');
     $__user_token = Request::post('token');
+    if (strpos($__user_key, User::ID) === 0) {
+        $__user_key = substr($__user_key, 1); // remove the `@`
+    }
     $f = ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key;
     if (!$__user_key) {
         Message::error('void_field', $language->user, true);
@@ -31,8 +34,8 @@ if (Request::is('post')) {
             Cookie::set('Mecha\Panel.user.key', $__user_key, $c);
             Cookie::set('Mecha\Panel.user.token', $__user_token, $c);
             Message::success('user_enter');
-            Hook::NS('on.enter');
-            Guardian::kick(Request::post('kick', ""));
+            Hook::NS('on.user.enter');
+            Guardian::kick(Request::post('_kick', ""));
         } else {
             Message::error('user_or_pass');
         }

@@ -6,4 +6,9 @@ foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . D
     $__plugins[$v] = (float) File::open([$s . '__index.stack', $s . 'index.stack'])->get(0, 10);
 }
 asort($__plugins);
-foreach (array_keys($__plugins) as $v) require $v;
+foreach (array_keys($__plugins) as $v) {
+    call_user_func(function() use($v) {
+        extract(Lot::get(null, []));
+        require $v;
+    });
+}

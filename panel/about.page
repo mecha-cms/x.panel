@@ -37,6 +37,7 @@ version: 1.0.0
  - `$__state`
  - `$__step`
  - `$__token`
+ - `$__user`
  - `$__user_enter`
  - `$__user_key`
  - `$__user_token`
