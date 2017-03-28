@@ -24,7 +24,7 @@ if (
     if (
         $url->path === $__state->path . '/::g::/enter' &&
         file_exists(PANEL . DS . 'lot' . DS . 'worker' . DS . 'index' . DS . 'set.php') &&
-        !glob(ENGINE . DS . 'log' . DS . 'user' . DS . '*.page', GLOB_NOSORT)
+        !g(ENGINE . DS . 'log' . DS . 'user', 'page')
     ) {
         Message::info('void', $language->users);
         Guardian::kick($__state->path . '/::s::/set');

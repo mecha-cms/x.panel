@@ -1,5 +1,5 @@
 <?php if (substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false): ?>
-<form id="form.m.editor" action="" method="post" enctype="multipart/form-data">
+<form id="form.m.editor" action="" method="post" enctype="multipart/form-data"<?php if ($__page[0]->author->key !== $__user->key): ?> disabled<?php endif; ?>>
   <aside class="s">
     <?php if ($__source[0]): ?>
     <section class="s-source">
@@ -68,11 +68,23 @@ foreach ([
   </main>
 </form>
 <?php else: ?>
-<form id="form.m.editor" action="" method="post" enctype="multipart/form-data">
+<form id="form.m.editor" action="" method="post" enctype="multipart/form-data"<?php if ($__page[1]->author->key !== $__user->key): ?> disabled<?php endif; ?>>
   <aside class="s">
     <section class="s-author">
       <h3><?php echo $language->author; ?></h3>
-      <p><?php echo Form::text('author', $__page[0]->author); ?></p>
+      <p><?php
+
+$__authors = [];
+$__select = $__page[0]->author;
+foreach (g(ENGINE . DS . 'log' . DS . 'user', 'page') as $__v) {
+    $__v = new User(Path::N($__v));
+    $__k = $__v->key;
+    if ($__user->status !== 1 && $__k !== $__user->key) continue;
+    $__authors[User::ID . $__k] = $__v->author;
+}
+echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID . $__page[0]->author => $__page[1]->author] : $__authors, $__select, ['classes' => ['select', 'block'], 'id' => 'f-author']);
+
+?></p>
     </section>
     <?php if ($__parent[0]): ?>
     <section class="s-parent">
@@ -89,15 +101,13 @@ foreach ([
         <?php foreach ($__kins[0] as $k => $v): ?>
         <li><?php echo HTML::a($__kins[1][$k]->title, $v->url); ?></li>
         <?php endforeach; ?>
-        <?php if ($__is_kin_has_step): ?>
-        <li><?php echo HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]); ?></li>
-        <?php endif; ?>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . Path::D($__path), false, ['title' => $language->add]); ?><?php echo $__is_kin_has_step ? ' ' .  HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]) : ""; ?></li>
       </ul>
     </section>
     <?php endif; ?>
-    <?php if ($__sgr === 'g' && Get::pages(LOT . DS . $__path, 'draft,page,archive')): ?>
     <section class="s-setting">
       <h3><?php echo $language->settings; ?></h3>
+      <?php if ($__sgr === 'g' && Get::pages(LOT . DS . $__path, 'draft,page,archive')): ?>
       <h4><?php echo $language->sort; ?></h4>
       <table class="table">
         <thead>
@@ -115,10 +125,10 @@ foreach ([
       </table>
       <h4><?php echo $language->chunk; ?></h4>
       <p><?php echo Form::number('chunk', $__page[0]->chunk, 7, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 20]); ?></p>
+      <?php endif; ?>
       <h4><?php echo $language->options; ?></h4>
       <p><em><?php echo $language->none; ?></em></p>
     </section>
-    <?php endif; ?>
   </aside>
   <main class="m">
     <?php echo $__message; ?>
@@ -243,7 +253,6 @@ foreach ([
     </section>
     <?php endif; ?>
     <?php if (count($__chops) > 1): ?>
-    <?php if ($__childs[0]): ?>
     <section class="s-child">
       <h3><?php echo $language->{count($__childs[0]) === 1 ? 'child' : 'childs'}; ?></h3>
       <ul>
@@ -263,7 +272,6 @@ foreach ([
         <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]); ?><?php echo $__is_child_has_step ? ' ' . HTML::a('&#x2026;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : ""; ?></li>
       </ul>
     </section>
-    <?php endif; ?>
     <?php endif; ?>
   </aside>
 </form>

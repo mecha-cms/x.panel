@@ -121,6 +121,29 @@ if ($__is_data) {
     }
 // `.{draft,page,archive}`
 } else {
+    $__folder_parent = Path::D($__file);
+    if ($__file_parent = File::exist([
+        $__folder_parent . '.draft',
+        $__folder_parent . '.page',
+        $__folder_parent . '.archive'
+    ])) {
+        $__parent = [
+            new Page($__file_parent, [], '__page'),
+            new Page($__file_parent, [], 'page')
+        ];
+        Lot::set('__parent', $__parent);
+    }
+    if ($__files = Get::pages($__folder, 'draft,page,archive', $__sort, 'path')) {
+        foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
+            $__childs[0][] = new Page($v, [], '__page');
+            $__childs[1][] = new Page($v, [], 'page');
+        }
+        $__is_child_has_step = count($__files) > $__chunk;
+        Lot::set([
+            '__childs' => $__childs,
+            '__is_child_has_step' => $__is_child_has_step
+        ]);
+    }
     if ($__sgr === 's') {
         if ($__is_post && !Message::$x) {
             $x = Request::post('x', 'page');
@@ -169,17 +192,6 @@ if ($__is_data) {
             new Page()
         ]);
         if (!$__is_r) {
-            if ($__files = Get::pages($__folder, 'draft,page,archive', $__sort, 'path')) {
-                foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
-                    $__childs[0][] = new Page($v, [], '__page');
-                    $__childs[1][] = new Page($v, [], 'page');
-                }
-                $__is_child_has_step = count($__files) > $__chunk;
-                Lot::set([
-                    '__childs' => $__childs,
-                    '__is_child_has_step' => $__is_child_has_step
-                ]);
-            }
             $__folder = Path::D($__folder);
         }
         if ($__files = Get::pages(Path::D($__folder), 'draft,page,archive', $__sort, 'path')) {
@@ -245,7 +257,7 @@ if ($__is_data) {
                 if (!$s = Request::post('time')) {
                     $s = date(DATE_WISE);
                 } else {
-                    $s = DateTime::createFromFormat('Y/m/d H:i:s', $s)->format();
+                    $s = DateTime::createFromFormat('Y/m/d H:i:s', $s)->format(DATE_WISE);
                 }
                 File::write($s)->saveTo($dd . DS . 'time.data', 0600);
                 // Create `sort.data` file…
@@ -274,18 +286,6 @@ if ($__is_data) {
                 '__kins' => $__kins,
                 '__is_kin_has_step' => $__is_kin_has_step
             ]);
-        }
-        $__folder_parent = Path::D($__file);
-        if ($__file_parent = File::exist([
-            $__folder_parent . '.draft',
-            $__folder_parent . '.page',
-            $__folder_parent . '.archive'
-        ])) {
-            $__parent = [
-                new Page($__file_parent, [], '__page'),
-                new Page($__file_parent, [], 'page')
-            ];
-            Lot::set('__parent', $__parent);
         }
         if ($__is_pages) {
             $site->is = 'pages';
@@ -351,17 +351,6 @@ if ($__is_data) {
             }
 
             Lot::set('__page', $__page);
-            if ($__files = Get::pages($__folder, 'draft,page,archive', $__sort, 'path')) {
-                foreach (Anemon::eat($__files)->chunk($__chunk, 0) as $v) {
-                    $__childs[0][] = new Page($v, [], '__page');
-                    $__childs[1][] = new Page($v, [], 'page');
-                }
-                $__is_child_has_step = count($__files) > $__chunk;
-                Lot::set([
-                    '__childs' => $__childs,
-                    '__is_child_has_step' => $__is_child_has_step
-                ]);
-            }
             if ($__files = g($__folder, 'data')) {
                 foreach (/* Anemon::eat($__files)->chunk($__chunk, 0) */ $__files as $k => $v) {
                     $s = Path::N($v);
@@ -393,11 +382,11 @@ if ($__is_data) {
         ])) {
             Shield::abort(PANEL_404);
         }
-        $__kick = str_replace('::r::', '::g::', $url->path);
+        $__k = str_replace('::r::', '::g::', $url->path);
         $__name = Path::B($__folder);
         Hook::fire('on.page.reset', [$__file]);
         if (Message::$x) {
-            Guardian::kick($__kick);
+            Guardian::kick($__k);
         }
         if (Request::get('abort')) {
             File::open($__folder . '.trash')->renameTo($__name . '.draft');
@@ -406,7 +395,7 @@ if ($__is_data) {
             File::open($__file)->renameTo($__name . '.trash');
             Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
         }
-        Guardian::kick(Path::D($__kick) . '/1');
+        Guardian::kick(Path::D($__k) . '/1');
     } else {
         Shield::abort(PANEL_404);
     }

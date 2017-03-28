@@ -251,7 +251,7 @@ code,.code {
 .p-enter {background:#ffa}
 .p-enter body,
 .p-enter .m {background:none}
-.p-enter .f > label[for="f-_enter"] + span {text-align:center}
+.p-enter .f > label[for="f-enter"] + span {text-align:center}
 
 .p-set .m {
   padding-top:4em;

@@ -9,8 +9,8 @@ if ($__user_enter) {
 }
 
 if (Request::is('post')) {
-    $__user_key = Request::post('_key');
-    $__user_pass = Request::post('_pass');
+    $__user_key = Request::post('user');
+    $__user_pass = Request::post('pass');
     $__user_token = Request::post('token');
     if (strpos($__user_key, User::ID) === 0) {
         $__user_key = substr($__user_key, 1); // remove the `@`
@@ -24,6 +24,8 @@ if (Request::is('post')) {
         if (!file_exists($f . DS . 'pass.data')) {
             // Reset password by deleting `pass.data` manually, then log in!
             File::write(password_hash($__user_pass . $__user_key, PASSWORD_DEFAULT))->saveTo($f . DS . 'pass.data');
+            Message::success('create', $language->pass);
+            Message::info('is', [$language->pass, '<em>' . $__user_pass . '</em>']);
         }
         if (password_verify($__user_pass . $__user_key, File::open($f . DS . 'pass.data')->get(0, ""))) {
             File::write($__user_token)->saveTo($f . DS . 'token.data');
@@ -35,7 +37,7 @@ if (Request::is('post')) {
             Cookie::set('Mecha\Panel.user.token', $__user_token, $c);
             Message::success('user_enter');
             Hook::NS('on.user.enter');
-            Guardian::kick(Request::post('_kick', ""));
+            Guardian::kick(Request::post('kick', ""));
         } else {
             Message::error('user_or_pass');
         }
@@ -43,7 +45,7 @@ if (Request::is('post')) {
         Message::error('user_or_pass');
     }
     if (Message::$x) {
-        Request::save('post', '_key', $__user_key);
+        Request::save('post', 'user', $__user_key);
     }
 }
 
