@@ -204,7 +204,53 @@ code,.code {
   padding:1em;
   margin:-.5em -.5em .5em;
 }
+.s-setting th,
+.s-setting td {padding:.25em .5em}
+.s-setting th {
+  font-size:85%;
+  font-weight:normal;
+  background:rgba(0,0,0,.05);
+}
 .s section + .s-setting {margin-top:1.5em}
+.s section h3 {
+  font-size:100%;
+  margin:0 0 .4em 0;
+  padding:0;
+}
+.s section ul {
+  list-style:none;
+  margin:.2em 0 0 .4em; /* indent */
+  padding:0;
+  overflow:hidden;
+}
+.s section li {
+  margin:0;
+  padding:0 0 0 1.4em; /* indent + .2em */
+  position:relative;
+}
+.s section ul ul {margin:0 0 0 .2em}
+.s section li:before {
+  content:"";
+  display:block;
+  width:0;
+  height:999em;
+  border-left:1px solid;
+  position:absolute;
+  bottom:.7em;
+  left:0;
+  margin-bottom:-1px;
+}
+.s section li:after {
+  content:"";
+  display:block;
+  width:1em; /* indent - .2em */
+  border-top:1px solid;
+  position:absolute;
+  top:.7em;
+  bottom:0;
+  left:0;
+  background:#fff; /* same with page background */
+}
 .s .s-nav {
   position:sticky;
   top:1em;

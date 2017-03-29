@@ -211,6 +211,17 @@ if ($__is_data) {
         }
     } else if ($__sgr === 'g') {
         if ($__is_post && !Message::$x) {
+            if ($s = Request::post('as_home')) {
+                $__state_page = Extend::state('page');
+                $__state_page['path'] = $s;
+                File::export($__state_page)->saveTo(EXTEND . DS . 'page' . DS . 'lot' . DS . 'state' . DS . 'config.php');
+            }
+            $f = Path::F($__file) . DS . Path::B($__file);
+            if (Request::post('as_page')) {
+                File::write("")->saveTo($f, 0600); // a placeholder page
+            } else {
+                if (File::open($f)->read(X) === "") File::open($f)->delete();
+            }
             if (Request::post('x') === 'trash') {
                 Guardian::kick(str_replace('::g::', '::r::', $url->current) . HTTP::query(['token' => Request::post('token')]));
             }

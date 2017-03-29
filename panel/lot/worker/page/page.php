@@ -1,5 +1,5 @@
 <?php if (substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false): ?>
-<form id="form.m.editor" action="" method="post" enctype="multipart/form-data"<?php if ($__page[0]->author->key !== $__user->key): ?> disabled<?php endif; ?>>
+<form id="form.m.editor" action="" method="post" enctype="multipart/form-data">
   <aside class="s">
     <?php if ($__source[0]): ?>
     <section class="s-source">
@@ -68,7 +68,7 @@ foreach ([
   </main>
 </form>
 <?php else: ?>
-<form id="form.m.editor" action="" method="post" enctype="multipart/form-data"<?php if ($__page[1]->author->key !== $__user->key): ?> disabled<?php endif; ?>>
+<form id="form.m.editor" action="" method="post" enctype="multipart/form-data">
   <aside class="s">
     <section class="s-author">
       <h3><?php echo $language->author; ?></h3>
@@ -105,9 +105,10 @@ echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID 
       </ul>
     </section>
     <?php endif; ?>
+    <?php if ($__sgr !== 's'): ?>
     <section class="s-setting">
       <h3><?php echo $language->settings; ?></h3>
-      <?php if ($__sgr === 'g' && Get::pages(LOT . DS . $__path, 'draft,page,archive')): ?>
+      <?php if ($__has_pages = Get::pages(LOT . DS . $__path, 'draft,page,archive')): ?>
       <h4><?php echo $language->sort; ?></h4>
       <table class="table">
         <thead>
@@ -127,8 +128,13 @@ echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID 
       <p><?php echo Form::number('chunk', $__page[0]->chunk, 7, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 20]); ?></p>
       <?php endif; ?>
       <h4><?php echo $language->options; ?></h4>
-      <p><em><?php echo $language->none; ?></em></p>
+      <p>
+        <?php echo $__has_pages ? Form::checkbox('as_page', 1, file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state), $language->panel->as_page, ['classes' => ['input']]) . '<br>' : ""; ?>
+        <?php $_s = trim(To::url(Path::F($__path, 'page')), '/'); ?>
+        <?php echo Form::checkbox('as_home', $_s, Extend::state('page', 'path', false) === $_s, $language->panel->as_home, ['classes' => ['input']]); ?>
+      </p>
     </section>
+    <?php endif; ?>
   </aside>
   <main class="m">
     <?php echo $__message; ?>

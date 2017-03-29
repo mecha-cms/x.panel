@@ -14,13 +14,10 @@ panel:
   slowest: Slowest
   user: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}
   sort:
-    0:
-      -1: Z &rarr; A
-       1: A &rarr; Z
-    1:
-      time: time
-      slug: slug
-      update: update
+    0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
+    1: {"time":"time","slug":"slug","update":"update"}
+  as_home: Set as Home Page
+  as_page: Disable Index View
 
 sort: Sort
 
