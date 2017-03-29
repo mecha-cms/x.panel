@@ -49,7 +49,7 @@ caption,figcaption {text-align:center}
 code,.code {font-family:monospace}
 del,s {text-decoration:line-through}
 ins,u {text-decoration:underline}
-kbd,small {font-size:80%}
+kbd,small,sub,sup {font-size:80%}
 html {
   font:normal normal 13px/1.5384615384615385em sans-serif;
   background:#fff;

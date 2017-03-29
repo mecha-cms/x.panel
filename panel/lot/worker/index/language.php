@@ -43,7 +43,7 @@ if (Request::is('post') && !Message::$x) {
         Request::save('post');
         Message::error('exist', [$language->locale, '<em>' . $s . '</em>']);
     }
-    Hook::NS('on.language.set', [$f]);
+    Hook::NS('on.language.set', [$__file]);
     if (!Message::$x) {
         $headers = [
             'title' => false,

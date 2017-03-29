@@ -6,7 +6,7 @@
       <ul>
       <?php foreach ($__kins[0] as $k => $v): ?>
         <?php $s = $__kins[1][$k]->key; ?>
-        <li><?php echo HTML::a($s, $__state->path . '/::g::/' . $__chops[0] . '/' . $s); ?></li>
+        <li><?php echo HTML::a($s . ' <sup>' . $v->state . '</sup>', $__state->path . '/::g::/' . $__chops[0] . '/' . $s); ?></li>
         <?php endforeach; ?>
       </ul>
     </section>
@@ -15,8 +15,8 @@
   <main class="m">
     <?php echo $__message; ?>
     <fieldset>
-      <legend><?php echo $language->site; ?></legend>
       <?php if (Path::N($__page[0]->path) === 'config'): ?>
+      <legend><?php echo $language->site; ?></legend>
       <p class="f f-zone">
         <label for="f-zone"><?php echo $language->time_zone; ?></label>
         <span>
@@ -30,7 +30,7 @@
         <label for="f-charset"><?php echo $language->encoding; ?></label>
         <span>
 <?php echo Form::text('config[charset]', $__page[0]->content['charset'], 'utf-8', [
-    'classes' => ['input', 'block'],
+    'classes' => ['input'],
     'id' => 'f-charset'
 ]); ?>
         </span>
@@ -146,6 +146,7 @@ $__s = Anemon::extend($__ss, $__s);
         </div>
       </fieldset>
       <?php else: ?>
+      <legend><?php echo $language->editor; ?></legend>
       <div class="f f-content expand p">
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>

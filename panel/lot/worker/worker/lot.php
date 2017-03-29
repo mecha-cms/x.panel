@@ -9,7 +9,7 @@ $__chunk = $__state->chunk;
 $__is_get = Request::is('get');
 $__is_post = Request::is('post');
 $__is_r = count($__chops) === 1;
-$__is_pages = $__sgr === 'g' && ($__is_r || is_numeric(Path::B($url->path)) ? '/1' : ""); // Force index view by appending page offset to the end of URL
+$__is_pages = $__sgr === 'g' && ($__is_r || is_numeric(Path::B($url->path))) ? '/1' : ""; // Force index view by appending page offset to the end of URL
 $__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
 
 $__folder = LOT . DS . $__path;

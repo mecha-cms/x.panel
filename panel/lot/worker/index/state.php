@@ -2,7 +2,7 @@
 
 if ($__files = g(STATE, 'php')) {
     foreach ($__files as $v) {
-        $v = (object) ['key' => Path::N($v)];
+        $v = (object) ['key' => Path::N($v), 'state' => 'php'];
         $__kins[0][] = $v;
         $__kins[1][] = $v;
     }

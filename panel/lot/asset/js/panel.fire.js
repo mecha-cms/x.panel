@@ -25,6 +25,24 @@ window.Panel = window.jQuery;
 
 (function($, win, doc) {
 
+    var nav = $('nav.n'),
+        parent = nav.find('li:has(ul)');
+    parent.children('a').on("click", function() {
+        return $(this).next().fadeToggle(100), false;
+    }).on("mouseenter", function() {
+        $(this).next().fadeIn(100);
+    }).parent().on("mouseleave", function() {
+        $(this).children('ul').fadeOut(100);
+    });
+    $(doc).on("click", function() {
+        var ul = parent.find('a+ul:visible');
+        return !!(ul && ul.fadeOut(100));
+    });
+
+})(Panel, window, document);
+
+(function($, win, doc) {
+
     var events = 'copy cut input keydown paste';
 
     $.f = function(a, b, c) {

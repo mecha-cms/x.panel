@@ -96,7 +96,11 @@
     </article>
     <?php endforeach; ?>
     <?php else: ?>
+    <?php if ($q = Request::get('q')): ?>
+    <p><?php echo $language->message_error_search('<em>' . $q . '</em>'); ?></p>
+    <?php else: ?>
     <p><?php echo $language->message_info_void($language->pages); ?></p>
+    <?php endif; ?>
     <?php endif; ?>
   </section>
 </main>
