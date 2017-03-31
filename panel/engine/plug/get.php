@@ -1,6 +1,6 @@
 <?php
 
-Get::plug('zone', function($id = null, $fail = false, $format = '%{1}% &#x00B7; %{2}% (UTC%{0}%)') {
+Get::plug('zone', function($id = null, $fail = false, $format = '(UTC%{0}%) %{1}% &#x00B7; %{2}%') {
     // http://pastebin.com/vBmW1cnX
     $regions = [
         \DateTimeZone::AFRICA,

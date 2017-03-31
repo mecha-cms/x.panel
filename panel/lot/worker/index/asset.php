@@ -1,2 +1,3 @@
 <?php
 
+$site->is = 'pages';

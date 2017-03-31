@@ -70,7 +70,7 @@
         </span>
       </p>
       <div class="f f-description p">
-        <label for="f-title"><?php echo $language->description; ?></label>
+        <label for="f-description"><?php echo $language->description; ?></label>
         <div>
 <?php echo Form::textarea('config[description]', $__page[0]->content['description'], $language->f_description($language->site), [
     'classes' => ['textarea', 'block'],

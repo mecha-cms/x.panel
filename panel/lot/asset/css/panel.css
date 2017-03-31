@@ -159,7 +159,9 @@ label {
 }
 .select,
 .input[type="color"],
+.input[type="file"],
 .input[type="range"] {cursor:pointer}
+.input[type="file"] {width:auto}
 .textarea {
   height:5em;
   resize:vertical;

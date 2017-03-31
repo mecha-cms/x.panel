@@ -133,7 +133,7 @@ echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID 
       <p>
         <?php echo $__has_pages ? Form::checkbox('as_page', 1, file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state), $language->panel->as_page, ['classes' => ['input']]) . '<br>' : ""; ?>
         <?php $_s = trim(To::url(Path::F($__path, 'page')), '/'); ?>
-        <?php echo Form::checkbox('as_home', $_s, Extend::state('page', 'path', false) === $_s, $language->panel->as_home, ['classes' => ['input']]); ?>
+        <?php echo Form::checkbox('as_home', $_s, $site->path === $_s, $language->panel->as_home, ['classes' => ['input']]); ?>
       </p>
     </section>
     <?php endif; ?>
