@@ -59,7 +59,7 @@
 
     for (i in k) {
         for (j in k[i]) {
-            if ($(k[i][j]).hasClass('code')) {
+            if ($(k[i][j]).hasClass('editor')) {
                 if (!forms.editor[i]) {
                     forms.editor[i] = {};
                 }

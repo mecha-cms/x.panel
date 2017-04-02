@@ -81,6 +81,11 @@ form,
 h1,h2,h3,h4,h5,h6,
 hr,ol,p,pre,table,ul,
 .p {margin:1rem 0 0}
+blockquote {
+  margin-left:1em;
+  font-size:110%;
+  font-style:italic;
+}
 ol,ul,dd {margin-left:2em}
 ol ol,
 ol ul,
