@@ -37,7 +37,7 @@
             </p>
             <div class="f f-content p">
               <label for="f-content"><?php echo $language->description; ?></label>
-              <div><?php echo Form::textarea('content', null, $language->f_description($language->user), ['classes' => ['textarea', 'block', 'expand', 'code', 'editor'], 'id' => 'f-content']); ?></div>
+              <div><?php echo Form::textarea('content', null, $language->f_description($language->user), ['classes' => ['textarea', 'block', 'expand', 'code', 'editor'], 'id' => 'f-content', 'data' => ['type' => 'HTML']]); ?></div>
             </div>
             <p class="f f-type">
               <label for="f-type"><?php echo $language->type; ?></label>
