@@ -28,7 +28,7 @@
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>
 <?php echo Form::textarea('content', $__page[0]->content, $language->f_content, [
-    'classes' => ['textarea', 'block', 'expand', 'code'],
+    'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
     'id' => 'f-content',
     'data' => ['type' => $__page[0]->type]
 ]); ?>

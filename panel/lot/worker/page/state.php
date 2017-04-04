@@ -151,7 +151,7 @@ $__s = Anemon::extend($__ss, $__s);
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>
 <?php echo Form::textarea('content', To::yaml($__page[0]->content), null, [
-    'classes' => ['textarea', 'block', 'expand', 'code'],
+    'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
     'id' => 'f-content',
     'data' => ['type' => 'YAML']
 ]); ?>
