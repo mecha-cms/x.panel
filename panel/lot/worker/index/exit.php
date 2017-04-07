@@ -1,9 +1,9 @@
 <?php
 
-$__user_key = Cookie::get('Mecha\Panel.user.key');
+$__user_key = Cookie::get('Mecha.Panel.user.key');
 
-Cookie::reset('Mecha\Panel.user.key');
-Cookie::reset('Mecha\Panel.user.token');
+Cookie::reset('Mecha.Panel.user.key');
+Cookie::reset('Mecha.Panel.user.token');
 
 $f = ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key . DS;
 

@@ -33,8 +33,8 @@ if (Request::is('post')) {
                 'expire' => 30,
                 'http_only' => true
             ];
-            Cookie::set('Mecha\Panel.user.key', $__user_key, $c);
-            Cookie::set('Mecha\Panel.user.token', $__user_token, $c);
+            Cookie::set('Mecha.Panel.user.key', $__user_key, $c);
+            Cookie::set('Mecha.Panel.user.token', $__user_token, $c);
             Message::success('user_enter');
             Hook::NS('on.user.enter');
             Guardian::kick(Request::post('kick', ""));

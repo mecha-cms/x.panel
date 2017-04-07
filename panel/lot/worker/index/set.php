@@ -36,8 +36,8 @@ if (Request::is('post')) {
         Message::success('create', $language->user . ' <em>' . $__user_key . '</em>');
         Request::save('post', 'user', $__user_key);
         Request::save('post', 'pass_x', true);
-        Cookie::reset('Mecha\Panel.user.key');
-        Cookie::reset('Mecha\Panel.user.token');
+        Cookie::reset('Mecha.Panel.user.key');
+        Cookie::reset('Mecha.Panel.user.token');
         Guardian::kick($__state->path . '/::g::/enter');
     } else {
         Request::save('post');
