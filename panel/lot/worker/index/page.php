@@ -150,14 +150,20 @@ if ($__is_data) {
             $f = Request::post('slug');
             $ff = $__folder . DS . $f;
             $fff = $ff . '.' . $x;
-            $headers = [
+            $datas = [];
+            foreach (explode("\n", trim(Request::post('__data', ""))) as $v) {
+                $v = explode(Page::$v[2], $v, 2);
+                if (!isset($v[1])) $v[1] = $v[0];
+                $datas[trim($v[0])] = trim($v[1]);
+            }
+            $headers = array_replace([
                 'title' => false,
                 'description' => false,
                 'author' => false,
                 'type' => false,
                 'link' => false,
                 'content' => false
-            ];
+            ], $datas);
             foreach ($headers as $k => $v) {
                 if (file_exists($ff . DS . $k . '.data')) continue;
                 $headers[$k] = Request::post($k, $v);
@@ -232,14 +238,20 @@ if ($__is_data) {
             $d = Path::D($__file);
             $dd = $d . DS . $ss;
             $ddd = $dd . '.' . $xx;
-            $headers = [
+            $datas = [];
+            foreach (explode("\n", trim(Request::post('__data', ""))) as $v) {
+                $v = explode(Page::$v[2], $v, 2);
+                if (!isset($v[1])) $v[1] = $v[0];
+                $datas[trim($v[0])] = trim($v[1]);
+            }
+            $headers = array_replace([
                 'title' => false,
                 'description' => false,
                 'author' => false,
                 'type' => false,
                 'link' => false,
                 'content' => false
-            ];
+            ], $datas);
             foreach ($headers as $k => $v) {
                 if (file_exists($dd . DS . $k . '.data')) continue;
                 $headers[$k] = Request::post($k, $v);

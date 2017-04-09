@@ -61,7 +61,8 @@ message_warning: Warning.
 f_title: Title Here
 f_content: Content goes here…
 f_description: Some description about this %{0}% (optional).
-f_query: foo, bar, baz
+f_query: lorem, ipsum, dolor, sit, amet
+f_yaml: "key: value"
 
 h_page: Configure the default page data here.
 

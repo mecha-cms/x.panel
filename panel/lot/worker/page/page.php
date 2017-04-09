@@ -135,6 +135,7 @@ echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID 
         <?php $_s = trim(To::url(Path::F($__path, 'page')), '/'); ?>
         <?php echo Form::checkbox('as_home', $_s, $site->path === $_s, $language->panel->as_home, ['classes' => ['input']]); ?>
       </p>
+      <?php echo Hook::fire('panel.f.page.settings', ["", $__page]); ?>
     </section>
     <?php endif; ?>
   </aside>
@@ -251,13 +252,39 @@ foreach ([
   <aside class="s">
     <?php if ($__sgr === 'g'): ?>
     <section class="s-data">
-      <h3><?php echo $language->{count($__datas[0]) === 1 ? 'data' : 'datas'}; ?></h3>
+<?php
+
+$__a = [
+    'title' => 1,
+    'description' => 1,
+    'author' => 1,
+    'type' => 1,
+    'link' => 1,
+    'content' => 1,
+    'time' => 1,
+    'kind' => 1,
+    'slug' => 1,
+    'state' => 1
+];
+
+$__aparts = Page::apart(file_get_contents($__page[0]->path));
+foreach ($__aparts as $k => $v) {
+    if (isset($__a[$k])) {
+        unset($__aparts[$k]);
+        continue;
+    }
+    $__aparts[$k] = is_array($v) ? json_encode($v) : s($v);
+}
+
+?>
+      <h3><?php echo $language->{count($__datas[0]) + count($__aparts) === 1 ? 'data' : 'datas'}; ?></h3>
       <ul>
         <?php foreach ($__datas[0] as $k => $v): ?>
         <li><?php echo HTML::a($__datas[1][$k]->key, $v->url); ?></li>
         <?php endforeach; ?>
         <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]); ?></li>
       </ul>
+      <p><?php echo Form::textarea('__data', To::yaml($__aparts), $language->f_yaml, ['classes' => ['textarea', 'block', 'code']]); ?></p>
     </section>
     <?php endif; ?>
     <?php if (count($__chops) > 1): ?>
