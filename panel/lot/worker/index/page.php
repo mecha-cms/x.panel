@@ -152,6 +152,8 @@ if ($__is_data) {
             $fff = $ff . '.' . $x;
             $datas = [];
             foreach (explode("\n", trim(Request::post('__data', ""))) as $v) {
+                $v = trim($v);
+                if ($v === "") continue;
                 $v = explode(Page::$v[2], $v, 2);
                 if (!isset($v[1])) $v[1] = $v[0];
                 $datas[trim($v[0])] = trim($v[1]);
@@ -240,6 +242,8 @@ if ($__is_data) {
             $ddd = $dd . '.' . $xx;
             $datas = [];
             foreach (explode("\n", trim(Request::post('__data', ""))) as $v) {
+                $v = trim($v);
+                if ($v === "") continue;
                 $v = explode(Page::$v[2], $v, 2);
                 if (!isset($v[1])) $v[1] = $v[0];
                 $datas[trim($v[0])] = trim($v[1]);

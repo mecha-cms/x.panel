@@ -250,7 +250,6 @@ foreach ([
     <?php echo Form::token(); ?>
   </main>
   <aside class="s">
-    <?php if ($__sgr === 'g'): ?>
     <section class="s-data">
 <?php
 
@@ -267,7 +266,7 @@ $__a = [
     'state' => 1
 ];
 
-$__aparts = Page::apart(file_get_contents($__page[0]->path));
+$__aparts = Page::apart($__sgr === 'g' ? file_get_contents($__page[0]->path) : "");
 foreach ($__aparts as $k => $v) {
     if (isset($__a[$k])) {
         unset($__aparts[$k]);
@@ -278,15 +277,16 @@ foreach ($__aparts as $k => $v) {
 
 ?>
       <h3><?php echo $language->{count($__datas[0]) + count($__aparts) === 1 ? 'data' : 'datas'}; ?></h3>
+      <?php if ($__sgr === 'g'): ?>
       <ul>
         <?php foreach ($__datas[0] as $k => $v): ?>
         <li><?php echo HTML::a($__datas[1][$k]->key, $v->url); ?></li>
         <?php endforeach; ?>
         <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]); ?></li>
       </ul>
+      <?php endif; ?>
       <p><?php echo Form::textarea('__data', To::yaml($__aparts), $language->f_yaml, ['classes' => ['textarea', 'block', 'code']]); ?></p>
     </section>
-    <?php endif; ?>
     <?php if (count($__chops) > 1): ?>
     <section class="s-child">
       <h3><?php echo $language->{count($__childs[0]) === 1 ? 'child' : 'childs'}; ?></h3>
