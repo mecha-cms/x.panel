@@ -1,5 +1,7 @@
 (function($, win, doc) {
 
+    // $.CP = {};
+
     var forms = $.forms, i, j,
         k = forms.lot;
 
@@ -17,15 +19,13 @@
         return t;
     }
 
-    forms.color = {};
+    forms.CP = {};
 
     for (i in k) {
+        forms.CP[i] = {};
         for (j in k[i]) {
-            if ($(k[i][j]).hasClass('color')) {
-                if (!forms.color[i]) {
-                    forms.color[i] = {};
-                }
-                forms.color[i][j] = apply_CP(k[i][j]);
+            if (/(^|\s)(color|CP)(\s|$)/.test(k[i][j].className)) {
+                forms.CP[i][j] = apply_CP(k[i][j]);
             }
         }
     }

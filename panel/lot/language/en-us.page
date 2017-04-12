@@ -5,6 +5,11 @@ type: YAML
 chunk: Per Page
 inherit: Inherit
 
+TIB:
+  text:
+    - Remove “%s” Tag
+    - Duplicate “%s” Tag
+
 panel:
   fast: Fast
   faster: Faster

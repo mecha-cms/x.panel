@@ -59,13 +59,13 @@
 
     for (i in k) {
         for (j in k[i]) {
-            if ($(k[i][j]).hasClass('editor')) {
-                if (!forms.editor[i]) {
-                    forms.editor[i] = {};
-                }
+            if (/(^|\s)(editor|CodeMirror|CM)(\s|$)/.test(k[i][j].className)) {
+                forms.editor[i] = {};
                 forms.editor[i][j] = apply_CodeMirror(k[i][j]);
             }
         }
     }
+
+    forms.CM = forms.editor;
 
 })(Panel, window, document);

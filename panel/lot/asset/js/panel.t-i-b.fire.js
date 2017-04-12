@@ -4,25 +4,19 @@
         k = forms.lot;
 
     function apply_TIB(node) {
-        var t = new TIB(node, {
-            max: 12,
-            text: ["", ""],
-            alert: false
-        });
+        var t = new TIB(node, $.TIB || {});
         t.create();
         t.input.parentNode.className += (' ' + t.input.className.replace(/(\b|\s+)tags-input(\b|\s+)/g, ""));
         return t;
     }
 
-    forms.query = {};
+    forms.TIB = {};
 
     for (i in k) {
+        forms.TIB[i] = {};
         for (j in k[i]) {
-            if ($(k[i][j]).hasClass('query')) {
-                if (!forms.query[i]) {
-                    forms.query[i] = {};
-                }
-                forms.query[i][j] = apply_TIB(k[i][j]);
+            if (/(^|\s)(query|TIB)(\s|$)/.test(k[i][j].className)) {
+                forms.TIB[i][j] = apply_TIB(k[i][j]);
             }
         }
     }

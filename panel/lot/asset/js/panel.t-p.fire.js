@@ -18,10 +18,10 @@
     }
 
     function apply_TP(node, t) {
-        var c = TP(node, {
+        var c = TP(node, $.extend({
             format: 'Y/m/d' + t,
             languages: languages
-        });
+        }, $.TP || {}));
         return c;
     }
 
