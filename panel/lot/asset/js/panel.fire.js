@@ -14,11 +14,11 @@ window.Panel = window.jQuery;
     });
 
     $.forms = {
-        lot: catches
+        $: catches
     };
 
     $.languages = {
-        lot: {}
+        $: {}
     };
 
 })(Panel, window, document);

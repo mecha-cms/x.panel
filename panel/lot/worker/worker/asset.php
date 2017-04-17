@@ -52,7 +52,7 @@ if ($__user_enter) {
     function fn_panel_asset_js_replace($content) {
         global $language;
         $a = array_merge([
-            'languages.lot' => Language::get(),
+            'languages.$' => $language->get(),
             'TIB' => Config::get('panel.f.js.TIB', o([
                 'max' => 12,
                 'text' => $language->TIB->text,

@@ -26,4 +26,12 @@
     <legend><?php echo $language->upload; ?></legend>
 	<p><?php echo Form::file('file', ['classes' => ['input']]); ?></p>
   </fieldset>
+  <section class="m-pages">
+    <?php if ($__pages[1]): ?>
+    <?php foreach ($__pages[1] as $_k => $_v): ?>
+    <article class="page file">
+    </article>
+    <?php endforeach; ?>
+    <?php endif; ?>
+  </section>
 </main>

@@ -238,12 +238,11 @@ code,.code {
   content:"";
   display:block;
   width:0;
-  height:999em;
   border-left:1px solid;
   position:absolute;
-  bottom:.7em;
+  top:0;
+  bottom:0;
   left:0;
-  margin-bottom:-1px;
 }
 .s section li:after {
   content:"";
@@ -251,11 +250,11 @@ code,.code {
   width:1em; /* indent - .2em */
   border-top:1px solid;
   position:absolute;
-  top:.7em;
+  top:.8em;
   bottom:0;
   left:0;
-  background:#fff; /* same with page background */
 }
+.s section li:last-child:after {background-color:#fff} /* same with page background */
 .s .s-nav {
   position:sticky;
   top:1em;

@@ -1,7 +1,7 @@
 (function($, win, doc) {
 
     var forms = $.forms,
-        i, j, k = forms.lot;
+        i, j, k = forms.$;
 
     function apply_CodeMirror(node) {
         var size = [$(node).outerWidth(), $(node).outerHeight()],
@@ -58,9 +58,9 @@
     forms.editor = {};
 
     for (i in k) {
+        forms.editor[i] = {};
         for (j in k[i]) {
             if (/(^|\s)(editor|CodeMirror|CM)(\s|$)/.test(k[i][j].className)) {
-                forms.editor[i] = {};
                 forms.editor[i][j] = apply_CodeMirror(k[i][j]);
             }
         }

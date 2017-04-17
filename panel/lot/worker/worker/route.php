@@ -2,8 +2,8 @@
 
 Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__sgr, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
     extract(Lot::get(null, []));
-    $__sgr = To::url_decode($__sgr, true);
-    $__path = To::url_decode($__path, true);
+    $__sgr = To::url($__sgr, true);
+    $__path = To::url($__path, true);
     $__path_shield = PANEL . DS . 'lot' . DS . 'shield' . DS . $__state->shield;
     $__chops = explode('/', $__path);
     $__DIR = Path::D(__DIR__);

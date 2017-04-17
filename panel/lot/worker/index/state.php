@@ -12,10 +12,13 @@ Lot::set('__kins', $__kins);
 
 $__name = $__is_r ? 'config' : $__chops[1];
 if ($__file = File::exist(STATE . DS . $__name . '.php')) {
-    $s = ['content' => File::open($__file)->import()];
+    $s = [
+        'path' => $__file,
+        'config' => File::open($__file)->import()
+    ];
     $__page = [
-        new Page($__file, $s, '__state'),
-        new Page($__file, $s, 'state')
+        new Page(null, $s, '__state'),
+        new Page(null, $s, 'state')
     ];
 }
 

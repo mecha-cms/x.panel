@@ -6,7 +6,7 @@
       <ul>
       <?php foreach ($__kins[0] as $k => $v): ?>
         <?php $s = $__kins[1][$k]->key; ?>
-        <li><?php echo HTML::a($s . ' <sup>' . $v->state . '</sup>', $__state->path . '/::g::/' . $__chops[0] . '/' . $s); ?></li>
+        <li><?php echo HTML::a($s, $__state->path . '/::g::/' . $__chops[0] . '/' . $s); ?></li>
         <?php endforeach; ?>
       </ul>
     </section>
@@ -20,7 +20,7 @@
       <p class="f f-zone">
         <label for="f-zone"><?php echo $language->time_zone; ?></label>
         <span>
-<?php echo Form::select('config[zone]', Get::zone(), $__page[0]->content['zone'], [
+<?php echo Form::select('config[zone]', Get::zone(), $__page[0]->config['zone'], [
     'classes' => ['select', 'block'],
     'id' => 'f-zone'
 ]); ?>
@@ -29,7 +29,7 @@
       <p class="f f-charset">
         <label for="f-charset"><?php echo $language->encoding; ?></label>
         <span>
-<?php echo Form::text('config[charset]', $__page[0]->content['charset'], 'utf-8', [
+<?php echo Form::text('config[charset]', $__page[0]->config['charset'], 'utf-8', [
     'classes' => ['input'],
     'id' => 'f-charset'
 ]); ?>
@@ -42,7 +42,7 @@
         <?php $__languages[Path::N($v)] = (new Page($v, [], 'language'))->title; ?>
         <?php endforeach; ?>
         <span>
-<?php echo Form::select('config[language]', $__languages, $__page[0]->content['language'], [
+<?php echo Form::select('config[language]', $__languages, $__page[0]->config['language'], [
     'classes' => ['select'],
     'id' => 'f-language'
 ]); ?>
@@ -54,7 +54,7 @@
 <?php echo Form::select('config[direction]', [
     'ltr' => 'Left to Right (LTR)',
     'rtl' => 'Right to Left (RTL)'
-], $__page[0]->content['direction'], [
+], $__page[0]->config['direction'], [
     'classes' => ['select'],
     'id' => 'f-direction'
 ]); ?>
@@ -63,7 +63,7 @@
       <p class="f f-title">
         <label for="f-title"><?php echo $language->title; ?></label>
         <span>
-<?php echo Form::text('config[title]', $__page[0]->content['title'], null, [
+<?php echo Form::text('config[title]', $__page[0]->config['title'], null, [
     'classes' => ['input', 'block'],
     'id' => 'f-title'
 ]); ?>
@@ -72,7 +72,7 @@
       <div class="f f-description p">
         <label for="f-description"><?php echo $language->description; ?></label>
         <div>
-<?php echo Form::textarea('config[description]', $__page[0]->content['description'], $language->f_description($language->site), [
+<?php echo Form::textarea('config[description]', $__page[0]->config['description'], $language->f_description($language->site), [
     'classes' => ['textarea', 'block'],
     'id' => 'f-description'
 ]); ?>
@@ -85,7 +85,7 @@
         <?php $__shields[$v] = Shield::info($v)->title; ?>
         <?php endforeach; ?>
         <span>
-<?php echo Form::select('config[shield]', $__shields, $__page[0]->content['shield'], [
+<?php echo Form::select('config[shield]', $__shields, $__page[0]->config['shield'], [
     'classes' => ['select'],
     'id' => 'f-shield'
 ]); ?>
@@ -96,7 +96,7 @@
         <p class="h"><?php echo $language->h_page; ?></p>
 <?php
 
-$__s = isset($__page[0]->content['page']) ? (array) $__page[0]->content['page'] : [];
+$__s = isset($__page[0]->config['page']) ? (array) $__page[0]->config['page'] : [];
 $__ss = [
     'title' => null,
     'author' => null,
@@ -150,7 +150,7 @@ $__s = Anemon::extend($__ss, $__s);
       <div class="f f-content expand p">
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>
-<?php echo Form::textarea('content', To::yaml($__page[0]->content), null, [
+<?php echo Form::textarea('content', To::yaml($__page[0]->config), null, [
     'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
     'id' => 'f-content',
     'data' => ['type' => 'YAML']
