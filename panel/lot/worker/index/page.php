@@ -219,10 +219,14 @@ if ($__is_data) {
         }
     } else if ($__sgr === 'g') {
         if ($__is_post && !Message::$x) {
-            if ($s = Request::post('as_home')) {
-                $__state_page = Extend::state('page');
-                $__state_page['path'] = $s;
-                File::export($__state_page)->saveTo(EXTEND . DS . 'page' . DS . 'lot' . DS . 'state' . DS . 'config.php');
+            if ($s = Request::post('as_')) {
+                if ($__state_shield = Shield::state($config->shield)) {
+                    $__state_shield['path'] = $s;
+                    File::export($__state_shield)->saveTo(SHIELD . DS . $config->shield . DS . 'state' . DS . 'config.php');
+                } else if ($__state_extend_page = Extend::state('page')) {
+                    $__state_extend_page['path'] = $s;
+                    File::export($__state_extend_page)->saveTo(EXTEND . DS . 'page' . DS . 'lot' . DS . 'state' . DS . 'config.php');
+                }
             }
             $f = Path::F($__file) . DS . Path::B($__file);
             if (Request::post('as_page')) {

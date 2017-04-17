@@ -21,7 +21,7 @@ panel:
   sort:
     0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
     1: {"time":"time","slug":"slug","update":"update"}
-  as_home: Set as Home Page
+  as_: Set as Home Page
   as_page: Hide Pages View
 
 sort: Sort
