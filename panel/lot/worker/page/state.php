@@ -4,9 +4,8 @@
     <section class="s-kin">
       <h3><?php echo $language->{count($__kins[0]) === 1 ? 'config' : 'configs'}; ?></h3>
       <ul>
-      <?php foreach ($__kins[0] as $k => $v): ?>
-        <?php $s = $__kins[1][$k]->key; ?>
-        <li><?php echo HTML::a($s, $__state->path . '/::g::/' . $__chops[0] . '/' . $s); ?></li>
+      <?php foreach ($__kins[0] as $__k => $__v): ?>
+        <li><?php echo HTML::a('<i class="i i-1"></i> ' . Path::B($__v->path), $__state->path . '/::g::/' . $__chops[0] . '/' . $__v->name); ?></li>
         <?php endforeach; ?>
       </ul>
     </section>
@@ -81,8 +80,9 @@
       <p class="f f-shield">
         <label for="f-shield"><?php echo $language->shield; ?></label>
         <?php $__shields = []; ?>
-        <?php foreach (glob(SHIELD . DS . '*', GLOB_ONLYDIR) as $v): $v = Path::B($v); ?>
-        <?php $__shields[$v] = Shield::info($v)->title; ?>
+        <?php foreach (glob(SHIELD . DS . '*', GLOB_ONLYDIR) as $v): ?>
+        <?php $v = File::exist([$v . DS . 'about.' . $config->language . '.page', $v . DS . 'about.page'], []); ?>
+        <?php $__shields[$v] = (new Page($v))->title; ?>
         <?php endforeach; ?>
         <span>
 <?php echo Form::select('config[shield]', $__shields, $__page[0]->config['shield'], [
@@ -163,11 +163,11 @@ $__s = Anemon::extend($__ss, $__s);
       <label for="f-state"><?php echo $language->state; ?></label>
       <span>
 <?php echo Form::submit('x', 'php', $language->update, [
-    'classes' => ['button', 'x-page'],
+    'classes' => ['button', 'set', 'x-page'],
     'id' => 'f-state:php'
 ]); ?>
       </span>
     </p>
-    <?php echo Form::token(); ?>
+    <?php echo Form::hidden('token', $__token); ?>
   </main>
 </form>

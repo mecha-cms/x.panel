@@ -1,16 +1,16 @@
 <?php
 
 if ($__files = g(STATE, 'php')) {
-    foreach ($__files as $v) {
-        $v = (object) ['key' => Path::N($v), 'state' => 'php'];
-        $__kins[0][] = $v;
-        $__kins[1][] = $v;
+    foreach ($__files as $__v) {
+        $__v = o(File::inspect($__v));
+        $__kins[0][] = $__v;
+        $__kins[1][] = $__v;
     }
 }
 
 Lot::set('__kins', $__kins);
 
-$__name = $__is_r ? 'config' : $__chops[1];
+$__name = count($__chops) === 1 ? 'config' : $__chops[1];
 if ($__file = File::exist(STATE . DS . $__name . '.php')) {
     $s = [
         'path' => $__file,

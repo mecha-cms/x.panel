@@ -1,10 +1,5 @@
 <aside class="s">
-  <section class="s-search">
-    <h3><?php echo $language->search; ?></h3>
-    <form id="form.s.search" class="search" action="<?php echo $url->current; ?>" method="get">
-      <p><?php echo Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]) . ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]); ?></p>
-    </form>
-  </section>
+  <?php include __DIR__ DS . '-search.php'; ?>
   <section class="s-kin">
     <h3><?php echo $language->kins; ?></h3>
     <ul>
@@ -24,9 +19,9 @@
   <?php echo $__message; ?>
   <fieldset>
     <legend><?php echo $language->upload; ?></legend>
-	<p><?php echo Form::file('file', ['classes' => ['input']]); ?></p>
+    <p><?php echo Form::file('file', ['classes' => ['input']]); ?></p>
   </fieldset>
-  <section class="m-pages">
+  <section class="pages">
     <?php if ($__pages[1]): ?>
     <?php foreach ($__pages[1] as $_k => $_v): ?>
     <article class="page file">

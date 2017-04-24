@@ -8,9 +8,7 @@ $__sort = $__state->sort;
 $__chunk = $__state->chunk;
 $__is_get = Request::is('get');
 $__is_post = Request::is('post');
-$__is_r = count($__chops) === 1;
-$__is_pages = $__sgr === 'g' && ($__is_r || is_numeric(Path::B($url->path))) ? '/1' : ""; // Force index view by appending page offset to the end of URL
-$__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
+$__is_has_step = $__sgr === 'g' && (count($__chops) === 1 || is_numeric(Path::B($url->path))) ? '/1' : ""; // Force index view by appending page offset to the end of URL
 
 $__folder = LOT . DS . $__path;
 $__file = File::exist([
@@ -36,14 +34,13 @@ $__seeds = [
     '__parents' => [[], []],
     '__sources' => [[], []],
     '__pager' => [null, null],
-    '__is_child_has_step' => false,
-    '__is_data_has_step' => false,
-    '__is_kin_has_step' => false,
-    '__is_page_has_step' => false,
-    '__is_parent_has_step' => false,
-    '__is_source_has_step' => false,
-    '__is_pages' => $__is_pages,
-    '__is_data' => $__is_data
+    '__is_has_step' => $__is_has_step,
+    '__is_has_step_child' => false,
+    '__is_has_step_data' => false,
+    '__is_has_step_kin' => false,
+    '__is_has_step_page' => false,
+    '__is_has_step_parent' => false,
+    '__is_has_step_source' => false
 ];
 
 extract(Lot::set($__seeds)->get(null, []));

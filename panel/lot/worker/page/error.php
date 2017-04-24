@@ -18,9 +18,9 @@
     <p class="f f-state expand">
       <label for="f-state"><?php echo $language->state; ?></label>
       <span>
-<?php echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'x-trash'], 'id' => 'f-state:trash']); ?>
+<?php echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'set', 'x-trash'], 'id' => 'f-state:trash']); ?>
       </span>
     </p>
-    <?php echo Form::token(); ?>
+    <?php echo Form::hidden('token', $__token); ?>
   </main>
 </form>

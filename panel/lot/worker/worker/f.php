@@ -105,7 +105,7 @@ if (Request::is('post')) {
         Request::set('post', 'x', $s = l($s));
         if (!Is::these(File::$config['extensions'])->has($s)) {
             Request::save('post');
-            Message::error('file_x', $s);
+            Message::error('file_x', '<em>' . $s . '</em>');
         }
     }
     // Remove empty request value(s)…
@@ -134,6 +134,6 @@ if (Request::is('post')) {
     }
 }
 
-$__f = (array) Config::get('panel.f', []); // hold!
+$__field = (array) Config::get('panel.f', []); // hold!
 
-asort($__f);
+asort($__field);

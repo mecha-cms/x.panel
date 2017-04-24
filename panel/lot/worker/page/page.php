@@ -12,8 +12,8 @@
     <section class="s-kin">
       <h3><?php echo $language->{count($__datas[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
       <ul>
-        <?php foreach ($__datas[0] as $k => $v): ?>
-        <li><?php echo HTML::a($__datas[1][$k]->key, $v->url); ?></li>
+        <?php foreach ($__datas[0] as $__k => $__v): ?>
+        <li><?php echo HTML::a($__datas[1][$__k]->key, $__v->url); ?></li>
         <?php endforeach; ?>
         <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]); ?></li>
       </ul>
@@ -26,7 +26,8 @@
       <div class="f f-content expand p">
         <label for="f-content"><?php echo $language->content; ?></label>
         <div>
-<?php echo Form::textarea('content', $__page[0]->content, $language->f_content, [
+<?php $__content = $__data[0]->content; ?>
+<?php echo Form::textarea('content', is_array($__content) ? To::json($__content) : $__content, $language->f_content, [
     'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
     'id' => 'f-content'
 ]); ?>
@@ -35,7 +36,7 @@
       <p class="f f-key">
         <label for="f-key"><?php echo $language->key; ?></label>
         <span>
-<?php echo Form::text('key', $__page[0]->key, null, [
+<?php echo Form::text('key', $__data[0]->key, null, [
     'classes' => ['input'],
     'id' => 'f-key',
     'pattern' => '^[a-z\\d_]+$',
@@ -49,22 +50,22 @@
       <span>
 <?php
 
-$s = substr($__path, -2) === '/+';
+$__s = substr($__path, -2) === '/+';
 foreach ([
-    'data' => $language->{$s ? 'save' : 'update'},
-    'trash' => $s ? false : $language->delete
-] as $k => $v) {
-    if (!$v) continue;
-    echo ' ' . Form::submit('x', $k, $v, [
-        'classes' => ['button', 'x-' . $k],
-        'id' => 'f-state:' . $k
+    'data' => $language->{$__s ? 'save' : 'update'},
+    'trash' => $__s ? false : $language->delete
+] as $__k => $__v) {
+    if (!$__v) continue;
+    echo ' ' . Form::submit('x', $__k, $__v, [
+        'classes' => ['button', 'set', 'x-' . $__k],
+        'id' => 'f-state:' . $__k
     ]);
 }
 
 ?>
       </span>
     </p>
-    <?php echo Form::token(); ?>
+    <?php echo Form::hidden('token', $__token); ?>
   </main>
 </form>
 <?php else: ?>
@@ -100,10 +101,10 @@ echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID 
     <section class="s-kin">
       <h3><?php echo $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
       <ul>
-        <?php foreach ($__kins[0] as $k => $v): ?>
-        <li><?php echo HTML::a($__kins[1][$k]->title, $v->url); ?></li>
+        <?php foreach ($__kins[0] as $__k => $__v): ?>
+        <li><?php echo HTML::a($__kins[1][$__k]->title, $__v->url); ?></li>
         <?php endforeach; ?>
-        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . Path::D($__path), false, ['title' => $language->add]); ?><?php echo $__is_kin_has_step ? ' ' .  HTML::a('&#x2026;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]) : ""; ?></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . Path::D($__path), false, ['title' => $language->add]); ?><?php echo $__is_has_step_kin ? ' ' .  HTML::a('&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]) : ""; ?></li>
       </ul>
     </section>
     <?php endif; ?>
@@ -131,8 +132,8 @@ echo Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID 
       <?php endif; ?>
       <h4><?php echo $language->options; ?></h4>
       <p>
-        <?php $_s = trim(To::url(Path::F($__path, 'page')), '/'); ?>
-        <?php echo Form::checkbox('as_', $_s, $site->path === $_s, $language->panel->as_, ['classes' => ['input'], 'disabled' => $site->path === $_s ? true : null]); ?>
+        <?php $__s = trim(To::url(Path::F($__path, 'page')), '/'); ?>
+        <?php echo Form::checkbox('as_', $__s, $site->path === $__s, $language->panel->as_, ['classes' => ['input'], 'disabled' => $site->path === $__s ? true : null]); ?>
         <?php echo $__has_pages ? '<br>' . Form::checkbox('as_page', 1, file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state), $language->panel->as_page, ['classes' => ['input']]) : ""; ?>
       </p>
       <?php echo Hook::fire('panel.f.page.options', ["", $__page]); ?>
@@ -225,7 +226,7 @@ $__x = $__page[0]->state;
 
 if ($__sgr !== 's') {
     echo Form::submit('x', $__x, $language->update, [
-        'classes' => ['button', 'x-' . $__x],
+        'classes' => ['button', 'set', 'x-' . $__x],
         'id' => 'f-state:' . $__x,
         'title' => $__x
     ]);
@@ -236,18 +237,18 @@ foreach ([
     'draft' => $language->save,
     'archive' => $language->archive,
     'trash' => $__sgr !== 's' ? $language->delete : false
-] as $k => $v) {
-    if (!$v || $__x === $k) continue;
-    echo ' ' . Form::submit('x', $k, $v, [
-        'classes' => ['button', 'x-' . $k],
-        'id' => 'f-state:' . $k
+] as $__k => $__v) {
+    if (!$__v || $__x === $__k) continue;
+    echo ' ' . Form::submit('x', $__k, $__v, [
+        'classes' => ['button', 'set', 'x-' . $__k],
+        'id' => 'f-state:' . $__k
     ]);
 }
 
 ?>
       </span>
     </p>
-    <?php echo Form::token(); ?>
+    <?php echo Form::hidden('token', $__token); ?>
   </main>
   <aside class="s">
     <section class="s-data">
@@ -267,20 +268,20 @@ $__a = [
 ];
 
 $__aparts = Page::apart($__sgr === 'g' ? file_get_contents($__page[0]->path) : "");
-foreach ($__aparts as $k => $v) {
-    if (isset($__a[$k])) {
-        unset($__aparts[$k]);
+foreach ($__aparts as $__k => $__v) {
+    if (isset($__a[$__k])) {
+        unset($__aparts[$__k]);
         continue;
     }
-    $__aparts[$k] = is_array($v) ? json_encode($v) : s($v);
+    $__aparts[$__k] = is_array($__v) ? json_encode($__v) : s($__v);
 }
 
 ?>
       <h3><?php echo $language->{count($__datas[0]) + count($__aparts) === 1 ? 'data' : 'datas'}; ?></h3>
       <?php if ($__sgr === 'g'): ?>
       <ul>
-        <?php foreach ($__datas[0] as $k => $v): ?>
-        <li><?php echo HTML::a($__datas[1][$k]->key, $v->url); ?></li>
+        <?php foreach ($__datas[0] as $__k => $__v): ?>
+        <li><?php echo HTML::a($__datas[1][$__k]->key, $__v->url); ?></li>
         <?php endforeach; ?>
         <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]); ?></li>
       </ul>
@@ -291,20 +292,20 @@ foreach ($__aparts as $k => $v) {
     <section class="s-child">
       <h3><?php echo $language->{count($__childs[0]) === 1 ? 'child' : 'childs'}; ?></h3>
       <ul>
-        <?php foreach ($__childs[0] as $k => $v): ?>
+        <?php foreach ($__childs[0] as $__k => $__v): ?>
         <?php
 
-        $g = $v->path;
-        $gg = Path::X($g);
-        $ggg = Path::D($g);
-        $gggg = Path::N($g) === Path::N($ggg) && file_exists($ggg . '.' . $gg);
+        $__g = $__v->path;
+        $__gg = Path::X($__g);
+        $__ggg = Path::D($__g);
+        $__gggg = Path::N($__g) === Path::N($__ggg) && file_exists($__ggg . '.' . $__gg);
 
-        if ($gggg) continue; // skip the placeholder page
+        if ($__gggg) continue; // skip the placeholder page
 
         ?>
-        <li><?php echo HTML::a($__childs[1][$k]->title, $v->url); ?></li>
+        <li><?php echo HTML::a($__childs[1][$__k]->title, $__v->url); ?></li>
         <?php endforeach; ?>
-        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]); ?><?php echo $__is_child_has_step ? ' ' . HTML::a('&#x2026;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : ""; ?></li>
+        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]); ?><?php echo $__is_has_step_child ? ' ' . HTML::a('&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : ""; ?></li>
       </ul>
     </section>
     <?php endif; ?>

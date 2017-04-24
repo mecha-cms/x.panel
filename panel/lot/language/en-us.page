@@ -33,7 +33,7 @@ sort: Sort
 message_error: Error.
 message_error_duplicate: Duplicate %{0}%.
 message_error_exist: %{0}% %{1}% already exists.
-message_error_file_extension: Extension %{0}% is not allowed.
+message_error_file_x: Extension %{0}% is not allowed.
 message_error_file_size:
   0: Must be greater than %{0}%.
   1: Must be less than %{0}%.

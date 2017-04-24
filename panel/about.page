@@ -1,6 +1,6 @@
 ---
 title: Panel
-description: GUI for Mecha.
+description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
 version: 1.0.0
@@ -13,7 +13,7 @@ version: 1.0.0
  - `$__chops`
  - `$__data`
  - `$__datas`
- - `$__f`
+ - `$__field`
  - `$__hash`
  - `$__is_child_has_step`
  - `$__is_data_has_step`
@@ -24,7 +24,7 @@ version: 1.0.0
  - `$__kin`
  - `$__kins`
  - `$__message`
- - `$__n`
+ - `$__nav`
  - `$__page`
  - `$__pages`
  - `$__parent`

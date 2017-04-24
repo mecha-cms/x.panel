@@ -70,13 +70,13 @@
 <?php
 
 echo Form::submit('x', 'page', $language->{$__sgr === 's' ? 'create' : 'update'}, [
-    'classes' => ['button', 'x-page'],
+    'classes' => ['button', 'set', 'x-page'],
     'id' => 'f-state:page'
 ]);
 
 if ($__sgr !== 's') {
     echo ' ' . Form::submit('x', 'trash', $language->delete, [
-        'classes' => ['button', 'x-trash'],
+        'classes' => ['button', 'set', 'x-trash'],
         'id' => 'f-state:trash'
     ]);
 }
@@ -84,6 +84,6 @@ if ($__sgr !== 's') {
 ?>
       </span>
     </p>
-    <?php echo Form::token(); ?>
+    <?php echo Form::hidden('token', $__token); ?>
   </main>
 </form>

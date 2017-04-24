@@ -40,11 +40,8 @@ define('PANEL_404', File::exist([
 ]));
 
 r(__DIR__ . DS . 'engine' . DS . 'plug', [
-    'extend.php',
     'form.php',
     'get.php',
-    'plugin.php',
-    'shield.php',
     'user.php'
 ], null, Lot::set('__state', $__state)->get(null, []));
 

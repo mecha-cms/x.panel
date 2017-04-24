@@ -11,9 +11,9 @@
     <?php endif; ?>
     --><li class="n--">
       <a href="">&#x22EE;</a>
-      <?php if ($__n): ?>
+      <?php if ($__nav): ?>
       <ul>
-        <?php foreach ($__n as $k => $v): ?>
+        <?php foreach ($__nav as $k => $v): ?>
         <li class="n-<?php echo $k . (strpos($url->path . '/', '::/' . $k . '/') !== false ? ' is-current' : ""); ?>">
           <?php if (is_string($v)): ?>
           <?php echo $v; ?>

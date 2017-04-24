@@ -55,7 +55,7 @@
             <label for="f-set"><?php echo $language->set; ?></label>
             <span><?php echo Form::submit('set', 1, $language->create, ['classes' => ['button', 'set'], 'id' => 'f-set']); ?></span>
           </p>
-          <?php echo Form::token(); ?>
+          <?php echo Form::hidden('token', $__token); ?>
         </form>
       </main>
     </div>

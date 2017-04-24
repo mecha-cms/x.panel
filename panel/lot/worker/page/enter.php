@@ -27,9 +27,9 @@
           </fieldset>
           <p class="f f-enter expand">
             <label for="f-enter"><?php echo $language->enter; ?></label>
-            <span><?php echo Form::submit('enter', 1, $language->enter, ['classes' => ['button', 'enter'], 'id' => 'f-enter']); ?></span>
+            <span><?php echo Form::submit('enter', 1, $language->enter, ['classes' => ['button', 'set'], 'id' => 'f-enter']); ?></span>
           </p>
-          <?php echo Form::token(); ?>
+          <?php echo Form::hidden('token', $__token); ?>
         </form>
       </main>
     </div>

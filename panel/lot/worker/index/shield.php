@@ -1,66 +1,14 @@
 <?php
 
-if ($__files = glob(SHIELD . DS . '*', GLOB_ONLYDIR)) {
-    foreach ($__files as $v) {
-        $v = Shield::info(Path::B($v));
-        $__pages[0][] = $v;
-        $__pages[1][] = $v;
-    }
-}
+Hook::set('__page.url', function($content, $lot) use($__state) {
+    $s = Path::D(Path::F($lot['path'], LOT));
+    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($s), '/'), '/');
+});
 
-$site->is = 'pages';
+// `panel/::s::/shield` → upload a new shield
+// `panel/::g::/shield` → index view
+// `panel/::s::/shield/blastula` → create new child file in `lot\shield\blastula`
+// `panel/::g::/shield/blastula` → view blastula shield file(s)
+$site->is = $__is_has_step ? 'pages' : 'page';
 
-if (isset($__chops[1])) {
-    $site->is = 'page';
-    if ($__file = File::exist(LOT . DS . $__path)) {
-        if (Is::F($__file)) {
-            $s = [
-                'key' => str_replace(SHIELD . DS . $__chops[1], "", $__file),
-                'content' => file_get_contents($__file)
-            ];
-            $__page = [
-                new Page($__file, $s, '__file'),
-                new Page($__file, $s, 'file')
-            ];
-        } else {
-            Shield::abort(PANEL_404);
-        }
-    } else {
-        Shield::abort(PANEL_404);
-    }
-    Lot::set('__page', $__page);
-    foreach (File::explore(SHIELD . DS . $__chops[1], true, true) as $k => $v) {
-        if ($v === 0) continue;
-        $s = [
-            'key' => str_replace(SHIELD . DS, "", $k)
-        ];
-        $__kins[0][] = new Page($k, $s, '__file');
-        $__kins[1][] = new Page($k, $s, 'file');
-    }
-    Lot::set('__kins', $__kins);
-}
-
-Lot::set([
-    '__pages' => $__pages,
-    '__pager' => [new Elevator($__files ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
-        'direction' => [
-           '-1' => 'previous',
-            '0' => false,
-            '1' => 'next'
-        ],
-        'union' => [
-           '-2' => [
-                2 => ['rel' => null, 'classes' => ['button', 'x']]
-            ],
-           '-1' => [
-                1 => '&#x276E;',
-                2 => ['rel' => 'prev', 'classes' => ['button']]
-            ],
-            '1' => [
-                1 => '&#x276F;',
-                2 => ['rel' => 'next', 'classes' => ['button']]
-            ]
-        ]
-    ], '__pages')],
-    '__is_page_has_step' => count($__files) > $__chunk
-]);
+if ($__f = File::exist(__DIR__ . DS . 'shield' . DS . $__sgr . '.php')) require $__f;
