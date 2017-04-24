@@ -5,9 +5,9 @@ if ($__is_data) {
     if (file_exists($__folder . DS . $__key . '.data')) {
         Guardian::kick(str_replace('::s::', '::g::', $url->current));
     }
-    require __DIR__ . DS . '..' . DS . '-data.php';
-    require __DIR__ . DS . '..' . DS . '-datas.php';
-    require __DIR__ . DS . '..' . DS . '-source.php';
+    require __DIR__ . DS . '-data.php';
+    require __DIR__ . DS . '-datas.php';
+    require __DIR__ . DS . '-source.php';
     if ($__is_post && !Message::$x) {
         $__k = Request::post('key', "", false);
         $__f = $__folder . DS . $__k . '.data';
@@ -30,9 +30,9 @@ if ($__is_data) {
         }
     }
 } else {
-    require __DIR__ . DS . '..' . DS . '-childs.php';
-    require __DIR__ . DS . '..' . DS . '-datas.php';
-    require __DIR__ . DS . '..' . DS . '-kins.php';
+    require __DIR__ . DS . '-childs.php';
+    require __DIR__ . DS . '-datas.php';
+    require __DIR__ . DS . '-kins.php';
     if (!$__is_has_step) {
         if ($__is_post && !Message::$x) {
             $__ss = Request::post('slug');
@@ -90,5 +90,5 @@ if ($__is_data) {
             new Page(null, [], 'page')
         ]);
     }
-    require __DIR__ . DS . '..' . DS . '-parent.php';
+    require __DIR__ . DS . '-parent.php';
 }

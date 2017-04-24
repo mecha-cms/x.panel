@@ -6,9 +6,9 @@ if ($__is_data) {
     if (!$__f = File::exist($__folder . DS . $__key . '.data')) {
         Shield::abort(PANEL_404);
     }
-    require __DIR__ . DS . '..' . DS . '-data.php';
-    require __DIR__ . DS . '..' . DS . '-datas.php';
-    require __DIR__ . DS . '..' . DS . '-source.php';
+    require __DIR__ . DS . '-data.php';
+    require __DIR__ . DS . '-datas.php';
+    require __DIR__ . DS . '-source.php';
     if ($__is_post && !Message::$x) {
         if (Request::post('x') === 'trash') {
             Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
@@ -34,9 +34,9 @@ if ($__is_data) {
         }
     }
 } else {
-    require __DIR__ . DS . '..' . DS . '-childs.php';
-    require __DIR__ . DS . '..' . DS . '-datas.php';
-    require __DIR__ . DS . '..' . DS . '-kins.php';
+    require __DIR__ . DS . '-childs.php';
+    require __DIR__ . DS . '-datas.php';
+    require __DIR__ . DS . '-kins.php';
     if (!$__is_has_step) {
         if ($__is_post && !Message::$x) {
             $__f = LOT . DS . $__path;
@@ -131,8 +131,8 @@ if ($__is_data) {
                 Guardian::kick(Path::D($url->current) . '/' . $__ss);
             }
         }
-        require __DIR__ . DS . '..' . DS . '-page.php';
+        require __DIR__ . DS . '-page.php';
     }
-    require __DIR__ . DS . '..' . DS . '-pages.php';
-    require __DIR__ . DS . '..' . DS . '-parent.php';
+    require __DIR__ . DS . '-pages.php';
+    require __DIR__ . DS . '-parent.php';
 }

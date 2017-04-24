@@ -82,7 +82,7 @@
         <?php $__shields = []; ?>
         <?php foreach (glob(SHIELD . DS . '*', GLOB_ONLYDIR) as $v): ?>
         <?php $v = File::exist([$v . DS . 'about.' . $config->language . '.page', $v . DS . 'about.page'], []); ?>
-        <?php $__shields[$v] = (new Page($v))->title; ?>
+        <?php $__shields[Path::B(Path::D($v))] = (new Page($v))->title; ?>
         <?php endforeach; ?>
         <span>
 <?php echo Form::select('config[shield]', $__shields, $__page[0]->config['shield'], [
