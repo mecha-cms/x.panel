@@ -1,14 +1,14 @@
 <?php
 
-$__nav = (array) Config::get('panel.n', []);
+$__n_n = (array) Config::get('panel.n.n', []);
 
-$__o = [];
+$__n = [];
 
-if (!isset($__nav['error']) || $__nav['error'] !== false) {
+if (!isset($__n_n['error']) || $__n_n['error'] !== false) {
     if ($__log = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
         preg_match_all('#^\s*\[(.+?)\]#m', File::open($__log)->read(), $__errors);
         if (!empty($__errors[1])) {
-            $__o['error'] = isset($__nav['error']) && is_array($__nav['error']) ? $__nav['error'] : [
+            $__n['error'] = isset($__n_n['error']) && is_array($__n_n['error']) ? $__n_n['error'] : [
                 'text' => $language->errors,
                 'attributes' => [
                     'href' => $__state->path . '/::g::/error'
@@ -17,40 +17,40 @@ if (!isset($__nav['error']) || $__nav['error'] !== false) {
             ];
         }
     }
-    unset($__nav['error']);
+    unset($__n_n['error']);
 }
 
-if (!isset($__nav['exit']) || $__nav['exit'] !== false) {
-    $__o['exit'] = isset($__nav['exit']) && is_array($__nav['exit']) ? $__nav['exit'] : [
+if (!isset($__n_n['exit']) || $__n_n['exit'] !== false) {
+    $__n['exit'] = isset($__n_n['exit']) && is_array($__n_n['exit']) ? $__n_n['exit'] : [
         'text' => $language->exit,
         'attributes' => [
             'href' => $__state->path . '/::g::/exit'
         ]
     ];
-    unset($__nav['exit']);
+    unset($__n_n['exit']);
 }
 
-if (!isset($__nav[""]) || $__nav[""] !== false) {
-    $__o[""] = isset($__nav[""]) && is_array($__nav[""]) ? $__nav[""] : [
+if (!isset($__n_n[""]) || $__n_n[""] !== false) {
+    $__n[""] = isset($__n_n[""]) && is_array($__n_n[""]) ? $__n_n[""] : [
         'text' => $language->visit . ' ' . $language->site,
         'attributes' => [
             'href' => $url . "",
             'target' => '_blank'
         ]
     ];
-    unset($__nav[""]);
+    unset($__n_n[""]);
 }
 
-foreach ($__nav as $k => $v) {
-    if ($v === false) continue;
-    $__o[$k] = is_array($v) ? $v : [
-        'text' => $language->{$k},
+foreach ($__n_n as $__k => $__v) {
+    if ($__v === false) continue;
+    $__n[$__k] = is_array($__v) ? $__v : [
+        'text' => $language->{$__k},
         'attributes' => [
-            'href' => $__state->path . '/::g::/' . $k
+            'href' => $__state->path . '/::g::/' . $__k
         ]
     ];
 }
 
-$__nav = Anemon::eat($__o)->sort([1, 'text'], '?')->vomit(); // hold!
+$__n_n = Anemon::eat($__n)->sort([1, 'text'], '?')->vomit(); // hold!
 
-unset($__o);
+unset($__n);

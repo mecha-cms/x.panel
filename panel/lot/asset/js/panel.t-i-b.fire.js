@@ -4,9 +4,9 @@
         k = forms.$;
 
     function apply_TIB(node) {
-        var t = new TIB(node, $.TIB || {});
-        t.create();
-        t.input.parentNode.className += (' ' + t.input.className.replace(/(\b|\s+)tags-input(\b|\s+)/g, ""));
+        var k = node.className,
+            t = new TIB(node, $.TIB || {});
+        t.view.className += (' ' + k);
         return t;
     }
 

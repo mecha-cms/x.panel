@@ -8,7 +8,3 @@
     <script>!function(n,e){n[e]=n[e].replace(/\bno-js\b/g,"js")}(document.documentElement,"className");</script>
   </head>
   <body spellcheck="false">
-<?php Shield::get([
-    $__path_shield . DS . 'nav.php',
-    __DIR__ . DS . 'nav.php'
-]); ?>

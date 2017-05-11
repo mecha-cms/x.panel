@@ -244,23 +244,46 @@ label {
 }
 .message + .message {margin-top:.25em}
 
-.p-enter,
-.p-enter body {
+.c {
   display:table;
+  width:100%;
+  table-layout:fixed;
+}
+.c > form {
+  display:table-row;
+  margin-top:0;
+}
+.m,.s {
+  display:table-cell;
+  vertical-align:top;
+  padding:1em;
+}
+
+.p-enter,
+.p-enter body,
+.p-enter .c,
+.p-enter form,
+.p-enter .m {
   padding:0;
+  border:0;
   width:100%;
   height:100%;
 }
-.p-enter body {
-  display:table-cell;
-  vertical-align:middle;
-}
-.p-enter form {
+.p-enter .m {vertical-align:middle}
+.p-enter .m fieldset {
   margin:0 auto;
+  max-width:16em;
+}
+.p-enter .m .messages {
+  margin:0 auto .5em;
   max-width:16em;
 }
 .p-enter .f > label {width:4em}
 .p-enter .f > label[for="f-enter"] {display:none}
+.p-enter .f > label[for="f-enter"] + span {
+  display:block;
+  text-align:center;
+}
 .p-404,
 .p-404 body {
   margin:0;

@@ -1,14 +1,3 @@
-<aside class="s">
-  <?php include __DIR__ . DS . '-search.php'; ?>
-  <?php if ($__pager[0]): ?>
-  <section class="s-nav">
-    <h3><?php echo $language->navigation; ?></h3>
-    <p><?php echo $__pager[0]; ?></p>
-  </section>
-  <?php endif; ?>
-</aside>
-<main class="m">
-  <?php echo $__message; ?>
   <section class="buttons">
     <p>
       <?php if (Request::get('q')): ?>
@@ -19,34 +8,26 @@
       <?php echo implode(' ', Hook::fire('panel.a.' . $__chops[0] . 's', [$__links])); ?>
     </p>
   </section>
+  <?php echo $__message; ?>
   <section class="pages">
     <?php if ($__pages[0]): ?>
     <?php foreach ($__pages[1] as $__k => $__v): ?>
-    <?php
-
-    $__s = $__pages[0][$__k]->url;
-
-    ?>
-    <article class="page on-<?php echo $__v->state . ($__v->id === $config->shield ? ' is-active' : ""); ?>" id="page-<?php echo $__v->id; ?>">
+    <?php $__s = $__pages[0][$__k]->url; ?>
+    <article class="page <?php echo 'on-' . $__v->state; ?><?php if ($config->shield === $__v->id): ?> is-current<?php endif; ?>" id="page-<?php echo $__v->id; ?>">
       <header>
         <h3><?php echo $__v->title; ?></h3>
       </header>
-      <section>
-        <p><?php echo To::snippet($__v->description, true, $__state->snippet); ?></p>
-      </section>
+      <section><p><?php echo To::snippet($__v->description, true, $__state->snippet); ?></p></section>
       <footer>
         <p>
         <?php
 
-        $__links = [HTML::a($language->open, $__s)];
+        $__links = [
+            HTML::a($language->edit, $__s),
+            HTML::a($language->delete, str_replace('::g::', '::r::', $__s) . HTTP::query(['token' => $__token]))
+        ];
 
-        if ($__v->id !== $config->shield) {
-            $__links[] = HTML::a($language->attach, str_replace('::g::', '::s::', $__s) . HTTP::query(['token' => $__token]));
-        }
-
-        $__links[] = HTML::a($language->delete, str_replace('::g::', '::r::', $__s) . HTTP::query(['token' => $__token]));
-
-        echo implode(' &#x00B7; ', Hook::fire('panel.a.' . $__chops[0], [$__links, $__v, $__pages]));
+        echo implode(' &#x00B7; ', Hook::fire('panel.a.' . $__chops[0], [$__links]));
 
         ?>
         </p>
@@ -61,4 +42,3 @@
     <?php endif; ?>
     <?php endif; ?>
   </section>
-</main>

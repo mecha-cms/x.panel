@@ -86,3 +86,7 @@ if ($__sgr === 's') {
     Message::success(To::sentence($language->restoreed));
     Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $s);
 }
+
+$site->is = 'page';
+$site->is_f = 'editor';
+$site->layout = 2;

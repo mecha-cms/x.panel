@@ -17,7 +17,7 @@
             <legend><?php echo $language->new__($language->user, true); ?></legend>
             <p class="f f-user">
               <label for="f-user"><?php echo $language->user; ?></label>
-              <span><?php echo Form::text('user', null, User::ID . l($language->user), ['classes' => ['input', 'block'], 'id' => 'f-user', 'pattern' => '^' . x(User::ID) . '[a-z\\d-]+$', 'autofocus' => true, 'required' => true]); ?></span>
+              <span><?php echo Form::text('user', null, User::ID . l($language->user), ['classes' => ['input', 'block'], 'id' => 'f-user', 'pattern' => '^' . x(User::ID) . '[a-z\\d]+(?:-[a-z\\d]+)*$', 'autofocus' => true, 'required' => true]); ?></span>
             </p>
             <p class="f f-status">
               <label for="f-status"><?php echo $language->status; ?></label>

@@ -1,17 +1,3 @@
-<form id="form.m.editor" action="" method="post">
-  <aside class="s">
-    <section class="s-language">
-      <h3><?php echo $language->language; ?></h3>
-      <ul>
-        <?php foreach ($__kins[0] as $k => $v): ?>
-        <li><?php echo HTML::a($__kins[1][$k]->title, $__state->path . '/::g::/' . $__chops[0] . '/' . $v->slug); ?></li>
-        <?php endforeach; ?>
-        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__chops[0], false, ['title' => $language->add]); ?></li>
-      </ul>
-    </section>
-  </aside>
-  <main class="m">
-    <?php echo $__message; ?>
     <fieldset>
       <legend><?php echo $language->editor; ?></legend>
       <p class="f f-title expand">
@@ -58,7 +44,9 @@
 <?php echo Form::text('slug', $__page[0]->slug, $__page[1]->slug, [
     'classes' => ['input'],
     'id' => 'f-locale',
-    'data' => ['slug-o' => 'title']
+    'data' => ['slug-o' => 'title'],
+    'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
+    'required' => true
 ]); ?>
         </span>
       </p>
@@ -84,6 +72,3 @@ if ($__sgr !== 's') {
 ?>
       </span>
     </p>
-    <?php echo Form::hidden('token', $__token); ?>
-  </main>
-</form>

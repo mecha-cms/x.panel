@@ -133,7 +133,3 @@ if (Request::is('post')) {
         Message::error('token');
     }
 }
-
-$__field = (array) Config::get('panel.f', []); // hold!
-
-asort($__field);

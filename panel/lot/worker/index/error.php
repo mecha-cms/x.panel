@@ -18,3 +18,7 @@ Lot::set('__page', [
         'type' => ""
     ])
 ]);
+
+$site->is = 'page';
+$site->is_f = 'editor';
+$site->layout = 2;

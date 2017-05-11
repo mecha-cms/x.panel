@@ -49,14 +49,10 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__user_key' => $__user_key,
         '__user_token' => $__user_token,
         '__message' => Message::get() ?: Lot::get('message', ""),
-        '__field' => $__field,
-        '__nav' => $__nav
+        '__n_n' => $__n_n
     ]);
     if ($__user && $__sgr === 's' && Request::is('get')) {
         Request::save('post', 'user', User::ID . $__user->key);
     }
-    Shield::attach([
-        $__path_shield . DS . $site->is . '.php',
-        $__DIR . DS . $site->is . '.php'
-    ]);
+    Shield::attach(__DIR__ . DS . '..' . DS . $site->layout(0) . '.php');
 }, 1);

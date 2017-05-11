@@ -1,25 +1,26 @@
 <nav class="n">
   <ul><!--
-    <?php if ($__menus = glob(LOT . DS . '*', GLOB_ONLYDIR)): ?>
-      <?php foreach ($__menus as $__menu): ?>
-      <?php $__menu = Path::N($__menu); ?>
-      <?php $c = strpos($url->path . '/', '::/' . $__menu . '/') !== false ? ' is-current' : ""; ?>
-      --><li class="n-<?php echo $__menu . $c; ?>">
-        <a href="<?php echo $url . '/' . $__state->path . '/::g::/' . $__menu; ?>"><?php echo $language->{$__menu}; ?></a>
+    <?php if ($__menus = array_replace(glob(LOT . DS . '*', GLOB_ONLYDIR), a(Config::get('panel.n', [])))): ksort($__menus); ?>
+      <?php foreach ($__menus as $__key => $__value): ?>
+      <?php if ($__key === 'n' || $__value === false) continue; ?>
+      <?php $__value = Path::N($__value); ?>
+      <?php $__c = strpos($url->path . '/', '::/' . $__value . '/') !== false ? ' is-current' : ""; ?>
+      --><li class="n-<?php echo $__value . $__c; ?>">
+        <a href="<?php echo $url . '/' . $__state->path . '/::g::/' . $__value; ?>"><?php echo $language->{$__value}; ?></a>
       </li><!--
       <?php endforeach; ?>
     <?php endif; ?>
-    --><li class="n--">
+    --><li class="n-n">
       <a href="">&#x22EE;</a>
-      <?php if ($__nav): ?>
+      <?php if ($__n_n): ksort($__n_n); ?>
       <ul>
-        <?php foreach ($__nav as $k => $v): ?>
-        <li class="n-<?php echo $k . (strpos($url->path . '/', '::/' . $k . '/') !== false ? ' is-current' : ""); ?>">
-          <?php if (is_string($v)): ?>
-          <?php echo $v; ?>
+        <?php foreach ($__n_n as $__k => $__v): ?>
+        <li class="n-n-<?php echo $__k . (strpos($url->path . '/', '::/' . $__k . '/') !== false ? ' is-current' : ""); ?>">
+          <?php if (is_string($__v)): ?>
+          <?php echo $__v; ?>
           <?php else: ?>
-          <?php $i = !empty($v['i']) ? ' <i>' . $v['i'] . '</i>' : ""; ?>
-          <?php echo HTML::a($v['text'] . $i, null, false, $v['attributes']); ?>
+          <?php $__i = !empty($__v['i']) ? ' <i>' . $__v['i'] . '</i>' : ""; ?>
+          <?php echo HTML::a($__v['text'] . $__i, null, false, $__v['attributes']); ?>
           <?php endif; ?>
         </li>
         <?php endforeach; ?>

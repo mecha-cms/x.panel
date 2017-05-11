@@ -5,5 +5,5 @@ return [
     'sort' => [-1, 'time'],
     'chunk' => 20,
     'snippet' => [250, '&#x2026;'],
-    'shield' => 'mecha'
+    'shield' => '1960'
 ];

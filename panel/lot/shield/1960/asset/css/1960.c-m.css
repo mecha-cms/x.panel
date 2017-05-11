@@ -1,5 +1,6 @@
 .CodeMirror {
-  font-family:"Courier New",Courier,"Nimbus Mono L",monospace;
+  font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
+  font-size:86%;
   border:1px solid;
   cursor:text;
 }

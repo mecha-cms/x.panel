@@ -5,7 +5,7 @@
 // c: container
 // d: data
 // e:
-// f: field
+// f: field/form
 // g:
 // h: hint
 // i: icon
@@ -17,9 +17,9 @@
 // o:
 // p: page/paragraph/path
 // q:
-// r:
+// r: require path
 // s: secondary/sidebar
-// t:
+// t: tab
 // u:
 // v:
 // w:
@@ -40,7 +40,6 @@ define('PANEL_404', File::exist([
 ]));
 
 r(__DIR__ . DS . 'engine' . DS . 'plug', [
-    'form.php',
     'get.php',
     'user.php'
 ], null, Lot::set('__state', $__state)->get(null, []));

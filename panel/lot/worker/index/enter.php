@@ -23,18 +23,18 @@ if (Request::is('post')) {
     } else if (file_exists($f . '.page')) {
         if (!file_exists($f . DS . 'pass.data')) {
             // Reset password by deleting `pass.data` manually, then log in!
-            File::write(password_hash($__user_pass . $__user_key, PASSWORD_DEFAULT))->saveTo($f . DS . 'pass.data');
+            File::write(password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($f . DS . 'pass.data');
             Message::success('create', $language->pass);
             Message::info('is', [$language->pass, '<em>' . $__user_pass . '</em>']);
         }
-        if (password_verify($__user_pass . $__user_key, File::open($f . DS . 'pass.data')->get(0, ""))) {
+        if (password_verify($__user_pass . ' ' . $__user_key, File::open($f . DS . 'pass.data')->get(0, ""))) {
             File::write($__user_token)->saveTo($f . DS . 'token.data');
             $c = [
                 'expire' => 30,
                 'http_only' => true
             ];
-            Cookie::set('Mecha.Panel.user.key', $__user_key, $c);
-            Cookie::set('Mecha.Panel.user.token', $__user_token, $c);
+            Cookie::set('panel.c.user.key', $__user_key, $c);
+            Cookie::set('panel.c.user.token', $__user_token, $c);
             Message::success('user_enter');
             Hook::NS('on.user.enter');
             Guardian::kick(Request::post('kick', ""));
@@ -49,10 +49,6 @@ if (Request::is('post')) {
     }
 }
 
-Hook::set('shield.path', function($__path) use($site) {
-    $s = Path::N($__path);
-    if ($s === $site->is) {
-        return PANEL . DS . 'lot' . DS . 'worker' . DS . $s . DS . Path::B(__FILE__);
-    }
-    return $__path;
-});
+$site->is = 'page';
+$site->is_f = 'enter';
+$site->layout = 0;

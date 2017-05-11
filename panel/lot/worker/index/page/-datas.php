@@ -1,9 +1,21 @@
 <?php
 
 if ($__f = g($__folder, 'data')) {
+    $__has_tag = Extend::exist('tag');
     foreach (/* Anemon::eat($__f)->chunk($__chunk, 0) */ $__f as $__k => $__v) {
         $__n = Path::N($__v);
-        if ($__n === $__key) continue;
+        if (
+            $__n === $__key ||
+            $__n === 'chunk' ||
+            $__n === 'css' ||
+            $__n === 'id' ||
+            $__n === 'js' ||
+            $__n === 'kind' && $__has_tag ||
+            $__n === 'slug' ||
+            $__n === 'sort' ||
+            $__n === 'state' ||
+            $__n === 'time'
+        ) continue;
         $__a = [
             'title' => $__n,
             'key' => $__n,

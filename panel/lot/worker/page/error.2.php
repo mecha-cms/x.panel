@@ -1,8 +1,3 @@
-<form id="form.m.view" action="<?php echo $url . '/' . $__state->path . '/::r::/' . $__path . $url->query; ?>" method="post">
-  <aside class="s">
-  </aside>
-  <main class="m">
-    <?php echo $__message; ?>
     <fieldset>
       <legend><?php echo $language->editor; ?></legend>
       <div class="f f-content expand p">
@@ -21,6 +16,3 @@
 <?php echo Form::submit('x', 'trash', $language->delete, ['classes' => ['button', 'set', 'x-trash'], 'id' => 'f-state:trash']); ?>
       </span>
     </p>
-    <?php echo Form::hidden('token', $__token); ?>
-  </main>
-</form>

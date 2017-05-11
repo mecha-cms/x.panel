@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i|Roboto+Mono:400,400i,700,700i');
 html {
-  font-family:Helmet,FreeSans,sans-serif;
+  font-family:"Roboto Condensed",Helmet,FreeSans,sans-serif;
   background:#000;
   color:#fff;
   border-bottom:4px solid transparent;
@@ -16,8 +17,8 @@ mark {
   color:inherit;
 }
 code,.code {
-  font-family:"Courier New",Courier,"Nimbus Mono L",monospace;
-  font-size:90%;
+  font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
+  font-size:85%;
 }
 .button,
 .input,
@@ -25,10 +26,12 @@ code,.code {
 .textarea {
   background:#fff;
   border-color:inherit;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.25);
 }
 .button {
   background:#00a;
   color:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
 }
 .button:focus,
 .button:active {
@@ -39,22 +42,14 @@ code,.code {
 .input:invalid,
 .textarea:invalid {
   color:#f00;
-  box-shadow:0 0 2px #f00;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.25),0 0 2px #f00;
 }
-.c {
-  display:table;
-  width:100%;
-  table-layout:fixed;
-}
-.c > form {
-  display:table-row;
-  margin-top:0;
-}
-.m,.s {
-  display:table-cell;
-  vertical-align:top;
-  padding:1em;
-}
+.input[type="checkbox"],
+.input[type="color"],
+.input[type="radio"],
+.input[type="range"],
+.input[readonly],
+.textarea[readonly] {box-shadow:none}
 .m {
   background:#ffa;
   padding-bottom:4em;
@@ -82,6 +77,13 @@ code,.code {
   height:22em;
   position:relative;
   overflow:hidden;
+  box-shadow:inset 0 -4px 0 #eec,0 1px 2px rgba(0,0,0,.25);
+}
+.m .page figure {
+  margin:-1em -1.25em 1em;
+  padding-bottom:70%;
+  height:0;
+  background:#ffc;
 }
 .m .page h3 {
   font:inherit;
@@ -101,14 +103,15 @@ code,.code {
   line-height:3em;
   padding:0 1em;
 }
-.m .page.is-parent {box-shadow:inset 0 0 0 4px #def}
+.m .page.is-parent {box-shadow:inset 0 -4px 0 #cde,0 1px 2px rgba(0,0,0,.25)}
 .m .page.as-home,
-.m .page.is-active {box-shadow:inset 0 0 0 4px #fed}
+.m .page.is-active {box-shadow:inset 0 -4px 0 #fdc,0 1px 2px rgba(0,0,0,.25)}
 .m .page.on-draft {border-style:dotted}
 .m .page.as-placeholder {
   border-style:dotted;
   opacity:.2;
 }
+.m .page.as-placeholder figure {display:none}
 .m .files {
   margin-right:0;
   margin-left:0;
@@ -122,11 +125,32 @@ code,.code {
   background:#fff;
   border-left:1px solid;
   padding:.25em .75em;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
 }
 .m .file + .file {margin-top:2px}
 .m .file:after {
   content:"";
   display:table;
+  clear:both;
+}
+.m .t {
+  margin:-1em -1em .5384615384615384em;
+  padding:.5384615384615384em 1em 0;
+}
+.m .messages + .t {margin-top:.5384615384615384em}
+.m .t:after {
+  content:"";
+  display:table;
+  clear:both;
+}
+.m .t a {
+  display:block;
+  float:left;
+}
+.m .t a + a {margin-left:1em}
+.m .t a.is-active {color:inherit}
+.m .t-c {
+  margin-top:0;
   clear:both;
 }
 .n ul,
@@ -254,6 +278,7 @@ code,.code {
   position:relative;
   word-wrap:break-word;
 }
+.s section li .i {margin-right:.2em}
 .s section ul ul {margin:0 0 0 .2em}
 .s section li:before {
   content:"";
@@ -385,14 +410,6 @@ code,.code {
 
 */
 
-.i\[\.\.\.\]:before,
-.i\[\.\.\.\]\:e:before,
-.i\[\.\.\.\]\:h:before {content:'\22EF'}
-.i\[\.\.\.\]\:n:before,
-.i\[\.\.\.\]\:v:before {content:'\22EE'}
-.i\[\.\.\.\]\:ne:before {content:'\22F0'}
-.i\[\.\.\.\]\:nw:before {content:'\22F1'}
-
 .n a .i,
 .button .i {
   width:auto;
@@ -432,7 +449,6 @@ code,.code {
 .p-enter {background:#ffa}
 .p-enter body,
 .p-enter .m {background:none}
-.p-enter .f > label[for="f-enter"] + span {text-align:center}
 
 .p-set .m {
   padding-top:4em;
@@ -477,6 +493,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* TODO */
+.n-comment,
 .n-asset,
 .n-cache,
 .n-extend {display:none}

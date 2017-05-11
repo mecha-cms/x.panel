@@ -4,7 +4,7 @@ if ($__sgr !== 's') {
     Shield::abort(PANEL_404);
 }
 
-// Once a user created, this page will only visible for logged in user with status `1`
+// Once a user created, this page will be visible only for logged in user(s) with status `1`
 if (g(ENGINE . DS . 'log' . DS . 'user', 'page') && User::current('status') !== 1) {
     Shield::abort(PANEL_404);
 }
@@ -36,8 +36,8 @@ if (Request::is('post')) {
         Message::success('create', $language->user . ' <em>' . $__user_key . '</em>');
         Request::save('post', 'user', $__user_key);
         Request::save('post', 'pass_x', true);
-        Cookie::reset('Mecha.Panel.user.key');
-        Cookie::reset('Mecha.Panel.user.token');
+        Cookie::reset('panel.c.user.key');
+        Cookie::reset('panel.c.user.token');
         Guardian::kick($__state->path . '/::g::/enter');
     } else {
         Request::save('post');
@@ -45,10 +45,6 @@ if (Request::is('post')) {
     }
 }
 
-Hook::set('shield.path', function($__path) use($site) {
-    $s = Path::N($__path);
-    if ($s === $site->is) {
-        return PANEL . DS . 'lot' . DS . 'worker' . DS . $s . DS . Path::B(__FILE__);
-    }
-    return $__path;
-});
+$site->is = 'page';
+$site->is_f = 'enter';
+$site->layout = 1;

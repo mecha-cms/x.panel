@@ -1,7 +1,6 @@
 <?php
 
 if ($__is_data) {
-    $site->is = 'page';
     $__folder = LOT . DS . $__[0];
     if (!$__f = File::exist($__folder . DS . $__key . '.data')) {
         Shield::abort(PANEL_404);
@@ -111,6 +110,18 @@ if ($__is_data) {
                     }
                     // Rename file…
                     File::open($__f)->renameTo($__ss . '.' . $__xx);
+                }
+                // Create `css.data` file…
+                if (($__s = trim(Request::post('css', "", false))) !== "") {
+                    File::write($__s)->saveTo($__dd . DS . 'css.data', 0600);
+                } else {
+                    File::open($__dd . DS . 'css.data')->delete();
+                }
+                // Create `js.data` file…
+                if (($__s = trim(Request::post('js', "", false))) !== "") {
+                    File::write($__s)->saveTo($__dd . DS . 'js.data', 0600);
+                } else {
+                    File::open($__dd . DS . 'js.data')->delete();
                 }
                 // Create `time.data` file…
                 if (!$__s = Request::post('time')) {

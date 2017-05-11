@@ -16,6 +16,7 @@ if (count($__chops) <= 1) {
         }
         foreach ($__f as $__v) {
             $__id = Path::B($__v);
+            if (substr($__id, -6) === '.trash') continue;
             if ($__v = File::exist([
                 $__v . DS . 'about.' . $config->language . '.page',
                 $__v . DS . 'about.page'
@@ -65,6 +66,9 @@ if (count($__chops) <= 1) {
         Lot::set('__page', $__page);
     } else if ($__f = File::exist(LOT . DS . $__path)) {
         if ($__is_post && !Message::$x) {
+            if (Request::post('xx') === -1) {
+                Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
+            }
             $__n = Request::post('name');
             $__x = Path::X($__n, false);
             $__is_f = Request::post('xx') !== 0;
@@ -129,9 +133,11 @@ if (count($__chops) <= 1) {
     if ($__f = glob(LOT . DS . $__path . DS . '*')) {
         foreach ($__f as $__k => $__v) {
             $__b = str_replace(SHIELD . DS . $__chops[1] . DS, "", To::path($__v));
+            if (substr($__b, -6) === '.trash') continue;
             $__a = [
                 'title' => Path::B($__b),
                 'path' => $__v,
+                'extension' => Path::X($__v),
                 'url' => $url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . $__chops[1] . '/' . $__b
             ];
             $__datas[0][] = (object) $__a;

@@ -25,13 +25,14 @@
                 autoCloseBrackets: true
             });
         var type = $(node).data('type'),
+            def = 'application/x-httpd-php',
             aliases = {
-                'html': 'application/x-httpd-php',
-                'xml': 'application/x-httpd-php',
+                'html': def,
                 'markdown': {
                     'name': 'text/x-markdown',
                     'fencedCodeBlocks': true
-                }
+                },
+                'xml': def
             };
         editor.addKeyMap({
             'Ctrl-J': 'toMatchingTag',

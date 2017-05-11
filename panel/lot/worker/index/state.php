@@ -36,3 +36,7 @@ if ($__is_post) {
     Message::success(To::sentence($language->updateed));
     Guardian::kick($url->current);
 }
+
+$site->is = 'page';
+$site->is_f = 'editor';
+$site->layout = 2;

@@ -20,4 +20,4 @@ Dependency
 
 ### Plugin
 
- - Markdown Parser
+ - Markdown
