@@ -5,7 +5,7 @@
 
 $__authors = [];
 $__select = $__page[0]->author;
-foreach (g(ENGINE . DS . 'log' . DS . 'user', 'page') as $__v) {
+foreach (g(USER, 'page') as $__v) {
     $__v = new User(Path::N($__v));
     $__k = $__v->key;
     if ($__user->status !== 1 && $__k !== $__user->key) continue;

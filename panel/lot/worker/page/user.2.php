@@ -1,12 +1,12 @@
           <fieldset>
-            <legend><?php echo $language->new__($language->user, true); ?></legend>
+            <legend><?php echo $language->user; ?></legend>
             <p class="f f-user">
               <label for="f-user"><?php echo $language->user; ?></label>
               <span><?php echo Form::text('user', null, User::ID . l($language->user), ['classes' => ['input', 'block'], 'id' => 'f-user', 'pattern' => '^' . x(User::ID) . '[a-z\\d]+(?:-[a-z\\d]+)*$', 'autofocus' => true, 'required' => true]); ?></span>
             </p>
             <p class="f f-status">
               <label for="f-status"><?php echo $language->status; ?></label>
-              <span><?php $__status = a($language->panel->user); echo Form::select('status', [(g(ENGINE . DS . 'log' . DS . 'user', 'page') ? "" : '.') . '2' => $__status[2], '1' => $__status[1]], null, ['classes' => ['select', 'block'], 'id' => 'f-status']); ?></span>
+              <span><?php $__status = a($language->panel->user); echo Form::select('status', [(g(USER, 'page') ? "" : '.') . '2' => $__status[2], '1' => $__status[1]], null, ['classes' => ['select', 'block'], 'id' => 'f-status']); ?></span>
             </p>
             <p class="f f-author">
               <label for="f-author"><?php echo $language->name; ?></label>

@@ -15,7 +15,7 @@ if (Request::is('post')) {
     if (strpos($__user_key, User::ID) === 0) {
         $__user_key = substr($__user_key, 1); // remove the `@`
     }
-    $f = ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key;
+    $f = USER . DS . $__user_key;
     if (!$__user_key) {
         Message::error('void_field', $language->user, true);
     } else if (!$__user_pass) {

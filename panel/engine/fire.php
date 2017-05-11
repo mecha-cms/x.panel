@@ -3,7 +3,7 @@
 $__user_enter = $__user_key = $__user_token = null;
 
 if ($__user_key = Cookie::get('panel.c.user.key')) {
-    if ($__user_token = File::open(ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key . DS . 'token.data')->get(0)) {
+    if ($__user_token = File::open(USER . DS . $__user_key . DS . 'token.data')->get(0)) {
         if (Cookie::get('panel.c.user.token') === $__user_token) {
             $__user_enter = true;
         }
@@ -24,7 +24,7 @@ if (
     if (
         $url->path === $__state->path . '/::g::/enter' &&
         file_exists(PANEL . DS . 'lot' . DS . 'worker' . DS . 'index' . DS . 'set.php') &&
-        !g(ENGINE . DS . 'log' . DS . 'user', 'page')
+        !g(USER, 'page')
     ) {
         Message::info('void', $language->users);
         Guardian::kick($__state->path . '/::s::/set');

@@ -5,7 +5,7 @@ if ($__sgr !== 's') {
 }
 
 // Once a user created, this page will be visible only for logged in user(s) with status `1`
-if (g(ENGINE . DS . 'log' . DS . 'user', 'page') && User::current('status') !== 1) {
+if (g(USER, 'page') && User::current('status') !== 1) {
     Shield::abort(PANEL_404);
 }
 
@@ -19,7 +19,7 @@ if (Request::is('post')) {
     } else if (!preg_match('#^' . x(User::ID) . '[a-z\d-]+$#', $__user_key)) {
         Message::error('pattern_field', $language->user);
     }
-    $f = ENGINE . DS . 'log' . DS . 'user' . DS . substr($__user_key, 1) . '.page';
+    $f = USER . DS . substr($__user_key, 1) . '.page';
     if (file_exists($f)) {
         Message::error('exist', [$language->user, '<em>' . $__user_key . '</em>']);
     }
@@ -45,6 +45,21 @@ if (Request::is('post')) {
     }
 }
 
+if ($__files = g(USER, 'page')) {
+    foreach ($__files as $__v) {
+        $__v = Path::N($__v);
+        $__kins[0][] = new User($__v, [], '__user');
+        $__kins[1][] = new User($__v, []);
+    }
+}
+
+$__is_has_step_kin = count($__files) > $__chunk ? true : false;
+
+Lot::set([
+    '__kins' => $__kins,
+    '__is_has_step_kin' => $__is_has_step_kin
+]);
+
 $site->is = 'page';
 $site->is_f = 'user';
-$site->layout = 1;
+$site->layout = 2;

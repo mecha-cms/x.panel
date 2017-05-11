@@ -5,7 +5,7 @@ $__user_key = Cookie::get('panel.c.user.key');
 Cookie::reset('panel.c.user.key');
 Cookie::reset('panel.c.user.token');
 
-$f = ENGINE . DS . 'log' . DS . 'user' . DS . $__user_key . DS;
+$f = USER . DS . $__user_key . DS;
 
 File::open($f . 'user.data')->delete();
 File::open($f . 'token.data')->delete();
