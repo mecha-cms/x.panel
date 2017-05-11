@@ -46,5 +46,5 @@ if (Request::is('post')) {
 }
 
 $site->is = 'page';
-$site->is_f = 'enter';
+$site->is_f = 'user';
 $site->layout = 1;

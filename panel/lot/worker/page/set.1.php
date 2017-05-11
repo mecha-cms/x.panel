@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html dir="<?php echo $site->direction; ?>" class="<?php echo 'p-' . str_replace('/', ' p-', $__path); ?>">
-  <head>
-    <meta charset="<?php echo $site->charset; ?>">
-    <meta name="viewport" content="width=device-width">
-    <!-- Prevent search engines from indexing the login page -->
-    <meta name="robots" content="noindex">
-    <title><?php echo $language->new__($language->user, true) . ' &#x00B7; ' . $language->__title; ?></title>
-    <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
-  </head>
-  <body spellcheck="false">
-    <div class="c">
-      <main class="m">
-        <form id="form.m.set" action="" method="post">
-          <?php echo $__message; ?>
           <fieldset>
             <legend><?php echo $language->new__($language->user, true); ?></legend>
             <p class="f f-user">
@@ -55,9 +40,3 @@
             <label for="f-set"><?php echo $language->set; ?></label>
             <span><?php echo Form::submit('set', 1, $language->create, ['classes' => ['button', 'set'], 'id' => 'f-set']); ?></span>
           </p>
-          <?php echo Form::hidden('token', $__token); ?>
-        </form>
-      </main>
-    </div>
-  </body>
-</html>
