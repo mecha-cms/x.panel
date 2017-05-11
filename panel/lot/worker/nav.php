@@ -28,8 +28,10 @@
       <?php endif; ?>
     </li><!--
   --></ul>
+  <?php if ($__user): ?>
   <span>
     <?php echo HTML::img($__user->avatar($url->protocol . 'www.gravatar.com/avatar/' . md5($__user->email ?: $__user->key) . '?s=60&amp;d=monsterid')); ?>
     <?php echo User::ID . $__user->key; ?>
   </span>
+  <?php endif; ?>
 </nav>
