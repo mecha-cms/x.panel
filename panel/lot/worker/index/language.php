@@ -1,5 +1,19 @@
 <?php
 
+$site->is = 'page';
+$site->is_f = 'editor';
+$site->layout = 2;
+
+Config::set('panel.t', [
+    'page' => [
+        'title' => $language->editor,
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'language.2.t.page.php',
+        'stack' => 10
+    ]
+]);
+
+/* `sgr` */
+
 foreach (glob(LANGUAGE . DS . '*.page') as $v) {
     $__kins[0][] = new Page($v, [], '__language');
     $__kins[1][] = new Page($v, [], 'language');
@@ -86,7 +100,3 @@ if ($__sgr === 's') {
     Message::success(To::sentence($language->restoreed));
     Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $s);
 }
-
-$site->is = 'page';
-$site->is_f = 'editor';
-$site->layout = 2;

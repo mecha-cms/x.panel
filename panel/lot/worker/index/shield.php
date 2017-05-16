@@ -13,4 +13,12 @@ $site->is = $__is_has_step ? 'pages' : 'page';
 $site->is_f = $__is_has_step ? false : 'editor';
 $site->layout = 2;
 
+Config::set('panel.t', [
+    'file' => [
+        'title' => $language->editor,
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'shield.2.t.file.php',
+        'stack' => 10
+    ]
+]);
+
 if ($__f = File::exist(__DIR__ . DS . 'shield' . DS . $__sgr . '.php')) require $__f;

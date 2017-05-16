@@ -61,5 +61,5 @@ Lot::set([
 ]);
 
 $site->is = 'page';
-$site->is_f = 'user';
+$site->is_f = 'editor';
 $site->layout = 2;

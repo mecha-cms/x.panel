@@ -81,9 +81,17 @@ code,.code {
 }
 .m .page figure {
   margin:-1em -1.25em 1em;
-  padding-bottom:70%;
+  padding-bottom:55%;
   height:0;
   background:#ffc;
+  overflow:hidden;
+}
+.m .page figure img {
+  display:block;
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
 }
 .m .page h3 {
   font:inherit;
@@ -134,7 +142,7 @@ code,.code {
   clear:both;
 }
 .m .t {
-  margin:-1em -1em .5384615384615384em;
+  margin:-1em -1em 1em;
   padding:.5384615384615384em 1em 0;
 }
 .m .messages + .t {margin-top:.5384615384615384em}

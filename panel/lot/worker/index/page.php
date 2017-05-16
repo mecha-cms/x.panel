@@ -86,18 +86,32 @@ Lot::set('__is_data', $__is_data);
 // `panel/::s::/page/blog` → new child page for `lot\page\blog`
 // `panel/::g::/page/blog` → edit page of `lot\page\blog`
 $site->is = $__is_has_step ? 'pages' : 'page';
-$site->is_f = $__is_has_step ? false : 'page';
+$site->is_f = $__is_has_step ? false : 'editor';
 $site->layout = $__is_has_step || $__is_data ? 2 : 3;
 
+Config::set('panel.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false ? [
+    'data' => [
+        'title' => $language->data,
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.data.php',
+        'stack' => 10
+    ]
+] : [
+    'page' => [
+        'title' => $language->page,
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.page.php',
+        'stack' => 10
+    ],
+    'css' => [
+        'title' => 'CSS',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.css.php',
+        'stack' => 20
+    ],
+    'js' => [
+        'title' => 'JavaScript',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.js.php',
+        'stack' => 30
+    ]
+]);
+// Config::set('panel.t:active', 'page');
+
 if ($__f = File::exist(__DIR__ . DS . 'page' . DS . $__sgr . '.php')) require $__f;
-
-
-/**
- * Field(s)
- * --------
- */
-
-// [+] &#x2795;
-// [-] &#x2796;
-// [:] &#x2797;
-// [x] &#x2716;

@@ -120,11 +120,12 @@ fieldset,hr {
 fieldset {padding:1em}
 legend {
   padding:0 .25em;
+  margin:-.5em 0;
   font-weight:bold;
 }
 legend + fieldset,
 legend + p,
-legend + .p {margin-top:-.5384615384615384em}
+legend + .p {margin-top:0}
 hr {border-width:1px 0 0}
 
 .button,

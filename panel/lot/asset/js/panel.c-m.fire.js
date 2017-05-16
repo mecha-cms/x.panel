@@ -22,7 +22,8 @@
                     indentTags: ["blockquote", "body", "div", "dl", "fieldset", "form", "frameset", "h1", "h2", "h3", "h4",
                     "h5", "h6", "head", "html", "object", "ol", "select", "table", "tbody", "tfoot", "thead", "tr", "ul"]
                 },
-                autoCloseBrackets: true
+                autoCloseBrackets: true,
+                showTrailingSpace: true
             });
         var type = $(node).data('type'),
             def = 'application/x-httpd-php',

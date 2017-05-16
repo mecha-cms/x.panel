@@ -44,7 +44,11 @@ r(__DIR__ . DS . 'engine' . DS . 'plug', [
     'user.php'
 ], null, Lot::set('__state', $__state)->get(null, []));
 
-Config::set('panel.f.page.types.HTML', 'HTML');
-Config::set('panel.f.page.types.Markdown', 'Markdown');
+Hook::set('on.panel.ready', function() use($language) {
+    Config::set('panel.f.page.types.HTML', 'HTML');
+    if (Plugin::exist('markdown')) {
+        Config::set('panel.f.page.types.Markdown', 'Markdown');
+    }
+}, 20);
 
 require __DIR__ . DS . 'engine' . DS . 'fire.php';

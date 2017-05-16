@@ -3,6 +3,7 @@
  *  - dialog.css
  *  - fullscreen.css
  *  - placeholder.css
+ *  - trailingspace.css
  */
 
 
@@ -599,4 +600,8 @@ span.CodeMirror-selectedtext {
 
 .CodeMirror-empty pre {
   opacity: .5;
+}
+
+.cm-trailingspace {
+  background: #dbeafc;
 }

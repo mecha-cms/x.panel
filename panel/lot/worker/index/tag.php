@@ -9,6 +9,15 @@ $site->is = $__is_has_step ? 'pages' : 'page';
 $site->is_f = $__is_has_step ? false : 'editor';
 $site->layout = $__is_has_step ? 2 : 3;
 
+Config::set('panel.t', [
+    'page' => [
+        'title' => $language->page,
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'tag.2.t.page.php',
+        'stack' => 10
+    ]
+]);
+
+// `sgr`
 if ($__is_has_step) {
     if ($__f = Get::tags($__folder, 'draft,page', [1, 'id'], 'path')) {
         if ($__q = l(Request::get('q', ""))) {

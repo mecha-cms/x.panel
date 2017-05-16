@@ -7,8 +7,8 @@ inherit: Inherit
 
 TIB:
   text:
-    - Remove “%s” Tag
-    - Duplicate “%s” Tag
+    - Delete “%s”
+    - Duplicate “%s”
 
 panel:
   fast: Fast
