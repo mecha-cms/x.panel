@@ -39,4 +39,4 @@
 
     forms.TP = forms.date;
 
-})(Panel, window, document);
+})(window.PANEL, window, document);

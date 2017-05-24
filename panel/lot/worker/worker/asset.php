@@ -65,7 +65,7 @@ if ($__user_enter) {
         foreach ($a as $k => $v) {
             $s .= ';$.' . $k . '=' . str_replace(['\\'], ['\\\\'], json_encode($v));
         }
-        return $content . '!function($){' . substr($s, 1) . '}(Panel);';
+        return $content . '!function($){' . substr($s, 1) . '}(window.PANEL);';
     }
     function fn_panel_asset_replace($content) {
         global $language;

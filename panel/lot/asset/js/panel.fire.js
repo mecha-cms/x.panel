@@ -1,4 +1,4 @@
-window.Panel = window.jQuery;
+window.PANEL = window.jQuery;
 
 (function($, win, doc) {
 
@@ -21,7 +21,7 @@ window.Panel = window.jQuery;
         $: {}
     };
 
-})(Panel, window, document);
+})(window.PANEL, window, document);
 
 (function($, win, doc) {
 
@@ -40,7 +40,7 @@ window.Panel = window.jQuery;
         return !!(ul && ul.fadeOut(100));
     });
 
-})(Panel, window, document);
+})(window.PANEL, window, document);
 
 (function($, win, doc) {
 
@@ -67,7 +67,7 @@ window.Panel = window.jQuery;
         return false;
     });
 
-})(Panel, window, document);
+})(window.PANEL, window, document);
 
 (function($, win, doc) {
 
@@ -106,4 +106,4 @@ window.Panel = window.jQuery;
         catched.val($.f($this.val(), '-', true));
     });
 
-})(Panel, window, document);
+})(window.PANEL, window, document);

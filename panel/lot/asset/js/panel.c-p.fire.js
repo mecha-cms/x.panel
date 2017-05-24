@@ -32,4 +32,4 @@
 
     forms.CP = forms.color;
 
-})(Panel, window, document);
+})(window.PANEL, window, document);

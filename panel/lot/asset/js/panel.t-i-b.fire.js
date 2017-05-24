@@ -23,4 +23,4 @@
 
     forms.TIB = forms.query;
 
-})(Panel, window, document);
+})(window.PANEL, window, document);

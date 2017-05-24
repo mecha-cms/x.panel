@@ -95,12 +95,13 @@ Config::set('panel.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !=
         'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.data.php',
         'stack' => 10
     ]
-] : [
+] : array_merge([
     'page' => [
         'title' => $language->page,
         'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.page.php',
         'stack' => 10
-    ],
+    ]
+], Plugin::exist('art') ? [
     'css' => [
         'title' => 'CSS',
         'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.css.php',
@@ -111,7 +112,7 @@ Config::set('panel.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !=
         'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.js.php',
         'stack' => 30
     ]
-]);
+] : []));
 // Config::set('panel.t:active', 'page');
 
 if ($__f = File::exist(__DIR__ . DS . 'page' . DS . $__sgr . '.php')) require $__f;

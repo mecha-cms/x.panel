@@ -70,4 +70,4 @@
 
     forms.CM = forms.editor;
 
-})(Panel, window, document);
+})(window.PANEL, window, document);
