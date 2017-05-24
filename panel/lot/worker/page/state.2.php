@@ -86,6 +86,7 @@ $__ss = [
     'title' => null,
     'author' => null,
     'type' => 'HTML',
+    'editor' => Extend::state('panel', 'editor', ""),
     'content' => null
 ];
 
@@ -116,6 +117,15 @@ $__s = Anemon::extend($__ss, $__s);
 <?php echo Form::select('config[page][type]', a(Config::get('panel.f.page.types')), $__s['type'], [
     'classes' => ['select'],
     'id' => 'f-page-type'
+]); ?>
+          </span>
+        </p>
+        <p class="f f-page f-page-editor">
+          <label for="f-page-editor"><?php echo $language->editor; ?></label>
+          <span>
+<?php echo Form::select('config[page][editor]', array_replace(["" => '&#x2014;' . l($language->none) . '&#x2014;'], a(Config::get('panel.f.page.editors', []))), $__s['editor'], [
+    'classes' => ['select'],
+    'id' => 'f-page-editor'
 ]); ?>
           </span>
         </p>
