@@ -1,4 +1,4 @@
-  <?php if (isset($__page[0]->name)): ?>
+<?php if (isset($__page[0]->name)): ?>
 <?php include __DIR__ . DS . '-t.php'; ?>
 <p class="f f-state expand">
   <label for="f-state"><?php echo $language->set; ?></label>
@@ -34,11 +34,25 @@ echo ' ' . HTML::a($language->cancel, Path::D($url->current), false, ['classes' 
   </p>
 </section>
 <section class="files">
+  <?php if ($__sgr === 's' && count($__chops) === 1): ?>
+  <fieldset>
+    <legend><?php echo $language->file; ?></legend>
+    <p class="f f-file expand">
+      <label for="f-file"><?php echo $language->file; ?></label>
+      <span><?php echo Form::file('file', ['id' => 'f-file']); ?></span>
+    </p>
+  </fieldset>
+  <p class="f f-state expand">
+    <label for="f-state"><?php echo $language->state; ?></label>
+    <span><?php echo Form::submit('x', 'zip', $language->upload, ['classes' => ['button'], 'id' => 'f-state']); ?></span>
+  </p>
+  <?php else: ?>
   <ul class="files">
     <?php foreach ($__datas[0] as $__k => $__v): ?>
     <?php if ($__v->extension === 'trash') continue; ?>
     <li class="file"><?php echo HTML::a('<i class="i i-' . (is_dir($__v->path) ? '0' : '1') . '"></i> ' . $__datas[1][$__k]->title, $__v->url); ?></li>
     <?php endforeach; ?>
   </ul>
+  <?php endif; ?>
 </section>
 <?php endif; ?>

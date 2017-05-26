@@ -15,9 +15,13 @@
   <?php $__s = $__pages[0][$__k]->url; ?>
   <article class="page <?php echo 'on-' . $__v->state; ?>" id="page-<?php echo $__v->id; ?>">
     <header>
-      <h3><?php echo $__v->title; ?></h3>
+      <?php if ($__pages[0][$__k]->state === 'draft'): ?>
+      <h3><?php echo $__v->url; ?></h3>
+      <?php else: ?>
+      <h3><?php echo HTML::a($__v->author, $__v->url, true); ?></h3>
+      <?php endif; ?>
     </header>
-    <section><p><?php echo To::snippet($__v->description, true, $__state->snippet); ?></p></section>
+    <section><p><?php echo To::snippet($__v->content, true, $__state->snippet); ?></p></section>
     <footer>
       <p>
       <?php

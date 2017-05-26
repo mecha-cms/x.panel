@@ -33,7 +33,7 @@ if ($__is_has_step) {
                 return false;
             });
         }
-        foreach ($__f as $__v) {
+        foreach (Anemon::eat($__f)->chunk($__chunk, $__step) as $__v) {
             $__pages[0][] = new Page($__v, [], '__tag');
             $__pages[1][] = new Page($__v, [], 'tag');
         }
