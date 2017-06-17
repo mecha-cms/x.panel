@@ -8,7 +8,6 @@
     <?php echo implode(' ', Hook::fire('panel.a.' . $__chops[0] . 's', [$__links])); ?>
   </p>
 </section>
-<?php echo $__message; ?>
 <section class="pages">
   <?php if ($__pages[0]): ?>
   <?php foreach ($__pages[1] as $__k => $__v): ?>

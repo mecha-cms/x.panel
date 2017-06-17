@@ -45,9 +45,8 @@ r(__DIR__ . DS . 'engine' . DS . 'plug', [
 ], null, Lot::set('__state', $__state)->get(null, []));
 
 Hook::set('on.panel.ready', function() use($language) {
-    Config::set('panel.f.page.types.HTML', 'HTML');
-    if (Plugin::exist('markdown')) {
-        Config::set('panel.f.page.types.Markdown', 'Markdown');
+    foreach ($language->f_types as $k => $v) {
+        Config::set('panel.f.page.types.' . $k, $v);
     }
 }, 20);
 

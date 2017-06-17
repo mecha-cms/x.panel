@@ -2,6 +2,11 @@
 
 if (count($__chops) === 1) {
     // Upload…
+    if (!empty($_FILES['file'])) {
+        if (($x = Path::X($_FILES['file']['name'])) !== 'zip') {
+            Message::error('file_x', '<em>' . $x . '</em>');
+        }
+    }
 } else if (count($__chops) === 2) {
     if (!Request::get('token')) {
         Shield::abort(PANEL_404);

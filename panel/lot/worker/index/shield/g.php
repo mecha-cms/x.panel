@@ -21,12 +21,11 @@ if (count($__chops) <= 1) {
                 $__v . DS . 'about.' . $config->language . '.page',
                 $__v . DS . 'about.page'
             ])) {
-                $__pages[0][] = new Page($__v, [
-                    'id' => $__id
-                ], '__page');
-                $__pages[1][] = new Page($__v, [
-                    'id' => $__id
-                ]);
+                $__a = new Page($__v, [], '__page');
+                $__b = new Page($__v, []);
+                $__a->id = $__b->id = $__id;
+                $__pages[0][] = $__a;
+                $__pages[1][] = $__b;
             }
         }
     }
