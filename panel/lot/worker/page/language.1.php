@@ -1,9 +1,21 @@
-<section class="s-language">
-  <h3><?php echo $language->language; ?></h3>
-  <ul>
-    <?php foreach ($__kins[0] as $k => $v): ?>
-    <li><?php echo HTML::a($__kins[1][$k]->title, $__state->path . '/::g::/' . $__chops[0] . '/' . $v->slug); ?></li>
-    <?php endforeach; ?>
-    <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__chops[0], false, ['title' => $language->add]); ?></li>
-  </ul>
-</section>
+<?php include __DIR__ . DS . '-t.php'; ?>
+<p class="f f-state expand">
+  <label for="f-state"><?php echo $language->state; ?></label>
+  <span>
+<?php
+
+echo Form::submit('x', 'page', $language->{$__sgr === 's' ? 'create' : 'update'}, [
+    'classes' => ['button', 'set', 'x-page'],
+    'id' => 'f-state:page'
+]);
+
+if ($__sgr !== 's') {
+    echo ' ' . Form::submit('x', 'trash', $language->delete, [
+        'classes' => ['button', 'set', 'x-trash'],
+        'id' => 'f-state:trash'
+    ]);
+}
+
+?>
+  </span>
+</p>

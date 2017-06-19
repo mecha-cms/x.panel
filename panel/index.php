@@ -50,4 +50,5 @@ Hook::set('on.panel.ready', function() use($language) {
     }
 }, 20);
 
+require __DIR__ . DS . 'engine' . DS . 'ignite.php';
 require __DIR__ . DS . 'engine' . DS . 'fire.php';

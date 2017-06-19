@@ -64,22 +64,3 @@
 .tags .tag + .tags-input span + span {display:none}
 .tags-input span:focus + span {opacity:.4}
 .tags-output {display:none}
-
-/* custom */
-.input.tags {
-  height:auto;
-  min-height:2.1538461538461537em;
-  -webkit-box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  box-sizing:border-box;
-}
-.input.tags .tags-input {
-  padding:0 .25em;
-  margin:0;
-}
-.input.tags .tag {
-  line-height:1.25;
-  padding:.125em .35em .125em .25em;
-  box-shadow:0 1px 2px rgba(0,0,0,.25);
-}
-.input.tags .tag a {font-family:Arial,sans-serif}

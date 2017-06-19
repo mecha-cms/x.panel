@@ -92,24 +92,24 @@ $site->layout = $__is_has_step || $__is_data ? 2 : 3;
 Config::set('panel.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false ? [
     'data' => [
         'title' => $language->data,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.data.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.1.t.data.php',
         'stack' => 10
     ]
 ] : array_merge([
     'page' => [
         'title' => $language->page,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.page.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.1.t.page.php',
         'stack' => 10
     ]
 ], Plugin::exist('art') ? [
     'css' => [
         'title' => 'CSS',
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.css.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.1.t.css.php',
         'stack' => 20
     ],
     'js' => [
         'title' => 'JavaScript',
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.2.t.js.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'page.1.t.js.php',
         'stack' => 30
     ]
 ] : []));

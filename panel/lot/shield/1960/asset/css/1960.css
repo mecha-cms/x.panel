@@ -146,6 +146,7 @@ code,.code {
   padding:.5384615384615384em 1em 0;
 }
 .m .messages + .t {margin-top:.5384615384615384em}
+.m .messages + section {margin-top:1em}
 .m .t:after {
   content:"";
   display:table;
@@ -452,7 +453,6 @@ code,.code {
 .h {font-style:italic}
 
 .message {background:#ee8}
-.messages + section {margin-top:1em}
 
 .p-enter {background:#ffa}
 .p-enter body,
@@ -490,7 +490,6 @@ input.input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* TODO */
-.n-comment,
 .n-asset,
 .n-cache,
 .n-extend,

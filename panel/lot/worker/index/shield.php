@@ -16,7 +16,7 @@ $site->layout = 2;
 Config::set('panel.t', [
     'file' => [
         'title' => $language->editor,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'shield.2.t.file.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'shield.1.t.file.php',
         'stack' => 10
     ]
 ]);
