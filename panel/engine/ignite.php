@@ -89,7 +89,13 @@ function __panel_f__($k, $v) {
 function __panel_m__() {}
 function __panel_n__() {}
 
-function __panel_p__() {}
+function __panel_p__($old = "", $new = "", $data) {
+    $d = Path::D($old);
+    $b = Path::B($old);
+    $n = Path::N($old);
+    $x = Path::X($old);
+    Page::data($data)->saveTo($new, 0600);
+}
 
 function __panel_s__($k, $v) {
     // `title`
