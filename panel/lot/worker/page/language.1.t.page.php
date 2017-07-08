@@ -1,50 +1,64 @@
-<p class="f f-title expand">
-  <label for="f-title"><?php echo $language->title; ?></label>
-  <span>
-<?php echo Form::text('title', $__page[0]->title, $language->f_title, [
-    'classes' => ['input', 'block'],
-    'id' => 'f-title',
-    'data' => ['slug-i' => 'title']
-]); ?>
-  </span>
-</p>
-<div class="f f-content expand p">
-  <label for="f-content"><?php echo $language->content; ?></label>
-  <div>
-<?php echo Form::textarea('content', $__page[0]->content, $language->f_content, [
-    'classes' => ['textarea', 'block', 'expand', 'code', 'editor'],
-    'id' => 'f-content',
-    'data' => ['type' => $__page[0]->type]
-]); ?>
-  </div>
-</div>
-<div class="f f-description p">
-  <label for="f-description"><?php echo $language->description; ?></label>
-  <div>
-<?php echo Form::textarea('description', $__page[0]->description, $language->f_description($language->language), [
-    'classes' => ['textarea', 'block'],
-    'id' => 'f-description'
-]); ?>
-  </div>
-</div>
-<p class="f f-version">
-  <label for="f-version"><?php echo $language->version; ?></label>
-  <span>
-<?php echo Form::text('version', $__page[0]->version, $__page[1]->version, [
-    'classes' => ['input'],
-    'id' => 'f-version'
-]); ?>
-  </span>
-</p>
-<p class="f f-locale">
-  <label for="f-locale"><?php echo $language->locale; ?></label>
-  <span>
-<?php echo Form::text('slug', $__page[0]->slug, $__page[1]->slug, [
-    'classes' => ['input'],
-    'id' => 'f-locale',
-    'data' => ['slug-o' => 'title'],
-    'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
-    'required' => true
-]); ?>
-  </span>
-</p>
+<?php
+
+return [
+    'title' => [
+        'type' => 'text',
+        'value' => $__page[0]->title,
+        'placeholder' => $__page[1]->title ?: $language->f_title,
+        'is' => [
+            'block' => true
+        ],
+        'attributes' => [
+            'data' => [
+                'slug-i' => 'title'
+            ]
+        ],
+        'expand' => true,
+        'stack' => 10
+    ],
+    'content' => [
+        'type' => 'editor',
+        'value' => $__page[0]->content,
+        'placeholder' => $language->f_content,
+        'union' => ['div'],
+        'is' => [
+            'expand' => true
+        ],
+        'attributes' => [
+            'data' => [
+                'type' => $__page[0]->type
+            ]
+        ],
+        'expand' => true,
+        'stack' => 10.1
+    ],
+    'description' => [
+        'type' => 'textarea',
+        'value' => $__page[0]->description,
+        'placeholder' => $__page[1]->description ?: $language->f_description($language->page),
+        'union' => ['div'],
+        'is' => [
+            'block' => true
+        ],
+        'stack' => 10.2
+    ],
+    'version' => [
+        'type' => 'text',
+        'value' => $__page[0]->version,
+        'placeholder' => $__page[1]->version,
+        'stack' => 10.3
+    ],
+    '*slug' => [
+        'title' => $language->locale,
+        'type' => 'text',
+        'value' => $__page[0]->slug,
+        'placeholder' => $__page[1]->slug,
+        'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
+        'attributes' => [
+            'data' => [
+                'slug-o' => 'title'
+            ]
+        ],
+        'stack' => 10.4
+    ]
+];

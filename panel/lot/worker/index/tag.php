@@ -12,7 +12,7 @@ $site->layout = $__is_has_step ? 2 : 3;
 Config::set('panel.t', [
     'page' => [
         'title' => $language->page,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'tag.2.t.page.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'tag.1.t.page.php',
         'stack' => 10
     ]
 ]);

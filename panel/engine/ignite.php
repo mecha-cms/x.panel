@@ -10,17 +10,21 @@ function __panel_f__($k, $v) {
     // `placeholder`
     // `pattern`
     // `union` ['p']
+    // `if`
     // `is`
     //    `block`
     //    `expand`
     //    `hidden`
     //    `visible`
     //    `.` <disabled>
-    //    `*` <required>
     //    `!` <readonly>
+    //    `*` <required>
     // `attributes`
     // `expand`
     // `stack`
+    if (array_key_exists('if', $v)) {
+        $v['is']['visible'] = $v['if'];
+    }
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
         return "";
     }
@@ -89,14 +93,6 @@ function __panel_f__($k, $v) {
 function __panel_m__() {}
 function __panel_n__() {}
 
-function __panel_p__($old = "", $new = "", $data) {
-    $d = Path::D($old);
-    $b = Path::B($old);
-    $n = Path::N($old);
-    $x = Path::X($old);
-    Page::data($data)->saveTo($new, 0600);
-}
-
 function __panel_s__($k, $v) {
     // `title`
     // `description`
@@ -104,6 +100,7 @@ function __panel_s__($k, $v) {
     // `before`
     // `after`
     // `a`
+    // `if`
     // `is`
     //    `hidden`
     //    `visible`
@@ -114,34 +111,42 @@ function __panel_s__($k, $v) {
     } else if (!$v) {
         return "";
     }
+    if (array_key_exists('if', $v)) {
+        $v['is']['visible'] = $v['if'];
+    }
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
         return "";
     }
     $content = isset($v['content']) ? $v['content'] : [];
     $html  = '<section class="s-' . $k . '">';
-    $html .= '<h3>' . (isset($v['title']) ? $v['title'] : $language->{count($v['content']) === 1 ? $k : $k . 's'}) . '</h3>';
+    $html .= '<h3>' . (isset($v['title']) ? $v['title'] : $language->{isset($v['content']) && count($v['content']) === 1 ? $k : $k . 's'}) . '</h3>';
     if (isset($v['before']) && $v['before']) {
         $html .= $v['before'];
     }
-    if (is_array($v['content'])) {
-        $html .= '<ul>';
-        foreach ($v['content'] as $kk => $vv) {
-            if (is_object($vv)) {
-                $html .= '<li>' . HTML::a($vv->title, $vv->url) . '</li>';
-            } else {
-                $html .= '<li>' . HTML::a($vv['title'], $vv['url']) . '</li>';
+    if (!empty($v['content'])) {
+        if (is_array($v['content'])) {
+            $html .= '<ul>';
+            if (is_array($v['content'][0])) {
+                foreach ($v['content'][0] as $kk => $vv) {
+                    if (is_object($vv)) {
+                        $html .= '<li>' . HTML::a($v['content'][1][$kk]->title, $vv->url) . '</li>';
+                    } else {
+                        $html .= '<li>' . HTML::a($v['content'][1][$kk]['title'], $vv['url']) . '</li>';
+                    }
+                }
             }
-        }
-        if (isset($v['a']) && $v['a']) {
-            $a = [];
-            foreach ($v['a'] as $kk => $vv) {
-                $a[] = stripos($vv, '</a>') !== false ? $vv : HTML::a($kk, $vv);
+            if (isset($v['a']) && $v['a']) {
+                $a = [];
+                foreach ($v['a'] as $kk => $vv) {
+                    if (!isset($vv)) continue;
+                    $a[] = stripos($vv, '</a>') !== false ? $vv : HTML::a($kk, $vv);
+                }
+                $html .= '<li>' . implode(' ', $a) . '</li>';
             }
-            $html .= '<li>' . implode(' ', $a) . '</li>';
+            $html .= '</ul>';
+        } else if (is_string($v['content'])) {
+            $html .= $v['content'];
         }
-        $html .= '</ul>';
-    } else {
-        $html .= $v['content'];
     }
     if (isset($v['after']) && $v['after']) {
         $html .= $v['after'];

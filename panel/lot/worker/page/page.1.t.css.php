@@ -1,10 +1,12 @@
 <?php
 
+$__s = $__page[0]->css;
+
 return [
     'css' => [
         'title' => 'CSS',
         'type' => 'editor',
-        'value' => $__page[0]->css,
+        'value' => $__s,
         'placeholder' => null,
         'union' => ['div'],
         'is' => [
@@ -12,7 +14,7 @@ return [
         ],
         'attributes' => [
             'data' => [
-                'type' => 'CSS'
+                'type' => stripos($__s, '</style>') === false && stripos($__s, '<link ') === false ? 'CSS' : 'HTML'
             ]
         ],
         'expand' => true,

@@ -1,5 +1,9 @@
 <?php
 
+Hook::set('__language.url', function($__content, $__lot) use($__chops) {
+    return __url__('url') . '/' . Extend::state('panel', 'path') . '/::g::/' . $__chops[0] . '/' . $__lot['slug'];
+});
+
 $site->is = 'page';
 $site->is_f = 'editor';
 $site->layout = 2;
@@ -7,7 +11,7 @@ $site->layout = 2;
 Config::set('panel.t', [
     'page' => [
         'title' => $language->editor,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'language.2.t.page.php',
+        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'language.1.t.page.php',
         'stack' => 10
     ]
 ]);

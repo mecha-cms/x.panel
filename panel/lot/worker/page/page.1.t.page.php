@@ -1,16 +1,17 @@
 <?php
 
 $__tags = [];
-$__types = a(Config::get('panel.f.page.types'));
+$__types = (array) Config::get('panel.f.page.types', []);
 
-if ($__page[0]->kind) {
-    foreach ($__page[0]->kind as $__v) {
-        $__tags[] = To::tag($__v);
+call_user_func(function() use($__page, &$__tags, &$__types) {
+    if ($__page[0]->kind) {
+        foreach ($__page[0]->kind as $__v) {
+            $__tags[] = To::tag($__v);
+        }
     }
-}
-
-sort($__tags);
-asort($__types);
+    sort($__tags);
+    asort($__types);
+});
 
 return [
     'title' => [
@@ -28,14 +29,13 @@ return [
         'expand' => true,
         'stack' => 10
     ],
-    'slug' => [
+    '*slug' => [
         'type' => 'text',
         'value' => $__page[0]->slug,
         'placeholder' => To::slug($language->f_title),
         'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
         'is' => [
-            'block' => true,
-            '*' => true
+            'block' => true
         ],
         'attributes' => [
             'data' => [
@@ -90,9 +90,9 @@ return [
         'type' => 'text',
         'value' => implode(', ', (array) $__tags) ?: null,
         'placeholder' => $language->f_query,
+        'if' => Extend::exist('tag'),
         'is' => [
-            'block' => true,
-            'visible' => Extend::exist('tag')
+            'block' => true
         ],
         'attributes' => [
             'classes' => [3 => 'query']
@@ -103,9 +103,7 @@ return [
         'type' => 'text',
         'value' => (new Date($__page[0]->time))->format('Y/m/d H:i:s'),
         'placeholder' => date('Y/m/d H:i:s'),
-        'is' => [
-            'hidden' => $__sgr === 's'
-        ],
+        'if' => $__sgr !== 's',
         'attributes' => [
             'classes' => [2 => 'date']
         ],

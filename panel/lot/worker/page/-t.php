@@ -17,12 +17,9 @@
     <?php if (!isset($__v['legend']) || $__v['legend'] !== false): ?>
     <legend><?php echo isset($__v['legend']) ? $__v['legend'] : $__v['title']; ?></legend>
     <?php if (is_file($__v['content'])): ?>
-    <?php $__v['content'] = require $__v['content']; ?>
+    <?php $__v['content'] = include $__v['content']; ?>
     <?php endif; ?>
     <?php if (is_array($__v['content'])): ?>
-    <?php if ($__w = Config::get('panel.f.' . $__k, [])): ?>
-    <?php $__v['content'] = array_replace_recursive($__v['content'], (array) a($__w)); ?>
-    <?php endif; ?>
     <?php foreach (Anemon::eat($__v['content'])->sort([1, 'stack'], "")->vomit() as $__kk => $__vv): ?>
     <?php if (!isset($__vv['stack']) || $__vv['stack'] === "" || $__vv['stack'] === false) continue; ?>
     <?php echo __panel_f__($__kk, $__vv); ?>

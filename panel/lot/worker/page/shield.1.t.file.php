@@ -37,12 +37,11 @@ if (Is::these(explode(',', SCRIPT_X))->has($__page[0]->extension)) {
 
 $__n = $__page[0]->name;
 
-$__f['name'] = [
+$__f['*name'] = [
     'type' => 'text',
     'value' => $__n,
     'is' => [
         'block' => true,
-        '*' => true,
         '!' => strpos($__n, 'about.') === 0 && Path::X($__n) === 'page'
     ],
     'stack' => 10.1

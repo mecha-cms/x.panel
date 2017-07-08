@@ -14,13 +14,10 @@ return [
         'expand' => true,
         'stack' => 10
     ],
-    'key' => [
+    '*key' => [
         'type' => 'text',
         'value' => $__data[0]->key,
         'pattern' => '^[a-z\\d]+(?:_[a-z\\d]+)*$',
-        'is' => [
-            '*' => true
-        ],
         'stack' => 10.1
     ]
 ];

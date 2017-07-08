@@ -27,34 +27,19 @@ foreach ($__aparts as $__k => $__v) {
 ?>
 <?php echo __panel_s__('data', [
     'title' => $language->{count($__datas[0]) + count($__aparts) === 1 ? 'data' : 'datas'},
-    'content' => $__datas[1],
+    'content' => $__sgr === 'g' ? $__datas : [[], []],
     'after' => '<p>' . Form::textarea('__data', To::yaml($__aparts), $language->f_yaml, ['classes' => ['textarea', 'block', 'code']]) . '</p>',
     'a' => [
         HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add])
     ],
-    'is' => [
-        'visible' => $__sgr === 'g'
-    ]
+    'if' => $__sgr !== 's'
 ]); ?>
-    <?php if (count($__chops) > 1): ?>
-    <section class="s-child">
-      <h3><?php echo $language->{count($__childs[0]) === 1 ? 'child' : 'childs'}; ?></h3>
-      <ul>
-        <?php foreach ($__childs[0] as $__k => $__v): ?>
-        <?php
-
-        $__g = $__v->path;
-        $__gg = Path::X($__g);
-        $__ggg = Path::D($__g);
-        $__gggg = Path::N($__g) === Path::N($__ggg) && file_exists($__ggg . '.' . $__gg);
-
-        if ($__gggg) continue; // skip the placeholder page
-
-        ?>
-        <li><?php echo HTML::a($__childs[1][$__k]->title, $__v->url); ?></li>
-        <?php endforeach; ?>
-        <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]); ?><?php echo $__is_has_step_child ? ' ' . HTML::a('&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : ""; ?></li>
-      </ul>
-    </section>
-    <?php endif; ?>
+<?php echo __panel_s__('child', [
+    'content' => $__childs,
+    'a' => [
+        HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]),
+        $__is_has_step_child ? ' ' . HTML::a('&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : null
+    ],
+    'if' => count($__chops) > 1
+]); ?>
 <?php endif; ?>

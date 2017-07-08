@@ -1,10 +1,12 @@
 <?php
 
+$__s = $__page[0]->js;
+
 return [
     'js' => [
         'title' => 'JavaScript',
         'type' => 'editor',
-        'value' => $__page[0]->js,
+        'value' => $__s,
         'placeholder' => null,
         'union' => ['div'],
         'is' => [
@@ -12,7 +14,7 @@ return [
         ],
         'attributes' => [
             'data' => [
-                'type' => 'JavaScript'
+                'type' => stripos($__s, '</script>') === false && stripos($__s, '<script ') === false ? 'JavaScript' : 'HTML'
             ]
         ],
         'expand' => true,

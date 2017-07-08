@@ -1,11 +1,8 @@
-<?php if ($__kins[0]): ?>
-<section class="s-kin">
-  <h3><?php echo $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
-  <ul>
-    <?php foreach ($__kins[0] as $__k => $__v): ?>
-    <li><?php echo HTML::a($__kins[1][$__k]->title, $__v->url); ?></li>
-    <?php endforeach; ?>
-    <li><?php echo HTML::a('&#x2795;', $__state->path . '/::s::/' . Path::D($__path), false, ['title' => $language->add]); ?><?php echo $__is_has_step_kin ? ' ' .  HTML::a('&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]) : ""; ?></li>
-  </ul>
-</section>
-<?php endif; ?>
+<?php echo __panel_s__('kin', [
+    'content' => $__kins,
+    'a' => [
+        HTML::a('&#x2795;', $__state->path . '/::s::/' . Path::D($__path), false, ['title' => $language->add]),
+        $__is_has_step_kin ? ' ' .  HTML::a('&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]) : null
+    ],
+    'if' => $__kins[0]
+]); ?>
