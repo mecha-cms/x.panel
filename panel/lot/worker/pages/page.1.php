@@ -15,7 +15,7 @@
   <?php
 
   $__s = $__pages[0][$__k]->url;
-  $__is_has_child = !!g(LOT . explode('::' . $__sgr . '::', $__s, 2)[1], 'draft,page,archive', "", false);
+  $__is_has_child = !!g(LOT . explode('::' . $__action . '::', $__s, 2)[1], 'draft,page,archive', "", false);
 
   $__g = $__pages[0][$__k]->path;
   $__gg = Path::X($__g);

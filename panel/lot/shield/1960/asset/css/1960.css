@@ -20,6 +20,13 @@ code,.code {
   font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
   font-size:85%;
 }
+pre {
+  background:#000;
+  color:#bbb;
+  padding:1em;
+  line-height:1;
+  font-size:86%;
+}
 .button,
 .input,
 .select,
@@ -46,6 +53,7 @@ code,.code {
 }
 .input[type="checkbox"],
 .input[type="color"],
+.input[type="file"],
 .input[type="radio"],
 .input[type="range"],
 .input[readonly],
@@ -450,7 +458,20 @@ code,.code {
 .s .select,
 .s .textarea {background-color:#afa}
 
-.h {font-style:italic}
+.h {
+  background:#fea;
+  border-bottom:1px solid #ed9;
+  padding:.5em;
+  line-height:1;
+}
+.f + .h {
+  background:none;
+  border:0;
+  margin:.5em 0 0 8em;
+  padding:0;
+  color:#a65;
+}
+.f.expand + .h {margin-left:0}
 
 .message {background:#ee8}
 

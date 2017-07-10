@@ -1,12 +1,18 @@
 <?php
 
-if ($__sgr !== 'g') {
+if ($__action !== 'g') {
     Shield::abort(PANEL_404);
 }
 
 if ($__user_enter) {
     Guardian::kick($__state->path . '/::g::/page');
 }
+
+Config::set([
+    'is' => 'page',
+    'is_f' => 'enter',
+    'layout' => 0
+]);
 
 if (Request::is('post')) {
     $__user_key = Request::post('user');
@@ -48,7 +54,3 @@ if (Request::is('post')) {
         Request::save('post', 'user', $__user_key);
     }
 }
-
-$site->is = 'page';
-$site->is_f = 'enter';
-$site->layout = 0;

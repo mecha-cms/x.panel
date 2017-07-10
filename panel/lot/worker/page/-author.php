@@ -10,5 +10,5 @@ foreach (g(USER, 'page') as $__v) {
 }
 
 echo __panel_s__('author', [
-    'content' => '<p>' . Form::select('author', $__user->status !== 1 && $__sgr !== 's' ? [User::ID . $__page[0]->author => $__page[1]->author] : $__authors, $__select, ['classes' => ['select', 'block'], 'id' => 'f-author']) . '</p>'
+    'content' => '<p>' . Form::select('author', $__user->status !== 1 && $__action !== 's' ? [User::ID . $__page[0]->author => $__page[1]->author] : $__authors, $__select, ['classes' => ['select', 'block'], 'id' => 'f-author']) . '</p>'
 ]);

@@ -8,6 +8,7 @@ version: 1.0.0
 
 ### Reserved Variables
 
+ - `$__action`
  - `$__child`
  - `$__childs`
  - `$__chops`
@@ -29,7 +30,6 @@ version: 1.0.0
  - `$__parents`
  - `$__path`
  - `$__path_shield`
- - `$__sgr`
  - `$__source`
  - `$__sources`
  - `$__state`

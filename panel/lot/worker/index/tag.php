@@ -1,21 +1,24 @@
 <?php
 
-Hook::set('__tag.url', function($__content, $__lot) use($__state) {
-    $__s = Path::F($__lot['path'], LOT);
-    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
-});
-
-$site->is = $__is_has_step ? 'pages' : 'page';
-$site->is_f = $__is_has_step ? false : 'editor';
-$site->layout = $__is_has_step ? 2 : 3;
-
-Config::set('panel.t', [
-    'page' => [
-        'title' => $language->page,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'tag.1.t.page.php',
-        'stack' => 10
+Config::set([
+    'is' => $__is_has_step ? 'pages' : 'page',
+    'is_f' => $__is_has_step ? false : 'editor',
+    'layout' => $__is_has_step ? 2 : 3,
+    'panel' => [
+        'm' => [
+            't' => [
+                'page' => [
+                    'stack' => 10
+                ]
+            ]
+        ]
     ]
 ]);
+
+Hook::set('__tag.url', function($__content, $__lot) use($__state) {
+    $__s = Path::F($__lot['path'], LOT);
+    return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
+});
 
 // `sgr`
 if ($__is_has_step) {
@@ -84,7 +87,7 @@ if ($__is_has_step) {
             if (file_exists($__dd . DS . $__k . '.data')) continue;
             $__headers[$__k] = Request::post($__k, $__v);
         }
-        if ($__sgr === 's' && File::exist([
+        if ($__action === 's' && File::exist([
             $__folder . DS . $__ss . '.draft',
             $__folder . DS . $__ss . '.page'
         ]) || $__s !== $__ss && File::exist([
@@ -98,7 +101,7 @@ if ($__is_has_step) {
         $__f = Path::D($__file) . DS . $__ss . '.' . $__xx;
         Hook::fire('on.tag.set', [$__f]);
         if (!Message::$x) {
-            if ($__sgr === 'g') {
+            if ($__action === 'g') {
                 Page::open($__file)->data($__headers)->save(0600);
                 if ($__s !== $__ss || $__x !== $__xx) {
                     // Rename folder…
@@ -109,7 +112,7 @@ if ($__is_has_step) {
                     File::open($__file)->renameTo($__ss . '.' . $__xx);
                 }
             } else {
-                if ($__sgr === 's') {
+                if ($__action === 's') {
                     $__dd = $__file . DS . $__ss; // New tag…
                 }
                 Page::data($__headers)->saveTo($__folder . DS . $__ss . '.' . $__xx, 0600);
@@ -133,7 +136,7 @@ if ($__is_has_step) {
             if ($__s = Request::post('chunk')) {
                 File::write($__s)->saveTo($__dd . DS . 'chunk.data', 0600);
             }
-            if ($__sgr === 'g') {
+            if ($__action === 'g') {
                 Message::success(To::sentence($language->updateed));
                 Guardian::kick(Path::D($url->current) . '/' . $__ss);
             } else {
@@ -142,7 +145,7 @@ if ($__is_has_step) {
             }
         }
     } else {
-        if ($__sgr === 'r') {
+        if ($__action === 'r') {
             if (!Request::get('token')) {
                 Shield::abort(PANEL_404);
             }
@@ -169,7 +172,7 @@ if ($__is_has_step) {
             }
             Guardian::kick(Path::D($__k) . '/1');
         }
-        if (($__file === $__folder || $__sgr === 's') && isset($__chops[1])) {
+        if (($__file === $__folder || $__action === 's') && isset($__chops[1])) {
             Shield::abort(PANEL_404);
         }
     }
@@ -188,7 +191,7 @@ if ($__is_has_step) {
         ];
     }
     Lot::set('__page', $__page);
-    if ($__f = Get::tags(Path::D($__folder), 'draft,page', $__sort, 'path')) {
+    if ($__f = Get::tags(TAG, 'draft,page', $__sort, 'path')) {
         $__s = Path::N($__file);
         $__f = array_filter($__f, function($__v) use($__s) {
             return Path::N($__v) !== $__s;

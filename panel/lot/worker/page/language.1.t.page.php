@@ -30,7 +30,7 @@ return [
             ]
         ],
         'expand' => true,
-        'stack' => 10.1
+        'stack' => 20
     ],
     'description' => [
         'type' => 'textarea',
@@ -40,13 +40,13 @@ return [
         'is' => [
             'block' => true
         ],
-        'stack' => 10.2
+        'stack' => 30
     ],
     'version' => [
         'type' => 'text',
         'value' => $__page[0]->version,
         'placeholder' => $__page[1]->version,
-        'stack' => 10.3
+        'stack' => 40
     ],
     '*slug' => [
         'title' => $language->locale,
@@ -59,6 +59,16 @@ return [
                 'slug-o' => 'title'
             ]
         ],
-        'stack' => 10.4
+        'stack' => 50
+    ],
+    // the submit button(s)
+    'x' => [
+        'type' => 'submit',
+        'title' => $language->submit,
+        'values' => [
+            'page' => $language->{$__action === 's' ? 'create' : 'update'},
+            'trash' => $__action !== 's' && $__page[0]->slug !== 'en-us' ? $language->delete : null
+        ],
+        'stack' => 0
     ]
 ];

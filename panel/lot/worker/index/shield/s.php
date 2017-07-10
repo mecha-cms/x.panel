@@ -6,7 +6,22 @@ if (count($__chops) === 1) {
         if (($x = Path::X($_FILES['file']['name'])) !== 'zip') {
             Message::error('file_x', '<em>' . $x . '</em>');
         }
+        if (!Message::$x) {
+            if (!File::upload($_FILES['file'], SHIELD, function($file) {
+                $zip = new ZipArchive;
+                extract($file);
+                if ($zip->open($path) === true) {
+                    $zip->extractTo(Path::D($path));
+                    $zip->close();
+                    File::open($path)->delete();
+                    Guardian::kick(str_replace('::s::', '::g::', __url__('path')) . '/' . Path::N($name));
+                }
+            })) {
+                // ?
+            }
+        }
     }
+    include __DIR__ . DS . '-kins.php';
 } else if (count($__chops) === 2) {
     if (!Request::get('token')) {
         Shield::abort(PANEL_404);

@@ -2,6 +2,7 @@
 
 $__tags = [];
 $__types = (array) Config::get('panel.f.page.types', []);
+$__x = $__page[0]->state;
 
 call_user_func(function() use($__page, &$__tags, &$__types) {
     if ($__page[0]->kind) {
@@ -12,6 +13,8 @@ call_user_func(function() use($__page, &$__tags, &$__types) {
     sort($__tags);
     asort($__types);
 });
+
+$__x = $__page[0]->state;
 
 return [
     'title' => [
@@ -43,7 +46,7 @@ return [
             ]
         ],
         'expand' => true,
-        'stack' => 10.1
+        'stack' => 20
     ],
     'content' => [
         'type' => 'editor',
@@ -59,13 +62,13 @@ return [
             ]
         ],
         'expand' => true,
-        'stack' => 10.2
+        'stack' => 30
     ],
     'type' => [
         'type' => 'select',
         'value' => $__page[0]->type,
         'values' => $__types,
-        'stack' => 10.3
+        'stack' => 40
     ],
     'description' => [
         'type' => 'textarea',
@@ -75,7 +78,7 @@ return [
         'is' => [
             'block' => true
         ],
-        'stack' => 10.4
+        'stack' => 50
     ],
     'link' => [
         'type' => 'url',
@@ -84,7 +87,7 @@ return [
         'is' => [
             'block' => true
         ],
-        'stack' => 10.5
+        'stack' => 60
     ],
     'tags' => [
         'type' => 'text',
@@ -97,16 +100,33 @@ return [
         'attributes' => [
             'classes' => [3 => 'query']
         ],
-        'stack' => 10.6
+        'stack' => 70
     ],
     'time' => [
         'type' => 'text',
         'value' => (new Date($__page[0]->time))->format('Y/m/d H:i:s'),
         'placeholder' => date('Y/m/d H:i:s'),
-        'if' => $__sgr !== 's',
+        'if' => $__action !== 's',
         'attributes' => [
             'classes' => [2 => 'date']
         ],
-        'stack' => 10.7
+        'stack' => 80
+    ],
+    // the submit button(s)
+    'x' => [
+        'type' => 'submit',
+        'title' => $language->submit,
+        'text' => $language->update,
+        'values' => array_merge($__action !== 's' ? [
+            '*' . $__x => $language->update
+        ] : [], array_filter([
+            'page' => $language->publish,
+            'draft' => $language->save,
+            'archive' => $language->archive,
+            'trash' => $__action !== 's' ? $language->delete : null
+        ], function($__k) use($__x) {
+            return $__k !== $__x;
+        }, ARRAY_FILTER_USE_KEY)),
+        'stack' => 0
     ]
 ];

@@ -44,11 +44,5 @@ r(__DIR__ . DS . 'engine' . DS . 'plug', [
     'user.php'
 ], null, Lot::set('__state', $__state)->get(null, []));
 
-Hook::set('on.panel.ready', function() use($language) {
-    foreach ($language->f_types as $k => $v) {
-        Config::set('panel.f.page.types.' . $k, $v);
-    }
-}, 20);
-
 require __DIR__ . DS . 'engine' . DS . 'ignite.php';
 require __DIR__ . DS . 'engine' . DS . 'fire.php';

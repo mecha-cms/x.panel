@@ -15,7 +15,7 @@ $__a = [
     'state' => 1
 ];
 
-$__aparts = Page::apart($__sgr === 'g' ? file_get_contents($__page[0]->path) : "");
+$__aparts = Page::apart($__action === 'g' ? file_get_contents($__page[0]->path) : "");
 foreach ($__aparts as $__k => $__v) {
     if (isset($__a[$__k])) {
         unset($__aparts[$__k]);
@@ -27,18 +27,18 @@ foreach ($__aparts as $__k => $__v) {
 ?>
 <?php echo __panel_s__('data', [
     'title' => $language->{count($__datas[0]) + count($__aparts) === 1 ? 'data' : 'datas'},
-    'content' => $__sgr === 'g' ? $__datas : [[], []],
+    'content' => $__action === 'g' ? $__datas : [[], []],
     'after' => '<p>' . Form::textarea('__data', To::yaml($__aparts), $language->f_yaml, ['classes' => ['textarea', 'block', 'code']]) . '</p>',
     'a' => [
         HTML::a('&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add])
     ],
-    'if' => $__sgr !== 's'
+    'if' => $__action !== 's'
 ]); ?>
 <?php echo __panel_s__('child', [
     'content' => $__childs,
     'a' => [
         HTML::a('&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]),
-        $__is_has_step_child ? ' ' . HTML::a('&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : null
+        $__is_has_step_child ? HTML::a('&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]) : null
     ],
     'if' => count($__chops) > 1
 ]); ?>

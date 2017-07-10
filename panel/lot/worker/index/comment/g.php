@@ -28,7 +28,7 @@ if ($__is_has_step) {
         krsort($__f);
         foreach (Anemon::eat($__f)->chunk($__chunk, $__step) as $__v) {
             $__pages[0][] = new Comment($__v, [], '__comment');
-            $__pages[1][] = new Comment($__v, [], 'comment');
+            $__pages[1][] = new Comment($__v);
         }
         Lot::set([
             '__pages' => $__pages,
@@ -55,15 +55,23 @@ if ($__is_has_step) {
         ]);
     }
 } else {
+    if ($__is_post && !Message::$x) {
+        $__headers = [
+          
+        ];
+    }
     if ($__file = File::exist([
         LOT . DS . $__path . '.draft',
         LOT . DS . $__path . '.page',
         LOT . DS . $__path . '.archive'
     ])) {
         $__page = [
-            new Page($__file, [], '__page'),
-            new Page($__file)
+            new Comment($__file, [], '__comment'),
+            new Comment($__file)
         ];
         Lot::set('__page', $__page);
     }
+    include __DIR__ . DS . '-childs.php';
+    include __DIR__ . DS . '-kins.php';
+    include __DIR__ . DS . '-source.php';
 }

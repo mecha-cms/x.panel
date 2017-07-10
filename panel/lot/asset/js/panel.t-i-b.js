@@ -1,6 +1,6 @@
 /*!
  * =======================================================
- *  SIMPLEST TAGS INPUT BEAUTIFIER 2.1.3
+ *  SIMPLEST TAGS INPUT BEAUTIFIER 2.1.5
  * =======================================================
  *
  *   Author: Taufik Nurrohman
@@ -25,6 +25,7 @@
         clas = 'classes',
         tlc = 'toLowerCase',
         re = 'replace',
+        pos = 'indexOf',
         first = 'firstChild',
         parent = 'parentNode',
         next = 'nextSibling',
@@ -52,7 +53,7 @@
     (function($) {
 
         // plugin version
-        $.version = '2.1.3';
+        $.version = '2.1.5';
 
         // collect all instance(s)
         $[instance] = {};
@@ -74,7 +75,7 @@
             config = {
                 join: ', ',
                 max: 9999,
-                escape: [',', '\n'],
+                escape: [','],
                 alert: true,
                 text: ['Delete \u201C%s\u201D', 'Duplicate \u201C%s\u201D'],
                 classes: ['tags', 'tag', 'tags-input', 'tags-output', 'tags-view'],
@@ -103,6 +104,7 @@
         target[cla] = config[clas][3];
         wrap[cla] = config[clas][0] + ' ' + config[clas][0] + '-' + hash;
         wrap[ev]("click", on_focus, false);
+        target[ev]("focus", on_focus, false);
         wrap.id = config[clas][0] + ':' + (target.id || hash);
         wrap[html] = '<span class="' + config[clas][4] + '"></span>';
         input[cla] = config[clas][2];
@@ -201,6 +203,7 @@
                 var t = this,
                     k = e.keyCode,
                     p = wrap,
+                    x = config.escape,
                     key = (e.key || String.fromCharCode(k))[tlc](),
                     ctrl = e.ctrlKey,
                     shift = e.shiftKey,
@@ -211,7 +214,7 @@
                     is_space = key === ' ' || !shift && k === 32,
                     is_backspace = key === 'backspace' || !shift && k === 8, form;
                 // submit form on `enter` key in the `span[contenteditable]`
-                if (!ctrl && is_enter) {
+                if (!ctrl && is_enter && x[pos]('\n') === -1) {
                     while (p = p[parent]) {
                         if (p.nodeName[tlc]() === 'form') {
                             form = p;
@@ -227,7 +230,7 @@
                 } else if (!t[text] && is_backspace) {
                     $.reset(data), on_focus();
                 } else {
-                    var x = config.escape, y, z;
+                    var y, z;
                     for (i in x) {
                         y = x[i];
                         z = y === '\s';
@@ -247,7 +250,7 @@
                         var v = t[text];
                         shadow[html] = v ? "" : placeholder;
                         for (i = 0, j = x.length; i < j; ++i) {
-                            if (x[i] && v.indexOf(x[i]) !== -1) {
+                            if (x[i] && v[pos](x[i]) !== -1) {
                                 $.set(v.split(x[i]).join(""));
                                 break;
                             }

@@ -1,15 +1,15 @@
 <?php
 
-Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__sgr, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
+Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__action, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
     extract(Lot::get(null, []));
-    $__sgr = To::url($__sgr, true);
+    $__action = To::url($__action, true);
     $__path = To::url($__path, true);
     $__path_shield = PANEL . DS . 'lot' . DS . 'shield' . DS . $__state->shield;
     $__chops = explode('/', $__path);
     $__DIR = Path::D(__DIR__);
     $__s = $__DIR . DS . 'worker' . DS;
     Lot::set([
-        '__sgr' => $__sgr,
+        '__action' => $__action,
         '__path' => $__path,
         '__path_shield' => $__path_shield,
         '__step' => $__step - 1,
@@ -25,13 +25,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     require $__s . DS . 'asset.php';
     require $__s . DS . 'lot.php';
     if (!$__task) {
-        foreach (glob(EXTEND . DS . '*' . DS . 'lot' . DS . 'worker' . DS . 'index' . DS . $__chops[0] . '.php', GLOB_NOSORT) as $__v) {
-            $__task = $__v;
-            break;
-        }
-        if (!$__task) {
-            Shield::abort(PANEL_404);
-        }
+        Shield::abort(PANEL_404);
     }
     $__token = Guardian::token();
     $__hash = Guardian::hash();
@@ -51,7 +45,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__message' => Message::get() ?: Lot::get('message', ""),
         '__n_n' => $__n_n
     ]);
-    if ($__user && $__sgr === 's' && Request::is('get')) {
+    if ($__user && $__action === 's' && Request::is('get')) {
         Request::save('post', 'user', User::ID . $__user->key);
     }
     Shield::attach(__DIR__ . DS . '..' . DS . $site->layout(0) . '.php');

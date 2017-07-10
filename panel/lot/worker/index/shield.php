@@ -1,24 +1,28 @@
 <?php
 
-Hook::set('__page.url', function($content, $lot) use($__state) {
-    $s = Path::D(Path::F($lot['path'], LOT));
-    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($s), '/'), '/');
-});
-
 // `panel/::s::/shield` → upload a new shield
 // `panel/::g::/shield` → index view
 // `panel/::s::/shield/blastula` → create new child file in `lot\shield\blastula`
 // `panel/::g::/shield/blastula` → view blastula shield file(s)
-$site->is = $__is_has_step ? 'pages' : 'page';
-$site->is_f = $__is_has_step ? false : 'editor';
-$site->layout = 2;
-
-Config::set('panel.t', [
-    'file' => [
-        'title' => $language->editor,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'shield.1.t.file.php',
-        'stack' => 10
+Config::set([
+    'is' => $__is_has_step ? 'pages' : 'page',
+    'is_f' => $__is_has_step ? false : 'editor',
+    'layout' => 2,
+    'panel' => [
+        'm' => [
+            't' => [
+                'file' => [
+                    'title' => $language->editor,
+                    'stack' => 10
+                ]
+            ]
+        ]
     ]
 ]);
 
-if ($__f = File::exist(__DIR__ . DS . 'shield' . DS . $__sgr . '.php')) require $__f;
+Hook::set('__page.url', function($__content, $__lot) use($__state) {
+    $__s = Path::D(Path::F($__lot['path'], LOT));
+    return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
+});
+
+if ($__f = File::exist(__DIR__ . DS . 'shield' . DS . $__action . '.php')) require $__f;

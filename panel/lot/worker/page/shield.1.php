@@ -1,27 +1,5 @@
 <?php if (isset($__page[0]->name)): ?>
-<?php include __DIR__ . DS . '-t.php'; ?>
-<p class="f f-state expand">
-  <label for="f-state"><?php echo $language->set; ?></label>
-  <span>
-<?php
-
-$__t = Is::these(explode(',', SCRIPT_X))->has($__page[0]->extension) ? '1' : '0';
-
-foreach ([
-    (is_dir($__page[0]->path) ? '0' : '1') => $language->{$__t ? 'update' : 'rename'},
-    '-1' => $language->delete
-] as $__k => $__v) {
-    echo ' ' . Form::submit('xx', $__k, $__v, [
-        'classes' => ['button', 'set', 'x-' . $__k],
-        'id' => 'f-state:' . $__k
-    ]);
-}
-
-echo ' ' . HTML::a($language->cancel, Path::D($url->current), false, ['classes' => ['button', 'reset']])
-
-?>
-  </span>
-</p>
+<?php include __DIR__ . DS . '-m.php'; ?>
 <?php else: ?>
 <section class="buttons">
   <p>
@@ -34,13 +12,14 @@ echo ' ' . HTML::a($language->cancel, Path::D($url->current), false, ['classes' 
   </p>
 </section>
 <section class="files">
-  <?php if ($__sgr === 's' && count($__chops) === 1): ?>
+  <?php if ($__action === 's' && count($__chops) === 1): ?>
   <fieldset>
     <legend><?php echo $language->file; ?></legend>
-    <p class="f f-file expand">
-      <label for="f-file"><?php echo $language->file; ?></label>
-      <span><?php echo Form::file('file', ['id' => 'f-file']); ?></span>
-    </p>
+    <?php echo __panel_f__('file', [
+    'type' => 'file',
+    'description' => $language->h_shield_upload,
+    'expand' => true
+]); ?>
   </fieldset>
   <p class="f f-state expand">
     <label for="f-state"><?php echo $language->state; ?></label>

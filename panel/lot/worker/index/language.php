@@ -1,26 +1,30 @@
 <?php
 
-Hook::set('__language.url', function($__content, $__lot) use($__chops) {
-    return __url__('url') . '/' . Extend::state('panel', 'path') . '/::g::/' . $__chops[0] . '/' . $__lot['slug'];
-});
-
-$site->is = 'page';
-$site->is_f = 'editor';
-$site->layout = 2;
-
-Config::set('panel.t', [
-    'page' => [
-        'title' => $language->editor,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'language.1.t.page.php',
-        'stack' => 10
+Config::set([
+    'is' => 'page',
+    'is_f' => 'editor',
+    'layout' => 2,
+    'panel' => [
+        'm' => [
+            't' => [
+                'page' => [
+                    'title' => $language->editor,
+                    'stack' => 10
+                ]
+            ]
+        ]
     ]
 ]);
 
+Hook::set('__language.url', function($__content, $__lot) use($__state, $__chops) {
+    return $__state->path . '/::g::/' . $__chops[0] . '/' . $__lot['slug'];
+});
+
 /* `sgr` */
 
-foreach (glob(LANGUAGE . DS . '*.page') as $v) {
-    $__kins[0][] = new Page($v, [], '__language');
-    $__kins[1][] = new Page($v, [], 'language');
+foreach (glob(LANGUAGE . DS . '*.page') as $__v) {
+    $__kins[0][] = new Page($__v, [], '__language');
+    $__kins[1][] = new Page($__v, [], 'language');
 }
 
 Lot::set('__kins', $__kins);
@@ -32,7 +36,7 @@ if (!$__file = File::exist([
     Shield::abort(PANEL_404);
 }
 
-if ($__sgr === 'g' && Path::N($__file) === 'en-us' && isset($__chops[1]) && $__chops[1] !== 'en-us') {
+if ($__action === 'g' && Path::N($__file) === 'en-us' && isset($__chops[1]) && $__chops[1] !== 'en-us') {
     Shield::abort(PANEL_404);
 }
 
@@ -44,26 +48,26 @@ $__page = [
 Lot::set('__page', $__page);
 
 if (Request::is('post') && !Message::$x) {
-    $n = Path::N($__file);
+    $__n = Path::N($__file);
     if (Request::post('x') === 'trash') {
-        if ($n === 'en-us') {
+        if ($__n === 'en-us') {
             Shield::abort(PANEL_404); // you can’t delete the default language
         }
         Hook::NS('on.language.reset', [$__file]);
         if (!Message::$x) {
-            File::open($__file)->renameTo($n . '.trash');
+            File::open($__file)->renameTo($__n . '.trash');
             Message::success(To::sentence($language->deleteed) . ' ' . HTML::a($language->restore, $__state->path . '/::r::/' . $__path . HTTP::query(['token' => $__token, 'abort' => 1]), false, ['classes' => ['right']]));
             Guardian::kick(Path::D($url->path));
         }
     }
-    $s = Request::post('slug');
-    if ($s === 'en-us' || ($s !== $n && File::exist(LANGUAGE . DS . $s . '.page'))) {
+    $__s = Request::post('slug');
+    if ($__s === 'en-us' || ($__s !== $__n && File::exist(LANGUAGE . DS . $__s . '.page'))) {
         Request::save('post');
-        Message::error('exist', [$language->locale, '<em>' . $s . '</em>']);
+        Message::error('exist', [$language->locale, '<em>' . $__s . '</em>']);
     }
     Hook::NS('on.language.set', [$__file]);
     if (!Message::$x) {
-        $headers = [
+        $__headers = [
             'title' => false,
             'description' => false,
             'author' => false,
@@ -71,17 +75,20 @@ if (Request::is('post') && !Message::$x) {
             'version' => '0.0.0',
             'content' => false
         ];
-        foreach ($headers as $k => $v) {
-            $headers[$k] = Request::post($k, $v);
+        foreach ($__headers as $__k => $__v) {
+            $__headers[$__k] = Request::post($__k, $__v);
         }
-        $f = LANGUAGE . DS . $s . '.page';
-        Page::data($headers)->saveTo($f, 0600);
-        Message::success(To::sentence($language->{($__sgr === 'g' ? 'update' : 'create') . 'ed'}));
-        Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $s);
+        $__f = LANGUAGE . DS . $__s . '.page';
+        Page::data($__headers)->saveTo($__f, 0600);
+        if ($__s !== $__n) {
+            File::open($__file)->delete(); // slug has been changed, delete the old file!
+        }
+        Message::success(To::sentence($language->{($__action === 'g' ? 'update' : 'create') . 'ed'}));
+        Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $__s);
     }
 }
 
-if ($__sgr === 's') {
+if ($__action === 's') {
     if (isset($__chops[1])) {
         Shield::abort(PANEL_404);
     }
@@ -92,15 +99,15 @@ if ($__sgr === 's') {
         ], '__language'),
         $__page[1]
     ]);
-} else if ($__sgr === 'r') {
+} else if ($__action === 'r') {
     if (!Request::get('token')) {
         Shield::abort(PANEL_404);
     }
-    $s = Path::B($url->path);
-    if (!$__file = File::exist(LANGUAGE . DS . $s . '.trash')) {
+    $__s = Path::B($url->path);
+    if (!$__file = File::exist(LANGUAGE . DS . $__s . '.trash')) {
         Shield::abort(PANEL_404);
     }
-    File::open($__file)->renameTo($s . '.page');
+    File::open($__file)->renameTo($__s . '.page');
     Message::success(To::sentence($language->restoreed));
-    Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $s);
+    Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $__s);
 }

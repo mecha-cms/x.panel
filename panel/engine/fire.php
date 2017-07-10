@@ -10,6 +10,8 @@ if ($__user_key = Cookie::get('panel.c.user.key')) {
     }
 }
 
+$__f = PANEL . DS . 'lot' . DS . 'worker' . DS;
+
 if (
     (
         $url->path === $__state->path ||
@@ -23,11 +25,12 @@ if (
 ) {
     if (
         $url->path === $__state->path . '/::g::/enter' &&
-        file_exists(PANEL . DS . 'lot' . DS . 'worker' . DS . 'index' . DS . 'user.php') &&
+        file_exists($__f . 'index' . DS . 'user.php') &&
         !g(USER, 'page')
     ) {
         Message::info('void', $language->users);
         Guardian::kick($__state->path . '/::s::/user');
     }
-    require PANEL . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';
+    require $__f . 'index.php';
+    require $__f . 'worker' . DS . 'route.php';
 }

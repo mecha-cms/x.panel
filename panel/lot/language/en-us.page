@@ -2,25 +2,20 @@
 type: YAML
 ...
 
-chunk: Per Page
-inherit: Inherit
-
 TIB:
   text:
     - Delete “%s”
     - Duplicate “%s”
 
 panel:
+  chunk: Per Page
   fast: Fast
   faster: Faster
   fastest: Fastest
+  inherit: Inherit
   slow: Slow
   slower: Slower
   slowest: Slowest
-  user: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}
-  sort:
-    0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
-    1: {"time":"time","slug":"slug","update":"update"}
   as_: Set as Home Page
   as_page: Hide Pages View
 
@@ -32,12 +27,6 @@ sort: Sort
 
 message_error: Error.
 message_error_duplicate: Duplicate %{0}%.
-message_error_exist: %{0}% %{1}% already exists.
-message_error_file_x: Extension %{0}% is not allowed.
-message_error_file_size:
-  0: Must be greater than %{0}%.
-  1: Must be less than %{0}%.
-message_error_file_type: File type %{0}% is not allowed.
 message_error_ip: Invalid IP.
 message_error_max: Maximum %{0}%: %{1}%.
 message_error_min: Minimum %{0}%: %{1}% %{0}%.
@@ -48,8 +37,8 @@ message_error_user_or_pass: Invalid user or pass value.
 message_error_value: Invalid %{0}%.
 message_error_void_field: Please fill out the %{0}% field.
 
-message_info_create: %{0}% created.
-message_info_delete: %{0}% deleted.
+message_info_create: %{0}% has been created.
+message_info_delete: %{0}% has been deleted.
 
 message_success: Success.
 message_success_create: %{0}% created.
@@ -65,13 +54,25 @@ message_warning: Warning.
 
 f_title: Title Here
 f_content: Content goes here…
+f_directions:
+  ltr: Left to Right (LTR)
+  rtl: Right to Left (RTL)
 f_description: Some description about this %{0}% (optional).
 f_query: lorem, ipsum, dolor, sit, amet
-f_types:
-  HTML: HTML
-  Markdown: Markdown
-f_yaml: "key: value"
 
-h_page: Configure the default page data here.
+h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code>file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
+h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code>file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
+h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code>file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
+h_state_page: Configure the default page data here.
+
+o_editors:
+  code-mirror: CodeMirror
+o_sorts:
+  0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
+  1: {"time":"time","slug":"slug","update":"update"}
+o_types:
+  HTML: HTML
+o_users: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}
+f_yaml: "key: value"
 
 __title: Control Panel

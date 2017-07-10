@@ -1,4 +1,11 @@
+
 <?php
+
+$__s = substr($__path, -2) === '/+';
+$__values = [
+    'data' => $language->{$__s ? 'save' : 'update'},
+    'trash' => $__s ? null : $language->delete
+];
 
 $__content = $__data[0]->content;
 
@@ -18,6 +25,12 @@ return [
         'type' => 'text',
         'value' => $__data[0]->key,
         'pattern' => '^[a-z\\d]+(?:_[a-z\\d]+)*$',
-        'stack' => 10.1
+        'stack' => 20
+    ],
+    'x' => [
+        'type' => 'submit',
+        'title' => $language->submit,
+        'values' => $__values,
+        'stack' => 0
     ]
 ];

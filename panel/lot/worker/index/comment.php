@@ -1,20 +1,29 @@
 <?php
 
-Hook::set('__comment.url', function($content, $lot) use($__state) {
-    $s = Path::F($lot['path'], LOT);
-    return rtrim(__url__('url') . '/' . $__state->path . '/::g::/' . ltrim(To::url($s), '/'), '/');
+Hook::set('__page.url', function($__content, $__lot) use($__state) {
+    $__s = Path::F($__lot['path'], LOT);
+    return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
 });
 
-$site->is = $__is_has_step ? 'pages' : 'page';
-$site->is_f = $__is_has_step ? false : 'editor';
-$site->layout = $__is_has_step ? 2 : 3;
+Hook::set('__comment.url', function($__content, $__lot) use($__state) {
+    $__s = Path::F($__lot['path'], LOT);
+    return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
+});
 
-if ($__f = File::exist(__DIR__ . DS . 'comment' . DS . $__sgr . '.php')) require $__f;
+if ($__f = File::exist(__DIR__ . DS . 'comment' . DS . $__action . '.php')) require $__f;
 
-Config::set('panel.t', [
-    'page' => [
-        'title' => $language->comment,
-        'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'comment.2.t.page.php',
-        'stack' => 10
+Config::set([
+    'is' => $__is_has_step ? 'pages' : 'page',
+    'is_f' => $__is_has_step ? false : 'editor',
+    'layout' => $__is_has_step ? 2 : 3,
+    'panel' => [
+        'm' => [
+            't' => [
+                'page' => [
+                    'title' => $language->comment,
+                    'stack' => 10
+                ]
+            ]
+        ]
     ]
 ]);

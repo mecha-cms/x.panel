@@ -1,6 +1,6 @@
 <?php
 
-$__a = o($__sgr === 'g' ? [
+$__a = o($__action === 'g' ? [
     'key' => $__key,
     'content' => File::open($__f)->read()
 ] : [

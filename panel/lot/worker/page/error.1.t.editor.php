@@ -10,6 +10,14 @@ return [
             'expand' => true
         ],
         'expand' => true,
-        'stack' => 10.1
+        'stack' => 10
     ],
+    // the submit button
+    'x' => [
+        'type' => 'submit',
+        'title' => $language->submit,
+        'text' => $language->delete,
+        'value' => 'trash',
+        'stack' => 0
+    ]
 ];

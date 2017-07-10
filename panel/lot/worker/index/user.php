@@ -1,6 +1,6 @@
 <?php
 
-if ($__sgr !== 's') {
+if ($__action !== 's') {
     Shield::abort(PANEL_404);
 }
 
@@ -8,6 +8,29 @@ if ($__sgr !== 's') {
 if (g(USER, 'page') && User::current('status') !== 1) {
     Shield::abort(PANEL_404);
 }
+
+Config::set([
+    'is' => 'page',
+    'is_f' => 'editor',
+    'layout' => 2,
+    'panel' => [
+        'm' => [
+            't' => [
+                'user' => [
+                    'stack' => 10
+                ]
+            ]
+        ]
+    ]
+]);
+
+Hook::set('__user.url', function($__content) use($__state, $__chops) {
+    return $__state->path . '/::g::/' . $__chops[0] . '/' . Path::N($__content);
+});
+
+Hook::set('user.title', function($__content, $__lot) {
+    return (isset($__lot['author']) ? $__lot['author'] : null);
+});
 
 if (Request::is('post')) {
     $__user_key = Request::post('user', "", false);
@@ -59,7 +82,3 @@ Lot::set([
     '__kins' => $__kins,
     '__is_has_step_kin' => $__is_has_step_kin
 ]);
-
-$site->is = 'page';
-$site->is_f = 'editor';
-$site->layout = 2;

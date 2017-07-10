@@ -112,36 +112,6 @@ if (count($__chops) <= 1) {
     } else {
         Shield::abort(PANEL_404);
     }
-    if ($__f = glob(SHIELD . DS . '*', GLOB_ONLYDIR)) {
-        foreach ($__f as $__k => $__v) {
-            if (Path::N($__v) === $__chops[1]) continue;
-            if ($__v = File::exist([
-                $__v . DS . 'about.' . $config->language . '.page',
-                $__v . DS . 'about.page'
-            ])) {
-                $__kins[0][] = new Page($__v, [], '__page');
-                $__kins[1][] = new Page($__v, [], 'page');
-            }
-        }
-        $__is_has_step_kin = count($__f) > $__chunk;
-        Lot::set([
-            '__kins' => $__kins,
-            '__is_has_step_kin' => $__is_has_step_kin
-        ]);
-    }
-    if ($__f = glob(LOT . DS . $__path . DS . '*')) {
-        foreach ($__f as $__k => $__v) {
-            $__b = str_replace(SHIELD . DS . $__chops[1] . DS, "", To::path($__v));
-            if (substr($__b, -6) === '.trash') continue;
-            $__a = [
-                'title' => Path::B($__b),
-                'path' => $__v,
-                'extension' => Path::X($__v),
-                'url' => $url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . $__chops[1] . '/' . $__b
-            ];
-            $__datas[0][] = (object) $__a;
-            $__datas[1][] = (object) $__a;
-        }
-        Lot::set('__datas', $__datas);
-    }
+    include __DIR__ . DS . '-datas.php';
+    include __DIR__ . DS . '-kins.php';
 }

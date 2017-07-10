@@ -2,11 +2,11 @@
   <section class="s-parent">
     <h3><?php echo $language->parent; ?></h3>
     <ul>
-      <li><?php $__p = Path::D($url->current); echo HTML::a('<i class="i i-0"></i> ' . (count($__chops) === 3 ? '.' : Path::B($__p)), $__p); ?></li>
+      <li><?php $__p = Path::D($url->current); echo HTML::a('<i class="i i-0"></i> ' . (count($__chops) === 3 ? '..' : Path::B($__p)), $__p); ?></li>
     </ul>
   </section>
   <?php endif; ?>
-  <?php if ($__kins[0] && count($__chops) === 2): ?>
+  <?php if ($__kins[0]): ?>
   <section class="s-kin">
     <h3><?php echo $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
     <ul>
