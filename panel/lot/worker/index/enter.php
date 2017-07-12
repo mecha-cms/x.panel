@@ -10,8 +10,7 @@ if ($__user_enter) {
 
 Config::set([
     'is' => 'page',
-    'is_f' => 'enter',
-    'layout' => 0
+    'is_f' => 'enter'
 ]);
 
 if (Request::is('post')) {

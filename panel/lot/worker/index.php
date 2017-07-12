@@ -1,15 +1,17 @@
 <?php
 
-foreach ((array) $language->o_types as $k => $v) {
-    Config::set('panel.f.page.types.' . $k, $v);
-}
-
-foreach ((array) $language->o_editors as $k => $v) {
-    Config::set('panel.f.page.editors.' . $k, $v);
-}
+Hook::set('on.panel.ready', function() use($language) {
+    foreach ((array) $language->o_type as $k => $v) {
+        Config::set('panel.o.page.type.' . $k, $v);
+    }
+    foreach ((array) $language->o_editor as $k => $v) {
+        Config::set('panel.o.page.editor.' . $k, $v);
+    }
+}, 20);
 
 if (Extend::exist('tag')) {
-
+    $__NS = explode('/', $url->path . '///')[2];
+    if (!$__NS || $__NS === 'tag') $__NS = X;
     function fn_tags_set($__file) {
         if (!Message::$x) {
             global $language;
@@ -42,7 +44,7 @@ if (Extend::exist('tag')) {
                                 'title' => $v,
                                 'author' => $__author
                             ])->saveTo($f . '.page', 0600);
-                            Message::info($language->message_info_create($language->tag . ' <em>' . str_replace('-', ' ', $v) . '</em>') . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $v, true, ['classes' => ['right']]));
+                            Message::info($language->message_info_create([$language->tag, '<em>' . str_replace('-', ' ', $v) . '</em>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $v, true, ['classes' => ['right']]));
                         }
                     }
                     $__kinds = array_unique($__kinds);
@@ -59,9 +61,7 @@ if (Extend::exist('tag')) {
         }
         return $__file;
     }
-
-    Hook::set('on.page.set', 'fn_tags_set');
-
+    Hook::set('on.' . $__NS . '.set', 'fn_tags_set');
     // Delete trash…
     Hook::set('on.user.exit', function() {
         foreach (File::explore(TAG, true, true) as $k => $v) {
@@ -78,5 +78,4 @@ if (Extend::exist('tag')) {
             }
         }
     });
-
 }

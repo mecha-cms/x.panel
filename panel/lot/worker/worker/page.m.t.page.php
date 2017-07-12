@@ -1,8 +1,13 @@
 <?php
 
 $__tags = [];
-$__types = (array) Config::get('panel.f.page.types', []);
-$__x = $__page[0]->state;
+$__types = (array) Config::get('panel.o.page.type', []);
+$__buttons = [
+    'page' => $language->publish,
+    'draft' => $language->save,
+    'archive' => $language->archive,
+    'trash' => $__action === 's' ? null : $language->delete
+];
 
 call_user_func(function() use($__page, &$__tags, &$__types) {
     if ($__page[0]->kind) {
@@ -14,13 +19,14 @@ call_user_func(function() use($__page, &$__tags, &$__types) {
     asort($__types);
 });
 
-$__x = $__page[0]->state;
+$__X = $__page[0]->state;
+$__N = $__page[0]->slug;
 
 return [
     'title' => [
         'type' => 'text',
         'value' => $__page[0]->title,
-        'placeholder' => $language->f_title,
+        'placeholder' => $__page[0]->title ?: $language->f_title,
         'is' => [
             'block' => true
         ],
@@ -35,7 +41,7 @@ return [
     '*slug' => [
         'type' => 'text',
         'value' => $__page[0]->slug,
-        'placeholder' => To::slug($language->f_title),
+        'placeholder' => $__N ?: To::slug($language->f_title),
         'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
         'is' => [
             'block' => true
@@ -73,8 +79,7 @@ return [
     'description' => [
         'type' => 'textarea',
         'value' => $__page[0]->description,
-        'placeholder' => $language->f_description($language->page),
-        'union' => ['div'],
+        'placeholder' => $__page[0]->description ?: $language->f_description($language->{$__chops[0]}),
         'is' => [
             'block' => true
         ],
@@ -90,43 +95,43 @@ return [
         'stack' => 60
     ],
     'tags' => [
-        'type' => 'text',
+        'type' => 'query',
         'value' => implode(', ', (array) $__tags) ?: null,
         'placeholder' => $language->f_query,
         'if' => Extend::exist('tag'),
         'is' => [
             'block' => true
         ],
-        'attributes' => [
-            'classes' => [3 => 'query']
-        ],
         'stack' => 70
     ],
-    'time' => [
-        'type' => 'text',
-        'value' => (new Date($__page[0]->time))->format('Y/m/d H:i:s'),
-        'placeholder' => date('Y/m/d H:i:s'),
+    '+[time]' => (
+        // Detect time format on the page slug @see `engine\kernel\page.php`
+        $__N &&
+        is_numeric($__N[0]) &&
+        (
+            // `2017-04-21.page`
+            substr_count($__N, '-') === 2 ||
+            // `2017-04-21-14-25-00.page`
+            substr_count($__N, '-') === 5
+        ) &&
+        is_numeric(str_replace('-', "", $__N)) &&
+        preg_match('#^\d{4,}-\d{2}-\d{2}(?:-\d{2}-\d{2}-\d{2})?$#', $__N)
+    ) ? null : [
+        'key' => 'time',
+        'type' => 'date',
+        'value' => $__page[0]->time,
         'if' => $__action !== 's',
-        'attributes' => [
-            'classes' => [2 => 'date']
-        ],
         'stack' => 80
     ],
-    // the submit button(s)
     'x' => [
         'type' => 'submit',
         'title' => $language->submit,
-        'text' => $language->update,
         'values' => array_merge($__action !== 's' ? [
-            '*' . $__x => $language->update
-        ] : [], array_filter([
-            'page' => $language->publish,
-            'draft' => $language->save,
-            'archive' => $language->archive,
-            'trash' => $__action !== 's' ? $language->delete : null
-        ], function($__k) use($__x) {
-            return $__k !== $__x;
+            '*' . $__X => $language->update . ' (' . Anemon::alter($__X, $__buttons) . ')'
+        ] : [], array_filter($__buttons, function($__k) use($__X) {
+            return $__k !== $__X;
         }, ARRAY_FILTER_USE_KEY)),
+        'order' => ['*' . $__X, 'page', 'draft', 'archive', 'trash'],
         'stack' => 0
     ]
 ];

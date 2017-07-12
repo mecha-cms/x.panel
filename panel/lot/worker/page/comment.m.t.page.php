@@ -1,8 +1,8 @@
 <?php
 
 $__x = $__page[0]->state;
-$__statuss = (array) $language->o_users;
-$__types = a(Config::get('panel.f.page.types', []));
+$__statuss = (array) $language->o_user;
+$__types = a(Config::get('panel.o.page.type', []));
 
 asort($__types);
 

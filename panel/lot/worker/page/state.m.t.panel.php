@@ -31,20 +31,20 @@ return [
         'key' => 'order',
         'type' => 'toggle',
         'value' => $__state->sort[0],
-        'values' => $language->o_sorts[0],
+        'values' => $language->o_sort[0],
         'stack' => 30
     ],
     '__[sort][1]' => [
         'key' => 'by',
         'type' => 'toggle',
         'value' => $__state->sort[1],
-        'values' => $language->o_sorts[1],
+        'values' => $language->o_sort[1],
         'stack' => 40
     ],
     '__[chunk]' => [
         'key' => 'chunk',
         'type' => 'number',
-        'title' => $language->panel->chunk,
+        'title' => $language->__->panel->chunk,
         'value' => $__state->chunk,
         'attributes' => [
             'min' => 0,

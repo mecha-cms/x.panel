@@ -27,6 +27,8 @@ pre {
   line-height:1;
   font-size:86%;
 }
+.table {background:#fff}
+.table th {background:#fea}
 .button,
 .input,
 .select,
@@ -267,9 +269,13 @@ pre {
   padding:1em;
   margin:-.5em -.5em .5em;
 }
-.s-setting .table {font-size:85%}
+.s-setting .table {
+  font-size:85%;
+  background:none;
+}
 .s-setting th,
 .s-setting td {
+  background:none;
   border:0;
   padding:.25em .5em;
 }

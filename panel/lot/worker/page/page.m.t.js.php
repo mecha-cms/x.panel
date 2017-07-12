@@ -3,7 +3,8 @@
 $__s = $__page[0]->js;
 
 return [
-    'js' => [
+    '+[js]' => [
+        'key' => 'js',
         'title' => 'JavaScript',
         'type' => 'editor',
         'value' => $__s,

@@ -50,6 +50,11 @@ code,.code {font-family:monospace}
 del,s {text-decoration:line-through}
 ins,u {text-decoration:underline}
 kbd,small,sub,sup {font-size:80%}
+pre {
+  word-wrap:break-word;
+  white-space:pre-wrap;
+  overflow:auto;
+}
 html {
   font:normal normal 13px/1.5384615384615385em sans-serif;
   background:#fff;

@@ -1,7 +1,7 @@
 <?php
 
-$__types = a(Config::get('panel.f.page.types', []));
-$__editors = a(Config::get('panel.f.page.editors', []));
+$__types = a(Config::get('panel.o.page.type', []));
+$__editors = a(Config::get('panel.o.page.editor', []));
 $__s = isset($__page[0]->config['page']) ? (array) $__page[0]->config['page'] : [];
 $__ss = [
     'title' => null,

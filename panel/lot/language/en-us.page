@@ -2,22 +2,29 @@
 type: YAML
 ...
 
+__that__: %{0}% That %{1}%
+__thats__: %{0}% Those %{1}%
+
+__this__: %{0}% This %{1}%
+__thiss__: %{0}% These %{1}%
+
 TIB:
   text:
-    - Delete “%s”
-    - Duplicate “%s”
+    - Delete “%s%”
+    - Duplicate “%s%”
 
-panel:
-  chunk: Per Page
-  fast: Fast
-  faster: Faster
-  fastest: Fastest
-  inherit: Inherit
-  slow: Slow
-  slower: Slower
-  slowest: Slowest
-  as_: Set as Home Page
-  as_page: Hide Pages View
+__:
+  panel:
+    chunk: Per Page
+    fast: Fast
+    faster: Faster
+    fastest: Fastest
+    inherit: Inherit
+    slow: Slow
+    slower: Slower
+    slowest: Slowest
+    as_: Set as Home Page
+    as_page: Hide Pages View
 
 sort: Sort
 
@@ -27,6 +34,7 @@ sort: Sort
 
 message_error: Error.
 message_error_duplicate: Duplicate %{0}%.
+message_error_exist: %{0}% %{1}% already exists.
 message_error_ip: Invalid IP.
 message_error_max: Maximum %{0}%: %{1}%.
 message_error_min: Minimum %{0}%: %{1}% %{0}%.
@@ -37,12 +45,17 @@ message_error_user_or_pass: Invalid user or pass value.
 message_error_value: Invalid %{0}%.
 message_error_void_field: Please fill out the %{0}% field.
 
-message_info_create: %{0}% has been created.
-message_info_delete: %{0}% has been deleted.
+message_info_create: %{0}% %{1}% has been created.
+message_info_delete: %{0}% %{1}% has been deleted.
+message_info_save: %{0}% %{1}% has been saved.
+message_info_update: %{0}% %{1}% has been updated.
 
 message_success: Success.
-message_success_create: %{0}% created.
-message_success_delete: %{0}% deleted.
+message_success_create: %{0}% %{1}% created.
+message_success_delete: %{0}% %{1}% deleted.
+message_success_restore: %{0}% %{1}% restored.
+message_success_save: %{0}% %{1}% saved.
+message_success_update: %{0}% %{1}% updated.
 message_success_user_enter: Logged in.
 message_success_user_exit: Logged out.
 
@@ -59,20 +72,20 @@ f_directions:
   rtl: Right to Left (RTL)
 f_description: Some description about this %{0}% (optional).
 f_query: lorem, ipsum, dolor, sit, amet
+f_yaml: "key: value"
 
-h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code>file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code>file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code>file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
+h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
+h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
+h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
 h_state_page: Configure the default page data here.
 
-o_editors:
+o_editor:
   code-mirror: CodeMirror
-o_sorts:
+o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"time","slug":"slug","update":"update"}
-o_types:
+o_type:
   HTML: HTML
-o_users: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}
-f_yaml: "key: value"
+o_user: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}
 
 __title: Control Panel

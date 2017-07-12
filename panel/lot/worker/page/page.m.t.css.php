@@ -3,7 +3,8 @@
 $__s = $__page[0]->css;
 
 return [
-    'css' => [
+    '+[css]' => [
+        'key' => 'css',
         'title' => 'CSS',
         'type' => 'editor',
         'value' => $__s,

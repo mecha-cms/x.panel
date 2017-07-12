@@ -7,8 +7,8 @@
 Config::set([
     'is' => $__is_has_step ? 'pages' : 'page',
     'is_f' => $__is_has_step ? false : 'editor',
-    'layout' => 2,
     'panel' => [
+        'layout' => 2,
         'm' => [
             't' => [
                 'file' => [

@@ -48,5 +48,5 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     if ($__user && $__action === 's' && Request::is('get')) {
         Request::save('post', 'user', User::ID . $__user->key);
     }
-    Shield::attach(__DIR__ . DS . '..' . DS . $site->layout(0) . '.php');
+    Shield::attach(__DIR__ . DS . '..' . DS . (isset($site->panel->layout) ? $site->panel->layout : 0) . '.php');
 }, 1);

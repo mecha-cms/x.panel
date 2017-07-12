@@ -5,15 +5,22 @@ $__n_n = (array) Config::get('panel.n.n', []);
 $__n = [];
 
 if (!isset($__n_n['error']) || $__n_n['error'] !== false) {
-    if ($__log = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
-        preg_match_all('#^\s*\[(.+?)\]#m', File::open($__log)->read(), $__errors);
+    if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
+        preg_match_all('#^\s*\[(.+?)\].*\s*$#m', $__log, $__errors);
         if (!empty($__errors[1])) {
+            $__errors[1] = array_unique($__errors[1], SORT_STRING);
+            foreach ($__errors[1] as $__k => $__v) {
+                $__vv = trim(explode(']', $__errors[0][$__k])[1]);
+                if (!trim(explode(':', $__vv . ':')[1])) {
+                    unset($__errors[1][$__k]);
+                }
+            }
             $__n['error'] = isset($__n_n['error']) && is_array($__n_n['error']) ? $__n_n['error'] : [
                 'text' => $language->errors,
                 'attributes' => [
                     'href' => $__state->path . '/::g::/error'
                 ],
-                'i' => count(array_unique($__errors[1]))
+                'i' => count($__errors[1])
             ];
         }
     }

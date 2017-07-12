@@ -9,7 +9,7 @@
     return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);
 })): // [1] ?>
   <?php if (count($__t) > 1): // [2] ?>
-  <?php $__t = Anemon::eat($__t)->sort([1, 'stack'], 10)->vomit(); ?>
+  <?php $__t = Anemon::eat($__t)->sort([1, 'stack'], "")->vomit(); ?>
   <nav class="t">
   <?php $__1 = array_keys($__t); ?>
   <?php $__1 = array_shift($__1); ?>
@@ -31,10 +31,10 @@
         <?php $__s = $__v['description']; ?>
         <div class="h p"><?php echo stripos($__s, '</p>') === false ? '<p>' . $__s . '</p>' : $__s; ?></div>
       <?php endif; // [3] ?>
-      <?php if (!isset($__v['content']) && $__w = File::exist(__DIR__ . DS . $__chops[0] . '.1.t.' . $__k . '.php')): // [3] ?>
+      <?php if (!isset($__v['content']) && $__w = File::exist(__DIR__ . DS . '..' . DS . 'page' . DS . $__chops[0] . '.m.t.' . $__k . '.php')): // [3] ?>
         <?php $__v['content'] = include $__w; ?>
-      <?php elseif (is_string($__v['content']) && is_file($__v['content'])): // [3] ?>
-        <?php $__v['content'] = include $__v['content']; ?>
+      <?php elseif (isset($__v['content']) && is_string($__v['content']) && is_file($__v['content'])): // [3] ?>
+        <?php $__v['content'] = include $__v['content']; // [4] ?>
       <?php endif; // [3] ?>
       <?php if (is_array($__v['content'])): // [3] ?>
       <?php if ($__a = a(Config::get('panel.f.' . $__k, []))): // [4] ?>
@@ -48,7 +48,7 @@
           <?php endif; // [5] ?>
         <?php echo __panel_f__($__kk, $__vv); ?>
       <?php endforeach; // [4] ?>
-      <?php else: // [3] ?>
+      <?php elseif (isset($__v['content'])): // [3] ?>
         <?php echo $__v['content']; ?>
       <?php endif; // [3] ?>
     </fieldset>

@@ -7,12 +7,15 @@ if (!$__file = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
 Config::set([
     'is' => 'page',
     'is_f' => 'editor',
-    'layout' => 2,
     'panel' => [
+        'layout' => 2,
         'm' => [
             't' => [
-                'editor' => [
+                'summary' => [
                     'stack' => 10
+                ],
+                'detail' => [
+                    'stack' => 20
                 ]
             ]
         ]

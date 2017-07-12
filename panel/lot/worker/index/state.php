@@ -3,8 +3,8 @@
 Config::set([
     'is' => 'page',
     'is_f' => 'editor',
-    'layout' => 2,
     'panel' => [
+        'layout' => 2,
         'm' => [
             't' => isset($__chops[1]) && $__chops[1] !== 'config' ? [
                 'editor' => [

@@ -1,4 +1,3 @@
-
 <?php
 
 $__s = substr($__path, -2) === '/+';
@@ -31,6 +30,7 @@ return [
         'type' => 'submit',
         'title' => $language->submit,
         'values' => $__values,
+        'order' => ['data', 'trash'],
         'stack' => 0
     ]
 ];

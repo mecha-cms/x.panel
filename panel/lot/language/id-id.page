@@ -2,28 +2,36 @@
 type: YAML
 ...
 
+__that__: %{0}% %{1}% Itu
+__thats__: %{0}% Semua %{1}% Itu
+
+__this__: %{0}% %{1}% Ini
+__thiss__: %{0}% Semua %{1}% Ini
+
 TIB:
   text:
-    - Hapus “%s”
-    - Duplikat “%s”
+    - Hapus “%s%”
+    - Duplikat “%s%”
 
-panel:
-  chunk: Per Halaman
-  fast: Cepat
-  faster: Lebih Cepat
-  fastest: Paling Cepat
-  inherit: Diturunkan
-  slow: Lambat
-  slower: Lebih Lambat
-  slowest: Paling Lambat
-  as_: Sebagai Beranda
-  as_page: Sembunyikan Daftar Halaman
+__:
+  panel:
+    chunk: Per Halaman
+    fast: Cepat
+    faster: Lebih Cepat
+    fastest: Paling Cepat
+    inherit: Diturunkan
+    slow: Lambat
+    slower: Lebih Lambat
+    slowest: Paling Lambat
+    as_: Sebagai Beranda
+    as_page: Sembunyikan Daftar Halaman
 
 sort: Sort
 
 
 message_error: Kesalahan.
 message_error_duplicate: Duplikat %{0}%.
+message_error_exist: %{0}% %{1}% sudah ada.
 message_error_ip: IP tidak valid.
 message_error_max: %{0}% maksimal: %{1}%.
 message_error_min: %{0}% minimal: %{1}% %{0}%.
@@ -34,12 +42,17 @@ message_error_user_or_pass: Pengguna atau kunci tidak valid.
 message_error_value: %{0}% tidak valid.
 message_error_void_field: Mohon isi bidang %{0}%.
 
-message_info_create: %{0}% telah dibuat.
-message_info_delete: %{0}% telah dihapus.
+message_info_create: %{0}% %{1}% telah dibuat.
+message_info_delete: %{0}% %{1}% telah dihapus.
+message_info_save: %{0}% %{1}% telah disimpan.
+message_info_update: %{0}% %{1}% telah diperbaharui.
 
 message_success: Success.
-message_success_create: %{0}% berhasil dibuat.
-message_success_delete: %{0}% berhasil dihapus.
+message_success_create: %{0}% %{1}% berhasil dibuat.
+message_success_delete: %{0}% %{1}% berhasil dihapus.
+message_success_restore: %{0}% %{1}% berhasil direstorasi.
+message_success_save: %{0}% %{1}% berhasil disimpan.
+message_success_update: %{0}% %{1}% berhasil diperbaharui.
 message_success_user_enter: Berhasil masuk.
 message_success_user_exit: Berhasil keluar.
 
@@ -55,18 +68,18 @@ f_description: Beberapa deskripsi tentang %{0}% ini (opsional).
 f_query: lorem, ipsum, dolor, sit, amet
 f_yaml: "kunci: nilai"
 
-h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code>berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code>berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_shield_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code>berkas.php\n └── berkas\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
+h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
+h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
+h_shield_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
 h_state_page: Konfigurasikan data halaman <em>default</em> di sini.
 
-o_editors:
+o_editor:
   code-mirror: CodeMirror
-o_sorts:
+o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"waktu publikasi","slug":"nama halaman","update":"waktu pembaharuan"}
-o_types:
+o_type:
   HTML: HTML
-o_users: {"-1":"Pengguna Diblokir (Tidak Ada Kontrol)","0":"Pengguna Ditangguhkan (Tidak Ada Kontrol)","1":"Pengguna Primer (Kontrol Penuh)","2":"Pengguna Sekunder (Kontrol Terbatas)"}
+o_user: {"-1":"Pengguna Diblokir (Tidak Ada Kontrol)","0":"Pengguna Ditangguhkan (Tidak Ada Kontrol)","1":"Pengguna Primer (Kontrol Penuh)","2":"Pengguna Sekunder (Kontrol Terbatas)"}
 
 __title: Panel Kontrol

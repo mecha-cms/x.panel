@@ -2,7 +2,7 @@
   <ul><!--
     <?php if ($__menus = array_replace(glob(LOT . DS . '*', GLOB_ONLYDIR), a(Config::get('panel.n', [])))): ksort($__menus); ?>
       <?php foreach ($__menus as $__key => $__value): ?>
-      <?php if ($__key === 'n' || $__value === false) continue; ?>
+      <?php if ($__key === 'n' || empty($__value)) continue; ?>
       <?php $__value = Path::N($__value); ?>
       <?php $__c = strpos($url->path . '/', '::/' . $__value . '/') !== false ? ' is-current' : ""; ?>
       --><li class="n-<?php echo $__value . $__c; ?>">
