@@ -11,9 +11,9 @@ if (g(USER, 'page') && User::current('status') !== 1) {
 
 Config::set([
     'is' => 'page',
-    'is_f' => 'editor',
     'panel' => [
         'layout' => 2,
+        'c:f' => 'editor',
         'm' => [
             't' => [
                 'user' => [

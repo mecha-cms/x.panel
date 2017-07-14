@@ -1,0 +1,42 @@
+---
+type: YAML
+...
+
+o_editor:
+  code-mirror: CodeMirror
+
+__:
+  panel:
+    code_mirror:
+      mode:
+        css: <abbr title="Cascading Style Sheet">CSS</abbr> (diperlukan oleh <abbr>PHP</abbr>)
+        javascript: JavaScript (diperlukan oleh <abbr>PHP</abbr>)
+        php: <abbr>PHP</abbr>
+        clike: C-Like (diperlukan oleh <abbr>PHP</abbr>)
+        gfm: <abbr title="Github-Flavored Markdown">GFM</abbr> (opsional untuk Markdown)
+        haml: <abbr>HAML</abbr>
+        htmlmixed: <abbr title="Hyper Text Markup Language">HTML</abbr> Mixed-Mode (tergantung pada <abbr title="Extensible Markup Language">XML</abbr>, JavaScript, dan <abbr title="Cascading Style Sheet">CSS</abbr>)
+        http: <abbr title="Hyper Text Transfer Protocol">HTTP</abbr>
+        markdown: Markdown
+        nginx: Nginx
+        sql: <abbr>SQL</abbr>
+        textile: Textile
+        xml: <abbr title="Extensible Markup Language">XML</abbr> (diperlukan oleh <abbr>PHP</abbr> and Markdown)
+        yaml: <abbr title="YAML Ain’t Markup Language">YAML</abbr>
+      addon:
+        dialog: Dialog (diperlukan oleh Penelusuran)
+        display: Tampilan (tekan <kbd>F11</kbd> untuk tampilan Layar Penuh)
+        edit: Sunting
+        fold: Lipatan (diperlukan oleh Sunting)
+        hint: Petunjuk (tekan <kbd>Ctrl</kbd> dan <kbd>Space</kbd> untuk mengaktifkan fitur)
+        search: Penelusuran (tekan <kbd>Ctrl</kbd> dan <kbd>F</kbd> untuk mengaktifkan fitur)
+
+-o_editor:
+  code-mirror:
+    lineNumbers: Tampilkan Baris Nomor
+    lineWrapping: Nonaktifkan Penggulung Horizontal
+    matchBrackets: Tandai Braket yang Cocok
+    matchTags: ["Tandai Tag yang Cocok"]
+    autoCloseTags: ["Penutup Tag Otomatis"]
+    autoCloseBrackets: Penutup Braket Otomatis
+    showTrailingSpace: Tandai Spasi yang Berlebih di Akhir Baris

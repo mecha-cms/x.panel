@@ -1,0 +1,8 @@
+---
+type: YAML
+...
+
+TIB:
+  text:
+    - Delete “%s%”
+    - Duplicate “%s%”

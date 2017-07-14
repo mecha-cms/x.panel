@@ -21,10 +21,11 @@ return [
         'values' => $__shields,
         'stack' => 10
     ],
-    '__[path]' => [
-        'key' => 'slug',
+    '*__[path]' => [
+        'key' => 'path',
         'type' => 'text',
         'value' => $__state->path,
+        'pattern' => '^[a-z\\d]+(?:[-._\\/][a-z\\d]+)*$',
         'stack' => 20
     ],
     '__[sort][0]' => [

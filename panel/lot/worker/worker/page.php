@@ -69,8 +69,8 @@ if ($__is_data) {
             Hook::NS('on.data.set', [$__ff, $__action === 's' ? null : $__f]);
         }
         if (!Message::$x) {
-            $__content = Request::post('content', "", false);
-            File::write(is_array($__content) ? json_encode($__content) : $__content)->saveTo($__ff, 0600);
+            $__value = Request::post('value', "", false);
+            File::write(is_array($__value) ? json_encode($__value) : $__value)->saveTo($__ff, 0600);
             if ($__s[1] !== $__key) {
                 File::open($__f)->delete();
             }
@@ -107,7 +107,7 @@ if ($__is_data) {
     }
     $__ss = (object) [
         'key' => $__f ? Path::N($__f) : null,
-        'content' => $__f ? file_get_contents($__f) : null
+        'value' => $__f ? file_get_contents($__f) : null
     ];
     $__ss->title = $__ss->key;
     $__ss->type = $__ss->key ?: 'HTML';
@@ -131,30 +131,30 @@ if ($__is_data) {
                 $__pages[0][] = new Page($__v, [], '__' . $__chops[0]);
                 $__pages[1][] = new Page($__v, [], $__chops[0]);
             }
-            Lot::set([
-                '__pages' => $__pages,
-                '__pager' => $__pager = [new Elevator($__g ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
-                    'direction' => [
-                       '-1' => 'previous',
-                        '0' => false,
-                        '1' => 'next'
-                    ],
-                    'union' => [
-                       '-2' => [
-                            2 => ['rel' => null, 'classes' => ['button', 'x']]
-                        ],
-                       '-1' => [
-                            1 => '&#x276E;',
-                            2 => ['rel' => 'prev', 'classes' => ['button']]
-                        ],
-                        '1' => [
-                            1 => '&#x276F;',
-                            2 => ['rel' => 'next', 'classes' => ['button']]
-                        ]
-                    ]
-                ], '__' . $__chops[0] . 's') . ""]
-            ]);
         }
+        Lot::set([
+            '__pages' => $__pages,
+            '__pager' => $__pager = [(new Elevator($__g ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
+                'direction' => [
+                   '-1' => 'previous',
+                    '0' => false,
+                    '1' => 'next'
+                ],
+                'union' => [
+                   '-2' => [
+                        2 => ['rel' => null, 'classes' => ['button', 'x']]
+                    ],
+                   '-1' => [
+                        1 => '&#x276E;',
+                        2 => ['rel' => 'prev', 'classes' => ['button']]
+                    ],
+                    '1' => [
+                        1 => '&#x276F;',
+                        2 => ['rel' => 'next', 'classes' => ['button']]
+                    ]
+                ]
+            ], '__' . $__chops[0] . 's')) . ""]
+        ]);
         // Get parent…
         $__p = Path::D($__f);
         if ($__p = File::exist([
@@ -442,9 +442,9 @@ if ($__is_data) {
 
 Config::set([
     'is' => $__is_has_step ? 'pages' : 'page',
-    'is_f' => $__is_has_step ? false : 'editor',
     'panel' => [
         'layout' => $__is_has_step || $__is_data ? 2 : 3,
+        'c:f' => $__is_has_step ? false : 'editor',
         'm' => [
             't' => [
                 'page' => $__is_data ? null : [
@@ -510,7 +510,6 @@ Config::set('panel.s', [
         'nav' => $__is_has_step ? [
             'title' => $language->navigation,
             'content' => '<p>' . $__pager[0] . '</p>',
-            'if' => $__pager[0],
             'stack' => 50
         ] : null,
         'setting' => $__is_has_step ? null : [

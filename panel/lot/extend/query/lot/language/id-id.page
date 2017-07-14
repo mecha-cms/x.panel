@@ -1,0 +1,8 @@
+---
+type: YAML
+...
+
+TIB:
+  text:
+    - Hapus “%s%”
+    - Duplikat “%s%”

@@ -14,9 +14,9 @@ if ($__f = File::exist(__DIR__ . DS . 'comment' . DS . $__action . '.php')) requ
 
 Config::set([
     'is' => $__is_has_step ? 'pages' : 'page',
-    'is_f' => $__is_has_step ? false : 'editor',
     'panel' => [
         'layout' => $__is_has_step ? 2 : 3,
+        'c:f' => $__is_has_step ? false : 'editor',
         'm' => [
             't' => [
                 'page' => [

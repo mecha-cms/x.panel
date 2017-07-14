@@ -6,9 +6,9 @@
 // `panel/::g::/shield/blastula` → view blastula shield file(s)
 Config::set([
     'is' => $__is_has_step ? 'pages' : 'page',
-    'is_f' => $__is_has_step ? false : 'editor',
     'panel' => [
         'layout' => 2,
+        'c:f' => $__is_has_step ? false : 'editor',
         'm' => [
             't' => [
                 'file' => [

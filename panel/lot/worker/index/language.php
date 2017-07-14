@@ -23,16 +23,16 @@ if ($__action !== 's' && count($__chops) === 1) {
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
 // Do not allow user to create page child(s)…
 if ($__f && $__action === 's') {
-    Guardian::kick(str_replace('::s::', '::g::', $url->current));
+    Shield::abort(PANEL_404);
 }
 
 // Set or modify the default panel content(s)…
 $__page[1] = new Page(LOT . DS . $__chops[0] . DS . 'en-us.page', [], $__chops[0]);
 Config::set([
     'is' => 'page',
-    'is_f' => 'editor',
     'panel' => [
         'layout' => 2,
+        'c:f' => 'editor',
         'm' => [
             't' => [
                 'page' => [

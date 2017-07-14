@@ -8,11 +8,6 @@ __thats__: %{0}% Those %{1}%
 __this__: %{0}% This %{1}%
 __thiss__: %{0}% These %{1}%
 
-TIB:
-  text:
-    - Delete “%s%”
-    - Duplicate “%s%”
-
 __:
   panel:
     chunk: Per Page
@@ -26,7 +21,14 @@ __:
     as_: Set as Home Page
     as_page: Hide Pages View
 
+mode: Mode
+modes: Modes
+
 sort: Sort
+sorts: Sorts
+
+theme: Theme
+themes: Themes
 
 
 #. Message
@@ -67,11 +69,9 @@ message_warning: Warning.
 
 f_title: Title Here
 f_content: Content goes here…
-f_directions:
-  ltr: Left to Right (LTR)
-  rtl: Right to Left (RTL)
 f_description: Some description about this %{0}% (optional).
 f_query: lorem, ipsum, dolor, sit, amet
+f_value: Value here…
 f_yaml: "key: value"
 
 h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
@@ -79,8 +79,9 @@ h_plugin_upload: "<p>Make sure the file you are trying to upload is structured l
 h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
 h_state_page: Configure the default page data here.
 
-o_editor:
-  code-mirror: CodeMirror
+o_direction:
+  ltr: Left to Right (LTR)
+  rtl: Right to Left (RTL)
 o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"time","slug":"slug","update":"update"}

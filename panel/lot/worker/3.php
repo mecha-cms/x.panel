@@ -1,8 +1,8 @@
 <?php Shield::get(__DIR__ . DS . 'header.php'); ?>
 <?php Shield::get(__DIR__ . DS . 'nav.php'); ?>
 <div class="c">
-  <?php if ($site->is_f): ?>
-  <form id="form.m.<?php echo $site->is_f; ?>" action="" method="post" enctype="multipart/form-data">
+  <?php if ($__name = Config::get('panel.c:f', false)): ?>
+  <form id="form.m.<?php echo $__name; ?>" action="" method="post" enctype="multipart/form-data">
   <?php endif; ?>
     <aside class="s s-1">
       <?php Shield::get([
@@ -29,7 +29,7 @@
           __DIR__ . DS . 'worker' . DS . '-s.2.php'
       ]); ?>
     </aside>
-  <?php if ($site->is_f): ?>
+  <?php if ($__name): ?>
   <?php echo Form::hidden('token', $__token); ?>
   </form>
   <?php endif; ?>

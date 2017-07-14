@@ -2,14 +2,27 @@
   font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
   font-size:86%;
   border:1px solid;
+  border-color:inherit;
   cursor:text;
+  min-height:5em;
 }
+.CodeMirror-empty pre {opacity:.5}
 .CodeMirror-dialog {
   background:inherit;
+  font:inherit !important;
   font-size:86%;
 }
+.CodeMirror-dialog input {font:inherit}
 .CodeMirror-dialog-top {border-bottom-color:inherit}
 .CodeMirror-dialog-bottom {border-top-color:inherit}
-.CodeMirror-search-hint {color:#aaa}
+.CodeMirror-search-hint {color:#aaa !important}
 .CodeMirror-fullscreen {border:0}
 .cm-keyword {font-weight:bold}
+.cm-trailingspace {background:rgba(255,0,0,.25) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==') repeat-x 0 100%}
+.CodeMirror-hints,
+.CodeMirror-hint {
+  border:1px solid inherit;
+  border-radius:0;
+  border-color:inherit;
+  font-family:inherit;
+}

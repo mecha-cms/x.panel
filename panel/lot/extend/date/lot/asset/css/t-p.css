@@ -1,0 +1,99 @@
+.time-picker-target,
+.time-picker,
+.time-picker * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+.time-picker-target {
+  display: inline-block;
+  position: relative;
+}
+
+.time-picker {
+  background: #fff;
+  color: #000;
+  border: 1px solid;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 9999;
+  line-height: 2em;
+  cursor: default;
+  display: none;
+}
+
+.time-picker-target.active .time-picker {
+  display: block;
+}
+
+.time-picker-target.active.top .time-picker {
+  top: auto;
+  bottom: 100%;
+}
+
+.time-picker caption {
+  background: #000;
+  color: #fff;
+  padding: 0 .5em;
+  text-align: center;
+}
+
+.time-picker caption a {
+  color: inherit;
+  cursor: pointer;
+}
+
+.time-picker caption a {
+  float: left;
+}
+
+.time-picker caption a + a {
+  float: right;
+}
+
+.time-picker caption a:before {
+  content: '\25C2'
+}
+
+.time-picker caption a + a:before {
+  content: '\25B8'
+}
+
+.time-picker table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.time-picker th,
+.time-picker td {
+  width: 2em;
+  text-align: center;
+}
+
+.time-picker th {
+  font-weight: bold;
+}
+
+.time-picker .day:hover {
+  background: #ff0;
+  cursor: pointer;
+}
+
+.time-picker .today {
+  background: #000;
+  color: #fff;
+}
+
+.time-picker .active {
+  background: #ff0;
+}
+
+.time-picker .x {
+  cursor: inherit;
+}

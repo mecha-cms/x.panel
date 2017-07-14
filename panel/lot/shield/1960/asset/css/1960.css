@@ -4,6 +4,7 @@ html {
   background:#000;
   color:#fff;
   border-bottom:4px solid transparent;
+  min-height:100%;
 }
 body {
   background:#fff;
@@ -37,6 +38,7 @@ pre {
   border-color:inherit;
   box-shadow:inset 0 1px 2px rgba(0,0,0,.25);
 }
+.select option[value=""] {color:#f00}
 .button {
   background:#00a;
   color:#fff;
@@ -51,6 +53,7 @@ pre {
 .input:focus:invalid,
 .textarea:focus:invalid {
   color:#f00;
+  border-color:#f00;
   box-shadow:inset 0 1px 2px rgba(0,0,0,.25),0 0 2px #f00;
 }
 .input[type="checkbox"],
@@ -210,6 +213,9 @@ pre {
   float:right;
   padding:0 .25em;
   line-height:1.5em;
+  margin:.75em -.5em 0 .5em;
+}
+.n li li a i {
   margin:.5em -.5em 0 0;
 }
 .n a:focus,
@@ -283,6 +289,7 @@ pre {
   font-weight:normal;
   background:rgba(0,0,0,.05);
 }
+.s .s-setting label .input + span {margin-left:0}
 .s section + .s-setting {margin-top:1.5em}
 .s section h3 {
   font-size:100%;
@@ -324,6 +331,19 @@ pre {
   left:0;
 }
 .s section li:last-child:after {background-color:#fff} /* same with page background */
+.s section label .input + span {
+  position:relative;
+  margin-left:.5em;
+}
+.s section label .input:not(:checked) + span:after {
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:4;
+}
 .s .s-nav {
   position:sticky;
   top:1em;
@@ -396,6 +416,7 @@ pre {
 ⎙ &#x2399;
 ⌗ &#x2317;
 ⌘ &#x2318;
+␣ &#x2423;
 
 ✓✔ &#x2713;&#x2714;
 ✗✘ &#x2717;&#x2718;
@@ -466,9 +487,9 @@ pre {
 
 .h {
   background:#fea;
-  border-bottom:1px solid #ed9;
-  padding:.5em;
-  line-height:1;
+  border-top:1px solid #ed9;
+  padding:.5em .75em;
+  line-height:1.25;
 }
 .f + .h {
   background:none;

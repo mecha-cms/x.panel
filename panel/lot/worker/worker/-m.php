@@ -15,21 +15,17 @@
   <?php $__1 = array_shift($__1); ?>
   <?php foreach ($__t as $__k => $__v): // [3] ?>
   <?php if (!isset($__v['title'])) $__v['title'] = $language->{$__k}; ?>
-  <?php echo HTML::a($__v['title'], '#t:' . $__k, false, ['class' => Config::get('panel.t:active', Request::get('t:active', $__1)) === $__k ? 'is-active' : null]); ?>
+  <?php echo HTML::a($__v['title'], '#t:' . $__k, false, ['class' => Request::get('t:active', Config::get('panel.t:active', $__1)) === $__k ? 'is-active' : null]); ?>
   <?php endforeach; // [3] ?>
   </nav>
   <?php endif; // [2] ?>
-  <?php $__panel_f_buttons = []; ?>
+  <?php $__hiddens = []; $__submit = false; ?>
   <?php foreach ($__t as $__k => $__v): // [2] ?>
   <?php if (!isset($__v['title'])) $__v['title'] = $language->{$__k}; ?>
   <section class="t-c" id="t:<?php echo $__k; ?>">
     <fieldset>
       <?php if (!isset($__v['legend']) || $__v['legend'] !== false): // [3] ?>
         <legend><?php echo isset($__v['legend']) ? $__v['legend'] : $__v['title']; ?></legend>
-      <?php endif; // [3] ?>
-      <?php if (!empty($__v['description'])): // [3] ?>
-        <?php $__s = $__v['description']; ?>
-        <div class="h p"><?php echo stripos($__s, '</p>') === false ? '<p>' . $__s . '</p>' : $__s; ?></div>
       <?php endif; // [3] ?>
       <?php if (!isset($__v['content']) && $__w = File::exist(__DIR__ . DS . '..' . DS . 'page' . DS . $__chops[0] . '.m.t.' . $__k . '.php')): // [3] ?>
         <?php $__v['content'] = include $__w; ?>
@@ -43,8 +39,12 @@
         <?php foreach (Anemon::eat($__v['content'])->is(function($__v) {
             return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);
         })->sort([1, 'stack'], "")->vomit() as $__kk => $__vv): // [4] ?>
-          <?php if (isset($__vv['type']) && strpos(',button,reset,submit,', ',' . $__vv['type'] . ',') !== false): // [5] ?>
-            <?php $__panel_f_buttons = [$__kk, $__vv]; continue; ?>
+          <?php if (isset($__vv['type'])): // [5] ?>
+            <?php if (strpos(X . 'submit' . X . 'submit[]' . X, X . $__vv['type'] . X) !== false): // [6] ?>
+              <?php $__button = [$__kk, $__vv]; continue; ?>
+            <?php elseif ($__vv['type'] === 'hidden'): // [6] ?>
+              <?php $__hiddens[$__kk] = $__vv; ?>
+            <?php endif; // [6] ?>
           <?php endif; // [5] ?>
         <?php echo __panel_f__($__kk, $__vv); ?>
       <?php endforeach; // [4] ?>
@@ -52,14 +52,22 @@
         <?php echo $__v['content']; ?>
       <?php endif; // [3] ?>
     </fieldset>
+    <?php if (!empty($__v['description'])): // [2] ?>
+      <?php $__s = $__v['description']; ?>
+      <div class="h p"><?php echo stripos($__s, '</p>') === false ? '<p>' . $__s . '</p>' : $__s; ?></div>
+    <?php endif; // [2] ?>
   </section>
   <?php endforeach; // [2] ?>
 <?php else: // [1] ?>
   <p>:(</p>
 <?php endif; // [1] ?>
-<?php if ($site->is_f): // [1] ?>
-  <?php if (!empty($__panel_f_buttons)): // [2] ?>
-    <?php echo call_user_func_array('__panel_f__', $__panel_f_buttons); ?>
+<?php if (Config::get('panel.c:f', false)): // [1] ?>
+  <?php if (!empty($__button)): // [2] ?>
+    <?php echo call_user_func_array('__panel_f__', $__button); ?>
+  <?php elseif (!empty($__hiddens)): // [2] ?>
+    <?php foreach ($__hiddens as $__k => $__v): // [3] ?>
+      <?php echo __panel_f__($__k, $__v); ?>
+    <?php endforeach; // [3] ?>
   <?php else: // [2] ?>
     <?php echo __panel_f__('x', [
         'type' => 'submit',

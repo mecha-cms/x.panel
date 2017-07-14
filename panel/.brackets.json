@@ -1,0 +1,10 @@
+{
+    "jscodehints.detectedExclusions": [
+        "F:/server/www/lot/extend/panel/lot/asset/js/panel.c-p.fire.min.js",
+        "F:/server/www/lot/extend/panel/lot/extend/date/lot/asset/js/t-p.js",
+        "F:/server/www/lot/extend/panel/lot/extend/date/lot/asset/js/t-p.fire.js",
+        "F:/server/www/lot/extend/panel/lot/extend/date/lot/asset/js/t-p.min.js",
+        "F:/server/www/lot/extend/panel/lot/extend/editor/lot/asset/js/addon/hint/anyword-hint.js",
+        "F:/server/www/lot/extend/panel/lot/extend/date/lot/asset/js/t-p.fire.min.js"
+    ]
+}

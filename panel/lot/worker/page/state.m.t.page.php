@@ -1,7 +1,6 @@
 <?php
 
 $__types = a(Config::get('panel.o.page.type', []));
-$__editors = a(Config::get('panel.o.page.editor', []));
 $__s = isset($__page[0]->config['page']) ? (array) $__page[0]->config['page'] : [];
 $__ss = [
     'title' => null,
@@ -14,10 +13,9 @@ $__ss = [
 $__s = Anemon::extend($__ss, $__s);
 
 asort($__types);
-asort($__editors);
 
 return [
-    'config[page][title]' => [
+    'c[page][title]' => [
         'key' => 'page-title',
         'type' => 'text',
         'title' => $language->title,
@@ -28,7 +26,7 @@ return [
         ],
         'stack' => 10
     ],
-    'config[page][author]' => [
+    'c[page][author]' => [
         'key' => 'page-author',
         'type' => 'text',
         'title' => $language->author,
@@ -39,7 +37,7 @@ return [
         ],
         'stack' => 20
     ],
-    'config[page][type]' => [
+    'c[page][type]' => [
         'key' => 'page-type',
         'type' => 'select',
         'title' => $language->type,
@@ -47,15 +45,7 @@ return [
         'values' => $__types,
         'stack' => 30
     ],
-    'config[page][editor]' => [
-        'key' => 'page-editor',
-        'type' => 'select',
-        'title' => $language->editor,
-        'value' => $__s['editor'],
-        'values' => array_merge(["" => '&#x2014;' . l($language->none) . '&#x2014;'], $__editors),
-        'stack' => 40
-    ],
-    'config[page][content]' => [
+    'c[page][content]' => [
         'key' => 'page-content',
         'type' => 'editor',
         'title' => $language->content,
@@ -70,6 +60,6 @@ return [
                 'type' => $__s['type']
             ]
         ],
-        'stack' => 50
+        'stack' => 40
     ]
 ];

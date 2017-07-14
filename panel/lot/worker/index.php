@@ -16,35 +16,36 @@ if (Extend::exist('tag')) {
         if (!Message::$x) {
             global $language;
             // Create `kind.data` file…
-            if ($s = Request::post('tags')) {
-                $s = explode(',', $s);
+            if ($__s = Request::post('tags')) {
+                $__s = explode(',', $__s);
                 $__kinds = [];
-                $__author = Request::post('author', false);
-                if (count($s) > 12) {
+                $__author = Request::post('author');
+                $__i = File::open(PANEL . DS . 'lot' . DS . 'extend' . DS . 'query' . DS . 'lot' . DS . 'state' . DS . 'config.php')->import(['max' => 12])['max'];
+                if (count($__s) > $__i) {
                     Request::save('post');
-                    Message::error('max', [$language->tags, '<strong>12</strong>']);
+                    Message::error('max', [$language->tags, '<strong>' . $__i . '</strong>']);
                 } else {
-                    foreach ($s as $v) {
-                        $v = To::slug($v);
-                        if (($id = From::tag($v)) !== false) {
-                            $__kinds[] = $id;
+                    foreach ($__s as $__v) {
+                        $__v = To::slug($__v);
+                        if (($__id = From::tag($__v)) !== false) {
+                            $__kinds[] = $__id;
                         } else {
                             $__o = 0;
-                            foreach (glob(TAG . DS . '*' . DS . 'id.data', GLOB_NOSORT) as $vv) {
-                                $id = (int) file_get_contents($vv);
-                                if ($id > $__o) $__o = $id;
+                            foreach (glob(TAG . DS . '*' . DS . 'id.data', GLOB_NOSORT) as $__vv) {
+                                $__id = (int) file_get_contents($__vv);
+                                if ($__id > $__o) $__o = $__id;
                             }
                             ++$__o;
                             $__kinds[] = $__o;
-                            $f = TAG . DS . $v;
+                            $__f = TAG . DS . $__v;
                             Hook::fire('on.tag.set', [$__file, $__o]);
-                            File::write(date(DATE_WISE))->saveTo($f . DS . 'time.data', 0600);
-                            File::write($__o)->saveTo($f . DS . 'id.data', 0600);
+                            File::write(date(DATE_WISE))->saveTo($__f . DS . 'time.data', 0600);
+                            File::write($__o)->saveTo($__f . DS . 'id.data', 0600);
                             Page::data([
-                                'title' => $v,
+                                'title' => $__v,
                                 'author' => $__author
-                            ])->saveTo($f . '.page', 0600);
-                            Message::info($language->message_info_create([$language->tag, '<em>' . str_replace('-', ' ', $v) . '</em>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $v, true, ['classes' => ['right']]));
+                            ])->saveTo($__f . '.page', 0600);
+                            Message::info($language->message_info_create([$language->tag, '<em>' . str_replace('-', ' ', $__v) . '</em>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['classes' => ['right']]));
                         }
                     }
                     $__kinds = array_unique($__kinds);
@@ -59,21 +60,20 @@ if (Extend::exist('tag')) {
                 File::open(Path::F($__file) . DS . 'kind.data')->delete();
             }
         }
-        return $__file;
     }
     Hook::set('on.' . $__NS . '.set', 'fn_tags_set');
     // Delete trash…
     Hook::set('on.user.exit', function() {
-        foreach (File::explore(TAG, true, true) as $k => $v) {
-            if ($v === 0) continue;
-            $s = Path::F($k);
-            foreach (g($s, 'trash') as $v) {
-                File::open($v)->delete();
+        foreach (File::explore(TAG, true, true) as $__k => $__v) {
+            if ($__v === 0) continue;
+            $__kk = Path::F($__k);
+            foreach (g($__kk, 'trash') as $__v) {
+                File::open($__v)->delete();
             }
-            if (Path::X($k) === 'trash') {
-                File::open($k)->delete();
-                if (Is::D($s)) {
-                    File::open($s)->delete();
+            if (Path::X($__k) === 'trash') {
+                File::open($__k)->delete();
+                if (Is::D($__kk)) {
+                    File::open($__kk)->delete();
                 }
             }
         }

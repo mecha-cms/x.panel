@@ -42,8 +42,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__user_enter' => $__user_enter,
         '__user_key' => $__user_key,
         '__user_token' => $__user_token,
-        '__message' => Message::get() ?: Lot::get('message', ""),
-        '__n_n' => $__n_n
+        '__message' => Message::get() ?: Lot::get('message', "")
     ]);
     if ($__user && $__action === 's' && Request::is('get')) {
         Request::save('post', 'user', User::ID . $__user->key);

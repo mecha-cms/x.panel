@@ -1,7 +1,7 @@
 <?php
 
 Hook::set('message.set.success', function($__s) use($language, $__action, $__chops, $__path) {
-    if ($__action === 'r') {
+    if ($__action === 'r' || !Request::post('x')) {
         return $__s;
     }
     $__p = new Page(LOT . DS . ($__action === 's' ? $__path . DS . Request::post('slug') : $__path) . '.' . Request::post('x'), [], $__chops[0]);

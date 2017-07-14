@@ -2,9 +2,9 @@
 
 Config::set([
     'is' => 'page',
-    'is_f' => 'editor',
     'panel' => [
         'layout' => 2,
+        'c:f' => 'editor',
         'm' => [
             't' => isset($__chops[1]) && $__chops[1] !== 'config' ? [
                 'editor' => [
@@ -28,7 +28,7 @@ Config::set([
                             'title' => $language->submit,
                             'values' => [
                                 'php' => $language->{$__action === 's' ? 'save' : 'update'},
-                                'trash' => $__action === 's' ? null : $language->delete
+                                '.x' => [$__action === 's' ? null : $language->delete, 'trash']
                             ],
                             'stack' => 0
                         ]
@@ -64,7 +64,7 @@ if ($__files = g(STATE, 'php')) {
     }
 }
 
-$__name = count($__chops) === 1 ? 'config' : $__chops[1];
+$__name = isset($__chops[1]) ? $__chops[1] : 'config';
 if ($__file = File::exist(STATE . DS . $__name . '.php')) {
     $__s = [
         'path' => $__file,
@@ -85,11 +85,17 @@ if ($__is_post) {
     if ($__c = Request::post('content')) {
         File::export(From::yaml($__c))->saveTo(STATE . DS . $__name . '.php', 0600);
     } else {
-        File::export(Request::post('config'))->saveTo(STATE . DS . $__name . '.php', 0600);
+        File::export(Request::post('c'))->saveTo(STATE . DS . $__name . '.php', 0600);
     }
-    Message::success(To::sentence($language->updateed));
+    if (!isset($__chops[1]) || $__chops[1] === 'config') {
+        Message::success('update', [$language->setting, '<strong>' . $language->common . '</strong>']);
+        Message::success('update', [$language->setting, '<strong>' . $language->page . '</strong>']);
+    } else {
+        Message::success('update', [$language->setting, '<em>' . $__name . '.php</em>']);
+    }
     if ($__c = Request::post('__')) {
         File::export(array_replace_recursive(Extend::state(PANEL, []), $__c))->saveTo(PANEL . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
+        Message::success('update', [$language->setting, '<strong>' . $language->states . '</strong>']);
         if (isset($__c['path']) && $__c['path'] !== $__state->path) {
             Guardian::kick($url . '/' . $__c['path'] . '/::' . $__action . '::/' . $__path);
         }

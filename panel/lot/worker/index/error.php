@@ -6,9 +6,9 @@ if (!$__file = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
 
 Config::set([
     'is' => 'page',
-    'is_f' => 'editor',
     'panel' => [
         'layout' => 2,
+        'c:f' => 'editor',
         'm' => [
             't' => [
                 'summary' => [

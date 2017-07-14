@@ -1,0 +1,42 @@
+---
+type: YAML
+...
+
+o_editor:
+  code-mirror: CodeMirror
+
+__:
+  panel:
+    code_mirror:
+      mode:
+        css: <abbr title="Cascading Style Sheet">CSS</abbr> (required by <abbr>PHP</abbr>)
+        javascript: JavaScript (required by <abbr>PHP</abbr>)
+        php: <abbr>PHP</abbr>
+        clike: C-Like (required by <abbr>PHP</abbr>)
+        gfm: <abbr title="Github-Flavored Markdown">GFM</abbr> (optional for Markdown)
+        haml: <abbr>HAML</abbr>
+        htmlmixed: <abbr title="Hyper Text Markup Language">HTML</abbr> Mixed-Mode (depends on <abbr title="Extensible Markup Language">XML</abbr>, JavaScript, and <abbr title="Cascading Style Sheet">CSS</abbr>)
+        http: <abbr title="Hyper Text Transfer Protocol">HTTP</abbr>
+        markdown: Markdown
+        nginx: Nginx
+        sql: <abbr>SQL</abbr>
+        textile: Textile
+        xml: <abbr title="Extensible Markup Language">XML</abbr> (required by <abbr>PHP</abbr> and Markdown)
+        yaml: <abbr title="YAML Ain’t Markup Language">YAML</abbr>
+      addon:
+        dialog: Dialog (required by Search)
+        display: Display (press <kbd>F11</kbd> to Full Screen)
+        edit: Edit
+        fold: Fold (required by Edit)
+        hint: Hints (press <kbd>Ctrl</kbd> and <kbd>Space</kbd> to activate the feature)
+        search: Search (press <kbd>Ctrl</kbd> and <kbd>F</kbd> to activate the feature)
+
+-o_editor:
+  code-mirror:
+    lineNumbers: Show Line Numbers
+    lineWrapping: Wrap Long Lines
+    matchBrackets: Highlight Matching Brackets
+    matchTags: ["Highlight Matching Tags"]
+    autoCloseTags: ["Auto-Close Tags"]
+    autoCloseBrackets: Auto-Close Brackets
+    showTrailingSpace: Highlight Trailing Spaces

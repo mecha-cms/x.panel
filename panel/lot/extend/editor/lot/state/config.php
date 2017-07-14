@@ -1,0 +1,1 @@
+<?php return ['theme'=>'','mode'=>['css','xml','gfm','htmlmixed','yaml','php','clike','javascript','markdown','textile'],'addon'=>['dialog','display','edit','fold','hint','search']];

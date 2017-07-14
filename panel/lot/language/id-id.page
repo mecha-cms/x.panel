@@ -8,11 +8,6 @@ __thats__: %{0}% Semua %{1}% Itu
 __this__: %{0}% %{1}% Ini
 __thiss__: %{0}% Semua %{1}% Ini
 
-TIB:
-  text:
-    - Hapus “%s%”
-    - Duplikat “%s%”
-
 __:
   panel:
     chunk: Per Halaman
@@ -26,7 +21,14 @@ __:
     as_: Sebagai Beranda
     as_page: Sembunyikan Daftar Halaman
 
-sort: Sort
+mode: Mode
+modes: Mode
+
+sort: Urutkan
+sorts: Urutkan
+
+theme: Theme
+themes: Themes
 
 
 message_error: Kesalahan.
@@ -61,11 +63,9 @@ message_warning: Peringatan.
 
 f_title: Judul di Sini
 f_content: Konten di sini…
-f_directions:
-  ltr: Kiri ke Kanan (LTR)
-  rtl: Kanan ke Kiri (RTL)
 f_description: Beberapa deskripsi tentang %{0}% ini (opsional).
 f_query: lorem, ipsum, dolor, sit, amet
+f_value: Nilai di sini…
 f_yaml: "kunci: nilai"
 
 h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
@@ -73,11 +73,12 @@ h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struk
 h_shield_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
 h_state_page: Konfigurasikan data halaman <em>default</em> di sini.
 
-o_editor:
-  code-mirror: CodeMirror
+o_direction:
+  ltr: Kiri ke Kanan (LTR)
+  rtl: Kanan ke Kiri (RTL)
 o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
-  1: {"time":"waktu publikasi","slug":"nama halaman","update":"waktu pembaharuan"}
+  1: {"time":"waktu","slug":"nama","update":"pembaharuan"}
 o_type:
   HTML: HTML
 o_user: {"-1":"Pengguna Diblokir (Tidak Ada Kontrol)","0":"Pengguna Ditangguhkan (Tidak Ada Kontrol)","1":"Pengguna Primer (Kontrol Penuh)","2":"Pengguna Sekunder (Kontrol Terbatas)"}

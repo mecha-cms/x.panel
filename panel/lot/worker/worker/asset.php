@@ -2,51 +2,25 @@
 
 call_user_func(function() use($config, $language) {
 
-    $__editor = isset($config->page->editor) && $config->page->editor;
-
     // Reset all asset(s)…
     Asset::reset();
 
     $__s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'css' . DS;
 
     Asset::set([
-        $__s . 'panel.min.css',
-        $__editor ? $__s . 'panel.c-m.min.css' : null,
-        $__s . 'panel.t-i-b.min.css',
-        $__s . 'panel.t-p.min.css',
-        $__s . 'panel.c-p.min.css'
+        $__s . 'panel.min.css'
     ], [
-        10,
-        $__editor ? 11 : null,
-        12,
-        13,
-        14
+        10
     ]);
 
     $__s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'js' . DS;
 
     Asset::set([
         $__s . 'panel.min.js',
-        $__s . 'panel.fire.min.js',
-        $__editor ? $__s . 'panel.c-m.min.js' : null,
-        $__editor ? $__s . 'panel.c-m.fire.min.js' : null,
-        $__s . 'panel.t-i-b.min.js',
-        $__s . 'panel.t-i-b.fire.min.js',
-        $__s . 'panel.t-p.min.js',
-        $__s . 'panel.t-p.fire.min.js',
-        $__s . 'panel.c-p.min.js',
-        $__s . 'panel.c-p.fire.min.js'
+        $__s . 'panel.fire.min.js'
     ], [
         10,
-        10.1,
-        $__editor ? 11 : null,
-        $__editor ? 11.1 : null,
-        12,
-        12.1,
-        13,
-        13.1,
-        14,
-        14.1
+        10.1
     ]);
 
 });
@@ -58,15 +32,8 @@ if ($__user_enter) {
     function fn_panel_asset_js_replace($__content) {
         global $language;
         $__a = array_merge([
-            'languages.$' => $language->get(),
-            'TIB' => Config::get('panel.f.js.TIB', o([
-                'max' => 12,
-                'text' => $language->TIB->text,
-                'alert' => false
-            ])),
-            'TP' => Config::get('panel.f.js.TP', []),
-            'CP' => Config::get('panel.f.js.CP', [])
-        ], get_defined_constants(true)['user']);
+            'languages.$' => $language->get()
+        ], get_defined_constants(true)['user'], a(Config::get('panel.c.js', [])));
         $__s = "";
         foreach ($__a as $__k => $__v) {
             $__s .= ';$.' . $__k . '=' . str_replace(['\\'], ['\\\\'], json_encode($__v));

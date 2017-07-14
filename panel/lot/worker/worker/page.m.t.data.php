@@ -6,23 +6,27 @@ $__values = [
     'trash' => $__s ? null : $language->delete
 ];
 
-$__content = $__data[0]->content;
+$__key = $__data[0]->key;
+$__k = Anemon::alter($__key, [
+    'chunk' => 'number',
+    'time' => 'date'
+], 'editor');
 
 return [
-    'content' => [
-        'type' => 'editor',
-        'value' => is_array($__content) ? To::json($__content) : $__content,
-        'placeholder' => $language->f_content,
+    'value' => [
+        'type' => $__k,
+        'value' => $__data[0]->value,
+        'placeholder' => $language->{'f_' . ($__k === 'editor' ? 'content' : 'value')},
         'union' => ['div'],
         'is' => [
             'expand' => true
         ],
-        'expand' => true,
+        'expand' => $__k === 'editor',
         'stack' => 10
     ],
     '*key' => [
         'type' => 'text',
-        'value' => $__data[0]->key,
+        'value' => $__key,
         'pattern' => '^[a-z\\d]+(?:_[a-z\\d]+)*$',
         'stack' => 20
     ],

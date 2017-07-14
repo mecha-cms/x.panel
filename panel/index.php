@@ -1,8 +1,8 @@
 <?php
 
-// a: anchor
+// a: anchor/article
 // b:
-// c: container
+// c: configuration/container
 // d: data
 // e:
 // f: field/form
@@ -14,16 +14,16 @@
 // l:
 // m: main
 // n: navigation
-// o:
+// o: option
 // p: page/paragraph/path
 // q:
 // r: require path
 // s: secondary/sidebar
 // t: tab
 // u:
-// v:
+// v: enable/show/add
 // w:
-// x:
+// x: disable/hide/remove
 // y:
 // z:
 
@@ -31,11 +31,11 @@ define('PANEL', __DIR__);
 
 $__state = new State(Extend::state(__DIR__), []);
 
-$s = PANEL . DS . 'lot' . DS;
+$__s = PANEL . DS . 'lot' . DS;
 
 define('PANEL_404', File::exist([
-    $s . 'shield' . DS . $__state->shield . DS . '404.php',
-    $s . 'worker' . DS . '404.php',
+    $__s . 'shield' . DS . $__state->shield . DS . '404.php',
+    $__s . 'worker' . DS . '404.php',
     SHIELD . DS . $config->shield . DS . '404.php'
 ]));
 

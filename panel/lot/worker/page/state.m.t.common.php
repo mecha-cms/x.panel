@@ -1,7 +1,10 @@
 <?php
 
+$__editors = a(Config::get('panel.o.page.editor', []));
 $__languages = [];
 $__shields = [];
+
+asort($__editors);
 
 call_user_func(function() use($config, &$__languages, &$__shields) {
     foreach (glob(LANGUAGE . DS . '*.page') as $__v) {
@@ -19,7 +22,7 @@ call_user_func(function() use($config, &$__languages, &$__shields) {
 });
 
 return [
-    'config[zone]' => [
+    'c[zone]' => [
         'key' => 'zone',
         'type' => 'select',
         'value' => $__page[0]->config['zone'],
@@ -29,7 +32,7 @@ return [
         ],
         'stack' => 10
     ],
-    'config[charset]' => [
+    'c[charset]' => [
         'key' => 'charset',
         'type' => 'text',
         'title' => $language->encoding,
@@ -37,21 +40,21 @@ return [
         'placeholder' => 'utf-8',
         'stack' => 20
     ],
-    'config[language]' => [
+    'c[language]' => [
         'key' => 'language',
         'type' => 'select',
         'value' => $__page[0]->config['language'],
         'values' => $__languages,
         'stack' => 30
     ],
-    'config[direction]' => [
+    'c[direction]' => [
         'key' => 'direction',
         'type' => 'toggle',
         'value' => $__page[0]->config['direction'],
-        'values' => $language->f_directions,
+        'values' => $language->o_direction,
         'stack' => 40
     ],
-    'config[title]' => [
+    'c[title]' => [
         'key' => 'title',
         'type' => 'text',
         'value' => $__page[0]->config['title'],
@@ -61,7 +64,7 @@ return [
         ],
         'stack' => 50
     ],
-    'config[description]' => [
+    'c[description]' => [
         'key' => 'description',
         'type' => 'textarea',
         'value' => $__page[0]->config['description'],
@@ -72,12 +75,20 @@ return [
         ],
         'stack' => 60
     ],
-    'config[shield]' => [
+    'c[shield]' => [
         'key' => 'shield',
         'type' => 'select',
         'value' => $__page[0]->config['shield'],
         'values' => $__shields,
         'stack' => 70
+    ],
+    'c[page][editor]' => [
+        'key' => 'page-editor',
+        'type' => 'select',
+        'title' => $language->editor,
+        'value' => isset($__page[0]->config['page']['editor']) ? $__page[0]->config['page']['editor'] : "",
+        'values' => array_merge(['!' => '&#x2716;'], $__editors),
+        'stack' => 80
     ],
     // the submit button
     'x' => [

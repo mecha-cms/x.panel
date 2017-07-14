@@ -172,6 +172,14 @@ label {
 .input[type="file"],
 .input[type="range"] {cursor:pointer}
 .input[type="file"] {width:auto}
+.select optgroup,
+.select option {padding:0}
+.select option[value=""] {color:rgba(0,0,0,.5)}
+.select optgroup {font-weight:bold}
+.select optgroup option {
+  font-weight:normal;
+  padding-left:.5em;
+}
 .textarea {
   height:5em;
   resize:vertical;
