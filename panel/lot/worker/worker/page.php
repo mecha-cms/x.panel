@@ -312,7 +312,7 @@ if ($__is_data) {
                         ) {
                             File::open($__DD . DS . $__k . '.data')->delete();
                         } else {
-                            File::write(is_array($__v) ? json_encode($__v) : $__v)->saveTo($__DD . DS . $__k . '.data', 0600);
+                            File::write(is_array($__v) ? json_encode(e($__v)) : $__v)->saveTo($__DD . DS . $__k . '.data', 0600);
                         }
                     }
                 }
