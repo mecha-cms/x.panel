@@ -61,7 +61,7 @@
 <?php else: // [1] ?>
   <p>:(</p>
 <?php endif; // [1] ?>
-<?php if (Config::get('panel.c:f', false)): // [1] ?>
+<?php if (Config::get('panel.c:f', Config::get('panel.m:f', false))): // [1] ?>
   <?php if (!empty($__button)): // [2] ?>
     <?php echo call_user_func_array('__panel_f__', $__button); ?>
   <?php elseif (!empty($__hiddens)): // [2] ?>

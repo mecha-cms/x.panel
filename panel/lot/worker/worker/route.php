@@ -29,9 +29,9 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     }
     $__token = Guardian::token();
     $__hash = Guardian::hash();
-    $__user = User::current();
+    $__user = User::get();
     // Restricted user
-    if ($__user && $__user->status !== 1 && Is::these(['language', 'state'])->has($__chops[0])) {
+    if ($__user && $__user->status !== 1 && Is::these(['language', 'state', 'user'])->has($__chops[0])) {
         Shield::abort(PANEL_404);
     }
     require $__task;
@@ -45,7 +45,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__message' => Message::get() ?: Lot::get('message', "")
     ]);
     if ($__user && $__action === 's' && Request::is('get')) {
-        Request::save('post', 'user', User::ID . $__user->key);
+        Request::save('post', 'user', '@' . $__user->key);
     }
     Shield::attach(__DIR__ . DS . '..' . DS . (isset($site->panel->layout) ? $site->panel->layout : 0) . '.php');
 }, 1);

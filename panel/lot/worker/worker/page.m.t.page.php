@@ -80,19 +80,36 @@ return [
         'type' => 'textarea',
         'value' => $__page[0]->description,
         'placeholder' => $__page[0]->description ?: $language->f_description($language->{$__chops[0]}),
-        'is' => [
-            'block' => true
-        ],
         'stack' => 50
+    ],
+    'author' => [
+        'type' => 'text',
+        'value' => $__page[0]->author,
+        'placeholder' => $language->f_user,
+        'is' => [
+            'block' => true,
+            'hidden' => true
+        ],
+        'stack' => 60
     ],
     'link' => [
         'type' => 'url',
         'value' => $__page[0]->link,
-        'placeholder' => $url->protocol,
+        'placeholder' => $language->f_link,
         'is' => [
             'block' => true
         ],
-        'stack' => 60
+        'stack' => 70
+    ],
+    'email' => [
+        'type' => 'email',
+        'value' => $__page[0]->email,
+        'placeholder' => $language->f_email,
+        'is' => [
+            'block' => true,
+            'hidden' => true
+        ],
+        'stack' => 80
     ],
     'tags' => [
         'type' => 'query',
@@ -102,7 +119,7 @@ return [
         'is' => [
             'block' => true
         ],
-        'stack' => 70
+        'stack' => 90
     ],
     '+[time]' => (
         // Detect time format on the page slug @see `engine\kernel\page.php`
@@ -121,10 +138,10 @@ return [
         'type' => 'date',
         'value' => $__page[0]->time,
         'if' => $__action !== 's',
-        'stack' => 80
+        'stack' => 100
     ],
     'x' => [
-        'type' => 'submit',
+        'type' => 'submit[]',
         'title' => $language->submit,
         'values' => array_merge($__action !== 's' ? [
             '*' . $__X => $language->update . ' (' . Anemon::alter($__X, $__buttons) . ')'

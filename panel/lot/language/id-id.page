@@ -20,6 +20,7 @@ __:
     slowest: Paling Lambat
     as_: Sebagai Beranda
     as_page: Sembunyikan Daftar Halaman
+    as_pages: Tampilkan Daftar Halaman
 
 mode: Mode
 modes: Mode
@@ -60,17 +61,20 @@ message_success_user_exit: Berhasil keluar.
 
 message_warning: Peringatan.
 
-
-f_title: Judul di Sini
 f_content: Konten di sini…
 f_description: Beberapa deskripsi tentang %{0}% ini (opsional).
+f_email: email@domain.com
+f_link: http://
 f_query: lorem, ipsum, dolor, sit, amet
+f_title: Judul di Sini
 f_value: Nilai di sini…
-f_yaml: "kunci: nilai"
+f_yaml: "properti: nilai"
 
-h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_shield_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur seperti ini:</p>\n    <pre><code class="txt">berkas.php\n └── berkas\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
+h_user: Tanpa prefiks <code>@</code>.
+
+h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
+h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
+h_shield_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php<\/code><\/pre>"
 h_state_page: Konfigurasikan data halaman <em>default</em> di sini.
 
 o_direction:

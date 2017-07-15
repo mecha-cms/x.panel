@@ -1,6 +1,6 @@
 <?php
 
-$__a = ',' . Config::get('panel.x.s.data', 'author,chunk,content,css,description,id,js,kind,link,sort,time,title,type') . ',';
+$__a = ',' . Config::get('panel.x.s.data') . ',author,content,description,email,link,title,type' . ',';
 $__aparts = Page::apart($__action === 'g' ? file_get_contents($__page[0]->path) : "");
 
 call_user_func(function() use(&$__aparts, $__a) {

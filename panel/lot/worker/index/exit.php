@@ -1,14 +1,6 @@
 <?php
 
-$__user_key = Cookie::get('panel.c.user.key');
-
-Cookie::reset('panel.c.user.key');
-Cookie::reset('panel.c.user.token');
-
-$f = USER . DS . $__user_key . DS;
-
-File::open($f . 'user.data')->delete();
-File::open($f . 'token.data')->delete();
+User::reset(Cookie::get('panel.c.user.key'));
 
 // Delete trash…
 foreach (File::explore(PAGE, true, true) as $k => $v) {

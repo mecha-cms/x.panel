@@ -1,7 +1,10 @@
 <?php
 
+// NOTE: These helper function(s) are only used internally and does
+// not intended to be used in production or sny other extension(s).
+
 function __panel_a__($k, $v) {
-    global $__state;
+    // `id`
     // `key`
     // `picture`
     // `title`
@@ -17,6 +20,7 @@ function __panel_a__($k, $v) {
     // `on`
     // `attributes`
     if (array_key_exists('if', $v)) {
+        $v['is']['hidden'] = !$v['if'];
         $v['is']['visible'] = $v['if'];
     }
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
@@ -53,8 +57,11 @@ function __panel_a__($k, $v) {
         }
     }
     $aa = array_replace_recursive($a, isset($v['attributes']) ? (array) $v['attributes'] : []);
+    if (isset($v['id']) && !array_key_exists('id', $aa)) {
+        $aa['id'] = $v['id'];
+    }
     $union = new Union([], 'h_t_m_l');
-    $u = array_replace_recursive(['article', $a], isset($v['union']) ? (array) $v['union'] : []);
+    $u = array_replace_recursive(['article', $aa], isset($v['union']) ? (array) $v['union'] : []);
     if ($u[0] !== 'article') {
         $u[1]['classes'][] = 'article';
     }
@@ -71,7 +78,7 @@ function __panel_a__($k, $v) {
     }
     if (isset($v['description'])) {
         $html .= '<section>';
-        $html .= '<p>' . call_user_func_array('To::snippet', array_merge([$v['description'], !empty($v['snippet']) ? $v['snippet'] : [true, $__state->snippet]])) . '</p>';
+        $html .= '<p>' . call_user_func_array('To::snippet', array_merge([$v['description'], !empty($v['snippet']) ? $v['snippet'] : [true, Extend::state('panel', 'snippet')]])) . '</p>';
         $html .= '</section>';
     }
     if (!empty($v['a'])) {
@@ -132,7 +139,7 @@ function __panel_f__($k, $v) {
     $kk = isset($v['key']) ? $v['key'] : ltrim($k, '.!*');
     $a = ['classes' => ['f', 'f-' . $kk]];
     $aa = isset($v['attributes']) ? (array) $v['attributes'] : [];
-    $q = 'f.' . __panel_q__($k);
+    $q = 'f.' . str_replace('][', '.', trim($k, ']['));
     if (isset($v['pattern'])) {
         $aa['pattern'] = $v['pattern'];
     }
@@ -152,11 +159,12 @@ function __panel_f__($k, $v) {
     $placeholder = array_key_exists('placeholder', $v) ? $v['placeholder'] : $value;
     $hidden = false;
     if ($type) {
-        $is_block = isset($v['is']['block']) && $v['is']['block'] ? 'block' : null;
+        $is_block = (isset($v['is']['block']) && $v['is']['block'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['is']['block']) || $v['is']['block'])) ? 'block' : null;
         $is_expand = isset($v['is']['expand']) && $v['is']['expand'] ? 'expand' : null;
         if ($type === 'hidden') {
             $hidden = Form::hidden($k, $v, $aa);
         } else if (strpos(X . 'button' . X . 'button[]' . X . 'reset' . X . 'reset[]' . X . 'submit' . X . 'submit[]' . X, X . $type . X) !== false) {
+            $type = str_replace('[]', "", $type);
             if (isset($v['values'])) {
                 if (isset($v['order'])) {
                     $vvv = [];
@@ -194,7 +202,7 @@ function __panel_f__($k, $v) {
                             // ]
                             $vv = $vv[0];
                         }
-                        $html .= call_user_func('Form::' . $type, $k, ltrim(Request::get($q, $nn), '.!*'), $vv, array_replace_recursive(['classes' => ['button', 'f-' . $kk . ':' . $nn], 'id' => 'f-' . $kk . ':' . $nn], $aa)) . ' ';
+                        $html .= call_user_func('Form::' . $type, $k, ltrim(Request::get($q, $nn), '.!*'), $vv, array_replace_recursive(['classes' => ['button'], 'id' => 'f-' . $kk . ':' . $nn], $aa)) . ' ';
                     }
                 }
                 $html = rtrim($html, ' ');
@@ -202,7 +210,7 @@ function __panel_f__($k, $v) {
                 if ($value && is_string($value) && $value[0] === '<' && strpos($value, '</') !== false && substr($value, -1) === '>') {
                     $html .= $value;
                 } else {
-                    $html .= call_user_func('Form::' . $type, $k, Request::get($q, isset($value) ? $value : true), $text, array_replace_recursive(['classes' => ['button', 'f-' . $kk], 'id' => 'f-' . $kk, 'type' => 'submit'], $aa));
+                    $html .= call_user_func('Form::' . $type, $k, Request::get($q, isset($value) ? $value : true), $text, array_replace_recursive(['classes' => ['button'], 'id' => 'f-' . $kk], $aa));
                 }
             }
         } else if ($type === 'content') {
@@ -210,7 +218,7 @@ function __panel_f__($k, $v) {
         } else if ($type === 'textarea') {
             $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', $is_block, $is_expand], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'editor') {
-            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', 'block', $is_expand, 'code', 'editor'], 'id' => 'f-' . $kk], $aa));
+            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', $is_block, $is_expand, 'code', 'editor'], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'query') {
             $html .= Form::text($k, Request::get($q, is_array($value) ? implode(', ', $value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['input', $is_block, 'query'], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'date') {
@@ -231,7 +239,7 @@ function __panel_f__($k, $v) {
         } else if (($type === 'select' || $type === 'select[]') && isset($v['values'])) {
             $vv = (array) $v['values'];
             if (isset($v['placeholder'])) {
-                $vv = array_merge(['.' => $v['placeholder']], $vv);
+                $vv = ['.' => $v['placeholder']] + $vv;
             }
             $html .= Form::select($k, $vv, Request::get($q, $value), array_replace_recursive(['classes' => ['select', $is_block], 'id' => 'f-' . $kk, 'multiple' => $type === 'select[]' ? true : null], $aa));
         } else if ($type === 'toggle' || $type === 'toggle[]') {
@@ -261,7 +269,7 @@ function __panel_f__($k, $v) {
                             //         'value_2' => 'text 2'
                             //     ]
                             // ]
-                            $hh .= '<br>' . Form::checkbox($k . '[' . $kkk . ']', is_array($vvv) && isset($vvv[1]) ? $vvv[1] : true, !empty(Request::get('f.' . __panel_q__($kkk), $value[$kkk], false)), $vvv[0], array_replace_recursive(['classes' => ['input'], 'id' => 'f-' . $kk . ':' . $kkk], $aa));
+                            $hh .= '<br>' . Form::checkbox($k . '[' . $kkk . ']', is_array($vvv) && isset($vvv[1]) ? $vvv[1] : true, !empty(Request::get('f.' . str_replace('][', '.', trim($kkk, '][')), isset($value[$kkk]) ? $value[$kkk] : false, false)), $vvv[0], array_replace_recursive(['classes' => ['input'], 'id' => 'f-' . $kk . ':' . $kkk], $aa));
                         }
                     }
                     $html .= substr($hh, 4);
@@ -280,7 +288,7 @@ function __panel_f__($k, $v) {
             $html .= call_user_func('Form::' . $type, $k, Request::get($q, $value, false), $placeholder, array_replace_recursive(['classes' => ['input', $is_block], 'id' => 'f-' . $kk], $aa));
         }
     } else {
-        $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', 'block'], 'id' => 'f-' . $kk], $aa));
+        $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea'], 'id' => 'f-' . $kk], $aa));
     }
     $html .= $union->end();
     $html .= $union->end();
@@ -293,10 +301,6 @@ function __panel_f__($k, $v) {
 
 function __panel_m__() {}
 function __panel_n__() {}
-
-function __panel_q__($s) {
-    return str_replace(['][', '['], '.', rtrim($s, ']'));
-}
 
 function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     // `title`

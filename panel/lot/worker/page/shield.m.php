@@ -1,5 +1,5 @@
 <?php if (isset($__page[0]->name)): ?>
-<?php include __DIR__ . DS . '-m.php'; ?>
+<?php include __DIR__ . DS . '..' . DS . 'worker' . DS . '-m.php'; ?>
 <?php else: ?>
 <section class="buttons">
   <p>
@@ -29,7 +29,7 @@
   <ul class="files">
     <?php foreach ($__datas[0] as $__k => $__v): ?>
     <?php if ($__v->extension === 'trash') continue; ?>
-    <li class="file"><?php echo HTML::a('<i class="i i-' . (is_dir($__v->path) ? '0' : '1') . '"></i> ' . $__datas[1][$__k]->title, $__v->url); ?></li>
+    <li class="file"><?php echo HTML::a('<i class="i i-' . (is_dir($__v->path) ? 'd' : 'f') . '"></i> ' . $__datas[1][$__k]->title, $__v->url); ?></li>
     <?php endforeach; ?>
   </ul>
   <?php endif; ?>

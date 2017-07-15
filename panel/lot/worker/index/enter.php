@@ -11,7 +11,7 @@ if ($__user_enter) {
 Config::set([
     'is' => 'page',
     'panel' => [
-        'c:f' => 'enter'
+        'c:f' => true
     ]
 ]);
 
@@ -19,7 +19,7 @@ if (Request::is('post')) {
     $__user_key = Request::post('user');
     $__user_pass = Request::post('pass');
     $__user_token = Request::post('token');
-    if (strpos($__user_key, User::ID) === 0) {
+    if (strpos($__user_key, '@') === 0) {
         $__user_key = substr($__user_key, 1); // remove the `@`
     }
     $f = USER . DS . $__user_key;
@@ -36,14 +36,9 @@ if (Request::is('post')) {
         }
         if (password_verify($__user_pass . ' ' . $__user_key, File::open($f . DS . 'pass.data')->get(0, ""))) {
             File::write($__user_token)->saveTo($f . DS . 'token.data');
-            $c = [
-                'expire' => 30,
-                'http_only' => true
-            ];
-            Cookie::set('panel.c.user.key', $__user_key, $c);
-            Cookie::set('panel.c.user.token', $__user_token, $c);
+            User::set($__user_key, $__user_token);
             Message::success('user_enter');
-            Hook::NS('on.user.enter');
+            Hook::fire('on.user.enter');
             Guardian::kick(Request::post('kick', ""));
         } else {
             Message::error('user_or_pass');
@@ -52,6 +47,6 @@ if (Request::is('post')) {
         Message::error('user_or_pass');
     }
     if (Message::$x) {
-        Request::save('post', 'user', $__user_key);
+        Request::save('post', 'user', '@' . $__user_key);
     }
 }

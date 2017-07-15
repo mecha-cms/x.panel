@@ -13,10 +13,9 @@ Hook::set('__comment.url', function($__content, $__lot) use($__state) {
 if ($__f = File::exist(__DIR__ . DS . 'comment' . DS . $__action . '.php')) require $__f;
 
 Config::set([
-    'is' => $__is_has_step ? 'pages' : 'page',
     'panel' => [
         'layout' => $__is_has_step ? 2 : 3,
-        'c:f' => $__is_has_step ? false : 'editor',
+        'c:f' => !$__is_has_step,
         'm' => [
             't' => [
                 'page' => [

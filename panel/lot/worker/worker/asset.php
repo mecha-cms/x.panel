@@ -8,9 +8,11 @@ call_user_func(function() use($config, $language) {
     $__s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'css' . DS;
 
     Asset::set([
-        $__s . 'panel.min.css'
+        $__s . 'panel.min.css',
+        $__s . 'panel.fire.min.css'
     ], [
-        10
+        10,
+        10.1
     ]);
 
     $__s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'js' . DS;
@@ -43,7 +45,7 @@ if ($__user_enter) {
     function fn_panel_asset_replace($__content) {
         global $language;
         $__content = preg_replace(
-            '#(\/panel\.min\.css(?:[?\#].+?)?"(?:\s[^<>]+?)?>)#',
+            '#(\/panel\.fire\.min\.css(?:[?\#].+?)?"(?:\s[^<>]+?)?>)#',
             '$1<style>' . Hook::fire('panel.css', [""]) . '</style>',
         $__content);
         $__content = preg_replace(

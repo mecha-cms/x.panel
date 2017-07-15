@@ -12,6 +12,10 @@ if ($__user_key = Cookie::get('panel.c.user.key')) {
 
 $__f = PANEL . DS . 'lot' . DS . 'worker' . DS;
 
+if (Request::is('get') && !$__user_enter && g(USER, 'page') && $url->path === $__state->path . '/::s::/user') {
+    Guardian::kick("");
+}
+
 if (
     (
         $url->path === $__state->path ||
@@ -31,6 +35,14 @@ if (
         Message::info('void', $language->users);
         Guardian::kick($__state->path . '/::s::/user');
     }
+    Hook::set('on.panel.ready', function() use($language) {
+        foreach ((array) $language->o_type as $k => $v) {
+            Config::set('panel.o.page.type.' . $k, $v);
+        }
+        foreach ((array) $language->o_editor as $k => $v) {
+            Config::set('panel.o.page.editor.' . $k, $v);
+        }
+    }, 1);
     require $__f . 'index.php';
     require $__f . 'worker' . DS . 'route.php';
 }

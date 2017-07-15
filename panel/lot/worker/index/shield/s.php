@@ -3,18 +3,18 @@
 if (count($__chops) === 1) {
     // Upload…
     if (!empty($_FILES['file'])) {
-        if (($x = Path::X($_FILES['file']['name'])) !== 'zip') {
+        if (($x = Path::X($_FILES['file']['name'])) && $x !== 'zip') {
             Message::error('file_x', '<em>' . $x . '</em>');
         }
         if (!Message::$x) {
-            if (!File::upload($_FILES['file'], SHIELD, function($file) {
+            if (!File::upload($_FILES['file'], SHIELD, function($file) use($url) {
                 $zip = new ZipArchive;
                 extract($file);
                 if ($zip->open($path) === true) {
                     $zip->extractTo(Path::D($path));
                     $zip->close();
                     File::open($path)->delete();
-                    Guardian::kick(str_replace('::s::', '::g::', __url__('path')) . '/' . Path::N($name));
+                    Guardian::kick(str_replace('::s::', '::g::', $url->path) . '/' . Path::N($name));
                 }
             })) {
                 // ?

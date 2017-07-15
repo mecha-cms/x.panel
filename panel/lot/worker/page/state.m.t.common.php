@@ -70,9 +70,6 @@ return [
         'value' => $__page[0]->config['description'],
         'placeholder' => $__page[1]->config['description'] ?: $language->f_description($language->site),
         'union' => ['div'],
-        'is' => [
-            'block' => true
-        ],
         'stack' => 60
     ],
     'c[shield]' => [

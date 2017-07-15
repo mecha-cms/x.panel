@@ -7,7 +7,7 @@ o_editor:
 
 __:
   panel:
-    code_mirror:
+    CM:
       mode:
         css: <abbr title="Cascading Style Sheet">CSS</abbr> (diperlukan oleh <abbr>PHP</abbr>)
         javascript: JavaScript (diperlukan oleh <abbr>PHP</abbr>)
@@ -30,11 +30,13 @@ __:
         fold: Lipatan (diperlukan oleh Sunting)
         hint: Petunjuk (tekan <kbd>Ctrl</kbd> dan <kbd>Space</kbd> untuk mengaktifkan fitur)
         search: Penelusuran (tekan <kbd>Ctrl</kbd> dan <kbd>F</kbd> untuk mengaktifkan fitur)
+        selection: Seleksi
 
 -o_editor:
   code-mirror:
     lineNumbers: Tampilkan Baris Nomor
     lineWrapping: Nonaktifkan Penggulung Horizontal
+    styleActiveLine: Tandai Baris yang Aktif
     matchBrackets: Tandai Braket yang Cocok
     matchTags: ["Tandai Tag yang Cocok"]
     autoCloseTags: ["Penutup Tag Otomatis"]

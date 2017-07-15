@@ -1,6 +1,6 @@
 <?php
 
-if (!$__file = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
+if (!$__log = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
     Shield::abort(PANEL_404);
 }
 
@@ -8,7 +8,7 @@ Config::set([
     'is' => 'page',
     'panel' => [
         'layout' => 2,
-        'c:f' => 'editor',
+        'c:f' => true,
         'm' => [
             't' => [
                 'summary' => [
@@ -23,12 +23,12 @@ Config::set([
 ]);
 
 if (Request::is('post')) {
-    File::open($__file)->delete();
+    File::open($__log)->delete();
     Message::success(To::sentence($language->deleteed));
     Guardian::kick($__state->path . '/::g::/page/1');
 }
 
 Lot::set('__page', [
-    new Page($__file, [], '__page'),
-    new Page($__file, [])
+    new Page($__log, [], '__' . $__chops[0]),
+    new Page($__log, [], $__chops[0])
 ]);

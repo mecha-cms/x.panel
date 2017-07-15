@@ -2,7 +2,9 @@
 type: YAML
 ...
 
-TIB:
-  text:
-    - Hapus “%s%”
-    - Duplikat “%s%”
+__:
+  panel:
+    TIB:
+      text:
+        - Hapus “%s%”
+        - Duplikat “%s%”

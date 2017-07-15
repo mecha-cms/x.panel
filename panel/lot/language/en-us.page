@@ -20,6 +20,7 @@ __:
     slowest: Slowest
     as_: Set as Home Page
     as_page: Hide Pages View
+    as_pages: Show Pages View
 
 mode: Mode
 modes: Modes
@@ -67,16 +68,21 @@ message_warning: Warning.
 #. Others
 #. ------
 
-f_title: Title Here
 f_content: Content goes here…
 f_description: Some description about this %{0}% (optional).
+f_email: email@domain.com
+f_link: http://
 f_query: lorem, ipsum, dolor, sit, amet
+f_title: Title Here
+f_user: @user
 f_value: Value here…
-f_yaml: "key: value"
+f_yaml: "property: value"
 
-h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php</code></pre>"
-h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:</p>\n    <pre><code class="txt">file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php</code></pre>"
+h_user: Without the <code>@</code> prefix.
+
+h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
+h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
+h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php<\/code><\/pre>"
 h_state_page: Configure the default page data here.
 
 o_direction:

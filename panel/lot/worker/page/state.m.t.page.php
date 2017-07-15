@@ -31,7 +31,7 @@ return [
         'type' => 'text',
         'title' => $language->author,
         'value' => $__s['author'],
-        'placeholder' => $__s['author'] ?: '@' . l($language->user),
+        'placeholder' => $__s['author'] ?: $language->f_user,
         'is' => [
             'block' => true
         ],

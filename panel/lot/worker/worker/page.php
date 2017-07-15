@@ -1,5 +1,19 @@
 <?php
 
+// Preparation(s)…
+if (!Get::kin($__chops[0] . 's')) {
+    Get::plug($__chops[0] . 's', function() use($__chops) {
+        if ($__g = g(LOT . DS . $__chops[0], 'draft,page,archive')) {
+            $__g = array_filter($__g, function($__v) use($__chops) {
+                return !isset($__chops[1]) || Path::N($__v) !== $__chops[1];
+            });
+            sort($__g);
+            return $__g;
+        }
+        return false;
+    });
+}
+
 $__is_data = substr($url->path, -2) === '/+' || strpos($url->path, '/+/') !== false;
 $__g = false;
 
@@ -66,14 +80,12 @@ if ($__is_data) {
             Message::error('exist', [$language->key, '<em>' . $__key . '</em>']);
         }
         if (!Message::$x) {
-            Hook::NS('on.data.set', [$__ff, $__action === 's' ? null : $__f]);
-        }
-        if (!Message::$x) {
             $__value = Request::post('value', "", false);
             File::write(is_array($__value) ? json_encode($__value) : $__value)->saveTo($__ff, 0600);
             if ($__s[1] !== $__key) {
                 File::open($__f)->delete();
             }
+            Hook::fire('on.+' . $__chops[0] . '.set', [$__ff, $__action === 's' ? null : $__f]);
             Message::success($language->{'message_success_' . ($__action === 's' ? 'create' : 'update')}($language->data . ' <em>' . $__key . '</em>'));
             Guardian::kick($__state->path . '/::g::/' . $__s[0] . '/+/' . $__key);
         }
@@ -89,17 +101,16 @@ if ($__is_data) {
                 Shield::abort(PANEL_404);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
-            if (!Message::$x) {
-                Hook::NS('on.data.reset', [$__d . DS . $__s[0] . '.trash', $__f]);
-            }
             if (Message::$x) {
                 Guardian::kick($__back);
             }
             if (Request::get('abort')) {
                 File::open($__d . DS . $__s[1] . '.trash')->renameTo($__s[1] . '.data');
+                Hook::fire('on.+' . $__chops[0] . '.set', [$__f, $__d . DS . $__s[1] . '.trash']);
                 Message::success($language->message_success_restore([$language->data, '<em>' . $__s[1] . '</em>']));
             } else {
                 File::open($__f)->renameTo($__s[1] . '.trash');
+                Hook::fire('on.+' . $__chops[0] . '.reset', [$__d . DS . $__s[1] . '.trash', $__f]);
                 Message::success($language->message_success_delete([$language->data, '<em>' . $__s[1] . '</em>']) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
             }
             Guardian::kick($__state->path . '/::g::/' . $__s[0]);
@@ -240,6 +251,7 @@ if ($__is_data) {
                 'author' => false,
                 'type' => false,
                 'link' => false,
+                'email' => false,
                 'content' => false
             ], $__headers_alt);
             $__headers_alt = (array) $site->page;
@@ -275,9 +287,6 @@ if ($__is_data) {
                     $__DD = $__d . DS . $__NN;
                     $__SS = $__DD . '.' . $__XX;
                 }
-                Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__action === 's' ? null : $__S]);
-            }
-            if (!Message::$x) {
                 // Create page…
                 if ($__action === 's') {
                     Page::data($__headers)->saveTo($__SS, 0600);
@@ -297,10 +306,13 @@ if ($__is_data) {
                 // Any `<input name="+[foo]">` value will be stored in the folder :)
                 if ($__s = Request::post('+', [], false)) {
                     foreach ($__s as $__k => $__v) {
-                        if (trim($__v) !== "") {
-                            File::write(is_array($__v) ? json_encode($__v) : $__v)->saveTo($__DD . DS . $__k . '.data', 0600);
-                        } else {
+                        if (
+                            is_string($__v) && trim($__v) === "" ||
+                            is_array($__v) && empty($__v)
+                        ) {
                             File::open($__DD . DS . $__k . '.data')->delete();
+                        } else {
+                            File::write(is_array($__v) ? json_encode($__v) : $__v)->saveTo($__DD . DS . $__k . '.data', 0600);
                         }
                     }
                 }
@@ -330,9 +342,11 @@ if ($__is_data) {
                 $__tt = $__headers['title'] ?: $language->_title;
                 if ($__action === 'g') {
                     Message::success($language->{'message_success_' . ($__XX === 'draft' ? 'save' : 'update')}($language->{$__chops[0]} . ' <strong>' . $__tt . '</strong>'));
+                    Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__action === 's' ? null : $__S]);
                     Guardian::kick(Path::D($url->current) . '/' . $__NN);
                 } else {
                     Message::success($language->{'message_success_' . ($__XX === 'draft' ? 'save' : 'create')}($language->{$__chops[0]} . ' <strong>' . $__tt . '</strong>'));
+                    Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__action === 's' ? null : $__S]);
                     Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $__NN);
                 }
             }
@@ -343,9 +357,6 @@ if ($__is_data) {
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
                 $__B = Path::B($__d);
-                if (!Message::$x) {
-                    Hook::fire('on.' . $__chops[0] . '.reset', [$__d . '.trash', $__f]);
-                }
                 if (Message::$x) {
                     Guardian::kick($__back);
                 }
@@ -362,9 +373,11 @@ if ($__is_data) {
                 });
                 if (Request::get('abort')) {
                     File::open($__d . '.trash')->renameTo($__B . '.draft');
+                    Hook::fire('on.' . $__chops[0] . '.set', [$__f, $__d . '.trash']);
                     Message::success($language->message_success_restore([$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']));
                 } else {
                     File::open($__f)->renameTo($__B . '.trash');
+                    Hook::fire('on.' . $__chops[0] . '.reset', [$__d . '.trash', $__f]);
                     Message::success($language->message_success_delete([$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
                 }
                 Guardian::kick(Path::D($__back) . '/1');
@@ -408,7 +421,7 @@ if ($__is_data) {
         }
         // Get data(s)…
         $__u = str_replace('::s::', '::g::', $url->current);
-        $__x = ',' . Config::get('panel.x.s.data', 'chunk,css,id,js,kind,sort,time') . ',';
+        $__x = ',' . Config::get('panel.x.s.data') . ',';
         foreach (glob($__d . DS . '*.data') as $__v) {
             $__s = Path::N($__v);
             if (strpos($__x, ',' . $__s . ',') !== false) continue;
@@ -441,10 +454,9 @@ if ($__is_data) {
 }
 
 Config::set([
-    'is' => $__is_has_step ? 'pages' : 'page',
     'panel' => [
         'layout' => $__is_has_step || $__is_data ? 2 : 3,
-        'c:f' => $__is_has_step ? false : 'editor',
+        'c:f' => !$__is_has_step,
         'm' => [
             't' => [
                 'page' => $__is_data ? null : [
@@ -466,55 +478,64 @@ $__ = [
     'title' => '..'
 ];
 
+$__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
+$__is_has_step = $__is_has_step && !$__is_data;
 Config::set('panel.s', [
-    1 => substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false ? [
+    1 => [
         'source' => [
+            'title' => $language->source,
             'content' => $__source[0] ? [[$__source[0]], [$__source[1]]] : [],
-            'if' => $__source[0],
+            'if' => $__is_data,
             'stack' => 10
         ],
-        'kin' => [
+        'search' => [
+            'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-search.php',
+            'if' => $__is_has_step,
+            'stack' => 10
+        ],
+        'author' => [
+            'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-author.php',
+            'if' => !$__is_has_step,
+            'stack' => 10
+        ],
+        'parent' => [
+            'title' => $language->parent,
+            'content' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
+            'if' => !$__is_data && count($__chops) > 1,
+            'lot' => $__is_has_step ? ['%{0}%/1'] : null,
+            'stack' => 20
+        ],
+        'current' => [
+            'content' => [[$__page[0]], [$__page[1]]],
+            'if' => $__is_has_step && $__page[0] && count($__chops) > 1,
+            'stack' => 30
+        ],
+        'kin' => $__is_data ? [
             'content' => $__datas,
             'a' => [
                 ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
             ],
             'stack' => 20
-        ]
-    ] : [
-        'search' => $__is_has_step ? [
-            'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-search.php',
-            'stack' => 10
-        ] : null,
-        'author' => $__is_has_step ? null : [
-            'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-author.php',
-            'stack' => 10
-        ],
-        'parent' => count($__chops) > 1 ? [
-            'content' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
-            'lot' => $__is_has_step ? ['%{0}%/1'] : null,
-            'stack' => 20
-        ] : null,
-        'current' => $__is_has_step && $__page[0] && count($__chops) > 1 ? [
-            'content' => [[$__page[0]], [$__page[1]]],
-            'stack' => 30
-        ] : null,
-        'kin' => count($__chops) > 1 ? [
+        ] : [
             'content' => $__kins,
             'a' => [
                 ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]],
                 $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]] : null
             ],
+            'if' => $__action === 's' || count($__chops) > 1,
             'lot' => $__is_has_step ? ['%{0}%/1'] : null,
             'stack' => 40
-        ] : null,
-        'nav' => $__is_has_step ? [
+        ],
+        'nav' => [
             'title' => $language->navigation,
             'content' => '<p>' . $__pager[0] . '</p>',
+            'if' => $__is_has_step,
             'stack' => 50
-        ] : null,
-        'setting' => $__is_has_step ? null : [
+        ],
+        'setting' => [
             'title' => $language->settings,
             'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-setting.php',
+            'if' => !$__is_has_step,
             'stack' => 50
         ]
     ],
@@ -526,6 +547,7 @@ Config::set('panel.s', [
             'a' => $__action === 'g' ? [
                 ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
             ] : [],
+            'if' => !$__is_data,
             'stack' => 10
         ],
         'child' => [
@@ -534,7 +556,7 @@ Config::set('panel.s', [
                 ['&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
                 $__is_has_step_child ? ['&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : null
             ],
-            'if' => count($__chops) > 1,
+            'if' => !$__is_data && count($__chops) > 1,
             'stack' => 20
         ]
     ]

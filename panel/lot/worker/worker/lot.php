@@ -1,8 +1,5 @@
 <?php
 
-$__ = explode('/+/', $__path . '/');
-$__key = isset($__[1]) ? To::key(rtrim($__[1], '/')) : null;
-
 $__step = $__step - 1;
 $__sort = $__state->sort;
 $__chunk = $__state->chunk;
@@ -11,17 +8,27 @@ $__is_post = Request::is('post');
 $__is_has_step = $__action === 'g' && (count($__chops) === 1 || is_numeric(Path::B($url->path))) ? '/1' : ""; // Force index view by appending page offset to the end of URL
 
 $__folder = LOT . DS . $__path;
-$__file = File::exist([
-    $__folder . '.draft',
-    $__folder . '.page',
-    $__folder . '.archive'
-], $__folder);
+$__file = false;
+
+$__folders = array_merge(
+    glob($__folder . DS . '.*', GLOB_ONLYDIR | GLOB_NOSORT),
+    glob($__folder . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)
+);
+$__files = array_filter(array_merge(
+    glob($__folder . DS . '.*', GLOB_NOSORT),
+    glob($__folder . DS . '*.*', GLOB_NOSORT)
+), function($__v) {
+    return is_file($__v);
+});
+
+Config::set('is', ($__is_has_step && substr($__path, -2) !== '/+' && strpos($__path, '/+/') === false) ? 'pages' : 'page');
+Config::set('panel.x.s.data', 'chunk,css,id,js,kind,sort,time');
 
 $__seeds = [
-    '__folder' => $__folder,
-    '__file' => $__file,
     '__child' => [[], []],
     '__data' => [[], []],
+    '__file' => [$__file, $__file],
+    '__folder' => [$__folder, $__folder],
     '__kin' => [[], []],
     '__page' => [[], []],
     '__parent' => [[], []],
@@ -29,6 +36,8 @@ $__seeds = [
     // Why “child(s)” and “data(s)”? Please open `lot\language\en-us.page` for more info
     '__childs' => [[], []],
     '__datas' => [[], []],
+    '__files' => [$__files, $__files],
+    '__folders' => [$__folders, $__folders],
     '__kins' => [[], []],
     '__pages' => [[], []],
     '__parents' => [[], []],
@@ -37,6 +46,8 @@ $__seeds = [
     '__is_has_step' => $__is_has_step,
     '__is_has_step_child' => false,
     '__is_has_step_data' => false,
+    '__is_has_step_file' => false,
+    '__is_has_step_folder' => false,
     '__is_has_step_kin' => false,
     '__is_has_step_page' => false,
     '__is_has_step_parent' => false,

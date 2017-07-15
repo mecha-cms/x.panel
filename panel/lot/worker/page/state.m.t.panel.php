@@ -18,7 +18,7 @@ return [
         'key' => 'shield',
         'type' => 'select',
         'value' => $__state->shield,
-        'values' => $__shields,
+        'values' => ['!' => '&#x2716;'] + $__shields,
         'stack' => 10
     ],
     '*__[path]' => [

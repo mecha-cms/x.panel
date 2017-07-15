@@ -8,6 +8,7 @@ Hook::set('message.set.success', function($__s) use($language, $__action, $__cho
     return $__s . ' ' . HTML::a($language->view, $__p->url, true, ['classes' => ['right']]);
 });
 
+// Load the main task(s)…
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
 
 // `panel/::s::/page` → new page in `lot\page`

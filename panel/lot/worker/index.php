@@ -1,14 +1,5 @@
 <?php
 
-Hook::set('on.panel.ready', function() use($language) {
-    foreach ((array) $language->o_type as $k => $v) {
-        Config::set('panel.o.page.type.' . $k, $v);
-    }
-    foreach ((array) $language->o_editor as $k => $v) {
-        Config::set('panel.o.page.editor.' . $k, $v);
-    }
-}, 20);
-
 if (Extend::exist('tag')) {
     $__NS = explode('/', $url->path . '///')[2];
     if (!$__NS || $__NS === 'tag') $__NS = X;

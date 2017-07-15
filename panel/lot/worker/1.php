@@ -1,18 +1,27 @@
 <?php Shield::get(__DIR__ . DS . 'header.php'); ?>
 <?php Shield::get(__DIR__ . DS . 'nav.php'); ?>
 <div class="c">
-  <?php if ($__name = Config::get('panel.c:f', false)): ?>
-  <form id="form.m.<?php echo $__name; ?>" action="" method="post" enctype="multipart/form-data">
+  <?php if ($__cf = Config::get('panel.c:f', false)): ?>
+  <form id="form.c.<?php echo $__cf === true ? $__chops[0] : $__cf; ?>" action="" method="post" enctype="multipart/form-data">
   <?php endif; ?>
     <main class="m">
+      <?php if ($__mf = Config::get('panel.m:f', false)): ?>
+      <form id="form.m.<?php echo $__mf === true ? $__chops[0] : $__mf; ?>" action="" method="post" enctype="multipart/form-data">
+      <?php endif; ?>
 	  <?php echo $__message; ?>
 	  <?php Shield::get([
           $__path_shield . DS . $site->is . DS . $__chops[0] . '.m.php',
           __DIR__ . DS . $site->is . DS . $__chops[0] . '.m.php',
+          $__path_shield . DS . $site->is . DS . 'page.m.php',
+          __DIR__ . DS . $site->is . DS . 'page.m.php',
           __DIR__ . DS . 'worker' . DS . '-m.php'
       ]); ?>
+      <?php if ($__mf): ?>
+      <?php echo Form::hidden('token', $__token); ?>
+      </form>
+      <?php endif; ?>
 	</main>
-  <?php if ($__name): ?>
+  <?php if ($__cf): ?>
   <?php echo Form::hidden('token', $__token); ?>
   </form>
   <?php endif; ?>

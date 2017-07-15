@@ -35,6 +35,8 @@ a {
   color:#00f;
   text-decoration:none;
 }
+a:focus,
+a:active {color:#f00}
 abbr {
   border:0;
   text-decoration:none;
@@ -50,11 +52,17 @@ code,.code {font-family:monospace}
 del,s {text-decoration:line-through}
 ins,u {text-decoration:underline}
 kbd,small,sub,sup {font-size:80%}
+mark {
+  background:#ff0;
+  color:inherit;
+}
 pre {
   word-wrap:break-word;
   white-space:pre-wrap;
   overflow:auto;
 }
+html,
+body {min-height:100%}
 html {
   font:normal normal 13px/1.5384615384615385em sans-serif;
   background:#fff;
@@ -120,7 +128,7 @@ ul:first-child,
 .p:first-child {margin-top:0}
 fieldset,hr {
   color:inherit;
-  border:1px solid;
+  border:1px dotted;
 }
 fieldset {padding:1em}
 legend {
@@ -132,13 +140,13 @@ legend + fieldset,
 legend + p,
 legend + .p {margin-top:0}
 hr {border-width:1px 0 0}
-
 .button,
 .input,
 .select,
 .textarea {
   display:inline-block;
   vertical-align:middle;
+  background:#fff;
   border:1px solid;
   padding:.25em .5em;
   width:12em;
@@ -155,10 +163,24 @@ hr {border-width:1px 0 0}
 .button {
   width:auto;
   text-align:center;
-  background:#eee;
+  background:#00f;
+  color:#fff;
   border-width:0;
   padding-right:.7em;
   padding-left:.7em;
+}
+.button:focus,
+.button:active {
+  background:#f00;
+  color:#fff;
+}
+.button.x,
+.button[disabled] {background:#000}
+.input:focus:invalid,
+.textarea:focus:invalid {
+  color:#f00;
+  border-color:#f00;
+  box-shadow:none;
 }
 .button,
 label {
@@ -211,7 +233,6 @@ label {
   border:0;
   padding:0;
 }
-.button[disabled],
 .input[disabled],
 .select[disabled],
 .textarea[disabled] {
@@ -239,7 +260,11 @@ label {
 .button.x,
 .input.x,
 .select.x,
-.textarea.x {cursor:default}
+.textarea.x,
+.button[disabled],
+.input[disabled],
+.select[disabled],
+.textarea[disabled] {cursor:not-allowed}
 .text-left {text-align:left}
 .text-center {text-align:center}
 .text-right {text-align:right}
@@ -251,68 +276,4 @@ label {
   display:inline-block;
   margin-right:auto;
   margin-left:auto;
-}
-
-.message {
-  padding:.5em 1em;
-  background:#ff0;
-}
-.message + .message {margin-top:.25em}
-
-.c {
-  display:table;
-  width:100%;
-  table-layout:fixed;
-}
-.c > form {
-  display:table-row;
-  margin-top:0;
-}
-.m,.s {
-  display:table-cell;
-  vertical-align:top;
-  padding:1em;
-}
-
-.p-enter,
-.p-enter body,
-.p-enter .c,
-.p-enter form,
-.p-enter .m {
-  padding:0;
-  border:0;
-  width:100%;
-  height:100%;
-}
-.p-enter .m {vertical-align:middle}
-.p-enter .m fieldset {
-  margin:0 auto;
-  max-width:16em;
-}
-.p-enter .m .messages {
-  margin:0 auto .5em;
-  max-width:16em;
-}
-.p-enter .f > label {width:4em}
-.p-enter .f > label[for="f-enter"] {display:none}
-.p-enter .f > label[for="f-enter"] + span {
-  display:block;
-  text-align:center;
-}
-.p-404,
-.p-404 body {
-  margin:0;
-  padding:0;
-  display:table;
-  width:100%;
-  height:100%;
-}
-.p-404 body {
-  display:table-cell;
-  vertical-align:middle;
-}
-.p-404 p {
-  font-size:200%;
-  font-weight:bold;
-  text-align:center;
 }

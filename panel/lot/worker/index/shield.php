@@ -5,10 +5,9 @@
 // `panel/::s::/shield/blastula` → create new child file in `lot\shield\blastula`
 // `panel/::g::/shield/blastula` → view blastula shield file(s)
 Config::set([
-    'is' => $__is_has_step ? 'pages' : 'page',
     'panel' => [
         'layout' => 2,
-        'c:f' => $__is_has_step ? false : 'editor',
+        'c:f' => !$__is_has_step,
         'm' => [
             't' => [
                 'file' => [

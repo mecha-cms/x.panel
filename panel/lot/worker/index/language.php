@@ -32,7 +32,7 @@ Config::set([
     'is' => 'page',
     'panel' => [
         'layout' => 2,
-        'c:f' => 'editor',
+        'c:f' => true,
         'm' => [
             't' => [
                 'page' => [

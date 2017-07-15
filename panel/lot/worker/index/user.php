@@ -1,84 +1,126 @@
 <?php
 
-if ($__action !== 's') {
+// Preparation(s)…
+Hook::set($__chops[0] . '.title', function($__content, $__lot) use($__chops) {
+    $__s = Page::apart(file_get_contents($__lot['path']));
+    return isset($__s['author']) ? $__s['author'] : (isset($__s['title']) ? $__s['title'] : "");
+});
+
+// Replace `title` field with `author` field on user create event…
+Hook::set('on.' . $__chops[0] . '.set', function($__f) use($__path, $__state) {
+    if (!file_exists(Path::F($__f . DS . 'pass.data'))) {
+        $__f = Path::N($__f);
+        User::reset($__f);
+        Request::save('post', 'user', '@' . $__f);
+        Request::save('post', 'pass_x', 1);
+        Guardian::kick($__state->path . '/::g::/enter');
+    }
+});
+
+// Load the main task(s)…
+require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
+
+// Do not allow user to create page child(s)…
+if ($__f && $__action === 's') {
     Shield::abort(PANEL_404);
 }
 
-// Once a user created, this page will be visible only for logged in user(s) with status `1`
-if (g(USER, 'page') && User::current('status') !== 1) {
+// Do not allow user to create page child(s)…
+if ($__f && $__action === 's') {
     Shield::abort(PANEL_404);
 }
 
-Config::set([
-    'is' => 'page',
-    'panel' => [
-        'layout' => 2,
-        'c:f' => 'editor',
-        'm' => [
-            't' => [
-                'user' => [
-                    'stack' => 10
-                ]
+// Set or modify the default panel content(s)…
+$__u = $__page[0] ? $__page[0] : (object) [
+    'email' => null,
+    'link' => null,
+    'state' => 'page',
+    'status' => 2
+];
+$__x = $__u->state;
+$__o = (array) $language->o_user;
+$__z = !g(LOT . DS . $__path, 'page') && User::get('status') !== 1 ? '.' : "";
+Config::set('panel.m.t.page.title', $language->user);
+Config::set('panel.m.t.page.content', [
+    'author' => [
+        'placeholder' => $language->user,
+        'is' => [
+            'hidden' => false
+        ],
+        'attributes' => [
+            'data' => [
+                'slug-i' => 'author'
             ]
-        ]
+        ],
+        'stack' => 10
+    ],
+    '*slug' => [
+        'type' => 'text',
+        'placeholder' => To::slug($language->user),
+        'title' => $language->key,
+        'description' => $language->h_user,
+        'attributes' => [
+            'data' => [
+                'slug-o' => 'author'
+            ]
+        ],
+        'expand' => false,
+        'stack' => 20
+    ],
+    'content' => [
+        'placeholder' => $language->f_description($language->user),
+        'expand' => false,
+        'stack' => 30
+    ],
+    'email' => [
+        'stack' => 40
+    ],
+    'link' => [
+        'stack' => 50
+    ],
+    '+[status]' => [
+        'key' => 'status',
+        'type' => 'toggle',
+        'value' => $__z ? 1 : $__u->status,
+        'values' => [
+            $__z . '-1' => $__o[-1],
+            (User::get() ? $__z : "") . '1' => $__o[1],
+            $__z . '2' => $__o[2]
+        ],
+        'stack' => 60
+    ],
+    'x' => [
+        'values' => [
+            '*' . $__x => $__action === 's' ? null : $language->update,
+            'page' => $__x === 'page' ? null : $language->create,
+            'draft' => $__x === 'draft' ? null : $language->save,
+            'archive' => null
+        ],
+        'order' => ['*' . $__x, 'page', 'draft', 'trash']
+    ],
+    '+[time]' => null,
+    'description' => null,
+    'tags' => null,
+    'title' => null
+]);
+
+Config::set('panel.s', [
+    1 => [
+        'source' => [
+            'stack' => 10
+        ],
+        'kin' => [
+            'stack' => 20
+        ],
+        'author' => null,
+        'current' => null,
+        'parent' => null,
+        'setting' => null
+    ],
+    2 => [
+        'child' => null,
+        'id' => null
     ]
 ]);
 
-Hook::set('__user.url', function($__content) use($__state, $__chops) {
-    return $__state->path . '/::g::/' . $__chops[0] . '/' . Path::N($__content);
-});
-
-Hook::set('user.title', function($__content, $__lot) {
-    return (isset($__lot['author']) ? $__lot['author'] : null);
-});
-
-if (Request::is('post')) {
-    $__user_key = Request::post('user', "", false);
-    if (Request::post('author', "", false) === "") {
-        Message::error('void_field', $language->name, true);
-    }
-    if ($__user_key === "") {
-        Message::error('void_field', $language->user, true);
-    } else if (!preg_match('#^' . x(User::ID) . '[a-z\d-]+$#', $__user_key)) {
-        Message::error('pattern_field', $language->user);
-    }
-    $f = USER . DS . substr($__user_key, 1) . '.page';
-    if (file_exists($f)) {
-        Message::error('exist', [$language->user, '<em>' . $__user_key . '</em>']);
-    }
-    Hook::NS('on.user.enter', [$f]);
-    if (!Message::$x) {
-        Page::data([
-            'author' => Request::post('author', false),
-            'type' => Request::post('type', 'HTML'),
-            'link' => Request::post('link', false),
-            'email' => Request::post('email', false),
-            'status' => Request::post('status', 2),
-            'content' => Request::post('description', false)
-        ])->saveTo($f, 0600);
-        Message::success('create', $language->user . ' <em>' . $__user_key . '</em>');
-        Request::save('post', 'user', $__user_key);
-        Request::save('post', 'pass_x', true);
-        Cookie::reset('panel.c.user.key');
-        Cookie::reset('panel.c.user.token');
-        Guardian::kick($__state->path . '/::g::/enter');
-    } else {
-        Request::save('post');
-        Guardian::kick($url->current);
-    }
-}
-
-if ($__files = g(USER, 'page')) {
-    foreach ($__files as $__v) {
-        $__v = Path::N($__v);
-        $__kins[0][] = new User($__v, [], '__user');
-        $__kins[1][] = new User($__v, []);
-    }
-}
-
-$__is_has_step_kin = count($__files) > $__chunk ? true : false;
-
-Lot::set([
-    '__kins' => $__kins,
-    '__is_has_step_kin' => $__is_has_step_kin
-]);
+Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',email,pass,status,token');

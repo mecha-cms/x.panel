@@ -1,9 +1,9 @@
 <?php
 
 if ($__is_has_step) {
-    if ($__files = File::explore(COMMENT, true, true)) {
+    if ($__comments = File::explore(COMMENT, true, true)) {
         $__f = [];
-        foreach ($__files as $__k => $__v) {
+        foreach ($__comments as $__k => $__v) {
             $__x = Path::X($__k);
             if ($__v === 0 || (
                 $__x !== 'draft' &&
@@ -27,8 +27,8 @@ if ($__is_has_step) {
         }
         krsort($__f);
         foreach (Anemon::eat($__f)->chunk($__chunk, $__step) as $__v) {
-            $__pages[0][] = new Comment($__v, [], '__comment');
-            $__pages[1][] = new Comment($__v);
+            $__pages[0][] = new Page($__v, [], '__' . $__chops[0]);
+            $__pages[1][] = new Page($__v, [], $__chops[0]);
         }
         Lot::set([
             '__pages' => $__pages,
@@ -51,7 +51,7 @@ if ($__is_has_step) {
                         2 => ['rel' => 'next', 'classes' => ['button']]
                     ]
                 ]
-            ], '__comments')]
+            ], '__' . $__chops[0] . 's')]
         ]);
     }
 } else {
@@ -60,14 +60,14 @@ if ($__is_has_step) {
           
         ];
     }
-    if ($__file = File::exist([
+    if ($__comment = File::exist([
         LOT . DS . $__path . '.draft',
         LOT . DS . $__path . '.page',
         LOT . DS . $__path . '.archive'
     ])) {
         $__page = [
-            new Comment($__file, [], '__comment'),
-            new Comment($__file)
+            new Page($__comment, [], '__' . $__chops[0]),
+            new Page($__comment, [], $__chops[0])
         ];
         Lot::set('__page', $__page);
     }

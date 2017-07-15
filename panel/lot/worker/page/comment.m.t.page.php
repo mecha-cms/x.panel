@@ -55,7 +55,7 @@ return [
         'stack' => 50
     ],
     'x' => [
-        'type' => 'submit',
+        'type' => 'submit[]',
         'title' => $language->submit,
         'values' => array_merge($__action !== 's' ? [
             '*' . $__x => $language->update

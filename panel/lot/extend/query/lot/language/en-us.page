@@ -2,7 +2,9 @@
 type: YAML
 ...
 
-TIB:
-  text:
-    - Delete “%s%”
-    - Duplicate “%s%”
+__:
+  panel:
+    TIB:
+      text:
+        - Delete “%s%”
+        - Duplicate “%s%”

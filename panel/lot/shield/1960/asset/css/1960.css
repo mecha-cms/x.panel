@@ -13,10 +13,6 @@ body {
 a {color:#00a}
 a:focus,
 a:active {color:#a00}
-mark {
-  background:#ff0;
-  color:inherit;
-}
 code,.code {
   font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
   font-size:85%;
@@ -28,6 +24,7 @@ pre {
   line-height:1;
   font-size:86%;
 }
+fieldset {border-style:solid}
 .table {background:#fff}
 .table th {background:#fea}
 .button,
@@ -49,13 +46,10 @@ pre {
   background:#a00;
   color:#fff;
 }
-.button.x {background:#666}
+.button.x,
+.button[disabled] {background:#666}
 .input:focus:invalid,
-.textarea:focus:invalid {
-  color:#f00;
-  border-color:#f00;
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.25),0 0 2px #f00;
-}
+.textarea:focus:invalid {box-shadow:inset 0 1px 2px rgba(0,0,0,.25),0 0 2px #f00}
 .input[type="checkbox"],
 .input[type="color"],
 .input[type="file"],
@@ -63,160 +57,34 @@ pre {
 .input[type="range"],
 .input[readonly],
 .textarea[readonly] {box-shadow:none}
-.m {
-  background:#ffa;
-  padding-bottom:4em;
-}
-.s {width:16em}
-.m section + section,
-.s section + section {margin-top:1em}
-.m section:after {
-  content:"";
-  display:table;
-  clear:both;
-}
-.m .buttons {
-  border-bottom:1px dashed #ee9;
-  padding-bottom:1em;
-  text-align:right;
-}
+.m {background:#ffa}
+.m .buttons {border-color:#ee9}
 .m .page {
   background:#fff;
-  border:1px solid;
-  width:16em;
-  float:left;
-  margin:0 1em 1em 0;
-  padding:1em 1.25em 4em 1.25em;
-  height:22em;
-  position:relative;
-  overflow:hidden;
   box-shadow:inset 0 -4px 0 #eec,0 1px 2px rgba(0,0,0,.25);
 }
-.m .page figure {
-  margin:-1em -1.25em 1em;
-  padding-bottom:55%;
-  height:0;
-  background:#ffc;
-  overflow:hidden;
+.m .page figure {background:#ffc}
+.m .page.is-parent {
+  border-color:inherit;
+  box-shadow:inset 0 -4px 0 #cde,0 1px 2px rgba(0,0,0,.25);
 }
-.m .page figure img {
-  display:block;
-  margin:0;
-  padding:0;
-  border:0;
-  outline:0;
-}
-.m .page h3 {
-  font:inherit;
-  font-weight:bold;
-  margin:0 0 1em;
-}
-.m .page section,
-.m .page footer {
-  font-size:90%;
-  overflow:visible;
-}
-.m .page footer {
-  position:absolute;
-  right:0;
-  bottom:0;
-  left:0;
-  line-height:3em;
-  padding:0 1em;
-}
-.m .page.is-parent {box-shadow:inset 0 -4px 0 #cde,0 1px 2px rgba(0,0,0,.25)}
-.m .page.as-home,
-.m .page.is-active {box-shadow:inset 0 -4px 0 #fdc,0 1px 2px rgba(0,0,0,.25)}
-.m .page.on-draft {border-style:dotted}
-.m .page.as-placeholder {
-  border-style:dotted;
-  opacity:.2;
-}
-.m .page.as-placeholder figure {display:none}
-.m .files {
-  margin-right:0;
-  margin-left:0;
-}
-.m .file {
-  margin:0;
-  padding:0;
-  list-style:none;
+.m .page.as-,
+.m .page.is-active {
+  border-color:inherit;
+  box-shadow:inset 0 -4px 0 #fdc,0 1px 2px rgba(0,0,0,.25);
 }
 .m .file {
   background:#fff;
-  border-left:1px solid;
-  padding:.25em .75em;
   box-shadow:0 1px 2px rgba(0,0,0,.25);
 }
-.m .file + .file {margin-top:2px}
-.m .file:after {
-  content:"";
-  display:table;
-  clear:both;
-}
-.m .t {
-  margin:-1em -1em 1em;
-  padding:.5384615384615384em 1em 0;
-}
-.m .messages + .t {margin-top:.5384615384615384em}
-.m .messages + section {margin-top:1em}
-.m .t:after {
-  content:"";
-  display:table;
-  clear:both;
-}
-.m .t a {
-  display:block;
-  float:left;
-}
-.m .t a + a {margin-left:1em}
-.m .t a.is-active {color:inherit}
-.m .t-c {
-  margin-top:0;
-  clear:both;
-}
-.n ul,
-.n li {
-  margin:0;
-  list-style:none;
-}
-.n {line-height:3em}
 .n ul {
   background:#000;
   color:#fff;
-  border:0 solid #abc;
-  border-bottom-width:2px;
-}
-.n ul:after {
-  content:"";
-  display:table;
-  clear:both;
-}
-.n li {
-  float:left;
-  position:relative;
-}
-.n a {
-  display:block;
-  padding:0 1.25em;
-  border:0 solid transparent;
-  border-bottom-width:2px;
-  margin-bottom:-2px;
-  color:inherit;
-  cursor:pointer;
+  border-color:#abc;
 }
 .n a i {
-  font:inherit;
-  font-weight:bold;
   background:#d00;
   color:#fff;
-  float:right;
-  padding:0 .25em;
-  line-height:1.5em;
-  margin:.75em -.5em 0 .5em;
-}
-.n li li a i {
-  margin:.5em -.5em 0 0;
 }
 .n a:focus,
 .n a:active {color:#def}
@@ -226,320 +94,29 @@ pre {
   background:none;
   border-color:#fba;
 }
-.n ul ul {
-  position:absolute;
-  top:100%;
-  left:0;
-  z-index:9999;
-  min-width:10em;
-  border-width:0 0 0 2px;
-  box-shadow:0 4px 8px -2px rgba(0,0,0,.4),0 8px 16px -4px rgba(0,0,0,.4);
-  display:none;
+.n ul + span {color:#fff}
+.s-setting {background:#fea}
+.i-d {background:#89a}
+.i-f:before {border-color:#89a}
+.i-f:after {
+  border-bottom-color:#89a;
+  border-left-color:#89a;
 }
-.no-js .n li:hover > ul {display:block}
-.n ul ul ul {
-  top:0;
-  left:100%;
-  margin-top:0;
-}
-.n ul ul li {
-  float:none;
-  display:block;
-  font-size:96%;
-  line-height:2.5em;
-}
-.n ul ul a {
-  border-width:0 0 0 2px;
-  margin:0 0 0 -2px;
-}
-.n ul ul a {padding:0 1em}
-.n ul + span {
-  position:absolute;
-  top:0;
-  right:0;
-  padding:0 3.25em 0 1.25em;
-  font-weight:bold;
-  color:#fff;
-}
-.n ul + span img {
-  display:block;
-  position:absolute;
-  top:.5em;
-  right:.5em;
-  width:2em;
-  height:2em;
-  background:none;
-}
-.s-setting {
-  background:#fea;
-  padding:1em;
-  margin:-.5em -.5em .5em;
-}
-.s-setting .table {
-  font-size:85%;
-  background:none;
-}
-.s-setting th,
-.s-setting td {
-  background:none;
-  border:0;
-  padding:.25em .5em;
-}
-.s-setting th {
-  font-weight:normal;
-  background:rgba(0,0,0,.05);
-}
-.s .s-setting label .input + span {margin-left:0}
-.s section + .s-setting {margin-top:1.5em}
-.s section h3 {
-  font-size:100%;
-  margin:0 0 .4em 0;
-  padding:0;
-  word-wrap:break-word;
-}
-.s section ul {
-  list-style:none;
-  margin:.2em 0 0 .4em; /* indent */
-  padding:0;
-}
-.s section li {
-  margin:0;
-  padding:0 0 0 1.4em; /* indent + .2em */
-  position:relative;
-  word-wrap:break-word;
-}
-.s section li .i {margin-right:.2em}
-.s section ul ul {margin:0 0 0 .2em}
-.s section li:before {
-  content:"";
-  display:block;
-  width:0;
-  border-left:1px solid;
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:0;
-}
-.s section li:after {
-  content:"";
-  display:block;
-  width:1em; /* indent - .2em */
-  border-top:1px solid;
-  position:absolute;
-  top:.8em;
-  bottom:0;
-  left:0;
-}
-.s section li:last-child:after {background-color:#fff} /* same with page background */
-.s section label .input + span {
-  position:relative;
-  margin-left:.5em;
-}
-.s section label .input:not(:checked) + span:after {
-  content:"";
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-  z-index:4;
-}
-.s .s-nav {
-  position:sticky;
-  top:1em;
-}
-.m-footer {
-  margin:3em .5em 0;
-  clear:both;
-}
-.search .input {
-  display:block;
-  width:100%;
-}
-.search .button {display:none}
-.i {
-  font:inherit;
-  display:inline-block;
-  vertical-align:middle;
-  width:1em;
-  height:1em;
-  position:relative;
-}
-.i:before,
-.i:after {content:""}
-.i-0 {
-  height:.8em;
-  background:#89a;
-}
-.i-0:before {
-  background:inherit;
-  height:1px;
-  position:absolute;
-  right:.4em;
-  bottom:100%;
-  left:0;
-  margin-bottom:1px;
-}
-.i-1:before {
-  background:#fff;
-  border:1px solid #89a;
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-}
-.i-1:after {
-  position:absolute;
-  top:0;
-  right:0;
-  border:2px solid #89a;
-  border-top-color:#fff;
-  border-right-color:#fff;
-}
-
-/*
-
-❓❗ &#x2753;&#x2757;
-❔❕ &#x2754;&#x2755;
-
-◆◇ &#x25C6;&#x25C7;
-
-★☆ &#x2605;&#x2606;
-
-⚐⚑ &#x2690;&#x2691;
-⎗⎘ &#x2397;&#x2398;
-
-⚓ &#x2693;
-⛽ &#x26FD;
-✉ &#x2709;
-⎙ &#x2399;
-⌗ &#x2317;
-⌘ &#x2318;
-␣ &#x2423;
-
-✓✔ &#x2713;&#x2714;
-✗✘ &#x2717;&#x2718;
-
-➕ &#x2795;
-➖ &#x2796;
-➗ &#x2797;
-✖ &#x2716;
-
-❯ &#x276F;
-❮ &#x276E;
-
-► &#x25BA;
-◄ &#x25C4;
-
-◢◣◤◥ &#x25E2;&#x25E3;&#x25E4;&#x25E5;
-◸◹◺◿ &#x25F8;&#x25F9;&#x25FA;&#x25FF;
-
-◻◼◽◾ &#x25FB;&#x25FC;&#x25FD;&#x25FE;
-
-▲▶▼◀ &#x25B2;&#x25B6;&#x25BC;&#x25C0;
-▴▸▾◂ &#x25B4;&#x25B8;&#x25BE;&#x25C2;
-△▷▽◁ &#x25B3;&#x25B7;&#x25BD;&#x25C1;
-▵▹▿◃ &#x25B5;&#x25B9;&#x25BF;&#x25C3;
-
-⇠ &#x21E0;
-⇡ &#x21E1;
-⇢ &#x21E2;
-⇣ &#x21E3;
-
-⋮ &#x22EE;
-⋯ &#x22EF;
-⋰ &#x22F0;
-⋱ &#x22F1;
-
-*/
-
-.n a .i,
-.button .i {
-  width:auto;
-  height:auto;
-}
-
-.f {
-  display:table;
-  table-layout:fixed;
-  width:100%;
-}
-.f > label,
-.f > label + span {
-  display:table-cell;
-  vertical-align:top;
-}
-.f > label {
-  width:8em;
-  padding:.25em 1em 0 0;
-  height:2.1538461538461537em;
-  text-align:right;
-}
-.f.expand,
-.f.expand > label + span {display:block}
-.f.expand > label {display:none}
-.s h3 {font-size:100%}
-.s h4 {font-size:90%}
 .s .input,
 .s .select,
 .s .textarea {background-color:#afa}
-
 .h {
   background:#fea;
   border-top:1px solid #ed9;
-  padding:.5em .75em;
-  line-height:1.25;
 }
 .f + .h {
   background:none;
   border:0;
-  margin:.5em 0 0 8em;
-  padding:0;
   color:#a65;
 }
-.f.expand + .h {margin-left:0}
-
 .message {background:#ee8}
-
 .p-enter {background:#ffa}
 .p-enter body,
 .p-enter .m {background:none}
-
 .p-404 {background:#ffa}
 .p-404 body {background:none}
-
-select.select {
-  -webkit-appearance:none;
-  -moz-appearance:none;
-  appearance:none;
-  background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGAQMAAAA1wBY1AAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAAABRJREFUCNdjaGI4xvCOoYbBgkEAABY+Avv4eJ89AAAAAElFTkSuQmCC');
-  background-repeat:no-repeat;
-  background-position:100% 50%;
-  background-position:calc(100% - .5em) 50%;
-  padding-right:1.5em;
-}
-input.input[type="number"] {
-  -webkit-appearance:none;
-  -moz-appearance:none;
-  appearance:none;
-  -webkit-appearance:textfield;
-  -moz-appearance:textfield;
-  appearance:textfield;
-  background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAKAQMAAABCAtZOAAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAAABhJREFUCNdjEGCwYKhh+McABECyBsgTAAAjPAOF2hJkLQAAAABJRU5ErkJggg==');
-  background-repeat:no-repeat;
-  background-position:100% 50%;
-  background-position:calc(100% - .5em) 50%;
-}
-input.input[type="number"]::-webkit-inner-spin-button, 
-input.input[type="number"]::-webkit-outer-spin-button { 
-  -webkit-appearance:none;
-  margin:0;
-}
-
-/* TODO */
-.n-asset,
-.n-cache,
-.n-comment,
-.n-extend,
-.n-user {display:none}

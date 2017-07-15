@@ -2,11 +2,11 @@
   <section class="s-parent">
     <h3><?php echo $language->parent; ?></h3>
     <ul>
-      <li><?php $__p = Path::D($url->current); echo HTML::a('<i class="i i-0"></i> ' . (count($__chops) === 3 ? '..' : Path::B($__p)), $__p); ?></li>
+      <li><?php $__p = Path::D($url->current); echo HTML::a('<i class="i i-f"></i> ' . (count($__chops) === 3 ? '..' : Path::B($__p)), $__p); ?></li>
     </ul>
   </section>
   <?php endif; ?>
-  <?php if ($__kins[0]): ?>
+  <?php if ($__kins[0] && count($__chops) <= 2): ?>
   <section class="s-kin">
     <h3><?php echo $language->{count($__kins[0]) === 1 ? 'kin' : 'kins'}; ?></h3>
     <ul>
@@ -31,7 +31,7 @@
     <ul>
 	  <?php foreach ($__kins[0] as $__v): ?>
       <?php if (Path::X($__v) === 'trash') continue; ?>
-      <li><?php echo HTML::a('<i class="i i-' . (is_dir($__v) ? '0' : '1') . '"></i> ' . Path::B($__v), $__p . '/' . Path::B($__v)); ?></li>
+      <li><?php echo HTML::a('<i class="i i-' . (is_dir($__v) ? 'd' : 'f') . '"></i> ' . Path::B($__v), $__p . '/' . Path::B($__v)); ?></li>
       <?php endforeach; ?>
     </ul>
   </section>
@@ -42,7 +42,7 @@
     <ul>
       <?php foreach ($__datas[0] as $__k => $__v): ?>
       <?php if ($__v->extension === 'trash') continue; ?>
-      <li><?php echo HTML::a('<i class="i i-' . (is_dir($__v->path) ? '0' : '1') . '"></i> ' . $__datas[1][$__k]->title, $__v->url); ?></li>
+      <li><?php echo HTML::a('<i class="i i-' . (is_dir($__v->path) ? 'd' : 'f') . '"></i> ' . $__datas[1][$__k]->title, $__v->url); ?></li>
       <?php endforeach; ?>
     </ul>
   </section>

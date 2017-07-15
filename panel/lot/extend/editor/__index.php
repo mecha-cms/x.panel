@@ -4,30 +4,39 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
     if (!Config::get('page.editor', "")) return;
     // Load the asset(s)…
     $__s = __DIR__ . DS . 'lot' . DS . 'asset' . DS;
-    Asset::set($__s . 'css' . DS . 'c-m.min.css', 10.2);
-    Asset::set($__s . 'css' . DS . 'c-m.fire.min.css', 10.3);
-    Asset::set($__s . 'js' . DS . 'c-m.min.js', 10.2);
-    Asset::set($__s . 'js' . DS . 'c-m.addon.min.js', 10.21);
-    Asset::set($__s . 'js' . DS . 'c-m.mode.min.js', 10.22);
-    Asset::set($__s . 'js' . DS . 'c-m.fire.min.js', 10.3);
-    $__code_mirror = new State(File::open(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php')->import());
-    if ($__code_mirror->theme && $__f = File::exist($__s . 'css' . DS . 'theme' . DS . $__code_mirror->theme . '.min.css')) {
+    Asset::set([
+        $__s . 'css' . DS . 'c-m.min.css',
+        $__s . 'css' . DS . 'c-m.fire.min.css',
+        $__s . 'js' . DS . 'c-m.min.js',
+        $__s . 'js' . DS . 'c-m.addon.min.js',
+        $__s . 'js' . DS . 'c-m.mode.min.js',
+        $__s . 'js' . DS . 'c-m.fire.min.js'
+    ], [
+        10.2,
+        10.3,
+        10.2,
+        10.21,
+        10.22,
+        10.3
+    ]);
+    $__CM = new State(File::open(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php')->import());
+    if ($__CM->theme && $__f = File::exist($__s . 'css' . DS . 'theme' . DS . $__CM->theme . '.min.css')) {
         Asset::set($__f, 10.21);
     }
     // Add configuration tab for this extension…
     if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config')) {
         $__themes = $__modes = $__addons = [];
-        foreach (glob(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'theme' . DS . '*.min.css', GLOB_NOSORT) as $__v) {
+        foreach (glob($__s . 'css' . DS . 'theme' . DS . '*.min.css', GLOB_NOSORT) as $__v) {
             $__v = basename($__v, '.min.css');
-            $__themes[$__v] = isset($language->__->panel->code_mirror->theme->{$__v}) ? $language->__->panel->code_mirror->theme->{$__v} : (isset($language->{$__v}) ? $language->{$__v} : $__v . '.css');
+            $__themes[$__v] = isset($language->__->panel->CM->theme->{$__v}) ? $language->__->panel->CM->theme->{$__v} : (isset($language->{$__v}) ? $language->{$__v} : $__v . '.css');
         }
-        foreach (glob(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'mode' . DS . '*.min.js', GLOB_NOSORT) as $__v) {
+        foreach (glob($__s . 'js' . DS . 'mode' . DS . '*.min.js', GLOB_NOSORT) as $__v) {
             $__v = basename($__v, '.min.js');
-            $__modes[$__v] = isset($language->__->panel->code_mirror->mode->{$__v}) ? $language->__->panel->code_mirror->mode->{$__v} : (isset($language->{$__v}) ? $language->{$__v} : $__v . '.js');
+            $__modes[$__v] = isset($language->__->panel->CM->mode->{$__v}) ? $language->__->panel->CM->mode->{$__v} : (isset($language->{$__v}) ? $language->{$__v} : $__v . '.js');
         }
-        foreach (glob(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'addon' . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT) as $__v) {
+        foreach (glob($__s . 'js' . DS . 'addon' . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT) as $__v) {
             $__v = basename($__v);
-            $__addons[$__v] = isset($language->__->panel->code_mirror->addon->{$__v}) ? $language->__->panel->code_mirror->addon->{$__v} : (isset($language->{$__v}) ? $language->{$__v} : To::title($__v));
+            $__addons[$__v] = isset($language->__->panel->CM->addon->{$__v}) ? $language->__->panel->CM->addon->{$__v} : (isset($language->{$__v}) ? $language->{$__v} : To::title($__v));
         }
         asort($__themes);
         asort($__modes);
@@ -43,15 +52,15 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                 '__[editor][theme]' => [
                     'key' => 'theme',
                     'type' => 'select',
-                    'value' => $__code_mirror->theme,
-                    'values' => array_merge(['!' => '&#x2716;'], $__themes),
+                    'value' => $__CM->theme,
+                    'values' => ['!' => '&#x2716;'] + $__themes,
                     'stack' => 10
                 ],
                 '__[editor][mode]' => [
                     'key' => 'mode',
                     'type' => 'toggle[]',
                     'title' => $language->languages,
-                    'value' => (array) $__code_mirror->mode,
+                    'value' => (array) $__CM->mode,
                     'values' => $__modes,
                     'stack' => 20
                 ],
@@ -59,7 +68,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                     'key' => 'extension',
                     'type' => 'toggle[]',
                     'title' => $language->extensions,
-                    'value' => (array) $__code_mirror->addon,
+                    'value' => (array) $__CM->addon,
                     'values' => $__addons,
                     'stack' => 30
                 ],
@@ -106,6 +115,8 @@ if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config')
         if (isset($__r['o'])) {
             if ($__r['theme'] !== "") {
                 $__r['o']['theme'] = $__r['theme'];
+            } else {
+                unset($__r['theme']);
             }
             File::export($__r['o'])->saveTo(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php', 0600);
             unset($__r['o']);
