@@ -7,8 +7,10 @@ Hook::set($__chops[0] . '.title', function($__content, $__lot) use($__chops) {
 });
 
 // Replace `title` field with `author` field on user create event…
-Hook::set('on.' . $__chops[0] . '.set', function($__f) use($__path, $__state) {
-    if (!file_exists(Path::F($__f . DS . 'pass.data'))) {
+Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__action, $__path, $__state) {
+    Message::reset();
+    Message::success($__action === 's' ? 'create' : 'update', [$language->user, '<strong>' . Request::post('author') . '</strong>']);
+    if (!file_exists(Path::F($__f) . DS . 'pass.data')) {
         $__f = Path::N($__f);
         User::reset($__f);
         Request::save('post', 'user', '@' . $__f);
@@ -73,6 +75,9 @@ Config::set('panel.m.t.page.content', [
         'stack' => 30
     ],
     'email' => [
+        'is' => [
+            'hidden' => false
+        ],
         'stack' => 40
     ],
     'link' => [
@@ -110,6 +115,7 @@ Config::set('panel.s', [
             'stack' => 10
         ],
         'kin' => [
+            'title' => $language->users,
             'stack' => 20
         ],
         'author' => null,
