@@ -1,17 +1,64 @@
 <?php
 
 // Preparation(s)…
-if (!Get::kin($__chops[0] . 's')) {
-    Get::plug($__chops[0] . 's', function() use($__chops) {
-        if ($__g = g(LOT . DS . $__chops[0], 'draft,page,archive')) {
-            $__g = array_filter($__g, function($__v) use($__chops) {
-                return !isset($__chops[1]) || Path::N($__v) !== $__chops[1];
-            });
-            sort($__g);
-            return $__g;
+if (!Get::kin('_' . $__chops[0] . 's')) {
+    function __fn_get_page_worker($v, $n = null) {
+        $n = $n ?: Path::N($v);
+        $v = file_get_contents($v);
+        if ($n === 'time') {
+            $v = (new Date($v))->format();
+        } else if ($n === 'slug') {
+            $v = h($v);
+        }
+        return $v;
+    }
+    function _fn_get_page($path, $key = null, $fail = false, $for = null) {
+        if (!file_exists($path)) return false;
+        $date = date(DATE_WISE, File::T($path, time()));
+        $o = [
+            'path' => $path,
+            'time' => $date,
+            'update' => $date,
+            'slug' => Path::N($path),
+            'state' => Path::X($path)
+        ];
+        $output = Page::open($path, array_replace([
+            $for => null
+        ], $o))->get($o);
+        $data = Path::F($path);
+        if (is_dir($data)) {
+            if ($for === null) {
+                foreach (g($data, '*.data', "", false) as $v) {
+                    $n = Path::N($v);
+                    $output[$n] = e(__fn_get_page_worker($v, $n));
+                }
+            } else if ($v = File::exist($data . DS . $for . '.data')) {
+                $output[$for] = e(__fn_get_page_worker($v, $for));
+            }
+        }
+        return !isset($key) ? $output : (array_key_exists($key, $output) ? $output[$key] : $fail);
+    }
+    function _fn_get_pages($folder = PAGE, $state = 'page', $sort = [-1, 'time'], $key = null) {
+        $output = [];
+        $by = is_array($sort) && isset($sort[1]) ? $sort[1] : null;
+        if ($input = g($folder, $state, "", false)) {
+            foreach ($input as $v) {
+                $output[] = fn_get_page($v, null, false, $by);
+            }
+            $output = $o = Anemon::eat($output)->sort($sort)->vomit();
+            if (isset($key)) {
+                $o = [];
+                foreach ($output as $v) {
+                    if (!array_key_exists($key, $v)) continue;
+                    $o[] = $v[$key];
+                }
+            }
+            unset($output);
+            return !empty($o) ? $o : false;
         }
         return false;
-    });
+    }
+    Get::plug('_' . $__chops[0] . 's', '_fn_get_pages');
 }
 
 $__is_data = substr($url->path, -2) === '/+' || strpos($url->path, '/+/') !== false;
@@ -31,7 +78,7 @@ $__f = File::exist([
     $__d . '.archive'
 ], "");
 // Get current page(s) file…
-if (Get::kin($__chops[0] . 's') && $__g = call_user_func('Get::' . $__chops[0] . 's', $__is_has_step ? $__d : Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
+if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__is_has_step ? $__d : Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
     if ($__q = l(Request::get('q', ""))) {
         Message::info('search', '<em>' . $__q . '</em>');
         $__q = explode(' ', $__q);
@@ -184,7 +231,7 @@ if ($__is_data) {
             new Page($__f ?: null, [], $__chops[0])
         ]);
         // Get kin(s)…
-        if (Get::kin($__chops[0] . 's') && $__g = call_user_func('Get::' . $__chops[0] . 's', Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
+        if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
             $__q = Path::B($__d);
             $__g = array_filter($__g, function($__v) use($__q) {
                 return Path::N($__v) !== $__q;
@@ -245,13 +292,14 @@ if ($__is_data) {
             }
             $__headers = array_replace([
                 'title' => function($__s) {
-                    return To::text($__s, HTML_WISE_I);
+                    return To::text($__s, HTML_WISE_I) ?: false;
                 },
                 'description' => false,
                 'author' => false,
                 'type' => false,
                 'link' => false,
                 'email' => false,
+                'status' => false,
                 'content' => false
             ], $__headers_alt);
             $__headers_alt = (array) $site->page;
@@ -435,7 +483,7 @@ if ($__is_data) {
         }
         Lot::set('__datas', $__datas);
         // Get child(s)…
-        if (Get::kin($__chops[0] . 's') && $__g = call_user_func('Get::' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
+        if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
             $__q = Path::B($__d);
             $__g = array_filter($__g, function($__v) use($__q) {
                 return Path::N($__v) !== $__q;
@@ -479,7 +527,6 @@ $__ = [
 ];
 
 $__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
-$__is_has_step = $__is_has_step && !$__is_data;
 Config::set('panel.s', [
     1 => [
         'source' => [
@@ -495,7 +542,7 @@ Config::set('panel.s', [
         ],
         'author' => [
             'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-author.php',
-            'if' => !$__is_has_step,
+            'if' => !$__is_has_step && !$__is_data,
             'stack' => 10
         ],
         'parent' => [
@@ -535,7 +582,7 @@ Config::set('panel.s', [
         'setting' => [
             'title' => $language->settings,
             'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-setting.php',
-            'if' => !$__is_has_step,
+            'if' => !$__is_has_step && !$__is_data,
             'stack' => 50
         ]
     ],

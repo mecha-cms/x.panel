@@ -10,7 +10,7 @@ if ($__f && $__action === 's') {
 
 // Set or modify the default panel content(s)…
 $__x = $__page[0] ? $__page[0]->state : 'page';
-Config::set('panel.m.t.page.content', [
+Config::set('panel.f', [
     'link' => null,
     'tags' => null,
     'x' => [

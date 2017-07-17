@@ -40,6 +40,11 @@
   margin-bottom: -1px;
 }
 
+.time-picker-target.active.left .time-picker {
+  right: 0;
+  left: auto;
+}
+
 .time-picker caption {
   background: #000;
   color: #fff;

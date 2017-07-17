@@ -29,7 +29,7 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
                 unset($__errors[1][$__k]);
             }
         }
-        $__n['error'] = isset($__n_n['error']) && is_array($__n_n['error']) ? $__n_n['error'] : [
+        $__n['error'] = [
             'text' => $language->errors,
             'url' => $__state->path . '/::g::/error',
             'i' => count($__errors[1]),
@@ -38,7 +38,7 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
     }
 }
 
-$__n['exit'] = isset($__n_n['exit']) && is_array($__n_n['exit']) ? $__n_n['exit'] : [
+$__n['exit'] = [
     'text' => $language->exit,
     'url' => $__state->path . '/::g::/exit',
     'stack' => 30

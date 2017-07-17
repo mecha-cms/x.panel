@@ -16,7 +16,7 @@ User::plug('set', function($key = null, $token, $fail = false) use($__user_key, 
     return $key;
 });
 
-User::plug('reset', function($key = null) {
+User::plug('reset', function($key = null, $fail = false) {
     if (isset($key)) {
         if ($f = File::exist(USER . DS . $key . DS . 'token.data')) {
             File::open($f)->delete();

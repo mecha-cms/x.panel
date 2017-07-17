@@ -19,9 +19,8 @@ function __panel_a__($k, $v) {
     // `as`
     // `on`
     // `attributes`
-    if (array_key_exists('if', $v)) {
-        $v['is']['hidden'] = !$v['if'];
-        $v['is']['visible'] = $v['if'];
+    if (isset($v['if']) && !$v['if']) {
+        return "";
     }
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
         return "";
@@ -123,8 +122,8 @@ function __panel_f__($k, $v) {
     // `attributes`
     // `expand`
     // `stack`
-    if (array_key_exists('if', $v)) {
-        $v['is']['visible'] = $v['if'];
+    if (isset($v['if']) && !$v['if']) {
+        return "";
     }
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
         return "";
@@ -320,8 +319,8 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     } else if (!$v) {
         return "";
     }
-    if (array_key_exists('if', $v)) {
-        $v['is']['visible'] = $v['if'];
+    if (isset($v['if']) && !$v['if']) {
+        return "";
     }
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
         return "";

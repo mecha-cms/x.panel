@@ -31,8 +31,17 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     $__hash = Guardian::hash();
     $__user = User::get();
     // Restricted user
-    if ($__user && $__user->status !== 1 && Is::these(['language', 'state', 'user'])->has($__chops[0])) {
-        Shield::abort(PANEL_404);
+    if ($__user) {
+        if ($__user->status === -1) {
+            Shield::abort(PANEL_404);
+        } else if ($__user->status !== 1) {
+            if (
+                (!isset($__chops[1]) || $__chops[1] !== $__user_key) &&
+                Is::these(['language', 'state', 'user'])->has($__chops[0])
+            ) {
+                Shield::abort(PANEL_404);
+            }
+        }
     }
     require $__task;
     Lot::set([

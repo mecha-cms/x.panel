@@ -1,8 +1,3 @@
-.time-picker {margin-bottom:-1px}
-.time-picker.top {
-  margin-top:-1px;
-  margin-bottom:auto;
-}
 .time-picker .active {
   background:#def;
   color:inherit;
@@ -14,8 +9,4 @@
 .time-picker .day:hover {
   background:#00a;
   color:#fff;
-}
-.path-\2B.path-time .time-picker {
-  top:100%;
-  bottom:auto;
 }

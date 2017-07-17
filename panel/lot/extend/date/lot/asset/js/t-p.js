@@ -337,10 +337,17 @@
     open = function () {
       on(doc, "click", docClick);
       cs(wrapperElement, 'active');
-      if (wrapperElement.offsetTop + wrapperElement.offsetHeight + calendarContainer.offsetHeight > doc.documentElement.offsetHeight) {
+      var h = doc.documentElement,
+          o = 'offset';
+      if (wrapperElement[o + 'Top'] + wrapperElement[o + 'Height'] + calendarContainer[o + 'Height'] > h[o + 'Height']) {
         cs(wrapperElement, 'top');
       } else {
         cr(wrapperElement, 'top');
+      }
+      if (wrapperElement[o + 'Left'] + wrapperElement[o + 'Width'] + calendarContainer[o + 'Width'] > h[o + 'Width']) {
+        cs(wrapperElement, 'left');
+      } else {
+        cr(wrapperElement, 'left');
       }
     };
     close = function () {

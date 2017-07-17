@@ -70,3 +70,20 @@ if (Extend::exist('tag')) {
         }
     });
 }
+
+// Delete trash…
+Hook::set('on.user.exit', function() {
+    foreach (File::explore(USER, true, true) as $__k => $__v) {
+        if ($__v === 0) continue;
+        $__kk = Path::F($__k);
+        foreach (g($__kk, 'trash') as $__v) {
+            File::open($__v)->delete();
+        }
+        if (Path::X($__k) === 'trash') {
+            File::open($__k)->delete();
+            if (Is::D($__kk)) {
+                File::open($__kk)->delete();
+            }
+        }
+    }
+});

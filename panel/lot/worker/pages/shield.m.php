@@ -1,4 +1,4 @@
-<section class="buttons">
+<section class="m-button">
   <p>
     <?php if (Request::get('q')): ?>
     <?php $__links = [HTML::a('&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step, false, ['classes' => ['button', 'reset']])]; ?>
@@ -8,7 +8,7 @@
     <?php echo implode(' ', Hook::fire('panel.a.' . $__chops[0] . 's', [$__links])); ?>
   </p>
 </section>
-<section class="pages">
+<section class="m-page">
   <?php if ($__pages[0]): ?>
   <?php foreach ($__pages[1] as $__k => $__v): ?>
   <?php

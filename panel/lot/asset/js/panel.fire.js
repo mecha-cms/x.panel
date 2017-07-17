@@ -83,8 +83,8 @@ window.PANEL = window.jQuery;
         return a;
     };
 
-    var key_i = $('[data-key-i]'),
-        key_o = $('[data-key-o]'),
+    var key_i = $('[data-key-i]:not([readonly])'),
+        key_o = $('[data-key-o]:not([readonly])'),
         catched;
     if (!key_i || !key_o) return;
     key_i.closest('form').on(events, '[data-key-i]', function(e) {
@@ -95,8 +95,8 @@ window.PANEL = window.jQuery;
         catched.val($.f($this.val(), '_', true));
     });
 
-    var slug_i = $('[data-slug-i]'),
-        slug_o = $('[data-slug-o]'),
+    var slug_i = $('[data-slug-i]:not([readonly])'),
+        slug_o = $('[data-slug-o]:not([readonly])'),
         catched;
     if (!slug_i || !slug_o) return;
     slug_i.closest('form').on(events, '[data-slug-i]', function(e) {

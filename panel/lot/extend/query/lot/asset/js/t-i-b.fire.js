@@ -16,12 +16,7 @@
                 h.parentNode && h.parentNode.removeChild(h);
             }, 5000);
         };
-        var k = node.className,
-            t = new TIB(node, c),
-            alt = doc.createElement('p');
-        alt.className = 'h';
-        t.view.className += (' ' + k);
-        return t;
+        return new TIB(node, c);
     }
 
     forms.query = {};

@@ -29,7 +29,7 @@
   display:table;
   clear:both;
 }
-.m .buttons {
+.m .m-button {
   border-bottom:1px dashed;
   padding-bottom:1em;
   text-align:right;
@@ -77,7 +77,7 @@
   line-height:3em;
   padding:0 1em;
 }
-.m .files {
+.m .m-file {
   margin-right:0;
   margin-left:0;
 }
@@ -193,6 +193,7 @@
   padding:0 3.25em 0 1.25em;
   font-weight:bold;
 }
+.n ul + span a {padding:0}
 .n ul + span img {
   display:block;
   position:absolute;

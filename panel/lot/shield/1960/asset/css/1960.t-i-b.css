@@ -1,24 +1,27 @@
-.tags {font:inherit}
-.tags-output span,
-.tags-input + span {
-  padding-top:0;
-  padding-bottom:0;
-  border-radius:0;
-}
-.input.tags {
+.tags {
+  background:#fff;
+  border-color:inherit;
+  color:#000;
+  font:inherit;
   height:auto;
   min-height:2.1538461538461537em;
   min-height:calc(2.1538461538461537em + 1px); /* magic number :( */
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.25);
   -webkit-box-sizing:border-box;
   -moz-box-sizing:border-box;
   box-sizing:border-box;
 }
-.input.tags .tags-input {
+.tags .tags-input {
   padding:0 .35em;
   margin:0;
 }
-.input.tags .tag {
+.tags .tag {
+  background:#f00;
+  color:inherit;
   padding:0 .35em;
   box-shadow:0 1px 2px rgba(0,0,0,.25);
 }
-.input.tags .tag a {font-family:Arial,sans-serif}
+.tags .tag a {
+  font-family:Arial,sans-serif;
+  color:#fff;
+}

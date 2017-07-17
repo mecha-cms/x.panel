@@ -49,14 +49,14 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
             'legend' => $__page->title,
             'description' => $__page->content . ($__page->link ? '<p>' . HTML::a($language->link . ' &#x21E2;', $__page->link, true, ['rel' => 'nofollow']) . '</p>' : ""),
             'content' => [
-                '__[editor][theme]' => [
+                'e[theme]' => [
                     'key' => 'theme',
                     'type' => 'select',
                     'value' => $__CM->theme,
                     'values' => ['!' => '&#x2716;'] + $__themes,
                     'stack' => 10
                 ],
-                '__[editor][mode]' => [
+                'e[mode]' => [
                     'key' => 'mode',
                     'type' => 'toggle[]',
                     'title' => $language->languages,
@@ -64,7 +64,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                     'values' => $__modes,
                     'stack' => 20
                 ],
-                '__[editor][addon]' => [
+                'e[addon]' => [
                     'key' => 'extension',
                     'type' => 'toggle[]',
                     'title' => $language->extensions,
@@ -72,7 +72,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                     'values' => $__addons,
                     'stack' => 30
                 ],
-                '__[editor][o]' => [
+                'e[o]' => [
                     'key' => 'o',
                     'type' => 'toggle[]',
                     'title' => $language->options,
@@ -91,7 +91,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
     }
 }, 1);
 
-if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config') && $__r = Request::post('__.editor')) {
+if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config') && $__r = Request::post('e')) {
     // Merge the asset(s)…
     $__s = __DIR__ . DS . 'lot' . DS . 'asset' . DS;
     $__assets = "";
@@ -122,7 +122,7 @@ if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config')
             unset($__r['o']);
         }
         File::export($__r)->saveTo(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
-        Request::reset('post', '__.editor');
+        Request::reset('post', 'e');
         Message::success('update', [$language->setting, '<strong>' . $language->editor . '</strong>']);
     }
 }

@@ -2,7 +2,7 @@
   <section class="s-parent">
     <h3><?php echo $language->parent; ?></h3>
     <ul>
-      <li><?php $__p = Path::D($url->current); echo HTML::a('<i class="i i-f"></i> ' . (count($__chops) === 3 ? '..' : Path::B($__p)), $__p); ?></li>
+      <li><?php $__p = Path::D($url->current); echo HTML::a('<i class="i i-d"></i> ' . (count($__chops) === 3 ? '..' : Path::B($__p)), $__p); ?></li>
     </ul>
   </section>
   <?php endif; ?>

@@ -1,19 +1,6 @@
 <?php
 
 // Preparation(s)…
-if (!Get::kin($__chops[0] . 's')) {
-    Get::plug($__chops[0] . 's', function() use($__chops) {
-        if ($__g = g(LOT . DS . $__chops[0], 'draft,page,archive')) {
-            $__g = array_filter($__g, function($__v) use($__chops) {
-                return !isset($__chops[1]) || Path::N($__v) !== $__chops[1];
-            });
-            sort($__g);
-            return $__g;
-        }
-        return false;
-    });
-}
-Lot::set('__is_has_step', $__is_has_step = "");
 if ($__action !== 's' && count($__chops) === 1) {
     $__chops[1] = $config->language;
     $__path .= '/' . $__chops[1];
@@ -21,6 +8,7 @@ if ($__action !== 's' && count($__chops) === 1) {
 
 // Load the main task(s)…
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
+
 // Do not allow user to create page child(s)…
 if ($__f && $__action === 's') {
     Shield::abort(PANEL_404);
@@ -93,9 +81,6 @@ Config::set([
         ],
         's' => [
             1 => [
-                'author' => null,
-                'parent' => null,
-                'current' => null,
                 'kin' => [
                     'title' => $language->{$__chops[0] . 's'},
                     'content' => $__kins,
@@ -105,8 +90,12 @@ Config::set([
                     'lot' => null,
                     'stack' => 10
                 ],
-                'setting' => null,
+                'author' => null,
+                'current' => null,
                 'nav' => null,
+                'parent' => null,
+                'search' => null,
+                'setting' => null
             ]
         ]
     ]
