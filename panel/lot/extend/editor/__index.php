@@ -79,7 +79,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                     'value' => array_map(function($__v) {
                         return is_array($__v) ? json_encode($__v) : $__v;
                     }, require __DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php'),
-                    'values' => array_replace_recursive(a($language->{'-o_editor'}->{'code-mirror'}), [
+                    'values' => array_replace_recursive((array) $language->{'-o_editor'}->{'code-mirror'}, [
                         'matchTags' => [1 => '{"bothTags":1}'],
                         'autoCloseTags' => [1 => '{"whenClosing":1,"whenOpening":1,"dontCloseTags":["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"],"indentTags":["blockquote","body","div","dl","fieldset","form","frameset","h1","h2","h3","h4","h5","h6","head","html","object","ol","select","table","tbody","tfoot","thead","tr","ul"]}']
                     ]),

@@ -58,7 +58,7 @@ if (Extend::exist('tag')) {
         foreach (File::explore(TAG, true, true) as $__k => $__v) {
             if ($__v === 0) continue;
             $__kk = Path::F($__k);
-            foreach (g($__kk, 'trash') as $__v) {
+            foreach (g($__kk, 'trash', "", false) as $__v) {
                 File::open($__v)->delete();
             }
             if (Path::X($__k) === 'trash') {

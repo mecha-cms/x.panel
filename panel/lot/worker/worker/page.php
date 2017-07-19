@@ -2,59 +2,59 @@
 
 // Preparation(s)…
 if (!Get::kin('_' . $__chops[0] . 's')) {
-    function __fn_get_page_worker($v, $n = null) {
-        $n = $n ?: Path::N($v);
-        $v = file_get_contents($v);
-        if ($n === 'time') {
-            $v = (new Date($v))->format();
-        } else if ($n === 'slug') {
-            $v = h($v);
+    function __fn_get_page_worker($__v, $__n = null) {
+        $__n = $__n ?: Path::N($__v);
+        $__v = file_get_contents($__v);
+        if ($__n === 'time') {
+            $__v = (new Date($__v))->format();
+        } else if ($__n === 'slug') {
+            $__v = h($__v);
         }
-        return $v;
+        return $__v;
     }
-    function _fn_get_page($path, $key = null, $fail = false, $for = null) {
-        if (!file_exists($path)) return false;
-        $date = date(DATE_WISE, File::T($path, time()));
-        $o = [
-            'path' => $path,
-            'time' => $date,
-            'update' => $date,
-            'slug' => Path::N($path),
-            'state' => Path::X($path)
+    function _fn_get_page($__path, $__key = null, $__fail = false, $__for = null) {
+        if (!file_exists($__path)) return false;
+        $__date = date(DATE_WISE, File::T($__path, time()));
+        $__o = [
+            'path' => $__path,
+            'time' => $__date,
+            'update' => $__date,
+            'slug' => Path::N($__path),
+            'state' => Path::X($__path)
         ];
-        $output = Page::open($path, array_replace([
-            $for => null
-        ], $o))->get($o);
-        $data = Path::F($path);
-        if (is_dir($data)) {
-            if ($for === null) {
-                foreach (g($data, '*.data', "", false) as $v) {
-                    $n = Path::N($v);
-                    $output[$n] = e(__fn_get_page_worker($v, $n));
+        $__output = Page::open($__path, array_replace([
+            $__for => null
+        ], $__o))->get($__o);
+        $__data = Path::F($__path);
+        if (is_dir($__data)) {
+            if ($__for === null) {
+                foreach (g($__data, '*.data', "", false) as $__v) {
+                    $__n = Path::N($__v);
+                    $__output[$__n] = e(__fn_get_page_worker($__v, $__n));
                 }
-            } else if ($v = File::exist($data . DS . $for . '.data')) {
-                $output[$for] = e(__fn_get_page_worker($v, $for));
+            } else if ($__v = File::exist($__data . DS . $__for . '.data')) {
+                $__output[$__for] = e(__fn_get_page_worker($__v, $__for));
             }
         }
-        return !isset($key) ? $output : (array_key_exists($key, $output) ? $output[$key] : $fail);
+        return !isset($__key) ? $__output : (array_key_exists($__key, $__output) ? $__output[$__key] : $__fail);
     }
-    function _fn_get_pages($folder = PAGE, $state = 'page', $sort = [-1, 'time'], $key = null) {
-        $output = [];
-        $by = is_array($sort) && isset($sort[1]) ? $sort[1] : null;
-        if ($input = g($folder, $state, "", false)) {
-            foreach ($input as $v) {
-                $output[] = fn_get_page($v, null, false, $by);
+    function _fn_get_pages($__folder = PAGE, $__state = 'page', $__sort = [-1, 'time'], $__key = null) {
+        $__output = [];
+        $__by = is_array($__sort) && isset($__sort[1]) ? $__sort[1] : null;
+        if ($__input = g($__folder, $__state, "", false)) {
+            foreach ($__input as $__v) {
+                $__output[] = _fn_get_page($__v, null, false, $__by);
             }
-            $output = $o = Anemon::eat($output)->sort($sort)->vomit();
-            if (isset($key)) {
-                $o = [];
-                foreach ($output as $v) {
-                    if (!array_key_exists($key, $v)) continue;
-                    $o[] = $v[$key];
+            $__output = $__o = Anemon::eat($__output)->sort($__sort)->vomit();
+            if (isset($__key)) {
+                $__o = [];
+                foreach ($__output as $__v) {
+                    if (!array_key_exists($__key, $__v)) continue;
+                    $__o[] = $__v[$__key];
                 }
             }
-            unset($output);
-            return !empty($o) ? $o : false;
+            unset($__output);
+            return !empty($__o) ? $__o : false;
         }
         return false;
     }

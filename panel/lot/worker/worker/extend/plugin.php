@@ -12,7 +12,7 @@ foreach (Config::get('+plugin', []) as $k => $v) {
 // Load panel plugin(s)…
 $__plu = PANEL . DS . 'lot' . DS . 'extend' . DS . 'plugin' . DS . 'lot' . DS . 'worker';
 $__plugins = [];
-foreach (g($__plu . DS . '*', '{index,__index}.php') as $v) {
+foreach (g($__plu . DS . '*', '{index,__index}.php', "", false) as $v) {
     $__plugins[$v] = (float) File::open(Path::D($v) . DS . 'index.stack')->get(0, 10);
 }
 asort($__plugins);

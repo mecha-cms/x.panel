@@ -34,7 +34,7 @@
         <?php endif; // [3] ?>
         <?php if (is_array($__v['content'])): // [3] ?>
         <?php if ($__a = a(Config::get('panel.f.' . $__k, []))): // [4] ?>
-          <?php $__v['content'] = array_replace_recursive($__v['content'], $__a); ?>
+          <?php $__v['content'] = array_replace_recursive((array) $__v['content'], (array) $__a); ?>
         <?php endif; // [4] ?>
           <?php foreach (Anemon::eat($__v['content'])->is(function($__v) {
               return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);

@@ -12,7 +12,7 @@ foreach (Config::get('+extend', []) as $__k => $__v) {
 // Load panel extension(s)…
 $__ext = PANEL . DS . 'lot' . DS . 'extend';
 $__extends = [];
-foreach (g($__ext . DS . '*', '{index,__index}.php') as $__v) {
+foreach (g($__ext . DS . '*', '{index,__index}.php', "", false) as $__v) {
     $__extends[$__v] = (float) File::open(Path::D($__v) . DS . 'index.stack')->get(0, 10);
 }
 asort($__extends);

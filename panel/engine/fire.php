@@ -12,7 +12,7 @@ if ($__user_key = Cookie::get('panel.c.user.key')) {
 
 $__f = PANEL . DS . 'lot' . DS . 'worker' . DS;
 
-if (Request::is('get') && !$__user_enter && g(USER, 'page') && $url->path === $__state->path . '/::s::/user') {
+if (Request::is('get') && !$__user_enter && g(USER, 'page', "", false) && $url->path === $__state->path . '/::s::/user') {
     Guardian::kick("");
 }
 

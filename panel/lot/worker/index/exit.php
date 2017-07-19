@@ -6,7 +6,7 @@ User::reset(Cookie::get('panel.c.user.key'));
 foreach (File::explore(PAGE, true, true) as $k => $v) {
     if ($v === 0) continue;
     $s = Path::F($k);
-    foreach (g($s, 'trash') as $v) {
+    foreach (g($s, 'trash', "", false) as $v) {
         File::open($v)->delete();
     }
     if (Path::X($k) === 'trash') {

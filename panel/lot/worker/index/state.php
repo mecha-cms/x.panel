@@ -54,7 +54,7 @@ Config::set([
     ]
 ]);
 
-if ($__states = g(STATE, 'php')) {
+if ($__states = g(STATE, 'php', "", false)) {
     foreach ($__states as $__v) {
         $__v = o(File::inspect($__v));
         $__v->title = '<i class="i i-f"></i> ' . $__v->name . '.' . $__v->extension;
@@ -94,7 +94,7 @@ if ($__is_post) {
         Message::success('update', [$language->setting, '<em>' . $__N . '.php</em>']);
     }
     if ($__c = Request::post('__')) {
-        $__c = array_replace_recursive(Extend::state(PANEL, []), $__c);
+        $__c = array_replace_recursive((array) Extend::state(PANEL, []), (array) $__c);
         if (!Request::post('__.shield')) {
             unset($__c['shield']);
         }

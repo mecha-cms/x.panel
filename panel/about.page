@@ -14,6 +14,10 @@ version: 1.0.0
  - `$__chops`
  - `$__data`
  - `$__datas`
+ - `$__file`
+ - `$__files`
+ - `$__folder`
+ - `$__folders`
  - `$__hash`
  - `$__is_child_has_step`
  - `$__is_data_has_step`

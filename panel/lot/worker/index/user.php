@@ -37,7 +37,7 @@ $__u = $__page[0] ? $__page[0] : (object) [
 ];
 $__x = $__u->state;
 $__o = (array) $language->o_user;
-$__z = !g(LOT . DS . $__path, 'page') && User::get('status') !== 1 ? '.' : "";
+$__z = !g(LOT . DS . $__path, 'page', "", false) && User::get('status') !== 1 ? '.' : "";
 Config::set('panel.m.t.page.title', $language->user);
 Config::set('panel.f.page', [
     'author' => [
