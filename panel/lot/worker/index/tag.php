@@ -10,9 +10,7 @@ if ($__f && $__action === 's') {
 
 // Set or modify the default panel content(s)…
 $__x = $__page[0] ? $__page[0]->state : 'page';
-Config::set('panel.f', [
-    'link' => null,
-    'tags' => null,
+Config::set('panel.f.page', [
     'x' => [
         'values' => [
             '*' . $__x => $__action === 's' ? null : $language->update,
@@ -20,8 +18,11 @@ Config::set('panel.f', [
             'draft' => $__x === 'draft' ? null : $language->save,
             'archive' => null
         ],
-        'order' => ['*' . $__x, 'page', 'draft', 'trash']
-    ]
+        'order' => ['*' . $__x, 'page', 'draft', 'trash'],
+    ],
+    '+[time]' => null,
+    'link' => null,
+    'tags' => null
 ]);
 
 Config::set('panel.s', [

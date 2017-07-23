@@ -26,7 +26,7 @@ return [
     'type' => [
         'type' => 'select',
         'value' => $__page[0]->type,
-        'values' => $__types,
+        'values' => $__types ?: ['HTML' => 'HTML'],
         'stack' => 20
     ],
     'author' => [

@@ -34,7 +34,7 @@
   padding-bottom:1em;
   text-align:right;
 }
-.m .page {
+.m .m-page article {
   background:#fff;
   border:1px solid;
   width:16em;
@@ -45,31 +45,31 @@
   position:relative;
   overflow:hidden;
 }
-.m .page figure {
+.m .m-page article figure {
   margin:-1em -1.25em 1em;
   padding-bottom:55%;
   height:0;
   background:rgba(0,0,0,.25);
   overflow:hidden;
 }
-.m .page figure img {
+.m .m-page article figure img {
   display:block;
   margin:0;
   padding:0;
   border:0;
   outline:0;
 }
-.m .page h3 {
+.m .m-page article h3 {
   font:inherit;
   font-weight:bold;
   margin:0 0 1em;
 }
-.m .page section,
-.m .page footer {
+.m .m-page article section,
+.m .m-page article footer {
   font-size:90%;
   overflow:visible;
 }
-.m .page footer {
+.m .m-page article footer {
   position:absolute;
   right:0;
   bottom:0;
@@ -77,26 +77,26 @@
   line-height:3em;
   padding:0 1em;
 }
-.m .m-file {
+.m .m-file ul {
   margin-right:0;
   margin-left:0;
+  list-style:none;
 }
-.m .file {
+.m .m-file li {
   margin:0;
   padding:0;
   list-style:none;
-}
-.m .file {
   background:#fff;
   border-left:1px solid;
   padding:.25em .75em;
 }
-.m .file + .file {margin-top:2px}
-.m .file:after {
+.m .m-file li + li {margin-top:2px}
+.m .m-file li:after {
   content:"";
   display:table;
   clear:both;
 }
+.m .m-file li span {float:right}
 .m .t {
   margin:-1em -1em 1em;
   padding:.5384615384615384em 1em 0;
@@ -250,7 +250,7 @@
   position:relative;
   word-wrap:break-word;
 }
-.s section li .i {margin-right:.2em}
+li .i {margin-right:.2em}
 .s section ul ul {margin:0 0 0 .2em}
 .s section li:before {
   content:"";

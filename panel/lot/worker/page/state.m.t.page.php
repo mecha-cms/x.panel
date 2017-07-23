@@ -42,7 +42,7 @@ return [
         'type' => 'select',
         'title' => $language->type,
         'value' => $__s['type'],
-        'values' => $__types,
+        'values' => $__types ?: ['HTML' => 'HTML'],
         'stack' => 30
     ],
     'c[page][content]' => [

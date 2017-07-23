@@ -1,7 +1,7 @@
 <?php
 
 // NOTE: These helper function(s) are only used internally and does
-// not intended to be used in production or sny other extension(s).
+// not intended to be used in production or any other extension(s).
 
 function __panel_a__($k, $v) {
     // `id`
@@ -30,7 +30,7 @@ function __panel_a__($k, $v) {
     } else if (!$v) {
         return "";
     }
-    $a = ['classes' => ['page', $k ? 'page-' . $k : null]];
+    $a = ['classes' => [$k ? 'p-' . $k : null]];
     if (!empty($v['is'])) {
         if (__is_anemon_a__($v['is'])) {
             $v['is'] = array_keys(array_filter($v['is']));

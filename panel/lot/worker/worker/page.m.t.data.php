@@ -18,6 +18,11 @@ return [
         'value' => $__data[0]->value,
         'placeholder' => $language->{'f_' . ($__k === 'editor' ? 'content' : 'value')},
         'union' => ['div'],
+        'attributes' => [
+            'data' => [
+                'type' => 'HTML'
+            ]
+        ],
         'is' => [
             'expand' => true
         ],

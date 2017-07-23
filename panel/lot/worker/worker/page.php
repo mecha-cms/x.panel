@@ -63,11 +63,7 @@ if (!Get::kin('_' . $__chops[0] . 's')) {
 
 $__is_data = substr($url->path, -2) === '/+' || strpos($url->path, '/+/') !== false;
 $__g = false;
-
-Hook::set('__' . $__chops[0] . '.url', function($__content, $__lot) use($__state) {
-    $__s = Path::F($__lot['path'], LOT);
-    return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
-});
+$__pth = $url . '/' . $__state->path . '/::g::/';
 
 // Get current folder…
 $__d = LOT . DS . $__path;
@@ -104,10 +100,10 @@ if ($__is_data) {
         $__d . '.page',
         $__d . '.archive'
     ])) {
-        $__source = [
-            new Page($__f, [], '__' . $__chops[0]),
-            new Page($__f, [], $__chops[0])
-        ];
+        $__a = new Page($__f, [], '__' . $__chops[0]);
+        $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__f, LOT)), '/'), '/');
+        $__aa = new Page($__f, [], $__chops[0]);
+        $__source = [$__a, $__aa];
         Lot::set('__source', $__source);
     } else {
         Shield::abort(PANEL_404);
@@ -164,6 +160,7 @@ if ($__is_data) {
         }
     }
     $__ss = (object) [
+        'path' => $__f,
         'key' => $__f ? Path::N($__f) : null,
         'value' => $__f ? file_get_contents($__f) : null
     ];
@@ -174,6 +171,7 @@ if ($__is_data) {
     foreach (glob($__d . DS . '*.data') as $__v) {
         $__ss = Path::N($__v);
         $__ss = (object) [
+            'path' => $__v,
             'title' => $__ss,
             'key' => $__ss,
             'url' => $url . '/' . $__state->path . '/::g::/' . $__s[0] . '/+/' . $__ss
@@ -186,12 +184,16 @@ if ($__is_data) {
     if ($__is_has_step) {
         if ($__g) {
             foreach (Anemon::eat($__g)->chunk($__chunk, $__step) as $__v) {
-                $__pages[0][] = new Page($__v, [], '__' . $__chops[0]);
-                $__pages[1][] = new Page($__v, [], $__chops[0]);
+                $__a = new Page($__v, [], '__' . $__chops[0]);
+                $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
+                $__aa = new Page($__v, [], $__chops[0]);
+                $__pages[0][] = $__a;
+                $__pages[1][] = $__aa;
             }
         }
         Lot::set([
             '__pages' => $__pages,
+            '__is_has_step_page' => ($__is_has_step_page = count($__g) > $__chunk),
             '__pager' => $__pager = [(new Elevator($__g ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
                 'direction' => [
                    '-1' => 'previous',
@@ -220,30 +222,30 @@ if ($__is_data) {
             $__p . '.page',
             $__p . '.archive'
         ])) {
-            Lot::set('__parent', $__parent = [
-                new Page($__p, [], '__' . $__chops[0]),
-                new Page($__p, [], $__chops[0])
-            ]);
+            $__a = new Page($__p, [], '__' . $__chops[0]);
+            $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__p, LOT)), '/'), '/');
+            $__aa = new Page($__p, [], $__chops[0]);
+            Lot::set('__parent', $__parent = [$__a, $__aa]);
         }
         // Get current…
-        Lot::set('__page', $__page = [
-            new Page($__f ?: null, [], '__' . $__chops[0]),
-            new Page($__f ?: null, [], $__chops[0])
-        ]);
+        $__a = new Page($__f ?: null, [], '__' . $__chops[0]);
+        $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__f ?: "", LOT)), '/'), '/');
+        $__aa = new Page($__f ?: null, [], $__chops[0]);
+        Lot::set('__page', $__page = [$__a, $__aa]);
         // Get kin(s)…
         if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
-            $__q = Path::B($__d);
-            $__g = array_filter($__g, function($__v) use($__q) {
-                return Path::N($__v) !== $__q;
-            });
+            $__q = $__action === 's' ? "" : Path::B($__d);
             foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                $__kins[0][] = new Page($__v, [], '__' . $__chops[0]);
-                $__kins[1][] = new Page($__v, [], $__chops[0]);
+                if ($__q && Path::N($__v) === $__q) continue;
+                $__a = new Page($__v, [], '__' . $__chops[0]);
+                $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
+                $__aa = new Page($__v, [], $__chops[0]);
+                $__kins[0][] = $__a;
+                $__kins[1][] = $__aa;
             }
-            $__is_has_step_kin = count($__g) > $__chunk;
             Lot::set([
                 '__kins' => $__kins,
-                '__is_has_step_kin' => $__is_has_step_kin
+                '__is_has_step_kin' => ($__is_has_step_kin = count($__g) > $__chunk)
             ]);
         }
     } else {
@@ -380,7 +382,7 @@ if ($__is_data) {
                 ) {
                     File::open($__DD . DS . 'time.data')->delete();
                 } else {
-                    if (!$__s = Request::post('+[time]')) {
+                    if (!$__s = Request::post('+.time')) {
                         $__s = date(DATE_WISE);
                     } else {
                         $__s = DateTime::createFromFormat('Y/m/d H:i:s', $__s)->format(DATE_WISE);
@@ -447,24 +449,24 @@ if ($__is_data) {
             ]);
         }
         // Get current…
-        Lot::set('__page', $__page = [
-            new Page($__f && $__action !== 's' ? $__f : null, [], '__' . $__chops[0]),
-            new Page($__f && $__action !== 's' ? $__f : null, [], $__chops[0])
-        ]);
+        $__a = new Page($__f && $__action !== 's' ? $__f : null, [], '__' . $__chops[0]);
+        $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__f ?: "", LOT)), '/'), '/');
+        $__aa = new Page($__f && $__action !== 's' ? $__f : null, [], $__chops[0]);
+        Lot::set('__page', $__page = [$__a, $__aa]);
         // Get kin(s)…
         if ($__g) {
-            $__q = Path::B($__d);
-            $__g = array_filter($__g, function($__v) use($__q) {
-                return Path::N($__v) !== $__q;
-            });
+            $__q = $__action === 's' ? "" : Path::B($__d);
             foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                $__kins[0][] = new Page($__v, [], '__' . $__chops[0]);
-                $__kins[1][] = new Page($__v, [], $__chops[0]);
+                if ($__q && Path::N($__v) === $__q) continue;
+                $__a = new Page($__v, [], '__' . $__chops[0]);
+                $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
+                $__aa = new Page($__v, [], $__chops[0]);
+                $__kins[0][] = $__a;
+                $__kins[1][] = $__aa;
             }
-            $__is_has_step_kin = count($__g) > $__chunk;
             Lot::set([
                 '__kins' => $__kins,
-                '__is_has_step_kin' => $__is_has_step_kin
+                '__is_has_step_kin' => ($__is_has_step_kin = count($__g) > $__chunk)
             ]);
         }
         // Get data(s)…
@@ -474,6 +476,7 @@ if ($__is_data) {
             $__s = Path::N($__v);
             if (strpos($__x, ',' . $__s . ',') !== false) continue;
             $__s = [
+                'path' => $__v,
                 'title' => $__s,
                 'key' => $__s,
                 'url' => $__u . '/+/' . $__s
@@ -485,17 +488,17 @@ if ($__is_data) {
         // Get child(s)…
         if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
             $__q = Path::B($__d);
-            $__g = array_filter($__g, function($__v) use($__q) {
-                return Path::N($__v) !== $__q;
-            });
             foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                $__childs[0][] = new Page($__v, [], '__' . $__chops[0]);
-                $__childs[1][] = new Page($__v, [], $__chops[0]);
+                if (Path::N($__v) === $__q) continue;
+                $__a = new Page($__v, [], '__' . $__chops[0]);
+                $__a->url = rtrim($__pth . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
+                $__aa = new Page($__v, [], $__chops[0]);
+                $__childs[0][] = $__a;
+                $__childs[1][] = $__aa;
             }
-            $__is_has_step_child = count($__g) > $__chunk;
             Lot::set([
                 '__childs' => $__childs,
-                '__is_has_step_child' => $__is_has_step_child
+                '__is_has_step_child' => ($__is_has_step_child = count($__g) > $__chunk)
             ]);
         }
     }
