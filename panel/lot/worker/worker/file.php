@@ -5,18 +5,21 @@ $__p = str_replace('/', DS, $__path);
 
 // Get current
 $__a = $__aa = File::inspect(LOT . DS . $__p);
-$__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f') . '"></i> ' . Path::B($__p);
+$__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__p);
 $__a['url'] = $__u . $__path;
 Lot::set('__current', $__current = [o($__a), o($__aa)]);
 
 if ($__is_has_step) {
     // Get file(s)
-    $__g = array_filter(array_merge(
+    if (!$__g = array_filter(array_merge(
         glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
         glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
     ), function($__v) {
         return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..';
-    });
+    })) {
+        // File/folder not found!
+        Shield::abort(PANEL_404);
+    }
     if ($__q = l(Request::get('q', ""))) {
         Message::info('search', '<em>' . $__q . '</em>');
         $__q = explode(' ', $__q);
@@ -33,7 +36,7 @@ if ($__is_has_step) {
     natsort($__g);
     foreach (Anemon::eat($__g)->chunk($__chunk * 2, $__step) as $__v) {
         $__a = $__aa = File::inspect($__v);
-        $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f') . '"></i> ' . Path::B($__v);
+        $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
         $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . (is_dir($__v) ? '/1' : "");
         $__files[0][] = o($__a);
         $__files[1][] = o($__aa);
@@ -41,7 +44,7 @@ if ($__is_has_step) {
     Lot::set([
         '__files' => $__files,
         '__is_has_step_file' => ($__is_has_step_file = count($__g) > $__chunk * 2),
-        '__pager' => $__pager = [(new Elevator($__g ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
+        '__pager' => $__pager = [(new Elevator($__g ?: [], $__chunk * 2, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
             'direction' => [
                '-1' => 'previous',
                 '0' => false,
@@ -64,10 +67,13 @@ if ($__is_has_step) {
     ]);
 } else {
     // Get file
-    $__a = $__aa = File::inspect(LOT . DS . $__p);
-    $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f') . '"></i> ' . Path::B($__p);
+    if (!$__f = File::exist(LOT . DS . $__p)) {
+        Shield::abort(PANEL_404);
+    }
+    $__a = $__aa = File::inspect($__f);
+    $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__p);
     $__a['url'] = $__u . $__path;
-    $__a['content'] = is_file($__a['path']) ? (strpos(',' . SCRIPT_X . ',', ',' . Path::X($__p) . ',') === false ? null : file_get_contents($__a['path'])) : false;
+    $__a['content'] = is_file($__a['path']) ? (strpos(',' . SCRIPT_X . ',', ',' . Path::X($__p) . ',') === false ? false : file_get_contents($__a['path'])) : null;
     Lot::set('__file', $__file = [o($__a), o($__aa)]);
 }
 
@@ -89,7 +95,7 @@ $__g = array_filter(array_merge(
 natsort($__g);
 foreach (Anemon::eat($__g)->chunk($__chunk * 2, 0) as $__v) {
     $__a = $__aa = File::inspect($__v);
-    $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f') . '"></i> ' . Path::B($__v);
+    $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
     $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "");
     $__kins[0][] = o($__a);
     $__kins[1][] = o($__aa);
@@ -107,7 +113,7 @@ Config::set('panel', [
             'file' => [
                 'legend' => $language->editor,
                 'content' => [
-                    'content' => [
+                    'content' => $__action === 's' || isset($__file[0]->content) ? [
                         'type' => 'editor',
                         'value' => isset($__file[0]->content) ? $__file[0]->content : null,
                         'attributes' => [
@@ -120,20 +126,27 @@ Config::set('panel', [
                         ],
                         'expand' => true,
                         'stack' => 10
-                    ],
+                    ] : null,
                     '*path' => [
-                        'type' => 'text',
+                        'type' => $__action === 's' ? 'hidden' : 'text',
                         'value' => str_replace(['/', ASSET . DS], [DS, ""], LOT . DS . $__path),
                         'is' => [
                             'block' => true
                         ],
                         'stack' => 20
                     ],
+                    '*name' => $__action === 's' ? [
+                        'type' => 'text',
+                        'is' => [
+                            'block' => true
+                        ],
+                        'stack' => 20
+                    ] : null,
                     '_' => [
                         'type' => 'submit[]',
                         'values' => [
-                            Path::X($__path, 'txt') => $language->update,
-                            'trash' => $language->delete
+                            Path::X($__path, 'txt') => $language->{$__action === 's' ? 'create' : (isset($__file[0]->content) ? 'update' : 'rename')},
+                            'trash' => $__action === 's' ? null : $language->delete
                         ],
                         'stack' => 0
                     ]

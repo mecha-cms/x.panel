@@ -16,7 +16,7 @@
   $__s = $__pages[0][$__k]->url;
 
   ?>
-  <article class="page on-<?php echo $__v->state . ($__v->id === $config->shield ? ' is-active' : ""); ?>" id="page-<?php echo $__v->id; ?>">
+  <article class="shield as.<?php echo $__v->state . ($__v->id === $config->shield ? ' is.active' : ""); ?>" id="shield-<?php echo $__v->id; ?>">
     <?php $__a = SHIELD . DS . $__v->id . DS . 'asset' . DS; if ($__f = File::exist([
         $__a . 'gif' . DS . $__v->id . '.gif',
         $__a . 'jpeg' . DS . $__v->id . '.jpeg',

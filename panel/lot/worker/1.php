@@ -14,7 +14,7 @@
           __DIR__ . DS . $site->is . DS . $__chops[0] . '.m.php',
           $__path_shield . DS . $site->is . DS . 'page.m.php',
           __DIR__ . DS . $site->is . DS . 'page.m.php',
-          __DIR__ . DS . 'worker' . DS . '-m.php'
+          __DIR__ . DS . 'worker' . DS . $site->is . '.m.php'
       ]); ?>
       <?php if ($__mf): ?>
       <?php echo Form::hidden('token', $__token); ?>

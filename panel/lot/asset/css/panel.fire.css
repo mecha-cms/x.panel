@@ -64,39 +64,56 @@
   font-weight:bold;
   margin:0 0 1em;
 }
-.m .m-page article section,
+.m .m-page article section {font-size:.9em}
 .m .m-page article footer {
-  font-size:90%;
-  overflow:visible;
-}
-.m .m-page article footer {
+  font-size:.7em;
+  text-transform:uppercase;
+  line-height:3em;
   position:absolute;
   right:0;
   bottom:0;
   left:0;
-  line-height:3em;
   padding:0 1em;
 }
-.m .m-file ul {
-  margin-right:0;
-  margin-left:0;
-  list-style:none;
+.m .m-page article.status\.1,
+.m .m-page article.is\.pages {border-color:#00f}
+.m .m-page article.as\.draft {border-style:dotted}
+.m .m-page article.as\.,
+.m .m-page article.is\.active {border-color:#f00}
+.m .m-page article.is\.hidden {
+  border-style:dotted;
+  opacity:.2;
 }
-.m .m-file li {
+.m .m-page article.is\.hidden figure {display:none}
+.m .m-file nav {
+  margin:.5em .5em 0;
+  text-align:right;
+}
+.m .m-file article,
+.m .m-file article h3,
+.m .m-file article header,
+.m .m-file article section,
+.m .m-file article footer {
+  font:inherit;
   margin:0;
   padding:0;
-  list-style:none;
+}
+.m .m-file article {
   background:#fff;
   border-left:1px solid;
   padding:.25em .75em;
+  position:relative;
 }
-.m .m-file li + li {margin-top:2px}
-.m .m-file li:after {
-  content:"";
-  display:table;
-  clear:both;
+.m .m-file article footer {
+  font-size:.7em;
+  line-height:1;
+  text-transform:uppercase;
+  position:absolute;
+  top:1em;
+  right:1em;
 }
-.m .m-file li span {float:right}
+.m .m-file article + article {margin-top:2px}
+.m .m-file .i {margin-right:.2em}
 .m .t {
   margin:-1em -1em 1em;
   padding:.5384615384615384em 1em 0;
@@ -147,7 +164,7 @@
   color:inherit;
   cursor:pointer;
 }
-.n .is-current a {border-color:#f00}
+.n .is\.active a {border-color:#f00}
 .n a i {
   font:inherit;
   font-weight:bold;
@@ -203,15 +220,6 @@
   height:2em;
   background:none;
 }
-.m .page.is-parent {border-color:#00f}
-.m .page.as-,
-.m .page.is-active {border-color:#f00}
-.m .page.on-draft {border-style:dotted}
-.m .page.as-placeholder {
-  border-style:dotted;
-  opacity:.2;
-}
-.m .page.as-placeholder figure {display:none}
 .s-setting {
   background:rgba(0,0,0,.05);
   padding:1em;
@@ -250,7 +258,7 @@
   position:relative;
   word-wrap:break-word;
 }
-li .i {margin-right:.2em}
+.s section li .i {margin-right:.2em}
 .s section ul ul {margin:0 0 0 .2em}
 .s section li:before {
   content:"";
@@ -363,6 +371,8 @@ li .i {margin-right:.2em}
 ➖ &#x2796;
 ➗ &#x2797;
 ✖ &#x2716;
+
+✒ &#x2712;
 
 ❯ &#x276F;
 ❮ &#x276E;

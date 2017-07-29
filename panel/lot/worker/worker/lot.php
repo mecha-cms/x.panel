@@ -1,6 +1,9 @@
 <?php
 
-$__step = $__step - 1;
+Config::set('__is', $__chops[0]);
+Config::set('__step', $__step); // 1–based index…
+
+$__step = $__step - 1; // 0–based index
 $__sort = $__state->sort;
 $__chunk = $__state->chunk;
 $__is_get = Request::is('get');

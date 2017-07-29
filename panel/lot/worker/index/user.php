@@ -5,6 +5,10 @@ Hook::set($__chops[0] . '.title', function($__content, $__lot) use($__chops) {
     $__s = Page::apart(file_get_contents($__lot['path']));
     return isset($__s['author']) ? $__s['author'] : (isset($__s['title']) ? $__s['title'] : "");
 });
+Hook::set($__chops[0] . '.url', function($__content, $__lot) use($__chops) {
+    $__s = Page::apart(file_get_contents($_s['path']));
+    return isset($__s['link']) ? $__s['link'] : false;
+});
 Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',email,pass,status,token');
 
 // Replace `title` field with `author` field on user create event…

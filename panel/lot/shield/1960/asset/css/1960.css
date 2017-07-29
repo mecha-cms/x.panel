@@ -61,16 +61,18 @@ fieldset {border-style:solid}
 .m .m-button {border-color:#ee9}
 .m .m-page article {box-shadow:inset 0 -4px 0 #eec,0 1px 2px rgba(0,0,0,.25)}
 .m .m-page article figure {background:#ffc}
-.m .m-page article.is-parent {
+.m .m-page article.status\.1,
+.m .m-page article.is\.pages {
   border-color:inherit;
   box-shadow:inset 0 -4px 0 #cde,0 1px 2px rgba(0,0,0,.25);
 }
-.m .m-page article.as-,
-.m .m-page article.is-active {
+.m .m-page article.as\.,
+.m .m-page article.is\.active {
   border-color:inherit;
   box-shadow:inset 0 -4px 0 #fdc,0 1px 2px rgba(0,0,0,.25);
 }
-.m .m-file li {box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.m .m-page article footer {bottom:2px}
+.m .m-file article {box-shadow:0 1px 2px rgba(0,0,0,.25)}
 .n ul {
   background:#000;
   color:#fff;
@@ -82,9 +84,9 @@ fieldset {border-style:solid}
 }
 .n a:focus,
 .n a:active {color:#def}
-.n .is-current a,
-.n .is-current a:focus,
-.n .is-current a:hover {
+.n .is\.active a,
+.n .is\.active a:focus,
+.n .is\.active a:hover {
   background:none;
   border-color:#fba;
 }

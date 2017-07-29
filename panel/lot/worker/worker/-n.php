@@ -27,7 +27,7 @@ if ($__menus) {
         } else {
             $__k = is_numeric($__k) && is_string($__v) ? $__v : $__k;
             $__a = $__d . $__k;
-            $__c = (is_array($__v) && isset($__v['is']['active']) && $__v['is']['active']) || strpos($__pth . '/', '::/' . $__k . '/') !== false ? ' is-current' : "";
+            $__c = (is_array($__v) && isset($__v['is']['active']) && $__v['is']['active']) || strpos($__pth . '/', '::/' . $__k . '/') !== false ? ' is.active' : "";
             $__i = isset($__v['i']) ? ' <i>' . $__v['i'] . '</i>' : "";
             $__html .= '<li class="n-' . $__k . $__c . '">';
             if (is_array($__v)) {
@@ -52,7 +52,7 @@ if ($__menus) {
             } else {
                 $__kk = is_numeric($__kk) && is_string($__vv) ? $__vv : $__kk;
                 $__aa = $__d . $__kk;
-                $__cc = (is_array($__vv) && isset($__vv['is']['active']) && $__vv['is']['active']) || strpos($__pth . '/', '::/' . $__kk . '/') !== false ? ' is-current' : "";
+                $__cc = (is_array($__vv) && isset($__vv['is']['active']) && $__vv['is']['active']) || strpos($__pth . '/', '::/' . $__kk . '/') !== false ? ' is.active' : "";
                 $__ii = isset($__vv['i']) ? ' <i>' . $__vv['i'] . '</i>' : "";
                 $__html .= '<li class="n-n-' . $__kk . $__cc . '">';
                 if (is_array($__vv)) {
