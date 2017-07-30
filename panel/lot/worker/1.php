@@ -10,10 +10,7 @@
       <?php endif; ?>
 	  <?php echo $__message; ?>
 	  <?php Shield::get([
-          $__path_shield . DS . $site->is . DS . $__chops[0] . '.m.php',
           __DIR__ . DS . $site->is . DS . $__chops[0] . '.m.php',
-          $__path_shield . DS . $site->is . DS . 'page.m.php',
-          __DIR__ . DS . $site->is . DS . 'page.m.php',
           __DIR__ . DS . 'worker' . DS . $site->is . '.m.php'
       ]); ?>
       <?php if ($__mf): ?>

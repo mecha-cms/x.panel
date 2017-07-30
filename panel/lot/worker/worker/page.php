@@ -147,15 +147,9 @@ if ($__is_data) {
             if (Message::$x) {
                 Guardian::kick($__back);
             }
-            if (Request::get('abort')) {
-                File::open($__d . DS . $__s[1] . '.trash')->renameTo($__s[1] . '.data');
-                Hook::fire('on.+' . $__chops[0] . '.set', [$__f, $__d . DS . $__s[1] . '.trash']);
-                Message::success($language->message_success_restore([$language->data, '<em>' . $__s[1] . '</em>']));
-            } else {
-                File::open($__f)->renameTo($__s[1] . '.trash');
-                Hook::fire('on.+' . $__chops[0] . '.reset', [$__d . DS . $__s[1] . '.trash', $__f]);
-                Message::success($language->message_success_delete([$language->data, '<em>' . $__s[1] . '</em>']) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
-            }
+            File::open($__f)->moveTo(LOT . DS . 'trash' . DS . 'lot' . DS . $__s[0]);
+            Hook::fire('on.+' . $__chops[0] . '.reset', [$__f, $__f]);
+            Message::success($language->message_success_delete([$language->data, '<em>' . $__s[1] . '</em>']));
             Guardian::kick($__state->path . '/::g::/' . $__s[0]);
         }
     }
@@ -421,15 +415,9 @@ if ($__is_data) {
                     }
                     return $language->_title;
                 });
-                if (Request::get('abort')) {
-                    File::open($__d . '.trash')->renameTo($__B . '.draft');
-                    Hook::fire('on.' . $__chops[0] . '.set', [$__f, $__d . '.trash']);
-                    Message::success($language->message_success_restore([$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']));
-                } else {
-                    File::open($__f)->renameTo($__B . '.trash');
-                    Hook::fire('on.' . $__chops[0] . '.reset', [$__d . '.trash', $__f]);
-                    Message::success($language->message_success_delete([$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']) . ' ' . HTML::a($language->restore, $url->path . HTTP::query(['abort' => 1]), false, ['classes' => ['right']]));
-                }
+                File::open($__f)->moveTo(LOT . DS . 'trash' . DS . 'lot' . DS . Path::D($__path));
+                Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__f]);
+                Message::success($language->message_success_delete([$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']));
                 Guardian::kick(Path::D($__back) . '/1');
             }
         }

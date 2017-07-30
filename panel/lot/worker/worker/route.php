@@ -16,7 +16,6 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__chops' => $__chops
     ]);
     $__task = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php');
-    $site->is = 'page'; // default is `page`
     require $__s . 'extend.php';
     require $__s . 'extend' . DS . 'plugin.php';
     require $__s . DS . 'shield.php';
@@ -25,7 +24,8 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     require $__s . DS . 'asset.php';
     require $__s . DS . 'lot.php';
     if (!$__task) {
-        Shield::abort(PANEL_404);
+        $__task = $__DIR . DS . 'worker' . DS . 'file.php';
+        Config::set('is', $__is_has_step ? 'files' : 'file');
     }
     $__token = Guardian::token();
     $__hash = Guardian::hash();

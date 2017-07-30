@@ -66,6 +66,34 @@ if ($__is_has_step) {
         ], '__' . $__chops[0] . 's')) . ""]
     ]);
 } else {
+    if ($__is_post) {
+        if ($__action === 's') {
+            $__n = trim(str_replace('/', DS, Request::post('name')), DS);
+            if ($__s = Request::post('content', "", false)) {
+                File::write($__s)->saveTo(LOT . DS . $__path . DS . $__n);
+            }
+            Message::success($language->message_success_create([$language->{$__chops[0]}, '<em>' .  $__n . '</em>']));
+            Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $__n);
+        } else if ($__action === 'g') {
+            if (Request::post('_') === 'trash') {
+                $__f = LOT . DS . $__path;
+                File::open($__f)->moveTo(LOT . DS . 'trash' . DS . 'lot' . DS . (is_file($__f) ? Path::D($__path) : $__path));
+                Message::success($language->message_success_delete([$language->{$__chops[0]}, '<em>' .  Path::B($__f) . '</em>']));
+                Guardian::kick(Path::D($url->current) . '/1');
+            }
+            $__p = trim(str_replace('/', DS, Request::post('path')), DS);
+            if ($__s = Request::post('content', "", false)) {
+                File::write($__s)->saveTo(LOT . DS . $__chops[0] . DS . $__p);
+            } else {
+                File::open(LOT . DS . $__path)->moveTo(LOT . DS . $__chops[0] . DS . $__p);
+            }
+            if ($__chops[0] . DS . $__p !== str_replace('/', DS, $__path)) {
+                File::open(LOT . DS . $__path)->delete();
+            }
+            Message::success($language->message_success_update([$language->{$__chops[0]}, '<em>' .  Path::B($__p) . '</em>']));
+            Guardian::kick($url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . str_replace(DS, '/', $__p));
+        }
+    }
     // Get file
     if (!$__f = File::exist(LOT . DS . $__p)) {
         Shield::abort(PANEL_404);
@@ -86,8 +114,28 @@ $__a['title'] = $__aa['title'] = '<i class="i i-d"></i> ' . (count($__chops) > 2
 $__a['url'] = rtrim($__u . Path::D($__path), '/') . ($__is_has_step ? '/1' : "");
 Lot::set('__parent', $__parent = [o($__a), o($__aa)]);
 
-// Get kin(s)
+// Get child(s)
 $__b = Path::B($__p);
+$__g = array_filter(array_merge(
+    glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
+    glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
+), function($__v) use($__b) {
+    return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..' && Path::B($__v) !== $__b;
+});
+natsort($__g);
+foreach (Anemon::eat($__g)->chunk($__chunk * 2, 0) as $__v) {
+    $__a = $__aa = File::inspect($__v);
+    $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
+    $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "");
+    $__childs[0][] = o($__a);
+    $__childs[1][] = o($__aa);
+}
+Lot::set([
+    '__childs' => $__childs,
+    '__is_has_step_child' => ($__is_has_step_child = count($__g) > $__chunk * 2)
+]);
+
+// Get kin(s)
 $__p = Path::D($__p);
 $__g = array_filter(array_merge(
     glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
@@ -130,15 +178,15 @@ Config::set('panel', [
                         'expand' => true,
                         'stack' => 10
                     ] : null,
-                    '*path' => [
-                        'type' => $__action === 's' ? 'hidden' : 'text',
+                    '*path' => $__action === 'g' ? [
+                        'type' => 'text',
                         'value' => str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__path),
                         'pattern' => '^[a-z\\d-_.]+(?:[\\/][a-z\\d-._]+)*$',
                         'is' => [
                             'block' => true
                         ],
                         'stack' => 20
-                    ],
+                    ] : null,
                     '*name' => $__action === 's' ? [
                         'type' => 'text',
                         'pattern' => '^[a-z\\d-_.]+$',
@@ -158,7 +206,7 @@ Config::set('panel', [
                 ],
                 'stack' => 10
             ],
-            'folder' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->folder ? [
+            'folder' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->files ? [
                 'content' => [
                     'directory' => [
                         'type' => 'text',
@@ -177,7 +225,7 @@ Config::set('panel', [
                 ],
                 'stack' => 20
             ] : null,
-            'upload' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->folder ? [
+            'upload' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->files ? [
                 'content' => [
                     'file' => [
                         'type' => 'file',
@@ -208,16 +256,24 @@ Config::set('panel', [
             ],
             'kin' => [
                 'content' => $__kins,
+                'a' => [
+                    ['&#x2795;', str_replace('::g::', '::s::', $__action === 's' ? $url->current : Path::D($url->current)), false, ['title' => $language->add]]
+                ],
                 'if' => count($__chops) > 1 && $__kins[0],
                 'stack' => 30
+            ],
+            'child' => [
+                'content' => $__childs,
+                'a' => [],
+                'if' => !$__is_has_step && is_dir(LOT . DS . $__path),
+                'stack' => 40
             ],
             'nav' => [
                 'title' => $language->navigation,
                 'content' => '<p>' . $__pager[0] . '</p>',
                 'if' => $__is_has_step,
-                'stack' => 40
-            ],
-            'child' => null
+                'stack' => 50
+            ]
         ]
     ]
 ]);

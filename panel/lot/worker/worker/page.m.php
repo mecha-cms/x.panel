@@ -1,1 +1,1 @@
-<?php include __DIR__ . DS . '-m.php';
+<?php require __DIR__ . DS . 'file.m.php';

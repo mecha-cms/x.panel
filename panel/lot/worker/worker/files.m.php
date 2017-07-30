@@ -27,22 +27,25 @@
   
       if ($__v->is->files && count(glob($__v->path . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) === 1 && $__g = File::explore($__v->path, true, true)) {
           $__dd = $__ff = [];
-          foreach ($__g as $__kk => $__vv) {
-              $__kkk = basename($__kk);
-              if ($__vv === 0) {
-                  $__uu .= '/' . $__kkk;
-                  if (count(glob($__kk . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) <= 1) {
+          foreach ($__g as $__kkk => $__vvv) {
+              $__kkkk = basename($__kkk);
+              if ($__vvv === 0) {
+                  $__uu .= '/' . $__kkkk;
+                  if (count(glob($__kkk . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) <= 1) {
                       $__dd[] = $__uu;
-                      echo ' / ' . HTML::a($__kkk, $__uu . $__is_has_step);
+                      echo ' / ' . HTML::a($__kkkk, $__uu . $__is_has_step);
                   }
               } else {
-                  $__ff[] = $__uu . '/' . $__kkk;
+                  $__ff[] = $__uu . '/' . $__kkkk;
               }
           }
           if (count($__ff) === 1 && dirname(end($__dd)) !== dirname($__ff[0])) {
               $__fff = basename($__ff[0]);
               $__uu .= '/' . $__fff;
               echo ' / ' . HTML::a($__fff, $__ff[0]);
+              $__v->is->file = true;
+              $__v->url = $__uu;
+              $__vv->url = To::url(str_replace($__u, LOT . DS, $__uu));
           }
       }
   
@@ -55,8 +58,7 @@
     <?php
 
     $__as = [
-        $__v->is->file ? [$language->view, $__vv->url, true] : null,
-        $__v->is->file ? null : [$language->add, str_replace('::g::', '::s::', $__uu)],
+        $__v->is->file ? [$language->view, $__vv->url, true] : [$language->add, str_replace('::g::', '::s::', $__uu)],
         [$language->edit, $__uu],
         [$language->delete, str_replace('::g::', '::r::', $__v->url . HTTP::query(['token' => $__token]))]
     ];

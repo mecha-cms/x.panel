@@ -1,5 +1,5 @@
 <?php if (isset($__page[0]->name)): ?>
-<?php include __DIR__ . DS . '..' . DS . 'worker' . DS . '-m.php'; ?>
+<?php include __DIR__ . DS . '..' . DS . 'worker' . DS . 'file.m.php'; ?>
 <?php else: ?>
 <section class="m-button">
   <p>

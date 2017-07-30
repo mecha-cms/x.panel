@@ -1,4 +1,4 @@
-<?php if ($__s = array_filter(a(Config::get('panel.s.' . (isset($__i) ? $__i : '1'), [])), function($__v) {
+<?php if ($__s = array_filter(a(Config::get('panel.s.' . (isset($__index) ? $__index : '1'), [])), function($__v) {
     return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);
 })): ?>
 <?php foreach (Anemon::eat($__s)->sort([1, 'stack'], "")->vomit() as $__k => $__v): ?>
