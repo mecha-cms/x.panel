@@ -10,7 +10,7 @@
 
 $__n = [];
 
-$__n["-"] = [
+$__n['site'] = [
     'text' => $language->visit . ' ' . $language->site,
     'url' => $url . "",
     'attributes' => [
@@ -44,4 +44,4 @@ $__n['exit'] = [
     'stack' => 30
 ];
 
-Config::set('panel.n.n', $__n = Anemon::eat($__n)->sort([1, 'stack'], "")->vomit()); // hold!
+Config::set('panel.n.+', $__n = Anemon::eat($__n)->sort([1, 'stack'], "")->vomit()); // hold!

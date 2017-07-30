@@ -48,16 +48,16 @@ window.PANEL = window.jQuery;
     }
     var w = $(win),
         tab = $('nav.t a'),
-        active = tab.filter('.is-active'),
+        active = tab.filter('.is\\.active'),
         content = $('section.t-c'), edit;
     if (!active.length) {
-        active = active.first();
-        active.addClass('is-active');
+        active = tab.first();
+        active.addClass('is.active');
     }
     if (tab.length) {
         content.hide().filter(hash(active[0].hash)).show();
         tab.on("click", function() {
-            $(this).addClass('is-active').siblings().removeClass('is-active');
+            $(this).addClass('is.active').siblings().removeClass('is.active');
             content.hide().filter(hash(this.hash)).show();
             edit = content.find('.CodeMirror').each(function() {
                 w.trigger("resize");

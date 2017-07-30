@@ -70,6 +70,9 @@ if ($__is_has_step) {
     if (!$__f = File::exist(LOT . DS . $__p)) {
         Shield::abort(PANEL_404);
     }
+    if ($__action === 's' && is_file($__f)) {
+        Shield::abort(PANEL_404); // Folder only!
+    }
     $__a = $__aa = File::inspect($__f);
     $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__p);
     $__a['url'] = $__u . $__path;
@@ -113,12 +116,12 @@ Config::set('panel', [
             'file' => [
                 'legend' => $language->editor,
                 'content' => [
-                    'content' => $__action === 's' || isset($__file[0]->content) ? [
+                    'content' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false ? [
                         'type' => 'editor',
-                        'value' => isset($__file[0]->content) ? $__file[0]->content : null,
+                        'value' => isset($__file[0]->content) ? ($__file[0]->content ?: "") : null,
                         'attributes' => [
                             'data' => [
-                                'type' => u(Path::X($__path, 'HTML'))
+                                'type' => $__action === 's' ? 'HTML' : u(Path::X($__path, 'HTML'))
                             ]
                         ],
                         'is' => [
@@ -129,7 +132,8 @@ Config::set('panel', [
                     ] : null,
                     '*path' => [
                         'type' => $__action === 's' ? 'hidden' : 'text',
-                        'value' => str_replace(['/', ASSET . DS], [DS, ""], LOT . DS . $__path),
+                        'value' => str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__path),
+                        'pattern' => '^[a-z\\d-_.]+(?:[\\/][a-z\\d-._]+)*$',
                         'is' => [
                             'block' => true
                         ],
@@ -137,6 +141,7 @@ Config::set('panel', [
                     ],
                     '*name' => $__action === 's' ? [
                         'type' => 'text',
+                        'pattern' => '^[a-z\\d-_.]+$',
                         'is' => [
                             'block' => true
                         ],
@@ -145,14 +150,48 @@ Config::set('panel', [
                     '_' => [
                         'type' => 'submit[]',
                         'values' => [
-                            Path::X($__path, 'txt') => $language->{$__action === 's' ? 'create' : (isset($__file[0]->content) ? 'update' : 'rename')},
+                            Path::X($__path, 'txt') => $language->{$__action === 's' ? 'create' : 'update'},
                             'trash' => $__action === 's' ? null : $language->delete
                         ],
                         'stack' => 0
                     ]
                 ],
                 'stack' => 10
-            ]
+            ],
+            'folder' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->folder ? [
+                'content' => [
+                    'directory' => [
+                        'type' => 'text',
+                        'title' => $language->folder,
+                        'is' => [
+                            'block' => true
+                        ],
+                        'stack' => 10
+                    ],
+                    'kick' => [
+                        'type' => 'toggle',
+                        'title' => null,
+                        'text' => 'Redirect to folder.',
+                        'stack' => 20
+                    ]
+                ],
+                'stack' => 20
+            ] : null,
+            'upload' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->folder ? [
+                'content' => [
+                    'file' => [
+                        'type' => 'file',
+                        'stack' => 10
+                    ],
+                    'extract' => [
+                        'type' => 'toggle',
+                        'title' => null,
+                        'text' => 'Extract package after upload.',
+                        'stack' => 20
+                    ]
+                ],
+                'stack' => 30
+            ] : null
         ]
     ],
     's' => [
@@ -172,13 +211,13 @@ Config::set('panel', [
                 'if' => count($__chops) > 1 && $__kins[0],
                 'stack' => 30
             ],
-            'child' => null,
             'nav' => [
                 'title' => $language->navigation,
                 'content' => '<p>' . $__pager[0] . '</p>',
                 'if' => $__is_has_step,
-                'stack' => 50
-            ]
+                'stack' => 40
+            ],
+            'child' => null
         ]
     ]
 ]);

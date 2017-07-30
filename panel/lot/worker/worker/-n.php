@@ -15,7 +15,7 @@ foreach (glob(LOT . DS . '*', GLOB_ONLYDIR) as $__k => $__v) {
 $__menus = array_replace_recursive($__menus, (array) a(Config::get('panel.n', [])));
 if ($__menus) {
     foreach (Anemon::eat($__menus)->sort([1, 'stack'], "")->vomit() as $__k => $__v) {
-        if ($__k === 'n' || ($__v !== '0' && empty($__v)) || !isset($__v['stack']) || !is_numeric($__v['stack'])) {
+        if ($__k === '+' || ($__v !== '0' && empty($__v)) || !isset($__v['stack']) || !is_numeric($__v['stack'])) {
             continue;
         }
         if (is_string($__v) && strpos($__v, '<') === 0 && substr($__v, -1) === '>' && strpos($__v, '</') !== false) {
@@ -38,10 +38,10 @@ if ($__menus) {
             $__html .= '</li>';
         }
     }
-    if (!empty($__menus['n'])) {
-        $__html .= '<li class="n-n"><a href="">&#x22EE;</a><ul>';
-        $__menus['n'] = Anemon::eat($__menus['n'])->sort([1, 'stack'], 10)->vomit();
-        foreach ($__menus['n'] as $__kk => $__vv) {
+    if (!empty($__menus['+'])) {
+        $__html .= '<li class="n-+"><a href="">&#x22EE;</a><ul>';
+        $__menus['+'] = Anemon::eat($__menus['+'])->sort([1, 'stack'], 10)->vomit();
+        foreach ($__menus['+'] as $__kk => $__vv) {
             if ($__vv !== '0' && empty($__vv)) continue;
             if (is_string($__vv) && strpos($__vv, '<') === 0 && substr($__vv, -1) === '>' && strpos($__vv, '</') !== false) {
                 if (substr($__vv, -5) === '</li>') {

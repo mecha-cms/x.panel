@@ -15,7 +15,7 @@
     <?php $__1 = array_shift($__1); ?>
     <?php foreach ($__t as $__k => $__v): // [3] ?>
       <?php if (!isset($__v['title'])) $__v['title'] = $language->{$__k}; ?>
-      <?php echo HTML::a($__v['title'], '#t:' . $__k, false, ['class' => Request::get('m.t:v', Config::get('panel.m.t:v', $__1)) === $__k ? 'is-active' : null]); ?>
+      <?php echo HTML::a($__v['title'], '#t:' . $__k, false, ['class' => Request::get('m.t:v', Config::get('panel.m.t:v', $__1)) === $__k ? 'is.active' : null]); ?>
     <?php endforeach; // [3] ?>
   </nav>
   <?php endif; // [2] ?>

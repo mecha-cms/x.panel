@@ -11,7 +11,7 @@
     <?php echo implode(' ', Hook::fire('panel.a.' . $__chops[0] . 's', [$__links])); ?>
   </p>
 </section>
-<section class="m-page">
+<section class="m-file">
   <?php if ($__action === 's' && count($__chops) === 1): ?>
   <fieldset>
     <legend><?php echo $language->file; ?></legend>

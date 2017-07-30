@@ -9,24 +9,40 @@
   </p>
 </section>
 <section class="m-file">
-  <?php if ($__files[0]): $__u = $url . '/' . $__state->path . '/::g::/'; ?>
+  <?php if ($__files[0]): ?>
   <?php foreach ($__files[0] as $__k => $__v): $__vv = $__files[1][$__k]; ?>
   <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : ""); ?>">
+    <?php
+
+    $__u = $url . '/' . $__state->path . '/::g::/';
+    $__uu = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v->path);
+
+    ?>
     <header>
       <h3>
       <?php if ($__v->is->file): ?>
       <span class="a" title="<?php echo $language->size . ': ' . $__v->size; ?>"><?php echo $__vv->title; ?></span>
       <?php else: ?>
-      <a href="<?php echo $__v->url; ?>" title="<?php echo ($__i = count(glob($__v->path . DS . '*', GLOB_NOSORT))) . ' ' . $language->{$__i === 1 ? 'item' : 'items'}; ?>"><?php echo $__vv->title; ?></a><?php
+      <a href="<?php echo $__v->url; ?>" title="<?php echo ($__ii = count(glob($__v->path . DS . '*', GLOB_NOSORT))) . ' ' . $language->{$__ii === 1 ? 'item' : 'items'}; ?>"><?php echo $__vv->title; ?></a><?php
   
       if ($__v->is->files && count(glob($__v->path . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) === 1 && $__g = File::explore($__v->path, true, true)) {
-          $__uu = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v->path);
+          $__dd = $__ff = [];
           foreach ($__g as $__kk => $__vv) {
-              $__kk = Path::B($__kk);
-              $__uu .= '/' . $__kk;
+              $__kkk = basename($__kk);
               if ($__vv === 0) {
-                  echo ' / ' . HTML::a($__kk, $__uu . $__is_has_step);
+                  $__uu .= '/' . $__kkk;
+                  if (count(glob($__kk . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) <= 1) {
+                      $__dd[] = $__uu;
+                      echo ' / ' . HTML::a($__kkk, $__uu . $__is_has_step);
+                  }
+              } else {
+                  $__ff[] = $__uu . '/' . $__kkk;
               }
+          }
+          if (count($__ff) === 1 && dirname(end($__dd)) !== dirname($__ff[0])) {
+              $__fff = basename($__ff[0]);
+              $__uu .= '/' . $__fff;
+              echo ' / ' . HTML::a($__fff, $__ff[0]);
           }
       }
   
@@ -34,11 +50,9 @@
       <?php endif; ?>
       </h3>
     </header>
-    <!-- section></section -->
+    <section></section>
     <footer>
     <?php
-
-    $__uu = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v->path);
 
     $__as = [
         $__v->is->file ? [$language->view, $__vv->url, true] : null,
