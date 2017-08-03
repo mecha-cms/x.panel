@@ -16,8 +16,13 @@
       <?php endif; ?>
 	  <?php echo $__message; ?>
 	  <?php Shield::get([
+          // Custom file manager layout
           __DIR__ . DS . $site->is . DS . $__chops[0] . '.m.php',
-          __DIR__ . DS . 'worker' . DS . $site->is . '.m.php'
+          // --ditto
+          __DIR__ . DS . 'worker' . DS . Config::get('panel.l', 'file') . ($site->is === 'page' ? "" : 's') . '.m.php',
+          // Default to file manager
+          __DIR__ . DS . 'worker' . DS . 'file' . ($site->is === 'page' ? "" : 's') . '.m.php'
+          
       ]); ?>
       <?php if ($__mf): ?>
       <?php echo Form::hidden('token', $__token); ?>

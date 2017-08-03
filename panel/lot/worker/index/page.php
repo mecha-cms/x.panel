@@ -11,6 +11,9 @@ Hook::set('message.set.success', function($__s) use($language, $__action, $__cho
 // Load the main task(s)…
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
 
+// Set custom file manager layout
+Config::set('panel.l', 'page');
+
 // `panel/::s::/page` → new page in `lot\page`
 // `panel/::g::/page` → index view
 // `panel/::s::/page/blog` → new child page for `lot\page\blog`

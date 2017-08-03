@@ -8,6 +8,9 @@ if ($__f && $__action === 's') {
     Shield::abort(PANEL_404);
 }
 
+// Set custom file manager layout
+Config::set('panel.l', 'page');
+
 // Set or modify the default panel content(s)…
 $__x = $__page[0] ? $__page[0]->state : 'page';
 Config::set('panel.f.page', [

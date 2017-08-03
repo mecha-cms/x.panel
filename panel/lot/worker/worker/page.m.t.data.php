@@ -20,7 +20,7 @@ return [
         'union' => ['div'],
         'attributes' => [
             'data' => [
-                'type' => 'HTML'
+                'type' => 'PHP'
             ]
         ],
         'is' => [

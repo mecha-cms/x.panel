@@ -10,6 +10,9 @@ __thiss__: %{0}% Semua %{1}% Ini
 
 __:
   panel:
+    as_: Sebagai Beranda
+    as_page: Sembunyikan Daftar Halaman
+    as_pages: Tampilkan Daftar Halaman
     chunk: Per Halaman
     fast: Cepat
     faster: Lebih Cepat
@@ -18,9 +21,6 @@ __:
     slow: Lambat
     slower: Lebih Lambat
     slowest: Paling Lambat
-    as_: Sebagai Beranda
-    as_page: Sembunyikan Daftar Halaman
-    as_pages: Tampilkan Daftar Halaman
 
 mode: Mode
 modes: Mode
@@ -70,7 +70,9 @@ f_title: Judul di Sini
 f_value: Nilai di sini…
 f_yaml: "properti: nilai"
 
-h_user: Tanpa prefiks <code>@</code>.
+h_kick__: Arahkan ke %{0}%.
+h_extract: Ekstrak paket setelah mengunggah.
+h_user: Tanpa awalan <code>@</code>.
 
 h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
 h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"

@@ -128,28 +128,28 @@ if ($__is_data) {
             if ($__s[1] !== $__key) {
                 File::open($__f)->delete();
             }
-            Hook::fire('on.+' . $__chops[0] . '.set', [$__ff, $__action === 's' ? null : $__f]);
-            Message::success($language->{'message_success_' . ($__action === 's' ? 'create' : 'update')}($language->data . ' <em>' . $__key . '</em>'));
+            Hook::fire('on.' . $__chops[0] . '.+.set', [$__ff, $__action === 's' ? null : $__f]);
+            Message::success($__action === 's' ? 'create' : 'update', [$language->data, '<em>' . $__key . '</em>']);
             Guardian::kick($__state->path . '/::g::/' . $__s[0] . '/+/' . $__key);
         }
     } else {
         if ($__action === 'r') {
-            if (!Request::get('token')) {
+            if (!$__t = Request::get('token')) {
+                Shield::abort(PANEL_404);
+            } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
                 Shield::abort(PANEL_404);
             }
-            if (!$__f = File::exist([
-                $__d . DS . $__s[1] . '.data',
-                $__d . DS . $__s[1] . '.trash'
-            ])) {
+            if (!$__f = File::exist($__d . DS . $__s[1] . '.data')) {
                 Shield::abort(PANEL_404);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
             if (Message::$x) {
                 Guardian::kick($__back);
             }
-            File::open($__f)->moveTo(LOT . DS . 'trash' . DS . 'lot' . DS . $__s[0]);
-            Hook::fire('on.+' . $__chops[0] . '.reset', [$__f, $__f]);
-            Message::success($language->message_success_delete([$language->data, '<em>' . $__s[1] . '</em>']));
+            $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+            File::open($__f)->moveTo(Path::D($__ff));
+            Hook::fire('on.' . $__chops[0] . '.+.reset', [$__f, $__ff]);
+            Message::success('delete', [$language->data, '<em>' . $__s[1] . '</em>']);
             Guardian::kick($__state->path . '/::g::/' . $__s[0]);
         }
     }
@@ -385,18 +385,20 @@ if ($__is_data) {
                 }
                 $__tt = $__headers['title'] ?: $language->_title;
                 if ($__action === 'g') {
-                    Message::success($language->{'message_success_' . ($__XX === 'draft' ? 'save' : 'update')}($language->{$__chops[0]} . ' <strong>' . $__tt . '</strong>'));
+                    Message::success($__XX === 'draft' ? 'save' : 'update', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                     Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__action === 's' ? null : $__S]);
                     Guardian::kick(Path::D($url->current) . '/' . $__NN);
                 } else {
-                    Message::success($language->{'message_success_' . ($__XX === 'draft' ? 'save' : 'create')}($language->{$__chops[0]} . ' <strong>' . $__tt . '</strong>'));
+                    Message::success($__XX === 'draft' ? 'save' : 'create', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                     Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__action === 's' ? null : $__S]);
                     Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $__NN);
                 }
             }
         } else {
             if ($__action === 'r') {
-                if (!Request::get('token')) {
+                if (!$__t = Request::get('token')) {
+                    Shield::abort(PANEL_404);
+                } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
                     Shield::abort(PANEL_404);
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
@@ -408,16 +410,16 @@ if ($__is_data) {
                     if ($__f = File::exist([
                         $__d . '.draft',
                         $__d . '.page',
-                        $__d . '.archive',
-                        $__d . '.trash'
+                        $__d . '.archive'
                     ])) {
                         return (new Page($__f, [], $__chops[0]))->title;
                     }
                     return $language->_title;
                 });
-                File::open($__f)->moveTo(LOT . DS . 'trash' . DS . 'lot' . DS . Path::D($__path));
-                Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__f]);
-                Message::success($language->message_success_delete([$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']));
+                $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+                File::open($__f)->moveTo(Path::D($__ff));
+                Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__ff]);
+                Message::success('delete', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                 Guardian::kick(Path::D($__back) . '/1');
             }
         }

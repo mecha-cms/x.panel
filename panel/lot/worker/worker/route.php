@@ -15,18 +15,13 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__step' => $__step - 1,
         '__chops' => $__chops
     ]);
-    $__task = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php');
     require $__s . 'extend.php';
     require $__s . 'extend' . DS . 'plugin.php';
-    require $__s . DS . 'shield.php';
-    require $__s . DS . 'f.php';
-    require $__s . DS . 'n.php';
-    require $__s . DS . 'asset.php';
-    require $__s . DS . 'lot.php';
-    if (!$__task) {
-        $__task = $__DIR . DS . 'worker' . DS . 'file.php';
-        Config::set('is', $__is_has_step ? 'files' : 'file');
-    }
+    require $__s . 'shield.php';
+    require $__s . 'f.php';
+    require $__s . 'n.php';
+    require $__s . 'asset.php';
+    require $__s . 'lot.php';
     $__token = Guardian::token();
     $__hash = Guardian::hash();
     $__user = User::get();
@@ -43,7 +38,12 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
             }
         }
     }
-    require $__task;
+    // Default to file manager
+    require $__s . 'file.php';
+    if ($__f = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php')) {
+        // Custom file manager layout
+        require $__f;
+    }
     Lot::set([
         '__token' => $__token,
         '__hash' => $__hash,
@@ -56,5 +56,5 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     if ($__user && $__action === 's' && Request::is('get')) {
         Request::save('post', 'user', '@' . $__user->key);
     }
-    Shield::attach(__DIR__ . DS . '..' . DS . (isset($site->panel->layout) ? $site->panel->layout : 0) . '.php');
+    Shield::attach(__DIR__ . DS . '..' . DS . Config::get('panel.layout', 0) . '.php');
 }, 1);

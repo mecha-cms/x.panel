@@ -21,9 +21,9 @@
 // s: secondary/sidebar
 // t: tab
 // u:
-// v: enable/show/add
+// v: check mark/enable/show/add
 // w:
-// x: disable/hide/remove
+// x: cross mark/disable/hide/remove
 // y:
 // z:
 

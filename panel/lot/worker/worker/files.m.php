@@ -1,13 +1,26 @@
+<?php
+
+if (Request::get('q')) {
+    $__links = [['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
+} else {
+    $__links = [['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
+}
+
+$__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
+
+foreach ($__links as $__k => $__v) {
+    if (!isset($__v)) continue;
+    if (is_array($__v)) {
+        $__links[$__k] = call_user_func_array('HTML::a', array_replace_recursive([null, null, false, ['classes' => ['button']]], $__v));
+    }
+}
+
+?>
+<?php if ($__links): ?>
 <section class="m-button">
-  <p>
-    <?php if (Request::get('q')): ?>
-    <?php $__links = [HTML::a('&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step, false, ['classes' => ['button']])]; ?>
-    <?php else: ?>
-    <?php $__links = [HTML::a('&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path, false, ['classes' => ['button']])]; ?>
-    <?php endif; ?>
-    <?php echo implode(' ', Hook::fire('panel.a.' . $__chops[0] . 's', [$__links])); ?>
-  </p>
+  <p><?php echo implode(' ', $__links); ?></p>
 </section>
+<?php endif; ?>
 <section class="m-file">
   <?php if ($__files[0]): ?>
   <?php foreach ($__files[0] as $__k => $__v): $__vv = $__files[1][$__k]; ?>
@@ -44,9 +57,9 @@
               $__uu .= '/' . $__fff;
               echo ' / ' . HTML::a($__fff, $__ff[0]);
               $__v->is->file = true;
-              $__v->url = $__uu;
-              $__vv->url = To::url(str_replace($__u, LOT . DS, $__uu));
           }
+          $__v->url = $__uu;
+          $__vv->url = To::url(str_replace($__u, LOT . DS, $__uu));
       }
   
       ?>

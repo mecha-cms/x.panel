@@ -10,6 +10,9 @@ __thiss__: %{0}% These %{1}%
 
 __:
   panel:
+    as_: Set as Home Page
+    as_page: Hide Pages View
+    as_pages: Show Pages View
     chunk: Per Page
     fast: Fast
     faster: Faster
@@ -18,9 +21,7 @@ __:
     slow: Slow
     slower: Slower
     slowest: Slowest
-    as_: Set as Home Page
-    as_page: Hide Pages View
-    as_pages: Show Pages View
+    extract: Extract package after upload.
 
 mode: Mode
 modes: Modes
@@ -78,6 +79,8 @@ f_user: @user
 f_value: Value here…
 f_yaml: "property: value"
 
+h_kick__: Redirect to %{0}%.
+h_extract: Extract package after upload.
 h_user: Without the <code>@</code> prefix.
 
 h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"

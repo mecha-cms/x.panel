@@ -32,6 +32,9 @@ if ($__f && $__action === 's') {
     Shield::abort(PANEL_404);
 }
 
+// Set custom file manager layout
+Config::set('panel.l', 'page');
+
 // Set or modify the default panel content(s)…
 $__u = $__page[0] ? $__page[0] : (object) [
     'email' => null,
@@ -41,7 +44,7 @@ $__u = $__page[0] ? $__page[0] : (object) [
 ];
 $__x = $__u->state;
 $__o = (array) $language->o_user;
-$__z = !g(LOT . DS . $__path, 'page', "", false) && User::get('status') !== 1 ? '.' : "";
+$__z = !g(LOT . DS . $__path, 'page', "", false) && User::get(null, 'status') !== 1 ? '.' : "";
 Config::set('panel.m.t.page.title', $language->user);
 Config::set('panel.f.page', [
     'author' => [
