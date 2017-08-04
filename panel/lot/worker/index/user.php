@@ -118,12 +118,9 @@ Config::set('panel.f.page', [
 
 Config::set('panel.s', [
     1 => [
-        'source' => [
-            'stack' => 10
-        ],
         'kin' => [
             'title' => $language->users,
-            'stack' => 20
+            'stack' => 10
         ],
         'author' => null,
         'current' => null,

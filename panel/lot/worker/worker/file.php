@@ -4,26 +4,22 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
 
     $__u = $url . '/' . $__state->path . '/::g::/';
     $__p = str_replace('/', DS, $__path);
+    $__query = HTTP::query();
 
     // Get current
     $__a = $__aa = File::inspect(LOT . DS . $__p);
     $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__p);
-    $__a['url'] = $__u . $__path;
+    $__a['url'] = $__u . $__path . $__query;
     Lot::set('__current', $__current = [o($__a), o($__aa)]);
 
     if ($__is_has_step) {
         // Get file(s)
-        if (!$__g = array_filter(array_merge(
+        $__g = array_filter(array_merge(
             glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
             glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
         ), function($__v) {
             return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..';
-        })) {
-            // File/folder not found!
-            if (count($__chops) > 1) {
-                Shield::abort(PANEL_404);
-            }
-        }
+        });
         if ($__q = l(Request::get('q', ""))) {
             Message::info('search', '<em>' . $__q . '</em>');
             $__q = explode(' ', $__q);
@@ -41,7 +37,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
         foreach (Anemon::eat($__g)->chunk($__chunk * 2, $__step) as $__v) {
             $__a = $__aa = File::inspect($__v);
             $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
-            $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . (is_dir($__v) ? '/1' : "");
+            $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . (is_dir($__v) ? '/1' : "") . $__query;
             $__files[0][] = o($__a);
             $__files[1][] = o($__aa);
         }
@@ -73,12 +69,22 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
         if ($__is_post) {
             if ($__action === 's') {
                 // Create file…
-                $__n = trim(str_replace('/', DS, Request::post('name')), DS);
-                if ($__s = Request::post('content', "", false)) {
-                    File::write($__s)->saveTo(LOT . DS . $__path . DS . $__n);
+                $__n = explode(DS, str_replace('/', DS, Request::post('path')));
+                $__n = array_pop($__n);
+                $__x = Path::X($__n);
+                if (!Is::these(File::$config['extensions'])->has($__x)) {
+                    Request::save('post');
+                    Message::error('file_x', '<em>' . $__x . '</em>');
                 }
-                Message::success('create', [$language->{$__chops[0]}, '<em>' .  $__n . '</em>']);
-                Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $__n);
+                if (!Message::$x) {
+                    if ($__s = Request::post('content', "", false)) {
+                        File::write($__s)->saveTo(LOT . DS . $__path . DS . $__n);
+                    }
+                    Message::success('create', [$language->{$__chops[0]}, '<em>' .  $__n . '</em>']);
+                    Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $__n . $__query);
+                } else {
+                    Guardian::kick($url->current . $__query);
+                }
             } else if ($__action === 'g') {
                 // Delete file…
                 if (Request::post('_x') === 'trash') {
@@ -86,16 +92,25 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                 }
                 // Update file…
                 $__p = trim(str_replace('/', DS, Request::post('path')), DS);
-                if ($__s = Request::post('content', "", false)) {
-                    File::write($__s)->saveTo(LOT . DS . $__chops[0] . DS . $__p);
+                $__x = Path::X($__p);
+                if (!Is::these(File::$config['extensions'])->has($__x)) {
+                    Request::save('post');
+                    Message::error('file_x', '<em>' . $__x . '</em>');
+                }
+                if (!Message::$x) {
+                    if ($__s = Request::post('content', "", false)) {
+                        File::write($__s)->saveTo(LOT . DS . $__chops[0] . DS . $__p);
+                    } else {
+                        File::open(LOT . DS . $__path)->moveTo(LOT . DS . $__chops[0] . DS . $__p);
+                    }
+                    if ($__chops[0] . DS . $__p !== str_replace('/', DS, $__path)) {
+                        File::open(LOT . DS . $__path)->delete();
+                    }
+                    Message::success('update', [$language->{$__chops[0]}, '<em>' .  Path::B($__p) . '</em>']);
+                    Guardian::kick($url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . str_replace(DS, '/', $__p) . $__query);
                 } else {
-                    File::open(LOT . DS . $__path)->moveTo(LOT . DS . $__chops[0] . DS . $__p);
+                    Guardian::kick($url->current . $__query);
                 }
-                if ($__chops[0] . DS . $__p !== str_replace('/', DS, $__path)) {
-                    File::open(LOT . DS . $__path)->delete();
-                }
-                Message::success('update', [$language->{$__chops[0]}, '<em>' .  Path::B($__p) . '</em>']);
-                Guardian::kick($url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . str_replace(DS, '/', $__p));
             }
         } else {
             if ($__action === 'r') {
@@ -109,25 +124,30 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
                 if (Message::$x) {
-                    Guardian::kick($__back);
+                    Guardian::kick($__back . $__query);
                 }
-                $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
-                File::open($__f)->moveTo(is_file($__f) ? Path::D($__ff) : $__ff);
+                if (Request::get('force') === 1) {
+                    $__ff = null;
+                    File::open($__f)->delete();
+                } else {
+                    $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+                    File::open($__f)->moveTo(is_file($__f) ? Path::D($__ff) : $__ff);
+                }
                 Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__ff]);
                 Message::success('delete', [$language->{$__chops[0]}, '<em>' . Path::B($__f) . '</em>']);
-                Guardian::kick(Path::D(str_replace('::r::', '::g::', $url->path)));
+                Guardian::kick(Path::D(str_replace('::r::', '::g::', $url->path)) . '/1' . $__query);
             }
         }
         // Get file
-        if (!$__f = File::exist(LOT . DS . $__p)) {
+        if ($__action === 'g' && !$__f = File::exist(LOT . DS . $__p)) {
             Shield::abort(PANEL_404);
         }
-        if ($__action === 's' && is_file($__f)) {
+        if ($__f && $__action === 's' && is_file($__f)) {
             Shield::abort(PANEL_404); // Folder only!
         }
         $__a = $__aa = File::inspect($__f);
         $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__p);
-        $__a['url'] = $__u . $__path;
+        $__a['url'] = $__u . $__path . $__query;
         $__a['content'] = is_file($__a['path']) ? (strpos(',' . SCRIPT_X . ',', ',' . Path::X($__p) . ',') === false ? false : file_get_contents($__a['path'])) : null;
         Lot::set('__file', $__file = [o($__a), o($__aa)]);
     }
@@ -135,7 +155,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
     // Get parent
     $__a = $__aa = File::inspect(rtrim(LOT . DS . Path::D($__p), DS));
     $__a['title'] = $__aa['title'] = '<i class="i i-d"></i> ' . (count($__chops) > 2 ? Path::B(Path::D($__p)) : '..');
-    $__a['url'] = rtrim($__u . Path::D($__path), '/') . ($__is_has_step ? '/1' : "");
+    $__a['url'] = rtrim($__u . Path::D($__path), '/') . ($__is_has_step ? '/1' : "") . $__query;
     Lot::set('__parent', $__parent = [o($__a), o($__aa)]);
 
     // Get child(s)
@@ -150,7 +170,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
     foreach (Anemon::eat($__g)->chunk($__chunk * 2, 0) as $__v) {
         $__a = $__aa = File::inspect($__v);
         $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
-        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "");
+        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "") . $__query;
         $__childs[0][] = o($__a);
         $__childs[1][] = o($__aa);
     }
@@ -160,25 +180,26 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
     ]);
 
     // Get kin(s)
-    $__p = Path::D($__p);
-    $__g = array_filter(array_merge(
-        glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
-        glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
-    ), function($__v) use($__b) {
-        return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..' && Path::B($__v) !== $__b;
-    });
-    natsort($__g);
-    foreach (Anemon::eat($__g)->chunk($__chunk * 2, 0) as $__v) {
-        $__a = $__aa = File::inspect($__v);
-        $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
-        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "");
-        $__kins[0][] = o($__a);
-        $__kins[1][] = o($__aa);
+    if ($__p = Path::D($__p)) {
+        $__g = array_filter(array_merge(
+            glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
+            glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
+        ), function($__v) use($__b) {
+            return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..' && Path::B($__v) !== $__b;
+        });
+        natsort($__g);
+        foreach (Anemon::eat($__g)->chunk($__chunk * 2, 0) as $__v) {
+            $__a = $__aa = File::inspect($__v);
+            $__a['title'] = $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> ' . Path::B($__v);
+            $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "") . $__query;
+            $__kins[0][] = o($__a);
+            $__kins[1][] = o($__aa);
+        }
+        Lot::set([
+            '__kins' => $__kins,
+            '__is_has_step_kin' => ($__is_has_step_kin = count($__g) > $__chunk * 2)
+        ]);
     }
-    Lot::set([
-        '__kins' => $__kins,
-        '__is_has_step_kin' => ($__is_has_step_kin = count($__g) > $__chunk * 2)
-    ]);
 
     Config::set('panel', [
         'layout' => 2,
@@ -187,7 +208,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
             't' => [
                 'file' => [
                     'legend' => $language->editor,
-                    'content' => [
+                    'list' => [
                         'content' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false ? [
                             'type' => 'editor',
                             'value' => isset($__file[0]->content) ? ($__file[0]->content ?: "") : null,
@@ -202,23 +223,15 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                             'expand' => true,
                             'stack' => 10
                         ] : null,
-                        '*path' => $__action === 'g' ? [
+                        '*path' => [
                             'type' => 'text',
-                            'value' => str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__path),
-                            'pattern' => '^[a-z\\d-_.]+(?:[\\/][a-z\\d-._]+)*$',
+                            'value' => $__action === 'g' ? str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__path) : null,
+                            'pattern' => $__action === 'g' ? '^[a-z\\d-_.]+(?:[\\/][a-z\\d-._]+)*$' : '^[a-z\\d-_.]+$',
                             'is' => [
                                 'block' => true
                             ],
                             'stack' => 20
-                        ] : null,
-                        '*name' => $__action === 's' ? [
-                            'type' => 'text',
-                            'pattern' => '^[a-z\\d-_.]+$',
-                            'is' => [
-                                'block' => true
-                            ],
-                            'stack' => 20
-                        ] : null,
+                        ],
                         '_x' => [
                             'type' => 'submit[]',
                             'values' => [
@@ -231,7 +244,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                     'stack' => 10
                 ],
                 'folder' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->files ? [
-                    'content' => [
+                    'list' => [
                         'directory' => [
                             'type' => 'text',
                             'title' => $language->folder,
@@ -250,7 +263,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                     'stack' => 20
                 ] : null,
                 'upload' => $__action === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->files ? [
-                    'content' => [
+                    'list' => [
                         'file' => [
                             'type' => 'file',
                             'stack' => 10
@@ -258,7 +271,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                         'extract' => [
                             'type' => 'toggle',
                             'title' => null,
-                            'text' => $language->h_package,
+                            'text' => $language->h_extract,
                             'stack' => 20
                         ]
                     ],
@@ -274,21 +287,23 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                     'stack' => 10
                 ],
                 'parent' => [
-                    'content' => [[$__parent[0]], [$__parent[1]]],
+                    'list' => [[$__parent[0]], [$__parent[1]]],
                     'if' => count($__chops) > 1,
                     'stack' => 20
                 ],
                 'kin' => [
-                    'content' => $__kins,
+                    'list' => $__kins,
                     'a' => [
-                        ['&#x2795;', str_replace('::g::', '::s::', $__action === 's' ? $url->current : Path::D($url->current)), false, ['title' => $language->add]]
+                        'set' => ['&#x2795;', str_replace('::g::', '::s::', $__action === 's' ? $url->current : Path::D($url->current)), false, ['title' => $language->add]]
                     ],
                     'if' => count($__chops) > 1 && $__kins[0],
                     'stack' => 30
                 ],
                 'child' => [
-                    'content' => $__childs,
-                    'a' => [],
+                    'list' => $__childs,
+                    'a' => [
+                        'set' => $__action === 's' ? ['&#x2795;', str_replace('::g::', '::s::', $url->current), false, ['title' => $language->add]] : null
+                    ],
                     'if' => !$__is_has_step && is_dir(LOT . DS . $__path),
                     'stack' => 40
                 ],

@@ -30,11 +30,11 @@ Config::set('panel.f.page', [
 
 Config::set('panel.s', [
     1 => [
-        'parent' => null,
-        'current' => null,
         'kin' => [
             'stack' => 20
         ],
+        'current' => null,
+        'parent' => null,
         'setting' => null
     ],
     2 => [

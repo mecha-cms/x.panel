@@ -146,8 +146,15 @@ if ($__is_data) {
             if (Message::$x) {
                 Guardian::kick($__back);
             }
-            $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
-            File::open($__f)->moveTo(Path::D($__ff));
+            if (Request::get('force') === 1) {
+                $__ff = null;
+                File::open($__f)->delete();
+                File::open(Path::F($__f))->delete();
+            } else {
+                $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+                File::open($__f)->moveTo(Path::D($__ff));
+                File::open(Path::F($__f))->moveTo(Path::D(Path::F($__ff)));
+            }
             Hook::fire('on.' . $__chops[0] . '.+.reset', [$__f, $__ff]);
             Message::success('delete', [$language->data, '<em>' . $__s[1] . '</em>']);
             Guardian::kick($__state->path . '/::g::/' . $__s[0]);
@@ -416,8 +423,15 @@ if ($__is_data) {
                     }
                     return $language->_title;
                 });
-                $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
-                File::open($__f)->moveTo(Path::D($__ff));
+                if (Request::get('force') === 1) {
+                    $__ff = null;
+                    File::open($__f)->delete();
+                    File::open(Path::F($__f))->delete();
+                } else {
+                    $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+                    File::open($__f)->moveTo(Path::D($__ff));
+                    File::open(Path::F($__f))->moveTo(Path::D(Path::F($__ff)));
+                }
                 Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__ff]);
                 Message::success('delete', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                 Guardian::kick(Path::D($__back) . '/1');
@@ -501,11 +515,11 @@ Config::set([
         'm' => [
             't' => [
                 'page' => $__is_data ? null : [
-                    'content' => require __DIR__ . DS . 'page.m.t.page.php',
+                    'list' => require __DIR__ . DS . 'page.m.t.page.php',
                     'stack' => 10
                 ],
                 'data' => $__is_data ? [
-                    'content' => require __DIR__ . DS . 'page.m.t.data.php',
+                    'list' => require __DIR__ . DS . 'page.m.t.data.php',
                     'stack' => 10
                 ] : null
             ]
@@ -524,7 +538,7 @@ Config::set('panel.s', [
     1 => [
         'source' => [
             'title' => $language->source,
-            'content' => $__source[0] ? [[$__source[0]], [$__source[1]]] : [],
+            'list' => $__source[0] ? [[$__source[0]], [$__source[1]]] : [],
             'if' => $__is_data,
             'stack' => 10
         ],
@@ -540,27 +554,27 @@ Config::set('panel.s', [
         ],
         'parent' => [
             'title' => $language->parent,
-            'content' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
+            'list' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
             'if' => !$__is_data && count($__chops) > 1,
             'lot' => $__is_has_step ? ['%{0}%/1'] : null,
             'stack' => 20
         ],
         'current' => [
-            'content' => [[$__page[0]], [$__page[1]]],
+            'list' => [[$__page[0]], [$__page[1]]],
             'if' => $__is_has_step && $__page[0] && count($__chops) > 1,
             'stack' => 30
         ],
         'kin' => $__is_data ? [
-            'content' => $__datas,
+            'list' => $__datas,
             'a' => [
-                ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
+                'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
             ],
             'stack' => 20
         ] : [
-            'content' => $__kins,
+            'list' => $__kins,
             'a' => [
-                ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]],
-                $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]] : null
+                'set' => ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]],
+                'get' => $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2', false, ['title' => $language->more]] : null
             ],
             'if' => $__action === 's' || count($__chops) > 1,
             'lot' => $__is_has_step ? ['%{0}%/1'] : null,
@@ -582,19 +596,19 @@ Config::set('panel.s', [
     2 => [
         'data' => [
             'title' => $language->datas,
-            'content' => $__action === 'g' ? $__datas : [[], []],
+            'list' => $__action === 'g' ? $__datas : [[], []],
             'after' => __DIR__ . DS . '..' . DS . 'page' . DS . '-data.php',
             'a' => $__action === 'g' ? [
-                ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
+                'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
             ] : [],
             'if' => !$__is_data,
             'stack' => 10
         ],
         'child' => [
-            'content' => $__childs,
+            'list' => $__childs,
             'a' => [
-                ['&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
-                $__is_has_step_child ? ['&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : null
+                'set' => ['&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
+                'get' => $__is_has_step_child ? ['&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : null
             ],
             'if' => !$__is_data && count($__chops) > 1,
             'stack' => 20

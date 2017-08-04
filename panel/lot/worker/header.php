@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="<?php echo $site->direction; ?>" class="no-js <?php echo 'p-' . str_replace('/', ' p-', $__path); ?>">
+<html dir="<?php echo $site->direction; ?>" class="no-js <?php echo 'p-' . str_replace('/', ' p-', $__path) . ' layout-' . Config::get('panel.layout', 0); ?>">
   <head>
     <meta charset="<?php echo $site->charset; ?>">
     <meta name="viewport" content="width=device-width">

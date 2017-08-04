@@ -1,9 +1,9 @@
 <?php
 
 if (Request::get('q')) {
-    $__links = [['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
+    $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
 } else {
-    $__links = [['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
+    $__links = ['set' => ['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
 }
 
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
@@ -11,7 +11,7 @@ $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
 foreach ($__links as $__k => $__v) {
     if (!isset($__v)) continue;
     if (is_array($__v)) {
-        $__links[$__k] = call_user_func_array('HTML::a', array_replace_recursive([null, null, false, ['classes' => ['button']]], $__v));
+        $__links[$__k] = call_user_func_array('HTML::a', array_replace_recursive([null, null, false, ['classes' => ['button', 'button:' . $__k]]], $__v));
     }
 }
 
@@ -38,6 +38,7 @@ foreach ($__links as $__k => $__v) {
       <?php else: ?>
       <a href="<?php echo $__v->url; ?>" title="<?php echo ($__ii = count(glob($__v->path . DS . '*', GLOB_NOSORT))) . ' ' . $language->{$__ii === 1 ? 'item' : 'items'}; ?>"><?php echo $__vv->title; ?></a><?php
   
+      /*
       if ($__v->is->files && count(glob($__v->path . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) === 1 && $__g = File::explore($__v->path, true, true)) {
           $__dd = $__ff = [];
           foreach ($__g as $__kkk => $__vvv) {
@@ -52,7 +53,7 @@ foreach ($__links as $__k => $__v) {
                   $__ff[] = $__uu . '/' . $__kkkk;
               }
           }
-          if (count($__ff) === 1 && dirname(end($__dd)) !== dirname($__ff[0])) {
+          if (count($__ff) === 1 && $__dd && dirname(end($__dd)) !== dirname($__ff[0])) {
               $__fff = basename($__ff[0]);
               $__uu .= '/' . $__fff;
               echo ' / ' . HTML::a($__fff, $__ff[0]);
@@ -61,6 +62,7 @@ foreach ($__links as $__k => $__v) {
           $__v->url = $__uu;
           $__vv->url = To::url(str_replace($__u, LOT . DS, $__uu));
       }
+      */
   
       ?>
       <?php endif; ?>
@@ -71,20 +73,21 @@ foreach ($__links as $__k => $__v) {
     <?php
 
     $__as = [
-        $__v->is->file ? [$language->view, $__vv->url, true] : [$language->add, str_replace('::g::', '::s::', $__uu)],
-        [$language->edit, $__uu],
-        [$language->delete, str_replace('::g::', '::r::', $__v->url . HTTP::query(['token' => $__token]))]
+        'view' => $__v->is->file ? [$language->view, $__vv->url, true] : null,
+        'set' => $__v->is->file ? null : [$language->add, str_replace('::g::', '::s::', $__uu)],
+        'edit' => [$language->edit, $__uu],
+        'reset' => [$language->delete, str_replace('::g::', '::r::', $__v->url . HTTP::query(['token' => $__token]))]
     ];
 
     $__as = Hook::fire('panel.a.' . $__chops[0], [$__as, [$__v, $__vv], $__files]);
 
     $__a = [];
-    foreach ($__as as $__v) {
+    foreach ($__as as $__k => $__v) {
         if (!isset($__v)) continue;
         if ($__v && is_string($__v) && $__v[0] === '<' && strpos($__v, '</') !== false && substr($__v, -1) === '>') {
-            $__a[] = $__v;
+            $__a[$__k] = $__v;
         } else {
-            $__a[] = call_user_func_array('HTML::a', $__v);
+            $__a[$__k] = call_user_func_array('HTML::a', $__v);
         }
     }
 
@@ -116,7 +119,7 @@ foreach ($__links as $__k => $__v) {
   <?php if ($__q = Request::get('q')): ?>
   <p><?php echo $language->message_error_search('<em>' . $__q . '</em>'); ?></p>
   <?php else: ?>
-  <p><?php echo $site->__step === 1 ? $language->message_info_void($language->{$__chops[0] . 's'}) : To::sentence($language->_finded); ?></p>
+  <p><?php echo $site->__step === 1 && count($__chops) === 1 ? $language->message_info_void($language->{$__chops[0] . 's'}) : To::sentence($language->_finded); ?></p>
   <?php endif; ?>
   <?php endif; ?>
 </section>

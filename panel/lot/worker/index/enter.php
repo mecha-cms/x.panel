@@ -11,7 +11,9 @@ if ($__user_enter) {
 Config::set([
     'is' => 'page',
     'panel' => [
-        'c:f' => true
+        'layout' => 0,
+        'c:f' => true,
+        'm:f' => false
     ]
 ]);
 

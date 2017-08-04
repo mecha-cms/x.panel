@@ -111,8 +111,9 @@ fieldset {border-style:solid}
   color:#a65;
 }
 .message {background:#ee8}
-.p-enter {background:#ffa}
-.p-enter body,
-.p-enter .m {background:none}
+.layout-0,
 .p-404 {background:#ffa}
-.p-404 body {background:none}
+.layout-0 body,
+.layout-0 .m,
+.p-404 body,
+.p-404 .m {background:none}

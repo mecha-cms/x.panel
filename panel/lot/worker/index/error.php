@@ -16,13 +16,19 @@ Config::set([
                 ],
                 'detail' => [
                     'stack' => 20
-                ]
+                ],
+                'file' => null,
+                'folder' => null,
+                'upload' => null
             ]
+        ],
+        's' => [
+            1 => null
         ]
     ]
 ]);
 
-if (Request::is('post')) {
+if ($__is_post) {
     File::open($__log)->delete();
     Message::success(To::sentence($language->deleteed));
     Guardian::kick($__state->path . '/::g::/page/1');

@@ -48,7 +48,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
         Config::set('panel.m.t.editor', [
             'legend' => $__page->title,
             'description' => $__page->content . ($__page->link ? '<p>' . HTML::a($language->link . ' &#x21E2;', $__page->link, true, ['rel' => 'nofollow']) . '</p>' : ""),
-            'content' => [
+            'list' => [
                 'e[theme]' => [
                     'key' => 'theme',
                     'type' => 'select',

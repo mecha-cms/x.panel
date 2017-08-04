@@ -1,5 +1,6 @@
 <?php
 
+// Set common path…
 Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__action, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
     extract(Lot::get(null, []));
     $__action = To::url($__action, true);
@@ -56,5 +57,42 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     if ($__user && $__action === 's' && Request::is('get')) {
         Request::save('post', 'user', '@' . $__user->key);
     }
+    if (($__l = Request::get('layout', "")) !== "") {
+        Config::set('panel.layout', is_numeric($__l) ? $__l : 0);
+    }
     Shield::attach(__DIR__ . DS . '..' . DS . Config::get('panel.layout', 0) . '.php');
+}, 1);
+
+// Set upload path for AJAX…
+Route::set($__state->path . '/::u::/%s%', function($__s = "") {
+    HTTP::mime('application/json');
+    $__t = Request::get('token');
+    if (!Request::is('post')) {
+        // “Method Not Allowed”
+        HTTP::status(405);
+        echo json_encode(['x' => 1, 'v' => 0, 'status' => 405]);
+        exit;
+    } else if (!$__t || $__t !== Session::get(Guardian::$config['session']['token'])) {
+        // “Non-Authoritative Information”
+        HTTP::status(203);
+        echo json_encode(['x' => 1, 'v' => 0, 'status' => 203]);
+        exit;
+    }
+    if (!empty($__FILES)) {
+        $__output = [];
+        foreach ($__FILES as $__k => $__v) {
+            if (!File::upload($__v, LOT . DS . $__s, function($__file) use($__url) {
+                $__output[$__k] = json_encode(array_merge($__file, ['x' => 0, 'v' => 1]));
+            })) {
+                // “Not Acceptable”
+                $__output[$__k] = ['x' => 1, 'v' => 0, 'status' => 406];
+            }
+        }
+        echo json_encode($__output);
+    } else {
+        // “No Content”
+        HTTP::status(204);
+        echo json_encode(['x' => 1, 'v' => 0, 'status' => 204]);
+    }
+    exit;
 }, 1);

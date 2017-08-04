@@ -1,9 +1,9 @@
 <?php
 
 if (Request::get('q')) {
-    $__links = [['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
+    $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
 } else {
-    $__links = [['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
+    $__links = ['set' => ['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
 }
 
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
@@ -11,7 +11,7 @@ $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
 foreach ($__links as $__k => $__v) {
     if (!isset($__v)) continue;
     if (is_array($__v)) {
-        $__links[$__k] = call_user_func_array('HTML::a', array_replace_recursive([null, null, false, ['classes' => ['button']]], $__v));
+        $__links[$__k] = call_user_func_array('HTML::a', array_replace_recursive([null, null, false, ['classes' => ['button', 'button:' . $__k]]], $__v));
     }
 }
 
@@ -39,14 +39,14 @@ foreach ($__links as $__k => $__v) {
   $__pppp = array_pop($__ppp) === array_pop($__ppp) && file_exists(Path::D($__pp) . '.' . Path::X($__pp));
 
   $__as = [
-      $__pppp ? null : [$language->edit, $__uu]
+      'edit' => $__pppp ? null : [$language->edit, $__uu]
   ];
 
   if ($__is_pages = !!g(LOT . explode('::' . $__action . '::', $__uu, 2)[1], 'draft,page,archive', "", false)) {
-      $__as[] = [$language->open, $__uu . '/1'];
+      $__as['get'] = [$language->open, $__uu . '/1'];
   }
 
-  $__as[] = [$language->delete, str_replace('::g::', '::r::', $__uu) . HTTP::query(['token' => $__token]), false, ['title' => $__pppp ? $language->__->panel->as_pages : null]];
+  $__as['reset'] = [$language->delete, str_replace('::g::', '::r::', $__uu) . HTTP::query(['token' => $__token]), false, ['title' => $__pppp ? $language->__->panel->as_pages : null]];
 
   $__as = Hook::fire('panel.a.' . $__chops[0], [$__as, [$__v, $__vv], $__pages]);
 
@@ -81,12 +81,12 @@ foreach ($__links as $__k => $__v) {
     <?php
 
     $__a = [];
-    foreach ($__as as $__vv) {
+    foreach ($__as as $__kk => $__vv) {
         if (!isset($__vv)) continue;
         if ($__vv && is_string($__vv) && $__vv[0] === '<' && strpos($__vv, '</') !== false && substr($__vv, -1) === '>') {
-            $__a[] = $__vv;
+            $__a[$__kk] = $__vv;
         } else {
-            $__a[] = call_user_func_array('HTML::a', $__vv);
+            $__a[$__kk] = call_user_func_array('HTML::a', $__vv);
         }
     }
 

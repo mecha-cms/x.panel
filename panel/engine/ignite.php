@@ -209,6 +209,7 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     // `title`
     // `description`
     // `content`
+    // `list`
     // `before`
     // `after`
     // `a`
@@ -229,17 +230,18 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
         return "";
     }
-    $content = isset($v['content']) ? $v['content'] : [];
+    $content = isset($v['content']) ? $v['content'] : "";
+    $list = isset($v['list']) ? $v['list'] : [];
     $html  = '<section class="s-' . $k . '">';
-    $html .= '<h3>' . (isset($v['title']) ? $v['title'] : $language->{isset($v['content'][0]) && count($v['content'][0]) === 1 ? $k : $k . 's'}) . '</h3>';
+    $html .= '<h3>' . (isset($v['title']) ? $v['title'] : $language->{isset($content[0]) && count($content[0]) === 1 ? $k : $k . 's'}) . '</h3>';
     if (isset($v['before']) && $v['before']) {
         $html .= $v['before'];
     }
-    if (!empty($v['content'])) {
-        if (is_array($v['content'])) {
-            $html .= '<ul>';
-            if (is_array($v['content'][0])) {
-                foreach ($v['content'][0] as $kk => $vv) {
+    if (!empty($list)) {
+        if (is_array($list)) {
+            if (is_array($list[0])) {
+                $html .= '<ul>';
+                foreach ($list[0] as $kk => $vv) {
                     $html .= is_callable($j) ? call_user_func($j, '<li>', $vv, $kk) : '<li>';
                     if (is_object($vv)) {
                         $w = $vv->url;
@@ -248,7 +250,7 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
                         } else {
                             $w = __replace__($i, $w);
                         }
-                        $html .= HTML::a($v['content'][1][$kk]->title, $w);
+                        $html .= HTML::a($list[1][$kk]->title, $w);
                     } else if (is_array($vv)) {
                         $w = $vv['url'];
                         if (is_callable($i)) {
@@ -256,7 +258,7 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
                         } else {
                             $w = __replace__($i, $w);
                         }
-                        $html .= HTML::a($v['content'][1][$kk]['title'], $w);
+                        $html .= HTML::a($list[1][$kk]['title'], $w);
                     } else {
                         if (is_callable($i)) {
                             $vv = call_user_func($i, $vv, $kk);
@@ -281,9 +283,12 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
                 $html .= $a ? '<li>' . implode(' ', $a) . '</li>' : "";
             }
             $html .= '</ul>';
-        } else if (is_string($v['content'])) {
-            $html .= $v['content'];
+        } else if (is_string($list)) {
+            $html .= $list;
         }
+    }
+    if ($content) {
+        $html .= $content;
     }
     if (isset($v['after']) && $v['after']) {
         $html .= $v['after'];

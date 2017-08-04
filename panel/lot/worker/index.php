@@ -33,7 +33,7 @@ if (Extend::exist('tag')) {
                             File::write(date(DATE_WISE))->saveTo($__f . DS . 'time.data', 0600);
                             File::write($__o)->saveTo($__f . DS . 'id.data', 0600);
                             Page::data([
-                                'title' => $__v,
+                                'title' => To::title($__v),
                                 'author' => $__author
                             ])->saveTo($__f . '.page', 0600);
                             Message::info($language->message_info_create([$language->tag, '<em>' . str_replace('-', ' ', $__v) . '</em>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['classes' => ['right']]));
@@ -53,37 +53,9 @@ if (Extend::exist('tag')) {
         }
     }
     Hook::set('on.' . $__NS . '.set', 'fn_tags_set');
-    // Delete trash…
-    Hook::set('on.user.exit', function() {
-        foreach (File::explore(TAG, true, true) as $__k => $__v) {
-            if ($__v === 0) continue;
-            $__kk = Path::F($__k);
-            foreach (g($__kk, 'trash', "", false) as $__v) {
-                File::open($__v)->delete();
-            }
-            if (Path::X($__k) === 'trash') {
-                File::open($__k)->delete();
-                if (Is::D($__kk)) {
-                    File::open($__kk)->delete();
-                }
-            }
-        }
-    });
 }
 
 // Delete trash…
 Hook::set('on.user.exit', function() {
-    foreach (File::explore(USER, true, true) as $__k => $__v) {
-        if ($__v === 0) continue;
-        $__kk = Path::F($__k);
-        foreach (g($__kk, 'trash') as $__v) {
-            File::open($__v)->delete();
-        }
-        if (Path::X($__k) === 'trash') {
-            File::open($__k)->delete();
-            if (Is::D($__kk)) {
-                File::open($__kk)->delete();
-            }
-        }
-    }
+    File::open(LOT . DS . 'trash')->delete();
 });

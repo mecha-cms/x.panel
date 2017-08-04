@@ -25,7 +25,7 @@ Config::set([
             't' => [
                 'page' => [
                     'title' => $language->editor,
-                    'content' => [
+                    'list' => [
                         'title' => [
                             'placeholder' => $__page[1]->title,
                             'stack' => 10
@@ -59,10 +59,6 @@ Config::set([
                             'expand' => null,
                             'stack' => 50
                         ],
-                        'type' => null,
-                        'link' => null,
-                        'tags' => null,
-                        '+[time]' => null,
                         // the submit button(s)
                         'x' => [
                             'values' => [
@@ -73,19 +69,26 @@ Config::set([
                             ],
                             'order' => ['page', 'trash'],
                             'stack' => 0
-                        ]
+                        ],
+                        '+[time]' => null,
+                        'type' => null,
+                        'link' => null,
+                        'tags' => null
                     ],
                     'stack' => 10
-                ]
+                ],
+                'file' => null,
+                'folder' => null,
+                'upload' => null
             ]
         ],
         's' => [
             1 => [
                 'kin' => [
                     'title' => $language->{$__chops[0] . 's'},
-                    'content' => $__kins,
+                    'list' => $__kins,
                     'a' => [
-                        ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]]
+                        'set' => ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]]
                     ],
                     'lot' => null,
                     'stack' => 10

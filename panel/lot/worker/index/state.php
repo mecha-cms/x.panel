@@ -1,5 +1,58 @@
 <?php
 
+if ($__states = g(LOT . DS . $__chops[0], 'php', "", false)) {
+    foreach ($__states as $__v) {
+        $__v = o(File::inspect($__v));
+        $__v->title = '<i class="i i-f"></i> ' . $__v->name . '.' . $__v->extension;
+        $__v->url = $__state->path . '/::g::/' . $__chops[0] . '/' . $__v->name;
+        $__kins[0][] = $__v;
+        $__kins[1][] = $__v;
+    }
+}
+
+$__N = isset($__chops[1]) ? $__chops[1] : 'config';
+if ($__f = File::exist(LOT . DS . $__chops[0] . DS . $__N . '.php')) {
+    $__s = [
+        'path' => $__f,
+        'config' => File::open($__f)->import()
+    ];
+    $__page = [
+        new Page(null, $__s, '__' . $__chops[0]),
+        new Page(null, $__s, $__chops[0])
+    ];
+}
+
+Lot::set([
+    '__kins' => $__kins,
+    '__page' => $__page
+]);
+
+if ($__is_post) {
+    if ($__c = Request::post('content')) {
+        File::export(From::yaml($__c))->saveTo(STATE . DS . $__N . '.php', 0600);
+    } else {
+        File::export(Request::post('c'))->saveTo(STATE . DS . $__N . '.php', 0600);
+    }
+    if (!isset($__chops[1]) || $__chops[1] === 'config') {
+        Message::success('update', [$language->setting, '<strong>' . $language->common . '</strong>']);
+        Message::success('update', [$language->setting, '<strong>' . $language->page . '</strong>']);
+    } else {
+        Message::success('update', [$language->setting, '<em>' . $__N . '.php</em>']);
+    }
+    if ($__c = Request::post('__')) {
+        $__c = array_replace_recursive((array) Extend::state(PANEL, []), (array) $__c);
+        if (!Request::post('__.shield')) {
+            unset($__c['shield']);
+        }
+        File::export($__c)->saveTo(PANEL . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
+        Message::success('update', [$language->setting, '<strong>' . $language->states . '</strong>']);
+        if (isset($__c['path']) && $__c['path'] !== $__state->path) {
+            Guardian::kick($url . '/' . $__c['path'] . '/::' . $__action . '::/' . $__path);
+        }
+    }
+    Guardian::kick($url->current);
+}
+
 Config::set([
     'is' => 'page',
     'panel' => [
@@ -8,7 +61,7 @@ Config::set([
         'm' => [
             't' => isset($__chops[1]) && $__chops[1] !== 'config' ? [
                 'editor' => [
-                    'content' => [
+                    'list' => [
                         'content' => [
                             'type' => 'editor',
                             'value' => To::yaml(File::open(STATE . DS . $__chops[1] . '.php')->import()),
@@ -48,61 +101,24 @@ Config::set([
                     'title' => $language->states,
                     'legend' => $language->__title,
                     'stack' => 30
-                ]
+                ],
+                'file' => null,
+                'folder' => null,
+                'upload' => null
+            ]
+        ],
+        's' => [
+            1 => [
+                'kin' => [
+                    'title' => $language->{count($__kins[0]) === 1 ? 'config' : 'configs'},
+                    'list' => $__kins,
+                    'if' => $__kins[0],
+                    'a' => null,
+                    'stack' => 10
+                ],
+                'search' => null,
+                'nav' => null
             ]
         ]
     ]
 ]);
-
-if ($__states = g(STATE, 'php', "", false)) {
-    foreach ($__states as $__v) {
-        $__v = o(File::inspect($__v));
-        $__v->title = '<i class="i i-f"></i> ' . $__v->name . '.' . $__v->extension;
-        $__v->url = $__state->path . '/::g::/' . $__chops[0] . '/' . $__v->name;
-        $__kins[0][] = $__v;
-        $__kins[1][] = $__v;
-    }
-}
-
-$__N = isset($__chops[1]) ? $__chops[1] : 'config';
-if ($__f = File::exist(STATE . DS . $__N . '.php')) {
-    $__s = [
-        'path' => $__f,
-        'config' => File::open($__f)->import()
-    ];
-    $__page = [
-        new Page(null, $__s, '__state'),
-        new Page(null, $__s, 'state')
-    ];
-}
-
-Lot::set([
-    '__kins' => $__kins,
-    '__page' => $__page
-]);
-
-if ($__is_post) {
-    if ($__c = Request::post('content')) {
-        File::export(From::yaml($__c))->saveTo(STATE . DS . $__N . '.php', 0600);
-    } else {
-        File::export(Request::post('c'))->saveTo(STATE . DS . $__N . '.php', 0600);
-    }
-    if (!isset($__chops[1]) || $__chops[1] === 'config') {
-        Message::success('update', [$language->setting, '<strong>' . $language->common . '</strong>']);
-        Message::success('update', [$language->setting, '<strong>' . $language->page . '</strong>']);
-    } else {
-        Message::success('update', [$language->setting, '<em>' . $__N . '.php</em>']);
-    }
-    if ($__c = Request::post('__')) {
-        $__c = array_replace_recursive((array) Extend::state(PANEL, []), (array) $__c);
-        if (!Request::post('__.shield')) {
-            unset($__c['shield']);
-        }
-        File::export($__c)->saveTo(PANEL . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
-        Message::success('update', [$language->setting, '<strong>' . $language->states . '</strong>']);
-        if (isset($__c['path']) && $__c['path'] !== $__state->path) {
-            Guardian::kick($url . '/' . $__c['path'] . '/::' . $__action . '::/' . $__path);
-        }
-    }
-    Guardian::kick($url->current);
-}

@@ -32,15 +32,22 @@ if ($__fn = File::exist($__path_shield . DS . '__index.php')) require $__fn;
 
 if ($__user_enter) {
     function fn_panel_asset_js_replace($__content) {
-        global $language;
+        global $language, $site;
+        $__languages = [];
+        foreach (glob(LANGUAGE . DS . '*.page') as $__v) {
+            $__languages[basename($__v, '.page')] = 1;
+        }
         $__a = array_merge([
-            'languages.$' => $language->get()
+            'language' => $site->language,
+            'languages' => array_merge([
+                '$' => $language->get()
+            ], $__languages)
         ], get_defined_constants(true)['user'], a(Config::get('panel.c.js', [])));
-        $__s = "";
+        $__s = '$.url=' . json_encode(__url__()) . ';$.u_r_l=$.url;$.token="' . Guardian::token() . '"';
         foreach ($__a as $__k => $__v) {
             $__s .= ';$.' . $__k . '=' . str_replace(['\\'], ['\\\\'], json_encode($__v));
         }
-        return $__content . '!function($){' . substr($__s, 1) . '}(window.PANEL);';
+        return $__content . '!function($){' . $__s . '}(window.PANEL);';
     }
     function fn_panel_asset_replace($__content) {
         global $language;
