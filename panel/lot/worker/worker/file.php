@@ -287,6 +287,7 @@ if (!file_exists(__DIR__ . DS . '..' . DS . $site->is . DS . $__chops[0] . '.php
                     'stack' => 10
                 ],
                 'parent' => [
+                    'title' => $language->parent,
                     'list' => [[$__parent[0]], [$__parent[1]]],
                     'if' => count($__chops) > 1,
                     'stack' => 20
