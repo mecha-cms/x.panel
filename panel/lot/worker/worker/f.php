@@ -58,13 +58,13 @@ if (Request::is('post')) {
     }
     // URL path
     if (Request::is('post', 'path')) {
-        $s = Request::post('path', "", false);
-        $format = '#^[a-z\\d]+(?:[-._\\/\\\\][a-z\\d]+)*(\\.[a-z\\d]+)?$#';
-        if (!is_string($s) || !preg_match($format, $s)) {
-            Request::save('post');
-            Message::error('pattern_field', $language->path, true);
+        if ($s = Request::post('path', "", false)) {
+            $format = '#^[a-z\\d]+(?:[-._\\/\\\\][a-z\\d]+)*(\\.[a-z\\d]+)?$#';
+            if (!is_string($s) || !preg_match($format, $s)) {
+                Request::save('post');
+                Message::error('pattern_field', $language->path, true);
+            }
         }
-        
     }
     // Comma–separated quer(y|ies)
     if (Request::is('post', 'query')) {

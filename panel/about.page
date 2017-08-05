@@ -8,10 +8,10 @@ version: 1.0.0
 
 ### Reserved Variables
 
- - `$__action`
  - `$__child`
  - `$__childs`
  - `$__chops`
+ - `$__command`
  - `$__data`
  - `$__datas`
  - `$__file`

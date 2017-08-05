@@ -12,7 +12,7 @@ call_user_func(function() use($language, &$__options, $__page) {
 });
 
 return implode("", [
-    $__action === 'g' && count($__chops) > 1 && Get::kin($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__path, 'draft,page,archive') ? '<h4>' . $language->sort . '</h4>
+    $__command === 'g' && count($__chops) > 1 && Get::kin($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__path, 'draft,page,archive') ? '<h4>' . $language->sort . '</h4>
 <table class="table">
   <thead>
     <tr>

@@ -8,7 +8,7 @@ $__sort = $__state->sort;
 $__chunk = $__state->chunk;
 $__is_get = Request::is('get');
 $__is_post = Request::is('post');
-$__is_has_step = $__action === 'g' && (count($__chops) === 1 || is_numeric(basename($url->path))) ? '/1' : ""; // Force index view by appending page offset to the end of URL
+$__is_has_step = $__command === 'g' && (count($__chops) === 1 || is_numeric(basename($url->path))) ? '/1' : ""; // Force index view by appending page offset to the end of URL
 
 Config::set('is', $__is_has_step ? 'pages' : 'page');
 Config::set('panel.x.s.data', 'chunk,css,id,js,kind,sort,time');

@@ -1,7 +1,7 @@
 <?php
 
 // Preparation(s)…
-if ($__action !== 's' && count($__chops) === 1) {
+if ($__command !== 's' && count($__chops) === 1) {
     $__chops[1] = $config->language;
     $__path .= '/' . $__chops[1];
 }
@@ -10,7 +10,7 @@ if ($__action !== 's' && count($__chops) === 1) {
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
 
 // Do not allow user to create page child(s)…
-if ($__f && $__action === 's') {
+if ($__f && $__command === 's') {
     Shield::abort(PANEL_404);
 }
 
@@ -63,7 +63,7 @@ Config::set([
                         'x' => [
                             'values' => [
                                 '*' . $__page[0]->state => null,
-                                'page' => $language->{$__action === 's' ? 'create' : 'update'},
+                                'page' => $language->{$__command === 's' ? 'create' : 'update'},
                                 'draft' => null,
                                 'archive' => null
                             ],

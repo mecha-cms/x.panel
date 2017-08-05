@@ -1,1 +1,1 @@
-<?php return ['mode'=>['css','xml','gfm','htmlmixed','yaml','php','clike','javascript','markdown','textile'],'addon'=>['dialog','display','edit','fold','hint','search','selection']];
+<?php return ['mode'=>['css','xml','gfm','htmlmixed','yaml','php','clike','javascript','markdown','textile'],'addon'=>['dialog','fold','search','hint','selection','edit','display']];

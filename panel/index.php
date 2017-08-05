@@ -2,25 +2,25 @@
 
 // a: anchor/article
 // b:
-// c: configuration/container
+// c: configuration/container/cookie
 // d: data
 // e:
 // f: field/form
-// g:
+// g: get
 // h: hint
 // i: icon
 // j:
 // k:
-// l:
+// l: layout
 // m: main
 // n: navigation
 // o: option
 // p: page/paragraph/path
 // q:
-// r: require path
-// s: secondary/sidebar
+// r: reset/require path
+// s: set/secondary/sidebar/session
 // t: tab
-// u:
+// u: upload
 // v: check mark/enable/show/add
 // w:
 // x: cross mark/disable/hide/remove

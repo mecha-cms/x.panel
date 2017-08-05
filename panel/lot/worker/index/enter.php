@@ -1,6 +1,6 @@
 <?php
 
-if ($__action !== 'g') {
+if ($__command !== 'g') {
     Shield::abort(PANEL_404);
 }
 

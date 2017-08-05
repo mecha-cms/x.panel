@@ -47,7 +47,7 @@ if ($__is_post) {
         File::export($__c)->saveTo(PANEL . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
         Message::success('update', [$language->setting, '<strong>' . $language->states . '</strong>']);
         if (isset($__c['path']) && $__c['path'] !== $__state->path) {
-            Guardian::kick($url . '/' . $__c['path'] . '/::' . $__action . '::/' . $__path);
+            Guardian::kick($url . '/' . $__c['path'] . '/::' . $__command . '::/' . $__path);
         }
     }
     Guardian::kick($url->current);
@@ -80,8 +80,8 @@ Config::set([
                             'type' => 'submit[]',
                             'title' => $language->submit,
                             'values' => [
-                                'php' => $language->{$__action === 's' ? 'save' : 'update'},
-                                '.x' => [$__action === 's' ? null : $language->delete, 'trash']
+                                'php' => $language->{$__command === 's' ? 'save' : 'update'},
+                                '.x' => [$__command === 's' ? null : $language->delete, 'trash']
                             ],
                             'stack' => 0
                         ]

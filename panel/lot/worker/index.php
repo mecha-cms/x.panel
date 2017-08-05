@@ -29,31 +29,34 @@ if (Extend::exist('tag')) {
                             ++$__o;
                             $__kinds[] = $__o;
                             $__f = TAG . DS . $__v;
-                            Hook::fire('on.tag.set', [$__file, $__o]);
                             File::write(date(DATE_WISE))->saveTo($__f . DS . 'time.data', 0600);
                             File::write($__o)->saveTo($__f . DS . 'id.data', 0600);
                             Page::data([
-                                'title' => To::title($__v),
+                                'title' => ($__t = To::title($__v)),
                                 'author' => $__author
                             ])->saveTo($__f . '.page', 0600);
-                            Message::info($language->message_info_create([$language->tag, '<em>' . str_replace('-', ' ', $__v) . '</em>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['classes' => ['right']]));
+                            Message::info($language->message_info_create([$language->tag, '<strong>' . $__t . '</strong>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['classes' => ['right']]));
+                            Hook::fire('on.tag.set', [$__file, null, $__o]);
                         }
                     }
                     $__kinds = array_unique($__kinds);
                     sort($__kinds);
-                    Hook::fire('on.tags.set', [$__file, $__kinds]);
                     if (!Message::$x) {
                         File::write(To::json($__kinds))->saveTo(Path::F($__file) . DS . 'kind.data', 0600);
+                        Hook::fire('on.tags.set', [$__file, null, $__kinds]);
                     }
                 }
             } else {
-                Hook::fire('on.tags.reset', [$__file, []]);
                 File::open(Path::F($__file) . DS . 'kind.data')->delete();
+                Hook::fire('on.tags.reset', [$__file, null, []]);
             }
         }
     }
     Hook::set('on.' . $__NS . '.set', 'fn_tags_set');
 }
+
+// Set proper menu name…
+Config::set('panel.n.extend.text', $language->extension);
 
 // Delete trash…
 Hook::set('on.user.exit', function() {

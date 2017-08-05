@@ -1,6 +1,6 @@
 <?php
 
-if ($__is_get && $__action === 'x') {
+if ($__is_get && $__command === 'x') {
     if (!$__t = Request::get('token')) {
         Shield::abort(PANEL_404);
     }
@@ -23,15 +23,21 @@ if ($__is_get && $__action === 'x') {
     if ($__xx === 'draft' || $__xx === 'page' || $__xx === 'archive') {
         $__pp = Path::F($__pp);
     } else if ($__xx === 'data') {
-        $__aa = explode('/', Path::F($__pp));
+        $__aa = explode('/', Path::F($__pp, null, '/'));
         $__nn = array_pop($__aa);
         $__pp = implode('/', $__aa) . '/+/' . $__nn;
+    } else {
+        $__query = HTTP::query([
+            'token' => false,
+            'force' => false,
+            'l' => 'file'
+        ]);
     }
-    Guardian::kick($__state->path . '/::g::/' . $__pp);
+    Guardian::kick($__state->path . '/::g::/' . $__pp . $__query);
 }
 
 // Read only!
-if ($__action !== 'g' || !$__is_has_step) {
+if ($__command !== 'g' || !$__is_has_step) {
     Shield::abort(PANEL_404);
 }
 

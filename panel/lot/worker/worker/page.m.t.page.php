@@ -6,7 +6,7 @@ $__buttons = [
     'page' => $language->publish,
     'draft' => $language->save,
     'archive' => $language->archive,
-    'trash' => $__action === 's' ? null : $language->delete
+    'trash' => $__command === 's' ? null : $language->delete
 ];
 
 call_user_func(function() use($__page, &$__tags, &$__types) {
@@ -137,13 +137,13 @@ return [
         'key' => 'time',
         'type' => 'date',
         'value' => $__page[0]->time,
-        'if' => $__action !== 's',
+        'if' => $__command !== 's',
         'stack' => 100
     ],
     'x' => [
         'type' => 'submit[]',
         'title' => $language->submit,
-        'values' => array_merge($__action !== 's' ? [
+        'values' => array_merge($__command !== 's' ? [
             '*' . $__X => $language->update . ' (' . Anemon::alter($__X, $__buttons) . ')'
         ] : [], array_filter($__buttons, function($__k) use($__X) {
             return $__k !== $__X;

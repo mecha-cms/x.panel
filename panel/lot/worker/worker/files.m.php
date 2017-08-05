@@ -1,9 +1,14 @@
 <?php
 
+$__query = HTTP::query([
+    'token' => false,
+    'force' => false
+]);
+
 if (Request::get('q')) {
-    $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
+    $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step . $__query]];
 } else {
-    $__links = ['set' => ['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
+    $__links = ['set' => ['&#x2795; ' . $language->{count($__chops) === 1 ? $__chops[0] : 'file'}, $__state->path . '/::s::/' . $__path . $__query]];
 }
 
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
@@ -36,7 +41,7 @@ foreach ($__links as $__k => $__v) {
       <?php if ($__v->is->file): ?>
       <span class="a" title="<?php echo $language->size . ': ' . $__v->size; ?>"><?php echo $__vv->title; ?></span>
       <?php else: ?>
-      <a href="<?php echo $__v->url; ?>" title="<?php echo ($__ii = count(glob($__v->path . DS . '*', GLOB_NOSORT))) . ' ' . $language->{$__ii === 1 ? 'item' : 'items'}; ?>"><?php echo $__vv->title; ?></a><?php
+      <a href="<?php echo $__v->url . $__query; ?>" title="<?php echo ($__ii = count(glob($__v->path . DS . '*', GLOB_NOSORT))) . ' ' . $language->{$__ii === 1 ? 'item' : 'items'}; ?>"><?php echo $__vv->title; ?></a><?php
   
       /*
       if ($__v->is->files && count(glob($__v->path . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) === 1 && $__g = File::explore($__v->path, true, true)) {
@@ -74,8 +79,8 @@ foreach ($__links as $__k => $__v) {
 
     $__as = [
         'view' => $__v->is->file ? [$language->view, $__vv->url, true] : null,
-        'set' => $__v->is->file ? null : [$language->add, str_replace('::g::', '::s::', $__uu)],
-        'edit' => [$language->edit, $__uu],
+        'set' => $__v->is->file ? null : [$language->add, str_replace('::g::', '::s::', $__uu) . $__query],
+        'edit' => [$language->edit, $__uu . $__query],
         'reset' => [$language->delete, str_replace('::g::', '::r::', $__v->url . HTTP::query(['token' => $__token]))]
     ];
 
@@ -107,11 +112,11 @@ foreach ($__links as $__k => $__v) {
   $__s = HTML::a($__chops[0], $__uu);
   foreach ($__chops_c as $__k => $__v) {
       $__uu .= '/' . $__v;
-      $__s .= ' / ' . HTML::a($__v, $__uu . $__is_has_step);
+      $__s .= ' / ' . HTML::a($__v, $__uu . $__is_has_step . $__query);
   }
 
   echo $__s . ' / ' . $__chops_e;
-    
+
   ?>
   </nav>
   <?php endif; ?>
@@ -119,7 +124,7 @@ foreach ($__links as $__k => $__v) {
   <?php if ($__q = Request::get('q')): ?>
   <p><?php echo $language->message_error_search('<em>' . $__q . '</em>'); ?></p>
   <?php else: ?>
-  <p><?php echo $site->__step === 1 && count($__chops) === 1 ? $language->message_info_void($language->{$__chops[0] . 's'}) : To::sentence($language->_finded); ?></p>
+  <p><?php echo is_dir(LOT . DS . $__path) || ($site->__step === 1 && count($__chops) === 1) ? $language->message_info_void($language->{(count($__chops) === 1 ? $__chops[0] : 'file') . 's'}) : To::sentence($language->_finded); ?></p>
   <?php endif; ?>
   <?php endif; ?>
 </section>

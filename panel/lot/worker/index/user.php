@@ -12,9 +12,9 @@ Hook::set($__chops[0] . '.url', function($__content, $__lot) use($__chops) {
 Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',email,pass,status,token');
 
 // Replace `title` field with `author` field on user create event…
-Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__action, $__path, $__state) {
+Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__command, $__path, $__state) {
     Message::reset();
-    Message::success($__action === 's' ? 'create' : 'update', [$language->user, '<strong>' . Request::post('author') . '</strong>']);
+    Message::success($__command === 's' ? 'create' : 'update', [$language->user, '<strong>' . Request::post('author') . '</strong>']);
     if (!file_exists(Path::F($__f) . DS . 'pass.data')) {
         $__f = Path::N($__f);
         User::reset();
@@ -28,7 +28,7 @@ Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__action,
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
 
 // Do not allow user to create page child(s)…
-if ($__f && $__action === 's') {
+if ($__f && $__command === 's') {
     Shield::abort(PANEL_404);
 }
 
@@ -63,12 +63,12 @@ Config::set('panel.f.page', [
         'type' => 'text',
         'placeholder' => To::slug($language->user),
         'title' => $language->key,
-        'description' => $__action === 's' ? $language->h_user : null,
+        'description' => $__command === 's' ? $language->h_user : null,
         'attributes' => [
             'data' => [
                 'slug-o' => 'author'
             ],
-            'readonly' => $__action === 's' ? null : true
+            'readonly' => $__command === 's' ? null : true
         ],
         'expand' => false,
         'stack' => 20
@@ -103,7 +103,7 @@ Config::set('panel.f.page', [
     ],
     'x' => [
         'values' => [
-            '*' . $__x => $__action === 's' ? null : $language->update,
+            '*' . $__x => $__command === 's' ? null : $language->update,
             'page' => $__x === 'page' ? null : $language->create,
             'draft' => $__x === 'draft' ? null : $language->save,
             'archive' => null

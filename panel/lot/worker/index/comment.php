@@ -10,7 +10,7 @@ Hook::set('__comment.url', function($__content, $__lot) use($__state) {
     return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
 });
 
-if ($__f = File::exist(__DIR__ . DS . 'comment' . DS . $__action . '.php')) require $__f;
+if ($__f = File::exist(__DIR__ . DS . 'comment' . DS . $__command . '.php')) require $__f;
 
 Config::set([
     'panel' => [

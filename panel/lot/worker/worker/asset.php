@@ -64,5 +64,5 @@ if ($__user_enter) {
     Hook::set('shield.output', 'fn_panel_asset_replace', 10);
     Hook::set('panel.js', 'fn_panel_asset_js_replace', 10);
     // Insert your panel extension’s asset(s) on panel ready event where possible
-    Hook::NS('on.panel.ready', []);
+    Hook::fire('on.panel.ready', []);
 }

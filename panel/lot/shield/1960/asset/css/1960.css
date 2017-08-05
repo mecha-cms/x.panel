@@ -57,6 +57,21 @@ fieldset {border-style:solid}
 .input[type="range"],
 .input[readonly],
 .textarea[readonly] {box-shadow:none}
+.h {
+  background:#fea;
+  border-top:1px solid #ed9;
+}
+.f + .h {
+  background:none;
+  border:0;
+  color:#a65;
+}
+.i-d {background:#89a}
+.i-f:before {border-color:#89a}
+.i-f:after {
+  border-bottom-color:#89a;
+  border-left-color:#89a;
+}
 .m {background:#ffa}
 .m .m-button {border-color:#ee9}
 .m .m-page article {box-shadow:inset 0 -4px 0 #eec,0 1px 2px rgba(0,0,0,.25)}
@@ -92,24 +107,10 @@ fieldset {border-style:solid}
 }
 .n ul + span {color:#fff}
 .s-setting {background:#fea}
-.i-d {background:#89a}
-.i-f:before {border-color:#89a}
-.i-f:after {
-  border-bottom-color:#89a;
-  border-left-color:#89a;
-}
 .s .input,
 .s .select,
 .s .textarea {background-color:#afa}
-.h {
-  background:#fea;
-  border-top:1px solid #ed9;
-}
-.f + .h {
-  background:none;
-  border:0;
-  color:#a65;
-}
+.t-c\:info {box-shadow:0 1px 2px rgba(0,0,0,.25)}
 .message {background:#ee8}
 .layout-0,
 .p-404 {background:#ffa}

@@ -4,7 +4,7 @@
 require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
 
 // Do not allow user to create page child(s)…
-if ($__f && $__action === 's') {
+if ($__f && $__command === 's') {
     Shield::abort(PANEL_404);
 }
 
@@ -16,7 +16,7 @@ $__x = $__page[0] ? $__page[0]->state : 'page';
 Config::set('panel.f.page', [
     'x' => [
         'values' => [
-            '*' . $__x => $__action === 's' ? null : $language->update,
+            '*' . $__x => $__command === 's' ? null : $language->update,
             'page' => $__x === 'page' ? null : $language->create,
             'draft' => $__x === 'draft' ? null : $language->save,
             'archive' => null

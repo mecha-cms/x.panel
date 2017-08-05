@@ -10,4 +10,4 @@ call_user_func(function() use(&$__id, $__path) {
     ++$__id;
 });
 
-return '<p>' . Form::text('!+[id]', $__action === 's' ? $__id : $__page[0]->id, $__id, ['classes' => ['input', 'block'], 'id' => 'f-id', 'ondblclick' => 'this.removeAttribute(\'readonly\'),this.focus(),this.select();', 'onblur' => 'this.setAttribute(\'readonly\',!0);']) . '</p>';
+return '<p>' . Form::text('!+[id]', $__command === 's' ? $__id : $__page[0]->id, $__id, ['classes' => ['input', 'block'], 'id' => 'f-id', 'ondblclick' => 'this.removeAttribute(\'readonly\'),this.focus(),this.select();', 'onblur' => 'this.setAttribute(\'readonly\',!0);']) . '</p>';

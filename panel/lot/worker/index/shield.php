@@ -1,27 +1,13 @@
 <?php
 
-// `panel/::s::/shield` → upload a new shield
-// `panel/::g::/shield` → index view
-// `panel/::s::/shield/blastula` → create new child file in `lot\shield\blastula`
-// `panel/::g::/shield/blastula` → view blastula shield file(s)
-Config::set([
-    'panel' => [
-        'layout' => 2,
-        'c:f' => !$__is_has_step,
-        'm' => [
-            't' => [
-                'file' => [
-                    'title' => $language->editor,
-                    'stack' => 10
-                ]
-            ]
-        ]
-    ]
-]);
+Config::set('panel.v.' . $__chops[0] . '.as', $config->shield);
 
-Hook::set('__page.url', function($__content, $__lot) use($__state) {
-    $__s = Path::D(Path::F($__lot['path'], LOT));
-    return rtrim($__state->path . '/::g::/' . ltrim(To::url($__s), '/'), '/');
+Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops) {
+    if (file_exists(LOT . DS . $__chops[0] . DS . $__v[0]->slug . DS . 'state' . DS . 'config.php')) {
+        $__a = ['state' => [$language->setting, $__a['edit'][1] . '/state/config.php']] + $__a;
+    }
+    $__a['edit'][0] = $language->open;
+    return $__a;
 });
 
-if ($__f = File::exist(__DIR__ . DS . 'shield' . DS . $__action . '.php')) require $__f;
+require __DIR__ . DS . 'extend.php';

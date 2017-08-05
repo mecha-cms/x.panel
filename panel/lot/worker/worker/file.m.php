@@ -1,18 +1,19 @@
 <?php
 
-// before
-if (!empty($__f = Config::get('panel.m.before'))) {
-    if (is_string($__f) && is_file($__f)) {
-        require $__f;
-    } else {
-        echo $__f;
-    }
-}
-
 // tab
+$__hiddens = [];
+$__submit = false;
 if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
     return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);
 })) {
+    // before tab
+    if (!empty($__f = Config::get('panel.m.before'))) {
+        if (is_string($__f) && is_file($__f)) {
+            require $__f;
+        } else {
+            echo $__f;
+        }
+    }
     if (count($__t) > 1) {
         $__t = Anemon::eat($__t)->sort([1, 'stack'], true)->vomit();
         echo '<nav class="t">';
@@ -26,13 +27,11 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
         }
         echo '</nav>';
     }
-    $__hiddens = [];
-    $__submit = false;
     foreach ($__t as $__k => $__v) {
         if (!isset($__v['title'])) {
             $__v['title'] = $language->{$__k};
         }
-        echo '<section class="t-c" id="t:' . $__k . '">';
+        echo '<section class="t-c t-c:' . $__k . '" id="t:' . $__k . '">';
         if (!isset($__v['list']) && $__w = File::exist(__DIR__ . DS . '..' . DS . 'page' . DS . $__chops[0] . '.m.t.' . $__k . '.php')) {
             $__v['list'] = include $__w;
         } else if (isset($__v['list']) && is_string($__v['list']) && is_file($__v['list'])) {
@@ -81,37 +80,36 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
         }
         echo '</section>';
     }
-} else {
-    echo '<p>:(</p>';
-}
-if (Config::get('panel.c:f', Config::get('panel.m:f', false))) {
-    if ($__submit) {
-        echo call_user_func_array('__panel_f__', $__submit);
-    } else {
-        echo __panel_f__('x', [
-            'type' => 'submit',
-            'title' => $language->submit,
-            'value' => 'txt'
-        ]);
-    }
-    if (!empty($__hiddens)) {
-        foreach ($__hiddens as $__k => $__v) {
-            echo __panel_f__($__k, $__v);
+    // after tab
+    if (!empty($__f = Config::get('panel.m.after'))) {
+        if (is_string($__f) && is_file($__f)) {
+            require $__f;
+        } else {
+            echo $__f;
         }
     }
+    if (Config::get('panel.c:f', Config::get('panel.m:f', false))) {
+        if (isset($__submit) && $__submit) {
+            echo call_user_func_array('__panel_f__', $__submit);
+        } else {
+            echo __panel_f__('x', [
+                'type' => 'submit',
+                'title' => $language->submit,
+                'value' => 'txt'
+            ]);
+        }
+        if (!empty($__hiddens)) {
+            foreach ($__hiddens as $__k => $__v) {
+                echo __panel_f__($__k, $__v);
+            }
+        }
+    }
+} else {
+    echo '<p>:(</p>';
 }
 
 // content
 if (!empty($__f = Config::get('panel.m.content'))) {
-    if (is_string($__f) && is_file($__f)) {
-        require $__f;
-    } else {
-        echo $__f;
-    }
-}
-
-// after
-if (!empty($__f = Config::get('panel.m.after'))) {
     if (is_string($__f) && is_file($__f)) {
         require $__f;
     } else {

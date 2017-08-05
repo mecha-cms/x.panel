@@ -1,9 +1,14 @@
 <?php
 
+$__query = HTTP::query([
+    'token' => false,
+    'force' => false
+]);
+
 if (Request::get('q')) {
-    $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step]];
+    $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step . $__query]];
 } else {
-    $__links = ['set' => ['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path]];
+    $__links = ['set' => ['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path . $__query]];
 }
 
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
@@ -36,14 +41,14 @@ foreach ($__links as $__k => $__v) {
 
   $__pp = $__v->path;
   $__ppp = explode('/', Path::F($__pp, null, '/'));
-  $__pppp = array_pop($__ppp) === array_pop($__ppp) && file_exists(Path::D($__pp) . '.' . Path::X($__pp));
+  $__pppp = Config::get('panel.v.' . $__chops[0] . '.is.hidden', array_pop($__ppp)) === array_pop($__ppp) && file_exists(Path::D($__pp) . '.' . Path::X($__pp));
 
   $__as = [
-      'edit' => $__pppp ? null : [$language->edit, $__uu]
+      'edit' => $__pppp ? null : [$language->edit, $__uu . $__query]
   ];
 
-  if ($__is_pages = !!g(LOT . explode('::' . $__action . '::', $__uu, 2)[1], 'draft,page,archive', "", false)) {
-      $__as['get'] = [$language->open, $__uu . '/1'];
+  if ($__is_pages = Config::get('panel.v.' . $__chops[0] . '.is.pages', !!g(LOT . explode('::' . $__command . '::', $__uu, 2)[1], 'draft,page,archive', "", false))) {
+      $__as['get'] = [$language->open, $__uu . '/1' . $__query];
   }
 
   $__as['reset'] = [$language->delete, str_replace('::g::', '::r::', $__uu) . HTTP::query(['token' => $__token]), false, ['title' => $__pppp ? $language->__->panel->as_pages : null]];
@@ -51,7 +56,7 @@ foreach ($__links as $__k => $__v) {
   $__as = Hook::fire('panel.a.' . $__chops[0], [$__as, [$__v, $__vv], $__pages]);
 
   $__cc = $__chops[0] . ' as.' . $__v->state . ($__pppp ? ' is.hidden' : "") . ($__v->status !== null ? ' status.' . $__v->status : "");
-  if ($__c === ltrim($__current . '/' . $__v->slug, '/')) {
+  if (Config::get('panel.v.' . $__chops[0] . '.as', $__c) === ltrim($__current . '/' . $__v->slug, '/')) {
       $__cc .= ' as.';
   }
   if (!$__is_pages || file_exists(Path::F($__pp) . DS . Path::N($__pp))) {

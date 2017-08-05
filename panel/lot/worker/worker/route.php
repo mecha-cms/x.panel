@@ -1,20 +1,20 @@
 <?php
 
 // Set common path…
-Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__action, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
+Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'], function($__command, $__path, $__step = 1) use($__state, $__user_enter, $__user_key, $__user_token) {
     extract(Lot::get(null, []));
-    $__action = To::url($__action, true);
+    $__command = To::url($__command, true);
     $__path = To::url($__path, true);
     $__path_shield = PANEL . DS . 'lot' . DS . 'shield' . DS . $__state->shield;
     $__chops = explode('/', $__path);
     $__DIR = Path::D(__DIR__);
     $__s = $__DIR . DS . 'worker' . DS;
     Lot::set([
-        '__action' => $__action,
+        '__chops' => $__chops,
+        '__command' => $__command,
         '__path' => $__path,
         '__path_shield' => $__path_shield,
-        '__step' => $__step - 1,
-        '__chops' => $__chops
+        '__step' => $__step - 1
     ]);
     require $__s . 'extend.php';
     require $__s . 'extend' . DS . 'plugin.php';
@@ -39,12 +39,6 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
             }
         }
     }
-    // Default to file manager
-    require $__s . 'file.php';
-    if ($__f = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php')) {
-        // Custom file manager layout
-        require $__f;
-    }
     Lot::set([
         '__token' => $__token,
         '__hash' => $__hash,
@@ -54,7 +48,13 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__user_token' => $__user_token,
         '__message' => Message::get() ?: Lot::get('message', "")
     ]);
-    if ($__user && $__action === 's' && Request::is('get')) {
+    // Default to file manager
+    require Path::D(__DIR__) . DS . 'worker' . DS . 'file.php';
+    if ($__f = File::exist(Path::D(__DIR__) . DS . 'index' . DS . $__chops[0] . '.php')) {
+        // Custom file manager layout
+        require $__f;
+    }
+    if ($__user && $__command === 's' && Request::is('get')) {
         Request::save('post', 'user', '@' . $__user->key);
     }
     if (($__l = Request::get('layout', "")) !== "") {
