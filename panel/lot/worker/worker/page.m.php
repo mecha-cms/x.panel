@@ -15,6 +15,6 @@ foreach ($__links as $__k => $__v) {
   <p><?php echo implode(' ', $__links); ?></p>
 </section>
 <?php endif; ?>
-<section class="m-file">
+<section class="m-page">
   <?php require __DIR__ . DS . '-m.php'; ?>
 </section>
