@@ -88,7 +88,7 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
             echo $__f;
         }
     }
-    if (Config::get('panel.c:f', Config::get('panel.m:f', false))) {
+    if (Config::get('panel.c:f') || Config::get('panel.m:f')) {
         if (isset($__submit) && $__submit) {
             echo call_user_func_array('__panel_f__', $__submit);
         } else {

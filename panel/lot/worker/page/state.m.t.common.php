@@ -25,7 +25,7 @@ return [
     'c[zone]' => [
         'key' => 'zone',
         'type' => 'select',
-        'value' => $__page[0]->config['zone'],
+        'value' => $__page[0]->c['zone'],
         'values' => Get::zone(),
         'is' => [
             'block' => true
@@ -36,29 +36,29 @@ return [
         'key' => 'charset',
         'type' => 'text',
         'title' => $language->encoding,
-        'value' => $__page[0]->config['charset'],
+        'value' => $__page[0]->c['charset'],
         'placeholder' => 'utf-8',
         'stack' => 20
     ],
     'c[language]' => [
         'key' => 'language',
         'type' => 'select',
-        'value' => $__page[0]->config['language'],
+        'value' => $__page[0]->c['language'],
         'values' => $__languages,
         'stack' => 30
     ],
     'c[direction]' => [
         'key' => 'direction',
         'type' => 'toggle',
-        'value' => $__page[0]->config['direction'],
+        'value' => $__page[0]->c['direction'],
         'values' => $language->o_direction,
         'stack' => 40
     ],
     'c[title]' => [
         'key' => 'title',
         'type' => 'text',
-        'value' => $__page[0]->config['title'],
-        'placeholder' => $__page[1]->config['title'] ?: $language->f_title,
+        'value' => $__page[0]->c['title'],
+        'placeholder' => $__page[1]->c['title'] ?: $language->f_title,
         'is' => [
             'block' => true
         ],
@@ -67,15 +67,15 @@ return [
     'c[description]' => [
         'key' => 'description',
         'type' => 'textarea',
-        'value' => $__page[0]->config['description'],
-        'placeholder' => $__page[1]->config['description'] ?: $language->f_description($language->site),
+        'value' => $__page[0]->c['description'],
+        'placeholder' => $__page[1]->c['description'] ?: $language->f_description($language->site),
         'union' => ['div'],
         'stack' => 60
     ],
     'c[shield]' => [
         'key' => 'shield',
         'type' => 'select',
-        'value' => $__page[0]->config['shield'],
+        'value' => $__page[0]->c['shield'],
         'values' => $__shields,
         'stack' => 70
     ],
@@ -83,7 +83,7 @@ return [
         'key' => 'page-editor',
         'type' => 'select',
         'title' => $language->editor,
-        'value' => isset($__page[0]->config['page']['editor']) ? $__page[0]->config['page']['editor'] : "",
+        'value' => isset($__page[0]->c['page']['editor']) ? $__page[0]->c['page']['editor'] : "",
         'values' => array_merge(['!' => '&#x2716;'], $__editors),
         'stack' => 80
     ],

@@ -111,7 +111,7 @@ if ($__is_has_step) {
             if (!empty($_FILES)) {
                 $__extract = Request::post('extract');
                 foreach ($_FILES as $__k => $__v) {
-                    if (!$__v) continue;
+                    if (!$__v || empty($__v['size'])) continue;
                     File::upload($__v, LOT . DS . $__path, $__extract && $__k === 'file' ? function($__a) {
                         if (!extension_loaded('zip')) {
                             Guardian::abort('<a href="http://www.php.net/manual/en/book.zip.php" title="PHP &#x2013; Zip" rel="nofollow" target="_blank">PHP Zip</a> extension is not installed on your web server.');
@@ -129,8 +129,9 @@ if ($__is_has_step) {
                         }
                     } : null);
                     if (!$__extract) {
-                        Session::set('panel.file.s.' . md5($__v['name']), 1);
-                        Hook::fire('on.package.set', [LOT . DS . str_replace('/', DS, $__path) . DS . $__v['name'], null]);
+                        $__nn = To::file($__v['name']);
+                        Session::set('panel.file.s.' . md5($__nn), 1);
+                        Hook::fire('on.package.set', [LOT . DS . str_replace('/', DS, $__path) . DS . $__nn, null]);
                     }
                 }
             }
@@ -344,7 +345,7 @@ Config::set('panel', [
                     ],
                     'kick' => [
                         'type' => 'toggle',
-                        'title' => null,
+                        'title' => "",
                         'text' => $language->h_kick__($language->folder),
                         'attributes' => [
                             'checked' => !!Request::restore('post', 'kick', false)
@@ -363,7 +364,7 @@ Config::set('panel', [
                     ],
                     'extract' => [
                         'type' => 'toggle',
-                        'title' => null,
+                        'title' => "",
                         'text' => $language->h_extract,
                         'stack' => 20
                     ]

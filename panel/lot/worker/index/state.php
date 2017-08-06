@@ -25,7 +25,7 @@ Hook::set('shield.enter', function() {
     if ($__f = File::exist(LOT . DS . $__chops[0] . DS . $__B)) {
         $__s = [
             'path' => $__f,
-            'config' => File::open($__f)->import()
+            'c' => File::open($__f)->import()
         ];
         $__page = [
             new Page(null, $__s, '__' . $__chops[0]),
