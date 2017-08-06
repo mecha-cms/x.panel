@@ -515,8 +515,9 @@ if ($__is_data) {
 
 Config::set([
     'panel' => [
-        'layout' => $__is_has_step || $__is_data ? 2 : 3,
-        'c:f' => !$__is_has_step,
+        'layout' => Config::get('panel.layout', $__is_has_step || $__is_data ? 2 : 3),
+        'c:f' => Config::get('panel.c:f', !$__is_has_step),
+        'm:f' => Config::get('panel.m:f', false),
         'm' => [
             't' => [
                 'page' => $__is_data ? null : [

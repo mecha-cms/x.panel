@@ -8,7 +8,7 @@ $__query = HTTP::query([
 if (Request::get('q')) {
     $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step . $__query]];
 } else {
-    $__links = ['set' => ['&#x2795; ' . $language->{$__chops[0]}, $__state->path . '/::s::/' . $__path . $__query]];
+    $__links = ['set' => ['&#x2795; ' . Config::get('panel.n.' . $__chops[0] . '.text', $language->{$__chops[0]}), $__state->path . '/::s::/' . $__path . $__query]];
 }
 
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
@@ -46,8 +46,13 @@ foreach ($__links as $__k => $__v) {
   $__as = [
       'edit' => $__pppp ? null : [$language->edit, $__uu . $__query]
   ];
+  
+  $__is_pages = !!g(LOT . explode('::' . $__command . '::', $__uu, 2)[1], 'draft,page,archive', "", false);  
+  if ($__s = Config::get('panel.v.' . $__chops[0] . '.is.pages', "")) {
+      $__is_pages = strpos(',' . $__s . ',', ',' . $__v->slug . ',') !== false;
+  }
 
-  if ($__is_pages = Config::get('panel.v.' . $__chops[0] . '.is.pages', !!g(LOT . explode('::' . $__command . '::', $__uu, 2)[1], 'draft,page,archive', "", false))) {
+  if ($__is_pages) {
       $__as['get'] = [$language->open, $__uu . '/1' . $__query];
   }
 

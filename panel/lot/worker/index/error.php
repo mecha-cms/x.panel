@@ -8,7 +8,13 @@ Config::set([
     'is' => 'page',
     'panel' => [
         'layout' => 2,
-        'c:f' => true,
+        'c:f' => true
+    ]
+]);
+
+Hook::set('shield.enter', function() {
+    extract(Lot::get(null, []));
+    Config::set('panel', [
         'm' => [
             't' => [
                 'summary' => [
@@ -19,14 +25,14 @@ Config::set([
                 ],
                 'file' => null,
                 'folder' => null,
-                'upload' => null
+                'package' => null
             ]
         ],
         's' => [
             1 => null
         ]
-    ]
-]);
+    ]);
+}, 0);
 
 if ($__is_post) {
     File::open($__log)->delete();

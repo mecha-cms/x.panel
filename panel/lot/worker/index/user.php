@@ -1,5 +1,10 @@
 <?php
 
+// Do not allow user to create page child(s)…
+if ($__command === 's' && count($__chops) > 1) {
+    Shield::abort(PANEL_404);
+}
+
 // Preparation(s)…
 Hook::set($__chops[0] . '.title', function($__content, $__lot) use($__chops) {
     $__s = Page::apart(file_get_contents($__lot['path']));
@@ -24,111 +29,105 @@ Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__command
     }
 });
 
-// Load the main task(s)…
-require __DIR__ . DS . '..' . DS . 'worker' . DS . 'page.php';
-
-// Do not allow user to create page child(s)…
-if ($__f && $__command === 's') {
-    Shield::abort(PANEL_404);
-}
-
 // Set custom file manager layout
 Config::set('panel.l', 'page');
 
 // Set or modify the default panel content(s)…
-$__u = $__page[0] ? $__page[0] : (object) [
-    'email' => null,
-    'link' => null,
-    'state' => 'page',
-    'status' => 1
-];
-$__x = $__u->state;
-$__o = (array) $language->o_user;
-$__z = !g(LOT . DS . $__path, 'page', "", false) && User::get(null, 'status') !== 1 ? '.' : "";
-Config::set('panel.m.t.page.title', $language->user);
-Config::set('panel.f.page', [
-    'author' => [
-        'placeholder' => $language->user,
-        'is' => [
-            'hidden' => false
-        ],
-        'attributes' => [
-            'data' => [
-                'slug-i' => 'author'
-            ]
-        ],
-        'stack' => 10
-    ],
-    '*slug' => [
-        'type' => 'text',
-        'placeholder' => To::slug($language->user),
-        'title' => $language->key,
-        'description' => $__command === 's' ? $language->h_user : null,
-        'attributes' => [
-            'data' => [
-                'slug-o' => 'author'
+Hook::set('shield.enter', function() {
+    extract(Lot::get(null, []));
+    $__u = $__page[0] ? $__page[0] : (object) [
+        'email' => null,
+        'link' => null,
+        'state' => 'page',
+        'status' => 1
+    ];
+    $__x = $__u->state;
+    $__o = (array) $language->o_user;
+    $__z = !g(LOT . DS . $__path, 'page', "", false) && User::get(null, 'status') !== 1 ? '.' : "";
+    Config::set('panel.m.t.page.title', $language->user);
+    Config::set('panel.f.page', [
+        'author' => [
+            'placeholder' => $language->user,
+            'is' => [
+                'hidden' => false
             ],
-            'readonly' => $__command === 's' ? null : true
-        ],
-        'expand' => false,
-        'stack' => 20
-    ],
-    'content' => [
-        'placeholder' => $language->f_description($language->user),
-        'expand' => false,
-        'stack' => 30
-    ],
-    'type' => [
-        'stack' => 40
-    ],
-    'email' => [
-        'is' => [
-            'hidden' => false
-        ],
-        'stack' => 50
-    ],
-    'link' => [
-        'stack' => 60
-    ],
-    'status' => [
-        'key' => 'status',
-        'type' => 'toggle',
-        'value' => $__u->status,
-        'values' => [
-            $__z . '-1' => $__o[-1],
-            (User::get() ? $__z : "") . '1' => $__o[1],
-            $__z . '2' => $__o[2]
-        ],
-        'stack' => 70
-    ],
-    'x' => [
-        'values' => [
-            '*' . $__x => $__command === 's' ? null : $language->update,
-            'page' => $__x === 'page' ? null : $language->create,
-            'draft' => $__x === 'draft' ? null : $language->save,
-            'archive' => null
-        ],
-        'order' => ['*' . $__x, 'page', 'draft', 'trash']
-    ],
-    '+[time]' => null,
-    'description' => null,
-    'tags' => null,
-    'title' => null
-]);
-
-Config::set('panel.s', [
-    1 => [
-        'kin' => [
-            'title' => $language->users,
+            'attributes' => [
+                'data' => [
+                    'slug-i' => 'author'
+                ]
+            ],
             'stack' => 10
         ],
-        'author' => null,
-        'current' => null,
-        'parent' => null,
-        'setting' => null
-    ],
-    2 => [
-        'child' => null,
-        'id' => null
-    ]
-]);
+        '*slug' => [
+            'type' => 'text',
+            'placeholder' => To::slug($language->user),
+            'title' => $language->key,
+            'description' => $__command === 's' ? $language->h_user : null,
+            'attributes' => [
+                'data' => [
+                    'slug-o' => 'author'
+                ],
+                'readonly' => $__command === 's' ? null : true
+            ],
+            'expand' => false,
+            'stack' => 20
+        ],
+        'content' => [
+            'placeholder' => $language->f_description($language->user),
+            'expand' => false,
+            'stack' => 30
+        ],
+        'type' => [
+            'stack' => 40
+        ],
+        'email' => [
+            'is' => [
+                'hidden' => false
+            ],
+            'stack' => 50
+        ],
+        'link' => [
+            'stack' => 60
+        ],
+        'status' => [
+            'key' => 'status',
+            'type' => 'toggle',
+            'value' => $__u->status,
+            'values' => [
+                $__z . '-1' => $__o[-1],
+                (User::get() ? $__z : "") . '1' => $__o[1],
+                $__z . '2' => $__o[2]
+            ],
+            'stack' => 70
+        ],
+        'x' => [
+            'values' => [
+                '*' . $__x => $__command === 's' ? null : $language->update,
+                'page' => $__x === 'page' ? null : $language->create,
+                'draft' => $__x === 'draft' ? null : $language->save,
+                'archive' => null
+            ],
+            'order' => ['*' . $__x, 'page', 'draft', 'trash']
+        ],
+        '+[time]' => null,
+        'description' => null,
+        'tags' => null,
+        'title' => null
+    ]);
+    Config::set('panel.s', [
+        1 => [
+            'kin' => [
+                'title' => $language->users,
+                'stack' => 10
+            ],
+            'author' => null,
+            'current' => null,
+            'parent' => null,
+            'setting' => null
+        ],
+        2 => [
+            'child' => null,
+            'id' => null
+        ]
+    ]);
+}, 0);

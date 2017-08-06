@@ -41,53 +41,55 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
         asort($__themes);
         asort($__modes);
         asort($__addons);
-        $__page = new Page(File::exist([
+        $__s = new Page(File::exist([
             __DIR__ . DS . 'about.' . $config->language . '.page',
             __DIR__ . DS . 'about.page'
         ]));
-        Config::set('panel.m.t.editor', [
-            'legend' => $__page->title,
-            'description' => $__page->content . ($__page->link ? '<p>' . HTML::a($language->link . ' &#x21E2;', $__page->link, true, ['rel' => 'nofollow']) . '</p>' : ""),
-            'list' => [
-                'e[theme]' => [
-                    'key' => 'theme',
-                    'type' => 'select',
-                    'value' => $__CM->theme,
-                    'values' => ['!' => '&#x2716;'] + $__themes,
-                    'stack' => 10
+        Hook::set('shield.enter', function() use($language, $__addons, $__CM, $__modes, $__s, $__themes) {
+            Config::set('panel.m.t.editor', [
+                'legend' => $__s->title,
+                'description' => $__s->content . ($__s->link ? '<p>' . HTML::a($language->link . ' &#x21E2;', $__s->link, true, ['rel' => 'nofollow']) . '</p>' : ""),
+                'list' => [
+                    'e[theme]' => [
+                        'key' => 'theme',
+                        'type' => 'select',
+                        'value' => $__CM->theme,
+                        'values' => ['!' => '&#x2716;'] + $__themes,
+                        'stack' => 10
+                    ],
+                    'e[mode]' => [
+                        'key' => 'mode',
+                        'type' => 'toggle[]',
+                        'title' => $language->languages,
+                        'value' => (array) $__CM->mode,
+                        'values' => $__modes,
+                        'stack' => 20
+                    ],
+                    'e[addon]' => [
+                        'key' => 'extension',
+                        'type' => 'toggle[]',
+                        'title' => $language->extensions,
+                        'value' => (array) $__CM->addon,
+                        'values' => $__addons,
+                        'stack' => 30
+                    ],
+                    'e[o]' => [
+                        'key' => 'o',
+                        'type' => 'toggle[]',
+                        'title' => $language->options,
+                        'value' => array_map(function($__v) {
+                            return is_array($__v) ? json_encode($__v) : $__v;
+                        }, require __DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php'),
+                        'values' => array_replace_recursive((array) $language->{'-o_editor'}->{'code-mirror'}, [
+                            'matchTags' => [1 => '{"bothTags":1}'],
+                            'autoCloseTags' => [1 => '{"whenClosing":1,"whenOpening":1,"dontCloseTags":["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"],"indentTags":["blockquote","body","div","dl","fieldset","form","frameset","h1","h2","h3","h4","h5","h6","head","html","object","ol","select","table","tbody","tfoot","thead","tr","ul"]}']
+                        ]),
+                        'stack' => 40
+                    ]
                 ],
-                'e[mode]' => [
-                    'key' => 'mode',
-                    'type' => 'toggle[]',
-                    'title' => $language->languages,
-                    'value' => (array) $__CM->mode,
-                    'values' => $__modes,
-                    'stack' => 20
-                ],
-                'e[addon]' => [
-                    'key' => 'extension',
-                    'type' => 'toggle[]',
-                    'title' => $language->extensions,
-                    'value' => (array) $__CM->addon,
-                    'values' => $__addons,
-                    'stack' => 30
-                ],
-                'e[o]' => [
-                    'key' => 'o',
-                    'type' => 'toggle[]',
-                    'title' => $language->options,
-                    'value' => array_map(function($__v) {
-                        return is_array($__v) ? json_encode($__v) : $__v;
-                    }, require __DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php'),
-                    'values' => array_replace_recursive((array) $language->{'-o_editor'}->{'code-mirror'}, [
-                        'matchTags' => [1 => '{"bothTags":1}'],
-                        'autoCloseTags' => [1 => '{"whenClosing":1,"whenOpening":1,"dontCloseTags":["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"],"indentTags":["blockquote","body","div","dl","fieldset","form","frameset","h1","h2","h3","h4","h5","h6","head","html","object","ol","select","table","tbody","tfoot","thead","tr","ul"]}']
-                    ]),
-                    'stack' => 40
-                ]
-            ],
-            'stack' => 20.1
-        ]);
+                'stack' => 20.1
+            ]);
+        }, 0);
     }
 }, 1);
 

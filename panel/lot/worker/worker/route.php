@@ -9,6 +9,9 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     $__chops = explode('/', $__path);
     $__DIR = Path::D(__DIR__);
     $__s = $__DIR . DS . 'worker' . DS;
+    if (!$__task = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php')) {
+        Shield::abort(PANEL_404);
+    }
     Lot::set([
         '__chops' => $__chops,
         '__command' => $__command,
@@ -48,17 +51,21 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__user_token' => $__user_token,
         '__message' => Message::get() ?: Lot::get('message', "")
     ]);
-    // Default to file manager
-    require Path::D(__DIR__) . DS . 'worker' . DS . 'file.php';
-    if ($__f = File::exist(Path::D(__DIR__) . DS . 'index' . DS . $__chops[0] . '.php')) {
-        // Custom file manager layout
-        require $__f;
+    // Custom file manager layout
+    if ($__task) {
+        require $__task;
     }
+    // Default to file manager
+    $__l = Request::get('l', Config::get('panel.l', 'file'));
+    require File::exist(
+        $__DIR . DS . 'worker' . DS . $__l . '.php',
+        $__DIR . DS . 'worker' . DS . 'file.php'
+    );
     if ($__user && $__command === 's' && Request::is('get')) {
         Request::save('post', 'user', '@' . $__user->key);
     }
-    if (($__l = Request::get('layout', "")) !== "") {
-        Config::set('panel.layout', is_numeric($__l) ? $__l : 0);
+    if (($__layout = Request::get('layout', "")) !== "") {
+        Config::set('panel.layout', is_numeric($__layout) ? $__layout : 0);
     }
     Shield::attach(__DIR__ . DS . '..' . DS . Config::get('panel.layout', 0) . '.php');
 }, 1);
