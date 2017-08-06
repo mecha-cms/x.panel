@@ -44,5 +44,8 @@ if (
         }
     }, 1);
     require $__f . 'index.php';
+    if ($__ff = File::exist(__DIR__ . DS . '..' . DS . 'lot' . DS . 'shield' . DS . $__state->shield . DS . 'index.php')) {
+        require $__ff;
+    }
     require $__f . 'worker' . DS . 'route.php';
 }
