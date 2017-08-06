@@ -57,6 +57,11 @@ if (Extend::exist('tag')) {
 
 // Set proper menu name…
 Config::set('panel.n.extend.text', $language->extension);
+// Add shortcut to plugin manager…
+Config::set('panel.n.extend.+.plugin', [
+    'url' => $__state->path . '/::g::/extend/plugin/lot/worker/1',
+    'stack' => 10
+]);
 
 // Delete trash…
 Hook::set('on.user.exit', function() {

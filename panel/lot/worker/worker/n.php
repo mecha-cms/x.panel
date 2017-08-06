@@ -2,15 +2,23 @@
 
 // `text`
 // `url`
+// `h`
 // `i`
 // `attributes`
 // `is`
 //    `active`
+//    `hidden`
+// `hidden`
+// `+`
 // `stack`
 
-$__n = [];
+$__n['+'] = [
+    'text' => '&#x22EE;',
+    'url' => "",
+    'stack' => 0
+];
 
-$__n['site'] = [
+$__n['+']['site'] = [
     'text' => $language->visit . ' ' . $language->site,
     'url' => $url . "",
     'attributes' => [
@@ -29,19 +37,19 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
                 unset($__errors[1][$__k]);
             }
         }
-        $__n['error'] = [
+        $__n['+']['error'] = [
             'text' => $language->errors,
             'url' => $__state->path . '/::g::/error',
-            'i' => count($__errors[1]),
+            'h' => count($__errors[1]),
             'stack' => 20
         ];
     }
 }
 
-$__n['exit'] = [
+$__n['+']['exit'] = [
     'text' => $language->exit,
     'url' => $__state->path . '/::g::/exit',
     'stack' => 30
 ];
 
-Config::set('panel.n.+', $__n = Anemon::eat($__n)->sort([1, 'stack'], "")->vomit()); // hold!
+Config::set('panel.n', $__n); // hold!

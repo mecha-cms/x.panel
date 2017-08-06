@@ -28,7 +28,7 @@ window.PANEL = window.jQuery;
         parent = nav.find('li:has(ul)');
     if (nav.length) {
         parent.children('a').on("click", function() {
-            return $(this).next().fadeToggle(100), false;
+            return $(this).next().fadeToggle(100), !$(this).parent().hasClass('n:+');
         }).on("mouseenter", function() {
             $(this).next().fadeIn(100);
         }).parent().on("mouseleave", function() {
