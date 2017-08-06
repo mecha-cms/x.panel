@@ -40,7 +40,7 @@ function __panel_f__($k, $v) {
     $union = new Union([], 'h_t_m_l');
     $type = isset($v['type']) ? $v['type'] : null;
     $kk = isset($v['key']) ? $v['key'] : ltrim($k, '.!*');
-    $a = ['classes' => ['f', 'f-' . $kk]];
+    $a = ['classes' => ['f', 'f-' . $kk, 'type:' . $type]];
     $aa = isset($v['attributes']) ? (array) $v['attributes'] : [];
     $q = 'f.' . str_replace('][', '.', trim($k, ']['));
     if (isset($v['pattern'])) {
@@ -56,7 +56,7 @@ function __panel_f__($k, $v) {
     $title = isset($v['title']) ? $v['title'] : $language->{$kk};
     $text = isset($v['text']) ? $v['text'] : $title;
     $html  = call_user_func_array([$union, 'begin'], $u);
-    $html .= $union->unite('label', $title !== $kk && $type !== 'toggle' && $type !== 'toggle[]' ? $title : "", ['for' => 'f-' . $kk]);
+    $html .= $union->unite('label', $title === $kk ? "" : $title, ['for' => 'f-' . $kk]);
     $html .= $union->begin($u[0] === 'p' ? 'span' : $u[0]);
     $value = isset($v['value']) ? $v['value'] : null;
     $placeholder = array_key_exists('placeholder', $v) ? $v['placeholder'] : $value;

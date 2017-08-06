@@ -28,6 +28,13 @@
   text-align:right;
 }
 .f > label:empty {visibility:hidden}
+.f.type\:toggle > label + span,
+.f.type\:toggle > label + div,
+.f.type\:toggle\[\] > label + span,
+.f.type\:toggle\[\] > label + div {
+  padding-top:.2em; /* magic number :( */
+  padding-bottom:.2em; /* magic number :( */
+}
 .f.expand,
 .f.expand > label + span {display:block}
 .f.expand > label {display:none}
