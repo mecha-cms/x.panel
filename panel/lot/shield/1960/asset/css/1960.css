@@ -20,8 +20,8 @@ code,.code {
 pre {
   background:#000;
   color:#bbb;
-  padding:1em;
-  line-height:1;
+  padding:1em 1.125em;
+  line-height:1.25;
   font-size:86%;
 }
 fieldset {border-style:solid}

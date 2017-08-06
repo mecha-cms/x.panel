@@ -1,6 +1,6 @@
 <?php
 
-$__query = HTTP::query([
+$__query = HTTP::query($__q = [
     'token' => false,
     'force' => false
 ]);
@@ -8,7 +8,22 @@ $__query = HTTP::query([
 if (Request::get('q')) {
     $__links = ['do' => ['&#x2716; ' . $language->doed, $__state->path . '/::g::/' . $__path . $__is_has_step . $__query]];
 } else {
-    $__links = ['set' => ['&#x2795; ' . $language->{count($__chops) === 1 ? $__chops[0] : 'file'}, $__state->path . '/::s::/' . $__path . $__query]];
+    if (count($__chops) > 1 && is_dir(LOT . DS . $__path)) {
+        $__q['token'] = $__token;
+        $__links['reset'] = ['&#x2716; ' . $language->delete, $__state->path . '/::r::/' . $__path . HTTP::query($__q)];
+        $__q['m']['t:v'] = 'file';
+    }
+    $__q['token'] = false;
+    $__links = [
+        'set' => ['&#x2795; ' . Config::get('panel.n.' . $__chops[0] . '.text', $language->{count($__chops) === 1 ? $__chops[0] : 'file'}), $__state->path . '/::s::/' . $__path . HTTP::query($__q)]
+    ];
+    if (count($__chops) > 1) {
+        $__q['m']['t:v'] = 'folder';
+        $__links['folder'] = ['&#x2795; ' . $language->folder, $__state->path . '/::s::/' . $__path . HTTP::query($__q)];
+        $__q['m']['t:v'] = 'package';
+        $__links['package'] = ['&#x2795; ' . $language->package, $__state->path . '/::s::/' . $__path . HTTP::query($__q)];
+    }
+    unset($__q);
 }
 
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [$__links]);
@@ -29,7 +44,10 @@ foreach ($__links as $__k => $__v) {
 <section class="m-file">
   <?php if ($__files[0]): ?>
   <?php foreach ($__files[0] as $__k => $__v): $__vv = $__files[1][$__k]; ?>
-  <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : ""); ?>">
+  <?php $__b = md5(basename($__v->path)); ?>
+  <?php $__is_active = Session::get('panel.file.s.' . $__b); ?>
+  <?php Session::reset('panel.file.s.' . $__b); // remember once! ?>
+  <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : "") . ($__is_active ? ' is.active' : ""); ?>">
     <?php
 
     $__u = $url . '/' . $__state->path . '/::g::/';
@@ -124,7 +142,7 @@ foreach ($__links as $__k => $__v) {
   <?php if ($__q = Request::get('q')): ?>
   <p><?php echo $language->message_error_search('<em>' . $__q . '</em>'); ?></p>
   <?php else: ?>
-  <p><?php echo is_dir(LOT . DS . $__path) || ($site->__step === 1 && count($__chops) === 1) ? $language->message_info_void($language->{(count($__chops) === 1 ? $__chops[0] : 'file') . 's'}) : To::sentence($language->_finded); ?></p>
+  <p><?php echo is_dir(LOT . DS . $__path) && $site->__step === 1 ? $language->message_info_void($language->{(count($__chops) === 1 ? $__chops[0] : 'file') . 's'}) : To::sentence($language->_finded); ?></p>
   <?php endif; ?>
   <?php endif; ?>
 </section>

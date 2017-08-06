@@ -157,7 +157,7 @@
   opacity:.2;
 }
 .m .m-page article.is\.hidden figure {display:none}
-.m .m-file nav {
+.m .m-file article + nav { /* path view */
   margin:.5em .5em 0;
   text-align:right;
 }
@@ -186,6 +186,11 @@
   right:1em;
 }
 .m .m-file article + article {margin-top:2px}
+.m .m-file article.is\.active {background:#ff0}
+.m .m-file article.is\.active .i-f:after {
+  border-top-color:#ff0;
+  border-right-color:#ff0;
+}
 .m .m-file .i {margin-right:.2em}
 .m .t {
   margin:-1em -1em 1em;
@@ -208,6 +213,11 @@
   margin-top:0;
   clear:both;
 }
+.m .t + .t-c,
+.m .t-c + .t-c {display:none}
+.no-js .m .t {display:none}
+.no-js .m .t-c {display:block}
+.no-js .m .t-c + .t-c {margin-top:1em}
 .n ul,
 .n li {
   margin:0;
@@ -519,5 +529,5 @@ input.input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* TODO */
-.n-cache,
-.n-comment {display:none}
+.n\:cache,
+.n\:comment {display:none}
