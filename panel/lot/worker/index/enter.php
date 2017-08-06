@@ -17,7 +17,7 @@ Config::set([
     ]
 ]);
 
-if (Request::is('post')) {
+if ($__is_post) {
     $__user_key = Request::post('user');
     $__user_pass = Request::post('pass');
     $__user_token = Request::post('token');
