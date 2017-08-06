@@ -17,7 +17,7 @@ Config::set([
     ]
 ]);
 
-if ($__is_post) {
+if ($__is_post && !Message::$x) {
     $__user_key = Request::post('user');
     $__user_pass = Request::post('pass');
     $__user_token = Request::post('token');
@@ -32,11 +32,17 @@ if ($__is_post) {
     } else if (file_exists($f . '.page')) {
         if (!file_exists($f . DS . 'pass.data')) {
             // Reset password by deleting `pass.data` manually, then log in!
-            File::write(password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($f . DS . 'pass.data');
+            File::write(X . password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($f . DS . 'pass.data');
             Message::success('create', $language->pass);
             Message::info('is', [$language->pass, '<em>' . $__user_pass . '</em>']);
         }
-        if (password_verify($__user_pass . ' ' . $__user_key, File::open($f . DS . 'pass.data')->get(0, ""))) {
+        $__pass = File::open($f . DS . 'pass.data')->get(0, "");
+        if (strpos($__pass, X) === 0) {
+            $__pass = substr($__pass, 1);
+        } else {
+            // TODO: (plain password)
+        }
+        if (password_verify($__user_pass . ' ' . $__user_key, $__pass)) {
             File::write($__user_token)->saveTo($f . DS . 'token.data');
             User::set($__user_key, $__user_token);
             Message::success('user_enter');
