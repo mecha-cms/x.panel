@@ -12,17 +12,21 @@ if ($__command !== 's' && count($__chops) === 1) {
 }
 
 // Set custom file manager layout
-Config::set('panel.l', 'page');
+Config::set([
+    'is' => 'page',
+    'panel' => [
+        'layout' => 2,
+        'l' => 'page',
+        'c:f' => true
+    ]
+]);
 
 // Set or modify the default panel content(s)…
-Config::set('is', 'page');
 Hook::set('shield.enter', function() {
     extract(Lot::get(null, []));
     $__page[1] = new Page(LOT . DS . $__chops[0] . DS . 'en-us.page', [], $__chops[0]);
     Config::set([
         'panel' => [
-            'layout' => 2,
-            'c:f' => true,
             'm' => [
                 't' => [
                     'page' => [
@@ -81,7 +85,7 @@ Hook::set('shield.enter', function() {
                     ],
                     'file' => null,
                     'folder' => null,
-                    'package' => null
+                    'upload' => null
                 ]
             ],
             's' => [

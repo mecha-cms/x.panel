@@ -15,13 +15,13 @@ if (Request::get('q')) {
     }
     $__q['token'] = false;
     $__links = [
-        'set' => ['&#x2795; ' . Config::get('panel.n.' . $__chops[0] . '.text', $language->{count($__chops) === 1 ? $__chops[0] : 'file'}), $__state->path . '/::s::/' . $__path . HTTP::query($__q)]
+        'set' => ['&#x2795; ' . $language->{count($__chops) === 1 ? Config::get('panel.n.' . $__chops[0] . '.text', $__chops[0]) : 'file'}, $__state->path . '/::s::/' . $__path . HTTP::query($__q)]
     ];
     if (count($__chops) > 1) {
         $__q['m']['t:v'] = 'folder';
         $__links['folder'] = ['&#x2795; ' . $language->folder, $__state->path . '/::s::/' . $__path . HTTP::query($__q)];
-        $__q['m']['t:v'] = 'package';
-        $__links['package'] = ['&#x2795; ' . $language->package, $__state->path . '/::s::/' . $__path . HTTP::query($__q)];
+        $__q['m']['t:v'] = 'upload';
+        $__links['upload'] = ['&#x2795; ' . $language->upload, $__state->path . '/::s::/' . $__path . HTTP::query($__q)];
     }
     unset($__q);
 }

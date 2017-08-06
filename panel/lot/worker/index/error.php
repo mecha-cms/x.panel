@@ -25,7 +25,7 @@ Hook::set('shield.enter', function() {
                 ],
                 'file' => null,
                 'folder' => null,
-                'package' => null
+                'upload' => null
             ]
         ],
         's' => [
@@ -34,7 +34,7 @@ Hook::set('shield.enter', function() {
     ]);
 }, 0);
 
-if ($__is_post) {
+if ($__is_post && !Message::$x) {
     File::open($__log)->delete();
     Message::success(To::sentence($language->deleteed));
     Guardian::kick($__state->path . '/::g::/page/1');

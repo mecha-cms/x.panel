@@ -70,7 +70,7 @@ Hook::set('shield.enter', function() {
                     ],
                     'file' => null,
                     'folder' => null,
-                    'package' => null
+                    'upload' => null
                 ] : [
                     'common' => [
                         'legend' => $language->site,
@@ -87,7 +87,7 @@ Hook::set('shield.enter', function() {
                     ],
                     'file' => null,
                     'folder' => null,
-                    'package' => null
+                    'upload' => null
                 ]
             ],
             's' => [
@@ -108,7 +108,7 @@ Hook::set('shield.enter', function() {
     ]);
 }, 0);
 
-if ($__is_post) {
+if ($__is_post && !Message::$x) {
     $__N = isset($__chops[1]) ? $__chops[1] : 'config';
     if ($__c = Request::post('content')) {
         File::export(From::yaml($__c))->saveTo(STATE . DS . $__N . '.php', 0600);

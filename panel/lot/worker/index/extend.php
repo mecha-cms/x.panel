@@ -75,7 +75,7 @@ if (count($__chops) === 1) {
                     't' => [
                         'file' => null,
                         'folder' => null,
-                        'package' => [
+                        'upload' => [
                             'legend' => $language->file,
                             'list' => [
                                 'file' => [
