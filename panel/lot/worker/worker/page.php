@@ -100,7 +100,7 @@ if ($__is_data) {
     $__s[1] = trim($__s[1], '/');
     $__d = LOT . DS . $__s[0];
     // Get source…
-    if ($__f = File::exist([
+    if (Config::get('panel.x.s.source') !== true && $__f = File::exist([
         $__d . '.draft',
         $__d . '.page',
         $__d . '.archive'
@@ -165,30 +165,34 @@ if ($__is_data) {
             Guardian::kick($__state->path . '/::g::/' . $__s[0] . $__query);
         }
     }
-    $__ss = (object) [
-        'path' => $__f,
-        'key' => $__f ? Path::N($__f) : null,
-        'value' => $__f ? file_get_contents($__f) : null
-    ];
-    $__ss->title = $__ss->key;
-    $__ss->type = $__ss->key ?: 'HTML';
-    Lot::set('__data', $__data = [$__ss, $__ss]);
-    // Get kin(s)…
-    foreach (glob($__d . DS . '*.data') as $__v) {
-        $__ss = Path::N($__v);
+    if (Config::get('panel.x.m.data') !== true) {
         $__ss = (object) [
-            'path' => $__v,
-            'title' => $__ss,
-            'key' => $__ss,
-            'url' => $url . '/' . $__state->path . '/::g::/' . $__s[0] . '/+/' . $__ss
+            'path' => $__f,
+            'key' => $__f ? Path::N($__f) : null,
+            'value' => $__f ? file_get_contents($__f) : null
         ];
-        $__datas[0][] = $__ss;
-        $__datas[1][] = $__ss;
+        $__ss->title = $__ss->key;
+        $__ss->type = $__ss->key ?: 'HTML';
+        Lot::set('__data', $__data = [$__ss, $__ss]);
     }
-    Lot::set('__datas', $__datas);
+    // Get kin(s)…
+    if (Config::get('panel.x.s.data') !== true) {
+        foreach (glob($__d . DS . '*.data') as $__v) {
+            $__ss = Path::N($__v);
+            $__ss = (object) [
+                'path' => $__v,
+                'title' => $__ss,
+                'key' => $__ss,
+                'url' => $url . '/' . $__state->path . '/::g::/' . $__s[0] . '/+/' . $__ss
+            ];
+            $__datas[0][] = $__ss;
+            $__datas[1][] = $__ss;
+        }
+        Lot::set('__datas', $__datas);
+    }
 } else {
     if ($__is_has_step) {
-        if ($__g) {
+        if ($__g && Config::get('panel.x.m.page') !== true) {
             foreach (Anemon::eat($__g)->chunk($__chunk, $__step) as $__v) {
                 $__a = new Page($__v, [], '__' . $__chops[0]);
                 $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
@@ -196,10 +200,12 @@ if ($__is_data) {
                 $__pages[0][] = $__a;
                 $__pages[1][] = $__aa;
             }
+            Lot::set([
+                '__pages' => $__pages,
+                '__is_has_step_page' => ($__is_has_step_page = count($__g) > $__chunk)
+            ]);
         }
         Lot::set([
-            '__pages' => $__pages,
-            '__is_has_step_page' => ($__is_has_step_page = count($__g) > $__chunk),
             '__pager' => $__pager = [(new Elevator($__g ?: [], $__chunk, $__step, $url . '/' . $__state->path . '/::g::/' . $__path, [
                 'direction' => [
                    '-1' => 'previous',
@@ -223,7 +229,7 @@ if ($__is_data) {
         ]);
         // Get parent…
         $__p = Path::D($__f);
-        if ($__p = File::exist([
+        if (Config::get('panel.x.s.parent') !== true && $__p = File::exist([
             $__p . '.draft',
             $__p . '.page',
             $__p . '.archive'
@@ -234,25 +240,29 @@ if ($__is_data) {
             Lot::set('__parent', $__parent = [$__a, $__aa]);
         }
         // Get current…
-        $__a = new Page($__f ?: null, [], '__' . $__chops[0]);
-        $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__f ?: "", LOT)), '/'), '/');
-        $__aa = new Page($__f ?: null, [], $__chops[0]);
-        Lot::set('__page', $__page = [$__a, $__aa]);
+        if (Config::get('panel.x.m.page') !== true) {
+            $__a = new Page($__f ?: null, [], '__' . $__chops[0]);
+            $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__f ?: "", LOT)), '/'), '/');
+            $__aa = new Page($__f ?: null, [], $__chops[0]);
+            Lot::set('__page', $__page = [$__a, $__aa]);
+        }
         // Get kin(s)…
-        if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
-            $__q = $__command === 's' ? "" : Path::B($__d);
-            foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                if ($__q && Path::N($__v) === $__q) continue;
-                $__a = new Page($__v, [], '__' . $__chops[0]);
-                $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
-                $__aa = new Page($__v, [], $__chops[0]);
-                $__kins[0][] = $__a;
-                $__kins[1][] = $__aa;
+        if (Config::get('panel.x.s.kin') !== true) {
+            if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
+                $__q = $__command === 's' ? "" : Path::B($__d);
+                foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
+                    if ($__q && Path::N($__v) === $__q) continue;
+                    $__a = new Page($__v, [], '__' . $__chops[0]);
+                    $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
+                    $__aa = new Page($__v, [], $__chops[0]);
+                    $__kins[0][] = $__a;
+                    $__kins[1][] = $__aa;
+                }
+                Lot::set([
+                    '__kins' => $__kins,
+                    '__is_has_step_kin' => ($__is_has_step_kin = count($__g) > $__chunk)
+                ]);
             }
-            Lot::set([
-                '__kins' => $__kins,
-                '__is_has_step_kin' => ($__is_has_step_kin = count($__g) > $__chunk)
-            ]);
         }
     } else {
         if ($__is_post && !Message::$x) {
@@ -447,7 +457,7 @@ if ($__is_data) {
         }
         // Get parent…
         $__p = Path::D($__f);
-        if ($__p = File::exist([
+        if (Config::get('panel.x.s.parent') !== true && $__p = File::exist([
             $__p . '.draft',
             $__p . '.page',
             $__p . '.archive'
@@ -458,12 +468,14 @@ if ($__is_data) {
             ]);
         }
         // Get current…
-        $__a = new Page($__f && $__command !== 's' ? $__f : null, [], '__' . $__chops[0]);
-        $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__f ?: "", LOT)), '/'), '/');
-        $__aa = new Page($__f && $__command !== 's' ? $__f : null, [], $__chops[0]);
-        Lot::set('__page', $__page = [$__a, $__aa]);
+        if (Config::get('panel.x.m.page') !== true) {
+            $__a = new Page($__f && $__command !== 's' ? $__f : null, [], '__' . $__chops[0]);
+            $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__f ?: "", LOT)), '/'), '/');
+            $__aa = new Page($__f && $__command !== 's' ? $__f : null, [], $__chops[0]);
+            Lot::set('__page', $__page = [$__a, $__aa]);
+        }
         // Get kin(s)…
-        if ($__g) {
+        if ($__g && Config::get('panel.x.s.kin') !== true) {
             $__q = $__command === 's' ? "" : Path::B($__d);
             foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                 if ($__q && Path::N($__v) === $__q) continue;
@@ -479,36 +491,40 @@ if ($__is_data) {
             ]);
         }
         // Get data(s)…
-        $__uu = str_replace('::s::', '::g::', $url->current);
-        $__x = ',' . Config::get('panel.x.s.data') . ',';
-        foreach (glob($__d . DS . '*.data') as $__v) {
-            $__s = Path::N($__v);
-            if (strpos($__x, ',' . $__s . ',') !== false) continue;
-            $__s = [
-                'path' => $__v,
-                'title' => $__s,
-                'key' => $__s,
-                'url' => $__uu . '/+/' . $__s
-            ];
-            $__datas[0][] = $__s;
-            $__datas[1][] = $__s;
-        }
-        Lot::set('__datas', $__datas);
-        // Get child(s)…
-        if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
-            $__q = Path::B($__d);
-            foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                if (Path::N($__v) === $__q) continue;
-                $__a = new Page($__v, [], '__' . $__chops[0]);
-                $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
-                $__aa = new Page($__v, [], $__chops[0]);
-                $__childs[0][] = $__a;
-                $__childs[1][] = $__aa;
+        if (($__x = Config::get('panel.x.s.data')) !== true) {
+            $__uu = str_replace('::s::', '::g::', $url->current);
+            $__x = ',' . $__x . ',';
+            foreach (glob($__d . DS . '*.data') as $__v) {
+                $__s = Path::N($__v);
+                if (strpos($__x, ',' . $__s . ',') !== false) continue;
+                $__s = [
+                    'path' => $__v,
+                    'title' => $__s,
+                    'key' => $__s,
+                    'url' => $__uu . '/+/' . $__s
+                ];
+                $__datas[0][] = $__s;
+                $__datas[1][] = $__s;
             }
-            Lot::set([
-                '__childs' => $__childs,
-                '__is_has_step_child' => ($__is_has_step_child = count($__g) > $__chunk)
-            ]);
+            Lot::set('__datas', $__datas);
+        }
+        // Get child(s)…
+        if (Config::get('panel.x.s.child') !== true) {
+            if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
+                $__q = Path::B($__d);
+                foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
+                    if (Path::N($__v) === $__q) continue;
+                    $__a = new Page($__v, [], '__' . $__chops[0]);
+                    $__a->url = rtrim($__u . ltrim(str_replace(DS, '/', Path::F($__v, LOT)), '/'), '/');
+                    $__aa = new Page($__v, [], $__chops[0]);
+                    $__childs[0][] = $__a;
+                    $__childs[1][] = $__aa;
+                }
+                Lot::set([
+                    '__childs' => $__childs,
+                    '__is_has_step_child' => ($__is_has_step_child = count($__g) > $__chunk)
+                ]);
+            }
         }
     }
 }
