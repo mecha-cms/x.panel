@@ -44,10 +44,10 @@ foreach ($__links as $__k => $__v) {
 <section class="m-file">
   <?php if ($__files[0]): ?>
   <?php foreach ($__files[0] as $__k => $__v): $__vv = $__files[1][$__k]; ?>
-  <?php $__b = md5(basename($__v->path)); ?>
-  <?php $__is_active = Session::get('panel.file.s.' . $__b); ?>
-  <?php Session::reset('panel.file.s.' . $__b); // remember once! ?>
-  <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : "") . ($__is_active ? ' is.active' : ""); ?>">
+  <?php $__s = md5($__v->path); ?>
+  <?php $__is_active = Session::get('panel.ff.s.' . $__s); ?>
+  <?php Session::reset('panel.ff.s.' . $__s); // remember once! ?>
+  <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : "") . ($__is_active ? ' v is.active' : ""); ?>">
     <?php
 
     $__u = $url . '/' . $__state->path . '/::g::/';

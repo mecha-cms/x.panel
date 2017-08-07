@@ -19,13 +19,13 @@ Hook::set('shield.enter', function() {
     });
     Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__is_has_step, $__state, $__token) {
         return $__v[0]->is->file ? [
-            'restore' => [$language->restore, str_replace('::g::', '::x::', $__v[0]->url) . HTTP::query(['token' => $__token])],
+            'restore' => [$language->restore, str_replace('::g::', '::z::', $__v[0]->url) . HTTP::query(['token' => $__token])],
             'reset' => [$language->delete, str_replace('::g::', '::r::', $__v[0]->url) . HTTP::query(['token' => $__token, 'force' => 1])]
         ] : [];
     });
 }, 0);
 
-if ($__is_get && $__command === 'x') {
+if ($__is_get && $__command === 'z') {
     if (!$__t = Request::get('token')) {
         Shield::abort(PANEL_404);
     }

@@ -22,14 +22,13 @@ function __panel_f__($k, $v) {
     //    `block`
     //    `expand`
     //    `hidden`
-    //    `visible`
     // `attributes`
     // `expand`
     // `stack`
     if (isset($v['if']) && !$v['if']) {
         return "";
     }
-    if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
+    if (isset($v['is']['hidden']) && $v['is']['hidden']) {
         return "";
     }
     if (is_string($v)) {
@@ -216,7 +215,6 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     // `if`
     // `is`
     //    `hidden`
-    //    `visible`
     // `stack`
     global $language;
     if (is_string($v)) {
@@ -227,7 +225,7 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     if (isset($v['if']) && !$v['if']) {
         return "";
     }
-    if (isset($v['is']['hidden']) && $v['is']['hidden'] || isset($v['is']['visible']) && !$v['is']['visible']) {
+    if (isset($v['is']['hidden']) && $v['is']['hidden']) {
         return "";
     }
     $content = isset($v['content']) ? $v['content'] : "";

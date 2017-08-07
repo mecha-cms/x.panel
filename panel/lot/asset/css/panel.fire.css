@@ -159,6 +159,7 @@
 .m .m-page article.as\.draft {border-style:dotted}
 .m .m-page article.as\.,
 .m .m-page article.is\.active {border-color:#f00}
+.m .m-page article.v.is\.active {background-color:#ff0}
 .m .m-page article.is\.hidden {
   border-style:dotted;
   opacity:.2;
@@ -193,8 +194,8 @@
   right:1em;
 }
 .m .m-file article + article {margin-top:2px}
-.m .m-file article.is\.active {background:#ff0}
-.m .m-file article.is\.active .i-f:after {
+.m .m-file article.v.is\.active {background-color:#ff0}
+.m .m-file article.v.is\.active .i-f:after {
   border-top-color:#ff0;
   border-right-color:#ff0;
 }

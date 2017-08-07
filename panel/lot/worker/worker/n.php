@@ -2,7 +2,6 @@
 
 // `text`
 // `url`
-// `h`
 // `i`
 // `attributes`
 // `is`
@@ -40,16 +39,25 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
         $__n['+']['error'] = [
             'text' => $language->errors,
             'url' => $__state->path . '/::g::/error',
-            'h' => count($__errors[1]),
+            'i' => count($__errors[1]),
             'stack' => 20
         ];
     }
 }
 
+if ($__sessions = Session::get('panel')) {
+    $__n['+']['session'] = [
+        'text' => $language->clear . ' ' . $language->sessions,
+        'url' => $__state->path . '/::r::/session' . HTTP::query(['token' => Guardian::token()]),
+        'i' => count($__sessions, COUNT_RECURSIVE),
+        'stack' => 30
+    ];
+}
+
 $__n['+']['exit'] = [
     'text' => $language->exit,
     'url' => $__state->path . '/::g::/exit',
-    'stack' => 30
+    'stack' => 40
 ];
 
 Config::set('panel.n', $__n); // hold!
