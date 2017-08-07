@@ -79,7 +79,7 @@ $__f = File::exist([
     $__d . '.archive'
 ], "");
 // Get current page(s) file…
-if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__is_has_step ? $__d : Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
+if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__is_has_step ? $__d : dirname($__d), 'draft,page,archive', $__sort, 'path')) {
     if ($__q = l(Request::get('q', ""))) {
         Message::info('search', '<em>' . $__q . '</em>');
         $__q = explode(' ', $__q);
@@ -133,8 +133,8 @@ if ($__is_data) {
             if ($__s[1] !== $__key) {
                 File::open($__f)->delete();
             }
-            Message::success($__command === 's' ? 'create' : 'update', [$language->data, '<em>' . $__key . '</em>']);
             Hook::fire('on.' . $__chops[0] . '.+.set', [$__ff, $__command === 's' ? null : $__f]);
+            Message::success($__command === 's' ? 'create' : 'update', [$language->data, '<em>' . $__key . '</em>']);
             Guardian::kick($__state->path . '/::g::/' . $__s[0] . '/+/' . $__key . $__query);
         }
     } else {
@@ -157,11 +157,11 @@ if ($__is_data) {
                 File::open(Path::F($__f))->delete();
             } else {
                 $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
-                File::open($__f)->moveTo(Path::D($__ff));
-                File::open(Path::F($__f))->moveTo(Path::D(Path::F($__ff)));
+                File::open($__f)->moveTo(dirname($__ff));
+                File::open(Path::F($__f))->moveTo(dirname(Path::F($__ff)));
             }
-            Message::success('delete', [$language->data, '<em>' . $__s[1] . '</em>']);
             Hook::fire('on.' . $__chops[0] . '.+.reset', [$__f, $__ff]);
+            Message::success('delete', [$language->data, '<em>' . $__s[1] . '</em>']);
             Guardian::kick($__state->path . '/::g::/' . $__s[0] . $__query);
         }
     }
@@ -228,7 +228,7 @@ if ($__is_data) {
             ], '__' . $__chops[0] . 's')) . ""]
         ]);
         // Get parent…
-        $__p = Path::D($__f);
+        $__p = dirname($__f);
         if (Config::get('panel.x.s.parent') !== true && $__p = File::exist([
             $__p . '.draft',
             $__p . '.page',
@@ -248,8 +248,8 @@ if ($__is_data) {
         }
         // Get kin(s)…
         if (Config::get('panel.x.s.kin') !== true) {
-            if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', Path::D($__d), 'draft,page,archive', $__sort, 'path')) {
-                $__q = $__command === 's' ? "" : Path::B($__d);
+            if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', dirname($__d), 'draft,page,archive', $__sort, 'path')) {
+                $__q = $__command === 's' ? "" : basename($__d);
                 foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                     if ($__q && Path::N($__v) === $__q) continue;
                     $__a = new Page($__v, [], '__' . $__chops[0]);
@@ -282,7 +282,7 @@ if ($__is_data) {
             }
             // Hide page(s) view?
             if ($__f) {
-                $__p = Path::F($__f) . DS . Path::B($__f);
+                $__p = Path::F($__f) . DS . basename($__f);
                 if (Request::post('as_page')) {
                     File::write("")->saveTo($__p, 0600); // a placeholder page
                 } else {
@@ -294,7 +294,7 @@ if ($__is_data) {
             // ...
             $__N = Path::N($__f);
             $__X = Path::X($__f);
-            $__D = Path::D($__f) ?: $__d;
+            $__D = dirname($__f) ?: $__d;
             $__S = $__f;
             $__NN = Request::post('slug', date('Y-m-d-H-i-s'));
             $__XX = Request::post('x', $__command === 's' ? 'page' : $__X);
@@ -407,12 +407,12 @@ if ($__is_data) {
                 }
                 $__tt = (new Page($__SS, [], $__chops[0]))->title ?: $language->_title;
                 if ($__command === 'g') {
+                    Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__command === 's' ? null : $__S]);
                     Message::success($__XX === 'draft' ? 'save' : 'update', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
-                    Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__command === 's' ? null : $__S]);
-                    Guardian::kick(Path::D($url->current) . '/' . $__NN . $__query);
+                    Guardian::kick(dirname($url->current) . '/' . $__NN . $__query);
                 } else {
-                    Message::success($__XX === 'draft' ? 'save' : 'create', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                     Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__command === 's' ? null : $__S]);
+                    Message::success($__XX === 'draft' ? 'save' : 'create', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                     Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/' . $__NN . $__query);
                 }
             }
@@ -424,7 +424,7 @@ if ($__is_data) {
                     Shield::abort(PANEL_404);
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
-                $__B = Path::B($__d);
+                $__B = basename($__d);
                 if (Message::$x) {
                     Guardian::kick($__back . $__query);
                 }
@@ -444,19 +444,19 @@ if ($__is_data) {
                     File::open(Path::F($__f))->delete();
                 } else {
                     $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
-                    File::open($__f)->moveTo(Path::D($__ff));
+                    File::open($__f)->moveTo(dirname($__ff));
                     File::open(Path::F($__f))->moveTo(Path::F($__ff));
                 }
-                Message::success('delete', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
                 Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__ff]);
-                Guardian::kick(Path::D($__back) . '/1' . $__query);
+                Message::success('delete', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
+                Guardian::kick(dirname($__back) . '/1' . $__query);
             }
         }
         if (!$__f && count($__chops) > 1) {
             Shield::abort(PANEL_404);
         }
         // Get parent…
-        $__p = Path::D($__f);
+        $__p = dirname($__f);
         if (Config::get('panel.x.s.parent') !== true && $__p = File::exist([
             $__p . '.draft',
             $__p . '.page',
@@ -476,7 +476,7 @@ if ($__is_data) {
         }
         // Get kin(s)…
         if ($__g && Config::get('panel.x.s.kin') !== true) {
-            $__q = $__command === 's' ? "" : Path::B($__d);
+            $__q = $__command === 's' ? "" : basename($__d);
             foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                 if ($__q && Path::N($__v) === $__q) continue;
                 $__a = new Page($__v, [], '__' . $__chops[0]);
@@ -511,7 +511,7 @@ if ($__is_data) {
         // Get child(s)…
         if (Config::get('panel.x.s.child') !== true) {
             if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
-                $__q = Path::B($__d);
+                $__q = basename($__d);
                 foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                     if (Path::N($__v) === $__q) continue;
                     $__a = new Page($__v, [], '__' . $__chops[0]);
@@ -549,7 +549,7 @@ Config::set([
     ]
 ]);
 
-$__ = Path::D($__path);
+$__ = dirname($__path);
 $__ = [
     'url' => $__state->path . '/::g::/' . ($__ ?: $__path),
     'title' => '..'
@@ -596,8 +596,8 @@ Config::set('panel.s', [
         ] : [
             'list' => $__kins,
             'a' => [
-                'set' => ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
-                'get' => $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . Path::D($__path) . '/2' . $__query, false, ['title' => $language->more]] : null
+                'set' => ['&#x2795;', $__state->path . '/::s::/' . (dirname($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
+                'get' => $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . dirname($__path) . '/2' . $__query, false, ['title' => $language->more]] : null
             ],
             'if' => $__command === 's' || count($__chops) > 1,
             'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
