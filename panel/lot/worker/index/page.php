@@ -15,21 +15,18 @@ Config::set('panel.l', 'page');
 // `panel/::g::/page` → index view
 // `panel/::s::/page/blog` → new child page for `lot\page\blog`
 // `panel/::g::/page/blog` → edit page of `lot\page\blog`
-Hook::set('shield.enter', function() {
-    extract(Lot::get(null, []));
-    Config::set('panel.m.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false ? [
-        'data' => [
-            'title' => $language->editor,
-            'stack' => 10
-        ]
-    ] : (Plugin::exist('art') ? [
-        'css' => [
-            'title' => 'CSS',
-            'stack' => 20
-        ],
-        'js' => [
-            'title' => 'JavaScript',
-            'stack' => 30
-        ]
-    ] : []));
-});
+Config::set('panel.m.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false ? [
+    'data' => [
+        'title' => $language->editor,
+        'stack' => 10
+    ]
+] : (Plugin::exist('art') ? [
+    'css' => [
+        'title' => 'CSS',
+        'stack' => 20
+    ],
+    'js' => [
+        'title' => 'JavaScript',
+        'stack' => 30
+    ]
+] : []));

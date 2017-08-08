@@ -529,133 +529,130 @@ if ($__is_data) {
     }
 }
 
-Config::set([
-    'panel' => [
-        'layout' => Config::get('panel.layout', $__is_has_step || $__is_data ? 2 : 3),
-        'c:f' => Config::get('panel.c:f', !$__is_has_step),
-        'm:f' => Config::get('panel.m:f', false),
-        'm' => [
-            't' => [
-                'page' => $__is_data ? null : [
-                    'list' => require __DIR__ . DS . 'page.m.t.page.php',
-                    'stack' => 10
-                ],
-                'data' => $__is_data ? [
-                    'list' => require __DIR__ . DS . 'page.m.t.data.php',
-                    'stack' => 10
-                ] : null
-            ]
-        ]
-    ]
-]);
-
 $__ = dirname($__path);
 $__ = [
     'url' => $__state->path . '/::g::/' . ($__ ?: $__path),
     'title' => '..'
 ];
 
-$__is_data = substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false;
-Config::set('panel.s', [
-    1 => [
-        'source' => [
-            'title' => $language->source,
-            'list' => $__source[0] ? [[$__source[0]], [$__source[1]]] : [],
-            'if' => $__is_data,
-            'stack' => 10
-        ],
-        'search' => [
-            'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-search.php',
-            'if' => $__is_has_step,
-            'stack' => 10
-        ],
-        'author' => [
-            'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-author.php',
-            'if' => !$__is_has_step && !$__is_data,
-            'stack' => 10
-        ],
-        'parent' => [
-            'title' => $language->parent,
-            'list' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
-            'if' => !$__is_data && count($__chops) > 1,
-            'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
-            'stack' => 20
-        ],
-        'current' => [
-            'title' => $language->current,
-            'list' => [[$__page[0]], [$__page[1]]],
-            'if' => $__is_has_step && $__page[0] && count($__chops) > 1,
-            'stack' => 30
-        ],
-        'kin' => $__is_data ? [
-            'list' => $__datas,
-            'a' => [
-                'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+' . $__query, false, ['title' => $language->add]]
+Config::set('panel', array_replace_recursive([
+    'layout' => $__is_has_step || $__is_data ? 2 : 3,
+    'c:f' => !$__is_has_step,
+    'm:f' => false,
+    'm' => [
+        't' => [
+            'page' => $__is_data ? false : [
+                'list' => require __DIR__ . DS . 'page.m.t.page.php',
+                'stack' => 10
             ],
-            'stack' => 20
-        ] : [
-            'list' => $__kins,
-            'a' => [
-                'set' => ['&#x2795;', $__state->path . '/::s::/' . (dirname($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
-                'get' => $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . dirname($__path) . '/2' . $__query, false, ['title' => $language->more]] : null
-            ],
-            'if' => $__command === 's' || count($__chops) > 1,
-            'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
-            'stack' => 40
-        ],
-        'nav' => [
-            'title' => $language->navigation,
-            'content' => '<p>' . $__pager[0] . '</p>',
-            'if' => $__is_has_step,
-            'stack' => 50
-        ],
-        'setting' => [
-            'title' => $language->settings,
-            'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-setting.php',
-            'if' => !$__is_has_step && !$__is_data,
-            'stack' => 50
+            'data' => $__is_data ? [
+                'list' => require __DIR__ . DS . 'page.m.t.data.php',
+                'stack' => 10
+            ] : false
         ]
     ],
-    2 => [
-        'data' => [
-            'title' => $language->datas,
-            'list' => $__command === 'g' ? $__datas : [[], []],
-            'after' => __DIR__ . DS . '..' . DS . 'page' . DS . '-data.php',
-            'a' => $__command === 'g' ? [
-                'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
-            ] : [],
-            'if' => !$__is_data,
-            'stack' => 10
-        ],
-        'child' => [
-            'list' => $__childs,
-            'a' => [
-                'set' => ['&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
-                'get' => $__is_has_step_child ? ['&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : null
+    's' => [
+        1 => [
+            'source' => [
+                'title' => $language->source,
+                'list' => $__source[0] ? [[$__source[0]], [$__source[1]]] : [],
+                'if' => $__is_data,
+                'stack' => 10
             ],
-            'if' => !$__is_data && count($__chops) > 1,
-            'lot' => ['%{0}%' . $__query],
-            'stack' => 20
+            'search' => [
+                'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-search.php',
+                'if' => $__is_has_step,
+                'stack' => 10
+            ],
+            'author' => [
+                'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-author.php',
+                'if' => !$__is_has_step && !$__is_data,
+                'stack' => 10
+            ],
+            'parent' => [
+                'title' => $language->parent,
+                'list' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
+                'if' => !$__is_data && count($__chops) > 1,
+                'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
+                'stack' => 20
+            ],
+            'current' => [
+                'title' => $language->current,
+                'list' => [[$__page[0]], [$__page[1]]],
+                'if' => $__is_has_step && $__page[0] && count($__chops) > 1,
+                'stack' => 30
+            ],
+            'kin' => $__is_data ? [
+                'list' => $__datas,
+                'a' => [
+                    'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+' . $__query, false, ['title' => $language->add]]
+                ],
+                'stack' => 20
+            ] : [
+                'list' => $__kins,
+                'a' => [
+                    'set' => ['&#x2795;', $__state->path . '/::s::/' . (dirname($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
+                    'get' => $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . dirname($__path) . '/2' . $__query, false, ['title' => $language->more]] : false
+                ],
+                'if' => $__command === 's' || count($__chops) > 1,
+                'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
+                'stack' => 40
+            ],
+            'nav' => [
+                'title' => $language->navigation,
+                'content' => '<p>' . $__pager[0] . '</p>',
+                'if' => $__is_has_step,
+                'stack' => 50
+            ],
+            'setting' => [
+                'title' => $language->settings,
+                'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-setting.php',
+                'if' => !$__is_has_step && !$__is_data,
+                'stack' => 50
+            ]
+        ],
+        2 => [
+            'data' => [
+                'title' => $language->datas,
+                'list' => $__command === 'g' ? $__datas : [[], []],
+                'after' => __DIR__ . DS . '..' . DS . 'page' . DS . '-data.php',
+                'a' => $__command === 'g' ? [
+                    'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
+                ] : [],
+                'if' => !$__is_data,
+                'stack' => 10
+            ],
+            'child' => [
+                'list' => $__childs,
+                'a' => [
+                    'set' => ['&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
+                    'get' => $__is_has_step_child ? ['&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : false
+                ],
+                'if' => !$__is_data && count($__chops) > 1,
+                'lot' => ['%{0}%' . $__query],
+                'stack' => 20
+            ]
         ]
     ]
-]);
+], (array) a(Config::get('panel', []))));
 
 if (!$__is_has_step && $__command !== 's' && $__page[0]) {
     $__s = trim(To::url(Path::F($__path, 'page', '/')), '/');
-    Config::set('panel.o.page.setting.option', [
+    $__toggle = (array) a(Config::get('panel.o.page.toggle', []));
+    Config::set('panel.o.page.toggle', array_replace_recursive([
         ($site->path === $__s ? '.' : "") . 'as_' => [
-            'title' => $language->__->panel->as_,
+            'title' => $language->o_toggle->as_,
             'value' => $__s,
             'is' => [
                 'active' => $site->path === $__s
             ]
         ],
         'as_page' => Get::pages(LOT . DS . $__path, 'draft,page,archive') ? [
-            'title' => $language->__->panel->as_page,
+            'title' => $language->o_toggle->as_page,
             'value' => 1,
             'is' => [
                 'active' => file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state)
             ]
-        ] : null
-    ]);
+        ] : false
+    ], $__toggle));
 }

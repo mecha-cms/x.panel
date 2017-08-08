@@ -12,7 +12,7 @@ foreach (glob(LOT . DS . '*', GLOB_ONLYDIR) as $__k => $__v) {
         'stack' => ($__k + 1) * 10
     ];
 }
-$__menus = array_replace_recursive($__menus, (array) a(Config::get('panel.n', [])));
+$__menus = (array) a(Config::set('panel.n', $__menus)->get('panel.n', []));
 if ($__menus) {
     $__menus = Anemon::eat($__menus)->not(function($__v) {
         return $__v !== '0' && (!isset($__v['stack']) || !is_numeric($__v['stack']));

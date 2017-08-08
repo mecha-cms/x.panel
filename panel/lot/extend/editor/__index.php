@@ -125,7 +125,6 @@ if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config')
         }
         File::export($__r)->saveTo(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
         Request::reset('post', 'e');
-        Message::success('update', [$language->setting, '<strong>' . $language->editor . '</strong>']);
     }
 }
 

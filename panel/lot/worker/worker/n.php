@@ -60,4 +60,11 @@ $__n['+']['exit'] = [
     'stack' => 40
 ];
 
+/*
+$__vv = (array) a(Config::get('panel.v.n', []));
+foreach ($__n as $__k => $__v) {
+    $__n[$__k]['is']['hidden'] = !(!isset($__vv[$__k]) || isset($__vv[$__k]) && $__vv[$__k]);
+}
+*/
+
 Config::set('panel.n', $__n); // hold!

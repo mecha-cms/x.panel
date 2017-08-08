@@ -61,9 +61,6 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         $__DIR . DS . 'worker' . DS . $__l . '.php',
         $__DIR . DS . 'worker' . DS . 'file.php'
     );
-    if ($__user && $__command === 's' && Request::is('get')) {
-        Request::save('post', 'user', '@' . $__user->key);
-    }
     if (($__layout = Request::get('layout', "")) !== "") {
         Config::set('panel.layout', is_numeric($__layout) ? $__layout : 0);
     }

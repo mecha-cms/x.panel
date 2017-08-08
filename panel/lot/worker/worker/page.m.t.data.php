@@ -3,7 +3,7 @@
 $__s = substr($__path, -2) === '/+';
 $__values = [
     'data' => $language->{$__s ? 'save' : 'update'},
-    'trash' => $__s ? null : $language->delete
+    'trash' => $__s ? false : $language->delete
 ];
 
 $__key = $__data[0]->key;

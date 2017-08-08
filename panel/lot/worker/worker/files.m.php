@@ -96,8 +96,8 @@ foreach ($__links as $__k => $__v) {
     <?php
 
     $__as = [
-        'view' => $__v->is->file ? [$language->view, $__vv->url, true] : null,
-        'set' => $__v->is->file ? null : [$language->add, str_replace('::g::', '::s::', $__uu) . $__query],
+        'view' => $__v->is->file ? [$language->view, $__vv->url, true] : false,
+        'set' => $__v->is->file ? false : [$language->add, str_replace('::g::', '::s::', $__uu) . $__query],
         'edit' => [$language->edit, $__uu . $__query],
         'reset' => [$language->delete, str_replace('::g::', '::r::', $__v->url . HTTP::query(['token' => $__token]))]
     ];
@@ -109,7 +109,7 @@ foreach ($__links as $__k => $__v) {
         if (!isset($__v)) continue;
         if ($__v && is_string($__v) && $__v[0] === '<' && strpos($__v, '</') !== false && substr($__v, -1) === '>') {
             $__a[$__k] = $__v;
-        } else {
+        } else if (is_array($__v)) {
             $__a[$__k] = call_user_func_array('HTML::a', $__v);
         }
     }

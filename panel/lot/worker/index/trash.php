@@ -1,28 +1,25 @@
 <?php
 
-Hook::set('shield.enter', function() {
-    extract(Lot::get(null, []));
-    Config::set('panel.s', [
-        1 => [
-            'child' => [
-                'a' => null
-            ],
-            'kin' => [
-                'a' => null
-            ]
+Config::set('panel.s', [
+    1 => [
+        'child' => [
+            'a' => false
+        ],
+        'kin' => [
+            'a' => false
         ]
-    ]);
-    Hook::set('panel.a.' . $__chops[0] . 's', function() use($language) {
-        return [
-            'reset' => ['&#x2716; ' . $language->delete, '#']
-        ];
-    });
-    Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__is_has_step, $__state, $__token) {
-        return $__v[0]->is->file ? [
-            'restore' => [$language->restore, str_replace('::g::', '::z::', $__v[0]->url) . HTTP::query(['token' => $__token])],
-            'reset' => [$language->delete, str_replace('::g::', '::r::', $__v[0]->url) . HTTP::query(['token' => $__token, 'force' => 1])]
-        ] : [];
-    });
+    ]
+]);
+Hook::set('panel.a.' . $__chops[0] . 's', function() use($language) {
+    return [
+        'reset' => ['&#x2716; ' . $language->delete, '#']
+    ];
+}, 0);
+Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__is_has_step, $__state, $__token) {
+    return $__v[0]->is->file ? [
+        'restore' => [$language->restore, str_replace('::g::', '::z::', $__v[0]->url) . HTTP::query(['token' => $__token])],
+        'reset' => [$language->delete, str_replace('::g::', '::r::', $__v[0]->url) . HTTP::query(['token' => $__token, 'force' => 1])]
+    ] : [];
 }, 0);
 
 if ($__is_get && $__command === 'z') {

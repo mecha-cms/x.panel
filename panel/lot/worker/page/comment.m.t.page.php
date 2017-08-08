@@ -55,14 +55,14 @@ return [
         'stack' => 50
     ],
     'x' => [
+        'key' => 'submit',
         'type' => 'submit[]',
-        'title' => $language->submit,
         'values' => array_merge($__command !== 's' ? [
             '*' . $__x => $language->update
         ] : [], array_filter([
             'page' => $language->approve,
             'draft' => $language->_approve,
-            'trash' => $__command !== 's' ? $language->delete : null
+            'trash' => $__command !== 's' ? $language->delete : false
         ], function($__k) use($__x) {
             return $__k !== $__x;
         }, ARRAY_FILTER_USE_KEY)),

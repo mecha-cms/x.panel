@@ -8,13 +8,7 @@ Config::set([
     'is' => 'page',
     'panel' => [
         'layout' => 2,
-        'c:f' => true
-    ]
-]);
-
-Hook::set('shield.enter', function() {
-    extract(Lot::get(null, []));
-    Config::set('panel', [
+        'c:f' => true,
         'm' => [
             't' => [
                 'summary' => [
@@ -23,21 +17,21 @@ Hook::set('shield.enter', function() {
                 'detail' => [
                     'stack' => 20
                 ],
-                'file' => null,
-                'folder' => null,
-                'upload' => null
+                'file' => false,
+                'folder' => false,
+                'upload' => false
             ]
         ],
         's' => [
             1 => null
         ]
-    ]);
-}, 0);
+    ]
+]);
 
 if ($__is_post && !Message::$x) {
     File::open($__log)->delete();
     Message::success(To::sentence($language->deleteed));
-    Guardian::kick($__state->path . '/::g::/page/1');
+    Guardian::kick($__state->path . '/::g::/' . $__state->kick('page') . '/1');
 }
 
 Lot::set('__page', [

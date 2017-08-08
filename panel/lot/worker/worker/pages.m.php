@@ -44,7 +44,7 @@ foreach ($__links as $__k => $__v) {
   $__pppp = Config::get('panel.v.' . $__chops[0] . '.is.hidden', array_pop($__ppp)) === array_pop($__ppp) && file_exists(Path::D($__pp) . '.' . Path::X($__pp));
 
   $__as = [
-      'edit' => $__pppp ? null : [$language->edit, $__uu . $__query]
+      'edit' => $__pppp ? false : [$language->edit, $__uu . $__query]
   ];
   
   $__is_pages = !!g(LOT . explode('::' . $__command . '::', $__uu, 2)[1], 'draft,page,archive', "", false);  
@@ -56,7 +56,7 @@ foreach ($__links as $__k => $__v) {
       $__as['get'] = [$language->open, $__uu . '/1' . $__query];
   }
 
-  $__as['reset'] = [$language->delete, str_replace('::g::', '::r::', $__uu) . HTTP::query(['token' => $__token]), false, ['title' => $__pppp ? $language->__->panel->as_pages : null]];
+  $__as['reset'] = [$language->delete, str_replace('::g::', '::r::', $__uu) . HTTP::query(['token' => $__token]), false, ['title' => $__pppp ? $language->o_toggle->as_pages : null]];
 
   $__as = Hook::fire('panel.a.' . $__chops[0], [$__as, [$__v, $__vv], $__pages]);
 
@@ -95,7 +95,7 @@ foreach ($__links as $__k => $__v) {
         if (!isset($__vv)) continue;
         if ($__vv && is_string($__vv) && $__vv[0] === '<' && strpos($__vv, '</') !== false && substr($__vv, -1) === '>') {
             $__a[$__kk] = $__vv;
-        } else {
+        } else if (is_array($__vv)) {
             $__a[$__kk] = call_user_func_array('HTML::a', $__vv);
         }
     }

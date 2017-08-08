@@ -1,6 +1,6 @@
 <?php
 
-$__p = $__path_i = str_replace('/', DS, $__path);
+$__p = str_replace('/', DS, $__path);
 $__u = $url . '/' . $__state->path . '/::g::/';
 $__query = HTTP::query([
     'token' => false,
@@ -19,7 +19,7 @@ if (Config::get('panel.x.s.current') !== true) {
 
 if ($__is_has_step) {
     // Folder not found!
-    if ($__command === 'g' && count($__chops) > 1 && !is_dir(LOT . DS . $__path_i)) {
+    if ($__command === 'g' && count($__chops) > 1 && !is_dir(LOT . DS . $__p)) {
         Shield::abort(PANEL_404);
     }
     // Get file(s)…
@@ -100,7 +100,7 @@ if ($__is_has_step) {
             // Create folder…
             if (!Message::$x && $__d = Request::post('directory', "", false)) {
                 $__d = To::folder($__d);
-                $__dd = LOT . DS . $__path_i . DS . $__d;
+                $__dd = LOT . DS . $__p . DS . $__d;
                 if (!file_exists($__dd)) {
                     Request::set('post', 'directory', $__d);
                     Folder::set($__dd, 0755);
@@ -116,7 +116,7 @@ if ($__is_has_step) {
                 $__extract = Request::post('o.upload.extract');
                 foreach ($_FILES as $__k => $__v) {
                     if (!$__v || empty($__v['size'])) continue;
-                    File::upload($__v, LOT . DS . $__path_i, $__extract && $__k === 'file' ? function($__a) use($__path_i) {
+                    File::upload($__v, LOT . DS . $__p, $__extract && $__k === 'file' ? function($__a) use($__p) {
                         if (!extension_loaded('zip')) {
                             Guardian::abort('<a href="http://www.php.net/manual/en/book.zip.php" title="PHP &#x2013; Zip" rel="nofollow" target="_blank">PHP Zip</a> extension is not installed on your web server.');
                         }
@@ -137,14 +137,14 @@ if ($__is_has_step) {
                         }
                     } : null);
                     if (!$__extract) {
-                        $__ff = LOT . DS . $__path_i . DS . To::file($__v['name']);
+                        $__ff = LOT . DS . $__p . DS . To::file($__v['name']);
                         Session::set('panel.ff.s.' . md5($__ff), 1);
                         Hook::fire('on.package.set', [$__ff, null]);
                     }
                 }
             }
             if (!Message::$x) {
-                $__f = LOT . DS . $__path_i . DS . $__n;
+                $__f = LOT . DS . $__p . DS . $__n;
                 $__uu = str_replace('::s::', '::g::', $url->current);
                 if ($__n) {
                     // Create file only if name/path is set
@@ -171,25 +171,25 @@ if ($__is_has_step) {
                 Guardian::kick(str_replace('::g::', '::r::', URL::I($url->current) . HTTP::query(['token' => Request::post('token')], [1 => '&'])));
             }
             // Update file…
-            $__p = trim(str_replace('/', DS, Request::post('path')), DS);
-            $__p = To::file($__p);
-            $__x = Path::X($__p);
+            $__pp = trim(str_replace('/', DS, Request::post('path')), DS);
+            $__pp = To::file($__pp);
+            $__x = Path::X($__pp);
             if (!Is::these(File::$config['extensions'])->has($__x)) {
                 Request::save('post');
                 Message::error('file_x', '<em>' . $__x . '</em>');
             }
             if (!Message::$x) {
-                $__f = LOT . DS . $__chops[0] . DS . $__p;
+                $__f = LOT . DS . $__chops[0] . DS . $__pp;
                 if ($__s = Request::post('content', "", false)) {
                     // text file
                     File::write($__s)->saveTo($__f);
                 } else {
                     // folder and other(s)
-                    $__ff = LOT . DS . $__path_i;
+                    $__ff = LOT . DS . $__p;
                     File::open($__ff)->moveTo(is_file($__ff) ? dirname($__f) : $__f);
                 }
-                if ($__chops[0] . DS . $__p !== $__path_i) {
-                    File::open(LOT . DS . $__path_i)->delete();
+                if ($__chops[0] . DS . $__pp !== $__p) {
+                    File::open(LOT . DS . $__p)->delete();
                 }
                 $__t = is_dir($__f) ? 'folder' : 'file';
                 Hook::fire('on.' . $__t . '.set', [$__f, $__ff]);
@@ -206,7 +206,7 @@ if ($__is_has_step) {
             } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
                 Shield::abort(PANEL_404);
             }
-            if (!$__f = File::exist(LOT . DS . $__path_i)) {
+            if (!$__f = File::exist(LOT . DS . $__p)) {
                 Shield::abort(PANEL_404);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
@@ -283,11 +283,12 @@ if (Config::get('panel.x.s.child') !== true) {
     ]);
 }
 
-// Get kin(s)
-if (Config::get('panel.x.s.kin') !== true && $__p = dirname($__p)) {
+// Get kin(s)…
+if (Config::get('panel.x.s.kin') !== true && $__pp = dirname($__p)) {
+    $__pp = $__pp === '.' ? "" : DS . $__pp;
     $__g = array_filter(array_merge(
-        glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
-        glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
+        glob(LOT . $__pp . DS . '.*', GLOB_NOSORT),
+        glob(LOT . $__pp . DS . '*', GLOB_NOSORT)
     ), function($__v) use($__b) {
         return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..' && basename($__v) !== $__b;
     });
@@ -307,10 +308,10 @@ if (Config::get('panel.x.s.kin') !== true && $__p = dirname($__p)) {
     ]);
 }
 
-Config::set('panel', [
-    'layout' => Config::get('panel.layout', 2),
-    'c:f' => Config::get('panel.c:f', false),
-    'm:f' => Config::get('panel.m:f', !$__is_has_step),
+Config::set('panel', array_replace_recursive([
+    'layout' => 2,
+    'c:f' => false,
+    'm:f' => !$__is_has_step,
     'm' => [
         't' => [
             'file' => [
@@ -332,10 +333,11 @@ Config::set('panel', [
                         ],
                         'expand' => true,
                         'stack' => 10
-                    ] : null,
+                    ] : false,
                     'path' => [
                         'type' => 'text',
                         'value' => $__command === 'g' ? str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__path) : null,
+                        'placeholder' => $__command === 's' ? $language->f_file : null,
                         'title' => $__command === 's' ? $language->name : $language->path,
                         'pattern' => $__command === 'g' ? '^[a-z\\d_.-]+(?:[\\\\/][a-z\\d._-]+)*$' : '^[a-z\\d_.-]+$',
                         'is' => [
@@ -344,10 +346,11 @@ Config::set('panel', [
                         'stack' => 20
                     ],
                     '_x' => [
+                        'key' => 'submit',
                         'type' => 'submit[]',
                         'values' => [
                             Path::X($__path, 'txt') => $language->{$__command === 's' ? 'submit' : 'update'},
-                            'trash' => $__command === 's' ? null : $language->delete
+                            'trash' => $__command === 's' ? false : $language->delete
                         ],
                         'stack' => 0
                     ]
@@ -359,7 +362,8 @@ Config::set('panel', [
                 'list' => [
                     'directory' => [
                         'type' => 'text',
-                        'title' => $language->folder,
+                        'placeholder' => $language->f_path,
+                        'title' => $language->path,
                         'is' => [
                             'block' => true
                         ],
@@ -377,7 +381,7 @@ Config::set('panel', [
                     ]
                 ],
                 'stack' => 20
-            ] : null,
+            ] : false,
             'upload' => $__command === 's' || isset($__file[0]->content) && $__file[0]->content !== false && $__file[0]->is->files ? [
                 'legend' => $language->upload,
                 'list' => [
@@ -397,7 +401,7 @@ Config::set('panel', [
                     ]
                 ],
                 'stack' => 30
-            ] : null
+            ] : false
         ]
     ],
     's' => [
@@ -424,9 +428,9 @@ Config::set('panel', [
             'child' => [
                 'list' => $__childs,
                 'a' => [
-                    'set' => $__command === 's' ? ['&#x2795;', str_replace('::g::', '::s::', $url->current), false, ['title' => $language->add]] : null
+                    'set' => $__command === 's' ? ['&#x2795;', str_replace('::g::', '::s::', $url->current), false, ['title' => $language->add]] : false
                 ],
-                'if' => !$__is_has_step && is_dir(LOT . DS . $__path_i) && $__childs[0],
+                'if' => !$__is_has_step && is_dir(LOT . DS . $__p) && $__childs[0],
                 'stack' => 40
             ],
             'nav' => [
@@ -437,4 +441,4 @@ Config::set('panel', [
             ]
         ]
     ]
-]);
+], (array) a(Config::get('panel', []))));

@@ -9,38 +9,46 @@ if ($__command === 's' && count($__chops) > 1) {
 Config::set('panel.l', 'page');
 
 // Set or modify the default panel content(s)…
-Hook::set('shield.enter', function() {
-    extract(Lot::get(null, []));
-    $__x = $__page[0] ? $__page[0]->state : 'page';
-    Config::set('panel.f.page', [
-        'x' => [
-            'values' => [
-                '*' . $__x => $__command === 's' ? null : $language->update,
-                'page' => $__x === 'page' ? null : $language->create,
-                'draft' => $__x === 'draft' ? null : $language->save,
-                'archive' => null
+$__x = $__page[0] ? $__page[0]->state : 'page';
+Config::set('panel', [
+    'f' => [
+        'page' => [
+            'x' => [
+                'values' => [
+                    '*' . $__x => $__command === 's' ? false : $language->update,
+                    'page' => $__x === 'page' ? false : $language->create,
+                    'draft' => $__x === 'draft' ? false : $language->save,
+                    'archive' => false
+                ],
+                'order' => ['*' . $__x, 'page', 'draft', 'trash'],
             ],
-            'order' => ['*' . $__x, 'page', 'draft', 'trash'],
-        ],
-        '+[time]' => null,
-        'link' => null,
-        'tags' => null
-    ]);
-    Config::set('panel.s', [
+            '+[time]' => false,
+            'link' => false,
+            'tags' => false
+        ]
+    ],
+    's' => [
         1 => [
             'kin' => [
                 'stack' => 20
             ],
-            'current' => null,
-            'parent' => null,
-            'setting' => null
+            'current' => false,
+            'parent' => false,
+            'setting' => false
         ],
         2 => [
             'id' => [
                 'content' => __DIR__ . DS . '..' . DS . 'page' . DS . 'tag' . DS . '-id.php',
                 'stack' => 20
             ],
-            'child' => null
+            'child' => false
         ]
-    ]);
-}, 0);
+    ],
+    'x' => [
+        's' => [
+            'child' => true,
+            'current' => true,
+            'parent' => true
+        ]
+    ]
+]);

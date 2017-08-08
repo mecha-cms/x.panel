@@ -5,15 +5,58 @@ if ($__command !== 'g') {
 }
 
 if ($__user_enter) {
-    Guardian::kick($__state->path . '/::g::/page');
+    Guardian::kick($__state->path . '/::g::/' . $__state->kick('page'));
 }
 
+$__pass_x = Request::restore('post', 'pass_x');
 Config::set([
     'is' => 'page',
     'panel' => [
         'layout' => 0,
         'c:f' => true,
-        'm:f' => false
+        'm:f' => false,
+        'm' => [
+            't' => [
+                'enter' => [
+                    'legend' => $language->log_in,
+                    'list' => [
+                        'user' => [
+                            'type' => 'text',
+                            'placeholder' => $language->f_user,
+                            'is' => [
+                                'block' => true
+                            ],
+                            'stack' => 10
+                        ],
+                        'pass' => [
+                            'type' => 'pass',
+                            'placeholder' => $__pass_x ? l($language->new__($language->pass)) : null,
+                            'is' => [
+                                'block' => true
+                            ],
+                            'stack' => 20
+                        ],
+                        'kick' => [
+                            'type' => 'hidden',
+                            'value' => Request::get('f.kick', $__state->path . '/::g::/' . $__state->kick('page')),
+                            'stack' => 30
+                        ],
+                        'x' => [
+                            'key' => 'submit',
+                            'type' => 'submit[]',
+                            'values' => [
+                                'page' => $language->enter
+                            ],
+                            'stack' => 0
+                        ]
+                    ],
+                    'stack' => 10
+                ],
+                'file' => false,
+                'folder' => false,
+                'upload' => false
+            ]
+        ]
     ]
 ]);
 

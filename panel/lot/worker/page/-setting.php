@@ -27,7 +27,7 @@ return implode("", [
     </tr>
   </tbody>
 </table>
-<h4>' . $language->__->panel->chunk . '</h4>
+<h4>' . $language->chunk . '</h4>
 <p>' . Form::number('+[chunk]', $__page[0]->chunk, 7, ['classes' => ['input', 'block'], 'min' => 0, 'max' => 50]) . '</p>' : "",
     '<h4>' . $language->options . '</h4>
 <p>' . ($__options ? implode('<br>', $__options) : $language->message_info_void($language->options)) . '</p>'

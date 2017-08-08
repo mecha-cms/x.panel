@@ -42,7 +42,7 @@ if (Cache::expire($__ext, $__id)) {
     foreach ($__c as $__k => $__v) {
         $__i18n = new Page($__k, [], 'language');
         $__fn = 'From::' . __c2f__($__i18n->type, '_');
-        $__content = array_replace_recursive($__content, is_callable($__fn) ? call_user_func($__fn, $__i18n->content) : (array) $__i18n->content);
+        $__content = array_replace_recursive($__content, is_callable($__fn) ? call_user_func($__fn, $__i18n->content) : From::yaml($__i18n->content));
     }
     Cache::set($__ext, $__content, $__id);
 } else {

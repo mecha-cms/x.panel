@@ -485,8 +485,8 @@
   max-width:16em;
 }
 .p-enter .f > label {width:4em}
-.p-enter .f > label[for="f-enter"] {display:none}
-.p-enter .f > label[for="f-enter"] + span {
+.p-enter .f > label[for="f-submit"] {display:none}
+.p-enter .f > label[for="f-submit"] + span {
   display:block;
   text-align:center;
 }

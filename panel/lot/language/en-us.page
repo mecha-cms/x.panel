@@ -10,10 +10,6 @@ __thiss__: %{0}% These %{1}%
 
 __:
   panel:
-    as_: Set as Home Page
-    as_page: Hide Pages View
-    as_pages: Show Pages View
-    chunk: Per Page
     fast: Fast
     faster: Faster
     fastest: Fastest
@@ -21,7 +17,6 @@ __:
     slow: Slow
     slower: Slower
     slowest: Slowest
-    extract: Extract package after upload.
 
 mode: Mode
 modes: Modes
@@ -72,8 +67,10 @@ message_warning: Warning.
 f_content: Content goes here…
 f_description: Some description about this %{0}% (optional).
 f_email: email@domain.com
+f_file: foo-bar.baz
 f_link: http://
-f_query: lorem, ipsum, dolor, sit, amet
+f_path: foo\bar\baz
+f_query: foo, bar, baz
 f_title: Title Here
 f_user: @user
 f_value: Value here…
@@ -94,6 +91,10 @@ o_direction:
 o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"time","slug":"slug","update":"update"}
+o_toggle:
+  as_: Set as Home Page
+  as_page: Hide Pages View
+  as_pages: Show Pages View
 o_type:
   HTML: HTML
 o_user: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}

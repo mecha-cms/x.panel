@@ -10,10 +10,6 @@ __thiss__: %{0}% Semua %{1}% Ini
 
 __:
   panel:
-    as_: Sebagai Beranda
-    as_page: Sembunyikan Daftar Halaman
-    as_pages: Tampilkan Daftar Halaman
-    chunk: Per Halaman
     fast: Cepat
     faster: Lebih Cepat
     fastest: Paling Cepat
@@ -30,7 +26,6 @@ sorts: Urutkan
 
 theme: Theme
 themes: Themes
-
 
 message_error: Kesalahan.
 message_error_duplicate: Duplikat %{0}%.
@@ -64,8 +59,10 @@ message_warning: Peringatan.
 f_content: Konten di sini…
 f_description: Beberapa deskripsi tentang %{0}% ini (opsional).
 f_email: email@domain.com
+f_file: foo-bar.baz
 f_link: http://
-f_query: lorem, ipsum, dolor, sit, amet
+f_path: foo\bar\baz
+f_query: foo, bar, baz
 f_title: Judul di Sini
 f_value: Nilai di sini…
 f_yaml: "properti: nilai"
@@ -85,6 +82,10 @@ o_direction:
 o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"waktu","slug":"nama","update":"pembaharuan"}
+o_toggle:
+  as_: Sebagai Beranda
+  as_page: Sembunyikan Daftar Halaman
+  as_pages: Tampilkan Daftar Halaman
 o_type:
   HTML: HTML
 o_user: {"-1":"Pengguna Diblokir (Tidak Ada Kontrol)","0":"Pengguna Ditangguhkan (Tidak Ada Kontrol)","1":"Pengguna Primer (Kontrol Penuh)","2":"Pengguna Sekunder (Kontrol Terbatas)"}

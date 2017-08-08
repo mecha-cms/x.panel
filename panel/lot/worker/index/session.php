@@ -13,4 +13,4 @@ if (!$__t = Request::get('token')) {
 Session::reset('panel');
 Hook::fire('on.session.reset', [null, null]);
 Message::success(To::sentence($language->cleared));
-Guardian::kick($__state->path . '/::g::/page' . HTTP::query(['token' => false]));
+Guardian::kick($__state->path . '/::g::/' . $__state->kick('page') . HTTP::query(['token' => false]));

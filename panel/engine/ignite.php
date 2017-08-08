@@ -6,8 +6,6 @@
 function __panel_f__($k, $v) {
     global $language;
     // `key`
-    // `title`
-    // `description`
     // `type`
     // `value`
     // `values`
@@ -16,6 +14,8 @@ function __panel_f__($k, $v) {
     // `pattern`
     // `range`
     // `step`
+    // `title`
+    // `description`
     // `union` ['p']
     // `if`
     // `is`
@@ -64,7 +64,7 @@ function __panel_f__($k, $v) {
         $is_block = (isset($v['is']['block']) && $v['is']['block'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['is']['block']) || $v['is']['block'])) ? 'block' : null;
         $is_expand = isset($v['is']['expand']) && $v['is']['expand'] ? 'expand' : null;
         if ($type === 'hidden') {
-            $hidden = Form::hidden($k, $v, $aa);
+            $hidden = Form::hidden($k, $value, $aa);
         } else if (strpos(X . 'button' . X . 'button[]' . X . 'reset' . X . 'reset[]' . X . 'submit' . X . 'submit[]' . X, X . $type . X) !== false) {
             $type = str_replace('[]', "", $type);
             if (isset($v['values'])) {
@@ -73,14 +73,14 @@ function __panel_f__($k, $v) {
                     $vvv_k = array_keys($v['values']);
                     $vvv_v = array_flip($vvv_k);
                     foreach ($v['order'] as $vv) {
-                        if ($vv === null || !isset($vvv_v[$vv])) continue;
+                        if ($vv === null || !isset($vvv_v[$vv]) || !$vvv_v[$vv]) continue;
                         $vvv[$vv] = $v['values'][$vv];
                     }
                 } else {
                     $vvv = $v['values'];
                 }
                 foreach ($vvv as $nn => $vv) {
-                    if (!isset($vv)) continue;
+                    if (!$vv) continue;
                     if ($vv && is_string($vv) && $vv[0] === '<' && strpos($vv, '</') !== false && substr($vv, -1) === '>') {
                         $html .= $vv;
                     } else {
@@ -271,10 +271,10 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
             if (isset($v['a']) && $v['a']) {
                 $a = [];
                 foreach ($v['a'] as $kk => $vv) {
-                    if (!isset($vv)) continue;
+                    if (!$vv) continue;
                     if ($vv && is_string($vv) && $vv[0] === '<' && strpos($vv, '</') !== false && substr($vv, -1) === '>') {
                         $a[] = $vv;
-                    } else {
+                    } else if (is_array($vv)) {
                         $a[] = call_user_func_array('HTML::a', $vv);
                     }
                 }
