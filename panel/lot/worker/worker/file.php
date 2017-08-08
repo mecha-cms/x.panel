@@ -324,7 +324,9 @@ Config::set('panel', array_replace_recursive([
                             'data' => [
                                 'type' => Anemon::alter($__command === 's' ? 'PHP' : u(Path::X($__path, 'HTML')), [
                                     'JS' => 'JavaScript',
-                                    'PAGE' => 'Markdown'
+                                    'JSON' => 'JavaScript',
+                                    'PAGE' => 'YAML-Frontmatter',
+                                    'XML' => 'HTML'
                                 ])
                             ]
                         ],

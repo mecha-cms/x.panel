@@ -23,12 +23,14 @@ __:
         textile: Textile
         xml: <abbr title="Extensible Markup Language">XML</abbr> (required by <abbr>PHP</abbr> and Markdown)
         yaml: <abbr title="YAML Ain’t Markup Language">YAML</abbr>
+        yaml-frontmatter: <abbr title="YAML Ain’t Markup Language">YAML</abbr> Front Matter (depends on <abbr title="YAML Ain’t Markup Language">YAML</abbr>)
       addon:
         dialog: Dialog (required by Search)
         display: Display (press <kbd>F11</kbd> to Full Screen)
         edit: Edit
         fold: Fold (required by Edit)
         hint: Hints (press <kbd>Ctrl</kbd> and <kbd>Space</kbd> to activate the feature)
+        mode: Mode (required by <abbr title="YAML Ain’t Markup Language">YAML</abbr> Front Matter)
         search: Search (press <kbd>Ctrl</kbd> and <kbd>F</kbd> to activate the feature)
         selection: Selection
 
