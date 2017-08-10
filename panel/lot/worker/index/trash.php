@@ -1,5 +1,10 @@
 <?php
 
+$__query = HTTP::query([
+    'token' => false,
+    'r' => false
+]);
+
 Config::set('panel.s', [
     1 => [
         'child' => [
@@ -10,15 +15,18 @@ Config::set('panel.s', [
         ]
     ]
 ]);
-Hook::set('panel.a.' . $__chops[0] . 's', function() use($language) {
+Hook::set('panel.a.' . $__chops[0] . 's', function() use($language, $__chops, $__query, $__state, $__token) {
     return [
-        'reset' => ['&#x2716; ' . $language->delete, '#']
+        'reset' => ['&#x2716; ' . $language->delete, $__state->path . '/::r::/' . $__chops[0] . HTTP::query([
+            'token' => $__token,
+            'r' => 1
+        ])]
     ];
 }, 0);
 Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__is_has_step, $__state, $__token) {
     return $__v[0]->is->file ? [
         'restore' => [$language->restore, str_replace('::g::', '::z::', $__v[0]->url) . HTTP::query(['token' => $__token])],
-        'reset' => [$language->delete, str_replace('::g::', '::r::', $__v[0]->url) . HTTP::query(['token' => $__token, 'force' => 1])]
+        'reset' => [$language->delete, str_replace('::g::', '::r::', $__v[0]->url) . HTTP::query(['token' => $__token, 'r' => 1])]
     ] : [];
 }, 0);
 
@@ -48,17 +56,28 @@ if ($__is_get && $__command === 'z') {
         $__aa = explode('/', Path::F($__pp, null, '/'));
         $__nn = array_pop($__aa);
         $__pp = implode('/', $__aa) . '/+/' . $__nn;
-    } else {
-        $__query = HTTP::query([
-            'token' => false,
-            'force' => false,
-            'l' => 'file'
-        ]);
     }
-    Guardian::kick($__state->path . '/::g::/' . $__pp . $__query);
+    Guardian::kick($__state->path . '/::g::/' . $__pp . HTTP::query([
+        'token' => false,
+        'r' => false
+    ]));
 }
 
 // Read only!
 if ($__command !== 'g' || !$__is_has_step) {
+    if ($__is_get && $__command === 'r' && count($__chops) === 1) {
+        if (!$__t = Request::get('token')) {
+            Shield::abort(PANEL_404);
+        } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
+            Shield::abort(PANEL_404);
+        }
+        File::open(LOT . DS . $__chops[0])->delete();
+        Hook::fire('on.' . $__chops[0] . '.reset', [null, null]);
+        Message::info('void', $language->{$__chops[0]});
+        Guardian::kick($__state->path . '/::g::/' . $__state->kick('page') . '/1' . HTTP::query([
+            'token' => false,
+            'r' => false
+        ]));
+    }
     Shield::abort(PANEL_404);
 }
