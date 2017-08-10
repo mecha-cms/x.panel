@@ -50,6 +50,9 @@ message_info_save: %{0}% %{1}% has been saved.
 message_info_update: %{0}% %{1}% has been updated.
 
 message_success: Success.
+message_success_get: %{0}% %{1}% retrieved.
+message_success_reset: %{0}% %{1}% removed.
+message_success_set: %{0}% %{1}% added.
 message_success_create: %{0}% %{1}% created.
 message_success_delete: %{0}% %{1}% deleted.
 message_success_restore: %{0}% %{1}% restored.
@@ -76,9 +79,12 @@ f_user: @user
 f_value: Value here…
 f_yaml: "property: value"
 
+h_file_extract: Extract file after upload (package).
+h_file_exist_reset: Ignore the existing file/package.
+
 h_kick__: Redirect to %{0}%.
-h_extract: Extract package after upload.
 h_user: Without the <code>@</code> prefix.
+h_user_o: <p><strong>Roles:</strong></p><ul><li><em>Banned</em> → no control (-1)</li><li><em>Pending</em> → no control (0)</li><li><em>Primary</em> → maximum control (1)</li><li><em>Secondary</em> → minimum control (2)</li></ul>
 
 h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
 h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
@@ -97,6 +103,6 @@ o_toggle:
   as_pages: Show Pages View
 o_type:
   HTML: HTML
-o_user: {"-1":"Banned User (No Control)","0":"Pending User (No Control)","1":"Primary User (Full Control)","2":"Secondary User (Restricted Control)"}
+o_user: {"-1":"Banned","0":"Pending","1":"Primary","2":"Secondary"}
 
 __title: Control Panel

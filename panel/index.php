@@ -1,31 +1,31 @@
 <?php
 
 // a: anchor/article
-// b:
-// c: configuration/container/cookie
-// d: data
+// b: base/name.base
+// c: capture/configuration/container/cookie
+// d: data/directory
 // e:
-// f: field/form
+// f: field/file/folder/form
 // g: get
 // h: hint
-// i: icon
+// i: icon/file.include
 // j:
-// k:
+// k: key
 // l: layout
 // m: main
-// n: navigation
+// n: name/navigation
 // o: option
 // p: page/paragraph/path
-// q:
-// r: reset/require path
-// s: set/secondary/sidebar/session
+// q: query
+// r: force/hard/file.require/reset
+// s: secondary/session/set/sidebar
 // t: tab
 // u: upload
-// v: check mark/enable/show/add
+// v: mark.check/enable/show/add
 // w:
-// x: cross mark/disable/hide/remove
-// y:
-// z:
+// x: mark.cross/disable/hide/remove
+// y: redo
+// z: undo
 
 define('PANEL', __DIR__);
 
