@@ -19,7 +19,7 @@ call_user_func(function() use($__page, &$__tags, &$__types) {
     asort($__types);
 });
 
-$__X = $__page[0]->state;
+$__X = $__page[0]->state ?: "";
 $__N = $__page[0]->slug;
 
 return [
@@ -70,17 +70,26 @@ return [
         'expand' => true,
         'stack' => 30
     ],
+    'version' => [
+        'type' => 'text',
+        'placeholder' => '0.0.0',
+        'pattern' => '^(?:\\d+\\.){2}\\d+$',
+        'is' => [
+            'hidden' => true
+        ],
+        'stack' => 40
+    ],
     'type' => [
         'type' => 'select',
         'value' => $__page[0]->type,
         'values' => $__types ?: ['HTML' => 'HTML'],
-        'stack' => 40
+        'stack' => 50
     ],
     'description' => [
         'type' => 'textarea',
         'value' => $__page[0]->description,
         'placeholder' => $__page[0]->description ?: $language->f_description($language->{$__chops[0]}),
-        'stack' => 50
+        'stack' => 60
     ],
     'author' => [
         'type' => 'text',
@@ -90,7 +99,7 @@ return [
             'block' => true,
             'hidden' => true
         ],
-        'stack' => 60
+        'stack' => 70
     ],
     'link' => [
         'type' => 'url',
@@ -99,7 +108,7 @@ return [
         'is' => [
             'block' => true
         ],
-        'stack' => 70
+        'stack' => 80
     ],
     'email' => [
         'type' => 'email',
@@ -109,7 +118,7 @@ return [
             'block' => true,
             'hidden' => true
         ],
-        'stack' => 80
+        'stack' => 90
     ],
     'tags' => [
         'type' => 'query',
@@ -119,10 +128,10 @@ return [
         'is' => [
             'block' => true
         ],
-        'stack' => 90
+        'stack' => 100
     ],
     '+[time]' => (
-        // Detect time format on the page slug @see `engine\kernel\page.php`
+        // Detect time format in the page slug @see `engine\kernel\page.php`
         $__N &&
         is_numeric($__N[0]) &&
         (
@@ -138,16 +147,17 @@ return [
         'type' => 'date',
         'value' => $__page[0]->time,
         'if' => $__command !== 's',
-        'stack' => 100
+        'stack' => 110
     ],
     'x' => [
         'key' => 'submit',
         'type' => 'submit[]',
-        'values' => array_merge($__command !== 's' ? [
+        'title' => "",
+        'values' => array_replace($__command !== 's' ? [
             '*' . $__X => $language->update . ' (' . Anemon::alter($__X, $__buttons) . ')'
-        ] : [], array_filter($__buttons, function($__k) use($__X) {
+        ] : [], $__X ? array_filter($__buttons, function($__k) use($__X) {
             return $__k !== $__X;
-        }, ARRAY_FILTER_USE_KEY)),
+        }, ARRAY_FILTER_USE_KEY) : $__buttons),
         'order' => ['*' . $__X, 'page', 'draft', 'archive', 'trash'],
         'stack' => 0
     ]

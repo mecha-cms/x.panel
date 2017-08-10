@@ -2,7 +2,7 @@
 
 $__query = HTTP::query([
     'token' => false,
-    'force' => false
+    'r' => false
 ]);
 
 if (Request::get('q')) {
@@ -37,6 +37,10 @@ foreach ($__links as $__k => $__v) {
   <?php foreach($__pages[0] as $__k => $__v): $__vv = $__pages[1][$__k]; ?>
   <?php
 
+  $__s = 'panel.v.f.' . md5($__v->path);
+  $__is_v = Session::get($__s);
+  Session::reset($__s); // remember once!
+
   $__uu = $__v->url;
 
   $__pp = $__v->path;
@@ -69,6 +73,9 @@ foreach ($__links as $__k => $__v) {
   }
   if ($__is_pages) {
       $__cc .= ' is.pages';
+  }
+  if ($__is_v) {
+      $__cc .= ' v is.active';
   }
 
   ?>
