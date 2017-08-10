@@ -2,7 +2,11 @@
 
 // Do not allow user to create page child(s)…
 if ($__command === 's' && count($__chops) > 1) {
-    Shield::abort(PANEL_404);
+    if (isset($__chops[2]) && $__chops[2] === '+') {
+        // But allow user to create custom field(s)…
+    } else {
+        Shield::abort(PANEL_404);
+    }
 }
 
 // Set custom file manager layout
@@ -15,9 +19,6 @@ Config::set('panel', [
         'page' => [
             'x' => [
                 'values' => [
-                    '*' . $__x => $__command === 's' ? false : $language->update,
-                    'page' => $__x === 'page' ? false : $language->create,
-                    'draft' => $__x === 'draft' ? false : $language->save,
                     'archive' => false
                 ],
                 'order' => ['*' . $__x, 'page', 'draft', 'trash'],
