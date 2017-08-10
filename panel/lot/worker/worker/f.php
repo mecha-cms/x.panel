@@ -105,6 +105,15 @@ if (Request::is('post')) {
             }
         }
     }
+    // Semantic version pattern: `0.0.0`
+    if (Request::is('post', 'version')) {
+        $s = Request::post('version', "", false);
+        $format = '#^(?:\d+\.){2}\d+$#';
+        if (!is_string($s) || !preg_match($format, $s)) {
+            Request::save('post');
+            Message::error('pattern_field', $language->version, true);
+        }
+    }
     // File extension
     if (Request::is('post', 'x')) {
         $s = Request::post('x', "", false);
