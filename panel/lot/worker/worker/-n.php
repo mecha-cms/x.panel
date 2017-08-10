@@ -34,9 +34,13 @@ if ($__menus) {
             $__i = isset($__v['i']) ? ' <i>' . $__v['i'] . '</i>' : "";
             $__html .= '<li class="n:' . $__k . $__c . '">';
             if (is_array($__v)) {
+                if (isset($__v['description'])) {
+                    $__v['attributes']['title'] = $__v['description'];
+                }
                 $__html .= HTML::a((isset($__v['text']) ? $__v['text'] : $language->{$__k}) . $__i, isset($__v['url']) ? $__v['url'] : $__a, false, isset($__v['attributes']) ? $__v['attributes'] : []);
             } else {
-                $__html .= '<a href="' . $__a . '">' . $language->{$__k} . $__i . '</a>';
+                $__t = isset($__v['description']) ? ' title="' . htmlentities($__v['description']) . '"' : "";
+                $__html .= '<a href="' . $__a . '"' . $__t . '>' . $language->{$__k} . $__i . '</a>';
             }
             $__v['+'] = !empty($__v['+']) ? Anemon::eat($__v['+'])->not(function($__v) {
                 return $__v !== '0' && (!isset($__v['stack']) || !is_numeric($__v['stack']));
@@ -60,9 +64,13 @@ if ($__menus) {
                         $__ii = isset($__vv['i']) ? ' <i>' . $__vv['i'] . '</i>' : "";
                         $__html .= '<li class="n:' . $__k . '.' . $__kk . $__cc . '">';
                         if (is_array($__vv)) {
+                            if (isset($__vv['description'])) {
+                                $__vv['attributes']['title'] = $__vv['description'];
+                            }
                             $__html .= HTML::a((isset($__vv['text']) ? $__vv['text'] : $language->{$__kk}) . $__ii, isset($__vv['url']) ? $__vv['url'] : $__aa, false, isset($__vv['attributes']) ? $__vv['attributes'] : []);
                         } else {
-                            $__html .= '<a href="' . $__aa . '">' . $language->{$__kk} . $__ii . '</a>';
+                            $__tt = isset($__vv['description']) ? ' title="' . htmlentities($__v['description']) . '"' : "";
+                            $__html .= '<a href="' . $__aa . '"' . $__tt . '>' . $language->{$__kk} . $__ii . '</a>';
                         }
                         $__html .= '</li>';
                     }
@@ -94,9 +102,13 @@ if ($__menus) {
                 $__ii = isset($__vv['i']) ? ' <i>' . $__vv['i'] . '</i>' : "";
                 $__html .= '<li class="n:+.' . $__kk . $__cc . '">';
                 if (is_array($__vv)) {
+                    if (isset($__vv['description'])) {
+                        $__vv['attributes']['title'] = $__vv['description'];
+                    }
                     $__html .= HTML::a((isset($__vv['text']) ? $__vv['text'] : $language->{$__kk}) . $__ii, isset($__vv['url']) ? $__vv['url'] : $__aa, false, isset($__vv['attributes']) ? $__vv['attributes'] : []);
                 } else {
-                    $__html .= '<a href="' . $__aa . '">' . $language->{$__kk} . $__ii . '</a>';
+                    $__tt = isset($__vv['description']) ? ' title="' . htmlentities($__vv['description']) . '"' : "";
+                    $__html .= '<a href="' . $__aa . '"' . $__tt . '>' . $language->{$__kk} . $__ii . '</a>';
                 }
                 $__html .= '</li>';
             }
