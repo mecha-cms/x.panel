@@ -6,13 +6,40 @@ if ($__command === 's' && count($__chops) > 1) {
 }
 
 // Preparation(s)…
-if ($__command !== 's' && count($__chops) === 1) {
-    $__chops[1] = $config->language;
-    $__path .= '/' . $__chops[1];
+if ($__is_get && count($__chops) === 1) {
+    $__chops[1] = 'en-us';
+    $__path .= '/en-us';
 }
 
+// ...
+if ($__is_post) {
+    // Disable the custom field(s) in any way!
+    Hook::set('on.' . $__chops[0] . '.set', function($__f) {
+        File::open(Path::F($__f))->delete();
+    }, 0);
+    // Set language from this form!
+    if (Request::post('x') === 'archive') {
+        $__config = State::config();
+        $__config['language'] = $__chops[1];
+        File::export($__config)->saveTo(STATE . DS . 'config.php', 0600);
+        Request::set('post', 'x', 'page');
+    }
+    // Update event here…
+}
+
+// Do not allow user to delete the `en-us` language
+if ($__command === 'r' && $__chops[1] === 'en-us') {
+    Shield::abort(PANEL_404);
+}
+
+// Load the page…
+$__f = LOT . DS . $__chops[0] . DS . (isset($__chops[1]) ? $__chops[1] : 'en-us') . '.page';
+Lot::set('__page', $__page = [
+    new Page($__f, [], '__' . $__chops[0]),
+    new Page($__f, [], $__chops[0])
+]);
+
 // Set or modify the default panel content(s)…
-$__page[1] = new Page(LOT . DS . $__chops[0] . DS . 'en-us.page', [], $__chops[0]);
 Config::set([
     'is' => 'page',
     'panel' => [
@@ -30,7 +57,7 @@ Config::set([
                         ],
                         'content' => [
                             'type' => 'editor',
-                            'value' => $__page[0]->content ?: $__page[1]->content,
+                            'value' => $__page[0]->content,
                             'attributes' => [
                                 'data' => [
                                     'type' => 'YAML'
@@ -39,13 +66,15 @@ Config::set([
                             'stack' => 20
                         ],
                         'description' => [
-                            'placeholder' => $__page[1]->description ?: $language->f_description($language->{$__chops[0]}),
+                            'placeholder' => $language->f_description($language->{$__chops[0]}),
                             'stack' => 30
                         ],
                         'version' => [
-                            'type' => 'text',
-                            'value' => $__page[0]->version,
+                            'value' => $__command === 's' ? null : $__page[0]->version,
                             'placeholder' => $__page[1]->version,
+                            'is' => [
+                                'hidden' => false
+                            ],
                             'stack' => 40
                         ],
                         '*slug' => [
@@ -57,19 +86,21 @@ Config::set([
                             'expand' => false,
                             'stack' => 50
                         ],
-                        // the submit button(s)
+                        'type' => [
+                            'type' => 'hidden',
+                            'value' => 'YAML'
+                        ],
                         'x' => [
                             'values' => [
-                                '*' . $__page[0]->state => null,
+                                '*' . ($__page[0]->state ?: "") => false,
                                 'page' => $language->{$__command === 's' ? 'create' : 'update'},
-                                'draft' => false,
-                                'archive' => false
+                                'archive' => $__command !== 's' && $config->language !== $__page[0]->slug ? $language->attach : false,
+                                'draft' => false
                             ],
-                            'order' => ['page', 'trash'],
+                            'order' => ['page', 'log', 'trash'],
                             'stack' => 0
                         ],
                         '+[time]' => false,
-                        'type' => false,
                         'link' => false,
                         'tags' => false
                     ],
