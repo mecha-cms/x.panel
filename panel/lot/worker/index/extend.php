@@ -1,9 +1,11 @@
 <?php
 
 // Preparation(s)…
-Hook::set('__' . $__chops[0] . '.url', function($__url) {
-    return Path::D($__url);
-}, 0);
+if ($__command !== 'r') {
+    Hook::set('__' . $__chops[0] . '.url', function($__url) {
+        return Path::D($__url);
+    }, 0);
+}
 Hook::set('__' . $__chops[0] . '.slug', function($__slug, $__lot) {
     return isset($__lot['path']) ? Path::B(Path::D($__lot['path'])) : null;
 }, 0);
@@ -41,6 +43,10 @@ if (!Get::kin('_' . $__chops[0] . 's')) {
 // `panel/::g::/extend` → index view
 // `panel/::s::/extend/page` → create a new file in `lot\extend\page`
 // `panel/::g::/extend/page` → view `page` extension file(s)
+$__query = HTTP::query([
+    'token' => false,
+    'r' => false
+]);
 Config::set('panel.v.' . $__chops[0] . '.is.pages', false);
 Config::set('panel', [
     'layout' => 2,
@@ -81,10 +87,6 @@ Hook::set('shield.enter', function() {
 if (count($__chops) === 1) {
     if ($__command === 'g') {
         Config::set('panel.l', 'page');
-        $__query = HTTP::query([
-            'token' => false,
-            'force' => false
-        ]);
         Config::set('panel.v.' . $__chops[0] . '.is.pages', 'plugin');
         Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__query) {
             if (file_exists(LOT . DS . $__chops[0] . DS . $__v[0]->slug . DS . 'lot' . DS . 'state' . DS . 'config.php')) {
@@ -112,7 +114,10 @@ if (count($__chops) === 1) {
                             ],
                             'o[upload]' => [
                                 'type' => 'hidden',
-                                'value' => true,
+                                'value' => [
+                                    'extract' => 1,
+                                    'exist_reset' => 1
+                                ],
                                 'stack' => 20
                             ],
                             'x' => [
@@ -134,6 +139,18 @@ if (count($__chops) === 1) {
                 ]
             ]
         ]);
+        Hook::set('on.package.set', function(...$__lot) use($config, $language, $__chops, $__state, $__query) {
+            $__d = $__lot[0];
+            if ($__f = File::exist([
+                $__d . DS . 'about.' . $config->language . '.page',
+                $__d . DS . 'about.page'
+            ])) {
+                Hook::fire('on.' . $__chops[0] . '.set', $__lot);
+                Message::reset();
+                Message::success('set', [Config::get('panel.n.' . $__chops[0] . '.text', $language->{$__chops[0]}), '<strong>' . (new Page($__f, [], $__chops[0]))->title . '</strong>']);
+                Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . basename($__d) . $__query);
+            }
+        });
     }
 } else if ($__command === 'g' && count($__chops) === 2) {
     $__d = LOT . DS . $__path . DS . 'about.';
