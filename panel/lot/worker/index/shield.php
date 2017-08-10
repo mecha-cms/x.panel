@@ -5,7 +5,7 @@ Config::set('panel.v.' . $__chops[0] . '.as', $config->shield);
 if (count($__chops) === 1) {
     $__query = HTTP::query([
         'token' => false,
-        'force' => false
+        'r' => false
     ]);
     Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__query) {
         if (file_exists(LOT . DS . $__chops[0] . DS . $__v[0]->slug . DS . 'state' . DS . 'config.php')) {
