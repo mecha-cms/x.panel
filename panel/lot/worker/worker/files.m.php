@@ -2,7 +2,7 @@
 
 $__query = HTTP::query($__q = [
     'token' => false,
-    'force' => false
+    'r' => false
 ]);
 
 if (Request::get('q')) {
@@ -44,10 +44,10 @@ foreach ($__links as $__k => $__v) {
 <section class="m-file">
   <?php if ($__files[0]): ?>
   <?php foreach ($__files[0] as $__k => $__v): $__vv = $__files[1][$__k]; ?>
-  <?php $__s = md5($__v->path); ?>
-  <?php $__is_active = Session::get('panel.ff.s.' . $__s); ?>
-  <?php Session::reset('panel.ff.s.' . $__s); // remember once! ?>
-  <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : "") . ($__is_active ? ' v is.active' : ""); ?>">
+  <?php $__s = 'panel.v.f.' . md5($__v->path); ?>
+  <?php $__is_v = Session::get($__s); ?>
+  <?php Session::reset($__s); // remember once! ?>
+  <article class="<?php echo $__chops[0]; ?> is.<?php echo ($__v->is->file ? 'file' : 'files is.folder') . ($__v->is->hidden ? ' is.hidden' : "") . ($__is_v ? ' v is.active' : ""); ?>">
     <?php
 
     $__u = $url . '/' . $__state->path . '/::g::/';
