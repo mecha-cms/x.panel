@@ -8,7 +8,9 @@ if ($__user_enter) {
     Guardian::kick($__state->path . '/::g::/' . $__state->kick('page'));
 }
 
+$__g = g(USER, 'draft,page', "", false);
 $__pass_x = Request::restore('post', 'pass_x');
+$__user_x = $__pass_x || !$__g;
 Config::set([
     'is' => 'page',
     'panel' => [
@@ -18,7 +20,7 @@ Config::set([
         'm' => [
             't' => [
                 'enter' => [
-                    'legend' => $language->log_in,
+                    'legend' => $__user_x ? $language->new__($language->user, true) : $language->log_in,
                     'list' => [
                         'user' => [
                             'type' => 'text',
@@ -26,13 +28,19 @@ Config::set([
                             'is' => [
                                 'block' => true
                             ],
+                            'attributes' => [
+                                'autofocus' => $__pass_x ? null : true
+                            ],
                             'stack' => 10
                         ],
                         'pass' => [
                             'type' => 'pass',
-                            'placeholder' => $__pass_x ? l($language->new__($language->pass)) : null,
+                            'placeholder' => $__user_x ? l($language->new__($language->pass)) : null,
                             'is' => [
                                 'block' => true
+                            ],
+                            'attributes' => [
+                                'autofocus' => $__pass_x ? true : null
                             ],
                             'stack' => 20
                         ],
@@ -45,7 +53,7 @@ Config::set([
                             'key' => 'submit',
                             'type' => 'submit[]',
                             'values' => [
-                                'page' => $language->enter
+                                'page' => $language->{$__user_x ? 'create' : 'enter'}
                             ],
                             'stack' => 0
                         ]
@@ -67,29 +75,40 @@ if ($__is_post && !Message::$x) {
     if (strpos($__user_key, '@') === 0) {
         $__user_key = substr($__user_key, 1); // remove the `@`
     }
-    $f = USER . DS . $__user_key;
+    $__f = USER . DS . $__user_key;
     if (!$__user_key) {
         Message::error('void_field', $language->user, true);
     } else if (!$__user_pass) {
         Message::error('void_field', $language->pass, true);
-    } else if (file_exists($f . '.page')) {
-        if (!file_exists($f . DS . 'pass.data')) {
+    } else if (!$__g) {
+        Page::data([
+            'author' => '@' . $__user_key,
+            'status' => 1
+        ])->saveTo($__f . '.page', 0600);
+        File::write($__user_token)->saveTo($__f . DS . 'token.data', 0600);
+        File::write(X . password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($__f . DS . 'pass.data', 0600);
+        User::set($__user_key, $__user_token);
+        Hook::fire('on.user.set', [$__f . '.page', false]);
+        Message::success('create', [$language->user, '<em>@' . $__user_key . '</em>']);
+        Message::success('create', [$language->pass, '<em>' . $__user_pass . '</em>']);
+        Guardian::kick($__state->path . '/::g::/user/' . $__user_key);
+    } else if (file_exists($__f . '.page')) {
+        if (!file_exists($__f . DS . 'pass.data')) {
             // Reset password by deleting `pass.data` manually, then log in!
-            File::write(X . password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($f . DS . 'pass.data');
-            Message::success('create', $language->pass);
-            Message::info('is', [$language->pass, '<em>' . $__user_pass . '</em>']);
+            File::write(X . password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($__f . DS . 'pass.data', 0600);
+            Message::success('create', [$language->pass, '<em>' . $__user_pass . '</em>']);
         }
-        $__pass = File::open($f . DS . 'pass.data')->get(0, "");
+        $__pass = File::open($__f . DS . 'pass.data')->get(0, "");
         if (strpos($__pass, X) === 0) {
             $__pass = substr($__pass, 1);
         } else {
             // TODO: (plain password)
         }
         if (password_verify($__user_pass . ' ' . $__user_key, $__pass)) {
-            File::write($__user_token)->saveTo($f . DS . 'token.data');
+            File::write($__user_token)->saveTo($__f . DS . 'token.data', 0600);
             User::set($__user_key, $__user_token);
-            Message::success('user_enter');
             Hook::fire('on.user.enter');
+            Message::success('user_enter');
             Guardian::kick(Request::post('kick', ""));
         } else {
             Message::error('user_or_pass');

@@ -9,9 +9,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     $__chops = explode('/', $__path);
     $__DIR = Path::D(__DIR__);
     $__s = $__DIR . DS . 'worker' . DS;
-    if (!$__task = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php')) {
-        Shield::abort(PANEL_404);
-    }
+    $__task = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php');
     Lot::set([
         '__chops' => $__chops,
         '__command' => $__command,
@@ -54,6 +52,8 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     // Custom file manager layout
     if ($__task) {
         require $__task;
+    } else {
+        Shield::abort(PANEL_404);
     }
     // Default to file manager
     $__l = Request::get('l', Config::get('panel.l', 'file'));
