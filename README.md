@@ -6,7 +6,7 @@ Start
 
  - Make sure you have uploaded the required extensions and plugins.
  - Upload the `panel` folder to `lot\extend` folder.
- - Now go to `http://localhost/panel/::g::/enter` you should be redirected to `http://localhost/panel/::s::/user` to create a new user.
+ - Now go to `http://localhost/panel/::g::/enter` to create a new user.
 
 Dependency
 ----------
@@ -15,7 +15,6 @@ Dependency
 
  - Assets
  - Pages
- - [Tags](https://github.com/mecha-cms/extend.tag)
  - [Users](https://github.com/mecha-cms/extend.user)
 
 ### Plugin
