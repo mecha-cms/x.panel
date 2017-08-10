@@ -4,7 +4,7 @@ $__p = str_replace('/', DS, $__path);
 $__u = $url . '/' . $__state->path . '/::g::/';
 $__query = HTTP::query([
     'token' => false,
-    'force' => false
+    'r' => false
 ]);
 
 // Get current
@@ -83,6 +83,7 @@ if ($__is_has_step) {
     ]);
 } else {
     if ($__is_post && !Message::$x) {
+        $__ext = File::$config['extensions'];
         if ($__command === 's') {
             // Create file…
             $__n = explode(DS, str_replace('/', DS, Request::post('path', "", false)));
@@ -93,7 +94,7 @@ if ($__is_has_step) {
                 Request::set('post', 'path', $__n);
             }
             $__x = Path::X($__n);
-            if ($__x && !Is::these(File::$config['extensions'])->has($__x)) {
+            if ($__x && !Is::these($__ext)->has($__x)) {
                 Request::save('post');
                 Message::error('file_x', '<em>' . $__x . '</em>');
             }
@@ -104,7 +105,7 @@ if ($__is_has_step) {
                 if (!file_exists($__dd)) {
                     Request::set('post', 'directory', $__d);
                     Folder::set($__dd, 0755);
-                    Session::set('panel.ff.s.' . md5($__f), 1);
+                    Session::set('panel.v.f.' . md5($__f), 1);
                     Hook::fire('on.folder.set', [$__f, null]);
                     Message::success('create', [$language->folder, '<em>' . $__d . '</em>']);
                 } else {
@@ -112,35 +113,65 @@ if ($__is_has_step) {
                 }
             }
             // Upload file…
-            if (!empty($_FILES)) {
-                $__extract = Request::post('o.upload.extract');
+            if (!Message::$x && !empty($_FILES)) {
+                $__dd = LOT . DS . $__p;
+                $__o = Request::post('o.upload', []);
+                $__extract = isset($__o['extract']) && $__o['extract'];
+                $__exist_reset = isset($__o['exist_reset']) && $__o['exist_reset'];
                 foreach ($_FILES as $__k => $__v) {
                     if (!$__v || empty($__v['size'])) continue;
-                    File::upload($__v, LOT . DS . $__p, $__extract && $__k === 'file' ? function($__a) use($__p) {
-                        if (!extension_loaded('zip')) {
+                    $__ss = $__dd . DS . To::file($__v['name']);
+                    if ($__exist_reset) {
+                        File::open($__ss)->delete();
+                    }
+                    File::upload($__v, $__dd, function($__a) use($__extract, $__exist_reset, $__ext, $__dd, $__ss) {
+                        if ($__extract && !extension_loaded('zip')) {
                             Guardian::abort('<a href="http://www.php.net/manual/en/book.zip.php" title="PHP &#x2013; Zip" rel="nofollow" target="_blank">PHP Zip</a> extension is not installed on your web server.');
                         }
                         $__zip = new ZipArchive;
                         if ($__zip->open($__a['path']) === true) {
-                            $__zip->extractTo($__d = dirname($__a['path']));
+                            $__aa = [];
                             for ($__i = 0; $__i < $__zip->numFiles; ++$__i) {
                                 $__ff = str_replace('/', DS, $__zip->getNameIndex($__i));
-                                Session::set('panel.ff.s.' . md5(rtrim($__d . DS . $__ff, DS)), 1);
+                                $__fff = rtrim($__dd . DS . $__ff, DS);
+                                // Re-check file extension in the package…
+                                $__xx = Path::X($__fff);
+                                if ($__xx && !Is::these($__ext)->has($__xx)) {
+                                    Request::save('post');
+                                    Message::reset();
+                                    Message::error('file_x', '<em>' . $__xx . '</em>');
+                                    $__zip->close(); // close to force unlink…
+                                    unlink($__a['path']);
+                                    break;
+                                }
+                                Session::set('panel.v.f.' . md5($__fff), 1);
+                                if ($__extract && $__exist_reset) {
+                                    File::open($__fff)->delete();
+                                }
                                 if ($__i === 0) {
                                     // Highlight the root folder…
-                                    Session::set('panel.ff.s.', md5(explode(DS, $__ff)[0]));
+                                    $__n = $__dd . DS . explode(DS, $__ff)[0];
+                                    $__aa[] = $__n;
+                                    Session::set('panel.v.f.', md5($__n));
                                 }
                             }
-                            $__zip->close();
-                            unlink($__a['path']);
-                            Hook::fire('on.package.reset', [$__a['path'], null, $__a]);
+                            if ($__extract && !Message::$x) {
+                                $__zip->extractTo($__dd);
+                                $__zip->close(); // close to unlink…
+                            }
+                            if ($__extract) {
+                                unlink($__a['path']);
+                                Hook::fire('on.package.reset', [$__a['path'], null, $__a]);
+                            }
                         }
-                    } : null);
-                    if (!$__extract) {
-                        $__ff = LOT . DS . $__p . DS . To::file($__v['name']);
-                        Session::set('panel.ff.s.' . md5($__ff), 1);
-                        Hook::fire('on.package.set', [$__ff, null]);
-                    }
+                        $__aa = array_unique($__aa);
+                        if ($__extract && count($__aa) === 1) {
+                            // Mark the root folder on extract if it is the only child
+                            $__ss = $__aa[0];
+                        }
+                        Session::set('panel.v.f.' . md5($__ss), 1);
+                        Hook::fire('on.package.set', [$__ss, $__a['path'], $__a]);
+                    });
                 }
             }
             if (!Message::$x) {
@@ -149,7 +180,7 @@ if ($__is_has_step) {
                 if ($__n) {
                     // Create file only if name/path is set
                     File::write(Request::post('content', "", false))->saveTo($__f);
-                    Session::set('panel.ff.s.' . md5($__f), 1);
+                    Session::set('panel.v.f.' . md5($__f), 1);
                     Hook::fire(['on.file.set', 'on.' . $__chops[0] . '.set'], [$__f, null]);
                     Message::success('create', [$language->file, '<em>' .  $__n . '</em>']);
                 }
@@ -194,7 +225,7 @@ if ($__is_has_step) {
                 $__t = is_dir($__f) ? 'folder' : 'file';
                 Hook::fire('on.' . $__t . '.set', [$__f, $__ff]);
                 Message::success('update', [$language->{$__t}, '<em>' .  basename($__p) . '</em>']);
-                Guardian::kick($url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . str_replace(DS, '/', $__p) . $__query);
+                Guardian::kick($url . '/' . $__state->path . '/::g::/' . $__chops[0] . '/' . str_replace(DS, '/', $__pp) . $__query);
             } else {
                 Guardian::kick($url->current . $__query);
             }
@@ -213,7 +244,7 @@ if ($__is_has_step) {
             if (Message::$x) {
                 Guardian::kick($__back . $__query);
             }
-            if (Request::get('force') === 1) {
+            if (Request::get('r') === 1) {
                 $__ff = null;
                 File::open($__f)->delete();
             } else {
@@ -338,7 +369,7 @@ Config::set('panel', array_replace_recursive([
                     ] : false,
                     'path' => [
                         'type' => 'text',
-                        'value' => $__command === 'g' ? str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__path) : null,
+                        'value' => $__command === 'g' ? str_replace(['/', LOT . DS . $__chops[0] . DS], [DS, ""], LOT . DS . $__p) : null,
                         'placeholder' => $__command === 's' ? $language->f_file : null,
                         'title' => $__command === 's' ? $language->name : $language->path,
                         'pattern' => $__command === 'g' ? '^[a-z\\d_.-]+(?:[\\\\/][a-z\\d._-]+)*$' : '^[a-z\\d_.-]+$',
@@ -374,7 +405,7 @@ Config::set('panel', array_replace_recursive([
                     'o[folder]' => [
                         'key' => 'o-folder',
                         'type' => 'toggle[]',
-                        'title' => $language->folder,
+                        'title' => "",
                         'value' => ['kick' => 1],
                         'values' => [
                             'kick' => [$language->h_kick__($language->folder), 1]
@@ -389,15 +420,17 @@ Config::set('panel', array_replace_recursive([
                 'list' => [
                     'file' => [
                         'type' => 'file',
+                        'title' => $language->file . '/' . $language->package,
                         'stack' => 10
                     ],
                     'o[upload]' => [
                         'key' => 'o-upload',
                         'type' => 'toggle[]',
-                        'title' => $language->package,
+                        'title' => "",
                         'value' => ['extract' => false],
                         'values' => [
-                            'extract' => [$language->h_extract, 1]
+                            'extract' => [$language->h_file_extract, 1],
+                            'exist_reset' => [$language->h_file_exist_reset, 1]
                         ],
                         'stack' => 20
                     ]
