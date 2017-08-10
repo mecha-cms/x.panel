@@ -2,7 +2,7 @@
 
 $__s = substr($__path, -2) === '/+';
 $__values = [
-    'data' => $language->{$__s ? 'save' : 'update'},
+    'data' => $language->{$__s ? 'create' : 'update'},
     'trash' => $__s ? false : $language->delete
 ];
 
@@ -36,8 +36,8 @@ return [
         'stack' => 20
     ],
     'x' => [
-        'type' => 'submit',
-        'title' => $language->submit,
+        'type' => 'submit[]',
+        'title' => "",
         'values' => $__values,
         'order' => ['data', 'trash'],
         'stack' => 0
