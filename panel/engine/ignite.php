@@ -73,7 +73,7 @@ function __panel_f__($k, $v) {
                     $vvv_k = array_keys($v['values']);
                     $vvv_v = array_flip($vvv_k);
                     foreach ($v['order'] as $vv) {
-                        if ($vv === null || !isset($vvv_v[$vv]) || !$vvv_v[$vv]) continue;
+                        if (!$vv || !isset($vvv_v[$vv])) continue;
                         $vvv[$vv] = $v['values'][$vv];
                     }
                 } else {
