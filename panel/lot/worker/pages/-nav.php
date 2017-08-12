@@ -1,0 +1,1 @@
+<?php return '<p>' . $__pager[0] . '</p>';

@@ -30,7 +30,7 @@ return [
         'key' => 'shield',
         'type' => 'select',
         'value' => $__state->shield,
-        'values' => ['!' => '&#x2716;'] + $__shields,
+        'values' => ['!' => ""] + $__shields,
         'stack' => 20
     ],
     '*__[path]' => [
@@ -64,7 +64,6 @@ return [
         ],
         'stack' => 60
     ],
-    /*
     'c[panel][v][n]' => [
         'key' => 'navigation',
         'type' => 'toggle[]',
@@ -72,5 +71,4 @@ return [
         'values' => $__kicks,
         'stack' => 70
     ]
-    */
 ];

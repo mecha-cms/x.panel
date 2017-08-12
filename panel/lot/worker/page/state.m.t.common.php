@@ -84,7 +84,7 @@ return [
         'type' => 'select',
         'title' => $language->editor,
         'value' => isset($__page[0]->c['page']['editor']) ? $__page[0]->c['page']['editor'] : "",
-        'values' => array_merge(['!' => '&#x2716;'], $__editors),
+        'values' => array_merge(['!' => ""], $__editors),
         'stack' => 80
     ],
     // the submit button
