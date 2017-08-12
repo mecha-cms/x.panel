@@ -2,13 +2,18 @@
 
 // Do not allow user to create page child(s)…
 if ($__command === 's' && count($__chops) > 1) {
-    Shield::abort(PANEL_404);
+    Shield::abort(PANEL_ERROR, [404]);
 }
 
 // Preparation(s)…
 if ($__is_get && count($__chops) === 1) {
     $__chops[1] = 'en-us';
     $__path .= '/en-us';
+    Lot::set([
+        '__chops' => $__chops,
+        '__is_has_step' => ($__is_has_step = ""),
+        '__path' => $__path
+    ]);
 }
 
 // ...
@@ -29,7 +34,7 @@ if ($__is_post) {
 
 // Do not allow user to delete the `en-us` language
 if ($__command === 'r' && $__chops[1] === 'en-us') {
-    Shield::abort(PANEL_404);
+    Shield::abort(PANEL_ERROR, [404]);
 }
 
 // Load the page…
@@ -105,10 +110,7 @@ Config::set([
                         'tags' => false
                     ],
                     'stack' => 10
-                ],
-                'file' => false,
-                'folder' => false,
-                'upload' => false
+                ]
             ]
         ],
         's' => [
@@ -117,7 +119,7 @@ Config::set([
                     'title' => $language->{$__chops[0] . 's'},
                     'list' => $__kins,
                     'a' => [
-                        'set' => ['&#x2795;', $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]]
+                        'set' => ["", $__state->path . '/::s::/' . (Path::D($__path) ?: $__path), false, ['title' => $language->add]]
                     ],
                     'lot' => false,
                     'stack' => 10

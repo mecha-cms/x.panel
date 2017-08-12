@@ -54,7 +54,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                         'key' => 'theme',
                         'type' => 'select',
                         'value' => $__CM->theme,
-                        'values' => ['!' => '&#x2716;'] + $__themes,
+                        'values' => ['!' => ""] + $__themes,
                         'stack' => 10
                     ],
                     'e[mode]' => [
@@ -82,7 +82,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                         }, require __DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php'),
                         'values' => array_replace_recursive((array) $language->{'-o_editor'}->{'code-mirror'}, [
                             'matchTags' => [1 => '{"bothTags":1}'],
-                            'autoCloseTags' => [1 => '{"whenClosing":1,"whenOpening":1,"dontCloseTags":["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"],"indentTags":["blockquote","body","div","dl","fieldset","form","frameset","h1","h2","h3","h4","h5","h6","head","html","object","ol","select","table","tbody","tfoot","thead","tr","ul"]}']
+                            'autoCloseTags' => [1 => '{"whenClosing":1,"whenOpening":1,"dontCloseTags":["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"],"indentTags":["article","blockquote","body","div","dl","fieldset","footer","form","frameset","head","header","html","object","ol","section","select","table","tbody","tfoot","thead","tr","ul"]}']
                         ]),
                         'stack' => 40
                     ]
@@ -93,7 +93,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
     }
 }, 1);
 
-if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config') && $__r = Request::post('e')) {
+if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config.php') && $__r = Request::post('e')) {
     // Merge the asset(s)…
     $__s = __DIR__ . DS . 'lot' . DS . 'asset' . DS;
     $__assets = "";

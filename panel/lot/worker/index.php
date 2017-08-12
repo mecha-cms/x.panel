@@ -1,5 +1,16 @@
 <?php
 
+// Force to add configuration item(s) for navigation visibility…
+$__c = require STATE . DS . 'config.php';
+if (!isset($__c['panel']['v']['n'])) {
+    $__a = [];
+    foreach (glob(LOT . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT) as $__v) {
+        $__a[basename($__v)] = true;
+    }
+    $__c['panel']['v']['n'] = $__a;
+    File::export($__c)->saveTo(STATE . DS . 'config.php', 0600);
+}
+
 if (Extend::exist('tag')) {
     $__NS = explode('/', $url->path . '///')[2];
     if (!$__NS || $__NS === 'tag') $__NS = X;
@@ -47,8 +58,8 @@ if (Extend::exist('tag')) {
                     }
                 }
             } else {
-                File::open(Path::F($__file) . DS . 'kind.data')->delete();
                 Hook::fire('on.tags.reset', [$__file, null, []]);
+                File::open(Path::F($__file) . DS . 'kind.data')->delete();
             }
         }
     }
@@ -67,7 +78,8 @@ if ($__trash = File::exist(LOT . DS . 'trash')) {
 // Set proper menu name…
 Config::set('panel.n.extend.text', $language->extension);
 // Add shortcut to plugin manager…
-Config::set('panel.n.extend.+.plugin', [
+Config::set('panel.n.extend.+.extend/plugin', [
+    'text' => $language->plugin,
     'url' => $__state->path . '/::g::/extend/plugin/lot/worker/1',
     'stack' => 10
 ]);

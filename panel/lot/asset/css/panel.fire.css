@@ -130,6 +130,19 @@
   height:0;
   background:rgba(0,0,0,.25);
   overflow:hidden;
+  position:relative;
+}
+.m .m-page article figure:after {
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background:-webkit-linear-gradient(transparent,#fff);
+  background:-moz-linear-gradient(transparent,#fff);
+  background:linear-gradient(transparent,#fff);
+  pointer-events:none;
 }
 .m .m-page article figure img {
   display:block;
@@ -137,6 +150,9 @@
   padding:0;
   border:0;
   outline:0;
+  width:100%;
+  height:auto;
+  min-height:100%;
 }
 .m .m-page article h3 {
   font:inherit;
@@ -399,7 +415,27 @@
 .t-c\:info {
   background:#fff;
   border:1px solid;
-  padding:1em;
+  padding:1em 1em 2em;
+  position:relative;
+}
+.t-c\:info .form-donate {
+  margin:0;
+  position:absolute;
+  top:.9em;
+  right:.9em;
+}
+.t-c\:info .form-donate p {margin:0}
+.t-c\:info .form-donate input {
+  width:auto;
+  height:auto;
+  max-width:none;
+  max-height:none;
+  background:none;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+  outline:none;
+  cursor:pointer;
 }
 
 /*
@@ -460,6 +496,32 @@
 
 */
 
+.m-button .button\:get:before {
+  content:'\25A4';
+  margin-right:.5em;
+}
+.m-button .button\:reset:before {
+  content:'\2716';
+  margin-right:.5em;
+}
+.m-button .button\:folder:before,
+.m-button .button\:set:before,
+.m-button .button\:upload:before {
+  content:'\2795';
+  margin-right:.5em;
+}
+
+.n\:\+ > a:before {content:'\22EE'}
+
+.s-child\:a a[href*="/::s::/"]:before,
+.s-data\:a a[href*="/::s::/"]:before,
+.s-kin\:a a[href*="/::s::/"]:before {content:'\2795'}
+.s-child\:a a[href*="/::g::/"]:before,
+.s-data\:a a[href*="/::g::/"]:before,
+.s-kin\:a a[href*="/::g::/"]:before {content:'\22EF'}
+.s-nav p [rel="prev"]:before {content:'\276E'}
+.s-nav p [rel="next"]:before {content:'\276F'}
+
 .n a .i,
 .button .i {
   width:auto;
@@ -490,19 +552,19 @@
   display:block;
   text-align:center;
 }
-.p-404,
-.p-404 body {
+.p-x,
+.p-x body {
   margin:0;
   padding:0;
   display:table;
   width:100%;
   height:100%;
 }
-.p-404 body {
+.p-x body {
   display:table-cell;
   vertical-align:middle;
 }
-.p-404 p {
+.p-x p {
   font-size:200%;
   font-weight:bold;
   text-align:center;

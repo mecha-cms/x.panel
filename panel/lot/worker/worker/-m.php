@@ -57,7 +57,7 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
                                 continue;
                             }
                         }
-                        echo __panel_f__($__kk, $__vv);
+                        echo _f($__kk, $__vv);
                     }
                 } else if (is_string($__v['list'])) {
                     echo $__v['list'];
@@ -90,9 +90,9 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
     }
     if (Config::get('panel.c:f') || Config::get('panel.m:f')) {
         if (isset($__submit) && $__submit) {
-            echo call_user_func_array('__panel_f__', $__submit);
+            echo call_user_func_array('_f', $__submit);
         } else {
-            echo __panel_f__('x', [
+            echo _f('x', [
                 'type' => 'submit',
                 'title' => $language->submit,
                 'value' => 'txt'
@@ -100,12 +100,12 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
         }
         if (!empty($__hiddens)) {
             foreach ($__hiddens as $__k => $__v) {
-                echo __panel_f__($__k, $__v);
+                echo _f($__k, $__v);
             }
         }
     }
 } else {
-    echo '<p>:(</p>';
+    echo '<p>&#x0CA0;&#x005F;&#x0CA0;</p>';
 }
 
 // content

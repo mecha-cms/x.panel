@@ -13,6 +13,6 @@
 <?php endif; ?>
 <?php $__w = [$__k, $__v]; ?>
 <?php if (!empty($__v['lot'])) $__w = array_merge($__w, (array) $__v['lot']); ?>
-<?php echo call_user_func_array('__panel_s__', $__w); ?>
+<?php echo call_user_func_array('_s', $__w); ?>
 <?php endforeach; ?>
 <?php endif; ?>

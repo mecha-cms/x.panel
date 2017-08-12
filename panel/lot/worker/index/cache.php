@@ -2,7 +2,7 @@
 
 Hook::set('panel.a.' . $__chops[0] . 's', function() use($language) {
     return [
-        'reset' => ['&#x2716; ' . $language->delete, '#']
+        'reset' => [$language->delete, '#']
     ];
 }, 0);
 

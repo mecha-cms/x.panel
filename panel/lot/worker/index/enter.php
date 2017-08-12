@@ -1,14 +1,14 @@
 <?php
 
 if ($__command !== 'g') {
-    Shield::abort(PANEL_404);
+    Shield::abort(PANEL_ERROR, [404]);
 }
 
 if ($__user_enter) {
     Guardian::kick($__state->path . '/::g::/' . $__state->kick('page'));
 }
 
-$__g = g(USER, 'draft,page', "", false);
+$__g = g(USER, 'page', "", false);
 $__pass_x = Request::restore('post', 'pass_x');
 $__user_x = $__pass_x || !$__g;
 Config::set([
@@ -46,6 +46,8 @@ Config::set([
                         ],
                         'kick' => [
                             'type' => 'hidden',
+                            // Need to get the `GET` value manually, because `hidden` value(s)
+                            // shouldn’t be accessible through URL query string!
                             'value' => Request::get('f.kick', $__state->path . '/::g::/' . $__state->kick('page')),
                             'stack' => 30
                         ],

@@ -17,7 +17,7 @@ Config::set('panel.s', [
 ]);
 Hook::set('panel.a.' . $__chops[0] . 's', function() use($language, $__chops, $__query, $__state, $__token) {
     return [
-        'reset' => ['&#x2716; ' . $language->delete, $__state->path . '/::r::/' . $__chops[0] . HTTP::query([
+        'reset' => [$language->delete, $__state->path . '/::r::/' . $__chops[0] . HTTP::query([
             'token' => $__token,
             'r' => 1
         ])]
@@ -32,13 +32,13 @@ Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops
 
 if ($__is_get && $__command === 'z') {
     if (!$__t = Request::get('token')) {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     if (!$__f = File::exist(LOT . DS . $__path)) {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     $__back = str_replace('::r::', '::g::', $url->path);
     if (Message::$x) {
@@ -67,9 +67,9 @@ if ($__is_get && $__command === 'z') {
 if ($__command !== 'g' || !$__is_has_step) {
     if ($__is_get && $__command === 'r' && count($__chops) === 1) {
         if (!$__t = Request::get('token')) {
-            Shield::abort(PANEL_404);
+            Shield::abort(PANEL_ERROR, [404]);
         } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-            Shield::abort(PANEL_404);
+            Shield::abort(PANEL_ERROR, [404]);
         }
         File::open(LOT . DS . $__chops[0])->delete();
         Hook::fire('on.' . $__chops[0] . '.reset', [null, null]);
@@ -79,5 +79,5 @@ if ($__command !== 'g' || !$__is_has_step) {
             'r' => false
         ]));
     }
-    Shield::abort(PANEL_404);
+    Shield::abort(PANEL_ERROR, [404]);
 }

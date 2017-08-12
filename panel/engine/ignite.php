@@ -3,7 +3,7 @@
 // NOTE: These helper function(s) are only used internally and does
 // not intended to be used in production or any other extension(s).
 
-function __panel_f__($k, $v) {
+function _f($k, $v) {
     global $language;
     // `key`
     // `type`
@@ -64,6 +64,8 @@ function __panel_f__($k, $v) {
         $is_block = (isset($v['is']['block']) && $v['is']['block'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['is']['block']) || $v['is']['block'])) ? 'block' : null;
         $is_expand = isset($v['is']['expand']) && $v['is']['expand'] ? 'expand' : null;
         if ($type === 'hidden') {
+            // All hidden field(s) value shouldn’t be accessible through URL query string!
+            // $value = Request::get($q, $value);
             $hidden = Form::hidden($k, $value, $aa);
         } else if (strpos(X . 'button' . X . 'button[]' . X . 'reset' . X . 'reset[]' . X . 'submit' . X . 'submit[]' . X, X . $type . X) !== false) {
             $type = str_replace('[]', "", $type);
@@ -201,10 +203,10 @@ function __panel_f__($k, $v) {
     return $hidden ?: $html;
 }
 
-function __panel_m__() {}
-function __panel_n__() {}
+function _m() {}
+function _n() {}
 
-function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
+function _s($k, $v, $i = '%{0}%', $j = "") {
     // `title`
     // `description`
     // `content`
@@ -278,7 +280,7 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
                         $a[] = call_user_func_array('HTML::a', $vv);
                     }
                 }
-                $html .= $a ? '<li>' . implode(' ', $a) . '</li>' : "";
+                $html .= $a ? '<li class="s-' . $k . ':a">' . implode(' ', $a) . '</li>' : "";
             }
             $html .= '</ul>';
         } else if (is_string($list)) {
@@ -295,4 +297,4 @@ function __panel_s__($k, $v, $i = '%{0}%', $j = "") {
     return $html;
 }
 
-function __panel_t__() {}
+function _t() {}

@@ -5,7 +5,7 @@ if ($__command === 's' && count($__chops) > 1) {
     if (isset($__chops[2]) && $__chops[2] === '+') {
         // But allow user to create custom field(s)…
     } else {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
 }
 
