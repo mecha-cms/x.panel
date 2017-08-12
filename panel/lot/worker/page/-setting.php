@@ -3,10 +3,13 @@
 $__options = [];
 
 call_user_func(function() use($language, &$__options, $__page) {
-    if ($__o = a(Config::get('panel.o.page.setting.option', []))) {
+    if ($__o = a(Config::get('panel.o.page.toggle', []))) {
         foreach ($__o as $__k => $__v) {
-            if (!isset($__v)) continue;
-            $__options[] = Form::checkbox($__k, isset($__v['value']) ? $__v['value'] : 1, isset($__v['is']['active']) && $__v['is']['active'], isset($__v['title']) ? $__v['title'] : (isset($language->__->panel->{$__k}) ? $language->__->panel->{$__k} : $language->{$__k}), ['classes' => ['input']]);
+            if (!$__v || isset($__v['is']['hidden']) && $__v['is']['hidden']) {
+                continue;
+            }
+            $__kk = ltrim($__k, '.!*');
+            $__options[] = Form::checkbox($__k, isset($__v['value']) ? $__v['value'] : 1, isset($__v['is']['active']) && $__v['is']['active'], isset($__v['text']) ? $__v['text'] : (isset($language->o_toggle->{$__kk}) ? $language->o_toggle->{$__kk} : $language->{$__kk}), ['classes' => ['input']]);
         }
     }
 });

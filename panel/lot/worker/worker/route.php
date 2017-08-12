@@ -27,19 +27,6 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     $__token = Guardian::token();
     $__hash = Guardian::hash();
     $__user = User::get();
-    // Restricted user
-    if ($__user) {
-        if ($__user->status === -1) {
-            Shield::abort(PANEL_404);
-        } else if ($__user->status !== 1) {
-            if (
-                (!isset($__chops[1]) || $__chops[1] !== $__user_key) &&
-                Is::these(['language', 'state', 'user'])->has($__chops[0])
-            ) {
-                Shield::abort(PANEL_404);
-            }
-        }
-    }
     Lot::set([
         '__token' => $__token,
         '__hash' => $__hash,
@@ -49,11 +36,12 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
         '__user_token' => $__user_token,
         '__message' => Message::get() ?: Lot::get('message', "")
     ]);
+    require $__s . 'role.php';
     // Custom file manager layout
     if ($__task) {
         require $__task;
     } else {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     // Default to file manager
     $__l = Request::get('l', Config::get('panel.l', 'file'));
