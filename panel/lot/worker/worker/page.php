@@ -70,6 +70,15 @@ $__g = false;
 $__p = str_replace('/', DS, $__path);
 $__u = $url . '/' . $__state->path . '/::g::/';
 
+// Fix for comment toggle…
+$__s = LOT . DS . $__p . DS . 'comments.data';
+if (
+    Extend::exist('comment') &&
+    Request::is('post') && !Request::post('+.comments.x') &&
+    file_exists($__s) && file_get_contents($__s) === '{"x":1}'
+) {
+    unlink($__s);
+}
 
 // Get current folder…
 $__d = LOT . DS . $__p;
@@ -112,11 +121,11 @@ if ($__is_data) {
         $__source = [$__a, $__aa];
         Lot::set('__source', $__source);
     } else {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     $__f = File::exist($__d . DS . $__s[1] . '.data', "");
     if (!$__s[1] && $__command !== 's' || $__s[1] && !$__f) {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     if ($__is_post && !Message::$x) {
         if (Request::post('x') === 'trash') {
@@ -142,27 +151,26 @@ if ($__is_data) {
     } else {
         if ($__command === 'r') {
             if (!$__t = Request::get('token')) {
-                Shield::abort(PANEL_404);
+                Shield::abort(PANEL_ERROR, [404]);
             } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-                Shield::abort(PANEL_404);
+                Shield::abort(PANEL_ERROR, [404]);
             }
             if (!$__f = File::exist($__d . DS . $__s[1] . '.data')) {
-                Shield::abort(PANEL_404);
+                Shield::abort(PANEL_ERROR, [404]);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
             if (Message::$x) {
                 Guardian::kick($__back . $__query);
             }
-            if (Request::get('r') === 1) {
-                $__ff = null;
+            $__ff = Request::get('r') === 1 ? null : str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+            Hook::fire('on.' . $__chops[0] . '.+.reset', [$__f, $__ff]);
+            if (!isset($__ff)) {
                 File::open($__f)->delete();
                 File::open(Path::F($__f))->delete();
             } else {
-                $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
                 File::open($__f)->moveTo(dirname($__ff));
                 File::open(Path::F($__f))->moveTo(dirname(Path::F($__ff)));
             }
-            Hook::fire('on.' . $__chops[0] . '.+.reset', [$__f, $__ff]);
             Message::success('delete', [$language->data, '<em>' . $__s[1] . '</em>']);
             Guardian::kick($__state->path . '/::g::/' . $__s[0] . $__query);
         }
@@ -216,14 +224,14 @@ if ($__is_data) {
                 ],
                 'union' => [
                    '-2' => [
-                        2 => ['rel' => null, 'classes' => ['button', 'x']]
+                        2 => ['classes' => ['button', 'x']]
                     ],
                    '-1' => [
-                        1 => '&#x276E;',
+                        1 => "",
                         2 => ['rel' => 'prev', 'classes' => ['button']]
                     ],
                     '1' => [
-                        1 => '&#x276F;',
+                        1 => "",
                         2 => ['rel' => 'next', 'classes' => ['button']]
                     ]
                 ]
@@ -423,9 +431,9 @@ if ($__is_data) {
         } else {
             if ($__command === 'r') {
                 if (!$__t = Request::get('token')) {
-                    Shield::abort(PANEL_404);
+                    Shield::abort(PANEL_ERROR, [404]);
                 } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-                    Shield::abort(PANEL_404);
+                    Shield::abort(PANEL_ERROR, [404]);
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
                 $__B = basename($__d);
@@ -442,22 +450,23 @@ if ($__is_data) {
                     }
                     return $language->_title;
                 });
-                if (Request::get('r') === 1) {
-                    $__ff = null;
+                $__ff = Request::get('r') === 1 ? null : str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+                Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__ff]);
+                if (!isset($__ff)) {
                     File::open($__f)->delete();
                     File::open(Path::F($__f))->delete();
                 } else {
-                    $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
                     File::open($__f)->moveTo(dirname($__ff));
                     File::open(Path::F($__f))->moveTo(Path::F($__ff));
                 }
-                Hook::fire('on.' . $__chops[0] . '.reset', [$__f, $__ff]);
-                Message::success('delete', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
+                if (!Message::get(false)) {
+                    Message::success('delete', [$language->{$__chops[0]}, '<strong>' . $__tt . '</strong>']);
+                }
                 Guardian::kick(dirname($__back) . '/1' . $__query);
             }
         }
         if (!$__f && count($__chops) > 1) {
-            Shield::abort(PANEL_404);
+            Shield::abort(PANEL_ERROR, [404]);
         }
         // Get parent…
         $__pp = $__command === 'g' ? dirname($__f) : Path::F($__f);
@@ -544,7 +553,12 @@ Config::set('panel', array_replace_recursive([
     'c:f' => !$__is_has_step,
     'm:f' => false,
     'm' => [
-        't' => [
+        't' => $__is_has_step ? [
+            'page' => [
+                'content' => require __DIR__ . DS . 'pages.m.t.page.php',
+                'stack' => 10
+            ]
+        ] : [
             'page' => $__is_data ? false : [
                 'list' => require __DIR__ . DS . 'page.m.t.page.php',
                 'stack' => 10
@@ -589,14 +603,14 @@ Config::set('panel', array_replace_recursive([
             'kin' => $__is_data ? [
                 'list' => $__datas,
                 'a' => [
-                    'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+' . $__query, false, ['title' => $language->add]]
+                    'set' => ["", $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+' . $__query, false, ['title' => $language->add]]
                 ],
                 'stack' => 20
             ] : [
                 'list' => $__kins,
                 'a' => [
-                    'set' => ['&#x2795;', $__state->path . '/::s::/' . (dirname($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
-                    'get' => $__is_has_step_kin ? ['&#x22EF;', $__state->path . '/::g::/' . dirname($__path) . '/2' . $__query, false, ['title' => $language->more]] : false
+                    'set' => ["", $__state->path . '/::s::/' . (dirname($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
+                    'get' => $__is_has_step_kin ? ["", $__state->path . '/::g::/' . dirname($__path) . '/2' . $__query, false, ['title' => $language->more]] : false
                 ],
                 'if' => $__command !== 's' && count($__chops) > 1,
                 'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
@@ -604,7 +618,7 @@ Config::set('panel', array_replace_recursive([
             ],
             'nav' => [
                 'title' => $language->navigation,
-                'content' => '<p>' . $__pager[0] . '</p>',
+                'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-nav.php',
                 'if' => $__is_has_step,
                 'stack' => 50
             ],
@@ -621,7 +635,7 @@ Config::set('panel', array_replace_recursive([
                 'list' => $__command === 'g' ? $__datas : [[], []],
                 'after' => __DIR__ . DS . '..' . DS . 'page' . DS . '-data.php',
                 'a' => $__command === 'g' ? [
-                    'set' => ['&#x2795;', $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
+                    'set' => ["", $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
                 ] : [],
                 'if' => !$__is_data,
                 'stack' => 10
@@ -629,8 +643,8 @@ Config::set('panel', array_replace_recursive([
             'child' => [
                 'list' => $__childs,
                 'a' => [
-                    'set' => ['&#x2795;', $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
-                    'get' => $__is_has_step_child ? ['&#x22EF;', $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : false
+                    'set' => ["", $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
+                    'get' => $__is_has_step_child ? ["", $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : false
                 ],
                 'if' => !$__is_data && count($__chops) > 1,
                 'lot' => ['%{0}%' . $__query],
@@ -645,17 +659,21 @@ if (!$__is_has_step && $__command !== 's' && $__page[0]) {
     $__toggle = (array) a(Config::get('panel.o.page.toggle', []));
     Config::set('panel.o.page.toggle', array_replace_recursive([
         ($site->path === $__s ? '.' : "") . 'as_' => [
-            'title' => $language->o_toggle->as_,
             'value' => $__s,
             'is' => [
                 'active' => $site->path === $__s
             ]
         ],
-        'as_page' => Get::pages(LOT . DS . $__p, 'draft,page,archive') ? [
-            'title' => $language->o_toggle->as_page,
+        'as_page' => count($__chops) > 1 && Get::kin($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__p, 'draft,page,archive') ? [
             'value' => 1,
             'is' => [
                 'active' => file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state)
+            ]
+        ] : false,
+        '+[comments][x]' => Extend::exist('comment') ? [
+            'value' => 1,
+            'is' => [
+                'active' => $__page[0]->comments && !empty($__page[0]->comments['x'])
             ]
         ] : false
     ], $__toggle));

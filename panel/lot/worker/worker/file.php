@@ -20,7 +20,7 @@ if (Config::get('panel.x.s.current') !== true) {
 if ($__is_has_step) {
     // Folder not found!
     if ($__command === 'g' && count($__chops) > 1 && !is_dir(LOT . DS . $__p)) {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     // Get file(s)…
     $__g = [];
@@ -68,14 +68,14 @@ if ($__is_has_step) {
             ],
             'union' => [
                '-2' => [
-                    2 => ['rel' => null, 'classes' => ['button', 'x']]
+                    2 => ['classes' => ['button', 'x']]
                 ],
                '-1' => [
-                    1 => '&#x276E;',
+                    1 => "",
                     2 => ['rel' => 'prev', 'classes' => ['button']]
                 ],
                 '1' => [
-                    1 => '&#x276F;',
+                    1 => "",
                     2 => ['rel' => 'next', 'classes' => ['button']]
                 ]
             ]
@@ -142,6 +142,7 @@ if ($__is_has_step) {
                                     Message::error('file_x', '<em>' . $__xx . '</em>');
                                     $__zip->close(); // close to force unlink…
                                     unlink($__a['path']);
+                                    Session::reset('panel.v.f');
                                     break;
                                 }
                                 Session::set('panel.v.f.' . md5($__fff), 1);
@@ -160,8 +161,10 @@ if ($__is_has_step) {
                                 $__zip->close(); // close to unlink…
                             }
                             if ($__extract) {
-                                unlink($__a['path']);
                                 Hook::fire('on.package.reset', [$__a['path'], null, $__a]);
+                                if (file_exists($__a['path'])) {
+                                    unlink($__a['path']);
+                                }
                             }
                         }
                         $__aa = array_unique($__aa);
@@ -233,28 +236,29 @@ if ($__is_has_step) {
     } else {
         if ($__command === 'r') {
             if (!$__t = Request::get('token')) {
-                Shield::abort(PANEL_404);
+                Shield::abort(PANEL_ERROR, [404]);
             } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-                Shield::abort(PANEL_404);
+                Shield::abort(PANEL_ERROR, [404]);
             }
             if (!$__f = File::exist(LOT . DS . $__p)) {
-                Shield::abort(PANEL_404);
+                Shield::abort(PANEL_ERROR, [404]);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
             if (Message::$x) {
                 Guardian::kick($__back . $__query);
             }
-            if (Request::get('r') === 1) {
-                $__ff = null;
+            $__ff = Request::get('r') === 1 ? null : str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+            Hook::fire('on.' . $__t . '.reset', [$__f, $__ff]);
+            if (!isset($__ff)) {
                 File::open($__f)->delete();
             } else {
-                $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
                 File::open($__f)->moveTo(is_file($__f) ? dirname($__ff) : $__ff);
             }
             $__t = is_dir($__ff) ? 'folder' : 'file';
-            Hook::fire('on.' . $__t . '.reset', [$__f, $__ff]);
-            Message::success('delete', [$language->{$__t}, '<em>' . basename($__f) . '</em>']);
-            $__uu = dirname(str_replace('::r::', '::g::', $url->path));
+            if (!Message::get(false)) {
+                Message::success('delete', [$language->{$__t}, '<em>' . basename($__f) . '</em>']);
+            }
+            $__uu = $__state->path . '/::g::/' . $__path;
             if (is_dir($__ff)) {
                 $__uu = dirname($__uu);
             }
@@ -263,10 +267,10 @@ if ($__is_has_step) {
     }
     // Get file
     if ($__command === 'g' && !$__f = File::exist(LOT . DS . $__p)) {
-        Shield::abort(PANEL_404);
+        Shield::abort(PANEL_ERROR, [404]);
     }
     if ($__f && $__command === 's' && is_file($__f)) {
-        Shield::abort(PANEL_404); // Folder only!
+        Shield::abort(PANEL_ERROR, [404]); // Folder only!
     }
     if (Config::get('panel.x.m.file') !== true) {
         $__a = $__aa = File::inspect($__f);
@@ -344,10 +348,15 @@ Config::set('panel', array_replace_recursive([
     'c:f' => false,
     'm:f' => !$__is_has_step,
     'm' => [
-        't' => [
+        't' => $__is_has_step ? [
+            'file' => [
+                'content' => require __DIR__ . DS . 'files.m.t.file.php',
+                'stack' => 10
+            ]
+        ] : [
             'file' => [
                 'legend' => $language->{$__command === 's' ? 'create' : 'update'},
-                'list' => [
+                'list' => $__is_has_step ? [] : [
                     'content' => $__command === 's' || isset($__file[0]->content) && $__file[0]->content !== false ? [
                         'type' => 'editor',
                         'value' => isset($__file[0]->content) ? ($__file[0]->content ?: "") : null,
@@ -455,7 +464,7 @@ Config::set('panel', array_replace_recursive([
             'kin' => [
                 'list' => $__kins,
                 'a' => [
-                    'set' => ['&#x2795;', str_replace('::g::', '::s::', $__command === 's' ? $url->current : dirname($url->current)), false, ['title' => $language->add]]
+                    'set' => ["", str_replace('::g::', '::s::', $__command === 's' ? $url->current : dirname($url->current)), false, ['title' => $language->add]]
                 ],
                 'if' => count($__chops) > 1 && $__kins[0],
                 'stack' => 30
@@ -463,14 +472,14 @@ Config::set('panel', array_replace_recursive([
             'child' => [
                 'list' => $__childs,
                 'a' => [
-                    'set' => $__command === 's' ? ['&#x2795;', str_replace('::g::', '::s::', $url->current), false, ['title' => $language->add]] : false
+                    'set' => $__command === 's' ? ["", str_replace('::g::', '::s::', $url->current), false, ['title' => $language->add]] : false
                 ],
                 'if' => !$__is_has_step && is_dir(LOT . DS . $__p) && $__childs[0],
                 'stack' => 40
             ],
             'nav' => [
                 'title' => $language->navigation,
-                'content' => '<p>' . $__pager[0] . '</p>',
+                'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-nav.php',
                 'if' => $__is_has_step,
                 'stack' => 50
             ]
