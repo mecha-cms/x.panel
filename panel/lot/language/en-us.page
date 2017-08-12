@@ -18,6 +18,10 @@ __:
     slower: Slower
     slowest: Slowest
 
+donate: Donate
+donateing: Donating
+donateed: Donated
+
 mode: Mode
 modes: Modes
 
@@ -86,9 +90,9 @@ h_kick__: Redirect to %{0}%.
 h_user: Without the <code>@</code> prefix.
 h_user_o: <p><strong>Roles:</strong></p><ul><li><em>Banned</em> → no control (-1)</li><li><em>Pending</em> → no control (0)</li><li><em>Primary</em> → maximum control (1)</li><li><em>Secondary</em> → minimum control (2)</li></ul>
 
-h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
-h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
-h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.php\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php<\/code><\/pre>"
+h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
+h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
+h_shield_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── asset\\\n     ├── 404.php\n     ├── about.page\n     ├── footer.php\n     ├── header.php\n     ├── index.php\n     ├── page.php\n     └── pages.php<\/code><\/pre>"
 h_state_page: Configure the default page data here.
 
 o_direction:
@@ -101,6 +105,7 @@ o_toggle:
   as_: Set as Home Page
   as_page: Hide Pages View
   as_pages: Show Pages View
+  +[comments][x]: Disable Comments
 o_type:
   HTML: HTML
 o_user: {"-1":"Banned","0":"Pending","1":"Primary","2":"Secondary"}

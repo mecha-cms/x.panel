@@ -18,6 +18,10 @@ __:
     slower: Lebih Lambat
     slowest: Paling Lambat
 
+donate: Donasikan
+donateing: Mendonasikan
+donateed: Didonasikan
+
 mode: Mode
 modes: Mode
 
@@ -92,6 +96,7 @@ o_toggle:
   as_: Sebagai Beranda
   as_page: Sembunyikan Daftar Halaman
   as_pages: Tampilkan Daftar Halaman
+  +[comments][x]: Nonaktifkan Komentar
 o_type:
   HTML: HTML
 o_user: {"-1":"Diblokir","0":"Ditangguhkan","1":"Primer","2":"Sekunder"}
