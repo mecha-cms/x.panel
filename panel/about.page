@@ -7,6 +7,12 @@ version: 1.0.0
 dependency: {"extension":["asset","page","user"],"plugin":["markdown"]}
 ...
 
+### Usage
+
+ - Make sure you have uploaded the required extensions and plugins.
+ - Upload the `panel` folder to `lot\extend` folder.
+ - Now go to `http://localhost/panel/::g::/enter` to create a new user.
+
 ### Reserved Variables
 
  - `$__child`
@@ -22,6 +28,7 @@ dependency: {"extension":["asset","page","user"],"plugin":["markdown"]}
  - `$__hash`
  - `$__is_child_has_step`
  - `$__is_data_has_step`
+ - `$__is_file_has_step`
  - `$__is_kin_has_step`
  - `$__is_page_has_step`
  - `$__is_parent_has_step`
