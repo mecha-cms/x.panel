@@ -33,10 +33,10 @@ $__state = new State(Extend::state(__DIR__), []);
 
 $__s = PANEL . DS . 'lot' . DS;
 
-define('PANEL_404', File::exist([
-    $__s . 'shield' . DS . $__state->shield . DS . '404.php',
-    $__s . 'worker' . DS . '404.php',
-    SHIELD . DS . $config->shield . DS . '404.php'
+define('PANEL_ERROR', File::exist([
+    $__s . 'shield' . DS . $__state->shield . DS . 'x.php',
+    $__s . 'worker' . DS . 'x.php',
+    SHIELD . DS . $config->shield . DS . 'x.php'
 ]));
 
 r(__DIR__ . DS . 'engine' . DS . 'plug', [
