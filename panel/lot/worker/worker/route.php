@@ -9,6 +9,8 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     $__chops = explode('/', $__path);
     $__DIR = Path::D(__DIR__);
     $__s = $__DIR . DS . 'worker' . DS;
+    $__user = User::get();
+    $__user_status = $__user ? $__user->status : 0;
     $__task = File::exist($__DIR . DS . 'index' . DS . $__chops[0] . '.php');
     Lot::set([
         '__chops' => $__chops,
@@ -26,13 +28,13 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     require $__s . 'lot.php';
     $__token = Guardian::token();
     $__hash = Guardian::hash();
-    $__user = User::get();
     Lot::set([
         '__token' => $__token,
         '__hash' => $__hash,
         '__user' => $__user,
         '__user_enter' => $__user_enter,
         '__user_key' => $__user_key,
+        '__user_status' => $__user_status,
         '__user_token' => $__user_token,
         '__message' => Message::get() ?: Lot::get('message', "")
     ]);
@@ -41,7 +43,7 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     if ($__task) {
         require $__task;
     } else {
-        Shield::abort(PANEL_ERROR, [404]);
+        Shield::abort(404);
     }
     // Default to file manager
     $__l = Request::get('l', Config::get('panel.l', 'file'));

@@ -5,11 +5,10 @@ if (!$__page[0]) {
 }
 
 $__authors = [];
-$__user = User::get();
 
-call_user_func(function() use(&$__authors, $__page, $__user) {
-    if ($__user->status !== 1) {
-        $__authors = ['@' . $__user->key => (new User($__user->key))->author];
+call_user_func(function() use(&$__authors, $__page, $__user_key, $__user_status) {
+    if ($__user_status !== 1) {
+        $__authors = ['@' . $__user_key => (new User($__user_key))->author];
     } else {
         foreach (g(USER, 'page') as $__v) {
             $__v = new User(Path::N($__v));
@@ -20,4 +19,4 @@ call_user_func(function() use(&$__authors, $__page, $__user) {
 });
 
 $__s = $__page[0]->author;
-return '<p>' . Form::select('author', $__user && $__user->status !== 1 && $__command !== 's' ? [$__s => $__page[1]->author] : $__authors, $__s, ['classes' => ['select', 'block'], 'id' => 'f-author']) . '</p>';
+return '<p>' . Form::select('author', $__user && $__user_status !== 1 && $__command !== 's' ? [$__s => $__page[1]->author] : $__authors, $__s, ['classes' => ['select', 'block'], 'id' => 'f-author']) . '</p>';

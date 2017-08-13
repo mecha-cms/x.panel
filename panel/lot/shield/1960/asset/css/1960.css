@@ -90,6 +90,9 @@ fieldset {border-style:solid}
   background-color:#ffd;
   box-shadow:inset 0 -4px 0 #eec,0 1px 2px rgba(0,0,0,.25);
 }
+.m .m-page article.status\.0,
+.m .m-page article.as\.draft {box-shadow:inset 0 -4px 0 #eec !important}
+.m .m-page article.as\.draft.is\.pages {box-shadow:inset 0 -4px 0 #cde !important}
 .m .m-page article footer {bottom:2px}
 .m .m-file article {box-shadow:0 1px 2px rgba(0,0,0,.25)}
 .m .m-file article.v.is\.active {background-color:#ffd}
@@ -127,4 +130,5 @@ fieldset {border-style:solid}
 .layout-0 .m,
 .p-x body,
 .p-x .m {background:none}
+.layout-0,
 .x-404 {background:#ffa}

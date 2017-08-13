@@ -9,7 +9,7 @@ call_user_func(function() use($language, &$__options, $__page) {
                 continue;
             }
             $__kk = ltrim($__k, '.!*');
-            $__options[] = Form::checkbox($__k, isset($__v['value']) ? $__v['value'] : 1, isset($__v['is']['active']) && $__v['is']['active'], isset($__v['text']) ? $__v['text'] : (isset($language->o_toggle->{$__kk}) ? $language->o_toggle->{$__kk} : $language->{$__kk}), ['classes' => ['input']]);
+            $__options[] = Form::checkbox($__k, isset($__v['value']) ? $__v['value'] : 1, isset($__v['is']['active']) && $__v['is']['active'], isset($__v['text']) ? $__v['text'] : (isset($language->o_toggle->{$__kk}) ? $language->get('o_toggle.' . $__kk) : $language->{$__kk}), ['classes' => ['input']]);
         }
     }
 });

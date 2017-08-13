@@ -45,7 +45,7 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
     }
 }
 
-if ($__sessions = Session::get('panel')) {
+if ($__user_status === 1 && $__sessions = Session::get('panel')) {
     $__n['+']['+']['+/session'] = [
         'text' => $language->clear . ' ' . $language->sessions,
         'url' => $__state->path . '/::r::/session' . HTTP::query(['token' => Guardian::token()]),
