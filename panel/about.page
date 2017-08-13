@@ -50,6 +50,7 @@ dependency: {"extension":["asset","page","user"],"plugin":["markdown"]}
  - `$__user`
  - `$__user_enter`
  - `$__user_key`
+ - `$__user_status`
  - `$__user_token`
 
 <!-- block:donate -->

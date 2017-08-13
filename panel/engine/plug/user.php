@@ -19,6 +19,8 @@ User::plug('set', function($id = null, $token, $fail = false) {
 User::plug('reset', function($id = null, $key = null, $fail = false) {
     if (isset($id)) {
         if ($f = File::exist(USER . DS . $id . DS . 'token.data')) {
+            Cookie::reset('panel.c.user.key');
+            Cookie::reset('panel.c.user.token');
             File::open($f)->delete();
             return $id;
         }

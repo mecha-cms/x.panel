@@ -30,14 +30,7 @@
 define('PANEL', __DIR__);
 
 $__state = new State(Extend::state(__DIR__), []);
-
-$__s = PANEL . DS . 'lot' . DS;
-
-define('PANEL_ERROR', File::exist([
-    $__s . 'shield' . DS . $__state->shield . DS . 'x.php',
-    $__s . 'worker' . DS . 'x.php',
-    SHIELD . DS . $config->shield . DS . 'x.php'
-]));
+$__s = __DIR__ . DS . 'lot' . DS;
 
 r(__DIR__ . DS . 'engine' . DS . 'plug', [
     'get.php',

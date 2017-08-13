@@ -172,10 +172,12 @@
 }
 .m .m-page article.status\.1,
 .m .m-page article.is\.pages {border-color:#00f}
+.m .m-page article.status\.0,
 .m .m-page article.as\.draft {border-style:dotted}
 .m .m-page article.as\.,
 .m .m-page article.is\.active {border-color:#f00}
 .m .m-page article.v.is\.active {background-color:#ff0}
+.m .m-page article.status\.-1,
 .m .m-page article.is\.hidden {
   border-style:dotted;
   opacity:.2;
