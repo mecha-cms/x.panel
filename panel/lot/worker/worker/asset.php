@@ -42,7 +42,7 @@ if ($__user_enter) {
             'languages' => array_merge([
                 '$' => $language->get()
             ], $__languages)
-        ], get_defined_constants(true)['user'], a(Config::get('panel.c.js', [])));
+        ], get_defined_constants(true)['user'], a(Config::get('panel.o.js', [])));
         $__s = '$.url=' . json_encode(__url__()) . ';$.u_r_l=$.url;$.token="' . Guardian::token() . '"';
         foreach ($__a as $__k => $__v) {
             $__s .= ';$.' . $__k . '=' . str_replace(['\\'], ['\\\\'], json_encode($__v));
