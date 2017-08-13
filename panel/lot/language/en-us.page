@@ -38,7 +38,7 @@ themes: Themes
 message_error: Error.
 message_error_duplicate: Duplicate %{0}%.
 message_error_exist: %{0}% %{1}% already exists.
-message_error_ip: Invalid IP.
+message_error_ip: Invalid %{$.ip}%.
 message_error_max: Maximum %{0}%: %{1}%.
 message_error_min: Minimum %{0}%: %{1}% %{0}%.
 message_error_number: Please enter a number.
@@ -71,16 +71,16 @@ message_warning: Warning.
 #. Others
 #. ------
 
-f_content: Content goes here…
+f_content: %{$.content}% goes here…
 f_description: Some description about this %{0}% (optional).
 f_email: email@domain.com
 f_file: foo-bar.baz
 f_link: http://
 f_path: foo\bar\baz
 f_query: foo, bar, baz
-f_title: Title Here
+f_title: %{$.title}% Here
 f_user: @user
-f_value: Value here…
+f_value: %{$.value}% here…
 f_yaml: "property: value"
 
 h_file_extract: Extract file after upload (package).
@@ -88,7 +88,7 @@ h_file_exist_reset: Ignore the existing file/package.
 
 h_kick__: Redirect to %{0}%.
 h_user: Without the <code>@</code> prefix.
-h_user_o: <p><strong>Roles:</strong></p><ul><li><em>Banned</em> → no control (-1)</li><li><em>Pending</em> → no control (0)</li><li><em>Primary</em> → maximum control (1)</li><li><em>Secondary</em> → minimum control (2)</li></ul>
+h_user_o: <p><strong>Roles:</strong></p><ul><li><em>%{$.o_user.-1}%</em> → no control (-1)</li><li><em>%{$.o_user.0}%</em> → no control (0)</li><li><em>%{$.o_user.1}%</em> → maximum control (1)</li><li><em>%{$.o_user.2}%</em> → minimum control (2)</li><li><em>%{$.o_user.3}%</em> → member only (3)</li></ul>
 
 h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
 h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
@@ -102,12 +102,12 @@ o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"time","slug":"slug","update":"update"}
 o_toggle:
-  as_: Set as Home Page
-  as_page: Hide Pages View
-  as_pages: Show Pages View
-  +[comments][x]: Disable Comments
+  as_: %{$.set}% as %{$.home}% %{$.page}%
+  as_page: %{$.hide}% %{$.pages}% View
+  as_pages: %{$.show}% %{$.pages}% View
+  +[comments][x]: %{$.disable}% %{$.comments}%
 o_type:
   HTML: HTML
-o_user: {"-1":"Banned","0":"Pending","1":"Primary","2":"Secondary"}
+o_user: {"-1":"Banned","0":"Pending","1":"Primary","2":"Secondary","3":"Tertiary"}
 
 __title: Control Panel
