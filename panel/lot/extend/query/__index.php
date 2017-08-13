@@ -11,7 +11,7 @@ Hook::set('on.panel.ready', function() use($language) {
         10.2,
         10.21
     ]);
-    Config::set('panel.c.js.TIB', array_replace((array) File::open(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php')->import(), [
+    Config::set('panel.o.js.TIB', array_replace((array) File::open(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php')->import(), [
         'text' => $language->__->panel->TIB->text
     ]));
 }, 1);

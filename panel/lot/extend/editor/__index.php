@@ -79,7 +79,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
                         'title' => $language->options,
                         'value' => array_map(function($__v) {
                             return is_array($__v) ? json_encode($__v) : $__v;
-                        }, require __DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php'),
+                        }, require __DIR__ . DS . 'lot' . DS . 'state' . DS . 'o.php'),
                         'values' => array_replace_recursive((array) $language->{'-o_editor'}->{'code-mirror'}, [
                             'matchTags' => [1 => '{"bothTags":1}'],
                             'autoCloseTags' => [1 => '{"whenClosing":1,"whenOpening":1,"dontCloseTags":["area","base","br","col","command","embed","hr","img","input","keygen","link","meta","param","source","track","wbr"],"indentTags":["article","blockquote","body","div","dl","fieldset","footer","form","frameset","head","header","html","object","ol","section","select","table","tbody","tfoot","thead","tr","ul"]}']
@@ -120,7 +120,7 @@ if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config.p
             } else {
                 unset($__r['theme']);
             }
-            File::export($__r['o'])->saveTo(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php', 0600);
+            File::export($__r['o'])->saveTo(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'o.php', 0600);
             unset($__r['o']);
         }
         File::export($__r)->saveTo(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'config.php', 0600);
@@ -129,4 +129,4 @@ if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config.p
 }
 
 // Load setting(s)…
-Config::set('panel.c.js.CM', File::open(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'c.php')->import());
+Config::set('panel.o.js.CM', File::open(__DIR__ . DS . 'lot' . DS . 'state' . DS . 'o.php')->import());
