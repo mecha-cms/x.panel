@@ -74,7 +74,7 @@ $__u = $url . '/' . $__state->path . '/::g::/';
 $__s = LOT . DS . $__p . DS . 'comments.data';
 if (
     Extend::exist('comment') &&
-    Request::is('post') && !Request::post('+.comments.x') &&
+    $__is_post && !Request::post('+.comments.x') &&
     file_exists($__s) && file_get_contents($__s) === '{"x":1}'
 ) {
     unlink($__s);
@@ -121,11 +121,11 @@ if ($__is_data) {
         $__source = [$__a, $__aa];
         Lot::set('__source', $__source);
     } else {
-        Shield::abort(PANEL_ERROR, [404]);
+        Shield::abort(404);
     }
     $__f = File::exist($__d . DS . $__s[1] . '.data', "");
     if (!$__s[1] && $__command !== 's' || $__s[1] && !$__f) {
-        Shield::abort(PANEL_ERROR, [404]);
+        Shield::abort(404);
     }
     if ($__is_post && !Message::$x) {
         if (Request::post('x') === 'trash') {
@@ -151,12 +151,12 @@ if ($__is_data) {
     } else {
         if ($__command === 'r') {
             if (!$__t = Request::get('token')) {
-                Shield::abort(PANEL_ERROR, [404]);
+                Shield::abort(404);
             } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-                Shield::abort(PANEL_ERROR, [404]);
+                Shield::abort(404);
             }
             if (!$__f = File::exist($__d . DS . $__s[1] . '.data')) {
-                Shield::abort(PANEL_ERROR, [404]);
+                Shield::abort(404);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
             if (Message::$x) {
@@ -431,9 +431,9 @@ if ($__is_data) {
         } else {
             if ($__command === 'r') {
                 if (!$__t = Request::get('token')) {
-                    Shield::abort(PANEL_ERROR, [404]);
+                    Shield::abort(404);
                 } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-                    Shield::abort(PANEL_ERROR, [404]);
+                    Shield::abort(404);
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
                 $__B = basename($__d);
@@ -466,7 +466,7 @@ if ($__is_data) {
             }
         }
         if (!$__f && count($__chops) > 1) {
-            Shield::abort(PANEL_ERROR, [404]);
+            Shield::abort(404);
         }
         // Get parent…
         $__pp = $__command === 'g' ? dirname($__f) : Path::F($__f);

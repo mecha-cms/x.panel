@@ -2,18 +2,22 @@
 
 // Do not allow user to create page child(s)…
 if ($__command === 's' && count($__chops) > 1) {
-    Shield::abort(PANEL_ERROR, [404]);
+    Shield::abort(404);
 }
 
 // Preparation(s)…
-if ($__is_get && count($__chops) === 1) {
-    $__chops[1] = 'en-us';
-    $__path .= '/en-us';
-    Lot::set([
-        '__chops' => $__chops,
-        '__is_has_step' => ($__is_has_step = ""),
-        '__path' => $__path
-    ]);
+if (count($__chops) === 1) {
+    if ($__command === 'g' && $__is_get) {
+        Request::delete('post');
+        Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . $config->language);
+    } else if ($__is_get) {
+        $__chops[1] = $config->language;
+        $__path .= '/' . $config->language;
+        Lot::set([
+            '__chops' => $__chops,
+            '__path' => $__path
+        ]);
+    }
 }
 
 // ...
@@ -34,7 +38,7 @@ if ($__is_post) {
 
 // Do not allow user to delete the `en-us` language
 if ($__command === 'r' && $__chops[1] === 'en-us') {
-    Shield::abort(PANEL_ERROR, [404]);
+    Shield::abort(409);
 }
 
 // Load the page…
@@ -102,7 +106,7 @@ Config::set([
                                 'archive' => $__command !== 's' && $config->language !== $__page[0]->slug ? $language->attach : false,
                                 'draft' => false
                             ],
-                            'order' => ['page', 'log', 'trash'],
+                            'order' => ['page', 'archive', 'trash'],
                             'stack' => 0
                         ],
                         '+[time]' => false,

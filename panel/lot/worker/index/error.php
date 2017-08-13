@@ -1,7 +1,7 @@
 <?php
 
 if (!$__log = File::exist(ENGINE . DS . 'log' . DS . 'error.log')) {
-    Shield::abort(PANEL_ERROR, [404]);
+    Shield::abort(404);
 }
 
 Config::set([

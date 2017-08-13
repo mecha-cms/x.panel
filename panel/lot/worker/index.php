@@ -75,6 +75,7 @@ if ($__trash = File::exist(LOT . DS . 'trash')) {
         'description' => $__trash[0] . ' ' . $language->{$__trash[0] === 1 ? 'folder' : 'folders'} . ', ' . $__trash[1] . ' ' . $language->{$__trash[1] === 1 ? 'file' : 'files'}
     ]);
 }
+
 // Set proper menu name…
 Config::set('panel.n.extend.text', $language->extension);
 // Add shortcut to plugin manager…
@@ -83,6 +84,17 @@ Config::set('panel.n.extend.+.extend/plugin', [
     'url' => $__state->path . '/::g::/extend/plugin/lot/worker/1',
     'stack' => 10
 ]);
+
+// Set universal error template…
+Hook::set('shield.path', function($__path, $__id = null) {
+    if (is_int($__id)) {
+        return File::exist([
+            __DIR__ . DS . $__id . '.php',
+            __DIR__ . DS . 'x.php'
+        ], false);
+    }
+    return $__path;
+}, 0);
 
 // Delete trash…
 Hook::set('on.user.exit', function() {

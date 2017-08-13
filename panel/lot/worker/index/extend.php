@@ -270,8 +270,8 @@ if (count($__chops) === 1) {
     }
 } else if ($__command === 'r' && count($__chops) === 2) {
     // Disallow user to delete the `panel` extension this way!
-    if ($__chops[1] === 'image') {
-        Shield::abort(PANEL_ERROR, [409]); // `Conflict`
+    if ($__chops[1] === 'panel') {
+        Shield::abort(409); // `Conflict`
     }
     $__d = LOT . DS . $__path;
     if (!Message::$x && $__f = File::exist([

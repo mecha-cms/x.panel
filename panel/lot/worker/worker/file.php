@@ -20,7 +20,7 @@ if (Config::get('panel.x.s.current') !== true) {
 if ($__is_has_step) {
     // Folder not found!
     if ($__command === 'g' && count($__chops) > 1 && !is_dir(LOT . DS . $__p)) {
-        Shield::abort(PANEL_ERROR, [404]);
+        Shield::abort(404);
     }
     // Get file(s)…
     $__g = [];
@@ -179,7 +179,7 @@ if ($__is_has_step) {
             }
             if (!Message::$x) {
                 $__f = LOT . DS . $__p . DS . $__n;
-                $__uu = str_replace('::s::', '::g::', $url->current);
+                $__uu = str_replace('::s::', '::g::', URL::I($url->current));
                 if ($__n) {
                     // Create file only if name/path is set
                     File::write(Request::post('content', "", false))->saveTo($__f);
@@ -192,7 +192,7 @@ if ($__is_has_step) {
                     if (Request::post('o.folder.kick')) {
                         Guardian::kick($__uu . '/' . $__d . '/1' . $__query);
                     } else {
-                        Guardian::kick($__uu . '/' . dirname($__d) . '/1' . $__query);
+                        Guardian::kick($__uu . '/1' . $__query);
                     }
                 }
                 Guardian::kick($__uu . '/' . ($__n ?: '1') . $__query);
@@ -236,12 +236,12 @@ if ($__is_has_step) {
     } else {
         if ($__command === 'r') {
             if (!$__t = Request::get('token')) {
-                Shield::abort(PANEL_ERROR, [404]);
+                Shield::abort(404);
             } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
-                Shield::abort(PANEL_ERROR, [404]);
+                Shield::abort(404);
             }
             if (!$__f = File::exist(LOT . DS . $__p)) {
-                Shield::abort(PANEL_ERROR, [404]);
+                Shield::abort(404);
             }
             $__back = str_replace('::r::', '::g::', $url->path);
             if (Message::$x) {
@@ -258,19 +258,16 @@ if ($__is_has_step) {
             if (!Message::get(false)) {
                 Message::success('delete', [$language->{$__t}, '<em>' . basename($__f) . '</em>']);
             }
-            $__uu = $__state->path . '/::g::/' . $__path;
-            if (is_dir($__ff)) {
-                $__uu = dirname($__uu);
-            }
+            $__uu = $__state->path . '/::g::/' . dirname($__path);
             Guardian::kick($__uu . '/1' . $__query);
         }
     }
     // Get file
     if ($__command === 'g' && !$__f = File::exist(LOT . DS . $__p)) {
-        Shield::abort(PANEL_ERROR, [404]);
+        Shield::abort(404);
     }
     if ($__f && $__command === 's' && is_file($__f)) {
-        Shield::abort(PANEL_ERROR, [404]); // Folder only!
+        Shield::abort(404); // Folder only!
     }
     if (Config::get('panel.x.m.file') !== true) {
         $__a = $__aa = File::inspect($__f);

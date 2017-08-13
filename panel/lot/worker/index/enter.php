@@ -1,7 +1,7 @@
 <?php
 
 if ($__command !== 'g') {
-    Shield::abort(PANEL_ERROR, [404]);
+    Shield::abort(404);
 }
 
 if ($__user_enter) {
@@ -95,10 +95,12 @@ if ($__is_post && !Message::$x) {
         Message::success('create', [$language->pass, '<em>' . $__user_pass . '</em>']);
         Guardian::kick($__state->path . '/::g::/user/' . $__user_key);
     } else if (file_exists($__f . '.page')) {
+        $__1 = false;
         if (!file_exists($__f . DS . 'pass.data')) {
             // Reset password by deleting `pass.data` manually, then log in!
             File::write(X . password_hash($__user_pass . ' ' . $__user_key, PASSWORD_DEFAULT))->saveTo($__f . DS . 'pass.data', 0600);
             Message::success('create', [$language->pass, '<em>' . $__user_pass . '</em>']);
+            $__1 = true;
         }
         $__pass = File::open($__f . DS . 'pass.data')->get(0, "");
         if (strpos($__pass, X) === 0) {
@@ -109,9 +111,15 @@ if ($__is_post && !Message::$x) {
         if (password_verify($__user_pass . ' ' . $__user_key, $__pass)) {
             File::write($__user_token)->saveTo($__f . DS . 'token.data', 0600);
             User::set($__user_key, $__user_token);
-            Hook::fire('on.user.enter');
+            $__ff = $__f . '.page';
+            if (!$__1) {
+                $__s = (new Page($__ff, [], 'user'))->status;
+                // `@pending` or `@member`, redirect to user manager!
+                $__1 = $__s === 0 || $__s === 3;
+            }
+            Hook::fire('on.user.enter', [$__ff, $__1 ? null : $__ff]);
             Message::success('user_enter');
-            Guardian::kick(Request::post('kick', ""));
+            Guardian::kick($__1 ? $__state->path . '/::g::/user/' . $__user_key : Request::post('kick', ""));
         } else {
             Message::error('user_or_pass');
         }
