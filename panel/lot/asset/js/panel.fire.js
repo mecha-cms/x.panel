@@ -70,38 +70,40 @@ window.PANEL = window.jQuery;
 
     // @key, @slug
 
-    var events = 'copy cut input keydown paste';
-    $.f = function(a, b, c) {
-        b = b || '-';
-        if (c) {
-            a = a.toLowerCase();
+    if (win.location.href.indexOf('/::s::/') !== -1) {
+        var events = 'copy cut input keydown paste';
+        $.f = function(a, b, c) {
+            b = b || '-';
+            if (c) {
+                a = a.toLowerCase();
+            }
+            a = a.replace(/<.*?>|&(?:[a-z\d]+|#\d+|#x[a-f\d]+);/gi, "").replace(new RegExp('[^a-z\\d' + b + ']', 'gi'), b).replace(new RegExp('[' + b + ']+', 'gi'), b).replace(new RegExp('^[' + b + ']|[' + b + ']$', 'gi'), "");
+            return a;
+        };
+        var key_i = $('[data-key-i]:not([readonly])'),
+            key_o = $('[data-key-o]:not([readonly])'),
+            catched;
+        if (key_i && key_o) {
+            key_i.closest('form').on(events, '[data-key-i]', function(e) {
+                var $this = $(e.target);
+                if (!catched) {
+                    catched = key_o.filter('[data-key-o="' + $this.data('key-i') + '"]');
+                }
+                catched.val($.f($this.val(), '_', true));
+            });
         }
-        a = a.replace(/<.*?>|&(?:[a-z\d]+|#\d+|#x[a-f\d]+);/gi, "").replace(new RegExp('[^a-z\\d' + b + ']', 'gi'), b).replace(new RegExp('[' + b + ']+', 'gi'), b).replace(new RegExp('^[' + b + ']|[' + b + ']$', 'gi'), "");
-        return a;
-    };
-    var key_i = $('[data-key-i]:not([readonly])'),
-        key_o = $('[data-key-o]:not([readonly])'),
-        catched;
-    if (key_i && key_o) {
-        key_i.closest('form').on(events, '[data-key-i]', function(e) {
-            var $this = $(e.target);
-            if (!catched) {
-                catched = key_o.filter('[data-key-o="' + $this.data('key-i') + '"]');
-            }
-            catched.val($.f($this.val(), '_', true));
-        });
-    }
-    var slug_i = $('[data-slug-i]:not([readonly])'),
-        slug_o = $('[data-slug-o]:not([readonly])'),
-        catched;
-    if (slug_i && slug_o) {
-        slug_i.closest('form').on(events, '[data-slug-i]', function(e) {
-            var $this = $(e.target);
-            if (!catched) {
-                catched = slug_o.filter('[data-slug-o="' + $this.data('slug-i') + '"]');
-            }
-            catched.val($.f($this.val(), '-', true));
-        });
+        var slug_i = $('[data-slug-i]:not([readonly])'),
+            slug_o = $('[data-slug-o]:not([readonly])'),
+            catched;
+        if (slug_i && slug_o) {
+            slug_i.closest('form').on(events, '[data-slug-i]', function(e) {
+                var $this = $(e.target);
+                if (!catched) {
+                    catched = slug_o.filter('[data-slug-o="' + $this.data('slug-i') + '"]');
+                }
+                catched.val($.f($this.val(), '-', true));
+            });
+        }
     }
 
 })(window.PANEL, window, document);
