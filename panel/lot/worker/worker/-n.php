@@ -26,6 +26,9 @@ function _n_ul($__a, $__n) {
             $__t = isset($__v['text']) ? $__v['text'] : $language->{$__k};
             $__a = isset($__v['url']) ? $__v['url'] : $__d . $__k;
             $__c = (is_array($__v) && isset($__v['is']['active']) && $__v['is']['active']) || strpos($__p . '/', '::/' . $__k . '/') !== false ? ' is.active' : "";
+            if (!$__cc = empty($__v['+'])) {
+                $__c .= ' is.parent';
+            }
             $__r = isset($__v['attributes']) ? (array) $__v['attributes'] : [];
             $__i = isset($__v['i']) ? ' <i>' . $__v['i'] . '</i>' : "";
             $__s .= '<li class="' . $__n . ':' . $__k . $__c . '">';
@@ -34,7 +37,7 @@ function _n_ul($__a, $__n) {
                     $__v['attributes']['title'] = $__v['description'];
                 }
                 $__s .= HTML::a($__t . $__i, $__a, false, $__r);
-                if (!empty($__v['+'])) {
+                if (!$__cc) {
                     $__s .= is_array($__v['+']) ? _n_ul($__v['+'], $__n . '-n') : $__v['+'];
                 }
             } else {
