@@ -54,8 +54,8 @@ if ($__is_post) {
     Request::set('post', 'slug', basename($__path));
 }
 
-// Set custom file manager layout
-Config::set('panel.l', 'page');
+// Set custom panel view
+Config::set('panel.view', 'page');
 
 // Set or modify the default panel content(s)…
 if (!$__is_has_step) {

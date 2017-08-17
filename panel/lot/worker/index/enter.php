@@ -46,7 +46,7 @@ Config::set([
                         ],
                         'kick' => [
                             'type' => 'hidden',
-                            // Need to get the `GET` value manually, because `hidden` value(s)
+                            // Need to get the `$_GET` value manually, because `hidden` value(s)
                             // shouldn’t be accessible through URL query string!
                             'value' => Request::get('f.kick', $__state->path . '/::g::/' . $__state->kick('page')),
                             'stack' => 30
@@ -71,9 +71,9 @@ Config::set([
 ]);
 
 if ($__is_post && !Message::$x) {
-    $__user_key = Request::post('user');
-    $__user_pass = Request::post('pass');
-    $__user_token = Request::post('token');
+    $__user_key = Request::post('user', "", false);
+    $__user_pass = Request::post('pass', "", false);
+    $__user_token = Request::post('token', "", false);
     if (strpos($__user_key, '@') === 0) {
         $__user_key = substr($__user_key, 1); // remove the `@`
     }
@@ -126,7 +126,8 @@ if ($__is_post && !Message::$x) {
     } else {
         Message::error('user_or_pass');
     }
-    if (Message::$x) {
-        Request::save('post', 'user', '@' . $__user_key);
+    if (Message::$x && $__s = ltrim($__user_key, '@')) {
+        Request::save('post', 'user', '@' . $__s);
+        Guardian::kick($url->current . HTTP::query());
     }
 }

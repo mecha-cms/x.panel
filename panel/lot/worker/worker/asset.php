@@ -33,21 +33,24 @@ if ($__fn = File::exist($__path_shield . DS . '__index.php')) require $__fn;
 if ($__user_enter) {
     function fn_panel_asset_js_replace($__content) {
         global $language, $site;
+        $__language = $site->language;
         $__languages = [];
-        foreach (glob(LANGUAGE . DS . '*.page') as $__v) {
-            $__languages[basename($__v, '.page')] = 1;
+        $__constants = get_defined_constants(true)['user'];
+        unset($__constants['PANEL']); // Remove `PANEL` constant!
+        foreach (glob(LANGUAGE . DS . '*.page', GLOB_NOSORT) as $__v) {
+            $__v = basename($__v, '.page');
+            $__languages[$__v] = $__v === $__language ? true : false;
         }
         $__a = array_merge([
-            'language' => $site->language,
-            'languages' => array_merge([
-                '$' => $language->get()
-            ], $__languages)
-        ], get_defined_constants(true)['user'], a(Config::get('panel.o.js', [])));
-        $__s = '$.url=' . json_encode(__url__()) . ';$.u_r_l=$.url;$.token="' . Guardian::token() . '"';
+            '$language' => $language->get(),
+            'languages' => $__languages,
+            '$config' => (array) a(Config::get('panel.o.js', [])),
+        ], $__constants);
+        $__s = '$.$url=' . json_encode(__url__()) . ';$.$u_r_l=$.$url;$.$token="' . Guardian::token() . '"';
         foreach ($__a as $__k => $__v) {
             $__s .= ';$.' . $__k . '=' . str_replace(['\\'], ['\\\\'], json_encode($__v));
         }
-        return $__content . '!function($){' . $__s . '}(window.PANEL);';
+        return $__content . '!function($){' . $__s . '}(window);';
     }
     function fn_panel_asset_replace($__content) {
         global $language;

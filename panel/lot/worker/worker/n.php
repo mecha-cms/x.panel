@@ -45,19 +45,21 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
     }
 }
 
+/*
 if ($__user_status === 1 && $__sessions = Session::get('panel')) {
     $__n['+']['+']['+/session'] = [
         'text' => $language->clear . ' ' . $language->sessions,
         'url' => $__state->path . '/::r::/session' . HTTP::query(['token' => Guardian::token()]),
         'i' => count($__sessions, COUNT_RECURSIVE),
-        'stack' => 30
+        'stack' => 21
     ];
 }
+*/
 
 $__n['+']['+']['+/exit'] = [
     'text' => $language->exit,
     'url' => $__state->path . '/::g::/exit',
-    'stack' => 40
+    'stack' => 30
 ];
 
 Config::set('panel.n', $__n); // hold!

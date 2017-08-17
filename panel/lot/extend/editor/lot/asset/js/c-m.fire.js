@@ -1,7 +1,7 @@
 (function($, win, doc) {
 
-    var forms = $.forms,
-        i, j, k = forms.$;
+    var form = $.__form__,
+        i, j, k = form.$;
 
     function apply_CodeMirror(node) {
         var size = [$(node).outerWidth(), $(node).outerHeight()],
@@ -44,17 +44,17 @@
         return editor;
     }
 
-    forms.editor = {};
+    form.editor = {};
 
     for (i in k) {
-        forms.editor[i] = {};
+        form.editor[i] = {};
         for (j in k[i]) {
             if (/(^|\s)(editor|CodeMirror|CM)(\s|$)/.test(k[i][j].className)) {
-                forms.editor[i][j] = apply_CodeMirror(k[i][j]);
+                form.editor[i][j] = apply_CodeMirror(k[i][j]);
             }
         }
     }
 
-    forms.CM = forms.editor;
+    form.CM = form.editor;
 
 })(window.PANEL, window, document);

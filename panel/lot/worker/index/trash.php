@@ -74,10 +74,7 @@ if ($__command !== 'g' || !$__is_has_step) {
         File::open(LOT . DS . $__chops[0])->delete();
         Hook::fire('on.' . $__chops[0] . '.reset', [null, null]);
         Message::info('void', $language->{$__chops[0]});
-        Guardian::kick($__state->path . '/::g::/' . $__state->kick('page') . '/1' . HTTP::query([
-            'token' => false,
-            'r' => false
-        ]));
+        Guardian::kick($__state->path . '/::g::/' . $__state->kick('page') . '/1' . $__query);
     }
-    Shield::abort(404);
+    // Shield::abort(404);
 }

@@ -100,8 +100,8 @@ Config::set([
 ]);
 
 if ($__is_post && !Message::$x) {
-    $__N = isset($__chops[1]) ? $__chops[1] : 'config';
-    $__F = LOT . DS . $__chops[0] . DS . $__N . '.php';
+    $__B = isset($__chops[1]) ? $__chops[1] : 'config.php';
+    $__F = LOT . DS . $__chops[0] . DS . $__B;
     if ($__c = Request::post('content')) {
         File::export(From::yaml($__c))->saveTo($__F, 0600);
     } else {

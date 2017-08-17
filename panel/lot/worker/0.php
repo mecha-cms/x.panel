@@ -12,7 +12,7 @@
           // Custom file manager layout
           __DIR__ . DS . $site->is . DS . $__chops[0] . '.m.php',
           // --ditto
-          __DIR__ . DS . 'worker' . DS . Request::get('l', Config::get('panel.l', 'file')) . ($site->is === 'page' ? "" : 's') . '.m.php',
+          __DIR__ . DS . 'worker' . DS . Request::get('view', Config::get('panel.view', 'file')) . ($site->is === 'page' ? "" : 's') . '.m.php',
           // Default to file manager
           __DIR__ . DS . 'worker' . DS . 'file' . ($site->is === 'page' ? "" : 's') . '.m.php'
           

@@ -1,7 +1,7 @@
 <?php
 
 $__types = a(Config::get('panel.o.page.type', []));
-$__s = isset($__page[0]->config['page']) ? (array) $__page[0]->config['page'] : [];
+$__s = isset($__page[0]->c['page']) ? (array) $__page[0]->c['page'] : [];
 $__ss = [
     'title' => null,
     'author' => null,
@@ -10,7 +10,7 @@ $__ss = [
     'content' => null
 ];
 
-$__s = Anemon::extend($__ss, $__s);
+$__s = array_replace_recursive($__ss, $__s);
 
 asort($__types);
 

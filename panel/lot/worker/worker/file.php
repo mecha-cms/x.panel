@@ -129,7 +129,7 @@ if ($__is_has_step) {
                             Guardian::abort('<a href="http://www.php.net/manual/en/book.zip.php" title="PHP &#x2013; Zip" rel="nofollow" target="_blank">PHP Zip</a> extension is not installed on your web server.');
                         }
                         $__zip = new ZipArchive;
-                        if ($__zip->open($__a['path']) === true) {
+                        if ($__a['extension'] === 'zip' && $__zip->open($__a['path']) === true) {
                             $__aa = [];
                             for ($__i = 0; $__i < $__zip->numFiles; ++$__i) {
                                 $__ff = str_replace('/', DS, $__zip->getNameIndex($__i));
@@ -166,11 +166,11 @@ if ($__is_has_step) {
                                     unlink($__a['path']);
                                 }
                             }
-                        }
-                        $__aa = array_unique($__aa);
-                        if ($__extract && count($__aa) === 1) {
-                            // Mark the root folder on extract if it is the only child
-                            $__ss = $__aa[0];
+                            $__aa = array_unique($__aa);
+                            if ($__extract && count($__aa) === 1) {
+                                // Mark the root folder on extract if it is the only child
+                                $__ss = $__aa[0];
+                            }
                         }
                         Session::set('panel.v.f.' . md5($__ss), 1);
                         Hook::fire('on.package.set', [$__ss, $__a['path'], $__a]);

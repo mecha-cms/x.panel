@@ -14,6 +14,7 @@ call_user_func(function() use($config, $language, &$__kicks, &$__shields) {
         ])) continue;
         $__shields[Path::B(Path::D($__v))] = (new Page($__v))->title;
     }
+    asort($__kicks);
     asort($__shields);
 });
 

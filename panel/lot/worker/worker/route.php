@@ -45,8 +45,8 @@ Route::set([$__state->path . '/::%s%::/%*%/%i%', $__state->path . '/::%s%::/%*%'
     } else {
         Shield::abort(404);
     }
-    // Default to file manager
-    $__l = Request::get('l', Config::get('panel.l', 'file'));
+    // Default to file manager view
+    $__l = Request::get('view', Config::get('panel.view', 'file'));
     require File::exist(
         $__DIR . DS . 'worker' . DS . $__l . '.php',
         $__DIR . DS . 'worker' . DS . 'file.php'

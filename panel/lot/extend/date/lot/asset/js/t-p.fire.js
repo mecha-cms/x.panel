@@ -1,9 +1,9 @@
 (function($, win, doc) {
 
-    var forms = $.forms, h, i, j,
-        k = forms.$;
+    var form = $.__form__, h, i, j,
+        k = form.$;
 
-    var lot = $.languages.$,
+    var lot = win.$language,
         languages = {
         days: {
             short: lot.days_short.map(function(v) {
@@ -21,22 +21,22 @@
         var c = TP(node, $.extend({
             format: 'Y/m/d' + t,
             languages: languages
-        }, $.TP || {}));
+        }, $config.TP || {}));
         return c;
     }
 
-    forms.date = {};
+    form.date = {};
 
     for (i in k) {
-        forms.date[i] = {};
+        form.date[i] = {};
         for (j in k[i]) {
             if (/(^|\s)(date|TP)(\s|$)/.test(k[i][j].className)) {
                 h = k[i][j].value.split(' ').pop();
-                forms.date[i][j] = apply_TP(k[i][j], h ? ' ' + h : "");
+                form.date[i][j] = apply_TP(k[i][j], h ? ' ' + h : "");
             }
         }
     }
 
-    forms.TP = forms.date;
+    form.TP = form.date;
 
 })(window.PANEL, window, document);

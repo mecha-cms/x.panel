@@ -14,11 +14,8 @@ window.PANEL = window.jQuery;
         });
         catches[this.id || this.name || Object.keys(catches).length] = a;
     });
-    $.forms = {
+    $.__form__ = {
         $: catches
-    };
-    $.languages = {
-        $: {}
     };
 
 

@@ -12,8 +12,8 @@ Hook::set('message.set.success', function($__s) use($language, $__command, $__ch
     return $__s . ' ' . HTML::a($language->view, $__p->url, true, ['classes' => ['right']]);
 });
 
-// Set custom file manager layout
-Config::set('panel.l', 'page');
+// Set custom panel view
+Config::set('panel.view', 'page');
 
 // `panel/::s::/page` → new page in `lot\page`
 // `panel/::g::/page` → index view

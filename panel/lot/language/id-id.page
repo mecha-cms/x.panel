@@ -80,7 +80,7 @@ h_file_exist_reset: Abaikan berkas/paket yang sudah ada.
 
 h_kick__: Arahkan ke %{0}%.
 h_user: Tanpa awalan <code>@</code>.
-h_user_o: <p><strong>Peran:</strong></p><ul><li><em>%{$.o_user.-1}%</em> → tidak ada kontrol (-1)</li><li><em>%{$.o_user.0}%</em> → tidak ada kontrol (0)</li><li><em>%{$.o_user.1}%</em> → kontrol maksimal (1)</li><li><em>%{$.o_user.2}%</em> → kontrol minimal (2)</li><li><em>%{$.o_user.3}%</em> → hanya anggota (3)</li></ul>
+h_user_o: <p><strong>Peran:</strong></p><ul><li><em>Diblokir</em> → tidak ada kontrol (-1)</li><li><em>Ditangguhkan</em> → tidak ada kontrol (0)</li><li><em>Primer</em> → kontrol maksimal (1)</li><li><em>Sekunder</em> → kontrol minimal (2)</li><li><em>Tersier</em> → hanya anggota (3)</li></ul>
 
 h_extend_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
 h_plugin_upload: "<p>Pastikan berkas yang sedang Anda coba unggah memiliki struktur pohon seperti ini:<\/p><pre><code class=\"txt\">berkas.php\n └── berkas\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"

@@ -1,7 +1,7 @@
 (function($, win, doc) {
 
-    var forms = $.forms, i, j,
-        k = forms.$;
+    var form = $.__form__, i, j,
+        k = form.$;
 
     function apply_TIB(node) {
         var c = $.TIB || {},
@@ -19,17 +19,17 @@
         return new TIB(node, c);
     }
 
-    forms.query = {};
+    form.query = {};
 
     for (i in k) {
-        forms.query[i] = {};
+        form.query[i] = {};
         for (j in k[i]) {
             if (/(^|\s)(query|TIB)(\s|$)/.test(k[i][j].className)) {
-                forms.query[i][j] = apply_TIB(k[i][j]);
+                form.query[i][j] = apply_TIB(k[i][j]);
             }
         }
     }
 
-    forms.TIB = forms.query;
+    form.TIB = form.query;
 
 })(window.PANEL, window, document);

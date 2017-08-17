@@ -1,4 +1,4 @@
-<?php $i = isset($lot[0]) ? $lot[0] : '404'; HTTP::status($i); ?>
+<?php $i = $config->status('404'); HTTP::status($i); ?>
 <!DOCTYPE html>
 <html dir="<?php echo $site->direction; ?>" class="p-x x-<?php echo $i; ?>">
   <head>

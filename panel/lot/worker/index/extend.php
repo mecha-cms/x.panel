@@ -128,7 +128,7 @@ Hook::set('shield.enter', function() {
 }, 0);
 if (count($__chops) === 1) {
     if ($__command === 'g') {
-        Config::set('panel.l', 'page');
+        Config::set('panel.view', 'page');
         Config::set('panel.v.' . $__chops[0] . '.is.pages', 'plugin');
         Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__query) {
             if (file_exists(LOT . DS . $__chops[0] . DS . $__v[0]->slug . DS . 'lot' . DS . 'state' . DS . 'config.php')) {
@@ -240,7 +240,7 @@ if (count($__chops) === 1) {
             'c:f' => false,
             'm:f' => false,
             'm' => [
-                't' => [
+                't' => $__is_has_step ? [] : [
                     'info' => [
                         'title' => $language->info,
                         'content' => $__content,
@@ -264,7 +264,6 @@ if (count($__chops) === 1) {
             } else {
                 $__a = ['get' => [$language->explore, $url->current . '/1']] + $__a;
             }
-            unset($__a['reset']);
             return $__a;
         }, 0);
     }

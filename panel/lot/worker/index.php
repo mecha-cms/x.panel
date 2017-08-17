@@ -3,7 +3,7 @@
 // Force to add configuration item(s) for navigation visibility…
 $__c = require STATE . DS . 'config.php';
 if (!isset($__c['panel']['v']['n'])) {
-    $__a = [];
+    $__a = ['trash' => true];
     foreach (glob(LOT . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT) as $__v) {
         $__a[basename($__v)] = true;
     }
@@ -88,6 +88,7 @@ Config::set('panel.n.extend.+.extend/plugin', [
 // Set universal error template…
 Hook::set('shield.path', function($__path, $__id = null) {
     if (is_int($__id)) {
+        Config::set('status', $__id);
         return File::exist([
             __DIR__ . DS . $__id . '.php',
             __DIR__ . DS . 'x.php'

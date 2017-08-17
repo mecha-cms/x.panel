@@ -33,4 +33,4 @@ Hook::set($__chops[0] . '.description', function($__content, $__lot) {
     return Page::apart(file_get_contents($__lot['path']), 'content', $__content);
 }, 0);
 
-Config::set('panel.l', 'page');
+Config::set('panel.view', 'page');

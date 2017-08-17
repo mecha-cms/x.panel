@@ -52,8 +52,8 @@ Lot::set('__page', $__page = [
 Config::set([
     'is' => 'page',
     'panel' => [
+        'view' => 'page',
         'layout' => 2,
-        'l' => 'page',
         'c:f' => true,
         'm' => [
             't' => [
