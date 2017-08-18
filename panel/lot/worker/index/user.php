@@ -25,15 +25,14 @@ if (isset($__chops[1]) && $__chops[1] === $__user_key) {
 
 // Preparation(s)…
 Hook::set($__chops[0] . '.title', function($__title, $__lot) {
-    return Page::apart(file_get_contents($__lot['path']), 'author', $__title);
+    return Page::apart($__lot['path'], 'author', $__title);
 }, 0);
 Hook::set($__chops[0] . '.url', function($__url, $__lot) {
-    return Page::apart(file_get_contents($__lot['path']), 'link', false);
+    return Page::apart($__lot['path'], 'link', false);
 }, 0);
 Config::set('panel.v.' . $__chops[0] . '.as', $__user_key);
 Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',email,pass,status,token');
 
-// Replace `title` field with `author` field on user create event…
 Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__command, $__path, $__state) {
     if (!file_exists(Path::F($__f) . DS . 'pass.data')) {
         $__f = Path::N($__f);

@@ -25,7 +25,7 @@ if ($__files[0]) {
             $__html .= '<a href="' . $__v->url . $__query . '" title="' . ($__ii = count(glob($__v->path . DS . '*', GLOB_NOSORT))) . ' ' . $language->{$__ii === 1 ? 'item' : 'items'} . '">' . $__vv->title . '</a>';
 
             /*
-            if ($__v->is->files && count(glob($__v->path . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) === 1 && $__g = File::explore($__v->path, true, true)) {
+            if ($__v->is->files && count(glob($__v->path . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT)) === 1 && $__g = File::explore($__v->path, true)) {
                 $__dd = $__ff = [];
                 foreach ($__g as $__kkk => $__vvv) {
                     $__kkkk = basename($__kkk);

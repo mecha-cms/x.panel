@@ -68,7 +68,7 @@ if (Extend::exist('tag')) {
 
 // Add trash counter…
 if ($__trash = File::exist(LOT . DS . 'trash')) {
-    $__trash = File::explore($__trash, true, true);
+    $__trash = File::explore($__trash, true);
     $__trash = array_replace([0, 0], array_count_values($__trash));
     Config::set('panel.n.trash', [
         'i' => array_sum($__trash),

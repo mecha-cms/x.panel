@@ -1,5 +1,8 @@
 <?php
 
+// 5 minute(s)!
+ini_set('max_execution_time', 300);
+
 // a: anchor/article
 // b: base/name.base
 // c: capture/configuration/container/cookie
