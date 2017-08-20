@@ -23,13 +23,11 @@ return [
                 'type' => 'PHP'
             ]
         ],
-        'is' => [
-            'expand' => true
-        ],
+        'height' => true,
         'expand' => $__k === 'editor',
         'stack' => 10
     ],
-    '*key' => [
+    'key' => [
         'type' => 'text',
         'value' => $__key,
         'pattern' => '^[a-z\\d]+(?:_[a-z\\d]+)*$',

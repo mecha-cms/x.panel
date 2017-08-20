@@ -18,12 +18,18 @@ if (count($__chops) === 1) {
         'token' => false,
         'r' => false
     ]);
-    Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($language, $__chops, $__query) {
+    Hook::set('panel.a.' . $__chops[0], function($__a, $__v) use($config, $language, $__chops, $__query) {
         if (file_exists(LOT . DS . $__chops[0] . DS . $__v[0]->slug . DS . 'state' . DS . 'config.php')) {
             $__a = ['state' => [$language->setting, $__a['edit'][1] . '/state/config.php' . $__query]] + $__a;
         }
+        // Prevent user to commit suicide…
+        if (isset($__a['edit'][1]) && basename($__a['edit'][1]) === $config->shield) {
+            unset($__a['reset']);
+        }
         return $__a;
     }, 0);
+} else if ($__command === 'r' && isset($__chops[1]) && $__chops[1] === $config->shield) {
+    Shield::abort(406);
 }
 
 require __DIR__ . DS . 'extend.php';

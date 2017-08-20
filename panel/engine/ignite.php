@@ -17,18 +17,13 @@ function _f($k, $v) {
     // `title`
     // `description`
     // `union` ['p']
-    // `if`
-    // `is`
-    //    `block`
-    //    `expand`
-    //    `hidden`
+    // `hidden`
     // `attributes`
     // `expand`
+    // `width`
+    // `height`
     // `stack`
-    if (isset($v['if']) && !$v['if']) {
-        return "";
-    }
-    if (isset($v['is']['hidden']) && $v['is']['hidden']) {
+    if (isset($v['hidden']) && !$v['hidden']) {
         return "";
     }
     if (is_string($v)) {
@@ -61,8 +56,14 @@ function _f($k, $v) {
     $placeholder = array_key_exists('placeholder', $v) ? $v['placeholder'] : $value;
     $hidden = false;
     if ($type) {
-        $is_block = (isset($v['is']['block']) && $v['is']['block'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['is']['block']) || $v['is']['block'])) ? 'block' : null;
-        $is_expand = isset($v['is']['expand']) && $v['is']['expand'] ? 'expand' : null;
+        $is_block = (isset($v['width']) && $v['width'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['width']) || $v['width'])) ? 'block' : null;
+        $is_expand = isset($v['height']) && $v['height'] ? 'expand' : null;
+        if (isset($is_block) && $is_block !== true) {
+            $aa['css']['width'] = is_int($is_block) ? $is_block . 'px' : $is_block;
+        }
+        if (isset($is_expand) && $is_expand !== true) {
+            $aa['css']['height'] = is_int($is_expand) ? $is_expand . 'px' : $is_expand;
+        }
         if ($type === 'hidden') {
             // All hidden field(s) value shouldn’t be accessible through URL query string!
             // $value = Request::get($q, $value);
@@ -155,10 +156,12 @@ function _f($k, $v) {
                     if (empty($value) || __is_anemon_0__($value)) {
                         $rr = X . implode(X, (array) Request::get($q, $value)) . X;
                         foreach ($vv as $kkk => $vvv) {
+                            if (!$vvv) continue;
                             $hh .= '<br>' . Form::checkbox($k . '[]', $kkk, strpos($rr, X . $kkk . X) !== false, $vvv, array_replace_recursive(['classes' => ['input'], 'id' => 'f-' . $kk . ':' . $kkk], $aa));
                         }
                     } else {
                         foreach ($vv as $kkk => $vvv) {
+                            if (!$vvv) continue;
                             $vvv = (array) $vvv;
                             // 'name (default)' => [
                             //     'values' => [
@@ -178,7 +181,7 @@ function _f($k, $v) {
                     }
                     $html .= substr($hh, 4);
                 } else {
-                    $html .= Form::radio($k, $vv, Request::get($q, $value), array_replace_recursive(['classes' => ['input'], 'id' => 'f-' . $kk], $aa));
+                    $html .= Form::radio($k, array_filter($vv), Request::get($q, $value), array_replace_recursive(['classes' => ['input'], 'id' => 'f-' . $kk], $aa));
                 }
             } else {
                 $html .= Form::checkbox($k, isset($value) ? $value : 'true', $value !== null && Request::get($q) === $value, $text, array_replace_recursive(['classes' => ['input'], 'id' => 'f-' . $kk], $aa));
@@ -214,9 +217,7 @@ function _s($k, $v, $i = '%{0}%', $j = "") {
     // `before`
     // `after`
     // `a`
-    // `if`
-    // `is`
-    //    `hidden`
+    // `hidden`
     // `stack`
     global $language;
     if (is_string($v)) {
@@ -224,10 +225,7 @@ function _s($k, $v, $i = '%{0}%', $j = "") {
     } else if (!$v) {
         return "";
     }
-    if (isset($v['if']) && !$v['if']) {
-        return "";
-    }
-    if (isset($v['is']['hidden']) && $v['is']['hidden']) {
+    if (isset($v['hidden']) && $v['hidden']) {
         return "";
     }
     $content = isset($v['content']) ? $v['content'] : "";

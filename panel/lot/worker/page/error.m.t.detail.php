@@ -6,9 +6,7 @@ return [
         'value' => $__page[0]->content,
         'placeholder' => null,
         'union' => ['div'],
-        'is' => [
-            'expand' => true
-        ],
+        'height' => true,
         'expand' => true,
         'stack' => 10
     ],

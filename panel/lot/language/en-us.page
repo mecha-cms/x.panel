@@ -87,8 +87,8 @@ h_file_extract: Extract file after upload (package).
 h_file_exist_reset: Ignore the existing file/package.
 
 h_kick__: Redirect to %{0}%.
+h_status: <p><strong>Roles:</strong></p><ul><li><em>Banned</em> → no control (-1)</li><li><em>Pending</em> → no control (0)</li><li><em>Primary</em> → maximum control (1)</li><li><em>Secondary</em> → minimum control (2)</li><li><em>Tertiary</em> → member only (3)</li></ul>
 h_user: Without the <code>@</code> prefix.
-h_user_o: <p><strong>Roles:</strong></p><ul><li><em>Banned</em> → no control (-1)</li><li><em>Pending</em> → no control (0)</li><li><em>Primary</em> → maximum control (1)</li><li><em>Secondary</em> → minimum control (2)</li><li><em>Tertiary</em> → member only (3)</li></ul>
 
 h_extend_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
 h_plugin_upload: "<p>Make sure the file you are trying to upload is structured like this:<\/p><pre><code class=\"txt\">file.zip\n └── file\\\n     ├── engine\\\n     └── lot\\\n         ├── asset\\\n         ├── about.page\n         └── index.php<\/code><\/pre>"
@@ -101,6 +101,7 @@ o_direction:
 o_sort:
   0: {"-1":"Z &rarr; A","1":"A &rarr; Z"}
   1: {"time":"time","slug":"slug","update":"update"}
+o_status: {"-1":"Banned","0":"Pending","1":"Primary","2":"Secondary","3":"Tertiary"}
 o_toggle:
   as_: %{$.set}% as %{$.home}% %{$.page}%
   as_page: %{$.hide}% %{$.pages}% View
@@ -108,6 +109,5 @@ o_toggle:
   +[comments][x]: %{$.disable}% %{$.comments}%
 o_type:
   HTML: HTML
-o_user: {"-1":"Banned","0":"Pending","1":"Primary","2":"Secondary","3":"Tertiary"}
 
 __title: Control Panel

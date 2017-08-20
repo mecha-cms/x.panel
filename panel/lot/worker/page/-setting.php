@@ -5,11 +5,11 @@ $__options = [];
 call_user_func(function() use($language, &$__options, $__page) {
     if ($__o = a(Config::get('panel.o.page.toggle', []))) {
         foreach ($__o as $__k => $__v) {
-            if (!$__v || isset($__v['is']['hidden']) && $__v['is']['hidden']) {
+            if (!$__v || isset($__v['hidden']) && $__v['hidden']) {
                 continue;
             }
             $__kk = ltrim($__k, '.!*');
-            $__options[] = Form::checkbox($__k, isset($__v['value']) ? $__v['value'] : 1, isset($__v['is']['active']) && $__v['is']['active'], isset($__v['text']) ? $__v['text'] : (isset($language->o_toggle->{$__kk}) ? Language::get('o_toggle.' . $__kk) : $language->{$__kk}), ['classes' => ['input']]);
+            $__options[] = Form::checkbox($__k, isset($__v['value']) ? $__v['value'] : 1, isset($__v['active']) && $__v['active'], isset($__v['text']) ? $__v['text'] : (isset($language->o_toggle->{$__kk}) ? Language::get('o_toggle.' . $__kk) : $language->{$__kk}), ['classes' => ['input']]);
         }
     }
 });

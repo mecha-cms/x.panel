@@ -4,7 +4,7 @@ function _n_ul($__a, $__n) {
     if (empty($__a)) {
         return "";
     }
-    global $language, $url, $__nav;
+    global $language, $url;
     $__p = $url->path;
     $__d = $url . '/' . explode('/', $__p)[0] . '/::g::/';
     $__s = '<ul class="' . $__n . '">';
@@ -12,7 +12,7 @@ function _n_ul($__a, $__n) {
         return isset($__v['stack']) && is_numeric($__v['stack']);
     })->sort([1, 'stack'], "")->vomit();
     foreach ($__a as $__k => $__v) {
-        if (isset($__v['is']['hidden']) && $__v['is']['hidden']) {
+        if (isset($__v['hidden']) && $__v['hidden']) {
             continue;
         }
         if (is_string($__v) && strpos($__v, '<') === 0 && substr($__v, -1) === '>' && strpos($__v, '</') !== false) {
@@ -25,7 +25,7 @@ function _n_ul($__a, $__n) {
             $__k = is_numeric($__k) && is_string($__v) ? $__v : $__k;
             $__t = isset($__v['text']) ? $__v['text'] : $language->{$__k};
             $__a = isset($__v['url']) ? $__v['url'] : $__d . $__k;
-            $__c = (is_array($__v) && isset($__v['is']['active']) && $__v['is']['active']) || strpos($__p . '/', '::/' . $__k . '/') !== false ? ' is.active' : "";
+            $__c = (is_array($__v) && isset($__v['active']) && $__v['active']) || strpos($__p . '/', '::/' . $__k . '/') !== false ? ' is.active' : "";
             if (!$__cc = empty($__v['+'])) {
                 $__c .= ' is.parent';
             }
@@ -34,7 +34,7 @@ function _n_ul($__a, $__n) {
             $__s .= '<li class="' . $__n . ':' . $__k . $__c . '">';
             if (is_array($__v)) {
                 if (isset($__v['description'])) {
-                    $__v['attributes']['title'] = $__v['description'];
+                    $__r['title'] = $__v['description'];
                 }
                 $__s .= HTML::a($__t . $__i, $__a, false, $__r);
                 if (!$__cc) {
@@ -64,7 +64,7 @@ $__menus = (array) a(Config::set('panel.n', $__menus)->get('panel.n', []));
 $__vv = (array) a(Config::get('panel.v.n', []));
 foreach ($__menus as $__k => &$__v) {
     if ($__k === '+') continue;
-    $__v['is']['hidden'] = !isset($__vv[$__k]) || !$__vv[$__k];
+    $__v['hidden'] = !isset($__vv[$__k]) || !$__vv[$__k];
 }
 
 return '<nav class="n">' . _n_ul($__menus, 'n') . '</nav>';

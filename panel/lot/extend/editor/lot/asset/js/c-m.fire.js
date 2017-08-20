@@ -5,7 +5,7 @@
 
     function apply_CodeMirror(node) {
         var size = [$(node).outerWidth(), $(node).outerHeight()],
-            editor = CodeMirror.fromTextArea(node, typeof $.CM === "object" ? $.CM : {
+            editor = CodeMirror.fromTextArea(node, typeof $config.CM === "object" ? $config.CM : {
                 lineNumbers: true,
                 lineWrapping: true
             });
@@ -19,6 +19,9 @@
                 },
                 'xml': def
             };
+        editor.on("blur", function() {
+            editor.save(); // update `<textarea>` value on every “blur” event
+        });
         editor.addKeyMap({
             'Ctrl-J': 'toMatchingTag',
             'Ctrl-Space': function(cm) {
@@ -38,7 +41,7 @@
             }
         }
         editor.setSize(size[0], size[1]);
-        $(win).on("resize", function() {
+        $(win).on("resize.panel", function() {
             $(editor.display.wrapper).width(0).width($(node).parent().width());
         });
         return editor;

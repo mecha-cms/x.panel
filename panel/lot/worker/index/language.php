@@ -81,17 +81,12 @@ Config::set([
                         'version' => [
                             'value' => $__command === 's' ? null : $__page[0]->version,
                             'placeholder' => $__page[1]->version,
-                            'is' => [
-                                'hidden' => false
-                            ],
                             'stack' => 40
                         ],
-                        '*slug' => [
+                        'slug' => [
                             'title' => $language->locale,
                             'placeholder' => $__page[1]->slug,
-                            'is' => [
-                                'block' => false
-                            ],
+                            'width' => true,
                             'expand' => false,
                             'stack' => 50
                         ],

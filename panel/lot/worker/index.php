@@ -66,16 +66,6 @@ if (Extend::exist('tag')) {
     Hook::set('on.' . $__NS . '.set', 'fn_tags_set');
 }
 
-// Add trash counter…
-if ($__trash = File::exist(LOT . DS . 'trash')) {
-    $__trash = File::explore($__trash, true);
-    $__trash = array_replace([0, 0], array_count_values($__trash));
-    Config::set('panel.n.trash', [
-        'i' => array_sum($__trash),
-        'description' => $__trash[0] . ' ' . $language->{$__trash[0] === 1 ? 'folder' : 'folders'} . ', ' . $__trash[1] . ' ' . $language->{$__trash[1] === 1 ? 'file' : 'files'}
-    ]);
-}
-
 // Set proper menu name…
 Config::set('panel.n.extend.text', $language->extension);
 // Add shortcut to plugin manager…

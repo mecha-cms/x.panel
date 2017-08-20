@@ -11,8 +11,8 @@ call_user_func(function() use($config, $language) {
         $__s . 'panel.min.css',
         $__s . 'panel.fire.min.css'
     ], [
-        10,
-        10.1
+        9,
+        9.1
     ]);
 
     $__s = PANEL . DS . 'lot' . DS . 'asset' . DS . 'js' . DS;
@@ -21,8 +21,8 @@ call_user_func(function() use($config, $language) {
         $__s . 'panel.min.js',
         $__s . 'panel.fire.min.js'
     ], [
-        10,
-        10.1
+        9,
+        9.1
     ]);
 
 });

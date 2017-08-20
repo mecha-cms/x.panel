@@ -60,27 +60,25 @@ Config::set('panel.view', 'page');
 if (!$__is_has_step) {
     Hook::set('shield.enter', function() use($__user_key, $__user_status) {
         extract(Lot::get(null, []));
-        $__u = $__page[0] ? $__page[0] : (object) [
-            'email' => false,
-            'link' => false,
-            'state' => 'archive',
-            'status' => 2
-        ];
-        $__x = $__u->state;
-        $__o = (array) $language->o_user;
+        $__x = $__page[0]->state;
+        $__o = (array) $language->o_status;
+        asort($__o);
         if ($__user && $__user_status !== 1) {
             // Read only!
-            $__o = ['.' . $__user_status => $__o[$__user_status]];
+            $__o = [
+                '.' . $__user_status => $__o[$__user_status],
+               -1 => false,
+                0 => false,
+                1 => false,
+                2 => false,
+                3 => false
+            ];
         }
-        asort($__o);
         Config::set('panel', [
             'f' => [
                 'page' => [
                     'author' => [
                         'placeholder' => $language->user,
-                        'is' => [
-                            'hidden' => false
-                        ],
                         'attributes' => [
                             'data' => [
                                 'slug-i' => 'author'
@@ -88,7 +86,7 @@ if (!$__is_has_step) {
                         ],
                         'stack' => 10
                     ],
-                    '*slug' => [
+                    'slug' => [
                         'type' => 'text',
                         'placeholder' => To::slug($language->user),
                         'title' => $language->key,
@@ -111,17 +109,10 @@ if (!$__is_has_step) {
                         'stack' => 40
                     ],
                     'status' => [
-                        'key' => 'status',
-                        'type' => 'toggle',
-                        'description' => $language->h_user_o,
-                        'value' => $__u->status,
                         'values' => $__o,
                         'stack' => 50
                     ],
                     'email' => [
-                        'is' => [
-                            'hidden' => false
-                        ],
                         'stack' => 60
                     ],
                     'link' => [

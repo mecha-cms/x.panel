@@ -25,9 +25,7 @@ Config::set([
                         'user' => [
                             'type' => 'text',
                             'placeholder' => $language->f_user,
-                            'is' => [
-                                'block' => true
-                            ],
+                            'width' => true,
                             'attributes' => [
                                 'autofocus' => $__pass_x ? null : true
                             ],
@@ -36,9 +34,7 @@ Config::set([
                         'pass' => [
                             'type' => 'pass',
                             'placeholder' => $__user_x ? l($language->new__($language->pass)) : null,
-                            'is' => [
-                                'block' => true
-                            ],
+                            'width' => true,
                             'attributes' => [
                                 'autofocus' => $__pass_x ? true : null
                             ],

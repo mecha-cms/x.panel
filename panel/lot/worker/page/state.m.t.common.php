@@ -26,10 +26,8 @@ return [
         'key' => 'zone',
         'type' => 'select',
         'value' => $__page[0]->c['zone'],
-        'values' => Get::zone(),
-        'is' => [
-            'block' => true
-        ],
+        'values' => Get::zones(),
+        'width' => true,
         'stack' => 10
     ],
     'c[charset]' => [
@@ -59,9 +57,7 @@ return [
         'type' => 'text',
         'value' => $__page[0]->c['title'],
         'placeholder' => $__page[1]->c['title'] ?: $language->f_title,
-        'is' => [
-            'block' => true
-        ],
+        'width' => true,
         'stack' => 50
     ],
     'c[description]' => [

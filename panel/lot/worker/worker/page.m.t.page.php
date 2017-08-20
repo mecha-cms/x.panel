@@ -9,6 +9,10 @@ $__buttons = [
     'trash' => $__command === 's' ? false : $language->delete
 ];
 
+$__roles = (array) $language->o_status;
+
+asort($__roles);
+
 call_user_func(function() use($__page, &$__tags, &$__types) {
     if ($__page[0]->kind) {
         foreach ($__page[0]->kind as $__v) {
@@ -27,9 +31,7 @@ return [
         'type' => 'text',
         'value' => $__page[0]->title,
         'placeholder' => $__page[0]->title ?: $language->f_title,
-        'is' => [
-            'block' => true
-        ],
+        'width' => true,
         'attributes' => [
             'data' => [
                 'slug-i' => 'title'
@@ -38,15 +40,14 @@ return [
         'expand' => true,
         'stack' => 10
     ],
-    '*slug' => [
+    'slug' => [
         'type' => 'text',
         'value' => $__page[0]->slug,
         'placeholder' => $__N ?: To::slug($language->f_title),
         'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
-        'is' => [
-            'block' => true
-        ],
+        'width' => true,
         'attributes' => [
+            'required' => true,
             'data' => [
                 'slug-o' => 'title'
             ]
@@ -59,9 +60,7 @@ return [
         'value' => $__page[0]->content,
         'placeholder' => $language->f_content,
         'union' => ['div'],
-        'is' => [
-            'expand' => true
-        ],
+        'height' => true,
         'attributes' => [
             'data' => [
                 'type' => $__page[0]->type
@@ -70,65 +69,32 @@ return [
         'expand' => true,
         'stack' => 30
     ],
-    'version' => [
-        'type' => 'text',
-        'placeholder' => '0.0.0',
-        'pattern' => '^(?:\\d+\\.){2}\\d+$',
-        'is' => [
-            'hidden' => true
-        ],
-        'stack' => 40
-    ],
     'type' => [
         'type' => 'select',
         'value' => $__page[0]->type,
         'values' => $__types ?: ['HTML' => 'HTML'],
-        'stack' => 50
+        'stack' => 40
     ],
     'description' => [
         'type' => 'textarea',
         'value' => $__page[0]->description,
         'placeholder' => $__page[0]->description ?: $language->f_description($language->{$__chops[0]}),
-        'stack' => 60
-    ],
-    'author' => [
-        'type' => 'text',
-        'value' => $__page[0]->author,
-        'placeholder' => $language->f_user,
-        'is' => [
-            'block' => true,
-            'hidden' => true
-        ],
-        'stack' => 70
+        'stack' => 50
     ],
     'link' => [
         'type' => 'url',
         'value' => $__page[0]->link,
         'placeholder' => $language->f_link,
-        'is' => [
-            'block' => true
-        ],
-        'stack' => 80
-    ],
-    'email' => [
-        'type' => 'email',
-        'value' => $__page[0]->email,
-        'placeholder' => $language->f_email,
-        'is' => [
-            'block' => true,
-            'hidden' => true
-        ],
-        'stack' => 90
+        'width' => true,
+        'stack' => 60
     ],
     'tags' => [
         'type' => 'query',
         'value' => implode(', ', (array) $__tags) ?: null,
         'placeholder' => $language->f_query,
-        'if' => Extend::exist('tag'),
-        'is' => [
-            'block' => true
-        ],
-        'stack' => 100
+        'hidden' => Extend::exist('tag'),
+        'width' => true,
+        'stack' => 70
     ],
     '+[time]' => (
         // Detect time format in the page slug @see `engine\kernel\page.php`
@@ -146,8 +112,8 @@ return [
         'key' => 'time',
         'type' => 'date',
         'value' => $__page[0]->time,
-        'if' => $__command !== 's',
-        'stack' => 110
+        'hidden' => $__command !== 's',
+        'stack' => 80
     ],
     'x' => [
         'key' => 'submit',
@@ -160,5 +126,37 @@ return [
         }, ARRAY_FILTER_USE_KEY) : $__buttons),
         'order' => ['*' . $__X, 'page', 'draft', 'archive', 'trash'],
         'stack' => 0
+    ],
+    // Hidden by default
+    'author' => [
+        'type' => 'text',
+        'value' => $__page[0]->author,
+        'placeholder' => $language->f_user,
+        'width' => true
+    ],
+    'email' => [
+        'type' => 'email',
+        'value' => $__page[0]->email,
+        'placeholder' => $language->f_email,
+        'width' => true
+    ],
+    'key' => [
+        'type' => 'text',
+        'value' => $__page[0]->key,
+        'placeholder' => $language->f_key,
+        'pattern' => '^[a-z\\d]+(?:_[a-z\\d]+)*$'
+    ],
+    'status' => [
+        'type' => 'toggle',
+        'description' => $language->h_status,
+        'value' => $__page[0]->status,
+        'values' => $__roles,
+        'width' => true
+    ],
+    'version' => [
+        'type' => 'text',
+        'value' => $__page[0]->version,
+        'placeholder' => '0.0.0',
+        'pattern' => '^(?:\\d+\\.){2}\\d+$'
     ]
 ];

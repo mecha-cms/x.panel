@@ -24,7 +24,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
         Asset::set($__f, 10.21);
     }
     // Add configuration tab for this extension…
-    if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config')) {
+    if ($__chops[0] === 'state' && (!isset($__chops[1]) || $__chops[1] === 'config.php')) {
         $__themes = $__modes = $__addons = [];
         foreach (glob($__s . 'css' . DS . 'theme' . DS . '*.min.css', GLOB_NOSORT) as $__v) {
             $__v = basename($__v, '.min.css');

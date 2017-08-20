@@ -94,7 +94,7 @@ if ($__is_has_step) {
                 Request::set('post', 'path', $__n);
             }
             $__x = Path::X($__n);
-            if ($__x && !Is::these($__ext)->has($__x)) {
+            if ($__x && !Are::these($__ext)->has($__x)) {
                 Request::save('post');
                 Message::error('file_x', '<em>' . $__x . '</em>');
             }
@@ -115,7 +115,7 @@ if ($__is_has_step) {
             // Upload file…
             if (!Message::$x && !empty($_FILES)) {
                 $__dd = LOT . DS . $__p;
-                $__o = Request::post('o.upload', []);
+                $__o = Request::post('o.upload.file', []);
                 $__extract = isset($__o['extract']) && $__o['extract'];
                 $__exist_reset = isset($__o['exist_reset']) && $__o['exist_reset'];
                 foreach ($_FILES as $__k => $__v) {
@@ -136,7 +136,7 @@ if ($__is_has_step) {
                                 $__fff = rtrim($__dd . DS . $__ff, DS);
                                 // Re-check file extension in the package…
                                 $__xx = Path::X($__fff);
-                                if ($__xx && !Is::these($__ext)->has($__xx)) {
+                                if ($__xx && !Are::these($__ext)->has($__xx)) {
                                     Request::save('post');
                                     Message::reset();
                                     Message::error('file_x', '<em>' . $__xx . '</em>');
@@ -189,7 +189,7 @@ if ($__is_has_step) {
                 }
                 if ($__d) {
                     $__d = str_replace(DS, '/', $__d);
-                    if (Request::post('o.folder.kick')) {
+                    if (Request::post('o.folder.directory.kick')) {
                         Guardian::kick($__uu . '/' . $__d . '/1' . $__query);
                     } else {
                         Guardian::kick($__uu . '/1' . $__query);
@@ -208,7 +208,7 @@ if ($__is_has_step) {
             $__pp = trim(str_replace('/', DS, Request::post('path')), DS);
             $__pp = To::file($__pp);
             $__x = Path::X($__pp);
-            if (!Is::these(File::$config['extensions'])->has($__x)) {
+            if (!Are::these(File::$config['extensions'])->has($__x)) {
                 Request::save('post');
                 Message::error('file_x', '<em>' . $__x . '</em>');
             }
@@ -237,7 +237,7 @@ if ($__is_has_step) {
         if ($__command === 'r') {
             if (!$__t = Request::get('token')) {
                 Shield::abort(404);
-            } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
+            } else if (!Guardian::check($__t)) {
                 Shield::abort(404);
             }
             if (!$__f = File::exist(LOT . DS . $__p)) {
@@ -367,9 +367,7 @@ Config::set('panel', array_replace_recursive([
                                 ])
                             ]
                         ],
-                        'is' => [
-                            'expand' => true
-                        ],
+                        'height' => true,
                         'expand' => true,
                         'stack' => 10
                     ] : false,
@@ -379,9 +377,7 @@ Config::set('panel', array_replace_recursive([
                         'placeholder' => $__command === 's' ? $language->f_file : null,
                         'title' => $__command === 's' ? $language->name : $language->path,
                         'pattern' => $__command === 'g' ? '^[a-z\\d_.-]+(?:[\\\\/][a-z\\d._-]+)*$' : '^[a-z\\d_.-]+$',
-                        'is' => [
-                            'block' => true
-                        ],
+                        'width' => true,
                         'stack' => 20
                     ],
                     '_x' => [
@@ -402,14 +398,13 @@ Config::set('panel', array_replace_recursive([
                     'directory' => [
                         'type' => 'text',
                         'placeholder' => $language->f_path,
+                        'pattern' => '^[a-z\\d]+(?:[-._\\/][a-z\\d]+)*$',
                         'title' => $language->path,
-                        'is' => [
-                            'block' => true
-                        ],
+                        'width' => true,
                         'stack' => 10
                     ],
-                    'o[folder]' => [
-                        'key' => 'o-folder',
+                    'o[folder][directory]' => [
+                        'key' => 'o-folder-directory',
                         'type' => 'toggle[]',
                         'title' => "",
                         'value' => ['kick' => 1],
@@ -429,8 +424,8 @@ Config::set('panel', array_replace_recursive([
                         'title' => $language->file . '/' . $language->package,
                         'stack' => 10
                     ],
-                    'o[upload]' => [
-                        'key' => 'o-upload',
+                    'o[upload][file]' => [
+                        'key' => 'o-upload-file',
                         'type' => 'toggle[]',
                         'title' => "",
                         'value' => ['extract' => false],
@@ -449,13 +444,13 @@ Config::set('panel', array_replace_recursive([
         1 => [
             'search' => [
                 'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-search.php',
-                'if' => $__is_has_step,
+                'hidden' => !$__is_has_step,
                 'stack' => 10
             ],
             'parent' => [
                 'title' => $language->parent,
                 'list' => [[$__parent[0]], [$__parent[1]]],
-                'if' => count($__chops) > 1,
+                'hidden' => count($__chops) === 1,
                 'stack' => 20
             ],
             'kin' => [
@@ -463,7 +458,7 @@ Config::set('panel', array_replace_recursive([
                 'a' => [
                     'set' => ["", str_replace('::g::', '::s::', $__command === 's' ? $url->current : dirname($url->current)), false, ['title' => $language->add]]
                 ],
-                'if' => count($__chops) > 1 && $__kins[0],
+                'hidden' => count($__chops) === 1 || !$__kins[0],
                 'stack' => 30
             ],
             'child' => [
@@ -471,13 +466,13 @@ Config::set('panel', array_replace_recursive([
                 'a' => [
                     'set' => $__command === 's' ? ["", str_replace('::g::', '::s::', $url->current), false, ['title' => $language->add]] : false
                 ],
-                'if' => !$__is_has_step && is_dir(LOT . DS . $__p) && $__childs[0],
+                'hidden' => $__is_has_step || !is_dir(LOT . DS . $__p) || !$__childs[0],
                 'stack' => 40
             ],
             'nav' => [
                 'title' => $language->navigation,
                 'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-nav.php',
-                'if' => $__is_has_step,
+                'hidden' => !$__is_has_step,
                 'stack' => 50
             ]
         ]

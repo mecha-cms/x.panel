@@ -6,7 +6,7 @@ if ($__command !== 'r') {
 
 if (!$__t = Request::get('token')) {
     Shield::abort(404);
-} else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
+} else if (!Guardian::check($__t)) {
     Shield::abort(404);
 }
 

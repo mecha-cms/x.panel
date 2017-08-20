@@ -143,6 +143,15 @@ if (count($__chops) === 1) {
             return $__a;
         }, 0);
     } else if ($__command === 's') {
+        if (isset($_FILES['file']['name'])) {
+            $__N = $_FILES['file']['name'];
+            if (Path::X($__N) === 'zip' && !Message::$x) {
+                // The package name simply tell the engine to delete the old extension folder which
+                // has the same name as the package name before extracting, so that uploading will
+                // correctly replace the entire folder instad of overwriting the folder contents.
+                File::open(LOT . DS . $__chops[0] . DS . Path::N($__N))->delete();
+            }
+        }
         Config::set('panel', [
             'm' => [
                 't' => [
@@ -156,12 +165,9 @@ if (count($__chops) === 1) {
                                 'expand' => true,
                                 'stack' => 10
                             ],
-                            'o[upload]' => [
+                            'o[upload][file]' => [
                                 'type' => 'hidden',
-                                'value' => [
-                                    'extract' => 1,
-                                    'exist_reset' => 1
-                                ],
+                                'value' => ['extract' => 1],
                                 'stack' => 20
                             ],
                             'x' => [

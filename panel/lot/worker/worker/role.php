@@ -25,12 +25,12 @@ if ($__user) {
                 // [1]. Cannot change the page key/slug
                 if ($__command !== 's') {
                     Config::set('panel.f.page', [
-                        '*key' => [
+                        'key' => [
                             'attributes' => [
                                 'readonly' => true
                             ]
                         ],
-                        '*slug' => [
+                        'slug' => [
                             'attributes' => [
                                 'readonly' => true
                             ]

@@ -26,6 +26,7 @@ $__n['+']['+']['+/view'] = [
     'stack' => 10
 ];
 
+// Add error counter…
 if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
     preg_match_all('#^\s*\[(.+?)\].*\s*$#m', $__log, $__errors);
     if (!empty($__errors[1])) {
@@ -43,6 +44,16 @@ if ($__log = File::open(ENGINE . DS . 'log' . DS . 'error.log')->read()) {
             'stack' => 20
         ];
     }
+}
+
+// Add trash counter…
+if ($__trash = File::exist(LOT . DS . 'trash')) {
+    $__trash = File::explore($__trash, true);
+    $__trash = array_replace([0, 0], array_count_values($__trash));
+    $__n['trash'] = [
+        'i' => array_sum($__trash),
+        'description' => $__trash[0] . ' ' . $language->{$__trash[0] === 1 ? 'folder' : 'folders'} . ', ' . $__trash[1] . ' ' . $language->{$__trash[1] === 1 ? 'file' : 'files'}
+    ];
 }
 
 /*

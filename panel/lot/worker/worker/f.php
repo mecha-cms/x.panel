@@ -122,7 +122,7 @@ if (Request::is('post')) {
             Message::error('void_field', $language->extension, true);
         }
         Request::set('post', 'x', $s = l($s));
-        if (!Is::these(File::$config['extensions'])->has($s)) {
+        if (!Are::these(File::$config['extensions'])->has($s)) {
             Request::save('post');
             Message::error('file_x', '<em>' . $s . '</em>');
         }
@@ -140,7 +140,7 @@ if (Request::is('post')) {
     }
     // Process token…
     $s = Request::post('token');
-    if (!$s || $s !== Session::get(Guardian::$config['session']['token'])) {
+    if (!$s || !Guardian::check($s)) {
         Request::save('post');
         Message::error('token');
         Guardian::kick();
@@ -148,7 +148,7 @@ if (Request::is('post')) {
 } else if (Request::is('get')) {
     // Process token…
     $s = Request::get('token');
-    if ($s && $s !== Session::get(Guardian::$config['session']['token'])) {
+    if ($s && !Guardian::check($s)) {
         Message::error('token');
     }
 }

@@ -10,9 +10,7 @@ return [
         'value' => $__s,
         'placeholder' => null,
         'union' => ['div'],
-        'is' => [
-            'expand' => true
-        ],
+        'height' => true,
         'attributes' => [
             'data' => [
                 'type' => stripos($__s, '</style>') === false && stripos($__s, '<link ') === false ? 'CSS' : 'HTML'

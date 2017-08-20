@@ -152,7 +152,7 @@ if ($__is_data) {
         if ($__command === 'r') {
             if (!$__t = Request::get('token')) {
                 Shield::abort(404);
-            } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
+            } else if (!Guardian::check($__t)) {
                 Shield::abort(404);
             }
             if (!$__f = File::exist($__d . DS . $__s[1] . '.data')) {
@@ -187,8 +187,10 @@ if ($__is_data) {
     }
     // Get kin(s)…
     if (Config::get('panel.x.s.data') !== true) {
+        $__q = end($__chops);
         foreach (glob($__d . DS . '*.data') as $__v) {
             $__ss = Path::N($__v);
+            if ($__q && $__q === $__ss) continue;
             $__ss = (object) [
                 'path' => $__v,
                 'title' => $__ss,
@@ -310,13 +312,13 @@ if ($__is_data) {
             $__XX = Request::post('x', $__command === 's' ? 'page' : $__X);
             $__DD = $__D . DS . $__NN;
             $__SS = $__DD . '.' . $__XX;
-            $__headers_alt = [];
+            $__headers_c = [];
             foreach (explode("\n", trim(Request::post('__datas', ""))) as $__v) {
                 $__v = trim($__v);
                 if ($__v === "") continue;
-                $__v = explode(Page::$v[2], $__v, 2);
+                $__v = explode(Page::v[2], $__v, 2);
                 if (!isset($__v[1])) $__v[1] = $__v[0];
-                $__headers_alt[trim($__v[0])] = trim($__v[1]);
+                $__headers_c[trim($__v[0])] = trim($__v[1]);
             }
             $__headers = array_replace([
                 'title' => function($__s) {
@@ -330,8 +332,8 @@ if ($__is_data) {
                 'email' => false,
                 'status' => false,
                 'content' => false
-            ], $__headers_alt);
-            $__headers_alt = (array) $site->page;
+            ], $__headers_c);
+            $__headers_c = (array) $site->page;
             foreach ($__headers as $__k => $__v) {
                 if (file_exists($__DD . DS . $__k . '.data')) continue;
                 if (is_callable($__v)) {
@@ -339,7 +341,7 @@ if ($__is_data) {
                 } else {
                     $__v = Request::post($__k, $__v);
                 }
-                if (isset($__headers_alt[$__k]) && $__headers_alt[$__k] === $__v) {
+                if (isset($__headers_c[$__k]) && $__headers_c[$__k] === $__v) {
                     $__v = false; // reset
                 }
                 $__headers[$__k] = $__v;
@@ -432,7 +434,7 @@ if ($__is_data) {
             if ($__command === 'r') {
                 if (!$__t = Request::get('token')) {
                     Shield::abort(404);
-                } else if ($__t !== Session::get(Guardian::$config['session']['token'])) {
+                } else if (!Guardian::check($__t)) {
                     Shield::abort(404);
                 }
                 $__back = str_replace('::r::', '::g::', $url->path);
@@ -555,11 +557,13 @@ Config::set('panel', array_replace_recursive([
     'm' => [
         't' => $__is_has_step ? [
             'page' => [
+                'title' => $language->{$__chops[0] . 's'},
                 'content' => require __DIR__ . DS . 'pages.m.t.page.php',
                 'stack' => 10
             ]
         ] : [
             'page' => $__is_data ? false : [
+                'title' => $language->{$__chops[0]},
                 'list' => require __DIR__ . DS . 'page.m.t.page.php',
                 'stack' => 10
             ],
@@ -574,30 +578,30 @@ Config::set('panel', array_replace_recursive([
             'source' => [
                 'title' => $language->source,
                 'list' => $__source[0] ? [[$__source[0]], [$__source[1]]] : [],
-                'if' => $__is_data,
+                'hidden' => !$__is_data,
                 'stack' => 10
             ],
             'search' => [
                 'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-search.php',
-                'if' => $__is_has_step,
+                'hidden' => !$__is_has_step,
                 'stack' => 10
             ],
             'author' => [
                 'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-author.php',
-                'if' => !$__is_has_step && !$__is_data,
+                'hidden' => $__is_has_step || $__is_data,
                 'stack' => 10
             ],
             'parent' => [
                 'title' => $language->parent,
                 'list' => $__parent[0] ? [[$__parent[0]], [$__parent[1]]] : [[$__], [$__]],
-                'if' => !$__is_data && count($__chops) > 1,
+                'hidden' => $__is_data || count($__chops) === 1,
                 'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
                 'stack' => 20
             ],
             'current' => [
                 'title' => $language->current,
                 'list' => [[$__page[0]], [$__page[1]]],
-                'if' => $__is_has_step && $__page[0] && count($__chops) > 1,
+                'hidden' => !$__is_has_step || count($__chops) === 1,
                 'stack' => 30
             ],
             'kin' => $__is_data ? [
@@ -612,20 +616,20 @@ Config::set('panel', array_replace_recursive([
                     'set' => ["", $__state->path . '/::s::/' . (dirname($__path) ?: $__path) . $__query, false, ['title' => $language->add]],
                     'get' => $__is_has_step_kin ? ["", $__state->path . '/::g::/' . dirname($__path) . '/2' . $__query, false, ['title' => $language->more]] : false
                 ],
-                'if' => $__command !== 's' && count($__chops) > 1,
+                'hidden' => $__command === 's' || count($__chops) === 1,
                 'lot' => $__is_has_step ? ['%{0}%/1' . $__query] : ['%{0}%' . $__query],
                 'stack' => 40
             ],
             'nav' => [
                 'title' => $language->navigation,
                 'content' => __DIR__ . DS . '..' . DS . 'pages' . DS . '-nav.php',
-                'if' => $__is_has_step,
+                'hidden' => !$__is_has_step,
                 'stack' => 50
             ],
             'setting' => [
                 'title' => $language->settings,
                 'content' => __DIR__ . DS . '..' . DS . 'page' . DS . '-setting.php',
-                'if' => !$__is_has_step && !$__is_data,
+                'hidden' => $__is_has_step || $__is_data,
                 'stack' => 50
             ]
         ],
@@ -637,7 +641,7 @@ Config::set('panel', array_replace_recursive([
                 'a' => $__command === 'g' ? [
                     'set' => ["", $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
                 ] : [],
-                'if' => !$__is_data,
+                'hidden' => $__is_data,
                 'stack' => 10
             ],
             'child' => [
@@ -646,7 +650,7 @@ Config::set('panel', array_replace_recursive([
                     'set' => ["", $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
                     'get' => $__is_has_step_child ? ["", $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : false
                 ],
-                'if' => !$__is_data && count($__chops) > 1,
+                'hidden' => $__is_data || count($__chops) > 1,
                 'lot' => ['%{0}%' . $__query],
                 'stack' => 20
             ]
@@ -658,23 +662,20 @@ if (!$__is_has_step && $__command !== 's' && $__page[0]) {
     $__s = trim(To::url(Path::F($__path, 'page', '/')), '/');
     $__toggle = (array) a(Config::get('panel.o.page.toggle', []));
     Config::set('panel.o.page.toggle', array_replace_recursive([
-        ($site->path === $__s ? '.' : "") . 'as_' => [
+        'as_' => [
             'value' => $__s,
-            'is' => [
-                'active' => $site->path === $__s
+            'active' => $site->path === $__s,
+            'attributes' => [
+                'disabled' => $site->path === $__s
             ]
         ],
         'as_page' => count($__chops) > 1 && Get::kin($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__p, 'draft,page,archive') ? [
             'value' => 1,
-            'is' => [
-                'active' => file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state)
-            ]
+            'active' => file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state)
         ] : false,
         '+[comments][x]' => Extend::exist('comment') ? [
             'value' => 1,
-            'is' => [
-                'active' => $__page[0]->comments && !empty($__page[0]->comments['x'])
-            ]
+            'active' => $__page[0]->comments && !empty($__page[0]->comments['x'])
         ] : false
     ], $__toggle));
 }

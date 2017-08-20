@@ -3,12 +3,12 @@
 if ($__states = g(LOT . DS . $__chops[0], 'php', "", false)) {
     $__kins = [[], []];
     foreach ($__states as $__v) {
-        $__v = o(File::inspect($__v));
-        $__b = basename($__v->path);
-        $__v->title = '<i class="i i-f"></i> ' . $__b;
-        $__v->url = $__state->path . '/::g::/' . $__chops[0] . '/' . $__b;
-        $__kins[0][] = $__v;
-        $__kins[1][] = $__v;
+        $__a = $__aa = o(File::inspect($__v));
+        $__t = basename($__a->path);
+        $__aa->title = '<i class="i i-f"></i> ' . $__t;
+        $__a->url = $__state->path . '/::g::/' . $__chops[0] . '/' . $__t;
+        $__kins[0][] = $__a;
+        $__kins[1][] = $__aa;
     }
 }
 $__B = isset($__chops[1]) ? $__chops[1] : 'config.php';
@@ -81,7 +81,7 @@ Config::set([
                 'kin' => [
                     'title' => $language->{count($__kins[0]) === 1 ? 'config' : 'configs'},
                     'list' => $__kins,
-                    'if' => $__kins[0],
+                    'hidden' => !$__kins[0],
                     'a' => false,
                     'stack' => 10
                 ],

@@ -59,6 +59,8 @@ mark {
 pre {
   word-wrap:break-word;
   white-space:pre-wrap;
+  font-weight:normal;
+  font-style:normal;
   overflow:auto;
 }
 html,

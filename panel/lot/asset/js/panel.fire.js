@@ -24,14 +24,14 @@ window.PANEL = window.jQuery;
     var nav = $('nav.n'),
         parent = nav.find('li:has(ul)');
     if (nav.length) {
-        parent.children('a').on("click", function() {
+        parent.children('a').on("click.panel", function() {
             return $(this).next().fadeToggle(100), !$(this).parent().hasClass('n:+');
-        }).on("mouseenter", function() {
+        }).on("mouseenter.panel", function() {
             $(this).next().fadeIn(100);
-        }).parent().on("mouseleave", function() {
+        }).parent().on("mouseleave.panel", function() {
             $(this).children('ul').fadeOut(100);
         });
-        $(doc).on("click", function() {
+        $(doc).on("click.panel", function() {
             var ul = parent.find('a+ul:visible');
             return !!(ul && ul.fadeOut(100));
         });
@@ -53,11 +53,11 @@ window.PANEL = window.jQuery;
     }
     if (tab.length) {
         content.hide().filter(hash(active[0].hash)).show();
-        tab.on("click", function() {
+        tab.on("click.panel", function() {
             $(this).addClass('is.active').siblings().removeClass('is.active');
             content.hide().filter(hash(this.hash)).show();
             edit = content.find('.CodeMirror').each(function() {
-                w.trigger("resize");
+                w.trigger("resize.panel");
                 this.CodeMirror && this.CodeMirror.refresh && this.CodeMirror.refresh();
             });
             return false;
@@ -68,7 +68,7 @@ window.PANEL = window.jQuery;
     // @key, @slug
 
     if (win.location.href.indexOf('/::s::/') !== -1) {
-        var events = 'copy cut input keydown paste';
+        var events = "copy.panel cut.panel input.panel keydown.panel paste.panel";
         $.f = function(a, b, c) {
             b = b || '-';
             if (c) {

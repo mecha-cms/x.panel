@@ -8,7 +8,7 @@ Hook::set('message.set.success', function($__s) use($language, $__command, $__ch
     if ($__x !== 'page') {
         return $__s;
     }
-    $__p = new Page(LOT . DS . ($__command === 's' ? $__path . DS . Request::post('slug') : $__path) . '.' . $__x, [], $__chops[0]);
+    $__p = new Page(LOT . DS . $__path . DS . Request::post('slug') . '.' . $__x, [], $__chops[0]);
     return $__s . ' ' . HTML::a($language->view, $__p->url, true, ['classes' => ['right']]);
 });
 
@@ -27,11 +27,11 @@ if (!$__is_has_step) {
         ]
     ] : (Plugin::exist('art') ? [
         'css' => [
-            'title' => 'CSS',
+            'title' => '<abbr title="Cascading Style Sheet">CSS</abbr>',
             'stack' => 20
         ],
         'js' => [
-            'title' => 'JavaScript',
+            'title' => '<abbr title="JavaScript">JS</abbr>',
             'stack' => 30
         ]
     ] : []));

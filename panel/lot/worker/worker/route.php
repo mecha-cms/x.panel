@@ -66,7 +66,7 @@ Route::set($__state->path . '/::u::/%s%', function($__s = "") {
         HTTP::status(405);
         echo json_encode(['x' => 1, 'v' => 0, 'status' => 405]);
         exit;
-    } else if (!$__t || $__t !== Session::get(Guardian::$config['session']['token'])) {
+    } else if (!$__t || !Guardian::check($__t)) {
         // “Non-Authoritative Information”
         HTTP::status(203);
         echo json_encode(['x' => 1, 'v' => 0, 'status' => 203]);

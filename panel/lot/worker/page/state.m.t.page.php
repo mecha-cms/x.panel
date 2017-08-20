@@ -21,9 +21,7 @@ return [
         'title' => $language->title,
         'value' => $__s['title'],
         'placeholder' => $__s['title'] ?: $language->f_title,
-        'is' => [
-            'block' => true
-        ],
+        'width' => true,
         'stack' => 10
     ],
     'c[page][author]' => [
@@ -32,9 +30,7 @@ return [
         'title' => $language->author,
         'value' => $__s['author'],
         'placeholder' => $__s['author'] ?: $language->f_user,
-        'is' => [
-            'block' => true
-        ],
+        'width' => true,
         'stack' => 20
     ],
     'c[page][type]' => [
@@ -52,9 +48,7 @@ return [
         'value' => $__s['content'],
         'placeholder' => $language->f_content,
         'union' => ['div'],
-        'is' => [
-            'expand' => true
-        ],
+        'height' => true,
         'attributes' => [
             'data' => [
                 'type' => $__s['type']

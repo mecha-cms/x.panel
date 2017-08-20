@@ -10,9 +10,7 @@ return [
         'value' => $__s,
         'placeholder' => null,
         'union' => ['div'],
-        'is' => [
-            'expand' => true
-        ],
+        'height' => true,
         'attributes' => [
             'data' => [
                 'type' => stripos($__s, '</script>') === false && stripos($__s, '<script ') === false ? 'JavaScript' : 'HTML'

@@ -23,7 +23,8 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
             if (!isset($__v['title'])) {
                 $__v['title'] = $language->{$__k};
             }
-            echo HTML::a($__v['title'], '#t:' . $__k, false, ['class' => Request::get('m.t:v', Config::get('panel.m.t:v', $__tt)) === $__k ? 'is.active' : null]);
+            $__a = isset($__v['attributes'][0]) ? (array) $__v['attributes'][0] : [];
+            echo HTML::a($__v['title'], '#t-c:' . $__k, false, array_replace_recursive(['classes' => ['t:' . $__k, Request::get('m.t:v', Config::get('panel.m.t:v', $__tt)) === $__k ? 'is.active' : null], 'id' => 't:' . $__k], $__a));
         }
         echo '</nav>';
     }
@@ -31,16 +32,17 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
         if (!isset($__v['title'])) {
             $__v['title'] = $language->{$__k};
         }
-        echo '<section class="t-c t-c:' . $__k . '" id="t:' . $__k . '">';
+        $__a = isset($__v['attributes'][1]) ? (array) $__v['attributes'][1] : [];
+        $__html = "";
         if (!isset($__v['list']) && $__w = File::exist(__DIR__ . DS . '..' . DS . 'page' . DS . $__chops[0] . '.m.t.' . $__k . '.php')) {
             $__v['list'] = include $__w;
         } else if (isset($__v['list']) && is_string($__v['list']) && is_file($__v['list'])) {
             $__v['list'] = include $__v['list'];
         }
         if (!empty($__v['list'])) {
-            echo '<fieldset>';
+            $__html .= '<fieldset>';
             if (!isset($__v['legend']) || $__v['legend'] !== false) {
-                echo '<legend>' . (isset($__v['legend']) ? $__v['legend'] : $__v['title']) . '</legend>';
+                $__html .= '<legend>' . (isset($__v['legend']) ? $__v['legend'] : $__v['title']) . '</legend>';
                 if (is_array($__v['list'])) {
                     if ($__a = a(Config::get('panel.f.' . $__k, []))) {
                         $__v['list'] = array_replace_recursive($__v['list'], (array) $__a);
@@ -57,16 +59,16 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
                                 continue;
                             }
                         }
-                        echo _f($__kk, $__vv);
+                        $__html .= _f($__kk, $__vv);
                     }
                 } else if (is_string($__v['list'])) {
-                    echo $__v['list'];
+                    $__html .= $__v['list'];
                 }
             }
-            echo '</fieldset>';
+            $__html .= '</fieldset>';
             if (!empty($__v['description'])) {
                 $__s = $__v['description'];
-                echo '<div class="h p">' . (stripos($__s, '</p>') === false ? '<p>' . $__s . '</p>' : $__s) . '</div>';
+                $__html .= '<div class="h p">' . (stripos($__s, '</p>') === false ? '<p>' . $__s . '</p>' : $__s) . '</div>';
             }
         } else {
             if (!isset($__v['content']) && $__w = File::exist(__DIR__ . DS . '..' . DS . 'page' . DS . $__chops[0] . '.m.t.' . $__k . '.php')) {
@@ -75,10 +77,10 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
                 $__v['content'] = include $__v['content'];
             }
             if (!empty($__v['content'])) {
-                echo $__v['content'];
+                $__html .= $__v['content'];
             }
         }
-        echo '</section>';
+        echo HTML::unite('section', $__html, array_replace_recursive(['classes' => ['t-c', 't-c:' . $__k], 'id' => 't-c:' . $__k], $__a));
     }
     // after tab
     if (!empty($__f = Config::get('panel.m.after'))) {
