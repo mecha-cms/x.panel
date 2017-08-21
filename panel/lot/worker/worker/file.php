@@ -94,7 +94,7 @@ if ($__is_has_step) {
                 Request::set('post', 'path', $__n);
             }
             $__x = Path::X($__n);
-            if ($__x && !Are::these($__ext)->has($__x)) {
+            if ($__x && !Is::this($__ext)->contain($__x)) {
                 Request::save('post');
                 Message::error('file_x', '<em>' . $__x . '</em>');
             }
@@ -136,7 +136,7 @@ if ($__is_has_step) {
                                 $__fff = rtrim($__dd . DS . $__ff, DS);
                                 // Re-check file extension in the package…
                                 $__xx = Path::X($__fff);
-                                if ($__xx && !Are::these($__ext)->has($__xx)) {
+                                if ($__xx && !Is::this($__ext)->contain($__xx)) {
                                     Request::save('post');
                                     Message::reset();
                                     Message::error('file_x', '<em>' . $__xx . '</em>');
@@ -208,7 +208,7 @@ if ($__is_has_step) {
             $__pp = trim(str_replace('/', DS, Request::post('path')), DS);
             $__pp = To::file($__pp);
             $__x = Path::X($__pp);
-            if (!Are::these(File::$config['extensions'])->has($__x)) {
+            if (!Is::this(File::$config['extensions'])->contain($__x)) {
                 Request::save('post');
                 Message::error('file_x', '<em>' . $__x . '</em>');
             }

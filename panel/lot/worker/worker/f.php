@@ -122,7 +122,7 @@ if (Request::is('post')) {
             Message::error('void_field', $language->extension, true);
         }
         Request::set('post', 'x', $s = l($s));
-        if (!Are::these(File::$config['extensions'])->has($s)) {
+        if (!Is::this(File::$config['extensions'])->contain($s)) {
             Request::save('post');
             Message::error('file_x', '<em>' . $s . '</em>');
         }
