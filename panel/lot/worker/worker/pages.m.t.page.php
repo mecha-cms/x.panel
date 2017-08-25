@@ -25,7 +25,7 @@ if ($__pages[0]) {
             'edit' => $__pppp ? false : [$language->edit, $__uu . $__query]
         ];
 
-        $__is_pages = !!g(LOT . explode('::' . $__command . '::', $__uu, 2)[1], 'draft,page,archive', "", false);  
+        $__is_pages = !!g(LOT . explode('::' . $__command . '::', $__uu, 2)[1], 'draft,page,archive');  
         if ($__s = Config::get('panel.v.' . $__chops[0] . '.is.pages', "")) {
             $__is_pages = strpos(',' . $__s . ',', ',' . $__v->slug . ',') !== false;
         }

@@ -11,7 +11,7 @@ if ($__user_key = Cookie::get('panel.c.user.key')) {
 }
 
 $__f = PANEL . DS . 'lot' . DS . 'worker' . DS;
-$__g = g(USER, 'page', "", false);
+$__g = g(USER, 'page');
 
 $path_ = $url->path;
 $_path = $__state->path;

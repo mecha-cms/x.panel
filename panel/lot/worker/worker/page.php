@@ -28,7 +28,7 @@ if (!Get::kin('_' . $__chops[0] . 's')) {
         $__data = Path::F($__path);
         if (is_dir($__data)) {
             if ($__for === null) {
-                foreach (g($__data, '*.data', "", false) as $__v) {
+                foreach (g($__data, 'data') as $__v) {
                     $__n = Path::N($__v);
                     $__output[$__n] = e(__fn_get_($__v, $__n));
                 }
@@ -41,7 +41,7 @@ if (!Get::kin('_' . $__chops[0] . 's')) {
     function _fn_get_s($__folder = PAGE, $__state = 'page', $__sort = [-1, 'time'], $__key = null) {
         $__output = [];
         $__by = is_array($__sort) && isset($__sort[1]) ? $__sort[1] : null;
-        if ($__input = g($__folder, $__state, "", false)) {
+        if ($__input = g($__folder, $__state)) {
             foreach ($__input as $__v) {
                 $__output[] = _fn_get_($__v, null, false, $__by);
             }

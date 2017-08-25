@@ -8,7 +8,7 @@ if ($__user_enter) {
     Guardian::kick($__state->path . '/::g::/' . $__state->kick('page'));
 }
 
-$__g = g(USER, 'page', "", false);
+$__g = g(USER, 'page');
 $__pass_x = Request::restore('post', 'pass_x');
 $__user_x = $__pass_x || !$__g;
 Config::set([

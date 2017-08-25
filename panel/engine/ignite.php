@@ -56,13 +56,13 @@ function _f($k, $v) {
     $placeholder = array_key_exists('placeholder', $v) ? $v['placeholder'] : $value;
     $hidden = false;
     if ($type) {
-        $is_block = (isset($v['width']) && $v['width'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['width']) || $v['width'])) ? 'block' : null;
-        $is_expand = isset($v['height']) && $v['height'] ? 'expand' : null;
-        if (isset($is_block) && $is_block !== true) {
-            $aa['css']['width'] = is_int($is_block) ? $is_block . 'px' : $is_block;
+        $is_width = (isset($v['width']) && $v['width'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['width']) || $v['width'])) ? 'width' : null;
+        $is_height = isset($v['height']) && $v['height'] ? 'height' : null;
+        if (isset($is_width) && $is_width !== true) {
+            $aa['css']['width'] = is_int($is_width) ? $is_width . 'px' : $is_width;
         }
-        if (isset($is_expand) && $is_expand !== true) {
-            $aa['css']['height'] = is_int($is_expand) ? $is_expand . 'px' : $is_expand;
+        if (isset($is_height) && $is_height !== true) {
+            $aa['css']['height'] = is_int($is_height) ? $is_height . 'px' : $is_height;
         }
         if ($type === 'hidden') {
             // All hidden field(s) value shouldn’t be accessible through URL query string!
@@ -121,14 +121,14 @@ function _f($k, $v) {
         } else if ($type === 'content') {
             $html .= $value;
         } else if ($type === 'textarea') {
-            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', $is_block, $is_expand], 'id' => 'f-' . $kk], $aa));
+            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', $is_width, $is_height], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'editor') {
-            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', $is_block, $is_expand, 'code', 'editor'], 'id' => 'f-' . $kk], $aa));
+            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea', $is_width, $is_height, 'code', 'editor'], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'query') {
-            $html .= Form::text($k, Request::get($q, is_array($value) ? implode(', ', $value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['input', $is_block, 'query'], 'id' => 'f-' . $kk], $aa));
+            $html .= Form::text($k, Request::get($q, is_array($value) ? implode(', ', $value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['input', $is_width, 'query'], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'date') {
             $ff = 'Y/m/d H:i:s';
-            $html .= Form::text($k, (new Date(Request::get($q, is_array($value) ? json_encode($value) : $value, false)))->format($ff), (new Date($placeholder))->format($ff), array_replace_recursive(['classes' => ['input', $is_block, 'date'], 'id' => 'f-' . $kk], $aa));
+            $html .= Form::text($k, (new Date(Request::get($q, is_array($value) ? json_encode($value) : $value, false)))->format($ff), (new Date($placeholder))->format($ff), array_replace_recursive(['classes' => ['input', $is_width, 'date'], 'id' => 'f-' . $kk], $aa));
         } else if ($type === 'range') {
             if (isset($v['range'])) {
                 // [min, val, max]
@@ -146,7 +146,7 @@ function _f($k, $v) {
             if (isset($v['placeholder'])) {
                 $vv = ['.' => $v['placeholder']] + $vv;
             }
-            $html .= Form::select($k, $vv, Request::get($q, $value), array_replace_recursive(['classes' => ['select', $is_block], 'id' => 'f-' . $kk, 'multiple' => $type === 'select[]' ? true : null], $aa));
+            $html .= Form::select($k, $vv, Request::get($q, $value), array_replace_recursive(['classes' => ['select', $is_width], 'id' => 'f-' . $kk, 'multiple' => $type === 'select[]' ? true : null], $aa));
         } else if ($type === 'toggle' || $type === 'toggle[]') {
             if (isset($v['values'])) {
                 $vv = (array) $v['values'];
@@ -192,7 +192,7 @@ function _f($k, $v) {
             if ($type === 'pass') {
                 $type .= 'word';
             }
-            $html .= call_user_func('Form::' . $type, $k, Request::get($q, $value, false), $placeholder, array_replace_recursive(['classes' => ['input', $is_block], 'id' => 'f-' . $kk], $aa));
+            $html .= call_user_func('Form::' . $type, $k, Request::get($q, $value, false), $placeholder, array_replace_recursive(['classes' => ['input', $is_width], 'id' => 'f-' . $kk], $aa));
         }
     } else {
         $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['classes' => ['textarea'], 'id' => 'f-' . $kk], $aa));

@@ -19,4 +19,4 @@ call_user_func(function() use(&$__authors, $__page, $__user_key, $__user_status)
 });
 
 $__s = $__page[0]->author;
-return '<p>' . Form::select('author', $__user && $__user_status !== 1 && $__command !== 's' ? [$__s => $__page[1]->author] : $__authors, $__s, ['classes' => ['select', 'block'], 'id' => 'f-author']) . '</p>';
+return '<p>' . Form::select('author', $__user && $__user_status !== 1 && $__command !== 's' ? [$__s => $__page[1]->author] : $__authors, $__s, ['classes' => ['select', 'width'], 'id' => 'f-author']) . '</p>';

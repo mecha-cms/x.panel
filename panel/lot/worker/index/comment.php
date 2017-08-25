@@ -57,6 +57,9 @@ if (!$__is_has_step) {
             't' => [
                 'page' => [
                     'list' => [
+                        'slug' => [
+                            'type' => 'hidden'
+                        ],
                         'content' => [
                             'stack' => 10
                         ],

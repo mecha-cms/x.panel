@@ -1,6 +1,6 @@
 <?php
 
-if ($__states = g(LOT . DS . $__chops[0], 'php', "", false)) {
+if ($__states = g(LOT . DS . $__chops[0], 'php')) {
     $__kins = [[], []];
     foreach ($__states as $__v) {
         $__a = $__aa = o(File::inspect($__v));

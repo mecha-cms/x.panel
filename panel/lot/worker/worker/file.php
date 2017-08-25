@@ -247,8 +247,8 @@ if ($__is_has_step) {
             if (Message::$x) {
                 Guardian::kick($__back . $__query);
             }
-            $__ff = Request::get('r') === 1 ? null : str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
-            Hook::fire('on.' . $__t . '.reset', [$__f, $__ff]);
+            $__ff = str_replace(LOT, LOT . DS . 'trash' . DS . 'lot', $__f);
+            Hook::fire('on.' . $__t . '.reset', [$__f, $__ff = Request::get('r') === 1 ? null : $__ff]);
             if (!isset($__ff)) {
                 File::open($__f)->delete();
             } else {
@@ -274,7 +274,7 @@ if ($__is_has_step) {
         $__t = basename($__p);
         $__a['title'] = $__t;
         $__a['url'] = $__u . $__path;
-        $__a['content'] = is_file($__a['path']) ? (strpos(',' . SCRIPT_X . ',', ',' . Path::X($__p) . ',') === false ? false : file_get_contents($__a['path'])) : null;
+        $__a['content'] = is_file($__a['path']) ? (strpos(',' . TEXT_X . ',', ',' . Path::X($__p) . ',') === false ? false : file_get_contents($__a['path'])) : null;
         $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> <span>' . $__t . '</span>';
         Lot::set('__file', $__file = [o($__a), o($__aa)]);
     }

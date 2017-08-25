@@ -210,7 +210,7 @@ label {
   height:5em;
   resize:vertical;
 }
-.textarea.expand {height:30em}
+.textarea.height {height:30em}
 .input[type="checkbox"],
 .input[type="radio"] {
   margin:0;
@@ -257,7 +257,7 @@ label {
   text-align:left;
   vertical-align:top;
 }
-.block {
+.width {
   display:block;
   width:100%;
 }
