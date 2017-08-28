@@ -8,6 +8,9 @@ Hook::set('message.set.success', function($__s) use($language, $__command, $__ch
     if ($__x !== 'page') {
         return $__s;
     }
+    if ($__command === 'g') {
+        $__path = dirname($__path);
+    }
     $__p = new Page(LOT . DS . $__path . DS . Request::post('slug') . '.' . $__x, [], $__chops[0]);
     return $__s . ' ' . HTML::a($language->view, $__p->url, true, ['classes' => ['right']]);
 });
@@ -19,7 +22,7 @@ Config::set('panel.view', 'page');
 // `panel/::g::/page` → index view
 // `panel/::s::/page/blog` → new child page for `lot\page\blog`
 // `panel/::g::/page/blog` → edit page of `lot\page\blog`
-if (!$__is_has_step) {
+if (!$__is_has_step && Request::get('view', X) === X) {
     Config::set('panel.m.t', substr($__path, -2) === '/+' || strpos($__path, '/+/') !== false ? [
         'data' => [
             'title' => $language->editor,

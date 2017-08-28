@@ -202,7 +202,7 @@ if ($__is_has_step) {
         } else if ($__command === 'g') {
             // Delete file…
             if (Request::post('_x') === 'trash') {
-                Guardian::kick(str_replace('::g::', '::r::', URL::I($url->current) . HTTP::query(['token' => Request::post('token')], [1 => '&'])));
+                Guardian::kick(str_replace('::g::', '::r::', URL::I($url->current) . HTTP::query(['token' => Request::post('token')])));
             }
             // Update file…
             $__pp = trim(str_replace('/', DS, Request::post('path')), DS);

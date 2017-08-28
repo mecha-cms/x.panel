@@ -13,7 +13,7 @@ if (!isset($__c['panel']['v']['n'])) {
 
 if (Extend::exist('tag')) {
     $__NS = explode('/', $url->path . '///')[2];
-    if (!$__NS || $__NS === 'tag') $__NS = X;
+    if (!$__NS) $__NS = X;
     function fn_tags_set($__file) {
         if (!Message::$x) {
             global $language;
@@ -47,18 +47,18 @@ if (Extend::exist('tag')) {
                                 'author' => $__author
                             ])->saveTo($__f . '.page', 0600);
                             Message::info($language->message_info_create([$language->tag, '<strong>' . $__t . '</strong>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['classes' => ['right']]));
-                            Hook::fire('on.tag.set', [$__file, null, $__o]);
+                            Hook::fire('on.kind.set', [$__file, null, $__o]);
                         }
                     }
                     $__kinds = array_unique($__kinds);
                     sort($__kinds);
                     if (!Message::$x) {
                         File::write(To::json($__kinds))->saveTo(Path::F($__file) . DS . 'kind.data', 0600);
-                        Hook::fire('on.tags.set', [$__file, null, $__kinds]);
+                        Hook::fire('on.kinds.set', [$__file, null, $__kinds]);
                     }
                 }
             } else {
-                Hook::fire('on.tags.reset', [$__file, null, []]);
+                Hook::fire('on.kinds.reset', [$__file, null, []]);
                 File::open(Path::F($__file) . DS . 'kind.data')->delete();
             }
         }
@@ -66,7 +66,7 @@ if (Extend::exist('tag')) {
     Hook::set('on.' . $__NS . '.set', 'fn_tags_set');
 }
 
-// Set proper menu name…
+// Set proper menu name (noun)…
 Config::set('panel.n.extend.text', $language->extension);
 // Add shortcut to plugin manager…
 Config::set('panel.n.extend.+.extend/plugin', [
@@ -87,7 +87,7 @@ Hook::set('shield.path', function($__path, $__id = null) {
     return $__path;
 }, 0);
 
-// Delete trash…
+// Delete trash on exit…
 Hook::set('on.user.exit', function() {
     File::open(LOT . DS . 'trash')->delete();
 });

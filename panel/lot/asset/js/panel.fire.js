@@ -103,4 +103,24 @@ window.PANEL = window.jQuery;
         }
     }
 
+
+    // @type
+    var container = $('.c'),
+        type = $('select[name="type"]');
+    if (container && type) {
+        type.on("change.panel input.panel", function() {
+            /*
+            $(this)
+                .find('option[value=' + this.value + ']') // TODO: fix this!
+                .attr('selected', true)
+                .siblings()
+                .removeAttr('selected');
+            */
+            container[0].className = container[0].className.replace(/(^|\s)page\.type:\S+(\s|$)/g, '$1$2');
+            container.addClass('page.type:' + this.value.replace(/[A-Z]/g, function(a, b) {
+                return '-' + a.toLowerCase();
+            }).replace(/^-+|-+$/g, ""));
+        }).trigger("change.panel");
+    }
+
 })(window.PANEL, window, document);

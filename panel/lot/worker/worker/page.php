@@ -129,7 +129,7 @@ if ($__is_data) {
     }
     if ($__is_post && !Message::$x) {
         if (Request::post('x') === 'trash') {
-            Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')], [1 => '&'])));
+            Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
         }
         $__key = Request::post('key', "", false);
         $__ff = $__d . DS . $__key . '.data';
@@ -280,7 +280,7 @@ if ($__is_data) {
         if ($__is_post && !Message::$x) {
             // Delete page…
             if (Request::post('x') === 'trash') {
-                Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')], [1 => '&'])));
+                Guardian::kick(str_replace('::g::', '::r::', $url->current . HTTP::query(['token' => Request::post('token')])));
             }
             // Set as home page?
             if ($__s = Request::post('as_')) {
@@ -312,6 +312,7 @@ if ($__is_data) {
             $__XX = Request::post('x', $__command === 's' ? 'page' : $__X);
             $__DD = $__D . DS . $__NN;
             $__SS = $__DD . '.' . $__XX;
+            Request::set('post', 'slug', $__NN);
             $__headers_c = [];
             foreach (explode("\n", trim(Request::post('__datas', ""))) as $__v) {
                 $__v = trim($__v);

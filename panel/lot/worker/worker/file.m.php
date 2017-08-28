@@ -3,7 +3,7 @@
 $__links = Hook::fire('panel.a.' . $__chops[0] . 's', [[]]);
 
 foreach ($__links as $__k => $__v) {
-    if (!isset($__v)) continue;
+    if (!$__v) continue;
     if (is_array($__v)) {
         $__links[$__k] = call_user_func_array('HTML::a', array_replace_recursive([null, null, false, ['classes' => ['button', 'button:' . $__k]]], $__v));
     }

@@ -111,9 +111,9 @@ fieldset {border-style:solid}
 }
 .n a:focus,
 .n a:active {color:#def}
-.n .is\.active a,
-.n .is\.active a:focus,
-.n .is\.active a:hover {
+.n .is\.active > a,
+.n .is\.active > a:focus,
+.n .is\.active > a:hover {
   background:none;
   border-color:#fba;
 }
@@ -124,11 +124,11 @@ fieldset {border-style:solid}
 .s .textarea {background-color:#afa}
 .t-c\:info {box-shadow:0 1px 2px rgba(0,0,0,.25)}
 .message {background:#ee8}
-.layout-0,
-.p-x {background:#f00}
-.layout-0 body,
-.layout-0 .m,
-.p-x body,
-.p-x .m {background:none}
-.layout-0,
-.x-404 {background:#ffa}
+.layout\:0,
+.chop\:x {background:#f00}
+.layout\:0 body,
+.layout\:0 .m,
+.chop\:x body,
+.chop\:x .m {background:none}
+.layout\:0,
+.x\:404 {background:#ffa}

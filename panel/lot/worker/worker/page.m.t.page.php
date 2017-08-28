@@ -47,7 +47,6 @@ return [
         'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
         'width' => true,
         'attributes' => [
-            'required' => true,
             'data' => [
                 'slug-o' => 'title'
             ]

@@ -1,6 +1,14 @@
 <?php Shield::get(__DIR__ . DS . 'header.php'); ?>
 <?php Shield::get(__DIR__ . DS . 'nav.php'); ?>
-<div class="c">
+<div class="c<?php
+
+if ($__type = Request::get('f.type')) {
+    echo ' page.type:' . __c2f__($__type);
+} else if ($__page && $__page[0] && $__page[0]->type) {
+    echo ' page.type:' . __c2f__($__page[0]->type);
+}
+
+?>">
   <?php if ($__cf = Config::get('panel.c:f', false)): ?>
   <form id="form.c.<?php echo $__cf === true ? $__chops[0] : $__cf; ?>" action="" method="post" enctype="multipart/form-data">
   <?php endif; ?>

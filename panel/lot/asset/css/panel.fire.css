@@ -243,9 +243,9 @@
 }
 .m .t + .t-c,
 .m .t-c + .t-c {display:none}
-.no-js .m .t {display:none}
-.no-js .m .t-c {display:block}
-.no-js .m .t-c + .t-c {margin-top:1em}
+.js\:false .m .t {display:none}
+.js\:false .m .t-c {display:block}
+.js\:false .m .t-c + .t-c {margin-top:1em}
 .n ul,
 .n li {
   margin:0;
@@ -275,7 +275,7 @@
   color:inherit;
   cursor:pointer;
 }
-.n .is\.active a {border-color:#f00}
+.n .is\.active > a {border-color:#f00}
 .n a i {
   font:inherit;
   font-weight:bold;
@@ -297,7 +297,7 @@
   box-shadow:0 4px 8px -2px rgba(0,0,0,.4),0 8px 16px -4px rgba(0,0,0,.4);
   display:none;
 }
-.no-js .n li:hover > ul {display:block}
+.js\:false .n li:hover > ul {display:block}
 .n ul ul ul {
   top:0;
   left:100%;
@@ -531,48 +531,60 @@
   width:auto;
   height:auto;
 }
-.p-enter,
-.p-enter body,
-.p-enter .c,
-.p-enter form,
-.p-enter .m {
+.chop\:enter,
+.chop\:enter body,
+.chop\:enter .c,
+.chop\:enter form,
+.chop\:enter .m {
   padding:0;
   border:0;
   width:100%;
   height:100%;
 }
-.p-enter .m {vertical-align:middle}
-.p-enter .m fieldset {
+.chop\:enter .m {vertical-align:middle}
+.chop\:enter .m fieldset {
   margin:0 auto;
   max-width:16em;
 }
-.p-enter .m .messages {
+.chop\:enter .m .messages {
   margin:0 auto .5em;
   max-width:16em;
 }
-.p-enter .f > label {width:4em}
-.p-enter .f > label[for="f-submit"] {display:none}
-.p-enter .f > label[for="f-submit"] + span {
+.chop\:enter .f > label {width:4em}
+.chop\:enter .f > label[for="f-submit"] {display:none}
+.chop\:enter .f > label[for="f-submit"] + span {
   display:block;
   text-align:center;
 }
-.p-x,
-.p-x body {
+.chop\:x,
+.chop\:x body {
   margin:0;
   padding:0;
   display:table;
   width:100%;
   height:100%;
 }
-.p-x body {
+.chop\:x body {
   display:table-cell;
   vertical-align:middle;
 }
-.p-x p {
+.chop\:x p {
   font-size:200%;
   font-weight:bold;
   text-align:center;
 }
+
+/* Hide some standard page field(s) for standardized page type which does not need it! */
+.c.page\.type\:quote .f-description,
+.c.page\.type\:quote .f-link,
+.c.page\.type\:quote .f-tags {display:none}
+.c.page\.type\:log .f-title,
+.c.page\.type\:log .f-slug,
+.c.page\.type\:log .f-description,
+.c.page\.type\:log .f-link,
+.c.page\.type\:log .f-tags,
+.c.page\.type\:log .f-time {display:none}
+.c.page\.type\:log .f-content {margin-top:0}
 
 select.select {
   -webkit-appearance:none;
