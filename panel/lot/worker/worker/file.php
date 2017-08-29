@@ -274,7 +274,12 @@ if ($__is_has_step) {
         $__t = basename($__p);
         $__a['title'] = $__t;
         $__a['url'] = $__u . $__path;
-        $__a['content'] = is_file($__a['path']) ? (strpos(',' . TEXT_X . ',', ',' . Path::X($__p) . ',') === false ? false : file_get_contents($__a['path'])) : null;
+        $__is_not_text = strpos(',' . TEXT_X . ',', ',' . Path::X($__f) . ',') === false;
+        if ($__is_not_text && is_file($__f)) {
+            $__s = mime_content_type($__f);
+            $__is_not_text = !$__s || strpos($__s, 'text/') !== 0;
+        }
+        $__a['content'] = is_file($__a['path']) ? ($__is_not_text ? false : file_get_contents($__a['path'])) : null;
         $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> <span>' . $__t . '</span>';
         Lot::set('__file', $__file = [o($__a), o($__aa)]);
     }
@@ -359,7 +364,7 @@ Config::set('panel', array_replace_recursive([
                         'value' => isset($__file[0]->content) ? ($__file[0]->content ?: "") : null,
                         'attributes' => [
                             'data' => [
-                                'type' => Anemon::alter($__command === 's' ? 'PHP' : u(Path::X($__path, 'HTML')), [
+                                'type' => Anemon::alter($__command === 's' ? 'PHP' : u(Path::X($__path, 'FILE')), [
                                     'JS' => 'JavaScript',
                                     'JSON' => 'JavaScript',
                                     'PAGE' => 'YAML-Frontmatter',
