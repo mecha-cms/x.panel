@@ -3,7 +3,7 @@
 // Preparation(s)…
 if ($__command !== 'r') {
     Hook::set('__' . $__chops[0] . '.url', function($__url) {
-        return Path::D($__url);
+        return dirname($__url);
     }, 0);
 }
 Hook::set($__chops[0] . '.image', function($__image, $__lot) {
@@ -148,7 +148,7 @@ if (count($__chops) === 1) {
             if (Path::X($__N) === 'zip' && !Message::$x) {
                 // The package name simply tell the engine to delete the old extension folder which
                 // has the same name as the package name before extracting, so that uploading will
-                // correctly replace the entire folder instad of overwriting the folder contents.
+                // correctly replace the entire folder instead of overwriting the folder contents.
                 File::open(LOT . DS . $__chops[0] . DS . Path::N($__N))->delete();
             }
         }

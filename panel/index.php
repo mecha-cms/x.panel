@@ -33,7 +33,6 @@ ini_set('max_execution_time', 300);
 define('PANEL', __DIR__);
 
 $__state = new State(Extend::state(__DIR__), []);
-$__s = __DIR__ . DS . 'lot' . DS;
 
 r(__DIR__ . DS . 'engine' . DS . 'plug', [
     'get.php',

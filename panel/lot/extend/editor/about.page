@@ -4,7 +4,7 @@ description: _CodeMirror_ extension for Mecha’s GUI.
 author: Taufik Nurrohman
 type: Markdown
 link: http://codemirror.net
-version: 1.0.0
+version: 1.0.1
 ...
 
 _CodeMirror_ is a versatile text editor implemented in JavaScript for the browser. It is specialized for editing code, and comes with a number of language modes and addons that implement more advanced editing functionality.
@@ -16,7 +16,7 @@ A rich programming API and a CSS theming system are available for customizing _C
 Add `editor` or `CM` class to a text area element to enable the editor, add a `data-type` attribute as the _CodeMirror_ mode:
 
 ~~~ .html
-<textarea class="editor expand" data-type="CSS">body {}</textarea>
+<textarea class="editor width height" data-type="CSS">body {}</textarea>
 ~~~
 
 Or use `editor` type in the Panel API:
@@ -29,8 +29,7 @@ return [
         'data' => [
             'type' => 'CSS'
         ]
-    ],
-    'expand' => true
+    ]
 ];
 ~~~
 

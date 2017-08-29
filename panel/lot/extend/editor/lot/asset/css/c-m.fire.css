@@ -3,6 +3,10 @@
   border-color: #000;
   cursor: text;
 }
+.CodeMirror-vscrollbar,
+.CodeMirror-hscrollbar {
+  cursor: auto;
+}
 .CodeMirror-dialog {
   position: absolute;
   left: 0; right: 0;

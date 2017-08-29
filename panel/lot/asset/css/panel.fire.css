@@ -576,7 +576,6 @@
 
 /* Hide some standard page field(s) for standardized page type which does not need it! */
 .c.page\.type\:quote .f-description,
-.c.page\.type\:quote .f-link,
 .c.page\.type\:quote .f-tags {display:none}
 .c.page\.type\:log .f-title,
 .c.page\.type\:log .f-slug,

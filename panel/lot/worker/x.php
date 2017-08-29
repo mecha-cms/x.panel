@@ -1,6 +1,6 @@
 <?php $i = $config->status('404'); HTTP::status($i); ?>
 <!DOCTYPE html>
-<html dir="<?php echo $site->direction; ?>" class="p-x x-<?php echo $i; ?>">
+<html dir="<?php echo $site->direction; ?>" class="chop:x x:<?php echo $i; ?>">
   <head>
     <meta charset="<?php echo $site->charset; ?>">
     <meta name="viewport" content="width=device-width">
