@@ -314,6 +314,20 @@ if ($__is_data) {
             $__SS = $__DD . '.' . $__XX;
             Request::set('post', 'slug', $__NN);
             $__headers_c = [];
+            // Inline custom field(s)…
+            // Any `<input name=":[foo]">` value will be appended to the page header :)
+            if ($__s = Request::post(':', [], false)) {
+                foreach ($__s as $__k => $__v) {
+                    if (
+                        is_string($__v) && trim($__v) === "" ||
+                        is_array($__v) && empty($__v)
+                    ) {
+                        continue;
+                    } else {
+                        $__headers_c[$__k] = is_array($__v) ? json_encode($__v) : $__v;
+                    }
+                }
+            }
             foreach (explode("\n", trim(Request::post('__datas', ""))) as $__v) {
                 $__v = trim($__v);
                 if ($__v === "") continue;
@@ -370,9 +384,11 @@ if ($__is_data) {
                 // Create page…
                 if ($__command === 's') {
                     Page::data($__headers)->saveTo($__SS, 0600);
+                    Request::delete('post');
                 // Update page…
                 } else {
                     Page::open($__S)->data($__headers)->save(0600);
+                    Request::delete('post');
                     if ($__N !== $__NN || $__X !== $__XX) {
                         // Rename file…
                         File::open($__S)->renameTo($__NN . '.' . $__XX);
@@ -382,7 +398,7 @@ if ($__is_data) {
                         }
                     }
                 }
-                // Working with custom field(s)…
+                // Separate custom field(s)…
                 // Any `<input name="+[foo]">` value will be stored in the folder :)
                 if ($__s = Request::post('+', [], false)) {
                     foreach ($__s as $__k => $__v) {
@@ -651,7 +667,7 @@ Config::set('panel', array_replace_recursive([
                     'set' => ["", $__state->path . '/::s::/' . $__path, false, ['title' => $language->add]],
                     'get' => $__is_has_step_child ? ["", $__state->path . '/::g::/' . $__path . '/2', false, ['title' => $language->more]] : false
                 ],
-                'hidden' => $__is_data || count($__chops) > 1,
+                'hidden' => $__is_data || count($__chops) === 1,
                 'lot' => ['%{0}%' . $__query],
                 'stack' => 20
             ]
@@ -680,3 +696,27 @@ if (!$__is_has_step && $__command !== 's' && $__page[0]) {
         ] : false
     ], $__toggle));
 }
+
+// Hide embed custom field(s) from the raw embed field(s)…
+Hook::set('shield.enter', function() {
+    $__hides = "";
+    foreach ((array) a(Config::get('panel.m.t', [])) as $__k => $__v) {
+        if (!is_array($__v)) continue;
+        if (!empty($__v['list']) && is_array($__v['list'])) {
+            foreach ($__v['list'] as $__kk => $__vv) {
+                if (strpos($__kk, ':[') === 0) {
+                    $__hides .= ',' . substr($__kk . ']', 2, strpos($__kk, ']') - 2);
+                }
+            }
+        }
+    }
+    foreach ((array) a(Config::get('panel.f', [])) as $__k => $__v) {
+        if (!is_array($__v)) continue;
+        foreach ($__v as $__kk => $__vv) {
+            if (strpos($__kk, ':[') === 0) {
+                $__hides .= ',' . substr($__kk . ']', 2, strpos($__kk, ']') - 2);
+            }
+        }
+    }
+    Config::set('panel.x.s.data', Config::get('panel.x.s.data') . $__hides);
+}, 0);
