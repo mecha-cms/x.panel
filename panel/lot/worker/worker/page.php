@@ -699,24 +699,24 @@ if (!$__is_has_step && $__command !== 's' && $__page[0]) {
 
 // Hide embed custom field(s) from the raw embed field(s)…
 Hook::set('shield.enter', function() {
-    $__hides = "";
+    $__hides = [];
+    foreach ((array) a(Config::get('panel.f', [])) as $__k => $__v) {
+        if (!is_array($__v)) continue;
+        foreach ($__v as $__kk => $__vv) {
+            if (strpos($__kk, ':[') === 0) {
+                $__hides[substr($__kk . ']', 2, strpos($__kk, ']') - 2)] = 1;
+            }
+        }
+    }
     foreach ((array) a(Config::get('panel.m.t', [])) as $__k => $__v) {
         if (!is_array($__v)) continue;
         if (!empty($__v['list']) && is_array($__v['list'])) {
             foreach ($__v['list'] as $__kk => $__vv) {
                 if (strpos($__kk, ':[') === 0) {
-                    $__hides .= ',' . substr($__kk . ']', 2, strpos($__kk, ']') - 2);
+                    $__hides[substr($__kk . ']', 2, strpos($__kk, ']') - 2)] = 1;
                 }
             }
         }
     }
-    foreach ((array) a(Config::get('panel.f', [])) as $__k => $__v) {
-        if (!is_array($__v)) continue;
-        foreach ($__v as $__kk => $__vv) {
-            if (strpos($__kk, ':[') === 0) {
-                $__hides .= ',' . substr($__kk . ']', 2, strpos($__kk, ']') - 2);
-            }
-        }
-    }
-    Config::set('panel.x.s.data', Config::get('panel.x.s.data') . $__hides);
+    Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',' . implode(',', array_keys($__hides)));
 }, 0);

@@ -23,10 +23,10 @@ Hook::set($__chops[0] . '.url', function() {
     return false;
 }, 0);
 Hook::set($__chops[0] . '.title', function(...$__lot) {
-    return Hook::fire('page.title', $__lot);
+    return Hook::fire(['*.title', 'page.title'], $__lot);
 }, 0);
 Hook::set($__chops[0] . '.description', function(...$__lot) {
-    return Hook::fire('page.description', $__lot);
+    return Hook::fire(['*.description', 'page.description'], $__lot);
 }, 0);
 Hook::set($__chops[0] . '.content', function(...$__lot) use($config, $url, $__chops, $__state) {
     if (!empty($__lot[1]['dependency'])) {
@@ -61,7 +61,7 @@ Hook::set($__chops[0] . '.content', function(...$__lot) use($config, $url, $__ch
             }
         }
     }
-    return Hook::fire('page.content', $__lot);
+    return Hook::fire(['*.content', 'page.content'], $__lot);
 }, 0);
 if (!Get::kin('_' . $__chops[0] . 's')) {
     Get::plug('_' . $__chops[0] . 's', function($__folder) use($config) {
