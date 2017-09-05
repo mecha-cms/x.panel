@@ -2,14 +2,14 @@
     return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);
 })): ?>
 <?php foreach (Anemon::eat($__s)->sort([1, 'stack'], "")->vomit() as $__k => $__v): ?>
-<?php if (isset($__v['before']) && is_string($__v['before']) && is_file($__v['before'])): ?>
-<?php $__v['before'] = include $__v['before']; ?>
+<?php if (isset($__v['begin']) && is_string($__v['begin']) && is_file($__v['begin'])): ?>
+<?php $__v['begin'] = include $__v['begin']; ?>
 <?php endif; ?>
 <?php if (isset($__v['content']) && is_string($__v['content']) && is_file($__v['content'])): ?>
 <?php $__v['content'] = include $__v['content']; ?>
 <?php endif; ?>
-<?php if (isset($__v['after']) && is_string($__v['after']) && is_file($__v['after'])): ?>
-<?php $__v['after'] = include $__v['after']; ?>
+<?php if (isset($__v['end']) && is_string($__v['end']) && is_file($__v['end'])): ?>
+<?php $__v['end'] = include $__v['end']; ?>
 <?php endif; ?>
 <?php $__w = [$__k, $__v]; ?>
 <?php if (!empty($__v['lot'])) $__w = array_merge($__w, (array) $__v['lot']); ?>

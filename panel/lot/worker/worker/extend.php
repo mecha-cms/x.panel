@@ -40,7 +40,7 @@ $__id = array_sum($__c);
 if (Cache::expire($__ext, $__id)) {
     $__content = [];
     foreach ($__c as $__k => $__v) {
-        $__i18n = new Page($__k, [], 'language');
+        $__i18n = new Page($__k, [], ['*', 'language']);
         $__fn = 'From::' . __c2f__($__i18n->type, '_');
         $__c = $__i18n->content;
         $__content = array_replace_recursive($__content, is_callable($__fn) ? call_user_func($__fn, $__c) : (array) $__c);

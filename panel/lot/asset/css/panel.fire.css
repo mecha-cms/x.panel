@@ -358,6 +358,7 @@
   padding:0;
   word-wrap:break-word;
 }
+.s section .s-c-list {margin-top:0}
 .s section ul {
   list-style:none;
   margin:.2em 0 0 .4em; /* indent */

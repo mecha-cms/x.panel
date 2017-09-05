@@ -109,7 +109,7 @@ if ($__is_post && !Message::$x) {
             User::set($__user_key, $__user_token);
             $__ff = $__f . '.page';
             if (!$__1) {
-                $__s = (new Page($__ff, [], 'user'))->status;
+                $__s = (new Page($__ff, [], ['*', 'user']))->status;
                 // `@pending` or `@member`, redirect to user manager!
                 $__1 = $__s === 0 || $__s === 3;
             }

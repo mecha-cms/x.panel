@@ -4,10 +4,10 @@
 $__hiddens = [];
 $__submit = false;
 if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
-    return isset($__v) && isset($__v['stack']) && is_numeric($__v['stack']);
+    return $__v && isset($__v['stack']) && is_numeric($__v['stack']);
 })) {
     // before tab
-    if (!empty($__f = Config::get('panel.m.before'))) {
+    if (!empty($__f = Config::get('panel.m.begin'))) {
         if (is_string($__f) && is_file($__f)) {
             require $__f;
         } else {
@@ -83,7 +83,7 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
         echo HTML::unite('section', $__html, array_replace_recursive(['classes' => ['t-c', 't-c:' . $__k], 'id' => 't-c:' . $__k], $__a));
     }
     // after tab
-    if (!empty($__f = Config::get('panel.m.after'))) {
+    if (!empty($__f = Config::get('panel.m.end'))) {
         if (is_string($__f) && is_file($__f)) {
             require $__f;
         } else {

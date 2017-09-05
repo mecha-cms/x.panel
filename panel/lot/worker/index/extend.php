@@ -39,7 +39,7 @@ Hook::set($__chops[0] . '.content', function(...$__lot) use($config, $url, $__ch
                     EXTEND . DS . $__v . DS . 'about.' . $config->language . '.page',
                     EXTEND . DS . $__v . DS . 'about.page'
                 ])) {
-                    $__page = new Page($__f, [], $__chops[0]);
+                    $__page = new Page($__f, [], ['*', $__chops[0]]);
                     $__lot[0] .= N . ' - [' . $__page->title . '](' . $url . '/' . $__state->path . '/::g::/extend/' . $__v . ')';
                 } else {
                     $__lot[0] .= N . ' - <s style="color:red;">' . $__v . '</s>';
@@ -53,7 +53,7 @@ Hook::set($__chops[0] . '.content', function(...$__lot) use($config, $url, $__ch
                     PLUGIN . DS . $__v . DS . 'about.' . $config->language . '.page',
                     PLUGIN . DS . $__v . DS . 'about.page'
                 ])) {
-                    $__page = new Page($__f, [], $__chops[0]);
+                    $__page = new Page($__f, [], ['*', $__chops[0]]);
                     $__lot[0] .= N . ' - [' . $__page->title . '](' . $url . '/' . $__state->path . '/::g::/extend/plugin/lot/worker/' . $__v . '/1)';
                 } else {
                     $__lot[0] .= N . ' - <s style="color:red;">' . $__v . '</s>';
@@ -104,7 +104,7 @@ Hook::set('shield.enter', function() {
                     $__d . $config->language . '.page',
                     $__d . 'page'
                 ])) {
-                    $__v->title = (new Page($__f, [], $__chops[0]))->title;
+                    $__v->title = (new Page($__f, [], ['*', $__chops[0]]))->title;
                 }
             }
             Lot::set('__childs', $__childs);
@@ -118,7 +118,7 @@ Hook::set('shield.enter', function() {
                     $__d . $config->language . '.page',
                     $__d . 'page'
                 ])) {
-                    $__v->title = (new Page($__f, [], $__chops[0]))->title;
+                    $__v->title = (new Page($__f, [], ['*', $__chops[0]]))->title;
                 }
             }
             Lot::set('__kins', $__kins);
@@ -197,7 +197,7 @@ if (count($__chops) === 1) {
             ])) {
                 Hook::fire('on.' . $__chops[0] . '.set', $__lot);
                 Message::reset();
-                Message::success('set', [Config::get('panel.n.' . $__chops[0] . '.text', $language->{$__chops[0]}), '<strong>' . (new Page($__f, [], $__chops[0]))->title . '</strong>']);
+                Message::success('set', [Config::get('panel.n.' . $__chops[0] . '.text', $language->{$__chops[0]}), '<strong>' . (new Page($__f, [], ['*', $__chops[0]]))->title . '</strong>']);
                 Guardian::kick($__state->path . '/::g::/' . $__chops[0] . '/' . basename($__d) . $__query);
             }
         });
@@ -208,7 +208,7 @@ if (count($__chops) === 1) {
         $__d . $config->language . '.page',
         $__d . 'page'
     ])) {
-        $__page = new Page($__f, [], $__chops[0]);
+        $__page = new Page($__f, [], ['*', $__chops[0]]);
         $__content  = '<h2>' . $__page->title . '</h2>';
         $__content .= '<p class="h">';
         $__list = [];
@@ -283,6 +283,6 @@ if (count($__chops) === 1) {
         $__d . DS . 'about.' . $config->language . '.page',
         $__d . DS . 'about.page'
     ])) {
-        Message::success('reset', [Config::get('panel.n.' . $__chops[0] . '.text', $language->{$__chops[0]}), '<strong>' . (new Page($__f, [], $__chops[0]))->title . '</strong>']);
+        Message::success('reset', [Config::get('panel.n.' . $__chops[0] . '.text', $language->{$__chops[0]}), '<strong>' . (new Page($__f, [], ['*', $__chops[0]]))->title . '</strong>']);
     }
 }

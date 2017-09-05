@@ -45,7 +45,7 @@ if ($__command === 'r' && $__chops[1] === 'en-us') {
 $__f = LOT . DS . $__chops[0] . DS . (isset($__chops[1]) ? $__chops[1] : 'en-us') . '.page';
 Lot::set('__page', $__page = [
     new Page($__f, [], '__' . $__chops[0]),
-    new Page($__f, [], $__chops[0])
+    new Page($__f, [], ['*', $__chops[0]])
 ]);
 
 // Set or modify the default panel content(s)…

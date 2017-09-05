@@ -19,7 +19,7 @@ if ($__f = File::exist(LOT . DS . $__chops[0] . DS . $__B)) {
     ];
     $__page = [
         new Page(null, $__s, '__' . $__chops[0]),
-        new Page(null, $__s, $__chops[0])
+        new Page(null, $__s, ['*', $__chops[0]])
     ];
 }
 Lot::set([

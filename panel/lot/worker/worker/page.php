@@ -117,7 +117,7 @@ if ($__is_data) {
     ])) {
         $__a = new Page($__f, [], '__' . $__chops[0]);
         $__a->url = rtrim($__u . ltrim(Path::F($__f, LOT, '/'), '/'), '/');
-        $__aa = new Page($__f, [], $__chops[0]);
+        $__aa = new Page($__f, [], ['*', $__chops[0]]);
         $__source = [$__a, $__aa];
         Lot::set('__source', $__source);
     } else {
@@ -208,7 +208,7 @@ if ($__is_data) {
             foreach (Anemon::eat($__g)->chunk($__chunk, $__step) as $__v) {
                 $__a = new Page($__v, [], '__' . $__chops[0]);
                 $__a->url = rtrim($__u . ltrim(Path::F($__v, LOT, '/'), '/'), '/');
-                $__aa = new Page($__v, [], $__chops[0]);
+                $__aa = new Page($__v, [], ['*', $__chops[0]]);
                 $__pages[0][] = $__a;
                 $__pages[1][] = $__aa;
             }
@@ -248,14 +248,14 @@ if ($__is_data) {
         ])) {
             $__a = new Page($__pp, [], '__' . $__chops[0]);
             $__a->url = rtrim($__u . ltrim(Path::F($__pp, LOT, '/'), '/'), '/');
-            $__aa = new Page($__pp, [], $__chops[0]);
+            $__aa = new Page($__pp, [], ['*', $__chops[0]]);
             Lot::set('__parent', $__parent = [$__a, $__aa]);
         }
         // Get current…
         if (Config::get('panel.x.m.page') !== true) {
             $__a = new Page($__f ?: null, [], '__' . $__chops[0]);
             $__a->url = rtrim($__u . ltrim(Path::F($__f ?: "", LOT, '/'), '/'), '/');
-            $__aa = new Page($__f ?: null, [], $__chops[0]);
+            $__aa = new Page($__f ?: null, [], ['*', $__chops[0]]);
             Lot::set('__page', $__page = [$__a, $__aa]);
         }
         // Get kin(s)…
@@ -266,7 +266,7 @@ if ($__is_data) {
                     if ($__q && Path::N($__v) === $__q) continue;
                     $__a = new Page($__v, [], '__' . $__chops[0]);
                     $__a->url = rtrim($__u . ltrim(Path::F($__v, LOT, '/'), '/'), '/');
-                    $__aa = new Page($__v, [], $__chops[0]);
+                    $__aa = new Page($__v, [], ['*', $__chops[0]]);
                     $__kins[0][] = $__a;
                     $__kins[1][] = $__aa;
                 }
@@ -435,7 +435,7 @@ if ($__is_data) {
                     }
                     File::write($__s)->saveTo($__DD . DS . 'time.data', 0600);
                 }
-                $__tt = (new Page($__SS, [], $__chops[0]))->title ?: $language->_title;
+                $__tt = (new Page($__SS, [], ['*', $__chops[0]]))->title ?: $language->_title;
                 Session::set('panel.v.f.' . md5($__SS), 1);
                 if ($__command === 'g') {
                     Hook::fire('on.' . $__chops[0] . '.set', [$__SS, $__S]);
@@ -465,7 +465,7 @@ if ($__is_data) {
                         $__d . '.page',
                         $__d . '.archive'
                     ])) {
-                        return (new Page($__f, [], $__chops[0]))->title;
+                        return (new Page($__f, [], ['*', $__chops[0]]))->title;
                     }
                     return $language->_title;
                 });
@@ -496,14 +496,14 @@ if ($__is_data) {
         ])) {
             $__a = new Page($__pp, [], '__' . $__chops[0]);
             $__a->url = $__u . ltrim(Path::F($__pp, LOT, '/'), '/');
-            $__aa = new Page($__pp, [], $__chops[0]);
+            $__aa = new Page($__pp, [], ['*', $__chops[0]]);
             Lot::set('__parent', $__parent = [$__a, $__aa]);
         }
         // Get current…
         if (Config::get('panel.x.m.page') !== true) {
             $__a = new Page($__f && $__command !== 's' ? $__f : null, [], '__' . $__chops[0]);
             $__a->url = rtrim($__u . ltrim(Path::F($__f ?: "", LOT, '/'), '/'), '/');
-            $__aa = new Page($__f && $__command !== 's' ? $__f : null, [], $__chops[0]);
+            $__aa = new Page($__f && $__command !== 's' ? $__f : null, [], ['*', $__chops[0]]);
             Lot::set('__page', $__page = [$__a, $__aa]);
         }
         // Get kin(s)…
@@ -513,7 +513,7 @@ if ($__is_data) {
                 if ($__q && Path::N($__v) === $__q) continue;
                 $__a = new Page($__v, [], '__' . $__chops[0]);
                 $__a->url = rtrim($__u . ltrim(Path::F($__v, LOT, '/'), '/'), '/');
-                $__aa = new Page($__v, [], $__chops[0]);
+                $__aa = new Page($__v, [], ['*', $__chops[0]]);
                 $__kins[0][] = $__a;
                 $__kins[1][] = $__aa;
             }
@@ -548,7 +548,7 @@ if ($__is_data) {
                     if (Path::N($__v) === $__q) continue;
                     $__a = new Page($__v, [], '__' . $__chops[0]);
                     $__a->url = rtrim($__u . ltrim(Path::F($__v, LOT, '/'), '/'), '/');
-                    $__aa = new Page($__v, [], $__chops[0]);
+                    $__aa = new Page($__v, [], ['*', $__chops[0]]);
                     $__childs[0][] = $__a;
                     $__childs[1][] = $__aa;
                 }
@@ -654,7 +654,7 @@ Config::set('panel', array_replace_recursive([
             'data' => [
                 'title' => $language->datas,
                 'list' => $__command === 'g' ? $__datas : [[], []],
-                'after' => __DIR__ . DS . '..' . DS . 'page' . DS . '-data.php',
+                'end' => __DIR__ . DS . '..' . DS . 'page' . DS . '-data.php',
                 'a' => $__command === 'g' ? [
                     'set' => ["", $__state->path . '/::s::/' . rtrim(explode('/+/', $__path . '/')[0], '/') . '/+', false, ['title' => $language->add]]
                 ] : [],

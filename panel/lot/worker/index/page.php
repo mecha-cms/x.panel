@@ -11,7 +11,7 @@ Hook::set('message.set.success', function($__s) use($language, $__command, $__ch
     if ($__command === 'g') {
         $__path = dirname($__path);
     }
-    $__p = new Page(LOT . DS . $__path . DS . Request::post('slug') . '.' . $__x, [], $__chops[0]);
+    $__p = new Page(LOT . DS . $__path . DS . Request::post('slug') . '.' . $__x, [], ['*', $__chops[0]]);
     return $__s . ' ' . HTML::a($language->view, $__p->url, true, ['classes' => ['right']]);
 });
 

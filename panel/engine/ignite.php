@@ -59,10 +59,10 @@ function _f($k, $v) {
         $is_width = (isset($v['width']) && $v['width'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['width']) || $v['width'])) ? 'width' : null;
         $is_height = isset($v['height']) && $v['height'] ? 'height' : null;
         if (isset($is_width) && $is_width !== true) {
-            $aa['css']['width'] = is_int($is_width) ? $is_width . 'px' : $is_width;
+            $aa['css']['width'] = is_numeric($is_width) ? $is_width . 'px' : $is_width;
         }
         if (isset($is_height) && $is_height !== true) {
-            $aa['css']['height'] = is_int($is_height) ? $is_height . 'px' : $is_height;
+            $aa['css']['height'] = is_numeric($is_height) ? $is_height . 'px' : $is_height;
         }
         if ($type === 'hidden') {
             // All hidden field(s) value shouldn’t be accessible through URL query string!
@@ -212,11 +212,12 @@ function _n() {}
 function _s($k, $v, $i = '%{0}%', $j = "") {
     // `title`
     // `description`
+    // `begin`
     // `content`
     // `list`
-    // `before`
-    // `after`
+    // `end`
     // `a`
+    // `toggle`
     // `hidden`
     // `stack`
     global $language;
@@ -225,16 +226,17 @@ function _s($k, $v, $i = '%{0}%', $j = "") {
     } else if (!$v) {
         return "";
     }
-    if (isset($v['hidden']) && $v['hidden']) {
+    if (isset($v['hidden']) && $v['hidden'] && !isset($v['toggle'])) {
         return "";
     }
     $content = isset($v['content']) ? $v['content'] : "";
     $list = isset($v['list']) ? $v['list'] : [];
-    $html  = '<section class="s-' . $k . '">';
+    $html  = '<section class="s-' . $k . (isset($v['toggle']) ? ' toggle ' . (isset($v['hidden']) && $v['hidden'] ? 'x' : 'v') : "") . '" id="s:' . $k . '">';
     $html .= '<h3>' . (isset($v['title']) ? $v['title'] : $language->{isset($content[0]) && count($content[0]) === 1 ? $k : $k . 's'}) . '</h3>';
-    if (isset($v['before']) && $v['before']) {
-        $html .= $v['before'];
+    if (isset($v['begin']) && $v['begin']) {
+        $html .= '<div class="s-c s-c-begin s-c:' . $k . ' p">' . $v['begin'] . '</div>';
     }
+    $html .= '<div class="s-c s-c-list s-c:' . $k . ' p">';
     if (!empty($list)) {
         if (is_array($list)) {
             if (is_array($list[0])) {
@@ -285,11 +287,12 @@ function _s($k, $v, $i = '%{0}%', $j = "") {
             $html .= $list;
         }
     }
+    $html .= '</div>';
     if ($content) {
-        $html .= $content;
+        $html .= '<div class="s-c s-c-content s-c:' . $k . ' p">' . $content . '</div>';
     }
-    if (isset($v['after']) && $v['after']) {
-        $html .= $v['after'];
+    if (isset($v['end']) && $v['end']) {
+        $html .= '<div class="s-c s-c-end s-c:' . $k . ' p">' . $v['end'] . '</div>';
     }
     $html .= '</section>';
     return $html;

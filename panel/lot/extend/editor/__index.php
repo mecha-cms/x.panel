@@ -44,7 +44,7 @@ Hook::set('on.panel.ready', function() use($config, $language, $__chops) {
         $__s = new Page(File::exist([
             __DIR__ . DS . 'about.' . $config->language . '.page',
             __DIR__ . DS . 'about.page'
-        ]));
+        ]), [], ['*', 'extend']);
         Hook::set('shield.enter', function() use($language, $__addons, $__CM, $__modes, $__s, $__themes) {
             Config::set('panel.m.t.editor', [
                 'legend' => $__s->title,

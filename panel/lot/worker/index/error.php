@@ -23,7 +23,7 @@ Config::set([
             ]
         ],
         's' => [
-            1 => null
+            1 => false
         ]
     ]
 ]);
@@ -36,5 +36,5 @@ if ($__is_post && !Message::$x) {
 
 Lot::set('__page', [
     new Page($__log, [], '__' . $__chops[0]),
-    new Page($__log, [], $__chops[0])
+    new Page($__log, [], ['*', $__chops[0]])
 ]);

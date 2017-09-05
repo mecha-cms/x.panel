@@ -8,7 +8,7 @@ asort($__editors);
 
 call_user_func(function() use($config, &$__languages, &$__shields) {
     foreach (glob(LANGUAGE . DS . '*.page') as $__v) {
-        $__languages[Path::N($__v)] = (new Page($__v, [], 'language'))->title;
+        $__languages[Path::N($__v)] = (new Page($__v, [], ['*', 'language']))->title;
     }
     foreach (glob(SHIELD . DS . '*', GLOB_ONLYDIR) as $__v) {
         if (!$__v = File::exist([
