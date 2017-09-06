@@ -47,7 +47,7 @@ abbr[title]:hover {border-bottom-color:inherit}
 article,aside,footer,header,main,nav,section {display:block}
 b,dt,h1,h2,h3,h4,h5,h6,strong,th {font-weight:bold}
 caption,em,figcaption,i,var {font-style:italic}
-caption,figcaption {text-align:center}
+caption,figure {text-align:center}
 code,.code {font-family:monospace}
 del,s {text-decoration:line-through}
 ins,u {text-decoration:underline}
