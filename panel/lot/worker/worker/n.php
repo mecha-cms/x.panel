@@ -21,7 +21,7 @@ $__n['+']['+']['+/view'] = [
     'text' => $language->visit . ' ' . $language->site,
     'url' => $url . "",
     'attributes' => [
-        'target' => '_new'
+        'target' => 'site'
     ],
     'stack' => 10
 ];

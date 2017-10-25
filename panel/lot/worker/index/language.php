@@ -86,7 +86,7 @@ Config::set([
                         'slug' => [
                             'title' => $language->locale,
                             'placeholder' => $__page[1]->slug,
-                            'width' => true,
+                            'width' => false,
                             'expand' => false,
                             'stack' => 50
                         ],

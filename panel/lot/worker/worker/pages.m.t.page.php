@@ -55,7 +55,7 @@ if ($__pages[0]) {
         $__html .= '<article class="' . $__cc . '" id="' . $__chops[0] . '-' . $__v->id . '">';
         if ($__vv->image) {
             $__html .= '<figure>';
-            $__html .= '<a href="' . $__vv->image . '" target="_new">';
+            $__html .= '<a href="' . $__vv->image . '" target="_blank">';
             $__html .= '<img alt="" src="' . $__vv->image . '">';
             $__html .= '</a>';
             $__html .= '</figure>';
