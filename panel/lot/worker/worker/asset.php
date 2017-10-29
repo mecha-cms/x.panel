@@ -46,7 +46,7 @@ if ($__user_enter) {
             'languages' => $__languages,
             '$config' => (array) a(Config::get('panel.o.js', [])),
         ], $__constants);
-        $__s = '$.$url=' . json_encode(__url__()) . ';$.$u_r_l=$.$url;$.$token="' . Guardian::token() . '"';
+        $__s = '$.$url=' . json_encode($GLOBALS['URL']) . ';$.$u_r_l=$.$url;$.$token="' . Guardian::token() . '"';
         foreach ($__a as $__k => $__v) {
             $__s .= ';$.' . $__k . '=' . str_replace(['\\'], ['\\\\'], json_encode($__v));
         }
