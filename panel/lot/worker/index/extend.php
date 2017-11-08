@@ -99,7 +99,7 @@ Hook::set('shield.enter', function() {
     if ($__command === 's' && count($__chops) === 1) {
         if (!empty($__childs[0])) {
             foreach ($__childs[1] as $__k => $__v) {
-                $__d = LOT . DS . $__chops[0] . DS . $__childs[0][$__k]->name . DS . 'about.';
+                $__d = LOT . DS . $__chops[0] . DS . basename($__childs[0][$__k]->path) . DS . 'about.';
                 if ($__f = File::exist([
                     $__d . $config->language . '.page',
                     $__d . 'page'
@@ -113,7 +113,7 @@ Hook::set('shield.enter', function() {
     } else if (count($__chops) === 2) {
         if (!empty($__kins[0])) {
             foreach ($__kins[1] as $__k => $__v) {
-                $__d = LOT . DS . $__chops[0] . DS . $__kins[0][$__k]->name . DS . 'about.';
+                $__d = LOT . DS . $__chops[0] . DS . basename($__kins[0][$__k]->path) . DS . 'about.';
                 if ($__f = File::exist([
                     $__d . $config->language . '.page',
                     $__d . 'page'

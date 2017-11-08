@@ -13,4 +13,4 @@ call_user_func(function() use(&$__aparts, $__a) {
     }
 });
 
-return '<p>' . Form::textarea('__datas', To::yaml($__aparts), $language->f_yaml, ['classes' => ['textarea', 'width', 'code']]) . '</p>';
+return '<p>' . Form::textarea('__datas', To::yaml($__aparts), $language->f_yaml, ['class[]' => ['textarea', 'width', 'code']]) . '</p>';

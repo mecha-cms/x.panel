@@ -24,7 +24,7 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
                 $__v['title'] = $language->{$__k};
             }
             $__a = isset($__v['attributes'][0]) ? (array) $__v['attributes'][0] : [];
-            echo HTML::a($__v['title'], '#t-c:' . $__k, false, array_replace_recursive(['classes' => ['t:' . $__k, Request::get('m.t:v', Config::get('panel.m.t:v', $__tt)) === $__k ? 'is.active' : null], 'id' => 't:' . $__k], $__a));
+            echo HTML::a($__v['title'], '#t-c:' . $__k, false, array_replace_recursive(['class[]' => ['t:' . $__k, Request::get('m.t:v', Config::get('panel.m.t:v', $__tt)) === $__k ? 'is.active' : null], 'id' => 't:' . $__k], $__a));
         }
         echo '</nav>';
     }
@@ -80,7 +80,7 @@ if ($__t = array_filter(a(Config::get('panel.m.t', [])), function($__v) {
                 $__html .= $__v['content'];
             }
         }
-        echo HTML::unite('section', $__html, array_replace_recursive(['classes' => ['t-c', 't-c:' . $__k], 'id' => 't-c:' . $__k], $__a));
+        echo HTML::unite('section', $__html, array_replace_recursive(['class[]' => ['t-c', 't-c:' . $__k], 'id' => 't-c:' . $__k], $__a));
     }
     // after tab
     if (!empty($__f = Config::get('panel.m.end'))) {

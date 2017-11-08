@@ -226,15 +226,15 @@ if ($__is_data) {
                 ],
                 'union' => [
                    '-2' => [
-                        2 => ['classes' => ['button', 'x']]
+                        2 => ['class[]' => ['button', 'x']]
                     ],
                    '-1' => [
                         1 => "",
-                        2 => ['rel' => 'prev', 'classes' => ['button']]
+                        2 => ['rel' => 'prev', 'class[]' => ['button']]
                     ],
                     '1' => [
                         1 => "",
-                        2 => ['rel' => 'next', 'classes' => ['button']]
+                        2 => ['rel' => 'next', 'class[]' => ['button']]
                     ]
                 ]
             ], '__' . $__chops[0] . 's')) . ""]

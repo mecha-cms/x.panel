@@ -12,7 +12,7 @@ return [
         'union' => ['div'],
         'height' => true,
         'attributes' => [
-            'data' => [
+            'data[]' => [
                 'type' => stripos($__s, '</style>') === false && stripos($__s, '<link ') === false ? 'CSS' : 'HTML'
             ]
         ],

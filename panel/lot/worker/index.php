@@ -46,7 +46,7 @@ if (Extend::exist('tag')) {
                                 'title' => ($__t = To::title($__v)),
                                 'author' => $__author
                             ])->saveTo($__f . '.page', 0600);
-                            Message::info($language->message_info_create([$language->tag, '<strong>' . $__t . '</strong>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['classes' => ['right']]));
+                            Message::info($language->message_info_create([$language->tag, '<strong>' . $__t . '</strong>']) . ' ' . HTML::a($language->edit, Extend::state('panel', 'path') . '/::g::/tag/' . $__v, true, ['class[]' => ['right']]));
                             Hook::fire('on.kind.set', [$__file, null, $__o]);
                         }
                     }

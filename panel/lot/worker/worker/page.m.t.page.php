@@ -33,7 +33,7 @@ return [
         'placeholder' => $__page[0]->title ?: $language->f_title,
         'width' => true,
         'attributes' => [
-            'data' => [
+            'data[]' => [
                 'slug-i' => 'title'
             ]
         ],
@@ -47,7 +47,7 @@ return [
         'pattern' => '^[a-z\\d]+(?:-[a-z\\d]+)*$',
         'width' => true,
         'attributes' => [
-            'data' => [
+            'data[]' => [
                 'slug-o' => 'title'
             ]
         ],
@@ -61,7 +61,7 @@ return [
         'union' => ['div'],
         'height' => true,
         'attributes' => [
-            'data' => [
+            'data[]' => [
                 'type' => $__page[0]->type
             ]
         ],

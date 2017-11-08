@@ -68,15 +68,15 @@ if ($__is_has_step) {
             ],
             'union' => [
                '-2' => [
-                    2 => ['classes' => ['button', 'x']]
+                    2 => ['class[]' => ['button', 'x']]
                 ],
                '-1' => [
                     1 => "",
-                    2 => ['rel' => 'prev', 'classes' => ['button']]
+                    2 => ['rel' => 'prev', 'class[]' => ['button']]
                 ],
                 '1' => [
                     1 => "",
-                    2 => ['rel' => 'next', 'classes' => ['button']]
+                    2 => ['rel' => 'next', 'class[]' => ['button']]
                 ]
             ]
         ], '__' . $__chops[0] . 's')) . ""]
@@ -363,7 +363,7 @@ Config::set('panel', array_replace_recursive([
                         'type' => 'editor',
                         'value' => isset($__file[0]->content) ? ($__file[0]->content ?: "") : null,
                         'attributes' => [
-                            'data' => [
+                            'data[]' => [
                                 'type' => Anemon::alter($__command === 's' ? 'PHP' : u(Path::X($__path, 'FILE')), [
                                     'JS' => 'JavaScript',
                                     'JSON' => 'JavaScript',

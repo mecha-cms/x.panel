@@ -19,7 +19,7 @@ return [
         'placeholder' => $language->{'f_' . ($__k === 'editor' ? 'content' : 'value')},
         'union' => ['div'],
         'attributes' => [
-            'data' => [
+            'data[]' => [
                 'type' => 'PHP'
             ]
         ],

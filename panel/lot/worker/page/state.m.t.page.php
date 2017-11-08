@@ -50,7 +50,7 @@ return [
         'union' => ['div'],
         'height' => true,
         'attributes' => [
-            'data' => [
+            'data[]' => [
                 'type' => $__s['type']
             ]
         ],

@@ -4,7 +4,13 @@ description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
 version: 1.x.x
-dependency: {"extension":["asset","page","user"],"plugin":["markdown"]}
+dependency:
+  extension:
+    - asset
+	- page
+	- user
+  plugin:
+    - markdown
 ...
 
 ### Usage

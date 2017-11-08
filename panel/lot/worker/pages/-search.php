@@ -1,1 +1,1 @@
-<?php return '<form id="form.s.search" action="" method="get"><p>' . Form::text('q', Request::get('q', ""), null, ['classes' => ['input']]) . ' ' . Form::submit(null, null, $language->search, ['classes' => ['button']]) . '</p></form>';
+<?php return '<form id="form.s.search" action="" method="get"><p>' . Form::text('q', Request::get('q', ""), null, ['class[]' => ['input']]) . ' ' . Form::submit(null, null, $language->search, ['class[]' => ['button']]) . '</p></form>';
