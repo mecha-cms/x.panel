@@ -26,7 +26,8 @@ if ($__is_has_step) {
     $__g = [];
     if (Config::get('panel.x.m.file') !== true) {
         $__g = array_filter(array_merge(
-            glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
+            // Show hidden file(s) for super user only!
+            $__user_status === 1 ? glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT) : [],
             glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
         ), function($__v) {
             return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..';
@@ -299,7 +300,8 @@ if (Config::get('panel.x.s.parent') !== true) {
 if (Config::get('panel.x.s.child') !== true) {
     $__b = basename($__p);
     $__g = array_filter(array_merge(
-        glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT),
+        // Show hidden file(s) for super user only!
+        $__user_status === 1 ? glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT) : [],
         glob(LOT . DS . $__p . DS . '*', GLOB_NOSORT)
     ), function($__v) use($__b) {
         return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..' && basename($__v) !== $__b;
@@ -324,7 +326,8 @@ if (Config::get('panel.x.s.child') !== true) {
 if (Config::get('panel.x.s.kin') !== true && $__pp = dirname($__p)) {
     $__pp = $__pp === '.' ? "" : DS . $__pp;
     $__g = array_filter(array_merge(
-        glob(LOT . $__pp . DS . '.*', GLOB_NOSORT),
+        // Show hidden file(s) for super user only!
+        $__user_status === 1 ? glob(LOT . DS . $__p . DS . '.*', GLOB_NOSORT) : [],
         glob(LOT . $__pp . DS . '*', GLOB_NOSORT)
     ), function($__v) use($__b) {
         return substr($__v, -2) !== DS . '.' && substr($__v, -3) !== DS . '..' && basename($__v) !== $__b;

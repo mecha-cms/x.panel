@@ -80,7 +80,7 @@ if (!$__is_has_step) {
                     'author' => [
                         'placeholder' => $language->user,
                         'attributes' => [
-                            'data' => [
+                            'data[]' => [
                                 'slug-i' => 'author'
                             ]
                         ],
@@ -92,7 +92,7 @@ if (!$__is_has_step) {
                         'title' => $language->key,
                         'description' => $__command === 's' ? $language->h_user : null,
                         'attributes' => [
-                            'data' => [
+                            'data[]' => [
                                 'slug-o' => 'author'
                             ],
                             'readonly' => $__command === 's' ? null : true

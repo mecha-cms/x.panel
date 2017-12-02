@@ -39,7 +39,7 @@ Config::set([
                         'content' => [
                             'value' => To::yaml(File::open(LOT . DS . $__path)->import()),
                             'attributes' => [
-                                'data' => [
+                                'data[]' => [
                                     'type' => 'YAML'
                                 ]
                             ]

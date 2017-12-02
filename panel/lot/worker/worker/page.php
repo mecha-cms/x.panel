@@ -1,7 +1,7 @@
 <?php
 
 // Preparation(s)…
-if (!Get::kin('_' . $__chops[0] . 's')) {
+if (!Get::_('_' . $__chops[0] . 's')) {
     function __fn_get_($__v, $__n = null) {
         $__n = $__n ?: Path::N($__v);
         $__v = file_get_contents($__v);
@@ -58,7 +58,7 @@ if (!Get::kin('_' . $__chops[0] . 's')) {
         }
         return false;
     }
-    Get::plug('_' . $__chops[0] . 's', '_fn_get_s');
+    Get::_('_' . $__chops[0] . 's', '_fn_get_s');
 }
 
 $__is_data = substr($url->path, -2) === '/+' || strpos($url->path, '/+/') !== false;
@@ -89,7 +89,7 @@ $__f = File::exist([
     $__d . '.archive'
 ], "");
 // Get current page(s) file…
-if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__is_has_step ? $__d : dirname($__d), 'draft,page,archive', $__sort, 'path')) {
+if (Get::_('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__is_has_step ? $__d : dirname($__d), 'draft,page,archive', $__sort, 'path')) {
     if ($__q = l(Request::get('q', ""))) {
         Message::info('search', '<em>' . $__q . '</em>');
         $__q = explode(' ', $__q);
@@ -260,7 +260,7 @@ if ($__is_data) {
         }
         // Get kin(s)…
         if (Config::get('panel.x.s.kin') !== true) {
-            if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', dirname($__d), 'draft,page,archive', $__sort, 'path')) {
+            if (Get::_('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', dirname($__d), 'draft,page,archive', $__sort, 'path')) {
                 $__q = $__command === 's' ? "" : basename($__d);
                 foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                     if ($__q && Path::N($__v) === $__q) continue;
@@ -542,7 +542,7 @@ if ($__is_data) {
         }
         // Get child(s)…
         if (Config::get('panel.x.s.child') !== true) {
-            if (Get::kin('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
+            if (Get::_('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
                 $__q = basename($__d);
                 foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                     if (Path::N($__v) === $__q) continue;
@@ -686,7 +686,7 @@ if (!$__is_has_step && $__command !== 's' && $__page[0]) {
                 'disabled' => $site->path === $__s
             ]
         ],
-        'as_page' => count($__chops) > 1 && Get::kin($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__p, 'draft,page,archive') ? [
+        'as_page' => count($__chops) > 1 && Get::_($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__p, 'draft,page,archive') ? [
             'value' => 1,
             'active' => file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state)
         ] : false,

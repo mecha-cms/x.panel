@@ -9,6 +9,8 @@ if ($__pages[0]) {
 
     foreach($__pages[0] as $__k => $__v) {
 
+        if (!$__v->path) continue;
+
         $__vv = $__pages[1][$__k];
 
         $__s = 'panel.v.f.' . md5($__v->path);

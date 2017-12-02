@@ -28,10 +28,10 @@ if ($__user_enter) {
         Hook::set('page.a.comment', function($__a, $__v) use($language, $url, $_path) {
             $__s = str_replace([LOT . DS, DS], ["", '/'], Path::F($__v->path));
             $__a = $__a + [
-                'get' => HTML::a($language->edit, $_path . '/::g::/' . $__s, false, ['classes' => ['comment-a', 'comment-a:get']]),
+                'get' => HTML::a($language->edit, $_path . '/::g::/' . $__s, false, ['class[]' => ['comment-a', 'comment-a:get']]),
                 'reset' => HTML::a($language->delete, $_path . '/::r::/' . $__s . HTTP::query([
                     'token' => Guardian::token()
-                ]), false, ['classes' => ['comment-a', 'comment-a:reset']])
+                ]), false, ['class[]' => ['comment-a', 'comment-a:reset']])
             ];
             return $__a;
         });

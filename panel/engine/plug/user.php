@@ -3,7 +3,7 @@
 $__user_key = Cookie::get('panel.c.user.key');
 $__user_token = Cookie::get('panel.c.user.token');
 
-User::plug('set', function($id = null, $token, $fail = false) {
+User::_('set', function($id = null, $token, $fail = false) {
     if (!file_exists(USER . DS . $id . '.page')) {
         return $fail;
     }
@@ -16,7 +16,7 @@ User::plug('set', function($id = null, $token, $fail = false) {
     return $id;
 });
 
-User::plug('reset', function($id = null, $key = null, $fail = false) {
+User::_('reset', function($id = null, $key = null, $fail = false) {
     if (isset($id)) {
         if ($f = File::exist(USER . DS . $id . DS . 'token.data')) {
             Cookie::reset('panel.c.user.key');
@@ -37,7 +37,7 @@ User::plug('reset', function($id = null, $key = null, $fail = false) {
     return $fail;
 });
 
-User::plug('get', function($id = null, $key = null, $fail = false) use($__user_key, $__user_token) {
+User::_('get', function($id = null, $key = null, $fail = false) use($__user_key, $__user_token) {
     $id = $id ?: $__user_key;
     if (!$id || !$__user_token) {
         return $fail;

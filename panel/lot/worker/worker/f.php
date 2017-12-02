@@ -87,7 +87,7 @@ if (Request::is('post')) {
     // Time pattern: `YYYY/MM/DD hh:mm:ss`
     if (Request::is('post', 'time')) {
         $s = Request::post('time', "", false);
-        $format = '#^(\d{4,}/\d{2}/\d{2}|\d{4,}\-\d{2}\-\d{2}) \d{2}:\d{2}:\d{2}$#';
+        $format = '#^(\d{4,}(/\d{2}){2}|\d{4,}(\-\d{2}){2}) \d{2}(:\d{2}){2}$#';
         if (!is_string($s) || !preg_match($format, $s)) {
             Request::save('post');
             Message::error('pattern_field', $language->time, true);

@@ -68,7 +68,7 @@ Config::set([
                             'type' => 'editor',
                             'value' => $__page[0]->content,
                             'attributes' => [
-                                'data' => [
+                                'data[]' => [
                                     'type' => 'YAML'
                                 ]
                             ],

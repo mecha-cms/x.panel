@@ -63,8 +63,8 @@ Hook::set($__chops[0] . '.content', function(...$__lot) use($config, $url, $__ch
     }
     return Hook::fire(['*.content', 'page.content'], $__lot);
 }, 0);
-if (!Get::kin('_' . $__chops[0] . 's')) {
-    Get::plug('_' . $__chops[0] . 's', function($__folder) use($config) {
+if (!Get::_('_' . $__chops[0] . 's')) {
+    Get::_('_' . $__chops[0] . 's', function($__folder) use($config) {
         $__output = [];
         foreach (glob($__folder . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT) as $__v) {
             if ($__f = File::exist([

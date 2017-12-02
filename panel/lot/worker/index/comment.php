@@ -19,8 +19,8 @@ Hook::set('message.set.success', function($__s) use($language, $__command, $__ch
 });
 
 // Preparation(s)…
-if (!Get::kin('_' . $__chops[0] . 's')) {
-    Get::plug('_' . $__chops[0] . 's', function($__folder) use($__is_has_step) {
+if (!Get::_('_' . $__chops[0] . 's')) {
+    Get::_('_' . $__chops[0] . 's', function($__folder) use($__is_has_step) {
         $__output = [];
         foreach (File::explore([$__folder, 'draft,page,archive'], $__is_has_step) as $__k => $__v) {
             $__output[basename($__k)] = $__k;
