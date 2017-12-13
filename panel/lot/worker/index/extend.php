@@ -92,7 +92,7 @@ $__query = HTTP::query([
 Config::set('panel.v.' . $__chops[0] . '.is.pages', false);
 Config::set('panel', [
     'layout' => 2,
-    'c:f' => !$__is_has_step
+    'c:f' => !$__is_has_step && !file_exists(LOT . DS . $__path)
 ]);
 Hook::set('shield.enter', function() {
     extract(Lot::get(null, []));

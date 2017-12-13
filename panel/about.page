@@ -8,8 +8,8 @@ version: 1.x.x
 dependency:
   extension:
     - asset
-	- page
-	- user
+    - page
+    - user
   plugin:
     - markdown
 ...

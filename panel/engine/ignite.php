@@ -58,11 +58,11 @@ function _f($k, $v) {
     if ($type) {
         $is_width = (isset($v['width']) && $v['width'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['width']) || $v['width'])) ? 'width' : null;
         $is_height = isset($v['height']) && $v['height'] ? 'height' : null;
-        if (isset($is_width) && $is_width !== true) {
-            $aa['css']['width'] = is_numeric($is_width) ? $is_width . 'px' : $is_width;
+        if (isset($is_width) && $is_width !== 'width') {
+            $aa['style[]']['width'] = is_numeric($is_width) ? $is_width . 'px' : $is_width;
         }
-        if (isset($is_height) && $is_height !== true) {
-            $aa['css']['height'] = is_numeric($is_height) ? $is_height . 'px' : $is_height;
+        if (isset($is_height) && $is_height !== 'height') {
+            $aa['style[]']['height'] = is_numeric($is_height) ? $is_height . 'px' : $is_height;
         }
         if ($type === 'hidden') {
             // All hidden field(s) value shouldn’t be accessible through URL query string!

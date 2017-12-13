@@ -16,8 +16,8 @@ if ($__type = Request::get('f.type')) {
       <?php if ($__mf = Config::get('panel.m:f', false)): ?>
       <form id="form.m.<?php echo $__mf === true ? $__chops[0] : $__mf; ?>" action="" method="post" enctype="multipart/form-data">
       <?php endif; ?>
-	  <?php echo $__message; ?>
-	  <?php Shield::get([
+      <?php echo $__message; ?>
+      <?php Shield::get([
           // Custom file manager layout
           __DIR__ . DS . $site->is . DS . $__chops[0] . '.m.php',
           // --ditto
@@ -30,7 +30,7 @@ if ($__type = Request::get('f.type')) {
       <?php echo Form::hidden('token', $__token); ?>
       </form>
       <?php endif; ?>
-	</main>
+    </main>
   <?php if ($__cf): ?>
   <?php echo Form::hidden('token', $__token); ?>
   </form>
