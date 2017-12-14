@@ -331,7 +331,7 @@ if ($__is_data) {
             foreach (explode("\n", trim(Request::post('__datas', ""))) as $__v) {
                 $__v = trim($__v);
                 if ($__v === "") continue;
-                $__v = explode(Page::v[2], $__v, 2);
+                $__v = explode(':', $__v, 2);
                 if (!isset($__v[1])) $__v[1] = $__v[0];
                 $__headers_c[trim($__v[0])] = trim($__v[1]);
             }
