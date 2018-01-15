@@ -81,7 +81,7 @@ h2 {font-size:190%}
 h3 {font-size:150%}
 h4 {font-size:120%}
 h6 {font-size:90%}
-h1,h2,h3,h4 {line-height:1}
+h1,h2,h3,h4,h5,h6 {line-height:1}
 kbd {
   display:inline-block;
   vertical-align:middle;
@@ -250,6 +250,7 @@ label {
   width:100%;
   border-collapse:collapse;
 }
+.table caption {margin-bottom:1rem}
 .table th,
 .table td {
   border:1px solid;
@@ -280,4 +281,21 @@ label {
   display:inline-block;
   margin-right:auto;
   margin-left:auto;
+}
+.align-left {
+  float:left;
+  margin:.38461538461538464em 1.5384615384615385em 1.5384615384615385em 0;
+  text-align:left;
+}
+.align-right {
+  float:right;
+  margin:.38461538461538464em 0 1.5384615384615385em 1.5384615384615385em;
+  text-align:right;
+}
+.align-center {
+  float:none;
+  display:block;
+  margin-right:auto;
+  margin-left:auto;
+  text-align:center;
 }

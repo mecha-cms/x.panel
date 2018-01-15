@@ -9,7 +9,7 @@ call_user_func(function() use(&$__aparts, $__a) {
             unset($__aparts[$__k]);
             continue;
         }
-        $__aparts[$__k] = is_array($__v) ? json_encode($__v) : s($__v);
+        $__aparts[$__k] = $__v;
     }
 });
 

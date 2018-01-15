@@ -2,7 +2,8 @@
 
 $__query = HTTP::query($__q = [
     'token' => false,
-    'r' => false
+    'r' => false,
+    $config->q => false
 ]);
 
 if (Request::get('q')) {

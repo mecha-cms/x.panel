@@ -8,7 +8,8 @@ Hook::set('panel.a.' . $__chops[0] . 's', function() use($language) {
 
 $__query = HTTP::query([
     'token' => $__token,
-    'r' => 1
+    'r' => 1,
+    $config->q => false
 ]);
 
 Hook::set('panel.a.' . $__chops[0], function($__a) use($__query) {
