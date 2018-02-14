@@ -25,13 +25,13 @@ if (isset($__chops[1]) && $__chops[1] === $__user_key) {
 
 // Preparation(s)…
 Hook::set($__chops[0] . '.title', function($__title, $__lot) {
-    return Page::apart($__lot['path'], 'author', $__title);
+    return Page::apart($__lot['path'], '$', $__title);
 }, 0);
 Hook::set($__chops[0] . '.url', function($__url, $__lot) {
     return Page::apart($__lot['path'], 'link', false);
 }, 0);
 Config::set('panel.v.' . $__chops[0] . '.as', $__user_key);
-Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',email,pass,status,token');
+Config::set('panel.x.s.data', Config::get('panel.x.s.data') . ',$,email,pass,status,token');
 
 Hook::set('on.' . $__chops[0] . '.set', function($__f) use($language, $__command, $__path, $__state) {
     if (!file_exists(Path::F($__f) . DS . 'pass.data')) {
@@ -49,7 +49,7 @@ if ($__is_post && Request::post('status', "") === "") {
 }
 
 // User key cannot be changed after created!
-if ($__is_post) {
+if ($__is_post && $__command !== 's') {
     Request::set('post', 'slug', basename($__path));
 }
 
@@ -60,7 +60,7 @@ Config::set('panel.view', 'page');
 if (!$__is_has_step) {
     Hook::set('shield.enter', function() use($__user_key, $__user_status) {
         extract(Lot::get(null, []));
-        $__x = $__page[0]->state;
+        $__x = isset($__page[0]->state) ? $__page[0]->state : null;
         $__o = (array) $language->o_status;
         asort($__o);
         if ($__user && $__user_status !== 1) {
@@ -77,23 +77,27 @@ if (!$__is_has_step) {
         Config::set('panel', [
             'f' => [
                 'page' => [
-                    'author' => [
+                    ':[$]' => [
+                        'key' => 'author',
+                        'type' => 'text',
+                        'value' => isset($__page[0]->{'$'}) ? $__page[0]->{'$'} : To::title(isset($__chops[1]) ? $__chops[1] : ""),
                         'placeholder' => $language->user,
+                        'title' => $language->name,
+                        'width' => true,
                         'attributes' => [
                             'data[]' => [
-                                'slug-i' => 'author'
+                                'slug-i' => '$'
                             ]
                         ],
                         'stack' => 10
                     ],
                     'slug' => [
-                        'type' => 'text',
                         'placeholder' => To::slug($language->user),
                         'title' => $language->key,
                         'description' => $__command === 's' ? $language->h_user : null,
                         'attributes' => [
                             'data[]' => [
-                                'slug-o' => 'author'
+                                'slug-o' => '$'
                             ],
                             'readonly' => $__command === 's' ? null : true
                         ],

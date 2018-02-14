@@ -80,7 +80,7 @@ if ($__is_post && !Message::$x) {
         Message::error('void_field', $language->pass, true);
     } else if (!$__g) {
         Page::data([
-            'author' => '@' . $__user_key,
+            '$' => '@' . $__user_key,
             'status' => 1
         ])->saveTo($__f . '.page', 0600);
         File::write($__user_token)->saveTo($__f . DS . 'token.data', 0600);

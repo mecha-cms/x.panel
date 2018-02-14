@@ -12,7 +12,7 @@ if (Config::get('panel.x.s.current') !== true) {
     $__a = $__aa = File::inspect(LOT . DS . $__p);
     $__t = basename($__p);
     $__a['title'] = $__t;
-    $__a['url'] = $__u . $__path;
+    $__a['url'] = $__u . $__path . $__query;
     $__aa['title'] = '<i class="i i-' . (is_dir($__a['path']) ? 'd' : 'f x-' . $__a['extension']) . '"></i> <span>' . $__t . '</span>';
     Lot::set('__current', $__current = [o($__a), o($__aa)]);
 }
@@ -50,7 +50,7 @@ if ($__is_has_step) {
             $__a = $__aa = File::inspect($__v);
             $__t = basename($__v);
             $__a['title'] = $__t;
-            $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . (is_dir($__v) ? '/1' : "");
+            $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . (is_dir($__v) ? '/1' : "") . $__query;
             $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> <span>' . $__t . '</span>';
             $__files[0][] = o($__a);
             $__files[1][] = o($__aa);
@@ -274,7 +274,7 @@ if ($__is_has_step) {
         $__a = $__aa = File::inspect($__f);
         $__t = basename($__p);
         $__a['title'] = $__t;
-        $__a['url'] = $__u . $__path;
+        $__a['url'] = $__u . $__path . $__query;
         $__is_not_text = strpos(',' . TEXT_X . ',', ',' . Path::X($__f) . ',') === false;
         if ($__is_not_text && is_file($__f)) {
             $__s = mime_content_type($__f);
@@ -291,7 +291,7 @@ if (Config::get('panel.x.s.parent') !== true) {
     $__a = $__aa = File::inspect(rtrim(LOT . DS . dirname($__p), DS));
     $__t = count($__chops) > 2 ? basename(dirname($__p)) : '..';
     $__a['title'] = $__t;
-    $__a['url'] = rtrim($__u . dirname($__path), '/') . ($__is_has_step ? '/1' : "");
+    $__a['url'] = rtrim($__u . dirname($__path), '/') . ($__is_has_step ? '/1' : "") . $__query;
     $__aa['title'] = '<i class="i i-d"></i> <span>' . $__t . '</span>';
     Lot::set('__parent', $__parent = [o($__a), o($__aa)]);
 }
@@ -311,7 +311,7 @@ if (Config::get('panel.x.s.child') !== true) {
         $__a = $__aa = File::inspect($__v);
         $__t = basename($__v);
         $__a['title'] = $__t;
-        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "");
+        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "") . $__query;
         $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> <span>' . $__t . '</span>';
         $__childs[0][] = o($__a);
         $__childs[1][] = o($__aa);
@@ -337,7 +337,7 @@ if (Config::get('panel.x.s.kin') !== true && $__pp = dirname($__p)) {
         $__a = $__aa = File::inspect($__v);
         $__t = basename($__v);
         $__a['title'] = $__t;
-        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "");
+        $__a['url'] = $__u . str_replace([LOT . DS, DS], ["", '/'], $__v) . ($__is_has_step && is_dir($__v) ? '/1' : "") . $__query;
         $__aa['title'] = '<i class="i i-' . (is_dir($__v) ? 'd' : 'f x-' . $__a['extension']) . '"></i> <span>' . $__t . '</span>';
         $__kins[0][] = o($__a);
         $__kins[1][] = o($__aa);
