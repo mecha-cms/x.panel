@@ -21,7 +21,7 @@ if ($__pages[0]) {
 
         $__pp = $__v->path;
         $__ppp = explode('/', Path::F($__pp, null, '/'));
-        $__pppp = Config::get('panel.v.' . $__chops[0] . '.is.hidden', array_pop($__ppp)) === array_pop($__ppp) && file_exists(Path::D($__pp) . '.' . Path::X($__pp));
+        $__pppp = (Config::get('panel.v.' . $__chops[0] . '.is.hidden', $__end = array_pop($__ppp)) === array_pop($__ppp) || $__end === '$') && file_exists(Path::D($__pp) . '.' . Path::X($__pp));
 
         $__as = [
             'edit' => $__pppp ? false : [$language->edit, $__uu . $__query]

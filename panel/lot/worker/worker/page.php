@@ -261,7 +261,7 @@ if ($__is_data) {
         // Get kin(s)…
         if (Config::get('panel.x.s.kin') !== true) {
             if (Get::_('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', dirname($__d), 'draft,page,archive', $__sort, 'path')) {
-                $__q = $__command === 's' ? "" : basename($__d);
+                $__q = $__command === 's' ? "" : basename($__f);
                 foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
                     if ($__q && Path::N($__v) === $__q) continue;
                     $__a = new Page($__v, [], '__' . $__chops[0]);
@@ -294,7 +294,7 @@ if ($__is_data) {
             }
             // Hide page(s) view?
             if ($__f) {
-                $__pp = Path::F($__f) . DS . basename($__f);
+                $__pp = Path::F($__f) . DS . '$.' . Path::X($__f);
                 if (Request::post('as_page')) {
                     File::write("")->saveTo($__pp, 0600); // a placeholder page
                 } else {
@@ -508,9 +508,11 @@ if ($__is_data) {
         }
         // Get kin(s)…
         if ($__command !== 's' && $__g && Config::get('panel.x.s.kin') !== true) {
-            $__q = basename($__d);
             foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                if ($__q && Path::N($__v) === $__q) continue;
+                if (
+                    Path::N($__v) === basename($__d) ||
+                    Path::N($__v) === '$'
+                ) continue;
                 $__a = new Page($__v, [], '__' . $__chops[0]);
                 $__a->url = rtrim($__u . ltrim(Path::F($__v, LOT, '/'), '/'), '/') . $__query;
                 $__aa = new Page($__v, [], ['*', $__chops[0]]);
@@ -543,9 +545,8 @@ if ($__is_data) {
         // Get child(s)…
         if (Config::get('panel.x.s.child') !== true) {
             if (Get::_('_' . $__chops[0] . 's') && $__g = call_user_func('Get::_' . $__chops[0] . 's', $__d, 'draft,page,archive', $__sort, 'path')) {
-                $__q = basename($__d);
                 foreach (Anemon::eat($__g)->chunk($__chunk, 0) as $__k => $__v) {
-                    if (Path::N($__v) === $__q) continue;
+                    if (Path::N($__v) === '$') continue;
                     $__a = new Page($__v, [], '__' . $__chops[0]);
                     $__a->url = rtrim($__u . ltrim(Path::F($__v, LOT, '/'), '/'), '/') . $__query;
                     $__aa = new Page($__v, [], ['*', $__chops[0]]);
@@ -688,7 +689,7 @@ if (!$__is_has_step && $__command !== 's' && $__page[0]) {
         ],
         'as_page' => count($__chops) > 1 && Get::_($__chops[0] . 's') && call_user_func('Get::' . $__chops[0] . 's', LOT . DS . $__p, 'draft,page,archive') ? [
             'value' => 1,
-            'active' => file_exists(Path::F($__page[0]->path) . DS . $__page[0]->slug . '.' . $__page[0]->state)
+            'active' => file_exists(Path::F($__page[0]->path) . DS . '$.' . $__page[0]->state)
         ] : false,
         '+[comments][x]' => Extend::exist('comment') ? [
             'value' => 1,
