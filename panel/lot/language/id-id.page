@@ -39,10 +39,8 @@ message_error_max: %{0}% maksimal: %{1}%.
 message_error_min: %{0}% minimal: %{1}% %{0}%.
 message_error_number: Mohon isi sebuah angka.
 message_error_pattern_field: Pola %{0}% tidak valid.
-message_error_token: Token tidak valid.
-message_error_user_or_pass: Pengguna atau kunci tidak valid.
 message_error_value: %{0}% tidak valid.
-message_error_void_field: Mohon isi bidang %{0}%.
+message_error_void_field: Mohon isi bidang %{0}%. # inherit `user` extension
 
 message_info_create: %{0}% %{1}% telah dibuat.
 message_info_delete: %{0}% %{1}% telah dihapus.

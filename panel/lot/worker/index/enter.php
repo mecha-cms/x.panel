@@ -113,6 +113,11 @@ if ($__is_post && !Message::$x) {
                 // `@pending` or `@member`, redirect to user manager!
                 $__1 = $__s === 0 || $__s === 3;
             }
+            // Also, enter the default log in system from the `user` extension!
+            Session::set('url.user', '@' . $__user_key);
+            Session::set('url.pass', $__user_pass);
+            Session::set('url.token', $__user_token);
+            // Trigger the hook!
             Hook::fire('on.user.enter', [$__ff, $__1 ? null : $__ff]);
             Message::success('user_enter');
             Guardian::kick($__1 ? $__state->path . '/::g::/user/' . $__user_key : Request::post('kick', ""));
