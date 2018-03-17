@@ -40,9 +40,9 @@ if (Request::is('get') && !$__user_enter && $__g && $path_ === $_path . '/::s::/
 // Add a hook to the default log in system from the `user` extension that will
 // redirect the user to the `Extend::state('panel', 'kick')` after logged in!
 if ($url->path === Extend::state('user', 'path')) {
-    Hook::set('on.user.enter', function() use($__state) {
-        Guardian::kick($__state->path . '/::g::/' . $__state->kick('page'));
-    });
+    if (!Request::get('kick')) {
+        Request::set('get', 'kick', $__state->path . '/::g::/' . $__state->kick('page'));
+    }
 }
 
 // Add some tool(s) that will be visible if user is logged in…
