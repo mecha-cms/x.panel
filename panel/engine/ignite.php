@@ -1,301 +1,197 @@
-<?php
+<?php namespace panel;
 
-// NOTE: These helper function(s) are only used internally and does
-// not intended to be used in production or any other extension(s).
+function nav($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    } else if (isset($input->content)) {
+        return $input->content;
+    }
+    $attr = array_replace_recursive([
+        'class[]' => ['nav', 'nav:' . $i, 'nav:' . $i . '.' . $id],
+        'id' => 'nav:' . $i . '.' . $id
+    ], $attr);
+    return \HTML::unite('nav', nav_ul($input, $id, [], $i), $attr);
+}
 
-function _f($k, $v) {
-    global $language;
-    // `key`
-    // `type`
-    // `value`
-    // `values`
-    // `order`
-    // `placeholder`
-    // `pattern`
-    // `range`
-    // `step`
-    // `title`
-    // `description`
-    // `union` ['p']
-    // `hidden`
-    // `attributes`
-    // `expand`
-    // `width`
-    // `height`
-    // `stack`
-    if (isset($v['hidden']) && !$v['hidden']) {
-        return "";
+function nav_ul($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    } else if (isset($input->content)) {
+        return $input->content;
     }
-    if (is_string($v)) {
-        return $v;
-    } else if (!$v) {
-        return "";
-    }
-    $tag = new HTML;
-    $type = isset($v['type']) ? $v['type'] : null;
-    $kk = isset($v['key']) ? $v['key'] : ltrim($k, '.!*');
-    $a = ['class[]' => ['f', 'f-' . $kk, 'type:' . $type]];
-    $aa = isset($v['attributes']) ? (array) $v['attributes'] : [];
-    $q = 'f.' . str_replace('][', '.', trim($k, ']['));
-    if (isset($v['pattern'])) {
-        $aa['pattern'] = $v['pattern'];
-    }
-    if (isset($v['expand']) && $v['expand'] || ($type && ($type === 'submit' || $type === 'submit[]') && !isset($v['expand']))) {
-        $a['class[]'][] = 'expand';
-    }
-    $u = array_replace_recursive(['p', $a], isset($v['union']) ? (array) $v['union'] : []);
-    if ($u[0] !== 'p') {
-        $u[1]['class[]'][] = 'p';
-    }
-    $title = isset($v['title']) ? $v['title'] : $language->{$kk};
-    $text = isset($v['text']) ? $v['text'] : $title;
-    $html  = call_user_func_array([$tag, 'begin'], $u);
-    $html .= $tag->unite('label', $title === $kk ? "" : $title, ['for' => 'f-' . $kk]);
-    $html .= $tag->begin($u[0] === 'p' ? 'span' : $u[0]);
-    $value = isset($v['value']) ? $v['value'] : null;
-    $placeholder = array_key_exists('placeholder', $v) ? $v['placeholder'] : $value;
-    $hidden = false;
-    if ($type) {
-        $is_width = (isset($v['width']) && $v['width'] || ($type === 'textarea' || $type === 'editor') && (!isset($v['width']) || $v['width'])) ? 'width' : null;
-        $is_height = isset($v['height']) && $v['height'] ? 'height' : null;
-        if (isset($is_width) && $is_width !== 'width') {
-            $aa['style[]']['width'] = is_numeric($is_width) ? $is_width . 'px' : $is_width;
+    $s = "";
+    $a = [];
+    foreach ($input as $k => $v) {
+        if (empty($v)) continue;
+        if (is_string($v) && strpos($v, ':') === 0 && $c = \Config::get('panel.nav' . $v)) {
+            $a[$k] = $c;
+        } else {
+            $a[$k] = o($v);
         }
-        if (isset($is_height) && $is_height !== 'height') {
-            $aa['style[]']['height'] = is_numeric($is_height) ? $is_height . 'px' : $is_height;
+    }
+    foreach (\Anemon::eat(a($a))->sort([1, 'stack'], true)->vomit() as $k => $v) {
+        $s .= nav_li(o($v), $k, [], $i);
+    }
+    $attr = array_replace_recursive([
+        'class[]' => ['ul:' . $i, 'ul:' . $i . '.' . $id],
+        'id' => 'ul:' . $i . '.' . $id
+    ], $attr);
+    return \HTML::unite('ul', $s, $attr);
+}
+
+function nav_li($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    } else if (isset($input->content)) {
+        return $input->content;
+    }
+    $attr = array_replace_recursive([
+        'class[]' => ['li:' . $i, 'li:' . $i . '.' . $id, !empty($input->active) ? 'active' : null],
+        'id' => 'li:' . $i . '.' . $id
+    ], $attr);
+    return \HTML::unite('li', nav_a($input, $id, [], $i) . (isset($input->{'+'}) ? nav_ul($input->{'+'}, $id, [], $i + 1) : ""), $attr);
+}
+
+function nav_li_search($input, $id = 0, $attr = [], $i = 0) {
+    $attr = array_replace([[], []], $attr);
+    return \HTML::unite('li', search($input, $id, $attr[1], $i), array_replace_recursive([
+        'class[]' => ['li:' . $i . '.' . $id, !empty($input->active) ? 'active' : null],
+        'id' => 'li:' . $i . '.' . $id
+    ], $attr[0]));
+}
+
+function nav_a($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    } else if (isset($input->content)) {
+        return $input->content;
+    }
+    global $config, $language, $url;
+    $attr = array_replace_recursive([
+        'class[]' => ['a:' . $i, 'a:' . $i . '.' . $id],
+        'href' => nav_a_href($input),
+        'id' => 'a:' . $i . '.' . $id,
+        'target' => isset($input->target) ? $input->target : null,
+        'title' => isset($input->description) ? To::text($input->description) : null
+    ], $attr);
+    $title = isset($input->title) ? $input->title : $language->{$id};
+    return \HTML::unite('a', text($title, array_replace_recursive(
+        isset($input->icon) ? $input->icon : [],
+        isset($input->{'+'}) ? [1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? ($config->direction === 'ltr' ? 'M10,17L15,12L10,7V17Z' : 'M14,7L9,12L14,17V7Z') : 'M7,10L12,15L17,10H7Z') . '"></path></svg>'] : []
+    )), $attr);
+}
+
+function nav_a_href($input) {
+    global $url;
+    $u = isset($input->path) ? $url . '/panel/::' . (isset($input->{'>>'}) ? $input->{'>>'} : 'g') . '::/' . ltrim($input->path, '/') : "";
+    if (isset($input->url)) {
+        $u = \URL::long($input->url);
+    } else if (isset($input->link)) {
+        $u = $input->link;
+    }
+    return $u;
+}
+
+function text($input, $icon = []) {
+    if ($input === false && isset($icon[0])) {
+        return icon($icon[0], ['class[]' => [1 => 'only']]);
+    }
+    $s = "";
+    if (isset($icon[0])) {
+        $s .= icon($icon[0], ['class[]' => [1 => 'left']]) . ' ';
+    }
+    $s .= '<span>' . $input . '</span>';
+    if (isset($icon[1])) {
+        $s .= ' ' . icon($icon[1], ['class[]' => [1 => 'right']]);
+    }
+    return $s;
+}
+
+function icon($input, $attr = []) {
+    $icon_none = \HTML::unite('i', "", array_replace_recursive(['class[]' => ['icon']], $attr));
+    if (is_string($input)) {
+        if ($input === "") {
+            return $icon_none;
         }
-        if ($type === 'hidden') {
-            // All hidden field(s) value shouldn’t be accessible through URL query string!
-            // $value = Request::get($q, $value);
-            $hidden = Form::hidden($k, $value, $aa);
-        } else if (strpos(X . 'button' . X . 'button[]' . X . 'reset' . X . 'reset[]' . X . 'submit' . X . 'submit[]' . X, X . $type . X) !== false) {
-            $type = str_replace('[]', "", $type);
-            if (isset($v['values'])) {
-                if (isset($v['order'])) {
-                    $vvv = [];
-                    $vvv_k = array_keys($v['values']);
-                    $vvv_v = array_flip($vvv_k);
-                    foreach ($v['order'] as $vv) {
-                        if (!$vv || !isset($vvv_v[$vv])) continue;
-                        $vvv[$vv] = $v['values'][$vv];
-                    }
-                } else {
-                    $vvv = $v['values'];
-                }
-                foreach ($vvv as $nn => $vv) {
-                    if (!$vv) continue;
-                    if ($vv && is_string($vv) && $vv[0] === '<' && strpos($vv, '</') !== false && substr($vv, -1) === '>') {
-                        $html .= $vv;
-                    } else {
-                        $vv = (array) $vv;
-                        if (isset($vv[1])) {
-                            // 'name (default)' => [
-                            //     'values' => [
-                            //         'name_1' => ['text 1', 'value_1'],
-                            //         'name_2' => ['text 2', 'value_2']
-                            //     ]
-                            // ]
-                            $k = $n = $nn;
-                            $nn = $vv[1] === true ? $n : $vv[1];
-                            $vv = $vv[0];
-                        } else {
-                            // 'name' => [
-                            //     'values' => [
-                            //         'value_1' => 'text 1',
-                            //         'value_2' => 'text 2'
-                            //     ]
-                            // ]
-                            $vv = $vv[0];
-                        }
-                        $html .= call_user_func('Form::' . $type, $k, ltrim(Request::get($q, $nn), '.!*'), $vv, array_replace_recursive(['class[]' => ['button'], 'id' => 'f-' . $kk . ':' . $nn], $aa)) . ' ';
-                    }
-                }
-                $html = rtrim($html, ' ');
-            } else {
-                if ($value && is_string($value) && $value[0] === '<' && strpos($value, '</') !== false && substr($value, -1) === '>') {
-                    $html .= $value;
-                } else {
-                    $html .= call_user_func('Form::' . $type, $k, Request::get($q, isset($value) ? $value : true), $text, array_replace_recursive(['class[]' => ['button'], 'id' => 'f-' . $kk], $aa));
-                }
-            }
-        } else if ($type === 'content') {
-            $html .= $value;
-        } else if ($type === 'textarea') {
-            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['class[]' => ['textarea', $is_width, $is_height], 'id' => 'f-' . $kk], $aa));
-        } else if ($type === 'editor') {
-            $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['class[]' => ['textarea', $is_width, $is_height, 'code', 'editor'], 'id' => 'f-' . $kk], $aa));
-        } else if ($type === 'query') {
-            $html .= Form::text($k, Request::get($q, is_array($value) ? implode(', ', $value) : $value, false), $placeholder, array_replace_recursive(['class[]' => ['input', $is_width, 'query'], 'id' => 'f-' . $kk], $aa));
-        } else if ($type === 'date') {
-            $ff = 'Y/m/d H:i:s';
-            $html .= Form::text($k, (new Date(Request::get($q, is_array($value) ? json_encode($value) : $value, false)))->format($ff), (new Date($placeholder))->format($ff), array_replace_recursive(['class[]' => ['input', $is_width, 'date'], 'id' => 'f-' . $kk], $aa));
-        } else if ($type === 'range') {
-            if (isset($v['range'])) {
-                // [min, val, max]
-                $value = [$v['range'][0], $value, $v['range'][1]];
-            }
-            if (isset($v['step'])) {
-                $aa['step'] = $v['step'];
-            }
-            $html .= Form::range($k, $value, array_replace_recursive(['class[]' => ['input'], 'id' => 'f-' . $kk], $aa));
-        // TODO
-        // } else if ($type === 'color') {
-        //
-        } else if (($type === 'select' || $type === 'select[]') && isset($v['values'])) {
-            $vv = (array) $v['values'];
-            if (isset($v['placeholder'])) {
-                $vv = ['.' => $v['placeholder']] + $vv;
-            }
-            $html .= Form::select($k, $vv, Request::get($q, $value), array_replace_recursive(['class[]' => ['select', $is_width], 'id' => 'f-' . $kk, 'multiple' => $type === 'select[]' ? true : null], $aa));
-        } else if ($type === 'toggle' || $type === 'toggle[]') {
-            if (isset($v['values'])) {
-                $vv = (array) $v['values'];
-                asort($vv);
-                if ($type === 'toggle[]') {
-                    $hh = "";
-                    if (empty($value) || __is_anemon_0__($value)) {
-                        $rr = X . implode(X, (array) Request::get($q, $value)) . X;
-                        foreach ($vv as $kkk => $vvv) {
-                            if (!$vvv) continue;
-                            $hh .= '<br>' . Form::checkbox($k . '[]', $kkk, strpos($rr, X . $kkk . X) !== false, $vvv, array_replace_recursive(['class[]' => ['input'], 'id' => 'f-' . $kk . ':' . $kkk], $aa));
-                        }
-                    } else {
-                        foreach ($vv as $kkk => $vvv) {
-                            if (!$vvv) continue;
-                            $vvv = (array) $vvv;
-                            // 'name (default)' => [
-                            //     'values' => [
-                            //         'name_1' => ['text 1', 'value_1'],
-                            //         'name_2' => ['text 2', 'value_2']
-                            //     ]
-                            // ]
-                            //
-                            // 'name' => [
-                            //     'values' => [
-                            //         'value_1' => 'text 1',
-                            //         'value_2' => 'text 2'
-                            //     ]
-                            // ]
-                            $hh .= '<br>' . Form::checkbox($k . '[' . $kkk . ']', is_array($vvv) && isset($vvv[1]) ? $vvv[1] : true, !empty(Request::get('f.' . str_replace('][', '.', trim($kkk, '][')), isset($value[$kkk]) ? $value[$kkk] : false, false)), $vvv[0], array_replace_recursive(['class[]' => ['input'], 'id' => 'f-' . $kk . ':' . $kkk], $aa));
-                        }
-                    }
-                    $html .= substr($hh, 4);
-                } else {
-                    $html .= Form::radio($k, array_filter($vv), Request::get($q, $value), array_replace_recursive(['class[]' => ['input'], 'id' => 'f-' . $kk], $aa));
-                }
-            } else {
-                $html .= Form::checkbox($k, isset($value) ? $value : 'true', $value !== null && Request::get($q) === $value, $text, array_replace_recursive(['class[]' => ['input'], 'id' => 'f-' . $kk], $aa));
-            }
-        } else if ($type === 'file') {
-            $html .= Form::file($k, array_replace_recursive(['class[]' => ['input'], 'id' => 'f-' . $kk], $aa));
-        } else if (strpos(',color,email,number,pass,password,search,tel,text,url,', ',' . $type . ',') !== false) {
-            if ($type === 'pass') {
-                $type .= 'word';
-            }
-            $html .= call_user_func('Form::' . $type, $k, Request::get($q, $value, false), $placeholder, array_replace_recursive(['class[]' => ['input', $is_width], 'id' => 'f-' . $kk], $aa));
+        return $input;
+    } else if (isset($input->content)) {
+        if ($input->content === "") {
+            return $icon_none;
         }
+        return $input->content;
+    }
+    // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
+    if (count($input) === 1) {
+        $box = '0 0 24 24';
+        $d = $input[0];
+    // `icon(['0 0 24 24', 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
     } else {
-        $html .= Form::textarea($k, Request::get($q, is_array($value) ? json_encode($value) : $value, false), $placeholder, array_replace_recursive(['class[]' => ['textarea'], 'id' => 'f-' . $kk], $aa));
+        $box = $input[0];
+        $d = $input[1];
     }
-    $html .= $tag->end();
-    $html .= $tag->end();
-    if (!empty($v['description'])) {
-        $description = $v['description'];
-        $html .= '<div class="h p">' . (stripos($description, '</p>') === false ? '<p>' . $description . '</p>' : $description) . '</div>';
-    }
-    return $hidden ?: $html;
+    $attr = array_replace_recursive([
+        'class[]' => ['icon'],
+        'viewBox' => $box
+    ], $attr);
+    return \HTML::unite('svg', strpos($d, '<') === 0 ? $d : '<path d="' . $d . '"></path>', $attr);
 }
 
-function _m() {}
-function _n() {}
+function search($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    } else if (isset($input->content)) {
+        return $input->content;
+    }
+    global $config, $language;
+    $s = \Form::text(isset($input->q) ? $input->q : 'q', null, isset($input->title) ? \To::text($input->title) : null, ['class[]' => ['input']]);
+    $s .= ' ' . \Form::submit(null, null, $language->search, ['class[]' => ['button']]);
+    $s = '<p class="field expand"><span>' . $s . '</span></p>';
+    $attr = array_replace_recursive([
+        'class[]' => ['form', 'form:' . $i . '.' . $id],
+        'id' => 'search:' . $i . '.' . $id,
+        'action' => nav_a_href($input)
+    ], $attr);
+    return \HTML::unite('form', $s, $attr);
+}
 
-function _s($k, $v, $i = '%{0}%', $j = "") {
-    // `title`
-    // `description`
-    // `begin`
-    // `content`
-    // `list`
-    // `end`
-    // `a`
-    // `toggle`
-    // `hidden`
-    // `stack`
-    global $language;
-    if (is_string($v)) {
-        return $v;
-    } else if (!$v) {
-        return "";
-    }
-    if (isset($v['hidden']) && $v['hidden'] && !isset($v['toggle'])) {
-        return "";
-    }
-    $content = isset($v['content']) ? $v['content'] : "";
-    $list = isset($v['list']) ? $v['list'] : [];
-    $html  = '<section class="s-' . $k . (isset($v['toggle']) ? ' toggle ' . (isset($v['hidden']) && $v['hidden'] ? 'x' : 'v') : "") . '" id="s:' . $k . '">';
-    $html .= '<h3>' . (isset($v['title']) ? $v['title'] : $language->{isset($content[0]) && count($content[0]) === 1 ? $k : $k . 's'}) . '</h3>';
-    if (isset($v['begin']) && $v['begin']) {
-        $html .= '<div class="s-c s-c-begin s-c:' . $k . ' p">' . $v['begin'] . '</div>';
-    }
-    $html .= '<div class="s-c s-c-list s-c:' . $k . ' p">';
-    if (!empty($list)) {
-        if (is_array($list)) {
-            if (is_array($list[0])) {
-                $html .= '<ul>';
-                foreach ($list[0] as $kk => $vv) {
-                    $html .= is_callable($j) ? call_user_func($j, '<li>', $vv, $kk) : '<li>';
-                    if (is_object($vv)) {
-                        $w = $vv->url;
-                        if (is_callable($i)) {
-                            $w = call_user_func($i, $vv, $kk);
-                        } else {
-                            $w = __replace__($i, $w);
-                        }
-                        $html .= HTML::a($list[1][$kk]->title, $w);
-                    } else if (is_array($vv)) {
-                        $w = $vv['url'];
-                        if (is_callable($i)) {
-                            $w = call_user_func($i, $vv, $kk);
-                        } else {
-                            $w = __replace__($i, $w);
-                        }
-                        $html .= HTML::a($list[1][$kk]['title'], $w);
-                    } else {
-                        if (is_callable($i)) {
-                            $vv = call_user_func($i, $vv, $kk);
-                        } else {
-                            $vv = __replace__($i, $vv);
-                        }
-                        $html .= $vv;
-                    }
-                    $html .= '</li>';
-                }
-            }
-            if (isset($v['a']) && $v['a']) {
-                $a = [];
-                foreach ($v['a'] as $kk => $vv) {
-                    if (!$vv) continue;
-                    if ($vv && is_string($vv) && $vv[0] === '<' && strpos($vv, '</') !== false && substr($vv, -1) === '>') {
-                        $a[] = $vv;
-                    } else if (is_array($vv)) {
-                        $a[] = call_user_func_array('HTML::a', $vv);
-                    }
-                }
-                $html .= $a ? '<li class="s-' . $k . ':a">' . implode(' ', $a) . '</li>' : "";
-            }
-            $html .= '</ul>';
-        } else if (is_string($list)) {
-            $html .= $list;
+function files($folder, $chunk = [], $sort = 1, $actives = []) {
+    $files = $folders = [];
+    foreach (array_unique(array_merge(
+        glob($folder . DS . '*', GLOB_NOSORT),
+        glob($folder . DS . '.*', GLOB_NOSORT)
+    )) as $v) {
+        if (substr($v, -2) === DS . '.') continue;
+        if (is_file($v)) {
+            $files[] = $v;
+        } else {
+            $folders[] = $v;
         }
     }
-    $html .= '</div>';
-    if ($content) {
-        $html .= '<div class="s-c s-c-content s-c:' . $k . ' p">' . $content . '</div>';
+    sort($files);
+    sort($folders);
+    $files = array_merge($folders, $files);
+    $chunk = array_replace([20, 0], (array) $chunk);
+    if ($files = \Anemon::eat($files)->chunk($chunk[0], $chunk[1])) {
+        $s = '<ul class="files" data-folder="' . ($dir = \Path::F($folder, LOT, '/')) . '">';
+        foreach ($files as $k => $v) {
+            $n = basename($v);
+            if ($n === '..' && trim(dirname($dir), '.') === "") continue;
+            $h = strpos($n, '.') === 0 || strpos($n, '_') === 0 ? ' is-hidden' : "";
+            $a = strpos(X . implode(X, $actives) . X, X . $n . X) !== false ? ' active' : "";
+            $s .= file($v, $k, $h . $a);
+        }
+        return $s . '</ul>';
     }
-    if (isset($v['end']) && $v['end']) {
-        $html .= '<div class="s-c s-c-end s-c:' . $k . ' p">' . $v['end'] . '</div>';
-    }
-    $html .= '</section>';
-    return $html;
+    return "";
 }
 
-function _t() {}
+function file($path, $key, $class) {
+    global $language, $url;
+    $n = basename($path);
+    $dir = \Path::F($path, LOT, '/');
+    $s  = '<li class="file is-' . (($is_file = is_file($path)) ? 'file' : 'folder') . $class . '">';
+    $s .= '<h3 class="title">';
+    $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/panel/::g::/' . ($n !== '..' ? $dir . '/' . $n : dirname($dir))) . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : $language->enter . '&hellip;') . '">' . $n . '</a>';
+    $s .= '</h3>';
+    return $s . '</li>';
+}

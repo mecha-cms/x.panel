@@ -1,0 +1,207 @@
+// @message
+.messages {
+  .desk & + div,
+  .desk & + main {margin-top:@y}
+  .message {
+    background:@color;
+    color:@color_inverse;
+    padding:(@y * .5) (@x * .5);
+    + .message {margin-top:(@y * .25)}
+    .icon {
+      &.right {margin-left:(@x * .25)}
+      &.left {margin-right:(@x * .25)}
+    }
+  }
+}
+
+// @desk
+.desk {
+  // max-width:@width;
+  .p2;
+  margin:0 auto;
+  &::before,
+  &::after {
+    .clear;
+  }
+  > header {
+    .m2b;
+  }
+  > footer {
+    .m2t;
+  }
+  @media (max-width:@view-mobile) {
+    .p1;
+    > header {
+      .m1b;
+    }
+    > footer {
+      .m1t;
+    }
+  }
+}
+
+// @container
+.container {
+  .p1;
+}
+
+// @layer
+.layers {position:relative}
+.js .layer {display:none}
+.layer,
+.js .layer.active {display:block}
+.layer + .layer {
+  .m1t;
+}
+.js .layer + .layer {
+  .m0t;
+}
+
+// @form (full page)
+html.form,
+html.form body {
+  display:table;
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+}
+html.form body {
+  display:table-cell;
+  vertical-align:middle;
+}
+html.form body form {
+  max-width:(@x * 10);
+  margin:0 auto;
+}
+
+// @nav
+.nav {
+  line-height:(@y * 2);
+  ul,
+  li,
+  .form,
+  .field {
+    display:block;
+    width:auto;
+    height:inherit;
+    margin:0;
+    padding:0;
+    list-style:none;
+    position:relative;
+  }
+  ul {
+    height:(@y * 2);
+    ul {
+      position:absolute;
+      top:100%;
+      left:0;
+      z-index:9999;
+      background:@color_inverse;
+      width:(@x * 8);
+      height:auto;
+      line-height:@y;
+      display:none;
+      &.show {display:block}
+      ul {
+        top:0;
+        left:100%;
+      }
+      li {float:none}
+      a {
+        padding:(@y * .25) (@x * .5);
+        + i {
+          font-weight:normal;
+          background:@color-a_inverse;
+          color:@color_inverse;
+          top:(@y * .25);
+          right:(@x * .25);
+          min-width:@x;
+          text-align:center;
+          pointer-events:none;
+        }
+      }
+      .icon {
+        margin:0 (@y * -.25);
+        &.right {margin-left:(@x * .5)}
+        &.left {margin-right:(@x * .5)}
+      }
+    }
+  }
+  li {
+    float:left;
+    &.right {float:right}
+    a:focus,
+    &.active > a {color:@color-a_inverse}
+  }
+  a {
+    display:block;
+    padding:0 (@x * .75);
+    overflow:hidden;
+    + i {
+      font-weight:bold;
+      font-style:normal;
+      font-size:(@z * .75);
+      position:absolute;
+      height:@y;
+      line-height:@y;
+      top:0;
+      right:2px;
+      color:@color-a_inverse;
+      padding:0 (@x * .25);
+    }
+  }
+  .icon {
+    display:block;
+    margin:(@y * .5) (@x * -.25);
+    &.arrow {
+      color:@color;
+      &.right {margin-left:0}
+      &.left {margin-right:0}
+    }
+    &.right {margin-left:(@x * .5)}
+    &.left {margin-right:(@x * .5)}
+  }
+  .field {
+    margin:(@y * .25);
+    .button {display:none}
+    .input {
+      display:block;
+      width:100%;
+    }
+  }
+}
+html:not(.js) .nav li:hover > ul,
+html:not(.js) .nav li:focus-within > ul {display:block}
+
+@media (max-width:@view-mobile) {
+  .nav {
+    > ul > li {
+      display:none;
+      &.main\:lot,
+      &.main\:search {display:block}
+      &.main\:search {
+        position:absolute;
+        top:0;
+        right:0;
+        left:(@x * 2);
+      }
+    }
+    ul ul ul {left:25%}
+  }
+}
+
+// @footer
+.footer {
+  .p2;
+  .p0t;
+  @media (max-width:@view-mobile) {
+    .p1;
+    .p0t;
+  }
+  &::after {
+    .clear;
+  }
+  .right,
+  .left {margin:0}
+}

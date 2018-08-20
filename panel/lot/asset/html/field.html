@@ -1,0 +1,8 @@
+<<?php echo !empty($tag) ? $tag : 'p'; ?> class="field<?php echo !empty($tag) && $tag !== 'p' ? ' p' : ""; ?><?php echo !empty($class) ? ' ' . $class : ""; ?>>
+  <label><?php echo !empty($title) ? $title : ""; ?></label>
+  <?php if (!empty($tag) && $tag !== 'p'): ?>
+  <div><?php echo !empty($content) ? $content : ""; ?></div>
+  <?php else: ?>
+  <span><?php echo !empty($content) ? $content : ""; ?></span>
+  <?php endif; ?>
+</<?php echo !empty($tag) ? $tag : 'p'; ?>>

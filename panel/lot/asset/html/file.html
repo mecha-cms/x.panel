@@ -1,0 +1,8 @@
+<li class="file<?php echo isset($type) ? ' is-' . $type : ""; ?><?php echo isset($class) ? ' ' . $class : ""; ?>">
+  <h3 class="title"><a href=""><?php echo isset($title) ? $title : ""; ?></a></h3>
+  <ul class="tools">
+    <?php if (isset($title) && $title !== '..'): ?>
+    <li><a href=""><svg class="icon"><use href="#i:cross"></use></svg></a></li>
+    <?php endif; ?>
+  </ul>
+</li>

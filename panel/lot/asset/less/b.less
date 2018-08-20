@@ -1,0 +1,759 @@
+// Extensions
+
+// @icon
+.icon {
+  display:inline-block;
+  width:@x;
+  height:@y;
+  min-width:@x;
+  min-height:@y;
+  max-width:100%;
+  max-height:100%;
+  vertical-align:top;
+  font-weight:normal;
+  font-style:normal;
+  fill:currentColor;
+  border-color:inherit;
+  position:relative;
+  overflow:hidden;
+  text-indent:-9999px;
+  .button &.left {
+    margin-right:(@x * .25);
+    margin-left:(@x * -.25);
+  }
+  .button &.right {
+    margin-right:(@x * -.25);
+    margin-left:(@x * .25);
+  }
+  .button &.only {
+    margin-right:(@x * -.25);
+    margin-left:(@x * -.25);
+  }
+}
+
+// @loading
+.loading {
+  .p1;
+  background:inherit;
+}
+
+// @title
+.title {
+  font:inherit;
+  font-size:(@z * 1.25);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+// @list
+.list-reset() {
+  .m0r;
+  .m0l;
+  .p0r;
+  .p0l;
+  list-style:none;
+}
+.links,
+.links li {
+  .list-reset;
+  &::after {
+    .clear;
+  }
+  li {
+    .left;
+    &::after {
+      content:'\00B7';
+      display:inline;
+      margin:0 (@z * .5);
+    }
+    &:last-child {
+      .m0r;
+      &::after {display:none}
+    }
+  }
+}
+/* .tools > .button */
+.tools {
+  display:block;
+  &::after {
+    .clear;
+  }
+  br {
+    display:block;
+    clear:both;
+    margin-bottom:(@y * .25);
+  }
+  .a,
+  .button,
+  .input,
+  .select {
+    .left;
+    margin-right:(@x * .25);
+    &:last-child {margin-right:0}
+  }
+}
+/* .tools > li > svg */
+ol.tools,
+ol.tools li,
+ul.tools,
+ul.tools li {
+  .list-reset;
+}
+ol.tools li,
+ul.tools li {
+  .left;
+  &:last-child {
+    .m0r;
+  }
+  .icon {display:block}
+}
+.traces,
+.traces li {
+  .list-reset;
+  &::before,
+  &::after {
+    .clear;
+  }
+  li {
+    .left;
+    &::after {
+      content:'/';
+      display:inline;
+      margin:0 (@z * .5);
+    }
+    &:last-child {
+      .m0r;
+      &::after {display:none}
+    }
+  }
+}
+
+// @align
+img {
+  &.align-right,
+  &.align-left,
+  &.align-center {
+    display:block;
+    float:none;
+    margin-top:@y;
+  }
+}
+img.align-left {
+  margin-right:@x;
+  margin-bottom:(@z * .5);
+  .left;
+  .text-left;
+}
+img.align-right {
+  margin-bottom:(@z * .5);
+  margin-left:@x;
+  .right;
+  .text-right;
+}
+img.align-center {
+  margin-right:auto;
+  margin-left:auto;
+  .text-center;
+}
+
+// @button
+.button {
+  &.text,
+  &.link {
+    background:none;
+    border:0;
+    color:inherit;
+    .border-radius(0);
+    .box-shadow(none);
+  }
+  &.link {
+    color:@color-a;
+    &:focus,
+    &:active {color:@color-a_inverse}
+  }
+}
+
+// @width, @height
+.width {
+  display:block;
+  width:100%;
+}
+.textarea.height {height:(@y * 10.75)}
+
+// @field
+.field {
+  display:table;
+  table-layout:fixed;
+  width:100%;
+  position:relative;
+  &.expand > label {display:none}
+  > label {
+    display:table-cell;
+    vertical-align:top;
+    width:(@x * 5);
+    padding-top:(@y * .25);
+    padding-right:@x;
+    .text-right;
+    + span,
+    + div,
+    + br + span,
+    + br + div {
+      display:table-cell;
+      vertical-align:top;
+    }
+    + br {display:none}
+  }
+  @media (max-width:@view-mobile) {
+    display:block;
+    width:auto;
+    > label {
+      display:block;
+      width:auto;
+      margin:0 0 (@y * .25);
+      padding:0;
+      text-align:inherit;
+      + span,
+      + div,
+      + br + span,
+      + br + div {
+        display:block;
+        width:auto;
+        margin:0;
+        padding:0;
+        text-align:inherit;
+      }
+    }
+    &.expand > label {display:block}
+  }
+  .hints {
+    display:block;
+    padding:0 (@x * .5);
+    font-size:(@z - @sizer);
+    background:@color;
+    color:@color_inverse;
+    border-bottom:1px solid transparent;
+  }
+}
+
+// @grid
+.grids,
+.field .grids {
+  .flex-display;
+  width:auto;
+  .grid:not(.grids) {
+    .flex;
+    display:block;
+    width:auto;
+    margin-right:@x;
+    &:last-child {margin-right:0}
+    &.auto {flex:0 0 auto}
+  }
+  &.span > .grid {
+    margin-right:.25em; // hacky :(
+    &:last-child {margin-right:0}
+  }
+}
+@media (max-width:@view-mobile) {
+  .grids,
+  .field .grids {
+    display:block;
+    width:100%;
+    .grid {
+      width:100%;
+      margin:0 0 @y 0;
+      &:last-child {margin-bottom:0}
+      &.auto {width:auto}
+    }
+    &.span > .grid {
+      margin:0 0 .25em 0; // hacky :(
+      &:last-child {margin-bottom:0}
+    }
+  }
+}
+.group {
+  display:inline-block;
+  vertical-align:middle;
+  &::before,
+  &::after {
+    .clear;
+  }
+  > .button,
+  > .input,
+  > .select,
+  > .textarea {
+    .left;
+  }
+}
+.inputs {
+  display:block;
+  padding-top:(@y * .25);
+  padding-bottom:(@y * .25);
+  &.block {
+    > label {
+      display:block;
+      + br {display:none}
+    }
+  }
+  &.span {
+    > label {
+      .left;
+      margin-right:@z;
+      &:last-child {margin-right:0}
+    }
+  }
+}
+.input {
+  &.plain {
+    width:auto;
+    height:auto;
+    background:none;
+    border:0;
+    padding-right:0;
+    padding-left:0;
+    &.width {width:100%}
+  }
+}
+
+// @dialog
+@dialog-width:(@width - (@x * 4));
+.dialog {
+  width:@dialog-width;
+  &.tiny {
+    width:(@x * 12);
+    @media (max-width:(@dialog-width + (@x * 2))) {
+      width:auto;
+    }
+  }
+  @media (max-width:(@dialog-width + (@x * 2))) {
+    width:auto;
+  }
+  margin-right:auto;
+  margin-left:auto;
+  background:@color_inverse;
+  position:relative;
+  &::before,
+  &::after {
+    .clear;
+  }
+  .loading {
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    &:only-child {position:static}
+  }
+  > header,
+  > footer {
+    position:absolute;
+    right:0;
+    left:0;
+  }
+  > header {
+    top:0;
+    height:(@y * 2);
+    line-height:(@y * 2);
+    padding:0 (@x * 2.75) 0 (@x * .75);
+  }
+  .title {margin:0}
+  > footer {
+    bottom:0;
+    height:(@y * 2.5);
+    line-height:0;
+    padding:(@y * .5) (@x * .5);
+    .text-right;
+    .tools {
+      .right;
+    }
+  }
+  > div {
+    margin:2px 2px (@y * 2.5);
+    overflow:auto;
+    &:only-child {margin-bottom:2px}
+  }
+  > header + div {margin-top:(@y * 2)}
+  > div > div {padding:@y @x}
+  &-x {
+    position:absolute;
+    top:0;
+    right:0;
+    width:(@x * 2);
+    height:(@y * 2);
+    line-height:(@y * 2);
+    .text-center;
+    .icon {
+      display:block;
+      margin:(@y * .5) (@x * .5);
+    }
+  }
+  &-overlay {
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:9999;
+    background:rgba(255,255,255,.9);
+    + .dialog {
+      min-width:(@x * 12);
+      @media (max-width:@view-mobile) {
+        min-width:0;
+      }
+      position:fixed;
+      top:0;
+      left:0;
+      z-index:9999;
+      &.expand {
+        top:@x;
+        right:@y;
+        bottom:@x;
+        left:@y;
+        min-width:0;
+        min-height:0;
+        width:auto;
+        height:auto;
+        max-width:100%;
+        max-height:100%;
+      }
+      @media (max-width:@dialog-width) {
+        top:0 !important;
+        right:0 !important;
+        bottom:0 !important;
+        left:0 !important;
+        margin:0 !important;
+        border-width:0;
+      }
+    }
+  }
+  &-overlay + & > div {
+    max-height:~'calc(100vh -' (@y * 2 + @y * 4.5) ~')';
+    @media (max-width:@dialog-width) {
+      max-height:~'calc(100vh -' (@y * 2 + @y * 2.5) ~')';
+    }
+  }
+}
+
+// @tab
+.tabs {
+  position:relative;
+  > nav {
+    height:(@y * 2);
+    line-height:(@y * 2);
+    ul,li {
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    ul {overflow:hidden}
+    li {
+      position:relative;
+      border:1px solid;
+      border-bottom-width:0;
+      .left;
+      + li {border-left-width:0}
+    }
+    .active {
+      z-index:4;
+      &::before,
+      &::after {
+        content:"";
+        display:block;
+        position:absolute;
+        bottom:0;
+        width:9999em;
+        height:0;
+        border-bottom:1px solid;
+      }
+      &::before {right:100%}
+      &::after {left:100%}
+      a {color:inherit}
+    }
+    a {
+      display:block;
+      padding:0 @x;
+      .text-special;
+      .icon {
+        margin:(@y * .5) (@x * -.5);
+        &.right {margin-left:(@x * .25)}
+        &.left {margin-right:(@x * .25)}
+      }
+    }
+    @media (max-width:@view-mobile) {
+      height:auto;
+      line-height:inherit;
+      li {
+        background:none;
+        border-width:0;
+        margin-right:@x;
+        &.active::before,
+        &.active::after {display:none}
+        &:last-child {margin-right:0}
+      }
+      a {
+        display:inline;
+        padding:0;
+        .icon {display:none}
+      }
+    }
+  }
+  > section {
+    + section {
+      .m1t;
+    }
+  }
+}
+.js .tabs > section {
+  .m1t;
+  display:none;
+  &.active {display:block}
+}
+html:not(.js) .tabs > nav {display:none}
+html:not(.js) .tabs > section[data-title]::before,
+html:not(.js) .tabs > section[title]::before {
+  content:attr(data-title);
+  display:block;
+  .h3;
+  margin-bottom:24px;
+}
+html:not(.js) .tabs > section[title]::before {content:attr(title)}
+
+// @item
+.items {
+  .m0r;
+  .m0l;
+  .p0;
+  list-style:none;
+}
+.item,
+.item-figure,
+.item-header,
+.item-title,
+.item-property,
+.item-tools,
+.item-body,
+.item-footer,
+.item-links {
+  .m0;
+  .p0;
+  list-style:none;
+  border-color:inherit;
+}
+.item {
+  background:@color_inverse;
+  border:0 solid @color_inverse;
+  padding:(@y * .5) (@x * .5);
+  margin:0 (@x * -.5);
+  position:relative;
+  &:focus,
+  &.active {
+    background:darken(@color_inverse, 1%);
+    border-color:$background;
+  }
+  &.disabled {opacity:.5}
+  &-figure {
+    width:(@x * 3.5);
+    height:(@y * 3.5);
+    background:darken(@color_inverse, 5%);
+    .left;
+    img {
+      display:block;
+      margin:0;
+      padding:0;
+      width:100%;
+      height:100%;
+    }
+  }
+  &-figure + &-header,
+  &-figure + &-header + &-body,
+  &-figure + &-header + &-body + &-footer {margin-left:(@x * 4.5)}
+  @media (max-width:@view-mobile) {
+    &-figure {display:none}
+    &-figure + &-header,
+    &-figure + &-header + &-body,
+    &-figure + &-header + &-body + &-footer {margin-left:0}
+  }
+  &-body,
+  &-footer {margin-top:(@y * .25)}
+  &-property,
+  &-tools {
+    position:absolute;
+    top:(@y * .5);
+    right:(@x * .5);
+  }
+  &-links {
+    .text-special;
+    margin-top:0;
+  }
+}
+
+// @file
+.files {
+  .m0r;
+  .m0l;
+  .p0;
+  list-style:none;
+}
+.file {
+  &,
+  .title,
+  .tools {
+    .m0;
+    .p0;
+    font:inherit;
+    list-style:none;
+    border-color:inherit;
+  }
+}
+.file {
+  background:@color_inverse;
+  border:0 solid @color_inverse;
+  padding:(@y * .25) (@x * .5);
+  margin:0 (@x * -.25);
+  position:relative;
+  overflow:hidden;
+  &:focus,
+  &.active {
+    background:darken(@color_inverse, 1%);
+    border-color:$background;
+  }
+  &.disabled {opacity:.5}
+  .title {
+    padding-right:(@x * 2.25);
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    .left;
+  }
+  .tools {
+    position:absolute;
+    top:(@y * .25);
+    right:(@x * .25);
+  }
+  &.is-file,
+  &.is-folder {
+    padding-left:(@x * 1.75);
+    &::before,
+    &::after {
+      content:"";
+      display:block;
+      width:@x;
+      height:@y;
+      position:absolute;
+      top:(@y * .25);
+      left:(@x * .25);
+    }
+  }
+  &.is-file::before {
+    background:@color_inverse;
+    border:1px solid @color;
+    width:(@x - 4);
+  }
+  &.is-file::after {
+    width:0;
+    height:0;
+    border:3px solid @color;
+    border-top-color:inherit;
+    border-right-color:inherit;
+    left:(@x - 4);
+  }
+  &.is-folder::before {
+    background:@color;
+    height:(@y - 6);
+    top:(@y * .25) + 5;
+  }
+  &.is-folder::after {
+    border-top:3px solid @color;
+    width:(@x * .5);
+    top:(@y * .25) + 1;
+  }
+}
+
+// @pager
+.pager {
+  &::after,
+  & > span::after {
+    .clear;
+  }
+  > a,
+  > span {
+    display:block;
+    float:left;
+    padding:0 (@x * .25);
+    margin-right:(@x * .25);
+    &:last-child {margin-right:0}
+    &:focus {background:@color-a_inverse}
+    a,
+    span,
+    strong {
+      display:block;
+      float:left;
+      font:inherit;
+      padding:0 (@x * .25);
+      margin-right:(@x * .25);
+      background:@color-a;
+      color:@color_inverse;
+      &:last-child {margin-right:0}
+      &:focus {background:@color-a_inverse}
+    }
+  }
+  > span,
+  > span span,
+  > span strong {
+    background:none;
+    color:inherit;
+  }
+  > a + span,
+  > span + span {padding:0}
+  @media (max-width:@view-mobile) {
+    & > a:first-child,
+    & > a:last-child,
+    & > span:first-child,
+    & > span:last-child {display:none}
+  }
+}
+
+// @menu
+.menu,
+.menu li {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.menu {
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:9999;
+  background:@color_inverse;
+  width:(@x * 8);
+  height:auto;
+  line-height:@y;
+  // display:none;
+  &.show {display:block}
+  ul {
+    top:0;
+    left:100%;
+  }
+  a {
+    display:block;
+    padding:(@y * .25) (@x * .5);
+    + i {
+      font-weight:normal;
+      background:@color-a_inverse;
+      color:@color_inverse;
+      top:(@y * .25);
+      right:(@x * .25);
+      min-width:@x;
+      text-align:center;
+      pointer-events:none;
+    }
+  }
+  .icon {
+    margin:0 (@y * -.25);
+    &.arrow {color:@color}
+    &.right {margin-left:(@x * .5)}
+    &.left {margin-right:(@x * .5)}
+  }
+}

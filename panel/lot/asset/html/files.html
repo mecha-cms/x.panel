@@ -1,0 +1,14 @@
+<ul class="files<?php echo isset($class) ? ' ' . $class : ""; ?>"><?php
+
+if (isset($content)) {
+    if (is_array($content)) {
+        foreach ($content as $v) {
+            call_user_func(function() use($v) {
+                extract($v);
+                require __DIR__ . '/file.html';
+            });
+        }
+    }
+}
+
+?></ul>
