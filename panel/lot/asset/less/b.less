@@ -159,16 +159,12 @@ img.align-center {
 
 // @button
 .button {
-  &.text,
-  &.link {
+  &.text {
     background:none;
     border:0;
-    color:inherit;
+    color:@color-a;
     .border-radius(0);
     .box-shadow(none);
-  }
-  &.link {
-    color:@color-a;
     &:focus,
     &:active {color:@color-a_inverse}
   }
@@ -676,39 +672,33 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   & > span::after {
     .clear;
   }
-  > a,
-  > span {
+  > span,
+  > span > a,
+  > span > b,
+  > span > span {
     display:block;
     float:left;
+    font:inherit;
     padding:0 (@x * .25);
     margin-right:(@x * .25);
     &:last-child {margin-right:0}
-    &:focus {background:@color-a_inverse}
-    a,
-    span,
-    strong {
-      display:block;
-      float:left;
-      font:inherit;
-      padding:0 (@x * .25);
-      margin-right:(@x * .25);
+  }
+  > span {
+    padding:0;
+    > a,
+    > b,
+    > span {
       background:@color-a;
       color:@color_inverse;
-      &:last-child {margin-right:0}
       &:focus {background:@color-a_inverse}
     }
+    > b,
+    > span {
+      background:none;
+      color:inherit;
+    }
   }
-  > span,
-  > span span,
-  > span strong {
-    background:none;
-    color:inherit;
-  }
-  > a + span,
-  > span + span {padding:0}
   @media (max-width:@view-mobile) {
-    & > a:first-child,
-    & > a:last-child,
     & > span:first-child,
     & > span:last-child {display:none}
   }
@@ -739,6 +729,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   a {
     display:block;
     padding:(@y * .25) (@x * .5);
+    overflow:hidden;
     + i {
       font-weight:normal;
       background:@color-a_inverse;

@@ -9,7 +9,6 @@ $folders = glob(LOT . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT);
 
 sort($folders);
 
-$links = [];
 $icons = [
     'asset' => 'M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M4,9V12C4,14.21 7.58,16 12,16C16.42,16 20,14.21 20,12V9C20,11.21 16.42,13 12,13C7.58,13 4,11.21 4,9M4,14V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V14C20,16.21 16.42,18 12,18C7.58,18 4,16.21 4,14Z',
     'block' => 'M4,3H5V5H3V4A1,1 0 0,1 4,3M20,3A1,1 0 0,1 21,4V5H19V3H20M15,5V3H17V5H15M11,5V3H13V5H11M7,5V3H9V5H7M21,20A1,1 0 0,1 20,21H19V19H21V20M15,21V19H17V21H15M11,21V19H13V21H11M7,21V19H9V21H7M4,21A1,1 0 0,1 3,20V19H5V21H4M3,15H5V17H3V15M21,15V17H19V15H21M3,11H5V13H3V11M21,11V13H19V11H21M3,7H5V9H3V7M21,7V9H19V7H21Z',
@@ -25,43 +24,71 @@ $icons = [
 ];
 
 $i = 0;
+$links = [];
 foreach ($folders as $v) {
     $n = basename($v);
-    $dir = Path::F($v, LOT, '/');
-    $links[$dir] = [
-        'title' => $language->{$n},
+    $links[$n] = [
         'icon' => [[isset($icons[$n]) ? $icons[$n] : ""]],
-        'active' => strpos($path . '/', $dir . '/') === 0,
-        'path' => $dir,
+        'active' => strpos($path . '/', $n . '/') === 0,
+        'path' => $n,
         'stack' => 10 + $i
     ];
     $i += .1;
 }
 
-Config::set('panel.nav:lot', [
+Config::set('panel.nav.lot', [
     'title' => false,
     'icon' => [['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z']],
     '+' => $links,
     'stack' => 10
 ]);
 
-$links = [];
 $i = 0;
-foreach (glob(STATE . DS . '*.php') as $v) {
-    $n = basename($v);
-    $dir = Path::F($v, LOT, '/');
-    $links[$dir] = [
-        'title' => $n,
-        'active' => strpos($path . '/', $dir . '/') === 0,
-        'path' => $dir . '.php',
-        'stack' => 10 + $i
+$links = [];
+foreach (glob(EXTEND . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $v) {
+    $directory = \Path::F(dirname($v), LOT, '/');
+    $n = basename($directory);
+    $title = \Page::open($v)->get('title', $n);
+    $links[$title] = [
+        'title' => $title,
+        'icon' => [""],
+        'active' => strpos($path . '/', $directory . '/') === 0,
+        'path' => $directory
     ];
+}
+ksort($links);
+$links_a = [];
+foreach ($links as $v) {
+    $v['stack'] = 10 + $i;
+    $links_a[basename($v['path'])] = $v;
     $i += .1;
 }
 
-Config::set('panel.nav:lot.+.state.+', $links);
+Config::set('panel.nav.lot.+.extend.+', $links_a);
 
-Config::set('panel.nav:search', [
+$i = 0;
+$links = [];
+foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $v) {
+    $dir = \Path::F(dirname($v), LOT, '/');
+    $title = \Page::open($v)->get('title', Path::N($dir));
+    $links[$title] = [
+        'title' => $title,
+        'icon' => [""],
+        'active' => strpos($path . '/', $dir . '/') === 0,
+        'path' => $dir
+    ];
+}
+ksort($links);
+$links_a = [];
+foreach ($links as $v) {
+    $v['stack'] = 10 + $i;
+    $links_a[basename($v['path'])] = $v;
+    $i += .1;
+}
+
+Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
+
+Config::set('panel.nav.search', [
     'content' => panel\nav_li_search(o([
         'title' => $language->{$a[0]},
         'path' => $path
@@ -69,7 +96,7 @@ Config::set('panel.nav:search', [
     'stack' => 10.1
 ]);
 
-Config::set('panel.nav:site', [
+Config::set('panel.nav.site', [
     '+' => [
         'config' => [
             'path' => 'state/config',
@@ -86,13 +113,33 @@ Config::set('panel.nav:site', [
     'stack' => 10.3
 ]);
 
-$page_nav = Config::get('panel.nav:lot.+.page');
-$page_nav->icon = [];
-$page_nav->stack = 10.2;
 
-Config::set('panel.nav', [
-    'lot' => ':lot',
-    'search' => ':search',
-    'page' => $page_nav,
-    'site' => ':site'
+Config::set('panel.tools.header', [
+    'file' => [
+        'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
+        'path' => $path,
+        '>>' => 's',
+        'query' => [
+            'tab:' . $a[0] => [
+                'active' => 'file'
+            ]
+        ]
+    ],
+    'folder' => [
+        'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
+        'path' => $path,
+        '>>' => 's',
+        'query' => [
+            'tab:' . $a[0] => [
+                'active' => 'folder'
+            ]
+        ]
+    ],
+    'more' => [
+        2 => [
+            'class[]' => [9999 => 'text']
+        ],
+        'title' => false,
+        'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']]
+    ]
 ]);

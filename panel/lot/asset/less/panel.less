@@ -40,16 +40,10 @@ a {
   }
 }
 .button {
-  &.text,
-  &.link {
+  &.text {
     background:none;
-    border:0;
-    color:inherit;
-    .border-radius(0);
-    .box-shadow(none);
-  }
-  &.link {
     color:#89a;
+    .box-shadow(none);
     &:hover {
       color:lighten(#89a, 5%);
     }

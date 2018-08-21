@@ -1,17 +1,33 @@
 <?php
 
-require __DIR__ . DS . 'engine' . DS . 'ignite.php';
-require __DIR__ . DS . 'engine' . DS . 'fire.php';
+$state = Extend::state('panel');
+$p = $state['path'];
 
-Route::set(['panel/::%s%::/%*%/%i%', 'panel/::%s%::/%*%'], function($act = 'g', $path = "", $step = null) use($language, $config) {
-    Asset::reset();
-    $chops = explode('/', $path);
-    Lot::set([
-        '_act' => $act,
-        '_chops' => $chops,
-        '_path' => $path,
-        '_step' => $step
-    ]);
-    Config::set('trace', new Anemon([$language->{$chops[0]}, $config->title], ' &#x00B7; '));
-    Shield::attach(__DIR__ . DS . 'lot' . DS . 'shield' . DS . 'files.php');
-});
+$i = $url->i;
+$chops = explode('/', $url->path);
+
+if ($chops && $chops[0] === $p) {
+
+    $p = array_shift($chops);
+    $act = array_shift($chops);
+    $path = implode('/', $chops);
+
+    if ($f = File::exist(LOT . DS . $path)) {
+        if ($i !== null && $f = File::exist(LOT . DS . $path . DS . $i)) {
+            $GLOBALS['URL']['path'] .= '/' . $i;
+            $GLOBALS['URL']['clean'] .= '/' . $i;
+            $GLOBALS['URL']['i'] = null;
+        }
+        Config::set('is', [
+            'error' => false,
+            'file' => is_file($f) ? $f : false,
+            'files' => is_dir($f) ? $f : false
+        ]);
+    }
+
+    require __DIR__ . DS . 'engine' . DS . 'ignite.php';
+    require __DIR__ . DS . 'engine' . DS . 'fire.php';
+
+    require __DIR__ . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';
+
+}

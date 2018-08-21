@@ -166,16 +166,16 @@ $body.data('$nav[]', $navs);
 if ($navs.length) {
     $uls = $navs.find('ul ul');
     $navs.on('nav:enter', function(e, $source, $target) {
-        if ($target.hasClass('show')) {
-            $target.removeClass('show').parent().removeClass('active')
-                .find('ul.show').removeClass('show').parent('li.active').removeClass('active');
+        if ($target.hasClass('enter')) {
+            $target.removeClass('enter').parent().removeClass('active')
+                .find('ul.enter').removeClass('enter').parent('li.active').removeClass('active');
         } else {
-            $target.addClass('show').parent().addClass('active')
-                .siblings().find('ul.show').removeClass('show').parent('li.active').removeClass('active');
+            $target.addClass('enter').parent().addClass('active')
+                .siblings().find('ul.enter').removeClass('enter').parent('li.active').removeClass('active');
         }
     });
     $navs.on('nav:exit', function(e, $source, $target) {
-        $uls.removeClass('show').parent().removeClass('active');
+        $uls.removeClass('enter').parent().removeClass('active');
     });
     $navs.each(function(i) {
         var $nav = $(this);
