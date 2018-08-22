@@ -10,8 +10,9 @@ Route::set([
     Lot::set('panel', new State([
         '>>' => $act,
         'chops' => $chops,
-        'path' => $path
+        'id' => ($id = array_shift($chops)),
+        'path' => implode(DS, $chops)
     ]));
-    Config::set('trace', new Anemon([$language->{$chops[0]}, $config->title], ' &#x00B7; '));
+    Config::set('trace', new Anemon([$language->{$id}, $config->title], ' &#x00B7; '));
     Shield::attach(__DIR__ . DS . '..' . DS . '..' . DS . 'shield' . DS . 'files.php');
-}, 1);
+}, 19);
