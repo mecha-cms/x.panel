@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="<?php echo $site->direction; ?>" class>
+<html lang="<?php echo $site->language; ?>" dir="<?php echo $site->direction; ?>" class>
   <head>
     <meta charset="<?php echo $site->charset; ?>">
     <meta name="viewport" content="width=device-width">
@@ -10,4 +10,3 @@
   </head>
   <body>
     <?php Shield::get(__DIR__ . DS . 'nav.php'); ?>
-    <div class="desk">

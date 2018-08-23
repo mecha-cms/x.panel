@@ -5,9 +5,20 @@ function _attr($input, &$attr, $p, $id, $i, $alt = []) {
         'class[]' => [$p, $p . ':' . $id, $p . ':' . $id . '.' . $i],
         'id' => $p . ':' . $id . '.' . $i
     ], $alt);
-    if (!empty($input->kind)) {
-        $attr['class[]'] = array_merge($attr['class[]'], (array) $input->kind);
+    if (!empty($input['kind'])) {
+        $attr['class[]'] = array_merge($attr['class[]'], (array) $input['kind']);
     }
+}
+
+function _config($defs = [], ...$any) {
+    $out = [];
+    while ($k = array_shift($any)) {
+        if ($v = \Config::get('panel.' . $k, [], true)) {
+            $out = array_replace_recursive($out, $v);
+            break;
+        }
+    }
+    return array_replace_recursive($defs, $out);
 }
 
 function text($input, $icon = []) {
@@ -32,11 +43,11 @@ function icon($input, $attr = []) {
             return $icon_none;
         }
         return $input;
-    } else if (isset($input->content)) {
-        if ($input->content === "") {
+    } else if (isset($input['content'])) {
+        if ($input['content'] === "") {
             return $icon_none;
         }
-        return $input->content;
+        return $input['content'];
     }
     // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
     if (count($input) === 1) {
@@ -57,29 +68,31 @@ function icon($input, $attr = []) {
 function a($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     _attr($input, $attr, 'a', $id, $i, [
         'href' => a_href($input),
-        'title' => isset($input->description) ? \To::text($input->description) : null
+        'title' => isset($input['description']) ? \To::text($input['description']) : null
     ]);
-    return \HTML::unite('a', text(isset($input->title) ? $input->title : "", isset($input->icon) ? $input->icon : []), $attr);
+    $s = \HTML::unite('a', text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []), $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function a_href($input) {
     global $url;
-    $u = isset($input->path) ? $url . '/' . \Extend::state('panel', 'path') . '/::' . (isset($input->{'>>'}) ? $input->{'>>'} : 'g') . '::/' . ltrim($input->path, '/') : "";
-    if (isset($input->url)) {
-        $u = \URL::long($input->url);
-    } else if (isset($input->link)) {
-        $u = $input->link;
+    $u = isset($input['path']) ? $url . '/' . \Extend::state('panel', 'path') . '/::' . (isset($input['>>']) ? $input['>>'] : 'g') . '::/' . ltrim($input['path'], '/') : "";
+    if (isset($input['url'])) {
+        $u = \URL::long($input['url']);
+    } else if (isset($input['link'])) {
+        $u = $input['link'];
     }
-    if (isset($input->query)) {
-        $u .= \HTTP::query(\a($input->query));
+    if (isset($input['query'])) {
+        $u .= \HTTP::query($input['query']);
     }
-    if (isset($input->hash)) {
-        $u .= '#' . urlencode($input->hash);
+    if (isset($input['hash'])) {
+        $u .= '#' . urlencode($input['hash']);
     }
     return $u;
 }
@@ -87,82 +100,92 @@ function a_href($input) {
 function button($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     $href = a_href($input);
     _attr($input, $attr, 'button', $id, $i);
     if ($href !== "") {
-        if (!empty($input->x)) {
+        if (!empty($input['x'])) {
             $attr['class[]'][] = 'disabled';
         }
         $attr['href'] = $href;
-    } else if (!empty($input->x)) {
+    } else if (!empty($input['x'])) {
         $attr['disabled'] = true;
     }
-    $s = text(isset($input->title) ? $input->title : "", isset($input->icon) ? $input->icon : []);
-    return \HTML::unite($href !== "" ? 'a' : 'button', $s, $attr);
+    $s = text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []);
+    $s = \HTML::unite($href !== "" ? 'a' : 'button', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function tools($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     global $language;
     $a = [];
-    foreach ($input as $k => $v) {
-        if (!isset($v->title)) {
-            $v->title = $language->{$k};
+    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+        if (!isset($v['title'])) {
+            $v['title'] = $language->{$k};
         }
         $a[] = button($v, $k, [], $i);
     }
     _attr($input, $attr, 'tools', $id, $i);
-    return \HTML::unite('div', implode(' ', $a), $attr);
+    $s = \HTML::unite('div', implode(' ', $a), $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function nav($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     _attr($input, $attr, 'nav', $id, $i);
-    return \HTML::unite('nav', nav_ul($input, $id, [], $i), $attr);
+    $s = \HTML::unite('nav', nav_ul($input, $id, [], $i), $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function nav_ul($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     $s = "";
-    foreach (\Anemon::eat(\a($input))->sort([1, 'stack'], true)->vomit() as $k => $v) {
-        $s .= nav_li(\o($v), $k, [], $i);
+    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+        $s .= nav_li($v, $k, [], $i);
     }
     _attr($input, $attr, 'ul', $id, $i);
-    return \HTML::unite('ul', $s, $attr);
+    $s = \HTML::unite('ul', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function nav_li($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     _attr($input, $attr, 'li', $id, $i);
-    if (!empty($input->active)) {
+    if (!empty($input['active'])) {
         $attr['class[]'][] = 'active';
     }
-    return \HTML::unite('li', nav_a($input, $id, [], $i) . (isset($input->{'+'}) ? nav_ul($input->{'+'}, $id, [], $i + 1) : ""), $attr);
+    $s = \HTML::unite('li', nav_a($input, $id, [], $i) . (isset($input['+']) ? nav_ul($input['+'], $id, [], $i + 1) : ""), $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function nav_li_search($input, $id = 0, $attr = [], $i = 0) {
     $attr = array_replace([[], []], $attr);
     _attr($input, $attr[0], 'li', $id, $i);
-    if (!empty($attr[0]->active)) {
+    if (!empty($attr[0]['active'])) {
         $attr[0]['class[]'][] = 'active';
     }
     return \HTML::unite('li', search($input, $id, $attr[1], $i), $attr[0]);
@@ -171,38 +194,42 @@ function nav_li_search($input, $id = 0, $attr = [], $i = 0) {
 function nav_a($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
-    global $config, $language, $url;
-    if (!empty($input->target)) {
-        $attr['target'] = $input->target;
+    global $config, $language;
+    if (!empty($input['target'])) {
+        $attr['target'] = $input['target'];
     }
-    if (!isset($input->title)) {
-        $input->title = $language->{$id};
+    if (!isset($input['title'])) {
+        $input['title'] = $language->{$id};
     }
-    if (isset($input->{'+'})) {
-        $input->icon = array_replace_recursive(isset($input->icon) ? $input->icon : [], [
+    if (isset($input['+'])) {
+        $input['icon'] = array_replace_recursive(isset($input['icon']) ? $input['icon'] : [], [
             1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? ($config->direction === 'ltr' ? 'M10,17L15,12L10,7V17Z' : 'M14,7L9,12L14,17V7Z') : 'M7,10L12,15L17,10H7Z') . '"></path></svg>'
         ]);
     }
-    return a($input, $id, $attr, $i);
+    $s = a($input, $id, $attr, $i);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function search($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
-    global $config, $language;
-    $s = \Form::text(isset($input->q) ? $input->q : 'q', null, isset($input->title) ? \To::text($input->title) : null, ['class[]' => ['input']]);
+    global $language;
+    $s = \Form::text(isset($input['q']) ? $input['q'] : 'q', null, isset($input['title']) ? \To::text($input['title']) : null, ['class[]' => ['input']]);
     $s .= ' ' . \Form::submit(null, null, $language->search, ['class[]' => ['button']]);
     $s = '<p class="field expand"><span>' . $s . '</span></p>';
     _attr($input, $attr, 'form', $id, $i, [
         'action' => a_href($input)
     ]);
-    return \HTML::unite('form', $s, $attr);
+    $s = \HTML::unite('form', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 function files($folder, $id = 0, $attr = [], $i = 0) {
@@ -373,19 +400,13 @@ function pager($folder, $id = 0, $attr = [], $i = 0) {
 function tabs($input, $active = null, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
-    } else if (isset($input->content)) {
-        return $input->content;
     }
     global $language;
     $s = "";
-    foreach (\Anemon::eat(\a($input))->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         $ss = "";
         if (isset($v['field'])) {
-            $ii = 0;
-            foreach (\Anemon::eat($v['field'])->sort([1, 'stack'], true)->vomit() as $kk => $vv) {
-                $ss .= field($kk, \o($vv), $id . '.tab:' . $k, [], $ii);
-                ++$ii;
-            }
+            $ss .= fields($v['field'], $id . '.tab', [], $i);
         } else if (isset($v['files'])) {
             $ss .= files(...$v['files']);
         }
@@ -398,7 +419,11 @@ function tabs($input, $active = null, $id = 0, $attr = [], $i = 0) {
         $s .= '<section class="tab:' . $k . ($k === $active ? ' active' : "") . '" id="tab:' . $k . '" title="' . $v['title'] . '">' . $ss . '</section>';
     }
     _attr($input, $attr, 'tabs', $id, $i);
-    return \HTML::unite('div', $s, $attr);
+    $s = \HTML::unite('div', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }
 
 \Config::set('panel.field', [
@@ -407,27 +432,35 @@ function tabs($input, $active = null, $id = 0, $attr = [], $i = 0) {
     'height' => false
 ]);
 
+function fields($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    }
+    $s = "";
+    $ii = 0;
+    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+        $s .= field($k, $v, $id, [], $ii);
+        ++$ii;
+    }
+    return $s;
+}
+
 function field($key, $input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
     }
-    if ($defs = \Config::get('panel.field', [])) {
-        $input = \o(array_replace_recursive(\a($defs), \a($input)));
-    }
-    if (isset($input->content)) {
-        return $input->content;
-    }
+    $input = _config($input, 'field', 'field:' . $id);
     global $language;
     _attr($input, $attr, 'field', $id, $i);
     $s = "";
-    $kind = isset($input->kind) ? (array) $input->kind : [];
+    $kind = isset($input['kind']) ? (array) $input['kind'] : [];
     $style = [];
-    $title = $language->{isset($input->key) ? $input->key : $key};
-    $type = isset($input->type) ? $input->type : null;
-    $value = isset($input->value) ? $input->value : null;
-    $placeholder = isset($input->placeholder) ? $input->placeholder : null;
-    $width = !empty($input->width) ? $input->width : null;
-    $height = !empty($input->height) ? $input->height : null;
+    $title = $language->{isset($input['key']) ? $input['key'] : $key};
+    $type = isset($input['type']) ? $input['type'] : null;
+    $value = isset($input['value']) ? $input['value'] : null;
+    $placeholder = isset($input['placeholder']) ? $input['placeholder'] : null;
+    $width = !empty($input['width']) ? $input['width'] : null;
+    $height = !empty($input['height']) ? $input['height'] : null;
     if ($width === true) {
         $kind[] = 'width';
     } else if (is_numeric($width)) {
@@ -455,5 +488,83 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
         $s .= \Form::textarea($key, $value, $placeholder, $attr_alt);
     }
     $s .= '</span>';
-    return \HTML::unite('p', $s, $attr);
+    $s = \HTML::unite('p', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
+}
+
+function desk($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    }
+    _attr($input, $attr, 'desk', $id, $i);
+    $s = "";
+    if (isset($input['header'])) {
+        $s .= desk_header($input['header'], $id, [], $i);
+    }
+    if (isset($input['body'])) {
+        $s .= desk_body($input['body'], $id, [], $i);
+    }
+    if (isset($input['footer'])) {
+        $s .= desk_footer($input['footer'], $id, [], $i);
+    }
+    $s = \HTML::unite('div', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
+}
+
+function desk_header($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    }
+    _attr($input, $attr, 'header', $id, $i);
+    $s = "";
+    if (isset($input['tool'])) {
+        $s .= tools($input['tool'], $id, [], $i);
+    }
+    $s = \HTML::unite('header', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
+}
+
+function desk_body($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    }
+    _attr($input, $attr, 'body', $id, $i);
+    $s = "";
+    if (isset($input['files'])) {
+        $s .= files($input['files'], $id, [], $i);
+    } else if (isset($input['field'])) {
+        $s .= fields($input['field'], $id, [], $i);
+    }
+    $s = \HTML::unite('main', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
+}
+
+function desk_footer($input, $id = 0, $attr = [], $i = 0) {
+    if (is_string($input)) {
+        return $input;
+    }
+    _attr($input, $attr, 'footer', $id, $i);
+    $s = "";
+    if (isset($input['tool'])) {
+        $s .= tools($input['tool'], $id, [], $i);
+    } else if (isset($input['pager'])) {
+        $s .= pager($input['pager'], $id, [], $i);
+    }
+    $s = \HTML::unite('footer', $s, $attr);
+    if (isset($input['content'])) {
+        return __replace__($input['content'], array_replace($input, ['content' => $s]));
+    }
+    return $s;
 }

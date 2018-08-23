@@ -89,10 +89,10 @@ foreach ($links as $v) {
 Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
 
 Config::set('panel.nav.search', [
-    'content' => panel\nav_li_search(o([
+    'content' => panel\nav_li_search([
         'title' => $language->{$a[0]},
         'path' => $path
-    ]), 'search'),
+    ], 'search'),
     'stack' => 10.1
 ]);
 
@@ -114,30 +114,46 @@ Config::set('panel.nav.site', [
 ]);
 
 
-Config::set('panel.tool.header', [
-    'file' => [
-        'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-        'path' => $path,
-        '>>' => 's',
-        'query' => [
-            'tab:' . $a[0] => [
-                'active' => 'file'
+
+
+Config::set('panel.desk', [
+    'header' => [
+        'tool' => [
+            'file' => [
+                '>>' => 's',
+                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
+                'path' => $path,
+                'stack' => 10,
+                'query' => [
+                    'tab:' . $a[0] => [
+                        'active' => 'file'
+                    ]
+                ],
+                'stack' => 10
+            ],
+            'folder' => [
+                '>>' => 's',
+                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
+                'path' => $path,
+                'query' => [
+                    'tab:' . $a[0] => [
+                        'active' => 'folder'
+                    ]
+                ],
+                'stack' => 10.1
+            ],
+            'more' => [
+                'title' => false,
+                'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']],
+                'kind' => ['text'],
+                'stack' => 10.2
             ]
         ]
     ],
-    'folder' => [
-        'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-        'path' => $path,
-        '>>' => 's',
-        'query' => [
-            'tab:' . $a[0] => [
-                'active' => 'folder'
-            ]
-        ]
+    'body' => [
+        'files' => LOT . DS . $path
     ],
-    'more' => [
-        'title' => false,
-        'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']],
-        'kind' => ['text']
+    'footer' => [
+        'pager' => LOT . DS . $path
     ]
 ]);
