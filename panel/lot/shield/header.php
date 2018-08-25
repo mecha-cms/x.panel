@@ -9,4 +9,5 @@
     <?php echo Asset::js(EXTEND . '/panel/lot/asset/index.js'); ?>
   </head>
   <body>
+    <?php echo $message; ?>
     <?php Shield::get(__DIR__ . DS . 'nav.php'); ?>

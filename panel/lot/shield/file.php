@@ -1,5 +1,3 @@
 <?php Shield::get(__DIR__ . DS . 'header.php'); ?>
-<header class="desk-header"></header>
-<main class="desk-body">Body</main>
-<footer class="desk-footer"></footer>
+<?php echo panel\desk(panel\_config([], 'desk', 'desk:' . $panel->id), $panel->id); ?>
 <?php Shield::get(__DIR__ . DS . 'footer.php'); ?>

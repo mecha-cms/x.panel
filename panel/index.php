@@ -3,30 +3,27 @@
 $state = Extend::state('panel');
 $p = $state['path'];
 
-$i = $url->i;
 $chops = explode('/', $url->path);
+$r = array_shift($chops);
 
-if ($chops && $chops[0] === $p) {
+if ($r === $p) {
 
-    $p = array_shift($chops);
-    $act = array_shift($chops);
-    $path = implode('/', $chops);
-
-    if ($f = File::exist(LOT . DS . $path)) {
-        if ($i !== null && $f = File::exist(LOT . DS . $path . DS . $i)) {
-            $GLOBALS['URL']['path'] .= '/' . $i;
-            $GLOBALS['URL']['clean'] .= '/' . $i;
-            $GLOBALS['URL']['i'] = null;
-        }
-        Config::set('is', [
-            'error' => false,
-            'file' => is_file($f) ? $f : false,
-            'files' => is_dir($f) ? $f : false
-        ]);
-    }
+    Lot::set('panel', $panel = new State([
+        '$' => $r,
+        '>>' => ($act = str_replace('::', "", array_shift($chops))),
+        'id' => ($id = array_shift($chops)),
+        'chops' => $chops,
+        'path' => implode('/', $chops),
+        'state' => $state,
+        'view' => ($view = basename(HTTP::get('view', 'file', false))),
+        'v' => $view . (!$chops || $url->i !== null ? 's' : "")
+    ]));
 
     require __DIR__ . DS . 'engine' . DS . 'ignite.php';
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
+
+    if ($f = File::exist(__DIR__ . DS . 'lot' . DS . 'worker' . DS . $panel->v . '.php')) require $f;
+    if ($f = File::exist(__DIR__ . DS . 'lot' . DS . 'worker' . DS . $panel->v . DS . $id . '.php')) require $f;
 
     require __DIR__ . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';
 

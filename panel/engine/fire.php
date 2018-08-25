@@ -110,50 +110,28 @@ Config::set('panel.nav.site', [
             'stack' => 10.1
         ]
     ],
-    'stack' => 10.3
+    'stack' => 20
 ]);
 
-
-
-
-Config::set('panel.desk', [
-    'header' => [
-        'tool' => [
-            'file' => [
-                '>>' => 's',
-                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => $path,
-                'stack' => 10,
-                'query' => [
-                    'tab:' . $a[0] => [
-                        'active' => 'file'
-                    ]
-                ],
-                'stack' => 10
-            ],
-            'folder' => [
-                '>>' => 's',
-                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => $path,
-                'query' => [
-                    'tab:' . $a[0] => [
-                        'active' => 'folder'
-                    ]
-                ],
-                'stack' => 10.1
-            ],
-            'more' => [
-                'title' => false,
-                'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']],
-                'kind' => ['text'],
-                'stack' => 10.2
-            ]
+Config::set('panel.nav.user', [
+    'title' => false,
+    'icon' => [[$icons['user']]],
+    'kind' => ['right'],
+    '+' => [
+        'exit' => [
+            'path' => 'enter',
+            '>>' => 'r',
+            'stack' => 10
         ]
     ],
-    'body' => [
-        'files' => LOT . DS . $path
-    ],
-    'footer' => [
-        'pager' => LOT . DS . $path
-    ]
+    'stack' => 10.2
 ]);
+
+/*
+if ($query = HTTP::get('q')) {
+    panel\message('info', 'Search results for <em>' . To::text($query) . '</em>', ['view' => [
+        'title' => 'View',
+        'url' => ""
+    ]]);
+}
+*/
