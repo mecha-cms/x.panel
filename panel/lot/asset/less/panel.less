@@ -23,6 +23,10 @@ a {
     color:darken(#89a, 5%);
   }
 }
+pre {
+  background:#ebebf2;
+  color:inherit;
+}
 .button,
 .pager > a,
 .pager > span a {
@@ -60,6 +64,13 @@ a {
   color:lighten(@color, 40%);
   border-color:lighten(@color, 75%) lighten(@color, 85%) lighten(@color, 90%);
   .box-shadow(inset 0 1px 1px rgba(0,0,0,.05));
+}
+
+.input.plain {
+  background:none;
+  color:inherit;
+  border:0;
+  .box-shadow(none);
 }
 
 .nav {

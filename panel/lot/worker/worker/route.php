@@ -1,13 +1,14 @@
 <?php
 
 Hook::set('on.ready', function() use($url) {
-    if (strpos($url->path, 'panel/::') === 0) {
+    $p = Extend::state('panel', 'path');
+    if (strpos($url->path, $p . '/::') === 0) {
         Asset::reset();
         Route::reset();
     }
     Route::set([
-        'panel/::%s%::/%*%/%i%',
-        'panel/::%s%::/%*%'
+        $p . '/::%s%::/%*%/%i%',
+        $p . '/::%s%::/%*%'
     ], function($act = 'g', $path = "", $step = null) {
         extract(Lot::get(null, []));
         // Prevent directory traversal attack <https://en.wikipedia.org/wiki/Directory_traversal_attack>
@@ -23,6 +24,8 @@ Hook::set('on.ready', function() use($url) {
                 'file' => is_file($f) ? $f : false,
                 'files' => is_dir($f) ? $f : false
             ]);
+        } else {
+            panel\error(404);
         }
         Config::set('trace', new Anemon([$language->{$panel->id}, $config->title], ' &#x00B7; '));
         Shield::attach(__DIR__ . DS . '..' . DS . '..' . DS . 'shield' . DS . $panel->v . '.php');

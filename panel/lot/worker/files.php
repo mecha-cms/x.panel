@@ -14,12 +14,14 @@
 
 // `panel.file.tools`
 
+$path = $panel->id . '/' . $panel->path;
+
 Config::set('panel.desk', [
     'header' => [
-        'tools' => [
+        'tool[]' => [
             'file' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => $panel->path,
+                'path' => $path,
                 '>>' => 's',
                 'stack' => 10,
                 'query' => [
@@ -30,7 +32,7 @@ Config::set('panel.desk', [
             ],
             'folder' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => $panel->path,
+                'path' => $path,
                 '>>' => 's',
                 'query' => [
                     'q' => false,
@@ -47,7 +49,13 @@ Config::set('panel.desk', [
         ]
     ],
     'body' => [
-        'files' => true
+        'tab[]' => [
+            $panel->id . 's' => [
+                'title' => $language->files,
+                'file[]' => true,
+                'stack' => 10
+            ]
+        ]
     ],
     'footer' => [
         'pager' => true
