@@ -22,79 +22,58 @@ function _config($defs = [], ...$any) {
     return array_replace_recursive($defs, $out);
 }
 
-function _pager($files, $chunk, $range, $path, $first, $previous, $next, $last) {
-    global $url;
-    $s = "";
-    $path .= '/';
-    $current = (int) $url->i ?: 1;
-    $count = count($files);
-    $div = (int) floor($range / 2);
-    $q = $url->query('&amp;'); // Include current URL query(es)…
-    $chunk = (int) ceil($count / $chunk);
-    $has_previous = $current > 1 ? $current - 1 : false;
-    $has_next = $current < $chunk ? $current + 1 : false;
-    if ($chunk > 1) {
-        if (!empty($previous)) {
-            $s .= '<span>';
-            $s .= $has_previous ? '<a href="' . $path . $has_previous . $q . '" title="' . $previous . '" rel="prev">' . $previous . '</a>' : '<span>' . $previous . '</span>';
-            $s .= '</span> ';
-        }
-        if (!empty($range)) {
-            $s .= '<span>';
-            // Enable range view if `$chunk` is greater than `$range`
-            if ($chunk > $range) {
-                // Jump!
-                if ($current >= $range) {
-                    $s .= '<a href="' . $path . '1' . $q . '" title="' . $first . '" rel="prev">1</a>';
-                    $s .= ' <span>&#x2026;</span>';
-                }
-                // Closer to the first chunk
-                if ($current < $range) {
-                    for ($i = 1; $i <= $range; ++$i) {
-                        if ($i > 1) {
-                            $s .= ' ';
-                        }
-                        $s .= $i === $current ? '<b>' . $i . '</b>' : '<a href="' . $path . $i . $q . '" title="' . $i . '" rel="' . ($i < $current ? 'prev' : 'next') . '">' . $i . '</a>';
-                    }
-                // Closer to the last chunk
-                } else if ($current >= ($chunk - $div - 1)) {
-                    for ($i = $chunk - $range + 1; $i <= $chunk; ++$i) {
-                        if ($i > 1) {
-                            $s .= ' ';
-                        }
-                        $s .= $i === $current ? '<b>' . $i . '</b>' : '<a href="' . $path . $i . $q . '" title="' . $i . '" rel="' . ($i < $current ? 'prev' : 'next') . '">' . $i . '</a>';
-                    }
-                // Somewhere in the middle of the chunk
-                } else if ($current >= $range && $current < ($chunk - $div)) {
-                    for ($i = $current - $div; $i <= ($current + $div); ++$i) {
-                        if ($i > 1) {
-                            $s .= ' ';
-                        }
-                        $s .= $i === $current ? '<b>' . $i . '</b>' : '<a href="' . $path . $i . $q . '" title="' . $i . '" rel="' . ($i < $current ? 'prev' : 'next') . '">' . $i . '</a>';
-                    }
-                }
-                // Jump!
-                if ($current < ($chunk - $range + $div)) {
-                    $s .= ' <span>&#x2026;</span>';
-                    $s .= ' <a href="' . $path . $chunk . $q . '" title="' . $last . '" rel="next">' . $chunk . '</a>';
-                }
-            // Disable range view if `$chunk` is less than `$range`
-            } else {
-                for ($i = 1; $i <= $chunk; ++$i) {
-                    if ($i > 1) {
-                        $s .= ' ';
-                    }
-                    $s .= $i === $current ? '<b>' . $i . '</b>' : '<a href="' . $path . $i . $q . '" title="' . ($i === 1 ? $first : ($i === $chunk ? $last : $i)) . '" rel="' . ($i < $current ? 'prev' : 'next') . '">' . $i . '</a>';
-                }
-            }
-            $s .= '</span> ';
-        }
-        if (!empty($next)) {
-            $s .= '<span>';
-            $s .= $has_next ? '<a href="' . $path . $has_next . $q . '" title="' . $next . '" rel="next">' . $next . '</a>' : '<span>' . $next . '</span>';
-            $s .= '</span>';
+// <http://salman-w.blogspot.com/2014/04/stackoverflow-like-_pager.html>
+function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $last) {
+    $A = 1;
+    $Z = ceil($count / $chunk);
+    if ($Z === 1) {
+        return;
+    }
+    if ($current <= $kin + $kin) {
+        $min = $A;
+        $max  = min($A + $kin + $kin, $Z);
+    } else if ($current > $Z - $kin - $kin) {
+        $min = $Z - $kin - $kin;
+        $max  = $Z;
+    } else {
+        $min = $current - $kin;
+        $max  = $current + $kin;
+    }
+    $s = '<span>';
+    if ($current === $A) {
+        $s .= '<b title="' . $previous . '">' . $previous . '</b>';
+    } else {
+        $s .= '<a href="' . (is_callable($fn) ? call_user_func($fn, $current - 1) : sprintf($fn, $current - 1)) . '" title="' . $previous . '" rel="prev">' . $previous . '</a>';
+    }
+    $s .= '</span> ';
+    $s .= '<span>';
+    if ($min > $A) {
+        $s .= '<a href="' . (is_callable($fn) ? call_user_func($fn, $A) : sprintf($fn, $A)) . '" title="' . $first . '" rel="prev">' . $A . '</a>';
+        if ($min > $A + 1) {
+            $s .= ' <span>&#x2026;</span>';
         }
     }
+    for ($i = $min; $i <= $max; ++$i) {
+        if ($current === $i) {
+            $s .= ' <b title="' . $i . '">' . $i . '</b>';
+        } else {
+            $s .= ' <a href="' . (is_callable($fn) ? call_user_func($fn, $i) : sprintf($fn, $i)) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+        }
+    }
+    if ($max < $Z) {
+        if ($max < $Z - 1) {
+            $s .= ' <span>&#x2026;</span>';
+        }
+        $s .= ' <a href="' . (is_callable($fn) ? call_user_func($fn, $Z) : sprintf($fn, $Z)) . '" title="' . $last . '" rel="next">' . $Z . '</a>';
+    }
+    $s .= '</span>';
+    $s .= ' <span>';
+    if ($current === $Z) {
+        $s .= '<b title="' . $next . '">' . $next . '</b>';
+    } else {
+        $s .= '<a href="' . (is_callable($fn) ? call_user_func($fn, $current + 1) : sprintf($fn, $current + 1)) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+    }
+    $s .= '</span>';
     return $s;
 }
 
@@ -597,12 +576,8 @@ function nav_li($input, $id = 0, $attr = [], $i = 0) {
 }
 
 function nav_li_search($input, $id = 0, $attr = [], $i = 0) {
-    $attr = array_replace([[], []], $attr);
-    _attr($input, $attr[0], 'li', $id, $i);
-    if (!empty($attr[0]['active'])) {
-        $attr[0]['class[]'][] = 'current';
-    }
-    return \HTML::unite('li', search($input, $id, $attr[1], $i), $attr[0]);
+    _attr($input, $attr, 'search', $id, $i);
+    return search($input, $id, $attr, $i);
 }
 
 // [...*nav_li]
@@ -634,16 +609,9 @@ function pager($folder, $id = 0, $attr = [], $i = 0) {
         }
         $files = q($files);
     }
-    $s = _pager(
-        $files,
-        $state['chunk'],
-        $state['range'],
-        $url->clean,
-        $language->first,
-        $language->previous,
-        $language->next,
-        $language->last
-    );
+    $s = _pager($url->i ?: 1, count($files), $state['chunk'], $state['kin'], function($i) use($url) {
+        return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
+    }, $language->first, $language->previous, $language->next, $language->last);
     if ($s) {
         _attr(0, $attr, 'pager', $id, $i);
         return \HTML::unite('p', $s, $attr);

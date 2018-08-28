@@ -46,7 +46,7 @@ foreach (glob(EXTEND . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
         $f . DS . 'about.page',
         $f . DS . 'about.' . $config->language . '.page'
     ]);
-    $title = Page::open($f)->get('title') ?: $n;
+    $title = Page::open($f)->get('title', $n);
     $links[$title] = [
         'title' => $title,
         'icon' => [""],
@@ -73,7 +73,7 @@ foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . D
         $f . DS . 'about.page',
         $f . DS . 'about.' . $config->language . '.page'
     ]);
-    $title = Page::open($f)->get('title') ?: Path::N($dir);
+    $title = Page::open($f)->get('title', Path::N($dir));
     $links[$title] = [
         'title' => $title,
         'icon' => [""],
@@ -95,7 +95,7 @@ Config::set('panel.nav.search', [
     'content' => panel\nav_li_search([
         'title' => $language->{$a[0]},
         'path' => $path
-    ], 'search'),
+    ], $a[0]),
     'stack' => 10.1
 ]);
 
@@ -117,8 +117,7 @@ Config::set('panel.nav.site', [
 ]);
 
 Config::set('panel.nav.user', [
-    'title' => false,
-    'icon' => [[$icons->user]],
+    'title' => '<img class="icon only" alt="" src="' . To::URL(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'png' . DS . 'avatar.png') . '">',
     'kind' => ['right'],
     'stack' => 10.2
 ]);
