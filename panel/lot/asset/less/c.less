@@ -82,6 +82,8 @@ html.form body form {
 
 // @nav
 .nav {
+  background:lighten(@color, 10%);
+  color:darken(@color_inverse, 20%);
   line-height:(@y * 2);
   ul,
   li,
@@ -98,39 +100,7 @@ html.form body form {
   ul {
     height:(@y * 2);
     ul {
-      position:absolute;
-      top:100%;
-      left:0;
-      z-index:9999;
-      background:@color_inverse;
-      width:(@x * 8);
-      height:auto;
-      line-height:@y;
-      display:none;
-      &.enter {display:block}
-      ul {
-        top:0;
-        left:100%;
-      }
-      li {float:none}
-      a {
-        padding:(@y * .25) (@x * .5);
-        + i {
-          font-weight:normal;
-          background:@color-a_inverse;
-          color:@color_inverse;
-          top:(@y * .25);
-          right:(@x * .25);
-          min-width:@x;
-          text-align:center;
-          pointer-events:none;
-        }
-      }
-      .icon {
-        margin:0 (@y * -.25);
-        &.right {margin-left:(@x * .5)}
-        &.left {margin-right:(@x * .5)}
-      }
+      .menus;
     }
   }
   li {
@@ -143,43 +113,37 @@ html.form body form {
         ul {right:100%}
       }
     }
-    a:focus,
-    &.current > a {color:@color-a_inverse}
+    &.li\:lot {
+      .color-html;
+      a {
+        .color-a;
+      }
+    }
   }
   a {
     display:block;
     padding:0 (@x * .75);
+    color:darken(@color_inverse, 10%);
     overflow:hidden;
-    + i {
-      font-weight:bold;
-      font-style:normal;
-      font-size:(@z * .75);
-      position:absolute;
-      height:@y;
-      line-height:@y;
-      top:0;
-      right:2px;
-      color:@color-a_inverse;
-      padding:0 (@x * .25);
-    }
   }
   .icon {
-    display:block;
-    margin:(@y * .5) (@x * -.25);
-    &.arrow {
-      color:@color;
-      &.right {margin-left:0}
-      &.left {margin-right:0}
-    }
-    &.right {margin-left:(@x * .5)}
-    &.left {margin-right:(@x * .5)}
+    .margin-icon;
+    &.arrow {color:lighten(@color, 50%)}
+    margin-top:(@y * .5);
   }
   .field {
-    margin:(@y * .25);
+    margin:0;
     .button {display:none}
     .input {
       display:block;
       width:100%;
+      height:(@y * 2);
+      line-height:(@y * 2);
+      margin:0;
+      padding:0 @z;
+      background:@color;
+      color:@color_inverse;
+      border:0;
     }
   }
 }
@@ -190,9 +154,9 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   .nav {
     > ul > li {
       display:none;
-      &.li\:lot\.0,
-      &.li\:search\.0 {display:block}
-      &.li\:search\.0 {
+      &.li\:lot,
+      &.li\:search {display:block}
+      &.li\:search {
         position:absolute;
         top:0;
         right:0;

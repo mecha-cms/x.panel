@@ -22,58 +22,65 @@ function _config($defs = [], ...$any) {
     return array_replace_recursive($defs, $out);
 }
 
-// <http://salman-w.blogspot.com/2014/04/stackoverflow-like-_pager.html>
+// <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
 function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $last) {
-    $A = 1;
-    $Z = ceil($count / $chunk);
-    if ($Z === 1) {
-        return;
+    $begin = 1;
+    $end = (int) ceil($count / $chunk);
+    $s = "";
+    if ($end === 1) {
+        return $s;
     }
     if ($current <= $kin + $kin) {
-        $min = $A;
-        $max  = min($A + $kin + $kin, $Z);
-    } else if ($current > $Z - $kin - $kin) {
-        $min = $Z - $kin - $kin;
-        $max  = $Z;
+        $min = $begin;
+        $max = min($begin + $kin + $kin, $end);
+    } else if ($current > $end - $kin - $kin) {
+        $min = $end - $kin - $kin;
+        $max = $end;
     } else {
         $min = $current - $kin;
-        $max  = $current + $kin;
+        $max = $current + $kin;
     }
-    $s = '<span>';
-    if ($current === $A) {
-        $s .= '<b title="' . $previous . '">' . $previous . '</b>';
-    } else {
-        $s .= '<a href="' . (is_callable($fn) ? call_user_func($fn, $current - 1) : sprintf($fn, $current - 1)) . '" title="' . $previous . '" rel="prev">' . $previous . '</a>';
-    }
-    $s .= '</span> ';
-    $s .= '<span>';
-    if ($min > $A) {
-        $s .= '<a href="' . (is_callable($fn) ? call_user_func($fn, $A) : sprintf($fn, $A)) . '" title="' . $first . '" rel="prev">' . $A . '</a>';
-        if ($min > $A + 1) {
-            $s .= ' <span>&#x2026;</span>';
-        }
-    }
-    for ($i = $min; $i <= $max; ++$i) {
-        if ($current === $i) {
-            $s .= ' <b title="' . $i . '">' . $i . '</b>';
+    if ($previous) {
+        $s = '<span>';
+        if ($current === $begin) {
+            $s .= '<b title="' . $previous . '">' . $previous . '</b>';
         } else {
-            $s .= ' <a href="' . (is_callable($fn) ? call_user_func($fn, $i) : sprintf($fn, $i)) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+            $s .= '<a href="' . call_user_func($fn, $current - 1) . '" title="' . $previous . '" rel="prev">' . $previous . '</a>';
         }
+        $s .= '</span> ';
     }
-    if ($max < $Z) {
-        if ($max < $Z - 1) {
-            $s .= ' <span>&#x2026;</span>';
+    if ($first && $last) {
+        $s .= '<span>';
+        if ($min > $begin) {
+            $s .= '<a href="' . call_user_func($fn, $begin) . '" title="' . $first . '" rel="prev">' . $begin . '</a>';
+            if ($min > $begin + 1) {
+                $s .= ' <span>&#x2026;</span>';
+            }
         }
-        $s .= ' <a href="' . (is_callable($fn) ? call_user_func($fn, $Z) : sprintf($fn, $Z)) . '" title="' . $last . '" rel="next">' . $Z . '</a>';
+        for ($i = $min; $i <= $max; ++$i) {
+            if ($current === $i) {
+                $s .= ' <b title="' . $i . '">' . $i . '</b>';
+            } else {
+                $s .= ' <a href="' . call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+            }
+        }
+        if ($max < $end) {
+            if ($max < $end - 1) {
+                $s .= ' <span>&#x2026;</span>';
+            }
+            $s .= ' <a href="' . call_user_func($fn, $end) . '" title="' . $last . '" rel="next">' . $end . '</a>';
+        }
+        $s .= '</span>';
     }
-    $s .= '</span>';
-    $s .= ' <span>';
-    if ($current === $Z) {
-        $s .= '<b title="' . $next . '">' . $next . '</b>';
-    } else {
-        $s .= '<a href="' . (is_callable($fn) ? call_user_func($fn, $current + 1) : sprintf($fn, $current + 1)) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+    if ($next) {
+        $s .= ' <span>';
+        if ($current === $end) {
+            $s .= '<b title="' . $next . '">' . $next . '</b>';
+        } else {
+            $s .= '<a href="' . call_user_func($fn, $current + 1) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+        }
+        $s .= '</span>';
     }
-    $s .= '</span>';
     return $s;
 }
 
@@ -187,7 +194,7 @@ function desk($input, $id = 0, $attr = [], $i = 0) {
     if (isset($input['content'])) {
         $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
     }
-    return \HTML::unite('div', $s, $attr);
+    return \HTML::unite('main', $s, $attr);
 }
 
 // content: ""
@@ -296,7 +303,7 @@ function error($code = 404) {
 // placeholder: ""
 // stack: +
 // title: ""
-// type: button | button[] | color | date | editor | email | file | hidden | number | pass | radio | range | search | select | select[] | source | tel | text | textarea | toggle | toggle[] | url
+// type: button | button[] | color | editor | file | hidden | radio | range | select | select[] | source | text | textarea | toggle | toggle[]
 // value: ""
 // value[]: ""
 // width: "" | + | ?
@@ -310,7 +317,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $s = "";
     $kind = isset($input['kind']) ? (array) $input['kind'] : [];
     $style = [];
-    $title = $language->{isset($input['key']) ? $input['key'] : $key};
+    $title = isset($input['title']) ? $input['title'] : $language->{isset($input['key']) ? $input['key'] : $key};
     $type = isset($input['type']) ? $input['type'] : null;
     $value = isset($input['value']) ? $input['value'] : null;
     $placeholder = isset($input['placeholder']) ? $input['placeholder'] : $value;
@@ -736,7 +743,13 @@ function tools($input, $id = 0, $attr = [], $i = 0) {
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
-        $a[] = button($v, $k, [], $i);
+        if (isset($v['menu[]'])) {
+            $hash = dechex(crc32($id . $k . $i));
+            \Config::set('panel.$.menu[].' . $hash, $v['menu[]']);
+            $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
+        } else {
+            $a[] = button($v, $k, [], $i);
+        }
     }
     _attr($input, $attr, 'tools', $id, $i);
     $s = implode(' ', $a);
@@ -744,4 +757,12 @@ function tools($input, $id = 0, $attr = [], $i = 0) {
         $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
+}
+
+
+function menus($input, $id = 0, $attr = [], $i = 0) {
+    _attr(0, $attr, 'menus', $id, $i, [
+        'hidden' => true
+    ]);
+    return nav_ul($input, $id, $attr, $i);
 }

@@ -1,7 +1,7 @@
 <?php
 
-Hook::set('on.ready', function() use($url) {
-    $p = Extend::state('panel', 'path');
+Hook::set('on.ready', function() use($panel, $url) {
+    $p = $panel->{'$'};
     if (strpos($url->path, $p . '/::') === 0) {
         Asset::reset();
         Route::reset();
@@ -29,5 +29,13 @@ Hook::set('on.ready', function() use($url) {
         }
         Config::set('trace', new Anemon([$language->{$panel->id}, $config->title], ' &#x00B7; '));
         Shield::attach(__DIR__ . DS . '..' . DS . '..' . DS . 'shield' . DS . $panel->v . '.php');
+    }, 0);
+    Route::set($p . '/gate', function() {
+        $path = str_replace('/', DS, HTTP::post('path'));
+        $name = basename(HTTP::post('name'));
+        $directory = str_replace('/', DS, HTTP::post('directory'));
+        $consent = HTTP::post('consent', 0600);
+        $content = HTTP::post('file.content');
+        File::set($content)->saveTo(LOT . DS . rtrim($path . DS . $directory, DS) . DS . $name, $consent);
     }, 0);
 }, 0);

@@ -321,15 +321,15 @@ $('.select.select-input').each(function() {
 });
 
 
-var $menus = $('.menu');
+var $menus = $('.menus');
 
 $body.data('$menu[]', $menus);
 
 if ($menus.length) {
     $doc.on("click", function() {
-        $menus.prop('hidden', true);
+        $menus.prop('hidden', true).removeClass('enter');
     });
-    $menus.on('menu:enter', function(e, $source) {console.log($source)
+    $menus.on('menu:enter', function(e, $source) {
         var offset = $source.offset();
         $(this).css({
             top: offset.top,
@@ -341,7 +341,7 @@ if ($menus.length) {
             $enter = ($this.data('jsEnter') || "").replace(/[:]/g, '\\$&');
         if ($enter && ($enter = $($enter)).length) {
             $enter.on("click", function(e) {
-                $this.prop('hidden', false).trigger('menu:enter', [$(this)]);
+                $this.prop('hidden', false).addClass('enter').trigger('menu:enter', [$(this)]);
                 e.stopPropagation();
             });
         }

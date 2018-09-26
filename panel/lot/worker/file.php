@@ -4,6 +4,7 @@ Config::set('panel.desk.form', true);
 
 $path = LOT . DS . $panel->id . DS . $panel->path;
 $mime = is_file($path) ? mime_content_type($path) : "";
+$is_text = $mime && (strpos($mime, 'text/') === 0 || strpos($mime, 'application/') === 0);
 
 Config::set('panel.desk', [
     'header' => null,
@@ -11,11 +12,11 @@ Config::set('panel.desk', [
         'tab[]' => [
             'file' => [
                 'field[]' => [
-                    'file[content]' => $mime && (strpos($mime, 'text/') === 0 || strpos($mime, 'application/') === 0) ? [
+                    'file[content]' => $panel->{'>>'} === 's' || $is_text ? [
                         'key' => 'content',
                         'type' => 'source',
-                        'value' => file_get_contents($path),
-                        'placeholder' => 'Content goes here&hellip;',
+                        'value' => $is_text ? file_get_contents($path) : null,
+                        'placeholder' => 'Content goes here…',
                         'width' => true,
                         'height' => true,
                         'stack' => 10
@@ -33,6 +34,15 @@ Config::set('panel.desk', [
                 'stack' => 10
             ],
             'folder' => [
+                'field[]' => [
+                    'directory' => [
+                        'title' => $language->path,
+                        'type' => 'text',
+                        'value' => null,
+                        'width' => true,
+                        'stack' => 10
+                    ]
+                ],
                 'stack' => 10.1
             ]
         ]

@@ -17,18 +17,25 @@
   position:relative;
   overflow:hidden;
   text-indent:-9999px;
-  .button &.left {
-    margin-right:(@x * .25);
+}
+
+.margin-icon() {
+  margin:0 (@y * -.25);
+  &.arrow {
+    color:@color;
+    &.right {margin-left:0}
+    &.left {margin-right:0}
+  }
+  &.only {
+    margin-right:(@x * -.25);
     margin-left:(@x * -.25);
   }
-  .button &.right {
-    margin-right:(@x * -.25);
-    margin-left:(@x * .25);
-  }
-  .button &.only {
-    margin-right:(@x * -.25);
-    margin-left:(@x * -.25);
-  }
+  &.right {margin-left:(@x * .25)}
+  &.left {margin-right:(@x * .25)}
+}
+
+.button .icon {
+  .margin-icon;
 }
 
 // @loading
@@ -126,6 +133,45 @@ ul.tools li {
       .m0r;
       &::after {display:none}
     }
+  }
+}
+
+// @menu
+.menus {
+  &,
+  & li {
+    margin:0;
+    padding:0;
+    list-style:none;
+  }
+  position:absolute;
+  top:100%;
+  left:0;
+  z-index:9999;
+  background:@color_inverse;
+  width:(@x * 8);
+  height:auto;
+  line-height:@y;
+  .box-shadow;
+  display:none;
+  &.enter {display:block}
+  ul {
+    top:0;
+    left:100%;
+  }
+  li {
+    float:none;
+    &.current > a {background:darken(@color_inverse, 10%)}
+  }
+  a {
+    display:block;
+    padding:(@y * .25) (@x * .5);
+    .color-a;
+  }
+  a:focus,
+  a:hover {background:darken(@color_inverse, 5%)}
+  .icon {
+    .margin-icon;
   }
 }
 
@@ -244,6 +290,9 @@ img.align-center {
     margin-right:@x;
     &:last-child {margin-right:0}
     &.auto {flex:0 0 auto}
+    &.w75 {flex:0 0 75%}
+    &.w50 {flex:0 0 50%}
+    &.w25 {flex:0 0 25%}
   }
   &.span > .grid {
     margin-right:.25em; // hacky :(
@@ -428,6 +477,7 @@ img.align-center {
       max-height:~'calc(100vh -' (@y * 2 + @y * 2.5) ~')';
     }
   }
+  .box-shadow;
 }
 
 // @tab
@@ -444,12 +494,14 @@ img.align-center {
     ul {overflow:hidden}
     li {
       position:relative;
+      background:darken(@color_inverse, 2%);
       border:1px solid;
       border-bottom-width:0;
       .left;
       + li {border-left-width:0}
     }
     .active {
+      background:none;
       z-index:4;
       &::before,
       &::after {
@@ -615,7 +667,6 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   }
   &.disabled {opacity:.5}
   .title {
-    padding-right:(@x * 2.25);
     width:100%;
     overflow:hidden;
     white-space:nowrap;
@@ -626,6 +677,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     position:absolute;
     top:(@y * .25);
     right:(@x * .25);
+    background:inherit;
   }
   &.is-file,
   &.is-folder {
@@ -701,50 +753,5 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   @media (max-width:@view-mobile) {
     & > span:first-child,
     & > span:last-child {display:none}
-  }
-}
-
-// @menu
-.menu,
-.menu li {
-  margin:0;
-  padding:0;
-  list-style:none;
-}
-.menu {
-  position:absolute;
-  top:0;
-  left:0;
-  z-index:9999;
-  background:@color_inverse;
-  width:(@x * 8);
-  height:auto;
-  line-height:@y;
-  // display:none;
-  &.show {display:block}
-  ul {
-    top:0;
-    left:100%;
-  }
-  a {
-    display:block;
-    padding:(@y * .25) (@x * .5);
-    overflow:hidden;
-    + i {
-      font-weight:normal;
-      background:@color-a_inverse;
-      color:@color_inverse;
-      top:(@y * .25);
-      right:(@x * .25);
-      min-width:@x;
-      text-align:center;
-      pointer-events:none;
-    }
-  }
-  .icon {
-    margin:0 (@y * -.25);
-    &.arrow {color:@color}
-    &.right {margin-left:(@x * .5)}
-    &.left {margin-right:(@x * .5)}
   }
 }
