@@ -8,23 +8,29 @@ $r = array_shift($chops);
 
 if ($r === $p) {
 
+    $worker = __DIR__ . DS . 'lot' . DS . 'worker' . DS;
     Lot::set('panel', $panel = new State([
-        '$' => $r,
-        '>>' => ($act = str_replace('::', "", array_shift($chops))),
+        'c' => ($c = str_replace('::', "", array_shift($chops))),
         'id' => ($id = array_shift($chops)),
         'chops' => $chops,
         'path' => implode('/', $chops),
         'state' => $state,
         'view' => ($view = basename(HTTP::get('view', 'file', false))),
-        'v' => $view . (!$chops || $url->i !== null ? 's' : "")
+        'r' => $r, // root
+        'v' => $view . (!$chops && $c === 'g' || $url->i !== null ? 's' : "") // plural or singular?
     ]));
 
     require __DIR__ . DS . 'engine' . DS . 'ignite.php';
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 
-    if ($f = File::exist(__DIR__ . DS . 'lot' . DS . 'worker' . DS . $panel->v . '.php')) require $f;
-    if ($f = File::exist(__DIR__ . DS . 'lot' . DS . 'worker' . DS . $panel->v . DS . $id . '.php')) require $f;
+    $tok = HTTP::get('token');
+    if ($tok && Guardian::check($tok)) {
+        require $worker . 'gate.php';
+    }
 
-    require __DIR__ . DS . 'lot' . DS . 'worker' . DS . 'worker' . DS . 'route.php';
+    if ($f = File::exist($worker . $panel->v . '.php')) require $f;
+    if ($f = File::exist($worker . $panel->v . DS . $id . '.php')) require $f;
+
+    require $worker . 'worker' . DS . 'route.php';
 
 }

@@ -1,15 +1,15 @@
 <?php
 
 Hook::set('on.ready', function() use($panel, $url) {
-    $p = $panel->{'$'};
-    if (strpos($url->path, $p . '/::') === 0) {
+    $r = $panel->r;
+    if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset();
         Route::reset();
     }
     Route::set([
-        $p . '/::%s%::/%*%/%i%',
-        $p . '/::%s%::/%*%'
-    ], function($act = 'g', $path = "", $step = null) {
+        $r . '/::%s%::/%*%/%i%',
+        $r . '/::%s%::/%*%'
+    ], function($c = 'g', $path = "", $step = null) {
         extract(Lot::get(null, []));
         // Prevent directory traversal attack <https://en.wikipedia.org/wiki/Directory_traversal_attack>
         $path = str_replace('../', "", urldecode($path));
@@ -29,13 +29,5 @@ Hook::set('on.ready', function() use($panel, $url) {
         }
         Config::set('trace', new Anemon([$language->{$panel->id}, $config->title], ' &#x00B7; '));
         Shield::attach(__DIR__ . DS . '..' . DS . '..' . DS . 'shield' . DS . $panel->v . '.php');
-    }, 0);
-    Route::set($p . '/gate', function() {
-        $path = str_replace('/', DS, HTTP::post('path'));
-        $name = basename(HTTP::post('name'));
-        $directory = str_replace('/', DS, HTTP::post('directory'));
-        $consent = HTTP::post('consent', 0600);
-        $content = HTTP::post('file.content');
-        File::set($content)->saveTo(LOT . DS . rtrim($path . DS . $directory, DS) . DS . $name, $consent);
     }, 0);
 }, 0);

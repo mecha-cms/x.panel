@@ -107,7 +107,7 @@ function a($input, $id = 0, $attr = [], $i = 0) {
     return \HTML::unite('a', $s, $attr);
 }
 
-// >>: g | r | s
+// c: g | r | s
 // hash: ""
 // link: ""
 // path: ""
@@ -124,7 +124,7 @@ function a_href($input) {
     // [3]. `link`
     $u = "";
     if (isset($input['path'])) {
-        $u = $url . '/' . \Extend::state('panel', 'path') . '/::' . (isset($input['>>']) ? $input['>>'] : 'g') . '::/' . ltrim($input['path'], '/');
+        $u = rtrim($url . '/' . \Extend::state('panel', 'path') . '/::' . (isset($input['c']) ? $input['c'] : 'g') . '::/' . ltrim($input['path'], '/'), '/');
     } else if (isset($input['url'])) {
         $u = \URL::long($input['url']);
     } else if (isset($input['link'])) {
@@ -156,13 +156,21 @@ function button($input, $id = 0, $attr = [], $i = 0) {
     if (isset($input['description'])) {
         $attr['title'] = \To::text($input['description']);
     }
-    if ($href !== "") {
+    if ($href === "") {
+        if (isset($input['active']) && !$input['active']) {
+            $attr['disabled'] = true;
+        }
+        if (isset($input['name'])) {
+            $attr['name'] = $input['name'];
+        }
+        if (isset($input['value'])) {
+            $attr['value'] = $input['value'];
+        }
+    } else {
         if (isset($input['active']) && !$input['active']) {
             $attr['class[]'][] = 'disabled';
         }
         $attr['href'] = $href;
-    } else if (!empty($input['x'])) {
-        $attr['disabled'] = true;
     }
     $s = text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []);
     if (isset($input['content'])) {
@@ -318,7 +326,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $kind = isset($input['kind']) ? (array) $input['kind'] : [];
     $style = [];
     $title = isset($input['title']) ? $input['title'] : $language->{isset($input['key']) ? $input['key'] : $key};
-    $type = isset($input['type']) ? $input['type'] : null;
+    $type = isset($input['type']) ? $input['type'] : 'textarea';
     $value = isset($input['value']) ? $input['value'] : null;
     $placeholder = isset($input['placeholder']) ? $input['placeholder'] : $value;
     $width = !empty($input['width']) ? $input['width'] : null;
@@ -339,7 +347,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
         'style[]' => $style
     ]);
     $s .= '<label for="f:' . $id . '.' . $i . '">' . $title . '</label>';
-    $textarea = strpos(',editor,source,textarea', ',' . $type . ',') !== false;
+    $textarea = strpos(',editor,source,textarea,', ',' . $type . ',') !== false;
     $tag = $textarea ? 'div' : 'span';
     $s .= '<' . $tag . '>';
     if ($type === 'hidden') {
@@ -417,14 +425,14 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
                 'title' => false,
                 'description' => $language->edit,
                 'icon' => [['M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z']],
-                '>>' => 'g',
+                'c' => 'g',
                 'stack' => 10
             ],
             'r' => [
                 'title' => false,
                 'description' => $language->delete,
                 'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
-                '>>' => 'r',
+                'c' => 'r',
                 'stack' => 10.1
             ]
         ], 'file.tool[]');

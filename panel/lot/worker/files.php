@@ -22,7 +22,7 @@ Config::set('panel.desk', [
             'file' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'path' => $path,
-                '>>' => 's',
+                'c' => 's',
                 'stack' => 10,
                 'query' => [
                     'q' => false,
@@ -33,7 +33,7 @@ Config::set('panel.desk', [
             'folder' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'path' => $path,
-                '>>' => 's',
+                'c' => 's',
                 'query' => [
                     'q' => false,
                     'tab:' . $panel->id => 'folder'

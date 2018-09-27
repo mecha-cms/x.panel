@@ -203,6 +203,7 @@ hr {border-width:1px 0 0}
   line-height:@y;
   padding:(@y * .25) (@x * .5);
   text-align:left;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.25));
   &.disabled,
   &[disabled] {
     opacity:.5;
@@ -226,6 +227,7 @@ hr {border-width:1px 0 0}
   background:@color-a;
   color:@color_inverse;
   border-width:0;
+  .box-shadow(0 1px 1px rgba(0,0,0,.25));
   &:focus,
   &:active {
     background:@color-a_inverse;
