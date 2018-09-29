@@ -37,10 +37,15 @@
 
 // @message
 .messages {
-  padding:(@y * .25) (@x * .25);
+  padding:(@y * .25) (@x * .5) (@y * .25) (@x * .25);
   font-size:(@z - @sizer);
   background:#900;
   color:@color_inverse;
+  position:fixed;
+  right:@y;
+  bottom:@x;
+  z-index:9999;
+  .box-shadow;
   .message {
     padding:0;
     + .message {margin-top:(@y * .5)}
@@ -150,6 +155,9 @@ html.form body form {
 }
 html:not(.js) .nav li:hover > ul,
 html:not(.js) .nav li:focus-within > ul {display:block}
+
+// @page
+.page h2 code {font:inherit}
 
 @media (max-width:@view-mobile) {
   .nav {

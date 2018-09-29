@@ -27,7 +27,7 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
     $begin = 1;
     $end = (int) ceil($count / $chunk);
     $s = "";
-    if ($end === 1) {
+    if ($end <= 1) {
         return $s;
     }
     if ($current <= $kin + $kin) {
@@ -206,9 +206,9 @@ function desk($input, $id = 0, $attr = [], $i = 0) {
 }
 
 // content: ""
-// field[]: "" | *fields
-// file[]: "" | ?
-// tab[]: "" | *tabs
+// fields: "" | *fields
+// files: "" | ?
+// tabs: "" | *tabs
 // *_attr
 function desk_body($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
@@ -216,19 +216,19 @@ function desk_body($input, $id = 0, $attr = [], $i = 0) {
     }
     _attr($input, $attr, 'body', $id, $i);
     $s = "";
-    if (isset($input['file[]'])) {
-        if ($input['file[]'] === true) {
+    if (isset($input['files'])) {
+        if ($input['files'] === true) {
             global $url;
             $chops = explode('/', $url->path);
             array_shift($chops);
             array_shift($chops);
-            $input['file[]'] = LOT . DS . implode(DS, $chops);
+            $input['files'] = LOT . DS . implode(DS, $chops);
         }
-        $s .= files($input['file[]'], $id, [], $i);
-    } else if (isset($input['tab[]'])) {
-        $s .= tabs($input['tab[]'], $id, [], $i);
-    } else if (isset($input['field[]'])) {
-        $s .= fields($input['field[]'], $id, [], $i);
+        $s .= files($input['files'], $id, [], $i);
+    } else if (isset($input['tabs'])) {
+        $s .= tabs($input['tabs'], $id, [], $i);
+    } else if (isset($input['fields'])) {
+        $s .= fields($input['fields'], $id, [], $i);
     }
     if (isset($input['content'])) {
         $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
@@ -238,7 +238,7 @@ function desk_body($input, $id = 0, $attr = [], $i = 0) {
 
 // content: ""
 // pager: "" | ?
-// tool[]: "" | *tools
+// tools: "" | *tools
 // *_attr
 function desk_footer($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
@@ -246,8 +246,8 @@ function desk_footer($input, $id = 0, $attr = [], $i = 0) {
     }
     _attr($input, $attr, 'footer', $id, $i);
     $s = "";
-    if (isset($input['tool[]'])) {
-        $s .= tools($input['tool[]'], $id, [], $i);
+    if (isset($input['tools'])) {
+        $s .= tools($input['tools'], $id, [], $i);
     } else if (isset($input['pager'])) {
         if ($input['pager'] === true) {
             global $url;
@@ -265,7 +265,7 @@ function desk_footer($input, $id = 0, $attr = [], $i = 0) {
 }
 
 // content: ""
-// tool[]: "" | *tools
+// tools: "" | *tools
 // *_attr
 function desk_header($input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
@@ -273,8 +273,8 @@ function desk_header($input, $id = 0, $attr = [], $i = 0) {
     }
     _attr($input, $attr, 'header', $id, $i);
     $s = "";
-    if (isset($input['tool[]'])) {
-        $s .= tools($input['tool[]'], $id, [], $i);
+    if (isset($input['tools'])) {
+        $s .= tools($input['tools'], $id, [], $i);
     }
     if (isset($input['content'])) {
         $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
@@ -282,27 +282,8 @@ function desk_header($input, $id = 0, $attr = [], $i = 0) {
     return \HTML::unite('header', $s, $attr);
 }
 
-function error($code = 404) {
-    \HTTP::status($code);
-    global $config, $language, $url;
-    $s  = '<!DOCTYPE html>';
-    $s .= '<html dir="' . $config->direction . '">';
-    $s .= '<head>';
-    $s .= '<meta charset="' . $config->charset . '">';
-    $s .= '<link href="' . $url . '/favicon.ico" rel="shortcut icon">';
-    $s .= '<title>' . \To::text($language->error . ' ' . $code . ' &#x00B7; ' . $config->title) . '</title>';
-    $s .= '<style>*{margin:0;padding:0;background:#000;color:#fff;text-align:center;font:normal normal 16px/16px sans-serif}html,body{width:100%;height:100%;overflow:hidden}body{display:table}p{display:table-cell;vertical-align:middle;width:100%}</style>';
-    $s .= '</head>';
-    $s .= '<body>';
-    $s .= '<p>&#x0CA0;&#x005F;&#x0CA0;</p>';
-    $s .= '</body>';
-    $s .= '</html>';
-    echo $s;
-    exit;
-}
-
 // active: ""
-// active[]: ""
+// actives: ""
 // content: ""
 // description: ""
 // height: "" | + | ?
@@ -313,7 +294,7 @@ function error($code = 404) {
 // title: ""
 // type: button | button[] | color | editor | file | hidden | radio | range | select | select[] | source | text | textarea | toggle | toggle[]
 // value: ""
-// value[]: ""
+// values: ""
 // width: "" | + | ?
 // *_attr
 function field($key, $input, $id = 0, $attr = [], $i = 0) {
@@ -412,31 +393,31 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     sort($files);
     sort($folders);
     $GLOBALS['.' . crc32($folder)] = ($files = array_merge($folders, $files));
+    _attr(0, $attr, 'files', $id, $i, [
+        'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
+    ]);
+    $tools = _config([
+        'g' => [
+            'title' => false,
+            'description' => $language->edit,
+            'icon' => [['M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z']],
+            'c' => 'g',
+            'stack' => 10
+        ],
+        'r' => [
+            'title' => false,
+            'description' => $language->delete,
+            'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
+            'c' => 'r',
+            'stack' => 10.1
+        ]
+    ], 'file.tools');
+    $tools = \Anemon::eat($tools)->sort([1, 'stack'])->vomit();
     if ($files = \Anemon::eat(q($files))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1)) {
-        _attr(0, $attr, 'files', $id, $i, [
-            'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
-        ]);
         if (trim(dirname($dir), '.') !== "") {
             array_unshift($files, dirname(LOT . DS . $dir) . DS . '..');
         }
         $s = "";
-        $tools = _config([
-            'g' => [
-                'title' => false,
-                'description' => $language->edit,
-                'icon' => [['M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z']],
-                'c' => 'g',
-                'stack' => 10
-            ],
-            'r' => [
-                'title' => false,
-                'description' => $language->delete,
-                'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
-                'c' => 'r',
-                'stack' => 10.1
-            ]
-        ], 'file.tool[]');
-        $tools = \Anemon::eat($tools)->sort([1, 'stack'])->vomit();
         foreach ($files as $k => $v) {
             $n = basename($v);
             $h = strpos($n, '.') === 0 || strpos($n, '_') === 0;
@@ -448,9 +429,10 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
                 ]
             ], $i, $tools);
         }
-        return \HTML::unite('ul', $s, $attr);
+    } else {
+        $s = file(dirname($folder) . DS . '..', $id, [], 0, $tools);
     }
-    return "";
+    return \HTML::unite('ul', $s, $attr);
 }
 
 function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
@@ -666,8 +648,8 @@ function search($input, $id = 0, $attr = [], $i = 0) {
 }
 
 // content: ""
-// field[]: *fields
-// file[]: *files
+// fields: *fields
+// files: *files
 // stack: +
 // title: ""
 function tab($input, $id = 0, $attr = [], $i = 0, $active = false) {
@@ -676,17 +658,17 @@ function tab($input, $id = 0, $attr = [], $i = 0, $active = false) {
     }
     global $language;
     $s = "";
-    if (isset($input['field[]'])) {
-        $s .= fields($input['field[]'], $id, [], $i);
-    } else if (isset($input['file[]'])) {
-        if (!is_string($input['file[]'])) {
+    if (isset($input['fields'])) {
+        $s .= fields($input['fields'], $id, [], $i);
+    } else if (isset($input['files'])) {
+        if (!is_string($input['files'])) {
             global $url;
             $chops = explode('/', $url->path);
             array_shift($chops);
             array_shift($chops);
-            $input['file[]'] = LOT . DS . implode(DS, $chops);
+            $input['files'] = LOT . DS . implode(DS, $chops);
         }
-        $s .= files($input['file[]'], $id, [], $i);
+        $s .= files($input['files'], $id, [], $i);
     }
     _attr($input, $attr, 'tab', $id, $i, [
         'title' => isset($input['title']) ? $input['title'] : $language->{$id},
@@ -751,9 +733,9 @@ function tools($input, $id = 0, $attr = [], $i = 0) {
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
-        if (isset($v['menu[]'])) {
+        if (isset($v['menus'])) {
             $hash = dechex(crc32($id . $k . $i));
-            \Config::set('panel.$.menu[].' . $hash, $v['menu[]']);
+            \Config::set('panel.$.menus.' . $hash, $v['menus']);
             $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
         } else {
             $a[] = button($v, $k, [], $i);
@@ -766,7 +748,6 @@ function tools($input, $id = 0, $attr = [], $i = 0) {
     }
     return \HTML::unite('div', $s, $attr);
 }
-
 
 function menus($input, $id = 0, $attr = [], $i = 0) {
     _attr(0, $attr, 'menus', $id, $i, [

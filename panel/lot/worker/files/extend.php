@@ -16,7 +16,7 @@ Hook::set('on.ready', function() {
         $s .= '<div class="p">' . $content . '</div>';
         $s .= $d;
         $s .= '</div>';
-        Config::set('panel.desk.body.tab[].info', [
+        Config::set('panel.desk.body.tabs.info', [
             'title' => $language->info,
             'content' => $s,
             'stack' => 9

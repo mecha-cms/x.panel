@@ -50,12 +50,12 @@ abbr {
   }
 }
 article,aside,footer,header,main,nav,section {display:block}
-b,dt,h1,h2,h3,h4,h5,h6,strong,th {font-weight:bold}
+b,dt,strong,th {font-weight:bold}
 blockquote,caption,dfn,em,figcaption,i,var {font-style:italic}
 figure {text-align:center}
 code,.code {
   font-family:@font-code;
-  font-size:(@z - @sizer); // magic number :(
+  font-size:(@z - (@sizer * 2)); // magic number :(
 }
 del,s {text-decoration:line-through}
 ins,u {text-decoration:underline}
@@ -77,7 +77,7 @@ pre {
   white-space:pre-wrap;
   font-weight:normal;
   font-style:normal;
-  background:@color;
+  background:lighten(@color, 20%);
   color:@color_inverse;
   padding:((@y * .5) - ((@y - @z) * .5)) (@x * .5);
   overflow:auto;

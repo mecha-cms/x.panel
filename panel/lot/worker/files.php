@@ -18,7 +18,7 @@ $path = $panel->id . '/' . $panel->path;
 
 Config::set('panel.desk', [
     'header' => [
-        'tool[]' => [
+        'tools' => [
             'file' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'path' => $path,
@@ -26,7 +26,8 @@ Config::set('panel.desk', [
                 'stack' => 10,
                 'query' => [
                     'q' => false,
-                    'tab:' . $panel->id => 'file'
+                    'tab' => 'file',
+                    'token' => false
                 ],
                 'stack' => 10
             ],
@@ -36,7 +37,8 @@ Config::set('panel.desk', [
                 'c' => 's',
                 'query' => [
                     'q' => false,
-                    'tab:' . $panel->id => 'folder'
+                    'tab' => 'folder',
+                    'token' => false
                 ],
                 'stack' => 10.1
             ],
@@ -44,7 +46,7 @@ Config::set('panel.desk', [
                 'title' => false,
                 'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']],
                 'kind' => ['text'],
-                'menu[]' => [
+                'menus' => [
                     'foo' => [
                         'title' => 'Foo',
                         'stack' => 10
@@ -59,10 +61,10 @@ Config::set('panel.desk', [
         ]
     ],
     'body' => [
-        'tab[]' => [
+        'tabs' => [
             $panel->id . 's' => [
                 'title' => $language->files,
-                'file[]' => true,
+                'files' => true,
                 'stack' => 10
             ]
         ]

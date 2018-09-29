@@ -37,7 +37,7 @@ $focus.length && $focus.focus();
 
 var $dialogs = $('.dialog');
 
-$body.data('$dialog[]', $dialogs);
+$body.data('dialogs', $dialogs);
 
 if ($dialogs.length) {
     var $view = $('html,body');
@@ -87,11 +87,11 @@ if ($dialogs.length) {
             'footer': $this.children('footer'),
             'x': $this.children('.js\\:exit')
         }, function(key, value) {
-            $this.data('$' + key, value);
+            $this.data(key, value);
         });
-        $this.data('$overlay', $this.prev('.dialog-overlay'));
-        $this.data('$button[]', $this.data('$footer').find('.button'));
-        if ($this.data('$header').length && !$this.data('$x').length) {
+        $this.data('overlay', $this.prev('.dialog-overlay'));
+        $this.data('buttons', $this.data('footer').find('.button'));
+        if ($this.data('header').length && !$this.data('x').length) {
             $this.append($x);
         }
         var $enter = ($this.data('jsEnter') || "").replace(/[:]/g, '\\$&'),
@@ -113,7 +113,7 @@ if ($dialogs.length) {
 
 var $tabs = $('.tabs');
 
-$body.data('$tab[]', $tabs);
+$body.data('tabs', $tabs);
 
 if ($tabs.length) {
     $tabs.on('tab:change', function(e, $source, $target) {
@@ -161,7 +161,7 @@ if ($tabs.length) {
 
 var $navs = $('.nav');
 
-$body.data('$nav[]', $navs);
+$body.data('navs', $navs);
 
 if ($navs.length) {
     $uls = $navs.find('ul ul');
@@ -199,8 +199,8 @@ if ($navs.length) {
 var $layers = $('.layers'),
     $aLayers = $('.a-layers');
 
-$body.data('$layer[]', $layers);
-$body.data('$a-layer[]', $aLayers);
+$body.data('layers', $layers);
+$body.data('a-layers', $aLayers);
 
 if ($layers.length) {
     $layers.on('layer:change', function(e, $source, $target) {
@@ -280,7 +280,7 @@ if ($slugger.length) {
 
 var $forms = $('form');
 
-$body.data('$form[]', $forms);
+$body.data('forms', $forms);
 
 if ($forms.length) {
     $forms.on("submit", function() {
@@ -323,7 +323,7 @@ $('.select.select-input').each(function() {
 
 var $menus = $('.menus');
 
-$body.data('$menu[]', $menus);
+$body.data('menus', $menus);
 
 if ($menus.length) {
     $doc.on("click", function() {
