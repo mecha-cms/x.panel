@@ -161,7 +161,10 @@ ul.tools li {
   }
   li {
     float:none;
-    &.current > a {background:darken(@color_inverse, 10%)}
+    &.current > a {
+      background:@color-list_current;
+      color:@color_inverse;
+    }
   }
   a {
     display:block;
@@ -169,7 +172,7 @@ ul.tools li {
     .color-a;
   }
   a:focus,
-  a:hover {background:darken(@color_inverse, 5%)}
+  a:hover {background:@color-list_hover}
   .icon {
     .margin-icon;
   }
@@ -495,14 +498,14 @@ img.align-center {
     ul {overflow:hidden}
     li {
       position:relative;
-      background:darken(@color_inverse, 2%);
       border:1px solid;
       border-bottom-width:0;
+      .box-shadow(inset 0 3px 0 @color-tab-line);
       .left;
       + li {border-left-width:0}
     }
     .active {
-      background:none;
+      .box-shadow(inset 0 3px 0 @color-tab-line_inverse);
       z-index:4;
       &::before,
       &::after {
@@ -516,11 +519,11 @@ img.align-center {
       }
       &::before {right:100%}
       &::after {left:100%}
-      a {color:inherit}
     }
     a {
       display:block;
       padding:0 @x;
+      color:inherit;
       .text-special;
       .icon {
         margin:(@y * .5) (@x * -.5);
@@ -593,8 +596,8 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   position:relative;
   overflow:hidden;
   &:focus,
-  &:hover {background:darken(@color_inverse, 5%)}
-  &.active {background:darken(@color_inverse, 10%)}
+  &:hover {background:@color-list_hover}
+  &.active {background:@color-list_active}
   &.disabled {opacity:.5}
   .title {
     width:100%;
@@ -624,7 +627,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     }
   }
   &.is-file::before {
-    background:@color_inverse;
+    background:@color-file;
     border:1px solid @color;
     width:(@x - 4);
   }
@@ -637,12 +640,12 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     left:(@x - 4);
   }
   &.is-folder::before {
-    background:@color;
+    background:@color-folder;
     height:(@y - 6);
     top:(@y * .25) + 5;
   }
   &.is-folder::after {
-    border-top:3px solid @color;
+    border-top:3px solid darken(@color-folder, 10%);
     width:(@x * .5);
     top:(@y * .25) + 1;
   }
