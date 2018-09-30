@@ -164,6 +164,11 @@ ul.tools li {
     &.current > a {
       background:@color-list_current;
       color:@color_inverse;
+      &:focus,
+      &:hover {
+        background:darken(@color-list_current, 5%);
+        color:@color_inverse;
+      }
     }
   }
   a {
@@ -172,7 +177,10 @@ ul.tools li {
     .color-a;
   }
   a:focus,
-  a:hover {background:@color-list_hover}
+  a:hover,
+  .active > a {background:@color-list_hover}
+  .active > a:focus,
+  .active > a:hover {background:darken(@color-list_hover, 5%)}
   .icon {
     .margin-icon;
   }
@@ -274,10 +282,9 @@ img.align-center {
   .hints {
     display:block;
     padding:0 (@x * .5);
-    font-size:(@z - @sizer);
-    background:@color;
-    color:@color_inverse;
-    border-bottom:1px solid transparent;
+    margin:(@y * .25) 0 0;
+    font-size:(@z - (@sizer * 2));
+    background:@color-hints;
   }
 }
 
@@ -560,6 +567,13 @@ img.align-center {
   display:none;
   &.active {display:block}
 }
+.js .tabs.size-0 {display:none}
+.js .tabs.size-1 {
+  > nav {display:none}
+  > section {
+    .m0t;
+  }
+}
 html:not(.js) .tabs > nav {display:none}
 html:not(.js) .tabs > section[data-title]::before,
 html:not(.js) .tabs > section[title]::before {
@@ -596,9 +610,14 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   position:relative;
   overflow:hidden;
   &:focus,
-  &:hover {background:@color-list_hover}
-  &.active {background:@color-list_active}
-  &.disabled {opacity:.5}
+  &:hover {
+    background:@color-list_hover;
+    border-color:@color-list_hover;
+  }
+  &.active {
+    background:@color-list_active;
+    border-color:@color-list_active;
+  }
   .title {
     width:100%;
     overflow:hidden;
@@ -649,7 +668,17 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     width:(@x * .5);
     top:(@y * .25) + 1;
   }
+  &.is-hidden:not(:focus):not(:hover) {opacity:.5}
 }
+
+// @page
+.pages,
+.page {margin:0;padding:0;list-style:none}
+.page{padding:12px}
+.page h3 {font-size:110%;font-weight:bold;margin:0}
+.page p{margin:0;font-size:14px}
+.page p+p {font-size:12px;text-transform:uppercase}
+.page:focus,.page:hover{background:#dee}
 
 // @pager
 .pager {

@@ -307,8 +307,10 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $kind = isset($input['kind']) ? (array) $input['kind'] : [];
     $style = [];
     $title = isset($input['title']) ? $input['title'] : $language->{isset($input['key']) ? $input['key'] : $key};
+    $description = isset($input['description']) ? trim($input['description']) : null;
     $type = isset($input['type']) ? $input['type'] : 'textarea';
     $value = isset($input['value']) ? $input['value'] : null;
+    $values = isset($input['values']) ? (array) $input['values'] : null;
     $placeholder = isset($input['placeholder']) ? $input['placeholder'] : $value;
     $width = !empty($input['width']) ? $input['width'] : null;
     $height = !empty($input['height']) ? $input['height'] : null;
@@ -322,7 +324,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     } else if (is_numeric($height)) {
         $style['height'] = $height . 'px';
     }
-    $kind[] = $type;
+    $kind[] = 'type:' . $type;
     $attr_alt = ['class[]' => $kind];
     _attr(0, $attr_alt, 'f', $id, $i, [
         'style[]' => $style
@@ -333,9 +335,21 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $s .= '<' . $tag . '>';
     if ($type === 'hidden') {
         return \Form::hidden($key, $value);
+    } else if ($type === 'blob') {
+        $attr_alt['class[]'][] = 'input';
+        $s .= \Form::blob($key, $attr_alt);
     } else if ($type === 'text') {
         $attr_alt['class[]'][] = 'input';
         $s .= \Form::text($key, $value, $placeholder, $attr_alt);
+    } else if ($type === 'toggle[]') {
+        $attr_alt['class[]'][] = 'input';
+        $s .= '<span class="inputs block">';
+        foreach ($values as $k => $v) {
+            // $v = [$text, $checked ?? false, $value ?? 1]
+            $v = (array) $v;
+            $s .= \Form::check($key . '[' . $k . ']', isset($v[2]) ? $v[2] : 1, !empty($v[1]), $v[0], $attr_alt);
+        }
+        $s .= '</span>';
     } else if ($type === 'editor' || $type === 'source') {
         $attr_alt['class[]'][] = 'textarea';
         if ($type === 'source') {
@@ -345,6 +359,13 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     } else {
         $attr_alt['class[]'][] = 'textarea';
         $s .= \Form::textarea($key, $value, $placeholder, $attr_alt);
+    }
+    if ($description) {
+        if ($tag === 'div') {
+            $s .= '<div class="hints">' . $description . '</div>';
+        } else {
+            $s .= ' <span class="hints">' . $description . '</span>';
+        }
     }
     $s .= '</' . $tag . '>';
     if (isset($input['content'])) {
@@ -374,7 +395,7 @@ function fields($input, $id = 0, $attr = [], $i = 0) {
 }
 
 function files($folder, $id = 0, $attr = [], $i = 0) {
-    global $language, $url;
+    global $language, $token, $url;
     $state = \Extend::state('panel', 'file');
     $files = $folders = [];
     $folder = rtrim($folder, DS);
@@ -396,6 +417,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     _attr(0, $attr, 'files', $id, $i, [
         'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
     ]);
+    $s = "";
     $tools = _config([
         'g' => [
             'title' => false,
@@ -409,6 +431,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
             'description' => $language->delete,
             'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
             'c' => 'r',
+            'query' => ['token' => $token],
             'stack' => 10.1
         ]
     ], 'file.tools');
@@ -417,19 +440,18 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
         if (trim(dirname($dir), '.') !== "") {
             array_unshift($files, dirname(LOT . DS . $dir) . DS . '..');
         }
-        $s = "";
         foreach ($files as $k => $v) {
             $n = basename($v);
-            $h = strpos($n, '.') === 0 || strpos($n, '_') === 0;
-            $a = strpos(X . implode(X, (array) \Session::get('panel.file.active')) . X, X . $n . X) !== false;
+            $h = $n !== '..' && (strpos($n, '.') === 0 || strpos($n, '_') === 0);
+            $a = strpos(str_replace('/', DS, X . implode(X, (array) \Session::get('panel.file.active')) . X), X . $v . X) !== false;
             $s .= file($v, $id, [
                 'class[]' => [
-                    9997 => $h ? 'is-hidden' : null,
-                    9998 => $a ? 'active' : null
+                    9996 => $h ? 'is-hidden' : null,
+                    9997 => $a ? 'active' : null
                 ]
             ], $i, $tools);
         }
-    } else {
+    } else if (dirname($folder) !== LOT) {
         $s = file(dirname($folder) . DS . '..', $id, [], 0, $tools);
     }
     return \HTML::unite('ul', $s, $attr);
@@ -440,7 +462,10 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     $n = basename($path);
     $dir = \Path::F($path, LOT, '/');
     _attr(0, $attr, 'file', $id, $i, [
-        'class[]' => [9999 => 'is-' . (($is_file = is_file($path)) ? 'file' : 'folder')]
+        'class[]' => [
+            9998 => 'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
+            9999 => $is_file ? 'x:' . strtolower(pathinfo($path, PATHINFO_EXTENSION)) : null
+        ]
     ]);
     $s  = '<h3 class="title">';
     $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
@@ -486,9 +511,14 @@ function icon($input, $attr = []) {
     }
     $attr = array_replace_recursive([
         'class[]' => ['icon'],
-        'viewBox' => $box
+        'viewBox' => strpos($d, '#') !== 0 ? $box : null
     ], $attr);
-    return \HTML::unite('svg', strpos($d, '<') === 0 ? $d : '<path d="' . $d . '"></path>', $attr);
+    if (strpos($d, '#') === 0) {
+        $d = '<use href="' . $d . '"></use>';
+    } else if (strpos($d, '<') !== 0) {
+        $d = '<path d="' . $d . '"></path>';
+    }
+    return \HTML::unite('svg', $d, $attr);
 }
 
 // [...*a]
@@ -694,7 +724,7 @@ function tabs($input, $id = 0, $attr = [], $i = 0, $active = null) {
     $s = "";
     if (!isset($active)) {
         // `?tab=1` or `?tab:page=1`
-        $active = \HTTP::get('tab:' . $id, \HTTP::get('tab', null, false), null, false);
+        $active = \HTTP::get('tab', null, false);
     }
     foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         $s .= tab($v, $k, [], $i, $k === $active);

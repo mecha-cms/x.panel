@@ -14,7 +14,7 @@
 
 // `panel.file.tools`
 
-$path = $panel->id . '/' . $panel->path;
+$path = rtrim($panel->id . '/' . $panel->path, '/');
 
 Config::set('panel.desk', [
     'header' => [
@@ -47,14 +47,31 @@ Config::set('panel.desk', [
                 'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']],
                 'kind' => ['text'],
                 'menus' => [
-                    'foo' => [
-                        'title' => 'Foo',
+                    'blob' => [
+                        'title' => $language->upload,
+                        'icon' => [['M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z']],
+                        'path' => $path,
+                        'c' => 's',
+                        'query' => [
+                            'q' => false,
+                            'tab' => 'blob',
+                            'token' => false
+                        ],
                         'stack' => 10
                     ],
-                    'baz' => [
-                        'title' => 'Bar',
+                    'r' => strpos($path, '/') !== false ? [
+                        'title' => $language->delete,
+                        'description' => 'Delete this folder with its contents.',
+                        'icon' => [['M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z']],
+                        'path' => $path,
+                        'c' => 'r',
+                        'query' => [
+                            'q' => false,
+                            'tab' => false,
+                            'token' => $token
+                        ],
                         'stack' => 10.1
-                    ]
+                    ] : null
                 ],
                 'stack' => 10.2
             ]

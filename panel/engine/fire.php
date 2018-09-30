@@ -5,7 +5,7 @@ array_shift($a); // remove namespace
 array_shift($a); // remove command
 
 if (count($a) === 0) {
-    panel\error(404);
+    exit;
 }
 
 $path = implode('/', $a);
@@ -94,7 +94,7 @@ Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
 Config::set('panel.nav.search', [
     'content' => panel\nav_li_search([
         'title' => $language->{$a[0]},
-        'path' => $path
+        'path' => $path . '/1'
     ], $a[0]),
     'stack' => 10.1
 ]);

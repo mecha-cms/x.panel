@@ -20,12 +20,12 @@ Config::set('panel.desk', [
                         'height' => true,
                         'stack' => 10
                     ] : [
-                        'content' => '<div class="field p"><label>' . $language->{$is_file ? 'content' : ""} . '</label><div><div class="input plain code">' . ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($path) : str_replace('/', DS, $path)) . '</div></div></div>',
+                        'content' => '<div class="field p"><label>' . $language->{$is_file ? 'content' : ""} . '</label><div><div class="input plain code">' . ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($path, "", ['style[]' => ['display' => 'block']]) : str_replace('/', DS, $path)) . '</div></div></div>',
                         'stack' => 10
                     ],
                     'name' => [
                         'type' => 'text',
-                        'value' => basename($panel->path),
+                        'value' => $c === 'g' ? basename($path) : null,
                         'width' => true,
                         'stack' => 10.1
                     ]
@@ -36,6 +36,7 @@ Config::set('panel.desk', [
                 'fields' => [
                     'directory' => [
                         'title' => $language->path,
+                        'description' => HTTP::get('tab') === 'folder' ? 'Create a folder.' : 'Move current working file or folder to the specified folder path.',
                         'type' => 'text',
                         'value' => null,
                         'width' => true,
@@ -43,6 +44,26 @@ Config::set('panel.desk', [
                     ]
                 ],
                 'stack' => 10.1
+            ],
+            'blob' => [
+                'title' => $language->upload,
+                'fields' => [
+                    'file[blob][]' => [
+                        'title' => $language->file,
+                        'type' => 'blob',
+                        'stack' => 10
+                    ],
+                    'o' => [
+                        'title' => $language->options,
+                        'type' => 'toggle[]',
+                        'values' => [
+                            'extract' => 'Extract package after upload.',
+                            'wrap' => ['Wrap the extracted files with a folder.', true]
+                        ],
+                        'stack' => 10.1
+                    ]
+                ],
+                'stack' => 10.2
             ]
         ]
     ],
