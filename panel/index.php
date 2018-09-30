@@ -10,7 +10,7 @@ if ($r === $p) {
 
     $worker = __DIR__ . DS . 'lot' . DS . 'worker' . DS;
     Lot::set('panel', $panel = new State([
-        'c' => ($c = str_replace('::', "", array_shift($chops))),
+        'c' => ($c = str_replace('::', "", array_shift($chops))), // command
         'id' => ($id = array_shift($chops)),
         'chops' => $chops,
         'path' => implode('/', $chops),

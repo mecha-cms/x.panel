@@ -312,6 +312,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $value = isset($input['value']) ? $input['value'] : null;
     $values = isset($input['values']) ? (array) $input['values'] : null;
     $placeholder = isset($input['placeholder']) ? $input['placeholder'] : $value;
+    $pattern = isset($input['pattern']) ? $input['pattern'] : null;
     $width = !empty($input['width']) ? $input['width'] : null;
     $height = !empty($input['height']) ? $input['height'] : null;
     if ($width === true) {
@@ -325,12 +326,15 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
         $style['height'] = $height . 'px';
     }
     $kind[] = 'type:' . $type;
-    $attr_alt = ['class[]' => $kind];
+    $attr_alt = [
+        'class[]' => $kind,
+        'pattern' => $pattern
+    ];
     _attr(0, $attr_alt, 'f', $id, $i, [
         'style[]' => $style
     ]);
     $s .= '<label for="f:' . $id . '.' . $i . '">' . $title . '</label>';
-    $textarea = strpos(',editor,source,textarea,', ',' . $type . ',') !== false;
+    $textarea = strpos(',content,editor,source,textarea,', ',' . $type . ',') !== false;
     $tag = $textarea ? 'div' : 'span';
     $s .= '<' . $tag . '>';
     if ($type === 'hidden') {
@@ -338,9 +342,9 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     } else if ($type === 'blob') {
         $attr_alt['class[]'][] = 'input';
         $s .= \Form::blob($key, $attr_alt);
-    } else if ($type === 'text') {
-        $attr_alt['class[]'][] = 'input';
-        $s .= \Form::text($key, $value, $placeholder, $attr_alt);
+    } else if ($type === 'select') {
+        $attr_alt['class[]'][] = 'select';
+        $s .= \Form::select($key, $values, $value, $attr_alt);
     } else if ($type === 'toggle[]') {
         $attr_alt['class[]'][] = 'input';
         $s .= '<span class="inputs block">';
@@ -350,15 +354,17 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
             $s .= \Form::check($key . '[' . $k . ']', isset($v[2]) ? $v[2] : 1, !empty($v[1]), $v[0], $attr_alt);
         }
         $s .= '</span>';
-    } else if ($type === 'editor' || $type === 'source') {
+    } else if ($type === 'editor' || $type === 'source' || $type === 'textarea') {
         $attr_alt['class[]'][] = 'textarea';
         if ($type === 'source') {
             $attr_alt['class[]'][] = 'code';
         }
         $s .= \Form::textarea($key, $value, $placeholder, $attr_alt);
-    } else {
-        $attr_alt['class[]'][] = 'textarea';
-        $s .= \Form::textarea($key, $value, $placeholder, $attr_alt);
+    } else if (strpos(',color,date,email,number,pass,search,tel,text,url,', ',' . $type . ',') !== false) {
+        $attr_alt['class[]'][] = 'input';
+        $s .= call_user_func('\Form::' . $type, $key, $value, $placeholder, $attr_alt);
+    } else /* if ($type === 'content') */ {
+        $s .= $value;
     }
     if ($description) {
         if ($tag === 'div') {
@@ -398,6 +404,11 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     global $language, $token, $url;
     $state = \Extend::state('panel', 'file');
     $files = $folders = [];
+    $x = false;
+    if (is_array($folder)) {
+        $x = $folder[1];
+        $folder = $folder[0];
+    }
     $folder = rtrim($folder, DS);
     foreach (array_unique(array_merge(
         glob($folder . DS . '*', GLOB_NOSORT),
@@ -406,8 +417,10 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
         $n = basename($v);
         if ($n === '.' || $n === '..') continue;
         if (is_file($v)) {
-            $files[] = $v;
-        } else {
+            if (!$x || \Path::X($v) === $x) {
+                $files[] = $v;
+            }
+        } else if (!$x) {
             $folders[] = $v;
         }
     }
@@ -434,7 +447,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
             'query' => ['token' => $token],
             'stack' => 10.1
         ]
-    ], 'file.tools');
+    ], '$.file.tools');
     $tools = \Anemon::eat($tools)->sort([1, 'stack'])->vomit();
     if ($files = \Anemon::eat(q($files))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1)) {
         if (trim(dirname($dir), '.') !== "") {
@@ -470,8 +483,8 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s  = '<h3 class="title">';
     $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
     $s .= '</h3>';
-    $vv = dirname($dir) . '/' . $n;
     if ($n !== '..' && $tools) {
+        $vv = dirname($dir) . '/' . $n;
         $s .= '<ul class="tools">';
         foreach ($tools as $k => $v) {
             if (!$v) continue;
@@ -479,11 +492,86 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
                 $v['path'] = $vv;
             } else if (is_callable($v['path'])) {
                 $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
+            } else if ($v['path'] === false) {
+                unset($v['path']);
+                $v['link'] = 'javascript:;';
             }
             $s .= '<li>' . a($v, false) . '</li>';
         }
         $s .= '</ul>';
     }
+    return \HTML::unite('li', $s, $attr);
+}
+
+function files_data($array, $id = 0, $attr = [], $i = 0) {
+    global $language, $token, $url;
+    $state = \Extend::state('panel', 'file');
+    sort($array);
+    _attr(0, $attr, 'files', $id, $i);
+    $s = "";
+    $tools = _config([
+        'g' => [
+            'title' => false,
+            'description' => $language->edit,
+            'icon' => [['M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z']],
+            'c' => 'g',
+            'stack' => 10
+        ],
+        'r' => [
+            'title' => false,
+            'description' => $language->delete,
+            'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
+            'c' => 'r',
+            'query' => ['token' => $token],
+            'stack' => 10.1
+        ]
+    ], '$.data.tools');
+    $tools = \Anemon::eat($tools)->sort([1, 'stack'])->vomit();
+    if ($array = \Anemon::eat(q($array))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1)) {
+        foreach ($array as $k => $v) {
+            $n = basename($v);
+            $a = strpos(str_replace('/', DS, X . implode(X, (array) \Session::get('panel.file.active')) . X), X . $v . X) !== false;
+            $s .= file_data($v, $id, [
+                'class[]' => [
+                    9997 => $a ? 'active' : null
+                ]
+            ], $i, $tools);
+        }
+    }
+    return \HTML::unite('ul', $s, $attr);
+}
+
+function file_data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
+    global $url;
+    $n = basename($path);
+    $dir = dirname(\Path::F($path, LOT, '/'));
+    _attr(0, $attr, 'file', $id, $i, [
+        'class[]' => [
+            9998 => 'is-file',
+            9999 => 'x:' . strtolower(pathinfo($path, PATHINFO_EXTENSION))
+        ]
+    ]);
+    $s  = '<h3 class="title">';
+    $s .= '<a href="' . $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . $dir . '/' . $n . '" target="_blank" title="' . \File::size($path) . '">' . $n . '</a>';
+    $s .= '</h3>';
+    if ($tools) {
+        $vv = $dir . '/' . $n;
+        $s .= '<ul class="tools">';
+        foreach ($tools as $k => $v) {
+            if (!$v) continue;
+            if (!isset($v['path'])) {
+                $v['path'] = $vv;
+            } else if (is_callable($v['path'])) {
+                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
+            } else if ($v['path'] === false) {
+                unset($v['path']);
+                $v['link'] = 'javascript:;';
+            }
+            $s .= '<li>' . a($v, false) . '</li>';
+        }
+        $s .= '</ul>';
+    }
+    $s .= \Form::hidden('data[' . \Path::N($n) . ']', file_get_contents($path));
     return \HTML::unite('li', $s, $attr);
 }
 

@@ -6,10 +6,12 @@ if ($c !== 'r' && !HTTP::is('post')) {
     exit('Method not allowed.');
 }
 
+$id = $panel->id;
+$r = $panel->r;
 $a = HTTP::post('a');
 $tab = HTTP::get('tab');
 
-$path = str_replace('/', DS, rtrim($panel->id . '/' . $panel->path, '/'));
+$path = str_replace('/', DS, rtrim($id . '/' . $panel->path, '/'));
 $directory = trim(str_replace('/', DS, HTTP::post('directory', "")), DS);
 $consent = HTTP::post('consent');
 
@@ -49,14 +51,17 @@ if ($tab === 'folder') {
             File::open($f)->delete();
             panel\message('success', $ff ? 'File deleted.' : 'Folder deleted.');
             HTTP::delete('post');
-            Guardian::kick($panel->r . '/::g::/' . dirname($path) . '/1');
+            Guardian::kick($r . '/::g::/' . dirname($path) . '/1');
         }
         $n = basename($path); // previous name
         $path = dirname($path);
     } else {
         $n = null;
     }
-    $content = HTTP::post('file.content', "");
+    if ($page = HTTP::post('page', [], false)) {
+        require __DIR__ . DS . 'gate.page.php';
+    }
+    $content = HTTP::post('file.content', "", false);
     if (Is::void($content)) {
         panel\message('error', 'Please fill out the content field!');
     }
@@ -71,7 +76,7 @@ if ($tab === 'folder') {
         }
         panel\message('success', $c === 's' ? 'File created.' : 'File updated.');
         HTTP::delete('post');
-        Guardian::kick($panel->r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name));
+        Guardian::kick($r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name));
     } else {
         HTTP::save('post');
         Guardian::kick($url->current . HTTP::query(['token' => false]));

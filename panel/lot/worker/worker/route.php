@@ -2,7 +2,9 @@
 
 Hook::set('on.ready', function() {
     extract(Lot::get(null, []));
+    $id = $panel->id;
     $r = $panel->r;
+    $v = $panel->v;
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset();
         Route::reset();
@@ -10,12 +12,12 @@ Hook::set('on.ready', function() {
     Route::set([
         $r . '/::%s%::/%*%/%i%',
         $r . '/::%s%::/%*%'
-    ], function($c = 'g', $path = "", $step = null) {
+    ], function($c = 'g', $path = "", $step = null) use($id, $r, $v) {
         extract(Lot::get(null, []));
         // Prevent directory traversal attack <https://en.wikipedia.org/wiki/Directory_traversal_attack>
         $path = str_replace('../', "", urldecode($path));
         if ($f = File::exist(LOT . DS . $path)) {
-            Config::set('trace', $trace = new Anemon([$language->{$panel->id}, $site->title], ' &#x00B7; '));
+            Config::set('trace', $trace = new Anemon([$language->{$id}, $site->title], ' &#x00B7; '));
             $error = false;
             if ($step !== null) {
                 if ($step !== 1 && !glob(LOT . DS . $path . DS . '*', GLOB_NOSORT)) {
@@ -31,11 +33,11 @@ Hook::set('on.ready', function() {
             Config::set('trace', $trace = new Anemon([$language->error, $site->title], ' &#x00B7; '));
             $error = true;
         }
-        $nav = panel\nav(panel\_config([], 'nav'), $panel->id);
-        $desk = panel\desk(panel\_config([], 'desk'), $panel->id);
+        $nav = panel\nav(panel\_config([], 'nav'), $id);
+        $desk = panel\desk(panel\_config([], 'desk'), $id);
         HTTP::status($error ? 404 : 200);
         echo '<!DOCTYPE html>';
-        echo '<html lang="' . $site->language . '" dir="' . $site->direction . '" class="' . ($error ? 'is-error error-404' : 'is-' . $panel->v) . '">';
+        echo '<html lang="' . $site->language . '" dir="' . $site->direction . '" class="' . ($error ? 'is-error error-404' : 'is-' . $v) . '">';
         echo '<head>';
         echo '<meta charset="' . $site->charset . '">';
         echo '<meta name="viewport" content="width=device-width">';
@@ -47,9 +49,9 @@ Hook::set('on.ready', function() {
         echo '<body spellcheck="false">';
         echo $message;
         echo $nav;
-        echo $panel->v === 'file' ? '<form class="form m0 p0" action="' . HTTP::query(['token' => $token]) . '" method="post" enctype="multipart/form-data">' : "";
+        echo $v === 'file' || $v === 'page' ? '<form class="form m0 p0" action="' . HTTP::query(['token' => $token]) . '" method="post" enctype="multipart/form-data">' : "";
         echo $error ? '<p class="m0 p2">&#x0CA0;&#x005F;&#x0CA0;</p>' : $desk;
-        echo $panel->v === 'file' ? '</form>' : "";
+        echo $v === 'file' || $v === 'page' ? '</form>' : "";
         echo '<footer></footer>';
         foreach ((array) Config::get('panel.$.menus', [], true) as $k => $v) {
             echo panel\menus($v, $k, [

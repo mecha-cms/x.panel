@@ -45,11 +45,11 @@ Config::set('panel.desk', [
                 ],
                 'stack' => 10.1
             ],
-            'blob' => [
+            'blob' => !$is_file ? [
                 'title' => $language->upload,
                 'fields' => [
                     'file[blob][]' => [
-                        'title' => $language->file,
+                        'key' => 'file',
                         'type' => 'blob',
                         'stack' => 10
                     ],
@@ -64,7 +64,7 @@ Config::set('panel.desk', [
                     ]
                 ],
                 'stack' => 10.2
-            ]
+            ] : null
         ]
     ],
     'footer' => [
