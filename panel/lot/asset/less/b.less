@@ -704,12 +704,14 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     > span {
       background:@color-a;
       color:@color_inverse;
+      .box-shadow(0 1px 1px rgba(0,0,0,.25));
       &:focus {background:@color-a_inverse}
     }
     > b,
     > span {
       background:none;
       color:inherit;
+      .box-shadow(none);
     }
   }
   @media (max-width:@view-mobile) {

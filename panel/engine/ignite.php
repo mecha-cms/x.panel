@@ -11,6 +11,34 @@ function _attr($input, &$attr, $p, $id, $i, $alt = []) {
     }
 }
 
+function _glob($folder, &$files, &$folders) {
+    if (is_array($folder)) {
+        foreach ($folder as $v) {
+            if (is_file($v)) {
+                $files[] = $v;
+            } else {
+                $folders[] = $v;
+            }
+        }
+    } else {
+        $folder = rtrim($folder, DS);
+        foreach (array_unique(array_merge(
+            glob($folder . DS . '*', GLOB_NOSORT),
+            glob($folder . DS . '.*', GLOB_NOSORT)
+        )) as $v) {
+            $n = basename($v);
+            if ($n === '.' || $n === '..') continue;
+            if (is_file($v)) {
+                $files[] = $v;
+            } else {
+                $folders[] = $v;
+            }
+        }
+    }
+    sort($files);
+    sort($folders);
+}
+
 function _config($defs = [], ...$any) {
     $out = [];
     while ($k = array_shift($any)) {
@@ -131,7 +159,7 @@ function a_href($input) {
         $u = $input['link'];
     }
     if (isset($input['query'])) {
-        $u .= \HTTP::query($input['query']);
+        $u .= \HTTP::query($input['query'], [1 => '&']);
     }
     if (isset($input['hash'])) {
         $u .= '#' . urlencode($input['hash']);
@@ -202,7 +230,7 @@ function desk($input, $id = 0, $attr = [], $i = 0) {
     if (isset($input['content'])) {
         $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
     }
-    return \HTML::unite('main', $s, $attr);
+    return \HTML::unite('div', $s, $attr);
 }
 
 // content: ""
@@ -302,7 +330,6 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
         return $input;
     }
     global $language;
-    _attr($input, $attr, 'field', $id, $i);
     $s = "";
     $kind = isset($input['kind']) ? (array) $input['kind'] : [];
     $style = [];
@@ -310,11 +337,15 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $description = isset($input['description']) ? trim($input['description']) : null;
     $type = isset($input['type']) ? $input['type'] : 'textarea';
     $value = isset($input['value']) ? $input['value'] : null;
-    $values = isset($input['values']) ? (array) $input['values'] : null;
+    $values = isset($input['values']) ? (array) $input['values'] : [];
     $placeholder = isset($input['placeholder']) ? $input['placeholder'] : $value;
     $pattern = isset($input['pattern']) ? $input['pattern'] : null;
     $width = !empty($input['width']) ? $input['width'] : null;
     $height = !empty($input['height']) ? $input['height'] : null;
+    asort($values);
+    $copy = $input;
+    $copy['kind'] = ['type:' . $type];
+    _attr($copy, $attr, 'field', $id, $i);
     if ($width === true) {
         $kind[] = 'width';
     } else if (is_numeric($width)) {
@@ -325,7 +356,6 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     } else if (is_numeric($height)) {
         $style['height'] = $height . 'px';
     }
-    $kind[] = 'type:' . $type;
     $attr_alt = [
         'class[]' => $kind,
         'pattern' => $pattern
@@ -354,7 +384,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
             $s .= \Form::check($key . '[' . $k . ']', isset($v[2]) ? $v[2] : 1, !empty($v[1]), $v[0], $attr_alt);
         }
         $s .= '</span>';
-    } else if ($type === 'editor' || $type === 'source' || $type === 'textarea') {
+    } else if (strpos(',editor,source,textarea,', ',' . $type . ',') !== false) {
         $attr_alt['class[]'][] = 'textarea';
         if ($type === 'source') {
             $attr_alt['class[]'][] = 'code';
@@ -393,8 +423,17 @@ function fields($input, $id = 0, $attr = [], $i = 0) {
     }
     $s = "";
     $ii = 0;
+    $hidden = [];
     foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
-        $s .= field($k, $v, $id, [], $ii);
+        if (isset($v['type']) && $v['type'] === 'hidden') {
+            $hidden[$k] = $v;
+            continue;
+        }
+        $s .= field($k, $v, isset($v['key']) ? $v['key'] : $k, [], $ii);
+        ++$ii;
+    }
+    foreach (\Anemon::eat($hidden)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+        $s .= field($k, $v, isset($v['key']) ? $v['key'] : $k, [], $ii);
         ++$ii;
     }
     return $s;
@@ -404,33 +443,12 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     global $language, $token, $url;
     $state = \Extend::state('panel', 'file');
     $files = $folders = [];
-    $x = false;
-    if (is_array($folder)) {
-        $x = $folder[1];
-        $folder = $folder[0];
-    }
-    $folder = rtrim($folder, DS);
-    foreach (array_unique(array_merge(
-        glob($folder . DS . '*', GLOB_NOSORT),
-        glob($folder . DS . '.*', GLOB_NOSORT)
-    )) as $v) {
-        $n = basename($v);
-        if ($n === '.' || $n === '..') continue;
-        if (is_file($v)) {
-            if (!$x || \Path::X($v) === $x) {
-                $files[] = $v;
-            }
-        } else if (!$x) {
-            $folders[] = $v;
-        }
-    }
-    sort($files);
-    sort($folders);
-    $GLOBALS['.' . crc32($folder)] = ($files = array_merge($folders, $files));
-    _attr(0, $attr, 'files', $id, $i, [
+    _glob($folder, $files, $folders);
+    $files = q(array_merge($folders, $files));
+    $dir = $s = "";
+    _attr(0, $attr, 'files', $id, $i, is_string($folder) ? [
         'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
-    ]);
-    $s = "";
+    ] : []);
     $tools = _config([
         'g' => [
             'title' => false,
@@ -464,7 +482,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
                 ]
             ], $i, $tools);
         }
-    } else if (dirname($folder) !== LOT) {
+    } else if (is_string($folder) && dirname($folder) !== LOT) {
         $s = file(dirname($folder) . DS . '..', $id, [], 0, $tools);
     }
     return \HTML::unite('ul', $s, $attr);
@@ -500,78 +518,6 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
         }
         $s .= '</ul>';
     }
-    return \HTML::unite('li', $s, $attr);
-}
-
-function files_data($array, $id = 0, $attr = [], $i = 0) {
-    global $language, $token, $url;
-    $state = \Extend::state('panel', 'file');
-    sort($array);
-    _attr(0, $attr, 'files', $id, $i);
-    $s = "";
-    $tools = _config([
-        'g' => [
-            'title' => false,
-            'description' => $language->edit,
-            'icon' => [['M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z']],
-            'c' => 'g',
-            'stack' => 10
-        ],
-        'r' => [
-            'title' => false,
-            'description' => $language->delete,
-            'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
-            'c' => 'r',
-            'query' => ['token' => $token],
-            'stack' => 10.1
-        ]
-    ], '$.data.tools');
-    $tools = \Anemon::eat($tools)->sort([1, 'stack'])->vomit();
-    if ($array = \Anemon::eat(q($array))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1)) {
-        foreach ($array as $k => $v) {
-            $n = basename($v);
-            $a = strpos(str_replace('/', DS, X . implode(X, (array) \Session::get('panel.file.active')) . X), X . $v . X) !== false;
-            $s .= file_data($v, $id, [
-                'class[]' => [
-                    9997 => $a ? 'active' : null
-                ]
-            ], $i, $tools);
-        }
-    }
-    return \HTML::unite('ul', $s, $attr);
-}
-
-function file_data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
-    global $url;
-    $n = basename($path);
-    $dir = dirname(\Path::F($path, LOT, '/'));
-    _attr(0, $attr, 'file', $id, $i, [
-        'class[]' => [
-            9998 => 'is-file',
-            9999 => 'x:' . strtolower(pathinfo($path, PATHINFO_EXTENSION))
-        ]
-    ]);
-    $s  = '<h3 class="title">';
-    $s .= '<a href="' . $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . $dir . '/' . $n . '" target="_blank" title="' . \File::size($path) . '">' . $n . '</a>';
-    $s .= '</h3>';
-    if ($tools) {
-        $vv = $dir . '/' . $n;
-        $s .= '<ul class="tools">';
-        foreach ($tools as $k => $v) {
-            if (!$v) continue;
-            if (!isset($v['path'])) {
-                $v['path'] = $vv;
-            } else if (is_callable($v['path'])) {
-                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
-            } else if ($v['path'] === false) {
-                unset($v['path']);
-                $v['link'] = 'javascript:;';
-            }
-            $s .= '<li>' . a($v, false) . '</li>';
-        }
-        $s .= '</ul>';
-    }
-    $s .= \Form::hidden('data[' . \Path::N($n) . ']', file_get_contents($path));
     return \HTML::unite('li', $s, $attr);
 }
 
@@ -710,20 +656,10 @@ function nav_ul($input, $id = 0, $attr = [], $i = 0) {
 
 function pager($folder, $id = 0, $attr = [], $i = 0) {
     global $language, $url;
-    $folder = rtrim($folder, DS);
     $state = \Extend::state('panel', 'file');
-    if ($files = isset($GLOBALS[$k = '.' . crc32($folder)]) ? $GLOBALS[$k] : false) {
-        $files = [];
-        foreach (array_unique(array_merge(
-            glob($folder . DS . '*', GLOB_NOSORT),
-            glob($folder . DS . '.*', GLOB_NOSORT)
-        )) as $v) {
-            $n = basename($v);
-            if ($n === '.' || $n === '..') continue;
-            $files[] = $v;
-        }
-        $files = q($files);
-    }
+    $files = $folders = [];
+    _glob($folder, $files, $folders);
+    $files = q(array_merge($folders, $files));
     $s = _pager($url->i ?: 1, count($files), $state['chunk'], $state['kin'], function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);

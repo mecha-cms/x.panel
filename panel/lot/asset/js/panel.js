@@ -116,9 +116,13 @@ var $tabs = $('.tabs');
 $body.data('tabs', $tabs);
 
 if ($tabs.length) {
+    var pushState = 'pushState' in win.history,
+        href = win.location.href;
     $tabs.on('tab:change', function(e, $source, $target) {
         $source.parent().addClass('active').siblings().removeClass('active');
         $target.addClass('active').siblings().removeClass('active');
+        href = href.replace(/[?&]tab(=([^?&#]+)?)?/g, "");
+        pushState && win.history.pushState({}, "", href + (href.indexOf('?') > -1 ? '&' : '?') + 'tab=' + $target.attr('id').split(':')[1].split('.')[0]);
         $focus = $target.find(focusable_class);
         $focus.length && $focus.focus();
     });

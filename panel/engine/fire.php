@@ -125,4 +125,5 @@ Config::set('panel.nav.message', [
 
 if ($query = HTTP::get('q')) {
     panel\message('info', $language->message_info_search(To::text($query)));
+    Lot::set('message', Message::get());
 }

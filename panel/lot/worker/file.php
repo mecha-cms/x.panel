@@ -25,6 +25,7 @@ Config::set('panel.desk', [
                     ],
                     'name' => [
                         'type' => 'text',
+                        'pattern' => '^[._]?[a-z\\d]+(-[a-z\\d]+)*\\.[a-z\\d]+$',
                         'value' => $c === 'g' ? basename($path) : null,
                         'width' => true,
                         'stack' => 10.1
@@ -48,19 +49,10 @@ Config::set('panel.desk', [
             'blob' => !$is_file ? [
                 'title' => $language->upload,
                 'fields' => [
-                    'file[blob][]' => [
+                    'file[blob]' => [
                         'key' => 'file',
                         'type' => 'blob',
                         'stack' => 10
-                    ],
-                    'o' => [
-                        'title' => $language->options,
-                        'type' => 'toggle[]',
-                        'values' => [
-                            'extract' => 'Extract package after upload.',
-                            'wrap' => ['Wrap the extracted files with a folder.', true]
-                        ],
-                        'stack' => 10.1
                     ]
                 ],
                 'stack' => 10.2

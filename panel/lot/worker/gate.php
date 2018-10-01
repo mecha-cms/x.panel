@@ -24,9 +24,10 @@ if ($c === 'r') {
     $ff = is_file($f = LOT . DS . $path);
     File::open($f)->delete();
     panel\message('success', $ff ? 'File deleted.' : 'Folder deleted.');
-    Guardian::kick(str_replace('::r::', '::g::', dirname($url->current)) . '/1');
+    Guardian::kick(HTTP::get('kick', str_replace('::r::', '::g::', dirname($url->current)) . '/1'));
 }
 
+$query = HTTP::query(['token' => false]);
 if ($tab === 'folder') {
     if (Is::void($directory)) {
         panel\message('error', 'Please fill out the directory field!');
@@ -39,12 +40,12 @@ if ($tab === 'folder') {
         Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/1');
     } else {
         HTTP::save('post');
-        Guardian::kick($url->current . HTTP::query(['token' => false]));
+        Guardian::kick($url->current . $query);
     }
 } else if ($tab === 'blob') {
     
 } else /* if ($tab === 'file') */ {
-    $name = basename(HTTP::post('name'));
+    $name = To::kebab(basename(HTTP::post('name', "", false)));
     if ($c === 'g') {
         if ($a === -1) {
             $ff = is_file($f = LOT . DS . $path);
@@ -59,7 +60,10 @@ if ($tab === 'folder') {
         $n = null;
     }
     if ($page = HTTP::post('page', [], false)) {
-        require __DIR__ . DS . 'gate.page.php';
+        require __DIR__ . DS . 'gate' . DS . 'page.php';
+    }
+    if ($x = HTTP::post('x', "", false)) {
+        $name .= '.' . $x;
     }
     $content = HTTP::post('file.content', "", false);
     if (Is::void($content)) {
@@ -76,9 +80,9 @@ if ($tab === 'folder') {
         }
         panel\message('success', $c === 's' ? 'File created.' : 'File updated.');
         HTTP::delete('post');
-        Guardian::kick($r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name));
+        Guardian::kick(HTTP::get('kick', $r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name) . $query));
     } else {
         HTTP::save('post');
-        Guardian::kick($url->current . HTTP::query(['token' => false]));
+        Guardian::kick($url->current . $query);
     }
 }

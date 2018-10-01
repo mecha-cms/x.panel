@@ -32,6 +32,7 @@ Config::reset('panel.desk.footer.tools');
 Config::set('panel.desk.body.tabs.file.title', $language->{$id});
 
 // Modify file tab content field(s)
+Config::set('panel.$.slug', ['page[title]:slug']);
 Config::set('panel.desk.body.tabs.file.fields', [
     'file[content]' => null,
     'name' => null,
@@ -80,18 +81,18 @@ Config::set('panel.desk.body.tabs.data', [
         'page[link]' => [
             'key' => 'link',
             'type' => 'text',
-            'pattern' => '^(\\/\\/\\S+|https?:\\/\\/\\S+)$',
+            'pattern' => '^([\\/?#]\\S+|\\/\\/\\S+|https?:\\/\\/\\S+)$',
             'value' => $page->link,
             'width' => true,
             'stack' => 10
         ],
-        'data[time]' => [
+        'data[time]' => $c === 'g' ? [
             'key' => 'time',
             'type' => 'text',
-            'pattern' => '^\\d{4,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1]) ([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}$',
+            'pattern' => '^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1]) ([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}$',
             'value' => $page->time,
             'stack' => 10.1
-        ],
+        ] : null,
         '+' => $c === 'g' ? [
             'key' => 'datas',
             'type' => 'content',
@@ -101,8 +102,12 @@ Config::set('panel.desk.body.tabs.data', [
     'stack' => 10.1
 ]);
 
-Hook::set('on.ready', function() use($language, $page) {
-    Config::set('panel.desk.body.tabs.file.fields.page[type].values', (array) $language->o_page_types);
+Hook::set('on.ready', function() use($language, $page, $token, $url) {
+    $types = (array) $language->o_page_types;
+    if (!isset($types[$page->type])) {
+        $types[$page->type] = $page->type;
+    }
+    Config::set('panel.desk.body.tabs.file.fields.page[type].values', $types);
     // Add data(s) field
     $datas = glob(Path::F($page->path) . DS . '*.data', GLOB_NOSORT);
     $removes = [];
@@ -111,7 +116,7 @@ Hook::set('on.ready', function() use($language, $page) {
         $v = $v['fields'];
         foreach ($v as $kk => $vv) {
             if (strpos($kk, 'data[') === 0) {
-                $removes[substr($kk, 5, -1) . '.data'] = 1;
+                $removes[substr(explode(']', $kk)[0], 5) . '.data'] = 1;
             }
         }
     }
@@ -120,15 +125,25 @@ Hook::set('on.ready', function() use($language, $page) {
             unset($datas[$k]);
         }
     }
-    $tools = '<ul class="links"><li>' . panel\a([
+    $query = [
+        'query' => [
+            'kick' => $url->path . To::query(['tab' => 'data']),
+            'tab' => false,
+            'view' => 'data'
+        ]
+    ];
+    $tools = '<ul class="links' . ($datas ? "" : ' inputs') . '"><li>' . panel\a([
         'title' => $language->create,
         'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-        'target' => '_blank',
         'path' => Path::F($page->path, LOT, '/'),
         'c' => 's',
-        'query' => ['view' => 'file']
+        'query' => $query['query']
     ]) . '</ul>';
-    Config::set('panel.desk.body.tabs.data.fields.+.value', panel\files_data($datas) . $tools);
+    Config::set('panel.$.file.tools', [
+        'g' => $query,
+        'r' => $query
+    ]);
+    Config::set('panel.desk.body.tabs.data.fields.+.value', ($datas ? panel\files($datas) : "") . $tools);
     // Add tag(s) field
     if (Extend::exist('tag')) {
         Config::set('panel.desk.body.tabs.file.fields.tags', [
@@ -143,7 +158,6 @@ Hook::set('on.ready', function() use($language, $page) {
     // Add art direction tab
     if (Plugin::exist('art')) {
         Config::set('panel.desk.body.tabs.art', [
-            'title' => 'Art',
             'fields' => [
                 'data[css]' => [
                     'title' => '<abbr title="Cascading Style Sheet">CSS</abbr>',

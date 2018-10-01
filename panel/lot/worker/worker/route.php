@@ -49,9 +49,17 @@ Hook::set('on.ready', function() {
         echo '<body spellcheck="false">';
         echo $message;
         echo $nav;
-        echo $v === 'file' || $v === 'page' ? '<form class="form m0 p0" action="' . HTTP::query(['token' => $token]) . '" method="post" enctype="multipart/form-data">' : "";
+        $g = "";
+        if ($c === 's') {
+            foreach (['slug', 'key'] as $k) {
+                if ($n = (array) Config::get('panel.$.' . $k, [], true)) {
+                    $g .= ' data-generator-' . $k . '="' . implode(' ', $n) . '"';
+                }
+            }
+        }
+        echo strpos(',data,file,page,', ',' . $v . ',') !== false ? '<form class="form m0 p0" action="' . HTTP::query(['token' => $token]) . '" method="post" enctype="multipart/form-data"' . $g . '>' : "";
         echo $error ? '<p class="m0 p2">&#x0CA0;&#x005F;&#x0CA0;</p>' : $desk;
-        echo $v === 'file' || $v === 'page' ? '</form>' : "";
+        echo strpos(',data,file,page,', ',' . $v . ',') !== false ? '</form>' : "";
         echo '<footer></footer>';
         foreach ((array) Config::get('panel.$.menus', [], true) as $k => $v) {
             echo panel\menus($v, $k, [

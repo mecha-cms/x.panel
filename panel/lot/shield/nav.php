@@ -1,1 +1,0 @@
-<?php echo panel\nav(panel\_config([], 'nav'), $panel->id); ?>
