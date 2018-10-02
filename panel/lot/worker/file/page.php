@@ -8,6 +8,11 @@ if (HTTP::get('view') === 'file') {
     return;
 }
 
+// TODO
+$panel->view = $panel->v = ($view = 'page');
+
+Session::set('panel.view', $view);
+
 $page = new Page(LOT . DS . $id . DS . $panel->path, array_replace([
     'author' => null,
     'content' => null,
@@ -71,6 +76,11 @@ Config::set('panel.desk.body.tabs.file.fields', [
         'kind' => ['select-input'],
         'value' => $page->type,
         'stack' => 10.4
+    ],
+    'consent' => [
+        'type' => 'hidden',
+        'value' => '0600',
+        'stack' => 0
     ]
 ]);
 
@@ -91,6 +101,7 @@ Config::set('panel.desk.body.tabs.data', [
             'type' => 'text',
             'pattern' => '^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1]) ([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}$',
             'value' => $page->time,
+            'placeholder' => $page->time ?: date(DATE_WISE),
             'stack' => 10.1
         ] : null,
         '+' => $c === 'g' ? [
@@ -127,23 +138,23 @@ Hook::set('on.ready', function() use($language, $page, $token, $url) {
     }
     $query = [
         'query' => [
-            'kick' => $url->path . To::query(['tab' => 'data']),
             'tab' => false,
-            'view' => 'data'
+            'view' => 'data',
+            'x' => Path::X($url->path)
         ]
     ];
-    $tools = '<ul class="links' . ($datas ? "" : ' inputs') . '"><li>' . panel\a([
-        'title' => $language->create,
-        'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-        'path' => Path::F($page->path, LOT, '/'),
-        'c' => 's',
-        'query' => $query['query']
-    ]) . '</ul>';
     Config::set('panel.$.file.tools', [
         'g' => $query,
         'r' => $query
     ]);
-    Config::set('panel.desk.body.tabs.data.fields.+.value', ($datas ? panel\files($datas) : "") . $tools);
+    Config::set('panel.desk.body.tabs.data.fields.+.value', ($datas ? panel\files($datas) : "") . '<p>' . panel\a([
+        'title' => $language->create,
+        'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']],
+        'c' => 's',
+        'url' => str_replace('::g::', '::s::', Path::F($url->path)),
+        'query' => $query['query'],
+        'kind' => ['button', 'text']
+    ]) . '</p>');
     // Add tag(s) field
     if (Extend::exist('tag')) {
         Config::set('panel.desk.body.tabs.file.fields.tags', [

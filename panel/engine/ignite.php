@@ -11,6 +11,41 @@ function _attr($input, &$attr, $p, $id, $i, $alt = []) {
     }
 }
 
+function _clean_walk($input, $fn) {
+    foreach ($input as $k => $v) {
+        if (is_array($v)) {
+            $o = _clean_walk($v, $fn);
+            if (!empty($o)) {
+                $input[$k] = $o;
+            } else {
+                unset($input[$k]);
+            }
+        } else {
+            if ($fn($v, $k)) {
+                unset($input[$k]);
+            }
+        }
+    }
+    return $input;
+}
+
+function _clean($input) {
+    return _clean_walk($input, function($v) {
+        return \Is::void($v);
+    });
+}
+
+function _config($defs = [], ...$any) {
+    $out = [];
+    while ($k = array_shift($any)) {
+        if (is_string($k) && $v = \Config::get('panel.' . $k, [], true)) {
+            $out = array_replace_recursive($out, $v);
+            break;
+        }
+    }
+    return array_replace_recursive($defs, $out);
+}
+
 function _glob($folder, &$files, &$folders) {
     if (is_array($folder)) {
         foreach ($folder as $v) {
@@ -37,17 +72,6 @@ function _glob($folder, &$files, &$folders) {
     }
     sort($files);
     sort($folders);
-}
-
-function _config($defs = [], ...$any) {
-    $out = [];
-    while ($k = array_shift($any)) {
-        if (is_string($k) && $v = \Config::get('panel.' . $k, [], true)) {
-            $out = array_replace_recursive($out, $v);
-            break;
-        }
-    }
-    return array_replace_recursive($defs, $out);
 }
 
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
@@ -146,17 +170,14 @@ function a_href($input) {
     if (is_string($input)) {
         return $input;
     }
-    global $url;
-    // [1]. `path`
-    // [2]. `url`
-    // [3]. `link`
+    // `[link[path[url]]]`
     $u = "";
-    if (isset($input['path'])) {
-        $u = rtrim($url . '/' . \Extend::state('panel', 'path') . '/::' . (isset($input['c']) ? $input['c'] : 'g') . '::/' . ltrim($input['path'], '/'), '/');
+    if (isset($input['link'])) {
+        $u = $input['link'];
     } else if (isset($input['url'])) {
         $u = \URL::long($input['url']);
-    } else if (isset($input['link'])) {
-        $u = $input['link'];
+    } else if (isset($input['path'])) {
+        $u = rtrim(\URL::long(\Extend::state('panel', 'path') . '/::' . (isset($input['c']) ? $input['c'] : 'g') . '::/' . ltrim($input['path'], '/')), '/');
     }
     if (isset($input['query'])) {
         $u .= \HTTP::query($input['query'], [1 => '&']);
@@ -522,20 +543,25 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function icon($input, $attr = []) {
-    $icon_none = \HTML::unite('i', "", array_replace_recursive(['class[]' => ['icon']], $attr));
+    $none = \HTML::unite('i', "", array_replace_recursive(['class[]' => ['icon']], $attr));
     if (is_string($input)) {
+        // `icon("")`
         if ($input === "") {
-            return $icon_none;
+            return $none;
         }
         return $input;
     } else if (isset($input['content'])) {
         if ($input['content'] === "") {
-            return $icon_none;
+            return $none;
         }
         return $input['content'];
     }
     // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
     if (count($input) === 1) {
+        // `icon([""])`
+        if ($input[0] === "") {
+            return $none;
+        }
         $box = '0 0 24 24';
         $d = $input[0];
     // `icon(['0 0 24 24', 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`

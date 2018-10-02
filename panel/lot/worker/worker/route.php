@@ -30,45 +30,15 @@ Hook::set('on.ready', function() {
                 }
             }
         } else {
-            Config::set('trace', $trace = new Anemon([$language->error, $site->title], ' &#x00B7; '));
+            Config::set('trace', new Anemon([$language->error, $site->title], ' &#x00B7; '));
             $error = true;
         }
-        $nav = panel\nav(panel\_config([], 'nav'), $id);
-        $desk = panel\desk(panel\_config([], 'desk'), $id);
         HTTP::status($error ? 404 : 200);
-        echo '<!DOCTYPE html>';
-        echo '<html lang="' . $site->language . '" dir="' . $site->direction . '" class="' . ($error ? 'is-error error-404' : 'is-' . $v) . '">';
-        echo '<head>';
-        echo '<meta charset="' . $site->charset . '">';
-        echo '<meta name="viewport" content="width=device-width">';
-        echo '<title>' . To::text($trace) . '</title>';
-        echo '<link href="' . $url . '/favicon.ico" rel="shortcut icon">';
-        echo str_replace('"stylesheet"', '"stylesheet/less"', Asset::css(EXTEND . '/panel/lot/asset/less/panel.less'));
-        echo Asset::js(EXTEND . '/panel/lot/asset/index.js');
-        echo '</head>';
-        echo '<body spellcheck="false">';
-        echo $message;
-        echo $nav;
-        $g = "";
-        if ($c === 's') {
-            foreach (['slug', 'key'] as $k) {
-                if ($n = (array) Config::get('panel.$.' . $k, [], true)) {
-                    $g .= ' data-generator-' . $k . '="' . implode(' ', $n) . '"';
-                }
-            }
-        }
-        echo strpos(',data,file,page,', ',' . $v . ',') !== false ? '<form class="form m0 p0" action="' . HTTP::query(['token' => $token]) . '" method="post" enctype="multipart/form-data"' . $g . '>' : "";
-        echo $error ? '<p class="m0 p2">&#x0CA0;&#x005F;&#x0CA0;</p>' : $desk;
-        echo strpos(',data,file,page,', ',' . $v . ',') !== false ? '</form>' : "";
-        echo '<footer></footer>';
-        foreach ((array) Config::get('panel.$.menus', [], true) as $k => $v) {
-            echo panel\menus($v, $k, [
-                'data[]' => ['js-enter' => '#js:' . $k]
-            ]);
-        }
-        echo Asset::js(EXTEND . '/panel/lot/asset/js/panel.js');
-        echo '</body>';
-        echo '</html>';
-        exit;
+        Lot::set([
+            'desk' => panel\desk(panel\_config([], 'desk'), $id),
+            'error' => $error,
+            'nav' => panel\nav(panel\_config([], 'nav'), $id)
+        ]);
+        Shield::attach(__DIR__ . DS . '..' . DS . 'view.php');
     }, 0);
 }, 0);

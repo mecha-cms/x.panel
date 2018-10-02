@@ -10,10 +10,18 @@ $id = $panel->id;
 $r = $panel->r;
 $a = HTTP::post('a');
 $tab = HTTP::get('tab');
+$gate_alt = File::exist(__DIR__ . DS . 'gate' . DS . Session::get('panel.view', X) . '.php');
+
+Session::reset('panel.view');
 
 $path = str_replace('/', DS, rtrim($id . '/' . $panel->path, '/'));
 $directory = trim(str_replace('/', DS, HTTP::post('directory', "")), DS);
-$consent = HTTP::post('consent');
+$consent = HTTP::post('consent', null, false);
+
+// <https://stackoverflow.com/q/28672096>
+if ($consent !== null) {
+    $consent = octdec($consent);
+}
 
 if ($c === 'r') {
     // Prevent user(s) from deleting the root folder(s)
@@ -21,10 +29,13 @@ if ($c === 'r') {
         panel\message('error', 'You can\'t delete this file/folder.');
         Guardian::kick(str_replace('::r::', '::g::', $url->current . '/1'));
     }
+    if ($gate_alt) {
+        require $gate_alt;
+    }
     $ff = is_file($f = LOT . DS . $path);
     File::open($f)->delete();
     panel\message('success', $ff ? 'File deleted.' : 'Folder deleted.');
-    Guardian::kick(HTTP::get('kick', str_replace('::r::', '::g::', dirname($url->current)) . '/1'));
+    Guardian::kick(str_replace('::r::', '::g::', dirname($url->current)) . '/1');
 }
 
 $query = HTTP::query(['token' => false]);
@@ -45,9 +56,12 @@ if ($tab === 'folder') {
 } else if ($tab === 'blob') {
     
 } else /* if ($tab === 'file') */ {
-    $name = To::kebab(basename(HTTP::post('name', "", false)));
+    $name = To::slug(basename(HTTP::post('name', "", false)));
     if ($c === 'g') {
         if ($a === -1) {
+            if ($gate_alt) {
+                require $gate_alt;
+            }
             $ff = is_file($f = LOT . DS . $path);
             File::open($f)->delete();
             panel\message('success', $ff ? 'File deleted.' : 'Folder deleted.');
@@ -59,8 +73,8 @@ if ($tab === 'folder') {
     } else {
         $n = null;
     }
-    if ($page = HTTP::post('page', [], false)) {
-        require __DIR__ . DS . 'gate' . DS . 'page.php';
+    if ($gate_alt) {
+        require $gate_alt;
     }
     if ($x = HTTP::post('x', "", false)) {
         $name .= '.' . $x;
@@ -80,7 +94,7 @@ if ($tab === 'folder') {
         }
         panel\message('success', $c === 's' ? 'File created.' : 'File updated.');
         HTTP::delete('post');
-        Guardian::kick(HTTP::get('kick', $r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name) . $query));
+        Guardian::kick($r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name) . $query);
     } else {
         HTTP::save('post');
         Guardian::kick($url->current . $query);
