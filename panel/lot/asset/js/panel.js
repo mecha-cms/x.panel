@@ -44,7 +44,13 @@ function query(source, key, value) {
         a[1] = a[1].slice(1);
     }
     value && (a[1] += '&' + key + '=' + value);
-    return a[1] && a[0] + '?' + a[1] || a[0];
+    if (a[1]) {
+        if (a[1][0] === '&') {
+            a[1] = a[1].slice(1);
+        }
+        return a[0] + '?' + a[1];
+    }
+    return a[0];
 }
 
 var $dialogs = $('.dialog');

@@ -52,9 +52,9 @@ if ($tab === 'folder') {
         Guardian::kick($url->current . $query);
     }
 } else if ($tab === 'blob') {
-    
+    // TODO: do file upload
 } else /* if ($tab === 'file') */ {
-    $name = To::slug(basename(HTTP::post('name', "", false)));
+    $name = To::file(basename(HTTP::post('name', "", false)));
     if ($c === 'g') {
         if ($a === -1) {
             if ($gate_alt) {
