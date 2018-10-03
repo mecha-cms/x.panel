@@ -2,11 +2,6 @@
 
 require __DIR__ . DS . 'file.php';
 
-// TODO
-$panel->view = $panel->v = ($view = 'data');
-
-Session::set('panel.view', $view);
-
 // Remove folder and blob tab(s)
 Config::reset('panel.desk.body.tabs.folder');
 Config::reset('panel.desk.body.tabs.blob');

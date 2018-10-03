@@ -4,6 +4,10 @@ if (!$page = HTTP::post('page', [], false)) {
     return;
 }
 
+if ($c === 'g' && $a === -1) {
+    // TODO: delete folder!
+}
+
 $headers = [
     'title' => function($s) {
         return w($s, HTML_WISE_I) ?: false;
@@ -41,7 +45,11 @@ foreach ($headers as $k => $v) {
 $headers = array_filter(array_replace_recursive($headers, $page), function($v) {
     return isset($v) && $v !== false && $v !== "" && !is_callable($v);
 });
-$name = To::slug(HTTP::post('slug', $headers['title'], false)) ?: date('Y-m-d-H-i-s');
+$title = date('Y/m/d H:i:s');
+if (!isset($headers['title'])) {
+    $headers['title'] = $title;
+}
+$name = To::slug(HTTP::post('slug', $headers['title'], false)) ?: strtr($title, '/: ', '---');
 
 if (!Message::$x) {
     if ($c === 'g') {

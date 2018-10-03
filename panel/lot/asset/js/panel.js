@@ -34,6 +34,18 @@ $html.addClass('js');
 var $focus = $(focusable_class);
 $focus.length && $focus.focus();
 
+function query(source, key, value) {
+    var a = source.split('?');
+    if (!a[1]) {
+        return value ? a[0] + '?' + key + '=' + value : a[0];
+    }
+    a[1] = a[1].replace(new RegExp('(^|&)' + key + '=[^&#]+', 'g'), "");
+    if (a[1] && a[1][0] === '&') {
+        a[1] = a[1].slice(1);
+    }
+    value && (a[1] += '&' + key + '=' + value);
+    return a[1] && a[0] + '?' + a[1] || a[0];
+}
 
 var $dialogs = $('.dialog');
 
@@ -117,12 +129,17 @@ $body.data('tabs', $tabs);
 
 if ($tabs.length) {
     var pushState = 'pushState' in win.history,
-        href = win.location.href;
+        href = win.location.href,
+        action;
     $tabs.on('tab:change', function(e, $source, $target) {
         $source.parent().addClass('active').siblings().removeClass('active');
         $target.addClass('active').siblings().removeClass('active');
-        href = href.replace(/[?&]tab(=([^?&#]+)?)?/g, "");
-        pushState && win.history.pushState({}, "", href + (href.indexOf('?') > -1 ? '&' : '?') + 'tab=' + $target.attr('id').split(':')[1].split('.')[0]);
+        var $form = $target.closest('form');
+        if (pushState) {
+            if (!action) action = $form.attr('action');
+            win.history.pushState({}, "", query(href, 'tab', $target.data('key')));
+            $form.attr('action', query(action, 'tab', $target.data('key')));
+        }
         $focus = $target.find(focusable_class);
         $focus.length && $focus.focus();
     });
@@ -140,9 +157,11 @@ if ($tabs.length) {
                 $i = $this.data('icon'),
                 $href = $this.attr('href') || $this.data('href') || "",
                 $target = $this.attr('target') || $this.data('target'),
-                text = '<span>' + ($this.attr('title') || $this.data('title') || '#' + ($this.attr('id') || j)) + '</span>',
+                id = $this.attr('id') || j,
+                text = '<span>' + ($this.attr('title') || $this.data('title') || '#' + id) + '</span>',
                 $li = $('<li></li>'),
                 $a = $('<a href="' + $href + '">' + ($i ? '<svg class="icon left" viewBox="0 0 24 24"><path d="' + $i + '"/></svg> ' + text : text) + '</a>').appendTo($li);
+            $this.data('key', id.split(':')[1].split('.')[0]);
             $target && $a.attr('target', $target);
             if ($this.hasClass('active')) {
                 $li.addClass('active');

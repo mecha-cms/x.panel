@@ -61,13 +61,13 @@ Config::set('panel.desk', [
     ],
     'footer' => [
         'tools' => [
-            0 => [
+            '+' => [
                 'title' => $language->{$c === 's' ? 'create' : 'update'},
                 'name' => 'a',
                 'value' => 1,
                 'stack' => 10
             ],
-            1 => $c === 'g' ? [
+            '-' => $c === 'g' ? [
                 'title' => $language->delete,
                 'name' => 'a',
                 'value' => -1,

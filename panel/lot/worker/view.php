@@ -23,7 +23,7 @@ if ($panel->c === 's') {
 }
 
 ?>
-<?php if (($v = strpos(',data,file,page,', ',' . $panel->v . ',')) !== false): ?>
+<?php if ($v = strpos(',data,file,page,', ',' . $panel->v . ',') !== false): ?>
 <form class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>
@@ -32,6 +32,7 @@ if ($panel->c === 's') {
 <?php echo $desk; ?>
 <?php endif; ?>
 <?php if ($v): ?>
+<input name="view" value="<?php echo HTTP::get('view', $panel->v); ?>" type="hidden">
 </form>
 <?php endif; ?>
 <footer></footer>

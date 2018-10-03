@@ -14,13 +14,14 @@ Hook::set('on.ready', function() {
         $r . '/::%s%::/%*%'
     ], function($c = 'g', $path = "", $step = null) use($id, $r, $v) {
         extract(Lot::get(null, []));
+        Config::reset('is.error');
         // Prevent directory traversal attack <https://en.wikipedia.org/wiki/Directory_traversal_attack>
         $path = str_replace('../', "", urldecode($path));
         if ($f = File::exist(LOT . DS . $path)) {
             Config::set('trace', $trace = new Anemon([$language->{$id}, $site->title], ' &#x00B7; '));
             $error = false;
             if ($step !== null) {
-                if ($step !== 1 && !glob(LOT . DS . $path . DS . '*', GLOB_NOSORT)) {
+                if ($step !== 1 && !glob($f . DS . '*', GLOB_NOSORT)) {
                     $error = true;
                 }
                 if ($f = File::exist(LOT . DS . $path . DS . $step)) {

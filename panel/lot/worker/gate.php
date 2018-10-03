@@ -10,9 +10,7 @@ $id = $panel->id;
 $r = $panel->r;
 $a = HTTP::post('a');
 $tab = HTTP::get('tab');
-$gate_alt = File::exist(__DIR__ . DS . 'gate' . DS . Session::get('panel.view', X) . '.php');
-
-Session::reset('panel.view');
+$gate_alt = File::exist(__DIR__ . DS . 'gate' . DS . HTTP::post('view', HTTP::get('view', X)) . '.php');
 
 $path = str_replace('/', DS, rtrim($id . '/' . $panel->path, '/'));
 $directory = trim(str_replace('/', DS, HTTP::post('directory', "")), DS);

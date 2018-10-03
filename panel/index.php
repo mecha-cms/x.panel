@@ -30,6 +30,8 @@ if ($r === $p) {
     $tok = HTTP::get('token');
     if ($tok && Guardian::check($tok)) {
         require $worker . 'gate.php';
+    } else if (HTTP::is('post')) {
+        exit('Invalid token.');
     }
 
     if ($f = File::exist($worker . $panel->v . '.php')) require $f;
