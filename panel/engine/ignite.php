@@ -773,8 +773,8 @@ function tabs($input, $id = 0, $attr = [], $i = 0, $active = null) {
     }
     $s = "";
     if (!isset($active)) {
-        // `?tab=1` or `?tab:page=1`
-        $active = \HTTP::get('tab', null, false);
+        // `?tab[0]=data`
+        $active = \HTTP::get('tab.' . $i, null, false);
     }
     foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         $s .= tab($v, $k, [], $i, $k === $active);

@@ -10,7 +10,7 @@ $id = $panel->id;
 $r = $panel->r;
 $a = HTTP::post('a');
 $tab = HTTP::get('tab');
-$gate_alt = File::exist(__DIR__ . DS . 'gate' . DS . HTTP::post('view', HTTP::get('view', X)) . '.php');
+$gate_alt = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . HTTP::post('view', HTTP::get('view', X)) . '.php');
 
 $path = str_replace('/', DS, rtrim($id . '/' . $panel->path, '/'));
 $directory = trim(str_replace('/', DS, HTTP::post('directory', "")), DS);
@@ -75,6 +75,9 @@ if ($tab === 'folder') {
         require $gate_alt;
     }
     if ($x = HTTP::post('x', "", false)) {
+        if ($name[0] === '.') {
+            $name = substr($name, 1);
+        }
         $name .= '.' . $x;
     }
     $content = HTTP::post('file.content', "", false);

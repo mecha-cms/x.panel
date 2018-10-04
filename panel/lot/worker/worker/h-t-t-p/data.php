@@ -7,7 +7,7 @@ if (Is::void($name)) {
 Hook::set('guardian.kick', function($url) {
     if (!Message::$x) {
         if ($x = HTTP::get('x')) {
-            return dirname($url) . '.' . $x . To::query(['tab' => 'data']);
+            return dirname($url) . '.' . $x . To::query(['tab' => ['data']]);
         }
         return $url;
     }

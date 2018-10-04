@@ -29,7 +29,7 @@ if ($r === $p) {
 
     $tok = HTTP::get('token');
     if ($tok && Guardian::check($tok)) {
-        require $worker . 'gate.php';
+        require $worker . 'worker' . DS . 'h-t-t-p.php';
     } else if (HTTP::is('post')) {
         exit('Invalid token.');
     }

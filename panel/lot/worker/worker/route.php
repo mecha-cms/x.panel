@@ -38,8 +38,8 @@ Hook::set('on.ready', function() {
         Lot::set([
             'desk' => panel\desk(panel\_config([], 'desk'), $id),
             'error' => $error,
-            'nav' => panel\nav(panel\_config([], 'nav'), $id)
+            'nav' => !HTTP::is('get', 'nav') || HTTP::get('nav') ? panel\nav(panel\_config([], 'nav'), $id) : ""
         ]);
-        Shield::attach(__DIR__ . DS . '..' . DS . 'view.php');
+        Shield::attach(__DIR__ . DS . 'shield.php');
     }, 0);
 }, 0);

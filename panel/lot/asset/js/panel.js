@@ -143,8 +143,10 @@ if ($tabs.length) {
         var $form = $target.closest('form');
         if (pushState) {
             if (!action) action = $form.attr('action');
-            win.history.pushState({}, "", query(href, 'tab', $target.data('key')));
-            $form.attr('action', query(action, 'tab', $target.data('key')));
+            var key = $target.data('key'),
+                k = 'tab[' + key[1] + ']';
+            win.history.pushState({}, "", query(href, k, key[0]));
+            $form.attr('action', query(action, k, key[0]));
         }
         $focus = $target.find(focusable_class);
         $focus.length && $focus.focus();
@@ -167,7 +169,7 @@ if ($tabs.length) {
                 text = '<span>' + ($this.attr('title') || $this.data('title') || '#' + id) + '</span>',
                 $li = $('<li></li>'),
                 $a = $('<a href="' + $href + '">' + ($i ? '<svg class="icon left" viewBox="0 0 24 24"><path d="' + $i + '"/></svg> ' + text : text) + '</a>').appendTo($li);
-            $this.data('key', id.split(':')[1].split('.')[0]);
+            $this.data('key', id.split(':')[1].split('.'));
             $target && $a.attr('target', $target);
             if ($this.hasClass('active')) {
                 $li.addClass('active');
