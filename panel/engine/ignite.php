@@ -49,24 +49,22 @@ function _config($defs = [], ...$any) {
 function _glob($folder, &$files, &$folders) {
     if (is_array($folder)) {
         foreach ($folder as $v) {
-            if (is_file($v)) {
-                $files[] = $v;
-            } else {
+            $v = str_replace('/', DS, $v);
+            if (substr($v, -1) === DS || is_file($v)) {
                 $folders[] = $v;
+            } else {
+                $files[] = $v;
             }
         }
     } else {
         $folder = rtrim($folder, DS);
-        foreach (array_unique(array_merge(
-            glob($folder . DS . '*', GLOB_NOSORT),
-            glob($folder . DS . '.*', GLOB_NOSORT)
-        )) as $v) {
+        // <https://stackoverflow.com/a/33059445/1163000>
+        foreach (glob($folder . DS . '{,.}[!.,!..]*', GLOB_NOSORT | GLOB_MARK | GLOB_BRACE) as $v) {
             $n = basename($v);
-            if ($n === '.' || $n === '..') continue;
-            if (is_file($v)) {
-                $files[] = $v;
-            } else {
+            if (substr($v, -1) === DS) {
                 $folders[] = $v;
+            } else {
+                $files[] = $v;
             }
         }
     }
@@ -483,7 +481,10 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
             'description' => $language->delete,
             'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
             'c' => 'r',
-            'query' => ['token' => $token],
+            'query' => [
+                'a' => -2,
+                'token' => $token,
+            ],
             'stack' => 10.1
         ]
     ], '$.file.tools');

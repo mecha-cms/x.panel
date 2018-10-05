@@ -35,11 +35,12 @@ var $focus = $(focusable_class);
 $focus.length && $focus.focus();
 
 function query(source, key, value) {
-    var a = source.split('?');
+    var a = source.split('?'),
+        esc = '!$^*()-=+[]{}\\|:<>,./?';
     if (!a[1]) {
         return value ? a[0] + '?' + key + '=' + value : a[0];
     }
-    a[1] = a[1].replace(new RegExp('(^|&)' + key + '=[^&#]+', 'g'), "");
+    a[1] = a[1].replace(new RegExp('(^|&)' + key.replace(new RegExp('[' + esc.replace(/./g, '\\$&') + ']', 'g'), '\\$&') + '=[^&#]+', 'g'), "");
     if (a[1] && a[1][0] === '&') {
         a[1] = a[1].slice(1);
     }

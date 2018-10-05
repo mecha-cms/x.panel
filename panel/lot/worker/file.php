@@ -25,7 +25,7 @@ Config::set('panel.desk', [
                     ],
                     'name' => [
                         'type' => 'text',
-                        'pattern' => '^[._]?[a-z\\d]+(-[a-z\\d]+)*\\.[a-z\\d]+$',
+                        'pattern' => '^[._]?[a-z\\d]+(-[a-z\\d]+)*' . ($is_file || $c === 's' ? '\\.[a-z\\d]+' : "") . '$',
                         'value' => $c === 'g' ? basename($path) : null,
                         'width' => true,
                         'stack' => 10.1
@@ -70,7 +70,7 @@ Config::set('panel.desk', [
             '-' => $c === 'g' ? [
                 'title' => $language->delete,
                 'name' => 'a',
-                'value' => -1,
+                'value' => -2,
                 'stack' => 10.1
             ] : null
         ]
