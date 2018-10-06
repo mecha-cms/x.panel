@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width">
 <title><?php echo To::text($site->trace); ?></title>
 <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
-<?php echo str_replace('"stylesheet"', '"stylesheet/less"', Asset::css(EXTEND . '/panel/lot/asset/less/panel.less'));
-echo Asset::js(EXTEND . '/panel/lot/asset/index.js'); ?>
 </head>
 <body spellcheck="false">
 <?php echo $message; ?>
@@ -35,7 +33,6 @@ if ($panel->c === 's') {
 <input name="view" value="<?php echo HTTP::get('view', $panel->v); ?>" type="hidden">
 </form>
 <?php endif; ?>
-<footer></footer>
 <?php
 
 foreach ((array) Config::get('panel.$.menus', [], true) as $k => $v) {
@@ -43,8 +40,6 @@ foreach ((array) Config::get('panel.$.menus', [], true) as $k => $v) {
         'data[]' => ['js-enter' => '#js:' . $k]
     ]);
 }
-
-echo Asset::js(EXTEND . '/panel/lot/asset/js/panel.js');
 
 ?>
 </body>

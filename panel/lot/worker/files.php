@@ -66,6 +66,7 @@ Config::set('panel.desk', [
                         'path' => $path,
                         'c' => 'r',
                         'query' => [
+                            'a' => -2,
                             'q' => false,
                             'tab' => false,
                             'token' => $token

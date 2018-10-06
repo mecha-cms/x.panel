@@ -8,6 +8,8 @@ Hook::set('on.ready', function() {
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset();
         Route::reset();
+        Asset::set(__DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS . 'less' . DS . 'panel.less');
+        Asset::set(__DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS . 'js' . DS . 'panel.js');
     }
     Route::set([
         $r . '/::%s%::/%*%/%i%',

@@ -10,7 +10,7 @@ Config::set('panel.desk.body.tabs.file.fields', [
     'name' => [
         'key' => 'key',
         'value' => $c === 'g' ? Path::N($path) : null,
-        'pattern' => '^[a-z\\d]+(-[a-z\\d]+)*$'
+        'pattern' => '^-?[a-z\\d]+(-[a-z\\d]+)*$'
     ],
     'x' => [
         'type' => 'hidden',

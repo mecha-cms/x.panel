@@ -62,7 +62,7 @@ function _glob($folder, &$files, &$folders) {
         foreach (glob($folder . DS . '{,.}[!.,!..]*', GLOB_NOSORT | GLOB_MARK | GLOB_BRACE) as $v) {
             $n = basename($v);
             if (substr($v, -1) === DS) {
-                $folders[] = $v;
+                $folders[] = rtrim($v, DS);
             } else {
                 $files[] = $v;
             }
@@ -331,9 +331,11 @@ function desk_header($input, $id = 0, $attr = [], $i = 0) {
 
 // active: ""
 // actives: ""
+// clone: ?
 // content: ""
 // description: ""
 // height: "" | + | ?
+// hidden: ?
 // key: ""
 // pattern: ""
 // placeholder: ""
@@ -348,6 +350,9 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     if (is_string($input)) {
         return $input;
     }
+    if (!empty($input['hidden'])) {
+        return "";
+    }
     global $language;
     $s = "";
     $kind = isset($input['kind']) ? (array) $input['kind'] : [];
@@ -361,6 +366,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     $pattern = isset($input['pattern']) ? $input['pattern'] : null;
     $width = !empty($input['width']) ? $input['width'] : null;
     $height = !empty($input['height']) ? $input['height'] : null;
+    $clone = isset($input['clone']) ? $input['clone'] : 0; // TODO
     asort($values);
     $copy = $input;
     $copy['kind'] = ['type:' . $type];

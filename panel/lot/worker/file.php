@@ -23,9 +23,15 @@ Config::set('panel.desk', [
                         'content' => '<div class="field p"><label>' . $language->{$is_file ? 'content' : ""} . '</label><div><div class="input plain code">' . ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($path, "", ['style[]' => ['display' => 'block']]) : str_replace('/', DS, $path)) . '</div></div></div>',
                         'stack' => 10
                     ],
+                    'file[consent]' => [
+                        'key' => 'consent',
+                        'type' => 'text',
+                        'hidden' => true,
+                        'stack' => 0
+                    ],
                     'name' => [
                         'type' => 'text',
-                        'pattern' => '^[._]?[a-z\\d]+(-[a-z\\d]+)*' . ($is_file || $c === 's' ? '\\.[a-z\\d]+' : "") . '$',
+                        'pattern' => '^[_.-]?[a-z\\d]+(-[a-z\\d]+)*' . ($is_file || $c === 's' ? '\\.[a-z\\d]+' : "") . '$',
                         'value' => $c === 'g' ? basename($path) : null,
                         'width' => true,
                         'stack' => 10.1
@@ -39,6 +45,7 @@ Config::set('panel.desk', [
                         'title' => $language->path,
                         'description' => HTTP::get('tab') === 'folder' ? 'Create a folder.' : 'Move current working file or folder to the specified folder path.',
                         'type' => 'text',
+                        'pattern' => '^[_.-]?[a-z\\d]+(-[a-z\\d]+)*([\\\/][_.-]?[a-z\\d]+(-[a-z\\d]+)*)*$',
                         'value' => null,
                         'width' => true,
                         'stack' => 10

@@ -72,10 +72,10 @@ Config::set('panel.desk.body.tabs.file.fields', [
         'value' => $page->type,
         'stack' => 10.4
     ],
-    'consent' => [
+    'file[consent]' => [
         'type' => 'hidden',
-        'value' => '0600',
-        'stack' => 0
+        'hidden' => false,
+        'value' => '0600'
     ]
 ]);
 
@@ -88,6 +88,7 @@ Config::set('panel.desk.body.tabs.data', [
             'type' => 'text',
             'pattern' => '^([\\/?#]\\S+|\\/\\/\\S+|https?:\\/\\/\\S+)$',
             'value' => $page->link,
+            'placeholder' => $url,
             'width' => true,
             'stack' => 10
         ],
@@ -99,60 +100,27 @@ Config::set('panel.desk.body.tabs.data', [
             'placeholder' => $page->time ?: date(DATE_WISE),
             'stack' => 10.1
         ] : null,
-        '+' => $c === 'g' ? [
+        '!:' => [
+            'key' => 'datas',
+            'type' => 'source',
+            'width' => true,
+            'placeholder' => 'key: value',
+            'stack' => 10.2
+        ],
+        '!+' => $c === 'g' ? [
             'key' => 'datas',
             'type' => 'content',
-            'stack' => 10.2
+            'stack' => 10.3
         ] : null
     ],
     'stack' => 10.1
 ]);
 
-Hook::set('on.ready', function() use($language, $page, $token, $url) {
-    $types = (array) $language->o_page_types;
-    if (!isset($types[$page->type])) {
-        $types[$page->type] = $page->type;
-    }
-    Config::set('panel.desk.body.tabs.file.fields.page[type].values', $types);
-    // Add data(s) field
-    $datas = glob(Path::F($page->path) . DS . '*.data', GLOB_NOSORT);
-    $removes = [];
-    foreach ((array) Config::get('panel.desk.body.tabs', [], true) as $v) {
-        if (!isset($v['fields'])) continue;
-        $v = $v['fields'];
-        foreach ($v as $kk => $vv) {
-            if (strpos($kk, 'data[') === 0) {
-                $removes[substr(explode(']', $kk)[0], 5) . '.data'] = 1;
-            }
-        }
-    }
-    foreach ($datas as $k => $v) {
-        if (isset($removes[basename($v)])) {
-            unset($datas[$k]);
-        }
-    }
-    $query = [
-        'query' => [
-            'tab' => false,
-            'view' => 'data',
-            'x' => Path::X($url->path)
-        ]
-    ];
-    Config::set('panel.$.file.tools', [
-        'g' => $query,
-        'r' => $query
-    ]);
-    Config::set('panel.desk.body.tabs.data.fields.+.value', ($datas ? panel\files($datas) : "") . '<p>' . panel\a([
-        'title' => $language->create,
-        'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']],
-        'c' => 's',
-        'url' => str_replace('::g::', '::s::', Path::F($url->path)),
-        'query' => $query['query'],
-        'kind' => ['button', 'text']
-    ]) . '</p>');
+Hook::set('on.ready', function() use($c, $language, $page, $token, $url) {
+    $pref = 'panel.desk.body.tabs.file.fields.';
     // Add tag(s) field
     if (Extend::exist('tag')) {
-        Config::set('panel.desk.body.tabs.file.fields.tags', [
+        Config::set($pref . 'tags', [
             'type' => 'text',
             'pattern' => '^([a-z\\d]+([ -][a-z\\d]+)*)(\\s*,\\s*[a-z\\d]+([ -][a-z\\d]+)*)*$',
             'kind' => ['tags'],
@@ -185,6 +153,59 @@ Hook::set('on.ready', function() use($language, $page, $token, $url) {
             'stack' => 10.2
         ]);
     }
+    // Other(s)
+    $types = (array) $language->o_page_types;
+    if (!isset($types[$page->type])) {
+        $types[$page->type] = $page->type;
+    }
+    Config::set($pref . 'page[type].values', $types);
+    // Add data(s) field
+    $datas = glob(Path::F($page->path) . DS . '*.data', GLOB_NOSORT);
+    $removes = [];
+    foreach ((array) Config::get('panel.desk.body.tabs', [], true) as $v) {
+        if (!isset($v['fields'])) continue;
+        foreach ($v['fields'] as $kk => $vv) {
+            if (strpos($kk, 'data[') === 0 || strpos($kk, 'page[') === 0) {
+                $removes[substr(explode(']', $kk)[0], 5) . '.data'] = 1;
+            }
+        }
+    }
+    foreach ($datas as $k => $v) {
+        if (isset($removes[basename($v)])) {
+            unset($datas[$k]);
+        }
+    }
+    $headers = $c === 'g' ? Page::apart(file_get_contents($page->path)) : [];
+    $query = [
+        'query' => [
+            'tab' => false,
+            'view' => 'data',
+            'x' => Path::X($url->path)
+        ]
+    ];
+    Config::set('panel.$.file.tools', [
+        'g' => $query,
+        'r' => $query
+    ]);
+    $pref = 'panel.desk.body.tabs.data.fields.';
+    foreach ($headers as $k => $v) {
+        if (isset($removes[$k . '.data'])) {
+            unset($headers[$k]);
+        }
+    }
+    if ($headers) {
+        Config::set($pref . '!:.value', To::YAML($headers));
+    } else {
+        Config::set($pref . '!:.hidden', true);
+    }
+    Config::set($pref . '!+.value', ($datas ? panel\files($datas, 'datas') : "") . '<p>' . panel\a([
+        'title' => $language->create,
+        'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']],
+        'c' => 's',
+        'url' => str_replace('::g::', '::s::', Path::F($url->path)),
+        'query' => $query['query'],
+        'kind' => ['button', 'text']
+    ]) . '</p>');
 }, 1);
 
 // Re-create submit button(s)
@@ -215,7 +236,7 @@ if ($c === 'g') {
     $buttons['-'] = [
         'title' => $language->delete,
         'name' => 'a',
-        'value' => -1,
+        'value' => -2,
         'stack' => 10 + $i
     ];
 }

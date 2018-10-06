@@ -4,8 +4,14 @@ if (!$page = HTTP::post('page', [], false)) {
     return;
 }
 
-if ($c === 'g' && $a === -1) {
-    // TODO: delete folder!
+if ($c === 'g' && $a < 0) {
+    // Delete folder
+    $d = Path::F($file);
+    if ($a === -2) {
+        File::open($d)->moveTo(str_replace(LOT . DS, LOT . DS . 'trash' . DS . $_date . DS, dirname($d)));
+    } else if ($a === -1) {
+        File::open($d)->delete();
+    }
 }
 
 $headers = [
@@ -42,15 +48,12 @@ foreach ($headers as $k => $v) {
     unset($page[$k]);
 }
 
-$headers = array_filter(array_replace_recursive($headers, $page), function($v) {
+$headers = array_replace_recursive($headers, From::YAML(HTTP::post(':', ""), '  ', [], false), $page);
+$headers = array_filter($headers, function($v) {
     return isset($v) && $v !== false && $v !== "" && !is_callable($v);
 });
-$title = date('Y/m/d H:i:s');
-if (!isset($headers['title'])) {
-    $headers['title'] = $title;
-}
-$name = To::slug(HTTP::post('slug', $headers['title'], false)) ?: strtr($title, '/: ', '---');
-
+$time = date(DATE_WISE);
+$name = To::slug(HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false)) ?: $time;
 if (!Message::$x) {
     if ($c === 'g') {
         $nn = Path::N($n);
@@ -66,8 +69,8 @@ if (!Message::$x) {
         }
     }
     $data = HTTP::post('data', [], false);
-    if (!isset($data['time'])) {
-        $data['time'] = date(DATE_WISE);
+    if (!isset($data['time']) && $name !== $time) {
+        $data['time'] = $time;
     }
     foreach ($data as $k => $v) {
         if (Is::void($v)) continue;
@@ -76,4 +79,4 @@ if (!Message::$x) {
 }
 
 Set::post('name', $name);
-Set::post('file.content', Page::unite($headers));
+Set::post('file.content', Page::unite($headers) ?: "---\n...");

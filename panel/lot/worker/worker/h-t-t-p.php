@@ -8,18 +8,21 @@ if ($c !== 'r' && !HTTP::is('post')) {
 
 $id = $panel->id;
 $r = $panel->r;
-$a = HTTP::post('a');
+$a = HTTP::post('a', HTTP::get('a'));
 $tab = HTTP::get('tab');
 $gate_alt = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . HTTP::post('view', HTTP::get('view', X)) . '.php');
 
 $path = str_replace('/', DS, rtrim($id . '/' . $panel->path, '/'));
 $directory = trim(str_replace('/', DS, HTTP::post('directory', "")), DS);
-$consent = HTTP::post('consent', null, false);
+$consent = HTTP::post('file.consent', null, false);
 
 // <https://stackoverflow.com/q/28672096>
 if ($consent !== null) {
     $consent = octdec($consent);
 }
+
+$_date = date('_Y-m-d-H-i-s');
+$is_file = is_file($file = LOT . DS . $path);
 
 if ($c === 'r') {
     // Prevent user(s) from deleting the root folder(s)
@@ -30,34 +33,30 @@ if ($c === 'r') {
     if ($gate_alt) {
         require $gate_alt;
     }
-    $ff = is_file($f = LOT . DS . $path);
-    $aa = HTTP::get('a');
     // Move to trash
-    if ($aa === -2) {
-        File::open($f)->moveTo(str_replace(LOT . DS, $tt = LOT . DS . 'trash' . DS . date('_Y-m-d-H-i-s') . DS, $ff ? dirname($f) : $f));
-        Session::set('panel.file.active', rtrim($tt, DS));
-        panel\message('success', $ff ? 'File moved to trash.' : 'Folder moved to trash.');
+    if ($a === -2) {
+        File::open($file)->moveTo(str_replace(LOT . DS, $trash = LOT . DS . 'trash' . DS . $_date . DS, $is_file ? dirname($file) : $file));
+        Session::set('panel.file.active', rtrim($trash, DS));
+        panel\message('success', $is_file ? 'File moved to trash.' : 'Folder moved to trash.');
     // Restore
-    } else if ($aa === 1) {
-        $res = str_replace(LOT . DS . 'trash' . DS, "", $f);
+    } else if ($a === 1) {
+        $res = str_replace(LOT . DS . 'trash' . DS, "", $file);
         $kk = strpos($res, DS);
         $kk = $kk !== false ? substr($res, 0, $kk) : $res;
-        // Restore file
-        if ($ff) {
-            File::open($f)->moveTo(str_replace(LOT . DS . 'trash' . DS . $kk . DS, LOT . DS, dirname($f)));
-        // Restore folder
+        $o = [];
+        if ($is_file) {
+            $o = File::open($file)->moveTo(rtrim(str_replace(LOT . DS . 'trash' . DS . $kk . DS, LOT . DS, dirname($file) . DS), DS))->path;
         } else {
-            foreach (File::explore([$f, 1], true, []) as $k => $v) {
-                File::open($k)->moveTo(str_replace(LOT . DS . 'trash' . DS . $kk . DS, LOT . DS, dirname($k)));
+            foreach (glob($file . DS . '{,.}[!.,!..]*', GLOB_BRACE | GLOB_NOSORT) as $v) {
+                $o = array_replace($o, File::open($v)->moveTo(rtrim(str_replace(LOT . DS . 'trash' . DS . $kk . DS, LOT . DS, dirname($v) . DS), DS))->path);
             }
-            if (substr_count($path, DS) === 1) {
-                File::open($f)->delete();
-            }
+            rmdir($file);
         }
-        panel\message('success', $ff ? 'File restored.' : 'Folder restored.');
+        Session::set('panel.file.active', array_values($o));
+        panel\message('success', $is_file ? 'File restored.' : 'Folder restored.');
     } else {
-        File::open($f)->delete();
-        panel\message('success', $ff ? 'File deleted.' : 'Folder deleted.');
+        File::open($file)->delete();
+        panel\message('success', $is_file ? 'File deleted.' : 'Folder deleted.');
     }
     Guardian::kick(str_replace('::r::', '::g::', dirname($url->current)) . '/1');
 }
@@ -86,15 +85,14 @@ if ($tab === 'folder') {
             if ($gate_alt) {
                 require $gate_alt;
             }
-            $ff = is_file($f = LOT . DS . $path);
             // Move to trash
             if ($a === -2) {
-                File::open($f)->moveTo(str_replace(LOT . DS, $tt = LOT . DS . 'trash' . DS . date('_Y-m-d-H-i-s') . DS, $ff ? dirname($f) : $f));
-                Session::set('panel.file.active', rtrim($tt, DS));
-                panel\message('success', $ff ? 'File moved to trash.' : 'Folder moved to trash.');
+                File::open($file)->moveTo(str_replace(LOT . DS, $trash = LOT . DS . 'trash' . DS . $_date . DS, $is_file ? dirname($file) : $file));
+                Session::set('panel.file.active', rtrim($trash, DS));
+                panel\message('success', $is_file ? 'File moved to trash.' : 'Folder moved to trash.');
             } else if ($a === -1) {
-                File::open($f)->delete();
-                panel\message('success', $ff ? 'File deleted.' : 'Folder deleted.');
+                File::open($file)->delete();
+                panel\message('success', $is_file ? 'File deleted.' : 'Folder deleted.');
             }
             HTTP::delete('post');
             Guardian::kick($r . '/::g::/' . dirname($path) . '/1');
@@ -121,8 +119,8 @@ if ($tab === 'folder') {
         panel\message('error', 'Please fill out the name field!');
     }
     if (!Message::$x) {
-        File::set($content)->saveTo($f = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name), $consent);
-        Session::set('panel.file.active', $f);
+        File::set($content)->saveTo($file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name), $consent);
+        Session::set('panel.file.active', $file);
         if ($n && ($directory || $n !== $name)) {
             File::open(LOT . DS . $path . DS . $n)->delete();
         }
