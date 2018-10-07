@@ -36,7 +36,7 @@ if ($panel->c === 's') {
 <?php
 
 foreach ((array) Config::get('panel.$.menus', [], true) as $k => $v) {
-    echo panel\menus($v, $k, [
+    echo fn\panel\menus($v, $k, [
         'data[]' => ['js-enter' => '#js:' . $k]
     ]);
 }

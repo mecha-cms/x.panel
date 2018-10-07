@@ -1,7 +1,7 @@
 <?php
 
 if (Is::void($name)) {
-    panel\message('error', 'Please fill out the key field!');
+    fn\panel\message('error', 'Please fill out the key field!');
 }
 
 Hook::set('guardian.kick', function($url) {

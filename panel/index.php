@@ -24,8 +24,8 @@ if ($r === $p) {
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 
     // Clean-up `GET` and `POST` data
-    Set::get(panel\_clean(Get::get()), false);
-    Set::post(panel\_clean(Get::post()), false);
+    Set::get(fn\panel\_clean(Get::get()), false);
+    Set::post(fn\panel\_clean(Get::post()), false);
 
     $tok = HTTP::get('token');
     if ($tok && Guardian::check($tok)) {

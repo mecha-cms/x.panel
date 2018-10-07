@@ -38,9 +38,9 @@ Hook::set('on.ready', function() {
         }
         HTTP::status($error ? 404 : 200);
         Lot::set([
-            'desk' => panel\desk(panel\_config([], 'desk'), $id),
+            'desk' => fn\panel\desk(fn\panel\_config([], 'desk'), $id),
             'error' => $error,
-            'nav' => !HTTP::is('get', 'nav') || HTTP::get('nav') ? panel\nav(panel\_config([], 'nav'), $id) : ""
+            'nav' => !HTTP::is('get', 'nav') || HTTP::get('nav') ? fn\panel\nav(fn\panel\_config([], 'nav'), $id) : ""
         ]);
         Shield::attach(__DIR__ . DS . 'shield.php');
     }, 0);

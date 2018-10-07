@@ -1,4 +1,4 @@
-<?php namespace panel;
+<?php namespace fn\panel;
 
 // kind: [a, b, c]
 function _attr($input, &$attr, $p, $id, $i, $alt = []) {
@@ -11,10 +11,10 @@ function _attr($input, &$attr, $p, $id, $i, $alt = []) {
     }
 }
 
-function _clean_walk($input, $fn) {
+function _walk($input, $fn) {
     foreach ($input as $k => $v) {
         if (is_array($v)) {
-            $o = _clean_walk($v, $fn);
+            $o = _walk($v, $fn);
             if (!empty($o)) {
                 $input[$k] = $o;
             } else {
@@ -30,7 +30,7 @@ function _clean_walk($input, $fn) {
 }
 
 function _clean($input) {
-    return _clean_walk($input, function($v) {
+    return _walk($input, function($v) {
         return \Is::void($v);
     });
 }
@@ -70,6 +70,15 @@ function _glob($folder, &$files, &$folders) {
     }
     sort($files);
     sort($folders);
+}
+
+function _svg($key = null) {
+    if (!isset($GLOBALS['_svg'])) {
+        $svg = json_decode(file_get_contents(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'json' . DS . 'svg.json'));
+    } else {
+        $svg = $GLOBALS['_svg'];
+    }
+    return $key ? $svg->{$key} : $svg;
 }
 
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
@@ -641,8 +650,7 @@ function nav_a($input, $id = 0, $attr = [], $i = 0) {
         $input['title'] = $language->{$id};
     }
     if (isset($input['+'])) {
-        global $language;
-        $arrow = $language->panel->icon->arrow;
+        $arrow = _svg('arrow');
         $input['icon'] = array_replace_recursive(isset($input['icon']) ? $input['icon'] : [], [
             1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? $arrow->{$config->direction === 'ltr' ? 'R' : 'L'} : $arrow->B) . '"></path></svg>'
         ]);

@@ -5,6 +5,7 @@ description: GUI extension for Mecha.
 dependency:
   extension:
     - asset
+    - less
     - page
     - user
   plugin:

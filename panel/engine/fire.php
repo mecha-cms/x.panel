@@ -14,14 +14,14 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         sort($folders);
 
-        $icons = $language->panel->icon;
+        $icons = fn\panel\_svg();
 
         $i = 0;
         $links = [];
         foreach ($folders as $v) {
             $n = basename($v);
             $links[$n] = [
-                'icon' => [[isset($icons->{$n}) ? (isset($icons->{$n}->{'$'}) ? $icons->{$n}->{'$'} : $icons->{$n}) : 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z']],
+                'icon' => [[isset($icons->{$n}) ? (isset($icons->{$n}->{'$'}) ? $icons->{$n}->{'$'} : $icons->{$n}) : $icons->folder]],
                 'active' => strpos($path . '/', $n . '/') === 0,
                 'path' => $n,
                 'stack' => 10 + $i
@@ -92,7 +92,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
 
         Config::set('panel.nav.search', [
-            'content' => panel\nav_li_search([
+            'content' => fn\panel\nav_li_search([
                 'title' => $language->{$a[0]},
                 'path' => $path . '/1'
             ], $a[0]),
@@ -128,6 +128,6 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 }
 
 if ($query = HTTP::get('q')) {
-    panel\message('info', $language->message_info_search(To::text($query)));
+    fn\panel\message('info', $language->message_info_search(To::text($query)));
     Lot::set('message', Message::get());
 }

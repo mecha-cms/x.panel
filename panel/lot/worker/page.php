@@ -88,7 +88,7 @@ Config::set('panel.desk.body.tabs.data', [
             'type' => 'text',
             'pattern' => '^([\\/?#]\\S+|\\/\\/\\S+|https?:\\/\\/\\S+)$',
             'value' => $page->link,
-            'placeholder' => $url,
+            'placeholder' => '&#x200C;' . $url->protocol . '&#x200C;' . $url->host . '&#x200C;',
             'width' => true,
             'stack' => 10
         ],
@@ -198,7 +198,7 @@ Hook::set('on.ready', function() use($c, $language, $page, $token, $url) {
     } else {
         Config::set($pref . '!:.hidden', true);
     }
-    Config::set($pref . '!+.value', ($datas ? panel\files($datas, 'datas') : "") . '<p>' . panel\a([
+    Config::set($pref . '!+.value', ($datas ? fn\panel\files($datas, 'datas') : "") . '<p>' . fn\panel\a([
         'title' => $language->create,
         'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']],
         'c' => 's',
