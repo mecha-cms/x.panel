@@ -80,7 +80,7 @@ Config::set('panel.desk', [
     ] : null,
     'body' => [
         'tabs' => [
-            $panel->id . 's' => [
+            'file' => [
                 'title' => $language->files,
                 'files' => true,
                 'stack' => 10

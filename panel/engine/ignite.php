@@ -1,13 +1,15 @@
 <?php namespace fn\panel;
 
+\Config::set('panel.$.svg', json_decode(file_get_contents(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'json' . DS . 'svg.json'), true));
+
 // kind: [a, b, c]
 function _attr($input, &$attr, $p, $id, $i, $alt = []) {
-    $attr = array_replace_recursive([
+    $attr = \extend([
         'class[]' => $id !== false ? [$p, $p . ':' . $id, $p . ':' . $id . '.' . $i] : null,
         'id' => $id !== false ? $p . ':' . $id . '.' . $i : null
     ], $attr, $alt);
     if (!empty($input['kind'])) {
-        $attr['class[]'] = array_merge($attr['class[]'], (array) $input['kind']);
+        $attr['class[]'] = \concat($attr['class[]'], (array) $input['kind']);
     }
 }
 
@@ -39,11 +41,11 @@ function _config($defs = [], ...$any) {
     $out = [];
     while ($k = array_shift($any)) {
         if (is_string($k) && $v = \Config::get('panel.' . $k, [], true)) {
-            $out = array_replace_recursive($out, $v);
+            $out = \extend($out, $v);
             break;
         }
     }
-    return array_replace_recursive($defs, $out);
+    return \extend($defs, $out);
 }
 
 function _glob($folder, &$files, &$folders) {
@@ -70,15 +72,6 @@ function _glob($folder, &$files, &$folders) {
     }
     sort($files);
     sort($folders);
-}
-
-function _svg($key = null) {
-    if (!isset($GLOBALS['_svg'])) {
-        $svg = json_decode(file_get_contents(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'json' . DS . 'svg.json'));
-    } else {
-        $svg = $GLOBALS['_svg'];
-    }
-    return $key ? $svg->{$key} : $svg;
 }
 
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
@@ -161,7 +154,7 @@ function a($input, $id = 0, $attr = [], $i = 0) {
     ]);
     $s = text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('a', $s, $attr);
 }
@@ -230,7 +223,7 @@ function button($input, $id = 0, $attr = [], $i = 0) {
     }
     $s = text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite($href !== "" ? 'a' : 'button', $s, $attr);
 }
@@ -256,7 +249,7 @@ function desk($input, $id = 0, $attr = [], $i = 0) {
         $s .= desk_footer($input['footer'], $id, [], $i);
     }
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
 }
@@ -287,7 +280,7 @@ function desk_body($input, $id = 0, $attr = [], $i = 0) {
         $s .= fields($input['fields'], $id, [], $i);
     }
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('main', $s, $attr);
 }
@@ -315,7 +308,7 @@ function desk_footer($input, $id = 0, $attr = [], $i = 0) {
         $s .= pager($input['pager'], $id, [], $i);
     }
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('footer', $s, $attr);
 }
@@ -333,7 +326,7 @@ function desk_header($input, $id = 0, $attr = [], $i = 0) {
         $s .= tools($input['tools'], $id, [], $i);
     }
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('header', $s, $attr);
 }
@@ -439,7 +432,7 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
     }
     $s .= '</' . $tag . '>';
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     if ($textarea) {
         $attr['class[]'][] = 'p';
@@ -478,7 +471,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     $state = \Extend::state('panel', 'file');
     $files = $folders = [];
     _glob($folder, $files, $folders);
-    $files = q(array_merge($folders, $files));
+    $files = q(\concat($folders, $files));
     $dir = $s = "";
     _attr(0, $attr, 'files', $id, $i, is_string($folder) ? [
         'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
@@ -559,7 +552,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function icon($input, $attr = []) {
-    $none = \HTML::unite('i', "", array_replace_recursive(['class[]' => ['icon']], $attr));
+    $none = \HTML::unite('i', "", \extend(['class[]' => ['icon']], $attr));
     if (is_string($input)) {
         // `icon("")`
         if ($input === "") {
@@ -585,7 +578,7 @@ function icon($input, $attr = []) {
         $box = $input[0];
         $d = $input[1];
     }
-    $attr = array_replace_recursive([
+    $attr = \extend([
         'class[]' => ['icon'],
         'viewBox' => strpos($d, '#') !== 0 ? $box : null
     ], $attr);
@@ -614,14 +607,13 @@ function links($input, $id = 0, $attr = [], $i = 0) {
     _attr($input, $attr, 'links', $id, $i);
     $s = implode("", $a);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('ul', $a, $attr);
 }
 
 function message($kind = "", $text) {
-    global $language;
-    $icons = (array) $language->panel->icon->message;
+    $icons = svg('message');
     call_user_func('\Message::' . $kind, text($text, [[\Anemon::alter($kind, $icons, $icons['$'])]]));
 }
 
@@ -634,7 +626,7 @@ function nav($input, $id = 0, $attr = [], $i = 0) {
     _attr($input, $attr, 'nav', $id, $i);
     $s = nav_ul($input, $id, [], $i);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('nav', $s, $attr);
 }
@@ -650,9 +642,9 @@ function nav_a($input, $id = 0, $attr = [], $i = 0) {
         $input['title'] = $language->{$id};
     }
     if (isset($input['+'])) {
-        $arrow = _svg('arrow');
-        $input['icon'] = array_replace_recursive(isset($input['icon']) ? $input['icon'] : [], [
-            1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? $arrow->{$config->direction === 'ltr' ? 'R' : 'L'} : $arrow->B) . '"></path></svg>'
+        $arrow = svg('arrow');
+        $input['icon'] = \extend(isset($input['icon']) ? $input['icon'] : [], [
+            1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? $arrow[$config->direction === 'ltr' ? 'r' : 'l'] : $arrow['b']) . '"></path></svg>'
         ]);
     }
     return a($input, $id, $attr, $i);
@@ -672,7 +664,7 @@ function nav_li($input, $id = 0, $attr = [], $i = 0) {
     }
     $s = nav_a($input, $id, [], $i) . (isset($input['+']) ? nav_ul($input['+'], $id, [], $i + 1) : "");
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('li', $s, $attr);
 }
@@ -700,7 +692,7 @@ function pager($folder, $id = 0, $attr = [], $i = 0) {
     $state = \Extend::state('panel', 'file');
     $files = $folders = [];
     _glob($folder, $files, $folders);
-    $files = q(array_merge($folders, $files));
+    $files = q(\concat($folders, $files));
     $s = _pager($url->i ?: 1, count($files), $state['chunk'], $state['kin'], function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);
@@ -737,9 +729,13 @@ function search($input, $id = 0, $attr = [], $i = 0) {
         'action' => a_href($input)
     ]);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('form', $s, $attr);
+}
+
+function svg($key = null) {
+    return \Config::get('panel.$.svg' . ($key ? '.' . $key : ""), null, true);
 }
 
 // content: ""
@@ -776,7 +772,7 @@ function tab($input, $id = 0, $attr = [], $i = 0, $active = false) {
         $attr['class[]'][] = 'active';
     }
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('section', $s, $attr);
 }
@@ -796,7 +792,7 @@ function tabs($input, $id = 0, $attr = [], $i = 0, $active = null) {
     }
     _attr($input, $attr, 'tabs', $id, $i);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
 }
@@ -839,7 +835,7 @@ function tools($input, $id = 0, $attr = [], $i = 0) {
     _attr($input, $attr, 'tools', $id, $i);
     $s = implode(' ', $a);
     if (isset($input['content'])) {
-        $s = __replace__($input['content'], array_replace($input, ['content' => $s]));
+        $s = \candy($input['content'], \extend($input, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
 }

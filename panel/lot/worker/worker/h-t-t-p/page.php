@@ -48,8 +48,8 @@ foreach ($headers as $k => $v) {
     unset($page[$k]);
 }
 
-$headers = array_replace_recursive($headers, From::YAML(HTTP::post(':', ""), '  ', [], false), $page);
-$headers = array_filter($headers, function($v) {
+$headers = extend($headers, From::YAML(HTTP::post(':', ""), '  ', [], false), $page);
+$headers = is($headers, function($v) {
     return isset($v) && $v !== false && $v !== "" && !is_callable($v);
 });
 $time = date(DATE_WISE);

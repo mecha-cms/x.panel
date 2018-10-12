@@ -14,14 +14,14 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         sort($folders);
 
-        $icons = fn\panel\_svg();
+        $icons = fn\panel\svg();
 
         $i = 0;
         $links = [];
         foreach ($folders as $v) {
             $n = basename($v);
             $links[$n] = [
-                'icon' => [[isset($icons->{$n}) ? (isset($icons->{$n}->{'$'}) ? $icons->{$n}->{'$'} : $icons->{$n}) : $icons->folder]],
+                'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icon['folder']]],
                 'active' => strpos($path . '/', $n . '/') === 0,
                 'path' => $n,
                 'stack' => 10 + $i
@@ -103,7 +103,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             '+' => [
                 'config' => [
                     'path' => 'state/config',
-                    'icon' => [[$icons->config]],
+                    'icon' => [[$icons['config']]],
                     'stack' => 10
                 ],
                 'view' => [

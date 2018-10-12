@@ -8,7 +8,7 @@ if (HTTP::get('view') === 'file') {
     return;
 }
 
-$page = new Page(LOT . DS . $id . DS . $panel->path, array_replace([
+$page = new Page(LOT . DS . $id . DS . $panel->path, extend([
     'author' => null,
     'content' => null,
     'description' => null,
