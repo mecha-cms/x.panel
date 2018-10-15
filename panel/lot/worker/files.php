@@ -17,7 +17,7 @@
 $path = rtrim($panel->id . '/' . $panel->path, '/');
 
 Config::set('panel.desk', [
-    'header' =>  !HTTP::is('get', 'header') || HTTP::get('header') ? [
+    'header' => [
         'tools' => [
             'file' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
@@ -77,7 +77,7 @@ Config::set('panel.desk', [
                 'stack' => 10.2
             ]
         ]
-    ] : null,
+    ],
     'body' => [
         'tabs' => [
             'file' => [

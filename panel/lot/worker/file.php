@@ -66,7 +66,7 @@ Config::set('panel.desk', [
             ] : null
         ]
     ],
-    'footer' => !HTTP::is('get', 'footer') || HTTP::get('footer') ? [
+    'footer' => [
         'tools' => [
             '+' => [
                 'title' => $language->{$c === 's' ? 'create' : 'update'},
@@ -81,5 +81,5 @@ Config::set('panel.desk', [
                 'stack' => 10.1
             ] : null
         ]
-    ] : null
+    ]
 ]);

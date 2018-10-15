@@ -37,10 +37,21 @@ Hook::set('on.ready', function() {
             $error = true;
         }
         HTTP::status($error ? 404 : 200);
+        foreach (['footer', 'header'] as $v) {
+            if (HTTP::is('get', $v) && !HTTP::get($v)) {
+                Config::reset('panel.desk.' . $v);
+            }
+        }
+        if (HTTP::is('get', 'nav') && !HTTP::get('nav')) {
+            Config::reset('panel.nav');
+            $nav = "";
+        } else {
+            $nav = fn\panel\nav(fn\panel\_config([], 'nav'), $id);
+        }
         Lot::set([
             'desk' => fn\panel\desk(fn\panel\_config([], 'desk'), $id),
             'error' => $error,
-            'nav' => !HTTP::is('get', 'nav') || HTTP::get('nav') ? fn\panel\nav(fn\panel\_config([], 'nav'), $id) : ""
+            'nav' => $nav
         ]);
         Shield::attach(__DIR__ . DS . 'shield.php');
     }, 0);

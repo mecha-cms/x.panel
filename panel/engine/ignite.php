@@ -3,36 +3,36 @@
 \Config::set('panel.$.svg', json_decode(file_get_contents(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'json' . DS . 'svg.json'), true));
 
 // kind: [a, b, c]
-function _attr($input, &$attr, $p, $id, $i, $alt = []) {
+function _attr($in, &$attr, $p, $id, $i, $alt = []) {
     $attr = \extend([
         'class[]' => $id !== false ? [$p, $p . ':' . $id, $p . ':' . $id . '.' . $i] : null,
         'id' => $id !== false ? $p . ':' . $id . '.' . $i : null
     ], $attr, $alt);
-    if (!empty($input['kind'])) {
-        $attr['class[]'] = \concat($attr['class[]'], (array) $input['kind']);
+    if (!empty($in['kind'])) {
+        $attr['class[]'] = \concat($attr['class[]'], (array) $in['kind']);
     }
 }
 
-function _walk($input, $fn) {
-    foreach ($input as $k => $v) {
+function _walk($in, $fn) {
+    foreach ($in as $k => $v) {
         if (is_array($v)) {
             $o = _walk($v, $fn);
             if (!empty($o)) {
-                $input[$k] = $o;
+                $in[$k] = $o;
             } else {
-                unset($input[$k]);
+                unset($in[$k]);
             }
         } else {
             if ($fn($v, $k)) {
-                unset($input[$k]);
+                unset($in[$k]);
             }
         }
     }
-    return $input;
+    return $in;
 }
 
-function _clean($input) {
-    return _walk($input, function($v) {
+function _clean($in) {
+    return _walk($in, function($v) {
         return \Is::void($v);
     });
 }
@@ -143,18 +143,18 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
 // title: ""
 // *_attr
 // *a_href
-function a($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function a($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'a', $id, $i, [
-        'href' => a_href($input),
-        'target' => isset($input['target']) ? $input['target'] : null,
-        'title' => isset($input['description']) ? \To::text($input['description']) : null
+    _attr($in, $attr, 'a', $id, $i, [
+        'href' => a_href($in),
+        'target' => isset($in['target']) ? $in['target'] : null,
+        'title' => isset($in['description']) ? \To::text($in['description']) : null
     ]);
-    $s = text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    $s = text(isset($in['title']) ? $in['title'] : "", isset($in['icon']) ? $in['icon'] : []);
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('a', $s, $attr);
 }
@@ -166,24 +166,24 @@ function a($input, $id = 0, $attr = [], $i = 0) {
 // query: ""
 // stack: +
 // url: ""
-function a_href($input) {
-    if (is_string($input)) {
-        return $input;
+function a_href($in) {
+    if (is_string($in)) {
+        return $in;
     }
     // `[link[path[url]]]`
     $u = "";
-    if (isset($input['link'])) {
-        $u = $input['link'];
-    } else if (isset($input['url'])) {
-        $u = \URL::long($input['url']);
-    } else if (isset($input['path'])) {
-        $u = rtrim(\URL::long(\Extend::state('panel', 'path') . '/::' . (isset($input['c']) ? $input['c'] : 'g') . '::/' . ltrim($input['path'], '/')), '/');
+    if (isset($in['link'])) {
+        $u = $in['link'];
+    } else if (isset($in['url'])) {
+        $u = \URL::long($in['url']);
+    } else if (isset($in['path'])) {
+        $u = rtrim(\URL::long(\Extend::state('panel', 'path') . '/::' . (isset($in['c']) ? $in['c'] : 'g') . '::/' . ltrim($in['path'], '/')), '/');
     }
-    if (isset($input['query'])) {
-        $u .= \HTTP::query($input['query'], [1 => '&']);
+    if (isset($in['query'])) {
+        $u .= \HTTP::query($in['query'], [1 => '&']);
     }
-    if (isset($input['hash'])) {
-        $u .= '#' . urlencode($input['hash']);
+    if (isset($in['hash'])) {
+        $u .= '#' . urlencode($in['hash']);
     }
     return $u;
 }
@@ -196,36 +196,86 @@ function a_href($input) {
 // stack: +
 // *_attr
 // *a_href
-function button($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function button($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    $href = a_href($input);
-    _attr($input, $attr, 'button', $id, $i);
-    if (isset($input['description'])) {
-        $attr['title'] = \To::text($input['description']);
+    $href = a_href($in);
+    _attr($in, $attr, 'button', $id, $i);
+    if (isset($in['description'])) {
+        $attr['title'] = \To::text($in['description']);
     }
     if ($href === "") {
-        if (isset($input['active']) && !$input['active']) {
+        if (isset($in['active']) && !$in['active']) {
             $attr['disabled'] = true;
         }
-        if (isset($input['name'])) {
-            $attr['name'] = $input['name'];
+        if (isset($in['name'])) {
+            $attr['name'] = $in['name'];
         }
-        if (isset($input['value'])) {
-            $attr['value'] = $input['value'];
+        if (isset($in['value'])) {
+            $attr['value'] = $in['value'];
         }
     } else {
-        if (isset($input['active']) && !$input['active']) {
+        if (isset($in['active']) && !$in['active']) {
             $attr['class[]'][] = 'disabled';
         }
         $attr['href'] = $href;
     }
-    $s = text(isset($input['title']) ? $input['title'] : "", isset($input['icon']) ? $input['icon'] : []);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    $s = text(isset($in['title']) ? $in['title'] : "", isset($in['icon']) ? $in['icon'] : []);
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite($href !== "" ? 'a' : 'button', $s, $attr);
+}
+
+function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
+    return \HTML::unite('li', basename($path));
+    /*
+    global $url;
+    $n = basename($path);
+    $dir = \Path::F($path, LOT, '/');
+    _attr(0, $attr, 'file', $id, $i, [
+        'class[]' => [
+            9998 => 'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
+            9999 => $is_file ? 'x:' . strtolower(pathinfo($path, PATHINFO_EXTENSION)) : null
+        ]
+    ]);
+    $s  = '<h3 class="title">';
+    $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
+    $s .= '</h3>';
+    if ($n !== '..' && $tools) {
+        $vv = dirname($dir) . '/' . $n;
+        $s .= '<ul class="tools">';
+        foreach ($tools as $k => $v) {
+            if (!$v) continue;
+            if (!isset($v['path'])) {
+                $v['path'] = $vv;
+            } else if (is_callable($v['path'])) {
+                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
+            } else if ($v['path'] === false) {
+                unset($v['path']);
+                $v['link'] = 'javascript:;';
+            }
+            $s .= '<li>' . a($v, false) . '</li>';
+        }
+        $s .= '</ul>';
+    }
+    return \HTML::unite('li', $s, $attr);
+    */
+}
+
+function datas($datas, $id = 0, $attr = [], $i = 0) {
+    $files = $folders = [];
+    _glob($pages, $files, $folders);
+    $datas = q(\is($files, function($v) use($x) {
+        return pathinfo($v, PATHINFO_EXTENSION) === 'data';
+    }));
+    _attr(0, $attr, 'datas', $id, $i);
+    $s = "";
+    foreach ($datas as $k => $v) {
+        $s .= data($v, $k, [], $i);
+    }
+    return \HTML::unite('ul', $s, $attr);
 }
 
 // body: "" | *desk_body
@@ -233,23 +283,23 @@ function button($input, $id = 0, $attr = [], $i = 0) {
 // footer: "" | *desk_footer
 // header: "" | *desk_header
 // *_attr
-function desk($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function desk($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'desk', $id, $i);
+    _attr($in, $attr, 'desk', $id, $i);
     $s = "";
-    if (isset($input['header'])) {
-        $s .= desk_header($input['header'], $id, [], $i);
+    if (isset($in['header'])) {
+        $s .= desk_header($in['header'], $id, [], $i);
     }
-    if (isset($input['body'])) {
-        $s .= desk_body($input['body'], $id, [], $i);
+    if (isset($in['body'])) {
+        $s .= desk_body($in['body'], $id, [], $i);
     }
-    if (isset($input['footer'])) {
-        $s .= desk_footer($input['footer'], $id, [], $i);
+    if (isset($in['footer'])) {
+        $s .= desk_footer($in['footer'], $id, [], $i);
     }
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
 }
@@ -259,28 +309,29 @@ function desk($input, $id = 0, $attr = [], $i = 0) {
 // files: "" | ?
 // tabs: "" | *tabs
 // *_attr
-function desk_body($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function desk_body($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'body', $id, $i);
+    _attr($in, $attr, 'body', $id, $i);
     $s = "";
-    if (isset($input['files'])) {
-        if ($input['files'] === true) {
+    if (isset($in['files'])) {
+        $panel = \Lot::get('panel');
+        if (!is_string($in['files'])) {
             global $url;
             $chops = explode('/', $url->path);
             array_shift($chops);
             array_shift($chops);
-            $input['files'] = LOT . DS . implode(DS, $chops);
+            $in['files'] = LOT . DS . implode(DS, $chops);
         }
-        $s .= files($input['files'], $id, [], $i);
-    } else if (isset($input['tabs'])) {
-        $s .= tabs($input['tabs'], $id, [], $i);
-    } else if (isset($input['fields'])) {
-        $s .= fields($input['fields'], $id, [], $i);
+        $s .= call_user_func(__NAMESPACE__ . '\\' . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
+    } else if (isset($in['tabs'])) {
+        $s .= tabs($in['tabs'], $id, [], $i);
+    } else if (isset($in['fields'])) {
+        $s .= fields($in['fields'], $id, [], $i);
     }
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('main', $s, $attr);
 }
@@ -289,26 +340,26 @@ function desk_body($input, $id = 0, $attr = [], $i = 0) {
 // pager: "" | ?
 // tools: "" | *tools
 // *_attr
-function desk_footer($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function desk_footer($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'footer', $id, $i);
+    _attr($in, $attr, 'footer', $id, $i);
     $s = "";
-    if (isset($input['tools'])) {
-        $s .= tools($input['tools'], $id, [], $i);
-    } else if (isset($input['pager'])) {
-        if ($input['pager'] === true) {
+    if (isset($in['tools'])) {
+        $s .= tools($in['tools'], $id, [], $i);
+    } else if (isset($in['pager'])) {
+        if ($in['pager'] === true) {
             global $url;
             $chops = explode('/', $url->path);
             array_shift($chops);
             array_shift($chops);
-            $input['pager'] = LOT . DS . implode(DS, $chops);
+            $in['pager'] = LOT . DS . implode(DS, $chops);
         }
-        $s .= pager($input['pager'], $id, [], $i);
+        $s .= pager($in['pager'], $id, [], $i);
     }
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('footer', $s, $attr);
 }
@@ -316,17 +367,17 @@ function desk_footer($input, $id = 0, $attr = [], $i = 0) {
 // content: ""
 // tools: "" | *tools
 // *_attr
-function desk_header($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function desk_header($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'header', $id, $i);
+    _attr($in, $attr, 'header', $id, $i);
     $s = "";
-    if (isset($input['tools'])) {
-        $s .= tools($input['tools'], $id, [], $i);
+    if (isset($in['tools'])) {
+        $s .= tools($in['tools'], $id, [], $i);
     }
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('header', $s, $attr);
 }
@@ -348,29 +399,29 @@ function desk_header($input, $id = 0, $attr = [], $i = 0) {
 // values: ""
 // width: "" | + | ?
 // *_attr
-function field($key, $input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function field($key, $in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    if (!empty($input['hidden'])) {
+    if (!empty($in['hidden'])) {
         return "";
     }
     global $language;
     $s = "";
-    $kind = isset($input['kind']) ? (array) $input['kind'] : [];
+    $kind = isset($in['kind']) ? (array) $in['kind'] : [];
     $style = [];
-    $title = isset($input['title']) ? $input['title'] : $language->{isset($input['key']) ? $input['key'] : $key};
-    $description = isset($input['description']) ? trim($input['description']) : null;
-    $type = isset($input['type']) ? $input['type'] : 'textarea';
-    $value = isset($input['value']) ? $input['value'] : null;
-    $values = isset($input['values']) ? (array) $input['values'] : [];
-    $placeholder = isset($input['placeholder']) ? $input['placeholder'] : $value;
-    $pattern = isset($input['pattern']) ? $input['pattern'] : null;
-    $width = !empty($input['width']) ? $input['width'] : null;
-    $height = !empty($input['height']) ? $input['height'] : null;
-    $clone = isset($input['clone']) ? $input['clone'] : 0; // TODO
+    $title = isset($in['title']) ? $in['title'] : $language->{isset($in['key']) ? $in['key'] : $key};
+    $description = isset($in['description']) ? trim($in['description']) : null;
+    $type = isset($in['type']) ? $in['type'] : 'textarea';
+    $value = isset($in['value']) ? $in['value'] : null;
+    $values = isset($in['values']) ? (array) $in['values'] : [];
+    $placeholder = isset($in['placeholder']) ? $in['placeholder'] : $value;
+    $pattern = isset($in['pattern']) ? $in['pattern'] : null;
+    $width = !empty($in['width']) ? $in['width'] : null;
+    $height = !empty($in['height']) ? $in['height'] : null;
+    $clone = isset($in['clone']) ? $in['clone'] : 0; // TODO
     asort($values);
-    $copy = $input;
+    $copy = $in;
     $copy['kind'] = ['type:' . $type];
     _attr($copy, $attr, 'field', $id, $i);
     if ($width === true) {
@@ -431,8 +482,8 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
         }
     }
     $s .= '</' . $tag . '>';
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     if ($textarea) {
         $attr['class[]'][] = 'p';
@@ -444,14 +495,14 @@ function field($key, $input, $id = 0, $attr = [], $i = 0) {
 }
 
 // [...*field]
-function fields($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function fields($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
     $s = "";
     $ii = 0;
     $hidden = [];
-    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         if (isset($v['type']) && $v['type'] === 'hidden') {
             $hidden[$k] = $v;
             continue;
@@ -464,6 +515,39 @@ function fields($input, $id = 0, $attr = [], $i = 0) {
         ++$ii;
     }
     return $s;
+}
+
+function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
+    global $url;
+    $n = basename($path);
+    $dir = \Path::F($path, LOT, '/');
+    _attr(0, $attr, 'file', $id, $i, [
+        'class[]' => [
+            9998 => 'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
+            9999 => $is_file ? 'x:' . strtolower(pathinfo($path, PATHINFO_EXTENSION)) : null
+        ]
+    ]);
+    $s  = '<h3 class="title">';
+    $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
+    $s .= '</h3>';
+    if ($n !== '..' && $tools) {
+        $vv = dirname($dir) . '/' . $n;
+        $s .= '<ul class="tools">';
+        foreach ($tools as $k => $v) {
+            if (!$v) continue;
+            if (!isset($v['path'])) {
+                $v['path'] = $vv;
+            } else if (is_callable($v['path'])) {
+                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
+            } else if ($v['path'] === false) {
+                unset($v['path']);
+                $v['link'] = 'javascript:;';
+            }
+            $s .= '<li>' . a($v, false) . '</li>';
+        }
+        $s .= '</ul>';
+    }
+    return \HTML::unite('li', $s, $attr);
 }
 
 function files($folder, $id = 0, $attr = [], $i = 0) {
@@ -518,65 +602,32 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     return \HTML::unite('ul', $s, $attr);
 }
 
-function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
-    global $url;
-    $n = basename($path);
-    $dir = \Path::F($path, LOT, '/');
-    _attr(0, $attr, 'file', $id, $i, [
-        'class[]' => [
-            9998 => 'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
-            9999 => $is_file ? 'x:' . strtolower(pathinfo($path, PATHINFO_EXTENSION)) : null
-        ]
-    ]);
-    $s  = '<h3 class="title">';
-    $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
-    $s .= '</h3>';
-    if ($n !== '..' && $tools) {
-        $vv = dirname($dir) . '/' . $n;
-        $s .= '<ul class="tools">';
-        foreach ($tools as $k => $v) {
-            if (!$v) continue;
-            if (!isset($v['path'])) {
-                $v['path'] = $vv;
-            } else if (is_callable($v['path'])) {
-                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
-            } else if ($v['path'] === false) {
-                unset($v['path']);
-                $v['link'] = 'javascript:;';
-            }
-            $s .= '<li>' . a($v, false) . '</li>';
-        }
-        $s .= '</ul>';
-    }
-    return \HTML::unite('li', $s, $attr);
-}
-
-function icon($input, $attr = []) {
+function icon($in, $attr = []) {
     $none = \HTML::unite('i', "", \extend(['class[]' => ['icon']], $attr));
-    if (is_string($input)) {
+    if (is_string($in)) {
         // `icon("")`
-        if ($input === "") {
+        if ($in === "") {
             return $none;
         }
-        return $input;
-    } else if (isset($input['content'])) {
-        if ($input['content'] === "") {
+        return $in;
+    } else if (isset($in['content'])) {
+        if ($in['content'] === "") {
             return $none;
         }
-        return $input['content'];
+        return $in['content'];
     }
     // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
-    if (count($input) === 1) {
+    if (count($in) === 1) {
         // `icon([""])`
-        if ($input[0] === "") {
+        if ($in[0] === "") {
             return $none;
         }
         $box = '0 0 24 24';
-        $d = $input[0];
+        $d = $in[0];
     // `icon(['0 0 24 24', 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
     } else {
-        $box = $input[0];
-        $d = $input[1];
+        $box = $in[0];
+        $d = $in[1];
     }
     $attr = \extend([
         'class[]' => ['icon'],
@@ -592,22 +643,22 @@ function icon($input, $attr = []) {
 
 // [...*a]
 // content: ""
-function links($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function links($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
     global $language;
     $a = [];
-    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
         $a[] = '<li>' . a($v, $k, [], $i) . '</li>';
     }
-    _attr($input, $attr, 'links', $id, $i);
+    _attr($in, $attr, 'links', $id, $i);
     $s = implode("", $a);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('ul', $a, $attr);
 }
@@ -619,72 +670,105 @@ function message($kind = "", $text) {
 
 // content: ""
 // *nav_ul
-function nav($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function nav($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'nav', $id, $i);
-    $s = nav_ul($input, $id, [], $i);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    _attr($in, $attr, 'nav', $id, $i);
+    $s = nav_ul($in, $id, [], $i);
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('nav', $s, $attr);
 }
 
 // content: ""
 // *a
-function nav_a($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function nav_a($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
     global $config, $language;
-    if (!isset($input['title'])) {
-        $input['title'] = $language->{$id};
+    if (!isset($in['title'])) {
+        $in['title'] = $language->{$id};
     }
-    if (isset($input['+'])) {
+    if (isset($in['+'])) {
         $arrow = svg('arrow');
-        $input['icon'] = \extend(isset($input['icon']) ? $input['icon'] : [], [
+        $in['icon'] = \extend(isset($in['icon']) ? $in['icon'] : [], [
             1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? $arrow[$config->direction === 'ltr' ? 'r' : 'l'] : $arrow['b']) . '"></path></svg>'
         ]);
     }
-    return a($input, $id, $attr, $i);
+    return a($in, $id, $attr, $i);
 }
 
 // +: *nav_ul
 // active: ?
 // content: ""
 // *nav_a
-function nav_li($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function nav_li($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
-    _attr($input, $attr, 'li', $id, $i);
-    if (!empty($input['active'])) {
+    _attr($in, $attr, 'li', $id, $i);
+    if (!empty($in['active'])) {
         $attr['class[]'][] = 'current';
     }
-    $s = nav_a($input, $id, [], $i) . (isset($input['+']) ? nav_ul($input['+'], $id, [], $i + 1) : "");
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    $s = nav_a($in, $id, [], $i) . (isset($in['+']) ? nav_ul($in['+'], $id, [], $i + 1) : "");
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('li', $s, $attr);
 }
 
-function nav_li_search($input, $id = 0, $attr = [], $i = 0) {
-    _attr($input, $attr, 'search', $id, $i);
-    return search($input, $id, $attr, $i);
+function nav_li_search($in, $id = 0, $attr = [], $i = 0) {
+    _attr($in, $attr, 'search', $id, $i);
+    return search($in, $id, $attr, $i);
 }
 
 // [...*nav_li]
-function nav_ul($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function nav_ul($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
     $s = "";
-    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         $s .= nav_li($v, $k, [], $i);
     }
-    _attr($input, $attr, 'ul', $id, $i);
+    _attr($in, $attr, 'ul', $id, $i);
     return \HTML::unite('ul', $s, $attr);
+}
+
+function page($page, $id = 0, $attr = [], $i = 0) {
+    _attr(0, $attr, 'page', $id, $i);
+    return '
+      <li class="item">
+        <figure>
+          <img alt="" src="jpg/200x200.jpg">
+        </figure>
+        <header>
+          <h3 class="title">Item Title</h3>
+        </header>
+        <div>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <ul class="tools">
+            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12H20A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4V2M18.78,3C18.61,3 18.43,3.07 18.3,3.2L17.08,4.41L19.58,6.91L20.8,5.7C21.06,5.44 21.06,5 20.8,4.75L19.25,3.2C19.12,3.07 18.95,3 18.78,3M16.37,5.12L9,12.5V15H11.5L18.87,7.62L16.37,5.12Z"/></svg></a></li>
+            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg></a></li>
+            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M15,12C13.89,12 13,12.89 13,14A2,2 0 0,0 15,16A2,2 0 0,0 17,14C17,12.89 16.1,12 15,12M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M14,9C14,7.89 13.1,7 12,7C10.89,7 10,7.89 10,9A2,2 0 0,0 12,11A2,2 0 0,0 14,9M9,12A2,2 0 0,0 7,14A2,2 0 0,0 9,16A2,2 0 0,0 11,14C11,12.89 10.1,12 9,12Z"/></svg></a></li>
+            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,13H17V11H7"/></svg></a></li>
+          </ul>
+        </div>
+      </li>';
+    /*
+    $s = '<h3>';
+    if ($page->state === 'draft') {
+        $s .= \HTML::span($page->title);
+    } else {
+        $s .= \HTML::a($page->title, $page->url, true);
+    }
+    $s .= '</h3>';
+    $s .= '<p>' . \To::text($page->excerpt ?: $page->description) . '</p>';
+    return \HTML::unite('li', $s, $attr);
+    */
 }
 
 function pager($folder, $id = 0, $attr = [], $i = 0) {
@@ -703,6 +787,22 @@ function pager($folder, $id = 0, $attr = [], $i = 0) {
     return "";
 }
 
+function pages($pages, $id = 0, $attr = [], $i = 0) {
+    $files = $folders = [];
+    _glob($pages, $files, $folders);
+    $x = ',draft,page,archive,';
+    $pages = q(\is($files, function($v) use($x) {
+        return strpos($x, ',' . pathinfo($v, PATHINFO_EXTENSION) . ',') !== false;
+    }));
+    _attr(0, $attr, 'items', $id, $i);
+    $s = "";
+    foreach ($pages as $k => $v) {
+        $v = new \Page($v);
+        $s .= page($v, $k, [], $i);
+    }
+    return \HTML::unite('ul', $s, $attr);
+}
+
 function q($files, $query = "") {
     if (($query = trim(\HTTP::get('q', $query, false))) !== "") {
         $query = explode(' ', strtolower($query));
@@ -717,19 +817,19 @@ function q($files, $query = "") {
     return $files;
 }
 
-function search($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function search($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
     global $language;
-    $s = \Form::text(isset($input['q']) ? $input['q'] : 'q', \HTTP::get('q', null, false), isset($input['title']) ? \To::text($input['title']) : null, ['class[]' => ['input']]);
+    $s = \Form::text(isset($in['q']) ? $in['q'] : 'q', \HTTP::get('q', null, false), isset($in['title']) ? \To::text($in['title']) : null, ['class[]' => ['input']]);
     $s .= ' ' . \Form::submit(null, null, $language->search, ['class[]' => ['button']]);
     $s = '<p class="field expand"><span>' . $s . '</span></p>';
-    _attr($input, $attr, 'form', $id, $i, [
-        'action' => a_href($input)
+    _attr($in, $attr, 'form', $id, $i, [
+        'action' => a_href($in)
     ]);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('form', $s, $attr);
 }
@@ -743,69 +843,70 @@ function svg($key = null) {
 // files: *files
 // stack: +
 // title: ""
-function tab($input, $id = 0, $attr = [], $i = 0, $active = false) {
-    if (is_string($input)) {
-        return $input;
+function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
+    if (is_string($in)) {
+        return $in;
     }
     global $language;
     $s = "";
-    if (isset($input['fields'])) {
-        $s .= fields($input['fields'], $id, [], $i);
-    } else if (isset($input['files'])) {
-        if (!is_string($input['files'])) {
+    if (isset($in['fields'])) {
+        $s .= fields($in['fields'], $id, [], $i);
+    } else if (isset($in['files'])) {
+        $panel = \Lot::get('panel');
+        if (!is_string($in['files'])) {
             global $url;
             $chops = explode('/', $url->path);
             array_shift($chops);
             array_shift($chops);
-            $input['files'] = LOT . DS . implode(DS, $chops);
+            $in['files'] = LOT . DS . implode(DS, $chops);
         }
-        $s .= files($input['files'], $id, [], $i);
+        $s .= call_user_func(__NAMESPACE__ . '\\' . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
     }
-    _attr($input, $attr, 'tab', $id, $i, [
-        'title' => isset($input['title']) ? $input['title'] : $language->{$id},
+    _attr($in, $attr, 'tab', $id, $i, [
+        'title' => isset($in['title']) ? $in['title'] : $language->{$id},
         'data[]' => [
-            'href' => a_href($input) ?: null,
-            'icon' => isset($input['icon'][0]) ? $input['icon'][0] : null
+            'href' => a_href($in) ?: null,
+            'icon' => isset($in['icon'][0]) ? $in['icon'][0] : null
         ]
     ]);
     if ($active) {
         $attr['class[]'][] = 'active';
     }
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('section', $s, $attr);
 }
 
 // [...*tab]
-function tabs($input, $id = 0, $attr = [], $i = 0, $active = null) {
-    if (is_string($input)) {
-        return $input;
+function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
+    if (is_string($in)) {
+        return $in;
     }
     $s = "";
     if (!isset($active)) {
         // `?tab[0]=data`
         $active = \HTTP::get('tab.' . $i, null, false);
     }
-    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         $s .= tab($v, $k, [], $i, $k === $active);
     }
-    _attr($input, $attr, 'tabs', $id, $i);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    _attr($in, $attr, 'tabs', $id, $i);
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
 }
 
-function text($input, $icon = []) {
-    if ($input === false && isset($icon[0])) {
+function text($in, $icon = []) {
+    if ($in === false && isset($icon[0])) {
         return icon($icon[0], ['class[]' => [1 => 'only']]);
     }
     $s = "";
     if (isset($icon[0])) {
         $s .= icon($icon[0], ['class[]' => [1 => 'left']]) . ' ';
     }
-    $s .= '<span>' . $input . '</span>';
+    $s .= '<span>' . $in . '</span>';
     if (isset($icon[1])) {
         $s .= ' ' . icon($icon[1], ['class[]' => [1 => 'right']]);
     }
@@ -814,13 +915,13 @@ function text($input, $icon = []) {
 
 // [...*button]
 // content: ""
-function tools($input, $id = 0, $attr = [], $i = 0) {
-    if (is_string($input)) {
-        return $input;
+function tools($in, $id = 0, $attr = [], $i = 0) {
+    if (is_string($in)) {
+        return $in;
     }
     global $language;
     $a = [];
-    foreach (\Anemon::eat($input)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
@@ -832,17 +933,17 @@ function tools($input, $id = 0, $attr = [], $i = 0) {
             $a[] = button($v, $k, [], $i);
         }
     }
-    _attr($input, $attr, 'tools', $id, $i);
+    _attr($in, $attr, 'tools', $id, $i);
     $s = implode(' ', $a);
-    if (isset($input['content'])) {
-        $s = \candy($input['content'], \extend($input, ['content' => $s]));
+    if (isset($in['content'])) {
+        $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
     return \HTML::unite('div', $s, $attr);
 }
 
-function menus($input, $id = 0, $attr = [], $i = 0) {
+function menus($in, $id = 0, $attr = [], $i = 0) {
     _attr(0, $attr, 'menus', $id, $i, [
         'hidden' => true
     ]);
-    return nav_ul($input, $id, $attr, $i);
+    return nav_ul($in, $id, $attr, $i);
 }

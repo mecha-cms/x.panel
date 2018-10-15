@@ -634,14 +634,72 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   &.is-hidden:not(:focus):not(:hover) {opacity:.5}
 }
 
-// @page
-.pages,
-.pages .page {margin:0;padding:0;list-style:none}
-.pages .page{padding:12px}
-.pages .page h3 {font-size:110%;font-weight:bold;margin:0}
-.pages .page p{margin:0;font-size:14px}
-.pages .page p+p {font-size:12px;text-transform:uppercase}
-.pages .page:focus,.pages .page:hover{background:#dee}
+// @item
+.items,
+.item {
+  .m0r;
+  .m0l;
+  .p0;
+  list-style:none;
+}
+.item {
+  > div,
+  > figure,
+  > footer,
+  > header,
+  .title,
+  .tools,
+  .links {
+    .m0;
+    .p0;
+    list-style:none;
+    border-color:inherit;
+  }
+  background:@color_inverse;
+  border:0 solid @color_inverse;
+  padding:(@y * .5) (@x * .5);
+  margin:0 (@x * -.5);
+  position:relative;
+  &:focus,
+  &:hover {
+    background:@color-list_hover;
+    border-color:darken(@color_inverse, 1%);
+  }
+  &.disabled {opacity:.5}
+  > figure {
+    width:(@x * 2.25);
+    height:(@y * 2.25);
+    background:darken(@color_inverse, 5%);
+    .left;
+    img {
+      display:block;
+      margin:0;
+      padding:0;
+      width:100%;
+      height:100%;
+    }
+  }
+  > figure + header,
+  > figure + header + div,
+  > figure + header + div + footer {margin-left:(@x * 3.25)}
+  @media (max-width:@view-mobile) {
+    > figure {display:none}
+    > figure + header,
+    > figure + header + div,
+    > figure + header + div + footer {margin-left:0}
+  }
+  > div,
+  > footer {margin-top:(@y * .25)}
+  .tools {
+    position:absolute;
+    top:(@y * .5);
+    right:(@x * .5);
+  }
+  .links {
+    .text-special;
+    margin-top:0;
+  }
+}
 
 // @pager
 .pager {

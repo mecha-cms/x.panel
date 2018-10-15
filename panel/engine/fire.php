@@ -21,7 +21,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         foreach ($folders as $v) {
             $n = basename($v);
             $links[$n] = [
-                'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icon['folder']]],
+                'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
                 'active' => strpos($path . '/', $n . '/') === 0,
                 'path' => $n,
                 'stack' => 10 + $i
