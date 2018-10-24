@@ -39,28 +39,25 @@
 .messages {
   margin:0;
   padding:0;
-  position:fixed;
+  position:absolute;
   top:0;
-  right:0;
-  left:0;
+  right:(@x * 2);
+  left:auto;
   z-index:9999;
-  .box-shadow;
   .message {
     .icon {
       &.right {margin-left:(@x * .25)}
       &.left {margin-right:(@x * .25)}
     }
   }
-  // + .nav {margin-top:(@y * 2)}
 }
 
 .message {
-  background:#ff7;
-  padding:(@y * .5) (@x * .5);
-  &-error {background:#fba}
-  &-info {background:#afb}
-  &-success {background:#bf7}
-  &-warn {background:#fd8}
+  color:#ff7;
+  padding:(@y * .5) 0;
+  &-error {color:#fba}
+  &-info {color:#afb}
+  &-success {color:#bf7}
 }
 
 // @layer

@@ -22,7 +22,7 @@ if ($panel->c === 's') {
 
 ?>
 <?php if ($v = strpos(',data,file,page,', ',' . $panel->v . ',') !== false): ?>
-<form class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
+<form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>
 <p class="m0 p2">&#x0CA0;&#x005F;&#x0CA0;</p>

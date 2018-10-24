@@ -12,7 +12,7 @@
 // `panel.desk.footer.tools`
 // `panel.desk.footer.pager`
 
-// `panel.file.tools`
+// `panel.$.file.tools`
 
 $path = rtrim($panel->id . '/' . $panel->path, '/');
 

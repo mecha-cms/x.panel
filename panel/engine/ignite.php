@@ -1,7 +1,5 @@
 <?php namespace fn\panel;
 
-\Config::set('panel.$.svg', json_decode(file_get_contents(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'json' . DS . 'svg.json'), true));
-
 // kind: [a, b, c]
 function _attr($in, &$attr, $p, $id, $i, $alt = []) {
     $attr = \extend([
@@ -51,7 +49,7 @@ function _config($defs = [], ...$any) {
 function _glob($folder, &$files, &$folders) {
     if (is_array($folder)) {
         foreach ($folder as $v) {
-            $v = str_replace('/', DS, $v);
+            $v = strtr($v, '/', DS);
             if (substr($v, -1) === DS || is_file($v)) {
                 $folders[] = $v;
             } else {
@@ -70,8 +68,8 @@ function _glob($folder, &$files, &$folders) {
             }
         }
     }
-    sort($files);
-    sort($folders);
+    natsort($files);
+    natsort($folders);
 }
 
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
@@ -502,7 +500,8 @@ function fields($in, $id = 0, $attr = [], $i = 0) {
     $s = "";
     $ii = 0;
     $hidden = [];
-    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
+        if (!$v) continue;
         if (isset($v['type']) && $v['type'] === 'hidden') {
             $hidden[$k] = $v;
             continue;
@@ -510,7 +509,7 @@ function fields($in, $id = 0, $attr = [], $i = 0) {
         $s .= field($k, $v, isset($v['key']) ? $v['key'] : $k, [], $ii);
         ++$ii;
     }
-    foreach (\Anemon::eat($hidden)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($hidden)->sort([1, 'stack'], true) as $k => $v) {
         $s .= field($k, $v, isset($v['key']) ? $v['key'] : $k, [], $ii);
         ++$ii;
     }
@@ -531,12 +530,11 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
     $s .= '</h3>';
     if ($n !== '..' && $tools) {
-        $vv = dirname($dir) . '/' . $n;
         $s .= '<ul class="tools">';
         foreach ($tools as $k => $v) {
             if (!$v) continue;
             if (!isset($v['path'])) {
-                $v['path'] = $vv;
+                $v['path'] = dirname($dir) . '/' . $n;
             } else if (is_callable($v['path'])) {
                 $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
             } else if ($v['path'] === false) {
@@ -551,7 +549,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function files($folder, $id = 0, $attr = [], $i = 0) {
-    global $language, $token, $url;
+    global $token, $url;
     $state = \Extend::state('panel', 'file');
     $files = $folders = [];
     _glob($folder, $files, $folders);
@@ -560,35 +558,16 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     _attr(0, $attr, 'files', $id, $i, is_string($folder) ? [
         'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
     ] : []);
-    $tools = _config([
-        'g' => [
-            'title' => false,
-            'description' => $language->edit,
-            'icon' => [['M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z']],
-            'c' => 'g',
-            'stack' => 10
-        ],
-        'r' => [
-            'title' => false,
-            'description' => $language->delete,
-            'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
-            'c' => 'r',
-            'query' => [
-                'a' => -2,
-                'token' => $token,
-            ],
-            'stack' => 10.1
-        ]
-    ], '$.file.tools');
-    $tools = \Anemon::eat($tools)->sort([1, 'stack'])->vomit();
-    if ($files = \Anemon::eat(q($files))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1)) {
+    $tools = \Anemon::eat(\Config::get('panel.$.file.tools', [], true))->sort([1, 'stack']);
+    $files = $files = \Anemon::eat(q($files))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1);
+    if ($files->count()) {
         if (trim(dirname($dir), '.') !== "") {
-            array_unshift($files, dirname(LOT . DS . $dir) . DS . '..');
+            $files->prepend(dirname(LOT . DS . $dir) . DS . '..');
         }
         foreach ($files as $k => $v) {
             $n = basename($v);
             $h = $n !== '..' && (strpos($n, '.') === 0 || strpos($n, '_') === 0);
-            $a = strpos(str_replace('/', DS, X . implode(X, (array) \Session::get('panel.file.active')) . X), X . $v . X) !== false;
+            $a = strpos(strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS), X . $v . X) !== false;
             $s .= file($v, $id, [
                 'class[]' => [
                     9996 => $h ? 'is-hidden' : null,
@@ -649,7 +628,8 @@ function links($in, $id = 0, $attr = [], $i = 0) {
     }
     global $language;
     $a = [];
-    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
+        if (!$v) continue;
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
@@ -665,7 +645,7 @@ function links($in, $id = 0, $attr = [], $i = 0) {
 
 function message($kind = "", $text) {
     $icons = svg('message');
-    call_user_func('\Message::' . $kind, text($text, [[\Anemon::alter($kind, $icons, $icons['$'])]]));
+    call_user_func('\Message::' . $kind, text($text, [[\alt($kind, $icons, $icons['$'])]]));
 }
 
 // content: ""
@@ -731,44 +711,52 @@ function nav_ul($in, $id = 0, $attr = [], $i = 0) {
         return $in;
     }
     $s = "";
-    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
+        if (!$v) continue;
         $s .= nav_li($v, $k, [], $i);
     }
     _attr($in, $attr, 'ul', $id, $i);
     return \HTML::unite('ul', $s, $attr);
 }
 
-function page($page, $id = 0, $attr = [], $i = 0) {
-    _attr(0, $attr, 'page', $id, $i);
-    return '
-      <li class="item">
-        <figure>
-          <img alt="" src="jpg/200x200.jpg">
-        </figure>
-        <header>
-          <h3 class="title">Item Title</h3>
-        </header>
-        <div>
-          <p>Lorem ipsum dolor sit amet.</p>
-          <ul class="tools">
-            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12H20A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4V2M18.78,3C18.61,3 18.43,3.07 18.3,3.2L17.08,4.41L19.58,6.91L20.8,5.7C21.06,5.44 21.06,5 20.8,4.75L19.25,3.2C19.12,3.07 18.95,3 18.78,3M16.37,5.12L9,12.5V15H11.5L18.87,7.62L16.37,5.12Z"/></svg></a></li>
-            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z"/></svg></a></li>
-            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M15,12C13.89,12 13,12.89 13,14A2,2 0 0,0 15,16A2,2 0 0,0 17,14C17,12.89 16.1,12 15,12M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M14,9C14,7.89 13.1,7 12,7C10.89,7 10,7.89 10,9A2,2 0 0,0 12,11A2,2 0 0,0 14,9M9,12A2,2 0 0,0 7,14A2,2 0 0,0 9,16A2,2 0 0,0 11,14C11,12.89 10.1,12 9,12Z"/></svg></a></li>
-            <li><a href=""><svg class="icon" viewBox="0 0 24 24"><path d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,13H17V11H7"/></svg></a></li>
-          </ul>
-        </div>
-      </li>';
-    /*
-    $s = '<h3>';
-    if ($page->state === 'draft') {
-        $s .= \HTML::span($page->title);
-    } else {
-        $s .= \HTML::a($page->title, $page->url, true);
-    }
+
+
+function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
+    $path = $page->path;
+    _attr(0, $attr, 'item', $id, $i, [
+        'class[]' => [
+            9998 => 'is-file',
+            9999 => 'state:' . $page->state
+        ]
+    ]);
+    $s  = '<figure>';
+    $s .= $page->has('image') ? $page->image(72, 72) : '<span class="img" style="background:#' . substr(md5($path), 0, 6) . ';">' . strip_tags($page->title)[0] . '</span>';
+    $s .= '</figure>';
+    $s .= '<header>';
+    $s .= '<h3 class="title">';
+    $s .= '<a href="' . $page->url . '">' . $page->title . '</a>';
     $s .= '</h3>';
-    $s .= '<p>' . \To::text($page->excerpt ?: $page->description) . '</p>';
+    $s .= '</header>';
+    $s .= '<div>';
+    $s .= '<p class="description">' . \To::description($page->description ?: "") . '</p>';
+    if ($tools) {
+        $s .= '<ul class="tools">';
+        foreach ($tools as $k => $v) {
+            if (!$v) continue;
+            if (!isset($v['path'])) {
+                $v['path'] = \Path::F($path, LOT, '/') . '.' . $page->state;
+            } else if (is_callable($v['path'])) {
+                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
+            } else if ($v['path'] === false) {
+                unset($v['path']);
+                $v['link'] = 'javascript:;';
+            }
+            $s .= '<li>' . a($v, false) . '</li>';
+        }
+        $s .= '</ul>';
+    }
+    $s .= '</div>';
     return \HTML::unite('li', $s, $attr);
-    */
 }
 
 function pager($folder, $id = 0, $attr = [], $i = 0) {
@@ -796,9 +784,10 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     }));
     _attr(0, $attr, 'items', $id, $i);
     $s = "";
+    $tools = \Anemon::eat(\Config::get('panel.$.page.tools', [], true))->sort([1, 'stack']);
     foreach ($pages as $k => $v) {
         $v = new \Page($v);
-        $s .= page($v, $k, [], $i);
+        $s .= page($v, $k, [], $i, $tools);
     }
     return \HTML::unite('ul', $s, $attr);
 }
@@ -826,7 +815,8 @@ function search($in, $id = 0, $attr = [], $i = 0) {
     $s .= ' ' . \Form::submit(null, null, $language->search, ['class[]' => ['button']]);
     $s = '<p class="field expand"><span>' . $s . '</span></p>';
     _attr($in, $attr, 'form', $id, $i, [
-        'action' => a_href($in)
+        'action' => a_href($in),
+        'name' => 'search'
     ]);
     if (isset($in['content'])) {
         $s = \candy($in['content'], \extend($in, ['content' => $s]));
@@ -888,7 +878,8 @@ function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
         // `?tab[0]=data`
         $active = \HTTP::get('tab.' . $i, null, false);
     }
-    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
+        if (!$v) continue;
         $s .= tab($v, $k, [], $i, $k === $active);
     }
     _attr($in, $attr, 'tabs', $id, $i);
@@ -921,7 +912,8 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
     }
     global $language;
     $a = [];
-    foreach (\Anemon::eat($in)->sort([1, 'stack'], true)->vomit() as $k => $v) {
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
+        if (!$v) continue;
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
