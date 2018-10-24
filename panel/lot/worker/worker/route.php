@@ -8,8 +8,14 @@ Hook::set('on.ready', function() {
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset();
         Route::reset();
-        Asset::set(__DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS . 'less' . DS . 'panel.less');
-        Asset::set(__DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS . 'js' . DS . 'panel.js');
+        $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
+        if (defined('DEBUG') && DEBUG && Extend::exist('less')) {
+            Asset::set($asset . 'less' . DS . 'panel.less');
+            Asset::set($asset . 'js' . DS . 'panel.js');
+        } else {
+            Asset::set($asset . 'css' . DS . 'panel.min.css');
+            Asset::set($asset . 'js' . DS . 'panel.min.js');
+        }
     }
     Route::set([
         $r . '/::%s%::/%*%/%i%',

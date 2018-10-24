@@ -11,24 +11,6 @@ function _attr($in, &$attr, $p, $id, $i, $alt = []) {
     }
 }
 
-function _walk($in, $fn) {
-    foreach ($in as $k => $v) {
-        if (is_array($v)) {
-            $o = _walk($v, $fn);
-            if (!empty($o)) {
-                $in[$k] = $o;
-            } else {
-                unset($in[$k]);
-            }
-        } else {
-            if ($fn($v, $k)) {
-                unset($in[$k]);
-            }
-        }
-    }
-    return $in;
-}
-
 function _clean($in) {
     return _walk($in, function($v) {
         return \Is::void($v);
@@ -46,11 +28,12 @@ function _config($defs = [], ...$any) {
     return \extend($defs, $out);
 }
 
-function _glob($folder, &$files, &$folders) {
+function _glob($folder) {
+    $folders = $files = [];
     if (is_array($folder)) {
         foreach ($folder as $v) {
             $v = strtr($v, '/', DS);
-            if (substr($v, -1) === DS || is_file($v)) {
+            if (substr($v, -1) === DS || is_dir($v)) {
                 $folders[] = $v;
             } else {
                 $files[] = $v;
@@ -70,6 +53,7 @@ function _glob($folder, &$files, &$folders) {
     }
     natsort($files);
     natsort($folders);
+    return [$folders, $files];
 }
 
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
@@ -132,6 +116,50 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
         $s .= '</span>';
     }
     return $s;
+}
+
+function _tools($tools, $path, $dir, $id, $i) {
+    $s = '<ul class="tools">';
+    foreach ($tools as $k => $v) {
+        if (!$v) continue;
+        if (!isset($v['path'])) {
+            $v['path'] = dirname($dir) . '/' . basename($path);
+        } else if (is_callable($v['path'])) {
+            $vv = call_user_func($v['path'], $v, $k, $path, $id, $i);
+            if ($vv === null) {
+                continue;
+            }
+            $v['path'] = $vv;
+        } else if ($v['path'] === false) {
+            unset($v['path']);
+            $v['link'] = 'javascript:;';
+        }
+        if (
+            !isset($v['link']) &&
+            !isset($v['path']) &&
+            !isset($v['url'])
+        ) continue;
+        $s .= '<li>' . a($v, false) . '</li>';
+    }
+    return $s . '</ul>';
+}
+
+function _walk($in, $fn) {
+    foreach ($in as $k => $v) {
+        if (is_array($v)) {
+            $o = _walk($v, $fn);
+            if (!empty($o)) {
+                $in[$k] = $o;
+            } else {
+                unset($in[$k]);
+            }
+        } else {
+            if ($fn($v, $k)) {
+                unset($in[$k]);
+            }
+        }
+    }
+    return $in;
 }
 
 // content: ""
@@ -263,9 +291,8 @@ function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function datas($datas, $id = 0, $attr = [], $i = 0) {
-    $files = $folders = [];
-    _glob($pages, $files, $folders);
-    $datas = q(\is($files, function($v) use($x) {
+    _glob($pages);
+    $datas = q(\is($files[1], function($v) use($x) {
         return pathinfo($v, PATHINFO_EXTENSION) === 'data';
     }));
     _attr(0, $attr, 'datas', $id, $i);
@@ -315,12 +342,14 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
     $s = "";
     if (isset($in['files'])) {
         $panel = \Lot::get('panel');
-        if (!is_string($in['files'])) {
-            global $url;
-            $chops = explode('/', $url->path);
-            array_shift($chops);
-            array_shift($chops);
-            $in['files'] = LOT . DS . implode(DS, $chops);
+        if (!is_array($in['files'])) {
+            if (is_bool($in['files']) && $in['files']) {
+                global $url;
+                $chops = explode('/', $url->path);
+                array_shift($chops);
+                array_shift($chops);
+                $in['files'] = LOT . DS . implode(DS, $chops);
+            }
         }
         $s .= call_user_func(__NAMESPACE__ . '\\' . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
     } else if (isset($in['tabs'])) {
@@ -530,20 +559,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
     $s .= '</h3>';
     if ($n !== '..' && $tools) {
-        $s .= '<ul class="tools">';
-        foreach ($tools as $k => $v) {
-            if (!$v) continue;
-            if (!isset($v['path'])) {
-                $v['path'] = dirname($dir) . '/' . $n;
-            } else if (is_callable($v['path'])) {
-                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
-            } else if ($v['path'] === false) {
-                unset($v['path']);
-                $v['link'] = 'javascript:;';
-            }
-            $s .= '<li>' . a($v, false) . '</li>';
-        }
-        $s .= '</ul>';
+        $s .= _tools($tools, $path, $dir, $id, $i);
     }
     return \HTML::unite('li', $s, $attr);
 }
@@ -551,23 +567,23 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 function files($folder, $id = 0, $attr = [], $i = 0) {
     global $token, $url;
     $state = \Extend::state('panel', 'file');
-    $files = $folders = [];
-    _glob($folder, $files, $folders);
-    $files = q(\concat($folders, $files));
+    $files = q(\concat(..._glob($folder)));
+    \Config::set('panel.$.files', $files);
     $dir = $s = "";
     _attr(0, $attr, 'files', $id, $i, is_string($folder) ? [
         'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
     ] : []);
-    $tools = \Anemon::eat(\Config::get('panel.$.file.tools', [], true))->sort([1, 'stack']);
     $files = $files = \Anemon::eat(q($files))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1);
     if ($files->count()) {
         if (trim(dirname($dir), '.') !== "") {
             $files->prepend(dirname(LOT . DS . $dir) . DS . '..');
         }
+        $tools = \Anemon::eat(\Config::get('panel.$.file.tools', [], true))->sort([1, 'stack']);
+        $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($files as $k => $v) {
             $n = basename($v);
             $h = $n !== '..' && (strpos($n, '.') === 0 || strpos($n, '_') === 0);
-            $a = strpos(strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS), X . $v . X) !== false;
+            $a = strpos($session, X . $v . X) !== false;
             $s .= file($v, $id, [
                 'class[]' => [
                     9996 => $h ? 'is-hidden' : null,
@@ -645,7 +661,7 @@ function links($in, $id = 0, $attr = [], $i = 0) {
 
 function message($kind = "", $text) {
     $icons = svg('message');
-    call_user_func('\Message::' . $kind, text($text, [[\alt($kind, $icons, $icons['$'])]]));
+    call_user_func('\Message::' . $kind, text($text, [[\alt($kind, $icons ?: [], $icons['$'])]]));
 }
 
 // content: ""
@@ -723,6 +739,7 @@ function nav_ul($in, $id = 0, $attr = [], $i = 0) {
 
 function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $path = $page->path;
+    $dir = \Path::F($page->path, LOT, '/');
     _attr(0, $attr, 'item', $id, $i, [
         'class[]' => [
             9998 => 'is-file',
@@ -730,7 +747,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
         ]
     ]);
     $s  = '<figure>';
-    $s .= $page->has('image') ? $page->image(72, 72) : '<span class="img" style="background:#' . substr(md5($path), 0, 6) . ';">' . strip_tags($page->title)[0] . '</span>';
+    $s .= '<img alt="" src="' . ($page->has('image') ? $page->image(72, 72) : \To::URL(realpath(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'php' . DS . 'image.php')) . '?c=' . substr(md5($dir), 0, 6)) . '" width="72" height="72">';
     $s .= '</figure>';
     $s .= '<header>';
     $s .= '<h3 class="title">';
@@ -738,22 +755,9 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s .= '</h3>';
     $s .= '</header>';
     $s .= '<div>';
-    $s .= '<p class="description">' . \To::description($page->description ?: "") . '</p>';
+    $s .= '<p class="description">' . \To::description($page->description ?: "", true, \Extend::state('panel', 'file')['snippet']) . '</p>';
     if ($tools) {
-        $s .= '<ul class="tools">';
-        foreach ($tools as $k => $v) {
-            if (!$v) continue;
-            if (!isset($v['path'])) {
-                $v['path'] = \Path::F($path, LOT, '/') . '.' . $page->state;
-            } else if (is_callable($v['path'])) {
-                $v['path'] = call_user_func($v['path'], $k, $path, $id, $i);
-            } else if ($v['path'] === false) {
-                unset($v['path']);
-                $v['link'] = 'javascript:;';
-            }
-            $s .= '<li>' . a($v, false) . '</li>';
-        }
-        $s .= '</ul>';
+        $s .= _tools($tools, $path, $dir, $id, $i);
     }
     $s .= '</div>';
     return \HTML::unite('li', $s, $attr);
@@ -762,10 +766,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
 function pager($folder, $id = 0, $attr = [], $i = 0) {
     global $language, $url;
     $state = \Extend::state('panel', 'file');
-    $files = $folders = [];
-    _glob($folder, $files, $folders);
-    $files = q(\concat($folders, $files));
-    $s = _pager($url->i ?: 1, count($files), $state['chunk'], $state['kin'], function($i) use($url) {
+    $s = _pager($url->i ?: 1, count(\Config::get('panel.$.files', [])), $state['chunk'], $state['kin'], function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);
     if ($s) {
@@ -776,18 +777,33 @@ function pager($folder, $id = 0, $attr = [], $i = 0) {
 }
 
 function pages($pages, $id = 0, $attr = [], $i = 0) {
-    $files = $folders = [];
-    _glob($pages, $files, $folders);
-    $x = ',draft,page,archive,';
-    $pages = q(\is($files, function($v) use($x) {
-        return strpos($x, ',' . pathinfo($v, PATHINFO_EXTENSION) . ',') !== false;
-    }));
     _attr(0, $attr, 'items', $id, $i);
     $s = "";
-    $tools = \Anemon::eat(\Config::get('panel.$.page.tools', [], true))->sort([1, 'stack']);
-    foreach ($pages as $k => $v) {
-        $v = new \Page($v);
-        $s .= page($v, $k, [], $i, $tools);
+    $x = 'draft,page,archive';
+    $state = \Extend::state('panel', 'file');
+    if (!is_array($pages)) {
+        \Config::set('panel.$.files', glob($pages . '*{' . $x . '}', GLOB_BRACE | GLOB_NOSORT));
+        $pages = \Get::pages($pages, $x);
+    } else {
+        \Config::set('panel.$.files', $pages);
+        $pages = \Anemon::eat($pages);
+    }
+    global $url;
+    $pages->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1);
+    if ($pages->count()) {
+        $tools = \Anemon::eat(\Config::get('panel.$.page.tools', [], true))->sort([1, 'stack']);
+        $pages = q($pages->pluck('path')->vomit());
+        $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
+        foreach ($pages as $v) {
+            $a = strpos($session, X . $v . X) !== false;
+            $v = new \Page($v);
+            $s .= page($v, $v->id, [
+                'class[]' => [
+                    9996 => $v->state === 'draft' ? 'is-hidden' : null,
+                    9997 => $a ? 'active' : null
+                ]
+            ], $i, $tools);
+        }
     }
     return \HTML::unite('ul', $s, $attr);
 }
@@ -843,12 +859,14 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
         $s .= fields($in['fields'], $id, [], $i);
     } else if (isset($in['files'])) {
         $panel = \Lot::get('panel');
-        if (!is_string($in['files'])) {
-            global $url;
-            $chops = explode('/', $url->path);
-            array_shift($chops);
-            array_shift($chops);
-            $in['files'] = LOT . DS . implode(DS, $chops);
+        if (!is_array($in['files'])) {
+            if (is_bool($in['files']) && $in['files']) {
+                global $url;
+                $chops = explode('/', $url->path);
+                array_shift($chops);
+                array_shift($chops);
+                $in['files'] = LOT . DS . implode(DS, $chops);
+            }
         }
         $s .= call_user_func(__NAMESPACE__ . '\\' . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
     }
