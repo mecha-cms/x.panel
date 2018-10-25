@@ -676,7 +676,10 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     background:@color-list_hover;
     border-color:darken(@color_inverse, 1%);
   }
-  &.disabled {opacity:.5}
+  &.active {
+    background:@color-list_active;
+    border-color:@color-list_active;
+  }
   > figure {
     width:(@x * 2);
     height:(@y * 2);
@@ -704,6 +707,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     right:(@x * .25);
   }
   min-height:(@y * 2.5);
+  &.is-hidden:not(:focus):not(:hover) {opacity:.5}
 }
 
 // @pager

@@ -56,6 +56,17 @@ function _glob($folder) {
     return [$folders, $files];
 }
 
+function _hidden($v) {
+    if (!array_key_exists('hidden', $v)) {
+        return false;
+    } else if (empty($v['hidden'])) {
+        return false;
+    } else if (is_callable($v['hidden']) && empty(call_user_func($v['hidden'], $v))) {
+        return false;
+    }
+    return true;
+}
+
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
 function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $last) {
     $begin = 1;
@@ -119,26 +130,24 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
 }
 
 function _tools($tools, $path, $dir, $id, $i) {
+    $path = strtr($path, '/', DS);
+    $dir = strtr($dir, '/', DS);
     $s = '<ul class="tools">';
     foreach ($tools as $k => $v) {
         if (!$v) continue;
+        if (isset($v['data']) && is_callable($v['data'])) {
+            $v = extend($v, call_user_func($v['data'], $k, $path, $dir, $id, $i));
+            unset($v['data']);
+        }
+        if (_hidden($v)) continue;
         if (!isset($v['path'])) {
-            $v['path'] = dirname($dir) . '/' . basename($path);
+            $v['path'] = dirname($dir) . DS . basename($path);
         } else if (is_callable($v['path'])) {
-            $vv = call_user_func($v['path'], $v, $k, $path, $id, $i);
-            if ($vv === null) {
-                continue;
-            }
-            $v['path'] = $vv;
+            $v['path'] = call_user_func($v['path'], $v, $k, $path, $id, $i);
         } else if ($v['path'] === false) {
             unset($v['path']);
             $v['link'] = 'javascript:;';
         }
-        if (
-            !isset($v['link']) &&
-            !isset($v['path']) &&
-            !isset($v['url'])
-        ) continue;
         $s .= '<li>' . a($v, false) . '</li>';
     }
     return $s . '</ul>';
@@ -298,6 +307,7 @@ function datas($datas, $id = 0, $attr = [], $i = 0) {
     _attr(0, $attr, 'datas', $id, $i);
     $s = "";
     foreach ($datas as $k => $v) {
+        if (!$v || _hidden($v)) continue;
         $s .= data($v, $k, [], $i);
     }
     return \HTML::unite('ul', $s, $attr);
@@ -530,7 +540,7 @@ function fields($in, $id = 0, $attr = [], $i = 0) {
     $ii = 0;
     $hidden = [];
     foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-        if (!$v) continue;
+        if (!$v || _hidden($v)) continue;
         if (isset($v['type']) && $v['type'] === 'hidden') {
             $hidden[$k] = $v;
             continue;
@@ -645,7 +655,7 @@ function links($in, $id = 0, $attr = [], $i = 0) {
     global $language;
     $a = [];
     foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-        if (!$v) continue;
+        if (!$v || _hidden($v)) continue;
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
@@ -728,14 +738,12 @@ function nav_ul($in, $id = 0, $attr = [], $i = 0) {
     }
     $s = "";
     foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-        if (!$v) continue;
+        if (!$v || _hidden($v)) continue;
         $s .= nav_li($v, $k, [], $i);
     }
     _attr($in, $attr, 'ul', $id, $i);
     return \HTML::unite('ul', $s, $attr);
 }
-
-
 
 function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $path = $page->path;
@@ -751,7 +759,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s .= '</figure>';
     $s .= '<header>';
     $s .= '<h3 class="title">';
-    $s .= '<a href="' . $page->url . '">' . $page->title . '</a>';
+    $s .= $page->url ? '<a href="' . $page->url . '">' . $page->title . '</a>' : '<span>' . $page->title . '</span>';
     $s .= '</h3>';
     $s .= '</header>';
     $s .= '<div>';
@@ -766,7 +774,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
 function pager($folder, $id = 0, $attr = [], $i = 0) {
     global $language, $url;
     $state = \Extend::state('panel', 'file');
-    $s = _pager($url->i ?: 1, count(\Config::get('panel.$.files', [])), $state['chunk'], $state['kin'], function($i) use($url) {
+    $s = _pager($url->i ?: 1, count(\Config::get('panel.$.files', [], true)), $state['chunk'], $state['kin'], function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);
     if ($s) {
@@ -786,7 +794,9 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
         $pages = \Get::pages($pages, $x);
     } else {
         \Config::set('panel.$.files', $pages);
-        $pages = \Anemon::eat($pages);
+        $pages = \Anemon::eat($pages)->map(function($v) {
+            return ['path' => $v];
+        });
     }
     global $url;
     $pages->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1);
@@ -897,7 +907,7 @@ function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
         $active = \HTTP::get('tab.' . $i, null, false);
     }
     foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-        if (!$v) continue;
+        if (!$v || _hidden($v)) continue;
         $s .= tab($v, $k, [], $i, $k === $active);
     }
     _attr($in, $attr, 'tabs', $id, $i);
@@ -931,7 +941,7 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
     global $language;
     $a = [];
     foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-        if (!$v) continue;
+        if (!$v || _hidden($v)) continue;
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }

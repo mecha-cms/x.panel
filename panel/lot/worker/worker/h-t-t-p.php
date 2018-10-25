@@ -1,14 +1,11 @@
 <?php
 
+require __DIR__ . DS . 'task.php';
+
 $c = $panel->c;
-
-if ($c !== 'r' && !HTTP::is('post')) {
-    exit('Method not allowed.');
-}
-
-$id = $panel->id;
 $r = $panel->r;
 $a = HTTP::post('a', HTTP::get('a'));
+$id = $panel->id;
 $tab = HTTP::get('tab');
 $gate_alt = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . HTTP::post('view', HTTP::get('view', X)) . '.php');
 
@@ -23,6 +20,27 @@ if ($consent !== null) {
 
 $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($file = LOT . DS . $path);
+
+if ($c !== 'r') {
+    if ($c === 'x' && HTTP::is('get')) { // Custom
+        // Run task
+        if (function_exists($task = 'fn\task\\' . $a)) {
+            $lot = (array) HTTP::get('lot', []);
+            array_unshift($lot, $file);
+            $def = str_replace('::x::', '::g::', dirname($url->current) . '/1');
+            if ($return = call_user_func($task, ...$lot)) {
+                Guardian::kick($return['kick'] ?? $def);
+            }
+            Guardian::kick($def);
+        } else {
+            echo error('Task <code>' . $task . '</code> not found.');
+            exit;
+        }
+    } else if (!HTTP::is('post')) {
+        echo error('Method not allowed.');
+        exit;
+    }
+}
 
 if ($c === 'r') {
     // Prevent user(s) from deleting the root folder(s)

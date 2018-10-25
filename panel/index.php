@@ -31,7 +31,11 @@ if ($r === $p) {
     if ($tok && Guardian::check($tok)) {
         require $worker . 'worker' . DS . 'h-t-t-p.php';
     } else if (HTTP::is('post')) {
-        exit('Invalid token.');
+        echo error('Invalid token.');
+        exit;
+    } else if ($c === 'x' || $c === 'r') {
+        echo error('Invalid token.');
+        exit;
     }
 
     if ($f = File::exist($worker . $panel->v . '.php')) require $f;
