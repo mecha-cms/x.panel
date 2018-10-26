@@ -129,21 +129,20 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
     return $s;
 }
 
-function _tools($tools, $path, $dir, $id, $i) {
+function _tools($tools, $path, $id, $i) {
     $path = strtr($path, '/', DS);
-    $dir = strtr($dir, '/', DS);
     $s = '<ul class="tools">';
     foreach ($tools as $k => $v) {
         if (!$v) continue;
         if (isset($v['data']) && is_callable($v['data'])) {
-            $v = extend($v, call_user_func($v['data'], $k, $path, $dir, $id, $i));
+            $v = extend($v, call_user_func($v['data'], $path, $v, $k, $id, $i));
             unset($v['data']);
         }
         if (_hidden($v)) continue;
         if (!isset($v['path'])) {
-            $v['path'] = dirname($dir) . DS . basename($path);
+            $v['path'] = str_replace(LOT . DS, "", $path);
         } else if (is_callable($v['path'])) {
-            $v['path'] = call_user_func($v['path'], $v, $k, $path, $id, $i);
+            $v['path'] = call_user_func($v['path'], $path, $v, $k, $id, $i);
         } else if ($v['path'] === false) {
             unset($v['path']);
             $v['link'] = 'javascript:;';
@@ -440,9 +439,6 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
     }
-    if (!empty($in['hidden'])) {
-        return "";
-    }
     global $language;
     $s = "";
     $kind = isset($in['kind']) ? (array) $in['kind'] : [];
@@ -558,7 +554,7 @@ function fields($in, $id = 0, $attr = [], $i = 0) {
 function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     global $url;
     $n = basename($path);
-    $dir = \Path::F($path, LOT, '/');
+    $dir = str_replace([LOT . DS, DS], ["", '/'], $path);
     _attr(0, $attr, 'file', $id, $i, [
         'class[]' => [
             9998 => 'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
@@ -569,7 +565,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . \Extend::state('panel', 'path') . '/::g::/' . ($n !== '..' ? $dir : dirname($dir)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($n === '..' ? basename(dirname($url->path)) : "")) . '">' . $n . '</a>';
     $s .= '</h3>';
     if ($n !== '..' && $tools) {
-        $s .= _tools($tools, $path, $dir, $id, $i);
+        $s .= _tools($tools, $path, $id, $i);
     }
     return \HTML::unite('li', $s, $attr);
 }
@@ -579,13 +575,14 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     $state = \Extend::state('panel', 'file');
     $files = q(\concat(..._glob($folder)));
     \Config::set('panel.$.files', $files);
-    $dir = $s = "";
+    $s = "";
+    $dir = is_string($folder) ? str_replace([LOT . DS, DS], ["", '/'], $folder) : null;
     _attr(0, $attr, 'files', $id, $i, is_string($folder) ? [
-        'data[]' => ['folder' => ($dir = \Path::F($folder, LOT, '/'))]
+        'data[]' => ['folder' => $dir]
     ] : []);
     $files = $files = \Anemon::eat(q($files))->chunk($state['chunk'], $url->i === null ? 0 : $url->i - 1);
     if ($files->count()) {
-        if (trim(dirname($dir), '.') !== "") {
+        if (is_string($folder) && trim(dirname($dir), '.') !== "") {
             $files->prepend(dirname(LOT . DS . $dir) . DS . '..');
         }
         $tools = \Anemon::eat(\Config::get('panel.$.file.tools', [], true))->sort([1, 'stack']);
@@ -746,8 +743,9 @@ function nav_ul($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
+    global $url;
     $path = $page->path;
-    $dir = \Path::F($page->path, LOT, '/');
+    $state = \Extend::state('panel');
     _attr(0, $attr, 'item', $id, $i, [
         'class[]' => [
             9998 => 'is-file',
@@ -755,7 +753,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
         ]
     ]);
     $s  = '<figure>';
-    $s .= '<img alt="" src="' . ($page->has('image') ? $page->image(72, 72) : \To::URL(realpath(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'php' . DS . 'image.php')) . '?c=' . substr(md5($dir), 0, 6)) . '" width="72" height="72">';
+    $s .= '<img alt="" src="' . ($page->has('image') ? $page->image(72, 72) : $url . '/' . $state['path'] . '/::g::/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
     $s .= '</figure>';
     $s .= '<header>';
     $s .= '<h3 class="title">';
@@ -763,9 +761,9 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $s .= '</h3>';
     $s .= '</header>';
     $s .= '<div>';
-    $s .= '<p class="description">' . \To::description($page->description ?: "", true, \Extend::state('panel', 'file')['snippet']) . '</p>';
+    $s .= '<p class="description">' . \To::description($page->description ?: "", true, $state['file']['snippet']) . '</p>';
     if ($tools) {
-        $s .= _tools($tools, $path, $dir, $id, $i);
+        $s .= _tools($tools, $path, $id, $i);
     }
     $s .= '</div>';
     return \HTML::unite('li', $s, $attr);
@@ -945,11 +943,18 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
         if (!isset($v['title'])) {
             $v['title'] = $language->{$k};
         }
-        if (isset($v['menus'])) {
+        if (!empty($v['menus'])) {
             $hash = dechex(crc32($id . $k . $i));
             \Config::set('panel.$.menus.' . $hash, $v['menus']);
             $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
         } else {
+            if (array_key_exists('menus', $v)) {
+                if (isset($v['kind'])) {
+                    $v['kind'][] = 'disabled';
+                } else {
+                    $v['kind'] = ['disabled'];
+                }
+            }
             $a[] = button($v, $k, [], $i);
         }
     }

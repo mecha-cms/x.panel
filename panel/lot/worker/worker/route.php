@@ -1,10 +1,13 @@
 <?php
 
 Hook::set('on.ready', function() {
+
     extract(Lot::get(null, []));
+
     $id = $panel->id;
     $r = $panel->r;
     $v = $panel->v;
+
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset();
         Route::reset();
@@ -17,6 +20,7 @@ Hook::set('on.ready', function() {
             Asset::set($asset . 'js' . DS . 'panel.min.js');
         }
     }
+
     Route::set([
         $r . '/::%s%::/%*%/%i%',
         $r . '/::%s%::/%*%'
@@ -59,6 +63,36 @@ Hook::set('on.ready', function() {
             'error' => $error,
             'nav' => $nav
         ]);
-        Shield::attach(__DIR__ . DS . 'shield.php');
-    }, 0);
+        return Shield::attach(__DIR__ . DS . 'shield.php');
+    }, 10);
+
+    $image_placeholder = $r . '/::g::/%i%/%i%/%s%.%[gif,jpg,jpeg,png]%';
+    Route::set($image_placeholder, function($width, $height, $color, $x) {
+        $i = 60 * 60 * 24 * 30 * 12; // 1 year
+        // Handle invalid MIME type
+        if ($x === 'jpg') {
+            $x = 'jpeg';
+        }
+        // Handle invalid HEX color
+        if (!ctype_xdigit($color) || strlen($color) !== 6) {
+            $color = '000000'; // default to black
+        }
+        HTTP::type('image/' . $x)->header([
+            'Pragma' => 'private',
+            'Cache-Control' => 'private, max-age=' . $i,
+            'Expires' => gmdate('D, d M Y H:i:s', time() + $i) . ' GMT'
+        ]);
+        $image = imagecreate($width, $height);
+        $hash = str_split($color, 2);
+        imagecolorallocate($image, hexdec($hash[0]), hexdec($hash[1]), hexdec($hash[2]));
+        call_user_func('image' . $x, $image);
+        imagedestroy($image);
+        return;
+    }, 9.9);
+    Route::set($r . '/::g::/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_placeholder) {
+        return Route::fire($image_placeholder, [$size, $size, $color, $x]);
+    }, 9.8);
+    Route::set($r . '/::g::/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_placeholder) {
+        return Route::fire($image_placeholder, [1, 1, $color, $x]);
+    }, 9.7);
 }, 0);

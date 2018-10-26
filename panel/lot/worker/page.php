@@ -100,13 +100,13 @@ Config::set('panel.desk.body.tabs.data', [
             'placeholder' => $page->time ?: date(DATE_WISE),
             'stack' => 10.1
         ] : null,
-        '!:' => [
+        '!:' => $c === 'g' ? [
             'key' => 'datas',
             'type' => 'source',
             'width' => true,
             'placeholder' => 'key: value',
             'stack' => 10.2
-        ],
+        ] : null,
         '!+' => $c === 'g' ? [
             'key' => 'datas',
             'type' => 'content',
@@ -160,52 +160,54 @@ Hook::set('on.ready', function() use($c, $language, $page, $token, $url) {
     }
     Config::set($pref . 'page[type].values', $types);
     // Add data(s) field
-    $datas = glob(Path::F($page->path) . DS . '*.data', GLOB_NOSORT);
-    $removes = [];
-    foreach ((array) Config::get('panel.desk.body.tabs', [], true) as $v) {
-        if (!isset($v['fields'])) continue;
-        foreach ($v['fields'] as $kk => $vv) {
-            if (strpos($kk, 'data[') === 0 || strpos($kk, 'page[') === 0) {
-                $removes[substr(explode(']', $kk)[0], 5) . '.data'] = 1;
+    if ($c === 'g') {
+        $datas = glob(Path::F($page->path) . DS . '*.data', GLOB_NOSORT);
+        $removes = [];
+        foreach ((array) Config::get('panel.desk.body.tabs', [], true) as $v) {
+            if (!isset($v['fields'])) continue;
+            foreach ($v['fields'] as $kk => $vv) {
+                if (strpos($kk, 'data[') === 0 || strpos($kk, 'page[') === 0) {
+                    $removes[substr(explode(']', $kk)[0], 5) . '.data'] = 1;
+                }
             }
         }
-    }
-    foreach ($datas as $k => $v) {
-        if (isset($removes[basename($v)])) {
-            unset($datas[$k]);
+        foreach ($datas as $k => $v) {
+            if (isset($removes[basename($v)])) {
+                unset($datas[$k]);
+            }
         }
-    }
-    $headers = $c === 'g' ? Page::apart(file_get_contents($page->path)) : [];
-    $query = [
-        'query' => [
-            'tab' => false,
-            'view' => 'data',
-            'x' => Path::X($url->path)
-        ]
-    ];
-    Config::set('panel.$.file.tools', [
-        'g' => $query,
-        'r' => $query
-    ]);
-    $pref = 'panel.desk.body.tabs.data.fields.';
-    foreach ($headers as $k => $v) {
-        if (isset($removes[$k . '.data'])) {
-            unset($headers[$k]);
+        $headers = Page::apart(file_get_contents($page->path));
+        $query = [
+            'query' => [
+                'tab' => false,
+                'view' => 'data',
+                'x' => Path::X($url->path)
+            ]
+        ];
+        Config::set('panel.$.file.tools', [
+            'g' => $query,
+            'r' => $query
+        ]);
+        $pref = 'panel.desk.body.tabs.data.fields.';
+        foreach ($headers as $k => $v) {
+            if (isset($removes[$k . '.data'])) {
+                unset($headers[$k]);
+            }
         }
+        if ($headers) {
+            Config::set($pref . '!:.value', To::YAML($headers));
+        } else {
+            Config::set($pref . '!:.hidden', true);
+        }
+        Config::set($pref . '!+.value', ($datas ? fn\panel\files($datas, 'datas') : "") . '<p>' . fn\panel\a([
+            'title' => $language->create,
+            'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']],
+            'c' => 's',
+            'url' => str_replace('::g::', '::s::', Path::F($url->path)),
+            'query' => $query['query'],
+            'kind' => ['button', 'text']
+        ]) . '</p>');
     }
-    if ($headers) {
-        Config::set($pref . '!:.value', To::YAML($headers));
-    } else {
-        Config::set($pref . '!:.hidden', true);
-    }
-    Config::set($pref . '!+.value', ($datas ? fn\panel\files($datas, 'datas') : "") . '<p>' . fn\panel\a([
-        'title' => $language->create,
-        'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']],
-        'c' => 's',
-        'url' => str_replace('::g::', '::s::', Path::F($url->path)),
-        'query' => $query['query'],
-        'kind' => ['button', 'text']
-    ]) . '</p>');
 }, 1);
 
 // Re-create submit button(s)

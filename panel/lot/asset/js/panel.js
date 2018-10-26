@@ -35,15 +35,24 @@ var $focus = $(focusable_class);
 $focus.length && $focus.focus();
 
 function query(source, key, value) {
+    key = decodeURIComponent(key);
     var a = source.split('?'),
         esc = '!$^*()-=+[]{}\\|:<>,./?';
     if (!a[1]) {
         return value ? a[0] + '?' + key + '=' + value : a[0];
     }
-    a[1] = a[1].replace(new RegExp('(^|&)' + key.replace(new RegExp('[' + esc.replace(/./g, '\\$&') + ']', 'g'), '\\$&') + '=[^&#]+', 'g'), "");
-    if (a[1] && a[1][0] === '&') {
-        a[1] = a[1].slice(1);
+    var parts = a[1].split('&'), data = {}, i, j;
+    for (i in parts) {
+        j = parts[i].split('=');
+        data[decodeURIComponent(j.shift())] = j.join('=') || false;
     }
+    delete data[key];
+    var o = [];
+    for (i in data) {
+        j = data[i];
+        o.push(encodeURIComponent(i) + (j !== false ? '=' + j : ""));
+    }
+    a[1] = o.join('&');
     value && (a[1] += '&' + key + '=' + value);
     if (a[1]) {
         if (a[1][0] === '&') {
@@ -303,7 +312,7 @@ if ($slugger.length) {
                 $from.on("blur focus input keydown paste", function() {
                     $to.val($(this).val().replace(/[A-Z]/g, function($) {
                         return '\u001a' + $.toLowerCase();
-                    }).replace(/[^a-z\d-_]/g, '\u001a').replace(/\u001a+/g, '\u001a').replace(/^\u001a|\u001a$/g, "").replace(/\u001A/g, x));
+                    }).replace(/[^a-z\d-_]/g, '\u001a').replace(/\u001a+/g, '\u001a').replace(/^\u001a|\u001a$/g, "").replace(/\u001a/g, x));
                 });
             }
         });

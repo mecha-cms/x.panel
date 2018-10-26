@@ -7,15 +7,24 @@ foreach (glob(EXTEND . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $v) {
 
 ksort($extends); // Sort by `title`
 
-Config::set('panel.desk.body.tabs.file.files', $extends);
+Config::set('panel.desk.body.tabs.file.files', array_values($extends));
+Config::set('panel.desk.header.tools', [
+    'file' => [
+        'title' => $language->add,
+        'query' => ['tab' => ['blob']]
+    ],
+    'folder' => null,
+    '+' => ['menus' => null]
+]);
+
 Config::set('panel.$.page.tools', [
     'enter' => null,
-    'view' => [
-        'data' => function($k, $path) use($language) {
+    'status' => [
+        'data' => function($path) use($language) {
             $active = file_exists(dirname($path) . DS . 'index.php');
             return [
                 'description' => $language->{($active ? '_' : "") . 'activate'},
-                'icon' => [[$active ? 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M17,11V13H7V11H17Z' : 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z']],
+                'icon' => [[$active ? 'M19,19H5V5H15V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V11H19M7.91,10.08L6.5,11.5L11,16L21,6L19.59,4.58L11,13.17L7.91,10.08Z' : 'M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z']],
                 'path' => str_replace(LOT . DS, "", dirname($path)) . DS . 'index.' . ($active ? 'php' : 'x'),
                 'query' => [
                     'lot' => ['index.' . ($active ? 'x' : 'php')]
@@ -30,10 +39,10 @@ Config::set('panel.$.page.tools', [
         ],
         'stack' => 9.9
     ],
-    'g' => ['path' => function($v, $k, $path) {
+    'g' => ['path' => function($path) {
         return str_replace(LOT . DS, "", dirname($path)) . DS . '1';
     }],
-    'r' => ['path' => function($v, $k, $path) {
+    'r' => ['path' => function($path) {
         return str_replace(LOT . DS, "", dirname($path));
     }]
 ]);

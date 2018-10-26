@@ -136,8 +136,12 @@ if ($tab === 'folder') {
     if (Is::void($name)) {
         fn\panel\message('error', To::sentence($language->error));
     }
+    $file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name);
+    if ($c === 's' && file_exists($file)) {
+        fn\panel\message('error', 'File already exists.');
+    }
     if (!Message::$x) {
-        File::set($content)->saveTo($file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name), $consent);
+        File::set($content)->saveTo($file, $consent);
         Session::set('panel.file.active', $file);
         if ($n && ($directory || $n !== $name)) {
             File::open(LOT . DS . $path . DS . $n)->delete();

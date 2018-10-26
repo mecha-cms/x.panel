@@ -159,7 +159,7 @@ Config::set('panel.$.file.tools', [
 
 Config::set('panel.$.page.tools', [
     'enter' => [
-        'data' => function($k, $path) {
+        'data' => function($path) {
             return ['hidden' => !glob(Path::F($path) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT)];
         },
         'title' => false,

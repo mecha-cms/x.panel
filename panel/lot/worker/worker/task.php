@@ -1,5 +1,12 @@
 <?php namespace fn\task;
 
+function empty_trash() {
+    \File::open(LOT . DS . 'trash')->delete();
+    return ['kick' => \Extend::state('panel', 'path') . '/::g::/page/1'];
+}
+
+function set_config($a, $b) {}
+
 function rename($a, $b) {
     \File::open($a)->renameTo($b);
 }
