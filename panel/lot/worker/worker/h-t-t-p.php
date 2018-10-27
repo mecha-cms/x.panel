@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__ . DS . 'task.php';
-
 $c = $panel->c;
 $r = $panel->r;
 $a = HTTP::post('a', HTTP::get('a'));
@@ -22,12 +20,12 @@ $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($file = LOT . DS . $path);
 
 if ($c !== 'r') {
-    if ($c === 'x' && HTTP::is('get')) { // Custom
+    if ($c === 'a' && HTTP::is('get')) {
         // Run task
-        if (function_exists($task = 'fn\task\\' . $a)) {
+        if (function_exists($task = "fn\\task\\_" . $a)) {
             $lot = (array) HTTP::get('lot', []);
             array_unshift($lot, $file);
-            $def = str_replace('::x::', '::g::', dirname($url->current) . '/1');
+            $def = str_replace('::a::', '::g::', dirname($url->current) . '/1');
             if ($return = call_user_func($task, ...$lot)) {
                 Guardian::kick($return['kick'] ?? $def);
             }
@@ -40,9 +38,7 @@ if ($c !== 'r') {
         echo error('Method not allowed.');
         exit;
     }
-}
-
-if ($c === 'r') {
+} else /* if ($c === 'r') */ {
     // Prevent user(s) from deleting the root folder(s)
     if (strpos($path, DS) === false) {
         fn\panel\message('error', 'You can\'t delete this file/folder.');
