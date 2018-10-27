@@ -28,55 +28,56 @@ Config::reset('panel.desk.body.tabs.blob');
 // Remove all submit button(s)
 Config::reset('panel.desk.footer.tools');
 
-// Rename file tab title
-Config::set('panel.desk.body.tabs.file.title', $language->{$id});
-
-// Modify file tab content field(s)
+// Modify file tab field(s)
 Config::set('panel.$.slug', ['page[title]:slug']);
-Config::set('panel.desk.body.tabs.file.fields', [
-    'file[content]' => null,
-    'name' => null,
-    'page[title]' => [
-        'key' => 'title',
-        'type' => 'text',
-        'value' => $page->title,
-        'width' => true,
-        'stack' => 10
+Config::set('panel.desk.body.tabs.file', [
+    'title' => $language->{$id},
+    'fields' => [
+        'file[content]' => null,
+        'name' => null,
+        'page[title]' => [
+            'key' => 'title',
+            'type' => 'text',
+            'value' => $page->title,
+            'width' => true,
+            'stack' => 10
+        ],
+        'slug' => [
+            'type' => 'text',
+            'pattern' => '^[a-z\\d]+(-[a-z\\d]+)*$',
+            'value' => $page->slug,
+            'width' => true,
+            'stack' => 10.1
+        ],
+        'page[content]' => [
+            'key' => 'content',
+            'type' => 'editor',
+            'value' => $page->content,
+            'width' => true,
+            'height' => true,
+            'stack' => 10.2
+        ],
+        'page[description]' => [
+            'key' => 'description',
+            'type' => 'textarea',
+            'value' => $page->description,
+            'width' => true,
+            'stack' => 10.3
+        ],
+        'page[type]' => [
+            'key' => 'type',
+            'type' => 'select',
+            'kind' => ['select-input'],
+            'value' => $page->type,
+            'stack' => 10.4
+        ],
+        'file[consent]' => [
+            'type' => 'hidden',
+            'hidden' => false,
+            'value' => '0600'
+        ]
     ],
-    'slug' => [
-        'type' => 'text',
-        'pattern' => '^[a-z\\d]+(-[a-z\\d]+)*$',
-        'value' => $page->slug,
-        'width' => true,
-        'stack' => 10.1
-    ],
-    'page[content]' => [
-        'key' => 'content',
-        'type' => 'editor',
-        'value' => $page->content,
-        'width' => true,
-        'height' => true,
-        'stack' => 10.2
-    ],
-    'page[description]' => [
-        'key' => 'description',
-        'type' => 'textarea',
-        'value' => $page->description,
-        'width' => true,
-        'stack' => 10.3
-    ],
-    'page[type]' => [
-        'key' => 'type',
-        'type' => 'select',
-        'kind' => ['select-input'],
-        'value' => $page->type,
-        'stack' => 10.4
-    ],
-    'file[consent]' => [
-        'type' => 'hidden',
-        'hidden' => false,
-        'value' => '0600'
-    ]
+    'stack' => 10 // why?!
 ]);
 
 // Add custom field(s) tab

@@ -159,18 +159,29 @@ Config::set('panel.$.file.tools', [
 
 Config::set('panel.$.page.tools', [
     'enter' => [
-        'data' => function($path) {
-            return ['hidden' => !glob(Path::F($path) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT)];
+        'data' => function($file) {
+            return [
+                'hidden' => !glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
+                'path' => Path::F($file, LOT, '/') . '/1'
+            ];
         },
         'title' => false,
-        'description' => $language->enter,
+        'description' => $language->enter . ': ' . $language->pages,
         'icon' => [['M5,3C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3H5M5,5H19V19H5V5M7,7V9H17V7H7M7,11V13H17V11H7M7,15V17H14V15H7Z']],
-        'link' => null,
-        'path' => function($v, $k, $path) {
-            return Path::F($path, LOT, '/') . '/1';
-        },
-        'url' => null,
         'c' => 'g',
+        'stack' => 9.9
+    ],
+    's' => [
+        'data' => function($file) {
+            return [
+                'hidden' => !!glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
+                'path' => Path::F($file, LOT, '/')
+            ];
+        },
+        'title' => false,
+        'description' => $language->add . ': ' . $language->pages,
+        'icon' => [['M19,5H22V7H19V10H17V7H14V5H17V2H19V5M17,19V13H19V21H3V5H11V7H5V19H17Z']],
+        'c' => 's',
         'stack' => 9.9
     ],
     'g' => [

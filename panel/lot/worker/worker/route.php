@@ -66,8 +66,8 @@ Hook::set('on.ready', function() {
         return Shield::attach(__DIR__ . DS . 'shield.php');
     }, 10);
 
-    $image_placeholder = $r . '/::g::/%i%/%i%/%s%.%[gif,jpg,jpeg,png]%';
-    Route::set($image_placeholder, function($width, $height, $color, $x) {
+    $image_path = $r . '/::g::/%i%/%i%/%s%.%[gif,jpg,jpeg,png]%';
+    Route::set($image_path, function($width, $height, $color, $x) {
         $i = 60 * 60 * 24 * 30 * 12; // 1 year
         // Handle invalid MIME type
         if ($x === 'jpg') {
@@ -88,11 +88,11 @@ Hook::set('on.ready', function() {
         call_user_func('image' . $x, $image);
         imagedestroy($image);
         return;
-    }, 9.9);
-    Route::set($r . '/::g::/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_placeholder) {
-        return Route::fire($image_placeholder, [$size, $size, $color, $x]);
-    }, 9.8);
-    Route::set($r . '/::g::/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_placeholder) {
-        return Route::fire($image_placeholder, [1, 1, $color, $x]);
-    }, 9.7);
+    }, 9);
+    Route::set($r . '/::g::/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_path) {
+        return Route::fire($image_path, [$size, $size, $color, $x]);
+    }, 9.1);
+    Route::set($r . '/::g::/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_path) {
+        return Route::fire($image_path, [1, 1, $color, $x]);
+    }, 9.2);
 }, 0);

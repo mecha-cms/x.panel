@@ -183,10 +183,10 @@ function a($in, $id = 0, $attr = [], $i = 0) {
     }
     _attr($in, $attr, 'a', $id, $i, [
         'href' => a_href($in),
-        'target' => isset($in['target']) ? $in['target'] : null,
+        'target' => $in['target'] ?? null,
         'title' => isset($in['description']) ? \To::text($in['description']) : null
     ]);
-    $s = text(isset($in['title']) ? $in['title'] : "", isset($in['icon']) ? $in['icon'] : []);
+    $s = text($in['title'] ?? "", $in['icon'] ?? []);
     if (isset($in['content'])) {
         $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
@@ -206,12 +206,21 @@ function a_href($in) {
     }
     // `[link[path[url]]]`
     $u = "";
+    if (isset($in['task'])) {
+        global $token;
+        $in['task'] = (array) $in['task'];
+        $in['c'] = 'a';
+        $in['query']['a'] = array_shift($in['task']);
+        $in['query']['lot'] = array_shift($in['task']);
+        $in['query']['token'] = $token;
+        unset($in['task']);
+    }
     if (isset($in['link'])) {
         $u = $in['link'];
     } else if (isset($in['url'])) {
         $u = \URL::long($in['url']);
     } else if (isset($in['path'])) {
-        $u = rtrim(\URL::long(\Extend::state('panel', 'path') . '/::' . (isset($in['c']) ? $in['c'] : 'g') . '::/' . ltrim($in['path'], '/')), '/');
+        $u = rtrim(\URL::long(\Extend::state('panel', 'path') . '/::' . ($in['c'] ?? 'g') . '::/' . ltrim($in['path'], '/')), '/');
     }
     if (isset($in['query'])) {
         $u .= \HTTP::query($in['query'], [1 => '&']);
@@ -234,15 +243,11 @@ function button($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
     }
-    $href = a_href($in);
     _attr($in, $attr, 'button', $id, $i);
     if (isset($in['description'])) {
         $attr['title'] = \To::text($in['description']);
     }
-    if ($href === "") {
-        if (isset($in['active']) && !$in['active']) {
-            $attr['disabled'] = true;
-        }
+    if ($is_button = !isset($in['link']) && !isset($in['path']) && !isset($in['url'])) {
         if (isset($in['name'])) {
             $attr['name'] = $in['name'];
         }
@@ -250,16 +255,13 @@ function button($in, $id = 0, $attr = [], $i = 0) {
             $attr['value'] = $in['value'];
         }
     } else {
-        if (isset($in['active']) && !$in['active']) {
-            $attr['class[]'][] = 'disabled';
-        }
-        $attr['href'] = $href;
+        $attr['href'] = a_href($in);
     }
-    $s = text(isset($in['title']) ? $in['title'] : "", isset($in['icon']) ? $in['icon'] : []);
+    $s = text($in['title'] ?? "", $in['icon'] ?? []);
     if (isset($in['content'])) {
         $s = \candy($in['content'], \extend($in, ['content' => $s]));
     }
-    return \HTML::unite($href !== "" ? 'a' : 'button', $s, $attr);
+    return \HTML::unite($is_button ? 'button' : 'a', $s, $attr);
 }
 
 function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
@@ -360,7 +362,7 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
                 $in['files'] = LOT . DS . implode(DS, $chops);
             }
         }
-        $s .= call_user_func(__NAMESPACE__ . '\\' . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
+        $s .= call_user_func(__NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
     } else if (isset($in['tabs'])) {
         $s .= tabs($in['tabs'], $id, [], $i);
     } else if (isset($in['fields'])) {
@@ -441,18 +443,18 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
     }
     global $language;
     $s = "";
-    $kind = isset($in['kind']) ? (array) $in['kind'] : [];
+    $kind = (array) ($in['kind'] ?? []);
     $style = [];
-    $title = isset($in['title']) ? $in['title'] : $language->{isset($in['key']) ? $in['key'] : $key};
+    $title = $in['title'] ?? $language->{$in['key'] ?? $key};
     $description = isset($in['description']) ? trim($in['description']) : null;
-    $type = isset($in['type']) ? $in['type'] : 'textarea';
-    $value = isset($in['value']) ? $in['value'] : null;
-    $values = isset($in['values']) ? (array) $in['values'] : [];
-    $placeholder = isset($in['placeholder']) ? $in['placeholder'] : $value;
-    $pattern = isset($in['pattern']) ? $in['pattern'] : null;
-    $width = !empty($in['width']) ? $in['width'] : null;
-    $height = !empty($in['height']) ? $in['height'] : null;
-    $clone = isset($in['clone']) ? $in['clone'] : 0; // TODO
+    $type = $in['type'] ?? 'textarea';
+    $value = $in['value'] ?? null;
+    $values = (array) ($in['values'] ?? []);
+    $placeholder = $in['placeholder'] ?? $value;
+    $pattern = $in['pattern'] ?? null;
+    $width = $in['width'] ?? null;
+    $height = $in['height'] ?? null;
+    $clone = $in['clone'] ?? 0; // TODO
     asort($values);
     $copy = $in;
     $copy['kind'] = ['type:' . $type];
@@ -492,7 +494,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         foreach ($values as $k => $v) {
             // $v = [$text, $checked ?? false, $value ?? 1]
             $v = (array) $v;
-            $s .= \Form::check($key . '[' . $k . ']', isset($v[2]) ? $v[2] : 1, !empty($v[1]), $v[0], $attr_alt);
+            $s .= \Form::check($key . '[' . $k . ']', $v[2] ?? 1, !empty($v[1]), $v[0], $attr_alt);
         }
         $s .= '</span>';
     } else if (strpos(',editor,source,textarea,', ',' . $type . ',') !== false) {
@@ -541,11 +543,11 @@ function fields($in, $id = 0, $attr = [], $i = 0) {
             $hidden[$k] = $v;
             continue;
         }
-        $s .= field($k, $v, isset($v['key']) ? $v['key'] : $k, [], $ii);
+        $s .= field($k, $v, $v['key'] ?? $k, [], $ii);
         ++$ii;
     }
     foreach (\Anemon::eat($hidden)->sort([1, 'stack'], true) as $k => $v) {
-        $s .= field($k, $v, isset($v['key']) ? $v['key'] : $k, [], $ii);
+        $s .= field($k, $v, $v['key'] ?? $k, [], $ii);
         ++$ii;
     }
     return $s;
@@ -697,7 +699,7 @@ function nav_a($in, $id = 0, $attr = [], $i = 0) {
     }
     if (isset($in['+'])) {
         $arrow = svg('arrow');
-        $in['icon'] = \extend(isset($in['icon']) ? $in['icon'] : [], [
+        $in['icon'] = \extend($in['icon'] ?? [], [
             1 => '<svg class="icon arrow right" viewBox="0 0 24 24"><path d="' . ($i > 0 ? $arrow[$config->direction === 'ltr' ? 'r' : 'l'] : $arrow['b']) . '"></path></svg>'
         ]);
     }
@@ -835,7 +837,8 @@ function search($in, $id = 0, $attr = [], $i = 0) {
         return $in;
     }
     global $language;
-    $s = \Form::text(isset($in['q']) ? $in['q'] : 'q', \HTTP::get('q', null, false), isset($in['title']) ? \To::text($in['title']) : null, ['class[]' => ['input']]);
+    $q = $in['q'] ?? 'q';
+    $s = \Form::text($q, \HTTP::get($q, null, false), isset($in['title']) ? \To::text($in['title']) : null, ['class[]' => ['input']]);
     $s .= ' ' . \Form::submit(null, null, $language->search, ['class[]' => ['button']]);
     $s = '<p class="field expand"><span>' . $s . '</span></p>';
     _attr($in, $attr, 'form', $id, $i, [
@@ -876,13 +879,13 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
                 $in['files'] = LOT . DS . implode(DS, $chops);
             }
         }
-        $s .= call_user_func(__NAMESPACE__ . '\\' . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
+        $s .= call_user_func(__NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
     }
     _attr($in, $attr, 'tab', $id, $i, [
-        'title' => isset($in['title']) ? $in['title'] : $language->{$id},
+        'title' => $in['title'] ?? $language->{$id},
         'data[]' => [
             'href' => a_href($in) ?: null,
-            'icon' => isset($in['icon'][0]) ? $in['icon'][0] : null
+            'icon' => $in['icon'][0] ?? null
         ]
     ]);
     if ($active) {
@@ -948,13 +951,6 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
             \Config::set('panel.$.menus.' . $hash, $v['menus']);
             $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
         } else {
-            if (array_key_exists('menus', $v)) {
-                if (isset($v['kind'])) {
-                    $v['kind'][] = 'disabled';
-                } else {
-                    $v['kind'] = ['disabled'];
-                }
-            }
             $a[] = button($v, $k, [], $i);
         }
     }

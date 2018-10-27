@@ -39,25 +39,25 @@
 .messages {
   margin:0;
   padding:0;
-  position:absolute;
-  top:0;
-  right:(@x * 2);
-  left:auto;
+  position:fixed;
+  right:(@x * .5);
+  bottom:(@y * .5);
+  font-size:(@z - @sizer);
   z-index:9999;
-  .message {
-    .icon {
-      &.right {margin-left:(@x * .25)}
-      &.left {margin-right:(@x * .25)}
-    }
-  }
 }
-
 .message {
-  color:#ff7;
-  padding:(@y * .5) 0;
-  &-error {color:#fba}
-  &-info {color:#afb}
-  &-success {color:#bf7}
+  background:#666;
+  color:@color_inverse;
+  padding:(@y * .25) (@x * .5) (@y * .25) (@x * .25);
+  .box-shadow(0 10px 10px -5px rgba(0,0,0,.5));
+  .icon {
+    &.right {margin-left:(@x * .25)}
+    &.left {margin-right:(@x * .25)}
+  }
+  &-error {background:#c14}
+  &-info {background:#78a}
+  &-success {background:#690}
+  + .message {margin-top:(@y * .5)}
 }
 
 // @layer
