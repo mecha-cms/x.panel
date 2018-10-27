@@ -1,18 +1,57 @@
 <?php namespace fn\task;
 
-function empty_trash() {
+// `empty trash`
+function _bf28477() {
     \File::open(LOT . DS . 'trash')->delete();
-    return ['kick' => \Extend::state('panel', 'path') . '/::g::/page/1'];
+    \fn\panel\message('success', 'The trash folder has been cleaned successfully.');
+    $state = \Extend::state('panel');
+    return ['kick' => $state['path'] . '/::g::/' . $state['$'] . '/1'];
 }
 
-function set_config($a, $b) {}
-
-function rename($a, $b) {
-    \File::open($a)->renameTo($b);
+// `set language`
+function _c528a68c($file) {
+    $f = STATE . DS . 'config.php';
+    $config = \File::open($f)->import();
+    $config['language'] = \Path::N($file);
+    \File::export($config)->saveTo($f, 0600);
+    $page = new \Page($file);
+    \fn\panel\message('success', 'The interface language has been successfully set to ' . $page->title . '.');
+    return ['kick' => \Extend::state('panel', 'path') . '/::g::/language/1'];
 }
 
-function rename_extend($a, $b) {
-    rename($a, $b);
-    \Session::set('panel.file.active', dirname($a) . DS . 'about.page');
-    return ['kick' => \Extend::state('panel', 'path') . '/::g::/extend/1'];
+// `rename`
+function _d99d544e($from, $to) {
+    \File::open($from)->renameTo($to);
+}
+
+// `rename then kick`
+function _32a5a0db($from, $to, $id) {
+    _d99d544e($from, $to);
+    \Session::set('panel.file.active', dirname($from) . DS . 'about.page');
+    return ['kick' => \Extend::state('panel', 'path') . '/::g::/' . $id . '/1'];
+}
+
+// `activate/deactivate extension`
+function _2eca1f34($from, $to) {
+    $page = new \Page(dirname($from) . DS . 'about.page');
+    \fn\panel\message('success', 'Extension ' . $page->title . ' has been ' . (\Path::X($from) === 'x' ? 'activated' : 'deactivated') . '.');
+    return _32a5a0db($from, $to, 'extend');
+}
+
+// `activate/deactivate plugin`
+function _787b240a($from, $to) {
+    $page = new \Page(dirname($from) . DS . 'about.page');
+    \fn\panel\message('success', 'Plugin ' . $page->title . ' has been ' . (\Path::X($from) === 'x' ? 'activated' : 'deactivated') . '.');
+    return _32a5a0db($from, $to, 'extend/plugin/lot/worker');
+}
+
+// `activate/deactivate shield`
+function _8f86d176($file) {
+    $f = STATE . DS . 'config.php';
+    $config = \File::open($f)->import();
+    $config['shield'] = basename(dirname($file));
+    \File::export($config)->saveTo($f, 0600);
+    $page = new \Page($file);
+    \fn\panel\message('success', 'Current theme has been successfully set to ' . $page->title . '.');
+    return ['kick' => \Extend::state('panel', 'path') . '/::g::/shield/1'];
 }
