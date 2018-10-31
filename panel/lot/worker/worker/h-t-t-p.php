@@ -49,7 +49,7 @@ if ($c !== 'r') {
     }
     // Move to trash
     if ($a === -2) {
-        File::open($file)->moveTo(str_replace(LOT . DS, $trash = LOT . DS . 'trash' . DS . $_date . DS, $is_file ? dirname($file) : $file));
+        File::open($file)->moveTo(str_replace(LOT . DS, $trash = LOT . DS . 'trash' . DS . $_date . DS, dirname($file)));
         Session::set('panel.file.active', rtrim($trash, DS));
         fn\panel\message('success', 'Moved to <a>trash</a>.');
     // Restore

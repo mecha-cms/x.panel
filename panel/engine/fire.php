@@ -2,100 +2,107 @@
 
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
-    Hook::set('on.ready', function() use($config, $language, $url) {
+    Hook::set('on.ready', function() {
 
-        $a = explode('/', $url->path);
-        array_shift($a); // remove namespace
-        array_shift($a); // remove command
+        extract(Lot::get(null, []));
 
-        $path = implode('/', $a);
+        $is_item = has(['file', 'page', 'data'], $panel->v);
 
+        $c = $panel->c;
+        $path = trim($panel->id . '/' . $panel->path, '/');
         $folders = glob(LOT . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT);
 
         sort($folders);
 
         $icons = fn\panel\svg();
 
-        $i = 0;
-        $links = [];
-        foreach ($folders as $v) {
-            $n = basename($v);
-            $links[$n] = [
-                'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
-                'active' => strpos($path . '/', $n . '/') === 0,
-                'path' => $n,
-                'stack' => 10 + $i
-            ];
-            $i += .1;
+        if (!$is_item) {
+            $i = 0;
+            $links = [];
+            foreach ($folders as $v) {
+                $n = basename($v);
+                $links[$n] = [
+                    'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
+                    'active' => strpos($path . '/', $n . '/') === 0,
+                    'path' => $n,
+                    'stack' => 10 + $i
+                ];
+                $i += .1;
+            }
         }
 
         Config::set('panel.nav.lot', [
             'title' => false,
-            'icon' => [['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z']],
-            '+' => $links,
+            'icon' => [[$is_item ? 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' : 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z']],
+            'path' => $is_item ? ($c === 's' ? $path : dirname($path)) . '/1' : null,
+            '+' => $is_item ? null : $links,
             'stack' => 10
         ]);
 
-        $i = 0;
-        $links = [];
-        foreach (glob(EXTEND . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
-            $directory = Path::F(dirname($v), LOT, '/');
-            $n = basename($directory);
-            $f = dirname($v);
-            $f = File::exist([
-                $f . DS . 'about.page',
-                $f . DS . 'about.' . $config->language . '.page'
-            ]);
-            $title = Page::open($f)->get('title', $n);
-            $links[$title] = [
-                'title' => $title,
-                'icon' => [""],
-                'active' => strpos($path . '/', $directory . '/') === 0,
-                'path' => $directory . '/1'
-            ];
-        }
-        ksort($links);
-        $links_a = [];
-        foreach ($links as $v) {
-            $v['stack'] = 10 + $i;
-            $links_a[basename(dirname($v['path']))] = $v;
-            $i += .1;
-        }
+        if (!$is_item) {
 
-        Config::set('panel.nav.lot.+.extend.+', $links_a);
+            $i = 0;
+            $links = [];
+            foreach (glob(EXTEND . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
+                $directory = Path::F(dirname($v), LOT, '/');
+                $n = basename($directory);
+                $f = dirname($v);
+                $f = File::exist([
+                    $f . DS . 'about.page',
+                    $f . DS . 'about.' . $config->language . '.page'
+                ]);
+                $title = Page::open($f)->get('title', $n);
+                $links[$title] = [
+                    'title' => $title,
+                    'icon' => [""],
+                    'active' => strpos($path . '/', $directory . '/') === 0,
+                    'path' => $directory . '/1'
+                ];
+            }
+            ksort($links);
+            $links_a = [];
+            foreach ($links as $v) {
+                $v['stack'] = 10 + $i;
+                $links_a[basename(dirname($v['path']))] = $v;
+                $i += .1;
+            }
 
-        $i = 0;
-        $links = [];
-        foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
-            $dir = Path::F(dirname($v), LOT, '/');
-            $f = dirname($v);
-            $f = File::exist([
-                $f . DS . 'about.page',
-                $f . DS . 'about.' . $config->language . '.page'
-            ]);
-            $title = Page::open($f)->get('title', Path::N($dir));
-            $links[$title] = [
-                'title' => $title,
-                'icon' => [""],
-                'active' => strpos($path . '/', $dir . '/') === 0,
-                'path' => $dir . '/1'
-            ];
-        }
-        ksort($links);
-        $links_a = [];
-        foreach ($links as $v) {
-            $v['stack'] = 10 + $i;
-            $links_a[basename(dirname($v['path']))] = $v;
-            $i += .1;
-        }
+            Config::set('panel.nav.lot.+.extend.+', $links_a);
 
-        Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
+            $i = 0;
+            $links = [];
+            foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
+                $dir = Path::F(dirname($v), LOT, '/');
+                $f = dirname($v);
+                $f = File::exist([
+                    $f . DS . 'about.page',
+                    $f . DS . 'about.' . $config->language . '.page'
+                ]);
+                $title = Page::open($f)->get('title', Path::N($dir));
+                $links[$title] = [
+                    'title' => $title,
+                    'icon' => [""],
+                    'active' => strpos($path . '/', $dir . '/') === 0,
+                    'path' => $dir . '/1'
+                ];
+            }
+            ksort($links);
+            $links_a = [];
+            foreach ($links as $v) {
+                $v['stack'] = 10 + $i;
+                $links_a[basename(dirname($v['path']))] = $v;
+                $i += .1;
+            }
+
+            Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
+
+        }
 
         Config::set('panel.nav.search', [
             'content' => fn\panel\nav_li_search([
-                'title' => $language->{$a[0]},
+                'title' => $language->{$panel->id},
                 'path' => $path . '/1'
-            ], $a[0]),
+            ], $panel->id),
             'stack' => 10.1
         ]);
 

@@ -1,5 +1,15 @@
 // Extensions
 
+a,
+.button,
+.input,
+.select,
+.textarea {
+  &.x {
+    .disabled;
+  }
+}
+
 // @icon
 .icon {
   display:inline-block;
@@ -683,7 +693,6 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   > figure {
     width:(@x * 2);
     height:(@y * 2);
-    background:darken(@color_inverse, 5%);
     .left;
     img {
       display:block;

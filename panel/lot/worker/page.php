@@ -8,7 +8,12 @@ if (HTTP::get('view') === 'file') {
     return;
 }
 
-$page = new Page(LOT . DS . $id . DS . $panel->path, extend([
+$f = LOT . DS . $id . DS . $panel->path;
+if ($c === 's' && is_file($f)) {
+    Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
+}
+
+$page = new Page(is_file($f) ? $f : null, extend([
     'author' => null,
     'content' => null,
     'description' => null,
@@ -17,10 +22,6 @@ $page = new Page(LOT . DS . $id . DS . $panel->path, extend([
     'title' => null,
     'type' => null
 ], (array) Config::get($id, [], true)), false);
-
-if ($c === 's') {
-    $page->slug = null;
-}
 
 // Remove folder and blob tab(s)
 Config::reset('panel.desk.body.tabs.folder');
@@ -77,8 +78,37 @@ Config::set('panel.desk.body.tabs.file', [
             'value' => '0600'
         ]
     ],
-    'stack' => 10 // why?!
+    'stack' => 10 // WHY?!
 ]);
+
+// Add setting(s) tab for page with children
+if ($c === 'g' && glob(Path::F($page->path) . DS . '*.{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT)) {
+    Config::set('panel.desk.body.tabs.config', [
+        'title' => $language->settings,
+        'fields' => [
+            'page[sort][0]' => [
+                'key' => 'order',
+                'title' => $language->sort[0],
+                'type' => 'radio[]',
+                'value' => $page->sort[0],
+                'values' => [
+                    '-1' => 'Z &#x2192; A',
+                    '1' => 'A &#x2192; Z'
+                ],
+                'stack' => 10
+            ],
+            'page[sort][1]' => [
+                'key' => 'by',
+                'title' => $language->sort[1],
+                'type' => 'text',
+                'value' => $page->sort[1],
+                'placeholder' => $page->sort[1] ?: 'time',
+                'stack' => 10.1
+            ]
+        ],
+        'stack' => 10.05
+    ]);
+}
 
 // Add custom field(s) tab
 Config::set('panel.desk.body.tabs.data', [
@@ -229,6 +259,7 @@ foreach ($buttons as $k => $v) {
     $buttons[$k] = [
         'title' => $language->{$v},
         'name' => 'x',
+        'type' => 'submit',
         'value' => $k,
         'stack' => 10 + $i
     ];
@@ -239,6 +270,7 @@ if ($c === 'g') {
     $buttons['-'] = [
         'title' => $language->delete,
         'name' => 'a',
+        'type' => 'submit',
         'value' => -2,
         'stack' => 10 + $i
     ];

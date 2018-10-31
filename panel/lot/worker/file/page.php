@@ -1,5 +1,5 @@
 <?php
 
-$panel->view = $panel->v = Path::X($url->path, 'page');
-
+// Force `view` value to `page`
+$panel->view = $panel->v = HTTP::get('view', 'page');
 require __DIR__ . DS . '..' . DS . 'page.php';

@@ -4,5 +4,9 @@ type: YAML
 
 message_info_search: Search results for <em>%{0}%</em>
 
+sort:
+  - Sort
+  - By
+
 o_page_types:
   HTML: HTML

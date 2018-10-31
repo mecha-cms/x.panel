@@ -21,7 +21,7 @@ if ($panel->c === 's') {
 }
 
 ?>
-<?php if ($v = strpos(',data,file,page,', ',' . $panel->v . ',') !== false): ?>
+<?php if ($v = has(['file', 'page', 'data'], $panel->v)): ?>
 <form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>

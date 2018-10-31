@@ -9,6 +9,9 @@ function _attr($in, &$attr, $p, $id, $i, $alt = []) {
     if (!empty($in['kind'])) {
         $attr['class[]'] = \concat($attr['class[]'], (array) $in['kind']);
     }
+    if (!empty($in['x'])) {
+        $attr['class[]'][] = 'x';
+    }
 }
 
 function _clean($in) {
@@ -203,6 +206,8 @@ function a($in, $id = 0, $attr = [], $i = 0) {
 function a_href($in) {
     if (is_string($in)) {
         return $in;
+    } else if (!empty($in['x'])) {
+        return 'javascript:;';
     }
     // `[link[path[url]]]`
     $u = "";
@@ -242,18 +247,15 @@ function a_href($in) {
 function button($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
+    } else if (!empty($in['x'])) {
+        $attr['disabled'] = true;
     }
     _attr($in, $attr, 'button', $id, $i);
-    if (isset($in['description'])) {
-        $attr['title'] = \To::text($in['description']);
-    }
+    isset($in['description']) && $attr['title'] = \To::text($in['description']);
     if ($is_button = !isset($in['link']) && !isset($in['path']) && !isset($in['url'])) {
-        if (isset($in['name'])) {
-            $attr['name'] = $in['name'];
-        }
-        if (isset($in['value'])) {
-            $attr['value'] = $in['value'];
-        }
+        isset($in['name']) && $attr['name'] = $in['name'];
+        isset($in['type']) && $attr['type'] = $in['type'];
+        isset($in['value']) && $attr['value'] = $in['value'];
     } else {
         $attr['href'] = a_href($in);
     }
@@ -447,6 +449,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
     $style = [];
     $title = $in['title'] ?? $language->{$in['key'] ?? $key};
     $description = isset($in['description']) ? trim($in['description']) : null;
+    $active = $in['active'] ?? false;
     $type = $in['type'] ?? 'textarea';
     $value = $in['value'] ?? null;
     $values = (array) ($in['values'] ?? []);
@@ -488,9 +491,23 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
     } else if ($type === 'select') {
         $attr_alt['class[]'][] = 'select';
         $s .= \Form::select($key, $values, $value, $attr_alt);
+    } else if ($type === 'radio[]') {
+        $attr_alt['class[]'][] = 'input';
+        $s .= '<span class="inputs block">';
+        $s .= \Form::radio($key, $values, $value, $attr_alt);
+        $s .= '</span>';
     } else if ($type === 'toggle[]') {
         $attr_alt['class[]'][] = 'input';
         $s .= '<span class="inputs block">';
+        foreach ($values as $k => $v) {
+            // $v = [$text, $checked ?? false, $value ?? 1]
+            $v = (array) $v;
+            $s .= \Form::check($key . '[' . $k . ']', $v[2] ?? 1, !empty($v[1]), $v[0], $attr_alt);
+        }
+        $s .= '</span>';
+    } else if ($type === 'toggle') {
+        $attr_alt['class[]'][] = 'input';
+        $s .= \Form::check($key, $value, $active, $description, $attr_alt);
         foreach ($values as $k => $v) {
             // $v = [$text, $checked ?? false, $value ?? 1]
             $v = (array) $v;
@@ -951,6 +968,9 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
             \Config::set('panel.$.menus.' . $hash, $v['menus']);
             $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
         } else {
+            if (array_key_exists('menus', $v)) {
+                $v['x'] = true;
+            }
             $a[] = button($v, $k, [], $i);
         }
     }

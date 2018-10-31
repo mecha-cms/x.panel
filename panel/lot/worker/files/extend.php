@@ -25,6 +25,7 @@ if ($panel->chops) {
         }
     }, 1);
 } else {
+    // Force `view` value to `page`
     $panel->v = ($panel->view = 'page') . 's';
-    require __DIR__ . DS . '..' . DS . $panel->v . DS . basename(__FILE__);
+    require __DIR__ . DS . '..' . DS . $panel->v . DS . 'extend.php';
 }
