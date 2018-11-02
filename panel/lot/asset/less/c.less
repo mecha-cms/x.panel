@@ -123,12 +123,18 @@ html.form body form {
         ul {right:100%}
       }
     }
-    &.li\:lot {
+    &.nav-li\:lot {
       .color-html;
       a {
         .color-a;
       }
-    }
+      &.active > a {
+        position:relative;
+        z-index:9999; /* must be greater than `.nav > ul > li > ul` */
+        background:inherit;
+        color:inherit;
+      }
+    } 
   }
   a {
     display:block;
@@ -156,6 +162,7 @@ html.form body form {
       border:0;
     }
   }
+  > ul > li.active > a {color:darken(@color_inverse, 2%)}
 }
 html:not(.js) .nav li:hover > ul,
 html:not(.js) .nav li:focus-within > ul {display:block}
@@ -167,13 +174,15 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   .nav {
     > ul > li {
       display:none;
-      &.li\:lot,
-      &.li\:search {display:block}
-      &.li\:search {
+      &.nav-li\:lot,
+      &.nav-li\:search,
+      &.nav-li\:message {display:block}
+      &.nav-li\:search {
         position:absolute;
         top:0;
-        right:0;
+        right:(@x * 2);
         left:(@x * 2);
+        .input {width:100%}
       }
     }
     ul ul ul {left:25%}
