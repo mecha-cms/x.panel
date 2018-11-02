@@ -1,12 +1,17 @@
 <?php
 
+if (HTTP::get('window')) {
+    Set::get('header', 0);
+    Set::get('nav', 0);
+}
+
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
     Hook::set('on.ready', function() {
 
         extract(Lot::get(null, []));
 
-        $is_item = has(['file', 'page', 'data'], $panel->v);
+        $item_view = has(['file', 'page', 'data'], $panel->v);
 
         $c = $panel->c;
         $path = trim($panel->id . '/' . $panel->path, '/');
@@ -16,11 +21,14 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         $icons = fn\panel\svg();
 
-        if (!$is_item) {
+        if (!$item_view) {
             $i = 0;
             $links = [];
             foreach ($folders as $v) {
                 $n = basename($v);
+                if (strpos('._', $n[0]) !== false) {
+                    continue;
+                }
                 $links[$n] = [
                     'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
                     'active' => strpos($path . '/', $n . '/') === 0,
@@ -33,19 +41,23 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         Config::set('panel.nav.lot', [
             'title' => false,
-            'icon' => [[$is_item ? 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' : 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z']],
-            'path' => $is_item ? ($c === 's' ? $path : dirname($path)) . '/1' : null,
-            '+' => $is_item ? null : $links,
+            'description' => $language->{$item_view ? 'back' : 'folders'},
+            'icon' => [[$item_view ? 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' : 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z']],
+            'path' => $item_view ? ($c === 's' ? $path : dirname($path)) . '/1' : null,
+            '+' => $item_view ? null : $links,
             'stack' => 10
         ]);
 
-        if (!$is_item) {
+        if (!$item_view) {
 
             $i = 0;
             $links = [];
             foreach (glob(EXTEND . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
                 $directory = Path::F(dirname($v), LOT, '/');
                 $n = basename($directory);
+                if (strpos('._', $n[0]) !== false) {
+                    continue;
+                }
                 $f = dirname($v);
                 $f = File::exist([
                     $f . DS . 'about.page',
@@ -72,18 +84,22 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             $i = 0;
             $links = [];
             foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
-                $dir = Path::F(dirname($v), LOT, '/');
+                $directory = Path::F(dirname($v), LOT, '/');
+                $n = basename($directory);
+                if (strpos('._', $n[0]) !== false) {
+                    continue;
+                }
                 $f = dirname($v);
                 $f = File::exist([
                     $f . DS . 'about.page',
                     $f . DS . 'about.' . $config->language . '.page'
                 ]);
-                $title = Page::open($f)->get('title', Path::N($dir));
+                $title = Page::open($f)->get('title', Path::N($directory));
                 $links[$title] = [
                     'title' => $title,
                     'icon' => [""],
-                    'active' => strpos($path . '/', $dir . '/') === 0,
-                    'path' => $dir . '/1'
+                    'active' => strpos($path . '/', $directory . '/') === 0,
+                    'path' => $directory . '/1'
                 ];
             }
             ksort($links);
@@ -95,6 +111,18 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             }
 
             Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
+
+        } else if ($panel->c === 'g') {
+
+            Config::set('panel.nav.s', [
+                'title' => false,
+                'description' => $language->new . ': ' . $language->{$panel->view},
+                'icon' => [['M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z']],
+                'path' => dirname($path),
+                'c' => 's',
+                'query' => e($_GET),
+                'stack' => 10.1
+            ]);
 
         }
 

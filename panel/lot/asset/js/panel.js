@@ -390,37 +390,25 @@ if ($menus.length) {
 }
 
 
-var $handlers = $('a[href*="#js:"]');
+// <https://stackoverflow.com/a/18639999/1163000>
+var crc32=function(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];return(-1^n)>>>0};
 
-if ($handlers.length) {
-    $handlers.on("click", function(e) {
-        var js = this.hash.replace(/^#?js:/, "");
-        win[js] && win[js](e, this, $);
-        return false;
-    });
-}
-
-win['file+'] = function() {
-  
-};
-win['file-'] = function() {
-  
-};
-win['file='] = function() {
-  
-};
-win['file|'] = function() {
-  
+// <https://stackoverflow.com/a/16861050/1163000>
+win._c170e1f9 = function(url, name, width, height) { // `window.open`
+    width = width || screen.width * .8;
+    height = height || screen.height * .8;
+    var dualScreenLeft = 'screenLeft' in win ? win.screenLeft : win.screenX,
+        dualScreenTop = 'screenTop' in win ? win.screenTop : win.screenY,
+        w = win.innerWidth || html.clientWidth || screen.width,
+        h = win.innerHeight || html.clientHeight || screen.height,
+        left = ((w / 2) - (width / 2)) + dualScreenLeft,
+        top = ((h / 2) - (height / 2)) + dualScreenTop,
+        newWindow = win.open(url, name, 'menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
+    win.focus && newWindow.focus();
+    return newWindow;
 };
 
 
-/*
-$('.file .tools use[href="#i:check"]').closest('a').on("click", function() {
-    var checked = $(this).find('use').attr('href') === '#i:checked';
-    $(this).find('use').attr('href', checked ? '#i:check' : '#i:checked');
-    return false;
-});
-*/
 
 $.fn.fire = $.fn.trigger;
 
