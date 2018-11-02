@@ -1,10 +1,12 @@
 <?php
 
-if (!$page = HTTP::post('page', [], false)) {
+$page = HTTP::post('page', [], false);
+
+if ($c !== 'r' && !$page) {
     return;
 }
 
-if ($c === 'g' && $a < 0) {
+if ($c === 'r' && $a < 0) {
     // Delete folder
     $d = Path::F($file);
     if ($a === -2) {

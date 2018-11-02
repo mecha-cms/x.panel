@@ -5,7 +5,7 @@ $r = $panel->r;
 $a = HTTP::post('a', HTTP::get('a'));
 $id = $panel->id;
 $tab = HTTP::get('tab');
-$gate_alt = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . HTTP::post('view', HTTP::get('view', X)) . '.php');
+$gate_alt = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . HTTP::post('view', HTTP::get('view', $panel->view)) . '.php');
 
 $path = strtr(rtrim($id . '/' . $panel->path, '/'), '/', DS);
 $directory = trim(strtr(HTTP::post('directory', ""), '/', DS), DS);
@@ -21,6 +21,9 @@ $is_file = is_file($file = LOT . DS . $path);
 
 if ($c !== 'r') {
     if ($c === 'a' && HTTP::is('get')) {
+        if ($gate_alt) {
+            require $gate_alt;
+        }
         // Run task
         if (function_exists($task = "fn\\task\\_" . $a)) {
             $lot = (array) HTTP::get('lot', []);

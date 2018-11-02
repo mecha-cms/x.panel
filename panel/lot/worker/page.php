@@ -237,7 +237,7 @@ Hook::set('on.ready', function() use($c, $language, $page, $token, $url) {
             'url' => str_replace('::g::', '::s::', Path::F($url->path)),
             'query' => $query['query'],
             'kind' => ['button', 'text']
-        ]) . '</p>');
+        ], 'a-data') . '</p>');
     }
 }, 1);
 
@@ -267,7 +267,7 @@ foreach ($buttons as $k => $v) {
 }
 
 if ($c === 'g') {
-    $buttons['-'] = [
+    $buttons['trash'] = [
         'title' => $language->delete,
         'name' => 'a',
         'type' => 'submit',

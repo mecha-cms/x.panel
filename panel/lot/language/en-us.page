@@ -2,6 +2,8 @@
 type: YAML
 ...
 
+back: Back
+
 message_info_search: Search results for <em>%{0}%</em>
 
 sort:

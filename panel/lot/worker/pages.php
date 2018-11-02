@@ -11,10 +11,12 @@ Config::set('panel.desk.header.tools', [
         ]
     ],
     '+' => [
-        'menus' => [
+        '+' => [
             'blob' => [
                 'query' => ['view' => 'file']
             ]
         ]
     ]
 ]);
+
+Config::set('panel.$.page.tools.r.query.view', 'page');

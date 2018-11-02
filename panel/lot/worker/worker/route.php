@@ -47,7 +47,7 @@ Hook::set('on.ready', function() {
             $error = true;
         }
         HTTP::status($error ? 404 : 200);
-        foreach (['footer', 'header'] as $v) {
+        foreach (['body', 'footer', 'header'] as $v) {
             if (HTTP::is('get', $v) && !HTTP::get($v)) {
                 Config::reset('panel.desk.' . $v);
             }
@@ -56,10 +56,10 @@ Hook::set('on.ready', function() {
             Config::reset('panel.nav');
             $nav = "";
         } else {
-            $nav = fn\panel\nav(fn\panel\_config([], 'nav'), $id);
+            $nav = fn\panel\nav((array) Config::get('panel.nav', [], true), $id);
         }
         Lot::set([
-            'desk' => fn\panel\desk(fn\panel\_config([], 'desk'), $id),
+            'desk' => fn\panel\desk((array) Config::get('panel.desk', [], true), $id),
             'error' => $error,
             'nav' => $nav
         ]);

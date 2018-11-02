@@ -18,3 +18,21 @@ Config::set('panel.desk.body.tabs.file.fields', [
         'stack' => 0
     ]
 ]);
+
+// Modify back menu destination
+if ($x = HTTP::get('x')) {
+    Hook::set('on.ready', function() use($panel, $x) {
+        $path = rtrim($panel->id . '/' . $panel->path, '/') . '.' . $x;
+        if (file_exists(LOT . DS . $path)) {
+            Config::set('panel.nav.lot', [
+                'c' => 'g',
+                'path' => $path,
+                'query' => [
+                    'tab' => ['data'],
+                    'view' => false,
+                    'x' => false
+                ]
+            ]);
+        }
+    });
+}

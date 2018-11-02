@@ -21,7 +21,6 @@ Config::set('panel.desk', [
         'tools' => [
             'file' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => $path,
                 'c' => 's',
                 'stack' => 10,
                 'query' => [
@@ -33,7 +32,6 @@ Config::set('panel.desk', [
             ],
             'folder' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => $path,
                 'c' => 's',
                 'query' => [
                     'q' => false,
@@ -44,13 +42,13 @@ Config::set('panel.desk', [
             ],
             '+' => [
                 'title' => false,
+                'type' => 'button',
                 'icon' => [['M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z']],
                 'kind' => ['text'],
-                'menus' => [
+                '+' => [
                     'blob' => [
                         'title' => $language->upload,
                         'icon' => [['M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z']],
-                        'path' => $path,
                         'c' => 's',
                         'query' => [
                             'q' => false,
@@ -63,7 +61,6 @@ Config::set('panel.desk', [
                         'title' => $language->delete,
                         'description' => 'Delete this folder with its contents.',
                         'icon' => [['M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z']],
-                        'path' => $path,
                         'c' => 'r',
                         'query' => [
                             'a' => -2,
@@ -82,7 +79,7 @@ Config::set('panel.desk', [
         'tabs' => [
             'file' => [
                 'title' => $language->files,
-                'files' => true,
+                'files' => $panel->file ?: $panel->folder,
                 'stack' => 10
             ]
         ]

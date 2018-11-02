@@ -5,19 +5,25 @@ $p = $state['path'];
 
 $chops = explode('/', $url->path);
 $r = array_shift($chops);
+$c = str_replace('::', "", array_shift($chops));
+$id = array_shift($chops);
+$path = implode('/', $chops);
 
 if ($r === $p) {
 
     $worker = __DIR__ . DS . 'lot' . DS . 'worker' . DS;
-    Lot::set('panel', $panel = new State([
-        'c' => ($c = str_replace('::', "", array_shift($chops))), // command
-        'id' => ($id = array_shift($chops)),
+    $f = rtrim(LOT . DS . $id . DS . strtr($path, '/', DS), DS);
+    Lot::set('panel', $GLOBALS['Panel'] = $panel = new State([
+        'c' => $c, // Command
+        'id' => $id, // Current folder
         'chops' => $chops,
-        'path' => implode('/', $chops),
-        'state' => $state,
+        'path' => $path,
+        'file' => is_file($f) ? $f : null,
+        'folder' => is_dir($f) ? $f : null,
+        'state' => \o($state),
         'view' => ($view = basename(HTTP::get('view', 'file', false))),
         'r' => $r, // root
-        'v' => $view . (!$chops && $c === 'g' || $url->i !== null ? 's' : "") // plural or singular?
+        'v' => $view . (!$chops && $c === 'g' || $url->i !== null ? 's' : "") // Plural or singular?
     ]));
 
     require __DIR__ . DS . 'engine' . DS . 'ignite.php';
