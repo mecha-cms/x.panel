@@ -48,11 +48,10 @@
 .message {
   background:#666;
   color:@color_inverse;
-  padding:(@y * .25) (@x * .5) (@y * .25) (@x * .25);
+  padding:(@y * .25) (@x * .5);
   .box-shadow(0 10px 10px -5px rgba(0,0,0,.5));
   .icon {
-    &.right {margin-left:(@x * .25)}
-    &.left {margin-right:(@x * .25)}
+    .margin-icon;
   }
   &-error {background:#c14}
   &-info {background:#78a}

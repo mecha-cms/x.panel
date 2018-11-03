@@ -3,7 +3,7 @@
 function _init($in, &$attr, $key, $id, $i, $alt = []) {
     if (!array_key_exists('path', $in)) {
         $panel = $GLOBALS['Panel'];
-        $in['path'] = $panel->path;
+        $in['path'] = trim($panel->id . '/' . $panel->path, '/');
     }
     if (!array_key_exists('title', $in)) {
         global $language;
@@ -380,10 +380,11 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
             $out .= \Form::check($key, $value, $active, $description, $alt);
         } else if (\has(['editor', 'source', 'textarea'], $type)) {
             $alt['class[]'][] = 'textarea';
-            if ($type === 'source') {
+            if ($type === 'editor' || $type === 'source') {
                 $alt['class[]'][] = 'code';
-            } else if ($type === 'editor') {
-                $alt['class[]'][] = 'editor';
+                if ($type === 'editor') {
+                    $alt['class[]'][] = 'editor';
+                }
             }
             $out .= \Form::textarea($key, $value, $placeholder, $alt);
         } else if (\has(['color', 'date', 'email', 'number', 'pass', 'search', 'tel', 'text', 'url'], $type)) {
@@ -498,6 +499,7 @@ function icon($in, $attr = []) {
         }
         return $in['content'];
     }
+    
     // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
     if (count($in) === 1) {
         // `icon([""])`

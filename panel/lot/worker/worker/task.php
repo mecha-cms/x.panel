@@ -55,3 +55,11 @@ function _8f86d176($file) {
     \fn\panel\message('success', 'Current theme has been successfully set to ' . $page->title . '.');
     return ['kick' => \Extend::state('panel', 'path') . '/::g::/shield/1'];
 }
+
+// `user exit`
+function _950abfd9($file) {
+    \File::open(\Path::F($file) . DS . 'token.data')->delete();
+    $state = \Extend::state('user');
+    \Message::success('user_exit');
+    return ['kick' => $state['_path'] ?? $state['path']];
+}

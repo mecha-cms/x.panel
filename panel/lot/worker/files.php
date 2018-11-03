@@ -14,7 +14,7 @@
 
 // `panel.$.file.tools`
 
-$path = rtrim($panel->id . '/' . $panel->path, '/');
+$path = trim($panel->id . '/' . $panel->path, '/');
 
 Config::set('panel.desk', [
     'header' => [
