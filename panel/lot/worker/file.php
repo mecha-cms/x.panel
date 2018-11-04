@@ -39,7 +39,7 @@ Config::set('panel.desk', [
                 ],
                 'stack' => 10
             ],
-            'folder' => $is_file || $c === 's' ? [
+            'folder' => [
                 'fields' => [
                     'directory' => [
                         'title' => $language->path,
@@ -52,7 +52,7 @@ Config::set('panel.desk', [
                     ]
                 ],
                 'stack' => 10.1
-            ] : null,
+            ],
             'blob' => !$is_file ? [
                 'title' => $language->upload,
                 'fields' => [

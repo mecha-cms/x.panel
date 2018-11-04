@@ -1,4 +1,4 @@
-<?php namespace fn\task;
+<?php
 
 // `empty trash`
 function _bf28477() {
@@ -62,4 +62,12 @@ function _950abfd9($file) {
     $state = \Extend::state('user');
     \Message::success('user_exit');
     return ['kick' => $state['_path'] ?? $state['path']];
+}
+
+// ajax count files
+function _fea4a865($file, $x = '*') {
+    $count = count(glob($file . DS . '*.' . $x, GLOB_NOSORT));
+    HTTP::type('text/plain')->header('Cache-Control', 'no-cache');
+    echo $count ? $count : "";
+    exit;
 }

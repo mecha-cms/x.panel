@@ -1,5 +1,4 @@
 <?php
 
 // Force `view` value to `page`
-$panel->view = $panel->v = 'page';
-require __DIR__ . DS . '..' . DS . 'page.php';
+require __DIR__ . DS . '..' . DS . ($panel->v = $panel->view = 'page') . DS . 'page.php';

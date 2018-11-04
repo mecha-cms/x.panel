@@ -2,7 +2,7 @@
 
 function _init($in, &$attr, $key, $id, $i, $alt = []) {
     if (!array_key_exists('path', $in)) {
-        $panel = $GLOBALS['Panel'];
+        global $panel;
         $in['path'] = trim($panel->id . '/' . $panel->path, '/');
     }
     if (!array_key_exists('title', $in)) {
@@ -18,6 +18,9 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     }
     if (!empty($in['x'])) {
         $attr['class[]'][] = 'x';
+    }
+    if (array_key_exists('i', $in)) {
+        $attr['data[]']['i'] = $in['i'];
     }
     return $in;
 }
@@ -173,6 +176,16 @@ function a($in, $id = 0, $attr = [], $i = 0) {
         'target' => $in['target'] ?? null,
         'title' => isset($in['description']) ? \To::text($in['description']) : null
     ]);
+    if (!array_key_exists('active', $in)) {
+        global $panel, $url;
+        $p = $in['url'] ?? trim($panel->r . '/::' . ($in['c'] ?? $panel->c) . '::/' . ($in['path'] ?? $panel->id . '/' . $panel->path), '/');
+        if (strpos($url->path . '/1/', $p . '/') === 0) {
+            $in['active'] = true;
+        }
+    }
+    if (!empty($in['active'])) {
+        $attr['class[]'] = \concat($attr['class[]'] ?? [], ['active']);
+    }
     $out = $in['content'] ?? text($in['title'] ?? "", $in['icon'] ?? []);
     return \HTML::unite('a', $out, $attr);
 }
@@ -199,7 +212,7 @@ function href($in) {
     } else if (isset($in['url'])) {
         $out = \URL::long($in['url']);
     } else if (isset($in['path'])) {
-        $panel = $GLOBALS['Panel'];
+        global $panel;
         $out = rtrim(\URL::long($panel->r . '/::' . ($in['c'] ?? 'g') . '::/' . ltrim($in['path'], '/')), '/');
     }
     if (isset($in['query'])) {
@@ -260,7 +273,7 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
     } else {
         $out = "";
         if (isset($in['files'])) {
-            $panel = $GLOBALS['Panel'];
+            global $panel;
             $out .= call_user_func(__NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
         } else if (isset($in['tabs'])) {
             $out .= tabs($in['tabs'], $id, [], $i);
@@ -440,8 +453,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
         'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
         $is_file ? 'x:' . \Path::X($path, '#') : null
     ]);
-    global $url;
-    $panel = $GLOBALS['Panel'];
+    global $panel, $url;
     $out  = '<h3 class="title">';
     $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : dirname($directory)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($name === '..' ? basename(dirname($url->path)) : "")) . '">' . $name . '</a>';
     $out .= '</h3>';
@@ -452,8 +464,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function files($folder, $id = 0, $attr = [], $i = 0) {
-    global $token, $url;
-    $panel = $GLOBALS['Panel'];
+    global $panel, $token, $url;
     $files = q(\concat(..._glob($folder)));
     \Config::set('panel.$.files', $files);
     $out = "";
@@ -576,7 +587,8 @@ function nav_a($in, $id = 0, $attr = [], $i = 0) {
             ])
         ]);
     }
-    $in = _init($in, $attr, 'nav-a', $id, $i);
+    unset($in['i']);
+    $in = _init($in, $attr, 'a', $id, $i);
     return a($in, $id, $attr, $i);
 }
 
@@ -584,9 +596,17 @@ function nav_li($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
     }
-    $in = _init($in, $attr, 'nav-li', $id, $i);
+    $in = _init($in, $attr, 'li', $id, $i);
+    if (!array_key_exists('active', $in)) {
+        global $panel, $url;
+        $p = $in['url'] ?? trim($panel->r . '/::' . ($in['c'] ?? $panel->c) . '::/' . ($in['path'] ?? $panel->id . '/' . $panel->path), '/');
+        if (strpos($url->path . '/1/', $p . '/') === 0) {
+            $in['active'] = true;
+        }
+    }
     if (!empty($in['active'])) {
         $attr['class[]'][] = 'current';
+        unset($in['active']);
     }
     $out = $in['content'] ?? nav_a($in, $id, [], $i) . (isset($in['+']) ? nav_ul($in['+'], $id, [], $i + 1) : "");
     return \HTML::unite('li', $out, $attr);
@@ -609,13 +629,12 @@ function nav_ul($in, $id = 0, $attr = [], $i = 0) {
             $out .= nav_li($v, $k, [], $i);
         }
     }
-    $in = _init($in, $attr, 'nav-ul', $id, $i);
+    $in = _init($in, $attr, 'ul', $id, $i);
     return \HTML::unite('ul', $out, $attr);
 }
 
 function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
-    global $url;
-    $panel = $GLOBALS['Panel'];
+    global $panel, $url;
     $path = $page->path;
     _init([], $attr, 'item', $id, $i, [
         'class[]' => [
@@ -639,8 +658,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function pager($id = 0, $attr = [], $i = 0) {
-    global $language, $url;
-    $panel = $GLOBALS['Panel'];
+    global $panel, $language, $url;
     $state = $panel->state->{$panel->view};
     $out = _pager($url->i ?: 1, count(\Config::get('panel.$.files', [], true)), $state->chunk, $state->kin, function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
@@ -656,8 +674,7 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     _init([], $attr, 'items', $id, $i);
     $out = "";
     $x = 'draft,page,archive';
-    global $url;
-    $panel = $GLOBALS['Panel'];
+    global $panel, $url;
     $state = $panel->state->page;
     $chunk = [$state->chunk, $url->i === null ? 0 : $url->i - 1];
     if (!is_array($pages)) {
@@ -740,7 +757,7 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
         if (isset($in['fields'])) {
             $out .= fields($in['fields'], $id, [], $i);
         } else if (isset($in['files'])) {
-            $panel = $GLOBALS['Panel'];
+            global $panel;
             $out .= call_user_func(__NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
         }
     }

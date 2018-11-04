@@ -1,3 +1,5 @@
+<?php $error = Config::get('panel.error'); ?>
+<?php HTTP::status($error ? 404 : 200); ?>
 <!DOCTYPE html>
 <html lang="<?php echo $site->language; ?>" dir="<?php echo $site->direction; ?>" class="<?php echo $error ? 'is-error error-404' : 'is-' . $panel->v; ?>">
 <head>
@@ -25,7 +27,7 @@ if ($panel->c === 's') {
 <form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>
-<p class="m0 p2">&#x0CA0;&#x005F;&#x0CA0;</p>
+<p class="m0 p2"><?php echo is_string($error) ? $error : '&#x0CA0;&#x005F;&#x0CA0;'; ?></p>
 <?php else: ?>
 <?php echo $desk; ?>
 <?php endif; ?>

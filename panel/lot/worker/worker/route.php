@@ -13,13 +13,28 @@ Hook::set('on.ready', function() {
         Route::reset();
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         if (defined('DEBUG') && DEBUG && Extend::exist('less')) {
-            Asset::set($asset . 'less' . DS . 'panel.less');
-            Asset::set($asset . 'js' . DS . 'panel.js');
+            Asset::set($asset . 'less' . DS . 'panel.less', 9);
+            Asset::set($asset . 'js' . DS . 'panel.js', 9, [
+                'src' => function($src) use($token) {
+                    $q = strpos($src, '?') !== false ? '&' : '?';
+                    return $src . $q . 'token=' . $token;
+                }
+            ]);
         } else {
-            Asset::set($asset . 'css' . DS . 'panel.min.css');
-            Asset::set($asset . 'js' . DS . 'panel.min.js');
+            Asset::set($asset . 'css' . DS . 'panel.min.css', 9);
+            Asset::set($asset . 'js' . DS . 'panel.min.js', 9, [
+                'src' => function($src) use($token) {
+                    $q = strpos($src, '?') !== false ? '&' : '?';
+                    return $src . $q . 'token=' . $token;
+                }
+            ]);
         }
     }
+
+    // TODO
+    Hook::set('asset:head', function($content) use($language) {
+        return '<script>window.$language=' . json_encode($language->get()) . ';</script>' . $content;
+    });
 
     Route::set([
         $r . '/::%s%::/%*%/%i%',
@@ -58,9 +73,11 @@ Hook::set('on.ready', function() {
         } else {
             $nav = fn\panel\nav((array) Config::get('panel.nav', [], true), $id);
         }
+        if ($error) {
+            Config::set('panel.error', $error);
+        }
         Lot::set([
             'desk' => fn\panel\desk((array) Config::get('panel.desk', [], true), $id),
-            'error' => $error,
             'nav' => $nav
         ]);
         return Shield::attach(__DIR__ . DS . 'shield.php');

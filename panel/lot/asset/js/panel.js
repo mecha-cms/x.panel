@@ -26,6 +26,8 @@ var win = window,
     $head = $(head),
     $body = $(body),
     $html = $(html),
+    $script = document.currentScript,
+    $token = /[?&]token=([a-f\d]+)/.exec($script.src)[1],
     focusable = 'a[href],button,input,select,textarea,[tabindex]',
     focusable_class = '.js\\:focus';
 
@@ -407,6 +409,21 @@ win._c170e1f9 = function(url, name, width, height) { // `window.open`
     win.focus && newWindow.focus();
     return newWindow;
 };
+
+// Live notification(s)
+var $notify = $('.nav li.li\\:message a');
+function notify() {
+    $.get($notify.attr('href').replace('::g::', '::a::').split(/[?&#]/)[0] + '?a=fea4a865&lot[0]=page&token=' + $token, function(i) {
+        i = +i;
+        console.log(i);
+        $notify
+            .attr('data-i', i)
+            .attr('title', i + ' ' + $language[i === 1 ? 'message' : 'messages'])
+            .parent()[i > 0 ? 'addClass' : 'removeClass']('current');
+        $notify.find('svg path').attr('d', i > 0 ? 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z' : 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21');
+        setTimeout(notify, 10000);
+    });
+} notify();
 
 
 

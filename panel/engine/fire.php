@@ -14,7 +14,8 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         $item_view = has(['file', 'page', 'data'], $panel->v);
 
         $c = $panel->c;
-        $path = trim($panel->id . '/' . $panel->path, '/');
+        $id = $panel->id;
+        $path = trim($id . '/' . $panel->path, '/');
         $folders = glob(LOT . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT);
 
         sort($folders);
@@ -31,7 +32,6 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 }
                 $links[$n] = [
                     'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
-                    'active' => strpos($path . '/', $n . '/') === 0,
                     'path' => $n,
                     'stack' => 10 + $i
                 ];
@@ -45,6 +45,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'icon' => [[$item_view ? 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' : 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z']],
             'path' => $item_view ? ($c === 's' ? $path : dirname($path)) . '/1' : null,
             '+' => $item_view ? null : $links,
+            'kind' => ['inverse'],
             'stack' => 10
         ]);
 
@@ -67,7 +68,6 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 $links[$title] = [
                     'title' => $title,
                     'icon' => [""],
-                    'active' => strpos($path . '/', $directory . '/') === 0,
                     'path' => $directory . '/1'
                 ];
             }
@@ -98,7 +98,6 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 $links[$title] = [
                     'title' => $title,
                     'icon' => [""],
-                    'active' => strpos($path . '/', $directory . '/') === 0,
                     'path' => $directory . '/1'
                 ];
             }
@@ -116,21 +115,21 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
             Config::set('panel.nav.s', [
                 'title' => false,
-                'description' => $language->new . ': ' . $language->{$panel->view},
-                'icon' => [['M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z']],
+                'description' => $language->new__($language->{$id}, true),
+                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'path' => dirname($path),
                 'c' => 's',
-                'query' => e($_GET),
-                'stack' => 10.1
+                'query' => HTTP::get(null, []),
+                'stack' => 10.09
             ]);
 
         }
 
         Config::set('panel.nav.search', [
             'content' => fn\panel\nav_li_search([
-                'title' => $language->{$panel->id},
+                'title' => $language->{$id},
                 'path' => $path . '/1'
-            ], $panel->id),
+            ], $id),
             'stack' => 10.1
         ]);
 
@@ -145,18 +144,17 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 ],
                 'user' => [
                     'icon' => [['M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z']],
-                    'active' => $active,
                     'path' => $path_user,
                     '+' => [
                         'g' => [
                             'title' => $language->edit,
                             'icon' => [['M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z']],
-                            'active' => $active,
                             'path' => $path_user . '/' . substr($user->key, 1) . '.page',
                             'stack' => 10
                         ],
                         'exit' => [
                             'icon' => [['M14.08,15.59L16.67,13H7V11H16.67L14.08,8.41L15.5,7L20.5,12L15.5,17L14.08,15.59M19,3A2,2 0 0,1 21,5V9.67L19,7.67V5H5V19H19V16.33L21,14.33V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19Z']],
+                            'active' => false,
                             'path' => basename(USER) . '/' . substr($user->key, 1) . '.page',
                             'task' => '950abfd9',
                             'stack' => 10.1
@@ -167,6 +165,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 'view' => [
                     'url' => "",
                     'icon' => [['M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z']],
+                    'active' => false,
                     'target' => '_blank',
                     'stack' => 10.2
                 ]
@@ -174,10 +173,14 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'stack' => 20
         ]);
 
+        $messages = glob(LOT . DS . '.message' . DS . '*.page', GLOB_NOSORT);
         Config::set('panel.nav.message', [
             'title' => false,
-            'icon' => [[glob(LOT . DS . '.message' . DS . '*.page', GLOB_NOSORT) ? 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z' : 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21']],
-            'path' => $panel->id . '/::g::/.message',
+            'i' => ($i = count($messages)),
+            'description' => $i . ' ' . $language->{'message' . ($i === 1 ? "" : 's')},
+            'icon' => [[$i > 0 ? 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z' : 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21']],
+            'active' => $i > 0,
+            'path' => '.message',
             'kind' => ['right'],
             'stack' => 10.2
         ]);

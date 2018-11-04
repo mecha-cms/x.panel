@@ -122,7 +122,7 @@ html.form body form {
         ul {right:100%}
       }
     }
-    &.nav-li\:lot {
+    &.inverse {
       .color-html;
       a {
         .color-a;
@@ -133,7 +133,10 @@ html.form body form {
         background:inherit;
         color:inherit;
       }
-    } 
+    }
+    &.li\:message {
+      &.current .icon {color:@color-mark-bell}
+    }
   }
   a {
     display:block;
@@ -173,10 +176,10 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   .nav {
     > ul > li {
       display:none;
-      &.nav-li\:lot,
-      &.nav-li\:search,
-      &.nav-li\:message {display:block}
-      &.nav-li\:search {
+      &.li\:lot,
+      &.li\:search,
+      &.li\:message {display:block}
+      &.li\:search {
         position:absolute;
         top:0;
         right:(@x * 2);

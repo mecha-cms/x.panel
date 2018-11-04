@@ -2,14 +2,14 @@
 
 $worker = __DIR__ . DS . 'lot' . DS . 'worker' . DS;
 $f = rtrim(LOT . DS . $id . DS . strtr($path, '/', DS), DS);
-Lot::set('panel', $GLOBALS['Panel'] = $panel = new State([
+Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
     'c' => $c, // Command
     'id' => $id, // Current folder
     'chops' => $chops,
     'path' => $path,
     'file' => is_file($f) ? $f : null,
     'folder' => is_dir($f) ? $f : null,
-    'state' => \o($state),
+    'state' => o($state),
     'view' => ($view = basename(HTTP::get('view', 'file', false))),
     'r' => $r, // root
     'v' => $view . (!$chops && $c === 'g' || $url->i !== null ? 's' : "") // Plural or singular?
@@ -35,6 +35,13 @@ if ($tok && Guardian::check($tok)) {
 }
 
 if ($f = File::exist($worker . $panel->v . '.php')) require $f;
+if ($f = File::exist($worker . $panel->v . DS . '$.php')) require $f;
 if ($f = File::exist($worker . $panel->v . DS . $id . '.php')) require $f;
+
+// User
+$user = new User(USER . DS . substr($user, 1) . '.page');
+$worker_user = $worker . $panel->v . DS . 'user' . DS . $user->status . DS;
+if ($f = File::exist($worker_user . '$.php')) require $f;
+if ($f = File::exist($worker_user . $id . '.php')) require $f;
 
 require $worker . 'worker' . DS . 'route.php';
