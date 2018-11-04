@@ -7,12 +7,15 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     }
     if (!array_key_exists('title', $in)) {
         global $language;
-        $in['title'] = $language->{$id};
+        $in['title'] = $language->{strpos($id, '.') === 0 ? substr($id, 1) : $id};
     }
-    $attr = \extend([
-        'class[]' => $id !== false ? [$key, $key . ':' . $id, $key . ':' . $id . '.' . $i] : null,
-        'id' => $id !== false ? $key . ':' . $id . '.' . $i : null
-    ], $attr, $alt);
+    if (!array_key_exists('class[]', $attr)) {
+        $attr['class[]'] = [];
+    }
+    $attr['class[]'] = \concat($attr['class[]'], [$key, $key . ':' . $id, $key . ':' . $id . '.' . $i]);
+    if (!array_key_exists('id', $attr)) {
+        $attr['id'] = $id !== false ? $key . ':' . $id . '.' . $i : null;
+    }
     if (!empty($in['kind'])) {
         $attr['class[]'] = \concat($attr['class[]'], (array) $in['kind']);
     }
@@ -22,6 +25,7 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     if (array_key_exists('i', $in)) {
         $attr['data[]']['i'] = $in['i'];
     }
+    $attr = \extend($attr, $alt);
     return $in;
 }
 
@@ -65,7 +69,7 @@ function _hidden($in) {
     } else if (empty($in['hidden'])) {
         return false;
     }
-    return true;
+    return isset($in['hidden']) && !empty($in['hidden']);
 }
 
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
@@ -202,8 +206,8 @@ function href($in) {
         global $token;
         $in['task'] = (array) $in['task'];
         $in['c'] = 'a';
-        $in['query']['a'] = array_shift($in['task']);
-        $in['query']['lot'] = array_shift($in['task']);
+        $in['query']['a'] = array_shift($in['task']) ?? false;
+        $in['query']['lot'] = array_shift($in['task']) ?? false;
         $in['query']['token'] = $token;
         unset($in['task']);
     }
@@ -216,7 +220,7 @@ function href($in) {
         $out = rtrim(\URL::long($panel->r . '/::' . ($in['c'] ?? 'g') . '::/' . ltrim($in['path'], '/')), '/');
     }
     if (isset($in['query'])) {
-        $out .= \HTTP::query($in['query'], [1 => '&']);
+        $out .= \HTTP::query($in['query'], '&');
     }
     if (isset($in['hash'])) {
         $out .= '#' . urlencode($in['hash']);
@@ -556,11 +560,6 @@ function links($in, $id = 0, $attr = [], $i = 0) {
     }
     $in = _init($in, $attr, 'links', $id, $i);
     return \HTML::unite('ul', $out, $attr);
-}
-
-function message($kind = "", $text) {
-    $icons = svg('message');
-    call_user_func("\\Message::" . $kind, text($text, [[\alt($kind, $icons ?: [], $icons['$'])]]));
 }
 
 function nav($in, $id = 0, $attr = [], $i = 0) {

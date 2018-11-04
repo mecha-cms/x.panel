@@ -9,9 +9,24 @@ Hook::set('on.ready', function() {
     $v = $panel->v;
 
     if (strpos($url->path, $r . '/::') === 0) {
+        // Remove all defined asset(s) and route(s)
         Asset::reset();
         Route::reset();
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
+        Asset::set($asset . 'js' . DS . 'zepto.min.js', 0);
+        $c = glob(__DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . '*.php', GLOB_NOSORT);
+        $c = array_reduce(array_map(function($v) {
+            return filemtime($v);
+        }, $c), function($a, $b) {
+            return $a + $b;
+        });
+        $c += filemtime(__FILE__);
+        $c = abs(crc32($c . $token)); // Smart cache updater
+        Asset::set($url . '/' . $r . '/::g::/static.js', .1, [
+            'src' => function($src) use($c) {
+                return candy($this->url, [$src, $c]);
+            }
+        ]);
         if (defined('DEBUG') && DEBUG && Extend::exist('less')) {
             Asset::set($asset . 'less' . DS . 'panel.less', 9);
             Asset::set($asset . 'js' . DS . 'panel.js', 9, [
@@ -30,11 +45,6 @@ Hook::set('on.ready', function() {
             ]);
         }
     }
-
-    // TODO
-    Hook::set('asset:head', function($content) use($language) {
-        return '<script>window.$language=' . json_encode($language->get()) . ';</script>' . $content;
-    });
 
     Route::set([
         $r . '/::%s%::/%*%/%i%',
@@ -83,6 +93,34 @@ Hook::set('on.ready', function() {
         return Shield::attach(__DIR__ . DS . 'shield.php');
     }, 10);
 
+    Route::set($r . '/::g::/static.js', function() {
+        extract(Lot::get(null, []));
+        $i = 60 * 60 * 24 * 30 * 12; // 1 Year
+        HTTP::type('application/javascript')->header([
+            'Pragma' => 'private',
+            'Cache-Control' => 'private, max-age=' . $i,
+            'Expires' => gmdate('D, d M Y H:i:s', time() + $i) . ' GMT'
+        ]);
+        $url = $GLOBALS['URL'];
+        unset($url['pass'], $url['user']);
+        $out = [
+            '$language' => $language->get(),
+            '$message' => $message,
+            '$panel' => $panel->state,
+            '$svg' => $config->get('panel.$.svg'),
+            '$token' => $token,
+            '$url' => $url,
+            '$user' => [
+                '$' => $user->{'$'},
+                'key' => $user->key,
+                'status' => $user->status
+            ],
+            '$u_r_l' => $url
+        ];
+        echo 'var panel=' . json_encode($out) . ';';
+        return;
+    });
+
     $image_path = $r . '/::g::/%i%/%i%/%s%.%[gif,jpg,jpeg,png]%';
     Route::set($image_path, function($width, $height, $color, $x) {
         $i = 60 * 60 * 24 * 30 * 12; // 1 year
@@ -106,10 +144,13 @@ Hook::set('on.ready', function() {
         imagedestroy($image);
         return;
     }, 9);
+
     Route::set($r . '/::g::/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_path) {
         return Route::fire($image_path, [$size, $size, $color, $x]);
     }, 9.1);
+
     Route::set($r . '/::g::/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_path) {
         return Route::fire($image_path, [1, 1, $color, $x]);
     }, 9.2);
+
 }, 0);

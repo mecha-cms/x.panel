@@ -1,21 +1,29 @@
 <?php
 
+// `POST`
 $page = HTTP::post('page', [], false);
 
-if ($c !== 'r' && !$page) {
-    return;
-}
-
-if ($c === 'r' && $a < 0) {
-    // Delete folder
-    $d = Path::F($file);
-    if ($a === -2) {
-        File::open($d)->moveTo(str_replace(LOT . DS, LOT . DS . 'trash' . DS . $_date . DS, dirname($d)));
-    } else if ($a === -1) {
-        File::open($d)->delete();
+if ($a < 0) {
+    // `GET`
+    if ($c === 'r') {
+        // Delete folder
+        $d = Path::F($file);
+        if ($a === -2) {
+            File::open($d)->moveTo(str_replace(LOT . DS, LOT . DS . 'trash' . DS . $_date . DS, dirname($d)));
+        } else if ($a === -1) {
+            File::open($d)->delete();
+        }
+    // `POST` ... a user click the submit button with name `a`
+    } else if (HTTP::is('post')) {
+        // Redirect to `GET`
+        Guardian::kick(str_replace('::' . $c . '::', '::r::', $url->current) . HTTP::query([
+            'a' => $a,
+            'view' => 'page'
+        ], '&'));
     }
 }
 
+// `POST` ...
 $headers = [
     'title' => function($s) {
         return w($s, HTML_WISE_I) ?: false;
@@ -55,7 +63,9 @@ $headers = is($headers, function($v) {
     return isset($v) && $v !== false && $v !== "" && !is_callable($v);
 });
 $time = date(DATE_WISE);
-$name = To::slug(HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false)) ?: $time;
+$name = HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false) ?: ($c === 'g' ? Path::F(basename($path)) : $time);
+$name = To::slug($name);
+
 if (!Message::$x) {
     if ($c === 'g') {
         $nn = Path::N($n);
@@ -65,7 +75,7 @@ if (!Message::$x) {
         if ($nn !== $name) {
             File::open($dd)->renameTo($name); // rename folder
         }
-    } else {
+    } else if ($c === 's') {
         if (!Folder::exist($dd = LOT . DS . $path . DS . $name)) {
             Folder::set($dd, 0775);
         }

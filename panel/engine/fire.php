@@ -153,7 +153,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                             'stack' => 10
                         ],
                         'exit' => [
-                            'icon' => [['M14.08,15.59L16.67,13H7V11H16.67L14.08,8.41L15.5,7L20.5,12L15.5,17L14.08,15.59M19,3A2,2 0 0,1 21,5V9.67L19,7.67V5H5V19H19V16.33L21,14.33V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H19Z']],
+                            'icon' => [['M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z']],
                             'active' => false,
                             'path' => basename(USER) . '/' . substr($user->key, 1) . '.page',
                             'task' => '950abfd9',
@@ -190,11 +190,11 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 }
 
 if ($query = HTTP::get('q')) {
-    fn\panel\message('info', $language->message_info_search(To::text($query)));
-    Lot::set('message', Message::get());
+    Message::info('search', To::text($query));
+    Lot::set('message', Message::get(null, false));
 }
 
-Config::set('panel.$.svg', json_decode(file_get_contents(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'json' . DS . 'svg.json'), true));
+Config::set('panel.$.svg', require __DIR__ . DS . '..' . DS . 'lot' . DS . 'state' . DS . 'svg.php');
 
 Config::set('panel.$.data.tools', []);
 

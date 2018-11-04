@@ -21,8 +21,12 @@ Config::set('panel.desk.body.tabs.file.fields', [
 
 // Modify back menu destination
 if ($x = HTTP::get('x')) {
-    Hook::set('on.ready', function() use($panel, $x) {
-        $path = rtrim($panel->id . '/' . $panel->path, '/') . '.' . $x;
+    Hook::set('on.ready', function() use($language, $panel, $x) {
+        Config::set('panel.nav.s', [
+            'description' => $language->new__($language->data, true),
+            'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']]
+        ]);
+        $path = dirname(trim($panel->id . '/' . $panel->path, '/')) . '.' . $x;
         if (file_exists(LOT . DS . $path)) {
             Config::set('panel.nav.lot', [
                 'c' => 'g',

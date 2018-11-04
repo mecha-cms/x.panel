@@ -3,7 +3,7 @@
 // `empty trash`
 function _bf28477() {
     \File::open(LOT . DS . 'trash')->delete();
-    \fn\panel\message('success', 'The trash folder has been cleaned successfully.');
+    \Message::success('The trash folder has been cleaned successfully.');
     $state = \Extend::state('panel');
     return ['kick' => $state['path'] . '/::g::/' . $state['$'] . '/1'];
 }
@@ -15,7 +15,7 @@ function _c528a68c($file) {
     $config['language'] = \Path::N($file);
     \File::export($config)->saveTo($f, 0600);
     $page = new \Page($file);
-    \fn\panel\message('success', 'The interface language has been successfully set to ' . $page->title . '.');
+    \Message::success('The interface language has been successfully set to ' . $page->title . '.');
     return ['kick' => \Extend::state('panel', 'path') . '/::g::/language/1'];
 }
 
@@ -34,14 +34,14 @@ function _32a5a0db($from, $to, $id) {
 // `activate/deactivate extension`
 function _2eca1f34($from, $to) {
     $page = new \Page(dirname($from) . DS . 'about.page');
-    \fn\panel\message('success', 'Extension ' . $page->title . ' has been ' . (\Path::X($from) === 'x' ? 'activated' : 'deactivated') . '.');
+    \Message::success('Extension ' . $page->title . ' has been ' . (\Path::X($from) === 'x' ? 'activated' : 'deactivated') . '.');
     return _32a5a0db($from, $to, 'extend');
 }
 
 // `activate/deactivate plugin`
 function _787b240a($from, $to) {
     $page = new \Page(dirname($from) . DS . 'about.page');
-    \fn\panel\message('success', 'Plugin ' . $page->title . ' has been ' . (\Path::X($from) === 'x' ? 'activated' : 'deactivated') . '.');
+    \Message::success('Plugin ' . $page->title . ' has been ' . (\Path::X($from) === 'x' ? 'activated' : 'deactivated') . '.');
     return _32a5a0db($from, $to, 'extend/plugin/lot/worker');
 }
 
@@ -52,7 +52,7 @@ function _8f86d176($file) {
     $config['shield'] = basename(dirname($file));
     \File::export($config)->saveTo($f, 0600);
     $page = new \Page($file);
-    \fn\panel\message('success', 'Current theme has been successfully set to ' . $page->title . '.');
+    \Message::success('Current theme has been successfully set to ' . $page->title . '.');
     return ['kick' => \Extend::state('panel', 'path') . '/::g::/shield/1'];
 }
 
@@ -64,7 +64,7 @@ function _950abfd9($file) {
     return ['kick' => $state['_path'] ?? $state['path']];
 }
 
-// ajax count files
+// `ajax count files`
 function _fea4a865($file, $x = '*') {
     $count = count(glob($file . DS . '*.' . $x, GLOB_NOSORT));
     HTTP::type('text/plain')->header('Cache-Control', 'no-cache');

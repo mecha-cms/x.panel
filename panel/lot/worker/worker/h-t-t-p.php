@@ -19,7 +19,9 @@ if ($consent !== null) {
 $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($file = LOT . DS . $path);
 
+// `GET`, `POST`
 if ($c !== 'r') {
+    // `GET`
     if ($c === 'a' && HTTP::is('get')) {
         if ($gate_alt) {
             require $gate_alt;
@@ -37,14 +39,16 @@ if ($c !== 'r') {
             echo error('Task <code>' . $task . '</code> not found.');
             exit;
         }
+    // `POST`
     } else if (!HTTP::is('post')) {
         echo error('Method not allowed.');
         exit;
     }
+// `GET`
 } else /* if ($c === 'r') */ {
     // Prevent user(s) from deleting the root folder(s)
     if (strpos($path, DS) === false) {
-        fn\panel\message('error', 'You can\'t delete this file/folder.');
+        Message::error('You can\'t delete this file/folder.');
         Guardian::kick(str_replace('::r::', '::g::', $url->current . '/1'));
     }
     if ($gate_alt) {
@@ -54,7 +58,7 @@ if ($c !== 'r') {
     if ($a === -2) {
         File::open($file)->moveTo(str_replace(LOT . DS, $trash = LOT . DS . 'trash' . DS . $_date . DS, dirname($file)));
         Session::set('panel.file.active', rtrim($trash, DS));
-        fn\panel\message('success', 'Moved to <a>trash</a>.');
+        Message::success('Moved to <a>trash</a>.');
     // Restore
     } else if ($a === 1) {
         $res = str_replace(LOT . DS . 'trash' . DS, "", $file);
@@ -70,23 +74,24 @@ if ($c !== 'r') {
             rmdir($file);
         }
         Session::set('panel.file.active', array_values($o));
-        fn\panel\message('success', To::sentence($language->restoreed));
+        Message::success(To::sentence($language->restoreed));
     } else {
         File::open($file)->delete();
-        fn\panel\message('success', To::sentence($language->deleteed));
+        Message::success(To::sentence($language->deleteed));
     }
     Guardian::kick(str_replace('::r::', '::g::', dirname($url->current)) . '/1');
 }
 
 $query = HTTP::query(['token' => false]);
+// `POST`
 if ($tab === 'folder') {
     if (Is::void($directory)) {
-        fn\panel\message('error', To::sentence($language->error));
+        Message::error(To::sentence($language->error));
     }
     if (!Message::$x) {
         Folder::set(LOT . DS . $path . DS . $directory, $consent);
         Session::set('panel.file.active', LOT . DS . $path . DS . explode(DS, $directory)[0]);
-        fn\panel\message('success', To::sentence($language->createed));
+        Message::success(To::sentence($language->createed));
         HTTP::delete('post');
         Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/1');
     } else {
@@ -98,6 +103,8 @@ if ($tab === 'folder') {
 } else /* if ($tab === 'file') */ {
     $name = To::file(basename(HTTP::post('name', "", false)));
     if ($c === 'g') {
+        $n = basename($path); // previous name
+        $path = dirname($path);
         if ($a < 0) {
             if ($gate_alt) {
                 require $gate_alt;
@@ -106,16 +113,14 @@ if ($tab === 'folder') {
             if ($a === -2) {
                 File::open($file)->moveTo(str_replace(LOT . DS, $trash = LOT . DS . 'trash' . DS . $_date . DS, $is_file ? dirname($file) : $file));
                 Session::set('panel.file.active', rtrim($trash, DS));
-                fn\panel\message('success', 'Moved to <a>trash</a>.');
+                Message::success('Moved to <a>trash</a>.');
             } else if ($a === -1) {
                 File::open($file)->delete();
-                fn\panel\message('success', To::sentence($language->deleteed));
+                Message::success(To::sentence($language->deleteed));
             }
             HTTP::delete('post');
-            Guardian::kick($r . '/::g::/' . dirname($path) . '/1');
+            Guardian::kick($r . '/::g::/' . $path . '/1');
         }
-        $n = basename($path); // previous name
-        $path = dirname($path);
     } else {
         $n = null;
     }
@@ -130,14 +135,14 @@ if ($tab === 'folder') {
     }
     $content = HTTP::post('file.content', "", false);
     if (Is::void($content)) {
-        fn\panel\message('error', To::sentence($language->error));
+        Message::error(To::sentence($language->error));
     }
     if (Is::void($name)) {
-        fn\panel\message('error', To::sentence($language->error));
+        Message::error(To::sentence($language->error));
     }
     $file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name);
     if ($c === 's' && file_exists($file)) {
-        fn\panel\message('error', 'File already exists.');
+        Message::error('file_exist');
     }
     if (!Message::$x) {
         File::set($content)->saveTo($file, $consent);
@@ -145,7 +150,7 @@ if ($tab === 'folder') {
         if ($n && ($directory || $n !== $name)) {
             File::open(LOT . DS . $path . DS . $n)->delete();
         }
-        fn\panel\message('success', To::sentence($language->{$c === 's' ? 'createed' : 'updateed'}));
+        Message::success(To::sentence($language->{$c === 's' ? 'createed' : 'updateed'}));
         HTTP::delete('post');
         Guardian::kick($r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name) . $query);
     } else {
