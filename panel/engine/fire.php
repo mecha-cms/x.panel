@@ -1,8 +1,8 @@
 <?php
 
 if (HTTP::get('window')) {
-    Set::get('header', 0);
-    Set::get('nav', 0);
+    Set::get('header', false);
+    Set::get('nav', false);
 }
 
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
@@ -185,6 +185,16 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'stack' => 10.2
         ]);
 
+        if (HTTP::get('q')) {
+            Config::set('panel.nav.lot', [
+                'description' => $language->clear,
+                'icon' => [['M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z']],
+                'path' => $path . '/1',
+                '+' => null,
+                'query' => ['q' => false]
+            ]);
+        }
+
     }, 0);
 
 }
@@ -242,7 +252,7 @@ Config::set('panel.$.page.tools', [
         },
         'title' => false,
         'description' => $language->add . ': ' . $language->pages,
-        'icon' => [['M19,5H22V7H19V10H17V7H14V5H17V2H19V5M17,19V13H19V21H3V5H11V7H5V19H17Z']],
+        'icon' => [['M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z']],
         'c' => 's',
         'stack' => 9.9
     ],

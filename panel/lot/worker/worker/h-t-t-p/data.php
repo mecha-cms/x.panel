@@ -1,7 +1,7 @@
 <?php
 
 if (Is::void($name)) {
-    Message::error(To::sentence($language->error));
+    Message::error($language->error);
 }
 
 Hook::set('guardian.kick', function($url) {

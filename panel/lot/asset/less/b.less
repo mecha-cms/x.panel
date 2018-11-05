@@ -183,8 +183,8 @@ ul.tools li {
     &.current > a {
       background:@color-list_current;
       color:@color_inverse;
-      &:focus,
-      &:hover {
+      &:focus:not(.x),
+      &:hover:not(.x) {
         background:darken(@color-list_current, 5%);
         color:@color_inverse;
       }
@@ -195,11 +195,11 @@ ul.tools li {
     padding:(@y * .25) (@x * .5);
     .color-a;
   }
-  a:focus,
-  a:hover,
+  a:focus:not(.x),
+  a:hover:not(.x),
   .active > a {background:@color-list_hover}
-  .active > a:focus,
-  .active > a:hover {background:darken(@color-list_hover, 5%)}
+  .active > a:focus:not(.x),
+  .active > a:hover:not(.x) {background:darken(@color-list_hover, 5%)}
   .icon {
     .margin-icon;
   }
@@ -241,8 +241,13 @@ img.align-center {
     color:@color-a;
     .border-radius(0);
     .box-shadow(none);
-    &:focus,
-    &:active {color:@color-a_inverse}
+    &:focus:not(.x):not([disabled]),
+    &:active:not(.x):not([disabled]) {
+      background:none;
+      color:@color-a_inverse;
+      .border-radius(0);
+      .box-shadow(none);
+    }
   }
 }
 
@@ -371,6 +376,7 @@ img.align-center {
         height:0;
         border-bottom:1px solid;
       }
+      a {color:inherit}
       &::before {right:100%}
       &::after {left:100%}
     }
@@ -546,8 +552,8 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   padding:(@y * .25) (@x * .25);
   margin:0 (@x * -.25);
   position:relative;
-  &:focus,
-  &:hover {
+  &:focus:not(.x),
+  &:hover:not(.x) {
     background:@color-list_hover;
     border-color:darken(@color_inverse, 1%);
   }
@@ -609,7 +615,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
       background:@color-a;
       color:@color_inverse;
       .box-shadow(0 1px 1px rgba(0,0,0,.25));
-      &:focus {background:@color-a_inverse}
+      &:focus:not(.x) {background:@color-a_inverse}
     }
     > b,
     > span {

@@ -336,5 +336,15 @@ function notify() {
     });
 } notify();
 
+// Hide message with time-out
+var $messages = $('.messages');
+if ($messages.length) {
+    $win.on("load", function() {
+        setTimeout(function() {
+            $messages.addClass('exit');
+        }, 5000);
+    });
+}
+
 
 })(Zepto, window.panel || {});

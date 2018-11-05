@@ -26,15 +26,15 @@
 ::placeholder {
   .placeholder;
 }
-:focus:not(:focus-visible) {
+:focus /* :not(:focus-visible) */ {
   outline:0;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
   -webkit-tap-highlight-color:transparent;
 }
 .color-a() {
   color:@color-a;
-  &:focus,
-  &:active {color:@color-a_inverse}
+  &:focus:not(.x),
+  &:active:not(.x) {color:@color-a_inverse}
 }
 a {
   .color-a;
@@ -229,8 +229,8 @@ hr {border-width:1px 0 0}
   color:@color_inverse;
   border-width:0;
   .box-shadow(0 1px 1px rgba(0,0,0,.25));
-  &:focus,
-  &:active {
+  &:focus:not(.x):not([disabled]),
+  &:active:not(.x):not([disabled]) {
     background:@color-a_inverse;
     color:@color_inverse;
   }

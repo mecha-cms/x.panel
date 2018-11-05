@@ -495,7 +495,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
             ], $i, $tools);
         }
     } else if (is_string($folder) && dirname($folder) !== LOT) {
-        $out = file(dirname($folder) . DS . '..', $id, [], 0, $tools);
+        $out = file(dirname($folder) . DS . '..', $id, [], 0);
     }
     return \HTML::unite('ul', $out, $attr);
 }
@@ -677,8 +677,7 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     $state = $panel->state->page;
     $chunk = [$state->chunk, $url->i === null ? 0 : $url->i - 1];
     if (!is_array($pages)) {
-        \Config::set('panel.$.files', glob($pages . DS . '*{' . $x . '}', GLOB_BRACE | GLOB_NOSORT));
-        $pages = \Get::pages($pages, $x, $state->sort)->chunk(...$chunk);
+        $pages = \Get::pages($pages, $x, $state->sort);
     } else {
         \Config::set('panel.$.files', $pages);
         $key = $state->sort[1];
@@ -689,11 +688,12 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
                 $key => $page->get($key)
             ];
         // Only sort if `$pages` is not an array
-        })->chunk(...$chunk)/* ->sort($state->sort) */;
+        })/* ->sort($state->sort) */;
     }
+    \Config::set('panel.$.files', $pages = q($pages->pluck('path')->vomit()));
+    $pages = \Anemon::eat($pages)->chunk(...$chunk);
     if ($pages->count()) {
         $tools = \Anemon::eat(\Config::get('panel.$.page.tools', [], true))->sort([1, 'stack']);
-        $pages = q($pages->pluck('path')->vomit());
         $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($pages as $v) {
             $a = strpos($session, X . $v . X) !== false;
@@ -713,7 +713,7 @@ function q($files, $query = "") {
     if (($query = trim(\HTTP::get('q', $query, false))) !== "") {
         $query = explode(' ', strtolower($query));
         $files = array_filter($files, function($v) use($query) {
-            $v = basename($v);
+            $v = str_replace('-', "", basename($v));
             foreach ($query as $q) {
                 return strpos($v, $q) !== false;
             }

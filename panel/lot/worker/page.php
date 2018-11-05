@@ -143,7 +143,15 @@ Config::set('panel.desk.body.tabs.data', [
     'stack' => 10.1
 ]);
 
-Hook::set('on.ready', function() use($c, $language, $page, $token, $url) {
+Hook::set('on.ready', function() use($c, $language, $page, $panel, $token, $url) {
+    $id = $panel->id;
+    $path = trim($panel->id . '/' . $panel->path, '/');
+    Config::set('panel.nav.search', [
+        'content' => fn\panel\nav_li_search([
+            'title' => $language->{$id},
+            'path' => Path::F($path) . '/1'
+        ], $id)
+    ]);
     $pref = 'panel.desk.body.tabs.file.fields.';
     // Add tag(s) field
     if (Extend::exist('tag')) {

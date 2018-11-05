@@ -44,6 +44,14 @@
   bottom:(@y * .5);
   font-size:(@z - @sizer);
   z-index:9999;
+  visibility:visible;
+  opacity:1;
+  .transition(all .5s ease-out);
+  &.exit {
+    visibility:hidden;
+    opacity:0;
+    bottom:(@y * -5);
+  }
 }
 .message {
   background:#666;
@@ -127,7 +135,7 @@ html.form body form {
       a {
         .color-a;
       }
-      &.active > a {
+      &.active > a:not(.x) {
         position:relative;
         z-index:9999; /* must be greater than `.nav > ul > li > ul` */
         background:inherit;
@@ -164,6 +172,8 @@ html.form body form {
       border:0;
     }
   }
+  > ul > li > a:focus:not(.x),
+  > ul > li > a:active:not(.x),
   > ul > li.active > a {color:darken(@color_inverse, 2%)}
 }
 html:not(.js) .nav li:hover > ul,

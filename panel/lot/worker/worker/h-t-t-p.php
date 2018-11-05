@@ -4,7 +4,7 @@ $c = $panel->c;
 $r = $panel->r;
 $a = HTTP::post('a', HTTP::get('a'));
 $id = $panel->id;
-$tab = HTTP::get('tab');
+$tab = HTTP::get('tab.0');
 $gate_alt = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . HTTP::post('view', HTTP::get('view', $panel->view)) . '.php');
 
 $path = strtr(rtrim($id . '/' . $panel->path, '/'), '/', DS);
@@ -74,10 +74,10 @@ if ($c !== 'r') {
             rmdir($file);
         }
         Session::set('panel.file.active', array_values($o));
-        Message::success(To::sentence($language->restoreed));
+        Message::success($language->restoreed);
     } else {
         File::open($file)->delete();
-        Message::success(To::sentence($language->deleteed));
+        Message::success($language->deleteed);
     }
     Guardian::kick(str_replace('::r::', '::g::', dirname($url->current)) . '/1');
 }
@@ -86,12 +86,12 @@ $query = HTTP::query(['token' => false]);
 // `POST`
 if ($tab === 'folder') {
     if (Is::void($directory)) {
-        Message::error(To::sentence($language->error));
+        Message::error($language->error);
     }
     if (!Message::$x) {
         Folder::set(LOT . DS . $path . DS . $directory, $consent);
         Session::set('panel.file.active', LOT . DS . $path . DS . explode(DS, $directory)[0]);
-        Message::success(To::sentence($language->createed));
+        Message::success($language->createed);
         HTTP::delete('post');
         Guardian::kick(str_replace('::s::', '::g::', $url->current) . '/1');
     } else {
@@ -116,7 +116,7 @@ if ($tab === 'folder') {
                 Message::success('Moved to <a>trash</a>.');
             } else if ($a === -1) {
                 File::open($file)->delete();
-                Message::success(To::sentence($language->deleteed));
+                Message::success($language->deleteed);
             }
             HTTP::delete('post');
             Guardian::kick($r . '/::g::/' . $path . '/1');
@@ -135,10 +135,10 @@ if ($tab === 'folder') {
     }
     $content = HTTP::post('file.content', "", false);
     if (Is::void($content)) {
-        Message::error(To::sentence($language->error));
+        Message::error($language->error);
     }
     if (Is::void($name)) {
-        Message::error(To::sentence($language->error));
+        Message::error($language->error);
     }
     $file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name);
     if ($c === 's' && file_exists($file)) {
@@ -150,7 +150,7 @@ if ($tab === 'folder') {
         if ($n && ($directory || $n !== $name)) {
             File::open(LOT . DS . $path . DS . $n)->delete();
         }
-        Message::success(To::sentence($language->{$c === 's' ? 'createed' : 'updateed'}));
+        Message::success($language->{$c === 's' ? 'createed' : 'updateed'});
         HTTP::delete('post');
         Guardian::kick($r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name) . $query);
     } else {
