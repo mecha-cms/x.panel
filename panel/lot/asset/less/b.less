@@ -131,7 +131,13 @@ ul.tools li {
   &:last-child {
     .m0r;
   }
-  a {display:block}
+  a {
+    display:block;
+    > span {
+      display:inline-block;
+      font-size:(@z - @sizer);
+    }
+  }
   .icon {display:block}
 }
 .traces,
@@ -188,6 +194,14 @@ ul.tools li {
         background:darken(@color-list_current, 5%);
         color:@color_inverse;
       }
+    }
+    &.separator {
+      width:auto;
+      height:1px;
+      background:@color;
+      opacity:.125;
+      margin:0;
+      overflow:hidden;
     }
   }
   a {

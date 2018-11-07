@@ -1,3 +1,27 @@
+// <https://stackoverflow.com/a/18639999/1163000>
+window.crc32=function(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];return(-1^n)>>>0};
+
+// <https://stackoverflow.com/a/16861050/1163000>
+window._c170e1f9 = function(url, name, width, height) { // `window.open`
+    width = width || screen.width * .8;
+    height = height || screen.height * .8;
+    var dualScreenLeft = 'screenLeft' in win ? win.screenLeft : win.screenX,
+        dualScreenTop = 'screenTop' in win ? win.screenTop : win.screenY,
+        w = win.innerWidth || html.clientWidth || screen.width,
+        h = win.innerHeight || html.clientHeight || screen.height,
+        left = ((w / 2) - (width / 2)) + dualScreenLeft,
+        top = ((h / 2) - (height / 2)) + dualScreenTop,
+        newWindow = win.open(url, name, 'menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
+    win.focus && newWindow.focus();
+    return newWindow;
+};
+
+// <https://github.com/tovic/query-string-parser>
+!function(n,r){function t(n,r){function t(n){return decodeURIComponent(n)}function e(n){return void 0!==n}function i(n){return"string"==typeof n}function u(n){return i(n)&&""!==n.trim()?'""'===n||"[]"===n||"{}"===n||'"'===n[0]&&'"'===n.slice(-1)||"["===n[0]&&"]"===n.slice(-1)||"{"===n[0]&&"}"===n.slice(-1):!1}function o(n){if(i(n)){if("true"===n)return!0;if("false"===n)return!1;if("null"===n)return null;if("'"===n.slice(0,1)&&"'"===n.slice(-1))return n.slice(1,-1);if(/^-?(\d*\.)?\d+$/.test(n))return+n;if(u(n))try{return JSON.parse(n)}catch(r){}}return n}function f(n,r,t){for(var e,i=r.split("["),u=0,o=i.length;o-1>u;++u)e=i[u].replace(/\]$/,""),n=n[e]||(n[e]={});n[i[u].replace(/\]$/,"")]=t}var c={},l=n.replace(/^.*?\?/,"");return""===l?c:(l.split(/&(?:amp;)?/).forEach(function(n){var i=n.split("="),u=t(i[0]),l=e(i[1])?t(i[1]):!0;l=!e(r)||r?o(l):l,"]"===u.slice(-1)?f(c,u,l):c[u]=l}),c)}n[r]=t}(window,"q2o");
+
+// <https://github.com/tovic/query-string-parser>
+!function(n,r){function t(n,r,t,o){function u(n){return encodeURIComponent(n)}function i(n){return void 0!==n}function e(n){return null!==n&&"object"==typeof n}function f(n){return n===!0?"true":n===!1?"false":null===n?"null":e(n)?JSON.stringify(n):n+""}function c(n,r){r=r||{};for(var t in n)i(r[t])?e(n[t])&&e(r[t])&&(r[t]=c(n[t],r[t])):r[t]=n[t];return r}function l(n,r,t,o){t=t||0;var i,f,a,v=[],d=r?"%5D":"";for(i in n)f=u(i),a=n[i],e(a)&&o>t?v=c(v,l(a,r+f+d+"%5B",t+1,o)):v[r+f+d]=a;return v}t=t||1;var a,v,d=[],p=l(n,"",0,t);for(a in p)v=p[a],(v!==!1||o)&&(v=v!==!0?"="+u(f(v)):"",d.push(a+v));return d.length?"?"+d.join(r||"&"):""}n[r]=t}(window,"o2q");
+
 (function($, panel) {
 
 $.fn.fire = $.fn.trigger;
@@ -252,24 +276,6 @@ $doc.on("click", function() {
 });
 
 
-// <https://stackoverflow.com/a/18639999/1163000>
-win.crc32=function(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];return(-1^n)>>>0};
-
-// <https://stackoverflow.com/a/16861050/1163000>
-win._c170e1f9 = function(url, name, width, height) { // `window.open`
-    width = width || screen.width * .8;
-    height = height || screen.height * .8;
-    var dualScreenLeft = 'screenLeft' in win ? win.screenLeft : win.screenX,
-        dualScreenTop = 'screenTop' in win ? win.screenTop : win.screenY,
-        w = win.innerWidth || html.clientWidth || screen.width,
-        h = win.innerHeight || html.clientHeight || screen.height,
-        left = ((w / 2) - (width / 2)) + dualScreenLeft,
-        top = ((h / 2) - (height / 2)) + dualScreenTop,
-        newWindow = win.open(url, name, 'menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
-    win.focus && newWindow.focus();
-    return newWindow;
-};
-
 // Live notification(s)
 var $notify = $('.nav li.li\\:message a');
 function notify() {
@@ -284,6 +290,7 @@ function notify() {
         setTimeout(notify, 10000);
     });
 } notify();
+
 
 // Hide message with time-out
 var $messages = $('.messages');

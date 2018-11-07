@@ -33,7 +33,7 @@ if ($x = HTTP::get('x')) {
         if (file_exists($path)) {
             Config::set('panel.nav.lot', [
                 'c' => 'g',
-                'path' => str_replace([LOT . DS, DS], ["", '/'], $path),
+                'path' => Path::R($path, LOT, '/'),
                 'query' => [
                     'tab' => ['data'],
                     'view' => false,

@@ -7,7 +7,11 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     }
     if (!array_key_exists('title', $in)) {
         global $language;
-        $in['title'] = $language->{$id};
+        $title = $language->{$id};
+        if ($title === $id) {
+            $title = $language->{ltrim($id, '._')};
+        }
+        $in['title'] = $title;
     }
     if (!array_key_exists('class[]', $attr)) {
         $attr['class[]'] = [];
@@ -132,6 +136,16 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
         $s .= '</span>';
     }
     return $s;
+}
+
+// TODO
+function _src($in) {
+    if (strpos($in, '%{') !== false) {
+        return \candy($in, \extend(['asset' => \To::url(ASSET)], \Lot::get(null, [])));
+    } else if (strpos($in, '[[') !== false) {
+        return $in; // TODO
+    }
+    return $in;
 }
 
 function _tools($tools, $path, $id, $i) {
@@ -337,7 +351,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $description = $in['description'] ?? null;
         $active = $in['active'] ?? false;
         $type = $in['type'] ?? 'textarea';
-        $value = $in['value'] ?? null;
+        $value = $in['value'] ?? \HTTP::get('f.' . str_replace(['[', ']'], ['.', ""], $k), null, false) ?? null;
         $values = (array) ($in['values'] ?? []);
         $placeholder = $in['placeholder'] ?? $value;
         $pattern = $in['pattern'] ?? null;
@@ -595,6 +609,9 @@ function nav_li($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
     }
+    if (isset($in['type']) && $in['type'] === '|') {
+        return \HTML::unite('li', '&zwnj;', ['class[]' => ['separator']]);
+    }
     $in = _init($in, $attr, 'li', $id, $i);
     if (!array_key_exists('active', $in)) {
         global $panel, $url;
@@ -642,15 +659,15 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
         ]
     ]);
     $out  = '<figure>';
-    $out .= '<img alt="" src="' . ($page->has('image') ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
+    $out .= '<img alt="" src="' . _src($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
     $out .= '</figure>';
     $out .= '<header>';
     $out .= '<h3 class="title">';
-    $out .= $page->url ? '<a href="' . $page->url . '">' . $page->title . '</a>' : '<span>' . $page->title . '</span>';
+    $out .= $page->url ? '<a href="' . $page->url . '" target="_blank">' . $page->title . '</a>' : '<span>' . $page->title . '</span>';
     $out .= '</h3>';
     $out .= '</header>';
     $out .= '<div>';
-    $out .= '<p class="description">' . \To::description($page->description ?: "", true, $panel->state->page->snippet) . '</p>';
+    $out .= '<p class="description">' . \To::snippet($page->description ?: "", true, $panel->state->page->snippet) . '</p>';
     $tools && $out .= _tools($tools, $path, $id, $i);
     $out .= '</div>';
     return \HTML::unite('li', $out, $attr);

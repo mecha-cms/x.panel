@@ -1,10 +1,5 @@
 <?php
 
-if (HTTP::get('window')) {
-    Set::get('header', false);
-    Set::get('nav', false);
-}
-
 // No `nav` key in URL query or has `nav` key in URL query with value of boolean `true`
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
@@ -171,12 +166,12 @@ Config::set('panel.$.page.tools', [
         'data' => function($file) {
             return [
                 'hidden' => !glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
-                'path' => Path::R($file, LOT, '/') . '/1'
+                'path' => Path::R(Path::F($file), LOT, '/') . '/1'
             ];
         },
         'title' => false,
         'description' => $language->enter . ': ' . $language->pages,
-        'icon' => [['M5,3C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3H5M5,5H19V19H5V5M7,7V9H17V7H7M7,11V13H17V11H7M7,15V17H14V15H7Z']],
+        'icon' => [['M15.5,2C13,2 11,4 11,6.5C11,9 13,11 15.5,11C16.4,11 17.2,10.7 17.9,10.3L21,13.4L22.4,12L19.3,8.9C19.7,8.2 20,7.4 20,6.5C20,4 18,2 15.5,2M4,4A2,2 0 0,0 2,6V20A2,2 0 0,0 4,22H18A2,2 0 0,0 20,20V15L18,13V20H4V6H9.03C9.09,5.3 9.26,4.65 9.5,4H4M15.5,4C16.9,4 18,5.1 18,6.5C18,7.9 16.9,9 15.5,9C14.1,9 13,7.9 13,6.5C13,5.1 14.1,4 15.5,4Z']],
         'c' => 'g',
         'stack' => 9.9
     ],
