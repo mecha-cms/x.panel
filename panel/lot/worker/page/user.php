@@ -6,10 +6,12 @@ require __DIR__ . DS . 'page.php';
 Config::set('panel.desk.body.tabs.art.hidden', true);
 
 // Modify default page field(s)
+Config::set('panel.$.slug', ['page[$]:slug']);
 Config::set('panel.desk.body.tabs', [
     'file' => [
         'fields' => [
             'page[title]' => null,
+            'page[description]' => null,
             'page[$]' => [
                 'key' => 'name',
                 'type' => 'text',
@@ -17,26 +19,49 @@ Config::set('panel.desk.body.tabs', [
                 'width' => true,
                 'stack' => 10
             ],
+            'slug' => [
+                'key' => 'key',
+                'description' => 'User key without the <code>@</code> prefix.',
+                'width' => false,
+                'hidden' => $c === 'g',
+                'stack' => 10.1
+            ],
+            'data[pass]' => $c === 's' ? [
+                'key' => 'pass',
+                'type' => 'pass',
+                'width' => false,
+                'stack' => 10.2
+            ] : null,
             'page[email]' => [
                 'key' => 'email',
                 'type' => 'email',
                 'value' => $page->email,
                 'width' => true,
-                'stack' => 10.1
-            ],
-            'page[description]' => [
-                'stack' => 10.2
-            ],
-            'page[content]' => [
-                'title' => 'Biography',
                 'stack' => 10.3
             ],
-            'page[type]' => [
-                'stack' => 10.4
-            ],
-            'tags' => ['hidden' => true],
-            'slug' => ['hidden' => true]
+            'page[content]' => ['stack' => 10.4],
+            'page[type]' => ['stack' => 10.5],
+            'tags' => ['hidden' => true]
         ]
+    ],
+    'status' => [
+        'fields' => [
+            'page[status]' => [
+                'key' => 'status',
+                'type' => 'radio[]',
+                'value' => $page->status,
+                'view' => 'block',
+                'values' => [
+                    '-1' => 'Banned',
+                    '0' => 'Pending',
+                    '1' => 'Administrator',
+                    '2' => 'Contributor',
+                    '3' => 'Member'
+                ],
+                'stack' => 10
+            ]
+        ],
+        'stack' => 10.01
     ]
 ]);
 

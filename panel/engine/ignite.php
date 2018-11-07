@@ -7,7 +7,7 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     }
     if (!array_key_exists('title', $in)) {
         global $language;
-        $in['title'] = $language->{strpos($id, '.') === 0 ? substr($id, 1) : $id};
+        $in['title'] = $language->{$id};
     }
     if (!array_key_exists('class[]', $attr)) {
         $attr['class[]'] = [];
@@ -379,12 +379,12 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
             $out .= \Form::select($key, $values, $value, $alt);
         } else if ($type === 'radio[]') {
             $alt['class[]'][] = 'input';
-            $out .= '<span class="inputs ' . ($in['layout'] ?? 'span') . '">';
+            $out .= '<span class="inputs ' . ($in['view'] ?? 'span') . '">';
             $out .= \Form::radio($key, $values, $value, $alt);
             $out .= '</span>';
         } else if ($type === 'toggle[]') {
             $alt['class[]'][] = 'input';
-            $out .= '<span class="inputs ' . ($in['layout'] ?? 'span') . '">';
+            $out .= '<span class="inputs ' . ($in['view'] ?? 'span') . '">';
             $a = [];
             foreach ($values as $k => $v) {
                 // $v = [$text, $checked ?? false, $value ?? 1]

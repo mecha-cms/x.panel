@@ -36,12 +36,12 @@ if ($c !== 'r') {
             }
             Guardian::kick($def);
         } else {
-            echo error('Task <code>' . $task . '</code> not found.');
+            echo fail('Task <code>' . $task . '</code> not found.');
             exit;
         }
     // `POST`
     } else if (!HTTP::is('post')) {
-        echo error('Method not allowed.');
+        echo fail('Method not allowed.');
         exit;
     }
 // `GET`

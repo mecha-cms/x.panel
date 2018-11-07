@@ -114,8 +114,8 @@ if ($tabs.length) {
 
 var $navs = $('.nav');
 
-panel.nav = $navs;
 panel.navs = $navs;
+panel.nav = $navs.first();
 
 if ($navs.length) {
     $uls = $navs.find('ul ul');
@@ -127,6 +127,8 @@ if ($navs.length) {
             $target.addClass('enter').parent().addClass('active')
                 .siblings().find('ul.enter').removeClass('enter').parent('li.active').removeClass('active');
         }
+        $menus.fire('menu:exit', [$source, null]);
+        // console.log(['nav:enter', $source, null]);
     });
     $navs.on('nav:exit', function(e, $source, $target) {
         $uls.removeClass('enter').parent().removeClass('active');
@@ -143,69 +145,6 @@ if ($navs.length) {
                     return false;
                 });
             }
-        });
-    });
-    $doc.on("click", function() {
-        $navs.fire('nav:exit', [null, null]);
-    });
-}
-
-var $layers = $('.layers'),
-    $aLayers = $('.a-layers'); // TODO
-
-panel.layers = $layers;
-panel.aLayers = $aLayers; // TODO
-
-if ($layers.length) {
-    $layers.on('layer:change', function(e, $source, $target) {
-        $target.addClass('active').siblings().removeClass('active');
-        $focus = $target.find(focusable_class);
-        $focus.length && $focus.focus();
-    });
-    $layers.each(function() {
-        var $this = $(this),
-            $c = $this.children('.layer'),
-            $a = $this.find('.a-layer');
-        $this.addClass('size-' + $c.length);
-        $a.on("click", function() {
-            var $source = $(this),
-                $target = $(this.hash.replace(/[:]/g, '\\$&')),
-                $old = $c.filter('.active');
-            if ($target.length) {
-                $target.fire('layer:enter', [$source, $target]);
-                $target.fire('layer:exit', [$source, $old]);
-                $target.fire('layer:change', [$source, $target]);
-                return false;
-            }
-        });
-    });
-}
-
-if ($aLayers.length) {
-    $aLayers.each(function() {
-        var $this = $(this),
-            $target = $(this.hash.replace(/[:]/g, '\\$&')),
-            $c = $target.children('.layer');
-        if (!$target.length || $c.length < 2) {
-            $this.addClass('disabled');
-        }
-        if (!$c.filter('.active').length) {
-            $c.first().addClass('active');
-        }
-        $this.on("click", function() {
-            var $source = $(this);
-            if ($source.is('.disabled')) {
-                return false;
-            }
-            var $old = $c.filter('.active'),
-                $next = $old.next('.layer');
-            if (!$next.length) {
-                $next = $c.first();
-            }
-            $target.fire('layer:exit', [$source, $old]);
-            $target.fire('layer:enter', [$source, $next]);
-            $target.fire('layer:change', [$source, $next]);
-            return false;
         });
     });
 }
@@ -280,15 +219,18 @@ var $menus = $('.menus');
 panel.menus = $menus;
 
 if ($menus.length) {
-    $doc.on("click", function() {
-        $menus.prop('hidden', true).removeClass('enter');
-    });
-    $menus.on('menu:enter', function(e, $source) {
-        var offset = $source.offset();
-        $(this).css({
+    $menus.on('menu:enter', function(e, $source, $target) {
+        var $this = $(this),
+            offset = $source.offset();
+        $this.css({
             top: offset.top,
             left: offset.left
         });
+        $navs.fire('nav:exit', [$source, null]);
+        // console.log(['menu:enter', $source, null]);
+    });
+    $menus.on('menu:exit', function(e, $source) {
+        $menus.prop('hidden', true).removeClass('enter');
     });
     $menus.each(function() {
         var $this = $(this),
@@ -301,6 +243,13 @@ if ($menus.length) {
         }
     });
 }
+
+
+// Exit on click-outside
+$doc.on("click", function() {
+    $menus.fire('menu:exit', [null, null]);
+    $navs.fire('nav:exit', [null, null]);
+});
 
 
 // <https://stackoverflow.com/a/18639999/1163000>

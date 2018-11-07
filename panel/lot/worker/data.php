@@ -21,8 +21,7 @@ Config::set('panel.desk.body.tabs.file.fields', [
 
 // Modify back menu destination
 if ($x = HTTP::get('x')) {
-    Hook::set('on.ready', function() use($c, $language, $panel, $x) {
-        $path = trim($panel->id . '/' . $panel->path, '/');
+    Hook::set('on.ready', function() use($c, $language, $panel, $path, $x) {
         if ($c === 'g') {
             Config::set('panel.nav.s', [
                 'description' => $language->new__($language->data, true),
@@ -31,10 +30,10 @@ if ($x = HTTP::get('x')) {
             $path = dirname($path);
         }
         $path .= '.' . $x;
-        if (file_exists(LOT . DS . $path)) {
+        if (file_exists($path)) {
             Config::set('panel.nav.lot', [
                 'c' => 'g',
-                'path' => $path,
+                'path' => str_replace([LOT . DS, DS], ["", '/'], $path),
                 'query' => [
                     'tab' => ['data'],
                     'view' => false,

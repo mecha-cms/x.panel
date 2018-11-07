@@ -5,6 +5,7 @@ if (HTTP::get('window')) {
     Set::get('nav', false);
 }
 
+// No `nav` key in URL query or has `nav` key in URL query with value of boolean `true`
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
     Hook::set('on.ready', function() {
@@ -28,7 +29,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             foreach ($folders as $v) {
                 $n = basename($v);
                 if (strpos('._', $n[0]) !== false) {
-                    continue;
+                    continue; // Skip hidden folder(s)
                 }
                 $links[$n] = [
                     'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
@@ -48,82 +49,6 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'kind' => ['inverse'],
             'stack' => 10
         ]);
-
-        if (!$item_view) {
-
-            $i = 0;
-            $links = [];
-            foreach (glob(EXTEND . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
-                $directory = Path::F(dirname($v), LOT, '/');
-                $n = basename($directory);
-                if (strpos('._', $n[0]) !== false) {
-                    continue;
-                }
-                $f = dirname($v);
-                $f = File::exist([
-                    $f . DS . 'about.page',
-                    $f . DS . 'about.' . $config->language . '.page'
-                ]);
-                $title = Page::open($f)->get('title', $n);
-                $links[$title] = [
-                    'title' => $title,
-                    'icon' => [""],
-                    'path' => $directory . '/1'
-                ];
-            }
-            ksort($links);
-            $links_a = [];
-            foreach ($links as $v) {
-                $v['stack'] = 10 + $i;
-                $links_a[basename(dirname($v['path']))] = $v;
-                $i += .1;
-            }
-
-            Config::set('panel.nav.lot.+.extend.+', $links_a);
-
-            $i = 0;
-            $links = [];
-            foreach (glob(EXTEND . DS . 'plugin' . DS . 'lot' . DS . 'worker' . DS . '*' . DS . 'index.php', GLOB_NOSORT) as $v) {
-                $directory = Path::F(dirname($v), LOT, '/');
-                $n = basename($directory);
-                if (strpos('._', $n[0]) !== false) {
-                    continue;
-                }
-                $f = dirname($v);
-                $f = File::exist([
-                    $f . DS . 'about.page',
-                    $f . DS . 'about.' . $config->language . '.page'
-                ]);
-                $title = Page::open($f)->get('title', Path::N($directory));
-                $links[$title] = [
-                    'title' => $title,
-                    'icon' => [""],
-                    'path' => $directory . '/1'
-                ];
-            }
-            ksort($links);
-            $links_a = [];
-            foreach ($links as $v) {
-                $v['stack'] = 10 + $i;
-                $links_a[basename(dirname($v['path']))] = $v;
-                $i += .1;
-            }
-
-            Config::set('panel.nav.lot.+.extend.+.plugin.+', $links_a);
-
-        } else if ($panel->c === 'g') {
-
-            Config::set('panel.nav.s', [
-                'title' => false,
-                'description' => $language->new__($language->{$id}, true),
-                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
-                'path' => dirname($path),
-                'c' => 's',
-                'query' => HTTP::get(null, []),
-                'stack' => 10.09
-            ]);
-
-        }
 
         Config::set('panel.nav.search', [
             'content' => fn\panel\nav_li_search([
@@ -185,6 +110,18 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'stack' => 10.2
         ]);
 
+        if ($item_view && $c === 'g') {
+            Config::set('panel.nav.s', [
+                'title' => false,
+                'description' => $language->new__($language->{$id}, true),
+                'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
+                'path' => dirname($path),
+                'c' => 's',
+                'query' => HTTP::get(null, []),
+                'stack' => 10.09
+            ]);
+        }
+
         if (HTTP::get('q')) {
             Config::set('panel.nav.lot', [
                 'description' => $language->clear,
@@ -234,7 +171,7 @@ Config::set('panel.$.page.tools', [
         'data' => function($file) {
             return [
                 'hidden' => !glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
-                'path' => Path::F($file, LOT, '/') . '/1'
+                'path' => Path::R($file, LOT, '/') . '/1'
             ];
         },
         'title' => false,
@@ -247,7 +184,7 @@ Config::set('panel.$.page.tools', [
         'data' => function($file) {
             return [
                 'hidden' => !!glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
-                'path' => Path::F($file, LOT, '/')
+                'path' => Path::R($file, LOT, '/')
             ];
         },
         'title' => false,

@@ -1,7 +1,9 @@
 <?php
 
+Config::set('panel.form', true);
+
 $c = $panel->c;
-$path = LOT . DS . $panel->id . DS . $panel->path;
+$path = rtrim(LOT . DS . $panel->id . DS . $panel->path, DS);
 $is_file = is_file($path) ? mime_content_type($path) : "";
 $is_file_text = $is_file && (strpos($is_file, 'text/') === 0 || strpos($is_file, 'application/') === 0);
 

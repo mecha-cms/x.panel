@@ -4,6 +4,9 @@ type: YAML
 
 back: Back
 
+".message": Message
+".messages": Messages
+
 message_info_search: Search results for <em>%{0}%</em>
 
 sort:

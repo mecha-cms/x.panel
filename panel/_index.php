@@ -27,10 +27,10 @@ if ($tok && Guardian::check($tok)) {
     require $worker . 'worker' . DS . 'task.php';
     require $worker . 'worker' . DS . 'h-t-t-p.php';
 } else if (HTTP::is('post')) {
-    echo error('Invalid token.');
+    echo fail('Invalid token.');
     exit;
 } else if ($c === 'a' || $c === 'r') {
-    echo error('Invalid token.');
+    echo fail('Invalid token.');
     exit;
 }
 

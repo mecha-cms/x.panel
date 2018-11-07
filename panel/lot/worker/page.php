@@ -102,7 +102,7 @@ if ($c === 'g' && glob(Path::F($page->path) . DS . '*.{draft,page,archive}', GLO
                 'stack' => 10.1
             ]
         ],
-        'stack' => 10.05
+        'stack' => 10.01
     ]);
 }
 
