@@ -39,7 +39,6 @@ if ($f = File::exist($worker . $panel->v . DS . '$.php')) require $f;
 if ($f = File::exist($worker . $panel->v . DS . $id . '.php')) require $f;
 
 // User
-$user = new User(USER . DS . substr($user, 1) . '.page');
 $worker_user = $worker . $panel->v . DS . 'user' . DS . $user->status . DS;
 if ($f = File::exist($worker_user . '$.php')) require $f;
 if ($f = File::exist($worker_user . $id . '.php')) require $f;

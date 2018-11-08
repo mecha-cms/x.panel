@@ -23,6 +23,6 @@ $c = str_replace('::', "", array_shift($chops));
 $id = array_shift($chops);
 $path = implode('/', $chops);
 
-if ($r === $p && $user = Is::user()) {
+if ($r === $p && Is::user()) {
     require __DIR__ . DS . '_index.php';
 }

@@ -10,14 +10,14 @@ Config::set('panel.$.page.tools', [
     'r' => [
         'data' => function($file) use($user) {
             return [
-                'x' => Path::N($file) === substr($user, 1)
+                'x' => '@' . Path::N($file) === $user->key
             ];
         }
     ],
     'exit' => [
         'data' => function($file) use($user) {
             return [
-                'x' => Path::N($file) === substr($user, 1),
+                'x' => '@' . Path::N($file) === $user->key,
                 'hidden' => !file_exists(Path::F($file) . DS . 'token.data'),
                 'description' => 'Force log out @' . Path::N($file),
                 'task' => '950abfd9'

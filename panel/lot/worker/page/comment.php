@@ -44,7 +44,6 @@ Config::set('panel.desk.body.tabs', [
     ]
 ]);
 
-Hook::set('on.ready', function() {
-    extract(Lot::get(null, []));
+Hook::set('on.ready', function() use($user) {
     Config::set('panel.desk.body.tabs.file.fields.page[author].value', $user->key);
 });
