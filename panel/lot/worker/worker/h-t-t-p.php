@@ -27,7 +27,10 @@ if ($c !== 'r') {
             require $gate_alt;
         }
         // Run task
-        if (function_exists($task = '_' . $a)) {
+        if (!$a) {
+            echo fail('Missing task ID.');
+            exit;
+        } else if (function_exists($task = '_' . $a)) {
             $lot = (array) HTTP::get('lot', []);
             array_unshift($lot, $file);
             $def = str_replace('::a::', '::g::', dirname($url->current) . '/1');

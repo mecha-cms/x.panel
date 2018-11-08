@@ -42,7 +42,6 @@
   position:fixed;
   right:(@x * .5);
   bottom:(@y * .5);
-  font-size:(@z - @sizer);
   z-index:9999;
   visibility:visible;
   opacity:1;
@@ -50,14 +49,13 @@
   &.exit {
     visibility:hidden;
     opacity:0;
-    bottom:(@y * -5);
   }
 }
 .message {
   background:#666;
   color:@color_inverse;
   padding:(@y * .25) (@x * .5);
-  .box-shadow(0 10px 10px -5px rgba(0,0,0,.5));
+  .box-shadow(0 5px 5px -1px rgba(0,0,0,.5));
   .icon {
     .margin-icon;
   }

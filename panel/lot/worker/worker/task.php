@@ -61,7 +61,6 @@ function _950abfd9($file) {
     \File::open(\Path::F($file) . DS . 'token.data')->delete();
     $state = \Extend::state('user');
     \Message::success('user_exit');
-    return ['kick' => $state['_path'] ?? $state['path']];
 }
 
 // `ajax count files`

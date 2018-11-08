@@ -21,9 +21,9 @@ Config::set('panel.desk.body.tabs', [
             ],
             'slug' => [
                 'key' => 'key',
+                'type' => $c === 'g' ? 'hidden' : 'text',
                 'description' => 'User key without the <code>@</code> prefix.',
                 'width' => false,
-                'hidden' => $c === 'g',
                 'stack' => 10.1
             ],
             'data[pass]' => $c === 's' ? [
