@@ -2,6 +2,11 @@
 
 require __DIR__ . DS . 'file.php';
 
+$f = LOT . DS . $id . DS . $panel->path;
+if ($c === 's' && is_file($f)) {
+    Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
+}
+
 // Remove folder and blob tab(s)
 Config::reset('panel.desk.body.tabs.folder');
 Config::reset('panel.desk.body.tabs.blob');
@@ -16,6 +21,10 @@ Config::set('panel.desk.body.tabs.file.fields', [
         'type' => 'hidden',
         'value' => 'data',
         'stack' => 0
+    ],
+    'file[consent]' => [
+        'type' => 'hidden',
+        'value' => '0600'
     ]
 ]);
 

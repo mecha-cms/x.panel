@@ -70,7 +70,6 @@ Config::set('panel.desk.body.tabs.file', [
         ],
         'file[consent]' => [
             'type' => 'hidden',
-            'hidden' => false,
             'value' => '0600'
         ]
     ],

@@ -5,6 +5,9 @@ type: YAML
 back: Back
 recent: Recent
 
+-message: Message
+-messages: Messages
+
 message_info_search: Search results for <em>%{0}%</em>
 
 sort:
