@@ -1,14 +1,14 @@
 <?php
 
-if (strpos($path, '/') === false) {
+if (!$chops) {
     $files = array_keys(File::explore([COMMENT, 'draft,page,archive'], true));
     usort($files, function($a, $b) {
         return basename($b) <=> basename($a);
     });
-    $files = array_slice($files, 0, $panel->state->page->chunk);
+    $files = array_slice($files, 0, $state['page']['chunk']);
     Hook::set('page.image', function($image) {
         $comment = new Comment($this->path);
-        return $image ?: $comment->avatar ?: $GLOBALS['URL']['protocol'] . 'www.gravatar.com/avatar/' . md5($comment->email) . '?s=72&amp;d=monsterid';
+        return $image ?: $comment->avatar(72, 72, 'monsterid') ?: $GLOBALS['URL']['protocol'] . 'www.gravatar.com/avatar/' . md5($comment->email) . '?s=72&amp;d=monsterid';
     });
     Hook::set('page.url', function($title) {
         return (new Comment($this->path))->url . "";
@@ -16,11 +16,11 @@ if (strpos($path, '/') === false) {
     Hook::set('page.title', function($title) {
         return (new Comment($this->path))->author . "";
     });
-    Hook::set('page.description', function($title) use($panel) {
-        return To::snippet(Page::apart($this->path, 'content'), true, $panel->state->page->snippet);
+    Hook::set('page.description', function($title) use($state) {
+        return To::snippet(Page::apart($this->path, 'content'), true, $state['page']['snippet']);
     });
-    Config::set('panel.$.page.tools.s', [
-        'data' => function($file) {
+    Config::set('panel.+.page.tool.s', [
+        'if' => function($file): array {
             return [
                 'path' => Path::R(dirname($file), LOT, '/'),
                 'query' => [
@@ -28,12 +28,12 @@ if (strpos($path, '/') === false) {
                 ]
             ];
         },
-        'description' => $language->reply,
+        'description' => $language->do_reply,
         'icon' => [['M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z']]
     ]);
     Config::reset('panel.desk.header');
-    Config::set('panel.desk.body.tabs.recent', [
+    Config::set('panel.desk.body.tab.recent', [
         'content' => fn\panel\pages($files),
-        'stack' => 9
+        'stack' => 9.9
     ]);
 }
