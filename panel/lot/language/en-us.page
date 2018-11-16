@@ -3,16 +3,72 @@ type: YAML
 ...
 
 back: Back
+
+do_archive: Archive # verb of `archive`
+do_empty_trash: Empty the Trash
+do_empty_cache: Refresh Cache
+
+height: Height
+
 recent: Recent
 
--message: Message
--messages: Messages
+o_message_info_comment_set:
+  title: New Comment
+  description: New comment has been added.
 
-message_info_search: Search results for <em>%{0}%</em>
+o_page_editor: []
+o_page_type:
+  HTML: HTML
+
+o_page_status:
+  -1: Banned
+  0: Pending
+  1: Primary
+  2: Secondary
+  3: Member
+
+field_description_key_user: User key without the <code>@</code> prefix.
+
+field_hint_directory: foo/bar/baz
+field_hint_file_consent: 0777
+field_hint_file_content: Content goes here…
+field_hint_key: key_here
+field_hint_name: name.txt
+field_hint_page_css: CSS goes here…
+field_hint_page_description: Description goes here…
+field_hint_page_description__: Description about this %{0}% (optional).
+field_hint_page_js: JavaScript goes here…
+field_hint_page_query: foo, bar, baz
+field_hint_page_title: Title Here
+field_hint_slug: slug-here
+
+"field_hint_:": key: value
 
 sort:
   - Sort
   - By
 
-o_page_types:
-  HTML: HTML
+view_site: View
+
+width: Width
+
+message_error_feature_get: You don’t have permission to access this feature.
+message_error_file_delete: You can’t delete this file.
+message_error_file_void: Please select a file.
+message_error_folder_delete: You can’t delete this folder.
+message_error_page_image_blob: Please select an image file.
+message_error_user_x: User %{0}% has been banned.
+message_error_void_field: Please fill out the %{0}% field.
+
+message_info_search: Search results for <em>%{0}%</em>
+
+message_success_empty_cache: The cache folder has been refreshed successfully.
+message_success_empty_trash: The trash folder has been cleaned successfully.
+message_success_extend_do: Extension %{0}% has been %{1}% successfully.
+message_success_language_set: The interface language has been successfully set to %{0}%.
+message_success_move: Moved to <a href="%{1}%">%{0}%</a>.
+message_success_plugin_do: Plugin %{0}% has been %{1}% successfully.
+message_success_shield_set: Current theme has been successfully set to %{0}%.
+
+.message: Message
+.messages: Messages

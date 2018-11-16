@@ -4,36 +4,24 @@
   .p2;
   margin:0 auto;
   &::before,
-  &::after {
-    .clear;
-  }
-  > header {
-    .m2b;
-  }
+  &::after {.clear}
+  > header {.m2b}
   > footer {
     .m2t;
-    > .tools {
-      margin-left:(@x * 5);
-    }
+    > .tools {margin-left:(@x * 5)}
   }
   @media (max-width:@view-mobile) {
     .p1;
-    > header {
-      .m1b;
-    }
+    > header {.m1b}
     > footer {
       .m1t;
-      > .tools {
-        margin-left:0;
-      }
+      > .tools {margin-left:0}
     }
   }
 }
 
 // @container
-.container {
-  .p1;
-}
+.container {.p1}
 
 // @message
 .messages {
@@ -50,24 +38,28 @@
     visibility:hidden;
     opacity:0;
   }
+  &--static .message {.box-shadow(0 1px 2px rgba(0,0,0,.4))}
 }
 .message {
   background:#666;
   color:@color_inverse;
   padding:(@y * .25) (@x * .5);
   .box-shadow(0 5px 5px -1px rgba(0,0,0,.5));
-  .icon {
-    .margin-icon;
-  }
+  .icon {.margin-icon}
   &-error {background:#c14}
   &-info {background:#78a}
   &-success {background:#690}
-  .title {
-    font:inherit;
+  .title {color:inherit}
+  p,.links {margin:(@y * .25) 0 0}
+  a {
     color:inherit;
-    font-weight:bold;
+    opacity:.6;
+    &:focus:not(.x),
+    &:hover:not(.x) {
+      color:inherit;
+      opacity:1;
+    }
   }
-  p {margin:(@y * .25) 0 0}
   + .message {margin-top:(@y * .5)}
 }
 
@@ -76,12 +68,8 @@
 .js .layer {display:none}
 .layer,
 .js .layer.active {display:block}
-.layer + .layer {
-  .m1t;
-}
-.js .layer + .layer {
-  .m0t;
-}
+.layer + .layer {.m1t}
+.js .layer + .layer {.m0t}
 
 // @form (full page)
 html.form,
@@ -120,9 +108,7 @@ html.form body form {
   }
   ul {
     height:(@y * 2);
-    ul {
-      .menus;
-    }
+    ul {.menus}
   }
   li {
     float:left;
@@ -136,9 +122,7 @@ html.form body form {
     }
     &.inverse {
       .color-html;
-      a {
-        .color-a;
-      }
+      a {.color-a}
       &.active > a:not(.x) {
         position:relative;
         z-index:9999; /* must be greater than `.nav > ul > li > ul` */
@@ -217,16 +201,12 @@ html:not(.js) .nav li:focus-within > ul {display:block}
 .footer {
   .p2;
   .p0t;
-  .desk & {
-    .p0;
-  }
+  .desk & {.p0}
   @media (max-width:@view-mobile) {
     .p1;
     .p0t;
   }
-  &::after {
-    .clear;
-  }
+  &::after {.clear}
   .right,
   .left {margin:0}
 }

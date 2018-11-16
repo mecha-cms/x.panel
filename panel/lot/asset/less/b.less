@@ -5,9 +5,7 @@ a,
 .input,
 .select,
 .textarea {
-  &.x {
-    .disabled;
-  }
+  &.x {.disabled}
 }
 
 // @icon
@@ -44,9 +42,7 @@ a,
   &.left {margin-right:(@x * .25)}
 }
 
-.button .icon {
-  .margin-icon;
-}
+.button .icon {.margin-icon}
 
 // @loading
 .loading {
@@ -82,9 +78,7 @@ a,
 .links,
 .links li {
   .list-reset;
-  &::after {
-    .clear;
-  }
+  &::after {.clear}
   li {
     .left;
     &::after {
@@ -96,14 +90,13 @@ a,
       .m0r;
       &::after {display:none}
     }
+    .text-special;
   }
 }
 /* .tools > .button */
 .tools {
   display:block;
-  &::after {
-    .clear;
-  }
+  &::after {.clear}
   br {
     display:block;
     clear:both;
@@ -122,15 +115,11 @@ a,
 ol.tools,
 ol.tools li,
 ul.tools,
-ul.tools li {
-  .list-reset;
-}
+ul.tools li {.list-reset}
 ol.tools li,
 ul.tools li {
   .left;
-  &:last-child {
-    .m0r;
-  }
+  &:last-child {.m0r}
   a {
     display:block;
     > span {
@@ -144,9 +133,7 @@ ul.tools li {
 .traces li {
   .list-reset;
   &::before,
-  &::after {
-    .clear;
-  }
+  &::after {.clear}
   li {
     .left;
     &::after {
@@ -214,9 +201,7 @@ ul.tools li {
   .active > a {background:@color-list_hover}
   .active > a:focus:not(.x),
   .active > a:hover:not(.x) {background:darken(@color-list_hover, 5%)}
-  .icon {
-    .margin-icon;
-  }
+  .icon {.margin-icon}
 }
 
 // @align
@@ -279,6 +264,15 @@ img.align-center {
   width:100%;
   position:relative;
   &.expand > label {display:none}
+  &.required > label:not(:empty)::before {
+    content:'*';
+    font-size:(@z - @sizer);
+    display:inline;
+    position:relative;
+    vertical-align:middle;
+    top:-.5em;
+    color:@color_error;
+  }
   > label {
     display:table-cell;
     vertical-align:top;
@@ -292,6 +286,7 @@ img.align-center {
     + br + div {
       display:table-cell;
       vertical-align:top;
+      position:relative;
     }
     + br {display:none}
   }
@@ -318,12 +313,30 @@ img.align-center {
     &.expand > label {display:block}
   }
   .hints {
-    display:block;
+    position:absolute;
+    bottom:100%;
+    left:0;
     padding:0 (@x * .5);
-    margin:(@y * .25) 0 0;
+    margin:0;
     font-size:(@z - (@sizer * 2));
-    background:@color-hints;
+    background:@color;
+    border-color:@color;
+    color:@color_inverse;
+    .box-shadow;
+    display:none;
+    &::before {
+      content:"";
+      display:block;
+      width:0;
+      height:0;
+      border:5px solid transparent;
+      position:absolute;
+      top:100%;
+      left:(@x * .5);
+      border-top-color:inherit;
+    }
   }
+  *:focus + .hints {display:block}
 }
 .inputs {
   display:block;
@@ -424,9 +437,7 @@ img.align-center {
     }
   }
   > section {
-    + section {
-      .m1t;
-    }
+    + section {.m1t}
   }
 }
 .js .tabs > section {
@@ -437,9 +448,7 @@ img.align-center {
 .js .tabs.size-0 {display:none}
 .js .tabs.size-1 {
   > nav {display:none}
-  > section {
-    .m0t;
-  }
+  > section {.m0t}
 }
 html:not(.js) .tabs > nav {display:none}
 html:not(.js) .tabs > section[data-title]::before,
@@ -607,9 +616,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
 // @pager
 .pager {
   &::after,
-  & > span::after {
-    .clear;
-  }
+  & > span::after {.clear}
   > span,
   > span > a,
   > span > b,
@@ -629,7 +636,10 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
       background:@color-a;
       color:@color_inverse;
       .box-shadow(0 1px 1px rgba(0,0,0,.25));
-      &:focus:not(.x) {background:@color-a_inverse}
+      &:focus:not(.x) {
+        background:@color-a_inverse;
+        color:@color_inverse;
+      }
     }
     > b,
     > span {

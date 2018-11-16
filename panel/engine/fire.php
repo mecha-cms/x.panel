@@ -1,13 +1,15 @@
 <?php
 
+$query = HTTP::get('q');
+
 // No `nav` key in URL query or has `nav` key in URL query with value of boolean `true`
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
-    Hook::set('on.ready', function() {
+    Hook::set('on.ready', function() use($query) {
 
         extract(Lot::get(null, []));
 
-        $item_view = has(['file', 'page', 'data'], $panel->v);
+        $item_view = Config::get('panel.+.form.editor');
 
         $c = $panel->c;
         $id = $panel->id;
@@ -23,8 +25,8 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             $links = [];
             foreach ($folders as $v) {
                 $n = basename($v);
-                if ($n[0] === '-') {
-                    continue; // Skip folder with name prefixed by a `-`
+                if (strpos('._', $n[0]) !== false) {
+                    continue; // Skip hidden folder(s)
                 }
                 $links[$n] = [
                     'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
@@ -47,7 +49,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         Config::set('panel.nav.search', [
             'content' => fn\panel\nav_li_search([
-                'title' => $language->{$id},
+                'title' => $language->{str_replace('.', "\\.", $id)},
                 'path' => $path . '/1'
             ], $id),
             'stack' => 10.1
@@ -57,7 +59,8 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         $active = strpos($path . '/', $path_user . '/') === 0;
         Config::set('panel.nav.site', [
             '+' => [
-                'config' => [
+                'state/config' => [
+                    'title' => $language->config,
                     'path' => 'state/config.php',
                     'icon' => [[$icons['config']]],
                     'stack' => 10
@@ -69,13 +72,13 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                         'g' => [
                             'title' => $language->edit,
                             'icon' => [['M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z']],
-                            'path' => $path_user . '/' . substr($user->key, 1) . '.page',
+                            'path' => $path_user . '/' . $user->slug . '.page',
                             'stack' => 10
                         ],
                         'exit' => [
                             'icon' => [['M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z']],
                             'active' => false,
-                            'path' => basename(USER) . '/' . substr($user->key, 1) . '.page',
+                            'path' => basename(USER) . '/' . $user->slug . '.page',
                             'task' => '950abfd9',
                             'stack' => 10.1
                         ]
@@ -83,6 +86,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                     'stack' => 10.2
                 ],
                 'view' => [
+                    'title' => $language->view_site,
                     'url' => "",
                     'icon' => [['M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z']],
                     'active' => false,
@@ -93,14 +97,14 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'stack' => 20
         ]);
 
-        $messages = glob(LOT . DS . '-message' . DS . '*.page', GLOB_NOSORT);
+        $messages = glob(LOT . DS . '.message' . DS . '*.page', GLOB_NOSORT);
         Config::set('panel.nav.message', [
             'title' => false,
             'i' => ($i = count($messages)),
             'description' => $i . ' ' . $language->{'message' . ($i === 1 ? "" : 's')},
             'icon' => [[$i > 0 ? 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z' : 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21']],
             'active' => $i > 0,
-            'path' => '-message',
+            'path' => '.message',
             'kind' => ['right'],
             'stack' => 10.2
         ]);
@@ -108,16 +112,19 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         if ($item_view && $c === 'g') {
             Config::set('panel.nav.s', [
                 'title' => false,
-                'description' => $language->new__($language->{$id}, true),
+                'description' => $language->new__($language->{str_replace('.', "\\.", $id)}, true),
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'path' => dirname($path),
                 'c' => 's',
-                'query' => HTTP::get(null, []),
+                'query' => [
+                    'tab' => ['file'],
+                    'tabs' => ['false']
+                ],
                 'stack' => 10.09
             ]);
         }
 
-        if (HTTP::get('q')) {
+        if ($query) {
             Config::set('panel.nav.lot', [
                 'description' => $language->clear,
                 'icon' => [['M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z']],
@@ -131,16 +138,16 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
 }
 
-if ($query = HTTP::get('q')) {
+if ($query) {
     Message::info('search', To::text($query));
     Lot::set('message', Message::get(null, false));
 }
 
-Config::set('panel.$.svg', require __DIR__ . DS . '..' . DS . 'lot' . DS . 'state' . DS . 'svg.php');
+Config::set('panel.+.svg', require __DIR__ . DS . '..' . DS . 'lot' . DS . 'state' . DS . 'svg.php');
 
-Config::set('panel.$.data.tools', []);
+Config::set('panel.+.data.tool', []);
 
-Config::set('panel.$.file.tools', [
+Config::set('panel.+.file.tool', [
     'g' => [
         'title' => false,
         'description' => $language->edit,
@@ -148,7 +155,8 @@ Config::set('panel.$.file.tools', [
         'c' => 'g',
         'stack' => 10
     ],
-    'r' => [
+    // Only user with status `1` that has delete access
+    'r' => $user->status === 1 ? [
         'title' => false,
         'description' => $language->delete,
         'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
@@ -158,15 +166,16 @@ Config::set('panel.$.file.tools', [
             'token' => $token,
         ],
         'stack' => 10.1
-    ]
+    ] : null
 ]);
 
-Config::set('panel.$.page.tools', [
+Config::set('panel.+.page.tool', [
     'enter' => [
-        'data' => function($file) {
+        'if' => function($file): array {
+            $f = Path::F($file);
             return [
-                'hidden' => !glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
-                'path' => Path::R(Path::F($file), LOT, '/') . '/1'
+                'hidden' => !glob($f . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
+                'path' => Path::R($f, LOT, '/') . '/1'
             ];
         },
         'title' => false,
@@ -176,10 +185,11 @@ Config::set('panel.$.page.tools', [
         'stack' => 9.9
     ],
     's' => [
-        'data' => function($file) {
+        'if' => function($file): array {
+            $f = Path::F($file);
             return [
-                'hidden' => !!glob(Path::F($file) . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
-                'path' => Path::R($file, LOT, '/')
+                'hidden' => !!glob($f . DS . '*{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT),
+                'path' => Path::R($f, LOT, '/')
             ];
         },
         'title' => false,
@@ -195,7 +205,8 @@ Config::set('panel.$.page.tools', [
         'c' => 'g',
         'stack' => 10
     ],
-    'r' => [
+    // Only user with status `1` that has delete access
+    'r' => $user->status === 1 ? [
         'title' => false,
         'description' => $language->delete,
         'icon' => [['M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z']],
@@ -205,5 +216,5 @@ Config::set('panel.$.page.tools', [
             'token' => $token,
         ],
         'stack' => 10.1
-    ]
+    ] : null
 ]);

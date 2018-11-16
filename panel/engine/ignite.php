@@ -7,11 +7,7 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     }
     if (!array_key_exists('title', $in)) {
         global $language;
-        $title = $language->{$id};
-        if ($title === $id) {
-            $title = $language->{ltrim($id, '._')};
-        }
-        $in['title'] = $title;
+        $in['title'] = $language->{str_replace('.', "\\.", $id)};
     }
     if (!array_key_exists('class[]', $attr)) {
         $attr['class[]'] = [];
@@ -138,24 +134,14 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
     return $s;
 }
 
-// TODO
-function _src($in) {
-    if (strpos($in, '%{') !== false) {
-        return \candy($in, \extend(['asset' => \To::url(ASSET)], \Lot::get(null, [])));
-    } else if (strpos($in, '[[') !== false) {
-        return $in; // TODO
-    }
-    return $in;
-}
-
 function _tools($tools, $path, $id, $i) {
     $path = strtr($path, '/', DS);
     $out = '<ul class="tools">';
     foreach ($tools as $k => $v) {
         if (!$v) continue;
-        if (isset($v['data']) && is_callable($v['data'])) {
-            $v = \extend($v, call_user_func($v['data'], $path, $v, $k, $id, $i));
-            unset($v['data']);
+        if (isset($v['if']) && is_callable($v['if'])) {
+            $v = \extend($v, call_user_func($v['if'], $path, $v, $k, $id, $i));
+            unset($v['if']);
         }
         if (_hidden($v)) {
             continue;
@@ -290,13 +276,18 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
         $out = $in['content'];
     } else {
         $out = "";
-        if (isset($in['files'])) {
+        if (isset($in['explore'])) {
             global $panel;
-            $out .= call_user_func(__NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
-        } else if (isset($in['tabs'])) {
-            $out .= tabs($in['tabs'], $id, [], $i);
-        } else if (isset($in['fields'])) {
-            $out .= fields($in['fields'], $id, [], $i);
+            $fn = __NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's';
+            if (is_callable($fn)) {
+                $out .= call_user_func($fn, $in['explore'], $id, [], $i);
+            } else {
+                $out .= call_user_func(__NAMESPACE__ . "\\files", $in['explore'], $id, [], $i);
+            }
+        } else if (isset($in['tab'])) {
+            $out .= tabs($in['tab'], $id, [], $i);
+        } else if (isset($in['field'])) {
+            $out .= fields($in['field'], $id, [], $i);
         }
     }
     $in = _init($in, $attr, 'body', $id, $i);
@@ -312,8 +303,8 @@ function desk_footer($in, $id = 0, $attr = [], $i = 0) {
         $out = $in['content'];
     } else {
         $out = "";
-        if (isset($in['tools'])) {
-            $out .= tools($in['tools'], $id, [], $i);
+        if (isset($in['tool'])) {
+            $out .= tools($in['tool'], $id, [], $i);
         } else if (isset($in['pager'])) {
             $out .= pager($id, [], $i);
         }
@@ -328,8 +319,8 @@ function desk_header($in, $id = 0, $attr = [], $i = 0) {
         $out = $in['content'];
     } else {
         $out = "";
-        if (isset($in['tools'])) {
-            $out .= tools($in['tools'], $id, [], $i);
+        if (isset($in['tool'])) {
+            $out .= tools($in['tool'], $id, [], $i);
         }
     }
     $in = _init($in, $attr, 'header', $id, $i);
@@ -351,12 +342,13 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $description = $in['description'] ?? null;
         $active = $in['active'] ?? false;
         $type = $in['type'] ?? 'textarea';
-        $value = $in['value'] ?? \HTTP::get('f.' . str_replace(['[', ']'], ['.', ""], $k), null, false) ?? null;
+        $value = $in['value'] ?? \HTTP::get('f.' . str_replace(['.', '[', ']', X], [X, '.', "", "\\."], $k), null, false) ?? null;
         $values = (array) ($in['values'] ?? []);
         $placeholder = $in['placeholder'] ?? $value;
         $pattern = $in['pattern'] ?? null;
         $width = $in['width'] ?? null;
         $height = $in['height'] ?? null;
+        $expand = !empty($in['expand']);
         $clone = $in['clone'] ?? 0; // TODO
         asort($values);
         $copy = $in;
@@ -371,6 +363,13 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
             $kind[] = 'height';
         } else if (is_numeric($height)) {
             $style['height'] = $height . 'px';
+        }
+        if ($expand) {
+            $attr['class[]'][] = 'expand';
+        }
+        // Add `*` mark for required field(s)
+        if (strpos($key, '*') === 0) {
+            $attr['class[]'][] = 'required';
         }
         $alt = [
             'class[]' => $kind,
@@ -392,11 +391,13 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
             $alt['class[]'][] = 'select';
             $out .= \Form::select($key, $values, $value, $alt);
         } else if ($type === 'radio[]') {
+            unset($alt['id']);
             $alt['class[]'][] = 'input';
             $out .= '<span class="inputs ' . ($in['view'] ?? 'span') . '">';
             $out .= \Form::radio($key, $values, $value, $alt);
             $out .= '</span>';
         } else if ($type === 'toggle[]') {
+            unset($alt['id']);
             $alt['class[]'][] = 'input';
             $out .= '<span class="inputs ' . ($in['view'] ?? 'span') . '">';
             $a = [];
@@ -473,7 +474,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     ]);
     global $panel, $url;
     $out  = '<h3 class="title">';
-    $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : dirname($directory)) . '/1') . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($name === '..' ? basename(dirname($url->path)) : "")) . '">' . $name . '</a>';
+    $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : dirname($directory)) . '/1' . $url->query('&amp;')) . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($name === '..' ? basename(dirname($url->path)) : "")) . '">' . $name . '</a>';
     $out .= '</h3>';
     if ($name !== '..' && $tools) {
         $out .= _tools($tools, $path, $id, $i);
@@ -484,7 +485,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 function files($folder, $id = 0, $attr = [], $i = 0) {
     global $panel, $token, $url;
     $files = q(\concat(..._glob($folder)));
-    \Config::set('panel.$.files', $files);
+    \Config::set('panel.+.explore', $files);
     $out = "";
     $directory = is_string($folder) ? str_replace([LOT . DS, DS], ["", '/'], $folder) : null;
     _init([], $attr, 'files', $id, $i, is_string($folder) ? [
@@ -495,7 +496,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
         if (is_string($folder) && trim(dirname($directory), '.') !== "") {
             $files->prepend(dirname(LOT . DS . $directory) . DS . '..');
         }
-        $tools = \Anemon::eat(\Config::get('panel.$.file.tools', [], true))->sort([1, 'stack']);
+        $tools = \Anemon::eat(\Config::get('panel.+.file.tool', [], true))->sort([1, 'stack']);
         $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($files as $k => $v) {
             $n = basename($v);
@@ -659,7 +660,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
         ]
     ]);
     $out  = '<figure>';
-    $out .= '<img alt="" src="' . _src($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
+    $out .= '<img alt="" src="' . ($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
     $out .= '</figure>';
     $out .= '<header>';
     $out .= '<h3 class="title">';
@@ -668,7 +669,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $out .= '</header>';
     $out .= '<div>';
     $out .= '<p class="description">' . \To::snippet($page->description ?: "", true, $panel->state->page->snippet) . '</p>';
-    $tools && $out .= _tools($tools, $path, $id, $i);
+    $tools && ($out .= _tools($tools, $path, $id, $i));
     $out .= '</div>';
     return \HTML::unite('li', $out, $attr);
 }
@@ -676,7 +677,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
 function pager($id = 0, $attr = [], $i = 0) {
     global $panel, $language, $url;
     $state = $panel->state->{$panel->view};
-    $out = _pager($url->i ?: 1, count(\Config::get('panel.$.files', [], true)), $state->chunk, $state->kin, function($i) use($url) {
+    $out = _pager($url->i ?: 1, count(\Config::get('panel.+.explore', [], true)), $state->chunk, $state->kin, function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);
     if ($out) {
@@ -696,7 +697,7 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     if (!is_array($pages)) {
         $pages = \Get::pages($pages, $x, $state->sort);
     } else {
-        \Config::set('panel.$.files', $pages);
+        \Config::set('panel.+.explore', $pages);
         $key = $state->sort[1];
         $pages = \Anemon::eat($pages)->map(function($v) use($key) {
             $page = new \Page($v);
@@ -707,10 +708,10 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
         // Only sort if `$pages` is not an array
         })/* ->sort($state->sort) */;
     }
-    \Config::set('panel.$.files', $pages = q($pages->pluck('path')->vomit()));
+    \Config::set('panel.+.explore', $pages = q($pages->pluck('path')->vomit()));
     $pages = \Anemon::eat($pages)->chunk(...$chunk);
     if ($pages->count()) {
-        $tools = \Anemon::eat(\Config::get('panel.$.page.tools', [], true))->sort([1, 'stack']);
+        $tools = \Anemon::eat(\Config::get('panel.+.page.tool', [], true))->sort([1, 'stack']);
         $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($pages as $v) {
             $a = strpos($session, X . $v . X) !== false;
@@ -759,7 +760,7 @@ function search($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function svg($key = null) {
-    return \Config::get('panel.$.svg' . ($key ? '.' . $key : ""), null, true);
+    return \Config::get('panel.+.svg' . ($key ? '.' . $key : ""), null, true);
 }
 
 function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
@@ -770,11 +771,16 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
     } else {
         global $language;
         $out = "";
-        if (isset($in['fields'])) {
-            $out .= fields($in['fields'], $id, [], $i);
-        } else if (isset($in['files'])) {
+        if (isset($in['field'])) {
+            $out .= fields($in['field'], $id, [], $i);
+        } else if (isset($in['explore'])) {
             global $panel;
-            $out .= call_user_func(__NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's', $in['files'], $id, [], $i);
+            $fn = __NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's';
+            if (is_callable($fn)) {
+                $out .= call_user_func($fn, $in['explore'], $id, [], $i);
+            } else {
+                $out .= call_user_func(__NAMESPACE__ . "\\files", $in['explore'], $id, [], $i);
+            }
         }
     }
     $in = _init($in, $attr, 'tab', $id, $i, [
@@ -783,8 +789,8 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
             'icon' => $in['icon'][0] ?? $in['icon'] ?? null
         ]
     ]);
-    $attr['title'] = $in['title'] ?? $language->{$id};
-    $active && $attr['class[]'][] = 'active';
+    $attr['title'] = $in['title'] ?? $language->{str_replace('.', "\\.", $id)};
+    $active && ($attr['class[]'][] = 'active');
     return \HTML::unite('section', $out, $attr);
 }
 
@@ -795,13 +801,23 @@ function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
         $out = $in['content'];
     } else {
         $out = "";
+        $in = \Anemon::eat($in)->sort([1, 'stack'], true)->vomit();
         if (!isset($active)) {
             // `?tab[0]=data`
-            $active = \HTTP::get('tab.' . $i, null, false);
+            $active = \HTTP::get('tab.' . $i, array_keys($in)[0] ?? null, false);
         }
-        foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-            if (!$v || _hidden($v)) continue;
-            $out .= tab($v, $k, [], $i, $k === $active);
+        // `?tab[0]=data&tabs[0]=false`
+        if (\HTTP::is('get', 'tabs.' . $i) && !\HTTP::get('tabs.' . $i)) {
+            if (!isset($in[$active])) {
+                \Config::set('panel.error', true);
+            } else {
+                $out .= tab($in[$active], $active, [], $i);
+            }
+        } else {
+            foreach ($in as $k => $v) {
+                if (!$v || _hidden($v)) continue;
+                $out .= tab($v, $k, [], $i, $k === $active);
+            }
         }
     }
     $in = _init($in, $attr, 'tabs', $id, $i);
@@ -838,7 +854,7 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
             }
             if (!empty($v['+'])) {
                 $hash = dechex(crc32($id . $k . $i));
-                \Config::set('panel.menu.' . $hash, $v['+']);
+                \Config::set('panel.+.menu.' . $hash, $v['+']);
                 $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
             } else {
                 if (array_key_exists('+', $v)) {

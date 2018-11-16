@@ -42,8 +42,6 @@ var win = window,
     focusable = 'a[href],button,input,select,textarea,[tabindex]',
     focusable_class = '.js\\:focus';
 
-$html.addClass('js');
-
 var $focus = $(focusable_class);
 $focus.length && $focus.focus();
 
@@ -298,7 +296,7 @@ if ($messages.length) {
     $win.on("load", function() {
         setTimeout(function() {
             $messages.addClass('exit');
-        }, 5000);
+        }, 10000);
     });
 }
 
