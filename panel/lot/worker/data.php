@@ -2,19 +2,20 @@
 
 require __DIR__ . DS . 'file.php';
 
-$f = LOT . DS . $id . DS . $panel->path;
-if ($c === 's' && is_file($f)) {
+$file = $panel->file ?: $panel->folder;
+if ($c === 's' && is_file($file)) {
     Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
 }
 
 // Remove folder and blob tab(s)
-Config::reset('panel.desk.body.tabs.folder');
-Config::reset('panel.desk.body.tabs.blob');
+Config::reset('panel.desk.body.tab.folder');
+Config::reset('panel.desk.body.tab.blob');
 
-Config::set('panel.desk.body.tabs.file.fields', [
+Config::set('panel.desk.body.tab.file.field', [
     'name' => [
         'key' => 'key',
-        'value' => $c === 'g' ? Path::N($path) : null,
+        'value' => $c === 'g' ? Path::N($file) : null,
+        'placeholder' => $c === 's' ? strtr($language->field_hint_key, '_', '-') : null,
         'pattern' => '^-?[a-z\\d]+(-[a-z\\d]+)*$'
     ],
     'x' => [
@@ -30,19 +31,19 @@ Config::set('panel.desk.body.tabs.file.fields', [
 
 // Modify back menu destination
 if ($x = HTTP::get('x')) {
-    Hook::set('on.ready', function() use($c, $language, $panel, $path, $x) {
+    Hook::set('on.ready', function() use($c, $file, $language, $panel, $x) {
         if ($c === 'g') {
             Config::set('panel.nav.s', [
                 'description' => $language->new__($language->data, true),
                 'icon' => [['M2,16H10V14H2M18,14V10H16V14H12V16H16V20H18V16H22V14M14,6H2V8H14M14,10H2V12H14V10Z']]
             ]);
-            $path = dirname($path);
+            $file = dirname($file);
         }
-        $path .= '.' . $x;
-        if (file_exists($path)) {
+        $file .= '.' . $x;
+        if (file_exists($file)) {
             Config::set('panel.nav.lot', [
                 'c' => 'g',
-                'path' => Path::R($path, LOT, '/'),
+                'path' => Path::R($file, LOT, '/'),
                 'query' => [
                     'tab' => ['data'],
                     'view' => false,
@@ -50,5 +51,5 @@ if ($x = HTTP::get('x')) {
                 ]
             ]);
         }
-    });
+    }, .1);
 }

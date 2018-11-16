@@ -1,7 +1,7 @@
 <?php
 
 if (Is::void($name)) {
-    Message::error($language->error);
+    Message::error('void_field', ['<em>' . $language->key . '</em>']);
 }
 
 Hook::set('guardian.kick', function($url) {

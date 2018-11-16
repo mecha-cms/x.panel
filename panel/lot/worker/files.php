@@ -1,31 +1,19 @@
 <?php
 
-// `panel.desk`
-// `panel.desk.header`
-// `panel.desk.header.tools`
-// `panel.desk.body`
-// `panel.desk.body.files`
-// `panel.desk.body.fields`
-// `panel.desk.body.tabs`
-// `panel.desk.body.tabs.fields`
-// `panel.desk.footer`
-// `panel.desk.footer.tools`
-// `panel.desk.footer.pager`
-
-// `panel.$.file.tools`
-
-$path = trim($panel->id . '/' . $panel->path, '/');
+$c = $panel->c;
+$file = $panel->file ?: $panel->folder;
+$is_file = is_file($file) ? mime_content_type($file) : "";
 
 Config::set('panel.desk', [
     'header' => [
-        'tools' => [
+        'tool' => [
             'file' => [
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'c' => 's',
-                'stack' => 10,
                 'query' => [
                     'q' => false,
                     'tab' => ['file'],
+                    'tabs' => ['false'],
                     'token' => false
                 ],
                 'stack' => 10
@@ -36,6 +24,7 @@ Config::set('panel.desk', [
                 'query' => [
                     'q' => false,
                     'tab' => ['folder'],
+                    'tabs' => ['false'],
                     'token' => false
                 ],
                 'stack' => 10.1
@@ -53,11 +42,13 @@ Config::set('panel.desk', [
                         'query' => [
                             'q' => false,
                             'tab' => ['blob'],
+                            'tabs' => ['false'],
                             'token' => false
                         ],
                         'stack' => 10
                     ],
-                    'r' => strpos($path, '/') !== false ? [
+                    // Only user with status `1` that has delete access
+                    'r' => $chops && $user->status === 1 ? [
                         'title' => $language->delete,
                         'description' => 'Delete this folder with its contents.',
                         'icon' => [['M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z']],
@@ -76,10 +67,10 @@ Config::set('panel.desk', [
         ]
     ],
     'body' => [
-        'tabs' => [
+        'tab' => [
             'file' => [
                 'title' => $language->files,
-                'files' => $panel->file ?: $panel->folder,
+                'explore' => $file,
                 'stack' => 10
             ]
         ]

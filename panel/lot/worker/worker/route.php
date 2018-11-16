@@ -21,8 +21,8 @@ Hook::set('on.ready', function() {
             return $a + $b;
         });
         $c += filemtime(__FILE__);
-        $c = abs(crc32($c . $token)); // Smart cache updater
-        Asset::set($url . '/' . $r . '/::g::/static.js', .1, [
+        $c = abs(crc32($c . $token . $site->language)); // Smart cache updater
+        Asset::set($url . '/' . $r . '/::g::/.static.js', .1, [
             'src' => function($src) use($c) {
                 return candy($this->url, [$src, $c]);
             }
@@ -46,6 +46,17 @@ Hook::set('on.ready', function() {
         }
     }
 
+    Hook::set('asset:body', function($head) use($token) {
+        $url = $GLOBALS['URL'];
+        unset($url['user'], $url['pass']);
+        $out = [
+            '$token' => $token,
+            '$url' => $url,
+            '$u_r_l' => $url
+        ];
+        return '<script>window.panel=' . json_encode($out) . ';</script>' . $head;
+    }, 0);
+
     Route::set([
         $r . '/::%s%::/%*%/%i%',
         $r . '/::%s%::/%*%'
@@ -54,8 +65,9 @@ Hook::set('on.ready', function() {
         Config::reset('is.error');
         // Prevent directory traversal attack <https://en.wikipedia.org/wiki/Directory_traversal_attack>
         $path = str_replace('../', "", urldecode($path));
+        $error = Config::get('panel.error');
         if ($f = File::exist(LOT . DS . $path)) {
-            Config::set('trace', $trace = new Anemon([$language->{$id}, $site->title], ' &#x00B7; '));
+            Config::set('trace', $trace = new Anemon([$language->{$error ? 'error' : str_replace('.', "\\.", $id)}, $site->title], ' &#x00B7; '));
             $error = false;
             if ($step !== null) {
                 if ($step !== 1 && !glob($f . DS . '*', GLOB_NOSORT)) {
@@ -93,7 +105,7 @@ Hook::set('on.ready', function() {
         return Shield::attach(__DIR__ . DS . 'shield.php');
     }, 10);
 
-    Route::set($r . '/::g::/static.js', function() {
+    Route::set($r . '/::g::/.static.js', function() {
         extract(Lot::get(null, []));
         $i = 60 * 60 * 24 * 30 * 12; // 1 Year
         HTTP::type('application/javascript')->header([
@@ -101,23 +113,18 @@ Hook::set('on.ready', function() {
             'Cache-Control' => 'private, max-age=' . $i,
             'Expires' => gmdate('D, d M Y H:i:s', time() + $i) . ' GMT'
         ]);
-        $url = $GLOBALS['URL'];
-        unset($url['pass'], $url['user']);
-        $out = [
+        foreach ([
             '$language' => $language->get(),
-            '$message' => $message,
             '$panel' => $panel->state,
-            '$svg' => $config->get('panel.$.svg'),
-            '$token' => $token,
-            '$url' => $url,
+            '$svg' => $config->get('panel.+.svg'),
             '$user' => [
                 '$' => $user->{'$'},
                 'key' => $user->key,
                 'status' => $user->status
-            ],
-            '$u_r_l' => $url
-        ];
-        echo 'var panel=' . json_encode($out) . ';';
+            ]
+        ] as $k => $v) {
+            echo 'panel.' . $k . '=' . json_encode($v) . ';';
+        }
         return;
     });
 

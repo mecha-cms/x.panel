@@ -1,12 +1,13 @@
 <?php $error = Config::get('panel.error'); ?>
 <?php HTTP::status($error ? 404 : 200); ?>
 <!DOCTYPE html>
-<html lang="<?php echo $site->language; ?>" dir="<?php echo $site->direction; ?>" class="<?php echo $error ? 'is-error error-404' : 'is-' . $panel->v; ?>">
+<html lang="<?php echo $site->language; ?>" dir="<?php echo $site->direction; ?>" class="<?php echo $error ? 'is-error error-404' : 'is-' . $panel->v; ?><?php echo Config::get('panel.form') === 1 ? ' form' : ""; ?>">
 <head>
 <meta charset="<?php echo $site->charset; ?>">
 <meta name="viewport" content="width=device-width">
 <title><?php echo To::text($site->trace); ?></title>
 <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
+<script>!function(e){e.className+=" js"}(document.documentElement);</script>
 </head>
 <body spellcheck="false">
 <?php echo $message; ?>
@@ -16,14 +17,14 @@
 $g = "";
 if ($panel->c === 's') {
     foreach (['slug', 'key'] as $k) {
-        if ($n = (array) Config::get('panel.$.' . $k, [], true)) {
+        if ($n = (array) Config::get('panel.+.' . $k, [], true)) {
             $g .= ' data-generator-' . $k . '="' . implode(' ', $n) . '"';
         }
     }
 }
 
 ?>
-<?php if ($v = has(['file', 'page', 'data'], $panel->v)): ?>
+<?php if ($v = Config::get('panel.+.form.editor')): ?>
 <form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>
@@ -37,7 +38,7 @@ if ($panel->c === 's') {
 <?php endif; ?>
 <?php
 
-foreach ((array) Config::get('panel.menu', [], true) as $k => $v) {
+foreach ((array) Config::get('panel.+.menu', [], true) as $k => $v) {
     echo fn\panel\menus($v, $k, [
         'data[]' => ['js-enter' => '#js:' . $k]
     ]);

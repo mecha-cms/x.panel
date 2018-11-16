@@ -1,28 +1,36 @@
 <?php
 
-Config::set('panel.form', true);
+Config::set('panel.+.form.editor', true);
 
 $c = $panel->c;
-$path = rtrim(LOT . DS . $panel->id . DS . $panel->path, DS);
-$is_file = is_file($path) ? mime_content_type($path) : "";
-$is_file_text = $is_file && (strpos($is_file, 'text/') === 0 || strpos($is_file, 'application/') === 0);
+$file = $panel->file ?: $panel->folder;
+$x = $file ? pathinfo($file, PATHINFO_EXTENSION) : null;
+$is_file = is_file($file) ? mime_content_type($file) : "";
+$is_file_text = $is_file && ($is_file === 'inode/x-empty' || strpos($is_file, 'text/') === 0 || strpos(',' . TEXT_X . ',', ',' . $x . ',') !== false);
+
+if ($c !== 's' && !file_exists($file)) {
+    Config::set('panel.error', true);
+    return;
+}
 
 Config::set('panel.desk', [
     'header' => null,
     'body' => [
-        'tabs' => [
+        'tab' => [
             'file' => [
-                'fields' => [
+                'field' => [
                     'file[content]' => $c === 's' || $is_file_text ? [
                         'key' => 'content',
                         'type' => 'source',
-                        'value' => $is_file_text ? file_get_contents($path) : null,
-                        'placeholder' => 'Content goes here…',
+                        'value' => $is_file_text ? file_get_contents($file) : null,
+                        'placeholder' => $c === 's' ? $language->field_hint_file_content : null,
                         'width' => true,
                         'height' => true,
                         'stack' => 10
                     ] : [
-                        'content' => '<div class="field p"><label>' . $language->{$is_file ? 'content' : ""} . '</label><div><div class="input plain code">' . ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($path, "", ['style[]' => ['display' => 'block']]) : str_replace('/', DS, $path)) . '</div></div></div>',
+                        'title' => false,
+                        'type' => 'content',
+                        'value' => ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($file, "", ['style[]' => ['display' => 'block']]) : '<code>' . str_replace(ROOT, '.', strtr($file, '/', DS)) . '</code>') . Form::hidden('file[read-only]', 1),
                         'stack' => 10
                     ],
                     'file[consent]' => [
@@ -34,7 +42,8 @@ Config::set('panel.desk', [
                     'name' => [
                         'type' => 'text',
                         'pattern' => '^[_.-]?[a-z\\d]+(-[a-z\\d]+)*' . ($is_file || $c === 's' ? '\\.[a-z\\d]+' : "") . '$',
-                        'value' => $c === 'g' ? basename($path) : null,
+                        'value' => $c === 'g' ? basename($file) : null,
+                        'placeholder' => $c === 's' ? $language->field_hint_name : null,
                         'width' => true,
                         'stack' => 10.1
                     ]
@@ -42,13 +51,14 @@ Config::set('panel.desk', [
                 'stack' => 10
             ],
             'folder' => [
-                'fields' => [
+                'field' => [
                     'directory' => [
                         'title' => $language->path,
-                        'description' => HTTP::get('tab') === 'folder' ? 'Create a folder.' : 'Move current working file or folder to the specified folder path.',
+                        'description' => HTTP::get('tab.0') === 'folder' ? 'Create a folder.' : 'Move current working file or folder to the specified folder path.',
                         'type' => 'text',
                         'pattern' => '^[_.-]?[a-z\\d]+(-[a-z\\d]+)*([\\\/][_.-]?[a-z\\d]+(-[a-z\\d]+)*)*$',
                         'value' => null,
+                        'placeholder' => $language->field_hint_directory,
                         'width' => true,
                         'stack' => 10
                     ]
@@ -57,8 +67,8 @@ Config::set('panel.desk', [
             ],
             'blob' => !$is_file ? [
                 'title' => $language->upload,
-                'fields' => [
-                    'file[blob]' => [
+                'field' => [
+                    'blob' => [
                         'key' => 'file',
                         'type' => 'blob',
                         'stack' => 10
@@ -69,14 +79,15 @@ Config::set('panel.desk', [
         ]
     ],
     'footer' => [
-        'tools' => [
+        'tool' => [
             's' => [
                 'title' => $language->{$c === 's' ? 'create' : 'update'},
                 'name' => 'a',
                 'value' => 1,
                 'stack' => 10
             ],
-            'r' => $c === 'g' ? [
+            // Only user with status `1` that has delete access
+            'r' => $c === 'g' && $user->status === 1 ? [
                 'title' => $language->delete,
                 'name' => 'a',
                 'value' => -2,

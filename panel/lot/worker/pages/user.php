@@ -2,25 +2,26 @@
 
 require __DIR__ . DS . 'page.php';
 
-// Disable page children
-Config::reset('panel.$.page.tools.s');
+// Disable page children feature
+Config::reset('panel.+.page.tool.s');
+Config::set('panel.error', !!$chops);
 
-// Add exit button for super admin
-Config::set('panel.$.page.tools', [
+Config::set('panel.+.page.tool', [
     'r' => [
-        'data' => function($file) use($user) {
-            return [
-                'x' => '@' . Path::N($file) === $user->key
-            ];
+        'if' => function($file) use($user): array {
+            // You can’t delete current user data
+            return ['x' => Is::user(Path::N($file))];
         }
     ],
+    // Add exit button for user with status `1`
     'exit' => [
-        'data' => function($file) use($user) {
+        'if' => function($file) use($user): array {
             return [
-                'x' => '@' . Path::N($file) === $user->key,
-                'hidden' => !file_exists(Path::F($file) . DS . 'token.data'),
+                // You can’t log-out the current user
+                'x' => Is::user(Path::N($file)),
+                'hidden' => $user->status !== 1 || !file_exists(Path::F($file) . DS . 'token.data'),
                 'description' => 'Force log out @' . Path::N($file),
-                'task' => '950abfd9'
+                'task' => 'd4e798fd'
             ];
         },
         'title' => false,

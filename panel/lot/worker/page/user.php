@@ -1,41 +1,53 @@
 <?php
 
+if ($c === 'g' && !$panel->file || HTTP::get('view') === 'file') {
+    return;
+}
+
 require __DIR__ . DS . 'page.php';
 
-// Hide the `art` tab
-Config::set('panel.desk.body.tabs.art.hidden', true);
+// Disable page children feature
+if ($c === 's' && $chops && HTTP::get('view', $panel->view) !== 'data') {
+    Config::set('panel.error', true);
+}
+
+// Hide the `art` and `image` tab
+Config::set('panel.desk.body.tab.art.hidden', true);
+Config::set('panel.desk.body.tab.image.hidden', true);
 
 // Modify default page field(s)
-Config::set('panel.$.slug', ['page[$]:slug']);
-Config::set('panel.desk.body.tabs', [
+Config::set('panel.+.slug', ['page[$]:slug']);
+Config::set('panel.desk.body.tab', [
     'file' => [
-        'fields' => [
+        'field' => [
             'page[title]' => null,
             'page[description]' => null,
             'page[$]' => [
                 'key' => 'name',
                 'type' => 'text',
                 'value' => $page->{'$'},
+                'placeholder' => $c === 's' ? $language->field_hint_page_title : null,
                 'width' => true,
                 'stack' => 10
             ],
             'slug' => [
                 'key' => 'key',
                 'type' => $c === 'g' ? 'hidden' : 'text',
-                'description' => 'User key without the <code>@</code> prefix.',
-                'width' => false,
+                'placeholder' => $c === 's' ? strtr($language->field_hint_key, '_', '-') : null,
+                'description' => $language->field_description_key_user,
                 'stack' => 10.1
             ],
-            'data[pass]' => $c === 's' ? [
+            '*data[pass]' => $c === 's' ? [
                 'key' => 'pass',
                 'type' => 'pass',
-                'width' => false,
+                'width' => true,
                 'stack' => 10.2
             ] : null,
             'page[email]' => [
                 'key' => 'email',
                 'type' => 'email',
                 'value' => $page->email,
+                'placeholder' => $c === 's' ? l($language->email) . '@' . $url->host : null,
                 'width' => true,
                 'stack' => 10.3
             ],
@@ -45,33 +57,33 @@ Config::set('panel.desk.body.tabs', [
         ]
     ],
     'status' => [
-        'fields' => [
+        'field' => [
             'page[status]' => [
                 'key' => 'status',
                 'type' => 'radio[]',
-                'value' => $page->status,
+                'value' => $c === 's' ? 2 : $page->status,
                 'view' => 'block',
-                'values' => [
-                    '-1' => 'Banned',
-                    '0' => 'Pending',
-                    '1' => 'Administrator',
-                    '2' => 'Contributor',
-                    '3' => 'Member'
-                ],
                 'stack' => 10
             ]
         ],
-        'stack' => 10.01
+        'stack' => 10.09
     ]
 ]);
 
+Hook::set('on.ready', function() use($language, $user) {
+    $status = (array) $language->o_page_status;
+    Config::set('panel.desk.body.tab.status.field.page[status].values', $user->status === 1 ? $status : [
+        $user->status => $status[$user->status]
+    ]);
+}, .1);
+
 if ($c === 'g') {
     Hook::set('on.ready', function() {
-        Config::set('panel.nav.s.icon', [['M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z']]);
-    });
+        Config::set('panel.nav.s.icon', [['M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z']]); // TODO
+    }, .1);
     if ('@' . Path::N($path) === $user->key) {
-        Config::reset('panel.desk.footer.tools.draft');
-        Config::reset('panel.desk.footer.tools.archive');
-        Config::reset('panel.desk.footer.tools.trash');
+        Config::reset('panel.desk.footer.tool.draft');
+        Config::reset('panel.desk.footer.tool.archive');
+        Config::reset('panel.desk.footer.tool.trash');
     }
 }
