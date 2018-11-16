@@ -1,12 +1,14 @@
 ---
 title: Panel
 description: GUI extension for Mecha.
+author: Taufik Nurrohman
+version: 2.0.0
 
 dependency:
   extension:
     - asset
-    - less
     - page
+    - shield
     - user
   plugin:
     - markdown
