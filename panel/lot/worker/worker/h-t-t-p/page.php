@@ -5,7 +5,8 @@ $page = HTTP::post('page', [], false);
 
 if ($a < 0) {
     // `GET`
-    if ($c === 'r') {
+    // Only user with status `1` that has delete access
+    if ($c === 'r' && $user->status === 1) {
         // Delete folder
         $d = Path::F($file);
         if ($a === -2) {
@@ -13,19 +14,85 @@ if ($a < 0) {
         } else if ($a === -1) {
             File::open($d)->delete();
         }
-    // `POST` ... a user click the submit button with name `a`
+    // `POST` … a user click the submit button with name `a`
     } else if (HTTP::is('post')) {
         // Redirect to `GET`
-        Guardian::kick(str_replace('::' . $c . '::', '::r::', $url->current) . HTTP::query([
+        Guardian::kick(str_replace('::' . $c . '::', '::r::', $url->path) . HTTP::query([
             'a' => $a,
             'view' => 'page'
         ], '&'));
     }
 }
 
-// `POST` ...
+// Process page image
+if (!array_key_exists('image', $page) && $blob = HTTP::files('image')) {
+    call_user_func(function() use($blob, $language, &$page, $state, $user) {
+        // Detect image by MIME type
+        if (!empty($blob['type']) && strpos($blob['type'], 'image/') !== 0) {
+            Message::error('page_image_blob');
+        } else if (!empty($blob['name'])) {
+            $b = To::file($blob['name']);
+            $n = Path::N($b);
+            $x = Path::X($b);
+            // Detect image by extension
+            if ($x && strpos(',' . IMAGE_X . ',', ',' . $x . ',') === false) {
+                Message::error('page_image_blob');
+            } else {
+                $candy = [
+                    'date' => new Date,
+                    'extension' => $x,
+                    'hash' => Guardian::hash(),
+                    'id' => sprintf('%u', time()),
+                    'name' => $n,
+                    'uid' => uniqid()
+                ];
+                $blob['name'] = candy($state['page']['image']['name'] ?? $b, $candy);
+                $path = ASSET . ($user->status === 1 ? DS : DS . $user->key . DS);
+                $path .= rtrim(strtr(candy($state['page']['image']['directory'] ?? "", $candy), '/', DS), DS);
+                $response = File::push($blob, $path);
+                // File already exists
+                if ($response === false) {
+                    Message::error('file_exist', [str_replace(ROOT, '.', $path . DS . $blob['name'])]);
+                // Trigger error
+                } else if (is_int($response)) {
+                    // But `4` (no file was uploaded)
+                    if ($response !== 4) {
+                        Message::error('file_push.' . $response);
+                    }
+                } else {
+                    // TODO: Resize image
+                    $width = b(HTTP::post('image.width', 72), 72, 1600);
+                    $height = HTTP::post('image.height');
+                    if ($width) {
+                        $height = $height !== null ? b($height, 72, 1600) : $width;
+                        // Image::open($response)->resize($width, $height ?? $width)->save();
+                    }
+                    Reset::post('image');
+                    $page['image'] = To::URL($response);
+                    Message::success('file_push', ['<code>' . str_replace(ROOT, '.', $response) . '</code>']);
+                }
+            }
+        }
+    });
+} else if (!empty($page['image:x'])) {
+    call_user_func(function() use(&$page) {
+        $image = To::path(URL::long($page['image']));
+        // Delete image if image is stored in the asset folder
+        if (strpos($image, ASSET . DS) === 0) {
+            File::open($image)->delete();
+        }
+        $page['image'] = false; // Remove `image` property
+        unset($page['image:x']);
+        Message::success('file_delete', ['<code>' . str_replace(ROOT, '.', $image) . '</code>']);
+    });
+}
+
+// `POST` …
 $headers = [
     'title' => function($s) {
+        return w($s, HTML_WISE_I) ?: false;
+    },
+    '$' => function($s) {
         return w($s, HTML_WISE_I) ?: false;
     },
     'description' => function($s) {
@@ -33,15 +100,25 @@ $headers = [
     },
     'type' => false,
     'link' => false,
+    'image' => false,
     'author' => function($s) {
+        $s = trim($s);
+        if (strpos($s, '@') === 0 && strlen($s) > 1) {
+            return $s;
+        }
         return w($s) ?: false;
+    },
+    'version' => function($s) {
+        $a = explode('.', $s);
+        $a = array_pad($a, 3, '0');
+        return implode('.', $a); // semver
     },
     'content' => ""
 ];
 
 $o = (array) Config::get($id, [], true);
 if (count($o) === 1 && isset($o[0])) {
-    $o = false; // numeric array, not a page configuration file
+    $o = false; // Numeric array, not a page configuration file
 }
 
 foreach ($headers as $k => $v) {
@@ -63,31 +140,77 @@ $headers = is($headers, function($v) {
     return isset($v) && $v !== false && $v !== "" && !is_callable($v);
 });
 $time = date(DATE_WISE);
-$name = HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false) ?: ($c === 'g' ? Path::F(basename($path)) : $time);
+$name = HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false) ?: ($c === 'g' ? Path::F(basename($file)) : $time);
 $name = To::slug($name);
 
 if (!Message::$x) {
     if ($c === 'g') {
         $nn = Path::N($n);
         if (!Folder::exist($dd = LOT . DS . $path . DS . $nn)) {
-            Folder::set($dd, 0775);
+            Folder::create($dd, 0775);
         }
         if ($nn !== $name) {
             File::open($dd)->renameTo($name); // rename folder
         }
     } else if ($c === 's') {
         if (!Folder::exist($dd = LOT . DS . $path . DS . $name)) {
-            Folder::set($dd, 0775);
+            Folder::create($dd, 0775);
         }
     }
+    // Process page data
     $data = HTTP::post('data', [], false);
-    if (!isset($data['time']) && $name !== $time) {
+    if (!isset($data['time']) && $name !== strtr($time, '- :', '---')) {
         $data['time'] = $time;
     }
     foreach ($data as $k => $v) {
-        if (Is::void($v)) continue;
-        File::set(is_array($v) ? json_encode($v) : $v)->saveTo($dd . DS . To::slug($k) . '.data', $consent);
+        $f = $dd . DS . To::slug($k) . '.data';
+        if (Is::void($v)) {
+            File::open($f)->delete();
+        } else {
+            File::put(is_array($v) ? json_encode($v) : $v)->saveTo($f, $consent);
+        }
     }
+}
+
+// Process page tag(s)
+if (Extend::exist('tag')) {
+    call_user_func(function() use($c, $consent, $language, $name, $path, $user) {
+        $file = LOT . DS . $path . DS . $name . DS . 'kind.data';
+        if (!$tags = HTTP::post('tags')) {
+            File::open($file)->delete();
+            return;
+        }
+        $i = 0;
+        // Can’t use `Get::tags()` here because the function is not ready yet
+        foreach (glob(TAG . DS . '*.{page,archive}', GLOB_BRACE | GLOB_NOSORT) as $v) {
+            if (!is_file($v)) continue;
+            $v = (new Tag($v, [], false))->id;
+            $v > $i && ($i = $v);
+        }
+        $i += 1;
+        $kinds = [];
+        $tags = preg_split('#\s*,\s*#', $tags);
+        foreach ($tags as $tag) {
+            $tag_id = From::tag($tag);
+            if ($tag_id !== false) {
+                $kinds[] = $tag_id;
+            } else {
+                // Create a new tag
+                Page::set([
+                    'title' => To::title($tag),
+                    'author' => $user->key
+                ])->saveTo($f = TAG . DS . $tag . '.page', $consent);
+                File::put($i)->saveTo(TAG . DS . $tag . DS . 'id.data', $consent);
+                File::put(date(DATE_WISE))->saveTo(TAG . DS . $tag . DS . 'time.data', $consent);
+                Message::info($language->message_success_file_create(['<code>' . str_replace(ROOT, '.', $f) . '</code>']));
+                $kinds[] = $i;
+                ++$i;
+            }
+        }
+        if ($kinds) {
+            File::put(json_encode($kinds))->saveTo($file, $consent);
+        }
+    });
 }
 
 Set::post('name', $name);
