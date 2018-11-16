@@ -18,17 +18,19 @@ Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
 require __DIR__ . DS . 'engine' . DS . 'ignite.php';
 require __DIR__ . DS . 'engine' . DS . 'fire.php';
 
-// Clean-up `GET` and `POST` data
+// Clean-up `FILES`, `GET`, `POST`, and `REQUEST` data
+// Empty string and empty array will be removed from HTTP request
+// Long string contains only white-space is considered empty in this case
+// `0`, `false` and `null` is not considered empty in this case
+Set::files(fn\panel\_clean(Get::files()), false);
 Set::get(fn\panel\_clean(Get::get()), false);
 Set::post(fn\panel\_clean(Get::post()), false);
+Set::request(fn\panel\_clean(Get::request()), false);
 
 $tok = HTTP::get('token');
 if ($tok && Guardian::check($tok)) {
     require $worker . 'worker' . DS . 'task.php';
     require $worker . 'worker' . DS . 'h-t-t-p.php';
-} else if (HTTP::is('post')) {
-    echo fail('Invalid token.');
-    exit;
 } else if ($c === 'a' || $c === 'r') {
     echo fail('Invalid token.');
     exit;
@@ -39,8 +41,9 @@ if ($f = File::exist($worker . $panel->v . DS . '$.php')) require $f;
 if ($f = File::exist($worker . $panel->v . DS . $id . '.php')) require $f;
 
 // User
-$worker_user = $worker . $panel->v . DS . 'user' . DS . $user->status . DS;
-if ($f = File::exist($worker_user . '$.php')) require $f;
-if ($f = File::exist($worker_user . $id . '.php')) require $f;
+if (is_numeric($i = $user->status)) {
+    if ($f = File::exist($worker . $i . '.php')) require $f;
+    if ($f = File::exist($worker . $i . DS . $id . '.php')) require $f;
+}
 
 require $worker . 'worker' . DS . 'route.php';
