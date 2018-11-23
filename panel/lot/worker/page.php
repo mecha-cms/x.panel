@@ -296,7 +296,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
             ]
         ]);
     }
-}, .1);
+}, .2);
 
 // Re-create submit button(s)
 $x = $page->state;

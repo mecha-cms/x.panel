@@ -1,5 +1,10 @@
 <?php
 
+// Only user with status `1` can create `htaccess` and `php` file
+if ($user->status !== 1) {
+    File::$config['extension'] = array_diff(File::$config['extension'], ['htaccess', 'php']);
+}
+
 $candy = [
     'date' => new Date,
     'hash' => Guardian::hash(),
@@ -132,6 +137,16 @@ if ($tab === 'folder') {
             $blob['name'] = candy(To::file($blob['name']), $candy);
             $destination = LOT . DS . $path;
             $response = File::push($blob, $destination);
+            $x = Path::X($blob['name']);
+            // Missing file extension
+            if (!$x) {
+                if ($user->status !== 1) {
+                    Message::error('file_void_x');
+                }
+            // Forbidden file extension
+            } else if (!has(File::$config['extension'], $x)) {
+                Message::error('file_x', ['<code>' . $x . '</code>']);
+            }
             // File already exists
             if ($response === false) {
                 Message::error('file_exist', ['<code>' . str_replace(ROOT, '.', $destination . DS . $blob['name']) . '</code>']);

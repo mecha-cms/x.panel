@@ -660,7 +660,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
         ]
     ]);
     $out  = '<figure>';
-    $out .= '<img alt="" src="' . ($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
+    $out .= '<img alt="" src="' . ($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/-/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
     $out .= '</figure>';
     $out .= '<header>';
     $out .= '<h3 class="title">';

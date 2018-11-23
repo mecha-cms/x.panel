@@ -22,7 +22,7 @@ Hook::set('on.ready', function() {
         });
         $c += filemtime(__FILE__);
         $c = abs(crc32($c . $token . $site->language)); // Smart cache updater
-        Asset::set($url . '/' . $r . '/::g::/.static.js', .1, [
+        Asset::set($url . '/' . $r . '/::g::/-/asset.js', .1, [
             'src' => function($src) use($c) {
                 return candy($this->url, [$src, $c]);
             }
@@ -105,7 +105,7 @@ Hook::set('on.ready', function() {
         return Shield::attach(__DIR__ . DS . 'shield.php');
     }, 10);
 
-    Route::set($r . '/::g::/.static.js', function() {
+    Route::set($r . '/::g::/-/asset.js', function() {
         extract(Lot::get(null, []));
         $i = 60 * 60 * 24 * 30 * 12; // 1 Year
         HTTP::type('application/javascript')->header([
@@ -128,7 +128,7 @@ Hook::set('on.ready', function() {
         return;
     });
 
-    $image_path = $r . '/::g::/%i%/%i%/%s%.%[gif,jpg,jpeg,png]%';
+    $image_path = $r . '/::g::/-/%i%/%i%/%s%.%[gif,jpg,jpeg,png]%';
     Route::set($image_path, function($width, $height, $color, $x) {
         $i = 60 * 60 * 24 * 30 * 12; // 1 year
         // Handle invalid MIME type
@@ -152,11 +152,11 @@ Hook::set('on.ready', function() {
         return;
     }, 9);
 
-    Route::set($r . '/::g::/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_path) {
+    Route::set($r . '/::g::/-/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_path) {
         return Route::fire($image_path, [$size, $size, $color, $x]);
     }, 9.1);
 
-    Route::set($r . '/::g::/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_path) {
+    Route::set($r . '/::g::/-/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_path) {
         return Route::fire($image_path, [1, 1, $color, $x]);
     }, 9.2);
 

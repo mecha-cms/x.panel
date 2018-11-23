@@ -55,6 +55,7 @@ width: Width
 message_error_feature_get: You don’t have permission to access this feature.
 message_error_file_delete: You can’t delete this file.
 message_error_file_void: Please select a file.
+message_error_file_void_x: Please provide a file extension.
 message_error_folder_delete: You can’t delete this folder.
 message_error_page_image_blob: Please select an image file.
 message_error_user_x: User %{0}% has been banned.

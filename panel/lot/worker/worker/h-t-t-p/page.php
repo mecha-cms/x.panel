@@ -167,14 +167,14 @@ if (!Message::$x) {
         if (Is::void($v)) {
             File::open($f)->delete();
         } else {
-            File::put(is_array($v) ? json_encode($v) : $v)->saveTo($f, $consent);
+            File::put(is_array($v) ? json_encode($v) : $v)->saveTo($f, 0600);
         }
     }
 }
 
 // Process page tag(s)
 if (Extend::exist('tag')) {
-    call_user_func(function() use($c, $consent, $language, $name, $path, $user) {
+    call_user_func(function() use($c, $language, $name, $path, $user) {
         $file = LOT . DS . $path . DS . $name . DS . 'kind.data';
         if (!$tags = HTTP::post('tags')) {
             File::open($file)->delete();
@@ -199,16 +199,16 @@ if (Extend::exist('tag')) {
                 Page::set([
                     'title' => To::title($tag),
                     'author' => $user->key
-                ])->saveTo($f = TAG . DS . $tag . '.page', $consent);
-                File::put($i)->saveTo(TAG . DS . $tag . DS . 'id.data', $consent);
-                File::put(date(DATE_WISE))->saveTo(TAG . DS . $tag . DS . 'time.data', $consent);
+                ])->saveTo($f = TAG . DS . $tag . '.page', 0600);
+                File::put($i)->saveTo(TAG . DS . $tag . DS . 'id.data', 0600);
+                File::put(date(DATE_WISE))->saveTo(TAG . DS . $tag . DS . 'time.data', 0600);
                 Message::info($language->message_success_file_create(['<code>' . str_replace(ROOT, '.', $f) . '</code>']));
                 $kinds[] = $i;
                 ++$i;
             }
         }
         if ($kinds) {
-            File::put(json_encode($kinds))->saveTo($file, $consent);
+            File::put(json_encode($kinds))->saveTo($file, 0600);
         }
     });
 }

@@ -10,6 +10,7 @@ $state = Extend::state('user');
 if ($url->path === ($state['_path'] ?? $state['path'])) {
     $a = Extend::state('panel');
     // Set redirection path after log-in
+    Session::reset('url.previous');
     Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
     return;
 }
