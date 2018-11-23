@@ -60,13 +60,12 @@ if (!array_key_exists('image', $page) && $blob = HTTP::files('image')) {
                         Message::error('file_push.' . $response);
                     }
                 } else {
-                    // TODO: Resize image
+                    // Resize image
                     $width = b(HTTP::post('image.width', 72), 72, 1600);
-                    $height = HTTP::post('image.height');
-                    if ($width) {
-                        $height = $height !== null ? b($height, 72, 1600) : $width;
-                        // Image::open($response)->resize($width, $height ?? $width)->save();
-                    }
+                    $height = b(HTTP::post('image.height', $width), 72, 1600);
+                    Image::open($response)->crop($width, $height)->save();
+                    // Create thumbnail
+                    Image::open($response)->crop(72, 72)->saveTo(Path::F($response) . DS . '72.' . $x);
                     Reset::post('image');
                     $page['image'] = To::URL($response);
                     Message::success('file_push', ['<code>' . str_replace(ROOT, '.', $response) . '</code>']);
