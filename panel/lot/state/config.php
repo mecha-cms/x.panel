@@ -3,6 +3,12 @@
 return [
     'path' => 'panel',
     '$' => 'page', // default redirect target
+    'fonts' => [
+        0 => 'Roboto Condensed', // body
+        1 => 'Roboto Condensed', // headers
+        2 => 'Roboto Condensed', // alternate
+        3 => 'Roboto Mono' // code
+    ],
     'file' => [
         'chunk' => 50,
         'kin' => 2,

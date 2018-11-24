@@ -7,8 +7,13 @@ back: Back
 do_archive: Archive # verb of `archive`
 do_empty_trash: Empty the Trash
 do_empty_cache: Refresh Cache
+do_empty_directory: Delete this folder with its contents.
+do_force_user_exit: Force log out %{0}%
 
 height: Height
+
+panel: Panel
+panels: Panels
 
 recent: Recent
 
@@ -27,6 +32,9 @@ o_page_status:
   2: Secondary
   3: Member
 
+field_description_directory:
+  0: Create a folder.
+  1: Move current working file or folder to the specified folder path.
 field_description_key_user: User key without the <code>@</code> prefix.
 
 field_hint_directory: foo/bar/baz
@@ -34,6 +42,7 @@ field_hint_file_consent: 0777
 field_hint_file_content: Content goes here…
 field_hint_key: key_here
 field_hint_name: name.txt
+field_hint_page_author: Display Name
 field_hint_page_css: CSS goes here…
 field_hint_page_description: Description goes here…
 field_hint_page_description__: Description about this %{0}% (optional).

@@ -21,11 +21,12 @@ if ($parent) {
     $source .= '<h3>' . $comment->author . '</h3>';
     $source .= '<div class="p">' . $comment->content . fn\panel\links([
         'g' => [
+            'x' => !Is::user(Page::apart($comment->path, 'author', X, true)),
             'title' => $language->edit,
             'path' => $link,
             'stack' => 10
         ],
-        'r' => [
+        'r' => $user->status === 1 ? [
             'title' => $language->delete,
             'path' => $link,
             'c' => 'r',
@@ -35,7 +36,7 @@ if ($parent) {
                 'token' => $token
             ],
             'stack' => 10.1
-        ]
+        ] : null
     ]) . '</div>';
 }
 

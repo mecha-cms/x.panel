@@ -22,10 +22,6 @@ Config::set('panel.desk.body.tab.file.field', [
         'type' => 'hidden',
         'value' => 'data',
         'stack' => 0
-    ],
-    'file[consent]' => [
-        'type' => 'hidden',
-        'value' => '0600'
     ]
 ]);
 

@@ -32,8 +32,10 @@ if (!$chops) {
         'icon' => [['M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z']]
     ]);
     Config::reset('panel.desk.header');
-    Config::set('panel.desk.body.tab.recent', [
-        'content' => fn\panel\pages($files),
-        'stack' => 9.9
-    ]);
+    Hook::set('on.ready', function() use($files) {
+        Config::set('panel.desk.body.tab.recent', [
+            'content' => fn\panel\pages($files),
+            'stack' => 9.9
+        ]);
+    }, .1);
 }

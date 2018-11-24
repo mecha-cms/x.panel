@@ -15,12 +15,12 @@ Config::set('panel.+.page.tool', [
     ],
     // Add exit button for user with status `1`
     'exit' => [
-        'if' => function($file) use($user): array {
+        'if' => function($file) use($language, $user): array {
             return [
                 // You can’t log-out the current user
-                'x' => Is::user(Path::N($file)),
+                'x' => Is::user($n = Path::N($file)),
                 'hidden' => $user->status !== 1 || !file_exists(Path::F($file) . DS . 'token.data'),
-                'description' => 'Force log out @' . Path::N($file),
+                'description' => $language->do_force_user_exit('@' . $n),
                 'task' => 'd4e798fd'
             ];
         },

@@ -28,9 +28,10 @@ Config::set('panel.desk', [
                         'height' => true,
                         'stack' => 10
                     ] : [
+                        'key' => 'content',
                         'title' => false,
                         'type' => 'content',
-                        'value' => ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($file, "", ['style[]' => ['display' => 'block']]) : '<code>' . str_replace(ROOT, '.', strtr($file, '/', DS)) . '</code>') . Form::hidden('file[read-only]', 1),
+                        'value' => ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($file, "", ['style[]' => ['display' => 'block']]) : '<pre><code class="language-yaml">' . To::YAML(File::inspect($file)) . '</code></pre>') . Form::hidden('file[read-only]', 1),
                         'stack' => 10
                     ],
                     'file[consent]' => [
@@ -54,7 +55,7 @@ Config::set('panel.desk', [
                 'field' => [
                     'directory' => [
                         'title' => $language->path,
-                        'description' => HTTP::get('tab.0') === 'folder' ? 'Create a folder.' : 'Move current working file or folder to the specified folder path.',
+                        'description' => $language->field_description_directory[$c === 's' && HTTP::get('tab.0') === 'folder' ? 0 : 1],
                         'type' => 'text',
                         'pattern' => '^[_.-]?[a-z\\d]+(-[a-z\\d]+)*([\\\/][_.-]?[a-z\\d]+(-[a-z\\d]+)*)*$',
                         'value' => null,

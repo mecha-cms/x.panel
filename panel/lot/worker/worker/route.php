@@ -22,6 +22,15 @@ Hook::set('on.ready', function() {
         });
         $c += filemtime(__FILE__);
         $c = abs(crc32($c . $token . $site->language)); // Smart cache updater
+        if ($fonts = (array) ($panel->state->fonts ?? [])) {
+            Asset::set('https://fonts.googleapis.com/css?family=' . implode('|', map(array_unique($fonts), function($v) {
+                return urlencode($v) . ':400,700,400i,700i';
+            })));
+            Hook::set('shield.yield', function($yield) use($fonts) {
+                $s = '<style media="screen">html,body{font-family:"' . $fonts[0] . '",serif}h1,h2,h3,h4,h5,h6{font-family:"' . $fonts[1] . '",serif}blockquote{font-family:"' . $fonts[2] . '",serif}code,.code,kbd{font-family:"' . $fonts[3] . '",serif}</style>';
+                return str_replace('</head>', $s . '</head>', $yield);
+            }, 0);
+        }
         Asset::set($url . '/' . $r . '/::g::/-/asset.js', .1, [
             'src' => function($src) use($c) {
                 return candy($this->url, [$src, $c]);
@@ -46,7 +55,7 @@ Hook::set('on.ready', function() {
         }
     }
 
-    Hook::set('asset:body', function($head) use($token) {
+    Hook::set('asset:body', function($body) use($token) {
         $url = $GLOBALS['URL'];
         unset($url['user'], $url['pass']);
         $out = [
@@ -54,7 +63,7 @@ Hook::set('on.ready', function() {
             '$url' => $url,
             '$u_r_l' => $url
         ];
-        return '<script>window.panel=' . json_encode($out) . ';</script>' . $head;
+        return '<script>window.panel=' . json_encode($out) . ';</script>' . $body;
     }, 0);
 
     Route::set([
@@ -73,11 +82,6 @@ Hook::set('on.ready', function() {
                 if ($step !== 1 && !glob($f . DS . '*', GLOB_NOSORT)) {
                     $error = true;
                 }
-                if ($f = File::exist(LOT . DS . $path . DS . $step)) {
-                    $GLOBALS['URL']['path'] .= '/' . $step;
-                    $GLOBALS['URL']['clean'] .= '/' . $step;
-                    $GLOBALS['URL']['i'] = null;
-                }
             }
         } else {
             Config::set('trace', new Anemon([$language->error, $site->title], ' &#x00B7; '));
@@ -93,13 +97,13 @@ Hook::set('on.ready', function() {
             Config::reset('panel.nav');
             $nav = "";
         } else {
-            $nav = fn\panel\nav((array) Config::get('panel.nav', [], true), $id);
+            $nav = fn\panel\nav(Config::get('panel.nav', [], true), $id);
         }
         if ($error) {
             Config::set('panel.error', $error);
         }
         Lot::set([
-            'desk' => fn\panel\desk((array) Config::get('panel.desk', [], true), $id),
+            'desk' => fn\panel\desk(Config::get('panel.desk', [], true), $id),
             'nav' => $nav
         ]);
         return Shield::attach(__DIR__ . DS . 'shield.php');

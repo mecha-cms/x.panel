@@ -6,6 +6,8 @@ function _4f9d54dd() {
     File::open(CACHE)->delete();
     Folder::create(CACHE, 0755);
     Message::success('empty_cache');
+    global $panel;
+    return ['kick' => $panel->r . '/::g::/cache/1'];
 }
 
 // `empty trash`

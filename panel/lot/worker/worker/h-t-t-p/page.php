@@ -48,7 +48,7 @@ if (!array_key_exists('image', $page) && $blob = HTTP::files('image')) {
                 ];
                 $blob['name'] = candy($state['page']['image']['name'] ?? $b, $candy);
                 $path = ASSET . ($user->status === 1 ? DS : DS . $user->key . DS);
-                $path .= rtrim(strtr(candy($state['page']['image']['directory'] ?? "", $candy), '/', DS), DS);
+                $path = rtrim($path . DS . strtr(candy($state['page']['image']['directory'] ?? "", $candy), '/', DS), DS);
                 $response = File::push($blob, $path);
                 // File already exists
                 if ($response === false) {
@@ -61,12 +61,16 @@ if (!array_key_exists('image', $page) && $blob = HTTP::files('image')) {
                     }
                 } else {
                     // Resize image
-                    $width = b(HTTP::post('image.width', 72), 72, 1600);
-                    $height = b(HTTP::post('image.height', $width), 72, 1600);
-                    Image::open($response)->crop($width, $height)->save();
+                    $width = HTTP::post('image.width');
+                    $height = HTTP::post('image.height');
+                    if ($width !== null) {
+                        $width = b($width, 72, 1600);
+                        $height = b($height ?? $width, 72, 1600);
+                        Image::open($response)->crop($width, $height)->save();
+                    }
                     // Create thumbnail
                     Image::open($response)->crop(72, 72)->saveTo(Path::F($response) . DS . '72.' . $x);
-                    Reset::post('image');
+                    Reset::post('image'); // Just in case
                     $page['image'] = To::URL($response);
                     Message::success('file_push', ['<code>' . str_replace(ROOT, '.', $response) . '</code>']);
                 }
@@ -136,7 +140,7 @@ foreach ($headers as $k => $v) {
 
 $headers = extend($headers, From::YAML(HTTP::post(':', ""), '  ', [], false), $page);
 $headers = is($headers, function($v) {
-    return isset($v) && $v !== false && $v !== "" && !is_callable($v);
+    return isset($v) && $v !== false && $v !== "" && !fn\is\instance($v);
 });
 $time = date(DATE_WISE);
 $name = HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false) ?: ($c === 'g' ? Path::F(basename($file)) : $time);
@@ -188,8 +192,7 @@ if (Extend::exist('tag')) {
         }
         $i += 1;
         $kinds = [];
-        $tags = preg_split('#\s*,\s*#', $tags);
-        foreach ($tags as $tag) {
+        foreach (preg_split('#\s*,\s*#', $tags) as $tag) {
             $tag_id = From::tag($tag);
             if ($tag_id !== false) {
                 $kinds[] = $tag_id;
@@ -214,3 +217,4 @@ if (Extend::exist('tag')) {
 
 Set::post('name', $name);
 Set::post('file.content', Page::unite($headers) ?: "---\n...");
+Set::post('file.consent', $consent = 0600);

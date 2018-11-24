@@ -80,13 +80,21 @@ html.form body {
   width:100%;
   height:100%;
 }
-html.form body {
-  display:table-cell;
-  vertical-align:middle;
-}
-html.form body form {
-  max-width:(@x * 10);
-  margin:0 auto;
+html.form {
+  body {
+    display:table-cell;
+    vertical-align:middle;
+    .desk {
+      .m0;
+      .p0;
+      > footer .tools {.m0}
+    }
+    form {
+      max-width:(@x * 10);
+      margin:0 auto;
+      .field > label {display:none}
+    }
+  }
 }
 
 // @nav
@@ -207,6 +215,6 @@ html:not(.js) .nav li:focus-within > ul {display:block}
     .p0t;
   }
   &::after {.clear}
-  .right,
-  .left {margin:0}
+  p.right,
+  p.left {margin:0}
 }

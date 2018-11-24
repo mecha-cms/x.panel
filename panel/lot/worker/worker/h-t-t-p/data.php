@@ -1,5 +1,7 @@
 <?php
 
+Set::post('file.consent', $consent = 0600);
+
 if (Is::void($name)) {
     Message::error('void_field', ['<em>' . $language->key . '</em>']);
 }

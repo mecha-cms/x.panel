@@ -10,7 +10,7 @@ if ($file && is_file($file)) {
     } else {
         $status = Page::apart($file, 'status', null, true);
         if ($status !== $user->status) {
-            Page::open($file)->set('status', $user->status)->save(0600);
+            Page::open($file)->set(['status' => $user->status])->save(0600);
         }
     }
 }

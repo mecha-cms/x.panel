@@ -12,7 +12,7 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     if (!array_key_exists('class[]', $attr)) {
         $attr['class[]'] = [];
     }
-    $attr['class[]'] = \concat($attr['class[]'], [$key, $key . ':' . $id, $key . ':' . $id . '.' . $i]);
+    $attr['class[]'] = \concat($attr['class[]'], [$key], $id !== false ? [$key . ':' . $id, $key . ':' . $id . '.' . $i] : []);
     if (!array_key_exists('id', $attr)) {
         $attr['id'] = $id !== false ? $key . ':' . $id . '.' . $i : null;
     }
@@ -214,10 +214,10 @@ function href($in) {
     if (isset($in['link'])) {
         $out = $in['link'];
     } else if (isset($in['url'])) {
-        $out = \URL::long($in['url']);
+        $out = \URL::long(strtr($in['url'], DS, '/'));
     } else if (isset($in['path'])) {
         global $panel;
-        $out = rtrim(\URL::long($panel->r . '/::' . ($in['c'] ?? 'g') . '::/' . ltrim($in['path'], '/')), '/');
+        $out = rtrim(\URL::long($panel->r . '/::' . ($in['c'] ?? 'g') . '::/' . ltrim(strtr($in['path'], DS, '/'), '/')), '/');
     }
     if (isset($in['query'])) {
         $out .= \HTTP::query($in['query'], '&');

@@ -1,11 +1,5 @@
 <?php
 
-if (!Extend::exist('user')) {
-    echo fail('Missing <code>user</code> extension.');
-} else if (!glob(USER . DS . '*.page', GLOB_NOSORT)) {
-    // TODO: Redirect to user registration form.
-}
-
 $state = Extend::state('user');
 if ($url->path === ($state['_path'] ?? $state['path'])) {
     $a = Extend::state('panel');
@@ -37,7 +31,9 @@ if (Extend::exist('comment')) {
 
 // Trigger notification on poll set
 if (Extend::exist('poll')) {
-    Hook::set('on.poll.set', function() {});
+    Hook::set('on.poll.set', function() {
+        // TODO
+    });
 }
 
 // Trigger notification on markdown link error
@@ -47,6 +43,6 @@ if (Plugin::exist('markdown.link')) {
     });
 }
 
-if ($r === $p && Is::user()) {
+if ($r === $p && (file_exists(__DIR__ . DS . 'task.php') || Is::user())) {
     require __DIR__ . DS . '_index.php';
 }

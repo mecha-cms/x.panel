@@ -73,13 +73,10 @@ Config::set('panel.desk.body.tab.file', [
             'stack' => 10.4
         ],
         'page[author]' => [
+            'key' => 'author',
             'type' => 'hidden',
             'value' => $c === 's' ? $user->key : ($page->author->key ?? $page->author) . "",
             'stack' => 0
-        ],
-        'file[consent]' => [
-            'type' => 'hidden',
-            'value' => '0600'
         ]
     ],
     'stack' => 10 // WHY?!
@@ -164,12 +161,12 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
         Config::set('panel.desk.body.tab.image', [
             'field' => $image ? [
                 'image' => [
-                    'key' => 'image',
                     'type' => 'content',
                     'value' => '<p>' . HTML::a(HTML::img($image, basename($image)), $r . '/::g::/' . Path::R(To::path($image), LOT, '/'), true) . '<br>' . Form::toggle('page[image:x]', 1, false, $language->remove) . '</p>',
                     'stack' => 10
                 ],
                 'page[image]' => [
+                    'key' => 'image',
                     'type' => 'hidden',
                     'value' => $image,
                     'stack' => 0
@@ -212,6 +209,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
         Config::set('panel.desk.body.tab.art', [
             'field' => [
                 'data[css]' => [
+                    'key' => 'css',
                     'title' => '<abbr title="Cascading Style Sheet">CSS</abbr>',
                     'type' => 'source',
                     'value' => $page->css,
@@ -221,6 +219,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
                     'stack' => 10
                 ],
                 'data[js]' => [
+                    'key' => 'js',
                     'title' => '<abbr title="JavaScript">JS</abbr>',
                     'type' => 'source',
                     'value' => $page->js,
@@ -303,7 +302,7 @@ $x = $page->state;
 $buttons = [
     'page' => 'publish',
     'draft' => 'save',
-    'archive' => 'do_archive'
+    'archive' => $c === 'g' ? 'do_archive' : null
 ];
 
 if ($c === 'g') {
@@ -313,6 +312,7 @@ if ($c === 'g') {
 
 $i = 0;
 foreach ($buttons as $k => $v) {
+    if (!isset($v)) continue;
     $buttons[$k] = [
         'title' => $language->{$v},
         'name' => 'x',

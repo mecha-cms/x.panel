@@ -34,8 +34,7 @@ $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($previous = $file = LOT . DS . $path);
 
 if ($c !== 's' && !file_exists($file)) {
-    echo fail('File <code>' . $file . '</code> does not exist.');
-    exit;
+    Guardian::abort('File <code>' . $file . '</code> does not exist.');
 }
 
 // `GET`, `POST`
@@ -45,8 +44,7 @@ if ($c !== 'r') {
         $gate !== false && require $gate;
         // Run task
         if (!$a) {
-            echo fail('Missing task ID.');
-            exit;
+            Guardian::abort('Missing task ID.');
         } else if (function_exists($task = '_' . $a)) {
             $lot = (array) HTTP::get('lot', []);
             array_unshift($lot, $file);
@@ -56,13 +54,11 @@ if ($c !== 'r') {
             }
             Guardian::kick($def);
         } else {
-            echo fail('Task <code>' . $task . '</code> not found.');
-            exit;
+            Guardian::abort('Task <code>' . $task . '</code> not found.');
         }
     // `POST`
     } else if (!HTTP::is('post')) {
-        echo fail('Method not allowed.');
-        exit;
+        Guardian::abort('Method not allowed.');
     }
 // `GET`
 } else /* if ($c === 'r') */ {
@@ -122,10 +118,10 @@ if ($tab === 'folder') {
         } else {
             Folder::create($d = LOT . DS . $path . DS . $directory, 0755);
         }
-        Hook::fire('on.folder.set', [$c === 's' ? null : $previous], new Folder($file));
         Session::set('panel.file.active', LOT . DS . ($is_file ? dirname($path) : $path) . DS . explode(DS, $directory)[0]);
         Message::success('folder_create', ['<code>' . str_replace(ROOT, '.', $d) . '</code>']);
         HTTP::delete();
+        Hook::fire('on.folder.set', [$c === 's' ? null : $previous], new Folder($file));
         Guardian::kick($r . '/::g::/' . strtr($is_file ? dirname($path) : $path, DS, '/') . '/1');
     } else {
         HTTP::save();
@@ -159,8 +155,8 @@ if ($tab === 'folder') {
         }
         if (!Message::$x) {
             Session::set('panel.file.active', $response);
-            Hook::fire('on.file.set', [null], new File($response));
             Message::success('file_push', ['<code>' . str_replace(ROOT, '.', $response) . '</code>']);
+            Hook::fire('on.file.set', [null], new File($response));
             Guardian::kick(str_replace('::' . $c . '::', '::g::', $url->path) . '/1');
         } else {
             Guardian::kick($url->path . HTTP::query(['token' => false], '&'));
@@ -206,13 +202,13 @@ if ($tab === 'folder') {
             File::put($content)->saveTo($file, $consent);
         }
         Session::set('panel.file.active', $file);
-        Hook::fire('on.file.set', [$c === 's' ? null : $previous], new File($file));
         if ($n && ($directory || $n !== $name)) {
             File::open(LOT . DS . $path . DS . $n)->delete();
         }
         Message::success('file_' . ($c === 's' ? 'create' : 'update'), ['<code>' . str_replace(ROOT, '.', $c === 's' ? $file : $previous) . '</code>']);
         HTTP::delete();
         $to = $r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name);
+        Hook::fire('on.file.set', [$c === 's' ? null : $previous], new File($file));
         // Redirect to file list if we are in `s` command
         Guardian::kick($c === 's' ? dirname($to) . '/1' : $to . $query);
     } else {

@@ -16,17 +16,19 @@ Config::set('panel.desk.body.tab.art.hidden', true);
 Config::set('panel.desk.body.tab.image.hidden', true);
 
 // Modify default page field(s)
+$pass = $user->pass;
 Config::set('panel.+.slug', ['page[$]:slug']);
 Config::set('panel.desk.body.tab', [
     'file' => [
         'field' => [
             'page[title]' => null,
             'page[description]' => null,
+            'page[author]' => null,
             'page[$]' => [
                 'key' => 'name',
                 'type' => 'text',
-                'value' => $page->{'$'},
-                'placeholder' => $c === 's' ? $language->field_hint_page_title : null,
+                'value' => $c === 's' ? null : $page->{'$'},
+                'placeholder' => $c === 's' ? $language->field_hint_page_author : $page->{'$'} ?: $language->field_hint_page_author,
                 'width' => true,
                 'stack' => 10
             ],
@@ -37,7 +39,7 @@ Config::set('panel.desk.body.tab', [
                 'description' => $language->field_description_key_user,
                 'stack' => 10.1
             ],
-            '*data[pass]' => $c === 's' ? [
+            '*data[pass]' => $c === 's' || !$pass ? [
                 'key' => 'pass',
                 'type' => 'pass',
                 'width' => true,
@@ -47,16 +49,25 @@ Config::set('panel.desk.body.tab', [
                 'key' => 'email',
                 'type' => 'email',
                 'value' => $page->email,
-                'placeholder' => $c === 's' ? l($language->email) . '@' . $url->host : null,
+                'placeholder' => $c === 's' ? l($language->email) . '@' . $url->host : $page->email ?: l($language->email) . '@' . $url->host,
                 'width' => true,
                 'stack' => 10.3
             ],
-            'page[content]' => ['stack' => 10.4],
+            'page[content]' => [
+                'placeholder' => $language->field_hint_page_description__($language->user),
+                'stack' => 10.4
+            ],
             'page[type]' => ['stack' => 10.5],
+            'page[status]' => $pass ? null : [
+                'key' => 'status',
+                'type' => 'hidden',
+                'value' => 1,
+                'stack' => 0
+            ],
             'tags' => ['hidden' => true]
         ]
     ],
-    'status' => [
+    'status' => $pass ? [
         'field' => [
             'page[status]' => [
                 'key' => 'status',
@@ -67,23 +78,31 @@ Config::set('panel.desk.body.tab', [
             ]
         ],
         'stack' => 10.09
-    ]
+    ] : null
 ]);
 
-Hook::set('on.ready', function() use($language, $user) {
-    $status = (array) $language->o_page_status;
-    Config::set('panel.desk.body.tab.status.field.page[status].values', $user->status === 1 ? $status : [
-        $user->status => $status[$user->status]
-    ]);
-}, .1);
+if ($pass) {
+    // Obfuscate pass value
+    if (strpos($pass, X) !== 0) {
+        File::put(X . password_hash($pass . ' ' . $user->slug, PASSWORD_DEFAULT))->saveTo(Path::F($user->path) . DS . 'pass.data', 0600);
+    }
+    Hook::set('on.ready', function() use($file, $language, $user) {
+        $status = (array) $language->o_page_status;
+        Config::set('panel.desk.body.tab.status.field.page[status].values', $user->status === 1 && !Is::user(Path::N($file)) ? $status : [
+            $user->status => $status[$user->status]
+        ]);
+    }, .1);
+}
 
 if ($c === 'g') {
     Hook::set('on.ready', function() {
         Config::set('panel.nav.s.icon', [['M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z']]);
-    }, .1);
+    }, .2);
     if (Path::N($path) === $user->slug) {
         Config::reset('panel.desk.footer.tool.draft');
         Config::reset('panel.desk.footer.tool.archive');
         Config::reset('panel.desk.footer.tool.trash');
     }
+} else {
+    Config::set('panel.desk.footer.tool.page.title', $language->create);
 }
