@@ -424,13 +424,18 @@ img.align-center {
         background:none;
         border-width:0;
         margin-right:@x;
+        .box-shadow(none);
         &.active::before,
         &.active::after {display:none}
+        &.active {
+          .box-shadow(none);
+          a {color:inherit}
+        }
         &:last-child {margin-right:0}
       }
       a {
-        display:inline;
         padding:0;
+        color:@color-a;
         .icon {display:none}
       }
     }

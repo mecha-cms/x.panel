@@ -25,7 +25,7 @@ if ($a < 0) {
 }
 
 // Process page image
-if (!array_key_exists('image', $page) && $blob = HTTP::files('image')) {
+if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP::files('image')) {
     call_user_func(function() use($blob, $language, &$page, $state, $user) {
         // Detect image by MIME type
         if (!empty($blob['type']) && strpos($blob['type'], 'image/') !== 0) {
@@ -46,7 +46,7 @@ if (!array_key_exists('image', $page) && $blob = HTTP::files('image')) {
                     'name' => $n,
                     'uid' => uniqid()
                 ];
-                $blob['name'] = candy($state['page']['image']['name'] ?? $b, $candy);
+                $blob['name'] = candy(($state['page']['image']['name'] ?? $b) ?: $b, $candy);
                 $path = ASSET . ($user->status === 1 ? DS : DS . $user->key . DS);
                 $path = rtrim($path . DS . strtr(candy($state['page']['image']['directory'] ?? "", $candy), '/', DS), DS);
                 $response = File::push($blob, $path);

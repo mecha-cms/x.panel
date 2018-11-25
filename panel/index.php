@@ -1,12 +1,14 @@
 <?php
 
-$state = Extend::state('user');
-if ($url->path === ($state['_path'] ?? $state['path'])) {
-    $a = Extend::state('panel');
-    // Set redirection path after log-in
-    Session::reset('url.previous');
-    Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
-    return;
+if (!HTTP::is('get', 'kick')) {
+    $state = Extend::state('user');
+    if ($url->path === ($state['_path'] ?? $state['path'])) {
+        $a = Extend::state('panel');
+        // Set redirection path after log-in
+        Session::reset('url.previous');
+        Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
+        return;
+    }
 }
 
 $state = Extend::state('panel');

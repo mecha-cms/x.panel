@@ -348,6 +348,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $pattern = $in['pattern'] ?? null;
         $width = $in['width'] ?? null;
         $height = $in['height'] ?? null;
+        $range = (array) ($in['range'] ?? []); // TODO
         $expand = !empty($in['expand']);
         $clone = $in['clone'] ?? 0; // TODO
         asort($values);

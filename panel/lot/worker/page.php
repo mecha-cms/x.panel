@@ -179,13 +179,15 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
                 'image[width]' => [
                    'key' => 'width',
                    'type' => 'number',
-                   'value' => $state['page']['image']['width'] ?? 0,
+                   'range' => [72, 1600],
+                   'value' => $state['page']['image']['width'] ?? null,
                    'stack' => 10.1
                 ],
                 'image[height]' => [
                    'key' => 'height',
                    'type' => 'number',
-                   'value' => $state['page']['image']['height'] ?? 0,
+                   'range' => [72, 1600],
+                   'value' => $state['page']['image']['height'] ?? null,
                    'stack' => 10.2
                 ]
             ],

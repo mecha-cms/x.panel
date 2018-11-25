@@ -1,6 +1,6 @@
 <?php
 
-if (!$chops) {
+if (!$chops && !HTTP::is('get', 'q')) {
     $files = array_keys(File::explore([COMMENT, 'draft,page,archive'], true));
     usort($files, function($a, $b) {
         return basename($b) <=> basename($a);
