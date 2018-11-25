@@ -15,6 +15,9 @@ if ($c === 's' && $chops && HTTP::get('view', $panel->view) !== 'data') {
 Config::set('panel.desk.body.tab.art.hidden', true);
 Config::set('panel.desk.body.tab.image.hidden', true);
 
+// Hide `archive` button
+Config::set('panel.desk.footer.tool.archive.hidden', true);
+
 // Modify default page field(s)
 $default = new Page(LANGUAGE . DS . 'en-us.page', [], false);
 Config::set('panel.desk.body.tab.file.field', [

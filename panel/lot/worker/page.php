@@ -50,7 +50,7 @@ Config::set('panel.desk.body.tab.file', [
         ],
         'page[content]' => [
             'key' => 'content',
-            'type' => 'editor',
+            'type' => 'source',
             'value' => $page->content,
             'placeholder' => $c === 's' ? $language->field_hint_file_content : null,
             'width' => true,

@@ -1,7 +1,7 @@
 <?php
 
 // Only user with status `1` can create/update user’s `status` data
-if ($file && is_file($file)) {
+if ($file && $file === $user->path) {
     if ($data = File::exist(Path::F($file) . DS . 'status.data')) {
         $status = (int) file_get_contents($data);
         if ($status !== $user->status) {

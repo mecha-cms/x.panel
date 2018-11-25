@@ -380,7 +380,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
             'style[]' => $style
         ]);
         $out .= '<label for="f:' . $id . '.' . $i . '">' . $title . '</label>';
-        $textarea = \has(['content', 'editor', 'source', 'textarea'], $type);
+        $textarea = \has(['content', 'source', 'textarea'], $type);
         $node = $in[0] ?? ($textarea ? 'div' : 'span');
         $out .= '<' . $node . '>';
         if ($type === 'hidden') {
@@ -411,17 +411,22 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         } else if ($type === 'toggle') {
             $alt['class[]'][] = 'input';
             $out .= \Form::check($key, $value, $active, $description, $alt);
-        } else if (\has(['editor', 'source', 'textarea'], $type)) {
+        } else if (\has(['source', 'textarea'], $type)) {
             $alt['class[]'][] = 'textarea';
-            if ($type === 'editor' || $type === 'source') {
+            if ($type === 'source') {
                 $alt['class[]'][] = 'code';
-                if ($type === 'editor') {
-                    $alt['class[]'][] = 'editor';
-                }
             }
             $out .= \Form::textarea($key, $value, $placeholder, $alt);
         } else if (\has(['color', 'date', 'email', 'number', 'pass', 'search', 'tel', 'text', 'url'], $type)) {
             $alt['class[]'][] = 'input';
+            if ($range) {
+                if ($type === 'number') {
+                    $alt['min'] = $range[0] ?? null;
+                    $alt['max'] = $range[1] ?? null;
+                } else if ($type === 'range') {
+                    $value = [$range[0] ?? 0, $value, $range[1] ?? 100];
+                }
+            }
             $out .= call_user_func("\\Form::" . $type, $key, $value, $placeholder, $alt);
         } else /* if ($type === 'content') */ {
             $out .= $value;

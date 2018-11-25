@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . DS . 'page.php';
+
 // Disable page children feature
 Config::reset('panel.+.page.tool.s');
 Config::set('panel.error', !!$chops);
