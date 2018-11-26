@@ -1,5 +1,7 @@
 <?php
 
+ini_set('max_execution_time', 300); // 5 minute(s)
+
 $worker = __DIR__ . DS . 'lot' . DS . 'worker' . DS;
 $f = rtrim(LOT . DS . $id . DS . strtr($path, '/', DS), DS);
 $i = (string) $url->i;

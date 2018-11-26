@@ -37,6 +37,8 @@ if ($c !== 's' && !file_exists($file)) {
     Guardian::abort('File <code>' . $file . '</code> does not exist.');
 }
 
+$any = $c === 's' || $is_file ? 'file' : 'folder';
+
 // `GET`, `POST`
 if ($c !== 'r') {
     // `GET`
@@ -163,7 +165,7 @@ if ($tab === 'folder') {
         }
     }
 } else /* if ($tab === 'file') */ {
-    $name = call_user_func('To::' . ($c === 's' || $is_file ? 'file' : 'folder'), basename(HTTP::post('name', "", false)));
+    $name = call_user_func('To::' . $any, basename(HTTP::post('name', "", false)));
     $n = null;
     if ($c === 'g') {
         $n = basename($path); // previous name
@@ -181,13 +183,16 @@ if ($tab === 'folder') {
         }
         $name .= '.' . $x;
     }
-    if ($content = HTTP::post('file.?', [])) {
-        $content = (array) $content;
-        if ($x === 'json') {
+    if ($content = HTTP::post('file.?', "", false)) {
+        $test_x = $x ?: Path::X($name);
+        if (is_string($content)) {
+            $content = From::YAML($content);
+        }
+        if ($test_x === 'json') {
             $content = json_encode($content);
-        } else if ($x === 'php') {
+        } else if ($test_x === 'php') {
             $content = z($content);
-        } else if ($x === 'yaml') {
+        } else if ($test_x === 'yaml') {
             $content = To::YAML($content);
         } else {
             $content = serialize($content); // Default to serial
@@ -200,14 +205,14 @@ if ($tab === 'folder') {
     $file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name);
     $file = candy($file, $candy);
     $test_x = Path::X($file);
-    if (($c === 's' || $is_file) && $test_x && !has(File::$config['extension'], $test_x)) {
+    if ($any === 'file' && $test_x && !has(File::$config['extension'], $test_x)) {
         Message::error('file_x', ['<code>' . $test_x . '</code>']);
     }
     if (Is::void($name)) {
         Message::error('void_field', ['<em>' . $language->name . '</em>'], true);
     } else if (file_exists($file)) {
         if ($c === 's' || $name !== basename($panel->path)) {
-            Message::error(($c === 's' || $is_file ? 'file' : 'folder') . '_exist', ['<code>' . str_replace(ROOT, '.', $file) . '</code>']);
+            Message::error($any . '_exist', ['<code>' . str_replace(ROOT, '.', $file) . '</code>']);
         }
     }
     if (!Message::$x) {
@@ -220,10 +225,10 @@ if ($tab === 'folder') {
         if ($n && ($directory || $n !== $name)) {
             File::open(LOT . DS . $path . DS . $n)->delete();
         }
-        Message::success(($c === 's' || $is_file ? 'file' : 'folder') . '_' . ($c === 's' ? 'create' : 'update'), ['<code>' . str_replace(ROOT, '.', $c === 's' ? $file : $previous) . '</code>']);
+        Message::success($any . '_' . ($c === 's' ? 'create' : 'update'), ['<code>' . str_replace(ROOT, '.', $c === 's' ? $file : $previous) . '</code>']);
         HTTP::delete();
         $to = $r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name);
-        Hook::fire('on.' . ($c === 's' || $is_file ? 'file' : 'folder') . '.set', [$c === 's' ? null : $previous], $c === 's' || $is_file ? new File($file) : new Folder($file));
+        Hook::fire('on.' . $any . '.set', [$c === 's' ? null : $previous], $any === 'file' ? new File($file) : new Folder($file));
         // Redirect to file list if we are in `s` command
         Guardian::kick($c === 's' ? dirname($to) . '/1' : $to . $query);
     } else {
