@@ -11,17 +11,16 @@ Hook::set('on.ready', function() {
     if (strpos($url->path, $r . '/::') === 0) {
         // Remove all defined asset(s) and route(s)
         Asset::reset();
-        Route::reset();
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         Asset::set($asset . 'js' . DS . 'zepto.min.js', 0);
-        $c = glob(__DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . '*.php', GLOB_NOSORT);
-        $c = array_reduce(array_map(function($v) {
+        $t = glob(__DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . '*.php', GLOB_NOSORT);
+        $t = array_reduce(array_map(function($v) {
             return filemtime($v);
-        }, $c), function($a, $b) {
+        }, $t), function($a, $b) {
             return $a + $b;
         });
-        $c += filemtime(__FILE__);
-        $c = abs(crc32($c . $token . $site->language)); // Smart cache updater
+        $t += filemtime(__FILE__);
+        $t = abs(crc32($t . $token . $site->language)); // Smart cache updater
         if ($fonts = (array) ($panel->state->fonts ?? [])) {
             Asset::set('https://fonts.googleapis.com/css?family=' . implode('|', map(array_unique($fonts), function($v) {
                 return urlencode($v) . ':400,700,400i,700i';
@@ -32,8 +31,8 @@ Hook::set('on.ready', function() {
             }, 0);
         }
         Asset::set($url . '/' . $r . '/::g::/-/asset.js', .1, [
-            'src' => function($src) use($c) {
-                return candy($this->url, [$src, $c]);
+            'src' => function($src) use($t) {
+                return candy($this->url, [$src, $t]);
             }
         ]);
         if (defined('DEBUG') && DEBUG && Extend::exist('less')) {

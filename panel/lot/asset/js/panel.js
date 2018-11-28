@@ -287,7 +287,7 @@ function notify() {
         $notify.find('svg path').attr('d', panel.$svg.bell[i > 0 ? 1 : 0]);
         setTimeout(notify, 10000);
     });
-} $html.hasClass('status-1') && notify();
+} $notify.length && $html.hasClass('status-1') && notify();
 
 
 // Hide message with time-out
