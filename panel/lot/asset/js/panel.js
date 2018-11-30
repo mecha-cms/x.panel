@@ -374,6 +374,7 @@ if ($codes.length) {
                 t.editor.$.setOption('readOnly', true);
                 view.setAttribute('readonly', 'readonly'); // Hacky :p
             }
+            $win.trigger('resize'); // Hacky :(
             return t.editor.$;
         }
         // Trigger once the editor creator
