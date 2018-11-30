@@ -33,7 +33,7 @@ if ($parent) {
             'query' => [
                 'a' => -2,
                 'f' => false,
-                'token' => $token
+                'token' => $panel->token
             ],
             'stack' => 10.1
         ] : null

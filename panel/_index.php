@@ -25,6 +25,7 @@ Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
     'file' => is_file($f) ? $f : null,
     'folder' => is_dir($f) ? $f : null,
     'state' => o($state),
+    'token' => $user->token,
     'view' => ($view = basename(HTTP::get('view', 'file', false))),
     'r' => $r, // root
     'v' => $view . (!$chops && $c === 'g' || $i !== "" ? 's' : "") // Plural or singular?
@@ -42,8 +43,9 @@ Set::get(fn\panel\_clean(Get::get()), false);
 Set::post(fn\panel\_clean(Get::post()), false);
 Set::request(fn\panel\_clean(Get::request()), false);
 
-$tok = HTTP::get('token');
-if ($tok && Guardian::check($tok)) {
+// Check form token
+$token = HTTP::get('token');
+if ($token && $token === $panel->token) {
     require $worker . 'worker' . DS . 'task.php';
     require $worker . 'worker' . DS . 'h-t-t-p.php';
 } else if ($c === 'a' || $c === 'r') {

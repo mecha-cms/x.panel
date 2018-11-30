@@ -57,7 +57,7 @@ Config::set('panel.desk', [
                             'a' => -2,
                             'q' => false,
                             'tab' => false,
-                            'token' => $token
+                            'token' => $panel->token
                         ],
                         'stack' => 10.1
                     ] : null

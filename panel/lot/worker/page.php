@@ -149,7 +149,7 @@ Config::set('panel.desk.body.tab.data', [
     'stack' => 10.1
 ]);
 
-Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $r, $token, $url) {
+Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $r, $url) {
     Config::set('panel.nav.search', [
         'content' => fn\panel\nav_li_search([
             'title' => $language->{str_replace('.', "\\.", $id)},

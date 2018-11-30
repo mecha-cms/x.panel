@@ -25,7 +25,7 @@ if ($panel->c === 's') {
 
 ?>
 <?php if ($v = Config::get('panel.+.form.editor')): ?>
-<form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
+<form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $panel->token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>
 <p class="m0 p2"><?php echo is_string($error) ? $error : '&#x0CA0;&#x005F;&#x0CA0;'; ?></p>

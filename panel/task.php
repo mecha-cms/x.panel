@@ -11,6 +11,7 @@ if (!Extend::exist('user')) {
         'description' => 'Delete me!',
         'status' => 1
     ])->saveTo(USER . DS . $uid . '.page', 0600);
+    $token = Guardian::token('panel');
     File::put($token)->saveTo(USER . DS . $uid . DS . 'token.data', 0600);
     Cookie::set('url.user', '@' . $uid);
     Cookie::set('url.token', $token);
@@ -49,5 +50,7 @@ if (!Extend::exist('user')) {
                 Guardian::kick($state['_path'] ?? $state['path']);
             }
         }, 0);
+    } else {
+        Guardian::kick($user_install);
     }
 }

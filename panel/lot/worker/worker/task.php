@@ -73,6 +73,7 @@ function _8f86d176($file) {
 
 // `user exit`
 function _950abfd9($file) {
+    $user = Lot::get('user');
     File::open(Path::F($file) . DS . 'token.data')->delete();
     $state = Extend::state('user');
     Message::success('user_exit');

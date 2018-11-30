@@ -21,7 +21,7 @@ foreach (glob($file . DS . '*.page', GLOB_NOSORT) as $v) {
             'path' => Path::R($v->path, LOT, '/'),
             'query' => [
                 'a' => false,
-                'token' => $token
+                'token' => $panel->token
             ],
             'stack' => 10.1
         ]

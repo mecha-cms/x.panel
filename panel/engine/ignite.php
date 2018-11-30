@@ -203,12 +203,12 @@ function href($in) {
     // `[link[path[url]]]`
     $out = "";
     if (isset($in['task'])) {
-        global $token;
+        global $panel;
         $in['task'] = (array) $in['task'];
         $in['c'] = 'a';
         $in['query']['a'] = array_shift($in['task']) ?? false;
         $in['query']['lot'] = array_shift($in['task']) ?? false;
-        $in['query']['token'] = $token;
+        $in['query']['token'] = $panel->token;
         unset($in['task']);
     }
     if (isset($in['link'])) {
@@ -491,7 +491,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 }
 
 function files($folder, $id = 0, $attr = [], $i = 0) {
-    global $panel, $token, $url;
+    global $panel, $url;
     $files = q(\concat(..._glob($folder)));
     \Config::set('panel.+.explore', $files);
     $out = "";

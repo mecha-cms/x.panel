@@ -164,7 +164,7 @@ Config::set('panel.+.file.tool', [
         'c' => 'r',
         'query' => [
             'a' => -2,
-            'token' => $token,
+            'token' => $panel->token,
         ],
         'stack' => 10.1
     ] : null
@@ -214,7 +214,7 @@ Config::set('panel.+.page.tool', [
         'c' => 'r',
         'query' => [
             'a' => -2,
-            'token' => $token,
+            'token' => $panel->token,
         ],
         'stack' => 10.1
     ] : null

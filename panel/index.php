@@ -1,10 +1,12 @@
 <?php
 
-if (!HTTP::is('get', 'kick')) {
+$is_enter = Is::user();
+if (!HTTP::is('get', 'kick') && !$is_enter) {
     $state = Extend::state('user');
     if ($url->path === ($state['_path'] ?? $state['path'])) {
         $a = Extend::state('panel');
         // Set redirection path after log-in
+        Cookie::reset('url.previous');
         Session::reset('url.previous');
         Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
         return;
@@ -45,6 +47,6 @@ if (Plugin::exist('markdown.link')) {
     });
 }
 
-if ($r === $p && (file_exists(__DIR__ . DS . 'task.php') || Is::user())) {
+if ($r === $p && (file_exists(__DIR__ . DS . 'task.php') || $is_enter)) {
     require __DIR__ . DS . '_index.php';
 }
