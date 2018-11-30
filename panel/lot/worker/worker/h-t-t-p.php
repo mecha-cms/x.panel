@@ -150,7 +150,7 @@ if ($tab === 'folder') {
                 Message::error('file_exist', ['<code>' . str_replace(ROOT, '.', $destination . DS . $blob['name']) . '</code>']);
             // Trigger error
             } else if (is_int($response)) {
-                Message::error('file_push.' . $response);
+                Message::error($language->message_error_file_push[$response] ?? $language->error . ': ' . $response);
             }
         } else {
             Message::error('file_void');

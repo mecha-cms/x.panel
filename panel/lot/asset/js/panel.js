@@ -83,10 +83,11 @@ if ($tabs.length) {
         href = win.location.href,
         action;
     $tabs.on('tab:change', function(e, $source, $target) {
+        var active = $source.parent().hasClass('active');
         $source.parent().addClass('active').siblings().removeClass('active');
         $target.addClass('active').siblings().removeClass('active');
         var $form = $target.closest('form');
-        if (pushState) {
+        if (pushState && !active) {
             if (!action) action = $form.attr('action');
             var key = $target.data('key'),
                 k = 'tab[' + key[1] + ']';
@@ -297,6 +298,95 @@ if ($messages.length) {
         setTimeout(function() {
             $messages.addClass('exit');
         }, 10000);
+    });
+}
+
+// Apply `CodeMirror`
+$codes = $('textarea.code');
+if ($codes.length) {
+    // Mode(s) are hard-coded :(
+    var mode = 'application/x-httpd-php',
+        x = panel.$url.path.split('.').pop() || 'text/plain',
+        markdown = {
+            name: 'markdown',
+            taskLists: false,
+            fencedCodeBlocks: '~~~'
+        },
+        yaml = {
+            name: 'yaml-frontmatter',
+            base: markdown
+        },
+        aliases = {
+            'archive': yaml,
+            'draft': yaml,
+            'page': yaml,
+            'css': 'text/x-less',
+            'js': 'text/javascript'
+        },
+        editorConfig = {
+            autoCloseBrackets: true,
+            autoRefresh: true,
+            lineNumbers: true,
+            lineWrapping: true,
+            matchBrackets: true,
+            mode: mode,
+            showTrailingSpace: true,
+            extraKeys: {
+                'Enter': 'newlineAndIndentContinueMarkdownList'
+            }
+        };
+    x && (mode = aliases[x] || x);
+    $.each($codes, function() {
+        var $this = this;
+        $this.editor = {'<>': $this};
+        function get() {
+            return this['<>'];
+        }
+        function reset() {
+            this.editor && this.editor.$ && this.editor.$.toTextArea();
+        }
+        function set(config) {
+            var t = this,
+                name = t.name,
+                m = $(t).data('syntax');
+            t.editor && t.editor.$ && t.editor.$.toTextArea();
+            if (m) {
+                mode = m;
+            } else {
+                if (/(data|page)\[content\]/.test(name)) {
+                    mode = markdown;
+                }
+                if (/(data|page)\[css\]/.test(name)) {
+                    mode = t.value.search('</style>') !== -1 ? 'application/x-httpd-php' : 'text/x-less';
+                } else if (/(data|page)\[js\]/.test(name)) {
+                    mode = t.value.search('</script>') !== -1 ? 'application/x-httpd-php' : 'text/javascript';
+                }
+            }
+            editorConfig.mode = mode;
+            t.editor.$ = CodeMirror.fromTextArea(t, $.extend({}, editorConfig, config));
+            var view = t.editor.$.getWrapperElement();
+            // Update `<textarea>` value on every “blur” event
+            t.editor.$.on("blur", function($) {
+                 $.save();
+            });
+            view.className += ' ' + t.className;
+            if (t.readOnly) {
+                t.editor.$.setOption('readOnly', true);
+                view.setAttribute('readonly', 'readonly'); // Hacky :p
+            }
+            return t.editor.$;
+        }
+        // Trigger once the editor creator
+        set.call($this);
+        $this.editor.get = get;
+        // Add generic editor destroyer for this editor to be used by other editor(s) that want to override this editor
+        $this.editor.reset = function() {
+            reset.call(this['<>']);
+        };
+        // Add generic editor creator for this editor
+        $this.editor.set = function(config) {
+            return set.call(this['<>'], config);
+        };
     });
 }
 

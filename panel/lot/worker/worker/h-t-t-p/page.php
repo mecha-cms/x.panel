@@ -57,7 +57,7 @@ if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP:
                 } else if (is_int($response)) {
                     // But `4` (no file was uploaded)
                     if ($response !== 4) {
-                        Message::error('file_push.' . $response);
+                        Message::error($language->message_info_file_push[$response] ?? $language->error . ': ' . $response);
                     }
                 } else {
                     // Resize image

@@ -9,6 +9,7 @@ do_empty_trash: Empty the Trash
 do_empty_cache: Refresh Cache
 do_empty_directory: Delete this folder with its contents.
 do_force_user_exit: Force log out %{0}%
+do_up_directory: Up one level directory.
 
 height: Height
 

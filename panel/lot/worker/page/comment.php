@@ -21,7 +21,7 @@ if ($parent) {
     $source .= '<h3>' . $comment->author . '</h3>';
     $source .= '<div class="p">' . $comment->content . fn\panel\links([
         'g' => [
-            'x' => !Is::user(Page::apart($comment->path, 'author', X, true)),
+            'x' => $user->status !== 1 && !Is::user(Page::apart($comment->path, 'author', X, true)),
             'title' => $language->edit,
             'path' => $link,
             'stack' => 10
@@ -45,6 +45,7 @@ Config::set('panel.desk.body.tab', [
         'field' => [
             'page[title]' => null,
             'page[description]' => null,
+            'slug' => null,
             'reply' => $parent ? [
                 'title' => false,
                 // 'expand' => true,
@@ -79,7 +80,6 @@ Config::set('panel.desk.body.tab', [
                 'type' => 'hidden',
                 'value' => $page->parent
             ],
-            'slug' => ['hidden' => true],
             'tags' => ['hidden' => true]
         ]
     ]

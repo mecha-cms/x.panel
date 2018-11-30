@@ -348,7 +348,8 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $pattern = $in['pattern'] ?? null;
         $width = $in['width'] ?? null;
         $height = $in['height'] ?? null;
-        $range = (array) ($in['range'] ?? []); // TODO
+        $range = (array) ($in['range'] ?? []);
+        $syntax = $in['syntax'] ?? null;
         $expand = !empty($in['expand']);
         $clone = $in['clone'] ?? 0; // TODO
         asort($values);
@@ -415,6 +416,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
             $alt['class[]'][] = 'textarea';
             if ($type === 'source') {
                 $alt['class[]'][] = 'code';
+                $alt['data[]']['syntax'] = $syntax;
             }
             $out .= \Form::textarea($key, $value, $placeholder, $alt);
         } else if (\has(['color', 'date', 'email', 'number', 'pass', 'search', 'tel', 'text', 'url'], $type)) {

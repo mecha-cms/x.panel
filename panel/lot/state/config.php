@@ -2,17 +2,20 @@
 
 return [
     'path' => 'panel',
-    '$' => 'page', // default redirect target
-    'fonts' => [
-        0 => 'Roboto Condensed', // body
-        1 => 'Roboto Condensed', // headers
-        2 => 'Roboto Condensed', // alternate
-        3 => 'Roboto Mono' // code
+    '$' => 'page', // Default redirect target
+    'style' => [
+        'fonts' => [
+            0 => 'Roboto Condensed', // Body
+            1 => 'Roboto Condensed', // Header(s)
+            2 => 'Roboto Condensed', // Alternate
+            3 => 'Roboto Mono' // Code
+        ],
+        'width' => 1024, // Maximum editor width
     ],
     'file' => [
         'chunk' => 50,
         'kin' => 2,
-        'size' => [ // minimum and maximum file size to upload in byte(s)
+        'size' => [ // TODO: Minimum and maximum file size to upload in byte(s)
             0, // 0 MB
             4e+6 // 4 MB
         ]

@@ -80,7 +80,10 @@ Hook::set('page.image', function($image) {
     return $image;
 });
 
-Hook::set('page.url', function($url) {
+Hook::set('page.url', function($u) use($state, $url) {
     $path = $this->path;
-    return $path && strpos($path, EXTEND . DS) === 0 ? false : $url;
+    if ($path && strpos($path, EXTEND . DS . 'plugin' . DS) === 0) {
+        return $url . '/' . $state['path'] . '/::g::/' . Path::R(EXTEND, LOT, '/') . '/plugin/lot/worker/1' . HTTP::query();
+    }
+    return $path && strpos($path, EXTEND . DS) === 0 ? false : $u;
 });

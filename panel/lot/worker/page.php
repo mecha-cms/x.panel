@@ -52,7 +52,7 @@ Config::set('panel.desk.body.tab.file', [
             'key' => 'content',
             'type' => 'source',
             'value' => $page->content,
-            'placeholder' => $c === 's' ? $language->field_hint_file_content : null,
+            'placeholder' => $language->field_hint_file_content,
             'width' => true,
             'height' => true,
             'stack' => 10.2
@@ -61,7 +61,7 @@ Config::set('panel.desk.body.tab.file', [
             'key' => 'description',
             'type' => 'textarea',
             'value' => $page->description,
-            'placeholder' => $c === 's' ? $language->field_hint_page_description__($language->{str_replace('.', "\\.", $id)}) : null,
+            'placeholder' => $language->field_hint_page_description__($language->{str_replace('.', "\\.", $id)}),
             'width' => true,
             'stack' => 10.3
         ],
@@ -135,6 +135,7 @@ Config::set('panel.desk.body.tab.data', [
         '!:' => $c === 'g' ? [
             'key' => 'datas',
             'type' => 'source',
+            'syntax' => 'yaml',
             'width' => true,
             'placeholder' => $language->{'field_hint_:'},
             'stack' => 10.2

@@ -23,7 +23,7 @@ Config::set('panel.desk', [
                         'key' => 'content',
                         'type' => 'source',
                         'value' => $is_file_text ? file_get_contents($file) : null,
-                        'placeholder' => $c === 's' ? $language->field_hint_file_content : null,
+                        'placeholder' => $language->field_hint_file_content,
                         'width' => true,
                         'height' => true,
                         'stack' => 10

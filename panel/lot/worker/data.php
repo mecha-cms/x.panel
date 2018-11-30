@@ -12,6 +12,7 @@ Config::reset('panel.desk.body.tab.folder');
 Config::reset('panel.desk.body.tab.blob');
 
 Config::set('panel.desk.body.tab.file.field', [
+    'file[content]' => ['syntax' => 'application/json'],
     'name' => [
         'key' => 'key',
         'value' => $c === 'g' ? Path::N($file) : null,

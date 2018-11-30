@@ -12,7 +12,11 @@ Hook::set('on.ready', function() {
         // Remove all defined asset(s) and route(s)
         Asset::reset();
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
-        Asset::set($asset . 'js' . DS . 'zepto.min.js', 0);
+        Asset::set($asset . 'js' . DS . 'zepto.min.js', 9);
+        Asset::set($asset . 'js' . DS . 'code-mirror.min.js', 9.1);
+        Asset::set($asset . 'js' . DS . 'code-mirror/display.min.js', 9.11);
+        Asset::set($asset . 'js' . DS . 'code-mirror/edit.min.js', 9.11);
+        Asset::set($asset . 'js' . DS . 'code-mirror/mode.min.js', 9.11);
         $t = glob(__DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . '*.php', GLOB_NOSORT);
         $t = array_reduce(array_map(function($v) {
             return filemtime($v);
@@ -21,37 +25,37 @@ Hook::set('on.ready', function() {
         });
         $t += filemtime(__FILE__);
         $t = abs(crc32($t . $token . $site->language)); // Smart cache updater
-        if ($fonts = (array) ($panel->state->fonts ?? [])) {
-            Asset::set('https://fonts.googleapis.com/css?family=' . implode('|', map(array_unique($fonts), function($v) {
-                return urlencode($v) . ':400,700,400i,700i';
-            })));
-            Hook::set('shield.yield', function($yield) use($fonts) {
-                $s = '<style media="screen">html,body{font-family:"' . $fonts[0] . '",serif}h1,h2,h3,h4,h5,h6{font-family:"' . $fonts[1] . '",serif}blockquote{font-family:"' . $fonts[2] . '",serif}code,.code,kbd{font-family:"' . $fonts[3] . '",serif}</style>';
-                return str_replace('</head>', $s . '</head>', $yield);
-            }, 0);
+        if ($style = (array) ($panel->state->style ?? [])) {
+            if (!empty($style['fonts'])) {
+                $fonts = $style['fonts'];
+                $s = '<link href="https://fonts.googleapis.com/css?family=' . implode('|', map(array_unique($fonts), function($v) {
+                    return urlencode($v) . ':400,700,400i,700i';
+                })) . '" rel="stylesheet"><style media="screen">html,body{font-family:"' . $fonts[0] . '",serif}h1,h2,h3,h4,h5,h6{font-family:"' . $fonts[1] . '",serif}blockquote{font-family:"' . $fonts[2] . '",serif}code,.code,kbd{font-family:"' . $fonts[3] . '",monospace}</style>';
+                Hook::set('shield.yield', function($yield) use($s) {
+                    return str_replace('</head>', $s . '</head>', $yield);
+                }, 0);
+            }
+            if (!empty($style['width'])) {
+                $width = $style['width'];
+                $s = '<style media="screen">.desk{max-width:' . (is_int($width) ? $width . 'px' : $width) . '}</style>';
+                Hook::set('shield.yield', function($yield) use($s) {
+                    return str_replace('</head>', $s . '</head>', $yield);
+                }, 0);
+            }
         }
-        Asset::set($url . '/' . $r . '/::g::/-/asset.js', .1, [
+        Asset::set($url . '/' . $r . '/::g::/-/asset.js', 9.12, [
             'src' => function($src) use($t) {
                 return candy($this->url, [$src, $t]);
             }
         ]);
         if (defined('DEBUG') && DEBUG && Extend::exist('less')) {
-            Asset::set($asset . 'less' . DS . 'panel.less', 9);
-            Asset::set($asset . 'js' . DS . 'panel.js', 9, [
-                'src' => function($src) use($token) {
-                    $q = strpos($src, '?') !== false ? '&' : '?';
-                    return $src . $q . 'token=' . $token;
-                }
-            ]);
+            Asset::set($asset . 'less' . DS . 'panel.less', 10);
+            Asset::set($asset . 'js' . DS . 'panel.js', 10);
         } else {
-            Asset::set($asset . 'css' . DS . 'panel.min.css', 9);
-            Asset::set($asset . 'js' . DS . 'panel.min.js', 9, [
-                'src' => function($src) use($token) {
-                    $q = strpos($src, '?') !== false ? '&' : '?';
-                    return $src . $q . 'token=' . $token;
-                }
-            ]);
+            Asset::set($asset . 'css' . DS . 'panel.min.css', 10);
+            Asset::set($asset . 'js' . DS . 'panel.min.js', 10);
         }
+        Asset::set($asset . 'css' . DS . 'code-mirror.min.css', 10.1);
     }
 
     Hook::set('asset:body', function($body) use($token) {

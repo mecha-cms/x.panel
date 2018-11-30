@@ -17,6 +17,7 @@ Config::set('panel.desk.body.tab.image.hidden', true);
 
 // Modify default page field(s)
 $pass = $user->pass;
+$email = l($language->email) . '@' . $url->host;
 Config::set('panel.+.slug', ['page[$]:slug']);
 Config::set('panel.desk.body.tab', [
     'file' => [
@@ -49,7 +50,7 @@ Config::set('panel.desk.body.tab', [
                 'key' => 'email',
                 'type' => 'email',
                 'value' => $page->email,
-                'placeholder' => $c === 's' ? l($language->email) . '@' . $url->host : $page->email ?: l($language->email) . '@' . $url->host,
+                'placeholder' => $c === 's' ? $email : $page->email ?: $email,
                 'width' => true,
                 'stack' => 10.3
             ],
@@ -96,9 +97,11 @@ if ($pass) {
 
 if ($c === 'g') {
     if (Path::N($path) === $user->slug) {
-        Config::reset('panel.desk.footer.tool.draft');
-        Config::reset('panel.desk.footer.tool.archive');
-        Config::reset('panel.desk.footer.tool.trash');
+        Config::reset([
+            'panel.desk.footer.tool.archive',
+            'panel.desk.footer.tool.draft',
+            'panel.desk.footer.tool.trash'
+        ]);
     }
 } else {
     Config::set('panel.desk.footer.tool.page.title', $language->create);
