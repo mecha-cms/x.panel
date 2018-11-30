@@ -21,8 +21,22 @@ html {
   .CodeMirror-selected {background:rgba(0,0,0,.125)}
   .CodeMirror-focused .CodeMirror-selected {background:rgba(0,0,0,.25)}
   .CodeMirror-placeholder {opacity:.5}
-  .CodeMirror .cm-trailingspace {
-    background:#f00;
-    opacity:.25;
+  .CodeMirror {
+    .cm-trailingspace {
+      background:#f00;
+      opacity:.25;
+    }
+    .cm-trailing-space-a,
+    .cm-trailing-space-b,
+    .cm-trailing-space-new-line {background:none}
+    .cm-trailing-space-a::before,
+    .cm-trailing-space-b::before {
+      position:absolute;
+      content:'\00B7';
+    }
+    .cm-trailing-space-new-line::before {
+      position:absolute;
+      content:'\21B5';
+    }
   }
 }

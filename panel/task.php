@@ -50,7 +50,7 @@ if (!Extend::exist('user')) {
                 Guardian::kick($state['_path'] ?? $state['path']);
             }
         }, 0);
-    } else {
+    } else if ($user_void) {
         Guardian::kick($user_install);
     }
 }
