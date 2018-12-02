@@ -112,9 +112,10 @@ if ($tabs.length) {
                 $href = $this.attr('href') || $this.data('href') || "",
                 $target = $this.attr('target') || $this.data('target'),
                 id = $this.attr('id') || j,
-                text = '<span>' + ($this.attr('title') || $this.data('title') || '#' + id) + '</span>',
+                title = $this.attr('title') || $this.data('title'),
+                text = title || !$i ? '<span>' + (title || '#' + id) + '</span>' : "",
                 $li = $('<li></li>'),
-                $a = $('<a href="' + $href + '">' + ($i ? '<svg class="icon left" viewBox="0 0 24 24"><path d="' + $i + '"/></svg> ' + text : text) + '</a>').appendTo($li);
+                $a = $('<a href="' + $href + '">' + ($i ? '<svg class="icon ' + (title ? 'left' : 'only') + '" viewBox="0 0 24 24"><path d="' + $i + '"/></svg> ' + text : text) + '</a>').appendTo($li);
             $this.data('key', id.split(':')[1].split('.'));
             $target && $a.attr('target', $target);
             if ($this.hasClass('active')) {

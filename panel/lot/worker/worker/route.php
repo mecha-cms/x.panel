@@ -24,7 +24,7 @@ Hook::set('on.ready', function() {
             return $a + $b;
         });
         $t += filemtime(__FILE__);
-        $t = abs(crc32($t . $panel->token . $site->language)); // Smart cache updater
+        $t = abs(crc32($t . $user->token . $site->language)); // Smart cache updater
         if ($style = (array) ($panel->state->style ?? [])) {
             if (!empty($style['fonts'])) {
                 $fonts = $style['fonts'];
@@ -58,11 +58,11 @@ Hook::set('on.ready', function() {
         Asset::set($asset . 'css' . DS . 'code-mirror.min.css', 10.1);
     }
 
-    Hook::set('asset:body', function($body) use($panel) {
+    Hook::set('asset:body', function($body) use($user) {
         $url = $GLOBALS['URL'];
         unset($url['user'], $url['pass']);
         $out = [
-            '$token' => $panel->token,
+            '$token' => $user->token,
             '$url' => $url,
             '$u_r_l' => $url
         ];

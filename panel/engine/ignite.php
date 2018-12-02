@@ -203,12 +203,12 @@ function href($in) {
     // `[link[path[url]]]`
     $out = "";
     if (isset($in['task'])) {
-        global $panel;
+        $user = \Lot::get('user');
         $in['task'] = (array) $in['task'];
         $in['c'] = 'a';
         $in['query']['a'] = array_shift($in['task']) ?? false;
         $in['query']['lot'] = array_shift($in['task']) ?? false;
-        $in['query']['token'] = $panel->token;
+        $in['query']['token'] = $user->token;
         unset($in['task']);
     }
     if (isset($in['link'])) {

@@ -20,7 +20,7 @@ Config::set('panel.+.file.tool', [
         'c' => 'r',
         'query' => [
             'a' => 1,
-            'token' => $panel->token
+            'token' => $user->token
         ],
         'stack' => 10
     ],

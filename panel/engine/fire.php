@@ -1,11 +1,14 @@
 <?php
 
+Config::set('panel.+.svg', require __DIR__ . DS . '..' . DS . 'lot' . DS . 'state' . DS . 'svg.php');
+
 $query = HTTP::get('q');
+$svg = fn\panel\svg();
 
 // No `nav` key in URL query or has `nav` key in URL query with value of boolean `true`
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
-    Hook::set('on.ready', function() use($query) {
+    Hook::set('on.ready', function() use($svg, $query) {
 
         extract(Lot::get(null, []));
 
@@ -13,12 +16,11 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         $c = $panel->c;
         $id = $panel->id;
+        $chops = $panel->chops;
         $path = trim($id . '/' . $panel->path, '/');
         $folders = glob(LOT . DS . '*', GLOB_ONLYDIR | GLOB_NOSORT);
 
         sort($folders);
-
-        $icons = fn\panel\svg();
 
         if (!$item_view) {
             $i = 0;
@@ -29,7 +31,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                     continue; // Skip hidden folder(s)
                 }
                 $links[$n] = [
-                    'icon' => [[isset($icons[$n]) ? (isset($icons[$n]['$']) ? $icons[$n]['$'] : $icons[$n]) : $icons['folder']]],
+                    'icon' => [[isset($svg[$n]) ? (isset($svg[$n]['$']) ? $svg[$n]['$'] : $svg[$n]) : $svg['folder']]],
                     'path' => $n,
                     'stack' => 10 + $i
                 ];
@@ -62,7 +64,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 'state/config' => [
                     'title' => $language->config,
                     'path' => 'state/config.php',
-                    'icon' => [[$icons['config']]],
+                    'icon' => [[$svg['config']]],
                     'stack' => 10
                 ],
                 'user' => [
@@ -113,7 +115,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         if ($item_view && $c === 'g') {
             Config::set('panel.nav.s', [
                 'title' => false,
-                'description' => $language->new__($language->{str_replace('.', "\\.", $id)}, true),
+                'description' => $language->new__($language->file, true),
                 'icon' => [['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']],
                 'path' => dirname($path),
                 'c' => 's',
@@ -144,8 +146,6 @@ if ($query) {
     Lot::set('message', Message::get(null, false));
 }
 
-Config::set('panel.+.svg', require __DIR__ . DS . '..' . DS . 'lot' . DS . 'state' . DS . 'svg.php');
-
 Config::set('panel.+.data.tool', []);
 
 Config::set('panel.+.file.tool', [
@@ -164,7 +164,7 @@ Config::set('panel.+.file.tool', [
         'c' => 'r',
         'query' => [
             'a' => -2,
-            'token' => $panel->token,
+            'token' => $user->token,
         ],
         'stack' => 10.1
     ] : null
@@ -214,7 +214,7 @@ Config::set('panel.+.page.tool', [
         'c' => 'r',
         'query' => [
             'a' => -2,
-            'token' => $panel->token,
+            'token' => $user->token,
         ],
         'stack' => 10.1
     ] : null
