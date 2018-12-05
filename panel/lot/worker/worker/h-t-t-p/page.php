@@ -24,6 +24,16 @@ if ($a < 0) {
     }
 }
 
+if ($layout = HTTP::post('page:view')) {
+    if ($layout === 'page') {
+        File::put("")->saveTo(Path::F($file) . DS . '$.' . Path::X($file));
+    } else if ($layout === 'pages') {
+        foreach (['page', 'archive'] as $v) {
+            File::open(Path::F($file) . DS . '$.' . $v)->delete();
+        }
+    }
+}
+
 // Process page image
 if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP::files('image')) {
     call_user_func(function() use($blob, $language, &$page, $state, $user) {

@@ -73,7 +73,14 @@ Config::set('panel.desk', [
                         'key' => 'file',
                         'type' => 'blob',
                         'stack' => 10
-                    ]
+                    ],
+                    'package' => Extend::exist('package') ? [
+                        'title' => false,
+                        'type' => 'toggle[]',
+                        'values' => (array) $language->o_package,
+                        'view' => 'block',
+                        'stack' => 10.1
+                    ] : null
                 ],
                 'stack' => 10.2
             ] : null

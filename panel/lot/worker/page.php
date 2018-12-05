@@ -107,18 +107,16 @@ if ($c === 'g' && glob(Path::F($page->path) . DS . '*.{draft,page,archive}', GLO
                 'placeholder' => $page->sort[1] ?: 'time',
                 'stack' => 10.1
             ],
-            /* TODO
-            'page:is' => [
+            'page:view' => [
                 'key' => 'view',
                 'type' => 'radio[]',
-                'value' => 'pages',
-                'values' => [
-                    'page' => $language->page,
-                    'pages' => $language->pages
-                ],
+                'value' => File::exist([
+                    Path::F($file) . DS . '$.page',
+                    Path::F($file) . DS . '$.archive'
+                ]) ? 'page' : 'pages',
+                'values' => (array) $language->o_page_view,
                 'stack' => 10.2
             ]
-            */
         ],
         'stack' => 9.9
     ]);

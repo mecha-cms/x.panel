@@ -18,6 +18,10 @@ panels: Panels
 
 recent: Recent
 
+o_package:
+  extract: Extract package after upload.
+  bucket: Wrap package in a folder.
+
 o_message_info_comment_set:
   title: New Comment
   description: New comment has been added.
@@ -32,6 +36,10 @@ o_page_status:
   1: Primary
   2: Secondary
   3: Member
+
+o_page_view:
+  page: Item
+  pages: Items
 
 field_description_directory:
   0: Create a folder.

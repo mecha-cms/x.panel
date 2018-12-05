@@ -158,6 +158,11 @@ if ($tab === 'folder') {
         if (!Message::$x) {
             Session::set('panel.file.active', $response);
             Message::success('file_push', ['<code>' . str_replace(ROOT, '.', $response) . '</code>']);
+            if (Extend::exist('package') && HTTP::post('package.extract')) {
+                // TODO: Check forbidden file in the package
+                Package::open($response)->extractAs(!!HTTP::post('package.bucket'));
+                File::open($response)->delete(); // Delete the package
+            }
             Hook::fire('on.file.set', [null], new File($response));
             Guardian::kick(str_replace('::' . $c . '::', '::g::', $url->path) . '/1');
         } else {
