@@ -30,7 +30,7 @@ if ($google_fonts = File::exist(EXTEND . DS . $chops[0] . DS . 'lot' . DS . 'sta
         $fonts[$v] = $v;
     }
 }
-$fonts['0'] = $language->default;
+$fonts['0'] = "";
 Config::set('panel.desk.body.tab.skin', [
     'field' => [
         'file[?][skin]' => [
