@@ -356,6 +356,9 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $copy = $in;
         $copy['kind'] = ['type:' . $type];
         $copy = _init($copy, $attr, 'field', $id, $i);
+        if ($range && !$description) {
+            $description = implode('&#x2013;', $range);
+        }
         if ($width === true) {
             $kind[] = 'width';
         } else if (is_numeric($width)) {
