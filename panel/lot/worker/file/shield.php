@@ -28,7 +28,7 @@ if ($c === 's' && HTTP::get('tab.0') === 'blob' && (HTTP::is('get', 'tabs.0') &&
     }
 }
 
-if (strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is('get', 'view')) {
+if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is('get', 'view')) {
     require __DIR__ . DS . 'state.php';
     Hook::set('on.ready', function() use($language, $site) {
         $pages = [];
