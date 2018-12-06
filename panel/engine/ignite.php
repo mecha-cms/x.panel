@@ -540,7 +540,6 @@ function icon($in, $attr = []) {
         }
         return $in['content'];
     }
-    
     // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
     if (count($in) === 1) {
         // `icon([""])`
@@ -554,15 +553,11 @@ function icon($in, $attr = []) {
         $box = $in[0];
         $d = $in[1];
     }
-    $attr = \extend([
-        'class[]' => ['icon'],
-        'viewBox' => strpos($d, '#') !== 0 ? $box : null
-    ], $attr);
-    // `icon(['#icon-bar'])`
-    if (strpos($d, '#') === 0) {
-        $d = '<use href="' . $d . '"></use>';
-    } else if (strpos($d, '<') !== 0) {
-        $d = '<path d="' . $d . '"></path>';
+    // Cache!
+    $GLOBALS['SVG'][$d] = $box;
+    $attr = \extend(['class[]' => ['icon']], $attr);
+    if (strpos($d, '<') !== 0) {
+        $d = '<use href="#i:' . dechex(crc32($d . $box)) . '"></use>';
     }
     return \HTML::unite('svg', $d, $attr);
 }
@@ -758,8 +753,11 @@ function search($in, $id = 0, $attr = [], $i = 0) {
     } else if (isset($in['content'])) {
         $out = $in['content'];
     } else {
-        global $language;
+        global $language, $panel;
         $out  = \Form::text('q', \HTTP::get('q', null, false), \To::text($in['title']), ['class[]' => ['input']]);
+        if ($view = \HTTP::get('view')) {
+            $out .= \Form::hidden('view', $view);
+        }
         $out .= ' ' . \Form::submit(null, null, $language->search, ['class[]' => ['button']]);
         $out  = '<p class="field expand"><span>' . $out . '</span></p>';
     }

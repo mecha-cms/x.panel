@@ -10,6 +10,11 @@
 <script>!function(e){e.className+=" js"}(document.documentElement);</script>
 </head>
 <body spellcheck="false">
+<?php if (!empty($GLOBALS['SVG'])): ?>
+<!-- Begin SVG -->
+<?php echo $icons; ?>
+<!-- End SVG -->
+<?php endif; ?>
 <?php echo $message; ?>
 <?php echo $nav; ?>
 <?php
@@ -36,14 +41,8 @@ if ($panel->c === 's') {
 <input name="view" value="<?php echo HTTP::get('view', $panel->v); ?>" type="hidden">
 </form>
 <?php endif; ?>
-<?php
-
-foreach ((array) Config::get('panel.+.menu', [], true) as $k => $v) {
-    echo fn\panel\menus($v, $k, [
-        'data[]' => ['js-enter' => '#js:' . $k]
-    ]);
-}
-
-?>
+<!-- Begin Menu(s) -->
+<?php echo $menus; ?>
+<!-- End Menu(s) -->
 </body>
 </html>

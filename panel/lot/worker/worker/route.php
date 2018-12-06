@@ -103,17 +103,32 @@ Hook::set('on.ready', function() {
                 Config::reset('panel.desk.' . $v);
             }
         }
+        $desk = fn\panel\desk(Config::get('panel.desk', [], true), $id);
+        $icons = $menus = $nav = "";
         if (HTTP::is('get', 'nav') && !HTTP::get('nav')) {
             Config::reset('panel.nav');
-            $nav = "";
         } else {
             $nav = fn\panel\nav(Config::get('panel.nav', [], true), $id);
         }
         if ($error) {
             Config::set('panel.error', $error);
         }
+        foreach ((array) Config::get('panel.+.menu', [], true) as $k => $v) {
+            $menus .= fn\panel\menus($v, $k, [
+                'data[]' => ['js-enter' => '#js:' . $k]
+            ]);
+        }
+        if (!empty($GLOBALS['SVG'])) {
+            $icons .= '<svg id="svg:panel" xmlns="http://www.w3.org/2000/svg" display="none">';
+            foreach ($GLOBALS['SVG'] as $k => $v) {
+                $icons .= '<symbol id="i:' . dechex(crc32($k . $v)) . '" viewBox="' . (is_string($v) ? $v : '0 0 24 24') . '"><path d="' . $k . '"></path></symbol>';
+            }
+            $icons .= '</svg>';
+        }
         Lot::set([
-            'desk' => fn\panel\desk(Config::get('panel.desk', [], true), $id),
+            'desk' => $desk,
+            'icons' => $icons,
+            'menus' => $menus,
             'nav' => $nav
         ]);
         return Shield::attach(__DIR__ . DS . 'shield.php');
