@@ -1,0 +1,307 @@
+// Default Theme
+
+@--z:16px; // font size
+
+@--color:#000;
+@--color_inverse:#fff;
+@--color-a:#009;
+@--color-a_inverse:#900;
+@--color-mark:#ff0;
+@--color-mark-bell:#0f0;
+@--color_error:#f00;
+
+@--color-headers:#66a;
+@--color-file:#fea;
+@--color-folder:#d00;
+@--color-source:#ffa;
+@--color-tab-line:#fcc;
+@--color-tab-line_inverse:#ccf;
+
+@--color-list_current:#d00;
+@--color-list_hover:#eef;
+@--color-list_active:#fec;
+
+@--color-message:#666;
+@--color-message-error:#c14;
+@--color-message-info:#78a;
+@--color-message-success:#690;
+
+@--view-mobile:720px;
+
+.border-radius(@--v) {
+  -webkit-border-radius:@--v;
+  -moz-border-radius:@--v;
+  border-radius:@--v;
+}
+.box-shadow(@--v:~'0 0 0 1px rgba(0,0,0,.05),0 ' (@--z * .25) (@--z * .5) ~'rgba(0,0,0,.25)') {
+  -webkit-box-shadow:@--v;
+  -moz-box-shadow:@--v;
+  box-shadow:@--v;
+}
+.color-html() {
+  background:@--color_inverse;
+  color:@--color;
+}
+.color-a() {
+  color:@--color-a;
+  &:focus:not(.x),
+  &:active:not(.x) {color:@--color-a_inverse}
+}
+
+html {.color-html}
+a {.color-a}
+mark {background:@--color-mark}
+pre {
+  background:lighten(@--color, 20%);
+  color:@--color_inverse;
+}
+h1,h2,h3,h4,h5,h6,
+.h1,.h2,.h3,.h4,.h5,.h6 {color:@--color-headers}
+blockquote,figcaption,
+.table caption {color:lighten(@--color, 50%)}
+.button,
+.input,
+.select,
+.textarea {
+  background:@--color-source;
+  color:@--color;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.25));
+}
+.button {
+  background:@--color-a;
+  color:@--color_inverse;
+  .box-shadow(0 1px 1px rgba(0,0,0,.25));
+  &:focus:not(.x):not([disabled]),
+  &:active:not(.x):not([disabled]) {
+    background:@--color-a_inverse;
+    color:@--color_inverse;
+  }
+}
+.input,
+.select,
+.textarea {
+  &.readonly,
+  &[readonly] {.box-shadow(none)}
+}
+.input:focus:invalid,
+.textarea:focus:invalid {
+  color:@--color_error;
+  border-color:@--color_error;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.25));
+}
+.input[type="file"] {.box-shadow(none)}
+.select {
+  optgroup,
+  option {background:@--color_inverse}
+}
+.input[type="checkbox"],
+.input[type="color"],
+.input[type="image"],
+.input[type="radio"],
+.input[type="range"] {
+  background:none;
+  border:0;
+  padding:0;
+  .box-shadow(none);
+}
+
+// @menu
+.menus {
+  background:@--color_inverse;
+  .box-shadow;
+  li {
+    &.current > a {
+      background:@--color-list_current;
+      color:@--color_inverse;
+      &:focus:not(.x),
+      &:hover:not(.x) {
+        background:darken(@--color-list_current, 5%);
+        color:@--color_inverse;
+      }
+    }
+    &.separator {background:@--color}
+  }
+  a {.color-a}
+  a:focus:not(.x),
+  a:hover:not(.x),
+  .active > a {background:@--color-list_hover}
+  .active > a:focus:not(.x),
+  .active > a:hover:not(.x) {background:darken(@--color-list_hover, 5%)}
+}
+
+// @button
+.button {
+  &.text {
+    background:none;
+    border:0;
+    color:@--color-a;
+    .border-radius(0);
+    .box-shadow(none);
+    &:focus:not(.x):not([disabled]),
+    &:active:not(.x):not([disabled]) {
+      background:none;
+      color:@--color-a_inverse;
+      .border-radius(0);
+      .box-shadow(none);
+    }
+  }
+}
+
+// @field
+.field {
+  &.required > label:not(:empty)::before {color:@--color_error}
+  .hints {
+    background:@--color;
+    border-color:@--color;
+    color:@--color_inverse;
+    .box-shadow;
+  }
+}
+.input {
+  &.plain {
+    background:none;
+    border:0;
+    .box-shadow(none);
+  }
+}
+
+// @tab
+.tabs {
+  > nav {
+    li {.box-shadow(inset 0 3px 0 @--color-tab-line)}
+    .active {.box-shadow(inset 0 3px 0 @--color-tab-line_inverse)}
+    @media (max-width:@--view-mobile) {
+      li {
+        background:none;
+        .box-shadow(none);
+        &.active {
+          .box-shadow(none);
+          a {color:inherit}
+        }
+      }
+      a {color:@--color-a}
+    }
+  }
+}
+
+// @file
+.file {
+  background:@--color_inverse;
+  border:0 solid @--color_inverse;
+  &:focus,
+  &:hover {
+    background:@--color-list_hover;
+    border-color:@--color-list_hover;
+  }
+  &.active {
+    background:@--color-list_active;
+    border-color:@--color-list_active;
+  }
+  &.is-file::before {
+    background:@--color-file;
+    border-color:@--color;
+  }
+  &.is-file::after {
+    border-color:@--color;
+    border-top-color:inherit;
+    border-right-color:inherit;
+  }
+  &.is-folder::before {background:@--color-folder}
+  &.is-folder::after {border-top-color:darken(@--color-folder, 10%)}
+}
+
+// @item
+.item {
+  background:@--color_inverse;
+  border-color:@--color_inverse;
+  &:focus:not(.x),
+  &:hover:not(.x) {
+    background:@--color-list_hover;
+    border-color:darken(@--color_inverse, 1%);
+  }
+  &.active {
+    background:@--color-list_active;
+    border-color:@--color-list_active;
+  }
+}
+
+// @pager
+.pager {
+  > span {
+    padding:0;
+    > a,
+    > b,
+    > span {
+      background:@--color-a;
+      color:@--color_inverse;
+      .box-shadow(0 1px 1px rgba(0,0,0,.25));
+      &:focus:not(.x) {
+        background:@--color-a_inverse;
+        color:@--color_inverse;
+      }
+    }
+    > b,
+    > span {
+      background:none;
+      color:inherit;
+      .box-shadow(none);
+    }
+  }
+}
+
+// @message
+.messages {
+  &--static .message {.box-shadow(0 1px 2px rgba(0,0,0,.4))}
+}
+.message {
+  background:@--color-message;
+  color:@--color_inverse;
+  .box-shadow(0 5px 5px -1px rgba(0,0,0,.5));
+  &-error {background:@--color-message-error}
+  &-info {background:@--color-message-info}
+  &-success {background:@--color-message-success}
+}
+
+// @nav
+.nav {
+  background:lighten(@--color, 10%);
+  color:darken(@--color_inverse, 20%);
+  ul {
+    ul {.menus}
+  }
+  li {
+    &.inverse {
+      .color-html;
+      a {.color-a}
+      &.active > a:not(.x) {
+        background:inherit;
+        color:inherit;
+      }
+    }
+    &.separator {background:@--color_inverse}
+    &.li\:message {
+      &.current .icon {color:@--color-mark-bell}
+    }
+  }
+  a {color:darken(@--color_inverse, 10%)}
+  .icon {
+    &.arrow {color:lighten(@--color, 50%)}
+  }
+  .field {
+    .input {
+      background:@--color;
+      color:@--color_inverse;
+    }
+  }
+  > ul > li > a:focus:not(.x),
+  > ul > li > a:active:not(.x),
+  > ul > li.active > a {color:darken(@--color_inverse, 2%)}
+}
+
+// @code-mirror
+html {
+  .CodeMirror {
+    background:@--color-source;
+    color:@--color;
+  }
+}

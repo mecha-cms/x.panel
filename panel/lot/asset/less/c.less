@@ -1,6 +1,6 @@
 // @desk
 .desk {
-  // max-width:@width;
+  // max-width:@--width;
   .p2;
   margin:0 auto;
   &::before,
@@ -8,9 +8,9 @@
   > header {.m2b}
   > footer {
     .m2t;
-    > .tools {margin-left:(@x * 5)}
+    > .tools {margin-left:(@--x * 5)}
   }
-  @media (max-width:@view-mobile) {
+  @media (max-width:@--view-mobile) {
     .p1;
     > header {.m1b}
     > footer {
@@ -28,8 +28,8 @@
   margin:0;
   padding:0;
   position:fixed;
-  right:(@x * .5);
-  bottom:(@y * .5);
+  right:(@--x * .5);
+  bottom:(@--y * .5);
   z-index:9999;
   visibility:visible;
   opacity:1;
@@ -38,19 +38,14 @@
     visibility:hidden;
     opacity:0;
   }
-  &--static .message {.box-shadow(0 1px 2px rgba(0,0,0,.4))}
 }
 .message {
-  background:#666;
-  color:@color_inverse;
-  padding:(@y * .25) (@x * .5);
-  .box-shadow(0 5px 5px -1px rgba(0,0,0,.5));
+  background:#000;
+  color:#fff;
+  padding:(@--y * .25) (@--x * .5);
   .icon {.margin-icon}
-  &-error {background:#c14}
-  &-info {background:#78a}
-  &-success {background:#690}
   .title {color:inherit}
-  p,.links {margin:(@y * .25) 0 0}
+  p,.links {margin:(@--y * .25) 0 0}
   a {
     color:inherit;
     opacity:.6;
@@ -60,7 +55,7 @@
       opacity:1;
     }
   }
-  + .message {margin-top:(@y * .5)}
+  + .message {margin-top:(@--y * .5)}
 }
 
 // @layer
@@ -90,7 +85,7 @@ html.form {
       > footer .tools {.m0}
     }
     form {
-      max-width:(@x * 10);
+      max-width:(@--x * 10);
       margin:0 auto;
       .field > label {display:none}
     }
@@ -99,9 +94,7 @@ html.form {
 
 // @nav
 .nav {
-  background:lighten(@color, 10%);
-  color:darken(@color_inverse, 20%);
-  line-height:(@y * 2);
+  line-height:(@--y * 2);
   ul,
   li,
   .form,
@@ -115,7 +108,7 @@ html.form {
     position:relative;
   }
   ul {
-    height:(@y * 2);
+    height:(@--y * 2);
     ul {.menus}
   }
   li {
@@ -140,45 +133,33 @@ html.form {
     }
     &.separator {
       width:1px;
-      background:@color_inverse;
-      opacity:.125;
-      height:@y;
-      margin:(@y * .5) 0;
+      height:@--y;
+      margin:(@--y * .5) 0;
       overflow:hidden;
-    }
-    &.li\:message {
-      &.current .icon {color:@color-mark-bell}
     }
   }
   a {
     display:block;
-    padding:0 (@x * .75);
-    color:darken(@color_inverse, 10%);
+    padding:0 (@--x * .75);
     overflow:hidden;
   }
   .icon {
     .margin-icon;
-    &.arrow {color:lighten(@color, 50%)}
-    margin-top:(@y * .5);
+    margin-top:(@--y * .5);
   }
   .field {
     margin:0;
     .button {display:none}
     .input {
       display:block;
-      width:(@x * 8);
-      height:(@y * 2);
-      line-height:(@y * 2);
+      width:(@--x * 8);
+      height:(@--y * 2);
+      line-height:(@--y * 2);
       margin:0;
-      padding:0 @z;
-      background:@color;
-      color:@color_inverse;
+      padding:0 @--z;
       border:0;
     }
   }
-  > ul > li > a:focus:not(.x),
-  > ul > li > a:active:not(.x),
-  > ul > li.active > a {color:darken(@color_inverse, 2%)}
 }
 html:not(.js) .nav li:hover > ul,
 html:not(.js) .nav li:focus-within > ul {display:block}
@@ -194,7 +175,7 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   }
 }
 
-@media (max-width:@view-mobile) {
+@media (max-width:@--view-mobile) {
   .nav {
     > ul > li {
       display:none;
@@ -204,8 +185,8 @@ html:not(.js) .nav li:focus-within > ul {display:block}
       &.li\:search {
         position:absolute;
         top:0;
-        right:(@x * 2);
-        left:(@x * 2);
+        right:(@--x * 2);
+        left:(@--x * 2);
         .input {width:100%}
       }
     }
@@ -218,11 +199,53 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   .p2;
   .p0t;
   .desk & {.p0}
-  @media (max-width:@view-mobile) {
+  @media (max-width:@--view-mobile) {
     .p1;
     .p0t;
   }
   &::after {.clear}
   p.right,
   p.left {margin:0}
+}
+
+// @code-mirror
+html {
+  .CodeMirror {
+    cursor:text;
+    background:#fff;
+    color:#000;
+    padding:0;
+  }
+  .CodeMirror-gutters {
+    background:rgba(0,0,0,.05);
+    border-color:rgba(0,0,0,.125);
+  }
+  .CodeMirror-lines {padding:(@--y * .25) 0} // vertical padding
+  .CodeMirror pre {padding:0 (@--x * .5)} // horizontal padding
+  .CodeMirror-linenumber {
+    padding:0 (@--x * .25) 0 (@--x * .5);
+    min-width:(@--x * .75);
+    color:rgba(0,0,0,.6);
+  }
+  .CodeMirror-selected {background:rgba(0,0,0,.125)}
+  .CodeMirror-focused .CodeMirror-selected {background:rgba(0,0,0,.25)}
+  .CodeMirror-placeholder {opacity:.5}
+  .CodeMirror {
+    .cm-trailingspace {
+      background:#f00;
+      opacity:.25;
+    }
+    .cm-trailing-space-a,
+    .cm-trailing-space-b,
+    .cm-trailing-space-new-line {background:none}
+    .cm-trailing-space-a::before,
+    .cm-trailing-space-b::before {
+      position:absolute;
+      content:'\00B7';
+    }
+    .cm-trailing-space-new-line::before {
+      position:absolute;
+      content:'\21B5';
+    }
+  }
 }

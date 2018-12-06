@@ -1,5 +1,5 @@
 // <https://stackoverflow.com/a/18639999/1163000>
-window.crc32=function(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r.charCodeAt(t))];return(-1^n)>>>0};
+window.crc32=function(e){for(var t,n=[],a=0;256>a;a++){t=a;for(var r=0;8>r;r++)t=1&t?3988292384^t>>>1:t>>>1;n[a]=t}for(var i=-1,o=0;o<e.length;o++)i=i>>>8^n[255&(i^e.charCodeAt(o))];return(-1^i)>>>0};
 
 // <https://stackoverflow.com/a/16861050/1163000>
 window._c170e1f9 = function(url, name, width, height) { // `window.open`
@@ -298,7 +298,7 @@ if ($messages.length) {
     $win.on("load", function() {
         setTimeout(function() {
             $messages.addClass('exit');
-        }, 10000);
+        }, 9000 + (1000 * $messages.children().length));
     });
 }
 

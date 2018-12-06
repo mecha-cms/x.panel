@@ -30,7 +30,7 @@ Hook::set('on.ready', function() {
                 $fonts = $style['fonts'];
                 $s = '<link href="https://fonts.googleapis.com/css?family=' . implode('|', map(array_unique($fonts), function($v) {
                     return urlencode($v) . ':400,700,400i,700i';
-                })) . '" rel="stylesheet"><style media="screen">html,body{font-family:"' . $fonts[0] . '",serif}h1,h2,h3,h4,h5,h6{font-family:"' . $fonts[1] . '",serif}blockquote{font-family:"' . $fonts[2] . '",serif}code,.code,kbd{font-family:"' . $fonts[3] . '",monospace}</style>';
+                })) . '" rel="stylesheet"><style media="screen">' . (!empty($fonts[0]) ? 'html,body{font-family:"' . $fonts[0] . '",serif}' : "") . (!empty($fonts[1]) ? 'h1,h2,h3,h4,h5,h6{font-family:"' . $fonts[1] . '",serif}' : "") . (!empty($fonts[2]) ? 'blockquote{font-family:"' . $fonts[2] . '",serif}' : "") . (!empty($fonts[3]) ? 'code,.code,kbd{font-family:"' . $fonts[3] . '",monospace}' : "") . '</style>';
                 Hook::set('shield.yield', function($yield) use($s) {
                     return str_replace('</head>', $s . '</head>', $yield);
                 }, 0);
@@ -48,11 +48,18 @@ Hook::set('on.ready', function() {
                 return candy($this->url, [$src, $t]);
             }
         ]);
+        $skin = $panel->state->skin ?? null;
         if (defined('DEBUG') && DEBUG && Extend::exist('less')) {
             Asset::set($asset . 'less' . DS . 'panel.less', 10);
+            if (isset($skin) && $skin !== "") {
+                Asset::set($asset . 'less' . DS . 'panel' . DS . $skin . '.less', 10.1);
+            }
             Asset::set($asset . 'js' . DS . 'panel.js', 10);
         } else {
             Asset::set($asset . 'css' . DS . 'panel.min.css', 10);
+            if (isset($skin) && $skin !== "") {
+                Asset::set($asset . 'css' . DS . 'panel' . DS . $skin . '.min.css', 10.1);
+            }
             Asset::set($asset . 'js' . DS . 'panel.min.js', 10);
         }
         Asset::set($asset . 'css' . DS . 'code-mirror.min.css', 10.1);
