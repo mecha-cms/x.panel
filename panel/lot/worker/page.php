@@ -161,12 +161,6 @@ Config::set('panel.desk.body.tab.data', [
 ]);
 
 Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $r, $url) {
-    Config::set('panel.nav.search', [
-        'content' => fn\panel\nav_li_search([
-            'title' => $language->{str_replace('.', "\\.", $id)},
-            'path' => Path::R(Path::F($file), LOT, '/') . '/1'
-        ], $id)
-    ]);
     // Add image field
     if (Extend::exist('image')) {
         $image = $page->image;

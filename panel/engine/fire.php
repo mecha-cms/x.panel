@@ -52,7 +52,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
         Config::set('panel.nav.search', [
             'content' => fn\panel\nav_li_search([
                 'title' => $language->{str_replace('.', "\\.", $id)},
-                'path' => $path . '/1'
+                'path' => ($item_view ? dirname($path) : $path) . '/1'
             ], $id),
             'stack' => 10.1
         ]);
@@ -133,7 +133,10 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 'icon' => [['M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z']],
                 'path' => $path . '/1',
                 '+' => null,
-                'query' => ['q' => false]
+                'query' => [
+                    'q' => false,
+                    'view' => HTTP::get('view', false)
+                ]
             ]);
         }
 
