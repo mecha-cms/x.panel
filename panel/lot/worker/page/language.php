@@ -22,6 +22,7 @@ Config::set('panel.desk.footer.tool.archive.hidden', true);
 $default = new Page(LANGUAGE . DS . 'en-us.page', [], false);
 Config::set('panel.desk.body.tab.file.field', [
     'page[content]' => [
+        'syntax' => 'text/x-yaml',
         'value' => $c === 's' ? $default->content : $page->content
     ],
     'page[type]' => [

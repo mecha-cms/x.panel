@@ -7,9 +7,17 @@ back: Back
 do_archive: Archive # verb of `archive`
 do_empty_trash: Empty the Trash
 do_empty_cache: Refresh Cache
-do_empty_directory: Delete this folder with its contents.
+do_empty_directory: Delete this folder with its contents
 do_force_user_exit: Force log out %{0}%
-do_up_directory: Up one level directory.
+do_up_directory: Up one level directory
+
+font: Font
+fonts: Fonts
+
+font_body: Body Font
+font_code: Code Font
+font_header: Header Font
+font_quote: Quote Font
 
 height: Height
 
@@ -17,6 +25,12 @@ panel: Panel
 panels: Panels
 
 recent: Recent
+
+skin: Skin
+skins: Skins
+
+style: Style
+styles: Styles
 
 o_package:
   extract: Extract package after upload.
@@ -46,6 +60,19 @@ field_description_directory:
   1: Move current working file or folder to the specified folder path.
 field_description_key_user: User key without the <code>@</code> prefix.
 
+field_description_package__: |
+  <p>Make sure that the package you want to upload is structured like this:</p>
+  <pre><code class="txt">%{0}%.zip
+   └── %{0}%\
+       ├── about.page
+       ├── LICENSE
+       └── …</code></pre>
+
+field_description_page_image_directory: Image upload directory pattern relative to %{0}%
+field_description_page_image_height: Maximum page image height.
+field_description_page_image_name: Image upload name pattern.
+field_description_page_image_width: Maximum page image width.
+
 field_hint_directory: foo/bar/baz
 field_hint_file_consent: 0777
 field_hint_file_content: Content goes here…
@@ -66,9 +93,13 @@ sort:
   - Sort
   - By
 
+snippet: Snippet
+snippets: Snippets
+
 view_site: View
 
 width: Width
+width_editor: Editor Width
 
 message_error_feature_get: You don’t have permission to access this feature.
 message_error_file_delete: You can’t delete this file.
@@ -91,3 +122,8 @@ message_success_shield_set: Current theme has been successfully set to %{0}%.
 
 .message: Message
 .messages: Messages
+
+page_image_directory: Image Folder
+page_image_height: Image Height
+page_image_name: Image Name
+page_image_width: Image Width

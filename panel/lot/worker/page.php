@@ -94,7 +94,7 @@ if ($c === 'g' && glob(Path::F($page->path) . DS . '*.{draft,page,archive}', GLO
                 'type' => 'radio[]',
                 'value' => $page->sort[0],
                 'values' => [
-                    '-1' => 'Z &#x2192; A',
+                   '-1' => 'Z &#x2192; A',
                     '1' => 'A &#x2192; Z'
                 ],
                 'stack' => 10
@@ -146,7 +146,7 @@ Config::set('panel.desk.body.tab.data', [
         '!:' => $c === 'g' ? [
             'key' => 'datas',
             'type' => 'source',
-            'syntax' => 'yaml',
+            'syntax' => 'text/x-yaml',
             'width' => true,
             'placeholder' => $language->{'field_hint_:'},
             'stack' => 10.2

@@ -59,7 +59,7 @@ Config::set('panel.desk', [
                         'type' => 'text',
                         'pattern' => '^[_.-]?[a-z\\d]+(-[a-z\\d]+)*([\\\/][_.-]?[a-z\\d]+(-[a-z\\d]+)*)*$',
                         'value' => null,
-                        'placeholder' => $language->field_hint_directory,
+                        'placeholder' => strtr($language->field_hint_directory, '/', DS),
                         'width' => true,
                         'stack' => 10
                     ]
@@ -104,3 +104,7 @@ Config::set('panel.desk', [
         ]
     ]
 ]);
+
+if (HTTP::get('tab.0') === 'blob' && (HTTP::is('get', 'tabs.0') && !HTTP::get('tabs.0'))) {
+    Config::set('panel.desk.footer.tool.s.title', $language->upload);
+}

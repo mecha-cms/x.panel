@@ -54,11 +54,23 @@ if ($token && $token === $user->token) {
 if ($f = File::exist($worker . $panel->v . '.php')) require $f;
 if ($f = File::exist($worker . $panel->v . DS . '$.php')) require $f;
 if ($f = File::exist($worker . $panel->v . DS . $id . '.php')) require $f;
+$recurse_a = explode('/', $path);
+$recurse_b = "";
+while ($recurse_c = array_shift($recurse_a)) {
+    $recurse_b .= DS . $recurse_c;
+    if ($f = File::exist($worker . $panel->v . DS . $id . $recurse_b . '.php')) require $f;
+}
 
 // User
 if (is_numeric($i = $user->status)) {
     if ($f = File::exist($worker . $i . '.php')) require $f;
     if ($f = File::exist($worker . $i . DS . $id . '.php')) require $f;
+    $recurse_a = explode('/', $path);
+    $recurse_b = "";
+    while ($recurse_c = array_shift($recurse_a)) {
+        $recurse_b .= DS . $recurse_c;
+        if ($f = File::exist($worker . $i . DS . $id . $recurse_b . '.php')) require $f;
+    }
 }
 
 require $worker . 'worker' . DS . 'route.php';
