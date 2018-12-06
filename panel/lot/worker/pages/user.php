@@ -30,6 +30,11 @@ Config::set('panel.+.page.tool', [
     ]
 ]);
 
+Hook::set('page.image', function($image) {
+    $user = new User($this->path);
+    return $image ?: $user->avatar(72, 72, 'monsterid') ?: $GLOBALS['URL']['protocol'] . 'www.gravatar.com/avatar/' . md5($user->email) . '?s=72&amp;d=monsterid';
+});
+
 Hook::set('page.url', function($url) {
     $path = $this->path;
     return $path && strpos($path, USER . DS) === 0 ? $GLOBALS['URL']['$'] . '/' . Extend::state('user', 'path') . '/' . $this->slug : $url;
