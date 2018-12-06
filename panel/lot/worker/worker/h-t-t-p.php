@@ -159,12 +159,31 @@ if ($tab === 'folder') {
             Session::set('panel.file.active', $response);
             Message::success('file_push', ['<code>' . str_replace(ROOT, '.', $response) . '</code>']);
             if (Extend::exist('package') && HTTP::post('package.extract')) {
-                // TODO: Check forbidden file in the package
-                Package::open($response)->extractAs(!!HTTP::post('package.bucket'));
-                File::open($response)->delete(); // Delete the package
+                foreach (Package::explore($response, true, []) as $k => $v) {
+                    $x = $v === 1 ? Path::X($k) : false;
+                    // Check forbidden file in the package by its file extension
+                    if ($x !== false && !has(File::$config['extension'], $x)) {
+                        Message::error('file_x', ['<code>' . $x . '</code>']);
+                    }
+                    // Check if file already exists
+                    if (file_exists($f = $file . DS . $k)) {
+                        Message::error(($v === 1 ? 'file' : 'folder') . '_exist', ['<code>' . str_replace(ROOT, '.', $f) . '</code>']);
+                    }
+                }
+                if (!Message::$x) {
+                    Package::open($response)->extractAs(!!HTTP::post('package.bucket'));
+                    File::open($response)->delete(); // Delete the package
+                } else {
+                    File::open($response)->delete(); // Abort
+                    Message::info($language->message_success_file_delete('<code>' . str_replace(ROOT, '.', $response) . '</code>'));
+                }
             }
-            Hook::fire('on.file.set', [null], new File($response));
-            Guardian::kick(str_replace('::' . $c . '::', '::g::', $url->path) . '/1');
+            if (!Message::$x) {
+                Hook::fire('on.file.set', [null], new File($response));
+                Guardian::kick(str_replace('::' . $c . '::', '::g::', $url->path) . '/1');
+            } else {
+                Guardian::kick($url->path . HTTP::query(['token' => false], '&'));
+            }
         } else {
             Guardian::kick($url->path . HTTP::query(['token' => false], '&'));
         }
@@ -188,7 +207,7 @@ if ($tab === 'folder') {
         }
         $name .= '.' . $x;
     }
-    if ($content = HTTP::post('file.?', "", false)) {
+    if ($content = HTTP::post('file.?', "")) {
         $test_x = $x ?: Path::X($name);
         if (is_string($content)) {
             $content = From::YAML($content);
@@ -196,7 +215,7 @@ if ($tab === 'folder') {
         if ($test_x === 'json') {
             $content = json_encode($content);
         } else if ($test_x === 'php') {
-            $content = z($content);
+            $content = '<?php return ' . z($content) . ';';
         } else if ($test_x === 'yaml') {
             $content = To::YAML($content);
         } else {
