@@ -19,7 +19,7 @@ Config::set('panel.desk.body.tab.file.field.file[?][$]', [
 
 $states = [];
 
-foreach (['file', 'page', 'skin', 'style'] as $v) {
+foreach (['data', 'file', 'page', 'skin', 'style'] as $v) {
     $states[$v] = a(e(Config::get('panel.desk.body.tab.file.field.file[?][' . $v . '].value', null, true)));
     Config::reset('panel.desk.body.tab.file.field.file[?][' . $v . ']');
 }
@@ -84,7 +84,7 @@ Config::set('panel.desk.body.tab.skin', [
 ]);
 
 Config::set('panel.desk.body.tab.view-file', [
-    'title' => $language->file,
+    'title' => $language->files,
     'field' => [
         'file[?][file][chunk]' => [
             'key' => 'chunk',
@@ -113,7 +113,7 @@ $_id = sprintf('%u', time());
 $_name = To::slug($language->image);
 $_uid = uniqid();
 Config::set('panel.desk.body.tab.view-page', [
-    'title' => $language->page,
+    'title' => $language->pages,
     'field' => [
         'file[?][page][chunk]' => [
             'key' => 'chunk',
@@ -230,6 +230,27 @@ Config::set('panel.desk.body.tab.view-page', [
         ]
     ],
     'stack' => 10.3
+]);
+
+Config::set('panel.desk.body.tab.view-data', [
+    'title' => $language->datas,
+    'field' => [
+        'file[?][data][chunk]' => [
+            'key' => 'chunk',
+            'type' => 'number',
+            'range' => [1, 100],
+            'value' => $states['data']['chunk'] ?? null,
+            'stack' => 10
+        ],
+        'file[?][data][kin]' => [
+            'key' => 'kin',
+            'type' => 'number',
+            'range' => [1, 5],
+            'value' => $states['data']['kin'] ?? null,
+            'stack' => 10.1
+        ]
+    ],
+    'stack' => 10.4
 ]);
 
 // You can’t delete this file

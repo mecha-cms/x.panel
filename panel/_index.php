@@ -30,6 +30,8 @@ Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
     'v' => $view . (!$chops && $c === 'g' || $i !== "" ? 's' : "") // Plural or singular?
 ]));
 
+Lot::set('file', $file = $panel->file ?: $panel->folder);
+
 require __DIR__ . DS . 'engine' . DS . 'ignite.php';
 require __DIR__ . DS . 'engine' . DS . 'fire.php';
 

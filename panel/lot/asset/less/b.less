@@ -446,6 +446,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   .m0r;
   .m0l;
   .p0;
+  display:block;
   list-style:none;
 }
 .file {
@@ -519,15 +520,25 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   &.is-hidden:not(:focus):not(:hover) {opacity:.5}
 }
 
-// @item
-.items,
-.item {
+// @page
+.pages,
+.pages .page {
   .m0r;
   .m0l;
   .p0;
+  display:block;
   list-style:none;
 }
-.item {
+.page {
+  h2 code {font:inherit}
+  &-description {
+    .m0r;
+    .m0l;
+    font-style:normal;
+    color:inherit;
+  }
+}
+.pages .page {
   > div,
   > figure,
   > header,
@@ -573,6 +584,55 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     right:(@--x * .25);
   }
   min-height:(@--y * 2.5);
+  &.is-hidden:not(:focus):not(:hover) {opacity:.5}
+}
+
+// @data
+.datas {
+  .m0r;
+  .m0l;
+  .p0;
+  display:block;
+  list-style:none;
+  .column(4, (@--x * .5));
+  @media (max-width:@--view-mobile) {
+    .column(2, (@--x * .5));
+  }
+}
+.data {
+  &,
+  .title,
+  .tools {
+    .m0;
+    .p0;
+    font:inherit;
+    list-style:none;
+    border-color:inherit;
+  }
+}
+.data {
+  background:#eee;
+  border:0 solid #eee;
+  padding:(@--y * .5) (@--x * .75);
+  position:relative;
+  overflow:hidden;
+  cursor:move;
+  .selection(none);
+  + .data {margin-top:(@--y * .5)}
+  .title {
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    color:inherit;
+    .left;
+  }
+  .tools {
+    position:absolute;
+    top:(@--y * .5);
+    right:(@--x * .5);
+    background:inherit;
+  }
   &.is-hidden:not(:focus):not(:hover) {opacity:.5}
 }
 

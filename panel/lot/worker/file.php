@@ -3,7 +3,6 @@
 Config::set('panel.+.form.editor', true);
 
 $c = $panel->c;
-$file = $panel->file ?: $panel->folder;
 $x = $file ? pathinfo($file, PATHINFO_EXTENSION) : null;
 $is_file = is_file($file) ? mime_content_type($file) : "";
 $is_file_text = $is_file && ($is_file === 'inode/x-empty' || strpos($is_file, 'text/') === 0 || strpos(',' . TEXT_X . ',', ',' . $x . ',') !== false);

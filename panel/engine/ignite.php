@@ -249,9 +249,46 @@ function button($in, $id = 0, $attr = [], $i = 0) {
     return \HTML::unite($is_button ? 'button' : 'a', $out, $attr);
 }
 
-function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {}
+function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
+    $name = basename($path);
+    $directory = str_replace([LOT . DS, DS], ["", '/'], $path);
+    _init([], $attr, 'data', $id, $i);
+    global $panel, $url;
+    $out  = '<h3 class="title">';
+    $out .= '<span title="' . \File::size($path) . '">' . \Path::N($name) . '</span>';
+    $out .= '</h3>';
+    if ($tools) {
+        $out .= _tools($tools, $path, $id, $i);
+    }
+    return \HTML::unite('li', $out, $attr);
+}
 
-function datas($datas, $id = 0, $attr = [], $i = 0) {}
+function datas($datas, $id = 0, $attr = [], $i = 0) {
+    global $panel, $url;
+    $files = q(glob($datas . DS . '*.data', GLOB_NOSORT));
+    sort($files);
+    \Config::set('panel.+.explore', $files);
+    $out = "";
+    $directory = is_string($datas) ? str_replace([LOT . DS, DS], ["", '/'], $datas) : null;
+    _init([], $attr, 'datas', $id, $i);
+    $files = \Anemon::eat($files)->chunk($panel->state->file->chunk, $url->i === null ? 0 : $url->i - 1);
+    if ($files->count()) {
+        $tools = \Anemon::eat(\Config::get('panel.+.data.tool', [], true))->sort([1, 'stack']);
+        $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
+        foreach ($files as $k => $v) {
+            $n = basename($v);
+            $h = $n !== '..' && (strpos($n, '.') === 0 || strpos($n, '_') === 0);
+            $a = strpos($session, X . $v . X) !== false;
+            $out .= data($v, $id, [
+                'class[]' => [
+                    -2 => $h ? 'is-hidden' : null,
+                    -1 => $a ? 'active' : null
+                ]
+            ], $i, $tools);
+        }
+    }
+    return \HTML::unite('ul', $out, $attr);
+}
 
 function desk($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
@@ -499,9 +536,7 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     \Config::set('panel.+.explore', $files);
     $out = "";
     $directory = is_string($folder) ? str_replace([LOT . DS, DS], ["", '/'], $folder) : null;
-    _init([], $attr, 'files', $id, $i, is_string($folder) ? [
-        'data[]' => ['folder' => $directory]
-    ] : []);
+    _init([], $attr, 'files', $id, $i);
     $files = \Anemon::eat($files)->chunk($panel->state->file->chunk, $url->i === null ? 0 : $url->i - 1);
     if ($files->count()) {
         if (is_string($folder) && trim(dirname($directory), '.') !== "") {
@@ -659,7 +694,7 @@ function nav_ul($in, $id = 0, $attr = [], $i = 0) {
 function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     global $panel, $url;
     $path = $page->path;
-    _init([], $attr, 'item', $id, $i, [
+    _init([], $attr, 'page', $id, $i, [
         'class[]' => [
             -1 => 'is-file',
             -2 => 'state:' . $page->state
@@ -694,7 +729,7 @@ function pager($id = 0, $attr = [], $i = 0) {
 }
 
 function pages($pages, $id = 0, $attr = [], $i = 0) {
-    _init([], $attr, 'items', $id, $i);
+    _init([], $attr, 'pages', $id, $i);
     $out = "";
     $x = 'draft,page,archive';
     global $panel, $url;

@@ -21,6 +21,10 @@
 @--color-list_hover:#eef;
 @--color-list_active:#fec;
 
+@--color-data:#def;
+@--color-data_hover:#cde;
+@--color-data_current:#fc9;
+
 @--color-message:#666;
 @--color-message-error:#c14;
 @--color-message-info:#78a;
@@ -210,8 +214,8 @@ blockquote,figcaption,
   &.is-folder::after {border-top-color:darken(@--color-folder, 10%)}
 }
 
-// @item
-.item {
+// @page
+.pages .page {
   background:@--color_inverse;
   border-color:@--color_inverse;
   &:focus:not(.x),
@@ -222,6 +226,21 @@ blockquote,figcaption,
   &.active {
     background:@--color-list_active;
     border-color:@--color-list_active;
+  }
+}
+
+// @data
+.data {
+  background:@--color-data;
+  border:0 solid @--color-data;
+  &:focus,
+  &:hover {
+    background:@--color-data_hover;
+    border-color:@--color-data_hover;
+  }
+  &.active {
+    background:@--color-data_current;
+    border-color:@--color-data_current;
   }
 }
 

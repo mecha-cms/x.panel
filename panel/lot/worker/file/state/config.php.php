@@ -1,16 +1,9 @@
 <?php
 
-$languages = $shields = $zones = [];
+$languages = $shields = [];
 
-foreach (glob(LANGUAGE . DS . '*.page', GLOB_NOSORT) as $v) {
-    $languages[Path::N($v)] = (new Page($v))->title;
-}
-
-foreach (glob(SHIELD . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $v) {
-    $shields[basename(dirname($v))] = (new Page($v))->title;
-}
-
-call_user_func(function() use(&$zones) {
+$zones = Cache::expire(__FILE__) ? Cache::set(__FILE__, function() {
+    $zones = [];
     $regions = [
         \DateTimeZone::AFRICA,
         \DateTimeZone::AMERICA,
@@ -37,7 +30,16 @@ call_user_func(function() use(&$zones) {
         $offset_formatted = gmdate('H:i', abs($offset));
         $zones[$zone] = 'GMT' . $offset_prefix . $offset_formatted . ' &#x00B7; ' . strtr($zone, '_', ' ');
     }
-});
+    return $zones;
+}) : Cache::get(__FILE__, []);
+
+foreach (glob(LANGUAGE . DS . '*.page', GLOB_NOSORT) as $v) {
+    $languages[Path::N($v)] = (new Page($v))->title;
+}
+
+foreach (glob(SHIELD . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $v) {
+    $shields[basename(dirname($v))] = (new Page($v))->title;
+}
 
 $key = 'panel.desk.body.tab.file.field.file[?]';
 Config::set($key . '[zone]', [

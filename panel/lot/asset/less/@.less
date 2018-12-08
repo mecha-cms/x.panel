@@ -57,6 +57,14 @@
   -moz-transform:@--v;
   transform:@--v;
 }
+.column(@--count, @--gap) {
+  -webkit-column-count:@--count;
+  -webkit-column-gap:@--gap;
+  -moz-column-count:@--count;
+  -moz-column-gap:@--gap;
+  column-count:@--count;
+  column-gap:@--gap;
+}
 .text-special() {
   font-size:(@--z - (@--sizer * 2));
   text-transform:uppercase;

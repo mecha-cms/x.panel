@@ -1,7 +1,6 @@
 <?php
 
 $c = $panel->c;
-$file = $panel->file ?: $panel->folder;
 $is_file = is_file($file) ? mime_content_type($file) : "";
 
 Config::set('panel.desk', [

@@ -2,7 +2,6 @@
 
 require __DIR__ . DS . 'file.php';
 
-$file = $panel->file ?: $panel->folder;
 if ($c === 's' && is_file($file)) {
     Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
 }

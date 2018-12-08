@@ -4,12 +4,11 @@ if ($c === 'g' && !$panel->file || HTTP::get('view') === 'file') {
     return;
 }
 
-$file = $panel->file ?: $panel->folder;
 if ($c === 's' && $is_file = is_file($file)) {
     Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
 }
 
-$page = new Page($is_file ? $file : null, extend([
+Lot::set('page', $page = new Page($is_file ? $file : null, extend([
     'author' => null,
     'content' => null,
     'description' => null,
@@ -17,7 +16,7 @@ $page = new Page($is_file ? $file : null, extend([
     'time' => null,
     'title' => null,
     'type' => Config::get('page.type', 'HTML') // Inherit `page.type` state or `HTML`
-], (array) Config::get($id, [], true)), false);
+], (array) Config::get($id, [], true)), false));
 
 // Remove folder and blob tab(s)
 Config::reset('panel.desk.body.tab.folder');
