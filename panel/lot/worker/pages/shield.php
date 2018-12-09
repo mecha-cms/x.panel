@@ -36,7 +36,18 @@ Config::set('panel.+.page.tool', [
         'icon' => [['M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z']],
         'stack' => 9.8
     ],
-    'status' => null, // TODO
+    'status' => [
+        'if' => function($file) use($config, $language): array {
+            return [
+                'hidden' => basename(dirname($file)) === $config->shield,
+                'description' => $language->attach,
+                'icon' => [['M18,6C18,7.82 16.76,9.41 15,9.86V17A5,5 0 0,1 10,22A5,5 0 0,1 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V9.86C11.23,9.4 10,7.8 10,5.97C10,3.76 11.8,2 14,2C16.22,2 18,3.79 18,6M14,8A2,2 0 0,0 16,6A2,2 0 0,0 14,4A2,2 0 0,0 12,6A2,2 0 0,0 14,8Z']]
+            ];
+        },
+        'title' => false,
+        'task' => '8f86d176',
+        'stack' => 9.9
+    ],
     'g' => [
         'if' => function($file): array {
             return ['path' => Path::R(dirname($file), LOT, '/') . '/1'];
