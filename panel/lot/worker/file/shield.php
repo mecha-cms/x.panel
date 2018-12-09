@@ -30,7 +30,7 @@ if ($c === 's' && HTTP::get('tab.0') === 'blob' && (HTTP::is('get', 'tabs.0') &&
 
 if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is('get', 'view')) {
     require __DIR__ . DS . 'state.php';
-    Hook::set('on.ready', function() use($language, $site) {
+    Hook::set('on.ready', function() use($config, $language) {
         $pages = [];
         foreach (Get::pages(PAGE, 'page,archive', [1, 'path'], 'path') as $v) {
             $pages[Path::N($v)] = (new Page($v))->title;
@@ -41,7 +41,7 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
                 'key' => 'home',
                 'type' => 'select',
                 'width' => true,
-                'value' => $site->path,
+                'value' => $config->path,
                 'values' => $pages,
                 'kind' => ['select-input'],
                 'stack' => 10
@@ -53,7 +53,7 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
                     'key' => 'order',
                     'title' => $language->sort[0],
                     'type' => 'radio[]',
-                    'value' => $site->page->sort[0] ?? null,
+                    'value' => $config->page->sort[0] ?? null,
                     'values' => [
                        '-1' => 'Z &#x2192; A',
                         '1' => 'A &#x2192; Z'
@@ -64,8 +64,8 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
                     'key' => 'by',
                     'title' => $language->sort[1],
                     'type' => 'text',
-                    'value' => $site->page->sort[1],
-                    'placeholder' => $site->page->sort[1] ?: 'time',
+                    'value' => $config->page->sort[1],
+                    'placeholder' => $config->page->sort[1] ?: 'time',
                     'stack' => 10.1
                 ]
             ],

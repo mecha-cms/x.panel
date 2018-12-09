@@ -26,12 +26,12 @@ if ($chops) {
         ]);
     }
     if (!HTTP::is('get', 'q')) {
-        Hook::set('on.ready', function() use($file, $url) {
-            extract(Lot::get(null, []));
+        Hook::set('on.ready', function() {
+            extract(Lot::get());
             $s = $file . DS . 'about.';
             if ($f = File::exist([
                 $s . 'page',
-                $s . DS . $site->language . '.page'
+                $s . DS . $config->language . '.page'
             ])) {
                 $page = new Page($f);
                 $title = $page->title . ' <code>' . $page->version . '</code>';

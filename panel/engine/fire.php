@@ -10,7 +10,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
     Hook::set('on.ready', function() use($svg, $query) {
 
-        extract(Lot::get(null, []));
+        extract(Lot::get());
 
         $item_view = Config::get('panel.+.form.editor');
 

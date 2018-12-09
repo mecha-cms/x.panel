@@ -23,7 +23,7 @@ Config::set('panel.desk.body.tab.file.field', [
 
 Hook::set('on.ready', function() use($c, $page) {
     if ($c === 's' || $page->state === 'draft') {
-        $i = Get::tags(TAG, 'page,archive', [-1, 'id'], 'id')->first();
+        $i = Get::tags(TAG, 'page,archive', [-1, 'id'])->first();
         $i += 1;
     } else {
         $i = $page->id;

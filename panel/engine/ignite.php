@@ -736,20 +736,9 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     $state = $panel->state->page;
     $chunk = [$state->chunk, $url->i === null ? 0 : $url->i - 1];
     if (!is_array($pages)) {
-        $pages = \Get::pages($pages, $x, $state->sort);
-    } else {
-        \Config::set('panel.+.explore', $pages);
-        $key = $state->sort[1];
-        $pages = \Anemon::eat($pages)->map(function($v) use($key) {
-            $page = new \Page($v);
-            return [
-                'path' => $v,
-                $key => $page->get($key)
-            ];
-        // Only sort if `$pages` is not an array
-        })/* ->sort($state->sort) */;
+        $pages = \Get::pages($pages, $x, $state->sort, 'path')->vomit();
     }
-    \Config::set('panel.+.explore', $pages = q($pages->pluck('path')->vomit()));
+    \Config::set('panel.+.explore', $pages = q($pages));
     $pages = \Anemon::eat($pages)->chunk(...$chunk);
     if ($pages->count()) {
         $tools = \Anemon::eat(\Config::get('panel.+.page.tool', [], true))->sort([1, 'stack']);

@@ -62,7 +62,7 @@ Config::set($key . '[direction]', [
 ]);
 
 Config::reset($key . '[page]');
-Hook::set('on.ready', function() use($key, $language, $shields, $site) {
+Hook::set('on.ready', function() use($config, $key, $language, $shields) {
     $editors = (array) $language->o_page_editor;
     Config::set('panel.desk.body.tab', [
         'site' => [
@@ -71,20 +71,20 @@ Hook::set('on.ready', function() use($key, $language, $shields, $site) {
                     'key' => 'title',
                     'type' => 'text',
                     'width' => true,
-                    'value' => $site->title,
+                    'value' => $config->title,
                     'stack' => 10
                 ],
                 'file[?][description]' => [
                     'key' => 'description',
                     'type' => 'textarea',
                     'width' => true,
-                    'value' => $site->description,
+                    'value' => $config->description,
                     'stack' => 10.1
                 ],
                 'file[?][shield]' => [
                     'key' => 'shield',
                     'type' => 'select',
-                    'value' => $site->shield,
+                    'value' => $config->shield,
                     'values' => $shields,
                     'stack' => 10.2
                 ]
@@ -97,7 +97,7 @@ Hook::set('on.ready', function() use($key, $language, $shields, $site) {
                     'key' => 'title',
                     'type' => 'text',
                     'width' => true,
-                    'value' => $site->page->title ?? null,
+                    'value' => $config->page->title ?? null,
                     'placeholder' => $language->field_hint_page_title,
                     'stack' => 10
                 ],
@@ -106,14 +106,14 @@ Hook::set('on.ready', function() use($key, $language, $shields, $site) {
                     'type' => 'source',
                     'width' => true,
                     'height' => true,
-                    'value' => $site->page->content ?? null,
+                    'value' => $config->page->content ?? null,
                     'placeholder' => $language->field_hint_file_content,
                     'stack' => 10.1
                 ],
                 'file[?][page][type]' => [
                     'key' => 'type',
                     'type' => 'select',
-                    'value' => $site->page->type ?? null,
+                    'value' => $config->page->type ?? null,
                     'values' => (array) $language->o_page_type,
                     'kind' => ['select-input'],
                     'stack' => 10.3
@@ -121,14 +121,14 @@ Hook::set('on.ready', function() use($key, $language, $shields, $site) {
                 'file[?][page][editor]' => $editors ? [
                     'key' => 'editor',
                     'type' => 'select',
-                    'value' => $site->page->editor ?? null,
+                    'value' => $config->page->editor ?? null,
                     'values' => concat(["" => ""], $editors),
                     'stack' => 10.4
                 ] : null,
-                'file[?][page][author]' => isset($site->page->author) ? [
+                'file[?][page][author]' => isset($config->page->author) ? [
                     'key' => 'author',
                     'type' => 'hidden',
-                    'value' => $site->page->author,
+                    'value' => $config->page->author,
                     'stack' => 0
                 ] : null
             ],

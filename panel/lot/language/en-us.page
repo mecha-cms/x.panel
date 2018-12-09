@@ -127,3 +127,6 @@ page_image_directory: Image Folder
 page_image_height: Image Height
 page_image_name: Image Name
 page_image_width: Image Width
+
+widget: Widget
+widgets: Widgets

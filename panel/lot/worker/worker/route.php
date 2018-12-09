@@ -2,7 +2,7 @@
 
 Hook::set('on.ready', function() {
 
-    extract(Lot::get(null, []));
+    extract(Lot::get());
 
     $id = $panel->id;
     $r = $panel->r;
@@ -24,7 +24,7 @@ Hook::set('on.ready', function() {
             return $a + $b;
         });
         $t += filemtime(__FILE__);
-        $t = abs(crc32($t . $user->token . $site->language)); // Smart cache updater
+        $t = abs(crc32($t . $user->token . $config->language)); // Smart cache updater
         if ($style = (array) ($panel->state->style ?? [])) {
             if (!empty($style['fonts'])) {
                 $fonts = $style['fonts'];
@@ -80,7 +80,7 @@ Hook::set('on.ready', function() {
         $r . '/::%s%::/%*%/%i%',
         $r . '/::%s%::/%*%'
     ], function($c = 'g', $path = "", $step = null) use($id, $r, $v) {
-        extract(Lot::get(null, []));
+        extract(Lot::get());
         Config::reset('is.error');
         // Prevent directory traversal attack <https://en.wikipedia.org/wiki/Directory_traversal_attack>
         $path = str_replace('../', "", urldecode($path));
@@ -135,7 +135,7 @@ Hook::set('on.ready', function() {
     }, 10);
 
     Route::set($r . '/::g::/-/asset.js', function() {
-        extract(Lot::get(null, []));
+        extract(Lot::get());
         $i = 60 * 60 * 24 * 30 * 12; // 1 Year
         HTTP::type('application/javascript')->header([
             'Pragma' => 'private',
