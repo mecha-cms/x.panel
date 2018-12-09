@@ -1,7 +1,7 @@
 <?php $error = Config::get('panel.error'); ?>
 <?php HTTP::status($error ? 404 : 200); ?>
 <!DOCTYPE html>
-<html lang="<?php echo $site->language; ?>" dir="<?php echo $site->direction; ?>" class="<?php echo $error ? 'is-error error-404' : 'is-' . $panel->v; ?><?php echo Config::get('panel.+.form.editor') === 1 ? ' form' : ""; ?> status-<?php echo $user->status; ?> <?php echo $site->direction; ?>">
+<html lang="<?php echo $site->language; ?>" dir="ltr" class="<?php echo $error ? 'is-error error-404' : 'is-' . $panel->v; ?><?php echo Config::get('panel.+.form.editor') === 1 ? ' form' : ""; ?> status-<?php echo $user->status; ?> ltr">
 <head>
 <meta charset="<?php echo $site->charset; ?>">
 <meta name="viewport" content="width=device-width">
