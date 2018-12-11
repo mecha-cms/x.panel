@@ -27,14 +27,24 @@ if ($file && Path::X($file) === 'php') {
             $fields[$key = 'file[?][' . $k . ']'] = [
                 'key' => $k,
                 'type' => 'text',
-                'width' => true,
                 'value' => $v,
+                'width' => true,
                 'stack' => 10 + $i
             ];
             if (is_array($v)) {
                 $fields[$key]['type'] = 'source';
                 $fields[$key]['syntax'] = 'application/json';
                 $fields[$key]['value'] = json_encode($v);
+            } else if ($v === true || $v === false) {
+                $fields[$key]['type'] = 'radio[]';
+                $fields[$key]['values'] = [
+                    'true' => $language->yes,
+                    'false' => $language->no
+                ];
+                unset($fields[$key]['width']);
+            } else if (is_int($v) || is_float($v)) {
+                $fields[$key]['type'] = 'number';
+                unset($fields[$key]['width']);
             }
             $i += .1;
         }

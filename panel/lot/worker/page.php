@@ -167,7 +167,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
             'field' => $image ? [
                 'image' => [
                     'type' => 'content',
-                    'value' => '<p>' . HTML::a(HTML::img($image, basename($image)), $r . '/::g::/' . Path::R(To::path($image), LOT, '/'), true) . '<br>' . Form::toggle('page[image:x]', 1, false, $language->remove) . '</p>',
+                    'value' => '<p>' . HTML::a(HTML::img((new Page($file))->image(72, 72), basename($image)), $r . '/::g::/' . Path::R(To::path($image), LOT, '/'), true) . '<br>' . Form::toggle('page[image:x]', 1, false, $language->remove) . '</p>',
                     'stack' => 10
                 ],
                 'page[image]' => [

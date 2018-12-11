@@ -86,7 +86,7 @@ Hook::set('on.ready', function() {
         $path = str_replace('../', "", urldecode($path));
         $error = Config::get('panel.error');
         if ($f = File::exist(LOT . DS . $path)) {
-            Config::set('trace', $trace = new Anemon([$language->{$error ? 'error' : str_replace('.', "\\.", $id)}, $site->title], ' &#x00B7; '));
+            Config::set('trace', $trace = new Anemon([$language->{$error ? 'error' : str_replace('.', "\\.", $id)}, $config->title], ' &#x00B7; '));
             $error = false;
             if ($step !== null) {
                 if ($step !== 1 && !glob($f . DS . '*', GLOB_NOSORT)) {
@@ -94,7 +94,7 @@ Hook::set('on.ready', function() {
                 }
             }
         } else {
-            Config::set('trace', new Anemon([$language->error, $site->title], ' &#x00B7; '));
+            Config::set('trace', new Anemon([$language->error, $config->title], ' &#x00B7; '));
             $error = true;
         }
         HTTP::status($error ? 404 : 200);

@@ -32,6 +32,11 @@ Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
 
 Lot::set('file', $file = $panel->file ?: $panel->folder);
 
+Config::set('is.panel', true);
+if ($file) {
+    Config::set('is.panel:' . $id, true);
+}
+
 require __DIR__ . DS . 'engine' . DS . 'ignite.php';
 require __DIR__ . DS . 'engine' . DS . 'fire.php';
 

@@ -4,10 +4,10 @@
 @--y:24px; // line height & vertical white-space
 @--x:24px; // horizontal white-space
 @--width:(@--x * 32); // page width
-@--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-@--font-code:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+@--text:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+@--text-code:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 
-@--view-mobile:720px;
+@--width-narrow:720px;
 
 .appearance(@--v) {
   -webkit-appearance:@--v;
@@ -121,7 +121,7 @@
 .p2l {padding-left:(@--x * 2)}
 .p2 {padding:(@--y * 2) (@--x * 2)}
 
-@media (max-width:@--view-mobile) {
+@media (max-width:@--width-narrow) {
   .m2t {margin-top:@--y}
   .m2r {margin-right:@--x}
   .m2b {margin-bottom:@--y}

@@ -25,6 +25,7 @@ a,
   position:relative;
   overflow:hidden;
   text-indent:-9999px;
+  .selection(none);
 }
 
 .margin-icon() {
@@ -259,6 +260,9 @@ img.align-center {
     width:(@--x * 5);
     padding-top:(@--y * .25);
     padding-right:@--x;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
     .text-right;
     + span,
     + div,

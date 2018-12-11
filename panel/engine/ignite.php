@@ -1,5 +1,8 @@
 <?php namespace fn\panel;
 
+// These are just helper function(s) used to reduce the repeating code over includable file(s).
+// These function(s) should not be re-used in your custom extension, plugin and shield.
+
 function _init($in, &$attr, $key, $id, $i, $alt = []) {
     if (!array_key_exists('path', $in)) {
         global $panel;
@@ -420,7 +423,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         _init([], $alt, 'f', $id, $i, [
             'style[]' => $style
         ]);
-        $out .= '<label for="f:' . $id . '.' . $i . '">' . $title . '</label>';
+        $out .= '<label for="f:' . $id . '.' . $i . '" title="' . $k . '">' . $title . '</label>';
         $textarea = \has(['content', 'source', 'textarea'], $type);
         $node = $in[0] ?? ($textarea ? 'div' : 'span');
         $out .= '<' . $node . '>';

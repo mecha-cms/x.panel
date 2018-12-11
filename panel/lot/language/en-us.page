@@ -2,6 +2,9 @@
 type: YAML
 ...
 
+attempt: Attempt
+attempts: Attempts
+
 back: Back
 
 do_archive: Archive # verb of `archive`
@@ -127,6 +130,9 @@ page_image_directory: Image Folder
 page_image_height: Image Height
 page_image_name: Image Name
 page_image_width: Image Width
+
+state_user_description_path: Create secret log-in path. By default, it will use the <code>path</code> value.
+state_user_description_try: Maximum log-in attempts.
 
 widget: Widget
 widgets: Widgets

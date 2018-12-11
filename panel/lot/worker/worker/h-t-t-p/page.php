@@ -62,7 +62,8 @@ if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP:
                 $response = File::push($blob, $path);
                 // File already exists
                 if ($response === false) {
-                    Message::error('file_exist', [str_replace(ROOT, '.', $path . DS . $blob['name'])]);
+                    Message::info($language->message_error_file_exist([str_replace(ROOT, '.', $path . DS . $blob['name'])]));
+                    $page['image'] = To::URL($path . DS . $blob['name']);
                 // Trigger error
                 } else if (is_int($response)) {
                     // But `4` (no file was uploaded)
@@ -93,6 +94,13 @@ if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP:
         // Delete image if image is stored in the asset folder
         if (strpos($image, ASSET . DS) === 0) {
             File::open($image)->delete();
+            // Delete thumbnail
+            $folder = Path::F($image);
+            File::open($folder . DS . '72.' . Path::X($image))->delete();
+            // Delete folder if empty
+            if (Folder::size($folder) === '0 B') {
+                Folder::open($folder)->delete();
+            }
         }
         $page['image'] = false; // Remove `image` property
         unset($page['image:x']);
