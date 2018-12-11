@@ -66,8 +66,8 @@ Config::set('panel.desk', [
                         'stack' => 20
                     ] : null,
                     'package' => $package_feature ? [
-                        'title' => $language->download,
-                        'icon' => [['M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z']],
+                        'title' => $language->do_backup_folder,
+                        'icon' => [['M12,3A9,9 0 0,0 3,12H0L4,16L8,12H5A7,7 0 0,1 12,5A7,7 0 0,1 19,12A7,7 0 0,1 12,19C10.5,19 9.09,18.5 7.94,17.7L6.5,19.14C8.04,20.3 9.94,21 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M14,12A2,2 0 0,0 12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12Z']],
                         'path' => $id,
                         'active' => false,
                         'task' => '421d9546',

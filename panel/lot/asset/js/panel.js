@@ -266,6 +266,9 @@ if ($menus.length) {
             });
         }
     });
+    $menus.find('a').on("click", function() {
+        // TODO: Nested floating menu(s)
+    });
 }
 
 
