@@ -888,7 +888,7 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
             if (!isset($v['title'])) {
                 $v['title'] = $language->{$k};
             }
-            if (!empty($v['+'])) {
+            if (!empty($v['+']) && array_filter($v['+'])) {
                 $hash = dechex(crc32($id . $k . $i));
                 \Config::set('panel.+.menu.' . $hash, $v['+']);
                 $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);

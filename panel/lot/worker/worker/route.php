@@ -116,7 +116,7 @@ Hook::set('on.ready', function() {
         foreach ((array) Config::get('panel.+.menu', [], true) as $k => $v) {
             $menus .= fn\panel\menus($v, $k, [
                 'data[]' => ['js-enter' => '#js:' . $k]
-            ]);
+            ], 1);
         }
         if (!empty($GLOBALS['SVG'])) {
             $icons .= '<svg id="svg:panel" xmlns="http://www.w3.org/2000/svg" display="none">';

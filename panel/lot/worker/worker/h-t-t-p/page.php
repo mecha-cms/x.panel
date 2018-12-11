@@ -167,16 +167,12 @@ $name = To::slug($name);
 if (!Message::$x) {
     if ($c === 'g') {
         $nn = Path::N($n);
-        if (!Folder::exist($dd = LOT . DS . $path . DS . $nn)) {
-            Folder::create($dd, 0775);
-        }
+        Folder::create($dd = LOT . DS . $path . DS . $nn, 0775);
         if ($nn !== $name) {
             File::open($dd)->renameTo($name); // rename folder
         }
     } else if ($c === 's') {
-        if (!Folder::exist($dd = LOT . DS . $path . DS . $name)) {
-            Folder::create($dd, 0775);
-        }
+        Folder::create($dd = LOT . DS . $path . DS . $name, 0775);
     }
     // Process page data
     $data = HTTP::post('data', [], false);

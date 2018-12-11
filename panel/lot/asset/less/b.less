@@ -148,14 +148,15 @@ ul.tools li {
 }
 
 // @menu
-.menus {
-  &,
-  & li {
-    margin:0;
-    padding:0;
-    list-style:none;
-    &.current a {color:inherit}
-  }
+.menus,
+.menus ul,
+.menus li {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.menus,
+.menus ul {
   position:absolute;
   top:100%;
   left:0;
@@ -166,12 +167,15 @@ ul.tools li {
   line-height:@--y;
   display:none;
   &.enter {display:block}
+}
+.menus {
   ul {
     top:0;
     left:100%;
   }
   li {
     float:none;
+    position:relative;
     &.separator {
       width:auto;
       height:1px;
@@ -179,7 +183,10 @@ ul.tools li {
       opacity:.125;
       margin:0;
       overflow:hidden;
+      &:first-child,
+      &:last-child {display:none}
     }
+    &.current a {color:inherit}
   }
   a {
     display:block;
@@ -274,7 +281,7 @@ img.align-center {
     }
     + br {display:none}
   }
-  @media (max-width:@--view-mobile) {
+  @media (max-width:@--width-narrow) {
     display:block;
     width:auto;
     > label {
@@ -400,7 +407,7 @@ img.align-center {
         &.left {margin-right:(@--x * .25)}
       }
     }
-    @media (max-width:@--view-mobile) {
+    @media (max-width:@--width-narrow) {
       height:auto;
       line-height:inherit;
       li {
@@ -577,7 +584,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   }
   > figure + header,
   > figure + header + div {margin-left:(@--x * 2.5)}
-  @media (max-width:@--view-mobile) {
+  @media (max-width:@--width-narrow) {
     > figure {display:none}
     > figure + header,
     > figure + header + div {margin-left:0}
@@ -599,7 +606,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   display:block;
   list-style:none;
   .column(4, (@--x * .5));
-  @media (max-width:@--view-mobile) {
+  @media (max-width:@--width-narrow) {
     .column(2, (@--x * .5));
   }
 }
@@ -673,7 +680,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
       color:inherit;
     }
   }
-  @media (max-width:@--view-mobile) {
+  @media (max-width:@--width-narrow) {
     & > span:first-child,
     & > span:last-child {display:none}
   }

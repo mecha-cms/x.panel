@@ -8,6 +8,7 @@ attempts: Attempts
 back: Back
 
 do_archive: Archive # verb of `archive`
+do_backup: Quick Backup
 do_empty_trash: Empty the Trash
 do_empty_cache: Refresh Cache
 do_empty_directory: Delete this folder with its contents

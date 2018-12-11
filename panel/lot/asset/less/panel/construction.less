@@ -111,8 +111,11 @@ blockquote,figcaption,
 
 // @menu
 .menus {
-  background:@--color--inverse;
-  .box-shadow;
+  &,
+  & ul {
+    background:@--color--inverse;
+    .box-shadow;
+  }
   li {
     &.current > a {
       background:@--color-list--current;

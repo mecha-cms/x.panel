@@ -10,7 +10,7 @@
     .m2t;
     > .tools {margin-left:(@--x * 5)}
   }
-  @media (max-width:@--view-mobile) {
+  @media (max-width:@--width-narrow) {
     .p1;
     > header {.m1b}
     > footer {
@@ -136,6 +136,8 @@ html.form {
       height:@--y;
       margin:(@--y * .5) 0;
       overflow:hidden;
+      &:first-child,
+      &:last-child {display:none}
     }
   }
   a {
@@ -164,7 +166,7 @@ html.form {
 html:not(.js) .nav li:hover > ul,
 html:not(.js) .nav li:focus-within > ul {display:block}
 
-@media (max-width:@--view-mobile) {
+@media (max-width:@--width-narrow) {
   .nav {
     > ul > li {
       display:none;
@@ -188,7 +190,7 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   .p2;
   .p0t;
   .desk & {.p0}
-  @media (max-width:@--view-mobile) {
+  @media (max-width:@--width-narrow) {
     .p1;
     .p0t;
   }

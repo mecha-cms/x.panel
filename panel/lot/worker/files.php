@@ -2,6 +2,7 @@
 
 $c = $panel->c;
 $is_file = is_file($file) ? mime_content_type($file) : "";
+$package_feature = false; // Extend::exist('package'); // TODO
 
 Config::set('panel.desk', [
     'header' => [
@@ -58,7 +59,33 @@ Config::set('panel.desk', [
                             'tab' => false,
                             'token' => $user->token
                         ],
-                        'stack' => 10.1
+                        'stack' => 10.3
+                    ] : null,
+                    '_0' => $package_feature ? [
+                        'type' => '|',
+                        'stack' => 20
+                    ] : null,
+                    'package' => $package_feature ? [
+                        'title' => $language->download,
+                        'icon' => [['M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z']],
+                        'path' => $id,
+                        'active' => false,
+                        'task' => '421d9546',
+                        '+' => [
+                            'not' => [
+                                'title' => 'Any But Public Data',
+                                'path' => $id,
+                                'active' => false,
+                                'stack' => 10
+                            ],
+                            'is' => [
+                                'title' => 'Public Data Only',
+                                'path' => $id,
+                                'active' => false,
+                                'stack' => 10
+                            ]
+                        ],
+                        'stack' => 20.1
                     ] : null
                 ],
                 'stack' => 10.2

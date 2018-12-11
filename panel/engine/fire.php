@@ -59,6 +59,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
         $path_user = basename(USER);
         $active = strpos($path . '/', $path_user . '/') === 0;
+        $package_feature = Extend::exist('package');
         Config::set('panel.nav.site', [
             '+' => [
                 'state/config' => [
@@ -94,7 +95,18 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                     'active' => false,
                     'target' => '_blank',
                     'stack' => 10.2
-                ]
+                ],
+                '_0' => $package_feature ? [
+                    'type' => '|',
+                    'stack' => 20
+                ] : null,
+                'package' => $package_feature ? [
+                    'title' => $language->do_backup,
+                    'icon' => [['M12,3A9,9 0 0,0 3,12H0L4,16L8,12H5A7,7 0 0,1 12,5A7,7 0 0,1 19,12A7,7 0 0,1 12,19C10.5,19 9.09,18.5 7.94,17.7L6.5,19.14C8.04,20.3 9.94,21 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M14,12A2,2 0 0,0 12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12Z']],
+                    'active' => false,
+                    'task' => ['421d9546', [1]],
+                    'stack' => 20.1
+                ] : null
             ],
             'stack' => 20
         ]);

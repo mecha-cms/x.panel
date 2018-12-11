@@ -93,3 +93,22 @@ function _fea4a865($file, $x = '*') {
     echo $count ? $count : "";
     exit;
 }
+
+// `zip`
+function _421d9546($file, $alt = null) {
+    extract(Lot::get());
+    $public = 'poll,share,view';
+    $name = To::slug($config->title);
+    if ($alt === 1) {
+        $file = ROOT;
+    } else if ($alt === 2) {
+        // TODO
+    } else if ($alt === -2) {
+        // TODO
+    } else {
+        $name .= '.' . $panel->id;
+    }
+    $package = ASSET . DS . 'zip' . DS . $user->token . DS . $name . '.' . date('Y-m-d') . '.zip';
+    Package::from($file)->packTo($package);
+    return ['kick' => Path::R($package, ROOT, '/')];
+}

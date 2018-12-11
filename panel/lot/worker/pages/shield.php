@@ -19,7 +19,10 @@ Config::set('panel.desk.header.tool', [
         ]
     ],
     'folder' => null,
-    '+' => ['+' => null]
+    '+' => ['+' => [
+        'blob' => null,
+        'r' => null
+    ]]
 ]);
 
 Config::set('panel.+.page.tool', [
