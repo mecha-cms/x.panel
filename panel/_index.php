@@ -30,7 +30,7 @@ Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
     'v' => $view . (!$chops && $c === 'g' || $i !== "" ? 's' : "") // Plural or singular?
 ]));
 
-Lot::set('file', $file = $panel->file ?: $panel->folder);
+Lot::set('_file', $GLOBALS['_file'] = $file = $panel->file ?: $panel->folder);
 
 Config::set('is.panel', true);
 if ($file) {

@@ -9,8 +9,8 @@ Hook::set('on.ready', function() {
     $v = $panel->v;
 
     if (strpos($url->path, $r . '/::') === 0) {
-        // Remove all defined asset(s) and route(s)
-        Asset::reset();
+        Asset::reset(); // Remove all asset(s)
+        Route::reset(['%*%/%i%', '%*%', ""]); // Remove all route(s) from `page` extension
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         Asset::set($asset . 'js' . DS . 'zepto.min.js', 9);
         Asset::set($asset . 'js' . DS . 'code-mirror.min.js', 9.1);
@@ -26,15 +26,6 @@ Hook::set('on.ready', function() {
         $t += filemtime(__FILE__);
         $t = abs(crc32($t . $user->token . $config->language)); // Smart cache updater
         if ($style = (array) ($panel->state->style ?? [])) {
-            if (!empty($style['fonts'])) {
-                $fonts = $style['fonts'];
-                $s = '<link href="https://fonts.googleapis.com/css?family=' . implode('|', map(array_unique($fonts), function($v) {
-                    return urlencode($v) . ':400,700,400i,700i';
-                })) . '" rel="stylesheet"><style media="screen">' . (!empty($fonts[0]) ? 'html,body{font-family:"' . $fonts[0] . '",serif}' : "") . (!empty($fonts[1]) ? 'h1,h2,h3,h4,h5,h6{font-family:"' . $fonts[1] . '",serif}' : "") . (!empty($fonts[2]) ? 'blockquote{font-family:"' . $fonts[2] . '",serif}' : "") . (!empty($fonts[3]) ? 'code,.code,kbd{font-family:"' . $fonts[3] . '",monospace}' : "") . '</style>';
-                Hook::set('shield.yield', function($yield) use($s) {
-                    return str_replace('</head>', $s . '</head>', $yield);
-                }, 0);
-            }
             if (!empty($style['width'])) {
                 $width = $style['width'];
                 $s = '<style media="screen">.desk{max-width:' . (is_int($width) ? $width . 'px' : $width) . '}</style>';

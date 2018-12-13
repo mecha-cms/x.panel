@@ -8,7 +8,7 @@ if ($c === 's' && $is_file = is_file($file)) {
     Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
 }
 
-Lot::set('page', $page = new Page($is_file ? $file : null, extend([
+Lot::set('_page', $GLOBALS['_page'] = $page = new Page($is_file ? $file : null, extend([
     'author' => null,
     'content' => null,
     'description' => null,
@@ -87,7 +87,7 @@ if ($c === 'g' && glob(Path::F($page->path) . DS . '*.{draft,page,archive}', GLO
         'title' => false,
         'icon' => [$svg['state']],
         'field' => [
-            'page[sort][0]' => [
+            'data[sort][0]' => [
                 'key' => 'order',
                 'title' => $language->sort[0],
                 'type' => 'radio[]',
@@ -98,7 +98,7 @@ if ($c === 'g' && glob(Path::F($page->path) . DS . '*.{draft,page,archive}', GLO
                 ],
                 'stack' => 10
             ],
-            'page[sort][1]' => [
+            'data[sort][1]' => [
                 'key' => 'by',
                 'title' => $language->sort[1],
                 'type' => 'text',

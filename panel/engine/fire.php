@@ -117,7 +117,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
             'title' => false,
             'i' => ($i = $user->status !== 1 ? 0 : count($messages)),
             'description' => $i . ' ' . $language->{'message' . ($i === 1 ? "" : 's')},
-            'icon' => [[$svg['bell'][$user->_muted ? 2 : ($i > 0 ? 1 : 0)] ?? ""]],
+            'icon' => [[$svg['bell'][$user->_mute ? 2 : ($i > 0 ? 1 : 0)] ?? ""]],
             'active' => $i > 0,
             'path' => '.message',
             'kind' => ['right'],
