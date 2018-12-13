@@ -16,14 +16,6 @@ do_empty_directory: Delete this folder with its contents
 do_force_user_exit: Force log out %{0}%
 do_up_directory: Up one level directory
 
-font: Font
-fonts: Fonts
-
-font_body: Body Font
-font_code: Code Font
-font_header: Header Font
-font_quote: Quote Font
-
 height: Height
 
 panel: Panel
@@ -39,7 +31,7 @@ styles: Styles
 
 o_package:
   extract: Extract package after upload.
-  bucket: Wrap package in a folder.
+  bucket: Wrap the extracted package in a folder.
 
 o_message_info_comment_set:
   title: New Comment

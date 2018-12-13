@@ -144,3 +144,6 @@ Hook::set('on.ready', function() use($config, $key, $language, $shields) {
 
 // You can’t delete this file
 Config::set('panel.desk.footer.tool.r.hidden', true);
+
+// Store page `type` value for editor extension(s)
+Lot::set('_page', $GLOBALS['_page'] = new Page(null, [], false));

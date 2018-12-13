@@ -24,13 +24,6 @@ foreach (['data', 'file', 'page', 'skin', 'style'] as $v) {
     Config::reset('panel.desk.body.tab.file.field.file[?][' . $v . ']');
 }
 
-$fonts = [];
-if ($google_fonts = File::exist(EXTEND . DS . $chops[0] . DS . 'lot' . DS . 'state' . DS . 'google-fonts.php')) {
-    foreach (require $google_fonts as $v) {
-        $fonts[$v] = $v;
-    }
-}
-$fonts['0'] = "";
 Config::set('panel.desk.body.tab.skin', [
     'field' => [
         'file[?][skin]' => [
@@ -40,44 +33,12 @@ Config::set('panel.desk.body.tab.skin', [
             'values' => $skins,
             'stack' => 10
         ],
-        'file[?][style][fonts][0]' => [
-            'title' => $language->font_body,
-            'type' => count($fonts) > 1 ? 'select' : 'text',
-            'value' => $states['style']['fonts'][0] ?? null,
-            'values' => $fonts,
-            'kind' => ['select-input'],
-            'stack' => 10.1
-        ],
-        'file[?][style][fonts][1]' => [
-            'title' => $language->font_header,
-            'type' => count($fonts) > 1 ? 'select' : 'text',
-            'value' => $states['style']['fonts'][1] ?? null,
-            'values' => $fonts,
-            'kind' => ['select-input'],
-            'stack' => 10.2
-        ],
-        'file[?][style][fonts][2]' => [
-            'title' => $language->font_quote,
-            'type' => count($fonts) > 1 ? 'select' : 'text',
-            'value' => $states['style']['fonts'][2] ?? null,
-            'values' => $fonts,
-            'kind' => ['select-input'],
-            'stack' => 10.3
-        ],
-        'file[?][style][fonts][3]' => [
-            'title' => $language->font_code,
-            'type' => count($fonts) > 1 ? 'select' : 'text',
-            'value' => $states['style']['fonts'][3] ?? null,
-            'values' => $fonts,
-            'kind' => ['select-input'],
-            'stack' => 10.4
-        ],
         'file[?][style][width]' => [
             'title' => $language->width_editor,
             'type' => 'number',
             'range' => [600, 1280],
             'value' => $states['style']['width'] ?? null,
-            'stack' => 10.5
+            'stack' => 10.1
         ]
     ],
     'stack' => 10.1

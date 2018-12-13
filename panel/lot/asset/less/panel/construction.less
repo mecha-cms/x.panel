@@ -1,5 +1,7 @@
 // Default Theme
 
+@import url('//fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400i,700i|Roboto+Mono:400,700,400i,700i');
+
 @--z:16px; // font size
 
 @--color:#000;
@@ -52,13 +54,17 @@
   &:active:not(.x) {color:@--color-a--inverse}
 }
 
-html {.color-html}
+html {
+  font-family:"Roboto Condensed",Roboto,sans-serif;
+  .color-html;
+}
 a {.color-a}
 mark {background:@--color-mark}
 pre {
   background:lighten(@--color, 20%);
   color:@--color--inverse;
 }
+code,.code {font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace}
 h1,h2,h3,h4,h5,h6,
 .h1,.h2,.h3,.h4,.h5,.h6 {color:@--color-headers}
 blockquote,figcaption,
@@ -325,5 +331,12 @@ html {
   .CodeMirror {
     background:@--color-source;
     color:@--color;
+    font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
   }
 }
+
+// @c-k-editor
+.cke_reset_all,
+.cke_reset_all *,
+.cke_reset_all a,
+.cke_reset_all textarea {font-family:"Roboto Condensed",Roboto,sans-serif !important}
