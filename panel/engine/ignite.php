@@ -654,9 +654,6 @@ function nav_li($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
     }
-    if (isset($in['type']) && $in['type'] === '|') {
-        return \HTML::unite('li', '&zwnj;', ['class[]' => ['separator']]);
-    }
     $in = _init($in, $attr, 'li', $id, $i);
     if (!array_key_exists('active', $in)) {
         global $panel, $url;

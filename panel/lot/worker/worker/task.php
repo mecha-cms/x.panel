@@ -75,6 +75,10 @@ function _8f86d176($file) {
 function _950abfd9($file) {
     $user = Lot::get('user');
     File::open(Path::F($file) . DS . 'token.data')->delete();
+    // Remove backup file(s)
+    if (Extend::exist('package')) {
+        Folder::open(ASSET . DS . 'zip' . DS . $user->token)->delete();
+    }
     $state = Extend::state('user');
     Message::success('user_exit');
     return ['kick' => $state['_path'] ?? $state['path']];
@@ -95,20 +99,22 @@ function _fea4a865($file, $x = '*') {
 }
 
 // `zip`
-function _421d9546($file, $alt = null) {
+function _421d9546() {
     extract(Lot::get());
-    $public = 'poll,share,view';
+    if ($user->status !== 1) return;
     $name = To::slug($config->title);
-    if ($alt === 1) {
-        $file = ROOT;
-    } else if ($alt === 2) {
-        // TODO
-    } else if ($alt === -2) {
-        // TODO
-    } else {
-        $name .= '.' . $panel->id;
+    $files = [];
+    foreach (File::explore([$r = ROOT . DS, 1], true) as $k => $v) {
+        // Back up all shield(s) but `document`
+        if (strpos($k . DS, SHIELD . DS . 'document' . DS) === 0) {
+            continue;
+        // Back up extension and plugin state(s) only
+        } else if (strpos($k . DS, EXTEND . DS) === 0 && (strpos($k, DS . 'lot' . DS . 'state' . DS) === false || substr($k, -8) === '.php.php')) {
+            continue;
+        }
+        $files[$k] = str_replace($r, "", $k);
     }
     $package = ASSET . DS . 'zip' . DS . $user->token . DS . $name . '.' . date('Y-m-d') . '.zip';
-    Package::from($file)->packTo($package);
+    Package::from($files)->packTo($package);
     return ['kick' => Path::R($package, ROOT, '/')];
 }
