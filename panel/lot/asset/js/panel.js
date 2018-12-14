@@ -246,7 +246,7 @@ if ($menus.length) {
     $menus.on('menu:enter', function(e, $source, $target) {
         var $this = $(this),
             offset = $source.offset();
-        $this.css({
+        $this.removeProp('hidden').addClass('enter').css({
             top: offset.top,
             left: offset.left
         });
@@ -254,20 +254,32 @@ if ($menus.length) {
         // console.log(['menu:enter', $source, null]);
     });
     $menus.on('menu:exit', function(e, $source) {
-        $menus.prop('hidden', true).removeClass('enter');
+        $menus.prop('hidden', true).removeClass('enter').find('ul.enter').removeClass('enter').parent().removeClass('active');
     });
     $menus.each(function() {
         var $this = $(this),
             $enter = ($this.data('jsEnter') || "").replace(/[:]/g, '\\$&');
         if ($enter && ($enter = $($enter)).length) {
             $enter.on("click", function(e) {
-                $this.prop('hidden', false).addClass('enter').fire('menu:enter', [$(this)]);
+                $this.fire('menu:enter', [$(this)]);
                 e.stopPropagation();
             });
         }
     });
-    $menus.find('a').on("click", function() {
-        // TODO: Nested floating menu(s)
+    $menus.find('a').on("click", function(e) {
+        var $this = $(this),
+            $ul = $this.next('ul');
+        if ($ul.length) {
+            if ($ul.hasClass('enter')) {
+                $ul.removeClass('enter').parent().removeClass('active')
+                    .find('ul.enter').removeClass('enter').parent('li.active').removeClass('active');
+            } else {
+                $ul.addClass('enter').parent().addClass('active')
+                    .siblings().find('ul.enter').removeClass('enter').parent('li.active').removeClass('active');
+            }
+            e.stopPropagation();
+            return false;
+        }
     });
 }
 
