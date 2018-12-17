@@ -245,11 +245,16 @@ panel.menus = $menus;
 if ($menus.length) {
     $menus.on('menu:enter', function(e, $source, $target) {
         var $this = $(this),
-            offset = $source.offset();
-        $this.removeProp('hidden').addClass('enter').css({
+            offset = $source.offset(),
+            width = $html.width();
+        $this.removeProp('hidden').removeClass('rtl').addClass('enter').css({
             top: offset.top,
             left: offset.left
         });
+        var w = $this.width();
+        if (offset.left + w > width) {
+            $this.addClass('rtl').css('left', width - w);
+        }
         $navs.fire('nav:exit', [$source, null]);
         // console.log(['menu:enter', $source, null]);
     });

@@ -7,7 +7,7 @@ foreach (glob(LOT . DS . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $v) {
 }
 
 foreach (glob(EXTEND . DS . $chops[0] . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel' . DS . '*.min.css', GLOB_NOSORT) as $v) {
-    $skins[basename($v, '.min.css')] = basename($v);
+    $skins[$v = basename($v, '.min.css')] = $v;
 }
 $skins[""] = "";
 
