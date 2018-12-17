@@ -25,8 +25,8 @@ if ($chops) {
         ]);
     }
     if (!HTTP::is('get', 'q')) {
-        Hook::set('on.ready', function() {
-            extract(Lot::get());
+        Hook::set('on.ready', function() use($file) {
+            extract(Lot::get(), EXTR_SKIP);
             $s = $file . DS . 'about.';
             if ($f = File::exist([
                 $s . 'page',

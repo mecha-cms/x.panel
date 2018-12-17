@@ -547,7 +547,16 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   list-style:none;
 }
 .page {
-  h2 code {font:inherit}
+  h2 code {
+    display:inline-block;
+    vertical-align:top;
+    font:inherit;
+    font-size:(@--z - @--sizer);
+    line-height:1;
+    padding:((@--z - @--sizer) * .25) ((@--z - @--sizer) * .5);
+    background:#000;
+    color:#fff;
+  }
   &-description {
     .m0r;
     .m0l;

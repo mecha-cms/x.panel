@@ -32,6 +32,8 @@
 @--color-message--info:#78a;
 @--color-message--success:#690;
 
+@--color-badge:#fc0;
+
 @--width-narrow:720px;
 
 .border-radius(@--v) {
@@ -224,6 +226,12 @@ blockquote,figcaption,
 }
 
 // @page
+.page {
+  h2 code {
+    background:@--color-badge;
+    color:@--color;
+  }
+}
 .pages .page {
   background:@--color--inverse;
   border-color:@--color--inverse;
