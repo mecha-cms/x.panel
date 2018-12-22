@@ -128,7 +128,7 @@ Config::set('panel.desk.body.tab.data', [
         'page[link]' => [
             'key' => 'link',
             'type' => 'text',
-            'pattern' => '^([\\/?#]\\S+|\\/\\/\\S+|https?:\\/\\/\\S+)$',
+            'pattern' => '^([?#]\\S+|(https?:)?\\/\\/\\S+)$',
             'value' => $page->link,
             'placeholder' => '&#x200C;' . $url->protocol . '&#x200C;' . $url->host . '&#x200C;',
             'width' => true,

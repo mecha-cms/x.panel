@@ -1,6 +1,6 @@
 // @desk
 .desk {
-  // max-width:@--width;
+  // max-width:@--w;
   .p2;
   margin:0 auto;
   &::before,
@@ -10,7 +10,7 @@
     .m2t;
     > .tools {margin-left:(@--x * 5)}
   }
-  @media (max-width:@--width-narrow) {
+  @media (max-width:@--w-narrow) {
     .p1;
     > header {.m1b}
     > footer {
@@ -166,7 +166,7 @@ html.form {
 html:not(.js) .nav li:hover > ul,
 html:not(.js) .nav li:focus-within > ul {display:block}
 
-@media (max-width:@--width-narrow) {
+@media (max-width:@--w-narrow) {
   .nav {
     > ul > li {
       display:none;
@@ -190,7 +190,7 @@ html:not(.js) .nav li:focus-within > ul {display:block}
   .p2;
   .p0t;
   .desk & {.p0}
-  @media (max-width:@--width-narrow) {
+  @media (max-width:@--w-narrow) {
     .p1;
     .p0t;
   }

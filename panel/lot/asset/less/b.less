@@ -203,31 +203,37 @@ ul.tools li {
 }
 
 // @align
-img {
-  &.align-right,
-  &.align-left,
-  &.align-center {
-    display:block;
-    float:none;
-    margin-top:@--y;
-  }
+.align-right,
+.align-left,
+.align-center {
+  display:block;
+  float:none;
+  margin-top:@--y;
 }
-img.align-left {
-  margin-right:@--x;
-  margin-bottom:(@--z * .5);
-  .left;
-  .text-left;
-}
-img.align-right {
+.align-right {
   margin-bottom:(@--z * .5);
   margin-left:@--x;
   .right;
   .text-right;
 }
-img.align-center {
+.align-left {
+  margin-right:@--x;
+  margin-bottom:(@--z * .5);
+  .left;
+  .text-left;
+}
+.align-center {
   margin-right:auto;
   margin-left:auto;
   .text-center;
+}
+.align-left img,
+.align-right img {display:block}
+.align-center,
+.align-center img {
+  display:block;
+  margin-right:auto;
+  margin-left:auto;
 }
 
 // @button
@@ -287,7 +293,7 @@ img.align-center {
     }
     + br {display:none}
   }
-  @media (max-width:@--width-narrow) {
+  @media (max-width:@--w-narrow) {
     display:block;
     width:auto;
     > label {
@@ -413,7 +419,7 @@ img.align-center {
         &.left {margin-right:(@--x * .25)}
       }
     }
-    @media (max-width:@--width-narrow) {
+    @media (max-width:@--w-narrow) {
       height:auto;
       line-height:inherit;
       li {
@@ -599,7 +605,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   }
   > figure + header,
   > figure + header + div {margin-left:(@--x * 2.5)}
-  @media (max-width:@--width-narrow) {
+  @media (max-width:@--w-narrow) {
     > figure {display:none}
     > figure + header,
     > figure + header + div {margin-left:0}
@@ -621,7 +627,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   display:block;
   list-style:none;
   .column(4, (@--x * .5));
-  @media (max-width:@--width-narrow) {
+  @media (max-width:@--w-narrow) {
     .column(2, (@--x * .5));
   }
 }
@@ -695,7 +701,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
       color:inherit;
     }
   }
-  @media (max-width:@--width-narrow) {
+  @media (max-width:@--w-narrow) {
     & > span:first-child,
     & > span:last-child {display:none}
   }

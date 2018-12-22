@@ -334,17 +334,5 @@ blockquote,figcaption,
   > ul > li.active > a {color:darken(@--color--inverse, 2%)}
 }
 
-// @code-mirror
-html {
-  .CodeMirror {
-    background:@--color-source;
-    color:@--color;
-    font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
-  }
-}
-
-// @c-k-editor
-.cke_reset_all,
-.cke_reset_all *,
-.cke_reset_all a,
-.cke_reset_all textarea {font-family:"Roboto Condensed",Roboto,sans-serif !important}
+@import 'construction/code-mirror';
+@import 'construction/c-k-editor';

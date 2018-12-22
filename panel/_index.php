@@ -11,10 +11,9 @@ if ($i !== "" && file_exists($f . DS . $i)) {
     $path .= '/' . $i;
     $f .= DS . $i;
     $chops[] = $i;
-    $i = null;
     $GLOBALS['URL']['path'] .= '/' . $i;
     $GLOBALS['URL']['clean'] .= '/' . $i;
-    $GLOBALS['URL']['i'] = null;
+    $GLOBALS['URL']['i'] = $i = null;
 }
 
 Lot::set('panel', $GLOBALS['panel'] = $panel = new State([

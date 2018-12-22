@@ -7,17 +7,24 @@ if (!$chops && !HTTP::is('get', 'q')) {
     });
     $files = array_slice($files, 0, $state['page']['chunk']);
     Hook::set('page.image', function($image) {
-        $comment = new Comment($this->path);
-        return $image ?: $comment->avatar(72, 72, 'monsterid') ?: $GLOBALS['URL']['protocol'] . 'www.gravatar.com/avatar/' . md5($comment->email) . '?s=72&amp;d=monsterid';
+        $path = $this->path;
+        if ($path && strpos($path, COMMENT . DS) === 0) {
+            $comment = new Comment($path);
+            return $image ?: $comment->avatar(72, 72, 'monsterid') ?: $GLOBALS['URL']['protocol'] . 'www.gravatar.com/avatar/' . md5($comment->email) . '?s=72&amp;d=monsterid';
+        }
+        return $image;
     });
-    Hook::set('page.url', function($title) {
-        return (new Comment($this->path))->url . "";
+    Hook::set('page.url', function($url) {
+        $path = $this->path;
+        return $path && strpos($path, COMMENT . DS) === 0 ? (new Comment($path))->url . "" : $url;
     });
     Hook::set('page.title', function($title) {
-        return (new Comment($this->path))->author . "";
+        $path = $this->path;
+        return $path && strpos($path, COMMENT . DS) === 0 ? (new Comment($path))->author . "" : $title;
     });
-    Hook::set('page.description', function($title) use($state) {
-        return To::snippet(Page::apart($this->path, 'content'), true, $state['page']['snippet']);
+    Hook::set('page.description', function($description) use($state) {
+        $path = $this->path;
+        return $path && strpos($path, COMMENT . DS) === 0 ? To::snippet(Page::apart($path, 'content'), true, $state['page']['snippet']) : $description;
     });
     Config::set('panel.+.page.tool.s', [
         'if' => function($file): array {
