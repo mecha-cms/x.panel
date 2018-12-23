@@ -3,8 +3,9 @@
 // `empty cache`
 function _4f9d54dd() {
     if (!defined('CACHE')) return;
-    File::open(CACHE)->delete();
-    Folder::create(CACHE, 0755);
+    foreach (glob(CACHE . DS . '*', GLOB_NOSORT) as $v) {
+        File::open($v)->delete();
+    }
     Message::success('empty_cache');
     global $panel;
     return ['kick' => $panel->r . '/::g::/cache/1'];
