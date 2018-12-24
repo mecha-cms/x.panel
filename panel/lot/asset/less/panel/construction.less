@@ -12,7 +12,7 @@
 @--color-mark:#ff0;
 @--color--error:#f00;
 
-@--color-headers:#66a;
+@--color-header:#66a;
 @--color-file:#fea;
 @--color-folder:#d00;
 @--color-source:#ffa;
@@ -33,6 +33,9 @@
 @--color-message--success:#690;
 
 @--color-badge:#fc0;
+
+@--text:"Roboto Condensed",Roboto,sans-serif;
+@--text-code:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace;
 
 @--width-narrow:720px;
 
@@ -57,7 +60,7 @@
 }
 
 html {
-  font-family:"Roboto Condensed",Roboto,sans-serif;
+  font-family:@--text;
   .color-html;
 }
 a {.color-a}
@@ -66,9 +69,9 @@ pre {
   background:lighten(@--color, 20%);
   color:@--color--inverse;
 }
-code,.code {font-family:"Roboto Mono","Courier New",Courier,"Nimbus Mono L",monospace}
+code,.code {font-family:@--text-code}
 h1,h2,h3,h4,h5,h6,
-.h1,.h2,.h3,.h4,.h5,.h6 {color:@--color-headers}
+.h1,.h2,.h3,.h4,.h5,.h6 {color:@--color-header}
 blockquote,figcaption,
 .table caption {color:lighten(@--color, 50%)}
 .button,
