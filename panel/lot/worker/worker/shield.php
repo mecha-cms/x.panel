@@ -15,7 +15,7 @@
 <?php echo $icons; ?>
 <!-- End SVG -->
 <?php endif; ?>
-<?php echo $message; ?>
+<?php static::message(); ?>
 <?php echo $nav; ?>
 <?php
 
