@@ -20,7 +20,7 @@ if ($c === 's') {
 // Automatic field(s)
 if ($file && Path::X($file) === 'php') {
     call_user_func(function() use($file) {
-        extract(Lot::get());
+        extract(Lot::get(), EXTR_SKIP);
         $fields = [];
         $i = 0;
         foreach (require $file as $k => $v) {
