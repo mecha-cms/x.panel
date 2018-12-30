@@ -11,6 +11,7 @@ Hook::set('on.ready', function() {
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset(); // Remove all asset(s)
         Route::reset(['%*%/%i%', '%*%', ""]); // Remove all route(s) from `page` extension
+        Shield::$id = X; // Disable current shield asset(s)
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         Asset::set($asset . 'js' . DS . 'zepto.min.js', 9);
         Asset::set($asset . 'js' . DS . 'code-mirror.min.js', 9.1);
@@ -40,20 +41,12 @@ Hook::set('on.ready', function() {
             }
         ]);
         $skin = $panel->state->skin ?? null;
-        if (defined('DEBUG') && DEBUG && Extend::exist('less')) {
-            Asset::set($asset . 'less' . DS . 'panel.less', 10);
-            if (isset($skin) && $skin !== "") {
-                Asset::set($asset . 'less' . DS . 'panel' . DS . $skin . '.less', 10.1);
-            }
-            Asset::set($asset . 'js' . DS . 'panel.js', 10);
-        } else {
-            Asset::set($asset . 'css' . DS . 'panel.min.css', 10);
-            if (isset($skin) && $skin !== "") {
-                Asset::set($asset . 'css' . DS . 'panel' . DS . $skin . '.min.css', 10.1);
-            }
-            Asset::set($asset . 'js' . DS . 'panel.min.js', 10);
-        }
+        Asset::set($asset . 'css' . DS . 'panel.min.css', 10);
         Asset::set($asset . 'css' . DS . 'code-mirror.min.css', 10.1);
+        if (isset($skin) && $skin !== "") {
+            Asset::set($asset . 'css' . DS . 'panel' . DS . $skin . '.min.css', 10.2);
+        }
+        Asset::set($asset . 'js' . DS . 'panel.min.js', 10);
     }
 
     Hook::set('asset:body', function($body) use($user) {

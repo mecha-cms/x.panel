@@ -1,6 +1,6 @@
 <?php
 
-Config::set('panel.+.svg', require __DIR__ . DS . '..' . DS . 'lot' . DS . 'state' . DS . 'svg.php');
+Config::set('panel.+.svg', Extend::state('panel:svg'));
 
 $query = HTTP::get('q');
 $svg = fn\panel\svg();
