@@ -653,6 +653,8 @@ function nav_a($in, $id = 0, $attr = [], $i = 0) {
 function nav_li($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
+    } else if (isset($in['content'])) {
+        return $in['content'];
     }
     $in = _init($in, $attr, 'li', $id, $i);
     if (!array_key_exists('active', $in)) {
@@ -666,26 +668,25 @@ function nav_li($in, $id = 0, $attr = [], $i = 0) {
         $attr['class[]'][] = 'current';
         unset($in['active']);
     }
-    $out = $in['content'] ?? nav_a($in, $id, [], $i) . (isset($in['+']) ? nav_ul($in['+'], $id, [], $i + 1) : "");
+    $out = nav_a($in, $id, [], $i) . (isset($in['+']) ? nav_ul($in['+'], $id, [], $i + 1) : "");
     return \HTML::unite('li', $out, $attr);
 }
 
 function nav_li_search($in, $id = 0, $attr = [], $i = 0) {
     $in = _init($in, $attr, 'search', $id, $i);
-    return search($in, $id, $attr, $i);
+    return \HTML::unite('li', search($in, $id, $attr, $i), $attr);
 }
 
 function nav_ul($in, $id = 0, $attr = [], $i = 0) {
     if (is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
-        $out = $in['content'];
-    } else {
-        $out = "";
-        foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
-            if (!$v || _hidden($v)) continue;
-            $out .= nav_li($v, $k, [], $i);
-        }
+        return $in['content'];
+    }
+    $out = "";
+    foreach (\Anemon::eat($in)->sort([1, 'stack'], true) as $k => $v) {
+        if (!$v || _hidden($v)) continue;
+        $out .= nav_li($v, $k, [], $i);
     }
     $in = _init($in, $attr, 'ul', $id, $i);
     return \HTML::unite('ul', $out, $attr);
