@@ -15,9 +15,9 @@ Hook::set('on.ready', function() {
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         Asset::set($asset . 'js' . DS . 'zepto.min.js', 9);
         Asset::set($asset . 'js' . DS . 'code-mirror.min.js', 9.1);
-        Asset::set($asset . 'js' . DS . 'code-mirror/display.min.js', 9.11);
-        Asset::set($asset . 'js' . DS . 'code-mirror/edit.min.js', 9.11);
-        Asset::set($asset . 'js' . DS . 'code-mirror/mode.min.js', 9.11);
+        Asset::set($asset . 'js' . DS . 'code-mirror' . DS . 'display.min.js', 9.11);
+        Asset::set($asset . 'js' . DS . 'code-mirror' . DS . 'edit.min.js', 9.11);
+        Asset::set($asset . 'js' . DS . 'code-mirror' . DS . 'mode.min.js', 9.11);
         $t = glob(__DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . '*.php', GLOB_NOSORT);
         $t = array_reduce(array_map(function($v) {
             return filemtime($v);
@@ -29,10 +29,7 @@ Hook::set('on.ready', function() {
         if ($style = (array) ($panel->state->style ?? [])) {
             if (!empty($style['width'])) {
                 $width = $style['width'];
-                $s = '<style media="screen">.desk{max-width:' . (is_int($width) ? $width . 'px' : $width) . '}</style>';
-                Hook::set('shield.yield', function($yield) use($s) {
-                    return str_replace('</head>', $s . '</head>', $yield);
-                }, 0);
+                Asset::style('.desk{max-width:' . (is_int($width) ? $width . 'px' : $width) . '}', 10, ['media' => 'screen']);
             }
         }
         Asset::set($url . '/' . $r . '/::g::/-/asset.js', 9.12, [
@@ -173,4 +170,4 @@ Hook::set('on.ready', function() {
         return Route::fire($image_path, [1, 1, $color, $x]);
     }, 9.2);
 
-}, 0);
+}, 2);
