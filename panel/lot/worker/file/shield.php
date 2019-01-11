@@ -35,15 +35,15 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
         $pages[Path::N($v)] = (new Page($v))->title;
     }
     $a = Config::get('panel.desk.body.tab.file.field.name', [], true);
-    $b = Config::get('panel.desk.body.tab.file.field.file[?][path].value', null);
-    $c = a(e(Config::get('panel.desk.body.tab.file.field.file[?][page].value', null)));
+    $b = Config::get('panel.desk.body.tab.file.field.file[+][path].value', null);
+    $c = a(e(Config::get('panel.desk.body.tab.file.field.file[+][page].value', null)));
     Config::reset('panel.desk.body.tab.file.field.name');
-    Config::reset('panel.desk.body.tab.file.field.file[?][path]');
-    Config::reset('panel.desk.body.tab.file.field.file[?][page]');
+    Config::reset('panel.desk.body.tab.file.field.file[+][path]');
+    Config::reset('panel.desk.body.tab.file.field.file[+][page]');
     $others = Config::get('panel.desk.body.tab.file.field', [], true);
     Config::reset('panel.desk.body.tab.file.field');
     Config::set('panel.desk.body.tab.file.field', [
-        'file[?][path]' => [
+        'file[+][path]' => [
             'key' => 'home',
             'type' => 'select',
             'width' => true,
@@ -56,7 +56,7 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
     ]);
     Config::set('panel.desk.body.tab.page', [
         'field' => [
-            'file[?][page][sort][0]' => [
+            'file[+][page][sort][0]' => [
                 'key' => 'order',
                 'title' => $language->sort[0],
                 'type' => 'radio[]',
@@ -67,7 +67,7 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
                 ],
                 'stack' => 10
             ],
-            'file[?][page][sort][1]' => [
+            'file[+][page][sort][1]' => [
                 'key' => 'by',
                 'title' => $language->sort[1],
                 'type' => 'text',
@@ -75,7 +75,7 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
                 'placeholder' => $config->page->sort[1] ?: 'time',
                 'stack' => 10.1
             ],
-            'file[?][page][chunk]' => [
+            'file[+][page][chunk]' => [
                 'key' => 'chunk',
                 'type' => 'number',
                 'range' => [1, 100],

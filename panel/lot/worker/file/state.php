@@ -24,7 +24,7 @@ if ($file && Path::X($file) === 'php') {
         $fields = [];
         $i = 0;
         foreach (require $file as $k => $v) {
-            $fields[$key = 'file[?][' . $k . ']'] = [
+            $fields[$key = 'file[+][' . $k . ']'] = [
                 'key' => $k,
                 'type' => 'text',
                 'value' => $v,

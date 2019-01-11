@@ -41,7 +41,7 @@ foreach (glob(SHIELD . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $v) {
     $shields[basename(dirname($v))] = (new Page($v))->title;
 }
 
-$key = 'panel.desk.body.tab.file.field.file[?]';
+$key = 'panel.desk.body.tab.file.field.file[+]';
 Config::set($key . '[zone]', [
     'type' => 'select',
     'values' => $zones
@@ -67,21 +67,21 @@ Hook::set('on.ready', function() use($config, $key, $language, $shields) {
     Config::set('panel.desk.body.tab', [
         'site' => [
             'field' => [
-                'file[?][title]' => [
+                'file[+][title]' => [
                     'key' => 'title',
                     'type' => 'text',
                     'width' => true,
                     'value' => $config->title,
                     'stack' => 10
                 ],
-                'file[?][description]' => [
+                'file[+][description]' => [
                     'key' => 'description',
                     'type' => 'textarea',
                     'width' => true,
                     'value' => $config->description,
                     'stack' => 10.1
                 ],
-                'file[?][shield]' => [
+                'file[+][shield]' => [
                     'key' => 'shield',
                     'type' => 'select',
                     'value' => $config->shield,
@@ -93,7 +93,7 @@ Hook::set('on.ready', function() use($config, $key, $language, $shields) {
         ],
         'page' => [
             'field' => [
-                'file[?][page][title]' => [
+                'file[+][page][title]' => [
                     'key' => 'title',
                     'type' => 'text',
                     'width' => true,
@@ -101,7 +101,7 @@ Hook::set('on.ready', function() use($config, $key, $language, $shields) {
                     'placeholder' => $language->field_hint_page_title,
                     'stack' => 10
                 ],
-                'file[?][page][content]' => [
+                'file[+][page][content]' => [
                     'key' => 'content',
                     'type' => 'source',
                     'width' => true,
@@ -110,7 +110,7 @@ Hook::set('on.ready', function() use($config, $key, $language, $shields) {
                     'placeholder' => $language->field_hint_file_content,
                     'stack' => 10.1
                 ],
-                'file[?][page][type]' => [
+                'file[+][page][type]' => [
                     'key' => 'type',
                     'type' => 'select',
                     'value' => $config->page->type ?? null,
@@ -118,14 +118,14 @@ Hook::set('on.ready', function() use($config, $key, $language, $shields) {
                     'kind' => ['select-input'],
                     'stack' => 10.3
                 ],
-                'file[?][page][editor]' => $editors ? [
+                'file[+][page][editor]' => $editors ? [
                     'key' => 'editor',
                     'type' => 'select',
                     'value' => $config->page->editor ?? null,
                     'values' => concat(["" => ""], $editors),
                     'stack' => 10.4
                 ] : null,
-                'file[?][page][author]' => isset($config->page->author) ? [
+                'file[+][page][author]' => isset($config->page->author) ? [
                     'key' => 'author',
                     'type' => 'hidden',
                     'value' => $config->page->author,

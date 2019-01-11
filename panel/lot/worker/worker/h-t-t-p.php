@@ -207,7 +207,7 @@ if ($tab === 'folder') {
         }
         $name .= '.' . $x;
     }
-    if ($content = HTTP::post('file.?', "")) {
+    if ($content = HTTP::post('file.+', "")) {
         $test_x = $x ?: Path::X($name);
         if (is_string($content)) {
             $content = From::YAML($content);
@@ -222,7 +222,7 @@ if ($tab === 'folder') {
             $content = serialize($content); // Default to serial
         }
         Set::post('file.content', $content);
-        Reset::post('file.?');
+        Reset::post('file.+');
     } else {
         $content = HTTP::post('file.content', "", false);
     }

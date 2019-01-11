@@ -11,7 +11,7 @@ foreach (glob(EXTEND . DS . $chops[0] . DS . 'lot' . DS . 'asset' . DS . 'css' .
 }
 $skins[""] = "";
 
-Config::set('panel.desk.body.tab.file.field.file[?][$]', [
+Config::set('panel.desk.body.tab.file.field.file[+][$]', [
     'title' => $language->home,
     'type' => 'select',
     'values' => $redirects
@@ -20,20 +20,20 @@ Config::set('panel.desk.body.tab.file.field.file[?][$]', [
 $states = [];
 
 foreach (['data', 'file', 'page', 'skin', 'style'] as $v) {
-    $states[$v] = a(e(Config::get('panel.desk.body.tab.file.field.file[?][' . $v . '].value', null, true)));
-    Config::reset('panel.desk.body.tab.file.field.file[?][' . $v . ']');
+    $states[$v] = a(e(Config::get('panel.desk.body.tab.file.field.file[+][' . $v . '].value', null, true)));
+    Config::reset('panel.desk.body.tab.file.field.file[+][' . $v . ']');
 }
 
 Config::set('panel.desk.body.tab.skin', [
     'field' => [
-        'file[?][skin]' => [
+        'file[+][skin]' => [
             'key' => 'skin',
             'type' => 'select',
             'value' => $states['skin'] ?? null,
             'values' => $skins,
             'stack' => 10
         ],
-        'file[?][style][width]' => [
+        'file[+][style][width]' => [
             'title' => $language->width_editor,
             'type' => 'number',
             'range' => [600, 1280],
@@ -47,14 +47,14 @@ Config::set('panel.desk.body.tab.skin', [
 Config::set('panel.desk.body.tab.view-file', [
     'title' => $language->files,
     'field' => [
-        'file[?][file][chunk]' => [
+        'file[+][file][chunk]' => [
             'key' => 'chunk',
             'type' => 'number',
             'range' => [1, 100],
             'value' => $states['file']['chunk'] ?? null,
             'stack' => 10
         ],
-        'file[?][file][kin]' => [
+        'file[+][file][kin]' => [
             'key' => 'kin',
             'type' => 'number',
             'range' => [1, 5],
@@ -76,28 +76,28 @@ $_uid = uniqid();
 Config::set('panel.desk.body.tab.view-page', [
     'title' => $language->pages,
     'field' => [
-        'file[?][page][chunk]' => [
+        'file[+][page][chunk]' => [
             'key' => 'chunk',
             'type' => 'number',
             'range' => [1, 100],
             'value' => $states['page']['chunk'] ?? null,
             'stack' => 10
         ],
-        'file[?][page][kin]' => [
+        'file[+][page][kin]' => [
             'key' => 'kin',
             'type' => 'number',
             'range' => [1, 5],
             'value' => $states['page']['kin'] ?? null,
             'stack' => 10.1
         ],
-        'file[?][page][snippet]' => [
+        'file[+][page][snippet]' => [
             'key' => 'snippet',
             'type' => 'number',
             'range' => [50, 300],
             'value' => $states['page']['snippet'] ?? null,
             'stack' => 10.2
         ],
-        'file[?][page][sort][0]' => [
+        'file[+][page][sort][0]' => [
             'key' => 'order',
             'title' => $language->sort[0],
             'type' => 'radio[]',
@@ -108,7 +108,7 @@ Config::set('panel.desk.body.tab.view-page', [
             ],
             'stack' => 10.3
         ],
-        'file[?][page][sort][1]' => [
+        'file[+][page][sort][1]' => [
             'key' => 'by',
             'title' => $language->sort[1],
             'type' => 'text',
@@ -116,7 +116,7 @@ Config::set('panel.desk.body.tab.view-page', [
             'placeholder' => $states['page']['sort'][1] ?? 'time',
             'stack' => 10.4
         ],
-        'file[?][page][image][width]' => $image_feature ? [
+        'file[+][page][image][width]' => $image_feature ? [
             'key' => 'width',
             'title' => $language->page_image_width,
             'description' => $language->field_description_page_image_width,
@@ -125,7 +125,7 @@ Config::set('panel.desk.body.tab.view-page', [
             'value' => $states['page']['image']['width'] ?? null,
             'stack' => 10.5
         ] : null,
-        'file[?][page][image][height]' => $image_feature ? [
+        'file[+][page][image][height]' => $image_feature ? [
             'key' => 'height',
             'title' => $language->page_image_height,
             'description' => $language->field_description_page_image_height,
@@ -134,7 +134,7 @@ Config::set('panel.desk.body.tab.view-page', [
             'value' => $states['page']['image']['height'] ?? null,
             'stack' => 10.6
         ] : null,
-        'file[?][page][image][directory]' => [
+        'file[+][page][image][directory]' => [
             'key' => 'directory',
             'title' => $language->page_image_directory,
             'description' => $language->field_description_page_image_directory('<code>' . rtrim($_asset, DS) . '</code>'),
@@ -160,7 +160,7 @@ Config::set('panel.desk.body.tab.view-page', [
             'kind' => ['select-input'],
             'stack' => 10.7
         ],
-        'file[?][page][image][name]' => [
+        'file[+][page][image][name]' => [
             'key' => 'name',
             'title' => $language->page_image_name,
             'description' => $language->field_description_page_image_name,
@@ -196,14 +196,14 @@ Config::set('panel.desk.body.tab.view-page', [
 Config::set('panel.desk.body.tab.view-data', [
     'title' => $language->datas,
     'field' => [
-        'file[?][data][chunk]' => [
+        'file[+][data][chunk]' => [
             'key' => 'chunk',
             'type' => 'number',
             'range' => [1, 100],
             'value' => $states['data']['chunk'] ?? null,
             'stack' => 10
         ],
-        'file[?][data][kin]' => [
+        'file[+][data][kin]' => [
             'key' => 'kin',
             'type' => 'number',
             'range' => [1, 5],

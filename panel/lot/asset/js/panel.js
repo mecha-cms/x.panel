@@ -3,6 +3,10 @@ window.crc32=function(e){for(var t,n=[],a=0;256>a;a++){t=a;for(var r=0;8>r;r++)t
 
 // <https://stackoverflow.com/a/16861050/1163000>
 window._c170e1f9 = function(url, name, width, height) { // `window.open`
+    var win = window,
+        doc = document,
+        html = doc.documentElement,
+        screen = win.screen;
     width = width || screen.width * .8;
     height = height || screen.height * .8;
     var dualScreenLeft = 'screenLeft' in win ? win.screenLeft : win.screenX,
@@ -212,7 +216,7 @@ $('.select.select-input').each(function() {
     var $this = $(this),
         $lastOption = $this.find('option').last();
     $('<option value="[...]">...</option>').appendTo($this);
-    $this.on("change input", function() {
+    $this.on("change", function() {
         var $t = $(this);
         if ($t.val() === '[...]') {
             $t.hide().prop('disabled', true);

@@ -1,12 +1,12 @@
 <?php
 
-$a = a(e(Config::get('panel.desk.body.tab.file.field.file[?][page].value', [], true)));
+$a = a(e(Config::get('panel.desk.body.tab.file.field.file[+][page].value', [], true)));
 
 Config::set('panel.desk.body.tab.file.field', [
-    'file[?][page]' => null,
-    'file[?][path]' => ['title' => $language->home],
-    'file[?][q]' => ['title' => $language->search],
-    'file[?][page][sort][0]' => [
+    'file[+][page]' => null,
+    'file[+][path]' => ['title' => $language->home],
+    'file[+][q]' => ['title' => $language->search],
+    'file[+][page][sort][0]' => [
         'key' => 'order',
         'title' => $language->sort[0],
         'type' => 'radio[]',
@@ -17,7 +17,7 @@ Config::set('panel.desk.body.tab.file.field', [
         ],
         'stack' => 20
     ],
-    'file[?][page][sort][1]' => [
+    'file[+][page][sort][1]' => [
         'key' => 'by',
         'title' => $language->sort[1],
         'type' => 'text',
@@ -25,7 +25,7 @@ Config::set('panel.desk.body.tab.file.field', [
         'placeholder' => $a['sort'][1] ?? 'time',
         'stack' => 20.1
     ],
-    'file[?][page][chunk]' => [
+    'file[+][page][chunk]' => [
         'key' => 'chunk',
         'type' => 'number',
         'range' => [1, 100],
