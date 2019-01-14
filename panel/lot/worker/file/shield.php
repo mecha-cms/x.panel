@@ -96,5 +96,22 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
             Config::set('panel.desk.body.tab.other.field.' . $k, $v);
             $i += .1;
         }
+        // Read-only view if current shield is not active
+        if ($chops[0] !== $config->shield) {
+            $preview = [];
+            foreach ($others as $k => $v) {
+                Config::set('panel.desk.body.tab.other.field.' . $k, [
+                    'type' => 'hidden',
+                    'value' => s($v['value'])
+                ]);
+                $preview[t($k, 'file[+][', ']')] = e($v['value']);
+            }
+            Config::set('panel.desk.body.tab.other.field.read-only', [
+                'type' => 'content',
+                'title' => false,
+                'value' => '<pre><code class="yaml">' . From::HTML(To::YAML($preview)) . '</code></pre>',
+                'stack' => 10
+            ]);
+        }
     }
 }
