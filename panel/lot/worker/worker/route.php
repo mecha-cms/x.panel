@@ -11,7 +11,7 @@ Hook::set('on.ready', function() {
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset(); // Remove all asset(s)
         Route::reset(['%*%/%i%', '%*%', ""]); // Remove all route(s) from `page` extension
-        Shield::$id = X; // Disable current shield asset(s)
+        Shield::$config['id'] = X; // Disable current shield asset(s)
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         Asset::set($asset . 'js' . DS . 'zepto.min.js', 9);
         Asset::set($asset . 'js' . DS . 'code-mirror.min.js', 9.1);
@@ -34,7 +34,7 @@ Hook::set('on.ready', function() {
         }
         Asset::set($url . '/' . $r . '/::g::/-/asset.js', 9.12, [
             'src' => function($src) use($t) {
-                return candy($this->url, [$src, $t]);
+                return candy($this->state['url'], [$src, $t]);
             }
         ]);
         $skin = $panel->state->skin ?? null;

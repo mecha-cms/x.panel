@@ -3,7 +3,7 @@
 if ($chops) {
     if (count($chops) === 1) {
         $active = file_exists($file . DS . 'index.php');
-        $x = has(['asset', 'page', 'panel', 'plugin', 'shield', 'user'], basename($file));
+        $x = has(['asset', 'form', 'page', 'panel', 'plugin', 'shield', 'user'], basename($file));
         if (file_exists($f = $file . DS . 'lot' . DS . 'state' . DS . 'config.php')) {
             Config::set('panel.desk.header.tool.state', [
                 'title' => false,

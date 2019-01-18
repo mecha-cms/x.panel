@@ -122,11 +122,11 @@ if ($tab === 'folder') {
         }
         Session::set('panel.file.active', LOT . DS . ($is_file ? dirname($path) : $path) . DS . explode(DS, $directory)[0]);
         Message::success('folder_create', ['<code>' . str_replace(ROOT, '.', $d) . '</code>']);
-        HTTP::delete();
+        Session::reset(Form::session);
         Hook::fire('on.folder.set', [$c === 's' ? null : $previous], new Folder($file));
         Guardian::kick($r . '/::g::/' . strtr($is_file ? dirname($path) : $path, DS, '/') . '/1');
     } else {
-        HTTP::save();
+        Session::set(Form::session, HTTP::post());
         Guardian::kick($url->path . $query);
     }
 } else if ($tab === 'blob') {
@@ -250,13 +250,13 @@ if ($tab === 'folder') {
             File::open(LOT . DS . $path . DS . $n)->delete();
         }
         Message::success($any . '_' . ($c === 's' ? 'create' : 'update'), ['<code>' . str_replace(ROOT, '.', $c === 's' ? $file : $previous) . '</code>']);
-        HTTP::delete();
+        Session::reset(Form::session);
         $to = $r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name);
         Hook::fire('on.' . $any . '.set', [$c === 's' ? null : $previous], $any === 'file' ? new File($file) : new Folder($file));
         // Redirect to file list if we are in `s` command
         Guardian::kick($c === 's' ? dirname($to) . '/1' : $to . $query);
     } else {
-        HTTP::save();
+        Session::set(Form::session, HTTP::post());
         Guardian::kick($url->path . $query);
     }
 }

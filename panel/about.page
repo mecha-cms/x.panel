@@ -3,13 +3,13 @@ title: Panel
 description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.0.8
+version: 2.0.10
 
 dependency:
   extension:
     - asset
+    - form
     - page
-    - shield
     - user
   plugin:
     - markdown

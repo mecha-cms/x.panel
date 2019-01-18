@@ -643,14 +643,17 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
   }
 }
 .data {
+  display:inline-block;
+  width:100%;
+  vertical-align:middle;
   background:#eee;
   border:0 solid #eee;
   padding:(@--y * .5) (@--x * .75);
+  margin-bottom:(@--y * .5);
   position:relative;
   overflow:hidden;
   cursor:move;
   .selection(none);
-  + .data {margin-top:(@--y * .5)}
   .title {
     width:100%;
     overflow:hidden;

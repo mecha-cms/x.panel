@@ -22,7 +22,7 @@ Config::set('panel.desk.header.tool', [
     '+' => ['+' => null]
 ]);
 
-$requires = ['asset', 'page', 'panel', 'plugin', 'shield', 'user'];
+$requires = ['asset', 'form', 'page', 'panel', 'plugin', 'shield', 'user'];
 Config::set('panel.+.page.tool', [
     'enter' => null,
     's' => null,
