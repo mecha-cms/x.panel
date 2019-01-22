@@ -4,19 +4,19 @@
 // These function(s) should not be re-used in your custom extension, plugin and shield.
 
 function _init($in, &$attr, $key, $id, $i, $alt = []) {
-    if (!array_key_exists('path', $in)) {
+    if (!\array_key_exists('path', $in)) {
         global $panel;
-        $in['path'] = trim($panel->id . '/' . $panel->path, '/');
+        $in['path'] = \trim($panel->id . '/' . $panel->path, '/');
     }
-    if (!array_key_exists('title', $in)) {
+    if (!\array_key_exists('title', $in)) {
         global $language;
-        $in['title'] = $language->{str_replace('.', "\\.", $id)};
+        $in['title'] = $language->{\str_replace('.', "\\.", $id)};
     }
-    if (!array_key_exists('class[]', $attr)) {
+    if (!\array_key_exists('class[]', $attr)) {
         $attr['class[]'] = [];
     }
     $attr['class[]'] = \concat($attr['class[]'], [$key], $id !== false ? [$key . ':' . $id, $key . ':' . $id . '.' . $i] : []);
-    if (!array_key_exists('id', $attr)) {
+    if (!\array_key_exists('id', $attr)) {
         $attr['id'] = $id !== false ? $key . ':' . $id . '.' . $i : null;
     }
     if (!empty($in['kind'])) {
@@ -25,7 +25,7 @@ function _init($in, &$attr, $key, $id, $i, $alt = []) {
     if (!empty($in['x'])) {
         $attr['class[]'][] = 'x';
     }
-    if (array_key_exists('i', $in)) {
+    if (\array_key_exists('i', $in)) {
         $attr['data[]']['i'] = $in['i'];
     }
     $attr = \extend($attr, $alt);
@@ -40,34 +40,34 @@ function _clean($in) {
 
 function _glob($folder) {
     $folders = $files = [];
-    if (is_array($folder)) {
+    if (\is_array($folder)) {
         foreach ($folder as $v) {
-            $v = strtr($v, '/', DS);
-            if (substr($v, -1) === DS || is_dir($v)) {
+            $v = \strtr($v, '/', DS);
+            if (\substr($v, -1) === DS || \is_dir($v)) {
                 $folders[] = $v;
             } else {
                 $files[] = $v;
             }
         }
     } else {
-        $folder = rtrim($folder, DS);
+        $folder = \rtrim($folder, DS);
         // <https://stackoverflow.com/a/33059445/1163000>
-        foreach (glob($folder . DS . '{,.}[!.,!..]*', GLOB_NOSORT | GLOB_MARK | GLOB_BRACE) as $v) {
-            $n = basename($v);
-            if (substr($v, -1) === DS) {
-                $folders[] = rtrim($v, DS);
+        foreach (\glob($folder . DS . '{,.}[!.,!..]*', \GLOB_NOSORT | \GLOB_MARK | \GLOB_BRACE) as $v) {
+            $n = \basename($v);
+            if (\substr($v, -1) === DS) {
+                $folders[] = \rtrim($v, DS);
             } else {
                 $files[] = $v;
             }
         }
     }
-    natsort($files);
-    natsort($folders);
+    \natsort($files);
+    \natsort($folders);
     return [$folders, $files];
 }
 
 function _hidden($in) {
-    if (!array_key_exists('hidden', (array) $in)) {
+    if (!\array_key_exists('hidden', (array) $in)) {
         return false;
     } else if (empty($in['hidden'])) {
         return false;
@@ -78,14 +78,14 @@ function _hidden($in) {
 // <http://salman-w.blogspot.com/2014/04/stackoverflow-like-pagination.html>
 function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $last) {
     $begin = 1;
-    $end = (int) ceil($count / $chunk);
+    $end = (int) \ceil($count / $chunk);
     $s = "";
     if ($end <= 1) {
         return $s;
     }
     if ($current <= $kin + $kin) {
         $min = $begin;
-        $max = min($begin + $kin + $kin, $end);
+        $max = \min($begin + $kin + $kin, $end);
     } else if ($current > $end - $kin - $kin) {
         $min = $end - $kin - $kin;
         $max = $end;
@@ -98,14 +98,14 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
         if ($current === $begin) {
             $s .= '<b title="' . $previous . '">' . $previous . '</b>';
         } else {
-            $s .= '<a href="' . call_user_func($fn, $current - 1) . '" title="' . $previous . '" rel="prev">' . $previous . '</a>';
+            $s .= '<a href="' . \call_user_func($fn, $current - 1) . '" title="' . $previous . '" rel="prev">' . $previous . '</a>';
         }
         $s .= '</span> ';
     }
     if ($first && $last) {
         $s .= '<span>';
         if ($min > $begin) {
-            $s .= '<a href="' . call_user_func($fn, $begin) . '" title="' . $first . '" rel="prev">' . $begin . '</a>';
+            $s .= '<a href="' . \call_user_func($fn, $begin) . '" title="' . $first . '" rel="prev">' . $begin . '</a>';
             if ($min > $begin + 1) {
                 $s .= ' <span>&#x2026;</span>';
             }
@@ -114,14 +114,14 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
             if ($current === $i) {
                 $s .= ' <b title="' . $i . '">' . $i . '</b>';
             } else {
-                $s .= ' <a href="' . call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+                $s .= ' <a href="' .\call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
             }
         }
         if ($max < $end) {
             if ($max < $end - 1) {
                 $s .= ' <span>&#x2026;</span>';
             }
-            $s .= ' <a href="' . call_user_func($fn, $end) . '" title="' . $last . '" rel="next">' . $end . '</a>';
+            $s .= ' <a href="' . \call_user_func($fn, $end) . '" title="' . $last . '" rel="next">' . $end . '</a>';
         }
         $s .= '</span>';
     }
@@ -130,7 +130,7 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
         if ($current === $end) {
             $s .= '<b title="' . $next . '">' . $next . '</b>';
         } else {
-            $s .= '<a href="' . call_user_func($fn, $current + 1) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+            $s .= '<a href="' . \call_user_func($fn, $current + 1) . '" title="' . $next . '" rel="next">' . $next . '</a>';
         }
         $s .= '</span>';
     }
@@ -138,18 +138,18 @@ function _pager($current, $count, $chunk, $kin, $fn, $first, $previous, $next, $
 }
 
 function _tools($tools, $path, $id, $i) {
-    $path = strtr($path, '/', DS);
+    $path = \strtr($path, '/', DS);
     $out = '<ul class="tools">';
     foreach ($tools as $k => $v) {
         if (!$v) continue;
-        if (isset($v['if']) && is_callable($v['if'])) {
-            $v = \extend($v, call_user_func($v['if'], $path, $v, $k, $id, $i));
+        if (isset($v['if']) && \is_callable($v['if'])) {
+            $v = \extend($v, \call_user_func($v['if'], $path, $v, $k, $id, $i));
             unset($v['if']);
         }
         if (_hidden($v)) {
             continue;
-        } else if (!array_key_exists('path', $v)) {
-            $v['path'] = str_replace(LOT . DS, "", $path);
+        } else if (!\array_key_exists('path', $v)) {
+            $v['path'] = \str_replace(LOT . DS, "", $path);
         }
         $out .= '<li>' . a($v, false) . '</li>';
     }
@@ -158,7 +158,7 @@ function _tools($tools, $path, $id, $i) {
 
 function _walk($in, $fn) {
     foreach ($in as $k => $v) {
-        if (is_array($v)) {
+        if (\is_array($v)) {
             $o = _walk($v, $fn);
             if (!empty($o)) {
                 $in[$k] = $o;
@@ -175,7 +175,7 @@ function _walk($in, $fn) {
 }
 
 function a($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     }
     $in = _init($in, $attr, 'a', $id, $i, [
@@ -183,10 +183,10 @@ function a($in, $id = 0, $attr = [], $i = 0) {
         'target' => $in['target'] ?? null,
         'title' => isset($in['description']) ? \To::text($in['description']) : null
     ]);
-    if (!array_key_exists('active', $in)) {
+    if (!\array_key_exists('active', $in)) {
         global $panel, $url;
-        $p = $in['url'] ?? trim($panel->r . '/::' . ($in['c'] ?? $panel->c) . '::/' . ($in['path'] ?? $panel->id . '/' . $panel->path), '/');
-        if (strpos($url->path . '/1/', $p . '/') === 0) {
+        $p = $in['url'] ?? \trim($panel->r . '/::' . ($in['c'] ?? $panel->c) . '::/' . ($in['path'] ?? $panel->id . '/' . $panel->path), '/');
+        if (\strpos($url->path . '/1/', $p . '/') === 0) {
             $in['active'] = true;
         }
     }
@@ -198,7 +198,7 @@ function a($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function href($in) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (!empty($in['x'])) {
         return 'javascript:;';
@@ -209,30 +209,30 @@ function href($in) {
         $user = \Lot::get('user');
         $in['task'] = (array) $in['task'];
         $in['c'] = 'a';
-        $in['query']['a'] = array_shift($in['task']) ?? false;
-        $in['query']['lot'] = array_shift($in['task']) ?? false;
+        $in['query']['a'] = \array_shift($in['task']) ?? false;
+        $in['query']['lot'] = \array_shift($in['task']) ?? false;
         $in['query']['token'] = $user->token;
         unset($in['task']);
     }
     if (isset($in['link'])) {
         $out = $in['link'];
     } else if (isset($in['url'])) {
-        $out = \URL::long(strtr($in['url'], DS, '/'));
+        $out = \URL::long(\strtr($in['url'], DS, '/'));
     } else if (isset($in['path'])) {
         global $panel;
-        $out = rtrim(\URL::long($panel->r . '/::' . ($in['c'] ?? 'g') . '::/' . ltrim(strtr($in['path'], DS, '/'), '/')), '/');
+        $out = \rtrim(\URL::long($panel->r . '/::' . ($in['c'] ?? 'g') . '::/' . \ltrim(\strtr($in['path'], DS, '/'), '/')), '/');
     }
     if (isset($in['query'])) {
         $out .= \HTTP::query($in['query'], '&');
     }
     if (isset($in['hash'])) {
-        $out .= '#' . urlencode($in['hash']);
+        $out .= '#' . \urlencode($in['hash']);
     }
     return $out;
 }
 
 function button($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (!empty($in['x'])) {
         $attr['disabled'] = true;
@@ -253,8 +253,8 @@ function button($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
-    $name = basename($path);
-    $directory = str_replace([LOT . DS, DS], ["", '/'], $path);
+    $name = \basename($path);
+    $directory = \str_replace([LOT . DS, DS], ["", '/'], $path);
     _init([], $attr, 'data', $id, $i);
     global $panel, $url;
     $out  = '<h3 class="title">';
@@ -268,20 +268,20 @@ function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
 
 function datas($datas, $id = 0, $attr = [], $i = 0) {
     global $panel, $url;
-    $files = q(glob($datas . DS . '*.data', GLOB_NOSORT));
-    sort($files);
+    $files = q(\glob($datas . DS . '*.data', \GLOB_NOSORT));
+    \sort($files);
     \Config::set('panel.+.explore', $files);
     $out = "";
-    $directory = is_string($datas) ? str_replace([LOT . DS, DS], ["", '/'], $datas) : null;
+    $directory = \is_string($datas) ? \str_replace([LOT . DS, DS], ["", '/'], $datas) : null;
     _init([], $attr, 'datas', $id, $i);
     $files = \Anemon::eat($files)->chunk($panel->state->file->chunk, $url->i === null ? 0 : $url->i - 1);
     if ($files->count()) {
         $tools = \Anemon::eat(\Config::get('panel.+.data.tool', [], true))->sort([1, 'stack']);
-        $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
+        $session = \strtr(X . \implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($files as $k => $v) {
-            $n = basename($v);
-            $h = $n !== '..' && (strpos($n, '.') === 0 || strpos($n, '_') === 0);
-            $a = strpos($session, X . $v . X) !== false;
+            $n = \basename($v);
+            $h = $n !== '..' && (\strpos($n, '.') === 0 || \strpos($n, '_') === 0);
+            $a = \strpos($session, X . $v . X) !== false;
             $out .= data($v, $id, [
                 'class[]' => [
                     -2 => $h ? 'is-hidden' : null,
@@ -294,7 +294,7 @@ function datas($datas, $id = 0, $attr = [], $i = 0) {
 }
 
 function desk($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     }
     $in = _init($in, $attr, 'desk', $id, $i);
@@ -310,7 +310,7 @@ function desk($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function desk_body($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -319,10 +319,10 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
         if (isset($in['explore'])) {
             global $panel;
             $fn = __NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's';
-            if (is_callable($fn)) {
-                $out .= call_user_func($fn, $in['explore'], $id, [], $i);
+            if (\is_callable($fn)) {
+                $out .= \call_user_func($fn, $in['explore'], $id, [], $i);
             } else {
-                $out .= call_user_func(__NAMESPACE__ . "\\files", $in['explore'], $id, [], $i);
+                $out .= \call_user_func(__NAMESPACE__ . "\\files", $in['explore'], $id, [], $i);
             }
         } else if (isset($in['tab'])) {
             $out .= tabs($in['tab'], $id, [], $i);
@@ -335,7 +335,7 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function desk_footer($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     }
     $in = _init($in, $attr, 'footer', $id, $i);
@@ -353,7 +353,7 @@ function desk_footer($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function desk_header($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -368,21 +368,21 @@ function desk_header($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function field($key, $in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
     } else {
         global $language;
         $out = "";
-        $k = ltrim(ltrim($key, '.!*'), '\\');
+        $k = \ltrim(\ltrim($key, '.!*'), '\\');
         $kind = (array) ($in['kind'] ?? []);
         $style = [];
         $title = $in['title'] ?? $language->{$in['key'] ?? $k};
         $description = $in['description'] ?? null;
         $active = $in['active'] ?? false;
         $type = $in['type'] ?? 'textarea';
-        $value = $in['value'] ?? \HTTP::get('f.' . str_replace(['.', '[', ']', X], [X, '.', "", "\\."], $k), null, false) ?? null;
+        $value = $in['value'] ?? \HTTP::get('f.' . \str_replace(['.', '[', ']', X], [X, '.', "", "\\."], $k), null, false) ?? null;
         $values = (array) ($in['values'] ?? []);
         $placeholder = $in['placeholder'] ?? $value;
         $pattern = $in['pattern'] ?? null;
@@ -392,28 +392,28 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $syntax = $in['syntax'] ?? null;
         $expand = !empty($in['expand']);
         $clone = $in['clone'] ?? 0; // TODO
-        asort($values);
+        \asort($values);
         $copy = $in;
         $copy['kind'] = ['type:' . $type];
         $copy = _init($copy, $attr, 'field', $id, $i);
         if ($range && !$description) {
-            $description = implode('&#x2013;', $range);
+            $description = \implode('&#x2013;', $range);
         }
         if ($width === true) {
             $kind[] = 'width';
-        } else if (is_numeric($width)) {
+        } else if (\is_numeric($width)) {
             $style['width'] = $width . 'px';
         }
         if ($height === true) {
             $kind[] = 'height';
-        } else if (is_numeric($height)) {
+        } else if (\is_numeric($height)) {
             $style['height'] = $height . 'px';
         }
         if ($expand) {
             $attr['class[]'][] = 'expand';
         }
         // Add `*` mark for required field(s)
-        if (strpos($key, '*') === 0) {
+        if (\strpos($key, '*') === 0) {
             $attr['class[]'][] = 'required';
         }
         $alt = [
@@ -451,7 +451,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
                 $v = (array) $v;
                 $a[] = \Form::check($key . '[' . $k . ']', $v[2] ?? 1, !empty($v[1]), $v[0], $alt);
             }
-            $out .= implode(\HTML::br(), $a) . '</span>';
+            $out .= \implode(\HTML::br(), $a) . '</span>';
         } else if ($type === 'toggle') {
             $alt['class[]'][] = 'input';
             $out .= \Form::check($key, $value, $active, $description, $alt);
@@ -472,7 +472,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
                     $value = [$range[0] ?? 0, $value, $range[1] ?? 100];
                 }
             }
-            $out .= call_user_func("\\Form::" . $type, $key, $value, $placeholder, $alt);
+            $out .= \call_user_func("\\Form::" . $type, $key, $value, $placeholder, $alt);
         } else /* if ($type === 'content') */ {
             $out .= $value;
         }
@@ -493,7 +493,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
 }
 
 function fields($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     }
     $out = "";
@@ -516,16 +516,16 @@ function fields($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
-    $name = basename($path);
-    $directory = str_replace([LOT . DS, DS], ["", '/'], $path);
+    $name = \basename($path);
+    $directory = \str_replace([LOT . DS, DS], ["", '/'], $path);
     _init([], $attr, 'file', $id, $i);
     $attr['class[]'] = \concat($attr['class[]'], [
-        'is-' . (($is_file = is_file($path)) ? 'file' : 'folder'),
+        'is-' . (($is_file = \is_file($path)) ? 'file' : 'folder'),
         $is_file ? 'x:' . \Path::X($path, '#') : null
     ]);
     global $panel, $url;
     $out  = '<h3 class="title">';
-    $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : dirname($directory)) . '/1' . $url->query('&amp;')) . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($name === '..' ? basename(dirname($url->path)) : "")) . '">' . $name . '</a>';
+    $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : \dirname($directory)) . '/1' . $url->query('&amp;')) . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::size($path) : ($name === '..' ? \basename(\dirname($url->path)) : "")) . '">' . $name . '</a>';
     $out .= '</h3>';
     if ($name !== '..' && $tools) {
         $out .= _tools($tools, $path, $id, $i);
@@ -538,19 +538,19 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
     $files = q(\concat(..._glob($folder)));
     \Config::set('panel.+.explore', $files);
     $out = "";
-    $directory = is_string($folder) ? str_replace([LOT . DS, DS], ["", '/'], $folder) : null;
+    $directory = \is_string($folder) ? \str_replace([LOT . DS, DS], ["", '/'], $folder) : null;
     _init([], $attr, 'files', $id, $i);
     $files = \Anemon::eat($files)->chunk($panel->state->file->chunk, $url->i === null ? 0 : $url->i - 1);
     if ($files->count()) {
-        if (is_string($folder) && trim(dirname($directory), '.') !== "") {
-            $files->prepend(dirname(LOT . DS . $directory) . DS . '..');
+        if (\is_string($folder) && \trim(\dirname($directory), '.') !== "") {
+            $files->prepend(\dirname(LOT . DS . $directory) . DS . '..');
         }
         $tools = \Anemon::eat(\Config::get('panel.+.file.tool', [], true))->sort([1, 'stack']);
-        $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
+        $session = \strtr(X . \implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($files as $k => $v) {
-            $n = basename($v);
-            $h = $n !== '..' && (strpos($n, '.') === 0 || strpos($n, '_') === 0);
-            $a = strpos($session, X . $v . X) !== false;
+            $n = \basename($v);
+            $h = $n !== '..' && (\strpos($n, '.') === 0 || \strpos($n, '_') === 0);
+            $a = \strpos($session, X . $v . X) !== false;
             $out .= file($v, $id, [
                 'class[]' => [
                     -2 => $h ? 'is-hidden' : null,
@@ -558,15 +558,15 @@ function files($folder, $id = 0, $attr = [], $i = 0) {
                 ]
             ], $i, $tools);
         }
-    } else if (is_string($folder) && dirname($folder) !== LOT) {
-        $out = file(dirname($folder) . DS . '..', $id, [], 0);
+    } else if (\is_string($folder) && \dirname($folder) !== LOT) {
+        $out = file(\dirname($folder) . DS . '..', $id, [], 0);
     }
     return \HTML::unite('ul', $out, $attr);
 }
 
 function icon($in, $attr = []) {
     $none = \HTML::unite('i', "", \extend(['class[]' => ['icon']], $attr));
-    if (is_string($in)) {
+    if (\is_string($in)) {
         // `icon("")`
         if ($in === "") {
             return $none;
@@ -579,7 +579,7 @@ function icon($in, $attr = []) {
         return $in['content'];
     }
     // `icon(['M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z'])`
-    if (count($in) === 1) {
+    if (\count($in) === 1) {
         // `icon([""])`
         if ($in[0] === "") {
             return $none;
@@ -594,14 +594,14 @@ function icon($in, $attr = []) {
     // Cache!
     $GLOBALS['SVG'][$d] = $box;
     $attr = \extend(['class[]' => ['icon']], $attr);
-    if (strpos($d, '<') !== 0) {
-        $d = '<use href="#i:' . dechex(crc32($d . $box)) . '"></use>';
+    if (\strpos($d, '<') !== 0) {
+        $d = '<use href="#i:' . \dechex(\crc32($d . $box)) . '"></use>';
     }
     return \HTML::unite('svg', $d, $attr);
 }
 
 function links($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -615,14 +615,14 @@ function links($in, $id = 0, $attr = [], $i = 0) {
             }
             $a[] = '<li>' . a($v, $k, [], $i) . '</li>';
         }
-        $out = implode("", $a);
+        $out = \implode("", $a);
     }
     $in = _init($in, $attr, 'links', $id, $i);
     return \HTML::unite('ul', $out, $attr);
 }
 
 function nav($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     }
     /* $in = */ _init($in, $attr, 'nav', $id, $i);
@@ -630,7 +630,7 @@ function nav($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function nav_a($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     }
     global $config, $language;
@@ -651,16 +651,16 @@ function nav_a($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function nav_li($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         return $in['content'];
     }
     $in = _init($in, $attr, 'li', $id, $i);
-    if (!array_key_exists('active', $in)) {
+    if (!\array_key_exists('active', $in)) {
         global $panel, $url;
-        $p = $in['url'] ?? trim($panel->r . '/::' . ($in['c'] ?? $panel->c) . '::/' . ($in['path'] ?? $panel->id . '/' . $panel->path), '/');
-        if (strpos($url->path . '/1/', $p . '/') === 0) {
+        $p = $in['url'] ?? \trim($panel->r . '/::' . ($in['c'] ?? $panel->c) . '::/' . ($in['path'] ?? $panel->id . '/' . $panel->path), '/');
+        if (\strpos($url->path . '/1/', $p . '/') === 0) {
             $in['active'] = true;
         }
     }
@@ -678,7 +678,7 @@ function nav_li_search($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function nav_ul($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         return $in['content'];
@@ -702,7 +702,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
         ]
     ]);
     $out  = '<figure>';
-    $out .= '<img alt="" src="' . ($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/-/' . substr(md5($path), 0, 6) . '.png') . '" width="72" height="72">';
+    $out .= '<img alt="" src="' . ($page->image ? $page->image(72, 72) : $url . '/' . $panel->r . '/::g::/-/' . \substr(\md5($path), 0, 6) . '.png') . '" width="72" height="72">';
     $out .= '</figure>';
     $out .= '<header>';
     $out .= '<h3 class="title">';
@@ -719,7 +719,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
 function pager($id = 0, $attr = [], $i = 0) {
     global $panel, $language, $url;
     $state = $panel->state->{$panel->view};
-    $out = _pager($url->i ?: 1, count(\Config::get('panel.+.explore', [], true)), $state->chunk, $state->kin, function($i) use($url) {
+    $out = _pager($url->i ?: 1, \count(\Config::get('panel.+.explore', [], true)), $state->chunk, $state->kin, function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);
     if ($out) {
@@ -736,16 +736,16 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     global $panel, $url;
     $state = $panel->state->page;
     $chunk = [$state->chunk, $url->i === null ? 0 : $url->i - 1];
-    if (!is_array($pages)) {
+    if (!\is_array($pages)) {
         $pages = \Get::pages($pages, $x, $state->sort, 'path')->vomit();
     }
     \Config::set('panel.+.explore', $pages = q($pages));
     $pages = \Anemon::eat($pages)->chunk(...$chunk);
     if ($pages->count()) {
         $tools = \Anemon::eat(\Config::get('panel.+.page.tool', [], true))->sort([1, 'stack']);
-        $session = strtr(X . implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
+        $session = \strtr(X . \implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($pages as $v) {
-            $a = strpos($session, X . $v . X) !== false;
+            $a = \strpos($session, X . $v . X) !== false;
             $v = new \Page($v);
             $out .= page($v, $v->id, [
                 'class[]' => [
@@ -759,12 +759,12 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
 }
 
 function q($files, $query = "") {
-    if (($query = trim(\HTTP::get('q', $query, false))) !== "") {
-        $query = explode(' ', strtolower($query));
-        $files = array_filter($files, function($v) use($query) {
-            $v = str_replace('-', "", basename($v));
+    if (($query = \trim(\HTTP::get('q', $query, false))) !== "") {
+        $query = \explode(' ', \strtolower($query));
+        $files = \array_filter($files, function($v) use($query) {
+            $v = \str_replace('-', "", \basename($v));
             foreach ($query as $q) {
-                return strpos($v, $q) !== false;
+                return \strpos($v, $q) !== false;
             }
             return false;
         });
@@ -773,7 +773,7 @@ function q($files, $query = "") {
 }
 
 function search($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -798,7 +798,7 @@ function svg($key = null) {
 }
 
 function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -810,10 +810,10 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
         } else if (isset($in['explore'])) {
             global $panel;
             $fn = __NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's';
-            if (is_callable($fn)) {
-                $out .= call_user_func($fn, $in['explore'], $id, [], $i);
+            if (\is_callable($fn)) {
+                $out .= \call_user_func($fn, $in['explore'], $id, [], $i);
             } else {
-                $out .= call_user_func(__NAMESPACE__ . "\\files", $in['explore'], $id, [], $i);
+                $out .= \call_user_func(__NAMESPACE__ . "\\files", $in['explore'], $id, [], $i);
             }
         }
     }
@@ -823,13 +823,13 @@ function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
             'icon' => $in['icon'][0] ?? $in['icon'] ?? null
         ]
     ]);
-    $attr['title'] = $in['title'] ?? $language->{str_replace('.', "\\.", $id)};
+    $attr['title'] = $in['title'] ?? $language->{\str_replace('.', "\\.", $id)};
     $active && ($attr['class[]'][] = 'active');
     return \HTML::unite('section', $out, $attr);
 }
 
 function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -838,7 +838,7 @@ function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
         $in = \Anemon::eat($in)->sort([1, 'stack'], true)->vomit();
         if (!isset($active)) {
             // `?tab[0]=data`
-            $active = \HTTP::get('tab.' . $i, array_keys($in)[0] ?? null, false);
+            $active = \HTTP::get('tab.' . $i, \array_keys($in)[0] ?? null, false);
         }
         // `?tab[0]=data&tabs[0]=false`
         if (\HTTP::is('get', 'tabs.' . $i) && !\HTTP::get('tabs.' . $i)) {
@@ -874,7 +874,7 @@ function text($in, $icon = []) {
 }
 
 function tools($in, $id = 0, $attr = [], $i = 0) {
-    if (is_string($in)) {
+    if (\is_string($in)) {
         return $in;
     } else if (isset($in['content'])) {
         $out = $in['content'];
@@ -886,18 +886,18 @@ function tools($in, $id = 0, $attr = [], $i = 0) {
             if (!isset($v['title'])) {
                 $v['title'] = $language->{$k};
             }
-            if (!empty($v['+']) && array_filter($v['+'])) {
-                $hash = dechex(crc32($id . $k . $i));
+            if (!empty($v['+']) && \array_filter($v['+'])) {
+                $hash = \dechex(\crc32($id . $k . $i));
                 \Config::set('panel.+.menu.' . $hash, $v['+']);
                 $a[] = button($v, $k, ['id' => 'js:' . $hash], $i);
             } else {
-                if (array_key_exists('+', $v)) {
+                if (\array_key_exists('+', $v)) {
                     $v['x'] = true;
                 }
                 $a[] = button($v, $k, [], $i);
             }
         }
-        $out = implode(' ', $a);
+        $out = \implode(' ', $a);
     }
     $in = _init($in, $attr, 'tools', $id, $i);
     return \HTML::unite('div', $out, $attr);
