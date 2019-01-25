@@ -6,8 +6,8 @@ if (!HTTP::is('get', 'kick') && !$is_enter) {
     if ($url->path === ($state['_path'] ?? $state['path'])) {
         $a = Extend::state('panel');
         // Set redirection path after log-in
-        Cookie::reset('url.previous');
-        Session::reset('url.previous');
+        Cookie::reset(URL::session . '.previous');
+        Session::reset(URL::session . '.previous');
         Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
         return;
     }

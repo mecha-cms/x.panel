@@ -13,10 +13,10 @@ if (!Extend::exist('user')) {
     ])->saveTo(USER . DS . $uid . '.page', 0600);
     $token = Guardian::token('panel');
     File::put($token)->saveTo(USER . DS . $uid . DS . 'token.data', 0600);
-    Cookie::set('url.user', '@' . $uid);
-    Cookie::set('url.token', $token);
-    Session::set('url.user', '@' . $uid);
-    Session::set('url.token', $token);
+    Cookie::set(URL::session . '.user', '@' . $uid);
+    Cookie::set(URL::session . '.token', $token);
+    Session::set(URL::session . '.user', '@' . $uid);
+    Session::set(URL::session . '.token', $token);
     Guardian::kick($user_install);
 } else {
     if ($url->path === $user_install) {
