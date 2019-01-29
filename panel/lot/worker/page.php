@@ -306,7 +306,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
 }, .2);
 
 // Re-create submit button(s)
-$x = $page->state;
+$x = $page->x;
 $buttons = [
     'page' => 'publish',
     'draft' => 'save',

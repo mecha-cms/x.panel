@@ -698,7 +698,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     _init([], $attr, 'page', $id, $i, [
         'class[]' => [
             -1 => 'is-file',
-            -2 => 'state:' . $page->state
+            -2 => 'x:' . $page->x
         ]
     ]);
     $out  = '<figure>';
