@@ -30,7 +30,7 @@ if ($panel->c === 's') {
 
 ?>
 <?php if ($v = Config::get('panel.+.form.editor')): ?>
-<form name="editor" class="form m0 p0" action="<?php echo HTTP::query(['token' => $user->token]); ?>" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
+<form name="editor" class="form m0 p0" action="" method="post" enctype="multipart/form-data"<?php echo $g; ?>>
 <?php endif; ?>
 <?php if ($error): ?>
 <p class="m0 p2"><?php echo is_string($error) ? $error : '&#x0CA0;&#x005F;&#x0CA0;'; ?></p>
@@ -39,6 +39,7 @@ if ($panel->c === 's') {
 <?php endif; ?>
 <?php if ($v): ?>
 <input name="view" value="<?php echo HTTP::get('view', $panel->v); ?>" type="hidden">
+<input name="token" value="<?php echo $user->token; ?>" type="hidden">
 </form>
 <?php endif; ?>
 <!-- Begin Menu(s) -->

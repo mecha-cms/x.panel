@@ -707,7 +707,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
     $out .= '</figure>';
     $out .= '<header>';
     $out .= '<h3 class="title">';
-    $out .= $page->url ? '<a href="' . $page->url . '" target="_blank">' . $page->title . '</a>' : '<span>' . $page->title . '</span>';
+    $out .= $page->url && $page->x !== 'draft' ? '<a href="' . $page->url . '" target="_blank">' . $page->title . '</a>' : '<span>' . $page->title . '</span>';
     $out .= '</h3>';
     $out .= '</header>';
     $out .= '<div>';

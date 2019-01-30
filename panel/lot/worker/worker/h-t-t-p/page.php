@@ -19,6 +19,7 @@ if ($a < 0) {
         // Redirect to `GET`
         Guardian::kick(str_replace('::' . $c . '::', '::r::', $url->path) . HTTP::query([
             'a' => $a,
+            'token' => HTTP::post('token'),
             'view' => 'page'
         ], '&'));
     }
@@ -228,5 +229,6 @@ if (Extend::exist('tag')) {
 }
 
 Set::post('name', $name);
+Set::post('x', HTTP::post('x', 'draft'));
 Set::post('file.content', Page::unite($headers) ?: "---\n...");
 Set::post('file.consent', $consent = 0600);

@@ -47,7 +47,7 @@ Set::post(fn\panel\_clean(Get::post()), false);
 Set::request(fn\panel\_clean(Get::request()), false);
 
 // Check form token
-$token = HTTP::get('token');
+$token = HTTP::post('token', HTTP::get('token'));
 if ($token && $token === $user->token) {
     require $worker . 'worker' . DS . 'task.php';
     require $worker . 'worker' . DS . 'h-t-t-p.php';

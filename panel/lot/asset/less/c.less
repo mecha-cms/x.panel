@@ -253,5 +253,9 @@ html {
       line-height:(@--y * 1.5) - 10;
       padding:0 (@--x / 3);
     }
+    .tags-input span + span,
+    .tags-input span:focus + span {
+      .placeholder;
+    }
   }
 }
