@@ -327,7 +327,7 @@ if ($messages.length) {
 }
 
 // Apply `CodeMirror`
-$codes = $('textarea.code');
+var $codes = $('textarea.code');
 if ($codes.length) {
     // Mode(s) are hard-coded :(
     var mode = 'application/x-httpd-php',
@@ -410,6 +410,49 @@ if ($codes.length) {
             reset.call(this['<>']);
         };
         // Add generic editor creator for this editor
+        $this.editor.set = function(config) {
+            return set.call(this['<>'], config);
+        };
+    });
+}
+
+// Apply `TIB`
+var $tags = $('input.tags');
+if ($tags.length) {
+    var tagsConfig = {
+        text: panel.$language.TIB,
+        pattern: '^[a-z\\d-]+(?:-[a-z\\d]+)*$',
+        alert: function(message, tag) {
+            if (this.error === 1) {
+                var t = $(tag).addClass('mark');
+                setTimeout(function() {
+                    t.removeClass('mark');
+                }, 1000);
+            } else {
+                win.alert(message);
+            }
+        }
+    };
+    $.each($tags, function() {
+        var $this = this,
+            classes = $this.className;
+        $this.editor = {'<>': $this};
+        function get() {
+            return this['<>'];
+        }
+        function reset() {
+            this.editor && this.editor.$ && this.editor.$.destroy();
+        }
+        function set(config) {
+            var t = this;
+            t.editor.$ = new TIB(t, $.extend(tagsConfig, config));
+            t.editor.$.self.className += ' ' + classes;
+            return t.editor.$;
+        } set.call($this);
+        $this.editor.get = get;
+        $this.editor.reset = function() {
+            reset.call(this['<>']);
+        };
         $this.editor.set = function(config) {
             return set.call(this['<>'], config);
         };

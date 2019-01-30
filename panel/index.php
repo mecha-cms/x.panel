@@ -27,7 +27,7 @@ if (Extend::exist('comment')) {
     Hook::set('on.comment.set', function($page) use($language, $p) {
         $path = $this->path;
         Page::set(extend((array) $language->o_message_info_comment_set, [
-            'type' => 'Info',
+            'type' => 'info',
             'link' => $p . '/::g::/' . Path::R($path, LOT, '/')
         ]))->saveTo(LOT . DS . '.message' . DS . md5($path) . '.page');
     });

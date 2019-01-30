@@ -132,7 +132,7 @@ $headers = [
     'version' => function($s) {
         $a = explode('.', $s);
         $a = array_pad($a, 3, '0');
-        return implode('.', $a); // semver
+        return implode('.', $a); // #semver
     },
     'content' => ""
 ];
@@ -156,7 +156,7 @@ foreach ($headers as $k => $v) {
     unset($page[$k]);
 }
 
-$headers = extend($headers, From::YAML(HTTP::post(':', ""), '  ', [], false), $page);
+$headers = extend($headers, From::YAML(HTTP::post(':', "", false), '  ', false, false), $page);
 $headers = is($headers, function($v) {
     return isset($v) && $v !== false && $v !== "" && !fn\is\instance($v);
 });
@@ -169,7 +169,7 @@ if (!Message::$x) {
         $nn = Path::N($n);
         Folder::create($dd = LOT . DS . $path . DS . $nn, 0775);
         if ($nn !== $name) {
-            File::open($dd)->renameTo($name); // rename folder
+            File::open($dd)->renameTo($name); // Rename folder
         }
     } else if ($c === 's') {
         Folder::create($dd = LOT . DS . $path . DS . $name, 0775);
@@ -191,19 +191,17 @@ if (!Message::$x) {
 
 // Process page tag(s)
 if (Extend::exist('tag')) {
+    // Can’t use `Get::tags()` here because the function is not ready yet
+    require_once EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'get.php';
+    require_once EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'from.php';
+    require_once EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'to.php';
     call_user_func(function() use($c, $language, $name, $path, $user) {
         $file = LOT . DS . $path . DS . $name . DS . 'kind.data';
         if (!$tags = HTTP::post('tags')) {
             File::open($file)->delete();
             return;
         }
-        $i = 0;
-        // Can’t use `Get::tags()` here because the function is not ready yet
-        foreach (glob(TAG . DS . '*.{page,archive}', GLOB_BRACE | GLOB_NOSORT) as $v) {
-            if (!is_file($v)) continue;
-            $v = (new Tag($v, [], false))->id;
-            $v > $i && ($i = $v);
-        }
+        $i = Get::tags(TAG, 'page,archive', [1, 'id'])->last();
         $i += 1;
         $kinds = [];
         foreach (preg_split('#\s*,\s*#', $tags) as $tag) {

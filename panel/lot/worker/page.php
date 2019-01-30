@@ -205,7 +205,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
             'type' => 'text',
             'pattern' => '^([a-z\\d]+([ -][a-z\\d]+)*)(\\s*,\\s*[a-z\\d]+([ -][a-z\\d]+)*)*$',
             'kind' => ['tags'],
-            'value' => implode(', ', (array) ($page->query ?? (new Page($file))->query)),
+            'value' => implode(', ', (array) ($page->query ?: (new Page($file))->query)),
             'placeholder' => $language->field_hint_page_query,
             'width' => true,
             'stack' => 10.31
@@ -343,3 +343,9 @@ if ($c === 'g' && $user->status === 1) {
 }
 
 Config::set('panel.desk.footer.tool', $buttons);
+
+Hook::set('on.ready', function() {
+$asset = __DIR__ . DS . '..' . DS . 'asset' . DS;
+Asset::set($asset . 'js' . DS . 't-i-b.min.js', 9.111);
+Asset::set($asset . 'css' . DS . 't-i-b.min.css', 10.11);
+}, 2.1);

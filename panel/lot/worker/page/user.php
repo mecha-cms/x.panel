@@ -73,8 +73,8 @@ Config::set('panel.desk.body.tab', [
             'page[status]' => [
                 'key' => 'status',
                 'type' => 'radio[]',
+                'block' => true,
                 'value' => $c === 's' ? 2 : $page->status,
-                'view' => 'block',
                 'stack' => 10
             ]
         ],

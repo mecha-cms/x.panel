@@ -391,6 +391,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $range = (array) ($in['range'] ?? []);
         $syntax = $in['syntax'] ?? null;
         $expand = !empty($in['expand']);
+        $block = !empty($in['block']);
         $clone = $in['clone'] ?? 0; // TODO
         \asort($values);
         $copy = $in;
@@ -438,13 +439,13 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         } else if ($type === 'radio[]') {
             unset($alt['id']);
             $alt['class[]'][] = 'input';
-            $out .= '<span class="inputs ' . ($in['view'] ?? 'span') . '">';
+            $out .= '<span class="inputs ' . ($block ? 'block' : 'inline') . '">';
             $out .= \Form::radio($key, $values, $value, $alt);
             $out .= '</span>';
         } else if ($type === 'toggle[]') {
             unset($alt['id']);
             $alt['class[]'][] = 'input';
-            $out .= '<span class="inputs ' . ($in['view'] ?? 'span') . '">';
+            $out .= '<span class="inputs ' . ($block ? 'block' : 'inline') . '">';
             $a = [];
             foreach ($values as $k => $v) {
                 // $v = [$text, $checked ?? false, $value ?? 1]
@@ -462,7 +463,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
                 $alt['data[]']['syntax'] = $syntax;
             }
             $out .= \Form::textarea($key, $value, $placeholder, $alt);
-        } else if (\has(['color', 'date', 'email', 'number', 'pass', 'search', 'tel', 'text', 'url'], $type)) {
+        } else if (\has(['color', 'date', 'eMail', 'number', 'pass', 'search', 'tel', 'text', 'URL'], $type)) {
             $alt['class[]'][] = 'input';
             if ($range) {
                 if ($type === 'number') {

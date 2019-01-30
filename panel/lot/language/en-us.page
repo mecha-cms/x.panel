@@ -28,6 +28,11 @@ skins: Skins
 style: Style
 styles: Styles
 
+TIB:
+  - 'Delete “%{tag}%”'
+  - 'Duplicate “%{tag}%”'
+  - 'Please match the requested format: %{pattern}%'
+
 o_package:
   extract: Extract package after upload.
   bucket: Wrap the extracted package in a folder.

@@ -76,8 +76,8 @@ Config::set('panel.desk', [
                     'package' => Extend::exist('package') ? [
                         'title' => false,
                         'type' => 'toggle[]',
+                        'block' => true,
                         'values' => (array) $language->o_package,
-                        'view' => 'block',
                         'stack' => 10.1
                     ] : null
                 ],

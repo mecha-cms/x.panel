@@ -25,14 +25,15 @@ Hook::set('on.ready', function() {
             return $a + $b;
         });
         $t += filemtime(__FILE__);
-        $t = abs(crc32($t . $user->token . $config->language)); // Smart cache updater
+        $t += filemtime(__DIR__ . DS . '..' . DS . '..' . DS . 'language' . DS . $config->language . '.page');
+        $t = abs(crc32($t . $user->token)); // Smart cache updater
         if ($style = (array) ($panel->state->style ?? [])) {
             if (!empty($style['width'])) {
                 $width = $style['width'];
                 Asset::style('.desk{max-width:' . (is_int($width) ? $width . 'px' : $width) . '}', 10, ['media' => 'screen']);
             }
         }
-        Asset::set($url . '/' . $r . '/::g::/-/asset.js', 9.12, [
+        Asset::set($url . '/' . $r . '/::g::/-/asset.js', 10, [
             'src' => function($src) use($t) {
                 return candy($this->state['url'], [$src, $t]);
             }
