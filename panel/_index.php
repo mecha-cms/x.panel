@@ -41,16 +41,33 @@ require __DIR__ . DS . 'engine' . DS . 'fire.php';
 // Empty string and array will be removed from HTTP request
 // Long string contains only white-space is considered empty in this case
 // `0`, `false` and `null` is not considered empty in this case
-Set::files(fn\panel\_clean(Get::files()), false);
-Set::get(fn\panel\_clean(Get::get()), false);
-Set::post(fn\panel\_clean(Get::post()), false);
-Set::request(fn\panel\_clean(Get::request()), false);
+$_FILES = fn\panel\_clean($_FILES ?? []);
+$_GET = fn\panel\_clean($_GET ?? []);
+$_POST = fn\panel\_clean($_POST ?? []);
+$_REQUEST = fn\panel\_clean($_REQUEST ?? []);
 
 // Check form token
 $token = HTTP::post('token', HTTP::get('token'));
 if ($token && $token === $user->token) {
-    require $worker . 'worker' . DS . 'task.php';
-    require $worker . 'worker' . DS . 'h-t-t-p.php';
+    Hook::set('on.ready', function() use(
+        $c,
+        $chops,
+        $f,
+        $file,
+        $i,
+        $id,
+        $panel,
+        $path,
+        $r,
+        $token,
+        $user,
+        $view,
+        $worker
+    ) {
+        extract(Lot::get(), EXTR_SKIP);
+        require $worker . 'worker' . DS . 'task.php';
+        require $worker . 'worker' . DS . 'h-t-t-p.php';
+    }, 2);
 } else if ($c === 'a' || $c === 'r') {
     Guardian::abort('Invalid token.');
 }

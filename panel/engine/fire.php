@@ -159,7 +159,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 }
 
 if ($query) {
-    Message::info('search', To::text($query));
+    Message::info('search', '<em>' . To::text($query) . '</em>');
     Lot::set('message', Message::get(null, false));
 }
 

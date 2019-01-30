@@ -463,7 +463,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
                 $alt['data[]']['syntax'] = $syntax;
             }
             $out .= \Form::textarea($key, $value, $placeholder, $alt);
-        } else if (\has(['color', 'date', 'eMail', 'number', 'pass', 'search', 'tel', 'text', 'URL'], $type)) {
+        } else if (\has(['color', 'date', 'email', 'eMail', 'number', 'pass', 'search', 'tel', 'text', 'url', 'URL'], $type)) {
             $alt['class[]'][] = 'input';
             if ($range) {
                 if ($type === 'number') {

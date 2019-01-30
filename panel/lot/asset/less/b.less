@@ -242,8 +242,8 @@ ul.tools li {
     background:none;
     border:0;
     color:#00f;
-    &:focus:not(.x):not([disabled]),
-    &:active:not(.x):not([disabled]) {
+    &:focus:not([disabled]),
+    &:active:not([disabled]) {
       background:none;
       color:#f00;
     }
@@ -352,7 +352,7 @@ ul.tools li {
       + br {display:none}
     }
   }
-  &.span {
+  &.inline {
     > label {
       .left;
       margin-right:@--z;
@@ -693,7 +693,7 @@ html:not(.js) .tabs > section[title]::before {content:attr(title)}
     > span {
       background:#00f;
       color:#fff;
-      &:focus:not(.x) {
+      &:focus {
         background:#f00;
         color:#fff;
       }

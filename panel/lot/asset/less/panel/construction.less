@@ -55,8 +55,8 @@
 }
 .color-a() {
   color:@--color-a;
-  &:focus:not(.x),
-  &:active:not(.x) {color:@--color-a--inverse}
+  &:focus,
+  &:active {color:@--color-a--inverse}
 }
 
 html {
@@ -86,8 +86,8 @@ blockquote,figcaption,
   background:@--color-a;
   color:@--color--inverse;
   .box-shadow(0 1px 1px rgba(0,0,0,.25));
-  &:focus:not(.x):not([disabled]),
-  &:active:not(.x):not([disabled]) {
+  &:focus:not([disabled]),
+  &:active:not([disabled]) {
     background:@--color-a--inverse;
     color:@--color--inverse;
   }
@@ -131,8 +131,8 @@ blockquote,figcaption,
     &.current > a {
       background:@--color-list--current;
       color:@--color--inverse;
-      &:focus:not(.x),
-      &:hover:not(.x) {
+      &:focus,
+      &:hover {
         background:darken(@--color-list--current, 5%);
         color:@--color--inverse;
       }
@@ -140,11 +140,11 @@ blockquote,figcaption,
     &.separator {background:@--color}
   }
   a {.color-a}
-  a:focus:not(.x),
-  a:hover:not(.x),
+  a:focus,
+  a:hover,
   .active > a {background:@--color-list--hover}
-  .active > a:focus:not(.x),
-  .active > a:hover:not(.x) {background:darken(@--color-list--hover, 5%)}
+  .active > a:focus,
+  .active > a:hover {background:darken(@--color-list--hover, 5%)}
 }
 
 // @button
@@ -155,8 +155,8 @@ blockquote,figcaption,
     color:@--color-a;
     .border-radius(0);
     .box-shadow(none);
-    &:focus:not(.x):not([disabled]),
-    &:active:not(.x):not([disabled]) {
+    &:focus:not([disabled]),
+    &:active:not([disabled]) {
       background:none;
       color:@--color-a--inverse;
       .border-radius(0);
@@ -238,8 +238,8 @@ blockquote,figcaption,
 .pages .page {
   background:@--color--inverse;
   border-color:@--color--inverse;
-  &:focus:not(.x),
-  &:hover:not(.x) {
+  &:focus,
+  &:hover {
     background:@--color-list--hover;
     border-color:darken(@--color--inverse, 1%);
   }
@@ -274,7 +274,7 @@ blockquote,figcaption,
       background:@--color-a;
       color:@--color--inverse;
       .box-shadow(0 1px 1px rgba(0,0,0,.25));
-      &:focus:not(.x) {
+      &:focus {
         background:@--color-a--inverse;
         color:@--color--inverse;
       }
@@ -312,7 +312,7 @@ blockquote,figcaption,
     &.inverse {
       .color-html;
       a {.color-a}
-      &.active > a:not(.x) {
+      &.active > a {
         background:inherit;
         color:inherit;
       }
@@ -332,8 +332,8 @@ blockquote,figcaption,
       color:@--color--inverse;
     }
   }
-  > ul > li > a:focus:not(.x),
-  > ul > li > a:active:not(.x),
+  > ul > li > a:focus,
+  > ul > li > a:active,
   > ul > li.active > a {color:darken(@--color--inverse, 2%)}
 }
 

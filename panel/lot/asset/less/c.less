@@ -49,8 +49,8 @@
   a {
     color:inherit;
     opacity:.6;
-    &:focus:not(.x),
-    &:hover:not(.x) {
+    &:focus,
+    &:hover {
       color:inherit;
       opacity:1;
     }
@@ -124,7 +124,7 @@ html.form {
     &.inverse {
       .color-html;
       a {.color-a}
-      &.active > a:not(.x) {
+      &.active > a {
         position:relative;
         z-index:9999; /* must be greater than `.nav > ul > li > ul` */
         background:inherit;
@@ -245,17 +245,13 @@ html {
 html {
   span.tags {
     padding:0;
-    .tags-view {
-      border-spacing:(@--y / 6);
-    }
+    .tags-view {border-spacing:(@--y / 6)}
     .tag {
       height:(@--y * 1.5) - 10;
       line-height:(@--y * 1.5) - 10;
       padding:0 (@--x / 3);
     }
     .tags-input span + span,
-    .tags-input span:focus + span {
-      .placeholder;
-    }
+    .tags-input span:focus + span {.placeholder}
   }
 }

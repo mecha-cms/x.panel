@@ -18,14 +18,17 @@ Hook::set('on.ready', function() {
         Asset::set($asset . 'js' . DS . 'code-mirror' . DS . 'display.min.js', 9.11);
         Asset::set($asset . 'js' . DS . 'code-mirror' . DS . 'edit.min.js', 9.11);
         Asset::set($asset . 'js' . DS . 'code-mirror' . DS . 'mode.min.js', 9.11);
-        $t = glob(__DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . '*.php', GLOB_NOSORT);
+        $f = __DIR__ . DS . '..' . DS . '..' . DS;
+        $t = glob($f . 'state' . DS . '*.php', GLOB_NOSORT);
         $t = array_reduce(array_map(function($v) {
             return filemtime($v);
         }, $t), function($a, $b) {
             return $a + $b;
         });
         $t += filemtime(__FILE__);
-        $t += filemtime(__DIR__ . DS . '..' . DS . '..' . DS . 'language' . DS . $config->language . '.page');
+        if ($f = File::exist($f . 'language' . DS . $config->language . '.page')) {
+            $t += filemtime($f);
+        }
         $t = abs(crc32($t . $user->token)); // Smart cache updater
         if ($style = (array) ($panel->state->style ?? [])) {
             if (!empty($style['width'])) {

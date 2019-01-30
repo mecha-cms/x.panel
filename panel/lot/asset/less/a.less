@@ -25,8 +25,8 @@
 }
 .color-a() {
   color:#00f;
-  &:focus:not(.x),
-  &:active:not(.x) {color:#f00}
+  &:focus,
+  &:active {color:#f00}
 }
 a {.color-a}
 html,
@@ -203,8 +203,8 @@ hr {border-width:1px 0 0}
   background:#00f;
   color:#fff;
   border-width:0;
-  &:focus:not(.x):not([disabled]),
-  &:active:not(.x):not([disabled]) {
+  &:focus:not([disabled]),
+  &:active:not([disabled]) {
     background:#f00;
     color:#fff;
   }
