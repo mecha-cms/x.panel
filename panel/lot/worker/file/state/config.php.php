@@ -2,7 +2,7 @@
 
 $languages = $shields = [];
 
-$zones = Cache::expire(__FILE__) ? Cache::set(__FILE__, function() {
+$zones = Cache::of(__FILE__, function() {
     $zones = [];
     $regions = [
         \DateTimeZone::AFRICA,
@@ -31,7 +31,7 @@ $zones = Cache::expire(__FILE__) ? Cache::set(__FILE__, function() {
         $zones[$zone] = 'GMT' . $offset_prefix . $offset_formatted . ' &#x00B7; ' . strtr($zone, '_', ' ');
     }
     return $zones;
-}) : Cache::get(__FILE__, []);
+}, '+1 second', []); // Never expire this cache!
 
 foreach (glob(LANGUAGE . DS . '*.page', GLOB_NOSORT) as $v) {
     $languages[Path::N($v)] = (new Page($v))->title;
