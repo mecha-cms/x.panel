@@ -30,7 +30,7 @@ Config::set('panel.desk', [
                         'key' => 'content',
                         'title' => false,
                         'type' => 'content',
-                        'value' => ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($file, "", ['style[]' => ['display' => 'block']]) : '<pre><code class="language-yaml">' . To::YAML(File::inspect($file)) . '</code></pre>') . Form::hidden('file[read-only]', 1),
+                        'value' => ($is_file && strpos($is_file, 'image/') === 0 ? HTML::img($file, "", ['style[]' => ['display' => 'block']]) : '<pre><code class="language-yaml">TODO</code></pre>') . Form::hidden('file[read-only]', 1),
                         'stack' => 10
                     ],
                     'file[consent]' => [

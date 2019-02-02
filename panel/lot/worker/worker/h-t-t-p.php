@@ -25,11 +25,6 @@ $directory = trim(strtr(HTTP::post('directory', ""), '/', DS), DS);
 
 $consent = HTTP::post('file.consent', null, false);
 
-// <https://stackoverflow.com/q/28672096>
-if ($consent !== null) {
-    $consent = octdec($consent);
-}
-
 $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($previous = $file = LOT . DS . $path);
 

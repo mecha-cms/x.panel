@@ -421,7 +421,7 @@ var $tags = $('input.tags');
 if ($tags.length) {
     var tagsConfig = {
         text: panel.$language.TIB,
-        pattern: '^[a-z\\d-]+(?:-[a-z\\d]+)*$',
+        pattern: '^[a-z\\d]+(?:-[a-z\\d]+)*$',
         alert: function(message, tag) {
             if (this.error === 1) {
                 var t = $(tag).addClass('mark');

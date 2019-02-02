@@ -192,10 +192,9 @@ if (!Message::$x) {
 
 // Process page tag(s)
 if (Extend::exist('tag')) {
-    // Can’t use `Get::tags()` here because the function is not ready yet
-    require_once EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'get.php';
-    require_once EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'from.php';
-    require_once EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'to.php';
+    // Can’t use `From::tag()` and `Get::tags()` here because the function is not yet defined
+    require EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'get.php';
+    require EXTEND . DS . 'tag' . DS . 'engine' . DS . 'plug' . DS . 'from.php';
     call_user_func(function() use($c, $language, $name, $path, $user) {
         $file = LOT . DS . $path . DS . $name . DS . 'kind.data';
         if (!$tags = HTTP::post('tags')) {
