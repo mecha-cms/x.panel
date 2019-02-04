@@ -51,7 +51,7 @@ if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP:
             } else {
                 $candy = [
                     'date' => new Date,
-                    'extension' => $x,
+                    'x' => $x,
                     'hash' => Guardian::hash(),
                     'id' => sprintf('%u', time()),
                     'name' => $n,

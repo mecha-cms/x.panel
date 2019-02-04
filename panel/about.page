@@ -3,7 +3,7 @@ title: Panel
 description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.0.17
+version: 2.0.18
 
 dependency:
   extension:

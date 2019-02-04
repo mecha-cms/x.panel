@@ -2,7 +2,7 @@
 
 // Only user with status `1` can create `htaccess` and `php` file
 if ($user->status !== 1) {
-    File::$config['extension'] = array_diff(File::$config['extension'], ['htaccess', 'php']);
+    File::$config['x'] = array_diff(File::$config['x'], ['htaccess', 'php']);
 }
 
 $candy = [
@@ -137,7 +137,7 @@ if ($tab === 'folder') {
                     Message::error('file_void_x');
                 }
             // Forbidden file extension
-            } else if (!has(File::$config['extension'], $x)) {
+            } else if (!has(File::$config['x'], $x)) {
                 Message::error('file_x', ['<code>' . $x . '</code>']);
             }
             // File already exists
@@ -157,7 +157,7 @@ if ($tab === 'folder') {
                 foreach (Package::explore($response, true, []) as $k => $v) {
                     $x = $v === 1 ? Path::X($k) : false;
                     // Check forbidden file in the package by its file extension
-                    if ($x !== false && !has(File::$config['extension'], $x)) {
+                    if ($x !== false && !has(File::$config['x'], $x)) {
                         Message::error('file_x', ['<code>' . $x . '</code>']);
                     }
                     // Check if file already exists
@@ -224,7 +224,7 @@ if ($tab === 'folder') {
     $file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name);
     $file = candy($file, $candy);
     $test_x = Path::X($file);
-    if ($any === 'file' && $test_x && !has(File::$config['extension'], $test_x)) {
+    if ($any === 'file' && $test_x && !has(File::$config['x'], $test_x)) {
         Message::error('file_x', ['<code>' . $test_x . '</code>']);
     }
     if (Is::void($name)) {

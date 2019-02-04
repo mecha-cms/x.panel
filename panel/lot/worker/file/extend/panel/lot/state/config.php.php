@@ -144,13 +144,13 @@ Config::set('panel.desk.body.tab.view-page', [
                 // None
                 "" => rtrim($_asset, DS),
                 // Extension
-                '%{extension}%' => $_asset . $_extension,
+                '%{x}%' => $_asset . $_extension,
                 // Extension + Time
-                '%{extension}%/%{date.year}%' => $_asset . $_extension . DS . $_date[0],
-                '%{extension}%/%{date.year}%-%{date.month}%' => $_asset . $_extension . DS . $_date[0] . '-' . $_date[1],
-                '%{extension}%/%{date.year}%-%{date.month}%-%{date.day}%' => $_asset . $_extension . DS . $_date[0] . '-' . $_date[1] . '-' . $_date[2],
-                '%{extension}%/%{date.year}%/%{date.month}%' => $_asset . $_extension . DS . $_date[0] . DS . $_date[1],
-                '%{extension}%/%{date.year}%/%{date.month}%/%{date.day}%' => $_asset . $_extension . DS . $_date[0] . DS . $_date[1] . DS . $_date[2],
+                '%{x}%/%{date.year}%' => $_asset . $_extension . DS . $_date[0],
+                '%{x}%/%{date.year}%-%{date.month}%' => $_asset . $_extension . DS . $_date[0] . '-' . $_date[1],
+                '%{x}%/%{date.year}%-%{date.month}%-%{date.day}%' => $_asset . $_extension . DS . $_date[0] . '-' . $_date[1] . '-' . $_date[2],
+                '%{x}%/%{date.year}%/%{date.month}%' => $_asset . $_extension . DS . $_date[0] . DS . $_date[1],
+                '%{x}%/%{date.year}%/%{date.month}%/%{date.day}%' => $_asset . $_extension . DS . $_date[0] . DS . $_date[1] . DS . $_date[2],
                 '%{date.year}%' => $_asset . $_date[0],
                 '%{date.year}%-%{date.month}%' => $_asset . $_date[0] . '-' . $_date[1],
                 '%{date.year}%-%{date.month}%-%{date.day}%' => $_asset . $_date[0] . '-' . $_date[1] . '-' . $_date[2],
@@ -168,23 +168,23 @@ Config::set('panel.desk.body.tab.view-page', [
             'value' => $states['page']['image']['name'] ?? null,
             'values' => [
                 // Time
-                '%{date.year}%-%{date.month}%-%{date.day}%-%{date.hour}%-%{date.minute}%-%{date.second}%.%{extension}%' => $_date[0] . '-' . $_date[1] . '-' . $_date[2] . '-' . $_date[3] . '-' . $_date[4] . '-' . $_date[5] . '.' . $_extension,
+                '%{date.year}%-%{date.month}%-%{date.day}%-%{date.hour}%-%{date.minute}%-%{date.second}%.%{x}%' => $_date[0] . '-' . $_date[1] . '-' . $_date[2] . '-' . $_date[3] . '-' . $_date[4] . '-' . $_date[5] . '.' . $_extension,
                 // ID
-                '%{id}%.%{extension}%' => $_id . '.' . $_extension,
+                '%{id}%.%{x}%' => $_id . '.' . $_extension,
                 // Unique ID
-                '%{uid}%.%{extension}%' => $_uid . '.' . $_extension,
+                '%{uid}%.%{x}%' => $_uid . '.' . $_extension,
                 // Hash
-                '%{hash}%.%{extension}%' => $_hash . '.' . $_extension,
+                '%{hash}%.%{x}%' => $_hash . '.' . $_extension,
                 // Name
-                '%{name}%.%{extension}%' => $_name . '.' . $_extension,
+                '%{name}%.%{x}%' => $_name . '.' . $_extension,
                 // Name + Time
-                '%{name}%-%{date.year}%-%{date.month}%-%{date.day}%.%{extension}%' => $_name . '-' . $_date[0] . '-' . $_date[1] . '-' . $_date[2] . '.' . $_extension,
+                '%{name}%-%{date.year}%-%{date.month}%-%{date.day}%.%{x}%' => $_name . '-' . $_date[0] . '-' . $_date[1] . '-' . $_date[2] . '.' . $_extension,
                 // Name + ID
-                '%{name}%-%{id}%.%{extension}%' => $_name . '-' . $_id . '.' . $_extension,
+                '%{name}%-%{id}%.%{x}%' => $_name . '-' . $_id . '.' . $_extension,
                 // Name + Unique ID
-                '%{name}%-%{uid}%.%{extension}%' => $_name . '-' . $_uid . '.' . $_extension,
+                '%{name}%-%{uid}%.%{x}%' => $_name . '-' . $_uid . '.' . $_extension,
                 // Name + Hash
-                '%{name}%-%{hash}%.%{extension}%' => $_name . '-' . $_hash . '.' . $_extension,
+                '%{name}%-%{hash}%.%{x}%' => $_name . '-' . $_hash . '.' . $_extension,
             ],
             'kind' => ['select-input'],
             'stack' => 10.8
