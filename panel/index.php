@@ -27,7 +27,7 @@ if (Extend::exist('comment')) {
     Hook::set('on.comment.set', function($page) use($language, $p) {
         $path = $this->path;
         Page::set(extend((array) $language->o_message_info_comment_set, [
-            'type' => 'info',
+            'type' => 'Info',
             'link' => $p . '/::g::/' . Path::R($path, LOT, '/')
         ]))->saveTo(LOT . DS . '.message' . DS . md5($path) . '.page');
     });
@@ -41,11 +41,13 @@ if (Extend::exist('poll')) {
 }
 
 // Trigger notification on markdown link error
-if (Plugin::exist('markdown.link')) {
-    Hook::set('on.markdown.link.x', function() {
-        // TODO
-    });
-}
+Hook::set('on.ready', function() {
+    if (Plugin::exist('markdown.link')) {
+        Hook::set('on.markdown.link.x', function() {
+            // TODO
+        });
+    }
+}, 0);
 
 if ($r === $p && (file_exists(__DIR__ . DS . 'task.php') || $is_enter)) {
     require __DIR__ . DS . '_index.php';
