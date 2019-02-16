@@ -256,7 +256,7 @@ function data($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     _init([], $attr, 'data', $id, $i);
     global $panel, $url;
     $out  = '<h3 class="title">';
-    $out .= '<span title="' . (new \File($path))->size() . '">' . \Path::N($path) . '</span>';
+    $out .= '<span title="' . \File::sizer(filesize($path)) . '">' . \Path::N($path) . '</span>';
     $out .= '</h3>';
     if ($tools) {
         $out .= _tools($tools, $path, $id, $i);
@@ -524,7 +524,7 @@ function file($path, $id = 0, $attr = [], $i = 0, $tools = []) {
     ]);
     global $panel, $url;
     $out  = '<h3 class="title">';
-    $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : \dirname($directory)) . '/1' . $url->query('&amp;')) . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? (new \File($path))->size() : ($name === '..' ? \basename(\dirname($url->path)) : "")) . '">' . $name . '</a>';
+    $out .= '<a href="' . ($is_file ? \To::URL($path) : $url . '/' . $panel->r . '/::g::/' . ($name !== '..' ? $directory : \dirname($directory)) . '/1' . $url->query('&amp;')) . '"' . ($is_file ? ' target="_blank"' : "") . ' title="' . ($is_file ? \File::sizer(filesize($path)) : ($name === '..' ? \basename(\dirname($url->path)) : "")) . '">' . $name . '</a>';
     $out .= '</h3>';
     if ($name !== '..' && $tools) {
         $out .= _tools($tools, $path, $id, $i);
