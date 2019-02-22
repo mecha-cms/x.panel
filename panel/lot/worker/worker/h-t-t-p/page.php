@@ -1,7 +1,7 @@
 <?php
 
 // `POST`
-$page = HTTP::post('page', [], false);
+$page = (array) HTTP::post('page', false);
 
 if ($a < 0) {
     // `GET`
@@ -138,7 +138,7 @@ $headers = [
     'content' => ""
 ];
 
-$o = (array) Config::get($id, [], true);
+$o = (array) Config::get($id, true);
 if (count($o) === 1 && isset($o[0])) {
     $o = false; // Numeric array, not a page configuration file
 }
@@ -157,12 +157,12 @@ foreach ($headers as $k => $v) {
     unset($page[$k]);
 }
 
-$headers = extend($headers, From::YAML(HTTP::post(':', "", false), '  ', false, false), $page);
+$headers = extend($headers, From::YAML(HTTP::post(':', false) ?? "", '  ', false, false), $page);
 $headers = is($headers, function($v) {
     return isset($v) && $v !== false && $v !== "" && !fn\is\instance($v);
 });
 $time = date(DATE_WISE);
-$name = HTTP::post('slug', isset($headers['title']) ? $headers['title'] : "", false) ?: ($c === 'g' ? Path::F(basename($file)) : $time);
+$name = HTTP::post('slug', false) ?? $headers['title'] ?? ($c === 'g' ? Path::F(basename($file)) : $time);
 $name = To::slug($name);
 
 if (!Message::$x) {
@@ -176,7 +176,7 @@ if (!Message::$x) {
         Folder::create($dd = LOT . DS . $path . DS . $name, 0775);
     }
     // Process page data
-    $data = HTTP::post('data', [], false);
+    $data = (array) HTTP::post('data', false);
     if (!isset($data['time']) && $name !== strtr($time, '- :', '---')) {
         $data['time'] = $time;
     }
@@ -228,6 +228,6 @@ if (Extend::exist('tag')) {
 }
 
 Set::post('name', $name);
-Set::post('x', HTTP::post('x', 'draft'));
+Set::post('x', HTTP::post('x') ?? 'draft');
 Set::post('file.content', Page::unite($headers) ?: "---\n...");
 Set::post('file.consent', $consent = 0600);

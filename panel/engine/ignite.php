@@ -274,7 +274,7 @@ function datas($datas, $id = 0, $attr = [], $i = 0) {
     _init([], $attr, 'datas', $id, $i);
     $files = \Anemon::eat($files)->chunk($panel->state->file->chunk, $url->i === null ? 0 : $url->i - 1);
     if ($files->count()) {
-        $tools = \Anemon::eat(\Config::get('panel.+.data.tool', [], true))->sort([1, 'stack']);
+        $tools = \Anemon::eat((array) \Config::get('panel.+.data.tool', true))->sort([1, 'stack']);
         $session = \strtr(X . \implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($files as $k => $v) {
             $n = \basename($v);
@@ -316,7 +316,7 @@ function desk_body($in, $id = 0, $attr = [], $i = 0) {
         $out = "";
         if (isset($in['explore'])) {
             global $panel;
-            $fn = __NAMESPACE__ . "\\" . \HTTP::get('view', $panel->view) . 's';
+            $fn = __NAMESPACE__ . "\\" . (\HTTP::get('view') ?? $panel->view) . 's';
             if (\is_callable($fn)) {
                 $out .= \call_user_func($fn, $in['explore'], $id, [], $i);
             } else {
@@ -380,7 +380,7 @@ function field($key, $in, $id = 0, $attr = [], $i = 0) {
         $description = $in['description'] ?? null;
         $active = $in['active'] ?? false;
         $type = $in['type'] ?? 'textarea';
-        $value = $in['value'] ?? \HTTP::get('f.' . \str_replace(['.', '[', ']', X], [X, '.', "", "\\."], $k), null, false) ?? null;
+        $value = $in['value'] ?? \HTTP::get('f.' . \str_replace(['.', '[', ']', X], [X, '.', "", "\\."], $k), false);
         $values = (array) ($in['values'] ?? []);
         $placeholder = $in['placeholder'] ?? $value;
         $pattern = $in['pattern'] ?? null;
@@ -718,7 +718,7 @@ function page($page, $id = 0, $attr = [], $i = 0, $tools = []) {
 function pager($id = 0, $attr = [], $i = 0) {
     global $panel, $language, $url;
     $state = $panel->state->{$panel->view};
-    $out = _pager($url->i ?: 1, \count(\Config::get('panel.+.explore', [], true)), $state->chunk, $state->kin, function($i) use($url) {
+    $out = _pager($url->i ?: 1, \count((array) \Config::get('panel.+.explore', true)), $state->chunk, $state->kin, function($i) use($url) {
         return $url->clean . '/' . $i . $url->query('&amp;') . $url->hash;
     }, $language->first, $language->previous, $language->next, $language->last);
     if ($out) {
@@ -741,7 +741,7 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
     \Config::set('panel.+.explore', $pages = q($pages));
     $pages = \Anemon::eat($pages)->chunk(...$chunk);
     if ($pages->count()) {
-        $tools = \Anemon::eat(\Config::get('panel.+.page.tool', [], true))->sort([1, 'stack']);
+        $tools = \Anemon::eat((array) \Config::get('panel.+.page.tool', true))->sort([1, 'stack']);
         $session = \strtr(X . \implode(X, (array) \Session::get('panel.file.active')) . X, '/', DS);
         foreach ($pages as $v) {
             $a = \strpos($session, X . $v . X) !== false;
@@ -758,7 +758,7 @@ function pages($pages, $id = 0, $attr = [], $i = 0) {
 }
 
 function q($files, $query = "") {
-    if (($query = \trim(\HTTP::get('q', $query, false))) !== "") {
+    if ("" !== ($query = \trim(\HTTP::get('q', false) ?? ""))) {
         $query = \explode(' ', \strtolower($query));
         $files = \array_filter($files, function($v) use($query) {
             $v = \str_replace('-', "", \basename($v));
@@ -778,7 +778,7 @@ function search($in, $id = 0, $attr = [], $i = 0) {
         $out = $in['content'];
     } else {
         global $language, $panel;
-        $out  = \Form::text('q', \HTTP::get('q', null, false), \To::text($in['title']), ['class[]' => ['input']]);
+        $out  = \Form::text('q', \HTTP::get('q', false), \To::text($in['title']), ['class[]' => ['input']]);
         if ($view = \HTTP::get('view')) {
             $out .= \Form::hidden('view', $view);
         }
@@ -793,7 +793,7 @@ function search($in, $id = 0, $attr = [], $i = 0) {
 }
 
 function svg($key = null) {
-    return \Config::get('panel.+.svg' . ($key ? '.' . $key : ""), null, true);
+    return \Config::get('panel.+.svg' . ($key ? '.' . $key : ""), true);
 }
 
 function tab($in, $id = 0, $attr = [], $i = 0, $active = false) {
@@ -837,7 +837,7 @@ function tabs($in, $id = 0, $attr = [], $i = 0, $active = null) {
         $in = \Anemon::eat($in)->sort([1, 'stack'], true)->vomit();
         if (!isset($active)) {
             // `?tab[0]=data`
-            $active = \HTTP::get('tab.' . $i, \array_keys($in)[0] ?? null, false);
+            $active = \HTTP::get('tab.' . $i, false) ?? \array_keys($in)[0] ?? null;
         }
         // `?tab[0]=data&tabs[0]=false`
         if (\HTTP::is('get', 'tabs.' . $i) && !\HTTP::get('tabs.' . $i)) {

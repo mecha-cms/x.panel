@@ -14,16 +14,16 @@ $candy = [
 
 $c = $panel->c;
 $r = $panel->r;
-$a = HTTP::post('a', HTTP::get('a'));
+$a = HTTP::post('a') ?? HTTP::get('a');
 $id = $panel->id;
 $tab = HTTP::get('tab.0');
-$view = HTTP::post('view', HTTP::get('view', $panel->view));
+$view = HTTP::post('view') ?? HTTP::get('view') ?? $panel->view;
 $gate = File::exist(__DIR__ . DS . 'h-t-t-p' . DS . $view . '.php', false);
 
 $path = strtr(rtrim($id . '/' . $panel->path, '/'), '/', DS);
-$directory = trim(strtr(HTTP::post('directory', ""), '/', DS), DS);
+$directory = trim(strtr(HTTP::post('directory') ?? "", '/', DS), DS);
 
-$consent = HTTP::post('file.consent', null, false);
+$consent = HTTP::post('file.consent', false);
 
 $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($previous = $file = LOT . DS . $path);
@@ -43,7 +43,7 @@ if ($c !== 'r') {
         if (!$a) {
             Guardian::abort('Missing task ID.');
         } else if (function_exists($task = '_' . $a)) {
-            $lot = (array) HTTP::get('lot', []);
+            $lot = (array) HTTP::get('lot');
             array_unshift($lot, $file);
             $def = str_replace('::a::', '::g::', dirname($url->path) . '/1');
             if ($return = call_user_func($task, ...$lot)) {
@@ -184,7 +184,7 @@ if ($tab === 'folder') {
         }
     }
 } else /* if ($tab === 'file') */ {
-    $name = call_user_func('To::' . $any, basename(HTTP::post('name', "", false)));
+    $name = call_user_func('To::' . $any, basename(HTTP::post('name', false) ?? ""));
     $n = null;
     if ($c === 'g') {
         $n = basename($path); // previous name
@@ -196,13 +196,13 @@ if ($tab === 'folder') {
         }
     }
     $gate !== false && require $gate;
-    if ($x = HTTP::post('x', "", false)) {
+    if ($x = HTTP::post('x', false)) {
         if ($name[0] === '.') {
             $name = substr($name, 1);
         }
         $name .= '.' . $x;
     }
-    if ($content = HTTP::post('file.+', "")) {
+    if ($content = HTTP::post('file.+')) {
         $test_x = $x ?: Path::X($name);
         if (is_string($content)) {
             $content = From::YAML($content);
@@ -219,7 +219,7 @@ if ($tab === 'folder') {
         Set::post('file.content', $content);
         Reset::post('file.+');
     } else {
-        $content = HTTP::post('file.content', "", false);
+        $content = HTTP::post('file.content', false) ?? "";
     }
     $file = LOT . DS . $path . DS . ($directory ? $directory . DS . $name : $name);
     $file = candy($file, $candy);

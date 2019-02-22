@@ -1,6 +1,6 @@
 <?php
 
-Config::set('panel.+.' . HTTP::get('view', $panel->view) . '.tool.g.if', function($file): array {
+Config::set('panel.+.' . (HTTP::get('view') ?? $panel->view) . '.tool.g.if', function($file): array {
     if (is_dir($file)) {
         $file = File::exist([
             $file . '.draft',
@@ -12,7 +12,7 @@ Config::set('panel.+.' . HTTP::get('view', $panel->view) . '.tool.g.if', functio
 });
 
 Hook::set('on.ready', function() use($c, $file, $panel) {
-    if (HTTP::get('view', $panel->view) === 'data') {
+    if ((HTTP::get('view') ?? $panel->view) === 'data') {
         $file = dirname($file);
     }
     if (is_dir($file)) {
@@ -22,7 +22,7 @@ Hook::set('on.ready', function() use($c, $file, $panel) {
             $file . '.archive'
         ]);
     }
-    if ($c === 'g' && Config::get('panel.+.form.editor') && !Is::user((new Page($file, [], false))->author)) {
+    if ($c === 'g' && Config::get('panel.+.form.editor') && !Is::user((new Page($file))['author'])) {
         Config::set('panel.error', true);
     }
 }, 10);

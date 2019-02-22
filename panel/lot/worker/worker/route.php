@@ -88,17 +88,17 @@ Hook::set('on.ready', function() {
                 Config::reset('panel.desk.' . $v);
             }
         }
-        $desk = fn\panel\desk(Config::get('panel.desk', [], true), $id);
+        $desk = fn\panel\desk((array) Config::get('panel.desk', true), $id);
         $icons = $menus = $nav = "";
         if (HTTP::is('get', 'nav') && !HTTP::get('nav')) {
             Config::reset('panel.nav');
         } else {
-            $nav = fn\panel\nav(Config::get('panel.nav', [], true), $id);
+            $nav = fn\panel\nav((array) Config::get('panel.nav', true), $id);
         }
         if ($error) {
             Config::set('panel.error', $error);
         }
-        foreach ((array) Config::get('panel.+.menu', [], true) as $k => $v) {
+        foreach ((array) Config::get('panel.+.menu', true) as $k => $v) {
             $menus .= fn\panel\menus($v, $k, [
                 'data[]' => ['js-enter' => '#js:' . $k]
             ], 1);

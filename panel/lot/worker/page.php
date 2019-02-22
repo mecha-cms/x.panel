@@ -15,8 +15,8 @@ Lot::set('_page', $GLOBALS['_page'] = $page = new Page($is_file ? $file : null, 
     'link' => null,
     'time' => null,
     'title' => null,
-    'type' => Config::get('page.type', 'HTML') // Inherit `page.type` state or `HTML`
-], (array) Config::get($id, [], true)), false));
+    'type' => Config::get('page.type') ?? 'HTML' // Inherit `page.type` state or `HTML`
+], (array) Config::get($id, true)), false));
 
 // Remove folder and blob tab(s)
 Config::reset('panel.desk.body.tab.folder');
@@ -249,7 +249,7 @@ Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $
     if ($c === 'g') {
         $datas = glob(Path::F($file) . DS . '*.data', GLOB_NOSORT);
         $removes = [];
-        foreach ((array) Config::get('panel.desk.body.tab', [], true) as $v) {
+        foreach ((array) Config::get('panel.desk.body.tab', true) as $v) {
             if (!isset($v['field'])) continue;
             foreach ($v['field'] as $kk => $vv) {
                 $kk = ltrim($kk, '.!*');

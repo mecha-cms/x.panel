@@ -20,7 +20,7 @@ Config::set('panel.desk.body.tab.file.field.file[+][$]', [
 $states = [];
 
 foreach (['data', 'file', 'page', 'skin', 'style'] as $v) {
-    $states[$v] = a(e(Config::get('panel.desk.body.tab.file.field.file[+][' . $v . '].value', null, true)));
+    $states[$v] = a(e(Config::get('panel.desk.body.tab.file.field.file[+][' . $v . '].value', true)));
     Config::reset('panel.desk.body.tab.file.field.file[+][' . $v . ']');
 }
 

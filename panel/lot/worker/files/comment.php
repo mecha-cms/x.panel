@@ -24,7 +24,7 @@ if (!$chops && !HTTP::is('get', 'q')) {
     });
     Hook::set('page.description', function($description) use($state) {
         $path = $this->path;
-        return $path && strpos($path, COMMENT . DS) === 0 ? To::snippet(Page::apart($path, 'content'), true, $state['page']['snippet']) : $description;
+        return $path && strpos($path, COMMENT . DS) === 0 ? To::snippet(Page::apart(file_get_contents($path), 'content'), true, $state['page']['snippet']) : $description;
     });
     Config::set('panel.+.page.tool.s', [
         'if' => function($file): array {

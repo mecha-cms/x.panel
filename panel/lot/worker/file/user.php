@@ -8,7 +8,7 @@ if ($file && $file === $user->path) {
             File::put($user->status)->saveTo($data, 0600);
         }
     } else {
-        $status = Page::apart($file, 'status', null, true);
+        $status = Page::apart(file_get_contents($file), 'status', null, true);
         if ($status !== $user->status) {
             Page::open($file)->set(['status' => $user->status])->save(0600);
         }

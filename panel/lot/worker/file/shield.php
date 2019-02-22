@@ -34,13 +34,13 @@ if ($chops && strpos($path, $chops[0] . '/state/config.php') === 0 && !HTTP::is(
     foreach (Get::pages(PAGE, 'page,archive', [1, 'path'], 'path') as $v) {
         $pages[Path::N($v)] = (new Page($v))->title;
     }
-    $a = Config::get('panel.desk.body.tab.file.field.name', [], true);
-    $b = Config::get('panel.desk.body.tab.file.field.file[+][path].value', null);
-    $c = a(e(Config::get('panel.desk.body.tab.file.field.file[+][page].value', null)));
+    $a = Config::get('panel.desk.body.tab.file.field.name', true);
+    $b = Config::get('panel.desk.body.tab.file.field.file[+][path].value');
+    $c = a(e(Config::get('panel.desk.body.tab.file.field.file[+][page].value')));
     Config::reset('panel.desk.body.tab.file.field.name');
     Config::reset('panel.desk.body.tab.file.field.file[+][path]');
     Config::reset('panel.desk.body.tab.file.field.file[+][page]');
-    $others = Config::get('panel.desk.body.tab.file.field', [], true);
+    $others = Config::get('panel.desk.body.tab.file.field', true);
     Config::reset('panel.desk.body.tab.file.field');
     Config::set('panel.desk.body.tab.file.field', [
         'file[+][path]' => [

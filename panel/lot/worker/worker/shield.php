@@ -22,7 +22,7 @@
 $g = "";
 if ($panel->c === 's') {
     foreach (['slug', 'key'] as $k) {
-        if ($n = (array) Config::get('panel.+.' . $k, [], true)) {
+        if ($n = (array) Config::get('panel.+.' . $k, true)) {
             $g .= ' data-generator-' . $k . '="' . implode(' ', $n) . '"';
         }
     }
@@ -38,7 +38,7 @@ if ($panel->c === 's') {
 <?php echo $desk; ?>
 <?php endif; ?>
 <?php if ($v): ?>
-<input name="view" value="<?php echo HTTP::get('view', $panel->v); ?>" type="hidden">
+<input name="view" value="<?php echo HTTP::get('view') ?? $panel->v; ?>" type="hidden">
 <input name="token" value="<?php echo $user->token; ?>" type="hidden">
 </form>
 <?php endif; ?>

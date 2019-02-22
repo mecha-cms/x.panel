@@ -7,7 +7,7 @@ if ($c === 'g' && !$panel->file || HTTP::get('view') === 'file') {
 require __DIR__ . DS . 'page.php';
 
 // Disable page children feature
-if ($c === 's' && $chops && HTTP::get('view', $panel->view) !== 'data') {
+if ($c === 's' && $chops && (HTTP::get('view') ?? $panel->view) !== 'data') {
     Config::set('panel.error', true);
 }
 

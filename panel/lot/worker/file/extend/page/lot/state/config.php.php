@@ -1,6 +1,6 @@
 <?php
 
-$a = a(e(Config::get('panel.desk.body.tab.file.field.file[+][page].value', [], true)));
+$a = a(e(Config::get('panel.desk.body.tab.file.field.file[+][page].value', true)));
 
 Config::set('panel.desk.body.tab.file.field', [
     'file[+][page]' => null,

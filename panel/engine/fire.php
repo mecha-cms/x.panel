@@ -149,7 +149,7 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
                 '+' => null,
                 'query' => [
                     'q' => false,
-                    'view' => HTTP::get('view', false)
+                    'view' => HTTP::get('view') ?? false
                 ]
             ]);
         }
@@ -160,7 +160,6 @@ if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
 if ($query) {
     Message::info('search', '<em>' . To::text($query) . '</em>');
-    Lot::set('message', Message::get(null, false));
 }
 
 Config::set('panel.+.data.tool', [

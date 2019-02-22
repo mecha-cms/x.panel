@@ -22,7 +22,7 @@ Lot::set('panel', $GLOBALS['panel'] = $panel = new State([
     'file' => is_file($f) ? $f : null,
     'folder' => is_dir($f) ? $f : null,
     'state' => o($state),
-    'view' => ($view = basename(HTTP::get('view', 'file', false))),
+    'view' => ($view = basename(HTTP::get('view', false) ?? 'file')),
     'r' => $r, // root
     'v' => $view . (!$chops && $c === 'g' || $i !== "" ? 's' : "") // Plural or singular?
 ]));
@@ -47,7 +47,7 @@ $_POST = fn\panel\_clean($_POST ?? []);
 $_REQUEST = fn\panel\_clean($_REQUEST ?? []);
 
 // Check form token
-$token = HTTP::post('token', HTTP::get('token'));
+$token = HTTP::post('token') ?? HTTP::get('token');
 if ($token && $token === $user->token) {
     Hook::set('on.ready', function() use(
         $c,

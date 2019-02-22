@@ -8,7 +8,7 @@ if ($c === 's' && !$chops) {
 }
 
 // Only user with status `1` that has access to edit any user(s)
-Config::set('panel.+.' . HTTP::get('view', $panel->view) . '.tool.g.if', function($file): array {
+Config::set('panel.+.' . (HTTP::get('view') ?? $panel->view) . '.tool.g.if', function($file): array {
     return ['x' => !Is::user(Path::N($file))];
 });
 
