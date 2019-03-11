@@ -8,7 +8,7 @@ $svg = fn\panel\svg();
 // No `nav` key in URL query or has `nav` key in URL query with value of boolean `true`
 if (!HTTP::is('get', 'nav') || HTTP::get('nav')) {
 
-    Hook::set('on.ready', function() use($svg, $query) {
+    Hook::set('start', function() use($svg, $query) {
 
         extract(Lot::get(), EXTR_SKIP);
 

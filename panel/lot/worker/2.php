@@ -6,7 +6,7 @@ if (!has($features, $id)) {
     Config::set('panel.error', $language->message_error_feature_get);
 }
 
-Hook::set('on.ready', function() use($features, $user) {
+Hook::set('start', function() use($features, $user) {
     if (!Config::get('panel.+.form.editor')) {
         Config::set('panel.nav.lot.+.asset.path', basename(ASSET) . '/' . $user->key . '/1');
     }

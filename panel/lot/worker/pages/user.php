@@ -19,7 +19,7 @@ Config::set('panel.+.page.tool', [
             return [
                 // You can’t log-out the current user
                 'x' => Is::user($n = Path::N($file)),
-                'hidden' => $user->status !== 1 || !file_exists(Path::F($file) . DS . 'token.data'),
+                'hidden' => $user->status !== 1 || !is_file(Path::F($file) . DS . 'token.data'),
                 'description' => $language->do_force_user_exit('@' . $n),
                 'task' => 'd4e798fd'
             ];

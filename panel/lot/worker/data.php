@@ -3,7 +3,7 @@
 require __DIR__ . DS . 'file.php';
 
 if ($c === 's' && is_file($file)) {
-    Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
+    Guard::kick(str_replace('::s::', '::g::', $url->current . $url->query));
 }
 
 // Remove folder and blob tab(s)
@@ -27,7 +27,7 @@ Config::set('panel.desk.body.tab.file.field', [
 
 // Modify back menu destination
 if ($x = HTTP::get('x')) {
-    Hook::set('on.ready', function() use($c, $file, $language, $panel, $x) {
+    Hook::set('start', function() use($c, $file, $language, $panel, $x) {
         if ($c === 'g') {
             Config::set('panel.nav.s', [
                 'description' => $language->new__($language->data, true),
@@ -36,7 +36,7 @@ if ($x = HTTP::get('x')) {
             $file = dirname($file);
         }
         $file .= '.' . $x;
-        if (file_exists($file)) {
+        if (is_file($file)) {
             Config::set('panel.nav.lot', [
                 'c' => 'g',
                 'path' => Path::R($file, LOT, '/'),

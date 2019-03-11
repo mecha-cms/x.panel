@@ -29,7 +29,7 @@ Config::set('panel.+.page.tool', [
     'state' => [
         'if' => function($file) use($language): array {
             return [
-                'hidden' => !file_exists($f = dirname($file) . DS . 'lot' . DS . 'state' . DS . 'config.php'),
+                'hidden' => !is_file($f = dirname($file) . DS . 'lot' . DS . 'state' . DS . 'config.php'),
                 'path' => Path::R($f, LOT, '/')
             ];
         },
@@ -39,7 +39,7 @@ Config::set('panel.+.page.tool', [
     ],
     'status' => [
         'if' => function($file) use($language, $requires): array {
-            $active = file_exists(($dir = dirname($file)) . DS . 'index.php');
+            $active = is_file(($dir = dirname($file)) . DS . 'index.php');
             return [
                 'x' => has($requires, basename($dir)),
                 'description' => $language->{$active ? 'eject' : 'attach'},

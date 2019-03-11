@@ -21,7 +21,7 @@ Config::set('panel.desk.body.tab.file.field', [
     'tags' => ['hidden' => true]
 ]);
 
-Hook::set('on.ready', function() use($c, $page) {
+Hook::set('start', function() use($c, $page) {
     if ($c === 's' || $page->x === 'draft') {
         $i = Get::tags(TAG, 'page,archive', [-1, 'id'])->first();
         $i += 1;

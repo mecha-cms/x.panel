@@ -11,7 +11,7 @@ Config::set('panel.+.' . (HTTP::get('view') ?? $panel->view) . '.tool.g.if', fun
     return ['x' => !Is::user((new Page($file, [], false))->author)];
 });
 
-Hook::set('on.ready', function() use($c, $file, $panel) {
+Hook::set('start', function() use($c, $file, $panel) {
     if ((HTTP::get('view') ?? $panel->view) === 'data') {
         $file = dirname($file);
     }

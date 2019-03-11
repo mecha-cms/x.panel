@@ -1,6 +1,6 @@
 <?php
 
-Hook::set('on.ready', function() {
+Hook::set('start', function() {
 
     extract(Lot::get());
 
@@ -10,7 +10,7 @@ Hook::set('on.ready', function() {
 
     if (strpos($url->path, $r . '/::') === 0) {
         Asset::reset(); // Remove all asset(s)
-        Route::reset(['%*%/%i%', '%*%', ""]); // Remove all route(s) from `page` extension
+        Route::reset(['%A%/%I%', '%A%', ""]); // Remove all route(s) from `page` extension
         Shield::$config['id'] = X; // Disable current shield asset(s)
         $asset = __DIR__ . DS . '..' . DS . '..' . DS . 'asset' . DS;
         Asset::set($asset . 'js' . DS . 'zepto.min.js', 9);
@@ -38,7 +38,7 @@ Hook::set('on.ready', function() {
         }
         Asset::set($url . '/' . $r . '/::g::/-/asset.js', 10, [
             'src' => function($src) use($t) {
-                return candy($this->state['url'], [$src, $t]);
+                return $src . '?v=' . $t;
             }
         ]);
         $skin = $panel->state->skin ?? null;
@@ -166,11 +166,11 @@ Hook::set('on.ready', function() {
         return;
     }, 9);
 
-    Route::set($r . '/::g::/-/%i%/%s%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_path) {
+    Route::set($r . '/::g::/-/%I%/%S%.%[gif,jpg,jpeg,png]%', function($size, $color, $x) use($image_path) {
         return Route::fire($image_path, [$size, $size, $color, $x]);
     }, 9.1);
 
-    Route::set($r . '/::g::/-/%s%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_path) {
+    Route::set($r . '/::g::/-/%S%.%[gif,jpg,jpeg,png]%', function($color, $x) use($image_path) {
         return Route::fire($image_path, [1, 1, $color, $x]);
     }, 9.2);
 

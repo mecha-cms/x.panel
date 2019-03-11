@@ -6,7 +6,8 @@ if (Is::void($name)) {
     Message::error('void_field', ['<em>' . $language->key . '</em>']);
 }
 
-Hook::set('guardian.kick', function($url) {
+/*
+Hook::set('guard.kick', function($url) {
     if (!Message::$x) {
         if ($x = HTTP::get('x')) {
             return dirname($url) . '.' . $x . To::query(['tab' => ['data']]);
@@ -14,3 +15,4 @@ Hook::set('guardian.kick', function($url) {
         return $url;
     }
 }, 0);
+*/

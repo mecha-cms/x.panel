@@ -31,7 +31,7 @@ Config::set('panel.+.page.tool', [
     'state' => [
         'if' => function($file) use($language): array {
             return [
-                'hidden' => !file_exists($f = dirname($file) . DS . 'state' . DS . 'config.php'),
+                'hidden' => !is_file($f = dirname($file) . DS . 'state' . DS . 'config.php'),
                 'path' => Path::R($f, LOT, '/')
             ];
         },

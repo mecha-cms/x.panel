@@ -13,7 +13,7 @@ Config::set('panel.+.page.tool.g.if', $if = function($file): array {
 
 Config::set('panel.+.file.tool.g.if', $if);
 
-Hook::set('on.ready', function() use($c, $file, $panel) {
+Hook::set('start', function() use($c, $file, $panel) {
     if ((HTTP::get('view') ?? $panel->view) === 'data') {
         $file = dirname($file);
     }

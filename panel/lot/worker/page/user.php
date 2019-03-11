@@ -87,7 +87,7 @@ if ($pass) {
     if (strpos($pass, X) !== 0) {
         File::put(X . password_hash($pass . ' ' . $user->slug, PASSWORD_DEFAULT))->saveTo(Path::F($user->path) . DS . 'pass.data', 0600);
     }
-    Hook::set('on.ready', function() use($file, $language, $user) {
+    Hook::set('start', function() use($file, $language, $user) {
         $status = (array) $language->o_page_status;
         Config::set('panel.desk.body.tab.status.field.page[status].values', $user->status === 1 && !Is::user(Path::N($file)) ? $status : [
             $user->status => $status[$user->status]

@@ -5,7 +5,7 @@ if ($c === 'g' && !$panel->file || HTTP::get('view') === 'file') {
 }
 
 if ($c === 's' && $is_file = is_file($file)) {
-    Guardian::kick(str_replace('::s::', '::g::', $url->current . $url->query));
+    Guard::kick(str_replace('::s::', '::g::', $url->current . $url->query));
 }
 
 Lot::set('_page', $GLOBALS['_page'] = $page = new Page($is_file ? $file : null, extend([
@@ -159,7 +159,7 @@ Config::set('panel.desk.body.tab.data', [
     'stack' => 10.1
 ]);
 
-Hook::set('on.ready', function() use($c, $file, $id, $language, $page, $state, $r, $url) {
+Hook::set('start', function() use($c, $file, $id, $language, $page, $state, $r, $url) {
     // Add image field
     if (Extend::exist('image')) {
         $image = $page->image;
@@ -344,8 +344,9 @@ if ($c === 'g' && $user->status === 1) {
 
 Config::set('panel.desk.footer.tool', $buttons);
 
-Hook::set('on.ready', function() {
-$asset = __DIR__ . DS . '..' . DS . 'asset' . DS;
-Asset::set($asset . 'js' . DS . 't-i-b.min.js', 9.111);
-Asset::set($asset . 'css' . DS . 't-i-b.min.css', 10.11);
+// TODO
+Hook::set('start', function() {
+    $asset = __DIR__ . DS . '..' . DS . 'asset' . DS;
+    Asset::set($asset . 'js' . DS . 't-i-b.min.js', 9.111);
+    Asset::set($asset . 'css' . DS . 't-i-b.min.css', 10.11);
 }, 2.1);

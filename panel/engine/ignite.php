@@ -1,4 +1,187 @@
-<?php namespace fn\panel;
+<?php
+
+namespace fn\panel {
+    function a($in) {
+        $href = a\href($in);
+        $kind = \array_unique($in['kind'] ?? []);
+        \sort($kind);
+        return '<a class="' . \implode(' ', $kind) . '" href="' . $href . '">' . $text . '</a>';
+    }
+    function data(string $file) {
+        if (!\is_file($file)) {
+            return "";
+        }
+        $out = '<li class="data">';
+        $out .= '<h3 class="title">';
+        $out .= '<span title="' . \File::sizer(filesize($path)) . '">' . \basename($file, '.data') . '</span>';
+        $out .= '</h3>';
+        $out .= '</li>';
+        return $out;
+    }
+    function datas($files) {
+        if (\is_string($files) && \is_dir($files)) {
+            $files = \y(\g($files, 'data'));
+        }
+        $out = '<ul class="datas">';
+        foreach ($files as $file) {
+            $out .= data($file);
+        }
+        $out .= '</ul>';
+        return $out;
+    }
+    function desk($in) {
+        $out = '<div class="desk">';
+        $out .= '<form>';
+        if (isset($in['header'])) {
+            $out .= desk\header($in['header']);
+        }
+        if (isset($in['body'])) {
+            $out .= desk\body($in['body']);
+        }
+        if (isset($in['footer'])) {
+            $out .= desk\footer($in['footer']);
+        }
+        $out .= '<input name="token" type="hidden" value="' . \Guard::token('panel') . '">';
+        $out .= '<input name="view" type="hidden" value="' . \HTTP::get('view') . '">';
+        $out .= '</form>';
+        $out .= '</div>';
+        return $out;
+    }
+    function field($in) {
+        $out = '<p class="field">';
+        if (isset($in['type']) && \function_exists($fn = __NAMESPACE__ . "\\" . $in['type'])) {
+            $out .= \call_user_func($fn, $in);
+        } else {
+            $out .= textarea($in);
+        }
+        $out .= '</p>';
+        return $out;
+    }
+    function fields() {}
+    function file(string $file) {}
+    function files() {}
+    function menu() {}
+    function menus() {}
+    function nav() {}
+    function page(string $page) {}
+    function pages() {}
+    function steps() {}
+    function tab() {}
+    function tabs() {}
+    function tool() {}
+    function tools() {}
+}
+
+namespace fn\panel\a {
+    function href($in) {
+        if (!empty($in['x'])) {
+            return false;
+        }
+        // `[link[path[url]]]`
+        $out = "";
+        if (isset($in['task'])) {
+            $user = \Lot::get('user');
+            $in['task'] = (array) $in['task'];
+            $in['c'] = 'a';
+            $in['query']['a'] = \array_shift($in['task']) ?? false;
+            $in['query']['lot'] = \array_shift($in['task']) ?? false;
+            $in['query']['token'] = $user->token;
+            unset($in['task']);
+        }
+        if (isset($in['link'])) {
+            $out = $in['link'];
+        } else if (isset($in['url'])) {
+            $out = \URL::long(\strtr($in['url'], DS, '/'));
+        } else if (isset($in['path'])) {
+            global $panel;
+            $out = \rtrim(\URL::long($panel['r'] . '/::' . ($in['c'] ?? 'g') . '::/' . \ltrim(\strtr($in['path'], DS, '/'), '/')), '/');
+        }
+        if (isset($in['query'])) {
+            $out .= \HTTP::query($in['query'], '&');
+        }
+        if (isset($in['hash'])) {
+            $out .= '#' . \urlencode($in['hash']);
+        }
+        return $out;
+    }
+}
+
+namespace fn\panel\desk {
+    function header($in) {
+        $out = '<header class="desk-header">';
+        if (!empty($in['tool'])) {
+            $out .= \fn\panel\tools($in['tool']);
+        }
+        $out .= '</header>';
+        return $out;
+    }
+    function body($in) {
+        $out = '<div class="desk-body">';
+        if (isset($in['data'])) {
+            $out .= \fn\panel\datas($in['data']);
+        } else if (isset($in['file'])) {
+            $out .= \fn\panel\files($in['file']);
+        } else if (isset($in['page'])) {
+            $out .= \fn\panel\pages($in['page']);
+        } else if (isset($in['tab'])) {
+            $out .= \fn\panel\tabs($in['tab']);
+        }
+        $out .= '</div>';
+        return $out;
+    }
+    function footer($in) {
+        $out = '<footer class="desk-footer">';
+        if (isset($in['step'])) {
+            $out .= \fn\panel\steps($in['step']);
+        } else if (isset($in['tool'])) {
+            $out .= \fn\panel\tools($in['tool']);
+        }
+        $out .= '</footer>';
+        return $out;
+    }
+}
+
+namespace fn\panel\field {
+    function button($in) {}
+    function buttons($in) {}
+    function input($in) {
+        // Default to `text`
+        return \call_user_func(__NAMESPACE__ . "\\input\\text", $in);
+    }
+    function inputs($in) {}
+    function select($in) {}
+    function selects($in) {}
+    function textarea($in) {}
+    function textareas($in) {}
+}
+
+namespace fn\panel\field\button {
+    function a($in) {}
+}
+
+namespace fn\panel\field\input {
+    function button() {}
+    function hidden() {}
+    function number() {}
+    function pass() {}
+    function range() {}
+    function text() {}
+    function toggle() {}
+    function toggles() {}
+}
+
+namespace fn\panel\_ {
+    function clean($in) {}
+}
+
+namespace fn\panel\nav {
+    function a() {}
+    function li() {}
+    function search() {}
+    function ul() {}
+}
+
+namespace fn\panel {
 
 // These are just helper function(s) used to reduce the repeating code over includable file(s).
 // These function(s) should not be re-used in your custom extension, plugin and shield.
@@ -907,4 +1090,6 @@ function menus($in, $id = 0, $attr = [], $i = 0) {
         'hidden' => true
     ]);
     return nav_ul($in, $id, $attr, $i);
+}
+
 }

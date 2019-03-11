@@ -62,7 +62,7 @@ Config::set($key . '[direction]', [
 ]);
 
 Config::reset($key . '[page]');
-Hook::set('on.ready', function() use($config, $key, $language, $shields) {
+Hook::set('start', function() use($config, $key, $language, $shields) {
     $editors = (array) $language->o_page_editor;
     Config::set('panel.desk.body.tab', [
         'site' => [

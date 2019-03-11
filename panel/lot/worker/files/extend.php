@@ -2,9 +2,9 @@
 
 if ($chops) {
     if (count($chops) === 1) {
-        $active = file_exists($file . DS . 'index.php');
+        $active = is_file($file . DS . 'index.php');
         $x = has(['asset', 'form', 'page', 'panel', 'plugin', 'shield', 'user'], basename($file));
-        if (file_exists($f = $file . DS . 'lot' . DS . 'state' . DS . 'config.php')) {
+        if (is_file($f = $file . DS . 'lot' . DS . 'state' . DS . 'config.php')) {
             Config::set('panel.desk.header.tool.state', [
                 'title' => false,
                 'description' => $language->state,
@@ -26,7 +26,7 @@ if ($chops) {
         ]);
     }
     if (!HTTP::is('get', 'q')) {
-        Hook::set('on.ready', function() use($file) {
+        Hook::set('start', function() use($file) {
             extract(Lot::get(), EXTR_SKIP);
             $s = $file . DS . 'about.';
             if ($f = File::exist([

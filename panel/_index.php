@@ -5,7 +5,7 @@ $f = rtrim(LOT . DS . $id . DS . strtr($path, '/', DS), DS);
 $i = (string) $url->i;
 
 // Fix URL data for numeric file/folder name
-if ($i !== "" && file_exists($f . DS . $i)) {
+if ($i !== "" && is_dir($f . DS . $i)) {
     $path .= '/' . $i;
     $f .= DS . $i;
     $chops[] = $i;
@@ -49,27 +49,10 @@ $_REQUEST = fn\panel\_clean($_REQUEST ?? []);
 // Check form token
 $token = HTTP::post('token') ?? HTTP::get('token');
 if ($token && $token === $user->token) {
-    Hook::set('on.ready', function() use(
-        $c,
-        $chops,
-        $f,
-        $file,
-        $i,
-        $id,
-        $panel,
-        $path,
-        $r,
-        $token,
-        $user,
-        $view,
-        $worker
-    ) {
-        extract(Lot::get(), EXTR_SKIP);
-        require $worker . 'worker' . DS . 'task.php';
-        require $worker . 'worker' . DS . 'h-t-t-p.php';
-    }, 2);
+    require $worker . 'worker' . DS . 'task.php';
+    require $worker . 'worker' . DS . 'h-t-t-p.php';
 } else if ($c === 'a' || $c === 'r') {
-    Guardian::abort('Invalid token.');
+    Guard::abort('Invalid token.');
 }
 
 if ($f = File::exist($worker . $panel->v . '.php')) require $f;

@@ -17,7 +17,7 @@ if ($a < 0) {
     // `POST` … a user click the submit button with name `a`
     } else if (HTTP::is('post')) {
         // Redirect to `GET`
-        Guardian::kick(str_replace('::' . $c . '::', '::r::', $url->path) . HTTP::query([
+        Guard::kick(str_replace('::' . $c . '::', '::r::', $url->path) . HTTP::query([
             'a' => $a,
             'token' => HTTP::post('token'),
             'view' => 'page'
@@ -52,7 +52,7 @@ if (Extend::exist('image') && !array_key_exists('image', $page) && $blob = HTTP:
                 $candy = [
                     'date' => new Date,
                     'x' => $x,
-                    'hash' => Guardian::hash(),
+                    'hash' => Guard::hash(),
                     'id' => sprintf('%u', time()),
                     'name' => $n,
                     'uid' => uniqid()

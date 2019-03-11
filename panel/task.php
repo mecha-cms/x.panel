@@ -3,7 +3,7 @@
 $user_void = !glob(USER . DS . '*.page', GLOB_NOSORT);
 $user_create = Extend::state('panel', 'path') . '/::s::/user';
 if (!Extend::exist('user')) {
-    Guardian::abort('Missing <code>user</code> extension.');
+    Guard::abort('Missing <code>user</code> extension.');
 } else if ($user_void) {
     $uid = uniqid();
     Page::set([
@@ -11,15 +11,15 @@ if (!Extend::exist('user')) {
         'description' => 'Delete me!',
         'status' => 1
     ])->saveTo(USER . DS . $uid . '.page', 0600);
-    $token = Guardian::token('panel');
+    $token = Guard::token('panel');
     File::put($token)->saveTo(USER . DS . $uid . DS . 'token.data', 0600);
     Cookie::set(URL::session . '.user', '@' . $uid);
     Cookie::set(URL::session . '.token', $token);
     Session::set(URL::session . '.user', '@' . $uid);
     Session::set(URL::session . '.token', $token);
-    Guardian::kick($user_create);
+    Guard::kick($user_create);
 } else if ($url->path === $user_create) {
-    Hook::set('on.ready', function() use($language, $user) {
+    Hook::set('start', function() use($language, $user) {
         if ($user->pass) return;
         Config::set('panel.nav', "");
         Config::set('panel.desk.footer.tool.page', [
@@ -45,6 +45,6 @@ if (!Extend::exist('user')) {
             unlink(__FILE__);
         }
         $state = Extend::state('user');
-        Guardian::kick($state['_path'] ?? $state['path']);
+        Guard::kick($state['_path'] ?? $state['path']);
     }, 0);
 }

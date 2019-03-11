@@ -7,7 +7,7 @@ if ($user->status !== 1) {
 
 $candy = [
     'date' => new Date,
-    'hash' => Guardian::hash(),
+    'hash' => Guard::hash(),
     'id' => sprintf('%u', time()),
     'uid' => uniqid()
 ];
@@ -29,7 +29,7 @@ $_date = date('_Y-m-d-H-i-s');
 $is_file = is_file($previous = $file = LOT . DS . $path);
 
 if ($c !== 's' && !file_exists($file)) {
-    Guardian::abort('File <code>' . $file . '</code> does not exist.');
+    Guard::abort(($is_file ? 'File' : 'Folder') . ' <code>' . $file . '</code> does not exist.');
 }
 
 $any = $c === 's' || $is_file ? 'file' : 'folder';
@@ -41,21 +41,21 @@ if ($c !== 'r') {
         $gate !== false && require $gate;
         // Run task
         if (!$a) {
-            Guardian::abort('Missing task ID.');
+            Guard::abort('Missing task ID.');
         } else if (function_exists($task = '_' . $a)) {
             $lot = (array) HTTP::get('lot');
             array_unshift($lot, $file);
             $def = str_replace('::a::', '::g::', dirname($url->path) . '/1');
             if ($return = call_user_func($task, ...$lot)) {
-                Guardian::kick($return['kick'] ?? $def);
+                Guard::kick($return['kick'] ?? $def);
             }
-            Guardian::kick($def);
+            Guard::kick($def);
         } else {
-            Guardian::abort('Task <code>' . $task . '</code> not found.');
+            Guard::abort('Task <code>' . $task . '</code> not found.');
         }
     // `POST`
     } else if (!HTTP::is('post')) {
-        Guardian::abort('Method not allowed.');
+        Guard::abort('Method not allowed.');
     }
 // `GET`
 } else /* if ($c === 'r') */ {
@@ -66,7 +66,7 @@ if ($c !== 'r') {
         strpos($path, DS) === false
     ) {
         Message::error(($is_file ? 'file' : 'folder') . '_delete');
-        Guardian::kick(str_replace('::r::', '::g::', ($is_file ? dirname($url->path) : $url->path) . '/1'));
+        Guard::kick(str_replace('::r::', '::g::', ($is_file ? dirname($url->path) : $url->path) . '/1'));
     }
     $gate !== false && require $gate;
     $trash = LOT . DS . 'trash' . DS . $_date;
@@ -97,7 +97,7 @@ if ($c !== 'r') {
         File::open($file)->delete();
         Message::success('file_delete', ['<code>' . str_replace(ROOT, '.', $file) . '</code>']);
     }
-    Guardian::kick(str_replace('::r::', '::g::', dirname($url->path)) . '/1');
+    Guard::kick(str_replace('::r::', '::g::', dirname($url->path)) . '/1');
 }
 
 $query = HTTP::query(['token' => false]);
@@ -119,10 +119,10 @@ if ($tab === 'folder') {
         Message::success('folder_create', ['<code>' . str_replace(ROOT, '.', $d) . '</code>']);
         Session::reset(Form::session);
         Hook::fire('on.folder.set', [$c === 's' ? null : $previous], new Folder($file));
-        Guardian::kick($r . '/::g::/' . strtr($is_file ? dirname($path) : $path, DS, '/') . '/1');
+        Guard::kick($r . '/::g::/' . strtr($is_file ? dirname($path) : $path, DS, '/') . '/1');
     } else {
         Session::set(Form::session, HTTP::post());
-        Guardian::kick($url->path . $query);
+        Guard::kick($url->path . $query);
     }
 } else if ($tab === 'blob') {
     if ($blob = HTTP::files('blob')) {
@@ -175,12 +175,12 @@ if ($tab === 'folder') {
             }
             if (!Message::$x) {
                 Hook::fire('on.file.set', [null], new File($response));
-                Guardian::kick(str_replace('::' . $c . '::', '::g::', $url->path) . '/1');
+                Guard::kick(str_replace('::' . $c . '::', '::g::', $url->path) . '/1');
             } else {
-                Guardian::kick($url->path . HTTP::query(['token' => false], '&'));
+                Guard::kick($url->path . HTTP::query(['token' => false], '&'));
             }
         } else {
-            Guardian::kick($url->path . HTTP::query(['token' => false], '&'));
+            Guard::kick($url->path . HTTP::query(['token' => false], '&'));
         }
     }
 } else /* if ($tab === 'file') */ {
@@ -192,7 +192,7 @@ if ($tab === 'folder') {
         if ($a < 0) {
             $gate !== false && require $gate;
             // `GET`
-            Guardian::kick(str_replace('::' . $c . '::', '::r::', $url->path) . HTTP::query(['a' => $a], '&'));
+            Guard::kick(str_replace('::' . $c . '::', '::r::', $url->path) . HTTP::query(['a' => $a], '&'));
         }
     }
     $gate !== false && require $gate;
@@ -249,9 +249,9 @@ if ($tab === 'folder') {
         $to = $r . '/::g::/' . $path . '/' . ($directory ? str_replace(DS, '/', $directory) . '/' . $name : $name);
         Hook::fire('on.' . $any . '.set', [$c === 's' ? null : $previous], $any === 'file' ? new File($file) : new Folder($file));
         // Redirect to file list if we are in `s` command
-        Guardian::kick($c === 's' ? dirname($to) . '/1' : $to . $query);
+        Guard::kick($c === 's' ? dirname($to) . '/1' : $to . $query);
     } else {
         Session::set(Form::session, HTTP::post());
-        Guardian::kick($url->path . $query);
+        Guard::kick($url->path . $query);
     }
 }

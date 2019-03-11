@@ -5,9 +5,6 @@ if (!HTTP::is('get', 'kick') && !$is_enter) {
     $state = Extend::state('user');
     if ($url->path === ($state['_path'] ?? $state['path'])) {
         $a = Extend::state('panel');
-        // Set redirection path after log-in
-        Cookie::reset(URL::session . '.previous');
-        Session::reset(URL::session . '.previous');
         Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
         return;
     }
@@ -41,7 +38,7 @@ if (Extend::exist('poll')) {
 }
 
 // Trigger notification on markdown link error
-Hook::set('on.ready', function() {
+Hook::set('start', function() {
     if (Plugin::exist('markdown.link')) {
         Hook::set('on.markdown.link.x', function() {
             // TODO
@@ -49,6 +46,6 @@ Hook::set('on.ready', function() {
     }
 }, 0);
 
-if ($r === $p && (file_exists(__DIR__ . DS . 'task.php') || $is_enter)) {
+if ($r === $p && (is_file(__DIR__ . DS . 'task.php') || $is_enter)) {
     require __DIR__ . DS . '_index.php';
 }
