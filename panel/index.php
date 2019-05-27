@@ -1,51 +1,10 @@
 <?php
 
-$is_enter = Is::user();
-if (!HTTP::is('get', 'kick') && !$is_enter) {
-    $state = Extend::state('user');
-    if ($url->path === ($state['_path'] ?? $state['path'])) {
-        $a = Extend::state('panel');
-        Set::get('kick', $a['path'] . '/::g::/' . $a['$']);
-        return;
-    }
-}
-
-$state = Extend::state('panel');
-$p = $state['path'];
-
-$chops = explode('/', $url->path);
-$r = array_shift($chops);
-$c = str_replace('::', "", array_shift($chops));
-$id = array_shift($chops);
-$path = implode('/', $chops);
-
-// Trigger notification on comment set
-if (Extend::exist('comment')) {
-    Hook::set('on.comment.set', function($page) use($language, $p) {
-        $path = $this->path;
-        Page::set(extend((array) $language->o_message_info_comment_set, [
-            'type' => 'Info',
-            'link' => $p . '/::g::/' . Path::R($path, LOT, '/')
-        ]))->saveTo(LOT . DS . '.message' . DS . md5($path) . '.page');
-    });
-}
-
-// Trigger notification on poll set
-if (Extend::exist('poll')) {
-    Hook::set('on.poll.set', function() {
-        // TODO
-    });
-}
-
-// Trigger notification on markdown link error
-Hook::set('start', function() {
-    if (Plugin::exist('markdown.link')) {
-        Hook::set('on.markdown.link.x', function() {
-            // TODO
-        });
-    }
-}, 0);
-
-if ($r === $p && (is_file(__DIR__ . DS . 'task.php') || $is_enter)) {
-    require __DIR__ . DS . '_index.php';
-}
+// Common file type(s) allowed to be uploaded by the file manager
+!defined('AUDIO_X') && define('AUDIO_X', 'aif,mid,mov,mpa,mp3,m3u,m4a,ogg,wav,wma');
+!defined('FONT_X') && define('FONT_X', 'eot,fnt,fon,otf,svg,ttf,woff,woff2');
+!defined('IMAGE_X') && define('IMAGE_X', 'bmp,cur,gif,ico,jpeg,jpg,png,svg');
+!defined('PACKAGE_X') && define('PACKAGE_X', 'cbr,gz,iso,pkg,rar,rpm,tar,zip,zipx,7z');
+!defined('TEXT_X') && define('TEXT_X', 'archive,cache,cfg,css,csv,data,draft,htaccess,html,js,json,log,page,php,srt,stack,tex,trash,txt,xml,yaml,yml');
+!defined('VIDEO_X') && define('VIDEO_X', 'avi,flv,mkv,mov,mpg,mp4,m4a,m4v,ogv,rm,swf,vob,webm,wmv,3gp,3g2');
+!defined('BINARY_X') && define('BINARY_X', AUDIO_X . ',' . PACKAGE_X . ',' . VIDEO_X . ',doc,docx,odt,pdf,ppt,pptx,rtf,xlr,xls,xlsx');

@@ -1,1 +1,0 @@
-<?php return ['path'=>'panel','$'=>'page','skin'=>'construction','style'=>['width'=>1024],'file'=>['chunk'=>50,'kin'=>2],'page'=>['chunk'=>25,'kin'=>2,'snippet'=>120,'sort'=>[-1,'time'],'image'=>['width'=>640,'height'=>480,'directory'=>'%{x}%','name'=>'%{id}%.%{x}%']],'data'=>['chunk'=>100,'kin'=>2]];
