@@ -2,13 +2,13 @@
 <html class="js" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Tabs</title>
+    <title>tab-group</title>
     <link href="../css/panel.css" rel="stylesheet">
     <link href="../css/panel/construction.css" rel="stylesheet">
   </head>
   <body spellcheck="false">
     <div class="desk">
-      <div class="tabs">
+      <div class="tab-group">
         <nav>
           <ul>
             <li class="active"><a href="?tab[0]=tab-1">Tab 1</a></li>
@@ -20,7 +20,7 @@
         <section>Tab content 2.</section>
         <section>Tab content 3.</section>
       </div>
-      <div class="tabs p">
+      <div class="tab-group p">
         <nav>
           <ul>
             <li class="active"><a href="?tab[0]=tab-1"><svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></svg><span>Tab 1</span></a></li>
@@ -32,7 +32,7 @@
         <section>Tab content 2.</section>
         <section>Tab content 3.</section>
       </div>
-      <div class="tabs p">
+      <div class="tab-group p">
         <nav>
           <ul>
             <li class="active"><a href="?tab[0]=tab-1"><svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></svg></a></li>
@@ -44,7 +44,7 @@
         <section>Tab content 2.</section>
         <section>Tab content 3.</section>
       </div>
-      <div class="tabs p">
+      <div class="tab-group p">
         <nav>
           <ul>
             <li class="active"><a href="?tab[0]=tab-1">Tab 1</a></li>
@@ -57,36 +57,6 @@
         <section>Tab content 3.</section>
       </div>
     </div>
-    <script>
-
-var tabs = document.querySelectorAll('.tabs'),
-    pushState = 'pushState' in window.history;
-
-tabs.forEach(function($) {
-    var panes = [].slice.call($.children),
-        buttons = panes.shift().querySelectorAll('a');
-    buttons.forEach(function($$, i) {
-        $$._index = i;
-        $$.addEventListener("click", function(e) {
-            if (!this.classList.contains('x')) {
-                buttons.forEach(function($$$) {
-                    $$$.parentNode.classList.remove('active');
-                    panes[$$$._index] && panes[$$$._index].classList.remove('active');
-                });
-                this.parentNode.classList.add('active');
-                panes[this._index] && panes[this._index].classList.add('active');
-                window.history.pushState({}, "", this.href);
-            }
-            e.preventDefault();
-        }, false);
-    });
-});
-
-// TODO
-window.addEventListener("popstate", function() {
-    document.querySelector('a[href*="' + window.location.search + '"]').click();
-});
-
-    </script>
+    <script src="../js/panel/tab-group.js"></script>
   </body>
 </html>

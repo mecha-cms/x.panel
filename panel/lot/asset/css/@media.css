@@ -1,0 +1,33 @@
+
+@media (max-width: 720px) {
+  .m2 {
+    margin: 24px;
+  }
+  .m2t {
+    margin-top: 24px;
+  }
+  .m2r {
+    margin-right: 24px;
+  }
+  .m2b {
+    margin-bottom: 24px;
+  }
+  .m2l {
+    margin-left: 24px;
+  }
+  .p2 {
+    padding: 24px;
+  }
+  .p2t {
+    padding-top: 24px;
+  }
+  .p2r {
+    padding-right: 24px;
+  }
+  .p2b {
+    padding-bottom: 24px;
+  }
+  .p2l {
+    padding-left: 24px;
+  }
+}

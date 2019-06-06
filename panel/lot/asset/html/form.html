@@ -9,7 +9,7 @@
   <body spellcheck="false">
     <nav class="nav">
       <ul>
-        <li class="inverse"><a href="javascript:;"><svg class="icon" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"></path></svg></a></li>
+        <li class="inverse"><a href="javascript:;"><svg viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"></path></svg></a></li>
         <li class="li:search">
           <form>
             <p class="field">
@@ -18,30 +18,21 @@
             </p>
           </form>
         </li>
-        <li><a href=""><span>Site</span> <svg class="icon arrow down" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z"></path></svg></a></li>
+        <li><a href=""><span>Site</span> <svg class="caret" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z"></path></svg></a></li>
       </ul>
     </nav>
-      <div class="menus static enter">
-        <li><a>
-          <svg class="icon" viewBox="0 0 24 24"><path d="M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M4,9V12C4,14.21 7.58,16 12,16C16.42,16 20,14.21 20,12V9C20,11.21 16.42,13 12,13C7.58,13 4,11.21 4,9M4,14V17C4,19.21 7.58,21 12,21C16.42,21 20,19.21 20,17V14C20,16.21 16.42,18 12,18C7.58,18 4,16.21 4,14Z"></path></svg>
-          <span>Asset</span>
-        </a></li>
-        <li><a>
-          <svg class="icon" viewBox="0 0 24 24"><path d="M20.5,11H19V7C19,5.89 18.1,5 17,5H13V3.5A2.5,2.5 0 0,0 10.5,1A2.5,2.5 0 0,0 8,3.5V5H4A2,2 0 0,0 2,7V10.8H3.5C5,10.8 6.2,12 6.2,13.5C6.2,15 5,16.2 3.5,16.2H2V20A2,2 0 0,0 4,22H7.8V20.5C7.8,19 9,17.8 10.5,17.8C12,17.8 13.2,19 13.2,20.5V22H17A2,2 0 0,0 19,20V16H20.5A2.5,2.5 0 0,0 23,13.5A2.5,2.5 0 0,0 20.5,11Z"></path></svg>
-          <span>Extend</span>
-          <svg class="icon arror right" viewBox="0 0 24 24"><path d="M10,17L15,12L10,7V17Z"></path></svg>
-        </a></li>
-        <li><a>Lorem</a></li>
-        <li><a>Ipsum</a></li>
-        <li><a>Dolor</a></li>
-        <li><a>Sit</a></li>
-        <li><a>Amet</a></li>
-      </div>
     <div class="desk">
       <header></header>
       <div>
-        <div class="tabs">
-          <section id="foo:0.0" title="Page">
+        <div class="tab-group p">
+          <nav>
+            <ul>
+              <li class="active"><a href="?tab[0]=tab-1">Page</a></li>
+              <li><a href="?tab[0]=tab-2">Setting</a></li>
+              <li><a href="?tab[0]=tab-3">Data</a></li>
+            </ul>
+          </nav>
+          <section class="active">
             <p class="field">
               <label>Title</label>
               <span><input class="input width" type="text"></span>
@@ -49,8 +40,8 @@
             <p class="field">
               <label>Slug</label>
               <span>
-                <span class="input-with-prefix">
-                  <span class="prefix">http://127.0.0.1/article/</span>
+                <span class="input-group width">
+                  <span class="fix">http://127.0.0.1/article/</span>
                   <input class="input width" type="text">
                 </span>
               </span>
@@ -60,45 +51,16 @@
               <div><textarea class="textarea width height code"></textarea></div>
             </div>
           </section>
-          <section id="foo:0.1" title="Data">
-            <p class="field">
-              <label>Name</label>
-              <span>
-                <span class="input-with-suffix">
-                  <input class="input width" type="text">
-                  <span class="suffix">.page</span>
-                </span>
-              </span>
-            </p>
-            <p class="field">
-              <label>Tags</label>
-              <span>
-                <input class="input width" placeholder="foo, bar, baz" type="text">
-                <span class="hint">Lorem ipsum dolor sit amet.</span>
-              </span>
-            </p>
-            <p class="field">
-              <label>Author</label>
-              <span>
-                <select class="select">
-                  <option>@primary-user</option>
-                  <option>@secondary-user</option>
-                  <option>@tertiary-user</option>
-                </select>
-                <span class="hint">Lorem ipsum dolor sit amet.</span>
-              </span>
-            </p>
-          </section>
+          <section>Tab content 2.</section>
+          <section>Tab content 3.</section>
         </div>
       </div>
       <footer>
-        <div class="tools">
+        <div class="action-group">
           <button class="button">Save</button>
-          <button class="button">Delete</button>
+          <button class="button">Cancel</button>
         </div>
       </footer>
     </div>
-    <script src="../js/zepto.min.js"></script>
-    <script src="../js/panel.js"></script>
   </body>
 </html>
