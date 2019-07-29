@@ -38,7 +38,7 @@ h6,
 }
 blockquote,
 figcaption,
-.table caption {
+caption {
   color: #808080;
 }
 .button,
@@ -129,77 +129,78 @@ figcaption,
   padding: 0;
   box-shadow: none;
 }
-.input-group .fix {
+.lot-input .fix {
   background: #dda;
 }
-.input-group .button {
-  background: #ffc;
+.lot-input .button {
+  background: #bdf;
   box-shadow: none;
 }
-.input-group .button:focus,
-.input-group .button:active {
-  background: #eeb;
+.lot-input .button:focus,
+.lot-input .button:active {
+  background: #cef;
 }
-.menu-group,
-.menu-group ul {
+.lot-menu,
+.lot-menu ul {
   background: #fff;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 4px 8px rgba(0, 0, 0, .25);
 }
-.menu-group li.current > a {
+.lot-menu li.current > a {
   background: #d00;
   color: #fff;
 }
-.menu-group li.current > a:focus,
-.menu-group li.current > a:hover,
-.menu-group li.current.active > a:focus,
-.menu-group li.current.active > a:hover {
+.lot-menu li.current > a:focus,
+.lot-menu li.current > a:hover,
+.lot-menu li.current.active > a:focus,
+.lot-menu li.current.active > a:hover {
   background: #c40000;
   color: #fff;
 }
-.menu-group li.current.active a {
+.lot-menu li.current.active a {
   background: #ce0000;
 }
-.menu-group li.current a.x {
+.lot-menu li.current a.x {
   background: #ed7e7e; /* opacity: .5 */
 }
-.menu-group li.current.active a.x {
+.lot-menu li.current.active a.x {
   background: #e67e7e; /* opacity: .5 */
 }
-.menu-group li.separator {
+.lot-menu li.separator {
   background: #000;
 }
-.menu-group a {
+.lot-menu a {
   color: #009;
 }
-.menu-group svg.caret {
+.lot-menu svg.caret {
   color: #000;
   opacity: .25;
 }
-.menu-group a:focus,
-.menu-group a:active {
+.lot-menu a:focus,
+.lot-menu a:active {
   color: #900;
 }
-.menu-group a:focus,
-.menu-group a:hover,
-.menu-group li.active > a {
+.lot-menu a:focus,
+.lot-menu a:hover,
+.lot-menu li.active > a {
   background: #eef;
 }
-.menu-group li.active > a:focus,
-.menu-group li.active > a:hover {
+.lot-menu li.active > a:focus,
+.lot-menu li.active > a:hover {
   background: #d5d5ff;
 }
-.menu-group a.x {
+.lot-menu a.x {
   background: #f5f5f5;
   color: #888;
   opacity: 1;
 }
-.menu-group li.active a.x {
+.lot-menu li.active a.x {
   background: #eee;
 }
 .field.required > label:not(:empty)::before {
   color: #f00;
 }
-.field .hint {
+.field .hint,
+.lot-page .page .hint {
   color: #888;
 }
 .input.plain {
@@ -207,27 +208,27 @@ figcaption,
   border: 0;
   box-shadow: none;
 }
-.tab-group > nav li {
+.lot-tab > nav li {
   box-shadow: inset 0 3px 0 #fcc;
 }
-.tab-group > nav .active {
+.lot-tab > nav .active {
   box-shadow: inset 0 3px 0 #ccf;
 }
-.tab-group > nav a.x {
+.lot-tab > nav a.x {
   box-shadow: inset 0 3px 0 #fff;
 }
 @media (max-width: 720px) {
-  .tab-group > nav li {
+  .lot-tab > nav li {
     background: none;
     box-shadow: none;
   }
-  .tab-group > nav li.active {
+  .lot-tab > nav li.active {
     box-shadow: none;
   }
-  .tab-group > nav li.active a {
+  .lot-tab > nav li.active a {
     color: inherit;
   }
-  .tab-group > nav a {
+  .lot-tab > nav a {
     color: #009;
   }
 }
@@ -368,4 +369,16 @@ figcaption,
 .nav > ul > li > a:active,
 .nav > ul > li.active > a {
   color: #fafafa;
+}
+.table-container .table th,
+.table-container .table td {
+  background: #eef;
+  color: inherit;
+  cursor: default;
+}
+.table-container .table tbody tr:hover td {
+  background: #dde;
+}
+.table-container .table th {
+  background: #ccd;
 }
