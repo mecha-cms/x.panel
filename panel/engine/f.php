@@ -29,7 +29,7 @@ namespace _\lot\x {
 
 namespace _\lot\x\panel {
     function type($in, $k, $fn) {
-        \Guard::abort('Unable to convert data <code>' . \json_encode($in) . '</code> because function <code>' . $fn . '</code> does not exist.');
+        \Guard::abort('Unable to convert data <code>' . \strtr(\json_encode($in, \JSON_PRETTY_PRINT), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '</code> does not exist.');
     }
     function content($in, $k, $type) {
         return new \HTML([
@@ -60,9 +60,7 @@ namespace _\lot\x\panel {
 // [content]
 namespace _\lot\x\panel\content {
     function desk($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
-        $out['class'] .= ' desk';
-        return $out;
+        return \call_user_func(__NAMESPACE__, $in, $k, $type);
     }
     function li($in, $k, $type) {
         $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
@@ -72,7 +70,6 @@ namespace _\lot\x\panel\content {
     function nav($in, $k, $type) {
         $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
         $out[0] = 'nav';
-        $out['class'] .= ' nav';
         return $out;
     }
     function ol($in, $k, $type) {
@@ -90,9 +87,7 @@ namespace _\lot\x\panel\content {
 // [lot]
 namespace _\lot\x\panel\lot {
     function desk($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
-        $out['class'] .= ' desk';
-        return $out;
+        return \call_user_func(__NAMESPACE__, $in, $k, $type);
     }
     function li($in, $k, $type) {
         $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
@@ -102,7 +97,6 @@ namespace _\lot\x\panel\lot {
     function nav($in, $k, $type) {
         $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
         $out[0] = 'nav';
-        $out['class'] .= ' nav';
         return $out;
     }
     function ol($in, $k, $type) {

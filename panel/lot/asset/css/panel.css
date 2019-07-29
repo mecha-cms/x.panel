@@ -433,7 +433,7 @@ hr {
 .input,
 .select,
 .textarea,
-.lot-input .fix {
+.lot\:input .fix {
   display: inline-block;
   vertical-align: middle;
   background: #fff;
@@ -480,13 +480,13 @@ hr {
   background: #f00;
   color: #fff;
 }
-.lot-button {
+.lot\:button {
   display: inline-flex;
 }
-.lot-button .button + .button {
+.lot\:button .button + .button {
   margin-left: 1px;
 }
-.lot-button .button svg.caret:only-child {
+.lot\:button .button svg.caret:only-child {
   margin-right: -12px;
   margin-left: -12px;
 }
@@ -577,11 +577,11 @@ label {
   width: auto;
   height: auto;
 }
-.lot-input {
+.lot\:input {
   display: inline-flex;
   position: relative;
 }
-.lot-input .fix {
+.lot\:input .fix {
   width: auto;
   max-width: 50%;
   background: rgba(0, 0, 0, .15);
@@ -589,37 +589,37 @@ label {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.lot-input * + * {
+.lot\:input * + * {
   margin-left: -1px;
 }
-.lot-input svg.fix {
+.lot\:input svg.fix {
   padding-right: 6px;
   padding-left: 6px;
 }
-.lot-input .button {
+.lot\:input .button {
   background: none;
   color: inherit;
   border-width: 1px;
   line-height: 22px;
 }
-.lot-input .button svg {
+.lot\:input .button svg {
   margin: -1px;
 }
-.lot-input .button svg:first-child {
+.lot\:input .button svg:first-child {
   margin-left: -7px;
 }
-.lot-input .button svg:last-child {
+.lot\:input .button svg:last-child {
   margin-right: -7px;
 }
-.lot-input .button svg:only-child {
+.lot\:input .button svg:only-child {
   margin-right: -7px;
   margin-left: -7px;
 }
-.lot-input .lot-button .button + .button {
+.lot\:input .lot\:button .button + .button {
   margin-left: -1px;
 }
-.lot-input .button:focus,
-.lot-input .button:active {
+.lot\:input .button:focus,
+.lot\:input .button:active {
   background: rgba(0, 0, 0, .05);
   color: inherit;
 }
@@ -638,16 +638,16 @@ label {
   text-align: inherit;
   vertical-align: top;
 }
-.table-container {
+.lot\:table {
   border: 1px solid;
   overflow: auto;
 }
-.table-container .table {
+.lot\:table .table {
   border-collapse: separate;
   border-spacing: 2px;
 }
-.table-container .table th,
-.table-container .table td {
+.lot\:table .table th,
+.lot\:table .table td {
   padding: 0 4px;
   border: 0;
   background: #000;
@@ -694,54 +694,54 @@ svg {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.lot-task {
+.lot\:task {
   display: flex;
   flex-wrap: wrap;
   margin: -3px;
 }
-.lot-task .button,
-.lot-task .lot-button,
-.lot-task .input,
-.lot-task .lot-input,
-.lot-task .select {
+.lot\:task .button,
+.lot\:task .lot\:button,
+.lot\:task .input,
+.lot\:task .lot\:input,
+.lot\:task .select {
   margin: 3px;
 }
-.lot-task .lot-button .button {
+.lot\:task .lot\:button .button {
   margin: 0;
 }
-.lot-task .lot-button .button + .button {
+.lot\:task .lot\:button .button + .button {
   margin-left: 1px;
 }
-.lot-task > a {
+.lot\:task > a {
   display: inline-block;
   vertical-align: middle;
   margin-right: 12px;
 }
-.lot-task > a > svg + span {
+.lot\:task > a > svg + span {
   display: inline-block;
   vertical-align: middle;
   font-size: 12px;
   margin-left: 3px;
 }
-.lot-task.icons > a {
+.lot\:task.icons > a {
   margin: 0;
 }
-.lot-task.icons > a > svg + span {
+.lot\:task.icons > a > svg + span {
   display: none;
 }
-.dropdown {
+.drop {
   display: inline-flex;
   position: relative;
 }
-.lot-menu,
-.lot-menu ul,
-.lot-menu li {
+.lot\:menu,
+.lot\:menu ul,
+.lot\:menu li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.lot-menu,
-.lot-menu ul {
+.lot\:menu,
+.lot\:menu ul {
   position: absolute;
   top: 100%;
   left: 0;
@@ -752,25 +752,25 @@ svg {
   line-height: 24px;
   display: none;
 }
-.lot-menu.static {
+.lot\:menu.static {
   position: static;
 }
-.lot-menu.enter,
-.lot-menu ul.enter {
+.lot\:menu.enter,
+.lot\:menu ul.enter {
   display: block;
 }
-.lot-menu ul {
+.lot\:menu ul {
   top: 0;
   left: 100%;
 }
-.lot-menu.rtl ul {
+.lot\:menu.rtl ul {
   left: auto;
   right: 100%;
 }
-.lot-menu li {
+.lot\:menu li {
   position: relative;
 }
-.lot-menu li.separator {
+.lot\:menu li.separator {
   width: auto;
   height: 1px;
   background: #000;
@@ -778,41 +778,41 @@ svg {
   margin: 0;
   overflow: hidden;
 }
-.lot-menu li.separator:first-child,
-.lot-menu li.separator:last-child {
+.lot\:menu li.separator:first-child,
+.lot\:menu li.separator:last-child {
   display: none;
 }
-.lot-menu li.current > a {
+.lot\:menu li.current > a {
   color: inherit;
 }
-.lot-menu a {
+.lot\:menu a {
   display: flex;
   width: 100%;
   padding: 6px 12px;
   color: #00f;
 }
-.lot-menu a:focus,
-.lot-menu a:active {
+.lot\:menu a:focus,
+.lot\:menu a:active {
   color: #ff0000;
 }
-.lot-menu span {
+.lot\:menu span {
   flex: 1;
 }
-.lot-menu svg {
+.lot\:menu svg {
   margin: 0 -6px;
 }
-.lot-menu svg:first-child {
+.lot\:menu svg:first-child {
   margin-right: 6px;
 }
-.lot-menu svg:last-child {
+.lot\:menu svg:last-child {
   margin-left: 6px;
 }
-.lot-menu svg:only-child {
+.lot\:menu svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
 }
-.lot-menu li:hover > ul,
-.lot-menu a:focus + ul {
+.lot\:menu li:hover > ul,
+.lot\:menu a:focus + ul {
   display: block;
 }
 .align-right,
@@ -965,33 +965,33 @@ svg {
 .input.plain.width {
   width: 100%;
 }
-.lot-tab > nav {
+.lot\:tab > nav {
   height: 48px;
   line-height: 48px;
 }
-.lot-tab > nav ul,
-.lot-tab > nav li {
+.lot\:tab > nav ul,
+.lot\:tab > nav li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.lot-tab > nav ul {
+.lot\:tab > nav ul {
   display: flex;
   overflow: hidden;
 }
-.lot-tab > nav li {
+.lot\:tab > nav li {
   position: relative;
   border: 1px solid;
   border-bottom-width: 0;
 }
-.lot-tab > nav li + li {
+.lot\:tab > nav li + li {
   border-left-width: 0;
 }
-.lot-tab > nav .active {
+.lot\:tab > nav .active {
   z-index: 4;
 }
-.lot-tab > nav .active::before,
-.lot-tab > nav .active::after {
+.lot\:tab > nav .active::before,
+.lot\:tab > nav .active::after {
   content: "";
   display: block;
   position: absolute;
@@ -1000,83 +1000,83 @@ svg {
   height: 0;
   border-bottom: 1px solid;
 }
-.lot-tab > nav .active a,
-.lot-tab > nav .active span {
+.lot\:tab > nav .active a,
+.lot\:tab > nav .active span {
   color: inherit;
 }
-.lot-tab > nav .active::before {
+.lot\:tab > nav .active::before {
   right: 100%;
 }
-.lot-tab > nav .active::after {
+.lot\:tab > nav .active::after {
   left: 100%;
 }
-.lot-tab > nav a {
+.lot\:tab > nav a {
   display: block;
   padding: 0 24px;
   color: inherit;
 }
-.lot-tab > nav svg {
+.lot\:tab > nav svg {
   margin: 12px -12px;
 }
-.lot-tab > nav svg:first-child {
+.lot\:tab > nav svg:first-child {
   margin-right: 6px;
 }
-.lot-tab > nav svg:last-child {
+.lot\:tab > nav svg:last-child {
   margin-left: 6px;
 }
-.lot-tab > nav svg:only-child {
+.lot\:tab > nav svg:only-child {
   margin-right: -12px;
   margin-left: -12px;
 }
 @media (max-width: 720px) {
-  .lot-tab > nav {
+  .lot\:tab > nav {
     height: auto;
     line-height: inherit;
   }
-  .lot-tab > nav li {
+  .lot\:tab > nav li {
     background: none;
     border-width: 0;
     margin-right: 24px;
   }
-  .lot-tab > nav li.active::before,
-  .lot-tab > nav li.active::after {
+  .lot\:tab > nav li.active::before,
+  .lot\:tab > nav li.active::after {
     display: none;
   }
-  .lot-tab > nav li.active a,
-  .lot-tab > nav li.active span {
+  .lot\:tab > nav li.active a,
+  .lot\:tab > nav li.active span {
     color: inherit;
   }
-  .lot-tab > nav li:last-child {
+  .lot\:tab > nav li:last-child {
     margin-right: 0;
   }
-  .lot-tab > nav a {
+  .lot\:tab > nav a {
     padding: 0;
     color: #00f;
   }
-  .lot-tab > nav svg {
+  .lot\:tab > nav svg {
     display: none;
   }
 }
-.lot-tab > section + section {
+.lot\:tab > section + section {
   margin-top: 24px;
 }
-.lot-tab > section {
+.lot\:tab > section {
   margin-top: 24px;
   display: none;
 }
-.lot-tab > section.active {
+.lot\:tab > section.active {
   display: block;
 }
-.lot-tab.size-0 {
+.lot\:tab.size-0 {
   display: none;
 }
-.lot-tab.size-1 > nav {
+.lot\:tab.size-1 > nav {
   display: none;
 }
-.lot-tab.size-1 > section {
+.lot\:tab.size-1 > section {
   margin-top: 0;
 }
-.files {
+.lot\:file {
   margin-right: 0;
   margin-left: 0;
   padding: 0;
@@ -1085,7 +1085,7 @@ svg {
 }
 .file,
 .file .title,
-.file .lot-task {
+.file .lot\:task {
   margin: 0;
   padding: 0;
   font: inherit;
@@ -1107,7 +1107,7 @@ svg {
   text-overflow: ellipsis;
   float: left;
 }
-.file .lot-task {
+.file .lot\:task {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -1155,8 +1155,8 @@ svg {
 .file.is-hidden:not(:focus):not(:hover) {
   opacity: 0.5;
 }
-.lot-page,
-.lot-page .page {
+.lot\:page,
+.lot\:page .page {
   margin-right: 0;
   margin-left: 0;
   padding: 0;
@@ -1179,7 +1179,7 @@ svg {
   font-style: normal;
   color: inherit;
 }
-.lot-page .page {
+.lot\:page .page {
   background: #fff;
   border: 0 solid #fff;
   padding: 6px 6px;
@@ -1187,33 +1187,33 @@ svg {
   position: relative;
   min-height: 76px;
 }
-.lot-page .page > div,
-.lot-page .page > figure,
-.lot-page .page > header,
-.lot-page .page .title,
-.lot-page .page .lot-task {
+.lot\:page .page > div,
+.lot\:page .page > figure,
+.lot\:page .page > header,
+.lot\:page .page .title,
+.lot\:page .page .lot\:task {
   margin: 0;
   padding: 0;
   list-style: none;
   border-color: inherit;
 }
-.lot-page .page .title {
+.lot\:page .page .title {
   font: inherit;
   font-size: 20px;
   color: inherit;
 }
-.lot-page .page .hint {
+.lot\:page .page .hint {
   margin: 0;
   padding: 0;
   font-size: 12px;
   line-height: 16px;
 }
-.lot-page .page > figure {
+.lot\:page .page > figure {
   width: 64px;
   height: 64px;
   float: left;
 }
-.lot-page .page > figure img {
+.lot\:page .page > figure img {
   display: block;
   margin: 0;
   padding: 0;
@@ -1221,28 +1221,28 @@ svg {
   height: 100%;
   text-align: center;
 }
-.lot-page .page > figure + header,
-.lot-page .page > figure + header + div {
+.lot\:page .page > figure + header,
+.lot\:page .page > figure + header + div {
   margin-left: 76px;
 }
 @media (max-width: 720px) {
-  .lot-page .page > figure {
+  .lot\:page .page > figure {
     display: none;
   }
-  .lot-page .page > figure + header,
-  .lot-page .page > figure + header + div {
+  .lot\:page .page > figure + header,
+  .lot\:page .page > figure + header + div {
     margin-left: 0;
   }
 }
-.lot-page .page .lot-task {
+.lot\:page .page .lot\:task {
   position: absolute;
   top: 6px;
   right: 6px;
 }
-.lot-page .page.is-hidden:not(:focus):not(:hover) {
+.lot\:page .page.is-hidden:not(:focus):not(:hover) {
   opacity: 0.5;
 }
-.datas {
+.lot\:data {
   margin-right: 0;
   margin-left: 0;
   padding: 0;
@@ -1256,7 +1256,7 @@ svg {
   column-gap: 12px;
 }
 @media (max-width: 720px) {
-  .datas {
+  .lot\:data {
     -webkit-column-count: 2;
     -webkit-column-gap: 12px;
     -moz-column-count: 2;
@@ -1267,7 +1267,7 @@ svg {
 }
 .data,
 .data .title,
-.data .lot-task {
+.data .lot\:task {
   margin: 0;
   padding: 0;
   font: inherit;
@@ -1297,7 +1297,7 @@ svg {
   color: inherit;
   float: left;
 }
-.data .lot-task {
+.data .lot\:task {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -1354,40 +1354,40 @@ svg {
     display: none;
   }
 }
-.desk {
+.lot\:desk {
   padding: 48px 48px;
   margin: 0 auto;
 }
-.desk::before,
-.desk::after {
+.lot\:desk::before,
+.lot\:desk::after {
   content: "";
   display: table;
   clear: both;
 }
-.desk > header {
+.lot\:desk > header {
   margin-bottom: 48px;
 }
-.desk > footer {
+.lot\:desk > footer {
   margin-top: 48px;
 }
-.desk > footer > .lot-task {
+.lot\:desk > footer > .lot\:task {
   margin-left: 117px;
 }
-.desk > header:empty,
-.desk > footer:empty {
+.lot\:desk > header:empty,
+.lot\:desk > footer:empty {
   display: none;
 }
 @media (max-width: 720px) {
-  .desk {
+  .lot\:desk {
     padding: 24px 24px;
   }
-  .desk > header {
+  .lot\:desk > header {
     margin-bottom: 24px;
   }
-  .desk > footer {
+  .lot\:desk > footer {
     margin-top: 24px;
   }
-  .desk > footer > .lot-task {
+  .lot\:desk > footer > .lot\:task {
     margin-left: 0;
   }
 }
@@ -1466,11 +1466,11 @@ html.form body {
   display: table-cell;
   vertical-align: middle;
 }
-html.form body .desk {
+html.form body .lot\:desk {
   margin: 0;
   padding: 0;
 }
-html.form body .desk > footer .lot-task {
+html.form body .lot\:desk > footer .lot\:task {
   margin: 0;
 }
 html.form body form {
@@ -1480,12 +1480,12 @@ html.form body form {
 html.form body form .field > label {
   display: none;
 }
-.nav {
+.lot\:nav {
   line-height: 48px;
 }
-.nav > ul,
-.nav > ul > li,
-.nav .field {
+.lot\:nav > ul,
+.lot\:nav > ul > li,
+.lot\:nav .field {
   display: block;
   width: auto;
   height: inherit;
@@ -1493,62 +1493,62 @@ html.form body form .field > label {
   padding: 0;
   list-style: none;
 }
-.nav > ul {
+.lot\:nav > ul {
   height: 48px;
 }
-.nav > ul > li {
+.lot\:nav > ul > li {
   float: left;
 }
-.nav > ul > li.active > a {
+.lot\:nav > ul > li.active > a {
   color: inherit;
 }
-.nav > ul > li.separator {
+.lot\:nav > ul > li.separator {
   width: 1px;
   height: 24px;
   margin: 12px 0;
   overflow: hidden;
 }
-.nav > ul > li.separator:first-child,
-.nav > ul > li.separator:last-child {
+.lot\:nav > ul > li.separator:first-child,
+.lot\:nav > ul > li.separator:last-child {
   display: none;
 }
-.nav > ul > li > a {
+.lot\:nav > ul > li > a {
   display: flex;
   padding: 0 18px;
   overflow: hidden;
 }
-.nav > ul > li > a > span {
+.lot\:nav > ul > li > a > span {
   flex: 1;
 }
-.nav > ul > li > a > svg {
+.lot\:nav > ul > li > a > svg {
   margin: 12px -6px 0;
   margin-top: 12px;
 }
-.nav > ul > li > a > svg:first-child {
+.lot\:nav > ul > li > a > svg:first-child {
   margin-right: 6px;
 }
-.nav > ul > li > a > svg:last-child {
+.lot\:nav > ul > li > a > svg:last-child {
   margin-left: 6px;
 }
-.nav > ul > li > a > svg:only-child {
+.lot\:nav > ul > li > a > svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
 }
-.nav > ul > li > a > svg.caret:first-child {
+.lot\:nav > ul > li > a > svg.caret:first-child {
   margin-right: 0;
   margin-left: -12px;
 }
-.nav > ul > li > a > svg.caret:last-child {
+.lot\:nav > ul > li > a > svg.caret:last-child {
   margin-right: -12px;
   margin-left: 0;
 }
-.nav .field {
+.lot\:nav .field {
   margin: 0;
 }
-.nav .field label {
+.lot\:nav .field label {
   display: none;
 }
-.nav .field .input {
+.lot\:nav .field .input {
   display: block;
   width: 192px;
   height: 48px;
@@ -1558,24 +1558,24 @@ html.form body form .field > label {
   border: 0;
 }
 @media (max-width: 720px) {
-  .nav > ul > li {
+  .lot\:nav > ul > li {
     display: none;
   }
-  .nav > ul > li.li\:lot,
-  .nav > ul > li.li\:search,
-  .nav > ul > li.li\:message {
+  .lot\:nav > ul > li.li\:lot,
+  .lot\:nav > ul > li.li\:search,
+  .lot\:nav > ul > li.li\:message {
     display: block;
   }
-  .nav > ul > li.li\:search {
+  .lot\:nav > ul > li.li\:search {
     position: absolute;
     top: 0;
     right: 48px;
     left: 48px;
   }
-  .nav > ul > li.li\:search .input {
+  .lot\:nav > ul > li.li\:search .input {
     width: 100%;
   }
-  .nav ul ul ul {
+  .lot\:nav ul ul ul {
     left: 25%;
   }
 }
@@ -1583,7 +1583,7 @@ html.form body form .field > label {
   padding: 48px 48px;
   padding-top: 0;
 }
-.desk .footer {
+.lot\:desk .footer {
   padding: 0;
 }
 @media (max-width: 720px) {
