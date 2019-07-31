@@ -3,54 +3,50 @@
 namespace {}
 
 namespace _\lot\x {
-    function panel($in, $k, $type) {
+    function panel($in, $key, $type) {
         $out = "";
-        $type = \strtr($type, '.-', "\\_");
+        $type = \strtr($type, '/-', "\\_");
         if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\type\\" . $type, "\\"))) {
-            $out .= \call_user_func($fn, $in, $k, $type);
+            $out .= \call_user_func($fn, $in, $key, $type);
         } else if (isset($in['content'])) {
             if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\content\\" . $type, "\\"))) {
-                $out .= \call_user_func($fn, $in['content'], $k, $type);
+                $out .= \call_user_func($fn, $in['content'], $key, $type);
             } else {
-                $out .= panel\content($in['content'], $k, $type);
+                $out .= panel\content($in['content'], $key, $type);
             }
         } else if (isset($in['lot'])) {
             if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\lot\\" . $type, "\\"))) {
-                $out .= \call_user_func($fn, $in['lot'], $k, $type);
+                $out .= \call_user_func($fn, $in['lot'], $key, $type);
             } else {
-                $out .= panel\lot($in['lot'], $k, $type);
+                $out .= panel\lot($in['lot'], $key, $type);
             }
         } else {
-            $out .= panel\type($in, $k, $fn);
+            $out .= panel\type($in, $key, $fn);
         }
         return $out;
     }
 }
 
 namespace _\lot\x\panel {
-    function type($in, $k, $fn) {
+    function type($in, $key, $fn) {
         \Guard::abort('Unable to convert data <code>' . \strtr(\json_encode($in, \JSON_PRETTY_PRINT), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '</code> does not exist.');
     }
-    function content($in, $k, $type) {
+    function content($in, $key, $type) {
         return new \HTML([
             0 => 'div',
             1 => \is_array($in) ? new \HTML($in) : $in,
-            2 => [
-                'class' => 'content' . ($type !== "" ? ' content:' . \c2f($type) : "")
-            ]
+            2 => ['class' => 'content' . ($type !== '#' ? ' content:' . \c2f($type) : "")]
         ]);
     }
-    function lot($in, $k, $type) {
+    function lot($in, $key, $type) {
         $out = [
             0 => 'div',
             1 => "",
-            2 => [
-                'class' => 'lot' . ($type !== "" ? ' lot:' . \c2f($type) : "")
-            ]
+            2 => ['class' => 'lot' . ($type !== '#' ? ' lot:' . \c2f($type) : "")]
         ];
         if (!empty($in) && \is_array($in)) {
             foreach (\Anemon::from($in)->sort([1, 'stack', 10], true) as $k => $v) {
-                $out[1] .= \call_user_func(__NAMESPACE__, $v, $k, $v['type'] ?? '#');
+                $out[1] .= \_\lot\x\panel($v, $k, $v['type'] ?? '#');
             }
         }
         return new \HTML($out);
@@ -59,26 +55,26 @@ namespace _\lot\x\panel {
 
 // [content]
 namespace _\lot\x\panel\content {
-    function desk($in, $k, $type) {
-        return \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function desk($in, $key, $type) {
+        return \_\lot\x\panel\content($in, $key, $type);
     }
-    function li($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function li($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'li';
         return $out;
     }
-    function nav($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function nav($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'nav';
         return $out;
     }
-    function ol($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function ol($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'ol';
         return $out;
     }
-    function ul($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function ul($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'ul';
         return $out;
     }
@@ -86,26 +82,27 @@ namespace _\lot\x\panel\content {
 
 // [lot]
 namespace _\lot\x\panel\lot {
-    function desk($in, $k, $type) {
-        return \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function desk($in, $key, $type) {
+        return \_\lot\x\panel\lot($in, $key, $type);
     }
-    function li($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function field($in, $key, $type) {}
+    function li($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'li';
         return $out;
     }
-    function nav($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function nav($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'nav';
         return $out;
     }
-    function ol($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function ol($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'ol';
         return $out;
     }
-    function ul($in, $k, $type) {
-        $out = \call_user_func(__NAMESPACE__, $in, $k, $type);
+    function ul($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'ul';
         return $out;
     }
@@ -113,18 +110,18 @@ namespace _\lot\x\panel\lot {
 
 // [content]
 namespace _\lot\x\panel\content\desk {
-    function body($in, $k, $type) {
-        $out = \call_user_func(\dirname(__NAMESPACE__), $in, $k, $type);
+    function body($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'main';
         return $out;
     }
-    function footer($in, $k, $type) {
-        $out = \call_user_func(\dirname(__NAMESPACE__), $in, $k, $type);
+    function footer($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'footer';
         return $out;
     }
-    function header($in, $k, $type) {
-        $out = \call_user_func(\dirname(__NAMESPACE__), $in, $k, $type);
+    function header($in, $key, $type) {
+        $out = \_\lot\x\panel\content($in, $key, $type);
         $out[0] = 'header';
         return $out;
     }
@@ -132,199 +129,104 @@ namespace _\lot\x\panel\content\desk {
 
 // [lot]
 namespace _\lot\x\panel\lot\desk {
-    function body($in, $k, $type) {
-        $out = \call_user_func(\dirname(__NAMESPACE__), $in, $k, $type);
+    function body($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'main';
         return $out;
     }
-    function footer($in, $k, $type) {
-        $out = \call_user_func(\dirname(__NAMESPACE__), $in, $k, $type);
+    function footer($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'footer';
         return $out;
     }
-    function header($in, $k, $type) {
-        $out = \call_user_func(\dirname(__NAMESPACE__), $in, $k, $type);
+    function header($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'header';
         return $out;
     }
 }
 
+
+// [h]: Helper function(s)
+namespace _\lot\x\panel\h {
+    function c($in) {
+        $a = \implode(' ', (array) ($in[2] ?? []));
+        $b = \implode(' ', (array) ($in['tags'] ?? []));
+        $c = \implode(' ', \array_unique(\array_filter(\array_merge(\explode(' ', $a), \explode(' ', $b)))));
+        $in[2]['class'] = $c !== "" ? $c : null;
+        return $in[2];
+    }
+    function icon($in) {
+        $icon = \array_replace([null, null], (array) $in);
+        if ($icon[0] && strpos($icon[0], '<') === false) {
+            $icon[0] = '<svg viewBox="0 0 24 24"><path d="' . $icon[0] . '"></path></svg>';
+        }
+        if ($icon[1] && strpos($icon[1], '<') === false) {
+            $icon[0] = '<svg viewBox="0 0 24 24"><path d="' . $icon[1] . '"></path></svg>';
+        }
+        return $icon;
+    }
+    function link($value) {
+        return url($value, $in);
+    }
+    function url($value) {
+        return \is_string($value) ? \URL::long($value) : null;
+    }
+}
+
 // [type]
 namespace _\lot\x\panel\type {
-    function a($in, $k, $type) {
-        $out = new \HTML([$in[0] ?? 'a', $in[1] ?? $in['title'] ?? "", \array_replace($in[2] ?? [], [
-            'href' => $in['link'] ?? $in['url'] ?? url($in['path']),
+    function a($in) {
+        if (!isset($in[1])) {
+            $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
+            if ($title = $in['title'] ?? "") {
+                $title = '<span>' . $title . '</span>';
+            }
+            $in[1] = $icon[0] . $title . $icon[1];
+        }
+        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['path'] ?? null);
+        $out = new \HTML([$in[0] ?? 'a', $in[1], [
+            'class' => $href === null ? 'disabled' : null,
+            'href' => $href === null ? 'javascript:;' : $href,
             'target' => isset($in['link']) ? '_blank' : ($in[2]['target'] ?? false)
-        ])]);
-        return $out;
-    }
-    function link(string $v, $in) {
-        return url($v, $in);
-    }
-    function url(string $v, $in) {
-        return \URL::long($v);
-    }
-}
-
-
-
-
-/*
-
-    function desk($in) {
-        $out = '<div class="desk">';
-        if (isset($in[0])) {
-            $out .= desk\header($in[0]);
-        }
-        if (isset($in[1])) {
-            $fn = \rtrim("\\_\\lot\\x\\panel\\lot\\" . ($in[1]['type'] ?? ""), "\\");
-            if (\function_exists($fn)) {
-                $out .= \call_user_func($fn, $in[1]['lot'] ?? []);
-            } else {
-                $out .= desk\body($in[1]);
-            }
-        }
-        if (isset($in[2])) {
-            $out .= desk\footer($in[2]);
-        }
-        return $out . '</div>';
-    }
-    function field($in) {
-        $key = \strip_tags($in['key'] ?? \uniqid());
-        $id = \strip_tags($in['id'] ?? 'field:' . $key);
-        $title = \strip_tags($in['title'] ?? $key ?? "", '<a><b><code><em><i><kbd><span><strong><var>');
-        $content = content($in);
-        if ($content instanceof \HTML) {
-            $content['id'] = $id;
-            if (!isset($content['name']) && \strpos(',button,input,select,textarea,', ',' . $content[0] . ',') !== false) {
-                $content['name'] = $key;
-            }
-            $content['placeholder'] = $in['placeholder'] ?? null;
-            $style = "";
-            $h = $in['height'] ?? null;
-            $w = $in['width'] ?? null;
-            if (isset($h) && !\is_bool($h)) {
-                $style .= 'height:' . (\is_numeric($h) ? $h . 'px' : $h) . ';';
-            }
-            if (isset($w) && !\is_bool($w)) {
-                $style .= 'width:' . (\is_numeric($w) ? $w . 'px' : $w) . ';';
-            }
-            $content['style'] = \trim($style) ?: null;
-        }
-        $out = new \HTML([$t = $in[0] ?? 'p', $in[1] ?? "", $in[2] ?? []]);
-        $out['class'] = c([
-            'field' => 1,
-            'p' => 1
-        ], $out['class']);
-        $out[1] = '<label for="' . $id . '"' . (isset($in['title']) ? ' title="' . $key . '"' : "") . '>' . $title . '</label>' . ($t === 'p' ? '<span>' . $content . '</span>' : '<div>' . $content . '</div>');
-        return $out;
-    }
-    function c($a = null, $b = null) {
-        if (\is_string($a)) {
-            $a = \array_count_values(\explode(' ', $a));
-        }
-        if (\is_string($b)) {
-            $b = \array_count_values(\explode(' ', $b));
-        }
-        $out = \array_replace((array) $a, (array) $b);
-        \ksort($out);
-        return \implode(' ', \array_keys(\array_filter($out)));
-    }
-
-namespace _\lot\x\panel\field {
-    function blob($in) {}
-    function hidden($in) {
-        return new \HTML(['input', false, [
-            'type' => 'hidden',
-            'value' => $in['value'] ?? null
         ]]);
-    }
-    function content($in) {
-        $in[0] = $in[0] ?? 'div';
-        if (!isset($in['content']) || \is_array($in['content'])) {
-            $in['height'] = $in['height'] ?? true; // Default to `true`
-            $in['width'] = $in['width'] ?? true; // Default to `true`
-            $in['content'] = \array_replace($in['content'] ?? [], [
-                0 => 'textarea',
-                1 => \htmlspecialchars($in['value'] ?? ""),
-                2 => [
-                    'class' => \_\lot\x\panel\c([
-                        'textarea' => 1,
-                        'height' => !empty($in['height']),
-                        'width' => !empty($in['width'])
-                    ])
-                ]
-            ]);
-        }
-        return \_\lot\x\panel\field($in);
-    }
-    function description($in) {
-        if (!isset($in['content']) || \is_array($in['content'])) {
-            $in['height'] = $in['height'] ?? false; // Default to `false`
-        }
-        return content($in);
-    }
-    function source($in) {
-        $out = content($in);
-        $out['data-type'] = $in['syntax'] ?? 'text/plain';
-        $out[1] = \preg_replace_callback('/<textarea(?:\s[^>]*)?>[\s\S]*?<\/textarea>/', function($m) use($in) {
-            $out = new \HTML($m[0]);
-            $out['class'] = \_\lot\x\panel\c($out['class'], ['code' => 1]);
-            $out['data-type'] = $in['syntax'] ?? 'text/plain';
-            return $out;
-        }, $out[1]);
         return $out;
     }
-    function slug($in) {}
-    function title($in) {
-        if (!isset($in['content']) || \is_array($in['content'])) {
-            $in['content'] = \array_replace([
-                0 => 'input',
-                1 => false,
-                2 => [
-                    'class' => 'input width',
-                    'type' => 'text',
-                    'value' => $in['value'] ?? null
-                ]
-            ], $in['content'] ?? []);
-        }
-        return \_\lot\x\panel\field($in);
-    }
+    function field($in) {}
 }
 
-namespace _\lot\x\panel\lot {
-    function field($in) {
-        $a = "";
-        $b = "";
-        foreach (\Anemon::from($in)->sort([1, 'stack', 10], true) as $k => $v) {
-            $v['id'] = $v['id'] ?? 'field:' . \dechex(\crc32($k));
-            $v['key'] = $v['key'] ?? $k;
-            $v['type'] = $v['type'] ?? 'title';
-            $fn = \rtrim("\\_\\lot\\x\\panel\\field\\" . $v['type'], "\\");
-            if (\function_exists($fn)) {
-                if ($v['type'] === 'hidden') {
-                    $b .= \call_user_func($fn, $v);
+namespace _\lot\x\panel\type\nav {
+    function ul($in, $key, $type, int $i = 0) {
+        $out = [
+            0 => 'ul',
+            1 => "",
+            2 => \_\lot\x\panel\h\c($in)
+        ];
+        if (isset($in['content'])) {
+            $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
+        } else if (isset($in['lot'])&& \is_array($in['lot'])) {
+            foreach ($in['lot'] as $k => $v) {
+                $li = new \HTML(['li', ""]);
+                if (\is_array($v)) {
+                    $v['icon'] = \_\lot\x\panel\h\icon($v['icon'] ?? [null, null]);
+                    if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
+                        $v['icon'][1] = '<svg class="caret" viewBox="0 0 24 24"><path d="' . ($v['caret'] ?? ($i === 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
+                    }
+                    $ul = ul($v, $k, $type, $i + 1); // Recurse
+                    $ul['class'] = 'lot lot:menu';
+                    $li[1] = \_\lot\x\panel\type\a($v) . $ul;
+                    $li[2] = \_\lot\x\panel\h\c($v);
+                    if ($i === 0) {
+                        $li['class'] = \trim($li['class'] . ' drop');
+                    }
                 } else {
-                    $a .= \call_user_func($fn, $v);
+                    $li[1] = \_\lot\x\panel\type\a(['title' => $v]);
                 }
+                $out[1] .= $li;
             }
+        } else if (isset($in[1])) {
+            $out[1] = $in[1];
         }
-        return '<div class="lot lot-field">' . $a . $b . '</div>';
+        return new \HTML($out);
     }
 }
-
-namespace _\lot\x\panel\lot\field {}
-
-namespace _\lot\x\panel\lot\menu {}
-
-namespace _\lot\x\panel\lot\nav {}
-
-namespace _\lot\x\panel\lot\tab {}
-
-namespace _\lot\x\panel\menu {}
-
-namespace _\lot\x\panel\nav {}
-
-namespace _\lot\x\panel\tab {}
-
-*/
