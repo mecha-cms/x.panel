@@ -1483,8 +1483,9 @@ html.form body form .field > label {
 .lot\:nav {
   line-height: 48px;
   display: flex;
+  flex-wrap: wrap;
 }
-.lot\:nav .fill {
+.lot\:nav > ul:nth-child(2) {
   flex: 1;
 }
 .lot\:nav > ul,
@@ -1498,10 +1499,8 @@ html.form body form .field > label {
   list-style: none;
 }
 .lot\:nav > ul {
+  display: flex;
   height: 48px;
-}
-.lot\:nav > ul > li {
-  float: left;
 }
 .lot\:nav > ul > li.active > a {
   color: inherit;
@@ -1562,25 +1561,14 @@ html.form body form .field > label {
   border: 0;
 }
 @media (max-width: 720px) {
-  .lot\:nav > ul > li {
-    display: none;
-  }
-  .lot\:nav > ul > li.li\:lot,
-  .lot\:nav > ul > li.li\:search,
-  .lot\:nav > ul > li.li\:message {
-    display: block;
-  }
-  .lot\:nav > ul > li.li\:search {
-    position: absolute;
-    top: 0;
-    right: 48px;
-    left: 48px;
-  }
-  .lot\:nav > ul > li.li\:search .input {
+  .lot\:nav > ul:first-child {
     width: 100%;
   }
-  .lot\:nav ul ul ul {
-    left: 25%;
+  .lot\:nav > ul:first-child > li + li {
+    flex: 1;
+  }
+  .lot\:nav > ul:first-child > li + li .input {
+    width: 100%;
   }
 }
 .footer {

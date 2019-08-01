@@ -5,8 +5,8 @@ namespace {}
 namespace _\lot\x {
     function panel($in, $key, $type) {
         $out = "";
-        $type = \strtr($type, '/-', "\\_");
-        if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\type\\" . $type, "\\"))) {
+        $type = \strtr($type, '.-', "\\_");
+        if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\" . $type, "\\"))) {
             $out .= \call_user_func($fn, $in, $key, $type);
         } else if (isset($in['content'])) {
             if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\content\\" . $type, "\\"))) {
@@ -21,16 +21,33 @@ namespace _\lot\x {
                 $out .= panel\lot($in['lot'], $key, $type);
             }
         } else {
-            $out .= panel\type($in, $key, $fn);
+            $out .= panel\abort($in, $key, $fn);
         }
         return $out;
     }
 }
 
 namespace _\lot\x\panel {
-    function type($in, $key, $fn) {
+    function a($in) {
+        if (!isset($in[1])) {
+            $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
+            if ($title = $in['title'] ?? "") {
+                $title = '<span>' . $title . '</span>';
+            }
+            $in[1] = $icon[0] . $title . $icon[1];
+        }
+        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['path'] ?? null);
+        $out = new \HTML([$in[0] ?? 'a', $in[1], [
+            'class' => $href === null ? 'disabled' : null,
+            'href' => $href === null ? 'javascript:;' : $href,
+            'target' => isset($in['link']) ? '_blank' : ($in[2]['target'] ?? false)
+        ]]);
+        return $out;
+    }
+    function abort($in, $key, $fn) {
         \Guard::abort('Unable to convert data <code>' . \strtr(\json_encode($in, \JSON_PRETTY_PRINT), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '</code> does not exist.');
     }
+    function field($in) {}
     function content($in, $key, $type) {
         return new \HTML([
             0 => 'div',
@@ -174,31 +191,10 @@ namespace _\lot\x\panel\h {
     }
 }
 
-// [type]
-namespace _\lot\x\panel\type {
-    function a($in) {
-        if (!isset($in[1])) {
-            $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
-            if ($title = $in['title'] ?? "") {
-                $title = '<span>' . $title . '</span>';
-            }
-            $in[1] = $icon[0] . $title . $icon[1];
-        }
-        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['path'] ?? null);
-        $out = new \HTML([$in[0] ?? 'a', $in[1], [
-            'class' => $href === null ? 'disabled' : null,
-            'href' => $href === null ? 'javascript:;' : $href,
-            'target' => isset($in['link']) ? '_blank' : ($in[2]['target'] ?? false)
-        ]]);
-        return $out;
-    }
-    function field($in) {}
-}
-
-namespace _\lot\x\panel\type\nav {
+namespace _\lot\x\panel\nav {
     function ul($in, $key, $type, int $i = 0) {
         $out = [
-            0 => 'ul',
+            0 => $in[0] ?? 'ul',
             1 => "",
             2 => \_\lot\x\panel\h\c($in)
         ];
@@ -212,15 +208,18 @@ namespace _\lot\x\panel\type\nav {
                     if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
                         $v['icon'][1] = '<svg class="caret" viewBox="0 0 24 24"><path d="' . ($v['caret'] ?? ($i === 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
                     }
-                    $ul = ul($v, $k, $type, $i + 1); // Recurse
-                    $ul['class'] = 'lot lot:menu';
-                    $li[1] = \_\lot\x\panel\type\a($v) . $ul;
+                    $li[1] = \_\lot\x\panel\a($v);
                     $li[2] = \_\lot\x\panel\h\c($v);
-                    if ($i === 0) {
-                        $li['class'] = \trim($li['class'] . ' drop');
+                    if (!\array_key_exists(0, $v) || \is_string($v[0])) {
+                        $ul = ul($v, $k, $type, $i + 1); // Recurse
+                        $ul['class'] = 'lot lot:menu';
+                        if ($i === 0) {
+                            $li['class'] = \trim($li['class'] . ' drop');
+                        }
+                        $li[1] .= $ul;
                     }
                 } else {
-                    $li[1] = \_\lot\x\panel\type\a(['title' => $v]);
+                    $li[1] = \_\lot\x\panel\a(['title' => $v]);
                 }
                 $out[1] .= $li;
             }
