@@ -45,7 +45,9 @@ namespace _\lot\x\panel {
         return $out;
     }
     function abort($in, $key, $fn) {
-        \Guard::abort('Unable to convert data <code>' . \strtr(\json_encode($in, \JSON_PRETTY_PRINT), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '</code> does not exist.');
+        if (\defined('DEBUG') && DEBUG) {
+            \Guard::abort('Unable to convert data <code>' . \strtr(\json_encode($in, \JSON_PRETTY_PRINT), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '</code> does not exist.');
+        }
     }
     function field($in) {}
     function content($in, $key, $type) {
@@ -54,6 +56,20 @@ namespace _\lot\x\panel {
             1 => \is_array($in) ? new \HTML($in) : $in,
             2 => ['class' => 'content' . ($type !== '#' ? ' content:' . \c2f($type) : "")]
         ]);
+    }
+    function form($in, $key, $type) {
+        if (isset($in['lot']) && \is_array($in['lot'])) {
+            $out = \_\lot\x\panel\lot($in['lot'], $key, $type);
+        } else if (isset($in['content'])) {
+            $out = \_\lot\x\panel\content($in['content'], $key, $type);
+        } else {
+            $out = \_\lot\x\panel($in, $key, $type);
+        }
+        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['path'] ?? null);
+        $out[0] = 'form';
+        $out['action'] = $href;
+        $out['name'] = $in['name'] ?? $key;
+        return $out;
     }
     function lot($in, $key, $type) {
         $out = [
@@ -67,6 +83,50 @@ namespace _\lot\x\panel {
             }
         }
         return new \HTML($out);
+    }
+    function tab($in, $key, $type) {
+        if (isset($in['lot']) && \is_array($in['lot'])) {
+            $out = new \HTML([
+                0 => 'div',
+                1 => "",
+                2 => \_\lot\x\panel\h\c($in)
+            ]);
+            $nav = [];
+            $section = [];
+            $out['class'] = \trim($out['class'] . ' lot lot:tab');
+            $active = $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
+            foreach (\Anemon::from($in['lot'])->sort([1, 'stack'], true) as $k => $v) {
+                $content = "";
+                if (\is_array($v)) {
+                    if ($k === $active) {
+                        $v['tags'][] = 'active';
+                    }
+                    if (isset($v['content'])) {
+                        $content = $v['content'];
+                        unset($v['content']);
+                        $v['path'] = '?tab[0]=' . $k;
+                    }
+                }
+                $nav[$k] = $v;
+                $section[$k] = $content;
+            }
+            // TODO
+            $out[1] = '<nav>' . \_\lot\x\panel(['lot' => $nav], 0, 'nav.ul') . '</nav>';
+            $out[1] .= '<section>' . \implode('</section><section>', $section) . '</section>';
+        } else if (isset($in['content'])) {
+            $out = \_\lot\x\panel\content($in['content'], $key, $type);
+        } else {
+            $out = \_\lot\x\panel($in, $key, $type);
+        }
+        return $out;
+    }
+}
+
+namespace _\lot\x\panel\form {
+    function post($in, $key, $type) {
+        $out = \_\lot\x\panel\form($in, $key, $type);
+        $out['method'] = 'post';
+        return $out;
     }
 }
 
@@ -187,7 +247,7 @@ namespace _\lot\x\panel\h {
         return url($value, $in);
     }
     function url($value) {
-        return \is_string($value) ? \URL::long($value) : null;
+        return \is_string($value) ? \URL::long($value, false) : null;
     }
 }
 
@@ -210,7 +270,7 @@ namespace _\lot\x\panel\nav {
                     }
                     $li[1] = \_\lot\x\panel\a($v);
                     $li[2] = \_\lot\x\panel\h\c($v);
-                    if (!\array_key_exists(0, $v) || \is_string($v[0])) {
+                    if (!empty($v['lot']) && (!\array_key_exists(0, $v) || \is_string($v[0]))) {
                         $ul = ul($v, $k, $type, $i + 1); // Recurse
                         $ul['class'] = 'lot lot:menu';
                         if ($i === 0) {

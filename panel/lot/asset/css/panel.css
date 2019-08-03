@@ -1561,14 +1561,15 @@ html.form body form .field > label {
   border: 0;
 }
 @media (max-width: 720px) {
-  .lot\:nav > ul:first-child {
-    width: 100%;
-  }
-  .lot\:nav > ul:first-child > li + li {
+  .lot\:nav > ul:first-child,
+  .lot\:nav > ul:first-child li + li {
     flex: 1;
   }
   .lot\:nav > ul:first-child > li + li .input {
     width: 100%;
+  }
+  .lot\:nav > ul:nth-child(2) {
+    display: none;
   }
 }
 .footer {

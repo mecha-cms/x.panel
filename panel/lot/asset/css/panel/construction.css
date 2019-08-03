@@ -333,18 +333,18 @@ caption {
   background: #1a1a1a;
   color: #ccc;
 }
-.lot\:nav li.head {
+.lot\:nav li.main {
   background: #fff;
   color: #000;
 }
-.lot\:nav li.head > a {
+.lot\:nav li.main > a {
   color: #009;
 }
-.lot\:nav li.head > a:focus,
-.lot\:nav li.head > a:active {
+.lot\:nav li.main > a:focus,
+.lot\:nav li.main > a:active {
   color: #900;
 }
-.lot\:nav li.head.active > a {
+.lot\:nav li.main.active > a {
   background: inherit;
   color: inherit;
 }

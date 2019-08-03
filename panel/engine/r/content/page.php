@@ -12,10 +12,10 @@
 <?php
 
 echo _\lot\x\panel(['lot' => [
-    0 => [
+    'nav' => [
         'type' => 'nav',
         'lot' => [
-            0 => [
+            'header' => [
                 'type' => 'nav.ul',
                 'lot' => [
                     0 => [
@@ -24,7 +24,7 @@ echo _\lot\x\panel(['lot' => [
                         'title' => false,
                         'path' => '/',
                         'lot' => ['Asset', 'Block', 'Cache', 'Comment', 'Content', 'Page', 'Extension'],
-                        'tags' => ['head']
+                        'tags' => ['main']
                     ],
                     1 => [
                         0 => false,
@@ -33,7 +33,7 @@ echo _\lot\x\panel(['lot' => [
                 ],
                 'stack' => 10
             ],
-            1 => [
+            'body' => [
                 'type' => 'nav.ul',
                 'lot' => ['Home', 'About', [
                     'title' => 'Archive',
@@ -45,7 +45,7 @@ echo _\lot\x\panel(['lot' => [
                 ], 'Contact'],
                 'stack' => 20
             ],
-            2 => [
+            'footer' => [
                 'type' => 'nav.ul',
                 'lot' => [
                     0 => [
@@ -58,20 +58,47 @@ echo _\lot\x\panel(['lot' => [
             ]
         ]
     ],
-    1 => [
+    'desk' => [
         'type' => 'desk',
         'lot' => [
-            0 => [
+            'header' => [
                 'type' => 'desk.header',
-                'content' => 'Header goes here.'
+                'content' => 'Header goes here.',
+                'stack' => 10
             ],
-            1 => [
+            'body' => [
                 'type' => 'desk.body',
-                'content' => 'Body goes here.'
+                'lot' => [
+                    'form' => [
+                        'type' => 'form.post',
+                        'path' => '/foo/bar',
+                        'lot' => [
+                            'tab' => [
+                                'type' => 'tab',
+                                'lot' => [
+                                    'page' => [
+                                        'title' => 'Page',
+                                        'content' => 'Content for <em>Page</em> tab.'
+                                    ],
+                                    'data' => [
+                                        'title' => 'Data',
+                                        'content' => 'Content for <em>Data</em> tab.'
+                                    ],
+                                    'any' => [
+                                        'title' => 'Others',
+                                        'content' => 'Content for <em>Others</em> tab.'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'stack' => 20
             ],
-            2 => [
+            'footer' => [
                 'type' => 'desk.footer',
-                'content' => 'Footer goes here.'
+                'content' => 'Footer goes here.',
+                'stack' => 30
             ]
         ]
     ]
