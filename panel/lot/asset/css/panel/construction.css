@@ -347,6 +347,8 @@ caption {
 .lot\:nav li.main.active > a {
   background: inherit;
   color: inherit;
+  position: relative;
+  z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
 }
 .lot\:nav > ul > li.separator {
   background: #222;

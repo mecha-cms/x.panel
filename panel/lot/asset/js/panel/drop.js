@@ -5,6 +5,7 @@ if (dropdowns.length) {
         document.querySelectorAll('.lot\\:menu.enter').forEach(function($$) {
             if ($$ !== but && t !== but.previousElementSibling) {
                 $$.classList.remove('enter');
+                $$.parentNode.classList.remove('active');
                 $$.previousElementSibling.classList.remove('active');
             }
         });
@@ -20,6 +21,7 @@ if (dropdowns.length) {
                 remove(menu, t);
                 setTimeout(function() {
                     t.classList.toggle('active');
+                    t.parentNode.classList.toggle('active');
                     menu.classList.toggle('enter');
                 }, 1);
                 e.preventDefault();
