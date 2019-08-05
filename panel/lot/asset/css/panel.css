@@ -1000,10 +1000,6 @@ svg {
   height: 0;
   border-bottom: 1px solid;
 }
-.lot\:tab > nav .active a,
-.lot\:tab > nav .active span {
-  color: inherit;
-}
 .lot\:tab > nav .active::before {
   right: 100%;
 }
@@ -1517,6 +1513,7 @@ html.form body form .field > label {
 }
 .lot\:nav > ul > li > a {
   display: flex;
+  height: inherit;
   padding: 0 18px;
   overflow: hidden;
 }

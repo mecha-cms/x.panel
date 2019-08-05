@@ -29,20 +29,25 @@ namespace _\lot\x {
 
 namespace _\lot\x\panel {
     function a($in) {
-        if (!isset($in[1])) {
+        $out = [
+            0 => $in[0] ?? 'a',
+            1 => $in[1] ?? "",
+            2 => []
+        ];
+        if ($out[1] === "") {
             $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
             if ($title = $in['title'] ?? "") {
                 $title = '<span>' . $title . '</span>';
             }
-            $in[1] = $icon[0] . $title . $icon[1];
+            $out[1] = $icon[0] . $title . $icon[1];
         }
-        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['path'] ?? null);
-        $out = new \HTML([$in[0] ?? 'a', $in[1], [
-            'class' => $href === null ? 'disabled' : null,
-            'href' => $href === null ? 'javascript:;' : $href,
-            'target' => isset($in['link']) ? '_blank' : ($in[2]['target'] ?? false)
-        ]]);
-        return $out;
+        if (!$href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['/'] ?? null)) {
+            $in['tags'][] = 'disabled';
+        }
+        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['href'] = $href === null ? 'javascript:;' : $href;
+        $out[2]['target'] = $in[2]['target'] ?? (isset($in['link']) ? '_blank' : null);
+        return new \HTML($out);
     }
     function abort($in, $key, $fn) {
         if (\defined('DEBUG') && DEBUG) {
@@ -58,18 +63,23 @@ namespace _\lot\x\panel {
         ]);
     }
     function form($in, $key, $type) {
-        if (isset($in['lot']) && \is_array($in['lot'])) {
-            $out = \_\lot\x\panel\lot($in['lot'], $key, $type);
-        } else if (isset($in['content'])) {
-            $out = \_\lot\x\panel\content($in['content'], $key, $type);
-        } else {
-            $out = \_\lot\x\panel($in, $key, $type);
+        $out = [
+            0 => $in[0] ?? 'form',
+            1 => $in[1] ?? "",
+            2 => []
+        ];
+        if (isset($in['content'])) {
+            $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
+        } else if (isset($in['lot']) && \is_array($in['lot'])) {
+            foreach (\Anemon::from($in['lot'])->sort([1, 'stack', 10], true) as $k => $v) {
+                $out[1] .= \_\lot\x\panel($v, $k, $v['type'] ?? '#');
+            }
         }
-        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['path'] ?? null);
-        $out[0] = 'form';
-        $out['action'] = $href;
-        $out['name'] = $in['name'] ?? $key;
-        return $out;
+        $href = $in['link'] ?? $in['url'] ?? \_\lot\x\panel\h\url($in['/'] ?? null);
+        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['action'] = $href;
+        $out[2]['name'] = $in['name'] ?? $key;
+        return new \HTML($out);
     }
     function lot($in, $key, $type) {
         $out = [
@@ -85,44 +95,44 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function tab($in, $key, $type) {
-        if (isset($in['lot']) && \is_array($in['lot'])) {
-            $out = new \HTML([
-                0 => 'div',
-                1 => "",
-                2 => \_\lot\x\panel\h\c($in)
-            ]);
+        $out = [
+            0 => $in[0] ?? 'div',
+            1 => $in[1] ?? "",
+            2 => []
+        ];
+        if (isset($in['content'])) {
+            $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
+        } else if (isset($in['lot']) && \is_array($in['lot'])) {
+            $name = $in['name'] ?? $key;
             $nav = [];
             $section = [];
-            $out['class'] = \trim($out['class'] . ' lot lot:tab');
-            $active = $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
+            $in['tags'][] = 'lot';
+            $in['tags'][] = 'lot:tab';
+            $active = $_GET['tab'][$name] ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
             foreach (\Anemon::from($in['lot'])->sort([1, 'stack'], true) as $k => $v) {
-                $content = "";
                 if (\is_array($v)) {
                     if ($k === $active) {
                         $v['tags'][] = 'active';
                     }
-                    if (isset($v['content'])) {
-                        $content = $v['content'];
-                        unset($v['content']);
-                        $v['path'] = '?tab[0]=' . $k;
-                    }
+                    $v['/'] = '?tab[' . \urlencode($name) . ']=' . \urlencode($k);
                 }
                 $nav[$k] = $v;
-                $section[$k] = $content;
+                $section[$k] = \_\lot\x\panel($v, $k, 'tab.content');
             }
-            // TODO
-            $out[1] = '<nav>' . \_\lot\x\panel(['lot' => $nav], 0, 'nav.ul') . '</nav>';
-            $out[1] .= '<section>' . \implode('</section><section>', $section) . '</section>';
-        } else if (isset($in['content'])) {
-            $out = \_\lot\x\panel\content($in['content'], $key, $type);
-        } else {
-            $out = \_\lot\x\panel($in, $key, $type);
+            $out[1] = '<nav>' . \_\lot\x\panel(['lot' => $nav], $name, 'nav.ul') . '</nav>';
+            $out[1] .= \implode("", $section);
         }
-        return $out;
+        $out[2] = \_\lot\x\panel\h\c($in);
+        return new \HTML($out);
     }
 }
 
 namespace _\lot\x\panel\form {
+    function get($in, $key, $type) {
+        $out = \_\lot\x\panel\form($in, $key, $type);
+        $out['method'] = 'get';
+        return $out;
+    }
     function post($in, $key, $type) {
         $out = \_\lot\x\panel\form($in, $key, $type);
         $out['method'] = 'post';
@@ -185,7 +195,6 @@ namespace _\lot\x\panel\lot {
     }
 }
 
-// [content]
 namespace _\lot\x\panel\content\desk {
     function body($in, $key, $type) {
         $out = \_\lot\x\panel\content($in, $key, $type);
@@ -204,7 +213,6 @@ namespace _\lot\x\panel\content\desk {
     }
 }
 
-// [lot]
 namespace _\lot\x\panel\lot\desk {
     function body($in, $key, $type) {
         $out = \_\lot\x\panel\lot($in, $key, $type);
@@ -255,37 +263,63 @@ namespace _\lot\x\panel\nav {
     function ul($in, $key, $type, int $i = 0) {
         $out = [
             0 => $in[0] ?? 'ul',
-            1 => "",
-            2 => \_\lot\x\panel\h\c($in)
+            1 => $in[1] ?? "",
+            2 => []
         ];
         if (isset($in['content'])) {
             $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
         } else if (isset($in['lot'])&& \is_array($in['lot'])) {
-            foreach ($in['lot'] as $k => $v) {
-                $li = new \HTML(['li', ""]);
+            foreach (\Anemon::from($in['lot'])->sort([1, 'stack', 10], true) as $k => $v) {
+                $li = [
+                    0 => 'li',
+                    1 => $v[1] ?? "",
+                    2 => []
+                ];
                 if (\is_array($v)) {
                     $v['icon'] = \_\lot\x\panel\h\icon($v['icon'] ?? [null, null]);
                     if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
                         $v['icon'][1] = '<svg class="caret" viewBox="0 0 24 24"><path d="' . ($v['caret'] ?? ($i === 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
                     }
-                    $li[1] = \_\lot\x\panel\a($v);
-                    $li[2] = \_\lot\x\panel\h\c($v);
-                    if (!empty($v['lot']) && (!\array_key_exists(0, $v) || \is_string($v[0]))) {
-                        $ul = ul($v, $k, $type, $i + 1); // Recurse
-                        $ul['class'] = 'lot lot:menu';
-                        if ($i === 0) {
-                            $li['class'] = \trim($li['class'] . ' drop');
+                    $ul = "";
+                    if (!isset($v[1])) {
+                        if (!empty($v['lot']) && (!\array_key_exists(0, $v) || \is_string($v[0]))) {
+                            $ul = ul($v, $k, $type, $i + 1); // Recurse
+                            $ul['class'] = 'lot lot:menu';
+                            $li[1] = $ul;
+                            if ($i === 0) {
+                                $v['tags'][] = 'drop';
+                            }
                         }
-                        $li[1] .= $ul;
+                        $li[2] = \_\lot\x\panel\h\c($v);
+                        unset($v['tags']);
+                        $li[1] = \_\lot\x\panel\a($v) . $ul;
                     }
                 } else {
                     $li[1] = \_\lot\x\panel\a(['title' => $v]);
                 }
-                $out[1] .= $li;
+                $out[1] .= new \HTML($li);
             }
-        } else if (isset($in[1])) {
-            $out[1] = $in[1];
         }
+        $out[2] = \_\lot\x\panel\h\c($in);
+        return new \HTML($out);
+    }
+}
+
+namespace _\lot\x\panel\tab {
+    function content($in, $key, $type) {
+        $out = [
+            0 => $in[0] ?? 'section',
+            1 => $in[1] ?? "",
+            2 => ['id' => $in['id'] ?? $key]
+        ];
+        if (isset($in['content'])) {
+            $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
+        } else if (isset($in['lot']) && \is_array($in['lot'])) {
+            foreach (\Anemon::from($in['lot'])->sort([1, 'stack', 10], true) as $k => $v) {
+                $out[1] .= \_\lot\x\panel($v, $k, $v['type'] ?? '#');
+            }
+        }
+        $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
 }

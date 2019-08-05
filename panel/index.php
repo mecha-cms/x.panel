@@ -19,5 +19,6 @@ Route::set('panel', 200, function() {
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . '@media.css');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel' . DS . 'construction.css');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'drop.js');
+    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'tab.js');
     $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'page.php');
 }, 0);
