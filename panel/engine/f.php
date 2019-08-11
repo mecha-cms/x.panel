@@ -54,12 +54,48 @@ namespace _\lot\x\panel {
             \Guard::abort('Unable to convert data <code>' . \strtr(\json_encode($in, \JSON_PRETTY_PRINT), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '</code> does not exist.');
         }
     }
-    function field($in) {}
+    function fields($in) {
+        $in['tags'][] = 'lot';
+        $in['tags'][] = 'lot:field';
+        $out = [
+            0 => $in[0] ?? 'div',
+            1 => $in[1] ?? "",
+            2 => $in[2] ?? []
+        ];
+        if (isset($in['content'])) {
+            $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
+        } else if (isset($in['lot']) && \is_array($in['lot'])) {
+            foreach (\Anemon::from($in['lot'])->sort([1, 'stack', 10], true) as $k => $v) {
+                $out[1] .= \_\lot\x\panel($v, $k, $v['type'] ?? '#');
+            }
+        }
+        $out[2] = \_\lot\x\panel\h\c($in);
+        return new \HTML($out);
+    }
+    function field($in, $key) {
+        $in['tags'][] = 'field';
+        $in['tags'][] = 'p';
+        $id = $in['id'] ?? \uniqid();
+        $in[2]['id'] = $in[2]['id'] ?? $id . '.0';
+        $out = [
+            0 => $in[0] ?? 'div',
+            1 => $in[1] ?? "",
+            2 => $in[2] ?? []
+        ];
+        if (isset($in['title'])) {
+            $out[1] .= '<label for="' . $id . '">' . $in['title'] . '</label>';
+        }
+        if (isset($in['content'])) {
+            $out[1] .= '<div>' . (\is_array($in['content']) ? new \HTML($in['content']) : $in) . '</div>';
+        }
+        $out[2] = \_\lot\x\panel\h\c($in);
+        return new \HTML($out);
+    }
     function content($in, $key, $type) {
         return new \HTML([
             0 => 'div',
             1 => \is_array($in) ? new \HTML($in) : $in,
-            2 => ['class' => 'content' . ($type !== '#' ? ' content:' . \c2f($type) : "")]
+            2 => ['class' => 'content' . ($type !== '#' ? ' content:' . \implode(' content:', \step(\c2f($type))) : "")]
         ]);
     }
     function form($in, $key, $type) {
@@ -68,6 +104,9 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => []
         ];
+        if (isset($in['active']) && empty($in['active'])) {
+            $out[0] = false;
+        }
         if (isset($in['content'])) {
             $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
         } else if (isset($in['lot']) && \is_array($in['lot'])) {
@@ -83,9 +122,9 @@ namespace _\lot\x\panel {
     }
     function lot($in, $key, $type) {
         $out = [
-            0 => 'div',
-            1 => "",
-            2 => ['class' => 'lot' . ($type !== '#' ? ' lot:' . \c2f($type) : "")]
+            0 => $in[0] ?? 'div',
+            1 => $in[1] ?? "",
+            2 => \array_replace(['class' => 'lot' . ($type !== '#' ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")], $in[2] ?? [])
         ];
         if (!empty($in) && \is_array($in)) {
             foreach (\Anemon::from($in)->sort([1, 'stack', 10], true) as $k => $v) {
@@ -98,7 +137,7 @@ namespace _\lot\x\panel {
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
-            2 => []
+            2 => $in[2] ?? []
         ];
         if (isset($in['content'])) {
             $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
@@ -117,7 +156,8 @@ namespace _\lot\x\panel {
                     $v['/'] = '?tab[' . \urlencode($name) . ']=' . \urlencode($k);
                 }
                 $nav[$k] = $v;
-                $section[$k] = \_\lot\x\panel($v, $k, 'tab.content');
+                unset($nav[$k]['lot']); // Disable dropdown menu view
+                $section[$k] = \_\lot\x\panel($v, $k, 'tab.pane');
             }
             $out[1] = '<nav>' . \_\lot\x\panel(['lot' => $nav], $name, 'nav.ul') . '</nav>';
             $out[1] .= \implode("", $section);
@@ -167,12 +207,49 @@ namespace _\lot\x\panel\content {
     }
 }
 
+// [field]
+namespace _\lot\x\panel\field {
+    function text($in, $key, $type) {
+        $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
+        $i = [
+            0 => 'input',
+            1 => false,
+            2 => [
+                'class' => 'input',
+                'id' => $in['id'],
+                'name' => $in['name'] ?? $key,
+                'placeholder' => $in['placeholder'] ?? null,
+                'type' => 'text',
+                'pattern' => $in['pattern'] ?? null
+            ]
+        ];
+        $style = "";
+        if (isset($in['height']) && $in['height'] !== false) {
+            if ($in['height'] === true) {
+                $i[2]['class'] .= ' height';
+            } else {
+                $style .= 'height:' . (\is_numeric($in['height']) ? $in['height'] . 'px' : $in['height']) . ';';
+            }
+        }
+        if (isset($in['width']) && $in['width'] !== false) {
+            if ($in['width'] === true) {
+                $i[2]['class'] .= ' width';
+            } else {
+                $style .= 'width:' . (\is_numeric($in['width']) ? $in['width'] . 'px' : $in['width']) . ';';
+            }
+        }
+        $i[2]['style'] = $style !== "" ? $style : null;
+        $in['content'] = $i;
+        $out = \_\lot\x\panel\field($in, $key);
+        return $out;
+    }
+}
+
 // [lot]
 namespace _\lot\x\panel\lot {
     function desk($in, $key, $type) {
         return \_\lot\x\panel\lot($in, $key, $type);
     }
-    function field($in, $key, $type) {}
     function li($in, $key, $type) {
         $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'li';
@@ -224,9 +301,27 @@ namespace _\lot\x\panel\lot\desk {
         $out[0] = 'footer';
         return $out;
     }
+    function form($in, $key, $type) {
+        $out = \_\lot\x\panel\lot($in, $key, $type);
+        $out[0] = 'form';
+        return $out;
+    }
     function header($in, $key, $type) {
         $out = \_\lot\x\panel\lot($in, $key, $type);
         $out[0] = 'header';
+        return $out;
+    }
+}
+
+namespace _\lot\x\panel\lot\desk\form {
+    function get($in, $key, $type) {
+        $out = \_\lot\x\panel\lot\desk\form($in, $key, $type);
+        $out['method'] = 'get';
+        return $out;
+    }
+    function post($in, $key, $type) {
+        $out = \_\lot\x\panel\lot\desk\form($in, $key, $type);
+        $out['method'] = 'post';
         return $out;
     }
 }
@@ -235,7 +330,7 @@ namespace _\lot\x\panel\lot\desk {
 // [h]: Helper function(s)
 namespace _\lot\x\panel\h {
     function c($in) {
-        $a = \implode(' ', (array) ($in[2] ?? []));
+        $a = \implode(' ', (array) ($in[2]['class'] ?? []));
         $b = \implode(' ', (array) ($in['tags'] ?? []));
         $c = \implode(' ', \array_unique(\array_filter(\array_merge(\explode(' ', $a), \explode(' ', $b)))));
         $in[2]['class'] = $c !== "" ? $c : null;
@@ -264,7 +359,7 @@ namespace _\lot\x\panel\nav {
         $out = [
             0 => $in[0] ?? 'ul',
             1 => $in[1] ?? "",
-            2 => []
+            2 => $in[2] ?? []
         ];
         if (isset($in['content'])) {
             $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
@@ -273,7 +368,7 @@ namespace _\lot\x\panel\nav {
                 $li = [
                     0 => 'li',
                     1 => $v[1] ?? "",
-                    2 => []
+                    2 => $v[2] ?? []
                 ];
                 if (\is_array($v)) {
                     $v['icon'] = \_\lot\x\panel\h\icon($v['icon'] ?? [null, null]);
@@ -306,11 +401,11 @@ namespace _\lot\x\panel\nav {
 }
 
 namespace _\lot\x\panel\tab {
-    function content($in, $key, $type) {
+    function pane($in, $key, $type) {
         $out = [
             0 => $in[0] ?? 'section',
             1 => $in[1] ?? "",
-            2 => ['id' => $in['id'] ?? $key]
+            2 => \array_replace(['id' => $in['id'] ?? $key], $in[2] ?? [])
         ];
         if (isset($in['content'])) {
             $out[1] = \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];

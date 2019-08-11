@@ -1350,36 +1350,52 @@ svg {
     display: none;
   }
 }
+.content\:desk,
 .lot\:desk {
   padding: 48px 48px;
   margin: 0 auto;
 }
+.content\:desk::before,
+.content\:desk::after,
 .lot\:desk::before,
 .lot\:desk::after {
   content: "";
   display: table;
   clear: both;
 }
+.content\:desk > header,
 .lot\:desk > header {
+  padding: 0;
   margin-bottom: 48px;
 }
+.content\:desk > main,
+.lot\:desk > main {
+  padding: 0;
+}
+.content\:desk > footer,
 .lot\:desk > footer {
+  padding: 0;
   margin-top: 48px;
 }
 .lot\:desk > footer > .lot\:task {
   margin-left: 117px;
 }
+.content\:desk > header:empty,
+.content\:desk > footer:empty,
 .lot\:desk > header:empty,
 .lot\:desk > footer:empty {
   display: none;
 }
 @media (max-width: 720px) {
+  .content\:desk,
   .lot\:desk {
     padding: 24px 24px;
   }
+  .content\:desk > header,
   .lot\:desk > header {
     margin-bottom: 24px;
   }
+  .content\:desk > footer,
   .lot\:desk > footer {
     margin-top: 24px;
   }

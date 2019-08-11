@@ -83,7 +83,9 @@ echo _\lot\x\panel(['lot' => [
         ]
     ],
     'desk' => [
-        'type' => 'desk',
+        'type' => 'desk.form.post',
+        '/' => '/foo/bar',
+        2 => ['enctype' => 'multipart/form-data'],
         'lot' => [
             'header' => [
                 'type' => 'desk.header',
@@ -93,29 +95,44 @@ echo _\lot\x\panel(['lot' => [
             'body' => [
                 'type' => 'desk.body',
                 'lot' => [
-                    'form' => [
-                        'type' => 'form.post',
-                        '/' => '/foo/bar',
+                    'tab' => [
+                        'type' => 'tab',
                         'lot' => [
-                            'tab' => [
-                                'type' => 'tab',
+                            'page' => [
+                                'title' => 'Page',
                                 'lot' => [
-                                    'page' => [
-                                        'title' => 'Page',
-                                        'content' => 'Content for <em>Page</em> tab.'
-                                    ],
-                                    'data' => [
-                                        'title' => 'Data',
-                                        'content' => 'Content for <em>Data</em> tab.'
-                                    ],
-                                    'any' => [
-                                        'title' => 'Others',
-                                        'content' => 'Content for <em>Others</em> tab.'
+                                    'fields' => [
+                                        'type' => 'fields',
+                                        'lot' => [
+                                            'page[title]' => [
+                                                'type' => 'field.text',
+                                                'title' => $language->title,
+                                                'width' => true,
+                                                'placeholder' => 'Page Title',
+                                                'value' => "",
+                                                'stack' => 10
+                                            ],
+                                            'page[time]' => [
+                                                'type' => 'field.text',
+                                                'title' => $language->title,
+                                                'placeholder' => 'Page Title',
+                                                'value' => "",
+                                                'stack' => 10
+                                            ]
+                                        ]
                                     ]
-                                ],
-                                'name' => 0
+                                ]
+                            ],
+                            'data' => [
+                                'title' => 'Data',
+                                'content' => 'Content for <em>Data</em> tab.'
+                            ],
+                            'any' => [
+                                'title' => 'Others',
+                                'content' => 'Content for <em>Others</em> tab.'
                             ]
-                        ]
+                        ],
+                        'name' => 0
                     ]
                 ],
                 'stack' => 20
