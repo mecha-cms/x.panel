@@ -147,7 +147,7 @@ namespace _\lot\x\panel {
             $section = [];
             $in['tags'][] = 'lot';
             $in['tags'][] = 'lot:tab';
-            $active = $_GET['tab'][$name] ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
+            $active = \Get::get('tab.' . $name) ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
             foreach (\Anemon::from($in['lot'])->sort([1, 'stack'], true) as $k => $v) {
                 if (\is_array($v)) {
                     if ($k === $active) {
