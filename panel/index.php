@@ -13,6 +13,17 @@ require __DIR__ . DS . 'engine' . DS . 'f.php';
 require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'content.php';
 require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'lot.php';
 
+Hook::set('content', function($content) {
+    if (empty($GLOBALS['SVG'])) {
+        return $content;
+    }
+    $icons = '<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">';
+    foreach ($GLOBALS['SVG'] as $k => $v) {
+        $icons .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24"><path d="' . $v . '"></path></symbol>';
+    }
+    $icons .= '</svg>';
+    return str_replace('<body>', '<body>' . $icons, $content);
+});
 
 // Test
 Route::set('panel', 200, function() {

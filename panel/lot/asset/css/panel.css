@@ -694,6 +694,16 @@ svg {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.lot\:item {
+  display: flex;
+  padding-top: 6px;
+}
+.lot\:item > label {
+  margin: 0 12px 0 0;
+}
+.lot\:item > label:last-child {
+  margin-right: 0;
+}
 .lot\:task {
   display: flex;
   flex-wrap: wrap;

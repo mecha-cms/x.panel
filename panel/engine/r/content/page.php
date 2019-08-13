@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html dir="ltr" class>
-  <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width" name="viewport">
-    <meta content="noindex" name="robots">
-    <title><?php echo w($t->reverse); ?></title>
-    <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
-  </head>
-  <body>
-
 <?php
+
+require __DIR__ . DS . 'before.php';
 
 echo _\lot\x\panel(['lot' => [
     'nav' => [
@@ -127,9 +118,19 @@ echo _\lot\x\panel(['lot' => [
                                                 'type' => 'field.content',
                                                 'title' => $language->description,
                                                 'width' => true,
-                                                'placeholder' => 'Page description goes here... (optional)',
+                                                'placeholder' => 'Page description goes here... ',
                                                 'value' => "",
                                                 'stack' => 30
+                                            ],
+                                            'page[type]' => [
+                                                'type' => 'field.item',
+                                                'title' => $language->type,
+                                                'value' => 'Markdown',
+                                                'lot' => [
+                                                    'HTML' => 'HTML',
+                                                    'Markdown' => 'Markdown'
+                                                ],
+                                                'stack' => 40
                                             ]
                                         ]
                                     ]
@@ -170,6 +171,7 @@ echo _\lot\x\panel(['lot' => [
                                 'stack' => 20
                             ],
                             2 => [
+                                'active' => false,
                                 'type' => 'button',
                                 'title' => 'Archive',
                                 'name' => 'x',
@@ -185,7 +187,4 @@ echo _\lot\x\panel(['lot' => [
     ]
 ]], 0, '#');
 
-?>
-
-  </body>
-</html>
+require __DIR__ . DS . 'after.php';
