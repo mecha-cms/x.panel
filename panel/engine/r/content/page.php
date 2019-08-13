@@ -87,11 +87,13 @@ echo _\lot\x\panel(['lot' => [
         '/' => '/foo/bar',
         2 => ['enctype' => 'multipart/form-data'],
         'lot' => [
+            /*
             'header' => [
                 'type' => 'desk.header',
                 'content' => 'Header goes here.',
                 'stack' => 10
             ],
+            */
             'body' => [
                 'type' => 'desk.body',
                 'lot' => [
@@ -101,7 +103,7 @@ echo _\lot\x\panel(['lot' => [
                             'page' => [
                                 'title' => 'Page',
                                 'lot' => [
-                                    'fields' => [
+                                    'field' => [
                                         'type' => 'fields',
                                         'lot' => [
                                             'page[title]' => [
@@ -112,12 +114,22 @@ echo _\lot\x\panel(['lot' => [
                                                 'value' => "",
                                                 'stack' => 10
                                             ],
-                                            'page[time]' => [
-                                                'type' => 'field.text',
-                                                'title' => $language->title,
-                                                'placeholder' => 'Page Title',
+                                            'page[content]' => [
+                                                'type' => 'field.source',
+                                                'title' => $language->content,
+                                                'width' => true,
+                                                'height' => true,
+                                                'placeholder' => 'Page content goes here...',
                                                 'value' => "",
-                                                'stack' => 10
+                                                'stack' => 20
+                                            ],
+                                            'page[description]' => [
+                                                'type' => 'field.content',
+                                                'title' => $language->description,
+                                                'width' => true,
+                                                'placeholder' => 'Page description goes here... (optional)',
+                                                'value' => "",
+                                                'stack' => 30
                                             ]
                                         ]
                                     ]
@@ -139,7 +151,34 @@ echo _\lot\x\panel(['lot' => [
             ],
             'footer' => [
                 'type' => 'desk.footer',
-                'content' => 'Footer goes here.',
+                'lot' => [
+                    'task' => [
+                        'type' => 'task',
+                        'lot' => [
+                            0 => [
+                                'type' => 'button',
+                                'title' => 'Publish',
+                                'name' => 'x',
+                                'value' => 'page',
+                                'stack' => 10
+                            ],
+                            1 => [
+                                'type' => 'button',
+                                'title' => 'Save',
+                                'name' => 'x',
+                                'value' => 'draft',
+                                'stack' => 20
+                            ],
+                            2 => [
+                                'type' => 'button',
+                                'title' => 'Archive',
+                                'name' => 'x',
+                                'value' => 'archive',
+                                'stack' => 30
+                            ]
+                        ]
+                    ]
+                ],
                 'stack' => 30
             ]
         ]

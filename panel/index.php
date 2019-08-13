@@ -10,6 +10,8 @@
 !defined('BINARY_X') && define('BINARY_X', AUDIO_X . ',' . PACKAGE_X . ',' . VIDEO_X . ',doc,docx,odt,pdf,ppt,pptx,rtf,xlr,xls,xlsx');
 
 require __DIR__ . DS . 'engine' . DS . 'f.php';
+require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'content.php';
+require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'lot.php';
 
 
 // Test
