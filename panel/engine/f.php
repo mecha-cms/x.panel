@@ -60,7 +60,7 @@ namespace _\lot\x\panel {
         $out['class'] = 'button';
         $out['disabled'] = isset($in['active']) && !$in['active'];
         $out['name'] = $in['name'] ?? $key;
-        $out['type'] = 'button';
+        $out['type'] = $in['type'] ?? 'button';
         $out['value'] = $in['value'] ?? null;
         unset($out['href'], $out['target']);
         return $out;
@@ -113,7 +113,7 @@ namespace _\lot\x\panel {
         if (isset($in['content'])) {
             $out[1] .= '<div>' . (\is_array($in['content']) ? new \HTML($in['content']) : $in['content']) . '</div>';
         } else if (isset($in['lot']) && \is_array($in['lot'])) {
-            // TODO
+            // TODO (grid view for fields)
         }
         $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
@@ -168,6 +168,7 @@ namespace _\lot\x\panel {
             $in['tags'][] = 'lot';
             $in['tags'][] = 'lot:tab';
             $active = \Get::get('tab.' . $name) ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
+            $size = 0;
             foreach (\Anemon::from($in['lot'])->sort([1, 'stack'], true) as $k => $v) {
                 if (\is_array($v)) {
                     if ($k === $active) {
@@ -178,10 +179,12 @@ namespace _\lot\x\panel {
                 $nav[$k] = $v;
                 unset($nav[$k]['lot']); // Disable dropdown menu view
                 $section[$k] = \_\lot\x\panel($v, $k, 'tab.pane');
+                ++$size;
             }
             $out[1] = '<nav>' . \_\lot\x\panel(['lot' => $nav], $name, 'nav.ul') . '</nav>';
             $out[1] .= \implode("", $section);
         }
+        $in['tags'][] = 'size-' . $size;
         $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
@@ -224,6 +227,7 @@ namespace _\lot\x\panel\form {
 
 // [field]
 namespace _\lot\x\panel\field {
+    function blob($in, $key, $type) {}
     function content($in, $key, $type) {
         $out = \_\lot\x\panel\h\field($in, $key, $type);
         $out['content'][2]['class'] = \trim('textarea ' . ($out['content'][2]['class'] ?? ""));
@@ -242,58 +246,74 @@ namespace _\lot\x\panel\field {
         ]);
     }
     function item($in, $key, $type) {
-        if (isset($in['lot'])) {
+        if (isset($in['lot']) && \is_array($in['lot'])) {
             $out = \_\lot\x\panel\h\field($in, $key, $type);
             $o = [];
             $value = $in['value'] ?? null;
-            if (\count($in['lot']) > 5) {
-                $out['content'][0] = 'select';
-                unset($out['placeholder'], $out['value']);
-                foreach ($in['lot'] as $k => $v) {
-                    $oo = new \HTML(['option', "", [
-                        'selected' => $value !== null && (string) $value === (string) $k,
-                        'value' => $k
-                    ]]);
-                    if (\is_array($v)) {
-                        $oo[1] = $t = \strip_tags($v['title'] ?? $k);
-                        $oo['disabled'] = isset($v['active']) && !$v['active'];
-                    } else {
-                        $oo[1] = $t = $v;
-                    }
-                    $o[$t] = $oo;
+            $out['content'][0] = 'div';
+            unset($out['name'], $out['placeholder'], $out['value']);
+            $n = $in['name'] ?? $key;
+            foreach ($in['lot'] as $k => $v) {
+                $oo = new \HTML(['input', false, [
+                    'checked' => $value !== null && (string) $value === (string) $k,
+                    'name' => $n,
+                    'type' => 'radio',
+                    'value' => $k
+                ]]);
+                if (\is_array($v)) {
+                    $t = \w($v['title'] ?? $k, 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
+                    $oo['disabled'] = isset($v['active']) && !$v['active'];
+                } else {
+                    $t = $v;
                 }
-                \asort($o);
-                $out['content'][1] = \implode("", \array_values($o));
-                $out['content'][2]['class'] = \trim('select ' . ($out['content'][2]['class'] ?? ""));
-            } else {
-                $out['content'][0] = 'div';
-                unset($out['name'], $out['placeholder'], $out['value']);
-                $n = $in['name'] ?? $key;
-                foreach ($in['lot'] as $k => $v) {
-                    $oo = new \HTML(['input', false, [
-                        'checked' => $value !== null && (string) $value === (string) $k,
-                        'name' => $n,
-                        'type' => 'radio',
-                        'value' => $k
-                    ]]);
-                    if (\is_array($v)) {
-                        $t = \w($v['title'] ?? $k, 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
-                        $oo['disabled'] = isset($v['active']) && !$v['active'];
-                    } else {
-                        $t = $v;
-                    }
-                    $o[$t] = '<label>' . $oo . '&nbsp;<span>' . $t . '</span></label>';
-                }
-                \ksort($o);
-                $out['content'][1] = \implode("", \array_values($o));
-                $out['content'][2]['class'] = 'lot lot:item';
+                $o[$t] = '<label>' . $oo . '&nbsp;<span>' . $t . '</span></label>';
             }
+            \ksort($o);
+            if (!isset($in['block'])) {
+                $block = \count($in['lot']) > 5 ? '<br>' : ""; // Auto
+            } else {
+                $block = $in['block'] ? '<br>' : "";
+            }
+            $out['content'][1] = \implode($block, $o);
+            $out['content'][2]['class'] = 'lot lot:item' . ($block ? ' block' : "");
             return \_\lot\x\panel\field($out, $key);
         }
         return \_\lot\x\panel\field\text($in, $key, $type);
     }
     function items($in, $key, $type) {
-        
+        if (isset($in['lot']) && \is_array($in['lot'])) {
+            $out = \_\lot\x\panel\h\field($in, $key, $type);
+            $o = [];
+            $value = P . \implode(P, (array) ($in['value[]'] ?? null)) . P;
+            $out['content'][0] = 'div';
+            unset($out['name'], $out['placeholder'], $out['value']);
+            $n = $in['name'] ?? $key;
+            foreach ($in['lot'] as $k => $v) {
+                $oo = new \HTML(['input', false, [
+                    'checked' => \strpos($value, P . $k . P) !== false,
+                    'name' => $n . '[' . $k . ']',
+                    'type' => 'checkbox',
+                    'value' => $k
+                ]]);
+                if (\is_array($v)) {
+                    $t = \w($v['title'] ?? $k, 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
+                    $oo['disabled'] = isset($v['active']) && !$v['active'];
+                } else {
+                    $t = $v;
+                }
+                $o[$t] = '<label>' . $oo . '&nbsp;<span>' . $t . '</span></label>';
+            }
+            \ksort($o);
+            if (!isset($in['block'])) {
+                $block = \count($in['lot']) > 5 ? '<br>' : ""; // Auto
+            } else {
+                $block = $in['block'] ? '<br>' : "";
+            }
+            $out['content'][1] = \implode($block, $o);
+            $out['content'][2]['class'] = 'lot lot:items' . ($block ? ' block' : "");
+            return \_\lot\x\panel\field($out, $key);
+        }
+        return \_\lot\x\panel\field\text($in, $key, $type);
     }
     function source($in, $key, $type) {
         $out = \_\lot\x\panel\h\field($in, $key, $type);
@@ -311,7 +331,19 @@ namespace _\lot\x\panel\field {
         return \_\lot\x\panel\field($out, $key);
     }
     function toggle($in, $key, $type) {
-        
+        $out = \_\lot\x\panel\h\field($in, $key, $type);
+        $value = $in['value'] ?? 1;
+        $toggle = new \HTML(['input', false, [
+            'checked' => !empty($value),
+            'name' => $in['name'] ?? $key,
+            'type' => 'checkbox',
+            'value' => $value === true ? 'true' : ($value === false ? 'false' : '1') // Force value to be exists
+        ]]);
+        $t = \w($in['description'] ?? $GLOBALS['language']->doYes ?? $key, 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
+        $out['content'][0] = 'div';
+        $out['content'][1] = '<label>' . $toggle . '&nbsp;<span>' . $t . '</span></label>';
+        $out['content'][2]['class'] = 'lot lot:toggle';
+        return \_\lot\x\panel\field($out, $key);
     }
 }
 
@@ -336,8 +368,8 @@ namespace _\lot\x\panel\h {
                 'name' => $in['name'] ?? $key,
                 'pattern' => $in['pattern'] ?? null,
                 'placeholder' => $in['placeholder'] ?? null,
-                'readonly' => !empty($in['read-only']),
-                'required' => !empty($in['required'])
+                'readonly' => !empty($in['!']),
+                'required' => !empty($in['*'])
             ]
         ];
         $style = "";

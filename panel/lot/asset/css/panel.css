@@ -694,15 +694,33 @@ svg {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.lot\:item {
+.lot\:item,
+.lot\:items {
   display: flex;
+  flex-wrap: wrap;
   padding-top: 6px;
 }
-.lot\:item > label {
+.lot\:item > label,
+.lot\:items > label {
   margin: 0 12px 0 0;
+  white-space: nowrap;
 }
-.lot\:item > label:last-child {
+.lot\:item > label:last-child,
+.lot\:items > label:last-child {
   margin-right: 0;
+}
+.lot\:item.block,
+.lot\:items.block {
+  display: block;
+  column-width: 120px;
+  column-gap: 24px;
+}
+.lot\:item.block > label,
+.lot\:items.block > label {
+  margin: 0;
+}
+.lot\:toggle {
+  padding-top: 6px;
 }
 .lot\:task {
   display: flex;
@@ -1364,6 +1382,7 @@ svg {
 .lot\:desk {
   padding: 48px 48px;
   margin: 0 auto;
+  max-width: 1152px;
 }
 .content\:desk::before,
 .content\:desk::after,
