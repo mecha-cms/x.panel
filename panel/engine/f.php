@@ -93,6 +93,75 @@ namespace _\lot\x\panel {
         $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
+    function file($in, $key) {
+        $f = \is_file($path = $in['/']);
+        $name = \basename($path);
+        $x = \pathinfo($path, \PATHINFO_EXTENSION);
+        $in['tags'][] = 'file';
+        $in['tags'][] = 'file:' . $key;
+        $in['tags'][] = 'is-' . ($f ? 'file' : 'folder');
+        if ($f) {
+            $in['tags'][] = 'x:' . $x;
+        }
+        if ($name && \strpos('._', $name[0]) !== false) {
+            $in['tags'][] = 'is-hidden';
+        }
+        $out = [
+            0 => 'li',
+            1 => "",
+            2 => []
+        ];
+        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[1] .= '<h3 class="title"><a href="" title="' . ($f ? (new \File($path))->size : $GLOBALS['language']->doEnter) . '">' . $name . '</a></h3>';
+        $out[1] .= \_\lot\x\panel\task([
+            0 => 'p',
+            'tags' => ['icons'],
+            'lot' => [
+                'g' => [
+                    'title' => false,
+                    'description' => 'Edit',
+                    'url' => '/panel/::g::/foo-bar',
+                    'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']
+                ]
+            ]
+        ], 0);
+        return new \HTML($out);
+    }
+    function files($in, $key) {
+        $in['tags'][] = 'lot';
+        $in['tags'][] = 'lot:file';
+        $out = [
+            0 => 'ul',
+            1 => "",
+            2 => []
+        ];
+        $out[2] = \_\lot\x\panel\h\c($in);
+        $a = [[], []];
+        if ($raw = isset($in['lot']) && \is_array($in['lot'])) {
+            foreach ($in['lot'] as $k => $v) {
+                $a[\is_file($v) ? 1 : 0][$k] = $v;
+            }
+        } else if (isset($in['source']) && \is_dir($in['source'])) {
+            foreach (\g($in['source']) as $k => $v) {
+                $a[$v][] = $k;
+            }
+        }
+        // Do not sort if input is array
+        if (!$raw) {
+            \asort($a[0]);
+            \asort($a[1]);
+        }
+        $chunk = $in['chunk'] ?? 0;
+        $i = $in['i'] ?? 1;
+        $a = \array_merge($a[0], $a[1]);
+        $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
+        if (isset($a[$i - 1])) {
+            foreach ($a[$i - 1] as $k => $v) {
+                $out[1] .= file(['/' => $v], $k);
+            }
+        }
+        return new \HTML($out);
+    }
     function form($in, $key, $type) {
         $out = [
             0 => $in[0] ?? 'form',
@@ -163,7 +232,7 @@ namespace _\lot\x\panel {
         $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
-    function task($in, $key, $type) {
+    function task($in, $key) {
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",

@@ -688,6 +688,9 @@ svg {
   -moz-user-select: none;
   user-select: none;
 }
+svg[display="none"] {
+  display: none;
+}
 .title {
   font: inherit;
   font-size: 18px;

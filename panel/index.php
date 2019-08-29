@@ -19,9 +19,11 @@ Hook::set('content', function($content) {
     if (empty($GLOBALS['SVG'])) {
         return $content;
     }
-    $icons = '<svg xmlns="http://www.w3.org/2000/svg" hidden>';
+    $icons = '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
     foreach ($GLOBALS['SVG'] as $k => $v) {
-        $icons .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24"><path d="' . $v . '"></path></symbol>';
+        $icons .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
+        $icons .= strpos($v, '<') === 0 ? $v : '<path d="' . $v . '"></path>';
+        $icons .= '</symbol>';
     }
     $icons .= '</svg>';
     return str_replace('<body>', '<body>' . $icons, $content);
@@ -35,5 +37,5 @@ Route::set('panel', 200, function() {
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel' . DS . 'construction.css');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'drop.js');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'tab.js');
-    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'test.field.php');
+    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'test.file.php');
 }, 0);

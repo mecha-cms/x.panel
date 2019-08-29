@@ -230,8 +230,7 @@ echo _\lot\x\panel(['lot' => [
                             ]
                         ]
                     ]
-                ],
-                'stack' => 30
+                ]
             ]
         ]
     ]
