@@ -91,6 +91,34 @@ echo _\lot\x\panel(['lot' => [
                                                 'title' => 'Show in menu',
                                                 'value' => true,
                                                 'stack' => 60
+                                            ],
+                                            'page[foo]' => [
+                                                'type' => 'field.combo',
+                                                'title' => 'Combo',
+                                                'lot' => [
+                                                    'red' => 'Red',
+                                                    'green' => 'Green',
+                                                    'blue' => 'Blue'
+                                                ],
+                                                'stack' => 70
+                                            ],
+                                            'page[fooz]' => [
+                                                'type' => 'field.combo',
+                                                'title' => 'Combo',
+                                                'lot' => [
+                                                    'red' => 'Red',
+                                                    'green' => 'Green',
+                                                    'blue' => 'Blue',
+                                                    'bw' => [
+                                                        'title' => 'Black & White',
+                                                        'lot' => [
+                                                            'black' => 'Black',
+                                                            'white' => 'White',
+                                                            'gray' => 'Gray'
+                                                        ]
+                                                    ]
+                                                ],
+                                                'stack' => 70
                                             ]
                                         ]
                                     ]

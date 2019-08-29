@@ -456,6 +456,7 @@ hr {
 .button[disabled],
 .input[disabled],
 .select[disabled],
+.select [disabled],
 .textarea[disabled] {
   opacity: .5;
   cursor: not-allowed;
@@ -518,6 +519,7 @@ label {
   background: none;
   border: 0;
   padding: 0;
+  font-size: 12px;
   line-height: 24px;
 }
 
@@ -658,8 +660,12 @@ a.disabled,
 .button.disabled,
 .input.disabled,
 .select.disabled,
+.select .disabled,
 .textarea.disabled {
   opacity: .5;
+  cursor: not-allowed;
+}
+label.disabled {
   cursor: not-allowed;
 }
 svg {
@@ -937,9 +943,7 @@ svg {
   text-overflow: ellipsis;
   text-align: right;
 }
-.field > label + span,
 .field > label + div,
-.field > label + br + span,
 .field > label + br + div {
   display: block;
   flex: 1;
@@ -959,9 +963,7 @@ svg {
     padding: 0;
     text-align: inherit;
   }
-  .field > label + span,
   .field > label + div,
-  .field > label + br + span,
   .field > label + br + div {
     width: auto;
     margin: 0;
@@ -972,26 +974,28 @@ svg {
     display: block;
   }
 }
-.field .hint {
+.field .output {
   display: inline-block;
   vertical-align: middle;
-  font-size: 12px;
-  margin: 0 0 0 12px;
-}
-.field .width + .hint {
-  display: block;
-  margin: 6px 0 0 0;
-}
-.input.plain {
+  border: 0;
+  background: none;
+  color: inherit;
   width: auto;
   height: auto;
-  background: none;
-  border: 0;
-  padding-right: 0;
-  padding-left: 0;
+  font: inherit;
+  line-height: 24px;
+  padding: 6px 0;
+  text-align: inherit;
+  position: relative;
+  z-index: 0;
 }
-.input.plain.width {
+.field .output.width {
   width: 100%;
+}
+.field .hint {
+  display: block;
+  font-size: 12px;
+  margin: 6px 0 0 0;
 }
 .lot\:tab > nav {
   height: 48px;
@@ -1382,7 +1386,7 @@ svg {
 .lot\:desk {
   padding: 48px 48px;
   margin: 0 auto;
-  max-width: 1152px;
+  max-width: 1008px;
 }
 .content\:desk::before,
 .content\:desk::after,
@@ -1636,6 +1640,12 @@ html.form body form .field > label {
 .footer p.left {
   margin: 0;
 }
+
+
+
+
+
+
 .CodeMirror {
   cursor: text;
   background: #fff;

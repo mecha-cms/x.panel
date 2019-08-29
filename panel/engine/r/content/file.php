@@ -32,7 +32,7 @@ echo _\lot\x\panel(['lot' => [
                                                 'title' => $language->content,
                                                 'width' => true,
                                                 'height' => true,
-                                                'placeholder' => 'File content goes here...',
+                                                'placeholder' => $language->fieldHintContent([$language->file], true),
                                                 'value' => "",
                                                 'stack' => 20
                                             ],
@@ -40,7 +40,7 @@ echo _\lot\x\panel(['lot' => [
                                                 'type' => 'field.text',
                                                 'title' => $language->name,
                                                 'width' => true,
-                                                'placeholder' => 'name.txt',
+                                                'placeholder' => $language->fieldHintName([$language->file], true),
                                                 'value' => "",
                                                 'stack' => 30
                                             ]

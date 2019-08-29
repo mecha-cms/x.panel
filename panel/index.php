@@ -13,11 +13,13 @@ require __DIR__ . DS . 'engine' . DS . 'f.php';
 require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'content.php';
 require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'lot.php';
 
+require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'language.php';
+
 Hook::set('content', function($content) {
     if (empty($GLOBALS['SVG'])) {
         return $content;
     }
-    $icons = '<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">';
+    $icons = '<svg xmlns="http://www.w3.org/2000/svg" hidden>';
     foreach ($GLOBALS['SVG'] as $k => $v) {
         $icons .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24"><path d="' . $v . '"></path></symbol>';
     }
@@ -33,5 +35,5 @@ Route::set('panel', 200, function() {
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel' . DS . 'construction.css');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'drop.js');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'tab.js');
-    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'file.php');
+    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'test.field.php');
 }, 0);

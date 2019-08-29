@@ -62,12 +62,18 @@ caption {
 .input[disabled],
 .input.disabled,
 .select[disabled],
+.select [disabled],
 .select.disabled,
+.select .disabled,
 .textarea[disabled],
 .textarea.disabled {
   background: #ffd;
   color: #999;
   opacity: 1;
+}
+.select [disabled],
+.select .disabled {
+  background: #fff;
 }
 .button[disabled],
 .button.disabled {
@@ -383,4 +389,103 @@ caption {
 }
 .lot\:table .table th {
   background: #ccd;
+}
+
+/* Custom Appearance for Modern Browsers */
+.input[type="checkbox"],
+.input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 2px solid #999;
+}
+.input[type="checkbox"] {
+  border-color: #090;
+}
+.input[type="radio"] {
+  border-color: #c00;
+}
+.input[type="checkbox"]:checked,
+.input[type="radio"]:checked,
+.input[type="checkbox"]:focus,
+.input[type="radio"]:focus {
+  border-width: 0;
+}
+.input[type="checkbox"]:checked,
+.input[type="checkbox"]:focus {
+  background: #090;
+}
+.input[type="radio"]:checked,
+.input[type="radio"]:focus {
+  background: #c00;
+}
+.input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  bottom: 4px;
+  left: 5px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+  visibility: hidden;
+}
+.input[type="radio"]::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  border: 2px solid #fff;
+  visibility: hidden;
+}
+.input[type="radio"],
+.input[type="radio"]::before {
+  border-radius: 100%;
+}
+.input[type="checkbox"]:checked::before,
+.input[type="radio"]:checked::before {
+  visibility: visible;
+}
+.input[type="checkbox"][disabled],
+.input[type="radio"][disabled] {
+  border-color: #999;
+}
+.input[type="checkbox"][disabled]:checked,
+.input[type="radio"][disabled]:checked {
+  background: #999;
+}
+.field\:toggle .input[type="checkbox"] {
+  width: 30px;
+  height: 20px;
+  background: #c00;
+  border-width: 0;
+  border-radius: 10px;
+  margin-right: 6px;
+}
+.field\:toggle .input[type="checkbox"]::before {
+  visibility: visible;
+  border: 0;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  transform: rotate(0);
+}
+.field\:toggle .input[type="checkbox"]:checked {
+  background: #090;
+}
+.field\:toggle .input[type="checkbox"]:checked::before {
+  left: 12px;
+}
+.field\:toggle .input[type="checkbox"][disabled] {
+  background: #999;
 }
