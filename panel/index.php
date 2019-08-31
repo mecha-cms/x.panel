@@ -10,8 +10,6 @@
 !defined('BINARY_X') && define('BINARY_X', AUDIO_X . ',' . PACKAGE_X . ',' . VIDEO_X . ',doc,docx,odt,pdf,ppt,pptx,rtf,xlr,xls,xlsx');
 
 require __DIR__ . DS . 'engine' . DS . 'f.php';
-require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'content.php';
-require __DIR__ . DS . 'engine' . DS . 'f' . DS . 'lot.php';
 
 require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'language.php';
 
@@ -37,5 +35,5 @@ Route::set('panel', 200, function() {
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel' . DS . 'construction.css');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'drop.js');
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'tab.js');
-    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'test.file.php');
+    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'test.field.php');
 }, 0);

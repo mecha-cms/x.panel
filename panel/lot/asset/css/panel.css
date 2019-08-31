@@ -22,7 +22,7 @@
 }
 .hidden,
 [hidden] {
-  display: none;
+  display: none !important;
 }
 .invisible {
   visibility: hidden;
@@ -595,8 +595,9 @@ label {
   margin-left: -1px;
 }
 .lot\:input svg.fix {
-  padding-right: 6px;
-  padding-left: 6px;
+  width: 36px;
+  padding-right: 0;
+  padding-left: 0;
 }
 .lot\:input .button {
   background: none;
@@ -703,20 +704,39 @@ svg[display="none"] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.lot\:color {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -6px;
+  margin-left: -6px;
+}
+.lot\:color .input {
+  margin-right: 6px;
+  margin-left: 6px;
+}
 .lot\:item,
-.lot\:items {
+.lot\:items,
+.lot\:toggle {
   display: flex;
   flex-wrap: wrap;
   padding-top: 6px;
 }
 .lot\:item > label,
-.lot\:items > label {
+.lot\:items > label,
+.lot\:toggle > label {
+  display: inline-flex;
+  align-items: center;
   margin: 0 12px 0 0;
   white-space: nowrap;
 }
 .lot\:item > label:last-child,
 .lot\:items > label:last-child {
   margin-right: 0;
+}
+.lot\:item > label > .input,
+.lot\:items > label > .input,
+.lot\:toggle > label > .input {
+  margin: 0 6px 0 0;
 }
 .lot\:item.block,
 .lot\:items.block {
@@ -727,9 +747,6 @@ svg[display="none"] {
 .lot\:item.block > label,
 .lot\:items.block > label {
   margin: 0;
-}
-.lot\:toggle {
-  padding-top: 6px;
 }
 .lot\:task {
   display: flex;
@@ -1399,27 +1416,22 @@ svg[display="none"] {
   display: table;
   clear: both;
 }
-.content\:desk > header,
-.lot\:desk > header {
-  padding: 0;
-  margin-bottom: 48px;
-}
-.content\:desk > main,
-.lot\:desk > main {
-  padding: 0;
-}
-.content\:desk > footer,
-.lot\:desk > footer {
-  padding: 0;
+.content\:desk > section + section,
+.lot\:desk > section + section,
+.content\:desk > form > section + section,
+.lot\:desk > form > section + section {
   margin-top: 48px;
 }
-.lot\:desk > footer > .lot\:task {
+.content\:desk > section > .lot\:task,
+.lot\:desk > section > .lot\:task,
+.content\:desk > form > section > .lot\:task,
+.lot\:desk > form > section > .lot\:task {
   margin-left: 117px;
 }
-.content\:desk > header:empty,
-.content\:desk > footer:empty,
-.lot\:desk > header:empty,
-.lot\:desk > footer:empty {
+.content\:desk > section:empty,
+.lot\:desk > section:empty,
+.content\:desk > form > section:empty,
+.lot\:desk > form > section:empty {
   display: none;
 }
 @media (max-width: 720px) {
@@ -1427,20 +1439,16 @@ svg[display="none"] {
   .lot\:desk {
     padding: 24px 24px;
   }
-  .content\:desk > header,
-  .lot\:desk > header {
-    margin-bottom: 24px;
-  }
-  .content\:desk > footer,
-  .lot\:desk > footer {
+  .content\:desk > section + section,
+  .lot\:desk > section + section,
+  .content\:desk > form > section + section,
+  .lot\:desk > form > section + section {
     margin-top: 24px;
   }
-  .lot\:desk > footer > .lot\:task {
+  .lot\:desk > section > .lot\:task,
+  .lot\:desk > form > section > .lot\:task {
     margin-left: 0;
   }
-}
-.container {
-  padding: 24px 24px;
 }
 .messages {
   margin: 0;
@@ -1528,17 +1536,17 @@ html.form body form {
 html.form body form .field > label {
   display: none;
 }
-.lot\:nav {
+.lot\:bar {
   line-height: 48px;
   display: flex;
   flex-wrap: wrap;
 }
-.lot\:nav > ul:nth-child(2) {
+.lot\:bar > ul:nth-child(2) {
   flex: 1;
 }
-.lot\:nav > ul,
-.lot\:nav > ul > li,
-.lot\:nav .field {
+.lot\:bar > ul,
+.lot\:bar > ul > li,
+.lot\:bar .field {
   display: block;
   width: auto;
   height: inherit;
@@ -1546,61 +1554,61 @@ html.form body form .field > label {
   padding: 0;
   list-style: none;
 }
-.lot\:nav > ul {
+.lot\:bar > ul {
   display: flex;
   height: 48px;
 }
-.lot\:nav > ul > li.active > a {
+.lot\:bar > ul > li.active > a {
   color: inherit;
 }
-.lot\:nav > ul > li.separator {
+.lot\:bar > ul > li.separator {
   width: 1px;
   height: 24px;
   margin: 12px 0;
   overflow: hidden;
 }
-.lot\:nav > ul > li.separator:first-child,
-.lot\:nav > ul > li.separator:last-child {
+.lot\:bar > ul > li.separator:first-child,
+.lot\:bar > ul > li.separator:last-child {
   display: none;
 }
-.lot\:nav > ul > li > a {
+.lot\:bar > ul > li > a {
   display: flex;
   height: inherit;
   padding: 0 18px;
   overflow: hidden;
 }
-.lot\:nav > ul > li > a > span {
+.lot\:bar > ul > li > a > span {
   flex: 1;
 }
-.lot\:nav > ul > li > a > svg {
+.lot\:bar > ul > li > a > svg {
   margin: 12px -6px 0;
   margin-top: 12px;
 }
-.lot\:nav > ul > li > a > svg:first-child {
+.lot\:bar > ul > li > a > svg:first-child {
   margin-right: 6px;
 }
-.lot\:nav > ul > li > a > svg:last-child {
+.lot\:bar > ul > li > a > svg:last-child {
   margin-left: 6px;
 }
-.lot\:nav > ul > li > a > svg:only-child {
+.lot\:bar > ul > li > a > svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
 }
-.lot\:nav > ul > li > a > svg.caret:first-child {
+.lot\:bar > ul > li > a > svg.caret:first-child {
   margin-right: 0;
   margin-left: -12px;
 }
-.lot\:nav > ul > li > a > svg.caret:last-child {
+.lot\:bar > ul > li > a > svg.caret:last-child {
   margin-right: -12px;
   margin-left: 0;
 }
-.lot\:nav .field {
+.lot\:bar .field {
   margin: 0;
 }
-.lot\:nav .field label {
+.lot\:bar .field label {
   display: none;
 }
-.lot\:nav .field .input {
+.lot\:bar .field .input {
   display: block;
   width: 192px;
   height: 48px;
@@ -1610,14 +1618,14 @@ html.form body form .field > label {
   border: 0;
 }
 @media (max-width: 720px) {
-  .lot\:nav > ul:first-child,
-  .lot\:nav > ul:first-child li + li {
+  .lot\:bar > ul:first-child,
+  .lot\:bar > ul:first-child li + li {
     flex: 1;
   }
-  .lot\:nav > ul:first-child > li + li .input {
+  .lot\:bar > ul:first-child > li + li .input {
     width: 100%;
   }
-  .lot\:nav > ul:nth-child(2) {
+  .lot\:bar > ul:nth-child(2) {
     display: none;
   }
 }

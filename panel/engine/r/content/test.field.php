@@ -4,55 +4,89 @@ require __DIR__ . DS . 'before.php';
 
 $fields = [
     'default[0]' => [
-        'type' => 'field',
+        'type' => 'Field',
         'title' => 'Default',
         'content' => '<output class="output">ABCDEF</output>'
     ],
+    'unknown[0]' => [
+        'type' => null,
+        'title' => 'Unknown',
+        'value' => "Foo\nBar\n<b>Baz</b>"
+    ],
+    'unknown[1]' => [
+        'type' => 'Foo',
+        'title' => 'Unknown',
+        'value' => "Foo\nBar\n<b>Baz</b>"
+    ],
     'text[0]' => [
-        'type' => 'field.text',
+        'type' => 'Text',
         'title' => 'Text',
         'placeholder' => 'Text'
     ],
+    'text[1]' => [
+        'required' => true,
+        'type' => 'Text',
+        'title' => 'Text',
+        'before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']
+    ],
+    'text[2]' => [
+        'required' => true,
+        'type' => 'Text',
+        'title' => 'Text',
+        'after' => '.php'
+    ],
+    'text[3]' => [
+        'required' => true,
+        'type' => 'Text',
+        'title' => 'Text',
+        'before' => 'IDR',
+        'after' => '.00'
+    ],
     'number[0]' => [
-        'type' => 'field.number',
+        'type' => 'Number',
         'title' => 'Number',
         'min' => 0,
         'max' => 10,
         'step' => .5
     ],
     'range[0]' => [
-        'type' => 'field.range',
+        'type' => 'Range',
         'title' => 'Range',
         'min' => 0,
         'max' => 10,
         'step' => .5
     ],
     'pass[0]' => [
-        'type' => 'field.pass',
+        'type' => 'Pass',
         'title' => 'Pass',
         'placeholder' => 'Pass'
     ],
     'color[0]' => [
-        'type' => 'field.color',
+        'type' => 'Color',
         'title' => 'Color'
     ],
+    'colors[0]' => [
+        'type' => 'Colors',
+        'title' => 'Colors',
+        'lot' => ['#ff0000', '#00ff00', '#0000ff']
+    ],
     'content[0]' => [
-        'type' => 'field.content',
+        'type' => 'Content',
         'title' => 'Content',
         'placeholder' => 'Content'
     ],
     'source[0]' => [
-        'type' => 'field.source',
+        'type' => 'Source',
         'title' => 'Source',
         'placeholder' => 'Source'
     ],
     'combo[0]' => [
-        'type' => 'field.combo',
+        'type' => 'Combo',
         'title' => 'Combo',
         'lot' => ['Red', 'Green', 'Blue']
     ],
     'combo[1]' => [
-        'type' => 'field.combo',
+        'type' => 'Combo',
         'title' => 'Combo',
         'lot' => [
             'red' => 'Red',
@@ -65,7 +99,7 @@ $fields = [
         ]
     ],
     'combo[2]' => [
-        'type' => 'field.combo',
+        'type' => 'Combo',
         'title' => 'Combo Group',
         'lot' => [
             'color' => [
@@ -79,7 +113,7 @@ $fields = [
         ]
     ],
     'combo[3]' => [
-        'type' => 'field.combo',
+        'type' => 'Combo',
         'title' => 'Combo Group',
         'lot' => [
             'color' => [
@@ -102,7 +136,7 @@ $fields = [
         ]
     ],
     'item[0]' => [
-        'type' => 'field.item',
+        'type' => 'Item',
         'title' => 'Item',
         'lot' => ['Red', 'Green', [
             'title' => 'Blue',
@@ -110,7 +144,7 @@ $fields = [
         ]]
     ],
     'item[1]' => [
-        'type' => 'field.item',
+        'type' => 'Item',
         'title' => 'Item',
         'lot' => ['#000', '#f00', '#0f0', '#00f', '#fff', '#0ff', '#f0f', [
             'title' => '#ff0',
@@ -118,7 +152,7 @@ $fields = [
         ]]
     ],
     'items[0]' => [
-        'type' => 'field.items',
+        'type' => 'Items',
         'title' => 'Items',
         'lot' => ['Red', 'Green', [
             'title' => 'Blue',
@@ -126,7 +160,7 @@ $fields = [
         ]]
     ],
     'items[1]' => [
-        'type' => 'field.items',
+        'type' => 'Items',
         'title' => 'Items',
         'lot' => ['#000', '#f00', '#0f0', '#00f', '#fff', '#0ff', '#f0f', [
             'title' => '#ff0',
@@ -134,99 +168,125 @@ $fields = [
         ]]
     ],
     'toggle[0]' => [
-        'type' => 'field.toggle',
+        'type' => 'Toggle',
         'title' => 'Toggle'
     ],
     'blob[0]' => [
-        'type' => 'field.blob',
+        'type' => 'Blob',
         'title' => 'Blob'
     ],
     'hidden[0]' => [
-        'type' => 'field.hidden'
+        'type' => 'Hidden'
     ]
 ];
 
-echo _\lot\x\panel(['lot' => [
-    'desk' => [
-        'type' => 'desk.form.post',
-        '/' => '/foo/bar',
-        2 => ['enctype' => 'multipart/form-data'],
-        'lot' => [
-            'body' => [
-                'type' => 'desk.body',
-                'lot' => [
-                    'tab' => [
-                        'type' => 'tab',
-                        'lot' => [
-                            0 => [
-                                'title' => 'Test 1',
-                                'lot' => [
-                                    'field' => [
-                                        'type' => 'fields',
-                                        'lot' => $fields
+echo _\lot\x\panel([
+    'type' => 'Desk',
+    'lot' => [
+        0 => [
+            'type' => 'Form.Post',
+            '/' => '/foo/bar',
+            'lot' => [
+                0 => [
+                    'type' => 'Section',
+                    'lot' => [
+                        'tab' => [
+                            'type' => 'Tabs',
+                            'lot' => [
+                                0 => [
+                                    'title' => 'Test 1',
+                                    'lot' => [
+                                        'field' => [
+                                            'type' => 'Fields',
+                                            'lot' => $fields
+                                        ]
                                     ]
-                                ]
-                            ],
-                            1 => [
-                                'title' => 'Test 2',
-                                'lot' => [
-                                    'field' => [
-                                        'type' => 'fields',
-                                        'lot' => \map($fields, function($field) {
-                                            $field['width'] = true;
-                                            return $field;
-                                        })
+                                ],
+                                1 => [
+                                    'title' => 'Test 2',
+                                    'lot' => [
+                                        'field' => [
+                                            'type' => 'Fields',
+                                            'lot' => \map($fields, function($field) {
+                                                $field['width'] = true;
+                                                return $field;
+                                            })
+                                        ]
                                     ]
-                                ]
-                            ],
-                            2 => [
-                                'title' => 'Test 3',
-                                'lot' => [
-                                    'field' => [
-                                        'type' => 'fields',
-                                        'lot' => \map($fields, function($field) {
-                                            $field['width'] = true;
-                                            $field['description'] = 'Description goes here.';
-                                            return $field;
-                                        })
+                                ],
+                                2 => [
+                                    'title' => 'Test 3',
+                                    'lot' => [
+                                        'field' => [
+                                            'type' => 'Fields',
+                                            'lot' => \map($fields, function($field) {
+                                                $field['width'] = true;
+                                                $field['description'] = 'Description goes here.';
+                                                return $field;
+                                            })
+                                        ]
                                     ]
                                 ]
                             ]
                         ]
                     ]
-                ]
-            ],
-            'footer' => [
-                'type' => 'desk.footer',
-                'lot' => [
-                    'task' => [
-                        'type' => 'task',
-                        'lot' => [
-                            0 => [
-                                'type' => 'button',
-                                'title' => 'Action 1',
-                                'name' => 'x',
-                                'stack' => 10
-                            ],
-                            1 => [
-                                'type' => 'button',
-                                'title' => 'Action 2',
-                                'name' => 'x',
-                                'stack' => 20
-                            ],
-                            2 => [
-                                'active' => false,
-                                'type' => 'button',
-                                'title' => 'Action 3',
-                                'name' => 'x',
-                                'stack' => 30
-                            ],
-                            3 => [
-                                'type' => 'button',
-                                'title' => 'Action 4',
-                                'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
-                                'name' => 'x',
-                                'stack' => 40
+                ],
+                1 => [
+                    'type' => 'Section',
+                    'lot' => [
+                        'task' => [
+                            'type' => 'Task',
+                            'lot' => [
+                                0 => [
+                                    'type' => 'Button',
+                                    'title' => 'Default',
+                                    'name' => 'x',
+                                    'stack' => 10
+                                ],
+                                1 => [
+                                    'type' => 'Button.Button',
+                                    'title' => 'Button',
+                                    'name' => 'x',
+                                    'stack' => 10.1
+                                ],
+                                2 => [
+                                    'type' => 'Button.Submit',
+                                    'title' => 'Submit',
+                                    'name' => 'x',
+                                    'stack' => 10.2
+                                ],
+                                3 => [
+                                    'type' => 'Button.Reset',
+                                    'title' => 'Reset',
+                                    'name' => 'x',
+                                    'stack' => 10.3
+                                ],
+                                4 => [
+                                    'type' => 'Button.Link',
+                                    'title' => 'Link',
+                                    'link' => 'https://example.com',
+                                    'stack' => 10.4
+                                ],
+                                5 => [
+                                    'type' => 'Button',
+                                    'title' => 'With Icon',
+                                    'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
+                                    'name' => 'x',
+                                    'stack' => 10.5
+                                ],
+                                6 => [
+                                    'active' => false,
+                                    'type' => 'Button',
+                                    'title' => 'Disabled',
+                                    'name' => 'x',
+                                    'stack' => 10.6
+                                ],
+                                7 => [
+                                    'active' => false,
+                                    'type' => 'Button.Link',
+                                    'title' => 'Disabled Link',
+                                    'stack' => 10.7
+                                ]
                             ]
                         ]
                     ]
@@ -234,6 +294,6 @@ echo _\lot\x\panel(['lot' => [
             ]
         ]
     ]
-]], 0, '#');
+], 0);
 
 require __DIR__ . DS . 'after.php';

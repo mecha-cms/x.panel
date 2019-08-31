@@ -335,47 +335,47 @@ caption {
 .message-success {
   background: #690;
 }
-.lot\:nav {
+.lot\:bar {
   background: #1a1a1a;
   color: #ccc;
 }
-.lot\:nav li.main {
+.lot\:bar li.main {
   background: #fff;
   color: #000;
 }
-.lot\:nav li.main > a {
+.lot\:bar li.main > a {
   color: #009;
 }
-.lot\:nav li.main > a:focus,
-.lot\:nav li.main > a:active {
+.lot\:bar li.main > a:focus,
+.lot\:bar li.main > a:active {
   color: #900;
 }
-.lot\:nav li.main.active > a {
+.lot\:bar li.main.active > a {
   background: inherit;
   color: inherit;
   position: relative;
   z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
 }
-.lot\:nav > ul > li.separator {
+.lot\:bar > ul > li.separator {
   background: #222;
 }
-.lot\:nav > ul > li > a {
+.lot\:bar > ul > li > a {
   color: #ddd;
 }
-.lot\:nav > ul > li > a > svg.caret {
+.lot\:bar > ul > li > a > svg.caret {
   color: #777;
 }
-.lot\:nav > ul > li > a:hover > svg.caret,
-.lot\:nav > ul > li > a:focus > svg.caret {
+.lot\:bar > ul > li > a:hover > svg.caret,
+.lot\:bar > ul > li > a:focus > svg.caret {
   color: #999;
 }
-.lot\:nav .field .input {
+.lot\:bar .field .input {
   background: #000;
   color: #fff;
 }
-.lot\:nav > ul > li > a:focus,
-.lot\:nav > ul > li > a:active,
-.lot\:nav > ul > li.active > a {
+.lot\:bar > ul > li > a:focus,
+.lot\:bar > ul > li > a:active,
+.lot\:bar > ul > li.active > a {
   color: #fafafa;
 }
 .lot\:table .table th,
@@ -397,42 +397,18 @@ caption {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border: 2px solid #999;
 }
 .input[type="checkbox"] {
-  border-color: #090;
-}
-.input[type="radio"] {
-  border-color: #c00;
-}
-.input[type="checkbox"]:checked,
-.input[type="radio"]:checked,
-.input[type="checkbox"]:focus,
-.input[type="radio"]:focus {
-  border-width: 0;
-}
-.input[type="checkbox"]:checked,
-.input[type="checkbox"]:focus {
   background: #090;
 }
-.input[type="radio"]:checked,
-.input[type="radio"]:focus {
+.input[type="radio"] {
   background: #c00;
 }
-.input[type="checkbox"]::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  right: 5px;
-  bottom: 4px;
-  left: 5px;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  transform: rotate(45deg);
+.input[type="checkbox"]:focus::before,
+.input[type="radio"]:focus::before {
   visibility: hidden;
 }
+.input[type="checkbox"]::before,
 .input[type="radio"]::before {
   content: "";
   position: absolute;
@@ -440,23 +416,31 @@ caption {
   right: 2px;
   bottom: 2px;
   left: 2px;
-  border: 2px solid #fff;
-  visibility: hidden;
+  background: #fff;
 }
 .input[type="radio"],
 .input[type="radio"]::before {
   border-radius: 100%;
 }
-.input[type="checkbox"]:checked::before,
+.input[type="checkbox"]:checked::before {
+  right: 5px;
+  bottom: 4px;
+  left: 5px;
+  background: none;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+  visibility: visible;
+}
 .input[type="radio"]:checked::before {
+  background: none;
+  border: 2px solid #fff;
   visibility: visible;
 }
 .input[type="checkbox"][disabled],
 .input[type="radio"][disabled] {
-  border-color: #999;
-}
-.input[type="checkbox"][disabled]:checked,
-.input[type="radio"][disabled]:checked {
   background: #999;
 }
 .field\:toggle .input[type="checkbox"] {
@@ -465,10 +449,8 @@ caption {
   background: #c00;
   border-width: 0;
   border-radius: 10px;
-  margin-right: 6px;
 }
 .field\:toggle .input[type="checkbox"]::before {
-  visibility: visible;
   border: 0;
   width: 16px;
   height: 16px;
@@ -479,6 +461,7 @@ caption {
   -webkit-transform: rotate(0);
   -moz-transform: rotate(0);
   transform: rotate(0);
+  visibility: visible;
 }
 .field\:toggle .input[type="checkbox"]:checked {
   background: #090;

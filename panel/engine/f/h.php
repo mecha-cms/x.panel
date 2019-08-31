@@ -61,7 +61,7 @@ function icon($in) {
 }
 
 function link($value) {
-    return url($value, $in);
+    return url($value);
 }
 
 function url($value) {
