@@ -8,9 +8,11 @@ function Field_($in, $key) {
 
 function Field_Blob($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
+    $name = 'blob[' . \md5($in['name'] ?? $key) . ']';
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['class'] = \trim('input ' . ($out['content'][2]['class'] ?? ""));
+    $out['content'][2]['name'] = $name;
     $out['content'][2]['type'] = 'file';
     return \_\lot\x\panel\Field($out, $key);
 }
@@ -40,16 +42,18 @@ function Field_Colors($in, $key) {
             if (\is_string($v)) {
                 $v = ['value' => $v];
             }
+            $n = $v['name'] ?? $name . '[' . $k . ']';
             $value = $v['value'] ?? null;
             $input = \_\lot\x\panel\h\field($v, $k);
             $input[0] = 'input';
             $input[1] = false;
             $input[2]['class'] = 'input';
-            $input[2]['name'] = $v['name'] ?? $name . '[' . $k . ']';
+            $input[2]['name'] = $n;
             $input[2]['title'] = $value;
             $input[2]['type'] = 'color';
             $input[2]['value'] = $value;
             $out['content'][1] .= new \HTML($input);
+            \_\lot\x\panel\h\session($n, $v);
         }
     }
     $out['content'][2]['class'] = \trim('lot lot:color ' . ($out['content'][2]['class'] ?? ""));
@@ -128,12 +132,13 @@ function Field_Content($in, $key) {
 }
 
 function Field_Hidden($in, $key) {
+    \_\lot\x\panel\h\session($name = $in['name'] ?? $key, $in);
     return new \HTML([
         0 => 'input',
         1 => false,
         2 => [
             'id' => $in['id'] ?? 'f:' . \dechex(\crc32($key)),
-            'name' => $in['name'] ?? $key,
+            'name' => $name,
             'type' => 'hidden',
             'value' => $in['value'] ?? null
         ]
@@ -156,6 +161,7 @@ function Field_Item($in, $key) {
                 'type' => 'radio',
                 'value' => $k
             ]]);
+            $_SESSION['panel']['field'][$n] = $v;
             if (\is_array($v)) {
                 $t = $v['title'] ?? $k;
                 $input['disabled'] = isset($v['active']) && !$v['active'];
@@ -194,6 +200,7 @@ function Field_Items($in, $key) {
                 'type' => 'checkbox',
                 'value' => $k
             ]]);
+            \_\lot\x\panel\h\session($n . '[' . $k . ']', $in);
             if (\is_array($v)) {
                 $t = \w($v['title'] ?? $k, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
                 $input['disabled'] = isset($v['active']) && !$v['active'];
@@ -234,7 +241,7 @@ function Field_Pass($in, $key) {
     $out['content'][1] = false;
     $out['content'][2]['class'] = \trim('input ' . ($out['content'][2]['class'] ?? ""));
     $out['content'][2]['type'] = 'password';
-    unset($out['content'][2]['value']); // Do not show `value` on this field
+    unset($out['content'][2]['value']); // Never show `value` on this field
     return \_\lot\x\panel\Field($out, $key);
 }
 

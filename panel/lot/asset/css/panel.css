@@ -1131,16 +1131,16 @@ svg[display="none"] {
   display: block;
   list-style: none;
 }
-.file,
-.file .title,
-.file .lot\:task {
+.lot\:file li,
+.lot\:file .title,
+.lot\:file .lot\:task {
   margin: 0;
   padding: 0;
   font: inherit;
   list-style: none;
   border-color: inherit;
 }
-.file {
+.lot\:file li {
   background: #fff;
   border: 0 solid #fff;
   padding: 6px 12px;
@@ -1148,27 +1148,25 @@ svg[display="none"] {
   position: relative;
   overflow: hidden;
 }
-.file .title {
+.lot\:file .title {
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   float: left;
 }
-.file .lot\:task {
+.lot\:file .lot\:task {
   position: absolute;
   top: 6px;
   right: 6px;
   background: inherit;
 }
-.file.is-file,
-.file.is-folder {
+.lot\:file .file,
+.lot\:file .folder {
   padding-left: 42px;
 }
-.file.is-file::before,
-.file.is-folder::before,
-.file.is-file::after,
-.file.is-folder::after {
+.lot\:file li::before,
+.lot\:file li::after {
   content: "";
   display: block;
   width: 24px;
@@ -1177,12 +1175,12 @@ svg[display="none"] {
   top: 6px;
   left: 6px;
 }
-.file.is-file::before {
+.lot\:file .file::before {
   background: transparent;
   border: 1px solid;
   width: 20px;
 }
-.file.is-file::after {
+.lot\:file .file::after {
   width: 0;
   height: 0;
   border: 3px solid;
@@ -1190,17 +1188,17 @@ svg[display="none"] {
   border-right-color: inherit;
   left: 20px;
 }
-.file.is-folder::before {
+.lot\:file .folder::before {
   background: #000;
   height: 18px;
   top: 11px;
 }
-.file.is-folder::after {
+.lot\:file .folder::after {
   border-top: 3px solid #000;
   width: 12px;
   top: 7px;
 }
-.file.is-hidden:not(:focus):not(:hover) {
+.lot\:file .disabled:not(:focus):not(:hover) {
   opacity: 0.5;
 }
 .lot\:page,

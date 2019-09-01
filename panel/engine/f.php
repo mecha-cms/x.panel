@@ -16,48 +16,8 @@ namespace _\lot\x\panel {
         $out[0] = 'nav';
         return $out;
     }
-    function Bar_List($in, $key, int $i = 0) {
-        $out = [
-            0 => $in[0] ?? 'ul',
-            1 => $in[1] ?? "",
-            2 => $in[2] ?? []
-        ];
-        if (isset($in['content'])) {
-            $out[1] .= \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
-        } else if (isset($in['lot'])&& \is_array($in['lot'])) {
-            foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
-                $li = [
-                    0 => 'li',
-                    1 => $v[1] ?? "",
-                    2 => $v[2] ?? []
-                ];
-                if (\is_array($v)) {
-                    $v['icon'] = \_\lot\x\panel\h\icon($v['icon'] ?? [null, null]);
-                    if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
-                        $v['icon'][1] = '<svg class="caret" viewBox="0 0 24 24"><path d="' . ($v['caret'] ?? ($i === 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
-                    }
-                    $ul = "";
-                    if (!isset($v[1])) {
-                        if (!empty($v['lot']) && (!\array_key_exists(0, $v) || \is_string($v[0]))) {
-                            $ul = Bar_List($v, $k, $i + 1); // Recurse
-                            $ul['class'] = 'lot lot:menu';
-                            $li[1] = $ul;
-                            if ($i === 0) {
-                                $v['tags'][] = 'drop';
-                            }
-                        }
-                        $li[2] = \_\lot\x\panel\h\c($v);
-                        unset($v['tags']);
-                        $li[1] = \_\lot\x\panel\Link($v, $k) . $ul;
-                    }
-                } else {
-                    $li[1] = \_\lot\x\panel\Link(['title' => $v], $k);
-                }
-                $out[1] .= new \HTML($li);
-            }
-        }
-        $out[2] = \_\lot\x\panel\h\c($in);
-        return new \HTML($out);
+    function Bar_List($in, $key) {
+        return \_\lot\x\panel\Menu($in, $key, -1);
     }
     function Button($in, $key) {
         $out = \_\lot\x\panel\Link($in, $key);
@@ -102,6 +62,9 @@ namespace _\lot\x\panel {
         }
         if (isset($in['content'])) {
             $out[1] .= '<div><span' . ($before || $after ? ' class="lot lot:input' . (!empty($in['width']) ? ' width' : "") . '"' : "") . '>' . $before . (\is_array($in['content']) ? new \HTML($in['content']) : $in['content']) . $after . '</span>' . ($description !== "" ? '<span class="hint">' . $description . '</span>' : "") . '</div>';
+            if (isset($in['content'][2]['name'])) {
+                \_\lot\x\panel\h\session($in['content'][2]['name'], $in);
+            }
         }
         $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
@@ -140,36 +103,27 @@ namespace _\lot\x\panel {
         $out[2] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
-    function File($in, $key, $task = null) {
-        $f = false;
-        $path = null;
-        $name = null;
-        $type = null;
-        if (\is_array($in)) {
-            if (isset($in['/'])) {
-                $f = \is_file($path = $in['/']);
-                $name = \basename($path);
-                $type = \pathinfo($path, \PATHINFO_EXTENSION);
-            }
-            if (isset($in['title'])) {
-                $name = $in['title'];
-            }
-            if (isset($in['type'])) {
-                $type = $in['type'];
-            }
-        } else if (\is_string($in)) {
-            $f = \is_file($path = $in);
-            $name = \basename($in);
-            $type = \pathinfo($in, \PATHINFO_EXTENSION);
-            $in = []; // Treat as array for now
+    function File($in, $key) {
+        $name = $x = null;
+        $task = $in['task'] ?? null;
+        if ($path = $in['path'] ?? null) {
+            $name = \basename($path);
+            $x = \pathinfo($path, \PATHINFO_EXTENSION);
+        }
+        if (isset($in['title'])) {
+            $name = $in['title'];
+        }
+        if (isset($in['x'])) {
+            $x = $in['x'];
         }
         $in['tags'][] = 'file';
-        if ($type) {
-            $in['tags'][] = 'file:' . $type;
+        if ($x) {
+            foreach ((array) $x as $k => $v) {
+                $in['tags'][] = 'file:' . $k;
+            }
         }
-        $in['tags'][] = 'is-' . ($f ? 'file' : 'folder');
-        if ($name && \strpos('._', $name[0]) !== false) {
-            $in['tags'][] = 'is-hidden';
+        if (isset($in['active']) && !$in['active']) {
+            $in['tags'][] = 'disabled';
         }
         $out = [
             0 => 'li',
@@ -177,27 +131,17 @@ namespace _\lot\x\panel {
             2 => []
         ];
         $out[2] = \_\lot\x\panel\h\c($in);
-        $t = $f ? (new \File($path))->size : (\is_dir($path) ? $GLOBALS['language']->doEnter : null);
-        if (isset($in['description'])) {
-            $t = $in['description'];
-        }
         $out[1] .= '<h3 class="title">' . \_\lot\x\panel\Link([
-            'description' => $t,
-            'link' => $f ? \To::URL($path) : null,
+            'description' => $in['description'] ?? ($path ? (new \File($path))->size : null),
+            'link' => $in['link'] ?? null,
             'title' => $name,
-            'url' => $f ? null : '/' // TODO
+            'url' => $in['url'] ?? null,
+            '/' => $in['/'] ?? null
         ], $key) . '</h3>';
-        if ($task) {
-            if (\is_callable($task)) {
-                $in['task'] = \array_replace($in['task'] ?? [], (array) \call_user_func($task, $path ?? $in));
-            } else if (\is_array($task)) {
-                $in['task'] = \array_replace($in['task'] ?? [], $task);
-            }
-        }
-        if (isset($in['task']) && \is_array($in['task'])) {
+        if (\is_array($task)) {
             $out[1] .= \_\lot\x\panel\Task([
                 0 => 'p',
-                'lot' => $in['task'],
+                'lot' => $task,
                 'tags' => ['icons']
             ], 0);
         }
@@ -214,11 +158,12 @@ namespace _\lot\x\panel {
         ];
         $out[2] = \_\lot\x\panel\h\c($in);
         $a = [[], []];
+        $source = isset($in['from']) && \is_dir($in['from']);
         if ($raw = isset($in['lot']) && \is_array($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
-                $a[\is_file($v) ? 1 : 0][$k] = $v;
+                $a[\is_string($v) && \is_file($v) ? 1 : 0][$k] = $v;
             }
-        } else if (isset($in['from']) && \is_dir($in['from'])) {
+        } else if ($source) {
             foreach (\g($in['from']) as $k => $v) {
                 $a[$v][] = $k;
             }
@@ -233,12 +178,77 @@ namespace _\lot\x\panel {
         $a = \array_merge($a[0], $a[1]);
         $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
         if (isset($a[$current - 1])) {
-            \array_unshift($a[$current - 1], [
-                'title' => '&zwnj;..&zwnj;'
-            ]);
-            foreach ($a[$current - 1] as $k => $v) {
-                $out[1] .= file($v, $k, $task);
+            if ($source) {
+                \array_unshift($a[$current - 1], [
+                    'title' => \S . '..' . \S,
+                    'type' => 'Folder',
+                    '/' => '/' // TODO
+                ]);
             }
+            foreach ($a[$current - 1] as $k => $v) {
+                if (\is_string($v)) {
+                    $f = \is_file($v);
+                    $n = \basename($v);
+                    $x = \pathinfo($v, \PATHINFO_EXTENSION);
+                    $v = [ // Treat as array for now
+                        'active' => !($v && \strpos('._', $v[0]) !== false),
+                        'file' => ['x' => [$x => 1]],
+                        'link' => $f ? \To::URL($v) : null,
+                        'path' => $v,
+                        'title' => $n,
+                        'type' => $f ? 'File' : 'Folder',
+                        'url' => $f ? null : '/' // TODO
+                    ];
+                }
+                $t = (array) ($v['task'] ?? []);
+                if (\is_callable($task)) {
+                    $v['task'] = \array_replace($t, (array) \call_user_func($task, $v));
+                } else if (\is_array($task)) {
+                    $v['task'] = \array_replace($t, $task);
+                }
+                if (!empty($v['current']) || isset($v['path']) && (
+                    isset($_SESSION['panel']['file'][$v['path']]) ||
+                    isset($_SESSION['panel']['folder'][$v['path']])
+                )) {
+                    $v['tags'][] = 'active';
+                }
+                $out[1] .= \_\lot\x\panel($v, $k);
+            }
+        }
+        return new \HTML($out);
+    }
+    function Folder($in, $key) {
+        $name = null;
+        $task = $in['task'] ?? null;
+        if ($path = $in['path'] ?? null) {
+            $name = \basename($path);
+        }
+        if (isset($in['title'])) {
+            $name = $in['title'];
+        }
+        $in['tags'][] = 'folder';
+        if (isset($in['active']) && !$in['active']) {
+            $in['tags'][] = 'disabled';
+        }
+        $out = [
+            0 => 'li',
+            1 => "",
+            2 => []
+        ];
+        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[1] .= '<h3 class="title">' . \_\lot\x\panel\Link([
+            'description' => $in['description'] ?? $GLOBALS['language']->doEnter,
+            'link' => $in['link'] ?? null,
+            'title' => $name,
+            'url' => $in['url'] ?? null,
+            '/' => $in['/'] ?? null
+        ], $key) . '</h3>';
+        if (\is_array($task)) {
+            $out[1] .= \_\lot\x\panel\Task([
+                0 => 'p',
+                'lot' => $task,
+                'tags' => ['icons']
+            ], 0);
         }
         return new \HTML($out);
     }
@@ -287,6 +297,54 @@ namespace _\lot\x\panel {
         $out[2]['title'] = $in['description'] ?? null;
         return new \HTML($out);
     }
+    function Menu($in, $key, int $i = 0) {
+        $out = [
+            0 => $in[0] ?? 'ul',
+            1 => $in[1] ?? "",
+            2 => $in[2] ?? []
+        ];
+        if (isset($in['content'])) {
+            $out[1] .= \is_array($in['content']) ? new \HTML($in['content']) : $in['content'];
+        } else if (isset($in['lot'])&& \is_array($in['lot'])) {
+            foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
+                if (!empty($v['hidden'])) {
+                    continue;
+                }
+                $li = [
+                    0 => 'li',
+                    1 => $v[1] ?? "",
+                    2 => $v[2] ?? []
+                ];
+                if (isset($v['type'])) {
+                    $li[1] .= \_\lot\x\panel($v, $k);
+                } else if (\is_array($v)) {
+                    $v['icon'] = \_\lot\x\panel\h\icon($v['icon'] ?? [null, null]);
+                    if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
+                        $v['icon'][1] = '<svg class="caret" viewBox="0 0 24 24"><path d="' . ($v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
+                    }
+                    $ul = "";
+                    if (!isset($v[1])) {
+                        if (!empty($v['lot']) && (!\array_key_exists(0, $v) || \is_string($v[0]))) {
+                            $ul = \_\lot\x\panel\Menu($v, $k, $i + 1); // Recurse
+                            $ul['class'] = 'lot lot:menu';
+                            $li[1] = $ul;
+                            if ($i < 0) {
+                                $v['tags'][] = 'drop';
+                            }
+                        }
+                        $li[2] = \_\lot\x\panel\h\c($v);
+                        unset($v['tags']);
+                        $li[1] = \_\lot\x\panel\Link($v, $k) . $ul;
+                    }
+                } else {
+                    $li[1] = \_\lot\x\panel\Link(['title' => $v], $k);
+                }
+                $out[1] .= new \HTML($li);
+            }
+        }
+        $out[2] = \_\lot\x\panel\h\c($in);
+        return new \HTML($out);
+    }
     function Page($in, $key) {}
     function Pages($in, $key) {}
     function Tab($in, $key) {
@@ -327,7 +385,11 @@ namespace _\lot\x\panel {
                         $v['tags'][] = 'active';
                     }
                     if (!isset($v['link'])) {
-                        $v['link'] = '?tab[' . \urlencode($name) . ']=' . \urlencode($k);
+                        $v['link'] = $GLOBALS['url']->query('&', [
+                            'tab' => [
+                                $name => $k
+                            ]
+                        ]);
                     }
                 }
                 $nav[$k] = $v;
@@ -398,7 +460,7 @@ namespace _\lot\x {
         if (\is_string($in)) {
             return $in;
         }
-        if (isset($in['hidden']) && !$in['hidden']) {
+        if (!empty($in['hidden'])) {
             return "";
         }
         $out = "";

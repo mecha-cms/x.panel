@@ -238,32 +238,32 @@ caption {
     color: #009;
   }
 }
-.file {
+.lot\:file li {
   background: #fff;
   border: 0 solid #fff;
 }
-.file:focus,
-.file:hover {
+.lot\:file li:focus,
+.lot\:file li:hover {
   background: #eef;
   border-color: #eef;
 }
-.file.active {
+.lot\:file .active {
   background: #fec;
   border-color: #fec;
 }
-.file.is-file::before {
+.lot\:file .file::before {
   background: #fea;
   border-color: #000;
 }
-.file.is-file::after {
+.lot\:file .file::after {
   border-color: #000;
   border-top-color: inherit;
   border-right-color: inherit;
 }
-.file.is-folder::before {
+.lot\:file .folder::before {
   background: #d00;
 }
-.file.is-folder::after {
+.lot\:file .folder::after {
   border-top-color: #a00;
 }
 .page h2 code {

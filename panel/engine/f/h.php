@@ -12,14 +12,15 @@ function c($in) {
 
 function field($in, $key) {
     $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
-    $i = [
+    $name = $in['name'] ?? $key;
+    $input = [
         0 => 'textarea',
         1 => \htmlspecialchars($in['value'] ?? ""),
         2 => [
             'class' => "",
             'disabled' => isset($in['active']) && !$in['active'],
             'id' => $in['id'],
-            'name' => $in['name'] ?? $key,
+            'name' => $name,
             'pattern' => $in['pattern'] ?? null,
             'placeholder' => $in['placeholder'] ?? null,
             'readonly' => !empty($in['read-only']),
@@ -29,21 +30,21 @@ function field($in, $key) {
     $style = "";
     if (isset($in['height']) && $in['height'] !== false) {
         if ($in['height'] === true) {
-            $i[2]['class'] .= ' height';
+            $input[2]['class'] .= ' height';
         } else {
             $style .= 'height:' . (\is_numeric($in['height']) ? $in['height'] . 'px' : $in['height']) . ';';
         }
     }
     if (isset($in['width']) && $in['width'] !== false) {
         if ($in['width'] === true) {
-            $i[2]['class'] .= ' width';
+            $input[2]['class'] .= ' width';
         } else {
             $style .= 'width:' . (\is_numeric($in['width']) ? $in['width'] . 'px' : $in['width']) . ';';
         }
     }
-    $i[2]['class'] = isset($i[2]['class']) && $i[2]['class'] !== "" ? \trim($i[2]['class']) : null;
-    $i[2]['style'] = $style !== "" ? $style : null;
-    $in['content'] = $i;
+    $input[2]['class'] = isset($input[2]['class']) && $input[2]['class'] !== "" ? \trim($input[2]['class']) : null;
+    $input[2]['style'] = $style !== "" ? $style : null;
+    $in['content'] = $input;
     return $in;
 }
 
@@ -62,6 +63,18 @@ function icon($in) {
 
 function link($value) {
     return url($value);
+}
+
+function session($name, $in) {
+    $out = [
+        'file' => (array) ($in['file'] ?? []),
+        'pattern' => $in['pattern'] ?? null,
+        'required' => $in['required'] ?? null,
+        'read-only' => $in['read-only'] ?? null,
+        'task' => $in['task'] ?? null
+    ];
+    // Store setting to be used by security
+    $_SESSION['panel']['field'][$name] = \array_filter($out);
 }
 
 function url($value) {

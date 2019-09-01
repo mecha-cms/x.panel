@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__ . DS . 'before.php';
-
 $fields = [
     'default[0]' => [
         'type' => 'Field',
@@ -24,19 +22,16 @@ $fields = [
         'placeholder' => 'Text'
     ],
     'text[1]' => [
-        'required' => true,
         'type' => 'Text',
         'title' => 'Text',
         'before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']
     ],
     'text[2]' => [
-        'required' => true,
         'type' => 'Text',
         'title' => 'Text',
         'after' => '.php'
     ],
     'text[3]' => [
-        'required' => true,
         'type' => 'Text',
         'title' => 'Text',
         'before' => 'IDR',
@@ -173,127 +168,133 @@ $fields = [
     ],
     'blob[0]' => [
         'type' => 'Blob',
-        'title' => 'Blob'
+        'title' => 'Blob',
+        '/' => 'asset'
     ],
     'hidden[0]' => [
         'type' => 'Hidden'
     ]
 ];
 
-echo _\lot\x\panel([
-    'type' => 'Desk',
-    'lot' => [
-        0 => [
-            'type' => 'Form.Post',
-            '/' => '/foo/bar',
-            'lot' => [
-                0 => [
-                    'type' => 'Section',
-                    'lot' => [
-                        'tab' => [
-                            'type' => 'Tabs',
-                            'lot' => [
-                                0 => [
-                                    'title' => 'Test 1',
-                                    'lot' => [
-                                        'field' => [
-                                            'type' => 'Fields',
-                                            'lot' => $fields
+return [
+    'desk' => [
+        // type: Desk
+        'lot' => [
+            'form' => [
+                // type: Form.Post
+                'lot' => [
+                    1 => [
+                        // type: Section
+                        'lot' => [
+                            'tab' => [
+                                // type: Tabs
+                                'lot' => [
+                                    0 => [
+                                        'title' => 'Test 1',
+                                        'lot' => [
+                                            'field' => [
+                                                'type' => 'Fields',
+                                                'lot' => $fields
+                                            ]
                                         ]
-                                    ]
-                                ],
-                                1 => [
-                                    'title' => 'Test 2',
-                                    'lot' => [
-                                        'field' => [
-                                            'type' => 'Fields',
-                                            'lot' => \map($fields, function($field) {
-                                                $field['width'] = true;
-                                                return $field;
-                                            })
+                                    ],
+                                    1 => [
+                                        'title' => 'Test 2',
+                                        'lot' => [
+                                            'field' => [
+                                                'type' => 'Fields',
+                                                'lot' => \map($fields, function($field) {
+                                                    $field['width'] = true;
+                                                    return $field;
+                                                })
+                                            ]
                                         ]
-                                    ]
-                                ],
-                                2 => [
-                                    'title' => 'Test 3',
-                                    'lot' => [
-                                        'field' => [
-                                            'type' => 'Fields',
-                                            'lot' => \map($fields, function($field) {
-                                                $field['width'] = true;
-                                                $field['description'] = 'Description goes here.';
-                                                return $field;
-                                            })
+                                    ],
+                                    2 => [
+                                        'title' => 'Test 3',
+                                        'lot' => [
+                                            'field' => [
+                                                'type' => 'Fields',
+                                                'lot' => \map($fields, function($field) {
+                                                    $field['width'] = true;
+                                                    $field['description'] = 'Description goes here.';
+                                                    return $field;
+                                                })
+                                            ]
                                         ]
                                     ]
                                 ]
                             ]
-                        ]
+                        ],
+                        'stack' => 20,
+                        'hidden' => false
+                    ],
+                    2 => [
+                        // type: Section
+                        'lot' => [
+                            'task' => [
+                                'type' => 'Task',
+                                'lot' => [
+                                    0 => [
+                                        'type' => 'Button',
+                                        'title' => 'Default',
+                                        'name' => 'x',
+                                        'stack' => 10
+                                    ],
+                                    1 => [
+                                        'type' => 'Button.Button',
+                                        'title' => 'Button',
+                                        'name' => 'x',
+                                        'stack' => 10.1
+                                    ],
+                                    2 => [
+                                        'type' => 'Button.Submit',
+                                        'title' => 'Submit',
+                                        'name' => 'x',
+                                        'stack' => 10.2
+                                    ],
+                                    3 => [
+                                        'type' => 'Button.Reset',
+                                        'title' => 'Reset',
+                                        'name' => 'x',
+                                        'stack' => 10.3
+                                    ],
+                                    4 => [
+                                        'type' => 'Button.Link',
+                                        'title' => 'Link',
+                                        'link' => 'https://example.com',
+                                        'stack' => 10.4
+                                    ],
+                                    5 => [
+                                        'type' => 'Button',
+                                        'title' => 'With Icon',
+                                        'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
+                                        'name' => 'x',
+                                        'stack' => 10.5
+                                    ],
+                                    6 => [
+                                        'active' => false,
+                                        'type' => 'Button',
+                                        'title' => 'Disabled',
+                                        'name' => 'x',
+                                        'stack' => 10.6
+                                    ],
+                                    7 => [
+                                        'active' => false,
+                                        'type' => 'Button.Link',
+                                        'title' => 'Disabled Link',
+                                        'stack' => 10.7
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'stack' => 30,
+                        'hidden' => false
                     ]
                 ],
-                1 => [
-                    'type' => 'Section',
-                    'lot' => [
-                        'task' => [
-                            'type' => 'Task',
-                            'lot' => [
-                                0 => [
-                                    'type' => 'Button',
-                                    'title' => 'Default',
-                                    'name' => 'x',
-                                    'stack' => 10
-                                ],
-                                1 => [
-                                    'type' => 'Button.Button',
-                                    'title' => 'Button',
-                                    'name' => 'x',
-                                    'stack' => 10.1
-                                ],
-                                2 => [
-                                    'type' => 'Button.Submit',
-                                    'title' => 'Submit',
-                                    'name' => 'x',
-                                    'stack' => 10.2
-                                ],
-                                3 => [
-                                    'type' => 'Button.Reset',
-                                    'title' => 'Reset',
-                                    'name' => 'x',
-                                    'stack' => 10.3
-                                ],
-                                4 => [
-                                    'type' => 'Button.Link',
-                                    'title' => 'Link',
-                                    'link' => 'https://example.com',
-                                    'stack' => 10.4
-                                ],
-                                5 => [
-                                    'type' => 'Button',
-                                    'title' => 'With Icon',
-                                    'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
-                                    'name' => 'x',
-                                    'stack' => 10.5
-                                ],
-                                6 => [
-                                    'active' => false,
-                                    'type' => 'Button',
-                                    'title' => 'Disabled',
-                                    'name' => 'x',
-                                    'stack' => 10.6
-                                ],
-                                7 => [
-                                    'active' => false,
-                                    'type' => 'Button.Link',
-                                    'title' => 'Disabled Link',
-                                    'stack' => 10.7
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
+                'stack' => 10
             ]
-        ]
+        ],
+        'stack' => 20
     ]
-], 0);
-
-require __DIR__ . DS . 'after.php';
+];
