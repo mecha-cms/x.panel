@@ -177,7 +177,7 @@ caption {
 .lot\:menu a {
   color: #009;
 }
-.lot\:menu svg.caret {
+.lot\:menu .title > svg.caret {
   color: #000;
   opacity: .25;
 }
@@ -205,8 +205,9 @@ caption {
 .field.required > label:not(:empty)::before {
   color: #f00;
 }
-.field .hint,
-.lot\:page .page .hint {
+.description,
+.field .hint, /* TODO: .field .description */
+.lot\:page .page .hint { /* TODO: .page .description */
   color: #888;
 }
 .input.plain {
@@ -362,11 +363,11 @@ caption {
 .lot\:bar > ul > li > a {
   color: #ddd;
 }
-.lot\:bar > ul > li > a > svg.caret {
+.lot\:bar > ul > li > a > .title > svg.caret {
   color: #777;
 }
-.lot\:bar > ul > li > a:hover > svg.caret,
-.lot\:bar > ul > li > a:focus > svg.caret {
+.lot\:bar > ul > li > a:hover > .title > svg.caret,
+.lot\:bar > ul > li > a:focus > .title > svg.caret {
   color: #999;
 }
 .lot\:bar .field .input {

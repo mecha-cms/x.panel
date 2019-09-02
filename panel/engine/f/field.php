@@ -36,7 +36,7 @@ function Field_Colors($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'div';
     $name = $in['name'] ?? $key;
-    if (isset($in['lot']) && \is_array($in['lot'])) {
+    if (isset($in['lot'])) {
         \sort($in['lot']);
         foreach ($in['lot'] as $k => $v) {
             if (\is_string($v)) {
@@ -61,7 +61,7 @@ function Field_Colors($in, $key) {
 }
 
 function Field_Combo($in, $key) {
-    if (isset($in['lot']) && \is_array($in['lot'])) {
+    if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
         $placeholder = $out['placeholder'] ?? null;
@@ -71,7 +71,7 @@ function Field_Combo($in, $key) {
         $a = [];
         foreach ($in['lot'] as $k => $v) {
             // Group
-            if (\is_array($v) && isset($v['lot'])) {
+            if (isset($v['lot'])) {
                 $aa = [];
                 $optgroup = new \HTML(['optgroup', "", [
                     'disabled' => isset($v['active']) && !$v['active'],
@@ -146,7 +146,7 @@ function Field_Hidden($in, $key) {
 }
 
 function Field_Item($in, $key) {
-    if (isset($in['lot']) && \is_array($in['lot'])) {
+    if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
         $out['content'][0] = 'div';
@@ -161,7 +161,7 @@ function Field_Item($in, $key) {
                 'type' => 'radio',
                 'value' => $k
             ]]);
-            $_SESSION['panel']['field'][$n] = $v;
+            \_\lot\x\panel\h\session($n, $v);
             if (\is_array($v)) {
                 $t = $v['title'] ?? $k;
                 $input['disabled'] = isset($v['active']) && !$v['active'];
@@ -185,7 +185,7 @@ function Field_Item($in, $key) {
 }
 
 function Field_Items($in, $key) {
-    if (isset($in['lot']) && \is_array($in['lot'])) {
+    if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = \P . \implode(\P, (array) ($in['value[]'] ?? null)) . \P;
         $out['content'][0] = 'div';
@@ -202,7 +202,7 @@ function Field_Items($in, $key) {
             ]]);
             \_\lot\x\panel\h\session($n . '[' . $k . ']', $in);
             if (\is_array($v)) {
-                $t = \w($v['title'] ?? $k, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
+                $t = \_\lot\x\panel\h\title($in, -2) . "";
                 $input['disabled'] = isset($v['active']) && !$v['active'];
             } else {
                 $t = $v;
@@ -287,7 +287,7 @@ function Field_Toggle($in, $key) {
     ]]);
     $t = \w($in['description'] ?? $GLOBALS['language']->doYes ?? $key, 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
     $out['content'][0] = 'div';
-    $out['content'][1] = '<label>' . $toggle . '&nbsp;<span>' . $t . '</span></label>';
+    $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     $out['content'][2]['class'] = 'lot lot:toggle';
     unset($out['description']);
     return \_\lot\x\panel\Field($out, $key);

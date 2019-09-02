@@ -9,6 +9,9 @@ function Button($in, $key) {
 function Link($in, $key) {
     $in['tags'][] = 'button';
     $out = \_\lot\x\panel\Link($in, $key);
+    $content = $out[1];
+    $content['class'] = \str_replace('button ', "", $content['class']);
+    $out[1] = $content;
     return $out;
 }
 

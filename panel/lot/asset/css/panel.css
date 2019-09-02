@@ -487,7 +487,7 @@ hr {
 .lot\:button .button + .button {
   margin-left: 1px;
 }
-.lot\:button .button svg.caret:only-child {
+.lot\:button .button .title > svg.caret:only-child {
   margin-right: -12px;
   margin-left: -12px;
 }
@@ -605,16 +605,16 @@ label {
   border-width: 1px;
   line-height: 22px;
 }
-.lot\:input .button svg {
+.lot\:input .button .title > svg {
   margin: -1px;
 }
-.lot\:input .button svg:first-child {
+.lot\:input .button .title > svg:first-child {
   margin-left: -7px;
 }
-.lot\:input .button svg:last-child {
+.lot\:input .button .title > svg:last-child {
   margin-right: -7px;
 }
-.lot\:input .button svg:only-child {
+.lot\:input .button .title > svg:only-child {
   margin-right: -7px;
   margin-left: -7px;
 }
@@ -693,17 +693,13 @@ svg[display="none"] {
   display: none;
 }
 .title {
-  font: inherit;
-  font-size: 18px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  flex-wrap: wrap;
 }
-.description {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.title > span {
+  flex: 1;
 }
+.description {}
 .lot\:color {
   display: flex;
   flex-wrap: wrap;
@@ -766,21 +762,19 @@ svg[display="none"] {
 .lot\:task .lot\:button .button + .button {
   margin-left: 1px;
 }
-.lot\:task > a {
+.lot\:task > .text {
   display: inline-block;
   vertical-align: middle;
   margin-right: 12px;
 }
-.lot\:task > a > svg + span {
-  display: inline-block;
-  vertical-align: middle;
+.lot\:task > .text > .title > span {
   font-size: 12px;
   margin-left: 3px;
 }
-.lot\:task.icons > a {
+.lot\:task.icons > .text {
   margin: 0;
 }
-.lot\:task.icons > a > svg + span {
+.lot\:task.icons > .text > .title > svg + span {
   display: none;
 }
 .drop {
@@ -840,8 +834,7 @@ svg[display="none"] {
   color: inherit;
 }
 .lot\:menu a {
-  display: flex;
-  width: 100%;
+  display: block;
   padding: 6px 12px;
   color: #00f;
 }
@@ -849,19 +842,19 @@ svg[display="none"] {
 .lot\:menu a:active {
   color: #ff0000;
 }
-.lot\:menu span {
+.lot\:menu .title > span {
   flex: 1;
 }
-.lot\:menu svg {
+.lot\:menu .title > svg {
   margin: 0 -6px;
 }
-.lot\:menu svg:first-child {
+.lot\:menu .title > svg:first-child {
   margin-right: 6px;
 }
-.lot\:menu svg:last-child {
+.lot\:menu .title > svg:last-child {
   margin-left: 6px;
 }
-.lot\:menu svg:only-child {
+.lot\:menu .title > svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
 }
@@ -913,23 +906,23 @@ svg[display="none"] {
   background: none;
   color: #f00;
 }
-.button svg {
+.button .title > svg {
   margin: 0 -6px;
 }
-.button svg:first-child {
+.button .title > svg:first-child {
   margin-right: 6px;
 }
-.button svg:last-child {
+.button .title > svg:last-child {
   margin-left: 6px;
 }
-.button svg:only-child {
+.button .title > svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
 }
-.button svg.caret:first-child {
+.button .title > svg.caret:first-child {
   margin-right: 0;
 }
-.button svg.caret:last-child {
+.button .title > svg.caret:last-child {
   margin-left: 0;
 }
 .width {
@@ -1063,16 +1056,16 @@ svg[display="none"] {
   padding: 0 24px;
   color: inherit;
 }
-.lot\:tab > nav svg {
+.lot\:tab > nav .title > svg {
   margin: 12px -12px;
 }
-.lot\:tab > nav svg:first-child {
+.lot\:tab > nav .title > svg:first-child {
   margin-right: 6px;
 }
-.lot\:tab > nav svg:last-child {
+.lot\:tab > nav .title > svg:last-child {
   margin-left: 6px;
 }
-.lot\:tab > nav svg:only-child {
+.lot\:tab > nav .title > svg:only-child {
   margin-right: -12px;
   margin-left: -12px;
 }
@@ -1101,7 +1094,7 @@ svg[display="none"] {
     padding: 0;
     color: #00f;
   }
-  .lot\:tab > nav svg {
+  .lot\:tab > nav .title > svg {
     display: none;
   }
 }
@@ -1131,9 +1124,9 @@ svg[display="none"] {
   display: block;
   list-style: none;
 }
+.lot\:file h3,
 .lot\:file li,
-.lot\:file .title,
-.lot\:file .lot\:task {
+.lot\:file p {
   margin: 0;
   padding: 0;
   font: inherit;
@@ -1148,14 +1141,14 @@ svg[display="none"] {
   position: relative;
   overflow: hidden;
 }
-.lot\:file .title {
+.lot\:file h3 {
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   float: left;
 }
-.lot\:file .lot\:task {
+.lot\:file p {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -1535,17 +1528,13 @@ html.form body form .field > label {
   display: none;
 }
 .lot\:bar {
-  line-height: 48px;
   display: flex;
   flex-wrap: wrap;
-}
-.lot\:bar > ul:nth-child(2) {
-  flex: 1;
+  line-height: 48px;
 }
 .lot\:bar > ul,
 .lot\:bar > ul > li,
 .lot\:bar .field {
-  display: block;
   width: auto;
   height: inherit;
   margin: 0;
@@ -1570,35 +1559,35 @@ html.form body form .field > label {
   display: none;
 }
 .lot\:bar > ul > li > a {
-  display: flex;
+  display: block;
   height: inherit;
   padding: 0 18px;
   overflow: hidden;
 }
-.lot\:bar > ul > li > a > span {
-  flex: 1;
-}
-.lot\:bar > ul > li > a > svg {
+.lot\:bar > ul > li > a > .title > svg {
   margin: 12px -6px 0;
   margin-top: 12px;
 }
-.lot\:bar > ul > li > a > svg:first-child {
+.lot\:bar > ul > li > a > .title > svg:first-child {
   margin-right: 6px;
 }
-.lot\:bar > ul > li > a > svg:last-child {
+.lot\:bar > ul > li > a > .title > svg:last-child {
   margin-left: 6px;
 }
-.lot\:bar > ul > li > a > svg:only-child {
+.lot\:bar > ul > li > a > .title > svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
 }
-.lot\:bar > ul > li > a > svg.caret:first-child {
+.lot\:bar > ul > li > a > .title > svg.caret:first-child {
   margin-right: 0;
   margin-left: -12px;
 }
-.lot\:bar > ul > li > a > svg.caret:last-child {
+.lot\:bar > ul > li > a > .title > svg.caret:last-child {
   margin-right: -12px;
   margin-left: 0;
+}
+.lot\:bar > ul:nth-child(2) {
+  flex: 1;
 }
 .lot\:bar .field {
   margin: 0;

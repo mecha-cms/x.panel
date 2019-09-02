@@ -23,13 +23,13 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
                         'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
                         'caret' => false,
                         'title' => false,
-                        'link' => '#',
+                        'url' => $url,
                         'tags' => ['main'],
                         'stack' => 10
                     ],
                     1 => [
                         'type' => 'Form.Get',
-                        '/' => $url->path . $url->query,
+                        'url' => $url->current,
                         'name' => 'search',
                         'lot' => [
                             'field' => [
@@ -76,6 +76,8 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
                     ],
                     1 => [
                         'type' => 'Section',
+                        'title' => 'Lorem Ipsum',
+                        'description' => 'Lorem ipsum dolor sit amet.',
                         'lot' => [
                             'tab' => [
                                 'type' => 'Tabs',

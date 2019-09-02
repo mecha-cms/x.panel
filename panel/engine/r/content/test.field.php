@@ -169,7 +169,7 @@ $fields = [
     'blob[0]' => [
         'type' => 'Blob',
         'title' => 'Blob',
-        '/' => 'asset'
+        'to' => 'asset'
     ],
     'hidden[0]' => [
         'type' => 'Hidden'
@@ -233,10 +233,9 @@ return [
                         // type: Section
                         'lot' => [
                             'task' => [
-                                'type' => 'Task',
+                                'type' => 'Task.Button',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Button',
                                         'title' => 'Default',
                                         'name' => 'x',
                                         'stack' => 10
@@ -266,7 +265,6 @@ return [
                                         'stack' => 10.4
                                     ],
                                     5 => [
-                                        'type' => 'Button',
                                         'title' => 'With Icon',
                                         'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
                                         'name' => 'x',
@@ -274,7 +272,6 @@ return [
                                     ],
                                     6 => [
                                         'active' => false,
-                                        'type' => 'Button',
                                         'title' => 'Disabled',
                                         'name' => 'x',
                                         'stack' => 10.6
