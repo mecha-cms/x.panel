@@ -29,6 +29,29 @@ namespace _\lot\x\panel {
         unset($out['href'], $out['target']);
         return $out;
     }
+    function Button_Button($in, $key) {
+        $out = \_\lot\x\panel\Button($in, $key);
+        $out['type'] = 'button';
+        return $out;
+    }
+    function Button_Link($in, $key) {
+        $in['tags'][] = 'button';
+        $out = \_\lot\x\panel\Link($in, $key);
+        $content = $out[1];
+        $content['class'] = \str_replace('button ', "", $content['class']);
+        $out[1] = $content;
+        return $out;
+    }
+    function Button_Reset($in, $key) {
+        $out = \_\lot\x\panel\Button($in, $key);
+        $out['type'] = 'reset';
+        return $out;
+    }
+    function Button_Submit($in, $key) {
+        $out = \_\lot\x\panel\Button($in, $key);
+        $out['type'] = 'submit';
+        return $out;
+    }
     function Data($in, $key) {}
     function Datas($in, $key) {}
     function Field($in, $key) {
@@ -38,7 +61,6 @@ namespace _\lot\x\panel {
             $in['tags'][] = \strtr(\c2f($in['type'], '-', '.'), '_', ':');
         }
         $id = $in['id'] ?? \uniqid();
-        $description = \w($in['description'] ?? "", 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
         $in[2]['id'] = $in[2]['id'] ?? $id . '.0';
         $out = [
             0 => $in[0] ?? 'div',
@@ -61,12 +83,35 @@ namespace _\lot\x\panel {
             }
         }
         if (isset($in['content'])) {
-            $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' . (!empty($in['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\h\content($in['content']) . $after . '</div>' . ($description !== "" ? '<div class="hint">' . $description . '</div>' : "") . '</div>';
+            if (\is_array($in['content'])) {
+                $style = "";
+                $in['content'][2]['class'] = $in['content'][2]['class'] ?? "";
+                if (isset($in['height']) && $in['height'] !== false) {
+                    if ($in['height'] === true) {
+                        $in['content'][2]['class'] .= ' height';
+                    } else {
+                        $style .= 'height:' . (\is_numeric($in['height']) ? $in['height'] . 'px' : $in['height']) . ';';
+                    }
+                }
+                if (isset($in['width']) && $in['width'] !== false) {
+                    if ($in['width'] === true) {
+                        $in['content'][2]['class'] .= ' width';
+                    } else {
+                        $style .= 'width:' . (\is_numeric($in['width']) ? $in['width'] . 'px' : $in['width']) . ';';
+                    }
+                }
+                $in['content'][2]['style'] = $style !== "" ? $style : null;
+            }
+            $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' . (!empty($in['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\h\content($in['content']) . $after . '</div>' . \_\lot\x\panel\h\description($in) . '</div>';
             if (isset($in['content'][2]['name'])) {
                 \_\lot\x\panel\h\session($in['content'][2]['name'], $in);
             }
+        } else if (isset($in['lot'])) {
+            foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
+                $out[1] .= \_\lot\x\panel($v, $k);
+            }
         }
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
     function Fields($in) {
@@ -100,7 +145,7 @@ namespace _\lot\x\panel {
             }
             $out[1] .= $append;
         }
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
     function File($in, $key) {
@@ -130,8 +175,8 @@ namespace _\lot\x\panel {
             1 => "",
             2 => []
         ];
-        $out[2] = \_\lot\x\panel\h\c($in);
-        $out[1] .= '<h3 class="title">' . \_\lot\x\panel\Link([
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
+        $out[1] .= '<h3>' . \_\lot\x\panel\Link([
             'description' => $in['description'] ?? ($path ? (new \File($path))->size : null),
             'link' => $in['link'] ?? null,
             'title' => $name,
@@ -155,7 +200,7 @@ namespace _\lot\x\panel {
             1 => "",
             2 => []
         ];
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         $a = [[], []];
         $source = isset($in['from']) && \is_dir($in['from']);
         if ($raw = isset($in['lot'])) {
@@ -234,7 +279,7 @@ namespace _\lot\x\panel {
             1 => "",
             2 => []
         ];
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         $out[1] .= '<h3>' . \_\lot\x\panel\Link([
             'description' => $in['description'] ?? $GLOBALS['language']->doEnter,
             'link' => $in['link'] ?? null,
@@ -267,7 +312,7 @@ namespace _\lot\x\panel {
             }
         }
         $href = $in['link'] ?? $in['url'] ?? null;
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         $out[2]['action'] = $href;
         $out[2]['name'] = $in['name'] ?? $key;
         return new \HTML($out);
@@ -285,7 +330,7 @@ namespace _\lot\x\panel {
         if ($href === \P || (isset($in['active']) && !$in['active'])) {
             $in['tags'][] = 'disabled';
         }
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         $out[2]['href'] = $href === \P ? '#' : $href;
         $out[2]['target'] = $in[2]['target'] ?? (isset($in['link']) ? '_blank' : null);
         $out[2]['title'] = $in['description'] ?? null;
@@ -326,7 +371,7 @@ namespace _\lot\x\panel {
                                 $v['tags'][] = 'drop';
                             }
                         }
-                        $li[2] = \_\lot\x\panel\h\c($v);
+                        $li[2]['class'] = \_\lot\x\panel\h\c($v);
                         unset($v['tags']);
                         $li[1] = \_\lot\x\panel\Link($v, $k) . $ul;
                     }
@@ -336,7 +381,7 @@ namespace _\lot\x\panel {
                 $out[1] .= new \HTML($li);
             }
         }
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
     function Page($in, $key) {}
@@ -354,7 +399,7 @@ namespace _\lot\x\panel {
                 $out[1] .= \_\lot\x\panel($v, $k);
             }
         }
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
     function Tabs($in, $key) {
@@ -396,7 +441,7 @@ namespace _\lot\x\panel {
             $out[1] .= \implode("", $section);
         }
         $in['tags'][] = 'size-' . $size;
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
     function Task($in, $key) {
@@ -414,7 +459,7 @@ namespace _\lot\x\panel {
                 $out[1] .= \_\lot\x\panel($v, $k);
             }
         }
-        $out[2] = \_\lot\x\panel\h\c($in);
+        $out[2]['class'] = \_\lot\x\panel\h\c($in);
         return new \HTML($out);
     }
     function abort($in, $key, $fn) {

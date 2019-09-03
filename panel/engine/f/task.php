@@ -5,6 +5,8 @@ function Button($in, $key) {
         foreach ($in['lot'] as &$v) {
             if (!isset($v['type'])) {
                 $v['type'] = 'Button';
+            } else if ($v['type'] !== 'Button' && \strpos($v['type'], 'Button_') !== 0) {
+                $v['type'] = 'Button_' . $v['type'];
             }
         }
     }
@@ -16,6 +18,8 @@ function Link($in, $key) {
         foreach ($in['lot'] as &$v) {
             if (!isset($v['type'])) {
                 $v['type'] = 'Link';
+            } else if ($v['type'] !== 'Link' && \strpos($v['type'], 'Link_') !== 0) {
+                $v['type'] = 'Link_' . $v['type'];
             }
             $v['tags'][] = 'text';
         }

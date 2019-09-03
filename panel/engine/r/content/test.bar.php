@@ -30,22 +30,51 @@ return [
             1 => [
                 // type: List
                 'lot' => [
-                    'site' => [
-                        'title' => $language->site,
-                        'url' => $url . "",
+                    1 => [
+                        'title' => 'Menu',
+                        'url' => '/',
+                        'stack' => 10
+                    ],
+                    2 => [
+                        'title' => 'Menu',
+                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                        'description' => 'Menu description.',
+                        'url' => '/',
+                        'stack' => 20
+                    ],
+                    3 => [
+                        'title' => 'Menu',
+                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                        'url' => '/',
                         'lot' => [
                             0 => [
-                                'title' => $language->config,
-                                'url' => '/', // TODO
-                                'stack' => 10
+                                'title' => 'Foo',
+                                'url' => '/'
                             ],
                             1 => [
-                                'title' => $language->doVisit,
-                                'link' => $url . "",
-                                'stack' => 20
+                                'title' => 'Bar',
+                                'url' => '/',
+                                'lot' => [
+                                    0 => [
+                                        'title' => 'Bar Foo',
+                                        'url' => '/'
+                                    ],
+                                    1 => [
+                                        'title' => 'Bar Bar',
+                                        'url' => '/'
+                                    ],
+                                    2 => [
+                                        'title' => 'Bar Baz',
+                                        'url' => '/'
+                                    ]
+                                ]
+                            ],
+                            2 => [
+                                'title' => 'Baz',
+                                'url' => '/'
                             ]
                         ],
-                        'stack' => 10
+                        'stack' => 30
                     ]
                 ]
             ],

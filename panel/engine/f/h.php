@@ -6,8 +6,7 @@ function c($in, array $class = []) {
     $c = \array_unique(\array_filter(\array_merge(\explode(' ', $a), \explode(' ', $b))));
     \sort($c);
     $c = \implode(' ', $c);
-    $in[2]['class'] = $c !== "" ? $c : null;
-    return $in[2];
+    return $c !== "" ? $c : null;
 }
 
 function content($content) {
@@ -21,10 +20,10 @@ function description($in, $or = null) {
     }
     $out = [
         0 => 'p',
-        1 => \w($description, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var'),
+        1 => $description,
         2 => []
     ];
-    $out[2] = \_\lot\x\panel\h\c($in, ['description']);
+    $out[2]['class'] = \_\lot\x\panel\h\c($in, ['description']);
     return new \HTML($out);
 }
 
@@ -45,23 +44,6 @@ function field($in, $key) {
             'required' => !empty($in['required'])
         ]
     ];
-    $style = "";
-    if (isset($in['height']) && $in['height'] !== false) {
-        if ($in['height'] === true) {
-            $input[2]['class'] .= ' height';
-        } else {
-            $style .= 'height:' . (\is_numeric($in['height']) ? $in['height'] . 'px' : $in['height']) . ';';
-        }
-    }
-    if (isset($in['width']) && $in['width'] !== false) {
-        if ($in['width'] === true) {
-            $input[2]['class'] .= ' width';
-        } else {
-            $style .= 'width:' . (\is_numeric($in['width']) ? $in['width'] . 'px' : $in['width']) . ';';
-        }
-    }
-    $input[2]['class'] = isset($input[2]['class']) && $input[2]['class'] !== "" ? \trim($input[2]['class']) : null;
-    $input[2]['style'] = $style !== "" ? $style : null;
     $in['content'] = $input;
     return $in;
 }
@@ -114,6 +96,10 @@ function title($in, $i = -1, $or = null) {
         $title = '<span>' . $title . '</span>';
     }
     $out[1] = $icon[0] . $title . $icon[1];
-    $out[2] = \_\lot\x\panel\h\c($in, ['title']);
+    $out[2]['class'] = \_\lot\x\panel\h\c($in, ['title']);
     return new \HTML($out);
+}
+
+function w($in) {
+    return \w($in, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
 }

@@ -205,9 +205,7 @@ caption {
 .field.required > label:not(:empty)::before {
   color: #f00;
 }
-.description,
-.field .hint, /* TODO: .field .description */
-.lot\:page .page .hint { /* TODO: .page .description */
+.description {
   color: #888;
 }
 .input.plain {
@@ -223,21 +221,6 @@ caption {
 }
 .lot\:tab > nav a.disabled {
   box-shadow: inset 0 3px 0 #fff;
-}
-@media (max-width: 720px) {
-  .lot\:tab > nav li {
-    background: none;
-    box-shadow: none;
-  }
-  .lot\:tab > nav li.active {
-    box-shadow: none;
-  }
-  .lot\:tab > nav li.active a {
-    color: inherit;
-  }
-  .lot\:tab > nav a {
-    color: #009;
-  }
 }
 .lot\:file li {
   background: #fff;
@@ -363,11 +346,11 @@ caption {
 .lot\:bar > ul > li > a {
   color: #ddd;
 }
-.lot\:bar > ul > li > a > .title > svg.caret {
+.lot\:bar > ul > li > a > .title svg.caret {
   color: #777;
 }
-.lot\:bar > ul > li > a:hover > .title > svg.caret,
-.lot\:bar > ul > li > a:focus > .title > svg.caret {
+.lot\:bar > ul > li > a:hover > .title svg.caret,
+.lot\:bar > ul > li > a:focus > .title svg.caret {
   color: #999;
 }
 .lot\:bar .field .input {
@@ -392,12 +375,34 @@ caption {
   background: #ccd;
 }
 
+@media (max-width: 720px) {
+  .lot\:tab > nav li {
+    background: none;
+    box-shadow: none;
+  }
+  .lot\:tab > nav li.active {
+    box-shadow: none;
+  }
+  .lot\:tab > nav li.active a {
+    color: inherit;
+  }
+  .lot\:tab > nav a {
+    color: #009;
+  }
+  .field > label {
+    font-weight: bolder;
+  }
+}
+
+
+
 /* Custom Appearance for Modern Browsers */
 .input[type="checkbox"],
 .input[type="radio"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .125);
 }
 .input[type="checkbox"] {
   background: #090;
@@ -418,12 +423,14 @@ caption {
   bottom: 2px;
   left: 2px;
   background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .125);
 }
 .input[type="radio"],
 .input[type="radio"]::before {
   border-radius: 100%;
 }
 .input[type="checkbox"]:checked::before {
+  top: 1px;
   right: 5px;
   bottom: 4px;
   left: 5px;
@@ -434,6 +441,7 @@ caption {
   -moz-transform: rotate(45deg);
   transform: rotate(45deg);
   visibility: visible;
+  box-shadow: none;
 }
 .input[type="radio"]:checked::before {
   background: none;

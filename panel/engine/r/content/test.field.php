@@ -141,8 +141,8 @@ $fields = [
     'item[1]' => [
         'type' => 'Item',
         'title' => 'Item',
-        'lot' => ['#000', '#f00', '#0f0', '#00f', '#fff', '#0ff', '#f0f', [
-            'title' => '#ff0',
+        'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
+            'title' => 'Item 8',
             'active' => false
         ]]
     ],
@@ -157,8 +157,8 @@ $fields = [
     'items[1]' => [
         'type' => 'Items',
         'title' => 'Items',
-        'lot' => ['#000', '#f00', '#0f0', '#00f', '#fff', '#0ff', '#f0f', [
-            'title' => '#ff0',
+        'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
+            'title' => 'Item 8',
             'active' => false
         ]]
     ],
@@ -241,25 +241,25 @@ return [
                                         'stack' => 10
                                     ],
                                     1 => [
-                                        'type' => 'Button.Button',
+                                        'type' => 'Button',
                                         'title' => 'Button',
                                         'name' => 'x',
                                         'stack' => 10.1
                                     ],
                                     2 => [
-                                        'type' => 'Button.Submit',
+                                        'type' => 'Submit',
                                         'title' => 'Submit',
                                         'name' => 'x',
                                         'stack' => 10.2
                                     ],
                                     3 => [
-                                        'type' => 'Button.Reset',
+                                        'type' => 'Reset',
                                         'title' => 'Reset',
                                         'name' => 'x',
                                         'stack' => 10.3
                                     ],
                                     4 => [
-                                        'type' => 'Button.Link',
+                                        'type' => 'Link',
                                         'title' => 'Link',
                                         'link' => 'https://example.com',
                                         'stack' => 10.4
@@ -278,7 +278,7 @@ return [
                                     ],
                                     7 => [
                                         'active' => false,
-                                        'type' => 'Button.Link',
+                                        'type' => 'Link',
                                         'title' => 'Disabled Link',
                                         'stack' => 10.7
                                     ]
