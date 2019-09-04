@@ -161,7 +161,7 @@ a {
 }
 a:focus,
 a:active {
-  color: #ff0;
+  color: #f00;
 }
 html,
 body {
@@ -261,28 +261,22 @@ img {
   max-width: 100%;
   height: auto;
 }
-h1,
-.h1 {
+h1 {
   font-size: 32px;
 }
-h2,
-.h2 {
+h2 {
   font-size: 28px;
 }
-h3,
-.h3 {
+h3 {
   font-size: 24px;
 }
-h4,
-.h4 {
+h4 {
   font-size: 20px;
 }
-h5,
-.h5 {
+h5 {
   font-size: 16px;
 }
-h6,
-.h6 {
+h6 {
   font-size: 12px;
 }
 h1,
@@ -290,13 +284,7 @@ h2,
 h3,
 h4,
 h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
+h6 {
   line-height: 1;
 }
 kbd {
@@ -318,17 +306,12 @@ kbd {
 * + h5,
 * + h6,
 * + hr,
+* + nav,
 * + ol,
 * + p,
 * + pre,
 * + table,
 * + ul,
-* + .h1,
-* + .h2,
-* + .h3,
-* + .h4,
-* + .h5,
-* + .h6,
 * + .p {
   margin-top: 24px;
 }
@@ -369,7 +352,28 @@ fieldset {
 }
 legend {
   padding: 0 8px;
-  margin: -8px 0 -24px;
+  margin: 0;
+}
+legend + blockquote,
+legend + dl,
+legend + fieldset,
+legend + figure,
+legend + form,
+legend + h1,
+legend + h2,
+legend + h3,
+legend + h4,
+legend + h5,
+legend + h6,
+legend + hr,
+legend + nav,
+legend + ol,
+legend + p,
+legend + pre,
+legend + table,
+legend + ul,
+legend + .p {
+  margin-top: 0;
 }
 hr {
   border-width: 1px 0 0;
@@ -566,6 +570,11 @@ a.disabled,
   opacity: .5;
   cursor: not-allowed;
 }
+label > input[type="checkbox"] + span,
+label > input[type="radio"] + span {
+  display: inline-block;
+  vertical-align: middle;
+}
 label.disabled {
   cursor: not-allowed;
 }
@@ -587,17 +596,21 @@ label.disabled {
 .align-center {
   display: block;
   float: none;
+}
+* + .align-center {
   margin-top: 24px;
 }
 .align-right {
-  margin-bottom: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
   margin-left: 24px;
   float: right;
   text-align: right;
 }
 .align-left {
+  margin-top: 8px;
   margin-right: 24px;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   float: left;
   text-align: left;
 }
@@ -854,6 +867,76 @@ label.disabled {
 .lot\:menu a:focus + ul {
   display: block;
 }
+.lot\:row {
+  display: flex;
+  margin-right: -24px;
+  margin-left: -24px;
+}
+.lot\:row > div {
+  flex: 1;
+  padding: 0 24px;
+}
+.lot\:tab > nav {
+  height: 48px;
+  line-height: 48px;
+}
+.lot\:tab > nav ul,
+.lot\:tab > nav li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lot\:tab > nav ul {
+  display: flex;
+  overflow: hidden;
+}
+.lot\:tab > nav li {
+  position: relative;
+  border: 1px solid;
+  border-bottom-width: 0;
+}
+.lot\:tab > nav li + li {
+  border-left-width: 0;
+}
+.lot\:tab > nav .active {
+  z-index: 4;
+}
+.lot\:tab > nav .active::before,
+.lot\:tab > nav .active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 9999em;
+  height: 0;
+  border-bottom: 1px solid;
+}
+.lot\:tab > nav .active::before {
+  right: 100%;
+}
+.lot\:tab > nav .active::after {
+  left: 100%;
+}
+.lot\:tab > nav a {
+  display: block;
+  padding: 0 22px;
+}
+.lot\:tab > nav li:not(.has-link) a {
+  color: inherit;
+}
+.lot\:tab > nav .title svg {
+  margin: 12px -10px;
+}
+.lot\:tab > nav .title svg:first-child {
+  margin-right: 6px;
+}
+.lot\:tab > nav .title svg:last-child {
+  margin-left: 6px;
+}
+.lot\:tab > nav .title svg:only-child {
+  margin-right: -12px;
+  margin-left: -12px;
+}
 .lot\:table {
   border: 1px solid;
   overflow: auto;
@@ -947,94 +1030,6 @@ label.disabled {
   display: block;
   font-size: 12px;
   margin: 6px 0 0 0;
-}
-.lot\:tab > nav {
-  height: 48px;
-  line-height: 48px;
-}
-.lot\:tab > nav ul,
-.lot\:tab > nav li {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.lot\:tab > nav ul {
-  display: flex;
-  overflow: hidden;
-}
-.lot\:tab > nav li {
-  position: relative;
-  border: 1px solid;
-  border-bottom-width: 0;
-}
-.lot\:tab > nav li + li {
-  border-left-width: 0;
-}
-.lot\:tab > nav .active {
-  z-index: 4;
-}
-.lot\:tab > nav .active::before,
-.lot\:tab > nav .active::after {
-  content: "";
-  display: block;
-  position: absolute;
-  bottom: 0;
-  width: 9999em;
-  height: 0;
-  border-bottom: 1px solid;
-}
-.lot\:tab > nav .active::before {
-  right: 100%;
-}
-.lot\:tab > nav .active::after {
-  left: 100%;
-}
-.lot\:tab > nav a {
-  display: block;
-  padding: 0 22px;
-  color: inherit;
-}
-.lot\:tab > nav .title svg {
-  margin: 12px -12px;
-}
-.lot\:tab > nav .title svg:first-child {
-  margin-right: 6px;
-}
-.lot\:tab > nav .title svg:last-child {
-  margin-left: 6px;
-}
-.lot\:tab > nav .title svg:only-child {
-  margin-right: -12px;
-  margin-left: -12px;
-}
-@media (max-width: 720px) {
-  .lot\:tab > nav {
-    height: auto;
-    line-height: inherit;
-  }
-  .lot\:tab > nav li {
-    background: none;
-    border-width: 0;
-    margin-right: 24px;
-  }
-  .lot\:tab > nav li.active::before,
-  .lot\:tab > nav li.active::after {
-    display: none;
-  }
-  .lot\:tab > nav li.active a,
-  .lot\:tab > nav li.active span {
-    color: inherit;
-  }
-  .lot\:tab > nav li:last-child {
-    margin-right: 0;
-  }
-  .lot\:tab > nav a {
-    padding: 0;
-    color: #00f;
-  }
-  .lot\:tab > nav .title > svg {
-    display: none;
-  }
 }
 .lot\:tab > section {
   margin-top: 24px;
@@ -1328,65 +1323,14 @@ label.disabled {
 .lot\:section:empty {
   display: none;
 }
-.messages {
-  margin: 0;
-  padding: 0;
-  position: fixed;
-  right: 12px;
-  bottom: 12px;
-  z-index: 9999;
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all .5s ease-out;
-  -moz-transition: all .5s ease-out;
-  transition: all .5s ease-out;
+.alert .error {
+  color: #f00;
 }
-.messages.exit {
-  visibility: hidden;
-  opacity: 0;
+.alert .info {
+  color: #00f;
 }
-.message {
-  background: #000;
-  color: #fff;
-  padding: 6px 12px;
-}
-.message svg {
-  margin: 0 -6px;
-}
-.message .title {
-  color: inherit;
-}
-.message p,
-.message .links {
-  margin: 6px 0 0;
-}
-.message a {
-  color: inherit;
-  opacity: .6;
-}
-.message a:focus,
-.message a:hover {
-  color: inherit;
-  opacity: 1;
-}
-.message + .message {
-  margin-top: 12px;
-}
-.layers {
-  position: relative;
-}
-.js .layer {
-  display: none;
-}
-.layer,
-.js .layer.active {
-  display: block;
-}
-.layer + .layer {
-  margin-top: 24px;
-}
-.js .layer + .layer {
-  margin-top: 0;
+.alert .success {
+  color: #0b0;
 }
 html.form,
 html.form body {

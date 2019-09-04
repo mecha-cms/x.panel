@@ -1,0 +1,13 @@
+---
+title: Panel
+description: GUI extension for Mecha.
+author: Taufik Nurrohman
+type: Markdown
+version: 2.1.1
+...
+
+### Usage
+
+ - Make sure you have uploaded the required extensions.
+ - Upload the `panel` folder to `.\lot\x` folder.
+ - Now visit your site! You should be redirected to create a new user.

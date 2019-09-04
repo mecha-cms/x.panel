@@ -10,16 +10,16 @@ return [
                     1 => [
                         // type: Section
                         'lot' => [
-                            'tab' => [
+                            'tabs' => [
                                 // type: Tabs
                                 'lot' => [
                                     0 => [
                                         'title' => 'Global Task',
                                         'lot' => [
-                                            'file' => [
+                                            'files' => [
                                                 'type' => 'Files',
                                                 'from' => PAGE,
-                                                'task' => [
+                                                'tasks' => [
                                                     'g' => [
                                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                                         'url' => '/',
@@ -33,10 +33,10 @@ return [
                                     1 => [
                                         'title' => 'Conditional Task',
                                         'lot' => [
-                                            'file' => [
+                                            'files' => [
                                                 'type' => 'Files',
                                                 'from' => PAGE,
-                                                'task' => function($in) {
+                                                'tasks' => function($in) {
                                                     if (isset($in['title']) && $in['title'] === '..') {
                                                         return [];
                                                     }
@@ -60,10 +60,8 @@ return [
                                 ]
                             ]
                         ],
-                        'stack' => 20,
-                        'hidden' => false
-                    ],
-                    2 => []
+                        'stack' => 20
+                    ]
                 ],
                 'stack' => 10
             ]

@@ -72,9 +72,26 @@ return [
                             2 => [
                                 'title' => 'Baz',
                                 'url' => '/'
+                            ],
+                            3 => [
+                                'title' => 'Disabled',
+                            ],
+                            4 => [
+                                'title' => 'Current',
+                                'url' => '/',
+                                'current' => true
+                            ],
+                            5 => [
+                                'title' => 'Current Disabled',
+                                'current' => true
                             ]
                         ],
                         'stack' => 30
+                    ],
+                    4 => [
+                        'title' => 'Menu',
+                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                        'stack' => 40
                     ]
                 ]
             ],

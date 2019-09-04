@@ -32,7 +32,7 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
                         'url' => $url->current,
                         'name' => 'search',
                         'lot' => [
-                            'field' => [
+                            'fields' => [
                                 'type' => 'Fields',
                                 'lot' => [
                                     'q' => [
@@ -66,12 +66,11 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
         'lot' => [
             'form' => [
                 'type' => 'Form.Post',
-                'name' => 'editor',
+                'name' => 'edit',
                 'lot' => [
                     0 => [
                         'type' => 'Section',
                         'lot' => [],
-                        'hidden' => true,
                         'stack' => 10
                     ],
                     1 => [
@@ -79,20 +78,18 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
                         'title' => 'Lorem Ipsum',
                         'description' => 'Lorem ipsum dolor sit amet.',
                         'lot' => [
-                            'tab' => [
+                            'tabs' => [
                                 'type' => 'Tabs',
                                 'name' => 0,
                                 'lot' => []
                             ]
                         ],
-                        'stack' => 20,
-                        'hidden' => true
+                        'stack' => 20
                     ],
                     2 => [
                         'type' => 'Section',
                         'lot' => [],
-                        'stack' => 30,
-                        'hidden' => true
+                        'stack' => 30
                     ]
                 ],
                 'stack' => 10

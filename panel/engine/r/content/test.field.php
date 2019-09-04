@@ -133,6 +133,7 @@ $fields = [
     'item[0]' => [
         'type' => 'Item',
         'title' => 'Item',
+        'value' => 0,
         'lot' => ['Red', 'Green', [
             'title' => 'Blue',
             'active' => false
@@ -141,6 +142,7 @@ $fields = [
     'item[1]' => [
         'type' => 'Item',
         'title' => 'Item',
+        'value' => 2,
         'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
             'title' => 'Item 8',
             'active' => false
@@ -149,6 +151,7 @@ $fields = [
     'items[0]' => [
         'type' => 'Items',
         'title' => 'Items',
+        'value' => 0,
         'lot' => ['Red', 'Green', [
             'title' => 'Blue',
             'active' => false
@@ -157,6 +160,7 @@ $fields = [
     'items[1]' => [
         'type' => 'Items',
         'title' => 'Items',
+        'value' => [2, 3],
         'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
             'title' => 'Item 8',
             'active' => false
@@ -186,24 +190,28 @@ return [
                     1 => [
                         // type: Section
                         'lot' => [
-                            'tab' => [
+                            'tabs' => [
                                 // type: Tabs
                                 'lot' => [
                                     0 => [
                                         'title' => 'Test 1',
                                         'lot' => [
-                                            'field' => [
+                                            'fields' => [
                                                 'type' => 'Fields',
-                                                'lot' => $fields
+                                                'lot' => \map($fields, function($field, $key) {
+                                                    $field['name'] = $key . '[0]';
+                                                    return $field;
+                                                })
                                             ]
                                         ]
                                     ],
                                     1 => [
                                         'title' => 'Test 2',
                                         'lot' => [
-                                            'field' => [
+                                            'fields' => [
                                                 'type' => 'Fields',
-                                                'lot' => \map($fields, function($field) {
+                                                'lot' => \map($fields, function($field, $key) {
+                                                    $field['name'] = $key . '[1]';
                                                     $field['width'] = true;
                                                     return $field;
                                                 })
@@ -213,9 +221,10 @@ return [
                                     2 => [
                                         'title' => 'Test 3',
                                         'lot' => [
-                                            'field' => [
+                                            'fields' => [
                                                 'type' => 'Fields',
-                                                'lot' => \map($fields, function($field) {
+                                                'lot' => \map($fields, function($field, $key) {
+                                                    $field['name'] = $key . '[2]';
                                                     $field['width'] = true;
                                                     $field['description'] = 'Description goes here.';
                                                     return $field;
@@ -226,14 +235,13 @@ return [
                                 ]
                             ]
                         ],
-                        'stack' => 20,
-                        'hidden' => false
+                        'stack' => 20
                     ],
                     2 => [
                         // type: Section
                         'lot' => [
-                            'task' => [
-                                'type' => 'Task.Button',
+                            'tasks' => [
+                                'type' => 'Tasks.Button',
                                 'lot' => [
                                     0 => [
                                         'title' => 'Default',
@@ -285,8 +293,7 @@ return [
                                 ]
                             ]
                         ],
-                        'stack' => 30,
-                        'hidden' => false
+                        'stack' => 30
                     ]
                 ],
                 'stack' => 10

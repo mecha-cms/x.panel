@@ -9,16 +9,18 @@ if (tabs.length) {
         buttons.forEach(function($$, i) {
             $$._index = i;
             $$.addEventListener("click", function(e) {
-                if (!this.classList.contains('disabled')) {
-                    buttons.forEach(function($$$) {
-                        $$$.parentNode.classList.remove('active');
-                        panes[$$$._index] && panes[$$$._index].classList.remove('active');
-                    });
-                    this.parentNode.classList.add('active');
-                    panes[this._index] && panes[this._index].classList.add('active');
-                    pushState && window.history.pushState({}, "", this.href);
+                if (!this.parentNode.classList.contains('has-link')) {
+                    if (!this.classList.contains('disabled')) {
+                        buttons.forEach(function($$$) {
+                            $$$.parentNode.classList.remove('active');
+                            panes[$$$._index] && panes[$$$._index].classList.remove('active');
+                        });
+                        this.parentNode.classList.add('active');
+                        panes[this._index] && panes[this._index].classList.add('active');
+                        pushState && window.history.pushState({}, "", this.href);
+                    }
+                    e.preventDefault();
                 }
-                e.preventDefault();
             }, false);
             links.push($$);
         });

@@ -10,13 +10,13 @@ return [
                     1 => [
                         // type: Section
                         'lot' => [
-                            'tab' => [
+                            'tabs' => [
                                 // type: Tabs
                                 'lot' => [
                                     0 => [
                                         'title' => 'From Path',
                                         'lot' => [
-                                            'file' => [
+                                            'files' => [
                                                 'type' => 'Files',
                                                 'from' => PAGE,
                                                 'chunk' => 10,
@@ -28,7 +28,7 @@ return [
                                     1 => [
                                         'title' => 'From Array 1',
                                         'lot' => [
-                                            'file' => [
+                                            'files' => [
                                                 'type' => 'Files',
                                                 'lot' => [
                                                     0 => 'foo/bar/baz-1.txt',
@@ -42,7 +42,7 @@ return [
                                     2 => [
                                         'title' => 'From Array 2',
                                         'lot' => [
-                                            'file' => [
+                                            'files' => [
                                                 'type' => 'Files',
                                                 'lot' => [
                                                     0 => [
@@ -87,7 +87,7 @@ return [
                                     3 => [
                                         'title' => 'From Array Mixed',
                                         'lot' => [
-                                            'file' => [
+                                            'files' => [
                                                 'type' => 'Files',
                                                 'lot' => [
                                                     0 => 'foo/bar/baz-1.txt',
@@ -105,10 +105,8 @@ return [
                                 ]
                             ]
                         ],
-                        'stack' => 20,
-                        'hidden' => false
-                    ],
-                    2 => []
+                        'stack' => 20
+                    ]
                 ],
                 'stack' => 10
             ]

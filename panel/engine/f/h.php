@@ -61,6 +61,20 @@ function icon($in) {
     return $icon;
 }
 
+function lot($lot, $fn = null) {
+    if (!\is_array($lot)) {
+        return;
+    }
+    $out = "";
+    foreach ((new \Anemon($lot))->sort([1, 'stack', 10], true) as $k => $v) {
+        if (!empty($v['hidden'])) {
+            continue;
+        }
+        $out .= $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);
+    }
+    return $out;
+}
+
 function session($name, $in) {
     $out = [
         'file' => (array) ($in['file'] ?? []),

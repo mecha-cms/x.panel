@@ -149,15 +149,15 @@ function Field_Hidden($in, $key) {
 
 function Field_Item($in, $key) {
     if (isset($in['lot'])) {
-        $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
-        $out['content'][0] = 'div';
-        unset($out['name'], $out['placeholder'], $out['value']);
         $n = $in['name'] ?? $key;
+        unset($in['name'], $in['placeholder'], $in['value']);
         $a = [];
+        $out = \_\lot\x\panel\h\field($in, $key);
+        $out['content'][0] = 'div';
         foreach ($in['lot'] as $k => $v) {
             $input = new \HTML(['input', false, [
-                'checked' => $value !== null && (string) $value === (string) $k,
+                'checked' => $value !== null && ((string) $value === (string) $k),
                 'class' => 'input',
                 'name' => $n,
                 'type' => 'radio',
@@ -188,13 +188,12 @@ function Field_Item($in, $key) {
 
 function Field_Items($in, $key) {
     if (isset($in['lot'])) {
-        $value = $in['value'] ?? [];
-        unset($in['value']);
-        $out = \_\lot\x\panel\h\field($in, $key);
+        $value = (array) ($in['value'] ?? []);
         $value = \P . \implode(\P, (array) $value) . \P;
-        $out['content'][0] = 'div';
-        unset($out['name'], $out['placeholder']);
         $n = $in['name'] ?? $key;
+        unset($in['name'], $in['placeholder'], $in['value']);
+        $out = \_\lot\x\panel\h\field($in, $key);
+        $out['content'][0] = 'div';
         $a = [];
         foreach ($in['lot'] as $k => $v) {
             $input = new \HTML(['input', false, [

@@ -1,1 +1,0 @@
-<?php namespace _\lot\x\panel\Button;

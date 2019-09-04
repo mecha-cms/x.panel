@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\Task;
+<?php namespace _\lot\x\panel\Tasks;
 
 function Button($in, $key) {
     if (isset($in['lot'])) {
@@ -10,7 +10,7 @@ function Button($in, $key) {
             }
         }
     }
-    return \_\lot\x\panel\Task($in, $key);
+    return \_\lot\x\panel\Tasks($in, $key);
 }
 
 function Link($in, $key) {
@@ -24,5 +24,5 @@ function Link($in, $key) {
             $v['tags'][] = 'text';
         }
     }
-    return \_\lot\x\panel\Task($in, $key);
+    return \_\lot\x\panel\Tasks($in, $key);
 }
