@@ -1,12 +1,11 @@
 <?php namespace _\lot\x\panel\h;
 
-function c($in, array $class = []) {
-    $a = \implode(' ', $class);
-    $b = \implode(' ', (array) ($in['tags'] ?? []));
-    $c = \array_unique(\array_filter(\array_merge(\explode(' ', $a), \explode(' ', $b))));
+function c(&$out, $in, $tags = []) {
+    $a = \explode(' ', $out['class'] ?? "");
+    $b = (array) ($in['tags'] ?? []);
+    $c = \array_unique(\array_filter(\array_merge($a, $b, $tags)));
     \sort($c);
-    $c = \implode(' ', $c);
-    return $c !== "" ? $c : null;
+    $out['class'] = $c ? \implode(' ', $c) : null;
 }
 
 function content($content) {
@@ -23,13 +22,20 @@ function description($in, $or = null) {
         1 => $description,
         2 => []
     ];
-    $out[2]['class'] = \_\lot\x\panel\h\c($in, ['description']);
+    \_\lot\x\panel\h\c($out[2], $in, ['description']);
     return new \HTML($out);
 }
 
 function field($in, $key) {
     $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $in['name'] ?? $key;
+    if ($readonly = !empty($in['read-only'])) {
+        $in['tags'][] = 'is:readonly';
+    }
+    if ($required = !empty($in['required'])) {
+        $in['tags'][] = 'is:required';
+    }
+    
     $input = [
         0 => 'textarea',
         1 => \htmlspecialchars($in['value'] ?? ""),
@@ -40,8 +46,8 @@ function field($in, $key) {
             'name' => $name,
             'pattern' => $in['pattern'] ?? null,
             'placeholder' => $in['placeholder'] ?? null,
-            'readonly' => !empty($in['read-only']),
-            'required' => !empty($in['required'])
+            'readonly' => $readonly,
+            'required' => $required
         ]
     ];
     $in['content'] = $input;
@@ -73,6 +79,17 @@ function lot($lot, $fn = null) {
         $out .= $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);
     }
     return $out;
+}
+
+function p(&$lot, $prefix) {
+    foreach ($lot as &$v) {
+        $type = $v['type'] ?? null;
+        if ($type !== $prefix && \strpos($type, $prefix . '_') !== 0) {
+            // Add prefix to `type`
+            $v['type'] = $type = $prefix . '_' . $type;
+        }
+    }
+    unset($v);
 }
 
 function session($name, $in) {
@@ -110,7 +127,11 @@ function title($in, $i = -1, $or = null) {
         $title = '<span>' . $title . '</span>';
     }
     $out[1] = $icon[0] . $title . $icon[1];
-    $out[2]['class'] = \_\lot\x\panel\h\c($in, ['title']);
+    \_\lot\x\panel\h\c($out[2], $in, [
+        'title',
+        $title ? 'has:title' : null,
+        $icon[0] || $icon[1] ? 'has:icon' : null
+    ]);
     return new \HTML($out);
 }
 

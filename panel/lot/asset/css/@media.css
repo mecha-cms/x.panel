@@ -29,17 +29,34 @@
   .p2l {
     padding-left: 24px;
   }
-  .lot\:bar > ul:first-child,
-  .lot\:bar > ul:first-child li + li {
+  .field {
+    display: block;
+    width: auto;
+  }
+  .field > label {
+    width: auto;
+    margin: 0 0 6px;
+    padding: 0;
+    text-align: inherit;
+  }
+  .field > label + div,
+  .field > label + br + div {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+  }
+  .panel\:bar > ul:first-child,
+  .panel\:bar > ul:first-child li + li {
     flex: 1;
   }
-  .lot\:bar > ul:first-child > li + li .input {
+  .panel\:bar > ul:first-child > li + li .input {
     width: 100%;
   }
-  .lot\:bar > ul:nth-child(2) {
+  .panel\:bar > ul:nth-child(2) {
     display: none;
   }
-  .lot\:data {
+  .panel\:data {
     -webkit-column-count: 2;
     -webkit-column-gap: 12px;
     -moz-column-count: 2;
@@ -47,58 +64,43 @@
     column-count: 2;
     column-gap: 12px;
   }
-  .content\:desk,
-  .lot\:desk,
-  .content\:section,
-  .lot\:section {
+  .panel\:desk,
+  .panel\:section {
     padding: 12px;
   }
-  .lot\:section > .lot\:task {
+  .panel\:section > .panel\:task {
     margin-left: 0;
   }
-  .lot\:page .page > figure {
-    display: none;
-  }
-  .lot\:page .page > figure + header,
-  .lot\:page .page > figure + header + div {
-    margin-left: 0;
-  }
-  .lot\:row {
-    margin-right: -12px;
-    margin-left: -12px;
-  }
-  .lot\:row > div {
-    padding: 0 12px;
-  }
+  /*
   .pager > span:first-child,
   .pager > span:last-child {
     display: none;
   }
-  .lot\:tab > nav {
+  */
+  .panel\:tab > nav {
     height: auto;
     line-height: inherit;
   }
-  .lot\:tab > nav li {
+  .panel\:tab > nav li {
     background: none;
     border-width: 0;
     margin-right: 24px;
   }
-  .lot\:tab > nav li.active::before,
-  .lot\:tab > nav li.active::after {
-    display: none;
-  }
-  .lot\:tab > nav li.active a,
-  .lot\:tab > nav li.active span {
-    color: inherit;
-  }
-  .lot\:tab > nav li:last-child {
+  .panel\:tab > nav li:last-child {
     margin-right: 0;
   }
-  .lot\:tab > nav a {
+  .panel\:tab > nav li.is\:active::before,
+  .panel\:tab > nav li.is\:active::after {
+    display: none;
+  }
+  .panel\:tab > nav li:not(.has\:link) a {
     padding: 0;
     color: #00f;
   }
-  .lot\:tab > nav .title > svg {
+  .panel\:tab > nav li.is\:active a {
+    color: inherit;
+  }
+  .panel\:tab > nav .title > svg {
     display: none;
   }
 }

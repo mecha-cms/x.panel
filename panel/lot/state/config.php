@@ -1,5 +1,6 @@
 <?php
 
 return [
-    '//' => 'panel'
+    '//' => 'panel',
+    'skin' => 'construction'
 ];

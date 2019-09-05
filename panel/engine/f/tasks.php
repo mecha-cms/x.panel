@@ -15,13 +15,9 @@ function Button($in, $key) {
 
 function Link($in, $key) {
     if (isset($in['lot'])) {
+        \_\lot\x\panel\h\p($in['lot'], 'Link');
         foreach ($in['lot'] as &$v) {
-            if (!isset($v['type'])) {
-                $v['type'] = 'Link';
-            } else if ($v['type'] !== 'Link' && \strpos($v['type'], 'Link_') !== 0) {
-                $v['type'] = 'Link_' . $v['type'];
-            }
-            $v['tags'][] = 'text';
+            $v['tags'][] = 'is:link';
         }
     }
     return \_\lot\x\panel\Tasks($in, $key);

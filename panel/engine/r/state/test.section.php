@@ -22,6 +22,7 @@ return [
                         'type' => 'Section',
                         'title' => 'Section 3',
                         'description' => 'Lorem ipsum dolor sit amet.',
+                        /*
                         'lot' => [
                             0 => [
                                 'type' => 'Column',
@@ -39,6 +40,7 @@ return [
                                 'stack' => 30
                             ]
                         ],
+                        */
                         'stack' => 30
                     ],
                     3 => [

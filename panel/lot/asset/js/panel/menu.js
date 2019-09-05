@@ -1,12 +1,12 @@
-var dropdowns = document.querySelectorAll('.drop');
+var dropdowns = document.querySelectorAll('.has\\:menu');
 
 if (dropdowns.length) {
     function remove(but, t) {
-        document.querySelectorAll('.lot\\:menu.enter').forEach(function($$) {
+        document.querySelectorAll('.panel\\:menu.is\\:enter').forEach(function($$) {
             if ($$ !== but && t !== but.previousElementSibling) {
-                $$.classList.remove('enter');
-                $$.parentNode.classList.remove('active');
-                $$.previousElementSibling.classList.remove('active');
+                $$.classList.remove('is:enter');
+                $$.parentNode.classList.remove('is:active');
+                $$.previousElementSibling.classList.remove('is:active');
             }
         });
     }
@@ -14,15 +14,15 @@ if (dropdowns.length) {
         remove(0, e);
     }, false);
     dropdowns.forEach(function($) {
-        var menu = $.querySelector('.lot\\:menu');
+        var menu = $.querySelector('.panel\\:menu');
         if (menu) {
             menu.previousElementSibling.addEventListener("click", function(e) {
                 var t = this;
                 remove(menu, t);
                 setTimeout(function() {
-                    t.classList.toggle('active');
-                    t.parentNode.classList.toggle('active');
-                    menu.classList.toggle('enter');
+                    t.classList.toggle('is:active');
+                    t.parentNode.classList.toggle('is:active');
+                    menu.classList.toggle('is:enter');
                 }, 1);
                 e.preventDefault();
             }, false);

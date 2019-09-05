@@ -1,5 +1,6 @@
 <?php
 
+/*
 // Common file type(s) allowed to be uploaded by the file manager
 !defined('AUDIO_X') && define('AUDIO_X', 'aif,mid,mov,mpa,mp3,m3u,m4a,ogg,wav,wma');
 !defined('FONT_X') && define('FONT_X', 'eot,fnt,fon,otf,svg,ttf,woff,woff2');
@@ -8,18 +9,26 @@
 !defined('TEXT_X') && define('TEXT_X', 'archive,cache,cfg,css,csv,data,draft,htaccess,html,js,json,log,page,php,srt,stack,tex,trash,txt,xml,yaml,yml');
 !defined('VIDEO_X') && define('VIDEO_X', 'avi,flv,mkv,mov,mpg,mp4,m4a,m4v,ogv,rm,swf,vob,webm,wmv,3gp,3g2');
 !defined('BINARY_X') && define('BINARY_X', AUDIO_X . ',' . PACKAGE_X . ',' . VIDEO_X . ',doc,docx,odt,pdf,ppt,pptx,rtf,xlr,xls,xlsx');
+*/
 
-require __DIR__ . DS . 'engine' . DS . 'f.php';
-
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'language.php';
-
-// Test
-Route::set('panel', 200, function() {
-    Asset::let();
-    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel.css');
-    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . '@media.css');
-    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'panel' . DS . 'construction.css');
-    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'drop.js');
-    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'panel' . DS . 'tab.js');
-    $this->content(__DIR__ . DS . 'engine' . DS . 'r' . DS . 'content' . DS . 'panel.php');
-}, 0);
+$path = state('panel')['//'];
+$p = trim($url->path, '/');
+if (strpos($p . '/', $path . '/') === 0) {
+    $panel = ['i' => $url->i];
+    $a = explode('/', $p);
+    $path = array_shift($a);
+    $task = $a[0] && strpos($a[0], '::') === 0 && substr($a[0], -2) === '::' ? substr(array_shift($a), 2, -2) : null;
+    if (count($a) === 1 && $task === 'g' && !isset($panel['i'])) {
+        Guard::kick($url->clean . '/1' . $url->query . $url->hash);
+    }
+    $panel['//'] = $path;
+    $panel['task'] = $task;
+    $panel['directory'] = $task ? array_shift($a) : null;
+    $panel['path'] = $task ? implode('/', $a) : null;
+    $panel['chunk'] = 20;
+    $GLOBALS['panel'] = $panel;
+    require __DIR__ . DS . 'engine' . DS . 'f.php';
+    require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'asset.php';
+    require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'language.php';
+    require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'route.php';
+}

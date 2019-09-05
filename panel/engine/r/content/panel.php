@@ -11,7 +11,6 @@
 
 <?php
 
-$over = defined('DEBUG') && DEBUG && isset($_GET['test']) && is_file($f = __DIR__ . DS . 'test.' . urlencode($_GET['test']) . '.php') ? require $f : [];
 $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
     'bar' => [
         'type' => 'Bar',
@@ -24,7 +23,7 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
                         'caret' => false,
                         'title' => false,
                         'url' => $url,
-                        'tags' => ['main'],
+                        'tags' => ['is:main'],
                         'stack' => 10
                     ],
                     1 => [
@@ -66,6 +65,7 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
         'lot' => [
             'form' => [
                 'type' => 'Form.Post',
+                'url' => $url->current,
                 'name' => 'edit',
                 'lot' => [
                     0 => [
@@ -75,8 +75,6 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
                     ],
                     1 => [
                         'type' => 'Section',
-                        'title' => 'Lorem Ipsum',
-                        'description' => 'Lorem ipsum dolor sit amet.',
                         'lot' => [
                             'tabs' => [
                                 'type' => 'Tabs',
@@ -97,7 +95,7 @@ $content = _\lot\x\panel\lot(['lot' => array_replace_recursive([
         ],
         'stack' => 20
     ]
-], $over)], 0);
+], (array) Config::get('panel', true))], 0);
 
 if (!empty($GLOBALS['SVG'])) {
     $icons = '<svg xmlns="http://www.w3.org/2000/svg" display="none">';

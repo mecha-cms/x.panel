@@ -1,4 +1,4 @@
-var tabs = document.querySelectorAll('.lot\\:tab'),
+var tabs = document.querySelectorAll('.panel\\:tab'),
     pushState = 'pushState' in window.history;
 
 if (tabs.length) {
@@ -9,14 +9,14 @@ if (tabs.length) {
         buttons.forEach(function($$, i) {
             $$._index = i;
             $$.addEventListener("click", function(e) {
-                if (!this.parentNode.classList.contains('has-link')) {
-                    if (!this.classList.contains('disabled')) {
+                if (!this.parentNode.classList.contains('has:link')) {
+                    if (!this.classList.contains('not:active')) {
                         buttons.forEach(function($$$) {
-                            $$$.parentNode.classList.remove('active');
-                            panes[$$$._index] && panes[$$$._index].classList.remove('active');
+                            $$$.parentNode.classList.remove('is:active');
+                            panes[$$$._index] && panes[$$$._index].classList.remove('is:active');
                         });
-                        this.parentNode.classList.add('active');
-                        panes[this._index] && panes[this._index].classList.add('active');
+                        this.parentNode.classList.add('is:active');
+                        panes[this._index] && panes[this._index].classList.add('is:active');
                         pushState && window.history.pushState({}, "", this.href);
                     }
                     e.preventDefault();

@@ -11,9 +11,9 @@ function Field_Blob($in, $key) {
     $name = 'blob[' . \md5($in['name'] ?? $key) . ']';
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['input']);
     $out['content'][2]['name'] = $name;
     $out['content'][2]['type'] = 'file';
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -21,8 +21,8 @@ function Field_Color($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['input']);
     $out['content'][2]['type'] = 'color';
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     $value = $in['value'] ?? "";
     // TODO: Convert any color string into HEX color code
     if ($value !== "") {
@@ -57,7 +57,7 @@ function Field_Colors($in, $key) {
         }
         unset($in['lot']);
     }
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['lot', 'lot:color']);
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:color']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -120,7 +120,7 @@ function Field_Combo($in, $key) {
         foreach ($a as $v) {
             $out['content'][1] .= $v;
         }
-        $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['select']);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['select']);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
@@ -129,7 +129,7 @@ function Field_Combo($in, $key) {
 
 function Field_Content($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['textarea']);
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -179,7 +179,7 @@ function Field_Item($in, $key) {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['lot', 'lot:item', $block ? 'block' : null]);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:item', $block ? 'is:block' : null]);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
@@ -219,7 +219,7 @@ function Field_Items($in, $key) {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['lot', 'lot:items', $block ? 'block' : null]);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:items', $block ? 'is:block' : null]);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
@@ -230,12 +230,12 @@ function Field_Number($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['input']);
     $out['content'][2]['type'] = 'number';
     $out['content'][2]['min'] = $in['min'] ?? null;
     $out['content'][2]['max'] = $in['max'] ?? null;
     $out['content'][2]['step'] = $in['step'] ?? null;
     $out['content'][2]['value'] = $in['value'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -243,9 +243,9 @@ function Field_Pass($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['input']);
     $out['content'][2]['type'] = 'password';
     unset($out['content'][2]['value']); // Never show `value` on this field
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -253,19 +253,19 @@ function Field_Range($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['input']);
     $out['content'][2]['type'] = 'range';
     $out['content'][2]['min'] = $in['min'] ?? null;
     $out['content'][2]['max'] = $in['max'] ?? null;
     $out['content'][2]['step'] = $in['step'] ?? null;
     $out['content'][2]['value'] = $in['value'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
 function Field_Source($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['textarea', 'code']);
     $out['content'][2]['data-type'] = $in['syntax'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea', 'code']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -273,9 +273,9 @@ function Field_Text($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['input']);
     $out['content'][2]['type'] = 'text';
     $out['content'][2]['value'] = $in['value'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -289,10 +289,10 @@ function Field_Toggle($in, $key) {
         'type' => 'checkbox',
         'value' => $value === true ? 'true' : ($value === false ? 'false' : '1') // Force value to be exists
     ]]);
-    $t = $in['description'] ?? $GLOBALS['language']->doYes ?? $key;
+    $t = $in['description'] ?? '&nbsp;';
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    $out['content'][2]['class'] = \_\lot\x\panel\h\c($in, ['lot', 'lot:toggle']);
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:toggle']);
     unset($out['description']);
     return \_\lot\x\panel\Field($out, $key);
 }
