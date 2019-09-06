@@ -1,4 +1,4 @@
-var tabs = document.querySelectorAll('.panel\\:tab'),
+var tabs = document.querySelectorAll('.lot\\:tab'),
     pushState = 'pushState' in window.history;
 
 if (tabs.length) {

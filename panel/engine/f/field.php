@@ -57,7 +57,7 @@ function Field_Colors($in, $key) {
         }
         unset($in['lot']);
     }
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:color']);
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:color']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -179,7 +179,7 @@ function Field_Item($in, $key) {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:item', $block ? 'is:block' : null]);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:item', $block ? 'is:block' : null]);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
@@ -210,7 +210,7 @@ function Field_Items($in, $key) {
             } else {
                 $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
             }
-            $a[$t] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
+            $a[$t] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
         }
         \ksort($a);
         if (!isset($in['block'])) {
@@ -219,7 +219,7 @@ function Field_Items($in, $key) {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:items', $block ? 'is:block' : null]);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:items', $block ? 'is:block' : null]);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
@@ -292,7 +292,7 @@ function Field_Toggle($in, $key) {
     $t = $in['description'] ?? '&nbsp;';
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['panel', 'panel:toggle']);
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);
     unset($out['description']);
     return \_\lot\x\panel\Field($out, $key);
 }

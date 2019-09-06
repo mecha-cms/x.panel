@@ -22,6 +22,9 @@ namespace _\lot\x\panel {
         unset($out['href'], $out['target']);
         return $out;
     }
+    function Button_($in, $key) {
+        return \_\lot\x\panel\Button($in, $key); // Unknown `Button` type
+    }
     function Button_Button($in, $key) {
         $out = \_\lot\x\panel\Button($in, $key);
         $out['type'] = 'button';
@@ -91,7 +94,7 @@ namespace _\lot\x\panel {
                 }
                 $in['content'][2]['style'] = $style !== "" ? $style : null;
             }
-            $out[1] .= '<div><div class="panel' . ($before || $after ? ' panel:input' . (!empty($in['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\h\content($in['content']) . $after . '</div>' . \_\lot\x\panel\h\description($in) . '</div>';
+            $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' . (!empty($in['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\h\content($in['content']) . $after . '</div>' . \_\lot\x\panel\h\description($in) . '</div>';
             if (isset($in['content'][2]['name'])) {
                 \_\lot\x\panel\h\session($in['content'][2]['name'], $in);
             }
@@ -102,7 +105,7 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Fields($in) {
-        $tags = ['panel', 'panel:field'];
+        $tags = ['lot', 'lot:field'];
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
@@ -122,7 +125,7 @@ namespace _\lot\x\panel {
                         $append .= \_\lot\x\panel\Field_Hidden($v, $k);
                     }
                 } else {
-                    $append .= \_\lot\x\panel\Field_($v, $k); // Unknown field type
+                    $append .= \_\lot\x\panel\Field_($v, $k); // Unknown `Field` type
                 }
                 unset($v);
             }
@@ -168,14 +171,13 @@ namespace _\lot\x\panel {
         if (\is_array($tasks)) {
             $out[1] .= \_\lot\x\panel\Tasks\Link([
                 0 => 'p',
-                'lot' => $tasks,
-                'tags' => ['are:icons']
+                'lot' => $tasks
             ], 0);
         }
         return new \HTML($out);
     }
     function Files($in, $key) {
-        $tags = ['panel', 'panel:file'];
+        $tags = ['lot', 'lot:file'];
         $tasks = $in['tasks'] ?? null;
         $out = [
             0 => 'ul',
@@ -190,7 +192,7 @@ namespace _\lot\x\panel {
                 $a[\is_string($v) && \is_file($v) ? 1 : 0][$k] = $v;
             }
         } else if ($source) {
-            foreach (\g($in['from']) as $k => $v) {
+            foreach (\g(\strtr($in['from'], '/', DS)) as $k => $v) {
                 $a[$v][] = $k;
             }
         }
@@ -203,12 +205,15 @@ namespace _\lot\x\panel {
         $current = $in['current'] ?? 1;
         $a = \array_merge($a[0], $a[1]);
         $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
+        $url = $GLOBALS['url'];
         if (isset($a[$current - 1])) {
-            if ($source) {
+            $clean = \dirname($url->clean);
+            // Add parent directory if current directory level is greater than `.\lot`
+            if ($source && \substr($clean, -2) !== '::') {
                 \array_unshift($a[$current - 1], [
                     'title' => '..',
                     'type' => 'Folder',
-                    'url' => '/' // TODO
+                    'url' => $clean . '/1' . $url->query
                 ]);
             }
             foreach ($a[$current - 1] as $k => $v) {
@@ -223,7 +228,7 @@ namespace _\lot\x\panel {
                         'path' => $v,
                         'title' => $n,
                         'type' => $f ? 'File' : 'Folder',
-                        'url' => $f ? null : $GLOBALS['url'] . '/' . $GLOBALS['panel']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
+                        'url' => $f ? null : $url . $GLOBALS['PANEL']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
                     ];
                 }
                 $t = (array) ($v['tasks'] ?? []);
@@ -233,8 +238,8 @@ namespace _\lot\x\panel {
                     $v['tasks'] = \array_replace($tasks, $t);
                 }
                 if (!empty($v['current']) || isset($v['path']) && (
-                    isset($_SESSION['panel']['file'][$v['path']]) ||
-                    isset($_SESSION['panel']['folder'][$v['path']])
+                    isset($_SESSION['PANEL']['file'][$v['path']]) ||
+                    isset($_SESSION['PANEL']['folder'][$v['path']])
                 )) {
                     $v['tags'][] = 'is:active';
                 }
@@ -271,8 +276,7 @@ namespace _\lot\x\panel {
         if (\is_array($tasks)) {
             $out[1] .= \_\lot\x\panel\Tasks\Link([
                 0 => 'p',
-                'lot' => $tasks,
-                'tags' => ['are:icons']
+                'lot' => $tasks
             ], 0);
         }
         return new \HTML($out);
@@ -318,7 +322,7 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Link_($in, $key) {
-        return \_\lot\x\panel\Link($in, $key);
+        return \_\lot\x\panel\Link($in, $key); // Unknown `Link` type
     }
     function Menu($in, $key, int $i = 0) {
         $out = [
@@ -360,7 +364,7 @@ namespace _\lot\x\panel {
                     if (!isset($v[1])) {
                         if (!empty($v['lot'])) {
                             $ul = \_\lot\x\panel\Menu($v, $k, $i + 1); // Recurse
-                            $ul['class'] = 'panel panel:menu';
+                            $ul['class'] = 'lot lot:menu';
                             $li[1] = $ul;
                             if ($i < 0) {
                                 $a[] = 'has:menu';
@@ -381,6 +385,78 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Page($in, $key) {}
+    function Pager($in, $key) {
+        $in['tags'][] = 'lot';
+        $in['tags'][] = 'lot:pager';
+        $pager = function($current, $count, $chunk, $peek, $fn, $first, $prev, $next, $last) {
+            $begin = 1;
+            $end = (int) \ceil($count / $chunk);
+            $out = "";
+            if ($end <= 1) {
+                return $out;
+            }
+            if ($current <= $peek + $peek) {
+                $min = $begin;
+                $max = \min($begin + $peek + $peek, $end);
+            } else if ($current > $end - $peek - $peek) {
+                $min = $end - $peek - $peek;
+                $max = $end;
+            } else {
+                $min = $current - $peek;
+                $max = $current + $peek;
+            }
+            if ($prev) {
+                $out = '<span>';
+                if ($current === $begin) {
+                    $out .= '<b title="' . $prev . '">' . $prev . '</b>';
+                } else {
+                    $out .= '<a href="' . \call_user_func($fn, $current - 1) . '" title="' . $prev . '" rel="prev">' . $prev . '</a>';
+                }
+                $out .= '</span> ';
+            }
+            if ($first && $last) {
+                $out .= '<span>';
+                if ($min > $begin) {
+                    $out .= '<a href="' . \call_user_func($fn, $begin) . '" title="' . $first . '" rel="prev">' . $begin . '</a>';
+                    if ($min > $begin + 1) {
+                        $out .= ' <span>&#x2026;</span>';
+                    }
+                }
+                for ($i = $min; $i <= $max; ++$i) {
+                    if ($current === $i) {
+                        $out .= ' <b title="' . $i . '">' . $i . '</b>';
+                    } else {
+                        $out .= ' <a href="' .\call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+                    }
+                }
+                if ($max < $end) {
+                    if ($max < $end - 1) {
+                        $out .= ' <span>&#x2026;</span>';
+                    }
+                    $out .= ' <a href="' . \call_user_func($fn, $end) . '" title="' . $last . '" rel="next">' . $end . '</a>';
+                }
+                $out .= '</span>';
+            }
+            if ($next) {
+                $out .= ' <span>';
+                if ($current === $end) {
+                    $out .= '<b title="' . $next . '">' . $next . '</b>';
+                } else {
+                    $out .= '<a href="' . \call_user_func($fn, $current + 1) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+                }
+                $out .= '</span>';
+            }
+            return $out;
+        };
+        $language = $GLOBALS['language'];
+        $in['content'] = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
+            extract($GLOBALS, \EXTR_SKIP);
+            return $url . $PANEL['//'] . '/::g::' . $PANEL['path'] . '/' . $i;
+        }, $language->first, $language->prev, $language->next, $language->last);
+        $out = \_\lot\x\panel\content($in, $key);
+        $out[0] = 'p';
+        return $out;
+    }
     function Pages($in, $key) {}
     function Tab($in, $key) {
         $out = [
@@ -399,7 +475,6 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Tabs($in, $key) {
-        \Asset::set(__DIR__ . \DS . '..' . \DS . 'lot' . \DS . 'asset' . \DS . 'js' . \DS . 'panel' . \DS . 'tab.js');
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
@@ -410,7 +485,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             $name = $in['name'] ?? $key;
             $nav = $section = [];
-            $tags = ['panel', 'panel:tab', 'p'];
+            $tags = ['lot', 'lot:tab', 'p'];
             $active = \Get::get('tab.' . $name) ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
             $size = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack'], true) as $k => $v) {
@@ -439,13 +514,14 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Tasks($in, $key) {
-        $tags = ['panel', 'panel:task'];
+        $tags = ['lot', 'lot:task'];
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
             2 => $in[2] ?? []
         ];
         if (isset($in['content'])) {
+            $tags[] = 'count:1';
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
             $tags[] = 'count:' . \count(\array_filter($in['lot']));
@@ -466,7 +542,7 @@ namespace _\lot\x\panel {
         return new \HTML([
             0 => 'div',
             1 => $title . $description . \_\lot\x\panel\h\content($in['content']),
-            2 => ['class' => 'count:1 panel' . (isset($type) ? ' panel:' . \implode(' panel:', \step(\c2f($type))) : "")]
+            2 => ['class' => 'count:1 lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")]
         ]);
     }
     function lot($in, $key) {
@@ -476,7 +552,7 @@ namespace _\lot\x\panel {
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? $title . $description,
-            2 => \array_replace(['class' => 'count:' . \count(\array_filter($in['lot'] ?? [])) . ' panel' . (isset($type) ? ' panel:' . \implode(' panel:', \step(\c2f($type))) : "")], $in[2] ?? [])
+            2 => \array_replace(['class' => 'count:' . \count(\array_filter($in['lot'] ?? [])) . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")], $in[2] ?? [])
         ];
         if (isset($in['lot'])) {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot']);

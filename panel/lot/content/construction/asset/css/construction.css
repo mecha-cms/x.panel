@@ -148,7 +148,7 @@ caption {
 .description {
   color: #888;
 }
-.field.is\:required > label:not(:empty)::before {
+.field.is\:required > label > span::before {
   color: #f00;
 }
 .input.is\:plain {
@@ -156,172 +156,200 @@ caption {
   border: 0;
   box-shadow: none;
 }
-.panel\:bar {
+.lot\:bar {
   background: #1a1a1a;
   color: #ccc;
 }
-.panel\:bar li.is\:main {
+.lot\:bar li.is\:main {
   background: #fff;
   color: #000;
 }
-.panel\:bar li.is\:main > a {
+.lot\:bar li.is\:main > a {
   color: #009;
 }
-.panel\:bar li.is\:main > a:focus,
-.panel\:bar li.is\:main > a:active {
+.lot\:bar li.is\:main > a:focus,
+.lot\:bar li.is\:main > a:active {
   color: #900;
 }
-.panel\:bar li.is\:main.is\:active > a {
+.lot\:bar li.is\:main.is\:active > a {
   background: inherit;
   color: inherit;
   position: relative;
-  z-index: 9999; /* Must be greater than the `.panel:menu` index to hide the top shadow from its drop menu */
+  z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
 }
-.panel\:bar > ul > li.is\:separator {
+.lot\:bar > ul > li.is\:separator {
   background: #222;
 }
-.panel\:bar > ul > li > a {
+.lot\:bar > ul > li > a {
   color: #ddd;
 }
-.panel\:bar > ul > li > a > .title svg.caret {
+.lot\:bar > ul > li > a > .title svg.caret {
   color: #777;
 }
-.panel\:bar > ul > li > a:hover > .title svg.caret,
-.panel\:bar > ul > li > a:focus > .title svg.caret {
+.lot\:bar > ul > li > a:hover > .title svg.caret,
+.lot\:bar > ul > li > a:focus > .title svg.caret {
   color: #999;
 }
-.panel\:bar .field .input {
+.lot\:bar .field .input {
   background: #000;
   color: #fff;
 }
-.panel\:bar > ul > li > a:focus,
-.panel\:bar > ul > li > a:active,
-.panel\:bar > ul > li.is\:active > a {
+.lot\:bar > ul > li > a:focus,
+.lot\:bar > ul > li > a:active,
+.lot\:bar > ul > li.is\:active > a {
   color: #fafafa;
 }
-.panel\:file li {
+.lot\:file li {
   background: #fff;
   border: 0 solid #fff;
 }
-.panel\:file li:focus,
-.panel\:file li:hover {
+.lot\:file li:focus,
+.lot\:file li:hover {
   background: #eef;
   border-color: #eef;
 }
-.panel\:file .is\:active {
+.lot\:file .lot\:task > * {
+  margin: 0;
+}
+.lot\:file .lot\:task > * .title span {
+  display: none;
+}
+.lot\:file .is\:active {
   background: #fec;
   border-color: #fec;
 }
-.panel\:file .is\:file::before {
+.lot\:file .is\:file::before {
   background: #fea;
   border-color: #000;
 }
-.panel\:file .is\:file::after {
+.lot\:file .is\:file::after {
   border-color: #000;
   border-top-color: inherit;
   border-right-color: inherit;
 }
-.panel\:file .is\:folder::before {
+.lot\:file .is\:folder::before {
   background: #d00;
 }
-.panel\:file .is\:folder::after {
+.lot\:file .is\:folder::after {
   border-top-color: #a00;
 }
-.panel\:input .fix {
+.lot\:input .fix {
   background: #dda;
 }
-.panel\:input .button {
+.lot\:input .button {
   background: #bdf;
   box-shadow: none;
 }
-.panel\:input .button:focus,
-.panel\:input .button:active {
+.lot\:input .button:focus,
+.lot\:input .button:active {
   background: #cef;
 }
-.panel\:menu,
-.panel\:menu ul {
+.lot\:menu,
+.lot\:menu ul {
   background: #fff;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 4px 8px rgba(0, 0, 0, .25);
 }
-.panel\:menu li.is\:current > a {
+.lot\:menu li.is\:current > a {
   background: #d00;
   color: #fff;
 }
-.panel\:menu li.is\:current > a:focus,
-.panel\:menu li.is\:current > a:hover,
-.panel\:menu li.is\:current.is\:active > a {
+.lot\:menu li.is\:current > a:focus,
+.lot\:menu li.is\:current > a:hover,
+.lot\:menu li.is\:current.is\:active > a {
   background: #ce0000;
   color: #fff;
 }
-.panel\:menu li.is\:current.is\:active > a:focus,
-.panel\:menu li.is\:current.is\:active > a:hover {
+.lot\:menu li.is\:current.is\:active > a:focus,
+.lot\:menu li.is\:current.is\:active > a:hover {
   background: #c40000;
 }
-.panel\:menu li.is\:current a.not\:active {
+.lot\:menu li.is\:current a.not\:active {
   background: #ea6565;
 }
-.panel\:menu li.is\:current.is\:active a.not\:active {
+.lot\:menu li.is\:current.is\:active a.not\:active {
   background: #e16565;
 }
-.panel\:menu li.is\:separator {
+.lot\:menu li.is\:separator {
   background: #000;
 }
-.panel\:menu a {
+.lot\:menu a {
   color: #009;
 }
-.panel\:menu .title > svg.caret {
+.lot\:menu .title > svg.caret {
   color: #000;
   opacity: .25;
 }
-.panel\:menu a:focus,
-.panel\:menu a:active {
+.lot\:menu a:focus,
+.lot\:menu a:active {
   color: #900;
 }
-.panel\:menu a:focus,
-.panel\:menu a:hover,
-.panel\:menu li.active > a {
+.lot\:menu a:focus,
+.lot\:menu a:hover,
+.lot\:menu li.active > a {
   background: #eef;
 }
-.panel\:menu li.is\:active > a:focus,
-.panel\:menu li.is\:active > a:hover {
+.lot\:menu li.is\:active > a:focus,
+.lot\:menu li.is\:active > a:hover {
   background: #d5d5ff;
 }
-.panel\:menu a.not\:active {
+.lot\:menu a.not\:active {
   background: #f5f5f5;
   color: #888;
   opacity: 1;
 }
-.panel\:menu li.is\:active a.not\:active {
+.lot\:menu li.is\:active a.not\:active {
   background: #eee;
 }
-.panel\:tab > nav li {
+.lot\:pager > span {
+  padding: 0;
+}
+.lot\:pager > span > a,
+.lot\:pager > span > b,
+.lot\:pager > span > span {
+  background: #009;
+  color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+}
+.lot\:pager > span > a:focus,
+.lot\:pager > span > b:focus,
+.lot\:pager > span > span:focus {
+  background: #900;
+  color: #fff;
+}
+.lot\:pager > span > b,
+.lot\:pager > span > span {
+  background: none;
+  color: inherit;
+  box-shadow: none;
+}
+.lot\:tab > nav li {
   box-shadow: inset 0 3px 0 #fcc;
 }
-.panel\:tab > nav .is\:active {
+.lot\:tab > nav .is\:active {
   box-shadow: inset 0 3px 0 #ccf;
 }
-.panel\:tab > nav .has\:link {
+.lot\:tab > nav .has\:link {
   box-shadow: inset 0 3px 0 #cfc;
 }
-.panel\:tab > nav li.not\:active {
+.lot\:tab > nav li.not\:active {
   opacity: 1;
 }
-.panel\:tab > nav li a.not\:active {
+.lot\:tab > nav li a.not\:active {
   opacity: 1;
   background: #f5f5f5;
   color: #aaa;
   box-shadow: inset 0 3px 0 #ddd;
 }
-.panel\:table .table th,
-.panel\:table .table td {
+.lot\:table .table th,
+.lot\:table .table td {
   background: #eef;
   color: inherit;
   cursor: default;
 }
-.panel\:table .table tbody tr:hover td {
+.lot\:table .table tbody tr:hover td {
   background: #dde;
 }
-.panel\:table .table th {
+.lot\:table .table th {
   background: #ccd;
 }
 
@@ -415,59 +443,17 @@ caption {
   .field > label {
     font-weight: bolder;
   }
-  .panel\:tab > nav li {
+  .lot\:tab > nav li {
     background: none;
     box-shadow: none;
   }
-  .panel\:tab > nav li:not(.has\:link) a {
+  .lot\:tab > nav li:not(.has\:link) a {
     color: #009;
   }
-  .panel\:tab > nav li.is\:active {
+  .lot\:tab > nav li.is\:active {
     box-shadow: none;
   }
-  .panel\:tab > nav li.is\:active a {
+  .lot\:tab > nav li.is\:active a {
     color: inherit;
   }
 }
-
-/*
-.pager > span {
-  padding: 0;
-}
-.pager > span > a,
-.pager > span > b,
-.pager > span > span {
-  background: #009;
-  color: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
-}
-.pager > span > a:focus,
-.pager > span > b:focus,
-.pager > span > span:focus {
-  background: #900;
-  color: #fff;
-}
-.pager > span > b,
-.pager > span > span {
-  background: none;
-  color: inherit;
-  box-shadow: none;
-}
-.messages--static .message {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .4);
-}
-.message {
-  background: #666;
-  color: #fff;
-  box-shadow: 0 5px 5px -1px rgba(0, 0, 0, .5);
-}
-.message-error {
-  background: #c14;
-}
-.message-info {
-  background: #78a;
-}
-.message-success {
-  background: #690;
-}
-*/

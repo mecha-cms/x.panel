@@ -1,6 +1,8 @@
 <?php
 
 Language::set([
-    'field-hint-content' => '%s content goes here.',
-    'field-hint-name' => '%s-name.txt'
+    'field-description-content' => 'Content goes here…',
+    'field-description-folder' => 'foo\\bar\\baz',
+    'field-description-name' => 'foo-bar.txt',
+    'panel' => ['Panel', 'Panel', 'Panels']
 ]);

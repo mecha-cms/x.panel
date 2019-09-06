@@ -37,6 +37,12 @@ $fields = [
         'before' => 'IDR',
         'after' => '.00'
     ],
+    'text[4]' => [
+        'type' => 'Text',
+        'title' => 'Text',
+        'placeholder' => 'Text',
+        'required' => true
+    ],
     'number[0]' => [
         'type' => 'Number',
         'title' => 'Number',
@@ -240,60 +246,71 @@ return [
                     2 => [
                         // type: Section
                         'lot' => [
-                            'tasks' => [
-                                'type' => 'Tasks.Button',
+                            'fields' => [
+                                'type' => 'Fields',
                                 'lot' => [
                                     0 => [
-                                        'title' => 'Default',
-                                        'name' => 'x',
-                                        'stack' => 10
-                                    ],
-                                    1 => [
-                                        'type' => 'Button',
-                                        'title' => 'Button',
-                                        'name' => 'x',
-                                        'stack' => 10.1
-                                    ],
-                                    2 => [
-                                        'type' => 'Submit',
-                                        'title' => 'Submit',
-                                        'name' => 'x',
-                                        'stack' => 10.2
-                                    ],
-                                    3 => [
-                                        'type' => 'Reset',
-                                        'title' => 'Reset',
-                                        'name' => 'x',
-                                        'stack' => 10.3
-                                    ],
-                                    4 => [
-                                        'type' => 'Link',
-                                        'title' => 'Link',
-                                        'link' => 'https://example.com',
-                                        'stack' => 10.4
-                                    ],
-                                    5 => [
-                                        'title' => 'With Icon',
-                                        'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
-                                        'name' => 'x',
-                                        'stack' => 10.5
-                                    ],
-                                    6 => [
-                                        'active' => false,
-                                        'title' => 'Disabled',
-                                        'name' => 'x',
-                                        'stack' => 10.6
-                                    ],
-                                    7 => [
-                                        'active' => false,
-                                        'type' => 'Link',
-                                        'title' => 'Disabled Link',
-                                        'stack' => 10.7
+                                        'type' => 'Field',
+                                        'title' => "",
+                                        'lot' => [
+                                            0 => [
+                                                'type' => 'Tasks.Button',
+                                                'lot' => [
+                                                    0 => [
+                                                        'title' => 'Default',
+                                                        'name' => 'x',
+                                                        'stack' => 10
+                                                    ],
+                                                    1 => [
+                                                        'type' => 'Button',
+                                                        'title' => 'Button',
+                                                        'name' => 'x',
+                                                        'stack' => 10.1
+                                                    ],
+                                                    2 => [
+                                                        'type' => 'Submit',
+                                                        'title' => 'Submit',
+                                                        'name' => 'x',
+                                                        'stack' => 10.2
+                                                    ],
+                                                    3 => [
+                                                        'type' => 'Reset',
+                                                        'title' => 'Reset',
+                                                        'name' => 'x',
+                                                        'stack' => 10.3
+                                                    ],
+                                                    4 => [
+                                                        'type' => 'Link',
+                                                        'title' => 'Link',
+                                                        'link' => 'https://example.com',
+                                                        'stack' => 10.4
+                                                    ],
+                                                    5 => [
+                                                        'title' => 'With Icon',
+                                                        'icon' => ['M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
+                                                        'name' => 'x',
+                                                        'stack' => 10.5
+                                                    ],
+                                                    6 => [
+                                                        'active' => false,
+                                                        'title' => 'Disabled',
+                                                        'name' => 'x',
+                                                        'stack' => 10.6
+                                                    ],
+                                                    7 => [
+                                                        'active' => false,
+                                                        'type' => 'Link',
+                                                        'title' => 'Disabled Link',
+                                                        'stack' => 10.7
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
                                     ]
-                                ]
+                                ],
+                                'stack' => 10
                             ]
-                        ],
-                        'stack' => 30
+                        ]
                     ]
                 ],
                 'stack' => 10

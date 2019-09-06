@@ -2,7 +2,7 @@ var dropdowns = document.querySelectorAll('.has\\:menu');
 
 if (dropdowns.length) {
     function remove(but, t) {
-        document.querySelectorAll('.panel\\:menu.is\\:enter').forEach(function($$) {
+        document.querySelectorAll('.lot\\:menu.is\\:enter').forEach(function($$) {
             if ($$ !== but && t !== but.previousElementSibling) {
                 $$.classList.remove('is:enter');
                 $$.parentNode.classList.remove('is:active');
@@ -14,7 +14,7 @@ if (dropdowns.length) {
         remove(0, e);
     }, false);
     dropdowns.forEach(function($) {
-        var menu = $.querySelector('.panel\\:menu');
+        var menu = $.querySelector('.lot\\:menu');
         if (menu) {
             menu.previousElementSibling.addEventListener("click", function(e) {
                 var t = this;

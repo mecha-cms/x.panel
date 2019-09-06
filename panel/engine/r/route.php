@@ -1,20 +1,24 @@
 <?php namespace _\lot\x\panel;
 
 function route($form, $k) {
-    extract($GLOBALS, \EXTR_SKIP);
-    $GLOBALS['t'][] = 'Panel';
-    if (is_file($panel['config'] ?? null)) {
-        \Config::set('panel', require $panel['config']);
+    if (!\Is::user()) {
+        // TODO: Show 404 page to confuse URL guesser
+        \Guard::kick("");
     }
-    $this->content(__DIR__ . DS . 'content' . DS . 'panel.php');
+    extract($GLOBALS, \EXTR_SKIP);
+    $GLOBALS['t'][] = $language->panel;
+    $GLOBALS['t'][] = isset($PANEL['path']) ? $language->{\explode('/', $PANEL['path'], 3)[1]} : null;
+    \Config::set([
+        'has' => [
+            'parent' => \substr_count($PANEL['path'], '/') > 1,
+        ],
+        'is' => [
+            'error' => false,
+            'page' => !isset($PANEL['i']),
+            'pages' => isset($PANEL['i'])
+        ]
+    ]);
+    $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }
 
-if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
-    $c = __DIR__ . \DS . 'state' . \DS . 'test.' . \basename(\urlencode($_GET['test'])) . '.php';
-} else {
-    $c = __DIR__ . \DS . 'state' . \DS . 'file' . (isset($panel['i']) ? 's' : "") . '.php';
-}
-
-$GLOBALS['panel']['config'] = $panel['config'] = $c;
-
-\Route::set(\state('panel')['//'] . '/*', __NAMESPACE__ . "\\route", 1);
+\Route::set($PANEL['//'] . '/*', __NAMESPACE__ . "\\route", 1);

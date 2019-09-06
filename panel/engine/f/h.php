@@ -86,8 +86,9 @@ function p(&$lot, $prefix) {
         $type = $v['type'] ?? null;
         if ($type !== $prefix && \strpos($type, $prefix . '_') !== 0) {
             // Add prefix to `type`
-            $v['type'] = $type = $prefix . '_' . $type;
+            $type = $prefix . '_' . $type;
         }
+        $v['type'] = $type;
     }
     unset($v);
 }
@@ -96,12 +97,14 @@ function session($name, $in) {
     $out = [
         'file' => (array) ($in['file'] ?? []),
         'pattern' => $in['pattern'] ?? null,
-        'required' => $in['required'] ?? null,
-        'read-only' => $in['read-only'] ?? null,
+        'is' => [
+            'required' => $in['required'] ?? null,
+            'readonly' => $in['read-only'] ?? null
+        ],
         'task' => $in['task'] ?? null
     ];
     // Store setting to be used by security
-    $_SESSION['panel']['field'][$name] = \array_filter($out);
+    $_SESSION['PANEL']['field'][$name] = \array_filter($out);
 }
 
 function title($in, $i = -1, $or = null) {

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="js" dir="ltr">
+  <head>
+    <meta content="width=device-width" name="viewport">
+    <meta charset="utf-8">
+    <title>Input</title>
+    <link href="../css/panel.css" rel="stylesheet">
+    <link href="../css/panel/construction.css" rel="stylesheet">
+  </head>
+  <body spellcheck="false">
+    <form class="lot lot:desk" novalidate>
+      <p>
+        <input class="input" type="text" placeholder="Default">
+      </p>
+      <p>
+        <input class="input" type="text" placeholder="Required" required>
+      </p>
+      <p>
+        <input class="input" type="text" pattern="^https?://\S+$" placeholder="Pattern ^https?://\S+$" required>
+      </p>
+      <p>
+        <input class="input" type="number" required>
+      </p>
+      <p>
+        <input class="input" type="text" placeholder="Read-Only" readonly>
+      </p>
+      <p>
+        <input class="input" type="text" placeholder="Disabled" disabled>
+      </p>
+      <p>
+        <input class="input width" type="text">
+      </p>
+      <p>
+        <span class="lot lot:input width">
+          <input class="input width" type="text">
+          <input class="input width" type="text">
+          <input class="input width" type="text">
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <span class="fix">A</span>
+          <input class="input" type="text" required>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <input class="input" type="text" required>
+          <span class="fix">Z</span>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <input class="input" type="text" required>
+          <span class="fix">Y</span>
+          <span class="fix">Z</span>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <span class="fix">A</span>
+          <input class="input" type="text" required>
+          <span class="fix">Z</span>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <span class="fix">A</span>
+          <span class="fix">B</span>
+          <input class="input" type="text" required>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <span class="fix">A</span>
+          <input class="input width" type="text" required>
+          <span class="fix">Z</span>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <span class="fix">A</span>
+          <span class="fix">B</span>
+          <input class="input width" type="text" required>
+          <span class="fix">Y</span>
+          <span class="fix">Z</span>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <svg class="fix" viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></svg>
+          <input class="input" type="text">
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <input class="input" type="text">
+          <button class="button">Button</button>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <input class="input" type="text">
+          <button class="button">
+            <svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path> <span>Button</span></svg>
+          </button>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <input class="input" type="text">
+          <button class="button">
+            <svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path></svg>
+          </button>
+        </span>
+      </p>
+      <p>
+        <span class="lot lot:input">
+          <input class="input" type="text">
+          <span class="lot lot:button">
+            <button class="button">Button</button>
+            <button class="button">
+              <svg class="caret" viewBox="0 0 24 24"><path d="M7,10L12,15L17,10H7Z"></path></svg>
+            </button>
+          </span>
+        </span>
+      </p>
+      <p>abcd <input class="input" type="checkbox"> abcd</p>
+      <p>abcd <input class="input" type="date"> abcd</p>
+      <p>abcd <input class="input" type="email" placeholder="E-Mail"> abcd</p>
+      <p>abcd <input class="input" type="file"> abcd</p>
+      <p>abcd <input class="input" type="image"> abcd</p>
+      <p>abcd <input class="input" type="number" placeholder="Number"> abcd</p>
+      <p>abcd <input class="input" type="password" placeholder="Password"> abcd</p>
+      <p>abcd <input class="input" type="radio"> abcd</p>
+      <p>abcd <input class="input" type="range"> abcd</p>
+      <p>abcd <input class="input" type="search" placeholder="Search"> abcd</p>
+      <p>abcd <input class="input" type="tel" placeholder="Tel"> abcd</p>
+      <p>abcd <input class="input" type="url" placeholder="URL"> abcd</p>
+    </form>
+  </body>
+</html>
