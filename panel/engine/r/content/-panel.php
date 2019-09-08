@@ -1,5 +1,7 @@
 <?php
 
+// Default panel data
+
 return (function() {
     extract($GLOBALS);
     $id = explode('/', $PANEL['path'], 3)[1];
@@ -7,21 +9,19 @@ return (function() {
     foreach (g(LOT) as $k => $v) {
         if ($v === 0) {
             $n = basename($k);
-            if ($n === 'x') {
-                continue;
-            }
-            $folders[$n] = [
+            $title = $language->{$n === 'x' ? 'extension' : $n};
+            $folders[$title] = [
                 'current' => strpos($PANEL['path'] . '/', '/' . $n . '/') === 0,
-                'icon' => ['M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z'],
-                'title' => $language->{$n},
+                'icon' => 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
+                'title' => $title,
                 'url' => $url . $PANEL['//'] . '/::g::/' . $n . '/1'
             ];
         }
     }
     ksort($folders);
-    $i = 0;
+    $i = 10;
     foreach ($folders as &$v) {
-        $v['stack'] = 10 + $i;
+        $v['stack'] = $i;
         $i += 10;
     }
     return _\lot\x\panel\lot(['lot' => array_replace_recursive([

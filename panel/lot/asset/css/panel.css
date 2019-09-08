@@ -1048,7 +1048,9 @@ label.not\:active {
   display: none;
 }
 .lot\:menu.is\:static {
+  display: block;
   position: static;
+  width: auto;
 }
 .lot\:menu.is\:enter,
 .lot\:menu ul.is\:enter {
@@ -1266,22 +1268,25 @@ label.not\:active {
   margin-left: 3px;
 }
 .lot\:desk,
+.lot\:pane,
 .lot\:section {
   padding: 24px;
   margin: 0 auto;
+}
+.lot\:desk {
   max-width: 1008px;
 }
-.lot\:desk::before,
-.lot\:desk::after,
-.lot\:section::before,
-.lot\:section::after {
-  content: "";
-  display: table;
-  clear: both;
+.lot\:pane > .lot\:container {
+  display: flex;
+  margin: 0 -24px;
 }
-.lot\:section {
-  max-width: 100%;
+.lot\:pane > .lot\:container > * {
+  width: 264px;
 }
+.lot\:pane > .lot\:container > * + * {
+  flex: 1;
+}
+.lot\:pane:empty,
 .lot\:section:empty {
   display: none;
 }
@@ -1352,8 +1357,16 @@ label.not\:active {
     display: none;
   }
   .lot\:desk,
+  .lot\:pane,
   .lot\:section {
     padding: 12px;
+  }
+  .lot\:pane > .lot\:container {
+    display: block;
+    margin: 0 -12px;
+  }
+  .lot\:pane > .lot\:container > * {
+    width: auto;
   }
   .lot\:pager > span:first-child,
   .lot\:pager > span:last-child {

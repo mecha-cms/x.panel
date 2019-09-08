@@ -330,7 +330,10 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => $in[2] ?? []
         ];
-        $tags = [];
+        $tags = $i < 0 ? [] : ['lot', 'lot:menu'];
+        if (!empty($in['static'])) {
+            $tags[] = 'is:static';
+        }
         if (isset($in['content'])) {
             $tags[] = 'count:1';
             $out[1] .= \_\lot\x\panel\h\content($in['content']);

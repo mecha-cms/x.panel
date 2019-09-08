@@ -1,6 +1,6 @@
 <?php namespace _\lot\x\panel\content;
 
-function Content($in, $key) {
+function Container($in, $key) {
     $out = \_\lot\x\panel\content($in, $key);
     $out[0] = 'div';
     return $out;
@@ -9,6 +9,12 @@ function Content($in, $key) {
 function Desk($in, $key) {
     $out = \_\lot\x\panel\content($in, $key);
     $out[0] = 'main';
+    return $out;
+}
+
+function Pane($in, $key) {
+    $out = \_\lot\x\panel\content($in, $key);
+    $out[0] = 'section';
     return $out;
 }
 

@@ -269,6 +269,9 @@ caption {
 .lot\:menu li.is\:current.is\:active a.not\:active {
   background: #e16565;
 }
+.lot\:menu.is\:static {
+  box-shadow: none;
+}
 .lot\:menu li.is\:separator {
   background: #000;
 }
