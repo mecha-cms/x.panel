@@ -15,6 +15,10 @@ $state = state('panel');
 
 $GLOBALS['PANEL'] = $PANEL = [
     'chunk' => $state['chunk'] ?? 20,
+    'file' => [
+        'path' => null,
+        'type' => null
+    ],
     'i' => $i = $url->i,
     'lot' => [],
     'path' => null,

@@ -18,6 +18,10 @@ function route($form, $k) {
             'pages' => isset($PANEL['i'])
         ]
     ]);
+    if ($PANEL['task'] === 'g' && !isset($PANEL['file']['path'])) {
+        $this->status(404);
+        $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
+    }
     $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }
 

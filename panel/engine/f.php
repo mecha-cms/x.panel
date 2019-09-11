@@ -117,6 +117,9 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             \_\lot\x\panel\h\p($in['lot'], 'Field');
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
+                if (!empty($v['hidden'])) {
+                    continue;
+                }
                 $type = $v['type'] ?? null;
                 if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . $type, "\\"))) {
                     if ($type !== 'Field_Hidden') {

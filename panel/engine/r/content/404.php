@@ -11,6 +11,21 @@
 
 <?php
 
+$GLOBALS['PANEL']['lot'] = [
+    'desk' => [
+        'lot' => [
+            'form' => false,
+            'message' => [
+                'type' => 'Section',
+                'title' => 'Error 404',
+                'description' => 'File not found.',
+                'content' => '<p>Lorem ipsum dolor sit amet.</p>',
+                'stack' => 10
+            ]
+        ]
+    ]
+];
+
 $content = require __DIR__ . DS . '-panel.php';
 $icon = require __DIR__ . DS . '-icon.php';
 

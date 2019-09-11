@@ -1,5 +1,12 @@
 var tabs = document.querySelectorAll('.lot\\:tab'),
-    pushState = 'pushState' in window.history;
+    pushState = 'pushState' in window.history,
+    setAction = function($) {
+        var href = $.href;
+        while ($ && $.nodeName.toLowerCase() !== 'form') {
+            $ = $.parentNode;
+        }
+        $.nodeName.toLowerCase() === 'form' && ($.action = href);
+    };
 
 if (tabs.length) {
     var links = [];
@@ -18,6 +25,7 @@ if (tabs.length) {
                         this.parentNode.classList.add('is:active');
                         panes[this._index] && panes[this._index].classList.add('is:active');
                         pushState && window.history.pushState({}, "", this.href);
+                        setAction(this);
                     }
                     e.preventDefault();
                 }

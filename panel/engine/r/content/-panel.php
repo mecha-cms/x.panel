@@ -1,7 +1,6 @@
 <?php
 
 // Default panel data
-
 return (function() {
     extract($GLOBALS);
     $id = explode('/', $PANEL['path'], 3)[1];
@@ -9,6 +8,9 @@ return (function() {
     foreach (g(LOT) as $k => $v) {
         if ($v === 0) {
             $n = basename($k);
+            if (strpos('._', $n[0]) !== false) {
+                continue; // Skip hidden folder(s)
+            }
             $title = $language->{$n === 'x' ? 'extension' : $n};
             $folders[$title] = [
                 'current' => strpos($PANEL['path'] . '/', '/' . $n . '/') === 0,
@@ -24,6 +26,7 @@ return (function() {
         $v['stack'] = $i;
         $i += 10;
     }
+    $alert = ($alert ?? "") . "";
     return _\lot\x\panel\lot(['lot' => array_replace_recursive([
         'bar' => [
             'type' => 'Bar',
@@ -78,7 +81,7 @@ return (function() {
                                         'g' => [
                                             'icon' => 'M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z',
                                             'title' => $language->doEdit,
-                                            'url' => $url . $PANEL['//'] . '/::g::/user/' . $user->name,
+                                            'url' => $url . $PANEL['//'] . '/::g::/user/' . $user->name(true),
                                             'stack' => 10
                                         ],
                                         'exit' => [
@@ -123,6 +126,12 @@ return (function() {
                             'type' => 'Section',
                             'lot' => [],
                             'stack' => 10
+                        ],
+                        'alert' => [
+                            'type' => 'Section',
+                            'hidden' => $alert === "",
+                            'content' => $alert,
+                            'stack' => 15
                         ],
                         1 => [
                             'type' => 'Section',

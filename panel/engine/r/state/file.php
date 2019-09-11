@@ -1,5 +1,24 @@
 <?php
 
+$path = $PANEL['file']['path'];
+$type = $PANEL['file']['type'];
+$name = basename($path);
+$folder = strtr(dirname($path), [
+    LOT . DS => "",
+    DS => '/'
+]);
+
+$plain = $type === null || strpos($type, 'text/') === 0 || $type === 'application/javascript' || strpos($type, 'application/json') === 0;
+$content = $path && $plain ? file_get_contents($path) : null;
+
+// <https://www.w3.org/TR/html5/forms.html#the-placeholder-attribute>
+// The `placeholder` attribute represents a short hint (a word or short phrase) intended
+// to aid the user with data entry when the control has no value. A hint could be a sample
+// value or a brief description of the expected format. The attribute, if specified, must
+// have a value that contains no “LF” (U+000A) or “CR” (U+000D) character(s).
+$placeholder = is_string($content) ? trim(explode("\n", n($content), 2)[0]) : "";
+$placeholder = $placeholder !== "" ? $placeholder : null;
+
 return [
     'desk' => [
         // type: Desk
@@ -29,9 +48,10 @@ return [
                                                     ],
                                                     'file[content]' => [
                                                         'title' => $language->content,
+                                                        'hidden' => !$plain,
                                                         'type' => 'Source',
-                                                        'placeholder' => $PANEL['data']['file']['content'] ?? $language->fieldDescriptionContent,
-                                                        'value' => $PANEL['data']['file']['content'] ?? null,
+                                                        'placeholder' => $placeholder ?? $language->fieldDescriptionContent,
+                                                        'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
                                                         'stack' => 10
@@ -39,8 +59,8 @@ return [
                                                     'file[name]' => [
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'placeholder' => $PANEL['data']['file']['name'] ?? $language->fieldDescriptionName,
-                                                        'value' => $PANEL['data']['file']['name'] ?? null,
+                                                        'placeholder' => $name ?? $language->fieldDescriptionName,
+                                                        'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20
                                                     ]
@@ -59,8 +79,8 @@ return [
                                                     'file[folder]' => [
                                                         'title' => $language->folder,
                                                         'type' => 'Text',
-                                                        'placeholder' => $PANEL['data']['file']['folder'] ?? $language->fieldDescriptionFolder,
-                                                        'value' => $PANEL['data']['file']['folder'] ?? null,
+                                                        'placeholder' => $folder ?? $language->fieldDescriptionFolder,
+                                                        'value' => $folder,
                                                         'width' => true,
                                                         'stack' => 10
                                                     ]
