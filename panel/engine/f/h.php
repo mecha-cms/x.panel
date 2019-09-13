@@ -93,6 +93,13 @@ function p(&$lot, $prefix) {
     unset($v);
 }
 
+function path($in) {
+    return \strtr($in, [
+        '/' => \DS,
+        \LOT => '.'
+    ]);
+}
+
 function session($name, $in) {
     $out = [
         'file' => (array) ($in['file'] ?? []),

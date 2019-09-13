@@ -1,22 +1,8 @@
 <?php
 
-$f = $_['f'];
-$type = $f ? mime_content_type($f) : null;
-$t = $type === null || $type === 'inode/x-empty' || strpos($type, 'text/') === 0 || $type === 'application/javascript' || strpos($type, 'application/json') === 0;
-$name = $_['task'] === 'g' ? basename($f) : "";
-
-$content = $_['task'] === 'g' && $f && $t ? file_get_contents($f) : "";
-
-// <https://www.w3.org/TR/html5/forms.html#the-placeholder-attribute>
-// The `placeholder` attribute represents a short hint (a word or short phrase) intended
-// to aid the user with data entry when the control has no value. A hint could be a sample
-// value or a brief description of the expected format. The attribute, if specified, must
-// have a value that contains no “LF” (U+000A) or “CR” (U+000D) character(s).
-$placeholder = is_string($content) ? trim(explode("\n", n($content), 2)[0]) : "";
+$name = $_['task'] === 'g' ? basename($_['f']) : "";
 
 if ("" === $name) $name = null;
-if ("" === $content) $content = null;
-if ("" === $placeholder) $placeholder = null;
 
 return [
     'bar' => [
@@ -29,7 +15,7 @@ return [
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
                         'hidden' => $_['task'] === 's',
-                        'description' => $language->doCreate . ' (' . $language->file . ')',
+                        'description' => $language->doCreate . ' (' . $language->folder . ')',
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query . $url->hash,
                         'stack' => 10.5
                     ]
@@ -49,8 +35,8 @@ return [
                             'tabs' => [
                                 // type: Tabs
                                 'lot' => [
-                                    'file' => [
-                                        'title' => $language->file,
+                                    'folder' => [
+                                        'title' => $language->folder,
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -61,27 +47,24 @@ return [
                                                     ],
                                                     'c' => [
                                                         'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'file'
-                                                    ],
-                                                    'content' => [
-                                                        'name' => 'file[content]',
-                                                        'title' => $language->content,
-                                                        'hidden' => $_['task'] === 'g' && !$t,
-                                                        'type' => 'Source',
-                                                        'placeholder' => $_['task'] === 'g' ? ($placeholder ?? $language->fieldDescriptionContent) : $language->fieldDescriptionContent,
-                                                        'value' => $content,
-                                                        'width' => true,
-                                                        'height' => true,
-                                                        'stack' => 10
+                                                        'value' => $_GET['content'] ?? 'folder'
                                                     ],
                                                     'name' => [
-                                                        'name' => 'file[name]',
+                                                        'name' => 'folder[name]',
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'placeholder' => $_['task'] === 'g' ? ($name ?? $language->fieldDescriptionName) : $language->fieldDescriptionName,
-                                                        'pattern' => '^([._]?[a-z\\d]+([.-][a-z\\d]+)*)?\\.(' . implode('|', array_keys(array_filter(File::$config['x']))) . ')$',
+                                                        'placeholder' => $_['task'] === 'g' ? ($name ?? $language->fieldDescriptionDirectory) : $language->fieldDescriptionDirectory,
+                                                        'pattern' => '^[._]?[a-z\\d]+([.-][a-z\\d]+)*([\\\\/][._]?[a-z\\d]+([.-][a-z\\d]+)*)*$',
                                                         'value' => $name,
                                                         'width' => true,
+                                                        'stack' => 10
+                                                    ],
+                                                    'kick' => [
+                                                        'name' => 'folder[kick]',
+                                                        'title' => "",
+                                                        'type' => 'Toggle',
+                                                        'description' => 'Immediately open the deepest folder created.',
+                                                        'value' => 1,
                                                         'stack' => 20
                                                     ]
                                                 ],

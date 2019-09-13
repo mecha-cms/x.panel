@@ -287,7 +287,7 @@ function Field_Toggle($in, $key) {
         'class' => 'input',
         'name' => $in['name'] ?? $key,
         'type' => 'checkbox',
-        'value' => $value === true ? 'true' : ($value === false ? 'false' : '1') // Force value to be exists
+        'value' => $value ?? 1 // Force value to be exists
     ]]);
     $t = $in['description'] ?? '&nbsp;';
     $out['content'][0] = 'div';

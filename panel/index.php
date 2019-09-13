@@ -1,11 +1,15 @@
 <?php
 
+// TODO
+File::$config['x']['htaccess'] = 1;
+
 $state = state('panel');
 
 $GLOBALS['_'] = $_ = [
     'alert' => [],
     'chop' => [],
     'chunk' => $state['chunk'] ?? 20,
+    'content' => $_GET['content'] ?? 'file', // `blob`, `file` or `folder`
     'f' => null,
     'i' => $i = $url->i,
     'kick' => null,
@@ -15,7 +19,6 @@ $GLOBALS['_'] = $_ = [
     'state' => $state,
     'task' => null,
     'token' => content(USER . DS . Cookie::get('user.key') . DS . 'token.data'),
-    'view' => 'file', // `file`, `page` or `data`
     '//' => $pp = '/' . $state['//']
 ];
 

@@ -99,7 +99,7 @@ namespace _\lot\x\panel {
                 \_\lot\x\panel\h\session($in['content'][2]['name'], $in);
             }
         } else if (isset($in['lot'])) {
-            $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
+            $out[1] .= '<div>' . \_\lot\x\panel\h\lot($in['lot']) . '</div>';
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
@@ -209,45 +209,49 @@ namespace _\lot\x\panel {
         $a = \array_merge($a[0], $a[1]);
         $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
         $url = $GLOBALS['url'];
-        if (isset($a[$current - 1])) {
-            $clean = \dirname($url->clean);
-            // Add parent directory if current directory level is greater than `.\lot`
-            if ($source && \substr($clean, -2) !== '::') {
-                \array_unshift($a[$current - 1], [
-                    'title' => '..',
-                    'type' => 'Folder',
-                    'url' => $clean . '/1' . $url->query
-                ]);
+        if (!isset($a[$current - 1])) {
+            $a[$current - 1] = [];
+        }
+        $clean = \dirname($url->clean);
+        // Add parent directory if current directory level is greater than `.\lot`
+        if ($source && \substr($clean, -2) !== '::') {
+            \array_unshift($a[$current - 1], [
+                'title' => '..',
+                'description' => false,
+                'type' => 'Folder',
+                'url' => $clean . '/1' . $url->query
+            ]);
+        }
+        foreach ($a[$current - 1] as $k => $v) {
+            if (\is_string($v)) {
+                $f = \is_file($v);
+                $n = \basename($v);
+                $x = \pathinfo($v, \PATHINFO_EXTENSION);
+                $v = [ // Treat as array for now
+                    'active' => !($v && \strpos('._', $v[0]) !== false),
+                    'file' => ['x' => [$x => 1]],
+                    'link' => $f ? \To::URL($v) : null,
+                    'path' => $v,
+                    'title' => $n,
+                    'type' => $f ? 'File' : 'Folder',
+                    'url' => $f ? null : $url . $GLOBALS['_']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
+                ];
             }
-            foreach ($a[$current - 1] as $k => $v) {
-                if (\is_string($v)) {
-                    $f = \is_file($v);
-                    $n = \basename($v);
-                    $x = \pathinfo($v, \PATHINFO_EXTENSION);
-                    $v = [ // Treat as array for now
-                        'active' => !($v && \strpos('._', $v[0]) !== false),
-                        'file' => ['x' => [$x => 1]],
-                        'link' => $f ? \To::URL($v) : null,
-                        'path' => $v,
-                        'title' => $n,
-                        'type' => $f ? 'File' : 'Folder',
-                        'url' => $f ? null : $url . $GLOBALS['_']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
-                    ];
-                }
-                $t = (array) ($v['tasks'] ?? []);
-                if (\is_callable($tasks)) {
-                    $v['tasks'] = \array_replace((array) \call_user_func($tasks, $v), $t);
-                } else if (\is_array($tasks)) {
-                    $v['tasks'] = \array_replace($tasks, $t);
-                }
-                if (!empty($v['current']) || isset($v['path']) && (
-                    isset($_SESSION['_']['file'][$v['path']]) ||
-                    isset($_SESSION['_']['folder'][$v['path']])
-                )) {
-                    $v['tags'][] = 'is:active';
-                }
-                $out[1] .= \_\lot\x\panel($v, $k);
+            $t = (array) ($v['tasks'] ?? []);
+            if (\is_callable($tasks)) {
+                $v['tasks'] = \array_replace((array) \call_user_func($tasks, $v), $t);
+            } else if (\is_array($tasks)) {
+                $v['tasks'] = \array_replace($tasks, $t);
             }
+            if (!empty($v['current']) || isset($v['path']) && (
+                isset($_SESSION['_']['file'][$v['path']]) ||
+                isset($_SESSION['_']['folder'][$v['path']])
+            )) {
+                $v['tags'][] = 'is:active';
+                unset($_SESSION['_']['file'][$v['path']]);
+                unset($_SESSION['_']['folder'][$v['path']]);
+            }
+            $out[1] .= \_\lot\x\panel($v, $k);
         }
         return new \HTML($out);
     }

@@ -14,15 +14,15 @@ function c() {
     if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
         $lot = __DIR__ . \DS . 'state' . \DS . 'test.' . \basename(\urlencode($_GET['test'])) . '.php';
     } else {
-        \Config::set('[content].view:' . $_['view'], true);
-        $lot = __DIR__ . \DS . 'state' . \DS . $_['view'] . ($_['i'] > 0 ? 's' : "") . '.php';
+        $lot = __DIR__ . \DS . 'state' . \DS . $_['content'] . ($_['i'] > 0 ? 's' : "") . '.php';
+        \Config::set('[content].content:' . $_['content'], true);
     }
     (function($lot) {
         extract($GLOBALS, \EXTR_SKIP);
         $GLOBALS['_']['lot'] = $_['lot'] = (array) (\is_file($lot) ? require $lot : []);
         $var = $GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? [];
         if (isset($var['token'])) {
-            if ($r = \Hook::fire('on.' . $_['view'] . '.' . ([
+            if ($r = \Hook::fire('on.' . $_['content'] . '.' . ([
                 'g' => 'get',
                 'l' => 'let',
                 's' => 'set'
