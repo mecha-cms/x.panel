@@ -104,7 +104,7 @@ function session($name, $in) {
         'task' => $in['task'] ?? null
     ];
     // Store setting to be used by security
-    $_SESSION['PANEL']['field'][$name] = \array_filter($out);
+    $_SESSION['_']['field'][$name] = \array_filter($out);
 }
 
 function title($in, $i = -1, $or = null) {

@@ -231,7 +231,7 @@ namespace _\lot\x\panel {
                         'path' => $v,
                         'title' => $n,
                         'type' => $f ? 'File' : 'Folder',
-                        'url' => $f ? null : $url . $GLOBALS['PANEL']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
+                        'url' => $f ? null : $url . $GLOBALS['_']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
                     ];
                 }
                 $t = (array) ($v['tasks'] ?? []);
@@ -241,8 +241,8 @@ namespace _\lot\x\panel {
                     $v['tasks'] = \array_replace($tasks, $t);
                 }
                 if (!empty($v['current']) || isset($v['path']) && (
-                    isset($_SESSION['PANEL']['file'][$v['path']]) ||
-                    isset($_SESSION['PANEL']['folder'][$v['path']])
+                    isset($_SESSION['_']['file'][$v['path']]) ||
+                    isset($_SESSION['_']['folder'][$v['path']])
                 )) {
                     $v['tags'][] = 'is:active';
                 }
@@ -457,7 +457,7 @@ namespace _\lot\x\panel {
         $language = $GLOBALS['language'];
         $in['content'] = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
-            return $url . $PANEL['//'] . '/::g::' . $PANEL['path'] . '/' . $i;
+            return $url . $_['//'] . '/::g::' . $_['path'] . '/' . $i;
         }, $language->first, $language->prev, $language->next, $language->last);
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';
@@ -495,6 +495,9 @@ namespace _\lot\x\panel {
             $active = \Get::get('tab.' . $name) ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
             $size = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack'], true) as $k => $v) {
+                if (!empty($v['hidden'])) {
+                    continue;
+                }
                 if (\is_array($v)) {
                     if ($k === $active) {
                         $v['tags'][] = 'is:active';

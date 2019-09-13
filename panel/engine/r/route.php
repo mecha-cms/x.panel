@@ -7,22 +7,22 @@ function route($form, $k) {
     }
     extract($GLOBALS, \EXTR_SKIP);
     $GLOBALS['t'][] = $language->panel;
-    $GLOBALS['t'][] = isset($PANEL['path']) ? $language->{\explode('/', $PANEL['path'], 3)[1]} : null;
+    $GLOBALS['t'][] = isset($_['path']) ? $language->{\explode('/', $_['path'], 3)[1]} : null;
     \Config::set([
         'has' => [
-            'parent' => \substr_count($PANEL['path'], '/') > 1,
+            'parent' => \substr_count($_['path'], '/') > 1,
         ],
         'is' => [
             'error' => false,
-            'page' => !isset($PANEL['i']),
-            'pages' => isset($PANEL['i'])
+            'page' => !isset($_['i']),
+            'pages' => isset($_['i'])
         ]
     ]);
-    if ($PANEL['task'] === 'g' && !isset($PANEL['file']['path'])) {
+    if ($_['task'] === 'g' && !isset($_['f'])) {
         $this->status(404);
         $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
     }
     $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }
 
-\Route::set($PANEL['//'] . '/*', __NAMESPACE__ . "\\route", 1);
+\Route::set($_['//'] . '/*', 200, __NAMESPACE__ . "\\route", 1);

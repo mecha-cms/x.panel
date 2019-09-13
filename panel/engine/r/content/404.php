@@ -11,7 +11,7 @@
 
 <?php
 
-$GLOBALS['PANEL']['lot'] = [
+$GLOBALS['_']['lot'] = [
     'desk' => [
         'lot' => [
             'form' => false,

@@ -1,15 +1,15 @@
 <?php
 
-$path = $PANEL['file']['path'];
-$type = $PANEL['file']['type'];
-$name = basename($path);
-$folder = strtr(dirname($path), [
-    LOT . DS => "",
+$f = $_['f'];
+$type = $f ? mime_content_type($f) : null;
+$t = $type === null || $type === 'inode/x-empty' || strpos($type, 'text/') === 0 || $type === 'application/javascript' || strpos($type, 'application/json') === 0;
+$name = $_['task'] === 'g' ? basename($f) : "";
+$folder = $_['task'] === 'g' ? strtr(dirname($f), [
+    LOT . DS . $_['chop'][0] => "",
     DS => '/'
-]);
+]) : "";
 
-$plain = $type === null || strpos($type, 'text/') === 0 || $type === 'application/javascript' || strpos($type, 'application/json') === 0;
-$content = $path && $plain ? file_get_contents($path) : null;
+$content = $_['task'] === 'g' && $f && $t ? file_get_contents($f) : "";
 
 // <https://www.w3.org/TR/html5/forms.html#the-placeholder-attribute>
 // The `placeholder` attribute represents a short hint (a word or short phrase) intended
@@ -17,7 +17,11 @@ $content = $path && $plain ? file_get_contents($path) : null;
 // value or a brief description of the expected format. The attribute, if specified, must
 // have a value that contains no “LF” (U+000A) or “CR” (U+000D) character(s).
 $placeholder = is_string($content) ? trim(explode("\n", n($content), 2)[0]) : "";
-$placeholder = $placeholder !== "" ? $placeholder : null;
+
+if ("" === $name) $name = null;
+if ("" === $folder) $folder = null;
+if ("" === $content) $content = null;
+if ("" === $placeholder) $placeholder = null;
 
 return [
     'desk' => [
@@ -40,26 +44,28 @@ return [
                                                 'lot' => [
                                                     'token' => [
                                                         'type' => 'Hidden',
-                                                        'value' => $PANEL['token'],
+                                                        'value' => $_['token']
                                                     ],
                                                     'view' => [
                                                         'type' => 'Hidden',
-                                                        'value' => $_GET['view'] ?? null
+                                                        'value' => $_GET['view'] ?? $_['view']
                                                     ],
-                                                    'file[content]' => [
+                                                    'content' => [
+                                                        'name' => 'file[content]',
                                                         'title' => $language->content,
-                                                        'hidden' => !$plain,
+                                                        'hidden' => $_['task'] === 'g' && !$t,
                                                         'type' => 'Source',
-                                                        'placeholder' => $placeholder ?? $language->fieldDescriptionContent,
+                                                        'placeholder' => $_['task'] === 'g' ? ($placeholder ?? $language->fieldDescriptionContent) : $language->fieldDescriptionContent,
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
                                                         'stack' => 10
                                                     ],
-                                                    'file[name]' => [
+                                                    'name' => [
+                                                        'name' => 'file[name]',
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'placeholder' => $name ?? $language->fieldDescriptionName,
+                                                        'placeholder' => $_['task'] === 'g' ? ($name ?? $language->fieldDescriptionName) : $language->fieldDescriptionName,
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20
@@ -72,14 +78,16 @@ return [
                                     ],
                                     'folder' => [
                                         'title' => $language->folder,
+                                        'hidden' => $_['task'] === 's',
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
                                                 'lot' => [
-                                                    'file[folder]' => [
+                                                    'folder' => [
+                                                        'name' => 'file[folder]',
                                                         'title' => $language->folder,
                                                         'type' => 'Text',
-                                                        'placeholder' => $folder ?? $language->fieldDescriptionFolder,
+                                                        'placeholder' => $_['task'] === 'g' ? ($folder ?? $language->fieldDescriptionDirectory) : $language->fieldDescriptionDirectory,
                                                         'value' => $folder,
                                                         'width' => true,
                                                         'stack' => 10
@@ -107,9 +115,17 @@ return [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
-                                                    0 => [
+                                                    's' => [
                                                         'type' => 'Submit',
-                                                        'title' => $language->doSave
+                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
+                                                        'stack' => 10
+                                                    ],
+                                                    'l' => [
+                                                        'type' => 'Link',
+                                                        'hidden' => $_['task'] === 's',
+                                                        'title' => $language->doDelete,
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['token' => $_['token']])),
+                                                        'stack' => 20
                                                     ]
                                                 ]
                                             ]

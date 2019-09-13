@@ -1,26 +1,47 @@
 <?php namespace _\lot\x\panel;
 
+if (\is_file($f = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
+    require $f;
+}
+
 function c() {
     extract($GLOBALS);
-    if (\stream_resolve_include_path($f = \LOT . \strtr($PANEL['path'], '/', \DS))) {
-        $GLOBALS['PANEL']['file']['path'] = $f;
-        $GLOBALS['PANEL']['file']['type'] = \mime_content_type($f);
-        $GLOBALS['PANEL']['view'] = $PANEL['view'] = \is_dir($f) ? 'folder' : 'file';
+    // Normalize path value and remove any `\..` to prevent directory traversal attack
+    $path = \str_replace(\DS . '..', "", \strtr($_['path'], '/', \DS));
+    if (\stream_resolve_include_path($f = \LOT . $path)) {
+        $GLOBALS['_']['f'] = $_['f'] = $f;
     }
     if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
-        $c = __DIR__ . \DS . 'state' . \DS . 'test.' . \basename(\urlencode($_GET['test'])) . '.php';
+        $lot = __DIR__ . \DS . 'state' . \DS . 'test.' . \basename(\urlencode($_GET['test'])) . '.php';
     } else {
-        $type = $PANEL['view'] . (isset($PANEL['i']) ? 's' : "");
-        \Config::set('[content].view:' . $type, true);
-        $c = __DIR__ . \DS . 'state' . \DS . $type . '.php';
+        \Config::set('[content].view:' . $_['view'], true);
+        $lot = __DIR__ . \DS . 'state' . \DS . $_['view'] . ($_['i'] > 0 ? 's' : "") . '.php';
     }
-    (function($c) {
+    (function($lot) {
         extract($GLOBALS, \EXTR_SKIP);
-        $GLOBALS['PANEL']['lot'] = \is_file($c) ? require $c : [];
-        if (\is_file($f = __DIR__ . \DS . \strtolower($_SERVER['REQUEST_METHOD']) . '.php')) {
-            require $f;
+        $GLOBALS['_']['lot'] = $_['lot'] = (array) (\is_file($lot) ? require $lot : []);
+        $var = $GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? [];
+        if (isset($var['token'])) {
+            if ($r = \Hook::fire('on.' . $_['view'] . '.' . ([
+                'g' => 'get',
+                'l' => 'let',
+                's' => 'set'
+            ][$_['task']] ?? '?'), [$_, $var])) {
+                $GLOBALS['_'] = $_ = $r;
+            }
+            if (!empty($_['alert'])) {
+                foreach ((array) $_['alert'] as $k => $v) {
+                    foreach ((array) $v as $alert) {
+                        $alert = (array) $alert;
+                        \call_user_func("\\Alert::" . $k, ...$alert);
+                    }
+                }
+            }
+            if (!empty($_['kick'])) {
+                \Guard::kick($_['kick']);
+            }
         }
-    })($c);
+    })($lot);
 }
 
 \Hook::set('start', __NAMESPACE__ . "\\c", 10);
