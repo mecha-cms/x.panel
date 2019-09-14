@@ -53,7 +53,6 @@ function Field_Colors($in, $key) {
             $input[2]['type'] = 'color';
             $input[2]['value'] = $value;
             $out['content'][1] .= new \HTML($input);
-            \_\lot\x\panel\h\session($n, $v);
         }
         unset($in['lot']);
     }
@@ -65,7 +64,7 @@ function Field_Combo($in, $key) {
     if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
-        $placeholder = $out['placeholder'] ?? null;
+        $placeholder = $out['alter'] ?? null;
         $out['content'][0] = 'select';
         unset($out['value']);
         $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
@@ -134,13 +133,12 @@ function Field_Content($in, $key) {
 }
 
 function Field_Hidden($in, $key) {
-    \_\lot\x\panel\h\session($name = $in['name'] ?? $key, $in);
     return new \HTML([
         0 => 'input',
         1 => false,
         2 => [
             'id' => $in['id'] ?? 'f:' . \dechex(\crc32($key)),
-            'name' => $name,
+            'name' => $in['name'] ?? $key,
             'type' => 'hidden',
             'value' => $in['value'] ?? null
         ]
@@ -151,7 +149,7 @@ function Field_Item($in, $key) {
     if (isset($in['lot'])) {
         $value = $in['value'] ?? null;
         $n = $in['name'] ?? $key;
-        unset($in['name'], $in['placeholder'], $in['value']);
+        unset($in['name'], $in['alter'], $in['value']);
         $a = [];
         $out = \_\lot\x\panel\h\field($in, $key);
         $out['content'][0] = 'div';
@@ -163,7 +161,6 @@ function Field_Item($in, $key) {
                 'type' => 'radio',
                 'value' => $k
             ]]);
-            \_\lot\x\panel\h\session($n, $v);
             if (\is_array($v)) {
                 $t = $v['title'] ?? $k;
                 $input['disabled'] = isset($v['active']) && !$v['active'];
@@ -203,7 +200,6 @@ function Field_Items($in, $key) {
                 'type' => 'checkbox',
                 'value' => $k
             ]]);
-            \_\lot\x\panel\h\session($n . '[' . $k . ']', $in);
             if (\is_array($v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
                 $input['disabled'] = isset($v['active']) && !$v['active'];
@@ -287,7 +283,7 @@ function Field_Toggle($in, $key) {
         'class' => 'input',
         'name' => $in['name'] ?? $key,
         'type' => 'checkbox',
-        'value' => $value ?? 1 // Force value to be exists
+        'value' => $value === true ? 'true' : ($value === false ? 'false' : 1) // Force value to be exists
     ]]);
     $t = $in['description'] ?? '&nbsp;';
     $out['content'][0] = 'div';

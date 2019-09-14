@@ -1,23 +1,5 @@
 <?php
 
-$f = $_['f'];
-$type = $f ? mime_content_type($f) : null;
-$t = $type === null || $type === 'inode/x-empty' || strpos($type, 'text/') === 0 || $type === 'application/javascript' || strpos($type, 'application/json') === 0;
-$name = $_['task'] === 'g' ? basename($f) : "";
-
-$content = $_['task'] === 'g' && $f && $t ? file_get_contents($f) : "";
-
-// <https://www.w3.org/TR/html5/forms.html#the-placeholder-attribute>
-// The `placeholder` attribute represents a short hint (a word or short phrase) intended
-// to aid the user with data entry when the control has no value. A hint could be a sample
-// value or a brief description of the expected format. The attribute, if specified, must
-// have a value that contains no “LF” (U+000A) or “CR” (U+000D) character(s).
-$placeholder = is_string($content) ? trim(explode("\n", n($content), 2)[0]) : "";
-
-if ("" === $name) $name = null;
-if ("" === $content) $content = null;
-if ("" === $placeholder) $placeholder = null;
-
 return [
     'bar' => [
         // type: Bar
@@ -49,8 +31,8 @@ return [
                             'tabs' => [
                                 // type: Tabs
                                 'lot' => [
-                                    'file' => [
-                                        'title' => $language->file,
+                                    'blob' => [
+                                        'title' => $language->doLoadUp,
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -61,28 +43,12 @@ return [
                                                     ],
                                                     'c' => [
                                                         'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'file'
+                                                        'value' => $_GET['content'] ?? 'blob'
                                                     ],
-                                                    'content' => [
-                                                        'name' => 'file[content]',
-                                                        'title' => $language->content,
-                                                        'hidden' => $_['task'] === 'g' && !$t,
-                                                        'type' => 'Source',
-                                                        'alter' => $_['task'] === 'g' ? ($placeholder ?? $language->fieldAlterContent) : $language->fieldAlterContent,
-                                                        'value' => $content,
-                                                        'width' => true,
-                                                        'height' => true,
+                                                    'blob' => [
+                                                        'title' => $language->file,
+                                                        'type' => 'Blob',
                                                         'stack' => 10
-                                                    ],
-                                                    'name' => [
-                                                        'name' => 'file[name]',
-                                                        'title' => $language->name,
-                                                        'type' => 'Text',
-                                                        'alter' => $_['task'] === 'g' ? ($name ?? $language->fieldAlterName) : $language->fieldAlterName,
-                                                        'pattern' => '^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(' . implode('|', array_keys(array_filter(File::$config['x']))) . ')$',
-                                                        'value' => $name,
-                                                        'width' => true,
-                                                        'stack' => 20
                                                     ]
                                                 ],
                                                 'stack' => 10
@@ -110,15 +76,8 @@ return [
                                                     's' => [
                                                         'type' => 'Submit',
                                                         'name' => false,
-                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
+                                                        'title' => $language->doLoadUp,
                                                         'stack' => 10
-                                                    ],
-                                                    'l' => [
-                                                        'type' => 'Link',
-                                                        'hidden' => $_['task'] === 's',
-                                                        'title' => $language->doDelete,
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['token' => $_['token']])),
-                                                        'stack' => 20
                                                     ]
                                                 ]
                                             ]

@@ -7,7 +7,8 @@ function route($form, $k) {
     }
     extract($GLOBALS, \EXTR_SKIP);
     $GLOBALS['t'][] = $language->panel;
-    $GLOBALS['t'][] = isset($_['path']) ? $language->{\explode('/', $_['path'], 3)[1]} : null;
+    $n = \ltrim(\explode('/', $_['path'], 3)[1] ?? '?', '_.-');
+    $GLOBALS['t'][] = isset($_['path']) ? $language->{$n === 'x' ? 'extension' : $n} : null;
     \Config::set([
         'has' => [
             'parent' => \substr_count($_['path'], '/') > 1,

@@ -53,8 +53,8 @@ return [
                                                         'name' => 'folder[name]',
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'placeholder' => $_['task'] === 'g' ? ($name ?? $language->fieldDescriptionDirectory) : $language->fieldDescriptionDirectory,
-                                                        'pattern' => '^[._]?[a-z\\d]+([.-][a-z\\d]+)*([\\\\/][._]?[a-z\\d]+([.-][a-z\\d]+)*)*$',
+                                                        'alter' => $_['task'] === 'g' ? ($name ?? $language->fieldAlterFolder) : $language->fieldAlterFolder,
+                                                        'pattern' => '^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 10
@@ -63,8 +63,8 @@ return [
                                                         'name' => 'folder[kick]',
                                                         'title' => "",
                                                         'type' => 'Toggle',
-                                                        'description' => 'Immediately open the deepest folder created.',
-                                                        'value' => 1,
+                                                        'description' => $language->fieldDescriptionFolderKick,
+                                                        'value' => $_['task'] === 's',
                                                         'stack' => 20
                                                     ]
                                                 ],
@@ -92,6 +92,7 @@ return [
                                                 'lot' => [
                                                     's' => [
                                                         'type' => 'Submit',
+                                                        'name' => false,
                                                         'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
                                                         'stack' => 10
                                                     ],

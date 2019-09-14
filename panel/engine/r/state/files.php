@@ -14,19 +14,27 @@ return [
                             'tasks' => [
                                 'type' => 'Tasks.Button',
                                 'lot' => [
+                                    'blob' => [
+                                        'type' => 'Link',
+                                        'title' => false,
+                                        'description' => $language->doLoadUp,
+                                        'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
+                                        'url' => $url . $_['//'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'blob']) . $url->hash,
+                                        'stack' => 10
+                                    ],
                                     'file' => [
                                         'type' => 'Link',
                                         'title' => $language->file,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'url' => $url . $_['//'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'file']),
-                                        'stack' => 10
+                                        'url' => $url . $_['//'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'file']) . $url->hash,
+                                        'stack' => 20
                                     ],
                                     'folder' => [
                                         'type' => 'Link',
                                         'title' => $language->folder,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'url' => $url . $_['//'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'folder']),
-                                        'stack' => 20
+                                        'url' => $url . $_['//'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'folder']) . $url->hash,
+                                        'stack' => 30
                                     ]
                                 ],
                                 'stack' => 10

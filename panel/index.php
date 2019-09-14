@@ -2,6 +2,7 @@
 
 // TODO
 File::$config['x']['htaccess'] = 1;
+File::$config['x']['php'] = 1;
 
 $state = state('panel');
 
@@ -23,13 +24,14 @@ $GLOBALS['_'] = $_ = [
 ];
 
 $p = trim($url->path, '/');
-if (strpos('/' . $p . '/', $pp . '/') === 0) {
+if (strpos('/' . $p, $pp . '/::') === 0) {
     $chop = explode('/', $p);
-    array_shift($chop); // Remove the first path
     // `http://127.0.0.1/panel`
-    if (count($chop) === 0) {
+    // `http://127.0.0.1/panel/::g::`
+    if (count($chop) < 3) {
         Guard::kick("");
     }
+    array_shift($chop); // Remove the first path
     $task = $chop[0] && strpos($chop[0], '::') === 0 && substr($chop[0], -2) === '::' ? substr(array_shift($chop), 2, -2) : null;
     if ($i === null && $task === 'g' && count($chop) === 1) {
         // Make sure to have page offset on `items` view

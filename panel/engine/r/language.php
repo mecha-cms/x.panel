@@ -1,9 +1,9 @@
 <?php
 
 Language::set([
-    'field-description-content' => 'Content goes here…',
-    'field-description-directory' => 'foo\\bar\\baz',
-    'field-description-folder' => 'foo-bar',
-    'field-description-name' => 'foo-bar.txt',
+    'field-alter-content' => 'Content goes here…',
+    'field-alter-folder' => 'foo\\bar\\baz',
+    'field-alter-name' => 'foo-bar.txt',
+    'field-description-folder-kick' => 'Redirect to folder',
     'panel' => ['Panel', 'Panel', 'Panels']
 ]);

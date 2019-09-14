@@ -17,9 +17,9 @@ $GLOBALS['_']['lot'] = [
             'form' => false,
             'message' => [
                 'type' => 'Section',
-                'title' => 'Error 404',
-                'description' => 'File not found.',
-                'content' => '<p>Lorem ipsum dolor sit amet.</p>',
+                'title' => $language->isError . ' :(',
+                'description' => null,
+                'content' => "",
                 'stack' => 10
             ]
         ]

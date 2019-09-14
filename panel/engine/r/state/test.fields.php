@@ -19,7 +19,7 @@ $fields = [
     'text[0]' => [
         'type' => 'Text',
         'title' => 'Text',
-        'placeholder' => 'Text'
+        'alter' => 'Text'
     ],
     'text[1]' => [
         'type' => 'Text',
@@ -40,7 +40,7 @@ $fields = [
     'text[4]' => [
         'type' => 'Text',
         'title' => 'Text',
-        'placeholder' => 'Text',
+        'alter' => 'Text',
         'required' => true
     ],
     'number[0]' => [
@@ -60,7 +60,7 @@ $fields = [
     'pass[0]' => [
         'type' => 'Pass',
         'title' => 'Pass',
-        'placeholder' => 'Pass'
+        'alter' => 'Pass'
     ],
     'color[0]' => [
         'type' => 'Color',
@@ -74,12 +74,12 @@ $fields = [
     'content[0]' => [
         'type' => 'Content',
         'title' => 'Content',
-        'placeholder' => 'Content'
+        'alter' => 'Content'
     ],
     'source[0]' => [
         'type' => 'Source',
         'title' => 'Source',
-        'placeholder' => 'Source'
+        'alter' => 'Source'
     ],
     'combo[0]' => [
         'type' => 'Combo',

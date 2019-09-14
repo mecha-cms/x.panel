@@ -22,7 +22,7 @@ function c() {
         $GLOBALS['_']['lot'] = $_['lot'] = (array) (\is_file($lot) ? require $lot : []);
         $var = $GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? [];
         if (isset($var['token'])) {
-            if ($r = \Hook::fire('on.' . $_['content'] . '.' . ([
+            if ($r = \Hook::fire('do.' . $_['content'] . '.' . ([
                 'g' => 'get',
                 'l' => 'let',
                 's' => 'set'

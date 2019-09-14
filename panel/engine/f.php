@@ -95,9 +95,6 @@ namespace _\lot\x\panel {
                 $in['content'][2]['style'] = $style !== "" ? $style : null;
             }
             $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' . (!empty($in['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\h\content($in['content']) . $after . '</div>' . \_\lot\x\panel\h\description($in) . '</div>';
-            if (isset($in['content'][2]['name'])) {
-                \_\lot\x\panel\h\session($in['content'][2]['name'], $in);
-            }
         } else if (isset($in['lot'])) {
             $out[1] .= '<div>' . \_\lot\x\panel\h\lot($in['lot']) . '</div>';
         }

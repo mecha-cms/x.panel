@@ -45,7 +45,7 @@ function field($in, $key) {
             'id' => $in['id'],
             'name' => $name,
             'pattern' => $in['pattern'] ?? null,
-            'placeholder' => $in['placeholder'] ?? null,
+            'placeholder' => $in['alter'] ?? null,
             'readonly' => $readonly,
             'required' => $required
         ]
@@ -98,20 +98,6 @@ function path($in) {
         '/' => \DS,
         \LOT => '.'
     ]);
-}
-
-function session($name, $in) {
-    $out = [
-        'file' => (array) ($in['file'] ?? []),
-        'pattern' => $in['pattern'] ?? null,
-        'is' => [
-            'required' => $in['required'] ?? null,
-            'readonly' => $in['read-only'] ?? null
-        ],
-        'task' => $in['task'] ?? null
-    ];
-    // Store setting to be used by security
-    $_SESSION['_']['field'][$name] = \array_filter($out);
 }
 
 function title($in, $i = -1, $or = null) {
