@@ -1,22 +1,21 @@
 <?php
 
 $f = $_['f'];
-$type = $f ? mime_content_type($f) : null;
-$t = $type === null || $type === 'inode/x-empty' || strpos($type, 'text/') === 0 || $type === 'application/javascript' || strpos($type, 'application/json') === 0;
+$type = $f && is_file($f) ? mime_content_type($f) : null;
 $name = $_['task'] === 'g' ? basename($f) : "";
 
-$content = $_['task'] === 'g' && $f && $t ? file_get_contents($f) : "";
+$editable = $_['task'] === 's';
+if (strpos($type, 'text/') === 0 || $type === 'inode/x-empty' || $type === 'image/svg+xml') {
+    $editable = true;
+}
+if (strpos($type, 'application/') === 0) {
+    $editable = strpos(',javascript,json,ld+json,php,x-httpd-php,x-httpd-php-source,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',') !== false;
+}
 
-// <https://www.w3.org/TR/html5/forms.html#the-placeholder-attribute>
-// The `placeholder` attribute represents a short hint (a word or short phrase) intended
-// to aid the user with data entry when the control has no value. A hint could be a sample
-// value or a brief description of the expected format. The attribute, if specified, must
-// have a value that contains no “LF” (U+000A) or “CR” (U+000D) character(s).
-$placeholder = is_string($content) ? trim(explode("\n", n($content), 2)[0]) : "";
+$content = $_['task'] === 'g' && $f && $editable ? file_get_contents($f) : "";
 
 if ("" === $name) $name = null;
 if ("" === $content) $content = null;
-if ("" === $placeholder) $placeholder = null;
 
 return [
     'bar' => [
@@ -64,21 +63,21 @@ return [
                                                         'value' => $_GET['content'] ?? 'file'
                                                     ],
                                                     'content' => [
-                                                        'name' => 'file[content]',
-                                                        'title' => $language->content,
-                                                        'hidden' => $_['task'] === 'g' && !$t,
-                                                        'type' => 'Source',
-                                                        'alter' => $_['task'] === 'g' ? ($placeholder ?? $language->fieldAlterContent) : $language->fieldAlterContent,
+                                                        'name' => $editable ? 'file[content]' : null,
+                                                        'title' => $language->{$editable ? 'content' : 'type'},
+                                                        'type' => $editable ? 'Source' : 'Field',
+                                                        'alt' => $language->fieldAltContent,
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
+                                                        'content' => $editable ? null : '<output class="output"><code>' . $type . '</code></output>',
                                                         'stack' => 10
                                                     ],
                                                     'name' => [
                                                         'name' => 'file[name]',
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'alter' => $_['task'] === 'g' ? ($name ?? $language->fieldAlterName) : $language->fieldAlterName,
+                                                        'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltName) : $language->fieldAltName,
                                                         'pattern' => '^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(' . implode('|', array_keys(array_filter(File::$config['x']))) . ')$',
                                                         'value' => $name,
                                                         'width' => true,

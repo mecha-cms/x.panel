@@ -53,18 +53,21 @@ return [
                                                         'name' => 'folder[name]',
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'alter' => $_['task'] === 'g' ? ($name ?? $language->fieldAlterFolder) : $language->fieldAlterFolder,
+                                                        'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltFolder) : $language->fieldAltFolder,
                                                         'pattern' => '^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
                                                     'kick' => [
-                                                        'name' => 'folder[kick]',
+                                                        'name' => 'folder',
                                                         'title' => "",
-                                                        'type' => 'Toggle',
-                                                        'description' => $language->fieldDescriptionFolderKick,
-                                                        'value' => $_['task'] === 's',
+                                                        'type' => 'Items',
+                                                        'block' => true,
+                                                        'value' => ['kick'],
+                                                        'lot' => [
+                                                            'kick' => $language->fieldDescriptionFolderKick
+                                                        ],
                                                         'stack' => 20
                                                     ]
                                                 ],

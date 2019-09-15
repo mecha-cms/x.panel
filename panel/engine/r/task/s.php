@@ -53,6 +53,7 @@ function blob($_, $form) {
                     $_['alert']['success'][] = ['blob-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                     $_['kick'] = $url . $_['//'] . '/::g::' . $_['path'] . '/1' . $e;
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
+                    $_['ff'][] = $f;
                 } else {
                     if (!\glob($folder . \DS . '*', \GLOB_NOSORT)) {
                         \rmdir($folder);
@@ -62,6 +63,10 @@ function blob($_, $form) {
                 }
             }
         }
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($form['token']);
+        $_SESSION['form'] = $form;
     }
     return $_;
 }
@@ -86,12 +91,18 @@ function file($_, $form) {
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = ['file-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else {
-            \file_put_contents($f, $form['file']['content'] ?? "");
+            if (isset($form['file']['content'])) {
+                \file_put_contents($f, $form['file']['content']);
+            }
             \chmod($f, \octdec($form['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['file-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $url . $_['//'] . '/::g::' . $_['path'] . '/1' . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($form['token']);
+        $_SESSION['form'] = $form;
     }
     return $_;
 }
@@ -127,6 +138,10 @@ function folder($_, $form) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($form['token']);
+        $_SESSION['form'] = $form;
     }
     return $_;
 }

@@ -7,7 +7,7 @@
     <title><?php echo w($t->reverse); ?></title>
     <link href="<?php echo $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
-  <body>
+  <body spellcheck="false">
 
 <?php
 

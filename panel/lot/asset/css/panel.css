@@ -1017,8 +1017,6 @@ label.not\:active {
 .lot\:item.is\:block,
 .lot\:items.is\:block {
   display: block;
-  column-width: 120px;
-  column-gap: 24px;
 }
 .lot\:item.is\:block > label,
 .lot\:items.is\:block > label {

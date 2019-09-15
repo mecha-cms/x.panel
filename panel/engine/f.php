@@ -240,13 +240,14 @@ namespace _\lot\x\panel {
             } else if (\is_array($tasks)) {
                 $v['tasks'] = \array_replace($tasks, $t);
             }
-            if (!empty($v['current']) || isset($v['path']) && (
-                isset($_SESSION['_']['file'][$v['path']]) ||
-                isset($_SESSION['_']['folder'][$v['path']])
+            $path = $v['path'] ?? false;
+            if (!empty($v['current']) || $path && (
+                isset($_SESSION['_']['file'][$path]) ||
+                isset($_SESSION['_']['folder'][$path])
             )) {
                 $v['tags'][] = 'is:active';
-                unset($_SESSION['_']['file'][$v['path']]);
-                unset($_SESSION['_']['folder'][$v['path']]);
+                unset($_SESSION['_']['file'][$path]);
+                unset($_SESSION['_']['folder'][$path]);
             }
             $out[1] .= \_\lot\x\panel($v, $k);
         }
@@ -342,12 +343,12 @@ namespace _\lot\x\panel {
             $tags[] = 'count:1';
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
-            $size = 0;
+            $count = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
                 if (!empty($v['hidden'])) {
                     continue;
                 }
-                ++$size;
+                ++$count;
                 $li = [
                     0 => 'li',
                     1 => $v[1] ?? "",
@@ -386,7 +387,7 @@ namespace _\lot\x\panel {
                 }
                 $out[1] .= new \HTML($li);
             }
-            $tags[] = 'count:' . $size;
+            $tags[] = 'count:' . $count;
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
@@ -494,11 +495,12 @@ namespace _\lot\x\panel {
             $nav = $section = [];
             $tags = ['lot', 'lot:tab', 'p'];
             $active = \Get::get('tab.' . $name) ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
-            $size = 0;
+            $count = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack'], true) as $k => $v) {
                 if (!empty($v['hidden'])) {
                     continue;
                 }
+                ++$count;
                 if (\is_array($v)) {
                     if ($k === $active) {
                         $v['tags'][] = 'is:active';
@@ -514,12 +516,11 @@ namespace _\lot\x\panel {
                 $nav[$k] = $v;
                 unset($nav[$k]['lot']); // Disable dropdown menu view
                 $section[$k] = \_\lot\x\panel\Tab($v, $k);
-                ++$size;
             }
             $out[1] = '<nav>' . \_\lot\x\panel\Bar_List(['lot' => $nav], $name) . '</nav>';
             $out[1] .= \implode("", $section);
         }
-        $tags[] = 'count:' . $size;
+        $tags[] = 'count:' . $count;
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
     }

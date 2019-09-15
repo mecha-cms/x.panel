@@ -25,15 +25,23 @@ function file($_, $form) {
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
             $_['alert']['error'][] = ['file-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else {
-            \file_put_contents($f, $form['file']['content'] ?? "");
-            \chmod($f, \octdec($form['file']['seal'] ?? '0777'));
-            if ($name !== $base) {
-                \unlink($_['f']);
+            if (isset($form['file']['content'])) {
+                \file_put_contents($f, $form['file']['content']);
+                if ($name !== $base) {
+                    \unlink($_['f']);
+                }
+            } else if ($name !== $base) {
+                \rename($_['f'], $f);
             }
+            \chmod($f, \octdec($form['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['file-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($form['token']);
+        $_SESSION['form'] = $form;
     }
     return $_;
 }
@@ -88,6 +96,10 @@ function folder($_, $form) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($form['token']);
+        $_SESSION['form'] = $form;
     }
     return $_;
 }

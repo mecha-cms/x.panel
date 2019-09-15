@@ -1,9 +1,5 @@
 <?php
 
-// TODO
-File::$config['x']['htaccess'] = 1;
-File::$config['x']['php'] = 1;
-
 $state = state('panel');
 
 $GLOBALS['_'] = $_ = [
@@ -43,6 +39,7 @@ if (strpos('/' . $p, $pp . '/::') === 0) {
     $GLOBALS['_'] = $_;
     require __DIR__ . DS . 'engine' . DS . 'f.php';
     require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'asset.php';
+    require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'file.php';
     require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'hook.php';
     require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'language.php';
     require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'route.php';

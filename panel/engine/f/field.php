@@ -64,7 +64,7 @@ function Field_Combo($in, $key) {
     if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
-        $placeholder = $out['alter'] ?? null;
+        $placeholder = $out['alt'] ?? null;
         $out['content'][0] = 'select';
         unset($out['value']);
         $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
@@ -149,11 +149,16 @@ function Field_Item($in, $key) {
     if (isset($in['lot'])) {
         $value = $in['value'] ?? null;
         $n = $in['name'] ?? $key;
-        unset($in['name'], $in['alter'], $in['value']);
+        unset($in['name'], $in['alt'], $in['value']);
         $a = [];
         $out = \_\lot\x\panel\h\field($in, $key);
         $out['content'][0] = 'div';
+        $count = 0;
         foreach ($in['lot'] as $k => $v) {
+            if (!empty($v['hidden'])) {
+                continue;
+            }
+            ++$count;
             $input = new \HTML(['input', false, [
                 'checked' => $value !== null && ((string) $value === (string) $k),
                 'class' => 'input',
@@ -171,12 +176,12 @@ function Field_Item($in, $key) {
         }
         \ksort($a);
         if (!isset($in['block'])) {
-            $block = \count($in['lot']) > 6 ? '<br>' : ""; // Auto
+            $block = $count > 6 ? '<br>' : ""; // Auto
         } else {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:item', $block ? 'is:block' : null]);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:item']);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
@@ -188,17 +193,22 @@ function Field_Items($in, $key) {
         $value = (array) ($in['value'] ?? []);
         $value = \P . \implode(\P, (array) $value) . \P;
         $n = $in['name'] ?? $key;
-        unset($in['name'], $in['placeholder'], $in['value']);
+        unset($in['name'], $in['alt'], $in['value']);
         $out = \_\lot\x\panel\h\field($in, $key);
         $out['content'][0] = 'div';
         $a = [];
+        $count = 0;
         foreach ($in['lot'] as $k => $v) {
+            if (!empty($v['hidden'])) {
+                continue;
+            }
+            ++$count;
             $input = new \HTML(['input', false, [
                 'checked' => \strpos($value, \P . $k . \P) !== false,
                 'class' => 'input',
                 'name' => $n . '[' . $k . ']',
                 'type' => 'checkbox',
-                'value' => $k
+                'value' => 1
             ]]);
             if (\is_array($v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
@@ -210,12 +220,12 @@ function Field_Items($in, $key) {
         }
         \ksort($a);
         if (!isset($in['block'])) {
-            $block = \count($in['lot']) > 6 ? '<br>' : ""; // Auto
+            $block = $count > 6 ? '<br>' : ""; // Auto
         } else {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:items', $block ? 'is:block' : null]);
+        \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:items']);
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }

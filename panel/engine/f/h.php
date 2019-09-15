@@ -45,7 +45,7 @@ function field($in, $key) {
             'id' => $in['id'],
             'name' => $name,
             'pattern' => $in['pattern'] ?? null,
-            'placeholder' => $in['alter'] ?? null,
+            'placeholder' => $in['alt'] ?? null,
             'readonly' => $readonly,
             'required' => $required
         ]
