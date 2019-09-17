@@ -1,13 +1,18 @@
 <?php namespace _\lot\x\panel\task\let;
 
-if (empty($_GET['token'])) {
+// TODO: Add option to move file to `trash` folder.
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' || empty($_GET['token'])) {
     // TODO: Show 404 page?
     \Guard::kick(\str_replace('::l::', '::g::', $url->current));
 }
 
-// TODO: Add option to move file to `trash` folder.
-
 function blob($_, $form) {
+    return file($_, $form);
+}
+
+// TODO
+function data($_, $form) {
     return file($_, $form);
 }
 
@@ -53,6 +58,11 @@ function folder($_, $form) {
         $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
+}
+
+// TODO
+function page($_, $form) {
+    return file($_, $form);
 }
 
 function _token($_, $form) {

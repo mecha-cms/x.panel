@@ -494,17 +494,21 @@ namespace _\lot\x\panel {
             $name = $in['name'] ?? $key;
             $nav = $section = [];
             $tags = ['lot', 'lot:tab', 'p'];
-            $active = \Get::get('tab.' . $name) ?? $in['active'] ?? \array_keys($in['lot'])[0] ?? null;
+            $lot = (new \Anemon($in['lot']))->sort([1, 'stack'], true)->get();
+            $first = \array_keys($lot)[0] ?? null; // The first tab
+            $active = $_GET['tab'][$name] ?? $in['active'] ?? $first ?? null;
+            if ($active !== null && isset($lot[$active]) && \is_array($lot[$active])) {
+                $lot[$active]['tags'][] = 'is:active';
+            } else if ($first !== null && isset($lot[$first]) && \is_array($lot[$first])) {
+                $lot[$first]['tags'][] = 'is:active';
+            }
             $count = 0;
-            foreach ((new \Anemon($in['lot']))->sort([1, 'stack'], true) as $k => $v) {
+            foreach ($lot as $k => $v) {
                 if (!empty($v['hidden'])) {
                     continue;
                 }
                 ++$count;
                 if (\is_array($v)) {
-                    if ($k === $active) {
-                        $v['tags'][] = 'is:active';
-                    }
                     if (empty($v['url']) && empty($v['link'])) {
                         $v['url'] = $GLOBALS['url']->query('&', [
                             'tab' => [$name => $k]

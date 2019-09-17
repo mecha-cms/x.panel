@@ -19,7 +19,10 @@ function route($form, $k) {
             'pages' => isset($_['i'])
         ]
     ]);
-    if ($_['task'] === 'g' && !isset($_['f'])) {
+    if ($_['task'] === 'g' && (
+        !isset($_['f']) ||
+        !\is_dir($_['f']) && isset($_['i'])
+    )) {
         $this->status(404);
         $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
     }

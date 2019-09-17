@@ -1,21 +1,7 @@
 <?php
 
-$f = $_['f'];
-$type = $f && is_file($f) ? mime_content_type($f) : null;
-$name = $_['task'] === 'g' ? basename($f) : "";
-
-$editable = $_['task'] === 's';
-if (strpos($type, 'text/') === 0 || $type === 'inode/x-empty' || $type === 'image/svg+xml') {
-    $editable = true;
-}
-if (strpos($type, 'application/') === 0) {
-    $editable = strpos(',javascript,json,ld+json,php,x-httpd-php,x-httpd-php-source,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',') !== false;
-}
-
-$content = $_['task'] === 'g' && $f && $editable ? file_get_contents($f) : "";
-
-if ("" === $name) $name = null;
-if ("" === $content) $content = null;
+$name = is_file($f = $_['f']) ? pathinfo($f, PATHINFO_FILENAME) : null;
+$content = $name ? file_get_contents($f) : null;
 
 return [
     'bar' => [
@@ -28,8 +14,8 @@ return [
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
                         'hidden' => $_['task'] === 's',
-                        'description' => $language->doCreate . ' (' . $language->file . ')',
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'file']) . $url->hash,
+                        'description' => $language->doCreate . ' (' . $language->data . ')',
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'data']) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -48,8 +34,8 @@ return [
                             'tabs' => [
                                 // type: Tabs
                                 'lot' => [
-                                    'file' => [
-                                        'title' => $language->file,
+                                    'data' => [
+                                        'title' => $language->data,
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -60,14 +46,18 @@ return [
                                                     ],
                                                     'c' => [
                                                         'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'file'
+                                                        'value' => $_GET['content'] ?? 'data'
+                                                    ],
+                                                    'seal' => [
+                                                        'type' => 'Hidden',
+                                                        'name' => 'file[seal]',
+                                                        'value' => '0600'
                                                     ],
                                                     'content' => [
                                                         'title' => $language->content,
                                                         'type' => 'Source',
-                                                        'hidden' => !$editable,
                                                         'alt' => $language->fieldAltContent,
-                                                        'name' => 'file[content]',
+                                                        'name' => 'data[content]',
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
@@ -76,9 +66,9 @@ return [
                                                     'name' => [
                                                         'title' => $language->name,
                                                         'type' => 'Text',
-                                                        'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltName) : $language->fieldAltName,
-                                                        'pattern' => "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(" . implode('|', array_keys(array_filter(File::$config['x']))) . ")$",
-                                                        'name' => 'file[name]',
+                                                        'alt' => $_['task'] === 'g' ? ($name ?? pathinfo($language->fieldAltName, PATHINFO_FILENAME)) : pathinfo($language->fieldAltName, PATHINFO_FILENAME),
+                                                        'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
+                                                        'name' => 'data[name]',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20
@@ -116,7 +106,7 @@ return [
                                                         'type' => 'Link',
                                                         'hidden' => $_['task'] === 's',
                                                         'title' => $language->doDelete,
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'file', 'token' => $_['token']])),
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'data', 'token' => $_['token']])),
                                                         'stack' => 20
                                                     ]
                                                 ]

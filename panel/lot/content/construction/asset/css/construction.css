@@ -159,23 +159,6 @@ caption {
   background: #1a1a1a;
   color: #ccc;
 }
-.lot\:bar li.is\:main {
-  background: #fff;
-  color: #000;
-}
-.lot\:bar li.is\:main > a {
-  color: #009;
-}
-.lot\:bar li.is\:main > a:focus,
-.lot\:bar li.is\:main > a:active {
-  color: #900;
-}
-.lot\:bar li.is\:main.is\:active > a {
-  background: inherit;
-  color: inherit;
-  position: relative;
-  z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
-}
 .lot\:bar > ul > li.is\:separator {
   background: #222;
 }
@@ -439,6 +422,26 @@ caption {
 }
 .field\:toggle .input[type="checkbox"][disabled] {
   background: #999;
+}
+
+@media (min-width: 719px) {
+  .lot\:bar li.is\:main {
+    background: #fff;
+    color: #000;
+  }
+  .lot\:bar li.is\:main > a {
+    color: #009;
+  }
+  .lot\:bar li.is\:main > a:focus,
+  .lot\:bar li.is\:main > a:active {
+    color: #900;
+  }
+  .lot\:bar li.is\:main.is\:active > a {
+    background: inherit;
+    color: inherit;
+    position: relative;
+    z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
+  }
 }
 
 @media (max-width: 720px) {

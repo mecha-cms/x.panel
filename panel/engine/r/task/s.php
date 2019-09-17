@@ -1,5 +1,11 @@
 <?php namespace _\lot\x\panel\task\set;
 
+// Redirect if file already exists
+if (($f = $_['f']) && \is_file($f)) {
+    \Alert::info(\Language::get('alert-error-file-exist', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']));
+    \Guard::kick(\str_replace('::s::', '::g::', $url->current));
+}
+
 function blob($_, $form) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
@@ -13,29 +19,27 @@ function blob($_, $form) {
         }
         $test_x = ',' . \implode(',', \array_keys(\array_filter(\File::$config['x'] ?? $v['x[]'] ?? []))) . ',';
         $test_type = ',' . \implode(',', \array_keys(\array_filter(\File::$config['type'] ?? $v['type[]'] ?? []))) . ',';
-        $test_size = \File::$config['size'] ?? [0, 0];
+        $test_size = \File::$config['size'] ?? $v['size[]'] ?? [0, 0];
         foreach ($form['blob'] ?? [] as $k => $v) {
             // Check for error code
             if (!empty($v['error'])) {
                 $_['alert']['error'][] = \Language::get('alert-info-file.' . $v['error']);
             }
-            $name = \To::file($v['name']) ?: \uniqid();
-            // Check for file extension
+            $name = \To::file($v['name']) ?? '0';
             $x = \pathinfo($name, \PATHINFO_EXTENSION);
+            $type = $v['type'] ?? 'application/octet-stream';
+            $size = $v['size'] ?? 0;
+            // Check for file extension
             if ($x && \strpos($test_x, ',' . $x . ',') === false) {
                 $_['alert']['error'][] = ['file-x', '<code>' . $x . '</code>'];
-            }
             // Check for file type
-            $type = $v['type'];
-            if ($type && \strpos($test_type, ',' . $type . ',') === false) {
+            } else if ($type && \strpos($test_type, ',' . $type . ',') === false) {
                 $_['alert']['error'][] = ['file-type', '<code>' . $type . '</code>'];
             }
             // Check for file size
-            $size = $v['size'];
-            if ($size && $size < $test_size[0]) {
+            if ($size < $test_size[0]) {
                 $_['alert']['error'][] = ['file-size.0', '<code>' . \File::sizer($test_size) . '</code>'];
-            }
-            if ($size && $size > $test_size[1]) {
+            } else if ($size > $test_size[1]) {
                 $_['alert']['error'][] = ['file-size.1', '<code>' . \File::sizer($test_size) . '</code>'];
             }
             if (!empty($_['alert']['error'])) {
@@ -47,7 +51,7 @@ function blob($_, $form) {
                     continue;
                 }
                 if (!\is_dir($folder)) {
-                    \mkdir($folder, 0775, true);
+                    \mkdir($folder, \octdec($v['seal'] ?? '0775'), true);
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
                     $_['alert']['success'][] = ['blob-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
@@ -71,6 +75,16 @@ function blob($_, $form) {
     return $_;
 }
 
+function data($_, $form) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = \basename(\To::file($form['data']['name'] ?? ""));
+        $form['file']['name'] = $name !== "" ? $name . '.data' : "";
+        $form['file']['content'] = $form['data']['content'] ?? "";
+        $_ = file($_, $form); // Move to `file`
+    }
+    return $_;
+}
+
 function file($_, $form) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
@@ -89,7 +103,7 @@ function file($_, $form) {
         } else if (\strpos(',' . \implode(',', \array_keys(\array_filter(\File::$config['x'] ?? $form['x[]'] ?? []))) . ',', ',' . $x . ',') === false) {
             $_['alert']['error'][] = ['file-x', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = ['file-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['error'][] = [(\is_dir($f) ? 'folder' : 'file') . '-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else {
             if (isset($form['file']['content'])) {
                 \file_put_contents($f, $form['file']['content']);
@@ -122,7 +136,7 @@ function folder($_, $form) {
         if ($name === "") {
             $_['alert']['error'][] = ['void-field', '<em>' . $language->name . '</em>', true];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = ['folder-exist', '<code>' . $f . '</code>'];
+            $_['alert']['error'][] = [(\is_dir($f) ? 'folder' : 'file') . '-exist', '<code>' . $f . '</code>'];
         } else {
             \mkdir($f, \octdec($form['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['folder-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
@@ -146,6 +160,39 @@ function folder($_, $form) {
     return $_;
 }
 
+function page($_, $form) {
+    extract($GLOBALS, \EXTR_SKIP);
+    $e = $url->query('&', [
+        'content' => false,
+        'token' => false
+    ]) . $url->hash;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Abort by previous hook’s return value if any
+        if (!empty($_['alert']['error'])) {
+            return $_;
+        }
+        $name = \To::kebab($form['page']['name'] ?? $form['page']['title'] ?? "");
+        $x = $form['page']['x'] ?? 'page';
+        if ($name === "") {
+            $name = \date('Y-m-d-H-i-s');
+        }
+        if (!\is_dir($d = $_['f'] . \DS . $name)) {
+            \mkdir($d, 0755, true);
+        }
+        if (isset($form['page']['+'])) {
+            foreach ((array) $form['page']['+'] as $k => $v) {
+                \file_put_contents($ff = $_['f'] . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
+                \chmod($ff, 0600);
+            }
+            unset($form['page']['+']);
+        }
+        $form['file']['content'] = \To::page(\array_filter($form['page'] ?? []));
+        $form['file']['name'] = $name . '.' . $x;
+        $_ = file($_, $form); // Move to `file`
+    }
+    return $_;
+}
+
 function _token($_, $form) {
     if (empty($form['token']) || $form['token'] !== $_['token']) {
         $_['alert']['error'][] = 'token';
@@ -153,7 +200,7 @@ function _token($_, $form) {
     return $_;
 }
 
-foreach (['blob', 'file', 'folder'] as $v) {
+foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\_token", 0);
-    \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 10);
+    \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 20);
 }

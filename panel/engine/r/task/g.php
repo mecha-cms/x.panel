@@ -2,6 +2,11 @@
 
 function blob($_, $form) {
     // Blob is always new, so there is no such update event
+    return $_;
+}
+
+function data($_, $form) {
+    
 }
 
 function file($_, $form) {
@@ -102,6 +107,10 @@ function folder($_, $form) {
         $_SESSION['form'] = $form;
     }
     return $_;
+}
+
+function page($_, $form) {
+    
 }
 
 function _token($_, $form) {

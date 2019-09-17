@@ -1,16 +1,18 @@
 <?php namespace _\lot\x\panel;
 
+// Normalize path value and remove any `\..` to prevent directory traversal attack
+$path = \str_replace(\DS . '..', "", \strtr($_['path'], '/', \DS));
+if (\stream_resolve_include_path($f = \LOT . $path)) {
+    $GLOBALS['_']['f'] = $_['f'] = $f;
+}
+
+// Task
 if (\is_file($f = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
     require $f;
 }
 
 function c() {
     extract($GLOBALS);
-    // Normalize path value and remove any `\..` to prevent directory traversal attack
-    $path = \str_replace(\DS . '..', "", \strtr($_['path'], '/', \DS));
-    if (\stream_resolve_include_path($f = \LOT . $path)) {
-        $GLOBALS['_']['f'] = $_['f'] = $f;
-    }
     if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
         $lot = __DIR__ . \DS . 'state' . \DS . 'test.' . \basename(\urlencode($_GET['test'])) . '.php';
     } else {
@@ -20,7 +22,7 @@ function c() {
     (function($lot) {
         extract($GLOBALS, \EXTR_SKIP);
         $GLOBALS['_']['lot'] = $_['lot'] = (array) (\is_file($lot) ? require $lot : []);
-        $var = $GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? [];
+        $var = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($var['token'])) {
             if ($r = \Hook::fire('do.' . $_['content'] . '.' . ([
                 'g' => 'get',

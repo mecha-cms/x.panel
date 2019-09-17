@@ -102,7 +102,7 @@ function path($in) {
 
 function title($in, $i = -1, $or = null) {
     $title = $in['title'] ?? $or;
-    if (!isset($title) && !isset($in['icon'])) {
+    if ((!isset($title) || $title === false) && (!isset($in['icon']) || empty($in['icon']))) {
         return;
     }
     $tag = false;

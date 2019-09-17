@@ -1262,7 +1262,6 @@ label.not\:active {
   margin-right: 0;
 }
 .lot\:task\.link > * .title span {
-  font-size: 12px;
   margin-left: 3px;
 }
 .lot\:desk,
@@ -1329,7 +1328,7 @@ label.not\:active {
     padding-left: 24px;
   }
   .field {
-    display: block;
+    flex-direction: column;
     width: auto;
   }
   .field > label {
@@ -1338,27 +1337,29 @@ label.not\:active {
     padding: 0;
     text-align: inherit;
   }
+  .field > label:empty {
+    display: none;
+  }
   .field > label + div,
   .field > label + br + div {
     width: auto;
     padding: 0;
     text-align: inherit;
   }
-  .lot\:bar {
-    position: relative;
+  .lot\:bar > ul:first-child {
+    flex: 1;
+    width: 100%;
+    min-width: 100%;
   }
-  .lot\:bar .has\:menu {
-    position: static;
+  .lot\:bar > ul:first-child > li:last-child {
+    flex: 1;
   }
-  .lot\:bar .has\:menu ul {
-    width: auto;
-    right: 0;
-    left: 0;
+  .lot\:bar .field .input {
+    display: block;
+    width: 100%;
   }
   .lot\:bar .has\:menu ul ul {
-    position: static;
-    box-shadow: none;
-    border-left: 24px solid;
+    left: 25%;
   }
   .lot\:desk,
   .lot\:pane,

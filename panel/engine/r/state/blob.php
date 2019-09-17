@@ -8,11 +8,11 @@ return [
             0 => [
                 'lot' => [
                     's' => [
-                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                        'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                         'title' => false,
                         'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->file . ')',
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'blob']) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -68,15 +68,15 @@ return [
                                 'lot' => [
                                     0 => [
                                         'type' => 'Field',
-                                        'title' => "",
+                                        'title' => false,
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
                                                         'type' => 'Submit',
-                                                        'name' => false,
                                                         'title' => $language->doLoadUp,
+                                                        'name' => false,
                                                         'stack' => 10
                                                     ]
                                                 ]
