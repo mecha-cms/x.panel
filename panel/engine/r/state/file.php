@@ -29,7 +29,7 @@ return [
                         'title' => false,
                         'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->file . ')',
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'file']) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'file', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -49,7 +49,6 @@ return [
                                 // type: Tabs
                                 'lot' => [
                                     'file' => [
-                                        'title' => $language->file,
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -63,7 +62,6 @@ return [
                                                         'value' => $_GET['content'] ?? 'file'
                                                     ],
                                                     'content' => [
-                                                        'title' => $language->content,
                                                         'type' => 'Source',
                                                         'hidden' => !$editable,
                                                         'alt' => $language->fieldAltContent,
@@ -74,7 +72,6 @@ return [
                                                         'stack' => 10
                                                     ],
                                                     'name' => [
-                                                        'title' => $language->name,
                                                         'type' => 'Text',
                                                         'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltName) : $language->fieldAltName,
                                                         'pattern' => "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(" . implode('|', array_keys(array_filter(File::$config['x']))) . ")$",
@@ -101,7 +98,7 @@ return [
                                 'lot' => [
                                     0 => [
                                         'type' => 'Field',
-                                        'title' => false,
+                                        'title' => "",
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',

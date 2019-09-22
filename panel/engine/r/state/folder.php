@@ -16,7 +16,7 @@ return [
                         'title' => false,
                         'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->folder . ')',
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'folder']) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'folder', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -36,7 +36,6 @@ return [
                                 // type: Tabs
                                 'lot' => [
                                     'folder' => [
-                                        'title' => $language->folder,
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -50,7 +49,6 @@ return [
                                                         'value' => $_GET['content'] ?? 'folder'
                                                     ],
                                                     'name' => [
-                                                        'title' => $language->name,
                                                         'type' => 'Text',
                                                         'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltFolder) : $language->fieldAltFolder,
                                                         'pattern' => "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$",
@@ -60,7 +58,7 @@ return [
                                                         'stack' => 10
                                                     ],
                                                     'options' => [
-                                                        'title' => false,
+                                                        'title' => "",
                                                         'type' => 'Items',
                                                         'block' => true,
                                                         'name' => 'folder',
@@ -88,7 +86,7 @@ return [
                                 'lot' => [
                                     0 => [
                                         'type' => 'Field',
-                                        'title' => false,
+                                        'title' => "",
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',

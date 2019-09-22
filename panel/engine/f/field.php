@@ -39,6 +39,9 @@ function Field_Colors($in, $key) {
     if (isset($in['lot'])) {
         \sort($in['lot']);
         foreach ($in['lot'] as $k => $v) {
+            if ($v === null || $v === false || !empty($v['hidden'])) {
+                continue;
+            }
             if (\is_string($v)) {
                 $v = ['value' => $v];
             }
@@ -70,6 +73,9 @@ function Field_Combo($in, $key) {
         $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
         $a = [];
         foreach ($in['lot'] as $k => $v) {
+            if ($v === null || $v === false || !empty($v['hidden'])) {
+                continue;
+            }
             // Group
             if (isset($v['lot'])) {
                 $aa = [];
@@ -155,7 +161,7 @@ function Field_Item($in, $key) {
         $out['content'][0] = 'div';
         $count = 0;
         foreach ($in['lot'] as $k => $v) {
-            if (!empty($v['hidden'])) {
+            if ($v === null || $v === false || !empty($v['hidden'])) {
                 continue;
             }
             ++$count;
@@ -199,7 +205,7 @@ function Field_Items($in, $key) {
         $a = [];
         $count = 0;
         foreach ($in['lot'] as $k => $v) {
-            if (!empty($v['hidden'])) {
+            if ($v === null || $v === false || !empty($v['hidden'])) {
                 continue;
             }
             ++$count;

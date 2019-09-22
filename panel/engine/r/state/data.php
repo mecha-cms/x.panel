@@ -15,7 +15,7 @@ return [
                         'title' => false,
                         'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->data . ')',
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'data']) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -35,7 +35,6 @@ return [
                                 // type: Tabs
                                 'lot' => [
                                     'data' => [
-                                        'title' => $language->data,
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -54,7 +53,6 @@ return [
                                                         'value' => '0600'
                                                     ],
                                                     'content' => [
-                                                        'title' => $language->content,
                                                         'type' => 'Source',
                                                         'alt' => $language->fieldAltContent,
                                                         'name' => 'data[content]',
@@ -64,7 +62,6 @@ return [
                                                         'stack' => 10
                                                     ],
                                                     'name' => [
-                                                        'title' => $language->name,
                                                         'type' => 'Text',
                                                         'alt' => $_['task'] === 'g' ? ($name ?? pathinfo($language->fieldAltName, PATHINFO_FILENAME)) : pathinfo($language->fieldAltName, PATHINFO_FILENAME),
                                                         'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
@@ -91,7 +88,7 @@ return [
                                 'lot' => [
                                     0 => [
                                         'type' => 'Field',
-                                        'title' => false,
+                                        'title' => "",
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',

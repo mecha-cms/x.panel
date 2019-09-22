@@ -860,23 +860,32 @@ label.not\:active {
   margin-right: 6px;
   margin-left: 6px;
 }
-.lot\:file {
+.lot\:file,
+.lot\:page {
   margin-right: 0;
   margin-left: 0;
   padding: 0;
   display: block;
   list-style: none;
 }
+.lot\:file.count\:0,
+.lot\:page.count\:0 {
+  display: none;
+}
 .lot\:file h3,
 .lot\:file li,
-.lot\:file p {
+.lot\:file p,
+.lot\:page h3,
+.lot\:page li,
+.lot\:page p {
   margin: 0;
   padding: 0;
   font: inherit;
   list-style: none;
   border-color: inherit;
 }
-.lot\:file li {
+.lot\:file li,
+.lot\:page li {
   background: #fff;
   border: 0 solid #fff;
   padding: 6px 12px;
@@ -897,10 +906,12 @@ label.not\:active {
   right: 6px;
   background: inherit;
 }
-.lot\:file li > .lot\:task {
+.lot\:file li > .lot\:task,
+.lot\:page li > .lot\:task {
   margin: 0;
 }
-.lot\:file h3 .title {
+.lot\:file h3 .title,
+.lot\:page h3 .title {
   display:inline-flex;
 }
 .lot\:file .is\:file,
@@ -1107,6 +1118,35 @@ label.not\:active {
 .lot\:menu a:focus + ul {
   display: block;
 }
+
+
+
+.lot\:page li {
+  padding: 6px;
+  display: flex;
+}
+.lot\:page li div {
+  height: 72px;
+}
+.lot\:page img,
+.lot\:page .img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  max-width: 72px;
+  max-height: 72px;
+  min-width: 0;
+  min-height: 0;
+}
+.lot\:page li div:first-child + div {
+  flex: 1;
+  padding: 0 12px;
+}
+.lot\:page .description {
+  margin: 6px 0 0;
+}
+
+
 .lot\:pager,
 .lot\:pager > span {
   display: flex;
@@ -1283,8 +1323,8 @@ label.not\:active {
 .lot\:pane > .lot\:container > * + * {
   flex: 1;
 }
-.lot\:pane:empty,
-.lot\:section:empty {
+.lot\:pane.count\:0,
+.lot\:section.count\:0 {
   display: none;
 }
 
@@ -1337,7 +1377,7 @@ label.not\:active {
     padding: 0;
     text-align: inherit;
   }
-  .field > label:empty {
+  .field > label.count\:0 {
     display: none;
   }
   .field > label + div,

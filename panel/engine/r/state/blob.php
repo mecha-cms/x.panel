@@ -12,7 +12,7 @@ return [
                         'title' => false,
                         'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->file . ')',
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'blob']) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'blob', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -68,7 +68,7 @@ return [
                                 'lot' => [
                                     0 => [
                                         'type' => 'Field',
-                                        'title' => false,
+                                        'title' => "",
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',

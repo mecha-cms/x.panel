@@ -59,8 +59,9 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => $in[2] ?? []
         ];
-        if (isset($in['title'])) {
-            $out[1] .= '<label for="' . $id . '">' . \_\lot\x\panel\h\title($in, -2, $key) . '</label>';
+        if (!\array_key_exists('title', $in) || $in['title'] !== false) {
+            $title = \_\lot\x\panel\h\title($in, -2, $GLOBALS['language']->{$key});
+            $out[1] .= '<label' . (\strip_tags($title) === "" ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
         }
         $before = "";
         $after = "";
@@ -114,7 +115,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             \_\lot\x\panel\h\p($in['lot'], 'Field');
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
-                if (!empty($v['hidden'])) {
+                if ($v === null || $v === false || !empty($v['hidden'])) {
                     continue;
                 }
                 $type = $v['type'] ?? null;
@@ -177,14 +178,12 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Files($in, $key) {
-        $tags = ['lot', 'lot:file'];
         $tasks = $in['tasks'] ?? null;
         $out = [
             0 => 'ul',
             1 => "",
             2 => []
         ];
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
         $a = [[], []];
         $source = isset($in['from']) && \is_dir($in['from']);
         if ($raw = isset($in['lot'])) {
@@ -219,7 +218,11 @@ namespace _\lot\x\panel {
                 'url' => $clean . '/1' . $url->query
             ]);
         }
+        $count = 0;
         foreach ($a[$current - 1] as $k => $v) {
+            if ($v === null || $v === false || !empty($v['hidden'])) {
+                continue;
+            }
             if (\is_string($v)) {
                 $f = \is_file($v);
                 $n = \basename($v);
@@ -250,7 +253,9 @@ namespace _\lot\x\panel {
                 unset($_SESSION['_']['folder'][$path]);
             }
             $out[1] .= \_\lot\x\panel($v, $k);
+            ++$count;
         }
+        \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:file']);
         return new \HTML($out);
     }
     function Folder($in, $key) {
@@ -313,7 +318,7 @@ namespace _\lot\x\panel {
             2 => []
         ];
         if ($out[1] === "") {
-            $out[1] = \_\lot\x\panel\h\title($in);
+            $out[1] = \_\lot\x\panel\h\title($in, -1, $GLOBALS['language']->{$key});
         }
         $tags = [];
         $href = (string) ($in['link'] ?? $in['url'] ?? \P);
@@ -345,7 +350,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             $count = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
-                if (!empty($v['hidden'])) {
+                if ($v === null || $v === false || !empty($v['hidden'])) {
                     continue;
                 }
                 ++$count;
@@ -504,7 +509,7 @@ namespace _\lot\x\panel {
             }
             $count = 0;
             foreach ($lot as $k => $v) {
-                if (!empty($v['hidden'])) {
+                if ($v === null || $v === false || !empty($v['hidden'])) {
                     continue;
                 }
                 ++$count;

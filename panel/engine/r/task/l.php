@@ -8,18 +8,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || empty($_GET['token'])) {
 }
 
 function blob($_, $form) {
-    return file($_, $form);
+    $_ = file($_, $form);
 }
 
-// TODO
 function data($_, $form) {
-    return file($_, $form);
+    extract($GLOBALS, \EXTR_SKIP);
+    $e = $url->query('&', [
+        'content' => false,
+        'tab' => ['data'],
+        'token' => false,
+        'x' => false
+    ]) . $url->hash;
+    $_ = file($_, $form); // Move to `file`
+    if (!empty($_GET['x'])) {
+        $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '.' . $_GET['x'] . $e;
+    }
+    return $_;
 }
 
 function file($_, $form) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'content' => false,
+        'tab'=> false,
         'token' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
@@ -28,7 +39,7 @@ function file($_, $form) {
     }
     if (\is_file($f = $_['f'])) {
         \unlink($f);
-        $_['alert']['success'][] = ['file-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+        $_['alert']['success'][] = ['file-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
         $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -38,6 +49,7 @@ function folder($_, $form) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'content' => false,
+        'tab'=> false,
         'token' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
@@ -54,15 +66,44 @@ function folder($_, $form) {
             }
         }
         \rmdir($f);
-        $_['alert']['success'][] = ['folder-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+        $_['alert']['success'][] = ['folder-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
         $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
 
-// TODO
 function page($_, $form) {
-    return file($_, $form);
+    if (\is_dir($d = \Path::F($_['f']))) {
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($d, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
+            $v = $k->getPathname();
+            if ($k->isDir()) {
+                \rmdir($v);
+            } else {
+                \unlink($v);
+            }
+        }
+        \rmdir($d);
+    }
+    if (\is_file($f = $_['f'])) {
+        // Get page `title` before the file is deleted
+        $title = '<strong>' . (new \Page($f))->title . '</strong>';
+        $_ = file($_, $form); // Move to `file`
+        $alter = [
+            'file-let' => ['page-let', $title]
+        ];
+        foreach ($_['alert'] as $k => &$v) {
+            foreach ($v as $kk => &$vv) {
+                if (\is_array($vv)) {
+                    if (isset($alter[$vv[0]])) {
+                        $vv = \array_replace($vv, $alter[$vv[0]]);
+                    }
+                } else if (\is_string($vv)) {
+                    $vv = $alter[$vv] ?? $vv;
+                }
+            }
+        }
+    }
+    return $_;
 }
 
 function _token($_, $form) {
@@ -74,7 +115,7 @@ function _token($_, $form) {
     return $_;
 }
 
-foreach (['blob', 'file', 'folder'] as $v) {
+foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\" . $v, 10);
 }

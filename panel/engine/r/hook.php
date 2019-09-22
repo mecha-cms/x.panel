@@ -1,41 +1,54 @@
 <?php namespace _\lot\x\panel;
 
-// Normalize path value and remove any `\..` to prevent directory traversal attack
-$path = \str_replace(\DS . '..', "", \strtr($_['path'], '/', \DS));
-if (\stream_resolve_include_path($f = \LOT . $path)) {
-    $GLOBALS['_']['f'] = $_['f'] = $f;
-}
-
 // Task
-if (\is_file($f = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
-    require $f;
+if (\is_file($_task = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
+    require $_task;
 }
 
-function c() {
+function _() {
     extract($GLOBALS);
+    $_state = __DIR__ . \DS . 'state' . \DS;
     if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
-        $lot = __DIR__ . \DS . 'state' . \DS . 'test.' . \basename(\urlencode($_GET['test'])) . '.php';
+        $_lot = $_state . 'test' . \DS . \basename(\urlencode($_GET['test'])) . '.php';
     } else {
-        $lot = __DIR__ . \DS . 'state' . \DS . $_['content'] . ($_['i'] > 0 ? 's' : "") . '.php';
-        \Config::set('[content].content:' . $_['content'], true);
+        $_lot = $_state . $_['content'] . ($_['i'] > 0 ? 's' : "") . '.php';
+        if (!isset($_GET['content'])) {
+            // Auto-detect content type
+            if ($_['f']) {
+                $GLOBALS['_']['content'] = $_['content'] = \is_dir($_['f']) ? 'folder' : 'file';
+                $_lot = $_state . $_['content'] . ($_['i'] > 0 ? 's' : "") . '.php'; // Update data
+            }
+            // Manually set content type based on file path
+            foreach (\array_reverse(\step(\trim($_['path'], '/'), '/')) as $_path) {
+                (function($_path) use(&$_lot) {
+                    if (\is_file($_path)) {
+                        extract($GLOBALS, \EXTR_SKIP);
+                        $_lot = $_path; // Update data
+                        require $_path;
+                    }
+                })($_state . 'file' . ($_['i'] > 0 ? 's' : "") . \DS . $_path . '.php');
+            }
+            $_ = $GLOBALS['_']; // Update data
+        }
     }
-    (function($lot) {
+    \Config::set('[content].content:' . $_['content'], true);
+    (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);
-        $GLOBALS['_']['lot'] = $_['lot'] = (array) (\is_file($lot) ? require $lot : []);
-        $var = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
-        if (isset($var['token'])) {
-            if ($r = \Hook::fire('do.' . $_['content'] . '.' . ([
+        $GLOBALS['_']['lot'] = $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($_lot) ? require $_lot : []));
+        $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
+        if (isset($_form['token'])) {
+            if ($_r = \Hook::fire('do.' . $_['content'] . '.' . ([
                 'g' => 'get',
                 'l' => 'let',
                 's' => 'set'
-            ][$_['task']] ?? '?'), [$_, $var])) {
-                $GLOBALS['_'] = $_ = $r;
+            ][$_['task']] ?? '?'), [$_, $_form])) {
+                $GLOBALS['_'] = $_ = $_r;
             }
             if (!empty($_['alert'])) {
-                foreach ((array) $_['alert'] as $k => $v) {
-                    foreach ((array) $v as $alert) {
-                        $alert = (array) $alert;
-                        \call_user_func("\\Alert::" . $k, ...$alert);
+                foreach ((array) $_['alert'] as $_k => $_v) {
+                    foreach ((array) $_v as $_alert) {
+                        $_alert = (array) $_alert;
+                        \call_user_func("\\Alert::" . $_k, ...$_alert);
                     }
                 }
             }
@@ -43,7 +56,7 @@ function c() {
                 \Guard::kick($_['kick']);
             }
         }
-    })($lot);
+    })($_lot);
 }
 
-\Hook::set('start', __NAMESPACE__ . "\\c", 10);
+\Hook::set('start', __NAMESPACE__ . "\\_", 10);
