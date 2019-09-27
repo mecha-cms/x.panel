@@ -151,7 +151,9 @@ namespace _\lot\x\panel {
         $tags = ['is:file'];
         if ($x) {
             foreach ($x as $k => $v) {
-                $tags[] = 'file:' . $k;
+                if ($v) {
+                    $tags[] = 'file:' . $k;
+                }
             }
         }
         if (isset($in['active']) && !$in['active']) {
@@ -188,6 +190,9 @@ namespace _\lot\x\panel {
         $source = isset($in['from']) && \is_dir($in['from']);
         if ($raw = isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
+                if ($v === null || $v === false || !empty($v['hidden'])) {
+                    continue;
+                }
                 $a[\is_string($v) && \is_file($v) ? 1 : 0][$k] = $v;
             }
         } else if ($source) {
@@ -208,14 +213,13 @@ namespace _\lot\x\panel {
         if (!isset($a[$current - 1])) {
             $a[$current - 1] = [];
         }
-        $clean = \dirname($url->clean);
         // Add parent directory if current directory level is greater than `.\lot`
-        if ($source && \substr($clean, -2) !== '::') {
+        if ($source && \count($GLOBALS['_']['chop'] ?? []) > 1) {
             \array_unshift($a[$current - 1], [
                 'title' => '..',
                 'description' => false,
                 'type' => 'Folder',
-                'url' => $clean . '/1' . $url->query
+                'url' => \dirname($url->clean) . '/1' . $url->query
             ]);
         }
         $count = 0;
@@ -234,7 +238,7 @@ namespace _\lot\x\panel {
                     'path' => $v,
                     'title' => $n,
                     'type' => $f ? 'File' : 'Folder',
-                    'url' => $f ? null : $url . $GLOBALS['_']['//'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
+                    'url' => $f ? null : $url . $GLOBALS['_']['/'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
                 ];
             }
             $t = (array) ($v['tasks'] ?? []);
@@ -321,7 +325,8 @@ namespace _\lot\x\panel {
             $out[1] = \_\lot\x\panel\h\title($in, -1, $GLOBALS['language']->{$key});
         }
         $tags = [];
-        $href = (string) ($in['link'] ?? $in['url'] ?? \P);
+        $href = $in['link'] ?? $in['url'] ?? \P;
+        $href = $href === false ? \P : (string) $href;
         if ($href === \P || (isset($in['active']) && !$in['active'])) {
             $tags[] = 'not:active';
         }
@@ -397,7 +402,47 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
     }
-    function Page($in, $key) {}
+    function Page($in, $key) {
+        $x = null;
+        $tasks = $in['tasks'] ?? null;
+        if ($path = $in['path'] ?? null) {
+            $x = [\pathinfo($path, \PATHINFO_EXTENSION) => 1];
+        }
+        if (isset($in['file']['x'])) {
+            $x = $in['file']['x'];
+        }
+        $tags = ['is:file'];
+        if ($x) {
+            foreach ($x as $k => $v) {
+                if ($v) {
+                    $tags[] = 'file:' . $k;
+                }
+            }
+        }
+        if (isset($in['active']) && !$in['active']) {
+            $tags[] = 'not:active';
+        }
+        $out = [
+            0 => 'li',
+            1 => "",
+            2 => []
+        ];
+        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        $title = ($path ? \date('Y/m/d H:i:s', \filemtime($path)) : null);
+        $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5($path ?? $key), 0, 6) . ';"></span>') . '</div>';
+        $out[1] .= '<div><h3>' . \_\lot\x\panel\Link([
+            'link' => $in['link'] ?? null,
+            'title' => $in['title'] ?? $title,
+            'url' => $in['url'] ?? null
+        ], $key) . '</h3>' . \_\lot\x\panel\h\description($in) . '</div>';
+        if (\is_array($tasks)) {
+            $out[1] .= '<div>' . \_\lot\x\panel\Tasks\Link([
+                0 => 'p',
+                'lot' => $tasks
+            ], 0) . '</div>';
+        }
+        return new \HTML($out);
+    }
     function Pager($in, $key) {
         $in['tags'][] = 'lot';
         $in['tags'][] = 'lot:pager';
@@ -464,13 +509,76 @@ namespace _\lot\x\panel {
         $language = $GLOBALS['language'];
         $in['content'] = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
-            return $url . $_['//'] . '/::g::' . $_['path'] . '/' . $i;
+            return $url . $_['/'] . '/::g::' . $_['path'] . '/' . $i;
         }, $language->first, $language->prev, $language->next, $language->last);
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';
         return $out;
     }
-    function Pages($in, $key) {}
+    function Pages($in, $key) {
+        $tasks = $in['tasks'] ?? null;
+        $out = [
+            0 => 'ul',
+            1 => "",
+            2 => []
+        ];
+        $a = [];
+        if ($raw = isset($in['lot'])) {
+            foreach ($in['lot'] as $k => $v) {
+                if ($v === null || $v === false || !empty($v['hidden'])) {
+                    continue;
+                }
+                if (isset($v['time'])) {
+                    $a[$v['time']] = $v;
+                } else {
+                    $a[] = $v;
+                }
+            }
+        } else if ($source = isset($in['from']) && \is_dir($in['from'])) {
+            foreach (\g(\strtr($in['from'], '/', DS), 'archive,draft,page') as $k => $v) {
+                $a[\filemtime($k)] = $k;
+            }
+        }
+        \krsort($a);
+        $chunk = $in['chunk'] ?? 0;
+        $current = $in['current'] ?? 1;
+        $child = $in['child'] ?? null;
+        $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
+        $url = $GLOBALS['url'];
+        $count = 0;
+        foreach ($a[$current - 1] ?? [] as $k => $v) {
+            if (\is_string($v)) {
+                $page = new \Page($v);
+                $x = $page->x;
+                $v = [ // Treat as array for now
+                    'active' => $x !== 'draft',
+                    'description' => \_\lot\x\panel\h\w($page->description ?? ($page->time . "")),
+                    'child' => $child,
+                    'file' => ['x' => [$x => 1]],
+                    'image' => $page->image(72, 72),
+                    'link' => $page->url,
+                    'path' => $v,
+                    'title' => $page->title,
+                    'type' => 'Page'
+                ];
+            }
+            $t = (array) ($v['tasks'] ?? []);
+            if (\is_callable($tasks)) {
+                $v['tasks'] = \array_replace((array) \call_user_func($tasks, $v), $t);
+            } else if (\is_array($tasks)) {
+                $v['tasks'] = \array_replace($tasks, $t);
+            }
+            $path = $v['path'] ?? false;
+            if (!empty($v['current']) || $path && isset($_SESSION['_']['file'][$path])) {
+                $v['tags'][] = 'is:active';
+                unset($_SESSION['_']['file'][$path]);
+            }
+            $out[1] .= \_\lot\x\panel($v, $k);
+            ++$count;
+        }
+        \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:page']);
+        return new \HTML($out);
+    }
     function Tab($in, $key) {
         $out = [
             0 => $in[0] ?? 'section',

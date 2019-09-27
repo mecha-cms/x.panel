@@ -1,6 +1,6 @@
 <?php namespace _\lot\x\panel;
 
-function route($form, $k) {
+function route($lot) {
     if (!\Is::user()) {
         // TODO: Show 404 page to confuse URL guesser
         \Guard::kick("");
@@ -9,7 +9,7 @@ function route($form, $k) {
     $GLOBALS['t'][] = $language->panel;
     $n = \ltrim(\explode('/', $_['path'], 3)[1] ?? '?', '_.-');
     $GLOBALS['t'][] = isset($_['path']) ? $language->{$n === 'x' ? 'extension' : $n} : null;
-    \Config::set([
+    \State::set([
         'has' => [
             'parent' => \substr_count($_['path'], '/') > 1,
         ],
@@ -29,4 +29,4 @@ function route($form, $k) {
     $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }
 
-\Route::set($_['//'] . '/*', 200, __NAMESPACE__ . "\\route", 1);
+\Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", 1);

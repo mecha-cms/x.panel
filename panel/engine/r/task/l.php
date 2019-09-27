@@ -7,26 +7,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || empty($_GET['token'])) {
     \Guard::kick(\str_replace('::l::', '::g::', $url->current));
 }
 
-function blob($_, $form) {
-    $_ = file($_, $form);
+// Prevent user(s) from deleting file(s) above the `.\lot\*` level
+if (strpos(strtr($_['f'], [\LOT . \DS => ""]), \DS) === false) {
+    \Guard::abort('Cound not delete <code>' . $_['f'] . '</code>.');
 }
 
-function data($_, $form) {
+function blob($_, $lot) {
+    $_ = file($_, $lot);
+}
+
+function data($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'content' => false,
         'tab' => ['data'],
-        'token' => false,
-        'x' => false
+        'token' => false
     ]) . $url->hash;
-    $_ = file($_, $form); // Move to `file`
-    if (!empty($_GET['x'])) {
-        $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '.' . $_GET['x'] . $e;
+    $_ = file($_, $lot); // Move to `file`
+    $p = \dirname($_['f']);
+    if (empty($_['alert']['error']) && $parent = \File::exist([
+            $p . '.draft',
+            $p . '.page',
+            $p . '.archive'
+        ])) {
+        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '.' . \pathinfo($parent, \PATHINFO_EXTENSION) . $e;
     }
     return $_;
 }
 
-function file($_, $form) {
+function file($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'content' => false,
@@ -40,12 +49,12 @@ function file($_, $form) {
     if (\is_file($f = $_['f'])) {
         \unlink($f);
         $_['alert']['success'][] = ['file-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
-        $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
 
-function folder($_, $form) {
+function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'content' => false,
@@ -67,12 +76,12 @@ function folder($_, $form) {
         }
         \rmdir($f);
         $_['alert']['success'][] = ['folder-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
-        $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
 
-function page($_, $form) {
+function page($_, $lot) {
     if (\is_dir($d = \Path::F($_['f']))) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($d, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
@@ -87,7 +96,7 @@ function page($_, $form) {
     if (\is_file($f = $_['f'])) {
         // Get page `title` before the file is deleted
         $title = '<strong>' . (new \Page($f))->title . '</strong>';
-        $_ = file($_, $form); // Move to `file`
+        $_ = file($_, $lot); // Move to `file`
         $alter = [
             'file-let' => ['page-let', $title]
         ];
@@ -106,11 +115,11 @@ function page($_, $form) {
     return $_;
 }
 
-function _token($_, $form) {
-    if (empty($form['token']) || $form['token'] !== $_['token']) {
+function _token($_, $lot) {
+    if (empty($lot['token']) || $lot['token'] !== $_['token']) {
         extract($GLOBALS, \EXTR_SKIP);
         $_['alert']['error'][] = 'token';
-        $_['kick'] = $url . $_['//'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -119,3 +128,5 @@ foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\" . $v, 10);
 }
+
+require __DIR__ . \DS . 'l' . \DS . 'user.php';

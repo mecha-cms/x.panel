@@ -259,7 +259,7 @@ figure {
 code,
 .code {
   font-family: monospace;
-  font-size: 12px;
+  font-size: 13px; /* Magic :( */
 }
 del,
 s {
@@ -712,12 +712,8 @@ label.not\:active {
 .field {
   display: flex;
 }
-.field.is\:required > label > span::before {
-  content: '*';
-  font-size: 14px;
-  position: relative;
-  vertical-align: middle;
-  top: -.5em;
+.field.is\:required > label > span {
+  color: #f00;
 }
 .field > label {
   display: block;
@@ -894,11 +890,9 @@ label.not\:active {
   overflow: hidden;
 }
 .lot\:file h3 {
-  width: 100%;
-  overflow: hidden;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-  float: left;
 }
 .lot\:file p {
   position: absolute;
@@ -912,7 +906,7 @@ label.not\:active {
 }
 .lot\:file h3 .title,
 .lot\:page h3 .title {
-  display:inline-flex;
+  display: inline-flex;
 }
 .lot\:file .is\:file,
 .lot\:file .is\:folder {
@@ -957,6 +951,9 @@ label.not\:active {
 .lot\:input {
   display: inline-flex;
   position: relative;
+}
+.lot\:input.width {
+  display: flex;
 }
 .lot\:input .fix {
   width: auto;
@@ -1118,23 +1115,21 @@ label.not\:active {
 .lot\:menu a:focus + ul {
   display: block;
 }
-
-
-
 .lot\:page li {
-  padding: 6px;
+  padding: 12px;
+  margin: 0 -12px;
   display: flex;
 }
 .lot\:page li div {
-  height: 72px;
+  min-height: 54px;
 }
 .lot\:page img,
 .lot\:page .img {
   display: block;
-  width: 72px;
-  height: 72px;
-  max-width: 72px;
-  max-height: 72px;
+  width: 54px;
+  height: 54px;
+  max-width: 54px;
+  max-height: 54px;
   min-width: 0;
   min-height: 0;
 }
@@ -1142,11 +1137,12 @@ label.not\:active {
   flex: 1;
   padding: 0 12px;
 }
+.lot\:page h3 {
+  font-size: 20px;
+}
 .lot\:page .description {
   margin: 6px 0 0;
 }
-
-
 .lot\:pager,
 .lot\:pager > span {
   display: flex;
@@ -1305,7 +1301,6 @@ label.not\:active {
   margin-left: 3px;
 }
 .lot\:desk,
-.lot\:pane,
 .lot\:section {
   padding: 24px;
   margin: 0 auto;
@@ -1313,17 +1308,6 @@ label.not\:active {
 .lot\:desk {
   max-width: 1016px;
 }
-.lot\:pane > .lot\:container {
-  display: flex;
-  margin: 0 -24px;
-}
-.lot\:pane > .lot\:container > * {
-  width: 264px;
-}
-.lot\:pane > .lot\:container > * + * {
-  flex: 1;
-}
-.lot\:pane.count\:0,
 .lot\:section.count\:0 {
   display: none;
 }
@@ -1402,16 +1386,8 @@ label.not\:active {
     left: 25%;
   }
   .lot\:desk,
-  .lot\:pane,
   .lot\:section {
     padding: 12px;
-  }
-  .lot\:pane > .lot\:container {
-    display: block;
-    margin: 0 -12px;
-  }
-  .lot\:pane > .lot\:container > * {
-    width: auto;
   }
   .lot\:pager > span:first-child,
   .lot\:pager > span:last-child {

@@ -10,6 +10,11 @@ return [
             // type: List
             0 => [
                 'lot' => [
+                    'folder' => [
+                        'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
+                        'url' => $url . $_['/'] . '/::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'lot' => false // Disable sub-menu(s)
+                    ],
                     's' => [
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
@@ -65,6 +70,7 @@ return [
                                                         'type' => 'Text',
                                                         'alt' => $_['task'] === 'g' ? ($name ?? pathinfo($language->fieldAltName, PATHINFO_FILENAME)) : pathinfo($language->fieldAltName, PATHINFO_FILENAME),
                                                         'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
+                                                        'focus' => true,
                                                         'name' => 'data[name]',
                                                         'value' => $name,
                                                         'width' => true,

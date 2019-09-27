@@ -31,18 +31,29 @@ function _() {
             $_ = $GLOBALS['_']; // Update data
         }
     }
-    \Config::set('[content].content:' . $_['content'], true);
+    \State::set('[content].content:' . $_['content'], true);
+    foreach ($GLOBALS['X'][1] as $_index) {
+        \is_file($_f = \dirname($_index) . \DS . 'panel.php') && (function($_f) {
+            extract($GLOBALS, \EXTR_SKIP);
+            require $_f;
+        })($_f);
+    }
     (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);
         $GLOBALS['_']['lot'] = $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($_lot) ? require $_lot : []));
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($_form['token'])) {
-            if ($_r = \Hook::fire('do.' . $_['content'] . '.' . ([
-                'g' => 'get',
-                'l' => 'let',
-                's' => 'set'
-            ][$_['task']] ?? '?'), [$_, $_form])) {
-                $GLOBALS['_'] = $_ = $_r;
+            $_hooks = \map(\step($_['content']), function($_hook) use($_) {
+                return 'do.' . $_hook . '.' . ([
+                    'g' => 'get',
+                    'l' => 'let',
+                    's' => 'set'
+                ][$_['task']] ?? '/');
+            });
+            foreach (\array_reverse($_hooks) as $_hook) {
+                if ($_r = \Hook::fire($_hook, [$_, $_form])) {
+                    $GLOBALS['_'] = $_ = $_r;
+                }
             }
             if (!empty($_['alert'])) {
                 foreach ((array) $_['alert'] as $_k => $_v) {

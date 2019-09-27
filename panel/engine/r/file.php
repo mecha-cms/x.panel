@@ -1,9 +1,11 @@
 <?php
 
-File::$config['type'] = array_replace(File::$config['type'] ?? [], state('panel', 'type'));
-File::$config['x'] = array_replace(File::$config['x'] ?? [], state('panel', 'x'));
+$state = State::get('x.panel.guard', true);
 
-if ($size = state('panel', 'size')) {
-    File::$config['size'] = array_replace(File::$config['size'], $size);
-    ini_set('upload_max_filesize', $size[1]);
+File::$state['type'] = array_replace(File::$state['type'] ?? [], $state['type'] ?? []);
+File::$state['x'] = array_replace(File::$state['x'] ?? [], $state['x'] ?? []);
+
+if (!empty($state['size'])) {
+    File::$state['size'] = array_replace(File::$state['size'], $state['size']);
+    ini_set('upload_max_filesize', $state['size'][1]);
 }

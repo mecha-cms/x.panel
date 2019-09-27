@@ -14,7 +14,7 @@ function content($content) {
 
 function description($in, $or = null) {
     $description = $in['description'] ?? $or;
-    if (!isset($description)) {
+    if (!isset($description) || $description === false) {
         return;
     }
     $out = [
@@ -22,6 +22,7 @@ function description($in, $or = null) {
         1 => $description,
         2 => []
     ];
+    unset($in['tags']);
     \_\lot\x\panel\h\c($out[2], $in, ['description']);
     return new \HTML($out);
 }
@@ -40,6 +41,7 @@ function field($in, $key) {
         0 => 'textarea',
         1 => \htmlspecialchars($in['value'] ?? ""),
         2 => [
+            'autofocus' => !empty($in['focus']),
             'class' => "",
             'disabled' => isset($in['active']) && !$in['active'],
             'id' => $in['id'],

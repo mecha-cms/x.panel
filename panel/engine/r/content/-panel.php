@@ -15,7 +15,7 @@ return (function($icons) {
                 'current' => strpos($_['path'] . '/', '/' . $n . '/') === 0,
                 'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
                 'title' => $language->{$n === 'x' ? 'extension' : $n},
-                'url' => $url . $_['//'] . '/::g::/' . $n . '/1'
+                'url' => $url . $_['/'] . '/::g::/' . $n . '/1'
             ];
         }
     }
@@ -27,7 +27,7 @@ return (function($icons) {
         $list[$k] = $v;
     }
     $alert = ($alert ?? "") . "";
-    $user_state = state('user');
+    $user_state = State::get('x.user', true);
     return _\lot\x\panel\lot(['lot' => array_replace_recursive([
         'bar' => [
             'type' => 'Bar',
@@ -77,18 +77,18 @@ return (function($icons) {
                                 'user' => [
                                     'icon' => 'M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z',
                                     'title' => $language->user,
-                                    'url' => $url . $_['//'] . '/::g::/user/1' . $url->query('&', ['tab' => false]) . $url->hash,
+                                    'url' => $url . $_['/'] . '/::g::/user/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                     'lot' => [
                                         'g' => [
                                             'icon' => 'M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z',
                                             'title' => $language->doEdit,
-                                            'url' => $url . $_['//'] . '/::g::/user/' . $user->name(true) . $url->query('&', ['tab' => false]) . $url->hash,
+                                            'url' => $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
                                             'stack' => 10
                                         ],
                                         'exit' => [
                                             'icon' => 'M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z',
                                             'title' => $language->doExit,
-                                            'url' => $url . '/' . ($user_state['//'] ?? $user_state['/']) . '/.' . $user->name . $url->query('&', ['content' => false, 'tab' => false, 'token' => $user['token']]) . $url->hash,
+                                            'url' => $url . ($user_state['_path'] ?? $user_state['path']) . '/' . $user->name . $url->query('&', ['content' => false, 'exit' => $user['token'], 'tab' => false]) . $url->hash,
                                             'stack' => 20
                                         ]
                                     ],
@@ -114,7 +114,7 @@ return (function($icons) {
                             'icon' => 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21',
                             'caret' => false,
                             'title' => false,
-                            'url' => $url . $_['//'] . '/::g::/.alert/1' . $url->query . $url->hash,
+                            'url' => $url . $_['/'] . '/::g::/.alert/1' . $url->query . $url->hash,
                             'stack' => 10
                         ]
                     ],

@@ -22,14 +22,14 @@ $_['path'] = $task ? '/' . implode('/', $chop) : null;
 $_['task'] = $task;
 
 // Normalize path value and remove any `\..` to prevent directory traversal attack
-$f = LOT . DS . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
+$f = LOT . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
 $_['f'] = stream_resolve_include_path($f) ?: null;
 
 $GLOBALS['_'] = $_; // Update data
 
-require __DIR__ . DS . 'engine' . DS . 'f.php';
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'asset.php';
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'file.php';
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'hook.php';
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'language.php';
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'route.php';
+require __DIR__ . DS . 'f.php';
+require __DIR__ . DS . 'r' . DS . 'asset.php';
+require __DIR__ . DS . 'r' . DS . 'file.php';
+require __DIR__ . DS . 'r' . DS . 'hook.php';
+require __DIR__ . DS . 'r' . DS . 'language.php';
+require __DIR__ . DS . 'r' . DS . 'route.php';

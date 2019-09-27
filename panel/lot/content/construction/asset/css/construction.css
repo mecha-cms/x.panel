@@ -181,22 +181,28 @@ caption {
 .lot\:bar > ul > li.is\:active > a {
   color: #fafafa;
 }
-.lot\:file li {
+.lot\:file li,
+.lot\:page li {
   background: #fff;
   border: 0 solid #fff;
 }
 .lot\:file li:focus,
-.lot\:file li:hover {
+.lot\:file li:hover,
+.lot\:page li:focus,
+.lot\:page li:hover {
   background: #eef;
   border-color: #eef;
 }
-.lot\:file .lot\:task > * {
+.lot\:file .lot\:task > *,
+.lot\:page .lot\:task > * {
   margin: 0;
 }
-.lot\:file .lot\:task > * .title span {
+.lot\:file .lot\:task > * .title span,
+.lot\:page .lot\:task > * .title span {
   display: none;
 }
-.lot\:file .is\:active {
+.lot\:file .is\:active,
+.lot\:page .is\:active {
   background: #fec;
   border-color: #fec;
 }

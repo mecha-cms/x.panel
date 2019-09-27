@@ -6,6 +6,6 @@ $GLOBALS['_']['content'] = $_['content'] = [
     'data' => 'data',
     'draft' => 'page',
     'page' => 'page'
-][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? (is_dir($_['f']) ? 'folder' : 'file');
+][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['content'];
 
 return require __DIR__ . DS . '..' . DS . $_['content'] . '.php';

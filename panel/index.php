@@ -1,6 +1,6 @@
 <?php
 
-$state = state('panel');
+$state = State::get('x.panel', true);
 
 $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
@@ -16,12 +16,13 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'state' => $state,
     'task' => null,
     'token' => content(USER . DS . Cookie::get('user.key') . DS . 'token.data'),
-    '//' => $pp = '/' . $state['//']
+    '/' => $pp = $state['path']
 ], $GLOBALS['_'] ?? []);
 
 $p = trim($url->path, '/');
 if (strpos('/' . $p, $pp . '/::') === 0) {
-    require __DIR__ . DS . 'panel.php';
+    Route::let(); // Remove all route(s)
+    require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }
 
 require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'user.php';
