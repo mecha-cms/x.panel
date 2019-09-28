@@ -4,7 +4,7 @@
 $GLOBALS['_']['content'] = 'page';
 
 Hook::set('page.title', function($title) {
-    return strpos($this->path, USER . DS) === 0 ? $this['author'] : $title;
+    return strpos($this->path, USER . DS) === 0 ? ($this['author'] ?? '@' . S . $this->name) : $title;
 }, 0);
 
 Hook::set('page.description', function($description) {

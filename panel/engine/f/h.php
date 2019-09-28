@@ -19,7 +19,7 @@ function description($in, $or = null) {
     }
     $out = [
         0 => 'p',
-        1 => $description,
+        1 => (string) ($description !== "" ? $description : $or),
         2 => []
     ];
     unset($in['tags']);
@@ -36,14 +36,16 @@ function field($in, $key) {
     if ($required = !empty($in['required'])) {
         $in['tags'][] = 'is:required';
     }
-    
+    if ($disabled = isset($in['active']) && !$in['active']) {
+        $in['tags'][] = 'not:active';
+    }
     $input = [
         0 => 'textarea',
         1 => \htmlspecialchars($in['value'] ?? ""),
         2 => [
             'autofocus' => !empty($in['focus']),
             'class' => "",
-            'disabled' => isset($in['active']) && !$in['active'],
+            'disabled' => $disabled,
             'id' => $in['id'],
             'name' => $name,
             'pattern' => $in['pattern'] ?? null,

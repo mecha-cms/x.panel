@@ -144,7 +144,6 @@ function page($_, $lot) {
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
-    $title = '<strong>' . (new \Page($_['f']))->title . '</strong>'; // Get old page `title`
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Abort by previous hook’s return value if any
         if (!empty($_['alert']['error'])) {
@@ -187,9 +186,11 @@ function page($_, $lot) {
         }
     }
     if (\is_file($f = $_['f'])) {
+        $key = $language->{\ltrim($_['chop'][0], '_.-')};
+        $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $alter = [
-            'file-exist' => 'page-exist',
-            'file-update' => ['page-update', $title]
+            'file-exist' => ['*-exist', [$key, $path]],
+            'file-update' => ['*-update', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
@@ -217,5 +218,3 @@ foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
     \Hook::set('do.' . $v . '.get', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.get', __NAMESPACE__ . "\\" . $v, 10);
 }
-
-require __DIR__ . \DS . 'g' . \DS . 'user.php';

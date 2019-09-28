@@ -82,6 +82,7 @@ function folder($_, $lot) {
 }
 
 function page($_, $lot) {
+    extract($GLOBALS, \EXTR_SKIP);
     if (\is_dir($d = \Path::F($_['f']))) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($d, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
@@ -94,11 +95,11 @@ function page($_, $lot) {
         \rmdir($d);
     }
     if (\is_file($f = $_['f'])) {
-        // Get page `title` before the file is deleted
-        $title = '<strong>' . (new \Page($f))->title . '</strong>';
+        $key = $language->{\ltrim($_['chop'][0], '_.-')};
+        $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $_ = file($_, $lot); // Move to `file`
         $alter = [
-            'file-let' => ['page-let', $title]
+            'file-let' => ['*-let', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
@@ -128,5 +129,3 @@ foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\" . $v, 10);
 }
-
-require __DIR__ . \DS . 'l' . \DS . 'user.php';

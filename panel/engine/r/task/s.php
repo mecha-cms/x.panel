@@ -225,9 +225,11 @@ function page($_, $lot) {
         }
     }
     if (\is_file($f = $_['f'])) {
+        $key = $language->{\ltrim($_['chop'][0], '_.-')};
+        $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $alter = [
-            'file-exist' => 'page-exist',
-            'file-set' => ['page-set', '<strong>' . (new \Page($f))->title . '</strong>']
+            'file-exist' => ['*-exist', [$key, $path]],
+            'file-set' => ['*-set', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
@@ -255,5 +257,3 @@ foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 20);
 }
-
-require __DIR__ . \DS . 's' . \DS . 'user.php';

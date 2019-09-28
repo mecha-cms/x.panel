@@ -7,6 +7,9 @@
   opacity: .5;
   cursor: not-allowed;
 }
+.not\:active .not\:active {
+  opacity: 1;
+}
 
 /* Text Helper */
 .text-center,
@@ -755,7 +758,8 @@ label.not\:active {
 .field .description {
   display: block;
   font-size: 12px;
-  margin: 6px 0 0 0;
+  line-height: 16px;
+  margin: 10px 0 0;
 }
 
 /* Lot */

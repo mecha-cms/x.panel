@@ -428,13 +428,13 @@ namespace _\lot\x\panel {
             2 => []
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $title = ($path ? \date('Y/m/d H:i:s', \filemtime($path)) : null);
+        $title = $in['time'] ? \strtr($in['time'], '-', '/') : ($path ? \date('Y/m/d H:i:s', \filectime($path)) : null);
         $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5($path ?? $key), 0, 6) . ';"></span>') . '</div>';
         $out[1] .= '<div><h3>' . \_\lot\x\panel\Link([
             'link' => $in['link'] ?? null,
             'title' => $in['title'] ?? $title,
             'url' => $in['url'] ?? null
-        ], $key) . '</h3>' . \_\lot\x\panel\h\description($in) . '</div>';
+        ], $key) . '</h3>' . \_\lot\x\panel\h\description($in, $title) . '</div>';
         if (\is_array($tasks)) {
             $out[1] .= '<div>' . \_\lot\x\panel\Tasks\Link([
                 0 => 'p',
@@ -559,7 +559,9 @@ namespace _\lot\x\panel {
                     'link' => $page->url,
                     'path' => $v,
                     'title' => $page->title,
-                    'type' => 'Page'
+                    'time' => $page->time . "",
+                    'type' => 'Page',
+                    'update' => $page->update . ""
                 ];
             }
             $t = (array) ($v['tasks'] ?? []);
@@ -621,18 +623,19 @@ namespace _\lot\x\panel {
                     continue;
                 }
                 ++$count;
+                $kk = $v['name'] ?? $k;
                 if (\is_array($v)) {
                     if (empty($v['url']) && empty($v['link'])) {
                         $v['url'] = $GLOBALS['url']->query('&', [
-                            'tab' => [$name => $k]
+                            'tab' => [$name => $kk]
                         ]);
                     } else {
                         $v['tags'][] = 'has:link';
                     }
                 }
-                $nav[$k] = $v;
-                unset($nav[$k]['lot']); // Disable dropdown menu view
-                $section[$k] = \_\lot\x\panel\Tab($v, $k);
+                $nav[$kk] = $v;
+                unset($nav[$kk]['lot']); // Disable dropdown menu view
+                $section[$kk] = \_\lot\x\panel\Tab($v, $kk);
             }
             $out[1] = '<nav>' . \_\lot\x\panel\Bar_List(['lot' => $nav], $name) . '</nav>';
             $out[1] .= \implode("", $section);

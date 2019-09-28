@@ -29,7 +29,7 @@ $fields = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                 // type: Tabs
                                 'lot' => [
                                     'page' => [
-                                        'title' => $language->user,
+                                        'name' => 'user',
                                         'lot' => [
                                             'fields' => [
                                                 // type: Fields

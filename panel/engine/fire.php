@@ -11,11 +11,7 @@ if (count($chop) < 3) {
 // Remove the first path
 array_shift($chop);
 
-// Make sure to have page offset on `items` view
 $task = $chop[0] && strpos($chop[0], '::') === 0 && substr($chop[0], -2) === '::' ? substr(array_shift($chop), 2, -2) : null;
-if ($i === null && $task === 'g' && count($chop) === 1) {
-    Guard::kick($url->clean . '/1' . $url->query . $url->hash);
-}
 
 $_['chop'] = $chop;
 $_['path'] = $task ? '/' . implode('/', $chop) : null;
@@ -24,6 +20,11 @@ $_['task'] = $task;
 // Normalize path value and remove any `\..` to prevent directory traversal attack
 $f = LOT . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
 $_['f'] = stream_resolve_include_path($f) ?: null;
+
+// Make sure to have page offset on `items` view
+if ($i === null && $task === 'g' && count($chop) === 1 && is_dir($f)) {
+    Guard::kick($url->clean . '/1' . $url->query . $url->hash);
+}
 
 $GLOBALS['_'] = $_; // Update data
 
