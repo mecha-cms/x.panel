@@ -1,5 +1,10 @@
 <?php namespace _\lot\x\panel;
 
+// Special case
+if ($_['task'] === 'g' && $_['path'] === '/.state') {
+    $GLOBALS['_']['content'] = $_['content'] = 'state';
+}
+
 // Task
 if (\is_file($_task = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
     require $_task;

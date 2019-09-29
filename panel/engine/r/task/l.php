@@ -116,6 +116,11 @@ function page($_, $lot) {
     return $_;
 }
 
+function state($_, $lot) {
+    // There is no such delete event for state(s)
+    return $_;
+}
+
 function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
         extract($GLOBALS, \EXTR_SKIP);
@@ -125,7 +130,7 @@ function _token($_, $lot) {
     return $_;
 }
 
-foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
+foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\" . $v, 10);
 }

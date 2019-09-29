@@ -246,6 +246,11 @@ function page($_, $lot) {
     return $_;
 }
 
+function state($_, $lot) {
+    // State must be exists, so there is no such create event, only update
+    return $_;
+}
+
 function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
         $_['alert']['error'][] = 'token';
@@ -253,7 +258,7 @@ function _token($_, $lot) {
     return $_;
 }
 
-foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
+foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 20);
 }

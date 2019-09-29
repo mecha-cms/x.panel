@@ -157,11 +157,17 @@ $fields = [
     'items[0]' => [
         'type' => 'Items',
         'title' => 'Items',
-        'value' => 0,
-        'lot' => ['Red', 'Green', [
-            'title' => 'Blue',
-            'active' => false
-        ]]
+        'value' => ['red'],
+        'flat' => true,
+        'lot' => [
+            'red' => 'Red',
+            'green' => 'Green',
+            'blue' => 'Blue',
+            'yellow' => [
+                'title' => 'Yellow',
+                'active' => false
+            ]
+        ]
     ],
     'items[1]' => [
         'type' => 'Items',

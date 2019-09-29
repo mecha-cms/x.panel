@@ -45,7 +45,7 @@ function Field_Colors($in, $key) {
             if (\is_string($v)) {
                 $v = ['value' => $v];
             }
-            $n = $v['name'] ?? $name . '[' . $k . ']';
+            $n = $name . '[' . $k . ']';
             $value = $v['value'] ?? null;
             $input = \_\lot\x\panel\h\field($v, $k);
             $input[0] = 'input';
@@ -72,6 +72,7 @@ function Field_Combo($in, $key) {
         unset($out['value']);
         $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
         $a = [];
+        $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
             if ($v === null || $v === false || !empty($v['hidden'])) {
                 continue;
@@ -96,14 +97,14 @@ function Field_Combo($in, $key) {
                         $tt = $vv;
                     }
                     $option[1] = \trim(\strip_tags($tt));
-                    $aa[$tt] = $option;
+                    $aa[$tt . $kk] = $option;
                 }
-                \ksort($aa);
+                $sort && \ksort($aa);
                 foreach ($aa as $vv) {
                     $optgroup[1] .= $vv;
                 }
                 // Add `0` to the end of the key so that option(s) group will come first
-                $a[$t . '0'] = $optgroup;
+                $a[$t . $k . '0'] = $optgroup;
             // Flat
             } else {
                 $option = new \HTML(['option', $k, [
@@ -118,10 +119,10 @@ function Field_Combo($in, $key) {
                 }
                 $option[1] = \trim(\strip_tags($t));
                 // Add `1` to the end of the key so that bare option(s) will come last
-                $a[$t . '1'] = $option;
+                $a[$t . $k . '1'] = $option;
             }
         }
-        \ksort($a);
+        $sort && \ksort($a);
         foreach ($a as $v) {
             $out['content'][1] .= $v;
         }
@@ -160,6 +161,7 @@ function Field_Item($in, $key) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $out['content'][0] = 'div';
         $count = 0;
+        $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
             if ($v === null || $v === false || !empty($v['hidden'])) {
                 continue;
@@ -178,9 +180,9 @@ function Field_Item($in, $key) {
             } else {
                 $t = $v;
             }
-            $a[$t] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
         }
-        \ksort($a);
+        $sort && \ksort($a);
         if (!isset($in['block'])) {
             $block = $count > 6 ? '<br>' : ""; // Auto
         } else {
@@ -197,24 +199,27 @@ function Field_Item($in, $key) {
 function Field_Items($in, $key) {
     if (isset($in['lot'])) {
         $value = (array) ($in['value'] ?? []);
-        $value = \P . \implode(\P, (array) $value) . \P;
+        if ($key_as_value = !empty($in['flat'])) {
+            $value = \P . \implode(\P, $value) . \P;
+        }
         $n = $in['name'] ?? $key;
         unset($in['name'], $in['alt'], $in['value']);
         $out = \_\lot\x\panel\h\field($in, $key);
         $out['content'][0] = 'div';
         $a = [];
         $count = 0;
+        $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
             if ($v === null || $v === false || !empty($v['hidden'])) {
                 continue;
             }
             ++$count;
             $input = new \HTML(['input', false, [
-                'checked' => \strpos($value, \P . $k . \P) !== false,
+                'checked' => $key_as_value ? \strpos($value, \P . $k . \P) !== false : isset($value[$k]),
                 'class' => 'input',
-                'name' => $n . '[' . $k . ']',
+                'name' => $n . '[' . ($key_as_value ? "" : $k) . ']',
                 'type' => 'checkbox',
-                'value' => 1
+                'value' => $key_as_value ? $k : \s($value[$k] ?? 1)
             ]]);
             if (\is_array($v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
@@ -222,9 +227,9 @@ function Field_Items($in, $key) {
             } else {
                 $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
             }
-            $a[$t] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
         }
-        \ksort($a);
+        $sort && \ksort($a);
         if (!isset($in['block'])) {
             $block = $count > 6 ? '<br>' : ""; // Auto
         } else {

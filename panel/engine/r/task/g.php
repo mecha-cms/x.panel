@@ -207,6 +207,32 @@ function page($_, $lot) {
     return $_;
 }
 
+function state($_, $lot) {
+    extract($GLOBALS, \EXTR_SKIP);
+    $e = $url->query('&', [
+        'content' => false,
+        'tab'=> false,
+        'token' => false
+    ]) . $url->hash;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Abort by previous hook’s return value if any
+        if (!empty($_['alert']['error'])) {
+            return $_;
+        }
+        if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
+            $source = \realpath($source);
+            \file_put_contents($source, '<?php return ' . \z(\array_replace_recursive((array) require $source, $lot['state'] ?? [])) . ';');
+            $_['alert']['success'][] = ['file-update', ['<code>.' . \DS . 'state.php</code>', true]];
+        }
+        $_['kick'] = $url . $_['/'] . '/::g::' . $_['path'] . $e;
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($lot['token']);
+        $_SESSION['form'] = $lot;
+    }
+    return $_;
+}
+
 function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
         $_['alert']['error'][] = 'token';
@@ -214,7 +240,7 @@ function _token($_, $lot) {
     return $_;
 }
 
-foreach (['blob', 'data', 'file', 'folder', 'page'] as $v) {
+foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
     \Hook::set('do.' . $v . '.get', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.get', __NAMESPACE__ . "\\" . $v, 10);
 }
