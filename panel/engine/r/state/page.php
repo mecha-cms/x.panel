@@ -11,7 +11,7 @@ $fields = [
                 'lot' => [
                     'folder' => [
                         'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
-                        'url' => $url . $_['/'] . '/::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
                         'lot' => false // Disable sub-menu(s)
                     ],
                     's' => [
@@ -35,7 +35,7 @@ $fields = [
                     1 => [
                         // type: Section
                         'lot' => [
-                            'tabs' => $tabs = [
+                            'tabs' => [
                                 // type: Tabs
                                 'lot' => [
                                     'page' => [
@@ -142,7 +142,7 @@ $fields = [
                                                                 'tags' => ['mb:1'],
                                                                 'lot' => [],
                                                                 'tasks' => function($in) use($_, $language, $page, $url) {
-                                                                    $before = $url . $_['/'] . '/::';
+                                                                    $before = $url . $_['/'] . '::';
                                                                     $after = '::' . strtr($in['path'], [
                                                                         LOT => "",
                                                                         DS => '/'
@@ -170,7 +170,7 @@ $fields = [
                                                                     's' => [
                                                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                                                         'title' => $language->data(2),
-                                                                        'url' => $url . $_['/'] . '/::s::' . Path::F($_['path']) . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
+                                                                        'url' => $url . $_['/'] . '::s::' . Path::F($_['path']) . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
                                                                         'stack' => 10
                                                                     ]
                                                                 ],
@@ -245,33 +245,35 @@ $fields = [
     ]
 ];
 
-$apart = [];
-foreach ($tabs as $k => $v) {
-    foreach ($v as $kk => $vv) {
-        if (empty($vv['lot']['fields']['lot'])) {
-            continue;
-        }
-        foreach ($vv['lot']['fields']['lot'] as $kkk => $vvv) {
-            $vvvv = $vvv['name'] ?? $kkk;
-            if (strpos($vvvv, 'data[') === 0) {
-                $apart[substr($vvvv, 5, -1)] = 1;
+Hook::set('set', function() use($page) {
+    $apart = [];
+    if (!empty($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'])) {
+        foreach ($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'] as $k => $v) {
+            foreach ($v as $kk => $vv) {
+                if (empty($vv['lot']['fields']['lot'])) {
+                    continue;
+                }
+                foreach ($vv['lot']['fields']['lot'] as $kkk => $vvv) {
+                    $vvvv = $vvv['name'] ?? $kkk;
+                    if (strpos($vvvv, 'data[') === 0) {
+                        $apart[substr($vvvv, 5, -1)] = 1;
+                    }
+                }
             }
         }
-    }
-}
-
-$files = [];
-if ($page->exist) {
-    $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
-    foreach (g(Path::F($path), 'data') as $k => $v) {
-        if ($v === 1 && isset($p[basename($k, '.data')])) {
-            continue;
+        $files = [];
+        if ($page->exist) {
+            $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
+            foreach (g(Path::F($path), 'data') as $k => $v) {
+                if ($v === 1 && isset($p[basename($k, '.data')])) {
+                    continue;
+                }
+                $files[] = $k;
+            }
+            sort($files);
         }
-        $files[] = $k;
+        $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
     }
-    sort($files);
-}
-
-$fields['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
+}, 0);
 
 return $fields;

@@ -20,13 +20,13 @@ return [
                                         'title' => false,
                                         'description' => $language->parent,
                                         'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
-                                        'url' => $url . $_['/'] . '/::g::' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                         'stack' => 10
                                     ],
                                     'page' => [
                                         'type' => 'Link',
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'url' => $url . $_['/'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'page', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'page', 'tab' => false]) . $url->hash,
                                         'stack' => 20
                                     ],
                                     'data' => [
@@ -34,7 +34,7 @@ return [
                                         'title' => $language->data(2),
                                         'type' => 'Link',
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'url' => $url . $_['/'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
                                         'stack' => 30
                                     ]
                                 ],
@@ -61,12 +61,12 @@ return [
                                                     if (!isset($in['path']) || !stream_resolve_include_path($in['path'])) {
                                                         return [];
                                                     }
-                                                    $before = $url . $_['/'] . '/::';
+                                                    $before = $url . $_['/'] . '::';
                                                     $after = '::' . strtr($in['path'], [
                                                         LOT => "",
                                                         DS => '/'
                                                     ]);
-                                                $create = is_dir($dir = Path::F($in['path'])) && !!glob($dir . DS . '*.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
+                                                $create = is_dir($dir = Path::F($in['path'])) && !!glob($dir . DS . '*.{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT);
                                                     return [
                                                         'enter' => [
                                                             'title' => $language->doEnter,

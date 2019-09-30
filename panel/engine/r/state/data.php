@@ -3,6 +3,10 @@
 $name = is_file($f = $_['f']) ? pathinfo($f, PATHINFO_FILENAME) : null;
 $content = $name ? file_get_contents($f) : null;
 
+$path = $_['task'] === 'g' ? dirname($f) : $f;
+$x = glob($path . '.{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT);
+$x = $x ? '.' . pathinfo($x[0], PATHINFO_EXTENSION) : '/1';
+
 return [
     'bar' => [
         // type: Bar
@@ -12,7 +16,7 @@ return [
                 'lot' => [
                     'folder' => [
                         'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
-                        'url' => $url . $_['/'] . '/::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . $x . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
                         'lot' => false // Disable sub-menu(s)
                     ],
                     's' => [

@@ -1,9 +1,10 @@
 <?php
 
 return [
+    '/' => '/panel/',
     'chunk' => 20,
     'name' => 'construction',
-    'path' => '/panel',
+    'path' => '/page',
     'peek' => 2,
     'guard' => [
         // Minimum and maximum file size allowed to upload

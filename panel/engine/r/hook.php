@@ -1,8 +1,11 @@
 <?php namespace _\lot\x\panel;
 
-// Special case
-if ($_['task'] === 'g' && $_['path'] === '/.state') {
-    $GLOBALS['_']['content'] = $_['content'] = 'state';
+// By path
+foreach (\step(\trim($_['path']), '/') as $_v) {
+    \is_file($_f = __DIR__ . \DS . 'path' . \DS . \strtr($_v, '/', \DS) . '.php') && (function($_f) {
+        extract($GLOBALS, \EXTR_SKIP);
+        require $_f;
+    })($_f);
 }
 
 // Task
@@ -36,13 +39,13 @@ function _() {
             $_ = $GLOBALS['_']; // Update data
         }
     }
-    \State::set('[content].content:' . $_['content'], true);
     foreach ($GLOBALS['X'][1] as $_index) {
         \is_file($_f = \dirname($_index) . \DS . 'panel.php') && (function($_f) {
             extract($GLOBALS, \EXTR_SKIP);
             require $_f;
         })($_f);
     }
+    \State::set('[content].content:' . $_['content'], true);
     (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);
         $GLOBALS['_']['lot'] = $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($_lot) ? require $_lot : []));

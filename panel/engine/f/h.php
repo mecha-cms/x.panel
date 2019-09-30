@@ -100,7 +100,7 @@ function p(&$lot, $prefix) {
 function path($in) {
     return \strtr($in, [
         '/' => \DS,
-        \LOT => '.'
+        \ROOT => '.'
     ]);
 }
 

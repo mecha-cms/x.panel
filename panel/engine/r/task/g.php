@@ -17,13 +17,8 @@ function data($_, $lot) {
         $lot['file']['name'] = $name !== "" ? $name . '.data' : "";
         $lot['file']['content'] = $lot['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
-        $p = \dirname($_['f']);
-        if (empty($_['alert']['error']) && $parent = \File::exist([
-            $p . '.draft',
-            $p . '.page',
-            $p . '.archive'
-        ])) {
-            $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '.' . \pathinfo($parent, \PATHINFO_EXTENSION) . $e;
+        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{draft,page,archive}', \GLOB_BRACE | \GLOB_NOSORT)) {
+            $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
@@ -60,7 +55,7 @@ function file($_, $lot) {
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['file-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>', true];
-            $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/' . $name . $e;
+            $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
     }
@@ -93,12 +88,12 @@ function folder($_, $lot) {
             // Do nothing
             $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>', true];
             if (!empty($lot['folder']['kick'])) {
-                $_['kick'] = $url . $_['/'] . '/::g::' . \strtr($f, [
+                $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
             }
             $_SESSION['_']['folder'][$f] = 1;
         } else {
@@ -118,12 +113,12 @@ function folder($_, $lot) {
             \rmdir($_['f']);
             $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>', true];
             if (!empty($lot['folder']['kick'])) {
-                $_['kick'] = $url . $_['/'] . '/::g::' . \strtr($f, [
+                $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
             }
             foreach (\step($_['f'] = $f, \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
@@ -179,8 +174,10 @@ function page($_, $lot) {
                     $lot['data']['update'] = (new \Date($lot['data']['time']))->format('Y-m-d H:i:s');
                 }
                 foreach ((array) $lot['data'] as $k => $v) {
-                    \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
-                    \chmod($ff, 0600);
+                    if (\trim($v) !== "") {
+                        \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
+                        \chmod($ff, 0600);
+                    }
                 }
             }
         }
@@ -222,9 +219,9 @@ function state($_, $lot) {
         if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
             $source = \realpath($source);
             \file_put_contents($source, '<?php return ' . \z(\array_replace_recursive((array) require $source, $lot['state'] ?? [])) . ';');
-            $_['alert']['success'][] = ['file-update', ['<code>.' . \DS . 'state.php</code>', true]];
+            $_['alert']['success'][] = ['file-update', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>', true]];
         }
-        $_['kick'] = $url . $_['/'] . '/::g::' . $_['path'] . $e;
+        $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . $e;
     }
     if (!empty($_['alert']['error'])) {
         unset($lot['token']);

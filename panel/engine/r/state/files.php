@@ -19,19 +19,19 @@ return [
                                         'title' => false,
                                         'description' => $language->doLoadUp,
                                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
-                                        'url' => $url . $_['/'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'blob', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'blob', 'tab' => false]) . $url->hash,
                                         'stack' => 10
                                     ],
                                     'file' => [
                                         'type' => 'Link',
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'url' => $url . $_['/'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'file', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'file', 'tab' => false]) . $url->hash,
                                         'stack' => 20
                                     ],
                                     'folder' => [
                                         'type' => 'Link',
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'url' => $url . $_['/'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'folder', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'folder', 'tab' => false]) . $url->hash,
                                         'stack' => 30
                                     ]
                                 ],
@@ -57,7 +57,7 @@ return [
                                                     if (!isset($in['path']) || !stream_resolve_include_path($in['path'])) {
                                                         return [];
                                                     }
-                                                    $before = $url . $_['/'] . '/::';
+                                                    $before = $url . $_['/'] . '::';
                                                     $after = '::' . strtr($in['path'], [
                                                         LOT => "",
                                                         DS => '/'

@@ -56,7 +56,7 @@ function blob($_, $lot) {
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
                     $_['alert']['success'][] = ['blob-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
-                    $_['kick'] = $url . $_['/'] . '/::g::' . $_['path'] . '/1' . $e;
+                    $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
                     $_['ff'][] = $f;
                 } else {
@@ -88,13 +88,8 @@ function data($_, $lot) {
         $lot['file']['name'] = $name !== "" ? $name . '.data' : "";
         $lot['file']['content'] = $lot['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
-        $p = \dirname($_['f']);
-        if (empty($_['alert']['error']) && $parent = \File::exist([
-            $p . '.draft',
-            $p . '.page',
-            $p . '.archive'
-        ])) {
-            $_['kick'] = $url . $_['/'] . '/::g::' . $_['path'] . '.' . \pathinfo($parent, \PATHINFO_EXTENSION) . $e;
+        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{draft,page,archive}', \GLOB_BRACE | \GLOB_NOSORT)) {
+            $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
@@ -126,7 +121,7 @@ function file($_, $lot) {
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['file-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
-            $_['kick'] = $url . $_['/'] . '/::g::' . $_['path'] . '/1' . $e;
+            $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
     }
@@ -158,12 +153,12 @@ function folder($_, $lot) {
             \mkdir($f, \octdec($lot['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['folder-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
             if (!empty($lot['folder']['kick'])) {
-                $_['kick'] = $url . $_['/'] . '/::g::' . \strtr($f, [
+                $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $url . $_['/'] . '/::g::' . $_['path'] . '/1' . $e;
+                $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             }
             foreach (\step($_['f'] = $f, \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
@@ -218,8 +213,10 @@ function page($_, $lot) {
                     $lot['data']['update'] = (new \Date($lot['data']['time']))->format('Y-m-d H:i:s');
                 }
                 foreach ((array) $lot['data'] as $k => $v) {
-                    \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
-                    \chmod($ff, 0600);
+                    if (\trim($v) !== "") {
+                        \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
+                        \chmod($ff, 0600);
+                    }
                 }
             }
         }

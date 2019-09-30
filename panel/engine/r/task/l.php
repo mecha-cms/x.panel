@@ -24,13 +24,8 @@ function data($_, $lot) {
         'token' => false
     ]) . $url->hash;
     $_ = file($_, $lot); // Move to `file`
-    $p = \dirname($_['f']);
-    if (empty($_['alert']['error']) && $parent = \File::exist([
-            $p . '.draft',
-            $p . '.page',
-            $p . '.archive'
-        ])) {
-        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '.' . \pathinfo($parent, \PATHINFO_EXTENSION) . $e;
+    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{draft,page,archive}', \GLOB_BRACE | \GLOB_NOSORT)) {
+        $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
     }
     return $_;
 }
@@ -49,7 +44,7 @@ function file($_, $lot) {
     if (\is_file($f = $_['f'])) {
         \unlink($f);
         $_['alert']['success'][] = ['file-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
-        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -76,7 +71,7 @@ function folder($_, $lot) {
         }
         \rmdir($f);
         $_['alert']['success'][] = ['folder-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
-        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -125,7 +120,7 @@ function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
         extract($GLOBALS, \EXTR_SKIP);
         $_['alert']['error'][] = 'token';
-        $_['kick'] = $url . $_['/'] . '/::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }

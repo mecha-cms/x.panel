@@ -509,7 +509,7 @@ namespace _\lot\x\panel {
         $language = $GLOBALS['language'];
         $in['content'] = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
-            return $url . $_['/'] . '/::g::' . $_['path'] . '/' . $i;
+            return $url . $_['/'] . '::g::' . $_['path'] . '/' . $i;
         }, $language->first, $language->prev, $language->next, $language->last);
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';

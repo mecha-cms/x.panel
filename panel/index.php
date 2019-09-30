@@ -16,11 +16,11 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'state' => $state,
     'task' => null,
     'token' => content(USER . DS . Cookie::get('user.key') . DS . 'token.data'),
-    '/' => $pp = $state['path']
+    '/' => $pp = $state['/']
 ], $GLOBALS['_'] ?? []);
 
 $p = trim($url->path, '/');
-if (strpos('/' . $p, $pp . '/::') === 0) {
+if (strpos('/' . $p, $pp . '::') === 0) {
     Route::let(); // Remove all route(s)
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }

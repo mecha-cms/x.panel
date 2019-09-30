@@ -31,7 +31,7 @@ return array_replace_recursive(require __DIR__ . DS . '..' . DS . $_['content'] 
                                 'lot' => [
                                     'page' => [
                                         'title' => $language->user,
-                                        'url' => $url . $_['/'] . '/::s::' . $_['path'] . $url->query('&', ['content' => 'page.user', 'tab' => false]) . $url->hash
+                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'page.user', 'tab' => false]) . $url->hash
                                     ]
                                 ]
                             ]
