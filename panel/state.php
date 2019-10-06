@@ -1,12 +1,13 @@
 <?php
 
 return [
-    '/' => '/panel/',
     'chunk' => 20,
+    'sort' => [-1, 'time'],
     'name' => 'construction',
     'path' => '/page',
     'peek' => 2,
     'guard' => [
+        'path' => '/panel',
         // Minimum and maximum file size allowed to upload
         'size' => [0, 2097152],
         // Add more file type(s) other than `File::state['type']` here so that the editor will accept them

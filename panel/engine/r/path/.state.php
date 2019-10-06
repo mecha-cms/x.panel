@@ -2,35 +2,35 @@
 
 $GLOBALS['_']['content'] = $_['content'] = 'state';
 
-\Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
-    extract($GLOBALS, \EXTR_SKIP);
+Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
+    extract($GLOBALS, EXTR_SKIP);
     if (isset($_['i'])) {
         // Force as item page
-        \Guard::kick($url->clean . $url->query . $url->hash);
+        Guard::kick($url->clean . $url->query . $url->hash);
     }
-    if (!\Is::user()) {
+    if (!Is::user()) {
         // TODO: Show 404 page to confuse URL guesser
-        \Guard::kick("");
+        Guard::kick("");
     }
-    $i18n = \extension_loaded('intl');
+    $i18n = extension_loaded('intl');
     $panes = $paths = $skins = [];
-    foreach (\glob(\LOT . \DS . '*', \GLOB_NOSORT | \GLOB_ONLYDIR) as $panel) {
-        $n = \basename($panel);
-        if (\strpos('_.-', $n[0]) !== false) {
+    foreach (glob(LOT . DS . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
+        $n = basename($panel);
+        if (strpos('_.-', $n[0]) !== false) {
             continue;
         }
         $panes['/' . $n] = $language->{$n === 'x' ? 'extension' : $n};
     }
-    foreach (\glob(\PAGE . \DS . '*.{page,archive}', \GLOB_NOSORT | GLOB_BRACE) as $path) {
-        $paths['/' . \pathinfo($path, \PATHINFO_FILENAME)] = (new \Page($path))->title;
+    foreach (glob(PAGE . DS . '*.{page,archive}', GLOB_NOSORT | GLOB_BRACE) as $path) {
+        $paths['/' . pathinfo($path, PATHINFO_FILENAME)] = (new Page($path))->title;
     }
-    foreach (\glob(\CONTENT . \DS . '*' . \DS . 'about.page', \GLOB_NOSORT) as $skin) {
-        $skins[\basename(\dirname($skin))] = (new \Page($skin))->title;
+    foreach (glob(CONTENT . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $skin) {
+        $skins[basename(dirname($skin))] = (new Page($skin))->title;
     }
-    \asort($panes);
-    \asort($paths);
-    \asort($skins);
-    $zones = \Cache::hit(__FILE__, function() {
+    asort($panes);
+    asort($paths);
+    asort($skins);
+    $zones = Cache::hit(__FILE__, function() {
         $zones = [];
         $regions = [
             \DateTimeZone::AFRICA,
@@ -46,23 +46,23 @@ $GLOBALS['_']['content'] = $_['content'] = 'state';
         $timezones = [];
         $timezone_offsets = [];
         foreach ($regions as $region) {
-            $timezones = \array_merge($timezones, \DateTimeZone::listIdentifiers($region));
+            $timezones = array_merge($timezones, \DateTimeZone::listIdentifiers($region));
         }
         foreach ($timezones as $timezone) {
             $tz = new \DateTimeZone($timezone);
             $timezone_offsets[$timezone] = $tz->getOffset(new \DateTime);
         }
-        \asort($timezone_offsets);
+        asort($timezone_offsets);
         foreach ($timezone_offsets as $zone => $offset) {
             $offset_prefix = $offset < 0 ? '-' : '+';
-            $offset_formatted = \gmdate('H:i', \abs($offset));
-            $zones[$zone] = 'GMT' . $offset_prefix . $offset_formatted . ' (' . \strtr($zone, '_', ' ') . ')';
+            $offset_formatted = gmdate('H:i', abs($offset));
+            $zones[$zone] = 'GMT' . $offset_prefix . $offset_formatted . ' (' . strtr($zone, '_', ' ') . ')';
         }
         return $zones;
     }, '1 year');
-    $GLOBALS['_']['lot'] = require __DIR__ . \DS . '..' . \DS . 'state' . \DS . 'state.php';
+    $GLOBALS['_']['lot'] = require __DIR__ . DS . '..' . DS . 'state' . DS . 'state.php';
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = \array_replace_recursive([
+    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = array_replace_recursive([
         'file' => [
             'icon' => 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z',
             'title' => false,
@@ -178,11 +178,12 @@ $GLOBALS['_']['content'] = $_['content'] = 'state';
             'stack' => 30
         ]
     ], $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] ?? []);
+    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
     $GLOBALS['t'][] = $language->panel;
     $GLOBALS['t'][] = $language->state;
-    \State::set([
+    State::set([
         'has' => [
-            'parent' => \count($_['chop']) > 1,
+            'parent' => count($_['chop']) > 1,
         ],
         'is' => [
             'error' => false,
@@ -190,5 +191,5 @@ $GLOBALS['_']['content'] = $_['content'] = 'state';
             'pages' => false
         ]
     ]);
-    $this->content(__DIR__ . \DS . '..' . \DS . 'content' . \DS . 'panel.php');
+    $this->content(__DIR__ . DS . '..' . DS . 'content' . DS . 'panel.php');
 }, 10);

@@ -6,7 +6,8 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
     'chop' => [],
     'chunk' => $state['chunk'] ?? 20,
-    'content' => $_GET['content'] ?? 'file', // `blob`, `file` or `folder`
+    'sort' => $state['sort'] ?? 1,
+    'content' => $_GET['content'] ?? 'file',
     'f' => null,
     'i' => $i = $url->i,
     'kick' => null,
@@ -16,7 +17,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'state' => $state,
     'task' => null,
     'token' => content(USER . DS . Cookie::get('user.key') . DS . 'token.data'),
-    '/' => $pp = $state['/']
+    '/' => $pp = (State::get('x.user.guard.path') ?? $state['guard']['path']) . '/'
 ], $GLOBALS['_'] ?? []);
 
 $p = trim($url->path, '/');

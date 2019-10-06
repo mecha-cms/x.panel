@@ -45,8 +45,6 @@ namespace _\lot\x\panel {
         $out['type'] = 'submit';
         return $out;
     }
-    function Data($in, $key) {}
-    function Datas($in, $key) {}
     function Field($in, $key) {
         $tags = ['field', 'p'];
         if (isset($in['type'])) {
@@ -136,26 +134,7 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function File($in, $key) {
-        $name = $x = null;
-        $tasks = $in['tasks'] ?? null;
-        if ($path = $in['path'] ?? null) {
-            $name = \basename($path);
-            $x = [\pathinfo($path, \PATHINFO_EXTENSION) => 1];
-        }
-        if (isset($in['title'])) {
-            $name = $in['title'];
-        }
-        if (isset($in['file']['x'])) {
-            $x = $in['file']['x'];
-        }
         $tags = ['is:file'];
-        if ($x) {
-            foreach ($x as $k => $v) {
-                if ($v) {
-                    $tags[] = 'file:' . $k;
-                }
-            }
-        }
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
         }
@@ -166,87 +145,37 @@ namespace _\lot\x\panel {
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $out[1] .= '<h3>' . \_\lot\x\panel\Link([
-            'description' => $in['description'] ?? ($path ? (new \File($path))->size : null),
+            'description' => $in['description'] ?? null,
             'link' => $in['link'] ?? null,
-            'title' => $name,
+            'title' => $in['title'] ?? null,
             'url' => $in['url'] ?? null
         ], $key) . '</h3>';
-        if (\is_array($tasks)) {
-            $out[1] .= \_\lot\x\panel\Tasks\Link([
-                0 => 'p',
-                'lot' => $tasks
-            ], 0);
-        }
+        $out[1] .= \_\lot\x\panel\Tasks\Link([
+            0 => 'p',
+            'lot' => $in['tasks'] ?? []
+        ], 0);
         return new \HTML($out);
     }
     function Files($in, $key) {
-        $tasks = $in['tasks'] ?? null;
         $out = [
             0 => 'ul',
             1 => "",
             2 => []
         ];
-        $a = [[], []];
-        $source = isset($in['from']) && \is_dir($in['from']);
-        if ($raw = isset($in['lot'])) {
+        $lot = [];
+        if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
                 if ($v === null || $v === false || !empty($v['hidden'])) {
                     continue;
                 }
-                $a[\is_string($v) && \is_file($v) ? 1 : 0][$k] = $v;
+                $lot[$k] = $v;
             }
-        } else if ($source) {
-            foreach (\g(\strtr($in['from'], '/', DS)) as $k => $v) {
-                $a[$v][] = $k;
-            }
-        }
-        // Do not sort if input is array
-        if (!$raw) {
-            \asort($a[0]);
-            \asort($a[1]);
         }
         $chunk = $in['chunk'] ?? 0;
         $current = $in['current'] ?? 1;
-        $a = \array_merge($a[0], $a[1]);
-        $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
-        $url = $GLOBALS['url'];
-        if (!isset($a[$current - 1])) {
-            $a[$current - 1] = [];
-        }
-        // Add parent directory if current directory level is greater than `.\lot`
-        if ($source && \count($GLOBALS['_']['chop'] ?? []) > 1) {
-            \array_unshift($a[$current - 1], [
-                'title' => '..',
-                'description' => false,
-                'type' => 'Folder',
-                'url' => \dirname($url->clean) . '/1' . $url->query
-            ]);
-        }
+        $lot = $chunk === 0 ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
-        foreach ($a[$current - 1] as $k => $v) {
-            if ($v === null || $v === false || !empty($v['hidden'])) {
-                continue;
-            }
-            if (\is_string($v)) {
-                $f = \is_file($v);
-                $n = \basename($v);
-                $x = \pathinfo($v, \PATHINFO_EXTENSION);
-                $v = [ // Treat as array for now
-                    'active' => !($v && \strpos('._', $v[0]) !== false),
-                    'file' => ['x' => [$x => 1]],
-                    'link' => $f ? \To::URL($v) : null,
-                    'path' => $v,
-                    'title' => $n,
-                    'type' => $f ? 'File' : 'Folder',
-                    'url' => $f ? null : $url . $GLOBALS['_']['/'] . '/::g::/' . \str_replace([\LOT . \DS, \DS], ["", '/'], $v) . '/1'
-                ];
-            }
-            $t = (array) ($v['tasks'] ?? []);
-            if (\is_callable($tasks)) {
-                $v['tasks'] = \array_replace((array) \call_user_func($tasks, $v), $t);
-            } else if (\is_array($tasks)) {
-                $v['tasks'] = \array_replace($tasks, $t);
-            }
+        foreach ($lot[$current - 1] ?? [] as $k => $v) {
             $path = $v['path'] ?? false;
             if (!empty($v['current']) || $path && (
                 isset($_SESSION['_']['file'][$path]) ||
@@ -403,22 +332,7 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Page($in, $key) {
-        $x = null;
-        $tasks = $in['tasks'] ?? null;
-        if ($path = $in['path'] ?? null) {
-            $x = [\pathinfo($path, \PATHINFO_EXTENSION) => 1];
-        }
-        if (isset($in['file']['x'])) {
-            $x = $in['file']['x'];
-        }
         $tags = ['is:file'];
-        if ($x) {
-            foreach ($x as $k => $v) {
-                if ($v) {
-                    $tags[] = 'file:' . $k;
-                }
-            }
-        }
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
         }
@@ -428,19 +342,17 @@ namespace _\lot\x\panel {
             2 => []
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $title = $in['time'] ? \strtr($in['time'], '-', '/') : ($path ? \date('Y/m/d H:i:s', \filectime($path)) : null);
-        $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5($path ?? $key), 0, 6) . ';"></span>') . '</div>';
+        $title = $in['time'] ? \strtr($in['time'], '-', '/') : null;
+        $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5($in['path'] ?? $key), 0, 6) . ';"></span>') . '</div>';
         $out[1] .= '<div><h3>' . \_\lot\x\panel\Link([
             'link' => $in['link'] ?? null,
             'title' => $in['title'] ?? $title,
             'url' => $in['url'] ?? null
         ], $key) . '</h3>' . \_\lot\x\panel\h\description($in, $title) . '</div>';
-        if (\is_array($tasks)) {
-            $out[1] .= '<div>' . \_\lot\x\panel\Tasks\Link([
-                0 => 'p',
-                'lot' => $tasks
-            ], 0) . '</div>';
-        }
+        $out[1] .= '<div>' . \_\lot\x\panel\Tasks\Link([
+            0 => 'p',
+            'lot' => $in['tasks'] ?? []
+        ], 0) . '</div>';
         return new \HTML($out);
     }
     function Pager($in, $key) {
@@ -509,67 +421,32 @@ namespace _\lot\x\panel {
         $language = $GLOBALS['language'];
         $in['content'] = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
-            return $url . $_['/'] . '::g::' . $_['path'] . '/' . $i;
+            return $url . $_['/'] . '::g::' . $_['path'] . '/' . $i . $url->query . $url->hash;
         }, $language->first, $language->prev, $language->next, $language->last);
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';
         return $out;
     }
     function Pages($in, $key) {
-        $tasks = $in['tasks'] ?? null;
         $out = [
             0 => 'ul',
             1 => "",
             2 => []
         ];
-        $a = [];
-        if ($raw = isset($in['lot'])) {
+        $lot = [];
+        if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
                 if ($v === null || $v === false || !empty($v['hidden'])) {
                     continue;
                 }
-                if (isset($v['time'])) {
-                    $a[$v['time']] = $v;
-                } else {
-                    $a[] = $v;
-                }
-            }
-        } else if ($source = isset($in['from']) && \is_dir($in['from'])) {
-            foreach (\g(\strtr($in['from'], '/', DS), 'archive,draft,page') as $k => $v) {
-                $a[\filemtime($k)] = $k;
+                $lot[$k] = $v;
             }
         }
-        \krsort($a);
         $chunk = $in['chunk'] ?? 0;
         $current = $in['current'] ?? 1;
-        $child = $in['child'] ?? null;
-        $a = $chunk === 0 ? [$a] : \array_chunk($a, $chunk, false);
-        $url = $GLOBALS['url'];
+        $lot = $chunk === 0 ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
-        foreach ($a[$current - 1] ?? [] as $k => $v) {
-            if (\is_string($v)) {
-                $page = new \Page($v);
-                $x = $page->x;
-                $v = [ // Treat as array for now
-                    'active' => $x !== 'draft',
-                    'description' => \_\lot\x\panel\h\w($page->description ?? ($page->time . "")),
-                    'child' => $child,
-                    'file' => ['x' => [$x => 1]],
-                    'image' => $page->image(72, 72),
-                    'link' => $page->url,
-                    'path' => $v,
-                    'title' => $page->title,
-                    'time' => $page->time . "",
-                    'type' => 'Page',
-                    'update' => $page->update . ""
-                ];
-            }
-            $t = (array) ($v['tasks'] ?? []);
-            if (\is_callable($tasks)) {
-                $v['tasks'] = \array_replace((array) \call_user_func($tasks, $v), $t);
-            } else if (\is_array($tasks)) {
-                $v['tasks'] = \array_replace($tasks, $t);
-            }
+        foreach ($lot[$current - 1] ?? [] as $k => $v) {
             $path = $v['path'] ?? false;
             if (!empty($v['current']) || $path && isset($_SESSION['_']['file'][$path])) {
                 $v['tags'][] = 'is:active';

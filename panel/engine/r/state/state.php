@@ -1,6 +1,6 @@
 <?php
 
-$fields = [
+$lot = [
     'token' => [
         'type' => 'Hidden',
         'value' => $_['token']
@@ -22,7 +22,7 @@ foreach (\State::get(null, true) as $k => $v) {
     } else if (is_string($v) && strpos($v, "\n") === false) {
         $type = 'Text';
     }
-    $fields[$k] = [
+    $lot[$k] = [
         'type' => $type,
         'width' => true,
         'value' => is_array($v) ? json_encode($v) : $v
@@ -62,7 +62,7 @@ return [
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
-                                                'lot' => $fields,
+                                                'lot' => $lot,
                                                 'stack' => 10
                                             ]
                                         ],

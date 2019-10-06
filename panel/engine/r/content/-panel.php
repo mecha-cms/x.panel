@@ -40,13 +40,13 @@ return (function($icons) {
                             'caret' => false,
                             'title' => false,
                             'url' => $url,
-                            'lot' => $list,
+                            'lot' => isset($_GET['q']) ? false : $list,
                             'tags' => ['is:main'],
                             'stack' => 10
                         ],
                         'search' => [
                             'type' => 'Form.Get',
-                            'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . $url->query . $url->hash,
+                            'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . '/1' . $url->query . $url->hash,
                             'name' => 'search',
                             'lot' => [
                                 'fields' => [
@@ -56,7 +56,8 @@ return (function($icons) {
                                             '2' => ['title' => $language->doSearch . ': ' . explode('/', $_['path'], 3)[1]],
                                             'type' => 'Text',
                                             'title' => $language->doSearch,
-                                            'alt' => $language->doSearch
+                                            'alt' => $language->doSearch,
+                                            'value' => $_GET['q'] ?? null
                                         ]
                                     ]
                                 ]
@@ -123,6 +124,14 @@ return (function($icons) {
                             'title' => false,
                             'url' => $url . $_['/'] . '::g::/.alert/1' . $url->query . $url->hash,
                             'stack' => 10
+                        ],
+                        'search' => [
+                            'hidden' => !isset($_GET['q']),
+                            'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
+                            'title' => false,
+                            'description' => $language->doClose,
+                            'url' => $url->clean . '/1' . $url->query('&', ['q' => false]) . $url->hash,
+                            'stack' => 20
                         ]
                     ],
                     'stack' => 30

@@ -11,6 +11,11 @@
   opacity: 1;
 }
 
+a:not(.button).not\:active {
+  opacity: 1;
+  color: inherit;
+}
+
 /* Text Helper */
 .text-center,
 .ta\:c {
@@ -715,9 +720,6 @@ label.not\:active {
 .field {
   display: flex;
 }
-.field.is\:required > label > span {
-  color: #f00;
-}
 .field > label {
   display: block;
   width: 120px;
@@ -972,8 +974,7 @@ label.not\:active {
 }
 .lot\:input svg.fix {
   width: 36px;
-  padding-right: 0;
-  padding-left: 0;
+  padding: 5px 0;
 }
 .lot\:input .button {
   background: none;

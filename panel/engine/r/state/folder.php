@@ -68,7 +68,7 @@ return [
                                                         'type' => 'Items',
                                                         'block' => true,
                                                         'name' => 'folder',
-                                                        'value' => ['kick'],
+                                                        'value' => $_['task'] === 's' ? ['kick' => 1] : [],
                                                         'lot' => [
                                                             'kick' => $language->fieldDescriptionFolderKick
                                                         ],

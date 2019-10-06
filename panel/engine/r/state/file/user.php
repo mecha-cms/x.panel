@@ -8,4 +8,31 @@ $GLOBALS['_']['content'] = $_['content'] = [
     'page' => 'page.user'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['content'];
 
-return require __DIR__ . DS . '..' . DS . $_['content'] . '.php';
+$lot = require __DIR__ . DS . '..' . DS . $_['content'] . '.php';
+
+$status = $user['status'];
+$i = $page['status'];
+$any = $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'];
+
+if ($status !== 1) {
+    $any = isset($any[$i]) ? [$i => $any[$i]] : [];
+} else if ($page->name === $user->name) {
+    $any = [1 => $any[1]];
+}
+
+// No use. These field(s) was added only to hide the `pass` data from file list
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['pass'] = [
+    'name' => 'data[pass]',
+    'hidden' => true
+];
+
+// No use. These field(s) was added only to hide the `pass` data from file list
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['token'] = [
+    'name' => 'data[token]',
+    'hidden' => true
+];
+
+// Modify user status list
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] = $any;
+
+return $lot;

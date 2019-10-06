@@ -29,6 +29,7 @@ if ($i === null && $task === 'g' && count($chop) === 1 && is_dir($f)) {
 $GLOBALS['_'] = $_; // Update data
 
 require __DIR__ . DS . 'f.php';
+require __DIR__ . DS . 'r' . DS . 'alert.php';
 require __DIR__ . DS . 'r' . DS . 'asset.php';
 require __DIR__ . DS . 'r' . DS . 'file.php';
 require __DIR__ . DS . 'r' . DS . 'hook.php';

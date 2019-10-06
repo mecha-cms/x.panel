@@ -1,62 +1,36 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/user/1`
-$GLOBALS['_']['content'] = 'page';
+$GLOBALS['_']['content'] = $_['content'] = 'page';
 
-Hook::set('page.title', function($title) {
-    return strpos($this->path, USER . DS) === 0 ? ($this['author'] ?? '@' . S . $this->name) : $title;
-}, 0);
+$lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
 
-Hook::set('page.description', function($description) {
-    return strpos($this->path, USER . DS) === 0 ? '@' . S . $this->name : $description;
-}, 0);
+if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
+    $path = $user->path;
+    $status = $user['status'];
+    foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
+        $page = new User($v['path']);
+        $v['link'] = $page->url;
+        $v['title'] = $page . "";
+        $v['description'] = $page->user;
+        $v['image'] = $page->avatar(72);
+        // Disable page children feature
+        $v['tasks']['enter']['hidden'] = true;
+        $v['tasks']['s']['hidden'] = true;
+        $v['tags'][] = 'status:' . $page['status'];
+        if (
+            // Prevent user from deleting their own user file
+            $v['path'] === $path ||
+            // Prevent user with status other than `1` from deleting user file(s)
+            $status !== 1
+        ) {
+            $v['tasks']['l']['active'] = false;
+            $v['tasks']['l']['url'] = 'javascript:;';
+        }
+    }
+}
 
-$prefix = $url . State::get('x.user.path') . '/';
-Hook::set('page.url', function($url) use($prefix) {
-    return strpos($this->path, USER . DS) === 0 ? $prefix . $this->name : $url;
-}, 0);
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = $language->user;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'page.user', 'tab' => false]) . $url->hash;
 
-return array_replace_recursive(require __DIR__ . DS . '..' . DS . $_['content'] . 's.php', [
-    'desk' => [
-        // type: Desk
-        'lot' => [
-            'form' => [
-                // type: Form.Post
-                'lot' => [
-                    0 => [
-                        // type: Section
-                        'lot' => [
-                            'tasks' => [
-                                // type: Tasks.Button
-                                'lot' => [
-                                    'page' => [
-                                        'title' => $language->user,
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'page.user', 'tab' => false]) . $url->hash
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ],
-                    1 => [
-                        // type: Section
-                        'lot' => [
-                            'tabs' => [
-                                // type: Tabs
-                                'lot' => [
-                                    'pages' => [
-                                        'lot' => [
-                                            'pages' => [
-                                                // type: Pages
-                                                'child' => false // Disallow to create child page(s) here
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ],
-                ]
-            ]
-        ]
-    ]
-]);
+return $lot;

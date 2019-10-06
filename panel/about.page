@@ -4,6 +4,9 @@ description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
 version: 2.1.1
+
+use:
+  '.\lot\x\user': 1
 ...
 
 ### Usage

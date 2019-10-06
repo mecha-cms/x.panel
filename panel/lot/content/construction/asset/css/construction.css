@@ -147,9 +147,6 @@ caption {
 .description {
   color: #888;
 }
-.field.is\:required > label > span {
-  color: #900;
-}
 .input.is\:plain {
   background: none;
   border: 0;

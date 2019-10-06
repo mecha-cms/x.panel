@@ -1,6 +1,21 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/tag/1`
-$GLOBALS['_']['content'] = 'page';
+$GLOBALS['_']['content'] = $_['content'] = 'page';
 
-return require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
+$lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
+
+if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
+    foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
+        unset($v['link']);
+        $v['url'] = $v['tasks']['g']['url'] ?? $url;
+        // Disable page children feature
+        $v['tasks']['enter']['hidden'] = true;
+        $v['tasks']['s']['hidden'] = true;
+    }
+}
+
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = $language->tag;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'page.tag', 'tab' => false]) . $url->hash;
+
+return $lot;
