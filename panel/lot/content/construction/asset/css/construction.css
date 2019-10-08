@@ -3,11 +3,11 @@ html {
   background: #fff;
   color: #000;
 }
-a {
+a[href] {
   color: #009;
 }
-a:focus,
-a:active {
+a[href]:focus,
+a[href]:active {
   color: #900;
 }
 mark {
@@ -66,6 +66,11 @@ caption {
 .button:focus,
 .button:active {
   background: #900;
+  color: #fff;
+}
+.button[href],
+.button[href]:focus,
+.button[href]:active {
   color: #fff;
 }
 .input[disabled],
@@ -182,6 +187,10 @@ caption {
 .lot\:page li {
   background: #fff;
   border: 0 solid #fff;
+}
+.lot\:file h3,
+.lot\:page h3 {
+  color: inherit;
 }
 .lot\:file li:focus,
 .lot\:file li:hover,

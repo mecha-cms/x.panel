@@ -5,7 +5,7 @@ var tabs = document.querySelectorAll('.lot\\:tab'),
         while ($ && $.nodeName.toLowerCase() !== 'form') {
             $ = $.parentNode;
         }
-        $.nodeName.toLowerCase() === 'form' && ($.action = href);
+        $ && $.nodeName.toLowerCase() === 'form' && ($.action = href);
     };
 
 if (tabs.length) {

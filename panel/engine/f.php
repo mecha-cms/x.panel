@@ -260,7 +260,7 @@ namespace _\lot\x\panel {
             $tags[] = 'not:active';
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $out[2]['href'] = $href === \P ? '#' : $href;
+        $out[2]['href'] = $href === \P ? null : $href;
         $out[2]['target'] = $in[2]['target'] ?? (isset($in['link']) ? '_blank' : null);
         $out[2]['title'] = $in['description'] ?? null;
         return new \HTML($out);
@@ -343,7 +343,10 @@ namespace _\lot\x\panel {
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $title = $in['time'] ? \strtr($in['time'], '-', '/') : null;
-        $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5($in['path'] ?? $key), 0, 6) . ';"></span>') . '</div>';
+        $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($in['path'] ?? $key, [
+            \ROOT => "",
+            \DS => '/'
+        ])), 0, 6) . ';"></span>') . '</div>';
         $out[1] .= '<div><h3>' . \_\lot\x\panel\Link([
             'link' => $in['link'] ?? null,
             'title' => $in['title'] ?? $title,
@@ -419,13 +422,13 @@ namespace _\lot\x\panel {
             return $out;
         };
         $language = $GLOBALS['language'];
-        $in['content'] = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
+        $in['content'] = $content = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
             return $url . $_['/'] . '::g::' . $_['path'] . '/' . $i . $url->query . $url->hash;
         }, $language->first, $language->prev, $language->next, $language->last);
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';
-        return $out;
+        return $content !== "" ? $out : null;
     }
     function Pages($in, $key) {
         $out = [
@@ -467,9 +470,7 @@ namespace _\lot\x\panel {
         if (isset($in['content'])) {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
-            foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
-                $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
-            }
+            $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
         }
         \_\lot\x\panel\h\c($out[2], $in);
         return new \HTML($out);
@@ -528,15 +529,19 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => $in[2] ?? []
         ];
+        $count = 0;
         if (isset($in['content'])) {
-            $tags[] = 'count:1';
+            $tags[] = 'count:' . ($count = 1);
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
-            $tags[] = 'count:' . \count(\array_filter($in['lot']));
-            $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
+            $out[1] .= \_\lot\x\panel\h\lot($in['lot'], null, $count);
+            $tags[] = 'count:' . $count;
         }
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
-        return new \HTML($out);
+        if ($count > 0) {
+            \_\lot\x\panel\h\c($out[2], $in, $tags);
+            return new \HTML($out);
+        }
+        return null;
     }
     function abort($in, $key, $fn) {
         if (\defined("\\DEBUG") && \DEBUG) {
@@ -557,14 +562,16 @@ namespace _\lot\x\panel {
         $type = $in['type'] ?? null;
         $title = \_\lot\x\panel\h\title($in, 2);
         $description = \_\lot\x\panel\h\description($in);
+        $count = 0;
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? $title . $description,
-            2 => \array_replace(['class' => 'count:' . \count(\array_filter($in['lot'] ?? [])) . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")], $in[2] ?? [])
+            2 => $in[2] ?? []
         ];
         if (isset($in['lot'])) {
-            $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
+            $out[1] .= \_\lot\x\panel\h\lot($in['lot'], null, $count);
         }
+        $out[2] = \array_replace(['class' => 'count:' . $count . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")], $out[2]);
         return new \HTML($out);
     }
 }

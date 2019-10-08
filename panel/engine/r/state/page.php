@@ -15,9 +15,9 @@ $lot = [
                         'lot' => false // Disable sub-menu(s)
                     ],
                     's' => [
+                        'hidden' => $_['task'] === 's',
                         'icon' => 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z',
                         'title' => false,
-                        'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->page . ')',
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'page', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
@@ -66,8 +66,8 @@ $lot = [
                                                         'stack' => 10
                                                     ],
                                                     'name' => [
-                                                        'type' => 'Text',
                                                         'hidden' => $_['task'] === 's',
+                                                        'type' => 'Text',
                                                         'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
                                                         'alt' => To::kebab($_['task'] === 'g' ? ($page->name ?? $language->fieldAltTitle) : $language->fieldAltTitle),
                                                         'name' => 'page[name]',
@@ -92,6 +92,13 @@ $lot = [
                                                         'width' => true,
                                                         'stack' => 40
                                                     ],
+                                                    'author' => [
+                                                        'type' => 'Hidden',
+                                                        'alt' => $page['author'] ?? '@' . S . To::kebab($language->fieldAltAuthor),
+                                                        'name' => 'page[author]',
+                                                        'value' => $page['author'] ?? $user->user,
+                                                        'stack' => 50
+                                                    ],
                                                     'type' => [
                                                         'type' => 'Item',
                                                         'name' => 'page[type]',
@@ -100,7 +107,7 @@ $lot = [
                                                             'HTML' => 'HTML',
                                                             'Markdown' => 'Markdown'
                                                         ],
-                                                        'stack' => 50
+                                                        'stack' => 60
                                                     ]
                                                 ],
                                                 'stack' => 10
@@ -124,8 +131,8 @@ $lot = [
                                                         'stack' => 10
                                                     ],
                                                     'time' => [
-                                                        'type' => 'Text',
                                                         'hidden' => $_['task'] === 's',
+                                                        'type' => 'Text',
                                                         'pattern' => "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])([ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2})?$",
                                                         'alt' => date('Y-m-d H:i:s'),
                                                         'name' => 'data[time]',
@@ -133,9 +140,9 @@ $lot = [
                                                         'stack' => 20
                                                     ],
                                                     'files' => [
+                                                        'hidden' => $_['task'] === 's',
                                                         'type' => 'Field',
                                                         'title' => "",
-                                                        'hidden' => $_['task'] === 's',
                                                         'lot' => [
                                                             'files' => [
                                                                 'type' => 'Files',
@@ -206,7 +213,7 @@ $lot = [
                                                         'type' => 'Submit',
                                                         'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doPublish'},
                                                         'name' => 'page[x]',
-                                                        'value' => $page->x,
+                                                        'value' => $_['task'] === 'g' ? $page->x : 'page',
                                                         'stack' => 10
                                                     ],
                                                     'draft' => [
@@ -217,16 +224,16 @@ $lot = [
                                                         'stack' => 20
                                                     ],
                                                     'archive' => [
-                                                        'type' => 'Submit',
                                                         'hidden' => $_['task'] === 's',
+                                                        'type' => 'Submit',
                                                         'title' => $language->doArchive,
                                                         'name' => 'page[x]',
                                                         'value' => 'archive',
                                                         'stack' => 30
                                                     ],
                                                     'l' => [
-                                                        'type' => 'Link',
                                                         'hidden' => $_['task'] === 's',
+                                                        'type' => 'Link',
                                                         'title' => $language->doDelete,
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['tab' => false, 'token' => $_['token']])),
                                                         'stack' => 40

@@ -20,7 +20,7 @@ return [
                                                 'type' => 'Files',
                                                 'from' => PAGE,
                                                 'chunk' => 10,
-                                                'current' => $url->i
+                                                'current' => $url['i']
                                             ]
                                         ],
                                         'stack' => 10

@@ -5,13 +5,18 @@ $GLOBALS['_']['content'] = $_['content'] = 'page';
 
 $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
 
+$g = $user->status !== 1;
+$author = $user->user;
+
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
-        unset($v['link']);
-        $v['url'] = $v['tasks']['g']['url'] ?? $url;
+        unset($v['link'], $v['url']);
         // Disable page children feature
         $v['tasks']['enter']['hidden'] = true;
         $v['tasks']['s']['hidden'] = true;
+        if ($g && $v['author'] !== null && $v['author'] !== $author) {
+            $v['hidden'] = true;
+        }
     }
 }
 

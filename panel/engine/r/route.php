@@ -2,7 +2,6 @@
 
 function route($lot) {
     if (!\Is::user()) {
-        // TODO: Show 404 page to confuse URL guesser
         \Guard::kick("");
     }
     extract($GLOBALS, \EXTR_SKIP);

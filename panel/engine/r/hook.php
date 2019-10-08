@@ -19,12 +19,12 @@ function _() {
     if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
         $_lot = $_state . 'test' . \DS . \basename(\urlencode($_GET['test'])) . '.php';
     } else {
-        $_lot = $_state . $_['content'] . ($_['i'] > 0 ? 's' : "") . '.php';
+        $_lot = $_state . $_['content'] . ($_['i'] ? 's' : "") . '.php';
         if (!isset($_GET['content'])) {
             // Auto-detect content type
             if ($_['f']) {
                 $GLOBALS['_']['content'] = $_['content'] = \is_dir($_['f']) ? 'folder' : 'file';
-                $_lot = $_state . $_['content'] . ($_['i'] > 0 ? 's' : "") . '.php'; // Update data
+                $_lot = $_state . $_['content'] . ($_['i'] ? 's' : "") . '.php'; // Update data
             }
             // Manually set content type based on file path
             foreach (\array_reverse(\step(\trim($_['path'], '/'), '/')) as $_path) {
@@ -34,7 +34,7 @@ function _() {
                         $_lot = $_path; // Update data
                         require $_path;
                     }
-                })($_state . 'file' . ($_['i'] > 0 ? 's' : "") . \DS . $_path . '.php');
+                })($_state . 'file' . ($_['i'] ? 's' : "") . \DS . $_path . '.php');
             }
             $_ = $GLOBALS['_']; // Update data
         }

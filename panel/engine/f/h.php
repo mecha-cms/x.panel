@@ -71,7 +71,7 @@ function icon($in) {
     return $icon;
 }
 
-function lot($lot, $fn = null) {
+function lot($lot, $fn = null, &$count = 0) {
     if (!\is_array($lot)) {
         return;
     }
@@ -80,7 +80,11 @@ function lot($lot, $fn = null) {
         if ($v === null || $v === false || !empty($v['hidden'])) {
             continue;
         }
-        $out .= $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);
+        $v = $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);
+        if ($v) {
+            ++$count;
+        }
+        $out .= $v;
     }
     return $out;
 }

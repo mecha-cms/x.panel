@@ -157,12 +157,27 @@ function page($_, $lot) {
             $lot['page']['update'] = (new \Date($lot['page']['update']))->format('Y-m-d H:i:s');
         }
         unset($lot['page']['name'], $lot['page']['x']);
-        $lot['file']['content'] = \To::page(\array_filter($lot['page'] ?? []));
+        $page = [];
+        $p = (array) ($state->x->page ?? []);
+        foreach ($lot['page'] as $k => $v) {
+            if (
+                // Skip empty value
+                \trim($v) === "" ||
+                // Skip default value
+                isset($p[$k]) && $p[$k] === $v
+            ) {
+                continue;
+            }
+            $page[$k] = $v;
+        }
+        $lot['file']['content'] = \To::page($page);
         $lot['file']['name'] = $name . '.' . $x;
+        $_f = $_['f']; // Get old file name
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error'])) {
-            if (!\is_dir($d = \Path::F($_['f']))) {
-                \mkdir($d, 0755, true); // TODO: Also rename folder on file name change
+            $d = \Path::F($_['f']);
+            if ($_['f'] !== $_f && \is_dir($_d = \Path::F($_f))) {
+                \rename($_d, $d);
             }
             if (isset($lot['data'])) {
                 if (isset($lot['data']['time'])) {

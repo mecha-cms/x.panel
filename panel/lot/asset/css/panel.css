@@ -11,11 +11,6 @@
   opacity: 1;
 }
 
-a:not(.button).not\:active {
-  opacity: 1;
-  color: inherit;
-}
-
 /* Text Helper */
 .text-center,
 .ta\:c {
@@ -209,10 +204,13 @@ a:not(.button).not\:active {
   -webkit-tap-highlight-color: transparent;
 }
 a {
+  color: inherit;
+}
+a[href] {
   color: #00f;
 }
-a:focus,
-a:active {
+a[href]:focus,
+a[href]:active {
   color: #f00;
 }
 
@@ -504,6 +502,10 @@ svg[display="none"] {
 .button:focus,
 .button:active {
   background: #f00;
+}
+.button[href],
+.button[href]:focus,
+.button[href]:active {
   color: #fff;
 }
 .input[readonly],
@@ -885,6 +887,11 @@ label.not\:active {
   font: inherit;
   list-style: none;
   border-color: inherit;
+}
+/* TODO */
+.lot\:file h3 a.not\:active,
+.lot\:page h3 a.not\:active {
+  opacity: 1;
 }
 .lot\:file li,
 .lot\:page li {

@@ -9,7 +9,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'sort' => $state['sort'] ?? 1,
     'content' => $_GET['content'] ?? 'file',
     'f' => null,
-    'i' => $i = $url->i,
+    'i' => $i = $url['i'],
     'kick' => null,
     'lot' => [],
     'path' => null,
@@ -22,7 +22,8 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 
 $p = trim($url->path, '/');
 if (strpos('/' . $p, $pp . '::') === 0) {
-    Route::let(); // Remove all route(s)
+    \Asset::let(); // Remove all asset(s)
+    \Route::let(); // Remove all route(s)
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }
 

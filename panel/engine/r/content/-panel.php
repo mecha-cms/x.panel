@@ -15,7 +15,7 @@ return (function($icons) {
                 'current' => strpos($_['path'] . '/', '/' . $n . '/') === 0,
                 'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
                 'title' => $language->{$n === 'x' ? 'extension' : $n},
-                'url' => $url . $_['/'] . '::g::/' . $n . '/1'
+                'url' => $url . $_['/'] . '::g::/' . $n . '/1' . $url->hash
             ];
         }
     }
@@ -153,8 +153,8 @@ return (function($icons) {
                             'stack' => 10
                         ],
                         'alert' => [
-                            'type' => 'Section',
                             'hidden' => $alert === "",
+                            'type' => 'Section',
                             'content' => $alert,
                             'stack' => 15
                         ],

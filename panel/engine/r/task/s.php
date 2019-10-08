@@ -196,7 +196,20 @@ function page($_, $lot) {
             $lot['page']['update'] = (new \Date($lot['page']['update']))->format('Y-m-d H:i:s');
         }
         unset($lot['page']['name'], $lot['page']['x']);
-        $lot['file']['content'] = \To::page(\array_filter($lot['page'] ?? []));
+        $page = [];
+        $p = (array) ($state->x->page ?? []);
+        foreach ($lot['page'] as $k => $v) {
+            if (
+                // Skip empty value
+                \trim($v) === "" ||
+                // Skip default value
+                isset($p[$k]) && $p[$k] === $v
+            ) {
+                continue;
+            }
+            $page[$k] = $v;
+        }
+        $lot['file']['content'] = \To::page($page);
         $lot['file']['name'] = $name . '.' . $x;
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error'])) {

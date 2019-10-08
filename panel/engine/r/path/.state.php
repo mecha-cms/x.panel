@@ -8,10 +8,6 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
         // Force as item page
         Guard::kick($url->clean . $url->query . $url->hash);
     }
-    if (!Is::user()) {
-        // TODO: Show 404 page to confuse URL guesser
-        Guard::kick("");
-    }
     $i18n = extension_loaded('intl');
     $panes = $paths = $skins = [];
     foreach (glob(LOT . DS . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {

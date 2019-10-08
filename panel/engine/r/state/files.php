@@ -10,18 +10,19 @@ $search = function($folder) {
 
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';
-    $guest = $user->status !== 1;
+    $g = $user->status !== 1;
     foreach ($search($folder) as $k => $v) {
         $after = '::' . strtr($k, [
             LOT => "",
             DS => '/'
         ]);
+        $n = basename($k);
         $files[$v][$k] = [
+            'hidden' => strpos('_.', $n[0]) !== false && $g, // User(s) with status other than `1` cannot see hidden file(s)
             'path' => $k,
             'type' => $v === 0 ? 'Folder' : 'File',
-            'title' => $n = basename($k),
+            'title' => $n,
             'description' => $v === 0 ? $language->doEnter : (new File($k))->size,
-            'hidden' => strpos('_.', $n[0]) !== false && $guest, // User(s) with status other than `1` cannot see hidden file(s)
             'url' => $before . 'g' . $after . ($v === 0 ? '/1' : "") . $url->query . $url->hash,
             'tasks' => [
                 'g' => [
@@ -32,7 +33,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                     'stack' => 10
                 ],
                 'l' => [
-                    'hidden' => $guest, // User(s) with status other than `1` cannot delete file(s)
+                    'hidden' => $g, // User(s) with status other than `1` cannot delete file(s)
                     'title' => $language->doDelete,
                     'description' => $language->doDelete,
                     'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
@@ -49,13 +50,13 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
 }
 
 if (count($_['chop']) > 1 && $_['i'] <= 1) {
-    array_unshift($files, [
+    $files = array_merge([$folder => [
         'type' => 'Folder',
         'title' => '..',
         'description' => $language->doExit,
         'tags' => ['is:folder'],
         'url' => $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query . $url->hash
-    ]);
+    ]], $files);
 }
 
 return [
@@ -113,7 +114,8 @@ return [
                                                 'current' => $_['i'],
                                                 'stack' => 10
                                             ]
-                                        ]
+                                        ],
+                                        'stack' => 10
                                     ]
                                 ]
                             ]

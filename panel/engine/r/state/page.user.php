@@ -51,6 +51,7 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                                     'email' => [
                                                         'type' => 'Text',
                                                         'required' => true,
+                                                        'pattern' => "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$",
                                                         'before' => ['icon' => 'M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6M20 6L12 11L4 6H20M20 18H4V8L12 13L20 8V18Z'],
                                                         'name' => 'page[email]',
                                                         'alt' => $_['task'] === 'g' ? $page['email'] : To::kebab($language->fieldAltAuthor) . S . '@' . $url->host . S,

@@ -25,5 +25,6 @@ Language::set([
         2 => 'Editor',
         3 => 'Member'
     ],
+    'info' => ['Info', 'Info', 'Infos'],
     'panel' => ['Panel', 'Panel', 'Panels']
 ]);

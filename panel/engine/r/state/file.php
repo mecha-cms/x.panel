@@ -30,9 +30,9 @@ return [
                         'lot' => false // Disable sub-menu(s)
                     ],
                     's' => [
+                        'hidden' => $_['task'] === 's',
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
-                        'hidden' => $_['task'] === 's',
                         'description' => $language->doCreate . ' (' . $language->file . ')',
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'file', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
@@ -67,8 +67,8 @@ return [
                                                         'value' => $_GET['content'] ?? 'file'
                                                     ],
                                                     'content' => [
-                                                        'type' => 'Source',
                                                         'hidden' => !$editable,
+                                                        'type' => 'Source',
                                                         'alt' => $language->fieldAltContent,
                                                         'name' => 'file[content]',
                                                         'value' => $content,
@@ -116,8 +116,8 @@ return [
                                                         'stack' => 10
                                                     ],
                                                     'l' => [
-                                                        'type' => 'Link',
                                                         'hidden' => $_['task'] === 's',
+                                                        'type' => 'Link',
                                                         'title' => $language->doDelete,
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'file', 'token' => $_['token']])),
                                                         'stack' => 20
