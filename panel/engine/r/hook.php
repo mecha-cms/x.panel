@@ -43,10 +43,11 @@ function _() {
         // Define lot with no filter
         $GLOBALS['_']['lot'] = $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($_lot) ? require $_lot : []));
         // Filter by status
-        \is_file($_f = __DIR__ . \DS . $user['status'] . '.php') && (function($_f) {
+        \is_file($_f = __DIR__ . \DS . 'user' . \DS . $user['status'] . '.php') && (function($_f) {
             extract($GLOBALS, \EXTR_SKIP);
             require $_f;
         })($_f);
+        $_ = $GLOBALS['_']; // Update data
         // Filter by path
         foreach (\step(\trim($_['path']), '/') as $_v) {
             \is_file($_f = __DIR__ . \DS . 'path' . \DS . \strtr($_v, '/', \DS) . '.php') && (function($_f) {
@@ -54,6 +55,7 @@ function _() {
                 require $_f;
             })($_f);
         }
+        $_ = $GLOBALS['_']; // Update data
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($_form['token'])) {
             $_hooks = \map(\step($_['content']), function($_hook) use($_) {

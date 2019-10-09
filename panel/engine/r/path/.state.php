@@ -9,8 +9,6 @@ $GLOBALS['_']['content'] = $_['content'] = 'state';
 
 Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
     extract($GLOBALS, EXTR_SKIP);
-    $GLOBALS['content'] = require __DIR__ . DS . '..' . DS . 'content' . DS . '-panel.php';
-    $GLOBALS['icon'] = require __DIR__ . DS . '..' . DS . 'content' . DS . '-icon.php';
     if (isset($_['i'])) {
         // Force as item page
         Guard::kick($url->clean . $url->query . $url->hash);
@@ -194,5 +192,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
             'pages' => false
         ]
     ]);
+    $GLOBALS['content'] = require __DIR__ . DS . '..' . DS . 'content' . DS . '-panel.php';
+    $GLOBALS['icon'] = require __DIR__ . DS . '..' . DS . 'content' . DS . '-icon.php';
     $this->content(__DIR__ . DS . '..' . DS . 'content' . DS . 'panel.php');
 }, 10);

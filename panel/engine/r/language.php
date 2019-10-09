@@ -5,7 +5,7 @@ Language::set([
     'alert-success-*-let' => '%s %s successfully deleted.',
     'alert-success-*-set' => '%s %s successfully created.',
     'alert-success-*-update' => '%s %s successfully updated.',
-    'field-alt-author' => 'Foo Bar',
+    'field-alt-author' => 'John Doe',
     'field-alt-content' => 'Content goes here…',
     'field-alt-css' => 'CSS goes here…',
     'field-alt-description' => 'Description goes here…',
@@ -19,12 +19,22 @@ Language::set([
     'field-description-locale' => 'This value determines the translation for date and time format. Every country has different locale name, and it might be vary on every operating system. Please consult to the administrator or search for query like &#x201C;PHP locale name for country XYZ&#x201D; with your favorite search engine.',
     'field-description-locale-error' => 'Please enable the internationalization extension on your PHP server.',
     'field-description-path-panel' => 'Select the main page that will open after you log in.',
+    'field:page-type' => [
+        'lot' => [
+            'HTML' => 'HTML',
+            'Markdown' => State::get('x.markdown') !== null ? 'Markdown' : null
+        ]
+    ],
     'field:user-status' => [
-        0 => 'Pending',
-        1 => 'Administrator',
-        2 => 'Editor',
-        3 => 'Member'
+        'lot' => [
+            0 => 'Pending',
+            1 => 'Administrator',
+            2 => 'Editor',
+            3 => 'Member'
+        ]
     ],
     'info' => ['Info', 'Info', 'Infos'],
-    'panel' => ['Panel', 'Panel', 'Panels']
+    'license' => ['License', 'License', 'Licenses'],
+    'panel' => ['Panel', 'Panel', 'Panels'],
+    'slug' => ['Slug', 'Slug', 'Slugs'],
 ]);

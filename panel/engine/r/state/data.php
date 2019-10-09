@@ -74,6 +74,7 @@ return [
                                                         'type' => 'Text',
                                                         'alt' => $_['task'] === 'g' ? ($name ?? pathinfo($language->fieldAltName, PATHINFO_FILENAME)) : pathinfo($language->fieldAltName, PATHINFO_FILENAME),
                                                         'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
+                                                        'after' => '.data',
                                                         'focus' => true,
                                                         'name' => 'data[name]',
                                                         'value' => $name,

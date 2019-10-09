@@ -20,6 +20,10 @@ pre {
   background: #333;
   color: #fff;
 }
+/* License block */
+pre.is\:text {
+  background: #ccc;
+}
 code,
 .code {
   font-family: "Roboto Mono", "Courier New", Courier, "Nimbus Mono L", monospace;

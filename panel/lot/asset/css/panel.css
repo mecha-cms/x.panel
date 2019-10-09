@@ -308,6 +308,12 @@ pre {
   padding: 8px 12px;
   overflow: auto;
 }
+pre.is\:text {
+  background: none;
+  border: 2px inset;
+  color: inherit;
+  padding: 12px;
+}
 img {
   max-width: 100%;
   height: auto;

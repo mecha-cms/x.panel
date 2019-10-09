@@ -10,8 +10,10 @@ $GLOBALS['_']['content'] = $_['content'] = [
 
 $lot = require __DIR__ . DS . '..' . DS . $_['content'] . '.php';
 
+$tabs = [];
+
 if ($_['content'] === 'page' && State::get('x.art') !== null) {
-    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['art'] = [
+    $tabs['art'] = [
         'lot' => [
             'fields' => [
                 'type' => 'Fields',
@@ -43,5 +45,7 @@ if ($_['content'] === 'page' && State::get('x.art') !== null) {
         'stack' => 30
     ];
 }
+
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = array_replace_recursive($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'], $tabs);
 
 return $lot;

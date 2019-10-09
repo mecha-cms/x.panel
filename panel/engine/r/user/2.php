@@ -11,7 +11,7 @@ if (isset($_['i'])) {
     // Change asset menu link to jump to the user file(s)
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['lot']['asset']['url'] = $url . $_['/'] . '::g::/asset/' . $user->user . '/1';
     // Hide these menu(s)
-    foreach (['cache', 'content', 'trash', 'user', 'x'] as $n) {
+    foreach (['block', 'cache', 'content', 'trash', 'user', 'x'] as $n) {
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['lot'][$n]['hidden'] = true;
     }
 }

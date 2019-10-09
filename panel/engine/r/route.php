@@ -6,8 +6,6 @@ function route($lot) {
     }
     extract($GLOBALS, \EXTR_SKIP);
     $GLOBALS['t'][] = $language->panel;
-    $n = \ltrim($_['chop'][0], '_.-');
-    $GLOBALS['t'][] = isset($_['path']) ? $language->{$n === 'x' ? 'extension' : $n} : null;
     $GLOBALS['content'] = require __DIR__ . \DS . 'content' . \DS . '-panel.php';
     $GLOBALS['icon'] = require __DIR__ . \DS . 'content' . \DS . '-icon.php';
     \State::set([
@@ -25,9 +23,12 @@ function route($lot) {
         !\is_dir($_['f']) && isset($_['i'])
     )) {
         \State::set('has.bar', false);
+        $GLOBALS['t'][] = $language->isError;
         $this->status(404);
         $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
     }
+    $n = \ltrim($_['chop'][0], '_.-');
+    $GLOBALS['t'][] = isset($_['path']) ? $language->{$n === 'x' ? 'extension' : $n} : null;
     $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }
 

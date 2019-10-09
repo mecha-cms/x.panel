@@ -6,7 +6,19 @@ if ($i > 1) {
     $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
     if ($i === 2 && is_file($f = $_['f'] . DS . 'about.page')) {
         $page = new Page($f);
-        $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['hidden'] = true;
+        // Hide some file(s) from the list
+        foreach ([
+            // Parent folder
+            $f = $_['f'],
+            // About file
+            $f . DS . 'about.page',
+            // License file
+            $f . DS . 'LICENSE',
+            // Custom stack data
+            $f . DS . basename($f)
+        ] as $p) {
+            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
+        }
         $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
             'title' => $language->info,
             'lot' => [
@@ -15,6 +27,19 @@ if ($i > 1) {
                     'title' => $page->title,
                     'description' => _\lot\x\panel\h\w($page->description),
                     'content' => $page->content,
+                    'stack' => 10
+                ]
+            ],
+            'stack' => 9.8
+        ];
+        $f = $_['f'] . DS . 'LICENSE';
+        $f = is_file($f) ? $f : null;
+        $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
+            'hidden' => !$f,
+            'lot' => [
+                0 => [
+                    'type' => 'Section',
+                    'content' => '<pre class="is:text"><code class="txt">' . htmlspecialchars($f ? file_get_contents($f) : "") . '</code></pre>',
                     'stack' => 10
                 ]
             ],
