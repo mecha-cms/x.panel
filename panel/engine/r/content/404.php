@@ -8,30 +8,9 @@
     <link href="<?= $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
   <body spellcheck="false">
-
-<?php
-
-$GLOBALS['_']['lot'] = [
-    'desk' => [
-        'lot' => [
-            'form' => false,
-            'message' => [
-                'type' => 'Section',
-                'title' => $language->isError . ' :(',
-                'description' => null,
-                'content' => "",
-                'stack' => 10
-            ]
-        ]
-    ]
-];
-
-$content = require __DIR__ . DS . '-panel.php';
-$icon = require __DIR__ . DS . '-icon.php';
-
-echo $icon . $content;
-
-?>
-
+    <!-- TODO: Better 404 page. -->
+    <div class="lot lot:desk">
+      <p>Not found.</p>
+    </div>
   </body>
 </html>

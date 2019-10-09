@@ -5,7 +5,7 @@ $GLOBALS['_']['content'] = $_['content'] = 'page';
 
 $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
 
-$g = $user->status !== 1;
+$g = $user['status'] !== 1;
 
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     $path = $user->path;

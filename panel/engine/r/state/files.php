@@ -10,7 +10,7 @@ $search = function($folder) {
 
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';
-    $g = $user->status !== 1;
+    $g = $user['status'] !== 1;
     foreach ($search($folder) as $k => $v) {
         $after = '::' . strtr($k, [
             LOT => "",
@@ -33,7 +33,6 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                     'stack' => 10
                 ],
                 'l' => [
-                    'hidden' => $g, // User(s) with status other than `1` cannot delete file(s)
                     'title' => $language->doDelete,
                     'description' => $language->doDelete,
                     'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',

@@ -670,6 +670,12 @@ label.not\:active {
   margin-right: auto;
   margin-left: auto;
 }
+.f\:r {
+  float: right;
+}
+.f\:l {
+  float: left;
+}
 .button.is\:text {
   background: none;
   border: 0;
@@ -716,6 +722,9 @@ label.not\:active {
 }
 .alert .success {
   color: #0b0;
+}
+.alert p .f\:r svg {
+  margin-right: -6px;
 }
 
 /* Field */

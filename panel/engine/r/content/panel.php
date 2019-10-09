@@ -7,16 +7,5 @@
     <title><?= w($t->reverse); ?></title>
     <link href="<?= $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
-  <body spellcheck="false">
-
-<?php
-
-$content = require __DIR__ . DS . '-panel.php';
-$icon = require __DIR__ . DS . '-icon.php';
-
-echo $icon . $content;
-
-?>
-
-  </body>
+  <body spellcheck="false"><?= $icon . $content; ?></body>
 </html>

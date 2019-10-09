@@ -3,6 +3,9 @@ html {
   background: #fff;
   color: #000;
 }
+html:not(.has\:bar) {
+  border-top: 4px solid;
+}
 a[href] {
   color: #009;
 }

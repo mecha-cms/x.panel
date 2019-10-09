@@ -131,6 +131,7 @@ function title($in, $i = -1, $or = null) {
         $title = '<span>' . $title . '</span>';
     }
     $out[1] = $icon[0] . $title . $icon[1];
+    unset($in['tags']);
     \_\lot\x\panel\h\c($out[2], $in, [
         'title',
         $title ? 'has:title' : null,

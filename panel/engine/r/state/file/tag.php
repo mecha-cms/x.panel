@@ -8,4 +8,6 @@ $GLOBALS['_']['content'] = $_['content'] = [
     'page' => 'page.tag'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['content'];
 
+// TODO: Tag ID
+
 return require __DIR__ . DS . '..' . DS . $_['content'] . '.php';

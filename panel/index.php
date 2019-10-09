@@ -15,9 +15,10 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'path' => null,
     'peek' => $state['peek'] ?? 2,
     'state' => $state,
+    'user' => $u = State::get('x.user', true),
     'task' => null,
     'token' => content(USER . DS . Cookie::get('user.key') . DS . 'token.data'),
-    '/' => $pp = (State::get('x.user.guard.path') ?? $state['guard']['path']) . '/'
+    '/' => $pp = ($u['guard']['path'] ?? $state['guard']['path']) . '/'
 ], $GLOBALS['_'] ?? []);
 
 $p = trim($url->path, '/');

@@ -1,13 +1,5 @@
 <?php namespace _\lot\x\panel;
 
-// By path
-foreach (\step(\trim($_['path']), '/') as $_v) {
-    \is_file($_f = __DIR__ . \DS . 'path' . \DS . \strtr($_v, '/', \DS) . '.php') && (function($_f) {
-        extract($GLOBALS, \EXTR_SKIP);
-        require $_f;
-    })($_f);
-}
-
 // Task
 if (\is_file($_task = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
     require $_task;
@@ -48,7 +40,20 @@ function _() {
     \State::set('[content].content:' . $_['content'], true);
     (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);
+        // Define lot with no filter
         $GLOBALS['_']['lot'] = $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($_lot) ? require $_lot : []));
+        // Filter by status
+        \is_file($_f = __DIR__ . \DS . $user['status'] . '.php') && (function($_f) {
+            extract($GLOBALS, \EXTR_SKIP);
+            require $_f;
+        })($_f);
+        // Filter by path
+        foreach (\step(\trim($_['path']), '/') as $_v) {
+            \is_file($_f = __DIR__ . \DS . 'path' . \DS . \strtr($_v, '/', \DS) . '.php') && (function($_f) {
+                extract($GLOBALS, \EXTR_SKIP);
+                require $_f;
+            })($_f);
+        }
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($_form['token'])) {
             $_hooks = \map(\step($_['content']), function($_hook) use($_) {

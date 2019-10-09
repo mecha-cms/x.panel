@@ -1,9 +1,16 @@
 <?php
 
+if ($user['status'] !== 1) {
+    Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
+    Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash);
+}
+
 $GLOBALS['_']['content'] = $_['content'] = 'state';
 
 Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
     extract($GLOBALS, EXTR_SKIP);
+    $GLOBALS['content'] = require __DIR__ . DS . '..' . DS . 'content' . DS . '-panel.php';
+    $GLOBALS['icon'] = require __DIR__ . DS . '..' . DS . 'content' . DS . '-icon.php';
     if (isset($_['i'])) {
         // Force as item page
         Guard::kick($url->clean . $url->query . $url->hash);

@@ -3,6 +3,7 @@
 namespace _\lot\x\panel {
     function Bar($in, $key) {
         if (isset($in['lot'])) {
+            \State::set('has.bar', true);
             \_\lot\x\panel\h\p($in['lot'], 'Bar');
         }
         $out = \_\lot\x\panel\lot($in, $key);

@@ -20,13 +20,13 @@ if ($status !== 1) {
     $any = [1 => $any[1]];
 }
 
-// No use. These field(s) was added only to hide the `pass` data from file list
+// No use. This field was added only to hide the `pass` data from file list
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['pass'] = [
     'hidden' => true,
     'name' => 'data[pass]'
 ];
 
-// No use. These field(s) was added only to hide the `pass` data from file list
+// No use. This field was added only to hide the `pass` data from file list
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['token'] = [
     'hidden' => true,
     'name' => 'data[token]'

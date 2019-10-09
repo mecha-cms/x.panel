@@ -27,7 +27,6 @@ return (function($icons) {
         $list[$k] = $v;
     }
     $alert = ($alert ?? "") . "";
-    $user_state = State::get('x.user', true);
     return _\lot\x\panel\lot(['lot' => array_replace_recursive([
         'bar' => [
             'type' => 'Bar',
@@ -96,7 +95,7 @@ return (function($icons) {
                                         'exit' => [
                                             'icon' => 'M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z',
                                             'title' => $language->doExit,
-                                            'url' => $url . ($user_state['guard']['path'] ?? $user_state['path']) . '/' . $user->name . $url->query('&', ['content' => false, 'exit' => $user['token'], 'tab' => false]) . $url->hash,
+                                            'url' => $url . ($_['user']['guard']['path'] ?? $_['user']['path']) . '/' . $user->name . '?exit=' . $_['token'] . $url->hash,
                                             'stack' => 20
                                         ]
                                     ],
@@ -124,14 +123,6 @@ return (function($icons) {
                             'title' => false,
                             'url' => $url . $_['/'] . '::g::/.alert/1' . $url->query . $url->hash,
                             'stack' => 10
-                        ],
-                        'search' => [
-                            'hidden' => !isset($_GET['q']),
-                            'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
-                            'title' => false,
-                            'description' => $language->doClose,
-                            'url' => $url->clean . '/1' . $url->query('&', ['q' => false]) . $url->hash,
-                            'stack' => 20
                         ]
                     ],
                     'stack' => 30
