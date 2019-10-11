@@ -3,52 +3,9 @@
 $pages = [];
 $count = 0;
 
-$k = function(string $f, array $q = []) {
-    if (is_dir($f) && $h = opendir($f)) {
-        while (false !== ($b = readdir($h))) {
-            if ($b !== '.' && $b !== '..') {
-                $n = pathinfo($b, PATHINFO_FILENAME);
-                foreach ($q as $v) {
-                    if (empty($v) && $v !== '0') {
-                        continue;
-                    }
-                    $r = $f . DS . $b;
-                    // Find by query in file name…
-                    if (stripos($n, $v) !== false) {
-                        yield $r => is_dir($r) ? 0 : 1;
-                    // Find by query in page data…
-                    } else if (is_file($r)) {
-                        $content = false;
-                        foreach (stream($r) as $kk => $vv) {
-                            // Start of header, skip!
-                            if ($kk === 0 && $vv === '---') {
-                                continue;
-                            }
-                            // End of header, now ignore any line(s) that looks like `key: value`
-                            if ($vv === '...') {
-                                $content = true;
-                            }
-                            if ($content) {
-                                if (stripos($vv, $v) !== false) {
-                                    yield $r => 1;
-                                }
-                            } else {
-                                if (stripos(explode(': ', $vv)[1] ?? "", $v) !== false) {
-                                    yield $r => 1;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        closedir($h);
-    }
-};
-
-$search = function($folder) use($k) {
+$search = function($folder) {
     $q = strtolower($_GET['q'] ?? "");
-    return $q ? $k($folder, preg_split('/\s+/', $q)) : g($folder);
+    return $q ? k($folder, preg_split('/\s+/', $q)) : g($folder);
 };
 
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
@@ -66,7 +23,10 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $pages[$k] = [
             'path' => $k,
             'type' => 'Page',
-            'tags' => ['is:' . ($x = $page->x)],
+            'tags' => [
+                'is:' . ($x = $page->x),
+                'type:' . c2f($page->type ?? '0')
+            ],
             'title' => _\lot\x\panel\h\w($page->title),
             'time' => $page->time . "",
             'update' => $page->update . "",

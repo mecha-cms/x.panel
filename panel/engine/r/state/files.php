@@ -5,7 +5,7 @@ $count = 0;
 
 $search = function($folder) {
     $q = strtolower($_GET['q'] ?? "");
-    return $q ? k($folder, preg_split('/\s+/', $q), true) : g($folder);
+    return $q ? k($folder, preg_split('/\s+/', $q)) : g($folder);
 };
 
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
@@ -23,7 +23,8 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             'type' => $v === 0 ? 'Folder' : 'File',
             'title' => $n,
             'description' => $v === 0 ? $language->doEnter : (new File($k))->size,
-            'url' => $before . 'g' . $after . ($v === 0 ? '/1' : "") . $url->query . $url->hash,
+            'url' => $v === 0 ? $before . 'g' . $after . '/1' . $url->query . $url->hash : null,
+            'link' => $v === 1 ? To::URL($k) : null,
             'tasks' => [
                 'g' => [
                     'title' => $language->doEdit,

@@ -6,8 +6,6 @@ function route($lot) {
     }
     extract($GLOBALS, \EXTR_SKIP);
     $GLOBALS['t'][] = $language->panel;
-    $GLOBALS['content'] = require __DIR__ . \DS . 'content' . \DS . '-panel.php';
-    $GLOBALS['icon'] = require __DIR__ . \DS . 'content' . \DS . '-icon.php';
     \State::set([
         'has' => [
             'parent' => \count($_['chop']) > 1,
@@ -22,8 +20,13 @@ function route($lot) {
         !isset($_['f']) ||
         !\is_dir($_['f']) && isset($_['i'])
     )) {
-        \State::set('has.bar', false);
         $GLOBALS['t'][] = $language->isError;
+        \State::set([
+            '[content]' => ['content:' . $_['content'] => false],
+            'is' => [
+                'error' => 404
+            ]
+        ]);
         $this->status(404);
         $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
     }

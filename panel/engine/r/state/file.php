@@ -62,10 +62,6 @@ return [
                                                         'type' => 'Hidden',
                                                         'value' => $_['token']
                                                     ],
-                                                    'c' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'file'
-                                                    ],
                                                     'content' => [
                                                         'hidden' => !$editable,
                                                         'type' => 'Source',
@@ -112,6 +108,7 @@ return [
                                                     's' => [
                                                         'type' => 'Submit',
                                                         'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
+                                                        'description' => $language->fieldDescriptionFileTo([_\lot\x\panel\h\path($_['f'])]),
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],

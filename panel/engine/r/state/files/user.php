@@ -10,7 +10,7 @@ $g = $user['status'] !== 1;
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     $path = $user->path;
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
-        $page = new User($v['path']);
+        $page = new User($k);
         $v['link'] = $page->url;
         $v['title'] = $page . "";
         $v['description'] = $page->user;

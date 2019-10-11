@@ -16,7 +16,7 @@ if (count($_['chop']) > 1) {
             unset($_POST['data']['status']);
         }
         // Prevent user from editing another user file
-        if ($_['f'] !== $user->path) {
+        if ($_['task'] === 'g' && $_['f'] !== $user->path) {
             Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
             Guard::kick(dirname($url->clean) . '/1' . $url->hash);
         }

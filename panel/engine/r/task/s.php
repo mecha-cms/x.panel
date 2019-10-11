@@ -189,12 +189,6 @@ function page($_, $lot) {
         if ($name === "") {
             $name = \date('Y-m-d-H-i-s');
         }
-        if (isset($lot['page']['time'])) {
-            $lot['page']['time'] = (new \Date($lot['page']['time']))->format('Y-m-d H:i:s');
-        }
-        if (isset($lot['page']['update'])) {
-            $lot['page']['update'] = (new \Date($lot['page']['update']))->format('Y-m-d H:i:s');
-        }
         unset($lot['page']['name'], $lot['page']['x']);
         $page = [];
         $p = (array) ($state->x->page ?? []);
@@ -217,14 +211,6 @@ function page($_, $lot) {
                 \mkdir($d, 0755, true);
             }
             if (isset($lot['data'])) {
-                if (isset($lot['data']['time'])) {
-                    $lot['data']['time'] = (new \Date($lot['data']['time']))->format('Y-m-d H:i:s');
-                } else {
-                    $lot['data']['time'] = \date('Y-m-d H:i:s', $t); // Force
-                }
-                if (isset($lot['data']['update'])) {
-                    $lot['data']['update'] = (new \Date($lot['data']['time']))->format('Y-m-d H:i:s');
-                }
                 foreach ((array) $lot['data'] as $k => $v) {
                     if (\trim($v) !== "") {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));

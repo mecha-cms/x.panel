@@ -1,7 +1,6 @@
 <?php namespace _\lot\x\panel\lot;
 
 function Desk($in, $key) {
-    \State::set('has.desk', true);
     $out = \_\lot\x\panel\lot($in, $key);
     $out[0] = 'main';
     return $out;

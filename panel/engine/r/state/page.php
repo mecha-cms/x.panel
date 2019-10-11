@@ -1,5 +1,23 @@
 <?php
 
+$GLOBALS['_']['form']['data']['time'] = function($value) {
+    return (string) (new Date($value ?? $_SERVER['REQUEST_TIME'] ?? time()));
+};
+
+$GLOBALS['_']['form']['page']['author'] = $safe = function($value) {
+    return _\lot\x\panel\h\w($value);
+};
+
+$GLOBALS['_']['form']['page']['id'] = $safe;
+$GLOBALS['_']['form']['page']['link'] = $safe;
+$GLOBALS['_']['form']['page']['description'] = function($value) {
+    return _\lot\x\panel\h\w($value, 'a');
+};
+
+$GLOBALS['_']['form']['page']['title'] = $safe;
+
+$GLOBALS['_']['form']['page']['x'] = $safe;
+
 $page = is_file($f = $_['f']) ? new Page($f) : new Page;
 
 $lot = [
@@ -46,10 +64,6 @@ $lot = [
                                                     'token' => [
                                                         'type' => 'Hidden',
                                                         'value' => $_['token']
-                                                    ],
-                                                    'c' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'page'
                                                     ],
                                                     'seal' => [
                                                         'type' => 'Hidden',
@@ -187,33 +201,43 @@ $lot = [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
+                                                        'hidden' => $_['task'] === 's',
                                                         'type' => 'Submit',
-                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doPublish'},
+                                                        'title' => $language->doUpdate,
                                                         'name' => 'page[x]',
-                                                        'value' => $_['task'] === 'g' ? $page->x : 'page',
+                                                        'value' => $page->x,
                                                         'stack' => 10
                                                     ],
+                                                    'page' => [
+                                                        'hidden' => $page->x === 'page',
+                                                        'type' => 'Submit',
+                                                        'title' => $language->doPublish,
+                                                        'name' => 'page[x]',
+                                                        'value' => 'page',
+                                                        'stack' => 20
+                                                    ],
                                                     'draft' => [
+                                                        'hidden' => $page->x === 'draft',
                                                         'type' => 'Submit',
                                                         'title' => $language->doSave,
                                                         'name' => 'page[x]',
                                                         'value' => 'draft',
-                                                        'stack' => 20
+                                                        'stack' => 30
                                                     ],
                                                     'archive' => [
-                                                        'hidden' => $_['task'] === 's',
+                                                        'hidden' => $_['task'] === 's' || $page->x === 'archive',
                                                         'type' => 'Submit',
                                                         'title' => $language->doArchive,
                                                         'name' => 'page[x]',
                                                         'value' => 'archive',
-                                                        'stack' => 30
+                                                        'stack' => 40
                                                     ],
                                                     'l' => [
                                                         'hidden' => $_['task'] === 's',
                                                         'type' => 'Link',
                                                         'title' => $language->doDelete,
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['tab' => false, 'token' => $_['token']])),
-                                                        'stack' => 40
+                                                        'stack' => 50
                                                     ]
                                                 ]
                                             ]

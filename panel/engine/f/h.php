@@ -92,9 +92,9 @@ function lot($lot, $fn = null, &$count = 0) {
 function p(&$lot, $prefix) {
     foreach ($lot as &$v) {
         $type = $v['type'] ?? null;
-        if ($type !== $prefix && \strpos($type, $prefix . '_') !== 0) {
+        if ($type !== $prefix && \strpos($type, $prefix . '__') !== 0) {
             // Add prefix to `type`
-            $type = $prefix . '_' . $type;
+            $type = $prefix . '__' . $type;
         }
         $v['type'] = $type;
     }
@@ -140,6 +140,6 @@ function title($in, $i = -1, $or = null) {
     return new \HTML($out);
 }
 
-function w($in) {
-    return \w($in, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
+function w($in, $also = null) {
+    return \w($in, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
 }

@@ -1,6 +1,16 @@
 <?php
 
-$lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
+$lot = require __DIR__ . DS . 'page.php';
+
+$GLOBALS['_']['form']['page']['email'] = $safe;
+
+// Encrypt password data
+$GLOBALS['_']['form']['data']['pass'] = function($value, $lot) {
+    $name = ($lot['data']['name'] ?? $lot['page']['name'] ?? uniqid());
+    return P . password_hash($value . '@' . $name, PASSWORD_DEFAULT);
+};
+
+$lot = array_replace_recursive($lot, [
     'bar' => [
         // type: Bar
         'lot' => [
@@ -34,18 +44,13 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                             'fields' => [
                                                 // type: Fields
                                                 'lot' => [
-                                                    'c' => [
-                                                        // type: Hidden
-                                                        'value' => $_GET['content'] ?? 'page.user'
-                                                    ],
                                                     'title' => ['hidden' => true],
                                                     'author' => [
                                                         'type' => 'Text',
-                                                        'before' => ['icon' => 'M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z'],
                                                         'alt' => $_['task'] === 'g' ? ($page['author'] ?? $language->fieldAltAuthor) : $language->fieldAltAuthor,
                                                         'name' => 'page[author]',
                                                         'value' => $page['author'],
-                                                        'description' => $language->fieldDescriptionAuthor,
+                                                        'description' => $_['task'] === 's' ? $language->fieldDescriptionAuthor : null,
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
@@ -59,14 +64,13 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                                         'focus' => true,
                                                         'stack' => 11
                                                     ],
-                                                    'email' => [
-                                                        'type' => 'Text',
+                                                    'pass' => [
+                                                        'hidden' => $_['task'] !== 's',
+                                                        'type' => 'Pass',
                                                         'required' => true,
-                                                        'pattern' => "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$",
-                                                        'before' => ['icon' => 'M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6M20 6L12 11L4 6H20M20 18H4V8L12 13L20 8V18Z'],
-                                                        'name' => 'page[email]',
-                                                        'alt' => $_['task'] === 'g' ? ($page['email'] ?? To::kebab($language->fieldAltAuthor) . S . '@' . $url->host) : To::kebab($language->fieldAltAuthor) . S . '@' . $url->host,
-                                                        'value' => $page['email'],
+                                                        'before' => ['icon' => 'M12,17C10.89,17 10,16.1 10,15C10,13.89 10.89,13 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17M18,20V10H6V20H18M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V10C4,8.89 4.89,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z'],
+                                                        'name' => 'data[pass]',
+                                                        'value' => "",
                                                         'width' => true,
                                                         'stack' => 12
                                                     ]
@@ -78,12 +82,21 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                         'lot' => [
                                             'fields' => [
                                                 'lot' => [
+                                                    'email' => [
+                                                        'type' => 'Text',
+                                                        'pattern' => "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$",
+                                                        'name' => 'page[email]',
+                                                        'alt' => $_['task'] === 'g' ? ($page['email'] ?? To::kebab($language->fieldAltAuthor) . S . '@' . $url->host) : To::kebab($language->fieldAltAuthor) . S . '@' . $url->host,
+                                                        'value' => $page['email'],
+                                                        'width' => true,
+                                                        'stack' => 11
+                                                    ],
                                                     'status' => [
                                                         'type' => 'Item',
                                                         'name' => 'page[status]',
                                                         'value' => $_['task'] === 's' ? 3 : $page['status'],
                                                         'lot' => (array) Language::get('field:user-status.lot'),
-                                                        'stack' => 40
+                                                        'stack' => 30
                                                     ]
                                                 ]
                                             ]
@@ -105,8 +118,6 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                             'tasks' => [
                                                 // type: Tasks.Button
                                                 'lot' => [
-                                                    's' => ['title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'}],
-                                                    'draft' => ['hidden' => true],
                                                     'archive' => ['hidden' => true],
                                                     'l' => ['hidden' => $_['task'] === 's' || $page->name === $user->name]
                                                 ]
@@ -122,13 +133,5 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
         ]
     ]
 ]);
-
-if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'])) {
-    foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] as &$v) {
-        if (strpos(',pass,token,', ',' . basename($v, '.data') . ',') !== false) {
-            $v = ['hidden' => true]; // Hide `pass` and `token` data from file list
-        }
-    }
-}
 
 return $lot;

@@ -46,10 +46,6 @@ return [
                                                         'type' => 'Hidden',
                                                         'value' => $_['token']
                                                     ],
-                                                    'c' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'blob'
-                                                    ],
                                                     'blob' => [
                                                         'title' => $language->file,
                                                         'description' => $language->fieldDescriptionBlobSize([File::sizer(File::$state['size'][0]), File::sizer(File::$state['size'][1])], true),
@@ -83,6 +79,7 @@ return [
                                                     's' => [
                                                         'type' => 'Submit',
                                                         'title' => $language->doLoadUp,
+                                                        'description' => $language->fieldDescriptionBlobTo([_\lot\x\panel\h\path($_['f'])]),
                                                         'name' => false,
                                                         'stack' => 10
                                                     ]

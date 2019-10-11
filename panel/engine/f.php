@@ -3,15 +3,11 @@
 namespace _\lot\x\panel {
     function Bar($in, $key) {
         if (isset($in['lot'])) {
-            \State::set('has.bar', true);
             \_\lot\x\panel\h\p($in['lot'], 'Bar');
         }
         $out = \_\lot\x\panel\lot($in, $key);
         $out[0] = 'nav';
         return $out;
-    }
-    function Bar_List($in, $key) {
-        return \_\lot\x\panel\Menu($in, $key, -1);
     }
     function Button($in, $key) {
         $out = \_\lot\x\panel\Link($in, $key);
@@ -21,29 +17,6 @@ namespace _\lot\x\panel {
         $out['name'] = $in['name'] ?? $key;
         $out['value'] = $in['value'] ?? null;
         unset($out['href'], $out['target']);
-        return $out;
-    }
-    function Button_($in, $key) {
-        return \_\lot\x\panel\Button($in, $key); // Unknown `Button` type
-    }
-    function Button_Button($in, $key) {
-        $out = \_\lot\x\panel\Button($in, $key);
-        $out['type'] = 'button';
-        return $out;
-    }
-    function Button_Link($in, $key) {
-        $out = \_\lot\x\panel\Link($in, $key);
-        \_\lot\x\panel\h\c($out, $in, ['button']);
-        return $out;
-    }
-    function Button_Reset($in, $key) {
-        $out = \_\lot\x\panel\Button($in, $key);
-        $out['type'] = 'reset';
-        return $out;
-    }
-    function Button_Submit($in, $key) {
-        $out = \_\lot\x\panel\Button($in, $key);
-        $out['type'] = 'submit';
         return $out;
     }
     function Field($in, $key) {
@@ -119,13 +92,13 @@ namespace _\lot\x\panel {
                 }
                 $type = $v['type'] ?? null;
                 if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . $type, "\\"))) {
-                    if ($type !== 'Field_Hidden') {
+                    if ($type !== 'Field__Hidden') {
                         $out[1] .= \call_user_func($fn, $v, $k);
                     } else {
-                        $append .= \_\lot\x\panel\Field_Hidden($v, $k);
+                        $append .= \_\lot\x\panel\Field__Hidden($v, $k);
                     }
                 } else {
-                    $append .= \_\lot\x\panel\Field_($v, $k); // Unknown `Field` type
+                    $append .= \_\lot\x\panel\Field__($v, $k); // Unknown `Field` type
                 }
                 unset($v);
             }
@@ -266,9 +239,6 @@ namespace _\lot\x\panel {
         $out[2]['title'] = $in['description'] ?? null;
         return new \HTML($out);
     }
-    function Link_($in, $key) {
-        return \_\lot\x\panel\Link($in, $key); // Unknown `Link` type
-    }
     function Menu($in, $key, int $i = 0) {
         $out = [
             0 => $in[0] ?? 'ul',
@@ -344,7 +314,7 @@ namespace _\lot\x\panel {
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $title = $in['time'] ? \strtr($in['time'], '-', '/') : null;
-        $out[1] .= '<div>' . (isset($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($in['path'] ?? $key, [
+        $out[1] .= '<div' . (isset($in['image']) && $in['image'] === false ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($in['path'] ?? $key, [
             \ROOT => "",
             \DS => '/'
         ])), 0, 6) . ';"></span>') . '</div>';
@@ -466,7 +436,7 @@ namespace _\lot\x\panel {
         $out = [
             0 => $in[0] ?? 'section',
             1 => $in[1] ?? "",
-            2 => $in[2] ?? []
+            2 => \array_replace(['data-name' => $key], $in[2] ?? [])
         ];
         if (isset($in['content'])) {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
@@ -477,15 +447,15 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Tabs($in, $key) {
+        $name = $in['name'] ?? $key;
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
-            2 => $in[2] ?? []
+            2 => \array_replace(['data-name' => $name], $in[2] ?? [])
         ];
         if (isset($in['content'])) {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
-            $name = $in['name'] ?? $key;
             $nav = $section = [];
             $tags = ['lot', 'lot:tab', 'p'];
             $lot = (new \Anemon($in['lot']))->sort([1, 'stack'], true)->get();
@@ -512,11 +482,12 @@ namespace _\lot\x\panel {
                         $v['tags'][] = 'has:link';
                     }
                 }
+                $v[2]['data-name'] = $kk;
                 $nav[$kk] = $v;
                 unset($nav[$kk]['lot']); // Disable dropdown menu view
                 $section[$kk] = \_\lot\x\panel\Tab($v, $kk);
             }
-            $out[1] = '<nav>' . \_\lot\x\panel\Bar_List(['lot' => $nav], $name) . '</nav>';
+            $out[1] = '<nav>' . \_\lot\x\panel\Bar__List(['lot' => $nav], $name) . '</nav>';
             $out[1] .= \implode("", $section);
         }
         $tags[] = 'count:' . $count;
@@ -610,10 +581,13 @@ namespace _\lot\x {
 }
 
 namespace {
+    require __DIR__ . DS . 'f' . DS . 'bar.php';
+    require __DIR__ . DS . 'f' . DS . 'button.php';
     require __DIR__ . DS . 'f' . DS . 'content.php';
     require __DIR__ . DS . 'f' . DS . 'field.php';
     require __DIR__ . DS . 'f' . DS . 'form.php';
     require __DIR__ . DS . 'f' . DS . 'h.php';
+    require __DIR__ . DS . 'f' . DS . 'link.php';
     require __DIR__ . DS . 'f' . DS . 'lot.php';
     require __DIR__ . DS . 'f' . DS . 'tasks.php';
 }

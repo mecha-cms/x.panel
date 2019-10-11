@@ -52,10 +52,6 @@ return [
                                                         'type' => 'Hidden',
                                                         'value' => $_['token']
                                                     ],
-                                                    'c' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'data'
-                                                    ],
                                                     'seal' => [
                                                         'type' => 'Hidden',
                                                         'name' => 'file[seal]',

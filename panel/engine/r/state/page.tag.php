@@ -1,5 +1,16 @@
 <?php
 
+$id = 0;
+
+foreach (g($_['f'], 'archive,page') as $k => $v) {
+    $v = From::tag(pathinfo($k, PATHINFO_FILENAME)) ?? 0;
+    if ($v > $id) {
+        $id = $v;
+    }
+}
+
+++$id;
+
 $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
     'bar' => [
         // type: Bar
@@ -34,9 +45,10 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                             'fields' => [
                                                 // type: Fields
                                                 'lot' => [
-                                                    'c' => [
-                                                        // type: Hidden
-                                                        'value' => $_GET['content'] ?? 'page.tag'
+                                                    'id' => [
+                                                        'type' => 'Hidden',
+                                                        'name' => 'data[id]',
+                                                        'value' => $_['task'] === 's' ? $id : $page->id
                                                     ],
                                                     'content' => ['hidden' => true]
                                                 ]
@@ -69,9 +81,6 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                             'tasks' => [
                                                 // type: Tasks.Button
                                                 'lot' => [
-                                                    's' => ['title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'}],
-                                                    'draft' => ['hidden' => true],
-                                                    'archive' => ['hidden' => true],
                                                     'l' => ['hidden' => $_['task'] === 's' || $page->name === $user->name]
                                                 ]
                                             ]
@@ -87,13 +96,5 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
         ]
     ]
 ]);
-
-if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'])) {
-    foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] as &$v) {
-        if (strpos(',pass,token,', ',' . basename($v, '.data') . ',') !== false) {
-            $v = ['hidden' => true]; // Hide `pass` and `token` data from file list
-        }
-    }
-}
 
 return $lot;

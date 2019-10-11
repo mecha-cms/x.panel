@@ -49,10 +49,6 @@ return [
                                                         'type' => 'Hidden',
                                                         'value' => $_['token']
                                                     ],
-                                                    'c' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_GET['content'] ?? 'folder'
-                                                    ],
                                                     'name' => [
                                                         'type' => 'Text',
                                                         'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltFolder) : $language->fieldAltFolder,
@@ -100,6 +96,7 @@ return [
                                                     's' => [
                                                         'type' => 'Submit',
                                                         'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
+                                                        'description' => $language->fieldDescriptionFolderTo([_\lot\x\panel\h\path($_['f'])]),
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],

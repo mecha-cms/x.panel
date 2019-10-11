@@ -4,47 +4,51 @@
 $i = count($_['chop']);
 if ($i > 1) {
     $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
-    if ($i === 2 && is_file($f = $_['f'] . DS . 'about.page')) {
-        $page = new Page($f);
-        // Hide some file(s) from the list
-        foreach ([
-            // Parent folder
-            $f = $_['f'],
-            // About file
-            $f . DS . 'about.page',
-            // License file
-            $f . DS . 'LICENSE',
-            // Custom stack data
-            $f . DS . basename($f)
-        ] as $p) {
-            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
+    if ($i === 2) {
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['url'] = $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['lot'] = false;
+        if (is_file($f = ($ff = $_['f']) . DS . 'about.page')) {
+            $page = new Page($f);
+            // Hide some file(s) from the list
+            foreach ([
+                // Parent folder
+                $ff,
+                // About file
+                $ff . DS . 'about.page',
+                // License file
+                $ff . DS . 'LICENSE',
+                // Custom stack data
+                $ff . DS . basename($ff)
+            ] as $p) {
+                $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
+            }
+            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
+                'title' => $language->info,
+                'lot' => [
+                    0 => [
+                        'type' => 'Section',
+                        'title' => $page->title,
+                        'description' => _\lot\x\panel\h\w($page->description, 'a'),
+                        'content' => $page->content,
+                        'stack' => 10
+                    ]
+                ],
+                'stack' => 20
+            ];
         }
-        $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
-            'title' => $language->info,
-            'lot' => [
-                0 => [
-                    'type' => 'Section',
-                    'title' => $page->title,
-                    'description' => _\lot\x\panel\h\w($page->description),
-                    'content' => $page->content,
-                    'stack' => 10
-                ]
-            ],
-            'stack' => 9.8
-        ];
-        $f = $_['f'] . DS . 'LICENSE';
-        $f = is_file($f) ? $f : null;
-        $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
-            'hidden' => !$f,
-            'lot' => [
-                0 => [
-                    'type' => 'Section',
-                    'content' => '<pre class="is:text"><code class="txt">' . htmlspecialchars($f ? file_get_contents($f) : "") . '</code></pre>',
-                    'stack' => 10
-                ]
-            ],
-            'stack' => 9.9
-        ];
+        if (is_file($f = $ff . DS . 'LICENSE')) {
+            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
+                'lot' => [
+                    0 => [
+                        'type' => 'Section',
+                        'content' => '<pre class="is:text"><code class="txt">' . htmlspecialchars(file_get_contents($f)) . '</code></pre>',
+                        'stack' => 10
+                    ]
+                ],
+                'stack' => 30
+            ];
+        }
     }
     return $lot;
 }

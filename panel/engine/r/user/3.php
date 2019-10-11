@@ -2,13 +2,8 @@
 
 require __DIR__ . DS . '2.php';
 
-// Pending user(s) cannot do anything but updating their user file
+// Member user(s) cannot do anything but updating their user file
 if ($_['task'] === 'g' && $_['f'] === $user->path) {
-    // Hide navigation bar
-    $GLOBALS['_']['lot']['bar']['hidden'] = true;
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][0]['title'] = $user['author'];
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][0]['description'] = 'Waiting for review.';
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][0]['content'] = '<p>While waiting to be reviewed, you can update your user information at any time.</p>';
     // Hide everything but `link`
     if (isset($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'])) {
         foreach ($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'] as $k => &$v) {

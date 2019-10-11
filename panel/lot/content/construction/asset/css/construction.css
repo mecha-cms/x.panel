@@ -3,9 +3,6 @@ html {
   background: #fff;
   color: #000;
 }
-html:not(.has\:bar) {
-  border-top: 4px solid;
-}
 a[href] {
   color: #009;
 }
@@ -19,10 +16,6 @@ mark {
 pre {
   background: #333;
   color: #fff;
-}
-/* License block */
-pre.is\:text {
-  background: #ccc;
 }
 code,
 .code {
@@ -355,6 +348,10 @@ caption {
 }
 .lot\:table .table th {
   background: #ccd;
+}
+
+pre.is\:text {
+  background: #ccc;
 }
 
 /* Custom Appearance for Modern Browsers */

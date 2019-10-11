@@ -1,12 +1,12 @@
 <?php namespace _\lot\x\panel;
 
-function Field_($in, $key) {
+function Field__($in, $key) {
     $out = \_\lot\x\panel\Field_Content($in, $key);
     $out['hidden'] = true;
     return $out;
 }
 
-function Field_Blob($in, $key) {
+function Field__Blob($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $name = 'blob[' . \md5($in['name'] ?? $key) . ']';
     $out['content'][0] = 'input';
@@ -17,7 +17,7 @@ function Field_Blob($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Color($in, $key) {
+function Field__Color($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -32,7 +32,7 @@ function Field_Color($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Colors($in, $key) {
+function Field__Colors($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'div';
     $name = $in['name'] ?? $key;
@@ -63,7 +63,7 @@ function Field_Colors($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Combo($in, $key) {
+function Field__Combo($in, $key) {
     if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
@@ -130,16 +130,16 @@ function Field_Combo($in, $key) {
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
-    return \_\lot\x\panel\Field_Text($in, $key);
+    return \_\lot\x\panel\Field__Text($in, $key);
 }
 
-function Field_Content($in, $key) {
+function Field__Content($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Hidden($in, $key) {
+function Field__Hidden($in, $key) {
     return new \HTML([
         0 => 'input',
         1 => false,
@@ -152,7 +152,7 @@ function Field_Hidden($in, $key) {
     ]);
 }
 
-function Field_Item($in, $key) {
+function Field__Item($in, $key) {
     if (isset($in['lot'])) {
         $value = $in['value'] ?? null;
         $n = $in['name'] ?? $key;
@@ -193,10 +193,10 @@ function Field_Item($in, $key) {
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
-    return \_\lot\x\panel\Field_Text($in, $key);
+    return \_\lot\x\panel\Field__Text($in, $key);
 }
 
-function Field_Items($in, $key) {
+function Field__Items($in, $key) {
     if (isset($in['lot'])) {
         $value = (array) ($in['value'] ?? []);
         if ($key_as_value = !empty($in['flat'])) {
@@ -240,10 +240,10 @@ function Field_Items($in, $key) {
         unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
-    return \_\lot\x\panel\Field_Text($in, $key);
+    return \_\lot\x\panel\Field__Text($in, $key);
 }
 
-function Field_Number($in, $key) {
+function Field__Number($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -256,7 +256,7 @@ function Field_Number($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Pass($in, $key) {
+function Field__Pass($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -266,7 +266,7 @@ function Field_Pass($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Range($in, $key) {
+function Field__Range($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -279,14 +279,14 @@ function Field_Range($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Source($in, $key) {
+function Field__Source($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][2]['data-type'] = $in['syntax'] ?? null;
     \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea', 'code']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Text($in, $key) {
+function Field__Text($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -296,7 +296,7 @@ function Field_Text($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function Field_Toggle($in, $key) {
+function Field__Toggle($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $value = $in['value'] ?? null;
     $toggle = new \HTML(['input', false, [

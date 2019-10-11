@@ -7,6 +7,11 @@ if (count($_['chop']) === 1) {
         $_SESSION['_']['folder'][$d] = 1;
         Guard::kick($url . $_['/'] . '::g::/asset/1');
     }
+    // You cannot edit or delete your own folder
+    if ($_['task'] === 'g') {
+        $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
+        $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
+    }
 }
 
 if ($user['status'] !== 1) {
@@ -15,7 +20,8 @@ if ($user['status'] !== 1) {
         Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
         Guard::kick($url . $_['/'] . '::g::/asset/' . $user->user . '/1');
     }
+    // Hide parent folder link
+    if (count($_['chop']) < 3) {
+        $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['hidden'] = true;
+    }
 }
-
-// Hide parent folder link
-$GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['hidden'] = true;

@@ -308,12 +308,6 @@ pre {
   padding: 8px 12px;
   overflow: auto;
 }
-pre.is\:text {
-  background: none;
-  border: 2px inset;
-  color: inherit;
-  padding: 12px;
-}
 img {
   max-width: 100%;
   height: auto;
@@ -1164,6 +1158,9 @@ label.not\:active {
   flex: 1;
   padding: 0 12px;
 }
+.lot\:page li div[hidden] + div {
+  padding-left: 0;
+}
 .lot\:page h3 {
   font-size: 20px;
 }
@@ -1337,6 +1334,24 @@ label.not\:active {
 }
 .lot\:section.count\:0 {
   display: none;
+}
+
+/* Document */
+pre.is\:text {
+  background: none;
+  border: 2px inset;
+  color: inherit;
+  padding: 12px;
+}
+.is\:error {
+  display: flex;
+  border-top: 4px solid;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+.is\:error > * {
+  flex: 1;
 }
 
 @media (max-width: 720px) {

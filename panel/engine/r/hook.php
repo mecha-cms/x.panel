@@ -57,6 +57,18 @@ function _() {
         }
         $_ = $GLOBALS['_']; // Update data
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
+        // Filter by function (TODO: Move this to a separate file)
+        foreach (['data', 'file', 'page', 'state'] as $_scope) {
+            if (!empty($_['form'][$_scope])) {
+                foreach ($_['form'][$_scope] as $_k => $_v) {
+                    if (!isset($_v)) {
+                        continue;
+                    }
+                    $_vv = $_form[$_scope][$_k] ?? null;
+                    $_form[$_scope][$_k] = \is_callable($_v) ? \call_user_func($_v, $_vv, $_form) : $_v;
+                }
+            }
+        }
         if (isset($_form['token'])) {
             $_hooks = \map(\step($_['content']), function($_hook) use($_) {
                 return 'do.' . $_hook . '.' . ([
@@ -85,4 +97,10 @@ function _() {
     })($_lot);
 }
 
-\Hook::set('start', __NAMESPACE__ . "\\_", 10);
+\Hook::set('start', __NAMESPACE__ . "\\_", 20);
+
+\Hook::set('set', function() {
+    $panel = require __DIR__ . \DS . 'content' . \DS . '-panel.php';
+    $icon = require __DIR__ . \DS . 'content' . \DS . '-icon.php'; // Require icon(s) later
+    $GLOBALS['content'] = $icon . $panel; // But load icon(s) first
+}, 1000);
