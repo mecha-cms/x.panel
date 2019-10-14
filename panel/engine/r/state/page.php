@@ -204,12 +204,13 @@ $lot = [
                                                         'hidden' => $_['task'] === 's',
                                                         'type' => 'Submit',
                                                         'title' => $language->doUpdate,
+                                                        'description' => $language->{$x = $page->x},
                                                         'name' => 'page[x]',
-                                                        'value' => $page->x,
+                                                        'value' => $x,
                                                         'stack' => 10
                                                     ],
                                                     'page' => [
-                                                        'hidden' => $page->x === 'page',
+                                                        'hidden' => $x === 'page',
                                                         'type' => 'Submit',
                                                         'title' => $language->doPublish,
                                                         'name' => 'page[x]',
@@ -217,7 +218,7 @@ $lot = [
                                                         'stack' => 20
                                                     ],
                                                     'draft' => [
-                                                        'hidden' => $page->x === 'draft',
+                                                        'hidden' => $x === 'draft',
                                                         'type' => 'Submit',
                                                         'title' => $language->doSave,
                                                         'name' => 'page[x]',
@@ -225,7 +226,7 @@ $lot = [
                                                         'stack' => 30
                                                     ],
                                                     'archive' => [
-                                                        'hidden' => $_['task'] === 's' || $page->x === 'archive',
+                                                        'hidden' => $x === 'archive' || $_['task'] === 's',
                                                         'type' => 'Submit',
                                                         'title' => $language->doArchive,
                                                         'name' => 'page[x]',

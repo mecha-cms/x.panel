@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('USER')) {
+    return;
+}
+
 $state = State::get('x.panel', true);
 
 $GLOBALS['_'] = $_ = array_replace_recursive([

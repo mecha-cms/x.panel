@@ -11,7 +11,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     $path = $user->path;
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         $page = new User($k);
-        $v['link'] = $page->url;
+        $v['link'] = $page->x !== 'draft' ? $page->url : null;
         $v['title'] = $page . "";
         $v['description'] = $page->user;
         $v['image'] = $page->avatar(72);

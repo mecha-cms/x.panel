@@ -4,10 +4,6 @@ $lot = [
     'token' => [
         'type' => 'Hidden',
         'value' => $_['token']
-    ],
-    'c' => [
-        'type' => 'Hidden',
-        'value' => $_GET['content'] ?? 'state'
     ]
 ];
 
@@ -90,7 +86,8 @@ return [
                                                         'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
                                                         'name' => false,
                                                         'stack' => 10
-                                                    ]
+                                                    ],
+                                                    'l' => ['hidden' => true]
                                                 ]
                                             ]
                                         ]

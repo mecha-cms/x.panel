@@ -40,4 +40,5 @@ Language::set([
     'license' => ['License', 'License', 'Licenses'],
     'panel' => ['Panel', 'Panel', 'Panels'],
     'slug' => ['Slug', 'Slug', 'Slugs'],
+    'style' => ['Style', 'Style', 'Styles']
 ]);

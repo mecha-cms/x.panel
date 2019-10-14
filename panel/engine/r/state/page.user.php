@@ -118,6 +118,7 @@ $lot = array_replace_recursive($lot, [
                                             'tasks' => [
                                                 // type: Tasks.Button
                                                 'lot' => [
+                                                    'draft' => ['hidden' => $page->x === 'draft' || $page->name === $user->name],
                                                     'archive' => ['hidden' => true],
                                                     'l' => ['hidden' => $_['task'] === 's' || $page->name === $user->name]
                                                 ]
