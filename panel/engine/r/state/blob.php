@@ -16,7 +16,7 @@ return [
                         'hidden' => $_['task'] === 's',
                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                         'title' => false,
-                        'description' => $language->doCreate . ' (' . $language->file . ')',
+                        'description' => ['New %s', 'file'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'blob', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
@@ -37,7 +37,7 @@ return [
                                 // type: Tabs
                                 'lot' => [
                                     'blob' => [
-                                        'title' => $language->doLoadUp,
+                                        'title' => 'Upload',
                                         'lot' => [
                                             'fields' => [
                                                 'type' => 'Fields',
@@ -47,8 +47,8 @@ return [
                                                         'value' => $_['token']
                                                     ],
                                                     'blob' => [
-                                                        'title' => $language->file,
-                                                        'description' => $language->fieldDescriptionBlobSize([File::sizer(File::$state['size'][0]), File::sizer(File::$state['size'][1])], true),
+                                                        'title' => 'File',
+                                                        'description' => ['Maximum file size allowed to upload is %s.', File::sizer(File::$state['size'][1])],
                                                         'type' => 'Blob',
                                                         'focus' => true,
                                                         'stack' => 10
@@ -70,16 +70,16 @@ return [
                                 'type' => 'Fields',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Field',
                                         'title' => "",
+                                        'type' => 'Field',
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
+                                                        'title' => 'Upload',
+                                                        'description' => ['Upload to %s', _\lot\x\panel\h\path($_['f'])],
                                                         'type' => 'Submit',
-                                                        'title' => $language->doLoadUp,
-                                                        'description' => $language->fieldDescriptionBlobTo([_\lot\x\panel\h\path($_['f'])]),
                                                         'name' => false,
                                                         'stack' => 10
                                                     ]

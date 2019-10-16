@@ -23,7 +23,7 @@ return [
                         'hidden' => $_['task'] === 's',
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
-                        'description' => $language->doCreate . ' (' . $language->data . ')',
+                        'description' => ['New %s', 'data'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
@@ -59,8 +59,8 @@ return [
                                                     ],
                                                     'content' => [
                                                         'type' => 'Source',
-                                                        'alt' => $language->fieldAltContent,
                                                         'name' => 'data[content]',
+                                                        'alt' => 'Content goes here...',
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
@@ -68,11 +68,11 @@ return [
                                                     ],
                                                     'name' => [
                                                         'type' => 'Text',
-                                                        'alt' => $_['task'] === 'g' ? ($name ?? pathinfo($language->fieldAltName, PATHINFO_FILENAME)) : pathinfo($language->fieldAltName, PATHINFO_FILENAME),
                                                         'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
                                                         'after' => '.data',
                                                         'focus' => true,
                                                         'name' => 'data[name]',
+                                                        'alt' => $_['task'] === 'g' ? ($name ?? 'foo-bar') : 'foo-bar',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20
@@ -94,23 +94,23 @@ return [
                                 'type' => 'Fields',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Field',
                                         'title' => "",
+                                        'type' => 'Field',
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
+                                                        'title' => $_['task'] === 'g' ? 'Update' : 'Create',
                                                         'type' => 'Submit',
-                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],
                                                     'l' => [
-                                                        'hidden' => $_['task'] === 's',
+                                                        'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'title' => $language->doDelete,
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'data', 'token' => $_['token']])),
+                                                        'hidden' => $_['task'] === 's',
                                                         'stack' => 20
                                                     ]
                                                 ]

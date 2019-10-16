@@ -43,7 +43,7 @@ function file($_, $lot) {
     }
     if (\is_file($f = $_['f'])) {
         \unlink($f);
-        $_['alert']['success'][] = ['file-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+        $_['alert']['success'][] = ['File %s deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -70,7 +70,7 @@ function folder($_, $lot) {
             }
         }
         \rmdir($f);
-        $_['alert']['success'][] = ['folder-let', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+        $_['alert']['success'][] = ['Folder %s deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -90,11 +90,11 @@ function page($_, $lot) {
         \rmdir($d);
     }
     if (\is_file($f = $_['f'])) {
-        $key = $language->{\ltrim($_['chop'][0], '_.-')};
+        $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $_ = file($_, $lot); // Move to `file`
         $alter = [
-            'file-let' => ['*-let', [$key, $path]]
+            'File %s deleted.' => ['%s %s deleted.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {

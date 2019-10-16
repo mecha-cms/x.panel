@@ -32,7 +32,7 @@ namespace _\lot\x\panel {
             2 => $in[2] ?? []
         ];
         if (!\array_key_exists('title', $in) || $in['title'] !== false) {
-            $title = \_\lot\x\panel\h\title($in, -2, $GLOBALS['language']->{$key});
+            $title = \_\lot\x\panel\h\title($in, -2, \ucfirst($key));
             $out[1] .= '<label' . (\strip_tags($title) === "" ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
         }
         $before = "";
@@ -105,7 +105,7 @@ namespace _\lot\x\panel {
             $out[1] .= $append;
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        return new \HTML($out);
+        return $out[1] !== "" ? new \HTML($out) : null;
     }
     function File($in, $key) {
         $tags = ['is:file'];
@@ -166,14 +166,6 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Folder($in, $key) {
-        $name = null;
-        $tasks = $in['tasks'] ?? null;
-        if ($path = $in['path'] ?? null) {
-            $name = \basename($path);
-        }
-        if (isset($in['title'])) {
-            $name = $in['title'];
-        }
         $tags = ['is:folder'];
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
@@ -185,17 +177,15 @@ namespace _\lot\x\panel {
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $out[1] .= '<h3>' . \_\lot\x\panel\Link([
-            'description' => $in['description'] ?? $GLOBALS['language']->doEnter,
+            'description' => $in['description'] ?? \i('Open folder'),
             'link' => $in['link'] ?? null,
-            'title' => $name,
+            'title' => $in['title'] ?? null,
             'url' => $in['url'] ?? null
         ], $key) . '</h3>';
-        if (\is_array($tasks)) {
-            $out[1] .= \_\lot\x\panel\Tasks\Link([
-                0 => 'p',
-                'lot' => $tasks
-            ], 0);
-        }
+        $out[1] .= \_\lot\x\panel\Tasks\Link([
+            0 => 'p',
+            'lot' => $in['tasks'] ?? []
+        ], 0);
         return new \HTML($out);
     }
     function Form($in, $key) {
@@ -225,7 +215,7 @@ namespace _\lot\x\panel {
             2 => []
         ];
         if ($out[1] === "") {
-            $out[1] = \_\lot\x\panel\h\title($in, -1, $GLOBALS['language']->{$key});
+            $out[1] = \_\lot\x\panel\h\title($in, -1, \ucfirst($key));
         }
         $tags = [];
         $href = $in['link'] ?? $in['url'] ?? \P;
@@ -236,7 +226,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $out[2]['href'] = $href === \P ? null : $href;
         $out[2]['target'] = $in[2]['target'] ?? (isset($in['link']) ? '_blank' : null);
-        $out[2]['title'] = $in['description'] ?? null;
+        $out[2]['title'] = \i(...((array) ($in['description'] ?? [])));
         return new \HTML($out);
     }
     function Menu($in, $key, int $i = 0) {
@@ -392,11 +382,10 @@ namespace _\lot\x\panel {
             }
             return $out;
         };
-        $language = $GLOBALS['language'];
         $in['content'] = $content = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
             return $url . $_['/'] . '::g::' . $_['path'] . '/' . $i . $url->query . $url->hash;
-        }, $language->first, $language->prev, $language->next, $language->last);
+        }, \i('First'), \i('Previous'), \i('Next'), \i('Last'));
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';
         return $content !== "" ? $out : null;
@@ -444,7 +433,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
         }
         \_\lot\x\panel\h\c($out[2], $in);
-        return new \HTML($out);
+        return $out[1] !== "" ? new \HTML($out) : null;
     }
     function Tabs($in, $key) {
         $name = $in['name'] ?? $key;
@@ -459,19 +448,11 @@ namespace _\lot\x\panel {
             $nav = $section = [];
             $tags = ['lot', 'lot:tab', 'p'];
             $lot = (new \Anemon($in['lot']))->sort([1, 'stack'], true)->get();
-            $first = \array_keys($lot)[0] ?? null; // The first tab
-            $active = $_GET['tab'][$name] ?? $in['active'] ?? $first ?? null;
-            if ($active !== null && isset($lot[$active]) && \is_array($lot[$active])) {
-                $lot[$active]['tags'][] = 'is:active';
-            } else if ($first !== null && isset($lot[$first]) && \is_array($lot[$first])) {
-                $lot[$first]['tags'][] = 'is:active';
-            }
             $count = 0;
             foreach ($lot as $k => $v) {
                 if ($v === null || $v === false || !empty($v['hidden'])) {
                     continue;
                 }
-                ++$count;
                 $kk = $v['name'] ?? $k;
                 if (\is_array($v)) {
                     if (empty($v['url']) && empty($v['link'])) {
@@ -483,9 +464,35 @@ namespace _\lot\x\panel {
                     }
                 }
                 $v[2]['data-name'] = $kk;
+                // If `type` is not defined, the default value will be `Tab`
+                if (!\array_key_exists('type', $v)) {
+                    $v['type'] = 'Tab';
+                }
                 $nav[$kk] = $v;
-                unset($nav[$kk]['lot']); // Disable dropdown menu view
-                $section[$kk] = \_\lot\x\panel\Tab($v, $kk);
+                $section[$kk] = $v;
+                // Disable dropdown menu view
+                unset(
+                    $nav[$kk]['content'],
+                    $nav[$kk]['lot'],
+                    $nav[$kk]['type']
+                );
+            }
+            // TODO: Do not activate tab (activate the first tab) if current tab content is empty
+            $first = \array_keys($nav)[0] ?? null; // The first tab
+            $active = $_GET['tab'][$name] ?? $in['active'] ?? $first ?? null;
+            if ($active !== null && isset($nav[$active]) && \is_array($nav[$active])) {
+                $nav[$active]['tags'][] = 'is:active';
+                $section[$active]['tags'][] = 'is:active';
+            } else if ($first !== null && isset($nav[$first]) && \is_array($nav[$first])) {
+                $nav[$first]['tags'][] = 'is:active';
+                $section[$first]['tags'][] = 'is:active';
+            }
+            foreach ($section as $k => $v) {
+                $vv = (string) \_\lot\x\panel($v, $k);
+                if ($vv !== "") {
+                    ++$count;
+                }
+                $section[$k] = $vv;
             }
             $out[1] = '<nav>' . \_\lot\x\panel\Bar__List(['lot' => $nav], $name) . '</nav>';
             $out[1] .= \implode("", $section);

@@ -20,7 +20,7 @@ return [
                         'hidden' => $_['task'] === 's',
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
-                        'description' => $language->doCreate . ' (' . $language->folder . ')',
+                        'description' => ['New %s', 'folder'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'folder', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
@@ -51,10 +51,10 @@ return [
                                                     ],
                                                     'name' => [
                                                         'type' => 'Text',
-                                                        'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltFolder) : $language->fieldAltFolder,
                                                         'pattern' => "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$",
                                                         'focus' => true,
                                                         'name' => 'folder[name]',
+                                                        'alt' => $_['task'] === 'g' ? ($name ?? "foo\\bar\\baz") : "foo\\bar\\baz",
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 10
@@ -66,7 +66,7 @@ return [
                                                         'name' => 'folder',
                                                         'value' => $_['task'] === 's' ? ['kick' => 1] : [],
                                                         'lot' => [
-                                                            'kick' => $language->fieldDescriptionFolderKick
+                                                            'kick' => 'Redirect to folder'
                                                         ],
                                                         'stack' => 20
                                                     ]
@@ -94,17 +94,17 @@ return [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
+                                                        'title' => $_['task'] === 'g' ? 'Update' : 'Create',
+                                                        'description' => ['Create in %s', _\lot\x\panel\h\path($_['f'])],
                                                         'type' => 'Submit',
-                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
-                                                        'description' => $language->fieldDescriptionFolderTo([_\lot\x\panel\h\path($_['f'])]),
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],
                                                     'l' => [
-                                                        'hidden' => $_['task'] === 's',
+                                                        'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'title' => $language->doDelete,
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'folder', 'token' => $_['token']])),
+                                                        'hidden' => $_['task'] === 's',
                                                         'stack' => 20
                                                     ]
                                                 ]

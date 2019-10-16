@@ -13,7 +13,7 @@ if (State::get('x.art') !== null) {
                         'title' => '<abbr title="Cascading Style Sheet">CSS</abbr>',
                         'type' => 'Source',
                         'name' => 'data[css]',
-                        'alt' => $language->fieldAltCss,
+                        'alt' => ['%s goes here...', 'CSS'],
                         'value' => $page['css'],
                         'width' => true,
                         'height' => true,
@@ -23,7 +23,7 @@ if (State::get('x.art') !== null) {
                         'title' => '<abbr title="JavaScript">JS</abbr>',
                         'type' => 'Source',
                         'name' => 'data[js]',
-                        'alt' => $language->fieldAltJs,
+                        'alt' => ['%s goes here...', 'JavaScript'],
                         'value' => $page['js'],
                         'width' => true,
                         'height' => true,
@@ -38,6 +38,6 @@ if (State::get('x.art') !== null) {
 }
 
 $lot['bar']['lot'][0]['lot']['s']['url'] = str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'page.page', 'tab' => false]) . $url->hash;
-$lot['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['title'] = $language->{'do' . ($_['task'] === 's' ? 'Publish' : 'Update')};
+$lot['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['title'] = $_['task'] === 's' ? 'Publish' : 'Update';
 
 return $lot;

@@ -33,7 +33,7 @@ return [
                         'hidden' => $_['task'] === 's',
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
-                        'description' => $language->doCreate . ' (' . $language->file . ')',
+                        'description' => ['New %s', 'file'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'file', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
@@ -63,21 +63,21 @@ return [
                                                         'value' => $_['token']
                                                     ],
                                                     'content' => [
-                                                        'hidden' => !$editable,
                                                         'type' => 'Source',
-                                                        'alt' => $language->fieldAltContent,
                                                         'name' => 'file[content]',
+                                                        'alt' => 'Content goes here...',
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
+                                                        'hidden' => !$editable,
                                                         'stack' => 10
                                                     ],
                                                     'name' => [
                                                         'type' => 'Text',
-                                                        'alt' => $_['task'] === 'g' ? ($name ?? $language->fieldAltName) : $language->fieldAltName,
                                                         'pattern' => "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(" . implode('|', array_keys(array_filter(File::$state['x']))) . ")$",
                                                         'focus' => true,
                                                         'name' => 'file[name]',
+                                                        'alt' => $_['task'] === 'g' ? ($name ?? 'foo-bar.baz') : 'foo-bar.baz',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20
@@ -99,24 +99,24 @@ return [
                                 'type' => 'Fields',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Field',
                                         'title' => "",
+                                        'type' => 'Field',
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
+                                                        'title' => $_['task'] === 'g' ? 'Update' : 'Create',
+                                                        'description' => ['Save to %s', _\lot\x\panel\h\path($_['f'])],
                                                         'type' => 'Submit',
-                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
-                                                        'description' => $language->fieldDescriptionFileTo([_\lot\x\panel\h\path($_['f'])]),
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],
                                                     'l' => [
-                                                        'hidden' => $_['task'] === 's',
+                                                        'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'title' => $language->doDelete,
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'file', 'token' => $_['token']])),
+                                                        'hidden' => $_['task'] === 's',
                                                         'stack' => 20
                                                     ]
                                                 ]

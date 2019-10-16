@@ -14,15 +14,15 @@ if ($_['task'] === 'g' && $_['f'] === $user->path) {
     }
     // Add exit button
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['exit'] = [
+        'title' => 'Exit',
         'type' => 'Link',
-        'title' => $language->doExit,
         'url' => $url . ($_['user']['guard']['path'] ?? $_['user']['path']) . '/' . $user->name . '?exit=' . $_['token'],
         'tags' => ['is:text'],
         'stack' => 20
     ];
 } else {
     if ($url->clean !== $url . $_['/'] . '::g::' . $_['state']['path']) {
-        Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
+        Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
     }
     Guard::kick($url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', [
         'content' => false,

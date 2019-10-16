@@ -39,11 +39,11 @@ function file($_, $lot) {
         $base = \basename($_['f']); // Old file name
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         if ($name === "") {
-            $_['alert']['error'][] = ['void-field', '<strong>' . $language->name . '</strong>', true];
+            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',') === false) {
-            $_['alert']['error'][] = ['file-x', '<code>' . $x . '</code>', true];
+            $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['file-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+            $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else {
             if (isset($lot['file']['content'])) {
                 \file_put_contents($f, $lot['file']['content']);
@@ -54,7 +54,7 @@ function file($_, $lot) {
                 \rename($_['f'], $f);
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['file-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>', true];
+            $_['alert']['success'][] = ['File %s updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
@@ -81,12 +81,12 @@ function folder($_, $lot) {
         $name = \To::folder($lot['folder']['name'] ?? ""); // New folder name
         $base = \basename($_['f']); // Old folder name
         if ($name === "") {
-            $_['alert']['error'][] = ['void-field', '<strong>' . $language->name . '</strong>', true];
+            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['folder-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+            $_['alert']['error'][] = ['folder-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else if ($name === $base) {
             // Do nothing
-            $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>', true];
+            $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
             if (!empty($lot['folder']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
@@ -111,7 +111,7 @@ function folder($_, $lot) {
                 }
             }
             \rmdir($_['f']);
-            $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>', true];
+            $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             if (!empty($lot['folder']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
@@ -184,11 +184,11 @@ function page($_, $lot) {
         }
     }
     if (\is_file($f = $_['f'])) {
-        $key = $language->{\ltrim($_['chop'][0], '_.-')};
+        $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
         $path = '<code>' . \_\lot\x\panel\h\path($_f) . '</code>'; // Use old file name
         $alter = [
-            'file-exist' => ['*-exist', [$key, $path]],
-            'file-update' => ['*-update', [$key, $path]]
+            'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
+            'File %s updated.' => ['%s %s updated.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
@@ -220,7 +220,7 @@ function state($_, $lot) {
         if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
             $source = \realpath($source);
             \file_put_contents($source, '<?php return ' . \z(\array_replace_recursive((array) require $source, $lot['state'] ?? [])) . ';');
-            $_['alert']['success'][] = ['file-update', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>', true]];
+            $_['alert']['success'][] = ['File %s updated.', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>']];
         }
         $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . $e;
     }
@@ -233,7 +233,7 @@ function state($_, $lot) {
 
 function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
-        $_['alert']['error'][] = 'token';
+        $_['alert']['error'][] = 'Invalid token.';
     }
     return $_;
 }

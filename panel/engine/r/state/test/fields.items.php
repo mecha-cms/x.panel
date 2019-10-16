@@ -25,9 +25,9 @@ return [
                                                 'type' => 'Fields',
                                                 'lot' => [
                                                     'to-sequence-array' => [
-                                                        'type' => 'Items',
                                                         'title' => 'Items',
                                                         'description' => 'Output as sequence array.',
+                                                        'type' => 'Items',
                                                         'flat' => true,
                                                         'value' => ['red', 'green', 'blue'],
                                                         'lot' => [
@@ -41,9 +41,9 @@ return [
                                                         ]
                                                     ],
                                                     'to-associative-array' => [
-                                                        'type' => 'Items',
                                                         'title' => 'Items',
                                                         'description' => 'Output as associative array.',
+                                                        'type' => 'Items',
                                                         'value' => [
                                                             'red' => 11,
                                                             'green' => 1,
@@ -75,15 +75,15 @@ return [
                                 'type' => 'Fields',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Field',
                                         'title' => "",
+                                        'type' => 'Field',
                                         'lot' => [
                                             0 => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     0 => [
-                                                        'type' => 'Submit',
                                                         'title' => 'Test',
+                                                        'type' => 'Submit',
                                                         'name' => false,
                                                         'stack' => 10
                                                     ]

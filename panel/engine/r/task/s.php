@@ -2,7 +2,7 @@
 
 // Redirect if file already exists
 if (($f = $_['f']) && \is_file($f)) {
-    \Alert::info(\Language::get('alert-error-file-exist', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']));
+    \Alert::info('File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>');
     \Guard::kick(\str_replace('::s::', '::g::', $url->current));
 }
 
@@ -24,7 +24,7 @@ function blob($_, $lot) {
         foreach ($lot['blob'] ?? [] as $k => $v) {
             // Check for error code
             if (!empty($v['error'])) {
-                $_['alert']['error'][] = \Language::get('alert-info-blob.' . $v['error']);
+                $_['alert']['error'][] = 'Blob: [' . $v['error'] . ']';
             }
             $name = \To::file(\lcfirst($v['name'])) ?? '0';
             $x = \pathinfo($name, \PATHINFO_EXTENSION);
@@ -32,38 +32,38 @@ function blob($_, $lot) {
             $size = $v['size'] ?? 0;
             // Check for file extension
             if ($x && \strpos($test_x, ',' . $x . ',') === false) {
-                $_['alert']['error'][] = ['file-x', '<code>' . $x . '</code>', true];
+                $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
             // Check for file type
             } else if ($type && \strpos($test_type, ',' . $type . ',') === false) {
-                $_['alert']['error'][] = ['file-type', '<code>' . $type . '</code>', true];
+                $_['alert']['error'][] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
             }
             // Check for file size
             if ($size < $test_size[0]) {
-                $_['alert']['error'][] = ['file-size.0', '<code>' . \File::sizer($test_size) . '</code>', true];
+                $_['alert']['error'][] = ['Minimum file size allowed is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
             } else if ($size > $test_size[1]) {
-                $_['alert']['error'][] = ['file-size.1', '<code>' . \File::sizer($test_size) . '</code>', true];
+                $_['alert']['error'][] = ['Maximum file size allowed is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
             }
             if (!empty($_['alert']['error'])) {
                 continue;
             } else {
                 $folder = \LOT . \DS . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \DS);
                 if (\is_file($f = $folder . \DS . $name)) {
-                    $_['alert']['error'][] = ['file-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+                    $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                     continue;
                 }
                 if (!\is_dir($folder)) {
                     \mkdir($folder, \octdec($v['seal'] ?? '0775'), true);
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
-                    $_['alert']['success'][] = ['blob-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+                    $_['alert']['success'][] = ['File %s uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                     $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
                     $_['ff'][] = $f;
                 } else {
-                    if (!\glob($folder . \DS . '*', \GLOB_NOSORT)) {
+                    if (\q(\g($folder)) === 0) {
                         \rmdir($folder);
                     }
-                    $_['alert']['error'][] = \To::sentence($language->isError);
+                    $_['alert']['error'][] = 'Error.';
                     continue;
                 }
             }
@@ -110,17 +110,17 @@ function file($_, $lot) {
         $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? "")));
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         if ($name === "") {
-            $_['alert']['error'][] = ['void-field', '<strong>' . $language->name . '</strong>', true];
+            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',') === false) {
-            $_['alert']['error'][] = ['file-x', '<code>' . $x . '</code>', true];
+            $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = [(\is_dir($f) ? 'folder' : 'file') . '-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+            $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else {
             if (isset($lot['file']['content'])) {
                 \file_put_contents($f, $lot['file']['content']);
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['file-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+            $_['alert']['success'][] = ['File %s created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
@@ -146,12 +146,12 @@ function folder($_, $lot) {
         }
         $name = \To::folder($lot['folder']['name'] ?? "");
         if ($name === "") {
-            $_['alert']['error'][] = ['void-field', '<em>' . $language->name . '</em>', true];
+            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = [(\is_dir($f) ? 'folder' : 'file') . '-exist', '<code>' . $f . '</code>', true];
+            $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
             \mkdir($f, \octdec($lot['folder']['seal'] ?? '0755'), true);
-            $_['alert']['success'][] = ['folder-set', '<code>' . \_\lot\x\panel\h\path($f) . '</code>', true];
+            $_['alert']['success'][] = ['Folder %s created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             if (!empty($lot['folder']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
@@ -221,11 +221,11 @@ function page($_, $lot) {
         }
     }
     if (\is_file($f = $_['f'])) {
-        $key = $language->{\ltrim($_['chop'][0], '_.-')};
+        $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $alter = [
-            'file-exist' => ['*-exist', [$key, $path]],
-            'file-set' => ['*-set', [$key, $path]]
+            'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
+            'File %s created.' => ['%s %s created.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
@@ -249,7 +249,7 @@ function state($_, $lot) {
 
 function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
-        $_['alert']['error'][] = 'token';
+        $_['alert']['error'][] = 'Invalid token.';
     }
     return $_;
 }

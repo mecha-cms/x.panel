@@ -2,93 +2,93 @@
 
 $fields = [
     'default[0]' => [
-        'type' => 'Field',
         'title' => 'Default',
+        'type' => 'Field',
         'content' => '<output class="output">ABCDEF</output>'
     ],
     'unknown[0]' => [
-        'type' => null,
         'title' => 'Unknown',
+        'type' => null,
         'value' => "Foo\nBar\n<b>Baz</b>"
     ],
     'unknown[1]' => [
-        'type' => 'Foo',
         'title' => 'Unknown',
+        'type' => 'Foo',
         'value' => "Foo\nBar\n<b>Baz</b>"
     ],
     'text[0]' => [
-        'type' => 'Text',
         'title' => 'Text',
+        'type' => 'Text',
         'alt' => 'Text'
     ],
     'text[1]' => [
-        'type' => 'Text',
         'title' => 'Text',
+        'type' => 'Text',
         'before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']
     ],
     'text[2]' => [
-        'type' => 'Text',
         'title' => 'Text',
+        'type' => 'Text',
         'after' => '.php'
     ],
     'text[3]' => [
-        'type' => 'Text',
         'title' => 'Text',
+        'type' => 'Text',
         'before' => 'IDR',
         'after' => '.00'
     ],
     'text[4]' => [
-        'type' => 'Text',
         'title' => 'Text',
+        'type' => 'Text',
         'alt' => 'Text',
         'required' => true
     ],
     'number[0]' => [
-        'type' => 'Number',
         'title' => 'Number',
+        'type' => 'Number',
         'min' => 0,
         'max' => 10,
         'step' => .5
     ],
     'range[0]' => [
-        'type' => 'Range',
         'title' => 'Range',
+        'type' => 'Range',
         'min' => 0,
         'max' => 10,
         'step' => .5
     ],
     'pass[0]' => [
-        'type' => 'Pass',
         'title' => 'Pass',
+        'type' => 'Pass',
         'alt' => 'Pass'
     ],
     'color[0]' => [
-        'type' => 'Color',
-        'title' => 'Color'
+        'title' => 'Color',
+        'type' => 'Color'
     ],
     'colors[0]' => [
-        'type' => 'Colors',
         'title' => 'Colors',
+        'type' => 'Colors',
         'lot' => ['#ff0000', '#00ff00', '#0000ff']
     ],
     'content[0]' => [
-        'type' => 'Content',
         'title' => 'Content',
+        'type' => 'Content',
         'alt' => 'Content'
     ],
     'source[0]' => [
-        'type' => 'Source',
         'title' => 'Source',
+        'type' => 'Source',
         'alt' => 'Source'
     ],
     'combo[0]' => [
-        'type' => 'Combo',
         'title' => 'Combo',
+        'type' => 'Combo',
         'lot' => ['Red', 'Green', 'Blue']
     ],
     'combo[1]' => [
-        'type' => 'Combo',
         'title' => 'Combo',
+        'type' => 'Combo',
         'lot' => [
             'red' => 'Red',
             'green' => 'Green',
@@ -100,8 +100,8 @@ $fields = [
         ]
     ],
     'combo[2]' => [
-        'type' => 'Combo',
         'title' => 'Combo Group',
+        'type' => 'Combo',
         'lot' => [
             'color' => [
                 'title' => 'Color',
@@ -114,8 +114,8 @@ $fields = [
         ]
     ],
     'combo[3]' => [
-        'type' => 'Combo',
         'title' => 'Combo Group',
+        'type' => 'Combo',
         'lot' => [
             'color' => [
                 'title' => 'Color',
@@ -137,8 +137,8 @@ $fields = [
         ]
     ],
     'item[0]' => [
-        'type' => 'Item',
         'title' => 'Item',
+        'type' => 'Item',
         'value' => 0,
         'lot' => ['Red', 'Green', [
             'title' => 'Blue',
@@ -146,8 +146,8 @@ $fields = [
         ]]
     ],
     'item[1]' => [
-        'type' => 'Item',
         'title' => 'Item',
+        'type' => 'Item',
         'value' => 2,
         'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
             'title' => 'Item 8',
@@ -155,8 +155,8 @@ $fields = [
         ]]
     ],
     'items[0]' => [
-        'type' => 'Items',
         'title' => 'Items',
+        'type' => 'Items',
         'value' => ['red'],
         'flat' => true,
         'lot' => [
@@ -170,8 +170,8 @@ $fields = [
         ]
     ],
     'items[1]' => [
-        'type' => 'Items',
         'title' => 'Items',
+        'type' => 'Items',
         'value' => [2, 3],
         'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
             'title' => 'Item 8',
@@ -179,12 +179,12 @@ $fields = [
         ]]
     ],
     'toggle[0]' => [
-        'type' => 'Toggle',
-        'title' => 'Toggle'
+        'title' => 'Toggle',
+        'type' => 'Toggle'
     ],
     'blob[0]' => [
-        'type' => 'Blob',
         'title' => 'Blob',
+        'type' => 'Blob',
         'to' => 'asset'
     ],
     'hidden[0]' => [

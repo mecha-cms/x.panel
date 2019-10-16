@@ -1,7 +1,7 @@
 <?php
 
 if ($user['status'] !== 1 || $_['task'] !== 'g') {
-    Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
+    Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
     Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash);
 }
 
@@ -13,20 +13,19 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
         // Force as item page
         Guard::kick($url->clean . $url->query . $url->hash);
     }
-    $i18n = extension_loaded('intl');
     $panes = $paths = $skins = [];
     foreach (glob(LOT . DS . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
         $n = basename($panel);
         if (strpos('_.-', $n[0]) !== false) {
             continue;
         }
-        $panes['/' . $n] = $language->{$n === 'x' ? 'extension' : $n};
+        $panes['/' . $n] = $n === 'x' ? 'Extension' : ucfirst($n);
     }
     foreach (glob(PAGE . DS . '*.{page,archive}', GLOB_NOSORT | GLOB_BRACE) as $path) {
-        $paths['/' . pathinfo($path, PATHINFO_FILENAME)] = (new Page($path))->title;
+        $paths['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
     }
     foreach (glob(CONTENT . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $skin) {
-        $skins[basename(dirname($skin))] = (new Page($skin))->title;
+        $skins[basename(dirname($skin))] = S . (new Page($skin))->title . S;
     }
     asort($panes);
     asort($paths);
@@ -68,7 +67,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
         'file' => [
             'icon' => 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z',
             'title' => false,
-            'description' => $language->site,
+            'description' => 'Site',
             'name' => 'site',
             'lot' => [
                 'fields' => [
@@ -91,7 +90,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                         'title' => [
                             'type' => 'Text',
                             'name' => 'state[title]',
-                            'alt' => $state->title ?? $language->fieldAltTitle,
+                            'alt' => $state->title ?? 'Title Goes Here',
                             'value' => $state->title,
                             'width' => true,
                             'stack' => 10
@@ -99,7 +98,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                         'description' => [
                             'type' => 'Content',
                             'name' => 'state[description]',
-                            'alt' => $language->fieldAltDescription,
+                            'alt' => 'Description goes here...',
                             'value' => $state->description,
                             'width' => true,
                             'stack' => 20
@@ -112,7 +111,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                             'stack' => 30
                         ],
                         'path' => [
-                            'title' => $language->home,
+                            'title' => 'Home',
                             'type' => 'Combo',
                             'name' => 'state[path]',
                             'value' => $state->path,
@@ -129,8 +128,8 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                     'type' => 'Fields',
                     'lot' => [
                         'path' => [
-                            'title' => $language->home,
-                            'description' => $language->fieldDescriptionPathPanel,
+                            'title' => 'Home',
+                            'description' => 'Choose default page that will open after logged-in.',
                             'type' => 'Combo',
                             'name' => 'state[x][panel][path]',
                             'value' => $state->x->panel->path ?? null,
@@ -165,15 +164,6 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                                 'rtl' => '<abbr title="Right to Left">RTL</abbr>'
                             ],
                             'stack' => 20
-                        ],
-                        'locale' => [
-                            'active' => $i18n,
-                            'description' => $language->{'fieldDescriptionLocale' . ($i18n ? "" : 'Error')},
-                            'type' => 'Text',
-                            'name' => 'state[locale]',
-                            'alt' => $state->locale,
-                            'value' => $state->locale,
-                            'stack' => 30
                         ]
                     ],
                     'stack' => 10
@@ -184,8 +174,8 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
     ], $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] ?? []);
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['hidden'] = true; // Hide delete button
-    $GLOBALS['t'][] = $language->panel;
-    $GLOBALS['t'][] = $language->state;
+    $GLOBALS['t'][] = i('Panel');
+    $GLOBALS['t'][] = i('State');
     State::set([
         'has' => [
             'parent' => count($_['chop']) > 1,

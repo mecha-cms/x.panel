@@ -14,7 +14,7 @@ return (function($icons) {
             $folders[$n] = [
                 'current' => strpos($_['path'] . '/', '/' . $n . '/') === 0,
                 'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
-                'title' => $language->{$n === 'x' ? 'extension' : $n},
+                'title' => $n === 'x' ? 'Extension' : \ucfirst($n),
                 'url' => $url . $_['/'] . '::g::/' . $n . '/1' . $url->hash
             ];
         }
@@ -54,11 +54,11 @@ return (function($icons) {
                                     'type' => 'Fields',
                                     'lot' => [
                                         'q' => [
-                                            '2' => ['title' => $language->doSearch . ': ' . explode('/', $_['path'], 3)[1]],
+                                            'title' => 'Search',
                                             'type' => 'Text',
-                                            'title' => $language->doSearch,
-                                            'alt' => $language->doSearch,
-                                            'value' => $_GET['q'] ?? null
+                                            'alt' => 'Search',
+                                            'value' => $_GET['q'] ?? null,
+                                            '2' => ['title' => i('Search in %s', ".\\lot" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))]
                                         ]
                                     ]
                                 ]
@@ -73,7 +73,6 @@ return (function($icons) {
                     'lot' => [
                         'site' => [
                             'current' => false,
-                            'title' => $language->site,
                             'link' => $url,
                             'lot' => [
                                 'state' => [
@@ -90,13 +89,15 @@ return (function($icons) {
                                         'g' => [
                                             'current' => strpos($url->path . '/', $_['/'] . '::' . $_['task'] . '::/user/' . $user->name(true) . '/') === 0,
                                             'icon' => 'M21.7,13.35L20.7,14.35L18.65,12.3L19.65,11.3C19.86,11.09 20.21,11.09 20.42,11.3L21.7,12.58C21.91,12.79 21.91,13.14 21.7,13.35M12,18.94L18.06,12.88L20.11,14.93L14.06,21H12V18.94M12,14C7.58,14 4,15.79 4,18V20H10V18.11L14,14.11C13.34,14.03 12.67,14 12,14M12,4A4,4 0 0,0 8,8A4,4 0 0,0 12,12A4,4 0 0,0 16,8A4,4 0 0,0 12,4Z',
-                                            'title' => $language->doEdit,
+                                            'title' => 'Edit',
+                                            'description' => S . $user->user . S,
                                             'url' => $url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
                                             'stack' => 10
                                         ],
                                         'exit' => [
+                                            'description' => S . $user->user . S,
                                             'icon' => 'M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z',
-                                            'title' => $language->doExit,
+                                            'title' => 'Exit',
                                             'url' => $url . ($_['user']['guard']['path'] ?? $_['user']['path']) . '/' . $user->name . '?exit=' . $_['token'] . $url->hash,
                                             'stack' => 20
                                         ]
@@ -106,7 +107,7 @@ return (function($icons) {
                                 'view' => [
                                     'current' => false,
                                     'icon' => 'M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z',
-                                    'title' => $language->doView,
+                                    'title' => 'View',
                                     'link' => $url,
                                     'stack' => 30
                                 ]

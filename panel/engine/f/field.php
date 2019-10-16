@@ -1,7 +1,7 @@
 <?php namespace _\lot\x\panel;
 
 function Field__($in, $key) {
-    $out = \_\lot\x\panel\Field_Content($in, $key);
+    $out = \_\lot\x\panel\Field__Content($in, $key);
     $out['hidden'] = true;
     return $out;
 }
@@ -67,7 +67,7 @@ function Field__Combo($in, $key) {
     if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
-        $placeholder = $out['alt'] ?? null;
+        $placeholder = \i(...((array) ($out['alt'] ?? [])));
         $out['content'][0] = 'select';
         unset($out['value']);
         $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
@@ -82,7 +82,7 @@ function Field__Combo($in, $key) {
                 $aa = [];
                 $optgroup = new \HTML(['optgroup', "", [
                     'disabled' => isset($v['active']) && !$v['active'],
-                    'label' => $t = \trim(\strip_tags($v['title'] ?? $k))
+                    'label' => $t = \trim(\strip_tags(\i(...((array) ($v['title'] ?? $k)))))
                 ]]);
                 $seq0 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
                 foreach ($v['lot'] as $kk => $vv) {
@@ -90,13 +90,13 @@ function Field__Combo($in, $key) {
                         'selected' => $value !== null && (string) $value === (string) $kk,
                         'value' => $seq0 ? null : $kk
                     ]]);
-                    if (\is_array($vv)) {
+                    if (\is_array($vv) && \array_key_exists('title', $vv)) {
                         $tt = $vv['title'] ?? $kk;
                         $option['disabled'] = isset($vv['active']) && !$vv['active'];
                     } else {
                         $tt = $vv;
                     }
-                    $option[1] = \trim(\strip_tags($tt));
+                    $option[1] = $tt = \trim(\strip_tags(\i(...((array) $tt))));
                     $aa[$tt . $kk] = $option;
                 }
                 $sort && \ksort($aa);
@@ -111,13 +111,13 @@ function Field__Combo($in, $key) {
                     'selected' => $value !== null && (string) $value === (string) $k,
                     'value' => $seq ? null : $k
                 ]]);
-                if (\is_array($v)) {
+                if (\is_array($v) && \array_key_exists('title', $v)) {
                     $t = $v['title'] ?? $k;
                     $option['disabled'] = isset($v['active']) && !$v['active'];
                 } else {
                     $t = $v;
                 }
-                $option[1] = \trim(\strip_tags($t));
+                $option[1] = \trim(\strip_tags(\i(...((array) $t))));
                 // Add `1` to the end of the key so that bare option(s) will come last
                 $a[$t . $k . '1'] = $option;
             }
@@ -175,12 +175,15 @@ function Field__Item($in, $key) {
                 'value' => $k
             ]]);
             if (\is_array($v)) {
-                $t = $v['title'] ?? $k;
+                $t = \_\lot\x\panel\h\title($v, -2) . "";
+                $d = $v['description'] ?? "";
                 $input['disabled'] = isset($v['active']) && !$v['active'];
             } else {
-                $t = $v;
+                $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
+                $d = "";
             }
-            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
+            $d = \strip_tags(\i(...((array) $d)));
+            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span' . ($d !== "" ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($in['block'])) {
@@ -221,13 +224,16 @@ function Field__Items($in, $key) {
                 'type' => 'checkbox',
                 'value' => $key_as_value ? $k : \s($value[$k] ?? 1)
             ]]);
-            if (\is_array($v)) {
+            if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
+                $d = $v['description'] ?? "";
                 $input['disabled'] = isset($v['active']) && !$v['active'];
             } else {
                 $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
+                $d = "";
             }
-            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span>' . $t . '</span></label>';
+            $d = \strip_tags(\i(...((array) $d)));
+            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span' . ($d !== "" ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($in['block'])) {
@@ -281,7 +287,6 @@ function Field__Range($in, $key) {
 
 function Field__Source($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
-    $out['content'][2]['data-type'] = $in['syntax'] ?? null;
     \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea', 'code']);
     return \_\lot\x\panel\Field($out, $key);
 }
@@ -304,9 +309,9 @@ function Field__Toggle($in, $key) {
         'class' => 'input',
         'name' => $in['name'] ?? $key,
         'type' => 'checkbox',
-        'value' => 'true' // Force value to be exists
+        'value' => 'true' // Force value to be `true`
     ]]);
-    $t = $in['description'] ?? '&nbsp;';
+    $t = \i(...((array) ($in['description'] ?? '&nbsp;')));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);

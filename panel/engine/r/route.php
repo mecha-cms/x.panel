@@ -5,7 +5,7 @@ function route($lot) {
         \Guard::kick("");
     }
     extract($GLOBALS, \EXTR_SKIP);
-    $GLOBALS['t'][] = $language->panel;
+    $GLOBALS['t'][] = \i('Panel');
     \State::set([
         'has' => [
             'parent' => \count($_['chop']) > 1,
@@ -20,7 +20,7 @@ function route($lot) {
         !isset($_['f']) ||
         !\is_dir($_['f']) && isset($_['i'])
     )) {
-        $GLOBALS['t'][] = $language->isError;
+        $GLOBALS['t'][] = \i('Error');
         \State::set([
             '[content]' => ['content:' . $_['content'] => false],
             'is' => [
@@ -31,7 +31,7 @@ function route($lot) {
         $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
     }
     $n = \ltrim($_['chop'][0], '_.-');
-    $GLOBALS['t'][] = isset($_['path']) ? $language->{$n === 'x' ? 'extension' : $n} : null;
+    $GLOBALS['t'][] = isset($_['path']) ? \i($n === 'x' ? 'Extension' : \ucfirst($n)) : null;
     $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }
 

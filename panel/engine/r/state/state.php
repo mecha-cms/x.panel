@@ -75,15 +75,15 @@ return [
                                 'type' => 'Fields',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Field',
                                         'title' => "",
+                                        'type' => 'Field',
                                         'lot' => [
                                             'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
+                                                        'title' => $_['task'] === 'g' ? 'Update' : 'Create',
                                                         'type' => 'Submit',
-                                                        'title' => $language->{$_['task'] === 'g' ? 'doUpdate' : 'doCreate'},
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],

@@ -19,7 +19,7 @@ function description($in, $or = null) {
     }
     $out = [
         0 => 'p',
-        1 => (string) ($description !== "" ? $description : $or),
+        1 => (string) \i(...($description !== "" ? (array) $description : (array) $or)),
         2 => []
     ];
     unset($in['tags']);
@@ -49,7 +49,7 @@ function field($in, $key) {
             'id' => $in['id'],
             'name' => $name,
             'pattern' => $in['pattern'] ?? null,
-            'placeholder' => $in['alt'] ?? null,
+            'placeholder' => \i(...((array) ($in['alt'] ?? []))),
             'readonly' => $readonly,
             'required' => $required
         ]
@@ -128,7 +128,7 @@ function title($in, $i = -1, $or = null) {
     ];
     $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
     if ($title !== null && $title !== false) {
-        $title = '<span>' . $title . '</span>';
+        $title = '<span>' . \i(...((array) $title)) . '</span>';
     }
     $out[1] = $icon[0] . $title . $icon[1];
     unset($in['tags']);

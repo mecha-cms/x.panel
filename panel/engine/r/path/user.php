@@ -10,14 +10,14 @@ if (count($_['chop']) > 1) {
             // Prevent user(s) from adding a hidden form (or changing the `page[status]` field value) that
             // defines its `status` through developer tools and such by enforcing the `page[status]` value
             if (isset($_POST['page']['status']) && $_POST['page']['status'] !== $status) {
-                Alert::error('You don&rsquo;t have permission to change the <code>status</code> value.');
+                Alert::error('You don\'t have permission to change the <code>status</code> value.');
             }
             $_POST['page']['status'] = $status;
             unset($_POST['data']['status']);
         }
         // Prevent user from editing another user file
         if ($_['task'] === 'g' && $_['f'] !== $user->path) {
-            Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
+            Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
             Guard::kick(dirname($url->clean) . '/1' . $url->hash);
         }
     }

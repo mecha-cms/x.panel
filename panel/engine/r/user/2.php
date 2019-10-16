@@ -2,7 +2,7 @@
 
 // Prevent user(s) from modifying the `content` type
 if ($_['task'] === 'g' && isset($_GET['content'])) {
-    Alert::error('Permission denied for your current user status: <code>' . $user['status'] . '</code>.<br><small>' . $url->current . '</small>');
+    Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
     Guard::kick($url->clean . $url->query('&', ['content' => false]) . $url->hash);
 }
 
