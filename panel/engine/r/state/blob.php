@@ -52,6 +52,16 @@ return [
                                                         'type' => 'Blob',
                                                         'focus' => true,
                                                         'stack' => 10
+                                                    ],
+                                                    'options' => [
+                                                        'title' => "",
+                                                        'type' => 'Items',
+                                                        'lot' => [
+                                                            'extract-here' => 'Extract package after package is uploaded.',
+                                                            'extract-to-folder' => 'Wrap the extracted package into a folder.'
+                                                        ],
+                                                        'hidden' => State::get('x.package') === null,
+                                                        'stack' => 20
                                                     ]
                                                 ],
                                                 'stack' => 10

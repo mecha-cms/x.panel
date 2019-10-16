@@ -178,6 +178,12 @@ function Field__Item($in, $key) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
                 $d = $v['description'] ?? "";
                 $input['disabled'] = isset($v['active']) && !$v['active'];
+                if (isset($v['name'])) {
+                    $input['name'] = $v['name'];
+                }
+                if (isset($v['value'])) {
+                    $input['value'] = $v['value'];
+                }
             } else {
                 $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
                 $d = "";
@@ -222,12 +228,18 @@ function Field__Items($in, $key) {
                 'class' => 'input',
                 'name' => $n . '[' . ($key_as_value ? "" : $k) . ']',
                 'type' => 'checkbox',
-                'value' => $key_as_value ? $k : \s($value[$k] ?? 1)
+                'value' => $key_as_value ? $k : \s($value[$k] ?? true)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
                 $d = $v['description'] ?? "";
                 $input['disabled'] = isset($v['active']) && !$v['active'];
+                if (isset($v['name'])) {
+                    $input['name'] = $v['name'];
+                }
+                if (isset($v['value'])) {
+                    $input['value'] = $v['value'];
+                }
             } else {
                 $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
                 $d = "";
