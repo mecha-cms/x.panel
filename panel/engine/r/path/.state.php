@@ -172,6 +172,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
             'stack' => 30
         ]
     ], $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] ?? []);
+    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['description'] = ['Save to %s', ".\\state.php"];
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['hidden'] = true; // Hide delete button
     $GLOBALS['t'][] = i('Panel');

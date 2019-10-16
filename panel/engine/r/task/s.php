@@ -30,6 +30,10 @@ function blob($_, $lot) {
             $x = \pathinfo($name, \PATHINFO_EXTENSION);
             $type = $v['type'] ?? 'application/octet-stream';
             $size = $v['size'] ?? 0;
+            // TODO: Handle package
+            if ($x === 'zip' || $type === 'asdf') {
+                
+            }
             // Check for file extension
             if ($x && \strpos($test_x, ',' . $x . ',') === false) {
                 $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];

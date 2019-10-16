@@ -311,10 +311,10 @@ function Field__Toggle($in, $key) {
         'type' => 'checkbox',
         'value' => 'true' // Force value to be `true`
     ]]);
-    $t = \i(...((array) ($in['description'] ?? '&nbsp;')));
+    $t = \i(...((array) ($in['alt'] ?? '&nbsp;')));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);
-    unset($out['description']);
+    unset($out['alt']);
     return \_\lot\x\panel\Field($out, $key);
 }
