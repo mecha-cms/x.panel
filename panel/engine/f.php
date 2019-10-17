@@ -22,7 +22,7 @@ namespace _\lot\x\panel {
     function Field($in, $key) {
         $tags = ['field', 'p'];
         if (isset($in['type'])) {
-            $tags[] = \strtr(\c2f($in['type'], '-', '.'), '_', ':');
+            $tags[] = \strtr(\c2f($in['type'], '-', '.'), ['__' => ':']);
         }
         $id = $in['id'] ?? \uniqid();
         $in[2]['id'] = $in[2]['id'] ?? \str_replace('f:', 'field:', $id);
