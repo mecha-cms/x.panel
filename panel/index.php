@@ -27,8 +27,8 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 
 $p = trim($url->path, '/');
 if (strpos('/' . $p, $pp . '::') === 0) {
-    \Asset::let(); // Remove all asset(s)
-    \Route::let(); // Remove all route(s)
+    Asset::let(); // Remove all asset(s)
+    Route::let(); // Remove all route(s)
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }
 

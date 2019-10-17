@@ -43,9 +43,9 @@ function blob($_, $lot) {
             }
             // Check for file size
             if ($size < $test_size[0]) {
-                $_['alert']['error'][] = ['Minimum file size allowed is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+                $_['alert']['error'][] = ['Minimum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
             } else if ($size > $test_size[1]) {
-                $_['alert']['error'][] = ['Maximum file size allowed is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+                $_['alert']['error'][] = ['Maximum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
             }
             if (!empty($_['alert']['error'])) {
                 continue;
@@ -59,7 +59,7 @@ function blob($_, $lot) {
                     \mkdir($folder, \octdec($v['seal'] ?? '0775'), true);
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
-                    $_['alert']['success'][] = ['File %s uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                    $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                     $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
                     $_['ff'][] = $f;
@@ -92,7 +92,7 @@ function data($_, $lot) {
         $lot['file']['name'] = $name !== "" ? $name . '.data' : "";
         $lot['file']['content'] = $lot['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
-        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{draft,page,archive}', \GLOB_BRACE | \GLOB_NOSORT)) {
+        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
             $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
@@ -124,7 +124,7 @@ function file($_, $lot) {
                 \file_put_contents($f, $lot['file']['content']);
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['File %s created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
@@ -155,7 +155,7 @@ function folder($_, $lot) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
             \mkdir($f, \octdec($lot['folder']['seal'] ?? '0755'), true);
-            $_['alert']['success'][] = ['Folder %s created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             if (!empty($lot['folder']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",

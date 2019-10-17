@@ -16,7 +16,7 @@ return [
                         'hidden' => $_['task'] === 's',
                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                         'title' => false,
-                        'description' => ['New %s', 'file'],
+                        'description' => ['New %s', 'File'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'blob', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]

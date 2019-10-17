@@ -17,7 +17,7 @@ function data($_, $lot) {
         $lot['file']['name'] = $name !== "" ? $name . '.data' : "";
         $lot['file']['content'] = $lot['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
-        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{draft,page,archive}', \GLOB_BRACE | \GLOB_NOSORT)) {
+        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
             $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
@@ -54,7 +54,7 @@ function file($_, $lot) {
                 \rename($_['f'], $f);
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['File %s updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
+            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
@@ -83,10 +83,10 @@ function folder($_, $lot) {
         if ($name === "") {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['folder-exist', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['error'][] = ['Folder %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         } else if ($name === $base) {
             // Do nothing
-            $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
+            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
             if (!empty($lot['folder']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
@@ -111,7 +111,7 @@ function folder($_, $lot) {
                 }
             }
             \rmdir($_['f']);
-            $_['alert']['success'][] = ['folder-update', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
+            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             if (!empty($lot['folder']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
@@ -220,7 +220,7 @@ function state($_, $lot) {
         if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
             $source = \realpath($source);
             \file_put_contents($source, '<?php return ' . \z(\array_replace_recursive((array) require $source, $lot['state'] ?? [])) . ';');
-            $_['alert']['success'][] = ['File %s updated.', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>']];
+            $_['alert']['success'][] = ['File %s successfully updated.', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>']];
         }
         $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . $e;
     }

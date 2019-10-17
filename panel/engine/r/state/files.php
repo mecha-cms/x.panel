@@ -21,7 +21,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             'hidden' => strpos('_.', $n[0]) !== false && $g, // User(s) with status other than `1` cannot see hidden file(s)
             'path' => $k,
             'title' => $n,
-            'description' => $v === 0 ? 'Open folder' : (new File($k))->size,
+            'description' => $v === 0 ? 'Open Folder' : (new File($k))->size,
             'type' => $v === 0 ? 'Folder' : 'File',
             'url' => $v === 0 ? $before . 'g' . $after . '/1' . $url->query . $url->hash : null,
             'link' => $v === 1 ? To::URL($k) : null,

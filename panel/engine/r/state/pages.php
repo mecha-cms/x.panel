@@ -44,7 +44,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                 's' => [
                     'hidden' => $x === 'draft' || $create,
                     'title' => 'Add',
-                    'description' => 'Add',
+                    'description' => ['Add %s', 'Child'],
                     'icon' => 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z',
                     'url' => $before . 's' . Path::F($after, '/') . $url->query('&', ['content' => 'page', 'tab' => false]) . $url->hash,
                     'stack' => 10
@@ -86,7 +86,7 @@ return [
                                 'lot' => [
                                     'parent' => [
                                         'title' => false,
-                                        'description' => 'Go to parent page',
+                                        'description' => ['Go to %s', 'Parent'],
                                         'type' => 'Link',
                                         'url' => $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                         'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',

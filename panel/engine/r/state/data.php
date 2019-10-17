@@ -4,7 +4,7 @@ $name = is_file($f = $_['f']) ? pathinfo($f, PATHINFO_FILENAME) : null;
 $content = $name ? file_get_contents($f) : null;
 
 $path = $_['task'] === 'g' ? dirname($f) : $f;
-$x = glob($path . '.{draft,page,archive}', GLOB_BRACE | GLOB_NOSORT);
+$x = glob($path . '.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
 $x = $x ? '.' . pathinfo($x[0], PATHINFO_EXTENSION) : '/1';
 
 return [
@@ -23,7 +23,7 @@ return [
                         'hidden' => $_['task'] === 's',
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
-                        'description' => ['New %s', 'data'],
+                        'description' => ['New %s', 'Data'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
@@ -102,6 +102,7 @@ return [
                                                 'lot' => [
                                                     's' => [
                                                         'title' => $_['task'] === 'g' ? 'Update' : 'Create',
+                                                        'description' => ['Create in %s', _\lot\x\panel\h\path($_['f'])],
                                                         'type' => 'Submit',
                                                         'name' => false,
                                                         'stack' => 10

@@ -1,8 +1,12 @@
 <?php
 
 if ($user['status'] !== 1 || $_['task'] !== 'g') {
-    Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
-    Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash);
+    if (Is::user()) {
+        Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
+        Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash);
+    } else {
+        Guard::kick("");
+    }
 }
 
 $GLOBALS['_']['content'] = $_['content'] = 'state';
@@ -164,6 +168,21 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                                 'rtl' => '<abbr title="Right to Left">RTL</abbr>'
                             ],
                             'stack' => 20
+                        ],
+                        'charset' => [
+                            'type' => 'Text',
+                            'name' => 'state[charset]',
+                            'alt' => ($v = $site->charset) ?? 'utf-8',
+                            'value' => $v,
+                            'stack' => 30
+                        ],
+                        'language' => [
+                            'description' => 'This value does not determine the I18N system on your site unless you want to make an I18N extension that depends on this value.',
+                            'type' => 'Text',
+                            'name' => 'state[language]',
+                            'alt' => ($v = $site->language) ?? 'en',
+                            'value' => $v,
+                            'stack' => 40
                         ]
                     ],
                     'stack' => 10

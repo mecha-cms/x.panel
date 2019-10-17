@@ -489,7 +489,9 @@ namespace _\lot\x\panel {
             }
             foreach ($section as $k => $v) {
                 $vv = (string) \_\lot\x\panel($v, $k);
-                if ($vv !== "") {
+                if ($vv === "") {
+                    unset($nav[$k]);
+                } else {
                     ++$count;
                 }
                 $section[$k] = $vv;
