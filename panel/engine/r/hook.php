@@ -37,6 +37,7 @@ function _() {
             require $_f;
         })($_f);
     }
+    $_ = $GLOBALS['_']; // Update data
     \State::set('[content].content:' . $_['content'], true);
     (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);

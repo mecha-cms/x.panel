@@ -113,6 +113,11 @@ function file($_, $lot) {
         }
         $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? "")));
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
+        // Special case for PHP file(s)
+        if ($x === 'php' && isset($lot['file']['content'])) {
+            // This must be enough to detect PHP syntax before saving
+            \token_get_all($lot['file']['content'], \TOKEN_PARSE);
+        }
         if ($name === "") {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',') === false) {

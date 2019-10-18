@@ -139,6 +139,41 @@ function Field__Content($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
+function Field__Date($in, $key) {
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
+    }
+    return \_\lot\x\panel\Field__DateTime($in, $key);
+}
+
+function Field__DateTime($in, $key) {
+    if (!isset($in['alt'])) {
+        $in['alt'] = \date('Y-m-d H:i:s');
+    }
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])([ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2})?$";
+    }
+    if (isset($in['value'])) {
+        if (\is_string($in['value']) || \is_numeric($in['value'])) {
+            $in['value'] = new \Time($in['value']);
+        } else {
+            $in['value'] = \date('Y-m-d H:i:s');
+        }
+        $in['value'] = (string) $in['value'];
+    }
+    return \_\lot\x\panel\Field__Text($in, $key);
+}
+
+function Field__Email($in, $key) {
+    if (!isset($in['alt'])) {
+        $in['alt'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
+    }
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
+    }
+    return \_\lot\x\panel\Field__Text($in, $key);
+}
+
 function Field__Hidden($in, $key) {
     return new \HTML([
         0 => 'input',
@@ -261,6 +296,17 @@ function Field__Items($in, $key) {
     return \_\lot\x\panel\Field__Text($in, $key);
 }
 
+function field__Link($in, $key) {
+    if (!isset($in['alt'])) {
+        $url = $GLOBALS['url'];
+        $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
+    }
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
+    }
+    return \_\lot\x\panel\Field__Text($in, $key);
+}
+
 function Field__Number($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
@@ -313,6 +359,14 @@ function Field__Text($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
+function Field__Time($in, $key) {
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
+    }
+    $out = \_\lot\x\panel\Field__DateTime($in, $key);
+    return $out;
+}
+
 function Field__Toggle($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $value = $in['value'] ?? null;
@@ -329,4 +383,15 @@ function Field__Toggle($in, $key) {
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);
     unset($out['alt']);
     return \_\lot\x\panel\Field($out, $key);
+}
+
+function field__URL($in, $key) {
+    if (!isset($in['alt'])) {
+        $url = $GLOBALS['url'];
+        $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
+    }
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";
+    }
+    return \_\lot\x\panel\Field__Text($in, $key);
 }

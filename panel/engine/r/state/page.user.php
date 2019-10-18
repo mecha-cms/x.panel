@@ -83,10 +83,9 @@ $lot = array_replace_recursive($lot, [
                                             'fields' => [
                                                 'lot' => [
                                                     'email' => [
-                                                        'type' => 'Text',
-                                                        'pattern' => "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$",
+                                                        'type' => 'Email',
                                                         'name' => 'page[email]',
-                                                        'alt' => $_['task'] === 'g' ? ($page['email'] ?? To::kebab($user->name ?? i('John Doe')) . S . '@' . $url->host) : To::kebab($user->name ?? i('John Doe')) . S . '@' . $url->host,
+                                                        'alt' => $_['task'] === 'g' ? $page['email'] : null,
                                                         'value' => $page['email'],
                                                         'width' => true,
                                                         'stack' => 11

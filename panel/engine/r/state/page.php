@@ -136,20 +136,16 @@ $lot = [
                                                 'type' => 'Fields',
                                                 'lot' => [
                                                     'link' => [
-                                                        'type' => 'Text',
-                                                        'pattern' => "^(https?:)?\\/\\/\\S+$",
+                                                        'type' => 'Link',
                                                         'name' => 'page[link]',
-                                                        'alt' => S . $url->protocol . S . $url->host . S,
                                                         'value' => $page['link'],
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
                                                     'time' => [
-                                                        'type' => 'Text',
-                                                        'pattern' => "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])([ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2})?$",
+                                                        'type' => 'DateTime',
                                                         'name' => 'data[time]',
-                                                        'alt' => date('Y-m-d H:i:s'),
-                                                        'value' => $page->time . "",
+                                                        'value' => $page->time,
                                                         'hidden' => $_['task'] === 's',
                                                         'stack' => 20
                                                     ],

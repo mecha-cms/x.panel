@@ -10,7 +10,7 @@ if (State::get('x.art') !== null) {
                 'type' => 'Fields',
                 'lot' => [
                     'css' => [
-                        'title' => '<abbr title="Cascading Style Sheet">CSS</abbr>',
+                        'title' => 'CSS',
                         'type' => 'Source',
                         'name' => 'data[css]',
                         'alt' => ['%s goes here...', 'CSS'],
@@ -20,7 +20,7 @@ if (State::get('x.art') !== null) {
                         'stack' => 10
                     ],
                     'js' => [
-                        'title' => '<abbr title="JavaScript">JS</abbr>',
+                        'title' => 'JS',
                         'type' => 'Source',
                         'name' => 'data[js]',
                         'alt' => ['%s goes here...', 'JavaScript'],
