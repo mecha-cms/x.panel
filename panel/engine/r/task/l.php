@@ -94,7 +94,7 @@ function page($_, $lot) {
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $_ = file($_, $lot); // Move to `file`
         $alter = [
-            'File %s deleted.' => ['%s %s deleted.', [$key, $path]]
+            'File %s successfully deleted.' => ['%s %s successfully deleted.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {

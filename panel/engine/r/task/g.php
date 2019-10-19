@@ -14,8 +14,9 @@ function data($_, $lot) {
     ]) . $url->hash;
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
+        $content = $lot['data']['content'] ?? "";
         $lot['file']['name'] = $name !== "" ? $name . '.data' : "";
-        $lot['file']['content'] = $lot['data']['content'] ?? "";
+        $lot['file']['content'] = \is_array($content) ? \json_encode($content) : \s($content);
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
             $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
@@ -193,7 +194,7 @@ function page($_, $lot) {
         $path = '<code>' . \_\lot\x\panel\h\path($_f) . '</code>'; // Use old file name
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
-            'File %s updated.' => ['%s %s updated.', [$key, $path]]
+            'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {

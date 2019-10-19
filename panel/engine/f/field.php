@@ -330,6 +330,19 @@ function Field__Pass($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
+function Field__Query($in, $key) {
+    if (!isset($in['alt'])) {
+        $in['alt'] = 'foo, bar, baz';
+    }
+    if (!isset($in['pattern'])) {
+        $in['pattern'] = "^([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*$";
+    }
+    if (isset($in['value']) && \is_array($in['value'])) {
+        $in['value'] = \implode(', ', $in['value']);
+    }
+    return \_\lot\x\panel\Field__Text($in, $key);
+}
+
 function Field__Range($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';

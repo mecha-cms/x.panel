@@ -65,7 +65,9 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
         return $zones;
     }, '1 year');
     $GLOBALS['_']['lot'] = array_replace_recursive(require __DIR__ . DS . '..' . DS . 'state' . DS . 'state.php', $_['lot']);
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
+    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
+    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
+    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = array_replace_recursive([
         'file' => [

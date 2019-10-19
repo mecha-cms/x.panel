@@ -11,10 +11,10 @@ return [
             // type: List
             0 => [
                 'lot' => [
-                    'folder' => [
-                        'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
+                    'folder' => ['hidden' => true],
+                    'link' => [
                         'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
-                        'lot' => false // Disable sub-menu(s)
+                        'hidden' => false
                     ],
                     's' => [
                         'hidden' => $_['task'] === 's',

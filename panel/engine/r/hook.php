@@ -59,16 +59,19 @@ function _() {
         $_ = $GLOBALS['_']; // Update data
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         // Filter by function (TODO: Move this to a separate file)
-        foreach (['data', 'file', 'page', 'state'] as $_scope) {
-            if (!empty($_['form'][$_scope])) {
-                foreach ($_['form'][$_scope] as $_k => $_v) {
-                    if (!isset($_v)) {
-                        continue;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            foreach (['data', 'file', 'page', 'state'] as $_scope) {
+                if (!empty($_['form'][$_scope])) {
+                    foreach ($_['form'][$_scope] as $_k => $_v) {
+                        if (!isset($_v)) {
+                            continue;
+                        }
+                        $_vv = $_form[$_scope][$_k] ?? null;
+                        $_form[$_scope][$_k] = \is_callable($_v) ? \call_user_func($_v, $_vv, $_form) : $_v;
                     }
-                    $_vv = $_form[$_scope][$_k] ?? null;
-                    $_form[$_scope][$_k] = \is_callable($_v) ? \call_user_func($_v, $_vv, $_form) : $_v;
                 }
             }
+            $_ = $GLOBALS['_']; // Update data
         }
         if (isset($_form['token'])) {
             $_hooks = \map(\step($_['content']), function($_hook) use($_) {

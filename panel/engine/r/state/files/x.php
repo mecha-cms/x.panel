@@ -5,9 +5,10 @@ $i = count($_['chop']);
 if ($i > 1) {
     $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
     if ($i === 2) {
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['url'] = $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['lot'] = false;
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
         if (is_file($f = ($ff = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
             // Hide some file(s) from the list
@@ -27,7 +28,7 @@ if ($i > 1) {
                 'title' => 'Info',
                 'lot' => [
                     0 => [
-                        'title' => $page->title,
+                        'title' => $page->title . ' <sup>' . $page->version . '</sup>',
                         'description' => _\lot\x\panel\h\w($page->description, 'a'),
                         'type' => 'Section',
                         'content' => $page->content,
@@ -38,7 +39,7 @@ if ($i > 1) {
             ];
         }
         if (is_file($f = $ff . DS . 'LICENSE')) {
-            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
+            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['legal'] = [
                 'lot' => [
                     0 => [
                         'type' => 'Section',

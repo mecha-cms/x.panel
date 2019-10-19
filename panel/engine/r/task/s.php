@@ -234,7 +234,7 @@ function page($_, $lot) {
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
-            'File %s created.' => ['%s %s created.', [$key, $path]]
+            'File %s successfully created.' => ['%s %s successfully created.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
