@@ -1,22 +1,15 @@
 <?php
 
-$GLOBALS['_']['form']['data']['time'] = function($value) {
-    return (string) (new Time($value ?? $_SERVER['REQUEST_TIME'] ?? time()));
-};
-
-$GLOBALS['_']['form']['page']['author'] = $safe = function($value) {
-    return _\lot\x\panel\h\w($value);
-};
-
-$GLOBALS['_']['form']['page']['id'] = $safe;
-$GLOBALS['_']['form']['page']['link'] = $safe;
-$GLOBALS['_']['form']['page']['description'] = function($value) {
-    return _\lot\x\panel\h\w($value, 'a');
-};
-
-$GLOBALS['_']['form']['page']['title'] = $safe;
-
-$GLOBALS['_']['form']['page']['x'] = $safe;
+// Sanitize form data
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_POST['data']['time'] = (string) (new Time($_POST['data']['time'] ?? time()));
+    $_POST['page']['author'] = _\lot\x\panel\h\w($_POST['page']['author'] ?? "");
+    $_POST['page']['id'] = _\lot\x\panel\h\w($_POST['page']['id'] ?? "");
+    $_POST['page']['link'] = _\lot\x\panel\h\w($_POST['page']['link'] ?? "");
+    $_POST['page']['description'] = _\lot\x\panel\h\w($_POST['page']['description'] ?? "", 'a');
+    $_POST['page']['title'] = _\lot\x\panel\h\w($_POST['page']['title'] ?? "");
+    $_POST['page']['x'] = _\lot\x\panel\h\w($_POST['page']['x'] ?? 'page');
+}
 
 $page = is_file($f = $_['f']) ? new Page($f) : new Page;
 

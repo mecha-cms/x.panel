@@ -2,13 +2,15 @@
 
 $lot = require __DIR__ . DS . 'page.php';
 
-$GLOBALS['_']['form']['page']['email'] = $safe;
-
-// Encrypt password data
-$GLOBALS['_']['form']['data']['pass'] = function($value, $lot) {
-    $name = ($lot['data']['name'] ?? $lot['page']['name'] ?? uniqid());
-    return P . password_hash($value . '@' . $name, PASSWORD_DEFAULT);
-};
+// Sanitize form data
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_POST['page']['email'] = _\lot\x\panel\h\w($_POST['page']['email'] ?? "");
+    // Encrypt password
+    if (isset($_POST['data']['pass'])) {
+        $name = $_POST['data']['name'] ?? $_POST['page']['name'] ?? uniqid();
+        $_POST['data']['pass'] = P . password_hash($_POST['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
+    }
+}
 
 $lot = array_replace_recursive($lot, [
     'bar' => [

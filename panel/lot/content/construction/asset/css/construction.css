@@ -439,6 +439,9 @@ pre.is\:text {
 .field\:toggle .input[type="checkbox"][disabled] {
   background: #999;
 }
+.field\:query span.tags .tag:not(.tags-input) {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+}
 
 @media (min-width: 719px) {
   .lot\:bar li.is\:main {

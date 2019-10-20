@@ -1,5 +1,13 @@
 <?php
 
+// Sanitize form data
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['state'])) {
+    $_POST['state']['title'] = _\lot\x\panel\h\w($_POST['state']['title'] ?? "");
+    $_POST['state']['description'] = _\lot\x\panel\h\w($_POST['state']['description'] ?? "");
+    $_POST['state']['charset'] = strip_tags($_POST['state']['charset'] ?? 'utf-8');
+    $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
+}
+
 if ($user['status'] !== 1 || $_['task'] !== 'g') {
     if (Is::user()) {
         Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');

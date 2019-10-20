@@ -303,7 +303,7 @@ namespace _\lot\x\panel {
             2 => []
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $title = $in['time'] ? \strtr($in['time'], '-', '/') : null;
+        $title = !empty($in['time']) ? \strtr($in['time'], '-', '/') : null;
         $out[1] .= '<div' . (isset($in['image']) && $in['image'] === false ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($in['path'] ?? $key, [
             \ROOT => "",
             \DS => '/'

@@ -19,11 +19,12 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             DS => '/'
         ]);
         $page = new Page($k);
-        $create = is_dir($folder = Path::F($k)) && !!glob($folder . DS . '*.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
+        $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) === 0;
         $pages[$k] = [
             'path' => $k,
             'title' => _\lot\x\panel\h\w($page->title),
             'description' => _\lot\x\panel\h\w($page->description),
+            'image' => $page->image(72),
             'author' => $page['author'],
             'type' => 'Page',
             'link' => ($x = $page->x) === 'draft' ? null : $page->url,
