@@ -1462,3 +1462,17 @@ pre.is\:text {
     display: none;
   }
 }
+
+/* Field: Query */
+.field\:query span.tags {
+  padding: 0; /* Original: 6px 12px */
+}
+.field\:query span.tags .tag {
+  padding: 0 8px; /* 12px - 3px (border-spacing) - 1px (border-width) */
+}
+.field\:query span.tags .tags-input {
+  padding: 0 9px;
+}
+.field\:query span.tags .tags-view {
+  border-spacing: 3px;
+}
