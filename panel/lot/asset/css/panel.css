@@ -1469,10 +1469,8 @@ pre.is\:text {
 }
 .field\:query span.tags .tag {
   padding: 0 8px; /* 12px - 3px (border-spacing) - 1px (border-width) */
-}
-.field\:query span.tags .tags-input {
-  padding: 0 9px;
+  line-height: 26px;
 }
 .field\:query span.tags .tags-view {
-  border-spacing: 3px;
+  border-spacing: 4px;
 }

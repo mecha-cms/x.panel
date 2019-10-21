@@ -340,7 +340,16 @@ function Field__Query($in, $key) {
     if (isset($in['value']) && \is_array($in['value'])) {
         $in['value'] = \implode(', ', $in['value']);
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    $out = \_\lot\x\panel\h\field($in, $key);
+    $out['content'][0] = 'input';
+    $out['content'][1] = false;
+    $out['content'][2]['type'] = 'text';
+    $out['content'][2]['value'] = $in['value'] ?? null;
+    if (isset($in['state'])) {
+        $out['content'][2]['data-state'] = \json_encode($in['state']);
+    }
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    return \_\lot\x\panel\Field($out, $key);
 }
 
 function Field__Range($in, $key) {
@@ -390,7 +399,7 @@ function Field__Toggle($in, $key) {
         'type' => 'checkbox',
         'value' => 'true' // Force value to be `true`
     ]]);
-    $t = \i(...((array) ($in['alt'] ?? '&nbsp;')));
+    $t = \i(...((array) ($in['alt'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);

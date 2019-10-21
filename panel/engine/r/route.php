@@ -8,7 +8,7 @@ function route($lot) {
     $GLOBALS['t'][] = \i('Panel');
     \State::set([
         'has' => [
-            'parent' => \count($_['chop']) > 1,
+            'parent' => \count($_['chops']) > 1,
         ],
         'is' => [
             'error' => false,
@@ -30,7 +30,7 @@ function route($lot) {
         $this->status(404);
         $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
     }
-    $n = \ltrim($_['chop'][0], '_.-');
+    $n = \ltrim($_['chops'][0], '_.-');
     $GLOBALS['t'][] = isset($_['path']) ? \i($n === 'x' ? 'Extension' : \ucfirst($n)) : null;
     $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
 }

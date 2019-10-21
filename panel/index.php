@@ -8,7 +8,7 @@ $state = State::get('x.panel', true);
 
 $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
-    'chop' => [],
+    'chops' => [],
     'chunk' => $state['chunk'] ?? 20,
     'sort' => $state['sort'] ?? 1,
     'content' => $_GET['content'] ?? 'file',

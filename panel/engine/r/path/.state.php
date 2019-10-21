@@ -208,7 +208,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
     $GLOBALS['t'][] = i('State');
     State::set([
         'has' => [
-            'parent' => count($_['chop']) > 1,
+            'parent' => count($_['chops']) > 1,
         ],
         'is' => [
             'error' => false,

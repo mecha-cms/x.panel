@@ -2,6 +2,9 @@
 
 $lot = require __DIR__ . DS . 'page.php';
 
+$parent = $_GET['parent'] ?? P;
+$parent = is_file($f = LOT . $_['path'] . DS . $parent . '.page') ? new Comment($f) : new Comment;
+
 $lot = array_replace_recursive($lot, [
     'bar' => [
         // type: Bar
@@ -20,6 +23,11 @@ $lot = array_replace_recursive($lot, [
             'form' => [
                 // type: Form.Post
                 'lot' => [
+                    0 => $parent->exist ? [
+                        // type: Section
+                        'title' => 'Reply to ' . $parent->author,
+                        'content' => $parent->content
+                    ] : [],
                     1 => [
                         // type: Section
                         'lot' => [
@@ -33,7 +41,7 @@ $lot = array_replace_recursive($lot, [
                                                 // type: Fields
                                                 'lot' => [
                                                     'author' => [
-                                                        'type' => 'Text',
+                                                        'type' => $_['task'] === 's' ? 'Hidden' : 'Text',
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
@@ -50,18 +58,15 @@ $lot = array_replace_recursive($lot, [
                                         'lot' => [
                                             'fields' => [
                                                 'lot' => [
+                                                    'time' => ['hidden' => true],
                                                     'link' => ['hidden' => true],
                                                     'status' => [
                                                         'type' => 'Item',
                                                         'name' => 'page[status]',
-                                                        'value' => $_['task'] === 's' ? 3 : $page['status'],
+                                                        'value' => $_['task'] === 's' ? 1 : $page['status'],
                                                         // Automatic sort by title is disabled because status order is more important to UX in this case
                                                         'sort' => false,
                                                         'lot' => [
-                                                           -1 => [
-                                                               'title' => 'Banned',
-                                                               'description' => -1
-                                                           ],
                                                             1 => [
                                                                'title' => 'Author',
                                                                'description' => 1
@@ -69,6 +74,10 @@ $lot = array_replace_recursive($lot, [
                                                             2 => [
                                                                'title' => 'Visitor',
                                                                'description' => 2
+                                                           ],
+                                                           -1 => [
+                                                               'title' => 'Banned',
+                                                               'description' => -1
                                                            ]
                                                         ],
                                                         'stack' => 30
@@ -94,8 +103,8 @@ $lot = array_replace_recursive($lot, [
                                                 // type: Tasks.Button
                                                 'lot' => [
                                                     's' => ['description' => ['Update as %s', [$page->x === 'page' ? 'Accepted' : 'Rejected']]],
-                                                    'page' => ['title' => 'Accept'],
-                                                    'draft' => ['title' => 'Reject'],
+                                                    'page' => ['title' => $_['task'] === 's' ? ($parent->exist ? 'Reply' : 'Publish') : 'Accept'],
+                                                    'draft' => ['title' => $_['task'] === 's' ? 'Save' : 'Reject'],
                                                     'archive' => ['hidden' => true]
                                                 ]
                                             ]

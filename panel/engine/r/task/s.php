@@ -230,7 +230,7 @@ function page($_, $lot) {
         }
     }
     if (\is_file($f = $_['f'])) {
-        $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
+        $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],

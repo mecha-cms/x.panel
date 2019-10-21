@@ -49,7 +49,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $files = array_merge($files[0], $files[1]);
 }
 
-if (count($_['chop']) > 1 && $_['i'] <= 1) {
+if (count($_['chops']) > 1 && $_['i'] <= 1) {
     $files = array_merge([$folder => [
         'title' => S . '..' . S,
         'description' => 'Exit',

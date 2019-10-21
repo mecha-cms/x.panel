@@ -3,12 +3,29 @@
 // Sanitize form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_POST['data']['time'] = (string) (new Time($_POST['data']['time'] ?? time()));
-    $_POST['page']['author'] = _\lot\x\panel\h\w($_POST['page']['author'] ?? "");
-    $_POST['page']['id'] = _\lot\x\panel\h\w($_POST['page']['id'] ?? "");
-    $_POST['page']['link'] = _\lot\x\panel\h\w($_POST['page']['link'] ?? "");
+    $_POST['page']['author'] = strip_tags($_POST['page']['author'] ?? "");
+    $_POST['page']['id'] = strip_tags($_POST['page']['id'] ?? "");
+    $_POST['page']['link'] = strip_tags($_POST['page']['link'] ?? "");
     $_POST['page']['description'] = _\lot\x\panel\h\w($_POST['page']['description'] ?? "", 'a');
     $_POST['page']['title'] = _\lot\x\panel\h\w($_POST['page']['title'] ?? "");
-    $_POST['page']['x'] = _\lot\x\panel\h\w($_POST['page']['x'] ?? 'page');
+    $_POST['page']['x'] = strip_tags($_POST['page']['x'] ?? 'page');
+    if (empty($_POST['page']['name'])) {
+        $_POST['page']['name'] = date('Y-m-d-H-i-s');
+    }
+    // Detect `time` pattern in the page’s file name and remove the `time` field if matched
+    $n = $_POST['page']['name'];
+    if (
+        is_string($n) && (
+            // `2017-04-21.page`
+            substr_count($n, '-') === 2 ||
+            // `2017-04-21-14-25-00.page`
+            substr_count($n, '-') === 5
+        ) &&
+        is_numeric(str_replace('-', "", $n)) &&
+        preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])(-([0-1]\d|2[0-4])(-([0-5]\d|60)){2})?$/', $n)
+    ) {
+        unset($_POST['data']['time']);
+    }
 }
 
 $page = is_file($f = $_['f']) ? new Page($f) : new Page;

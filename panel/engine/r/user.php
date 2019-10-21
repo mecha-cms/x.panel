@@ -10,17 +10,3 @@
         });
     }
 })();
-
-Hook::set('on.comment.set', function($comment) {
-    extract($GLOBALS, EXTR_SKIP);
-    $id = uniqid();
-    file_put_contents(LOT . DS . '.alert' . DS . $id . '.page', To::page([
-        'title' => i('New %s', 'Comment'),
-        'description' => i('A new %s has been added.', 'comment'),
-        'type' => 'Info',
-        'link' => $url . $_['/'] . '::g::' . strtr($comment->path, [
-            LOT => "",
-            DS => '/'
-        ])
-    ]));
-});

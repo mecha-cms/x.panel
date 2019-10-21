@@ -21,7 +21,7 @@
     if (query.length) {
         query.forEach(function($) {
             c = $.className;
-            $$ = new TIB($, {max: 10});
+            $$ = new TIB($, JSON.parse($.getAttribute('data-state') || '{}'));
             $$.self.className += ' ' + c;
         });
     }

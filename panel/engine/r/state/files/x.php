@@ -1,7 +1,7 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/x/foo-bar/1`
-$i = count($_['chop']);
+$i = count($_['chops']);
 if ($i > 1) {
     $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
     if ($i === 2) {

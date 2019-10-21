@@ -19,7 +19,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             DS => '/'
         ]);
         $page = new Page($k);
-        $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) === 0;
+        $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
             'title' => _\lot\x\panel\h\w($page->title),
@@ -91,7 +91,7 @@ return [
                                         'type' => 'Link',
                                         'url' => $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                         'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
-                                        'hidden' => count($_['chop']) <= 1,
+                                        'hidden' => count($_['chops']) <= 1,
                                         'stack' => 10
                                     ],
                                     'blob' => [
@@ -113,7 +113,7 @@ return [
                                         'type' => 'Link',
                                         'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'hidden' => count($_['chop']) <= 1,
+                                        'hidden' => count($_['chops']) <= 1,
                                         'stack' => 40
                                     ]
                                 ],

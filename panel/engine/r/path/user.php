@@ -1,6 +1,6 @@
 <?php
 
-if (count($_['chop']) > 1) {
+if (count($_['chops']) > 1) {
     $status = $user['status'];
     if ($status !== 1) {
         // Hide add user link
