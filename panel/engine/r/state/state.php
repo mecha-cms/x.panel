@@ -7,25 +7,6 @@ $lot = [
     ]
 ];
 
-/*
-foreach (\State::get(null, true) as $k => $v) {
-    if ($k === 'x') continue;
-    $type = 'Source';
-    if (is_int($v) || is_float($v)) {
-        $type = 'Number';
-    } else if ($v === true || $v === false) {
-        $type = 'Toggle';
-    } else if (is_string($v) && strpos($v, "\n") === false) {
-        $type = 'Text';
-    }
-    $lot[$k] = [
-        'type' => $type,
-        'width' => true,
-        'value' => is_array($v) ? json_encode($v) : $v
-    ];
-}
-*/
-
 return [
     'bar' => [
         // type: Bar
@@ -35,7 +16,7 @@ return [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
                         'hidden' => false
                     ]
                 ]
@@ -82,7 +63,7 @@ return [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
-                                                        'title' => $_['task'] === 'g' ? 'Update' : 'Create',
+                                                        'title' => 'g' === $_['task'] ? 'Update' : 'Create',
                                                         'type' => 'Submit',
                                                         'name' => false,
                                                         'stack' => 10

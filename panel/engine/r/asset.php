@@ -8,8 +8,7 @@ Hook::set('start', function() {
     Asset::set($f . 'js' . DS . 'panel' . DS . 'alert.js', 20.2);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'menu.js', 20.2);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'tab.js', 20.2);
-    Asset::set($f . 'js' . DS . 'tags-input-beautifier.js', 20.2);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'field' . DS . 'query.js', 20.2);
     extract($GLOBALS);
-    require __DIR__ . DS . 'content.php';
+    require __DIR__ . DS . 'layout.php';
 }, 20);

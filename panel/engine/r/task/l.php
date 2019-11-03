@@ -2,13 +2,13 @@
 
 // TODO: Add option to move file to `trash` folder.
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' || empty($_GET['token'])) {
+if ('POST' === $_SERVER['REQUEST_METHOD'] || empty($_GET['token'])) {
     // TODO: Show 404 page?
     \Guard::kick(\str_replace('::l::', '::g::', $url->current));
 }
 
 // Prevent user(s) from deleting file(s) above the `.\lot\*` level
-if (strpos(strtr($_['f'], [\LOT . \DS => ""]), \DS) === false) {
+if (false === strpos(strtr($_['f'], [\LOT . \DS => ""]), \DS)) {
     \Guard::abort('Cound not delete <code>' . $_['f'] . '</code>.');
 }
 
@@ -19,7 +19,7 @@ function blob($_, $lot) {
 function data($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab' => ['data'],
         'token' => false
     ]) . $url->hash;
@@ -33,7 +33,7 @@ function data($_, $lot) {
 function file($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
@@ -52,7 +52,7 @@ function file($_, $lot) {
 function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab'=> false,
         'token' => false
     ]) . $url->hash;

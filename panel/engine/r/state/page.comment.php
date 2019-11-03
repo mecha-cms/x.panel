@@ -12,6 +12,12 @@ $lot = array_replace_recursive($lot, [
             // type: List
             0 => [
                 'lot' => [
+                    'link' => [
+                        'url' => $url . $_['/'] . '::g::' . strtr(COMMENT, [
+                            LOT => "",
+                            DS => '/'
+                        ]) . '/1' . $url->query('&', ['layout' => false, 'tab' => false, 'parent' => false]) . $url->hash
+                    ],
                     's' => ['hidden' => true]
                 ]
             ]
@@ -41,7 +47,7 @@ $lot = array_replace_recursive($lot, [
                                                 // type: Fields
                                                 'lot' => [
                                                     'author' => [
-                                                        'type' => $_['task'] === 's' ? 'Hidden' : 'Text',
+                                                        'type' => 's' === $_['task'] ? 'Hidden' : 'Text',
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
@@ -63,7 +69,7 @@ $lot = array_replace_recursive($lot, [
                                                     'status' => [
                                                         'type' => 'Item',
                                                         'name' => 'page[status]',
-                                                        'value' => $_['task'] === 's' ? 1 : $page['status'],
+                                                        'value' => 's' === $_['task'] ? 1 : $page['status'],
                                                         // Automatic sort by title is disabled because status order is more important to UX in this case
                                                         'sort' => false,
                                                         'lot' => [
@@ -102,9 +108,9 @@ $lot = array_replace_recursive($lot, [
                                             'tasks' => [
                                                 // type: Tasks.Button
                                                 'lot' => [
-                                                    's' => ['description' => ['Update as %s', [$page->x === 'page' ? 'Accepted' : 'Rejected']]],
-                                                    'page' => ['title' => $_['task'] === 's' ? ($parent->exist ? 'Reply' : 'Publish') : 'Accept'],
-                                                    'draft' => ['title' => $_['task'] === 's' ? 'Save' : 'Reject'],
+                                                    's' => ['description' => ['Update as %s', ['page' === $page->x ? 'Accepted' : 'Rejected']]],
+                                                    'page' => ['title' => 's' === $_['task'] ? ($parent->exist ? 'Reply' : 'Publish') : 'Accept'],
+                                                    'draft' => ['title' => 's' === $_['task'] ? 'Save' : 'Reject'],
                                                     'archive' => ['hidden' => true]
                                                 ]
                                             ]

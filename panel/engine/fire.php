@@ -11,7 +11,7 @@ if (count($chops) < 3) {
 // Remove the first path
 array_shift($chops);
 
-$task = $chops[0] && strpos($chops[0], '::') === 0 && substr($chops[0], -2) === '::' ? substr(array_shift($chops), 2, -2) : null;
+$task = $chops[0] && 0 === strpos($chops[0], '::') && '::' === substr($chops[0], -2) ? substr(array_shift($chops), 2, -2) : null;
 
 $_['chops'] = $chops;
 $_['path'] = $task ? '/' . implode('/', $chops) : null;
@@ -22,7 +22,7 @@ $f = LOT . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
 $_['f'] = stream_resolve_include_path($f) ?: null;
 
 // Make sure to have page offset on `items` view
-if ($i === null && $task === 'g' && count($chops) === 1 && is_dir($f)) {
+if (null === $i && 'g' === $task && 1 === count($chops) && is_dir($f)) {
     Guard::kick($url->clean . '/1' . $url->query . $url->hash);
 }
 
@@ -52,3 +52,4 @@ require __DIR__ . DS . 'r' . DS . 'asset.php';
 require __DIR__ . DS . 'r' . DS . 'file.php';
 require __DIR__ . DS . 'r' . DS . 'hook.php';
 require __DIR__ . DS . 'r' . DS . 'route.php';
+require __DIR__ . DS . 'r' . DS . 'tag.php';

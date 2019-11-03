@@ -2,11 +2,11 @@
 
 if (count($_['chops']) > 1) {
     $status = $user['status'];
-    if ($status !== 1) {
+    if (1 !== $status) {
         // Hide add user link
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
         // XSS Protection
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ('POST' === $_SERVER['REQUEST_METHOD']) {
             // Prevent user(s) from adding a hidden form (or changing the `page[status]` field value) that
             // defines its `status` through developer tools and such by enforcing the `page[status]` value
             if (isset($_POST['page']['status']) && $_POST['page']['status'] !== $status) {
@@ -16,7 +16,7 @@ if (count($_['chops']) > 1) {
             unset($_POST['data']['status']);
         }
         // Prevent user from editing another user file
-        if ($_['task'] === 'g' && $_['f'] !== $user->path) {
+        if ('g' === $_['task'] && $_['f'] !== $user->path) {
             Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
             Guard::kick(dirname($url->clean) . '/1' . $url->hash);
         }

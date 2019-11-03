@@ -25,7 +25,7 @@ function Field__Color($in, $key) {
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     $value = $in['value'] ?? "";
     // TODO: Convert any color string into HEX color code
-    if ($value !== "") {
+    if ("" !== $value) {
         $out['content'][2]['title'] = $value;
         $out['content'][2]['value'] = $value;
     }
@@ -39,7 +39,7 @@ function Field__Colors($in, $key) {
     if (isset($in['lot'])) {
         \sort($in['lot']);
         foreach ($in['lot'] as $k => $v) {
-            if ($v === null || $v === false || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['hidden'])) {
                 continue;
             }
             if (\is_string($v)) {
@@ -74,7 +74,7 @@ function Field__Combo($in, $key) {
         $a = [];
         $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
-            if ($v === null || $v === false || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['hidden'])) {
                 continue;
             }
             // Group
@@ -87,7 +87,7 @@ function Field__Combo($in, $key) {
                 $seq0 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
                 foreach ($v['lot'] as $kk => $vv) {
                     $option = new \HTML(['option', "", [
-                        'selected' => $value !== null && (string) $value === (string) $kk,
+                        'selected' => null !== $value && (string) $value === (string) $kk,
                         'value' => $seq0 ? null : $kk
                     ]]);
                     if (\is_array($vv) && \array_key_exists('title', $vv)) {
@@ -108,7 +108,7 @@ function Field__Combo($in, $key) {
             // Flat
             } else {
                 $option = new \HTML(['option', $k, [
-                    'selected' => $value !== null && (string) $value === (string) $k,
+                    'selected' => null !== $value && (string) $value === (string) $k,
                     'value' => $seq ? null : $k
                 ]]);
                 if (\is_array($v) && \array_key_exists('title', $v)) {
@@ -198,12 +198,12 @@ function Field__Item($in, $key) {
         $count = 0;
         $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
-            if ($v === null || $v === false || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['hidden'])) {
                 continue;
             }
             ++$count;
             $input = new \HTML(['input', false, [
-                'checked' => $value !== null && ((string) $value === (string) $k),
+                'checked' => null !== $value && ((string) $value === (string) $k),
                 'class' => 'input',
                 'name' => $n,
                 'type' => 'radio',
@@ -224,7 +224,7 @@ function Field__Item($in, $key) {
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span' . ($d !== "" ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($in['block'])) {
@@ -254,12 +254,12 @@ function Field__Items($in, $key) {
         $count = 0;
         $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
-            if ($v === null || $v === false || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['hidden'])) {
                 continue;
             }
             ++$count;
             $input = new \HTML(['input', false, [
-                'checked' => $key_as_value ? \strpos($value, \P . $k . \P) !== false : isset($value[$k]),
+                'checked' => $key_as_value ? false !== \strpos($value, \P . $k . \P) : isset($value[$k]),
                 'class' => 'input',
                 'name' => $n . '[' . ($key_as_value ? "" : $k) . ']',
                 'type' => 'checkbox',
@@ -280,7 +280,7 @@ function Field__Items($in, $key) {
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span' . ($d !== "" ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($in['block'])) {

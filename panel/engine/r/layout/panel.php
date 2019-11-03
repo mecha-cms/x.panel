@@ -7,5 +7,5 @@
     <title><?= w($t->reverse); ?></title>
     <link href="<?= $url; ?>/favicon.ico" rel="shortcut icon">
   </head>
-  <body spellcheck="false"><?= $content; ?></body>
+  <body spellcheck="false"><?= $layout; ?></body>
 </html>

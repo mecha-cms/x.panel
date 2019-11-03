@@ -9,15 +9,15 @@ return [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
                         'hidden' => false
                     ],
                     's' => [
-                        'hidden' => $_['task'] === 's',
+                        'hidden' => 's' === $_['task'],
                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                         'title' => false,
                         'description' => ['New %s', 'File'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'blob', 'tab' => false]) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -57,10 +57,10 @@ return [
                                                         'title' => "",
                                                         'type' => 'Items',
                                                         'lot' => [
-                                                            'extract-here' => 'Extract package after package is uploaded.',
-                                                            'extract-to-folder' => 'Wrap the extracted package into a folder.'
+                                                            'extract-here' => 'Extract and delete package on upload.'
                                                         ],
-                                                        'hidden' => State::get('x.package') === null,
+                                                        'block' => true,
+                                                        'hidden' => null === State::get('x.package'),
                                                         'stack' => 20
                                                     ]
                                                 ],

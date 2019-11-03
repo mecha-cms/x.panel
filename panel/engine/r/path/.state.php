@@ -1,47 +1,43 @@
 <?php
 
 // Sanitize form data
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['state'])) {
+if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['title'] = _\lot\x\panel\h\w($_POST['state']['title'] ?? "");
     $_POST['state']['description'] = _\lot\x\panel\h\w($_POST['state']['description'] ?? "");
     $_POST['state']['charset'] = strip_tags($_POST['state']['charset'] ?? 'utf-8');
     $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
 }
 
-if ($user['status'] !== 1 || $_['task'] !== 'g') {
+if (1 !== $user['status'] || 'g' !== $_['task']) {
     if (Is::user()) {
         Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
-        Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash);
+        Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash);
     } else {
         Guard::kick("");
     }
 }
 
-$GLOBALS['_']['content'] = $_['content'] = 'state';
+$GLOBALS['_']['layout'] = $_['layout'] = 'state';
 
-Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
+Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
     extract($GLOBALS, EXTR_SKIP);
     if (isset($_['i'])) {
         // Force as item page
         Guard::kick($url->clean . $url->query . $url->hash);
     }
-    $panes = $paths = $skins = [];
+    $panes = $paths = [];
     foreach (glob(LOT . DS . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
         $n = basename($panel);
-        if (strpos('_.-', $n[0]) !== false) {
+        if (false !== strpos('_.-', $n[0])) {
             continue;
         }
-        $panes['/' . $n] = $n === 'x' ? 'Extension' : ucfirst($n);
+        $panes['/' . $n] = 'x' === $n ? 'Extension' : ucfirst($n);
     }
-    foreach (glob(PAGE . DS . '*.{page,archive}', GLOB_NOSORT | GLOB_BRACE) as $path) {
+    foreach (glob(PAGE . DS . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
         $paths['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
-    }
-    foreach (glob(CONTENT . DS . '*' . DS . 'about.page', GLOB_NOSORT) as $skin) {
-        $skins[basename(dirname($skin))] = S . (new Page($skin))->title . S;
     }
     asort($panes);
     asort($paths);
-    asort($skins);
     $zones = Cache::hit(__FILE__, function() {
         $zones = [];
         $regions = [
@@ -75,7 +71,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
     $GLOBALS['_']['lot'] = array_replace_recursive(require __DIR__ . DS . '..' . DS . 'state' . DS . 'state.php', $_['lot']);
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
+    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
     $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = array_replace_recursive([
         'file' => [
@@ -117,20 +113,14 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
                             'width' => true,
                             'stack' => 20
                         ],
-                        'skin' => [
-                            'type' => 'Combo',
-                            'name' => 'state[name]',
-                            'value' => $state->name,
-                            'lot' => $skins,
-                            'stack' => 30
-                        ],
                         'path' => [
                             'title' => 'Home',
+                            'description' => 'Choose default page that will open in the home page.',
                             'type' => 'Combo',
                             'name' => 'state[path]',
                             'value' => $state->path,
                             'lot' => $paths,
-                            'stack' => 40
+                            'stack' => 30
                         ]
                     ]
                 ]
@@ -216,5 +206,5 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function($lot, $type) {
             'pages' => false
         ]
     ]);
-    $this->content(__DIR__ . DS . '..' . DS . 'content' . DS . 'panel.php');
+    $this->view('panel');
 }, 10);

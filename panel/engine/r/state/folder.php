@@ -1,6 +1,6 @@
 <?php
 
-$name = $_['task'] === 'g' ? basename($_['f']) : "";
+$name = 'g' === $_['task'] ? basename($_['f']) : "";
 
 if ("" === $name) $name = null;
 
@@ -13,15 +13,15 @@ return [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
                         'hidden' => false
                     ],
                     's' => [
-                        'hidden' => $_['task'] === 's',
+                        'hidden' => 's' === $_['task'],
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
                         'description' => ['New %s', 'Folder'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'folder', 'tab' => false]) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['layout' => 'folder', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -54,7 +54,7 @@ return [
                                                         'pattern' => "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$",
                                                         'focus' => true,
                                                         'name' => 'folder[name]',
-                                                        'alt' => $_['task'] === 'g' ? ($name ?? "foo\\bar\\baz") : "foo\\bar\\baz",
+                                                        'alt' => 'g' === $_['task'] ? ($name ?? "foo\\bar\\baz") : "foo\\bar\\baz",
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 10
@@ -64,7 +64,7 @@ return [
                                                         'type' => 'Items',
                                                         'block' => true,
                                                         'name' => 'folder',
-                                                        'value' => $_['task'] === 's' ? ['kick' => 1] : [],
+                                                        'value' => 's' === $_['task'] ? ['kick' => 1] : [],
                                                         'lot' => [
                                                             'kick' => 'Redirect to folder'
                                                         ],
@@ -94,7 +94,7 @@ return [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     's' => [
-                                                        'title' => $_['task'] === 'g' ? 'Update' : 'Create',
+                                                        'title' => 'g' === $_['task'] ? 'Update' : 'Create',
                                                         'description' => ['Create in %s', _\lot\x\panel\h\path($_['f'])],
                                                         'type' => 'Submit',
                                                         'name' => false,
@@ -103,8 +103,8 @@ return [
                                                     'l' => [
                                                         'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['content' => 'folder', 'token' => $_['token']])),
-                                                        'hidden' => $_['task'] === 's',
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['layout' => 'folder', 'token' => $_['token']])),
+                                                        'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ]
                                                 ]

@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('USER')) {
+if (!defined('USER') || null === State::get('x.user')) {
     return;
 }
 
@@ -10,8 +10,8 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
     'chops' => [],
     'chunk' => $state['chunk'] ?? 20,
+    'layout' => $_GET['layout'] ?? 'file',
     'sort' => $state['sort'] ?? 1,
-    'content' => $_GET['content'] ?? 'file',
     'f' => null,
     'i' => $i = $url['i'],
     'kick' => null,
@@ -26,7 +26,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 ], $GLOBALS['_'] ?? []);
 
 $p = trim($url->path, '/');
-if (strpos('/' . $p, $pp . '::') === 0) {
+if (0 === strpos('/' . $p, $pp . '::')) {
     Asset::let(); // Remove all asset(s)
     Route::let(); // Remove all route(s)
     require __DIR__ . DS . 'engine' . DS . 'fire.php';

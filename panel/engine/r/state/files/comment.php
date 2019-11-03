@@ -1,26 +1,30 @@
 <?php
 
-$lot = require __DIR__ . DS . '..' . DS . 'files.php';
+// `http://127.0.0.1/panel/::g::/comment/1`
+$GLOBALS['_']['layout'] = $_['layout'] = 'page';
 
-if (count($_['chops']) === 1) {
-    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] = true;
-    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['hidden'] = true;
-    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['folder']['hidden'] = true;
-    $pages = $files = [];
-    $author = $user->user;
-    foreach (g($_['f'], 'archive,draft,page', true) as $k => $v) {
-        $files[$k] = basename($k);
-    }
-    asort($files);
+$lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
+
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Comments';
+
+$pages = [];
+$count = 0;
+
+$search = function($folder, $x, $r) {
+    $q = strtolower($_GET['q'] ?? "");
+    return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
+};
+
+if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';
-    foreach (array_slice(array_keys($files), 0, $_['chunk']) as $k) {
-        $page = new Comment($k);
+    $author = $user->user;
+    foreach ($search($folder, 'archive,draft,page', true) as $k => $v) {
         $after = '::' . strtr($k, [
             LOT => "",
             DS => '/'
         ]);
         $hidden = false;
-        $kk = strtr(dirname($k), [COMMENT . DS => PAGE . DS]);
+        $kk = strtr(dirname($k), [$folder . DS => PAGE . DS]);
         if ($parent = File::exist([
             $kk . '.draft',
             $kk . '.page',
@@ -29,6 +33,8 @@ if (count($_['chops']) === 1) {
             $test = (new Page($parent))['author'];
             $hidden = $test && $test !== $author;
         }
+        $page = new Comment($k);
+        $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
             'title' => _\lot\x\panel\h\w($page->author),
@@ -36,7 +42,7 @@ if (count($_['chops']) === 1) {
             'image' => $page->avatar(72),
             'author' => $page['author'],
             'type' => 'Page',
-            'link' => ($x = $page->x) === 'draft' ? null : $page->url,
+            'link' => 'draft' === ($x = $page->x) ? null : $page->url,
             'time' => $page->time . "",
             'tags' => [
                 'is:' . $x,
@@ -47,7 +53,7 @@ if (count($_['chops']) === 1) {
                     'title' => 'Reply',
                     'description' => 'Reply to ' . $page->author,
                     'icon' => 'M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z',
-                    'url' => $before . 's' . dirname($after) . $url->query('&', ['content' => 'page.comment', 'parent' => $page->name, 'tab' => false]) . $url->hash,
+                    'url' => $before . 's' . dirname($after) . $url->query('&', ['layout' => 'page.comment', 'parent' => $page->name, 'tab' => false]) . $url->hash,
                     'stack' => 10
                 ],
                 'g' => [
@@ -68,25 +74,17 @@ if (count($_['chops']) === 1) {
             // Hide comment(s) that is not related to the page that is written by the current user
             'hidden' => $hidden
         ];
+        ++$count;
     }
-    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['recent'] = [
-        'lot' => [
-            'comments' => [
-                'type' => 'Pages',
-                'lot' => $pages
-            ]
-        ],
-        'stack' => 9.9
-    ];
+    $pages = (new Anemon($pages))->sort($_['sort'], true)->get();
+    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
+    $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }
 
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['title'] = 'All';
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'page.comment', 'tab' => false]) . $url->hash;
 
-if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'])) {
-    foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] as $k => &$v) {
-        // $v['tasks']['g']['hidden'] = true;
-        $v['tasks']['l']['hidden'] = true;
-    }
-}
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['parent']['hidden'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['data']['hidden'] = true;
 
 return $lot;

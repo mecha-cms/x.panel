@@ -1,7 +1,7 @@
 <?php
 
 // Sanitize form data
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ('POST' === $_SERVER['REQUEST_METHOD']) {
     $_POST['data']['time'] = (string) (new Time($_POST['data']['time'] ?? time()));
     $_POST['page']['author'] = strip_tags($_POST['page']['author'] ?? "");
     $_POST['page']['id'] = strip_tags($_POST['page']['id'] ?? "");
@@ -10,16 +10,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_POST['page']['title'] = _\lot\x\panel\h\w($_POST['page']['title'] ?? "");
     $_POST['page']['x'] = strip_tags($_POST['page']['x'] ?? 'page');
     if (empty($_POST['page']['name'])) {
-        $_POST['page']['name'] = date('Y-m-d-H-i-s');
+        $name = To::kebab($_POST['page']['title'] ?? "");
+        $_POST['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s');
     }
     // Detect `time` pattern in the page’s file name and remove the `time` field if matched
     $n = $_POST['page']['name'];
     if (
         is_string($n) && (
             // `2017-04-21.page`
-            substr_count($n, '-') === 2 ||
+            2 === substr_count($n, '-') ||
             // `2017-04-21-14-25-00.page`
-            substr_count($n, '-') === 5
+            5 === substr_count($n, '-')
         ) &&
         is_numeric(str_replace('-', "", $n)) &&
         preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])(-([0-1]\d|2[0-4])(-([0-5]\d|60)){2})?$/', $n)
@@ -39,15 +40,15 @@ $lot = [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ($_['task'] === 'g' ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
                         'hidden' => false
                     ],
                     's' => [
-                        'hidden' => $_['task'] === 's',
+                        'hidden' => 's' === $_['task'],
                         'icon' => 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z',
                         'title' => false,
                         'description' => ['New %s', 'Page'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['content' => 'page', 'tab' => false]) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
                         'stack' => 10.5
                     ]
                 ]
@@ -82,7 +83,7 @@ $lot = [
                                                     ],
                                                     'title' => [
                                                         'type' => 'Text',
-                                                        'alt' => $_['task'] === 'g' ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
+                                                        'alt' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
                                                         'focus' => true,
                                                         'name' => 'page[title]',
                                                         'value' => $page['title'],
@@ -93,11 +94,11 @@ $lot = [
                                                         'title' => 'Slug',
                                                         'type' => 'Text',
                                                         'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
-                                                        'alt' => To::kebab($_['task'] === 'g' ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
+                                                        'alt' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
                                                         'name' => 'page[name]',
                                                         'value' => $page->name,
                                                         'width' => true,
-                                                        'hidden' => $_['task'] === 's',
+                                                        'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ],
                                                     'content' => [
@@ -130,7 +131,7 @@ $lot = [
                                                         'value' => $page->type,
                                                         'lot' => [
                                                             'HTML' => 'HTML',
-                                                            'Markdown' => State::get('x.markdown') !== null ? 'Markdown' : null
+                                                            'Markdown' => null !== State::get('x.markdown') ? 'Markdown' : null
                                                         ],
                                                         'stack' => 60
                                                     ]
@@ -156,7 +157,7 @@ $lot = [
                                                         'type' => 'DateTime',
                                                         'name' => 'data[time]',
                                                         'value' => $page->time,
-                                                        'hidden' => $_['task'] === 's',
+                                                        'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ],
                                                     'files' => [
@@ -174,7 +175,7 @@ $lot = [
                                                                 'lot' => [
                                                                     's' => [
                                                                         'title' => 'Data',
-                                                                        'url' => $url . $_['/'] . '::s::' . Path::F($_['path'], '/') . $url->query('&', ['content' => 'data', 'tab' => false]) . $url->hash,
+                                                                        'url' => $url . $_['/'] . '::s::' . Path::F($_['path'], '/') . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
                                                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                                                         'stack' => 10
                                                                     ]
@@ -182,7 +183,7 @@ $lot = [
                                                                 'stack' => 20
                                                             ]
                                                         ],
-                                                        'hidden' => $_['task'] === 's',
+                                                        'hidden' => 's' === $_['task'],
                                                         'stack' => 100
                                                     ]
                                                 ],
@@ -214,7 +215,7 @@ $lot = [
                                                         'type' => 'Submit',
                                                         'name' => 'page[x]',
                                                         'value' => $x,
-                                                        'hidden' => $_['task'] === 's',
+                                                        'hidden' => 's' === $_['task'],
                                                         'stack' => 10
                                                     ],
                                                     'page' => [
@@ -222,7 +223,7 @@ $lot = [
                                                         'type' => 'Submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'page',
-                                                        'hidden' => $x === 'page',
+                                                        'hidden' => 'page' === $x,
                                                         'stack' => 20
                                                     ],
                                                     'draft' => [
@@ -231,7 +232,7 @@ $lot = [
                                                         'type' => 'Submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'draft',
-                                                        'hidden' => $x === 'draft',
+                                                        'hidden' => 'draft' === $x,
                                                         'stack' => 30
                                                     ],
                                                     'archive' => [
@@ -240,14 +241,14 @@ $lot = [
                                                         'type' => 'Submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'archive',
-                                                        'hidden' => $x === 'archive' || $_['task'] === 's',
+                                                        'hidden' => 'archive' === $x || 's' === $_['task'],
                                                         'stack' => 40
                                                     ],
                                                     'l' => [
                                                         'title' => 'Delete',
                                                         'type' => 'Link',
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['tab' => false, 'token' => $_['token']])),
-                                                        'hidden' => $_['task'] === 's',
+                                                        'hidden' => 's' === $_['task'],
                                                         'stack' => 50
                                                     ]
                                                 ]
@@ -275,7 +276,7 @@ Hook::set('set', function() use($_, $page, $url) {
                 }
                 foreach ($vv['lot']['fields']['lot'] as $kkk => $vvv) {
                     $vvvv = $vvv['name'] ?? $kkk;
-                    if (strpos($vvvv, 'data[') === 0) {
+                    if (0 === strpos($vvvv, 'data[')) {
                         $apart[substr($vvvv, 5, -1)] = 1;
                     }
                 }
@@ -286,7 +287,7 @@ Hook::set('set', function() use($_, $page, $url) {
             $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
             $before = $url . $_['/'] . '::';
             foreach (g(Path::F($path), 'data') as $k => $v) {
-                if ($v === 1 && isset($p[basename($k, '.data')])) {
+                if (1 === $v && isset($p[basename($k, '.data')])) {
                     continue;
                 }
                 $after = '::' . strtr($k, [

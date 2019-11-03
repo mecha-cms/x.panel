@@ -132,7 +132,7 @@ if ($tabs.length) {
                 $this.fire('tab:enter', [$source, $target]);
                 $this.fire('tab:exit', [$source, $old]);
                 $this.fire('tab:change', [$source, $target]);
-                return $href !== "";
+                return "" !== $href;
             });
             $li.appendTo($ul);
         }).removeAttr('title');

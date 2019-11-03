@@ -3,11 +3,11 @@
 require __DIR__ . DS . '2.php';
 
 // Member user(s) cannot do anything but updating their user file
-if ($_['task'] === 'g' && $_['f'] === $user->path) {
+if ('g' === $_['task'] && $_['f'] === $user->path) {
     // Hide everything but `link`
     if (isset($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'])) {
         foreach ($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'] as $k => &$v) {
-            if ($k !== 'link') {
+            if ('link' !== $k) {
                 $v['hidden'] = true;
             }
         }
@@ -25,7 +25,7 @@ if ($_['task'] === 'g' && $_['f'] === $user->path) {
         Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
     }
     Guard::kick($url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab' => false
     ]) . $url->hash);
 }

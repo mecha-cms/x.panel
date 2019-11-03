@@ -9,11 +9,11 @@ if (($f = $_['f']) && \is_file($f)) {
 function blob($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
         if (!empty($_['alert']['error'])) {
             return $_;
@@ -31,14 +31,14 @@ function blob($_, $lot) {
             $type = $v['type'] ?? 'application/octet-stream';
             $size = $v['size'] ?? 0;
             // TODO: Handle package
-            if ($x === 'zip' || $type === 'asdf') {
+            if ('zip' === $x || 'application/zip' === $type) {
                 
             }
             // Check for file extension
-            if ($x && \strpos($test_x, ',' . $x . ',') === false) {
+            if ($x && false === \strpos($test_x, ',' . $x . ',')) {
                 $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
             // Check for file type
-            } else if ($type && \strpos($test_type, ',' . $type . ',') === false) {
+            } else if ($type && false === \strpos($test_type, ',' . $type . ',')) {
                 $_['alert']['error'][] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
             }
             // Check for file size
@@ -64,7 +64,7 @@ function blob($_, $lot) {
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
                     $_['ff'][] = $f;
                 } else {
-                    if (\q(\g($folder)) === 0) {
+                    if (0 === \q(\g($folder))) {
                         \rmdir($folder);
                     }
                     $_['alert']['error'][] = 'Error.';
@@ -83,13 +83,13 @@ function blob($_, $lot) {
 function data($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab' => ['data'],
         'token' => false
     ]) . $url->hash;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
-        $lot['file']['name'] = $name !== "" ? $name . '.data' : "";
+        $lot['file']['name'] = "" !== $name ? $name . '.data' : "";
         $lot['file']['content'] = $lot['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
@@ -102,11 +102,11 @@ function data($_, $lot) {
 function file($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
         if (!empty($_['alert']['error'])) {
             return $_;
@@ -114,16 +114,17 @@ function file($_, $lot) {
         $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? "")));
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         // Special case for PHP file(s)
-        if ($x === 'php' && isset($lot['file']['content'])) {
-            // This must be enough to detect PHP syntax before saving
+        if ('php' === $x && isset($lot['file']['content'])) {
+            // This should be enough to detect PHP syntax error before saving
             \token_get_all($lot['file']['content'], \TOKEN_PARSE);
         }
-        if ($name === "") {
+        if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
-        } else if (\strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',') === false) {
+        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',')) {
             $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['f'] = $f;
         } else {
             if (isset($lot['file']['content'])) {
                 \file_put_contents($f, $lot['file']['content']);
@@ -144,17 +145,17 @@ function file($_, $lot) {
 function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
         if (!empty($_['alert']['error'])) {
             return $_;
         }
         $name = \To::folder($lot['folder']['name'] ?? "");
-        if ($name === "") {
+        if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
@@ -184,18 +185,18 @@ function folder($_, $lot) {
 function page($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'content' => false,
+        'layout' => false,
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
         if (!empty($_['alert']['error'])) {
             return $_;
         }
         $name = \To::kebab($lot['page']['name'] ?? $lot['page']['title'] ?? "");
         $x = $lot['page']['x'] ?? 'page';
-        if ($name === "") {
+        if ("" === $name) {
             $name = \date('Y-m-d-H-i-s');
         }
         unset($lot['page']['name'], $lot['page']['x']);
@@ -204,7 +205,7 @@ function page($_, $lot) {
         foreach ($lot['page'] as $k => $v) {
             if (
                 // Skip empty value
-                \trim($v) === "" ||
+                "" === \trim($v) ||
                 // Skip default value
                 isset($p[$k]) && $p[$k] === $v
             ) {
@@ -221,7 +222,7 @@ function page($_, $lot) {
             }
             if (isset($lot['data'])) {
                 foreach ((array) $lot['data'] as $k => $v) {
-                    if (\trim($v) !== "") {
+                    if ("" !== \trim($v)) {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
                         \chmod($ff, 0600);
                     }
@@ -265,5 +266,5 @@ function _token($_, $lot) {
 
 foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\_token", 0);
-    \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 20);
+    \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 10);
 }

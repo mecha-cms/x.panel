@@ -1,17 +1,17 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/user/1`
-$GLOBALS['_']['content'] = $_['content'] = 'page';
+$GLOBALS['_']['layout'] = $_['layout'] = 'page';
 
-$lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
+$lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
-$g = $user['status'] !== 1;
+$g = 1 !== $user['status'];
 
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     $path = $user->path;
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         $page = new User($k);
-        $v['link'] = $page->x !== 'draft' ? $page->url : null;
+        $v['link'] = 'draft' !== $page->x ? $page->url : null;
         $v['title'] = $page . "";
         $v['description'] = $page->user;
         $v['image'] = $page->avatar(72);
@@ -34,7 +34,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
 }
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['content' => 'page.user', 'tab' => false]) . $url->hash;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'page.user', 'tab' => false]) . $url->hash;
 
 // Prevent user with status other than `1` from creating user file(s)
 if ($g) {

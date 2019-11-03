@@ -1,20 +1,20 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/user/foo-bar.page`
-$GLOBALS['_']['content'] = $_['content'] = [
+$GLOBALS['_']['layout'] = $_['layout'] = [
     'archive' => 'page.user',
     'data' => 'data',
     'draft' => 'page.user',
     'page' => 'page.user'
-][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['content'];
+][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['layout'];
 
-$lot = require __DIR__ . DS . '..' . DS . $_['content'] . '.php';
+$lot = require __DIR__ . DS . '..' . DS . $_['layout'] . '.php';
 
 $status = $user['status'];
 $i = $page['status'];
 $any = $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'];
 
-if ($status !== 1) {
+if (1 !== $status) {
     $any = isset($any[$i]) ? [$i => $any[$i]] : [];
 } else if ($page->name === $user->name) {
     $any = [1 => $any[1]];

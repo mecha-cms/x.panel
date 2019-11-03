@@ -3,24 +3,24 @@
 // `http://127.0.0.1/panel/::g::/x/foo-bar/1`
 $i = count($_['chops']);
 if ($i > 1) {
-    $lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
-    if ($i === 2) {
+    $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
+    if (2 === $i) {
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['content' => false, 'tab' => false]) . $url->hash;
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
-        if (is_file($f = ($ff = $_['f']) . DS . 'about.page')) {
+        if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
             // Hide some file(s) from the list
             foreach ([
                 // Parent folder
-                $ff,
+                $d,
                 // About file
-                $ff . DS . 'about.page',
+                $d . DS . 'about.page',
                 // License file
-                $ff . DS . 'LICENSE',
+                $d . DS . 'LICENSE',
                 // Custom stack data
-                $ff . DS . basename($ff)
+                $d . DS . basename($d)
             ] as $p) {
                 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
             }
@@ -38,8 +38,8 @@ if ($i > 1) {
                 'stack' => 20
             ];
         }
-        if (is_file($f = $ff . DS . 'LICENSE')) {
-            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['legal'] = [
+        if (is_file($f = $d . DS . 'LICENSE')) {
+            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
                 'lot' => [
                     0 => [
                         'type' => 'Section',
@@ -55,9 +55,9 @@ if ($i > 1) {
 }
 
 // `http://127.0.0.1/panel/::g::/x/1`
-$GLOBALS['_']['content'] = $_['content'] = 'page';
+$GLOBALS['_']['layout'] = $_['layout'] = 'page';
 
-$lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
+$lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
 $lot['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
 
@@ -67,7 +67,7 @@ $count = 0;
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';
     foreach (g($folder, 'page', 1) as $k => $v) {
-        if (basename($k) !== 'about.page') {
+        if ('about.page' !== basename($k)) {
             continue;
         }
         $after = '::' . strtr($kk = dirname($k), [
@@ -112,7 +112,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] = true;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] = false;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Upload';
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
 
 return $lot;

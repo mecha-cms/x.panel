@@ -14,12 +14,12 @@ function content($content) {
 
 function description($in, $or = null) {
     $description = $in['description'] ?? $or;
-    if (!isset($description) || $description === false) {
+    if (!isset($description) || false === $description) {
         return;
     }
     $out = [
         0 => 'p',
-        1 => (string) \i(...($description !== "" ? (array) $description : (array) $or)),
+        1 => (string) \i(...("" !== $description ? (array) $description : (array) $or)),
         2 => []
     ];
     unset($in['tags']);
@@ -60,11 +60,11 @@ function field($in, $key) {
 
 function icon($in) {
     $icon = \array_replace([null, null], (array) $in);
-    if ($icon[0] && strpos($icon[0], '<') === false) {
+    if ($icon[0] && false === strpos($icon[0], '<')) {
         $GLOBALS['SVG'][$id = \dechex(\crc32($icon[0]))] = $icon[0];
         $icon[0] = '<svg><use href="#i:' . $id . '"></use></svg>';
     }
-    if ($icon[1] && strpos($icon[1], '<') === false) {
+    if ($icon[1] && false === strpos($icon[1], '<')) {
         $GLOBALS['SVG'][$id = \dechex(\crc32($icon[1]))] = $icon[1];
         $icon[1] = '<svg><use href="#i:' . $id . '"></use></svg>';
     }
@@ -77,7 +77,7 @@ function lot($lot, $fn = null, &$count = 0) {
     }
     $out = "";
     foreach ((new \Anemon($lot))->sort([1, 'stack', 10], true) as $k => $v) {
-        if ($v === null || $v === false || !empty($v['hidden'])) {
+        if (null === $v || false === $v || !empty($v['hidden'])) {
             continue;
         }
         $v = $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);
@@ -92,7 +92,7 @@ function lot($lot, $fn = null, &$count = 0) {
 function p(&$lot, $prefix) {
     foreach ($lot as &$v) {
         $type = $v['type'] ?? null;
-        if ($type !== $prefix && \strpos($type, $prefix . '__') !== 0) {
+        if ($type !== $prefix && 0 !== \strpos($type, $prefix . '__')) {
             // Add prefix to `type`
             $type = $prefix . '__' . $type;
         }
@@ -110,13 +110,13 @@ function path($in) {
 
 function title($in, $i = -1, $or = null) {
     $title = $in['title'] ?? $or;
-    if ((!isset($title) || $title === false) && (!isset($in['icon']) || empty($in['icon']))) {
+    if ((!isset($title) || false === $title) && (!isset($in['icon']) || empty($in['icon']))) {
         return;
     }
     $tag = false;
-    if ($i === -1) {
+    if (-1 === $i) {
         $tag = 'span';
-    } else if ($i === 0) {
+    } else if (0 === $i) {
         $tag = 'p';
     } else if ($i > 0) {
         $tag = 'h' . $i;
@@ -127,7 +127,7 @@ function title($in, $i = -1, $or = null) {
         2 => []
     ];
     $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
-    if ($title !== null && $title !== false) {
+    if (null !== $title && false !== $title) {
         $title = '<span>' . \i(...((array) $title)) . '</span>';
     }
     $out[1] = $icon[0] . $title . $icon[1];

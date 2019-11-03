@@ -11,14 +11,14 @@ function _() {
     if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
         $_lot = $_state . 'test' . \DS . \basename(\urlencode($_GET['test'])) . '.php';
     } else {
-        $_lot = $_state . $_['content'] . ($_['i'] ? 's' : "") . '.php';
-        if (!isset($_GET['content'])) {
-            // Auto-detect content type
+        $_lot = $_state . $_['layout'] . ($_['i'] ? 's' : "") . '.php';
+        if (!isset($_GET['layout'])) {
+            // Auto-detect layout type
             if ($_['f']) {
-                $GLOBALS['_']['content'] = $_['content'] = \is_dir($_['f']) ? 'folder' : 'file';
-                $_lot = $_state . $_['content'] . ($_['i'] ? 's' : "") . '.php'; // Update data
+                $GLOBALS['_']['layout'] = $_['layout'] = \is_dir($_['f']) ? 'folder' : 'file';
+                $_lot = $_state . $_['layout'] . ($_['i'] ? 's' : "") . '.php'; // Update data
             }
-            // Manually set content type based on file path
+            // Manually set layout type based on file path
             foreach (\array_reverse(\step(\trim($_['path'], '/'), '/')) as $_path) {
                 (function($_path) use(&$_lot) {
                     if (\is_file($_path)) {
@@ -38,7 +38,7 @@ function _() {
         })($_f);
     }
     $_ = $GLOBALS['_']; // Update data
-    \State::set('[content].content:' . $_['content'], true);
+    \State::set('[layout].layout:' . $_['layout'], true);
     (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);
         // Define lot with no filter
@@ -59,7 +59,7 @@ function _() {
         $_ = $GLOBALS['_']; // Update data
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($_form['token'])) {
-            $_hooks = \map(\step($_['content']), function($_hook) use($_) {
+            $_hooks = \map(\step($_['layout']), function($_hook) use($_) {
                 return 'do.' . $_hook . '.' . ([
                     'g' => 'get',
                     'l' => 'let',
@@ -89,7 +89,7 @@ function _() {
 \Hook::set('start', __NAMESPACE__ . "\\_", 20);
 
 \Hook::set('set', function() {
-    $panel = require __DIR__ . \DS . 'content' . \DS . '-panel.php';
-    $icon = require __DIR__ . \DS . 'content' . \DS . '-icon.php'; // Require icon(s) later
-    $GLOBALS['content'] = $icon . $panel; // But load icon(s) first
+    $panel = require __DIR__ . \DS . 'layout' . \DS . '-panel.php';
+    $icon = require __DIR__ . \DS . 'layout' . \DS . '-icon.php'; // Require icon(s) later
+    $GLOBALS['layout'] = $icon . $panel; // But load icon(s) first
 }, 1000);

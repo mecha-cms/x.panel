@@ -1,9 +1,9 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/.alert/1`
-$GLOBALS['_']['content'] = $_['content'] = 'page';
+$GLOBALS['_']['layout'] = $_['layout'] = 'page';
 
-$lot = require __DIR__ . DS . '..' . DS . $_['content'] . 's.php';
+$lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
 // Hide all button(s)
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['hidden'] = true;

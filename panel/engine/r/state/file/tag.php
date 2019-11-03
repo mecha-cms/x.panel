@@ -1,11 +1,11 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/user/foo-bar.page`
-$GLOBALS['_']['content'] = $_['content'] = [
+$GLOBALS['_']['layout'] = $_['layout'] = [
     'archive' => 'page.tag',
     'data' => 'data',
     'draft' => 'page.tag',
     'page' => 'page.tag'
-][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['content'];
+][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['layout'];
 
-return require __DIR__ . DS . '..' . DS . $_['content'] . '.php';
+return require __DIR__ . DS . '..' . DS . $_['layout'] . '.php';

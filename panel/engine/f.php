@@ -31,9 +31,9 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => $in[2] ?? []
         ];
-        if (!\array_key_exists('title', $in) || $in['title'] !== false) {
+        if (!\array_key_exists('title', $in) || false !== $in['title']) {
             $title = \_\lot\x\panel\h\title($in, -2, \ucfirst($key));
-            $out[1] .= '<label' . (\strip_tags($title) === "" ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
+            $out[1] .= '<label' . ("" === \strip_tags($title) ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
         }
         $before = "";
         $after = "";
@@ -51,21 +51,21 @@ namespace _\lot\x\panel {
             if (\is_array($in['content'])) {
                 $style = "";
                 $in['content'][2]['class'] = $in['content'][2]['class'] ?? "";
-                if (isset($in['height']) && $in['height'] !== false) {
-                    if ($in['height'] === true) {
+                if (isset($in['height']) && false !== $in['height']) {
+                    if (true === $in['height']) {
                         $in['content'][2]['class'] .= ' height';
                     } else {
                         $style .= 'height:' . (\is_numeric($in['height']) ? $in['height'] . 'px' : $in['height']) . ';';
                     }
                 }
-                if (isset($in['width']) && $in['width'] !== false) {
-                    if ($in['width'] === true) {
+                if (isset($in['width']) && false !== $in['width']) {
+                    if (true === $in['width']) {
                         $in['content'][2]['class'] .= ' width';
                     } else {
                         $style .= 'width:' . (\is_numeric($in['width']) ? $in['width'] . 'px' : $in['width']) . ';';
                     }
                 }
-                $in['content'][2]['style'] = $style !== "" ? $style : null;
+                $in['content'][2]['style'] = "" !== $style ? $style : null;
             }
             $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' . (!empty($in['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\h\content($in['content']) . $after . '</div>' . \_\lot\x\panel\h\description($in) . '</div>';
         } else if (isset($in['lot'])) {
@@ -87,12 +87,12 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             \_\lot\x\panel\h\p($in['lot'], 'Field');
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
-                if ($v === null || $v === false || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 $type = $v['type'] ?? null;
                 if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . $type, "\\"))) {
-                    if ($type !== 'Field__Hidden') {
+                    if ('Field__Hidden' !== $type) {
                         $out[1] .= \call_user_func($fn, $v, $k);
                     } else {
                         $append .= \_\lot\x\panel\Field__Hidden($v, $k);
@@ -105,7 +105,7 @@ namespace _\lot\x\panel {
             $out[1] .= $append;
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        return $out[1] !== "" ? new \HTML($out) : null;
+        return "" !== $out[1] ? new \HTML($out) : null;
     }
     function File($in, $key) {
         $tags = ['is:file'];
@@ -139,7 +139,7 @@ namespace _\lot\x\panel {
         $lot = [];
         if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
-                if ($v === null || $v === false || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 $lot[$k] = $v;
@@ -147,7 +147,7 @@ namespace _\lot\x\panel {
         }
         $chunk = $in['chunk'] ?? 0;
         $current = $in['current'] ?? 1;
-        $lot = $chunk === 0 ? [$lot] : \array_chunk($lot, $chunk, false);
+        $lot = 0 === $chunk ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
         foreach ($lot[$current - 1] ?? [] as $k => $v) {
             $path = $v['path'] ?? false;
@@ -214,17 +214,17 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => []
         ];
-        if ($out[1] === "") {
+        if ("" === $out[1]) {
             $out[1] = \_\lot\x\panel\h\title($in, -1, \ucfirst($key));
         }
         $tags = [];
         $href = $in['link'] ?? $in['url'] ?? \P;
-        $href = $href === false ? \P : (string) $href;
-        if ($href === \P || (isset($in['active']) && !$in['active'])) {
+        $href = false === $href ? \P : (string) $href;
+        if (\P === $href || (isset($in['active']) && !$in['active'])) {
             $tags[] = 'not:active';
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $out[2]['href'] = $href === \P ? null : $href;
+        $out[2]['href'] = \P === $href ? null : $href;
         $out[2]['target'] = $in[2]['target'] ?? (isset($in['link']) ? '_blank' : null);
         $out[2]['title'] = \i(...((array) ($in['description'] ?? [])));
         return new \HTML($out);
@@ -245,7 +245,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             $count = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
-                if ($v === null || $v === false || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 ++$count;
@@ -304,7 +304,7 @@ namespace _\lot\x\panel {
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $title = !empty($in['time']) ? \strtr($in['time'], '-', '/') : null;
-        $out[1] .= '<div' . (isset($in['image']) && $in['image'] === false ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($in['path'] ?? $key, [
+        $out[1] .= '<div' . (isset($in['image']) && false === $in['image'] ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($in['path'] ?? $key, [
             \ROOT => "",
             \DS => '/'
         ])), 0, 6) . ';"></span>') . '</div>';
@@ -388,7 +388,7 @@ namespace _\lot\x\panel {
         }, \i('First'), \i('Previous'), \i('Next'), \i('Last'));
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';
-        return $content !== "" ? $out : null;
+        return "" !== $content ? $out : null;
     }
     function Pages($in, $key) {
         $out = [
@@ -399,7 +399,7 @@ namespace _\lot\x\panel {
         $lot = [];
         if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
-                if ($v === null || $v === false || !empty($v['hidden'])) {
+                if (null ===$v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 $lot[$k] = $v;
@@ -407,7 +407,7 @@ namespace _\lot\x\panel {
         }
         $chunk = $in['chunk'] ?? 0;
         $current = $in['current'] ?? 1;
-        $lot = $chunk === 0 ? [$lot] : \array_chunk($lot, $chunk, false);
+        $lot = 0 === $chunk ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
         foreach ($lot[$current - 1] ?? [] as $k => $v) {
             $path = $v['path'] ?? false;
@@ -433,7 +433,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
         }
         \_\lot\x\panel\h\c($out[2], $in);
-        return $out[1] !== "" ? new \HTML($out) : null;
+        return "" !== $out[1] ? new \HTML($out) : null;
     }
     function Tabs($in, $key) {
         $name = $in['name'] ?? $key;
@@ -450,7 +450,7 @@ namespace _\lot\x\panel {
             $lot = (new \Anemon($in['lot']))->sort([1, 'stack'], true)->get();
             $count = 0;
             foreach ($lot as $k => $v) {
-                if ($v === null || $v === false || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 $kk = $v['name'] ?? $k;
@@ -480,16 +480,16 @@ namespace _\lot\x\panel {
             // TODO: Do not activate tab (activate the first tab) if current tab content is empty
             $first = \array_keys($nav)[0] ?? null; // The first tab
             $active = $_GET['tab'][$name] ?? $in['active'] ?? $first ?? null;
-            if ($active !== null && isset($nav[$active]) && \is_array($nav[$active])) {
+            if (null !== $active && isset($nav[$active]) && \is_array($nav[$active])) {
                 $nav[$active]['tags'][] = 'is:active';
                 $section[$active]['tags'][] = 'is:active';
-            } else if ($first !== null && isset($nav[$first]) && \is_array($nav[$first])) {
+            } else if (null !== $first && isset($nav[$first]) && \is_array($nav[$first])) {
                 $nav[$first]['tags'][] = 'is:active';
                 $section[$first]['tags'][] = 'is:active';
             }
             foreach ($section as $k => $v) {
                 $vv = (string) \_\lot\x\panel($v, $k);
-                if ($vv === "") {
+                if ("" === $vv) {
                     unset($nav[$k]);
                 } else {
                     ++$count;

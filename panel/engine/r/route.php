@@ -16,23 +16,23 @@ function route($lot) {
             'pages' => isset($_['i'])
         ]
     ]);
-    if ($_['task'] === 'g' && (
+    if ('g' === $_['task'] && (
         !isset($_['f']) ||
         !\is_dir($_['f']) && isset($_['i'])
     )) {
         $GLOBALS['t'][] = \i('Error');
         \State::set([
-            '[content]' => ['content:' . $_['content'] => false],
+            '[layout]' => ['layout:' . $_['layout'] => false],
             'is' => [
                 'error' => 404
             ]
         ]);
         $this->status(404);
-        $this->content(__DIR__ . \DS . 'content' . \DS . '404.php');
+        $this->view('panel.404');
     }
     $n = \ltrim($_['chops'][0], '_.-');
-    $GLOBALS['t'][] = isset($_['path']) ? \i($n === 'x' ? 'Extension' : \ucfirst($n)) : null;
-    $this->content(__DIR__ . \DS . 'content' . \DS . 'panel.php');
+    $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \ucfirst($n)) : null;
+    $this->view('panel');
 }
 
 \Route::set($_['/'] . '*', 200, __NAMESPACE__ . "\\route", 20);
