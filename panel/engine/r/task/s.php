@@ -30,10 +30,6 @@ function blob($_, $lot) {
             $x = \pathinfo($name, \PATHINFO_EXTENSION);
             $type = $v['type'] ?? 'application/octet-stream';
             $size = $v['size'] ?? 0;
-            // TODO: Handle package
-            if ('zip' === $x || 'application/zip' === $type) {
-                
-            }
             // Check for file extension
             if ($x && false === \strpos($test_x, ',' . $x . ',')) {
                 $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
@@ -63,6 +59,24 @@ function blob($_, $lot) {
                     $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
                     $_['ff'][] = $f;
+                    // Extract package
+                    if (
+                        !empty($lot['options']['extract']) &&
+                        \extension_loaded('zip') &&
+                        ('zip' === $x || 'application/zip' === $type)
+                    ) {
+                        $zip = new \ZipArchive;
+                        if (true === $zip->open($f)) {
+                            // TODO: Scan for forbidden file(s) in package
+                            // TODO: Mark all of the extracted file(s) and folder(s)
+                            if ($zip->extractTo($folder)) {
+                                $_['alert']['success'][] = ['Package %s successfully extracted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                            } else {
+                                $_['alert']['error'][] = ['Package %s could not be extracted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                            }
+                        }
+                        $zip->close();
+                    }
                 } else {
                     if (0 === \q(\g($folder))) {
                         \rmdir($folder);

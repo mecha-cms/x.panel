@@ -1,5 +1,10 @@
 <?php
 
+$options = [];
+if (extension_loaded('zip')) {
+    $options['extract'] = 'Extract package after upload.';
+}
+
 return [
     'bar' => [
         // type: Bar
@@ -56,11 +61,8 @@ return [
                                                     'options' => [
                                                         'title' => "",
                                                         'type' => 'Items',
-                                                        'lot' => [
-                                                            'extract-here' => 'Extract and delete package on upload.'
-                                                        ],
+                                                        'lot' => $options,
                                                         'block' => true,
-                                                        'hidden' => null === State::get('x.package'),
                                                         'stack' => 20
                                                     ]
                                                 ],
