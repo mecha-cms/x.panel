@@ -21,7 +21,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             'path' => $k,
             'title' => _\lot\x\panel\h\w($page->title),
             'description' => _\lot\x\panel\h\w($page->description),
-            'image' => $page->image(72),
+            'image' => $page->image(72, 72, 50),
             'author' => $page['author'],
             'type' => 'Page',
             'link' => 'draft' === ($x = $page->x) ? null : $page->url,

@@ -1,6 +1,6 @@
 <?php
 
-Hook::set('start', function() {
+Hook::set('get', function() {
     Asset::let(); // Again: remove all asset(s)
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset' . DS;
     Asset::set($f . 'css' . DS . 'panel.css', 20);

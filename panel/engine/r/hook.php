@@ -86,10 +86,4 @@ function _() {
     })($_lot);
 }
 
-\Hook::set('start', __NAMESPACE__ . "\\_", 20);
-
-\Hook::set('set', function() {
-    $panel = require __DIR__ . \DS . 'layout' . \DS . '-panel.php';
-    $icon = require __DIR__ . \DS . 'layout' . \DS . '-icon.php'; // Require icon(s) later
-    $GLOBALS['layout'] = $icon . $panel; // But load icon(s) first
-}, 1000);
+\Hook::set('get', __NAMESPACE__ . "\\_", 20);
