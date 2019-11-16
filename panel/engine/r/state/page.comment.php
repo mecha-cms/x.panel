@@ -2,9 +2,6 @@
 
 $lot = require __DIR__ . DS . 'page.php';
 
-$parent = $_GET['parent'] ?? P;
-$parent = is_file($f = LOT . $_['path'] . DS . $parent . '.page') ? new Comment($f) : new Comment;
-
 $lot = array_replace_recursive($lot, [
     'bar' => [
         // type: Bar
@@ -29,11 +26,6 @@ $lot = array_replace_recursive($lot, [
             'form' => [
                 // type: Form.Post
                 'lot' => [
-                    0 => $parent->exist ? [
-                        // type: Section
-                        'title' => 'Reply to ' . $parent->author,
-                        'content' => $parent->content
-                    ] : [],
                     1 => [
                         // type: Section
                         'lot' => [
@@ -109,7 +101,7 @@ $lot = array_replace_recursive($lot, [
                                                 // type: Tasks.Button
                                                 'lot' => [
                                                     's' => ['description' => ['Update as %s', ['page' === $page->x ? 'Accepted' : 'Rejected']]],
-                                                    'page' => ['title' => 's' === $_['task'] ? ($parent->exist ? 'Reply' : 'Publish') : 'Accept'],
+                                                    'page' => ['title' => 's' === $_['task'] ? 'Publish' : 'Accept'],
                                                     'draft' => ['title' => 's' === $_['task'] ? 'Save' : 'Reject'],
                                                     'archive' => ['hidden' => true]
                                                 ]

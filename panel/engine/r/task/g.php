@@ -52,8 +52,8 @@ function file($_, $lot) {
             $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (isset($lot['file']['content'])) {
-                \file_put_contents($f, $lot['file']['content']);
+            if (isset($lot['file']['content']) || array_key_exists('content', $lot['file'] ?? [])) {
+                \file_put_contents($f, $lot['file']['content'] ?? "");
                 if ($name !== $base) {
                     \unlink($_['f']);
                 }
@@ -61,7 +61,7 @@ function file($_, $lot) {
                 \rename($_['f'], $f);
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
+            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }

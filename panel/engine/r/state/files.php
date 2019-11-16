@@ -83,12 +83,14 @@ return [
                                     ],
                                     'file' => [
                                         'type' => 'Link',
+                                        'description' => ['New %s', 'File'],
                                         'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'file', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 20
                                     ],
                                     'folder' => [
                                         'type' => 'Link',
+                                        'description' => ['New %s', 'Folder'],
                                         'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'folder', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 30

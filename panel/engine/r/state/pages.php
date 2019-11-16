@@ -102,12 +102,14 @@ return [
                                     ],
                                     'page' => [
                                         'type' => 'Link',
+                                        'description' => ['New %s', 'Page'],
                                         'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 30
                                     ],
                                     'data' => [
                                         'type' => 'Link',
+                                        'description' => ['New %s', 'Data'],
                                         'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'hidden' => count($_['chops']) <= 1,

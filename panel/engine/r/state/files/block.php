@@ -14,6 +14,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['
 }
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['title'] = 'Block';
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'Block';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash;
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] = true;

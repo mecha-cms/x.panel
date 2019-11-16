@@ -140,8 +140,8 @@ function file($_, $lot) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (isset($lot['file']['content'])) {
-                \file_put_contents($f, $lot['file']['content']);
+            if (isset($lot['file']['content']) || array_key_exists('content', $lot['file'] ?? [])) {
+                \file_put_contents($f, $lot['file']['content'] ?? "");
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];

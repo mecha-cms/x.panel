@@ -49,13 +49,6 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                 'type:comment'
             ],
             'tasks' => [
-                's' => [
-                    'title' => 'Reply',
-                    'description' => 'Reply to ' . $page->author,
-                    'icon' => 'M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z',
-                    'url' => $before . 's' . dirname($after) . $url->query('&', ['layout' => 'page.comment', 'parent' => $page->name, 'tab' => false]) . $url->hash,
-                    'stack' => 10
-                ],
                 'g' => [
                     'title' => 'Edit',
                     'description' => 'Edit',

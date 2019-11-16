@@ -726,6 +726,9 @@ label.not\:active {
 .alert p .f\:r svg {
   margin-right: -6px;
 }
+.lot\:page .alert p + p {
+  margin-top: 24px;
+}
 
 /* Field */
 .field {
