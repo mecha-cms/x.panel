@@ -47,12 +47,12 @@ function file($_, $lot) {
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',')) {
-            $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
+            $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
             $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (isset($lot['file']['content']) || array_key_exists('content', $lot['file'] ?? [])) {
+            if (\array_key_exists('content', $lot['file'] ?? [])) {
                 \file_put_contents($f, $lot['file']['content'] ?? "");
                 if ($name !== $base) {
                     \unlink($_['f']);

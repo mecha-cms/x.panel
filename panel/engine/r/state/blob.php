@@ -2,7 +2,7 @@
 
 $options = [];
 if (extension_loaded('zip')) {
-    $options['extract'] = 'Extract package after upload.';
+    $options['extract'] = 'Extract package immediately after uploaded.';
 }
 
 return [
@@ -58,7 +58,7 @@ return [
                                                         'focus' => true,
                                                         'stack' => 10
                                                     ],
-                                                    'options' => [
+                                                    'o' => [
                                                         'title' => "",
                                                         'type' => 'Items',
                                                         'lot' => $options,

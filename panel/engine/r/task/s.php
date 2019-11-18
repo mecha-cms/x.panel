@@ -32,7 +32,7 @@ function blob($_, $lot) {
             $size = $v['size'] ?? 0;
             // Check for file extension
             if ($x && false === \strpos($test_x, ',' . $x . ',')) {
-                $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
+                $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
             // Check for file type
             } else if ($type && false === \strpos($test_type, ',' . $type . ',')) {
                 $_['alert']['error'][] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
@@ -61,18 +61,29 @@ function blob($_, $lot) {
                     $_['ff'][] = $f;
                     // Extract package
                     if (
-                        !empty($lot['options']['extract']) &&
+                        !empty($lot['o']['extract']) &&
                         \extension_loaded('zip') &&
                         ('zip' === $x || 'application/zip' === $type)
                     ) {
                         $zip = new \ZipArchive;
+                        $zip_extract = true;
                         if (true === $zip->open($f)) {
-                            // TODO: Scan for forbidden file(s) in package
-                            // TODO: Mark all of the extracted file(s) and folder(s)
-                            if ($zip->extractTo($folder)) {
+                            for ($i = 0, $j = $zip->numFiles; $i < $j; ++$i) {
+                                $n = $zip->getNameIndex($i);
+                                $x = \pathinfo($n, \PATHINFO_EXTENSION);
+                                if (false === \strpos($test_x, ',' . $x . ',')) {
+                                    $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+                                    $zip_extract = false;
+                                    break;
+                                }
+                                // Mark all file(s) and folder(s) from package
+                                $_SESSION['_']['file'][$folder . \DS . \strtr($n, '/', \DS)] = 1;
+                                $_SESSION['_']['folder'][\rtrim($folder . DS . \strtr(\dirname($n), '/', \DS), \DS)] = 1;
+                            }
+                            if ($zip_extract && $zip->extractTo($folder)) {
                                 $_['alert']['success'][] = ['Package %s successfully extracted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                             } else {
-                                $_['alert']['error'][] = ['Package %s could not be extracted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                                $_['alert']['error'][] = ['Package %s could not be extracted due to the previous errors.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                             }
                         }
                         $zip->close();
@@ -135,12 +146,12 @@ function file($_, $lot) {
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',')) {
-            $_['alert']['error'][] = ['Extension %s is not allowed.', '<code>' . $x . '</code>'];
+            $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (isset($lot['file']['content']) || array_key_exists('content', $lot['file'] ?? [])) {
+            if (\array_key_exists('content', $lot['file'] ?? [])) {
                 \file_put_contents($f, $lot['file']['content'] ?? "");
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));

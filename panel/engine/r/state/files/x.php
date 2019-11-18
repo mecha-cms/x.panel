@@ -11,6 +11,21 @@ if ($i > 1) {
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
         if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
+            $use = "";
+            if ($uses = $page->use) {
+                $use .= '<details class="p"><summary><strong>' . i('Dependency') . '</strong> (' . count($uses) . ')</summary><ul>';
+                foreach ((array) $uses as $k => $v) {
+                    if (is_file($kk = strtr($k, [
+                        ".\\" => ROOT . DS,
+                        "\\" => DS
+                    ]) . DS . 'index.php') && $v) {
+                        $use .= '<li><a href="' . $url . $_['/'] . '::g::/' . dirname(Path::R($kk, LOT, '/')) . '/1?tab[0]=info">' . $k . '</a></li>';
+                    } else {
+                        $use .= '<li>' . $k . (0 === $v ? ' <span class="description">(' . i('optional') . ')</span>' : "") . '</li>';
+                    }
+                }
+                $use .= '</details>';
+            }
             // Hide some file(s) from the list
             foreach ([
                 // Parent folder
@@ -25,13 +40,12 @@ if ($i > 1) {
                 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
             }
             $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
-                'title' => 'Info',
                 'lot' => [
                     0 => [
                         'title' => $page->title . ' <sup>' . $page->version . '</sup>',
                         'description' => _\lot\x\panel\h\w($page->description, 'a'),
                         'type' => 'Section',
-                        'content' => $page->content,
+                        'content' => $page->content . $use,
                         'stack' => 10
                     ]
                 ],
@@ -114,5 +128,6 @@ $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] =
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] = false;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';
 
 return $lot;
