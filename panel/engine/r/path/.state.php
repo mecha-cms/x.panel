@@ -6,6 +6,23 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['description'] = _\lot\x\panel\h\w($_POST['state']['description'] ?? "");
     $_POST['state']['charset'] = strip_tags($_POST['state']['charset'] ?? 'utf-8');
     $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
+    $user_state = require X . DS . 'user' . DS . 'state.php';
+    $panel_state = require X . DS . 'panel' . DS . 'state.php';
+    $core_state = require ROOT . DS . 'state.php';
+    $default = $user_state['guard']['path'] ?? $panel_state['guard']['path'] ?? $core_state['x']['user']['guard']['path'] ?? $core_state['x']['panel']['guard']['path'] ?? "";
+    $default = '/' . trim($default, '/') . '/';
+    if (!empty($_POST['state']['x']['user']['guard']['path'])) {
+        if ($secret = To::kebab(trim($_POST['state']['x']['user']['guard']['path'], '/'))) {
+            $_POST['state']['x']['user']['guard']['path'] = '/' . $secret;
+            $default = '/' . $secret . '/';
+        } else {
+            unset($_POST['state']['x']['user']['guard']['path']);
+        }
+    }
+    if ($_['/'] !== $default) {
+        $GLOBALS['_']['/'] = $default;
+        $GLOBALS['_']['alert']['info'][] = ['Your log-in URL has been changed to %s', ['<code>' . $url . substr($default, 0, -1) . '</code>']];
+    }
 }
 
 if (1 !== $user['status'] || 'g' !== $_['task']) {
@@ -139,6 +156,14 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                             'value' => $state->x->panel->path ?? null,
                             'lot' => $panes,
                             'stack' => 10
+                        ],
+                        'key' => [
+                            'description' => 'Set custom log-in path.',
+                            'type' => 'Text',
+                            'name' => 'state[x][user][guard][path]',
+                            'alt' => $_['state']['guard']['path'],
+                            'value' => $state->x->user->guard->path ?? null,
+                            'stack' => 20
                         ]
                     ],
                     'stack' => 10

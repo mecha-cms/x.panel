@@ -218,6 +218,17 @@ function state($_, $lot) {
         'tab'=> false,
         'token' => false
     ]) . $url->hash;
+    // Remove array item(s) with `null` value
+    $null = function($v) use(&$null) {
+        foreach ($v as $kk => $vv) {
+            if (\is_array($vv)) {
+                $v[$kk] = $null($vv);
+            } else if ("" === $vv || null === $vv || [] === $vv) {
+                unset($v[$kk]);
+            }
+        }
+        return $v;
+    };
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
         if (!empty($_['alert']['error'])) {
@@ -225,7 +236,9 @@ function state($_, $lot) {
         }
         if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
             $source = \realpath($source);
-            \file_put_contents($source, '<?php return ' . \z(\array_replace_recursive((array) require $source, $lot['state'] ?? [])) . ';');
+            $v = \array_replace_recursive((array) require $source, $lot['state'] ?? []);
+            $v = $null($v);
+            \file_put_contents($source, '<?php return ' . \z($v) . ';');
             $_['alert']['success'][] = ['File %s successfully updated.', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>']];
         }
         $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . $e;

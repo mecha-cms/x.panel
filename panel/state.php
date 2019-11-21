@@ -3,7 +3,6 @@
 return [
     'chunk' => 20,
     'sort' => [-1, 'time'],
-    'name' => 'construction',
     'path' => '/page',
     'peek' => 2,
     'guard' => [

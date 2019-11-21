@@ -7,8 +7,8 @@ if (!is_dir($d = LOT . DS . 'asset' . DS . $user->user)) {
     Guard::kick($url->current);
 }
 
-if (1 === count($_['chops'])) {
-    // You cannot edit or delete your own folder
+// You cannot edit or delete your own folder
+if (count($_['chops']) < 3) {
     if ('g' === $_['task']) {
         $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
         $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
