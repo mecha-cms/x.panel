@@ -129,5 +129,6 @@ $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] =
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'blob.x', 'tab' => false]) . $url->hash;
 
 return $lot;

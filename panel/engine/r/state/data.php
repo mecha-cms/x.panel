@@ -16,7 +16,7 @@ return [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . $x . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . $x . $url->query('&', ['layout' => false, 'tab' => ['data']]) . $url->hash,
                         'hidden' => false
                     ],
                     's' => [

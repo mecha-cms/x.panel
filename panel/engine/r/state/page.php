@@ -156,7 +156,7 @@ $lot = [
                                                     'time' => [
                                                         'type' => 'DateTime',
                                                         'name' => 'data[time]',
-                                                        'value' => $page->time,
+                                                        'value' => $page['time'],
                                                         'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ],
@@ -266,10 +266,10 @@ $lot = [
     ]
 ];
 
-Hook::set('set', function() use($_, $page, $url) {
+Hook::set('_', function($_) use($page, $url) {
     $apart = [];
-    if (!empty($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'])) {
-        foreach ($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'] as $k => $v) {
+    if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'])) {
+        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'] as $k => $v) {
             foreach ($v as $kk => $vv) {
                 if (empty($vv['lot']['fields']['lot'])) {
                     continue;
@@ -320,8 +320,9 @@ Hook::set('set', function() use($_, $page, $url) {
             }
             asort($files);
         }
-        $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
+        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
     }
+    return $_;
 }, 0);
 
 return $lot;

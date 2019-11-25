@@ -56,7 +56,7 @@ function _() {
                 require $_f;
             })($_f);
         }
-        $_ = $GLOBALS['_']; // Update data
+        $GLOBALS['_'] = $_ = \Hook::fire('_', [$GLOBALS['_']]); // Update data
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($_form['token'])) {
             $_hooks = \map(\step($_['layout']), function($_hook) use($_) {
