@@ -161,6 +161,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                             'description' => 'Set custom log-in path.',
                             'type' => 'Text',
                             'name' => 'state[x][user][guard][path]',
+                            'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
                             'alt' => $_['state']['guard']['path'],
                             'value' => $state->x->user->guard->path ?? null,
                             'stack' => 20
@@ -205,6 +206,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                             'description' => 'This value does not determine the I18N system on your site unless you want to make an I18N extension that depends on this value.',
                             'type' => 'Text',
                             'name' => 'state[language]',
+                            'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
                             'alt' => ($v = $site->language) ?? 'en',
                             'value' => $v,
                             'stack' => 40

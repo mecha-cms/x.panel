@@ -59,11 +59,10 @@ return [
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
-                                                    'options' => [
+                                                    'o' => [
                                                         'title' => "",
                                                         'type' => 'Items',
                                                         'block' => true,
-                                                        'name' => 'folder',
                                                         'value' => 's' === $_['task'] ? ['kick' => 1] : [],
                                                         'lot' => [
                                                             'kick' => 'Redirect to folder'

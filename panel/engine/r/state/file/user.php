@@ -12,7 +12,7 @@ $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . '.php';
 
 $status = $user['status'];
 $i = $page['status'];
-$any = $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'];
+$any = $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] ?? null;
 
 if (1 !== $status) {
     $any = isset($any[$i]) ? [$i => $any[$i]] : [];

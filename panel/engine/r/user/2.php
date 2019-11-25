@@ -18,3 +18,14 @@ if (isset($_['i'])) {
 
 // Hide main state link
 $GLOBALS['_']['lot']['bar']['lot'][1]['lot']['site']['lot']['state']['hidden'] = true;
+
+// Hide these page(s)
+foreach (['block', 'cache', 'layout', 'trash', 'x'] as $n) {
+    if (0 === strpos($_['path'] . '/', '/' . $n . '/')) {
+        Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
+        Guard::kick($url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', [
+            'layout' => false,
+            'tab' => false
+        ]) . $url->hash);
+    }
+}

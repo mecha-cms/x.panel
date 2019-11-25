@@ -162,6 +162,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel($v, $k);
             ++$count;
         }
+        unset($lot);
         \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:file']);
         return new \HTML($out);
     }
@@ -418,6 +419,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel($v, $k);
             ++$count;
         }
+        unset($lot);
         \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:page']);
         return new \HTML($out);
     }

@@ -1,7 +1,7 @@
 <?php
 
+$status = $user['status'];
 if (count($_['chops']) > 1) {
-    $status = $user['status'];
     if (1 !== $status) {
         // Hide add user link
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
@@ -21,4 +21,11 @@ if (count($_['chops']) > 1) {
             Guard::kick(dirname($url->clean) . '/1' . $url->hash);
         }
     }
+// Prevent user(s) from creating new user
+} else if ('s' === $_['task'] && 1 !== $status) {
+    Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
+    Guard::kick($url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', [
+        'layout' => false,
+        'tab' => false
+    ]) . $url->hash);
 }

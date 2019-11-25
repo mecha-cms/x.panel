@@ -94,7 +94,7 @@ function folder($_, $lot) {
         } else if ($name === $base) {
             // Do nothing
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
-            if (!empty($lot['folder']['kick'])) {
+            if (!empty($lot['o']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
@@ -119,7 +119,7 @@ function folder($_, $lot) {
             }
             \rmdir($_['f']);
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
-            if (!empty($lot['folder']['kick'])) {
+            if (!empty($lot['o']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
@@ -221,9 +221,9 @@ function state($_, $lot) {
     // Remove array item(s) with `null` value
     $null = function($v) use(&$null) {
         foreach ($v as $kk => $vv) {
-            if (\is_array($vv)) {
+            if (\is_array($vv) && !empty($vv)) {
                 $v[$kk] = $null($vv);
-            } else if ("" === $vv || null === $vv || [] === $vv) {
+            } else if ("" === $vv || null === $vv) {
                 unset($v[$kk]);
             }
         }

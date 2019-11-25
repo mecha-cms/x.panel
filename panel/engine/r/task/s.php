@@ -187,7 +187,7 @@ function folder($_, $lot) {
         } else {
             \mkdir($f, \octdec($lot['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-            if (!empty($lot['folder']['kick'])) {
+            if (!empty($lot['o']['kick'])) {
                 $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
