@@ -323,6 +323,6 @@ Hook::set('_', function($_) use($page, $url) {
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
     }
     return $_;
-}, 0);
+}, 20);
 
 return $lot;

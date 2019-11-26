@@ -723,22 +723,22 @@ label.not\:active {
 .alert .success {
   color: #0b0;
 }
+.alert p + p {
+  margin-top: 12px;
+}
 .alert p .f\:r svg {
   margin-right: -6px;
-}
-.lot\:page .alert p + p {
-  margin-top: 24px;
 }
 
 /* Field */
 .field {
   display: flex;
+  gap: 24px;
 }
 .field > label {
   display: block;
   width: 120px;
   padding: 6px 0;
-  padding-right: 24px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -900,13 +900,14 @@ label.not\:active {
   list-style: none;
   border-color: inherit;
 }
-/* TODO */
 .lot\:file h3 a.not\:active,
 .lot\:page h3 a.not\:active {
   opacity: 1;
 }
 .lot\:file li,
 .lot\:page li {
+  display: flex;
+  gap: 6px;
   background: #fff;
   border: 0 solid #fff;
   padding: 6px 12px;
@@ -915,19 +916,13 @@ label.not\:active {
   overflow: hidden;
 }
 .lot\:file h3 {
+  flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.lot\:file p {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background: inherit;
-}
-.lot\:file li > .lot\:task,
-.lot\:page li > .lot\:task {
-  margin: 0;
+.lot\:file li > .lot\:task {
+  margin-right: -6px;
 }
 .lot\:file h3 .title,
 .lot\:page h3 .title {
@@ -1026,6 +1021,7 @@ label.not\:active {
 .lot\:items,
 .lot\:toggle {
   display: flex;
+  gap: 12px;
   flex-wrap: wrap;
   padding: 6px 0;
 }
@@ -1033,26 +1029,13 @@ label.not\:active {
 .lot\:items > label,
 .lot\:toggle > label {
   display: inline-flex;
+  gap: 6px;
   align-items: center;
-  margin: 0 12px 0 0;
   white-space: nowrap;
-}
-.lot\:item > label:last-child,
-.lot\:items > label:last-child {
-  margin-right: 0;
-}
-.lot\:item > label > .input,
-.lot\:items > label > .input,
-.lot\:toggle > label > .input {
-  margin: 0 6px 0 0;
 }
 .lot\:item.is\:block,
 .lot\:items.is\:block {
   display: block;
-}
-.lot\:item.is\:block > label,
-.lot\:items.is\:block > label {
-  margin: 0;
 }
 .has\:menu {
   display: inline-flex;
@@ -1142,7 +1125,7 @@ label.not\:active {
 .lot\:page li {
   padding: 12px;
   margin: 0 -12px;
-  display: flex;
+  gap: 12px;
 }
 .lot\:page li div {
   min-height: 54px;
@@ -1159,10 +1142,6 @@ label.not\:active {
 }
 .lot\:page li div:first-child + div {
   flex: 1;
-  padding: 0 12px;
-}
-.lot\:page li div[hidden] + div {
-  padding-left: 0;
 }
 .lot\:page h3 {
   font-size: 20px;
@@ -1173,12 +1152,9 @@ label.not\:active {
 .lot\:pager,
 .lot\:pager > span {
   display: flex;
+  gap: 6px;
   flex-wrap: wrap;
   align-items: center;
-}
-.lot\:pager {
-  margin-right: -3px;
-  margin-left: -3px;
 }
 .lot\:pager > span,
 .lot\:pager > span > a,
@@ -1186,11 +1162,6 @@ label.not\:active {
 .lot\:pager > span > span {
   font: inherit;
   padding: 0 6px;
-  margin: 0 3px;
-}
-.lot\:pager > span {
-  margin: 0;
-  padding: 0;
 }
 .lot\:pager > span > a,
 .lot\:pager > span > b,
@@ -1212,9 +1183,6 @@ label.not\:active {
 .lot\:pager > span > span {
   background: none;
   color: inherit;
-}
-.lot\:pager > span > span {
-  padding: 0;
 }
 .lot\:tab > nav {
   height: 48px;
@@ -1311,18 +1279,12 @@ label.not\:active {
 }
 .lot\:task {
   display: flex;
+  gap: 6px;
   align-items: center;
   flex-wrap: wrap;
-  margin: -3px;
 }
-.lot\:task > * {
-  margin: 3px;
-}
-.lot\:task\.link > * {
-  margin: 0 12px 0 0;
-}
-.lot\:task\.link > *:last-child {
-  margin-right: 0;
+.lot\:task\.link {
+  gap: 12px;
 }
 .lot\:task\.link > * .title span {
   margin-left: 3px;
@@ -1398,11 +1360,11 @@ pre.is\:text {
   }
   .field {
     flex-direction: column;
+    gap: 6px;
     width: auto;
   }
   .field > label {
     width: auto;
-    margin: 0 0 6px;
     padding: 0;
     text-align: inherit;
   }

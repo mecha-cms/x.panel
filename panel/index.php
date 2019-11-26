@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('USER') || null === State::get('x.user')) {
+if (!is_dir(LOT . DS . 'user') || null === State::get('x.user')) {
     return;
 }
 
@@ -21,7 +21,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'state' => $state,
     'user' => $u = State::get('x.user', true),
     'task' => null,
-    'token' => content(USER . DS . Cookie::get('user.key') . DS . 'token.data'),
+    'token' => content(LOT . DS . 'user' . DS . Cookie::get('user.key') . DS . 'token.data'),
     '/' => $pp = ($u['guard']['path'] ?? $state['guard']['path']) . '/'
 ], $GLOBALS['_'] ?? []);
 

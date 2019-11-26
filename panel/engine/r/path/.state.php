@@ -6,8 +6,8 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['description'] = _\lot\x\panel\h\w($_POST['state']['description'] ?? "");
     $_POST['state']['charset'] = strip_tags($_POST['state']['charset'] ?? 'utf-8');
     $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
-    $user_state = require X . DS . 'user' . DS . 'state.php';
-    $panel_state = require X . DS . 'panel' . DS . 'state.php';
+    $user_state = require LOT . DS . 'x' . DS . 'user' . DS . 'state.php';
+    $panel_state = require LOT . DS . 'x' . DS . 'panel' . DS . 'state.php';
     $core_state = require ROOT . DS . 'state.php';
     $default = $user_state['guard']['path'] ?? $panel_state['guard']['path'] ?? $core_state['x']['user']['guard']['path'] ?? $core_state['x']['panel']['guard']['path'] ?? "";
     $default = '/' . trim($default, '/') . '/';
@@ -50,7 +50,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
         }
         $panes['/' . $n] = 'x' === $n ? 'Extension' : ucfirst($n);
     }
-    foreach (glob(PAGE . DS . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
+    foreach (glob(LOT . DS . 'page' . DS . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
         $paths['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
     }
     asort($panes);

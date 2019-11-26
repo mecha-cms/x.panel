@@ -1,11 +1,5 @@
 <?php namespace _\lot\x\panel\task\set;
 
-// Redirect if file already exists
-if (($f = $_['f']) && \is_file($f)) {
-    \Alert::info('File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>');
-    \Guard::kick(\str_replace('::s::', '::g::', $url->current));
-}
-
 function blob($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
@@ -18,30 +12,31 @@ function blob($_, $lot) {
         if (!empty($_['alert']['error'])) {
             return $_;
         }
-        $test_x = ',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $v['blob']['x'] ?? []))) . ',';
-        $test_type = ',' . \implode(',', \array_keys(\array_filter(\File::$state['type'] ?? $v['blob']['type'] ?? []))) . ',';
-        $test_size = \File::$state['size'] ?? $v['blob']['size'] ?? [0, 0];
+        $test_x = ',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? []))) . ',';
+        $test_type = ',' . \implode(',', \array_keys(\array_filter(\File::$state['type'] ?? []))) . ',';
+        $test_size = \File::$state['size'] ?? [0, 0];
         foreach ($lot['blob'] ?? [] as $k => $v) {
             // Check for error code
             if (!empty($v['error'])) {
                 $_['alert']['error'][] = 'Blob: [' . $v['error'] . ']';
-            }
-            $name = \To::file(\lcfirst($v['name'])) ?? '0';
-            $x = \pathinfo($name, \PATHINFO_EXTENSION);
-            $type = $v['type'] ?? 'application/octet-stream';
-            $size = $v['size'] ?? 0;
-            // Check for file extension
-            if ($x && false === \strpos($test_x, ',' . $x . ',')) {
-                $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
-            // Check for file type
-            } else if ($type && false === \strpos($test_type, ',' . $type . ',')) {
-                $_['alert']['error'][] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
-            }
-            // Check for file size
-            if ($size < $test_size[0]) {
-                $_['alert']['error'][] = ['Minimum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
-            } else if ($size > $test_size[1]) {
-                $_['alert']['error'][] = ['Maximum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+            } else {
+                $name = \To::file(\lcfirst($v['name'])) ?? '0';
+                $x = \pathinfo($name, \PATHINFO_EXTENSION);
+                $type = $v['type'] ?? 'application/octet-stream';
+                $size = $v['size'] ?? 0;
+                // Check for file extension
+                if ($x && false === \strpos($test_x, ',' . $x . ',')) {
+                    $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+                // Check for file type
+                } else if ($type && false === \strpos($test_type, ',' . $type . ',')) {
+                    $_['alert']['error'][] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
+                }
+                // Check for file size
+                if ($size < $test_size[0]) {
+                    $_['alert']['error'][] = ['Minimum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+                } else if ($size > $test_size[1]) {
+                    $_['alert']['error'][] = ['Maximum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+                }
             }
             if (!empty($_['alert']['error'])) {
                 continue;
@@ -69,19 +64,33 @@ function blob($_, $lot) {
                         $zip_extract = true;
                         if (true === $zip->open($f)) {
                             for ($i = 0, $j = $zip->numFiles; $i < $j; ++$i) {
-                                $n = $zip->getNameIndex($i);
+                                $n = \strtr($zip->getNameIndex($i), '/', \DS);
+                                if (\DS === \substr($n, -1)) {
+                                    continue; // Skip folder(s)
+                                }
                                 $x = \pathinfo($n, \PATHINFO_EXTENSION);
-                                if (false === \strpos($test_x, ',' . $x . ',')) {
+                                // This prevents user(s) from uploading forbidden file(s)
+                                if ("" !== $x && false === \strpos($test_x, ',' . $x . ',')) {
                                     $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
                                     $zip_extract = false;
-                                    break;
+                                // This prevents user(s) from accidentally overwrite the existing file(s)
+                                } else if (\stream_resolve_include_path($ff = \rtrim($folder . \DS . $n, \DS))) {
+                                    $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($ff) . '</code>'];
+                                    $zip_extract = false;
+                                // Mark all file(s) and folder(s) from package after succeeded
+                                } else {
+                                    $_SESSION['_']['file'][$ff] = 1;
+                                    $_SESSION['_']['folder'][\rtrim($folder . DS . \dirname($n), \DS)] = 1;
                                 }
-                                // Mark all file(s) and folder(s) from package
-                                $_SESSION['_']['file'][$folder . \DS . \strtr($n, '/', \DS)] = 1;
-                                $_SESSION['_']['folder'][\rtrim($folder . DS . \strtr(\dirname($n), '/', \DS), \DS)] = 1;
                             }
                             if ($zip_extract && $zip->extractTo($folder)) {
-                                $_['alert']['success'][] = ['Package %s successfully extracted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                                if (!empty($lot['o']['let'])) {
+                                    $zip->close();
+                                    \unlink($f);
+                                    $_['alert']['success'][] = ['Package %s successfully extracted and deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                                } else {
+                                    $_['alert']['success'][] = ['Package %s successfully extracted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                                }
                             } else {
                                 $_['alert']['error'][] = ['Package %s could not be extracted due to the previous errors.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                             }

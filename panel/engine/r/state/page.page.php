@@ -45,7 +45,7 @@ if (null !== State::get('x.tag') && substr_count($_['path'], '/') > 1) {
             return $_;
         }
         if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($lot['data']['kind'])) {
-            $any = map(Tags::from(TAG, 'archive,page')->sort([-1, 'id']), function($tag) {
+            $any = map(Tags::from(LOT . DS . 'tag', 'archive,page')->sort([-1, 'id']), function($tag) {
                 return $tag->id;
             })[0] ?? 0; // Get the highest tag ID
             $out = [];
@@ -58,12 +58,12 @@ if (null !== State::get('x.tag') && substr_count($_['path'], '/') > 1) {
                     $out[] = $id;
                 } else {
                     $out[] = $any;
-                    (new Tag($f = TAG . DS . $v . '.page'))->set([
+                    (new Tag($f = LOT . DS . 'tag' . DS . $v . '.page'))->set([
                         'title' => To::title($v),
                         'author' => $user->user ?? null
                     ])->save(0600);
-                    (new File(TAG . DS . $v . DS . 'id.data'))->set($any)->save(0600);
-                    (new File(TAG . DS . $v . DS . 'time.data'))->set(date('Y-m-d H:i:s'))->save(0600);
+                    (new File(LOT . DS . 'tag' . DS . $v . DS . 'id.data'))->set($any)->save(0600);
+                    (new File(LOT . DS . 'tag' . DS . $v . DS . 'time.data'))->set(date('Y-m-d H:i:s'))->save(0600);
                     $_['alert']['info'][] = ['%s %s successfully created.', ['Tag', '<code>' . _\lot\x\panel\h\path($f) . '</code>']];
                     ++$any;
                 }

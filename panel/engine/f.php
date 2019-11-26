@@ -24,7 +24,7 @@ namespace _\lot\x\panel {
         if (isset($in['type'])) {
             $tags[] = \strtr(\c2f($in['type'], '-', '.'), ['__' => ':']);
         }
-        $id = $in['id'] ?? \uniqid();
+        $id = $in['id'] ?? 'f:' . \dechex(\time());
         $in[2]['id'] = $in[2]['id'] ?? \str_replace('f:', 'field:', $id);
         $out = [
             0 => $in[0] ?? 'div',

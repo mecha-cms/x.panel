@@ -24,7 +24,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             DS => '/'
         ]);
         $hidden = false;
-        $kk = strtr(dirname($k), [$folder . DS => PAGE . DS]);
+        $kk = strtr(dirname($k), [$folder . DS => LOT . DS . 'page' . DS]);
         if ($parent = File::exist([
             $kk . '.draft',
             $kk . '.page',

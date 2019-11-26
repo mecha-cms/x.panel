@@ -29,3 +29,6 @@ foreach (['block', 'cache', 'layout', 'trash', 'x'] as $n) {
         ]) . $url->hash);
     }
 }
+
+// Disable notification(s)
+$GLOBALS['_']['lot']['bar']['lot'][2]['lot']['alert']['tags'][0] = false;

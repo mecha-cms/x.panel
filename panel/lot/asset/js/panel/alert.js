@@ -5,7 +5,7 @@
             svg = a.querySelector('use'),
             icon = svg.getAttribute('href'),
             url = a.href;
-        url += (url.indexOf('?') !== -1 ? '&' : '?') + 'count=1';
+        url += (url.indexOf('?') < 0 ? '?' : '&') + 'count=1';
         function count() {
             fetch(url).then(function(request) {
                 return request.text();

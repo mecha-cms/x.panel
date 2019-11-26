@@ -3,6 +3,7 @@
 $options = [];
 if (extension_loaded('zip')) {
     $options['extract'] = 'Extract package immediately after uploaded.';
+    $options['let'] = 'Remove package immediately after extracted.';
 }
 
 return [

@@ -199,9 +199,9 @@ caption {
   background: #eef;
   border-color: #eef;
 }
-.lot\:file .lot\:task > *,
-.lot\:page .lot\:task > * {
-  margin: 0;
+.lot\:file .lot\:task,
+.lot\:page .lot\:task {
+  gap: 0;
 }
 .lot\:file .lot\:task > * .title span,
 .lot\:page .lot\:task > * .title span {
