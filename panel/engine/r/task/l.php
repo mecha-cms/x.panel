@@ -1,7 +1,5 @@
 <?php namespace _\lot\x\panel\task\let;
 
-// TODO: Add option to move file to `trash` folder.
-
 if ('POST' === $_SERVER['REQUEST_METHOD'] || empty($_GET['token'])) {
     // TODO: Show 404 page?
     \Guard::kick(\str_replace('::l::', '::g::', $url->current));
@@ -21,7 +19,8 @@ function data($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab' => ['data'],
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     $_ = file($_, $lot); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
@@ -38,12 +37,21 @@ function file($_, $lot) {
         'token' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
-    if (!empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
+    $trash = !empty($lot['trash']) ? (new \Time($lot['trash']))->name : false;
     if (\is_file($f = $_['f'])) {
-        \unlink($f);
-        $_['alert']['success'][] = ['File %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+        if ($trash) {
+            $ff = \strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]);
+            if (!\is_dir($dd = \dirname($ff))) {
+                \mkdir($dd, 0775, true);
+            }
+            \rename($f, $ff);
+        } else {
+            \unlink($f);
+        }
+        $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -54,23 +62,33 @@ function folder($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
-    if (!empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
+    $trash = !empty($lot['trash']) ? (new \Time($lot['trash']))->name : false;
     if (\is_dir($f = $_['f'])) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($f, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
-            if ($k->isDir()) {
-                \rmdir($v);
+            if ($trash) {
+                $vv = \strtr($v, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]);
+                if (!\is_dir($dd = \dirname($vv))) {
+                    \mkdir($dd, 0775, true);
+                }
+                \rename($v, $vv);
             } else {
-                \unlink($v);
+                if ($k->isDir()) {
+                    \rmdir($v);
+                } else {
+                    \unlink($v);
+                }
             }
         }
         \rmdir($f);
-        $_['alert']['success'][] = ['Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+        $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
         $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -78,13 +96,26 @@ function folder($_, $lot) {
 
 function page($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+        return $_;
+    }
+    $trash = !empty($lot['trash']) ? (new \Time($lot['trash']))->name : false;
     if (\is_dir($d = \Path::F($_['f']))) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($d, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
-            if ($k->isDir()) {
-                \rmdir($v);
+            if ($trash) {
+                $vv = \strtr($v, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]);
+                if (!\is_dir($dd = \dirname($vv))) {
+                    \mkdir($dd, 0775, true);
+                }
+                \rename($v, $vv);
             } else {
-                \unlink($v);
+                if ($k->isDir()) {
+                    \rmdir($v);
+                } else {
+                    \unlink($v);
+                }
             }
         }
         \rmdir($d);
@@ -94,7 +125,8 @@ function page($_, $lot) {
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
         $_ = file($_, $lot); // Move to `file`
         $alter = [
-            'File %s successfully deleted.' => ['%s %s successfully deleted.', [$key, $path]]
+            'File %s successfully deleted.' => ['%s %s successfully deleted.', [$key, $path]],
+            'File %s successfully moved to trash.' => ['%s %s successfully moved to trash.', [$key, $path]]
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {

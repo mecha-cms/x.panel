@@ -407,7 +407,7 @@ function Field__Toggle($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
-function field__URL($in, $key) {
+function Field__URL($in, $key) {
     if (!isset($in['alt'])) {
         $url = $GLOBALS['url'];
         $in['alt'] = \S . $url->protocol . \S . $url->host . \S;

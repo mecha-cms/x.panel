@@ -2,8 +2,25 @@
 
 // `http://127.0.0.1/panel/::g::/x/foo-bar/1`
 $i = count($_['chops']);
+$uses = [
+    'alert' => 1,
+    'asset' => 1,
+    'layout' => 1,
+    'page' => 1,
+    'panel' => 1,
+    'user' => 1,
+    'y-a-m-l' => 1
+];
+
 if ($i > 1) {
     $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
+    if (isset($uses[$_['chops'][1]])) {
+        // Disable delete button where possible
+        $index = $index = $_['f'] . DS . 'index.php';
+        $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['active'] = false;
+        unset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['url']);
+        
+    }
     if (2 === $i) {
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
@@ -112,14 +129,15 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                     'title' => 'Delete',
                     'description' => 'Delete',
                     'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                    'url' => $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]),
+                    'url' => !isset($uses[$n]) ? $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]) : null,
+                    'active' => !isset($uses[$n]),
                     'stack' => 30
                 ]
             ]
         ];
         ++$count;
     }
-    $pages = (new Anemon($pages))->sort($_['sort'], true)->get();
+    $pages = (new Anemon($pages))->sort([1, 'title'], true)->get();
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }

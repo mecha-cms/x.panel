@@ -20,21 +20,27 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
         }
     }
     if ($_['/'] !== $default) {
-        $GLOBALS['_']['/'] = $default;
-        $GLOBALS['_']['alert']['info'][] = ['Your log-in URL has been changed to %s', ['<code>' . $url . substr($default, 0, -1) . '</code>']];
+        $_['/'] = $default;
+        if ($default === $panel_state['guard']['path'] . '/') {
+            $_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $user_state['path'] . '</code>'];
+        } else {
+            $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . substr($default, 0, -1) . '</code>'];
+        }
     }
 }
 
 if (1 !== $user['status'] || 'g' !== $_['task']) {
     if (Is::user()) {
-        Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
-        Guard::kick($url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash);
+        $_['alert']['error'][] = i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
+        $_['kick'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
     } else {
-        Guard::kick("");
+        $_['kick'] = "";
     }
 }
 
-$GLOBALS['_']['layout'] = $_['layout'] = 'state';
+$_['layout'] = 'state';
+
+$GLOBALS['_'] = $_;
 
 Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
     extract($GLOBALS, EXTR_SKIP);
@@ -85,12 +91,12 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
         }
         return $zones;
     }, '1 year');
-    $GLOBALS['_']['lot'] = array_replace_recursive(require __DIR__ . DS . '..' . DS . 'state' . DS . 'state.php', $_['lot']);
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = array_replace_recursive([
+    $_['lot'] = array_replace_recursive(require __DIR__ . DS . '..' . DS . 'state' . DS . 'state.php', $_['lot']);
+    $_['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
+    $_['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
+    $_['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
+    $_['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] = array_replace_recursive([
         'file' => [
             'icon' => 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z',
             'title' => false,
@@ -162,7 +168,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                             'type' => 'Text',
                             'name' => 'state[x][user][guard][path]',
                             'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
-                            'alt' => $_['state']['guard']['path'],
+                            'alt' => $state->x->user->path,
                             'value' => $state->x->user->guard->path ?? null,
                             'stack' => 20
                         ]
@@ -217,10 +223,11 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
             ],
             'stack' => 30
         ]
-    ], $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] ?? []);
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['description'] = ['Save to %s', ".\\state.php"];
-    $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['hidden'] = true; // Hide delete button
+    ], $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] ?? []);
+    $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['description'] = ['Save to %s', ".\\state.php"];
+    $_['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
+    $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['hidden'] = true; // Hide delete button
+    $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = i('Panel');
     $GLOBALS['t'][] = i('State');
     State::set([

@@ -8,6 +8,8 @@ $search = function($folder, $x, $r) {
     return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
 };
 
+$trash = date('Y-m-d-H-i-s');
+
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';
     $g = 1 !== $user['status'];
@@ -37,7 +39,11 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                     'title' => 'Delete',
                     'description' => 'Delete',
                     'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                    'url' => $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]),
+                    'url' => $before . 'l' . $after . $url->query('&', [
+                        'tab' => false,
+                        'token' => $_['token'],
+                        'trash' => $trash
+                    ]),
                     'stack' => 20
                 ]
             ]
@@ -70,7 +76,11 @@ if (count($_['chops']) > 1 && $_['i'] <= 1) {
                 'title' => 'Delete',
                 'description' => 'Delete Parent Folder',
                 'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                'url' => $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]),
+                'url' => $before . 'l' . $after . $url->query('&', [
+                    'tab' => false,
+                    'token' => $_['token'],
+                    'trash' => $trash
+                ]),
                 'stack' => 20
             ]
         ]

@@ -31,6 +31,8 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
 
 $page = is_file($f = $_['f']) ? new Page($f) : new Page;
 
+$trash = date('Y-m-d-H-i-s');
+
 $lot = [
     'bar' => [
         // type: Bar
@@ -247,7 +249,11 @@ $lot = [
                                                     'l' => [
                                                         'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['tab' => false, 'token' => $_['token']])),
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
+                                                            'tab' => false,
+                                                            'token' => $_['token'],
+                                                            'trash' => $trash
+                                                        ])),
                                                         'hidden' => 's' === $_['task'],
                                                         'stack' => 50
                                                     ]
@@ -266,7 +272,7 @@ $lot = [
     ]
 ];
 
-Hook::set('_', function($_) use($page, $url) {
+Hook::set('_', function($_) use($page, $trash, $url) {
     $apart = [];
     if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'])) {
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'] as $k => $v) {
@@ -312,7 +318,11 @@ Hook::set('_', function($_) use($page, $url) {
                             'title' => 'Delete',
                             'description' => 'Delete',
                             'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                            'url' => $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]),
+                            'url' => $before . 'l' . $after . $url->query('&', [
+                                'tab' => false,
+                                'token' => $_['token'],
+                                'trash' => $trash
+                            ]),
                             'stack' => 20
                         ]
                     ]

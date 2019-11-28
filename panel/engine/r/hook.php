@@ -71,17 +71,23 @@ function _() {
                     $GLOBALS['_'] = $_ = $_r;
                 }
             }
-            if (!empty($_['alert'])) {
-                foreach ((array) $_['alert'] as $_k => $_v) {
-                    foreach ((array) $_v as $_alert) {
-                        $_alert = (array) $_alert;
-                        \call_user_func("\\Alert::" . $_k, ...$_alert);
-                    }
+        }
+        if (!empty($_['alert'])) {
+            foreach ((array) $_['alert'] as $_k => $_v) {
+                foreach ((array) $_v as $_alert) {
+                    $_alert = (array) $_alert;
+                    \call_user_func("\\Alert::" . $_k, ...$_alert);
                 }
             }
-            if (!empty($_['kick'])) {
-                \Guard::kick($_['kick']);
+        }
+        if (empty($_['kick'])) {
+            if (isset($_form['token'])) {
+                \Guard::kick($_['kick'] ?? $url->clean . $url->i . $url->query('&', [
+                    'token' => false
+                ]) . $url->hash);
             }
+        } else {
+            \Guard::kick($_['kick']);
         }
     })($_lot);
 }

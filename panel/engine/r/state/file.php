@@ -17,6 +17,8 @@ $content = 'g' === $_['task'] && $f && $editable ? file_get_contents($f) : "";
 if ("" === $name) $name = null;
 if ("" === $content) $content = null;
 
+$trash = date('Y-m-d-H-i-s');
+
 return [
     'bar' => [
         // type: Bar
@@ -115,7 +117,11 @@ return [
                                                     'l' => [
                                                         'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['layout' => 'file', 'token' => $_['token']])),
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
+                                                            'layout' => 'file',
+                                                            'token' => $_['token'],
+                                                            'trash' => $trash
+                                                        ])),
                                                         'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ]

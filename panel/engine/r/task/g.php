@@ -10,7 +10,8 @@ function data($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab' => ['data'],
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
@@ -29,11 +30,12 @@ function file($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'tab' => false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? ""))); // New file name
@@ -61,7 +63,7 @@ function file($_, $lot) {
                 \rename($_['f'], $f);
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
@@ -78,11 +80,12 @@ function folder($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $name = \To::folder($lot['folder']['name'] ?? ""); // New folder name
@@ -144,11 +147,12 @@ function page($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $name = \To::kebab($lot['page']['name'] ?? $lot['page']['title'] ?? "");
@@ -191,7 +195,7 @@ function page($_, $lot) {
     }
     if (\is_file($f = $_['f'])) {
         $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
-        $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
+        $path = '<code>' . \_\lot\x\panel\h\path($_f ?? $f) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
             'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]
@@ -216,14 +220,15 @@ function state($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     // Remove array item(s) with `null` value
     $null = function($v) use(&$null) {
         foreach ($v as $kk => $vv) {
             if (\is_array($vv) && !empty($vv)) {
                 $v[$kk] = $null($vv);
-            } else if ("" === $vv || null === $vv) {
+            } else if ("" === $vv || null === $vv || [] === $vv) {
                 unset($v[$kk]);
             }
         }
@@ -231,7 +236,7 @@ function state($_, $lot) {
     };
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {

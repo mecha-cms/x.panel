@@ -71,7 +71,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $pages = (new Anemon($pages))->sort($_['sort'], true)->get();
     // Load image(s) after chunked for the best performance
     foreach ($pages as $k => &$v) {
-        $v['image'] = (new Page($k))->avatar(72);
+        $v['image'] = (new Comment($k))->avatar(72);
     }
     unset($v);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;

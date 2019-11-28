@@ -5,11 +5,12 @@ function blob($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $test_x = ',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? []))) . ',';
@@ -119,7 +120,8 @@ function data($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab' => ['data'],
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
@@ -138,11 +140,12 @@ function file($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? "")));
@@ -181,11 +184,12 @@ function folder($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $name = \To::folder($lot['folder']['name'] ?? "");
@@ -221,11 +225,12 @@ function page($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
         $name = \To::kebab($lot['page']['name'] ?? $lot['page']['title'] ?? "");

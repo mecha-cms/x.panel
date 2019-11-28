@@ -7,6 +7,8 @@ $path = 'g' === $_['task'] ? dirname($f) : $f;
 $x = glob($path . '.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
 $x = $x ? '.' . pathinfo($x[0], PATHINFO_EXTENSION) : '/1';
 
+$trash = date('Y-m-d-H-i-s');
+
 return [
     'bar' => [
         // type: Bar
@@ -110,7 +112,11 @@ return [
                                                     'l' => [
                                                         'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['layout' => 'data', 'token' => $_['token']])),
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
+                                                            'layout' => 'data',
+                                                            'token' => $_['token'],
+                                                            'trash' => $trash
+                                                        ])),
                                                         'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ]

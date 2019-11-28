@@ -4,6 +4,8 @@ $name = 'g' === $_['task'] ? basename($_['f']) : "";
 
 if ("" === $name) $name = null;
 
+$trash = date('Y-m-d-H-i-s');
+
 return [
     'bar' => [
         // type: Bar
@@ -102,7 +104,11 @@ return [
                                                     'l' => [
                                                         'title' => 'Delete',
                                                         'type' => 'Link',
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', ['layout' => 'folder', 'token' => $_['token']])),
+                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
+                                                            'layout' => 'folder',
+                                                            'token' => $_['token'],
+                                                            'trash' => $trash
+                                                        ])),
                                                         'hidden' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ]
