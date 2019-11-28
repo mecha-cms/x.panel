@@ -5,19 +5,18 @@ return (function($icons) {
     extract($GLOBALS, EXTR_SKIP);
     $id = explode('/', $_['path'], 3)[1];
     $folders = [];
-    foreach (g(LOT) as $k => $v) {
-        if (0 === $v) {
-            $n = basename($k);
-            if (false !== strpos('._', $n[0])) {
-                continue; // Skip hidden folder(s)
-            }
-            $folders[$n] = [
-                'current' => 0 === strpos($_['path'] . '/', '/' . $n . '/'),
-                'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
-                'title' => 'x' === $n ? 'Extension' : \ucfirst($n),
-                'url' => $url . $_['/'] . '::g::/' . $n . '/1' . $url->hash
-            ];
+    foreach (g(LOT, 0) as $k => $v) {
+        $n = basename($k);
+        if (false !== strpos('._', $n[0])) {
+            continue; // Skip hidden folder(s)
         }
+        $folders[$n] = [
+            'current' => 0 === strpos($_['path'] . '/', '/' . $n . '/'),
+            'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
+            'title' => 'x' === $n ? 'Extension' : \ucfirst($n),
+            'url' => $url . $_['/'] . '::g::/' . $n . '/1' . $url->hash,
+            'hidden' => !q(g($k)) // Hide menu if folder is empty
+        ];
     }
     $i = 10;
     $list = [];
