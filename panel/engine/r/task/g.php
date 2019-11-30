@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\task\get;
+<?php namespace _\lot\x\panel\task\g;
 
 function blob($_, $lot) {
     // Blob is always new, so there is no such update event

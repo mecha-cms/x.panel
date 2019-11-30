@@ -42,7 +42,7 @@ if (null !== State::get('x.tag') && (
     'g' === $_['task'] && substr_count($_['path'], '/') > 2
 )) {
     // Convert list of tag(s) slug into list of tag(s) ID
-    Hook::set(['do.page.set', 'do.page.get'], function($_, $lot) use($user) {
+    Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) use($user) {
         // Abort by previous hook’s return value if any
         if (/* !empty($_['kick']) || */ !empty($_['alert']['error'])) {
             return $_;

@@ -3,14 +3,19 @@
 $lot = require __DIR__ . DS . 'page.php';
 
 // Sanitize form data
-if ('POST' === $_SERVER['REQUEST_METHOD']) {
-    $_POST['page']['email'] = _\lot\x\panel\h\w($_POST['page']['email'] ?? "");
-    // Encrypt password
-    if (isset($_POST['data']['pass'])) {
-        $name = $_POST['data']['name'] ?? $_POST['page']['name'] ?? uniqid();
-        $_POST['data']['pass'] = P . password_hash($_POST['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
+Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
+    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+        return $_;
     }
-}
+    $lot['page']['email'] = _\lot\x\panel\h\w($lot['page']['email'] ?? "");
+    // Encrypt password
+    if (isset($lot['data']['pass'])) {
+        $name = $lot['data']['name'] ?? $lot['page']['name'] ?? uniqid();
+        $lot['data']['pass'] = P . password_hash($lot['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
+    }
+    $_POST = $lot; // Update data
+    return $_;
+}, 9.9);
 
 $lot = array_replace_recursive($lot, [
     'bar' => [

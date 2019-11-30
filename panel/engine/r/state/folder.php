@@ -4,7 +4,7 @@ $name = 'g' === $_['task'] ? basename($_['f']) : "";
 
 if ("" === $name) $name = null;
 
-$trash = date('Y-m-d-H-i-s');
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 return [
     'bar' => [

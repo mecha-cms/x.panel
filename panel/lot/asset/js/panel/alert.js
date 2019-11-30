@@ -5,7 +5,7 @@
             svg = a.querySelector('use'),
             icon = svg.getAttribute('href'),
             url = a.href;
-        url += (url.indexOf('?') < 0 ? '?' : '&') + 'count=1';
+        url = url.replace(/\/::\w+::\/.*$/, '/::f::/affd6ded?token=' + _.token);
         function count() {
             fetch(url).then(function(request) {
                 return request.text();

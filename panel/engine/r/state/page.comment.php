@@ -10,7 +10,7 @@ $lot = array_replace_recursive($lot, [
             0 => [
                 'lot' => [
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::/' . $_['chops'][0] . '/1' . $url->query('&', ['layout' => false, 'tab' => false, 'parent' => false]) . $url->hash
+                        'url' => $url . $_['/'] . '::g::/' . $_['chops'][0] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash
                     ],
                     's' => ['hidden' => true]
                 ]

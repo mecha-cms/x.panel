@@ -7,7 +7,7 @@ $path = 'g' === $_['task'] ? dirname($f) : $f;
 $x = glob($path . '.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
 $x = $x ? '.' . pathinfo($x[0], PATHINFO_EXTENSION) : '/1';
 
-$trash = date('Y-m-d-H-i-s');
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 return [
     'bar' => [

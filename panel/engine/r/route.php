@@ -1,6 +1,10 @@
 <?php namespace _\lot\x\panel;
 
 function route() {
+    if ('f' === $GLOBALS['_']['task']) {
+        $this->type('text/plain');
+        $this->content("");
+    }
     if (\Request::is('Get')) {
         if (!\Is::user()) {
             \Guard::kick("");

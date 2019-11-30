@@ -1,24 +1,28 @@
 <?php
 
-if (!$zip = extension_loaded('zip')) {
-    $GLOBALS['_']['alert']['error'][] = ['It is not possible to upload the package due to the missing %s extension.', 'PHP <code>zip</code>'];
-}
+$zip = extension_loaded('zip');
 
-if ('POST' === $_SERVER['REQUEST_METHOD']) {
-    if (isset($_POST['blob']) && is_array($_POST['blob'])) {
-        foreach ($_POST['blob'] as $blob) {
+Hook::set('do.blob.set', function($_, $lot) use($zip) {
+    if (!$zip) {
+        $_['alert']['error'][] = ['It is not possible to upload the package due to the missing %s extension.', 'PHP <code>zip</code>'];
+    }
+    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+        return $_;
+    }
+    if (isset($lot['blob']) && is_array($lot['blob'])) {
+        foreach ($lot['blob'] as $blob) {
             if (!empty($blob['error'])) {
                 continue;
             }
             $x = pathinfo($blob['name'], PATHINFO_EXTENSION);
             // Allow ZIP archive(s) only
             if ('zip' !== $x) {
-                $GLOBALS['_']['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
-                break;
+                $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
             }
         }
     }
-}
+    return $_;
+}, 9.9);
 
 $lot = require __DIR__ . DS . 'blob.php';
 

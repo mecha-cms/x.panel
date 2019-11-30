@@ -12,6 +12,8 @@ $uses = [
     'y-a-m-l' => 1
 ];
 
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
+
 if ($i > 1) {
     $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
     if (isset($uses[$_['chops'][1]])) {
@@ -41,7 +43,7 @@ if ($i > 1) {
                         $use .= '<li>' . $k . (0 === $v ? ' <span class="description">(' . i('optional') . ')</span>' : "") . '</li>';
                     }
                 }
-                $use .= '</details>';
+                $use .= '</ul></details>';
             }
             // Hide some file(s) from the list
             foreach ([
@@ -129,7 +131,11 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                     'title' => 'Delete',
                     'description' => 'Delete',
                     'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                    'url' => !isset($uses[$n]) ? $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]) : null,
+                    'url' => !isset($uses[$n]) ? $before . 'l' . $after . $url->query('&', [
+                        'tab' => false,
+                        'token' => $_['token'],
+                        'trash' => $trash
+                    ]) : null,
                     'active' => !isset($uses[$n]),
                     'stack' => 30
                 ]

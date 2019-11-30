@@ -8,7 +8,7 @@ $search = function($folder, $x, $r) {
     return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
 };
 
-$trash = date('Y-m-d-H-i-s');
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';

@@ -38,7 +38,6 @@ function _() {
         })($_f);
     }
     $_ = $GLOBALS['_']; // Update data
-    \State::set('[layout].layout:' . $_['layout'], true);
     (function($_lot) {
         extract($GLOBALS, \EXTR_SKIP);
         // Define lot with no filter
@@ -56,7 +55,8 @@ function _() {
                 require $_f;
             })($_f);
         }
-        $GLOBALS['_'] = $_ = \Hook::fire('_', [$GLOBALS['_']]); // Update data
+        // Filter by hook
+        $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]); // Update data
         $_form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
         if (isset($_form['token'])) {
             $_hooks = \map(\step($_['layout']), function($_hook) use($_) {
@@ -68,7 +68,7 @@ function _() {
             });
             foreach (\array_reverse($_hooks) as $_hook) {
                 if ($_r = \Hook::fire($_hook, [$_, $_form])) {
-                    $GLOBALS['_'] = $_ = $_r;
+                    $_ = $GLOBALS['_'] = $_r;
                 }
             }
         }
@@ -80,15 +80,16 @@ function _() {
                 }
             }
         }
-        if (empty($_['kick'])) {
+        if (isset($_['kick'])) {
+            \Guard::kick($_['kick']);
+        } else {
             if (isset($_form['token'])) {
-                \Guard::kick($_['kick'] ?? $url->clean . $url->i . $url->query('&', [
+                \Guard::kick($url->clean . $url->i . $url->query('&', [
                     'token' => false
                 ]) . $url->hash);
             }
-        } else {
-            \Guard::kick($_['kick']);
         }
+        \State::set('[layout].layout:' . $_['layout'], true);
     })($_lot);
 }
 

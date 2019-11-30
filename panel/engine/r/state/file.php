@@ -17,7 +17,7 @@ $content = 'g' === $_['task'] && $f && $editable ? file_get_contents($f) : "";
 if ("" === $name) $name = null;
 if ("" === $content) $content = null;
 
-$trash = date('Y-m-d-H-i-s');
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 return [
     'bar' => [

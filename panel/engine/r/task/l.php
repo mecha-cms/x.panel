@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\task\let;
+<?php namespace _\lot\x\panel\task\l;
 
 if ('POST' === $_SERVER['REQUEST_METHOD'] || empty($_GET['token'])) {
     // TODO: Show 404 page?
@@ -48,6 +48,7 @@ function file($_, $lot) {
                 \mkdir($dd, 0775, true);
             }
             \rename($f, $ff);
+            $_SESSION['_']['file'][$ff] = 1;
         } else {
             \unlink($f);
         }
@@ -79,6 +80,7 @@ function folder($_, $lot) {
                     \mkdir($dd, 0775, true);
                 }
                 \rename($v, $vv);
+                $_SESSION['_'][$k->isDir() ? 'folder' : 'file'][$vv] = 1;
             } else {
                 if ($k->isDir()) {
                     \rmdir($v);
@@ -86,6 +88,9 @@ function folder($_, $lot) {
                     \unlink($v);
                 }
             }
+        }
+        if ($trash) {
+            $_SESSION['_']['folder'][\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS])] = 1;
         }
         \rmdir($f);
         $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];

@@ -39,7 +39,7 @@ foreach ([
     7 => 'Failed to write file to disk.',
     8 => 'A PHP extension stopped the file upload.'
 ] as $k => $v) {
-    $GLOBALS['I']['Blob: [' . $k . ']'] = $v;
+    $GLOBALS['I']['#blob:' . $k] = $v;
 }
 
 $GLOBALS['I']['%s goes here...'] = "%s goes here\u{2026}";

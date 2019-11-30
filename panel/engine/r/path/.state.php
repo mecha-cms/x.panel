@@ -1,22 +1,29 @@
 <?php
 
+// Force layout to `state`
+$GLOBALS['_']['layout'] = $_['layout'] = 'state';
+
 // Sanitize form data
-if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
-    $_POST['state']['title'] = _\lot\x\panel\h\w($_POST['state']['title'] ?? "");
-    $_POST['state']['description'] = _\lot\x\panel\h\w($_POST['state']['description'] ?? "");
-    $_POST['state']['charset'] = strip_tags($_POST['state']['charset'] ?? 'utf-8');
-    $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
+Hook::set('do.state.get', function($_, $lot) {
+    if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($lot['state'])) {
+        return $_;
+    }
+    extract($GLOBALS, EXTR_SKIP);
+    $lot['state']['title'] = _\lot\x\panel\h\w($lot['state']['title'] ?? "");
+    $lot['state']['description'] = _\lot\x\panel\h\w($lot['state']['description'] ?? "");
+    $lot['state']['charset'] = strip_tags($lot['state']['charset'] ?? 'utf-8');
+    $lot['state']['language'] = strip_tags($lot['state']['language'] ?? 'en');
     $user_state = require LOT . DS . 'x' . DS . 'user' . DS . 'state.php';
     $panel_state = require LOT . DS . 'x' . DS . 'panel' . DS . 'state.php';
     $core_state = require ROOT . DS . 'state.php';
     $default = $user_state['guard']['path'] ?? $panel_state['guard']['path'] ?? $core_state['x']['user']['guard']['path'] ?? $core_state['x']['panel']['guard']['path'] ?? "";
     $default = '/' . trim($default, '/') . '/';
-    if (!empty($_POST['state']['x']['user']['guard']['path'])) {
-        if ($secret = To::kebab(trim($_POST['state']['x']['user']['guard']['path'], '/'))) {
-            $_POST['state']['x']['user']['guard']['path'] = '/' . $secret;
+    if (!empty($lot['state']['x']['user']['guard']['path'])) {
+        if ($secret = To::kebab(trim($lot['state']['x']['user']['guard']['path'], '/'))) {
+            $lot['state']['x']['user']['guard']['path'] = '/' . $secret;
             $default = '/' . $secret . '/';
         } else {
-            unset($_POST['state']['x']['user']['guard']['path']);
+            unset($lot['state']['x']['user']['guard']['path']);
         }
     }
     if ($_['/'] !== $default) {
@@ -27,7 +34,9 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
             $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . substr($default, 0, -1) . '</code>'];
         }
     }
-}
+    $_POST = $lot; // Update data
+    return $_;
+}, 9.9);
 
 if (1 !== $user['status'] || 'g' !== $_['task']) {
     if (Is::user()) {
@@ -37,10 +46,6 @@ if (1 !== $user['status'] || 'g' !== $_['task']) {
         $_['kick'] = "";
     }
 }
-
-$_['layout'] = 'state';
-
-$GLOBALS['_'] = $_;
 
 Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
     extract($GLOBALS, EXTR_SKIP);

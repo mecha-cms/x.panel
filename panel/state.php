@@ -8,7 +8,7 @@ return [
     'guard' => [
         'path' => '/panel',
         // Minimum and maximum file size allowed to upload
-        'size' => [0, 2097152],
+        'size' => [0, 125829120], // 0 – 120 MB
         // Add more file type(s) other than `File::state['type']` here so that the editor will accept them
         'type' => [
             'application/octet-stream' => 1,
@@ -115,6 +115,7 @@ return [
             'woff2' => 1,
             'zip' => 1,
             '7z' => 1
-        ]
+        ],
+        'trash' => true // Move deleted file(s) to the trash folder
     ]
 ];

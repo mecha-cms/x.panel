@@ -1,20 +1,23 @@
 <?php
 
 // Sanitize form data
-if ('POST' === $_SERVER['REQUEST_METHOD']) {
-    $_POST['data']['time'] = (string) (new Time($_POST['data']['time'] ?? time()));
-    $_POST['page']['author'] = strip_tags($_POST['page']['author'] ?? "");
-    $_POST['page']['id'] = strip_tags($_POST['page']['id'] ?? "");
-    $_POST['page']['link'] = strip_tags($_POST['page']['link'] ?? "");
-    $_POST['page']['description'] = _\lot\x\panel\h\w($_POST['page']['description'] ?? "", 'a');
-    $_POST['page']['title'] = _\lot\x\panel\h\w($_POST['page']['title'] ?? "");
-    $_POST['page']['x'] = strip_tags($_POST['page']['x'] ?? 'page');
-    if (empty($_POST['page']['name'])) {
-        $name = To::kebab($_POST['page']['title'] ?? "");
-        $_POST['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s');
+Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
+    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+        return $_;
+    }
+    $lot['data']['time'] = (string) (new Time($lot['data']['time'] ?? time()));
+    $lot['page']['author'] = strip_tags($lot['page']['author'] ?? "");
+    $lot['page']['id'] = strip_tags($lot['page']['id'] ?? "");
+    $lot['page']['link'] = strip_tags($lot['page']['link'] ?? "");
+    $lot['page']['description'] = _\lot\x\panel\h\w($lot['page']['description'] ?? "", 'a');
+    $lot['page']['title'] = _\lot\x\panel\h\w($lot['page']['title'] ?? "");
+    $lot['page']['x'] = strip_tags($lot['page']['x'] ?? 'page');
+    if (empty($lot['page']['name'])) {
+        $name = To::kebab($lot['page']['title'] ?? "");
+        $lot['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s');
     }
     // Detect `time` pattern in the page’s file name and remove the `time` field if matched
-    $n = $_POST['page']['name'];
+    $n = $lot['page']['name'];
     if (
         is_string($n) && (
             // `2017-04-21.page`
@@ -25,13 +28,15 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
         is_numeric(str_replace('-', "", $n)) &&
         preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])(-([0-1]\d|2[0-4])(-([0-5]\d|60)){2})?$/', $n)
     ) {
-        unset($_POST['data']['time']);
+        unset($lot['data']['time']);
     }
-}
+    $_POST = $lot; // Update data
+    return $_;
+}, 9.9);
 
 $page = is_file($f = $_['f']) ? new Page($f) : new Page;
 
-$trash = date('Y-m-d-H-i-s');
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 $lot = [
     'bar' => [
