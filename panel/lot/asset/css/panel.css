@@ -733,7 +733,11 @@ label.not\:active {
 /* Field */
 .field {
   display: flex;
-  gap: 24px;
+  margin-right: -12px;
+  margin-left: -12px;
+}
+.field > * {
+  margin: 0 12px;
 }
 .field > label {
   display: block;
@@ -792,6 +796,10 @@ label.not\:active {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.lot\:bar .field > * {
+  margin-right: 0;
+  margin-left: 0;
 }
 .lot\:bar > ul {
   display: flex;
@@ -907,7 +915,6 @@ label.not\:active {
 .lot\:file li,
 .lot\:page li {
   display: flex;
-  gap: 6px;
   background: #fff;
   border: 0 solid #fff;
   padding: 6px 12px;
@@ -915,6 +922,11 @@ label.not\:active {
   position: relative;
   overflow: hidden;
 }
+.lot\:file li > *,
+.lot\:page li > * {
+  margin: 0 3px;
+}
+
 .lot\:file h3 {
   flex: 1;
   white-space: nowrap;
@@ -1021,17 +1033,26 @@ label.not\:active {
 .lot\:items,
 .lot\:toggle {
   display: flex;
-  gap: 12px;
   flex-wrap: wrap;
+  margin: 0 -6px;
   padding: 6px 0;
+}
+.lot\:item > *,
+.lot\:items > *,
+.lot\:toggle > * {
+  margin: 0 6px;
 }
 .lot\:item > label,
 .lot\:items > label,
 .lot\:toggle > label {
   display: inline-flex;
-  gap: 6px;
   align-items: center;
   white-space: nowrap;
+}
+.lot\:item > label > *,
+.lot\:items > label > *,
+.lot\:toggle > label > * {
+  margin: 0 6px;
 }
 .lot\:item.is\:block,
 .lot\:items.is\:block {
@@ -1123,9 +1144,11 @@ label.not\:active {
   display: block;
 }
 .lot\:page li {
-  padding: 12px;
+  padding: 12px 6px;
   margin: 0 -12px;
-  gap: 12px;
+}
+.lot\:page li > * {
+  margin: 0 6px;
 }
 .lot\:page li div {
   min-height: 54px;
@@ -1152,9 +1175,12 @@ label.not\:active {
 .lot\:pager,
 .lot\:pager > span {
   display: flex;
-  gap: 6px;
   flex-wrap: wrap;
   align-items: center;
+  margin: 0 -3px;
+}
+.lot\:pager > * {
+  margin: 0 3px;
 }
 .lot\:pager > span,
 .lot\:pager > span > a,
@@ -1279,12 +1305,20 @@ label.not\:active {
 }
 .lot\:task {
   display: flex;
-  gap: 6px;
   align-items: center;
   flex-wrap: wrap;
+  margin: -3px;
+}
+.lot\:task > * {
+  margin: 3px;
 }
 .lot\:task\.link {
-  gap: 12px;
+  margin-right: -6px;
+  margin-left: -6px;
+}
+.lot\:task\.link > * {
+  margin-right: 6px;
+  margin-left: 6px;
 }
 .lot\:task\.link > * .title span {
   margin-left: 3px;
@@ -1360,8 +1394,10 @@ pre.is\:text {
   }
   .field {
     flex-direction: column;
-    gap: 6px;
     width: auto;
+  }
+  .field > * + * {
+    margin-top: 6px;
   }
   .field > label {
     width: auto;
@@ -1429,13 +1465,14 @@ pre.is\:text {
 }
 
 /* Field: Query */
-.field\:query span.tags {
-  padding: 0; /* Original: 6px 12px */
+.field\:query .tag-picker {
+  min-height: 36px;
+  height: auto;
+  padding: 2px;
 }
-.field\:query span.tags .tag {
-  padding: 0 8px; /* 12px - 3px (border-spacing) - 1px (border-width) */
-  line-height: 26px;
-}
-.field\:query span.tags .tags-view {
-  border-spacing: 4px;
+.field\:query .tag-picker .tag {
+  height: 26px; /* 36 - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2) */
+  padding: 0 7px;
+  margin: 2px;
+  border: 1px solid transparent;
 }

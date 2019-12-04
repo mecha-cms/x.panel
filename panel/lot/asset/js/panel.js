@@ -7,6 +7,7 @@
     _.ASSET_JS = {
         'js/panel/alert': {},
         'js/panel/field/query': {},
+        'js/panel/field/source': {},
         'js/panel/menu': {},
         'js/panel/tab': {}
     };

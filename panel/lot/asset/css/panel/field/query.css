@@ -1,1 +1,77 @@
-span.tags,span.tags *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}span.tags{font:inherit;font-weight:400;font-style:normal;border:1px solid;display:block;cursor:text;overflow:hidden;position:relative}span.tags .tags-view{display:table;border-collapse:separate;border-spacing:.25em}span.tags .tag{display:table-cell;white-space:nowrap;width:auto;background:red;padding:0 .5em;line-height:1.75em;cursor:default}span.tags .tag::before{content:attr(data-tag)}span.tags a{display:inline-block;margin:0 0 0 .5em;color:#fff;text-decoration:none;cursor:pointer}span.tags a::before{content:'\00D7'}span.tags .tags-input{background:0 0;cursor:inherit;min-width:1em;position:relative}span.tags .tags-input span{position:absolute;top:0;right:0;bottom:0;left:.5em;z-index:4}span.tags .tags-input span+span{position:static;opacity:.5;white-space:nowrap}span.tags .tag+.tags-input span+span{display:none}span.tags .tags-input span:focus+span{opacity:.4}.tags-output{position:fixed;top:-9999px;left:-9999px}
+.tag-picker,
+.tag-picker * {
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
+}
+.tag-picker,
+.tag-picker .tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  min-height: 1.5em;
+  line-height: 1.5em;
+}
+.tag-picker {
+  border: 1px solid;
+  padding: .125em;
+  cursor: text;
+}
+.tag-picker .tag {
+  background: #f00;
+  color: inherit;
+  text-decoration: none;
+  margin: .125em;
+  padding: 0 .5em;
+  height: 1.5em; /* Same with `min-height` of container */
+  cursor: pointer;
+  outline: none;
+}
+.tag-picker .tag[title]::before {
+  content: attr(title);
+}
+.tag-picker .tag[title] a {
+  margin-left: .5em;
+  text-decoration: none;
+  color: #fff;
+  outline: none;
+}
+.tag-picker .tag[title] a::before {
+  content: '\00d7'; /* The “×” button */
+}
+.tag-picker .tag:focus {
+  background: #c00;
+}
+.tag-picker .editor {
+  background: none;
+  color: inherit;
+  cursor: inherit;
+  position: relative;
+  flex: 1;
+}
+.tag-picker .editor span {
+  display: block;
+  height: 100%;
+  outline: none;
+  position: relative;
+  z-index: 1;
+}
+.tag-picker .editor span + span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: inherit;
+  white-space: nowrap;
+  z-index: 0;
+  opacity: .5;
+}
+.tag-picker .tag + .editor span + span {
+  display: none; /* Hide the placeholder if we have at least one tag */
+}
+.tag-picker-source {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+}

@@ -202,8 +202,10 @@ caption {
   border-color: #eef;
 }
 .lot\:file .lot\:task,
-.lot\:page .lot\:task {
-  gap: 0;
+.lot\:page .lot\:task,
+.lot\:file .lot\:task > *,
+.lot\:page .lot\:task > * {
+  margin: 0;
 }
 .lot\:file .lot\:task > * .title span,
 .lot\:page .lot\:task > * .title span {
@@ -441,7 +443,7 @@ pre.is\:text {
 .field\:toggle .input[type="checkbox"][disabled] {
   background: #999;
 }
-.field\:query span.tags .tag:not(.tags-input) {
+.field\:query .tag-picker .tag:not(.editor) {
   box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
 }
 

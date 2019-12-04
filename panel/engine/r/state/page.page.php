@@ -95,7 +95,10 @@ if (null !== State::get('x.tag') && (
     }, 11);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [
         'type' => 'Query',
-        'state' => ['max' => 10],
+        'state' => [
+            'max' => 12,
+            'x' => true
+        ],
         'name' => 'data[kind]',
         'value' => (new Page($_['f']))->query,
         'width' => true,

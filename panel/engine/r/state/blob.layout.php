@@ -4,8 +4,17 @@ Hook::set('do.blob.set', function($_, $lot) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    foreach (g(LOT . DS . $_['chops'][0], null, true) as $k => $v) {
-        1 === $v ? unlink($k) : rmdir($k);
+    $error = 0;
+    foreach ($lot['blob'] ?? [] as $k => $v) {
+        if (!empty($v['error'])) {
+            $error = 1;
+            break;
+        }
+    }
+    if (!$error) {
+        foreach (g(LOT . DS . $_['chops'][0], null, true) as $k => $v) {
+            1 === $v ? unlink($k) : rmdir($k);
+        }
     }
     return $_;
 }, 9.9);
