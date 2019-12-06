@@ -367,6 +367,9 @@ function Field__Range($in, $key) {
 
 function Field__Source($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
+    $out['content'][2]['data-state'] = \json_encode(\array_replace($in['state'] ?? [], [
+        'tab' => '  '
+    ]));
     \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea', 'code']);
     return \_\lot\x\panel\Field($out, $key);
 }
