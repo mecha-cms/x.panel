@@ -5,9 +5,10 @@ $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 if (1 === count($_['chops'])) {
     if (extension_loaded('zip')) {
         $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['import'] = [
+            'title' => 'Layout',
             'description' => 'Replace layout files with the new ones.',
             'type' => 'Link',
-            'icon' => 'M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z',
+            'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
             'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'blob.layout', 'tab' => false]) . $url->hash,
             'stack' => 40
         ];

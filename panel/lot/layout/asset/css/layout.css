@@ -372,10 +372,6 @@ pre.is\:text {
 .input[type="radio"] {
   background: #08a;
 }
-.input[type="checkbox"]:focus::before,
-.input[type="radio"]:focus::before {
-  visibility: hidden;
-}
 .input[type="checkbox"]::before,
 .input[type="radio"]::before {
   content: "";
@@ -390,6 +386,12 @@ pre.is\:text {
 .input[type="radio"],
 .input[type="radio"]::before {
   border-radius: 100%;
+}
+.input[type="checkbox"]:focus::before {
+  visibility: hidden;
+}
+.input[type="radio"]:focus::before {
+  background: none;
 }
 .input[type="checkbox"]:checked::before {
   top: 1px;
