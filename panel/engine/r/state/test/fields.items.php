@@ -78,7 +78,7 @@ return [
                                         'title' => "",
                                         'type' => 'Field',
                                         'lot' => [
-                                            0 => [
+                                            'tasks' => [
                                                 'type' => 'Tasks.Button',
                                                 'lot' => [
                                                     0 => [

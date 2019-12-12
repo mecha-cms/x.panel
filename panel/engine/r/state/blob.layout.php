@@ -26,6 +26,7 @@ $description .= '<pre><code class="txt">' . i('layout') . '.zip&#xA;&#x251C;&#x2
 $description .= '<p>' . i('Please note that this action will first remove all of your current layout files before replacing it with the new ones.') . ' ' . i('You may want to <a href="%s" title="%s">save a copy</a> of your current layout files before doing this action.', [$url . $_['/'] . '::f::/de686795/' . $_['chops'][0] . $url->query('&amp;', [
     'd' => 0,
     'kick' => URL::short($url->current, false),
+    'layout' => false,
     'token' => $_['token']
 ]), 'Download current layout as a ZIP file.']) . '</p>';
 

@@ -185,6 +185,9 @@ caption {
 .lot\:bar > ul > li.is\:active > a {
   color: #fafafa;
 }
+.lot\:bar .js\:alert.is\:active a span {
+  color: #0f0;
+}
 .lot\:file li,
 .lot\:page li {
   background: #fff;
@@ -301,9 +304,6 @@ caption {
 .lot\:menu li.is\:active a.not\:active {
   background: #eee;
 }
-.lot\:pager > span {
-  padding: 0;
-}
 .lot\:pager > span > a,
 .lot\:pager > span > b,
 .lot\:pager > span > span {
@@ -372,6 +372,12 @@ pre.is\:text {
 .input[type="radio"] {
   background: #08a;
 }
+.input[type="checkbox"]:focus {
+  background: #060;
+}
+.input[type="radio"]:focus {
+  background: #047;
+}
 .input[type="checkbox"]::before,
 .input[type="radio"]::before {
   content: "";
@@ -386,12 +392,6 @@ pre.is\:text {
 .input[type="radio"],
 .input[type="radio"]::before {
   border-radius: 100%;
-}
-.input[type="checkbox"]:focus::before {
-  visibility: hidden;
-}
-.input[type="radio"]:focus::before {
-  background: none;
 }
 .input[type="checkbox"]:checked::before {
   top: 1px;
@@ -438,6 +438,12 @@ pre.is\:text {
 }
 .field\:toggle .input[type="checkbox"]:checked {
   background: #090;
+}
+.field\:toggle .input[type="checkbox"]:focus {
+  background: #800;
+}
+.field\:toggle .input[type="checkbox"]:checked:focus {
+  background: #060;
 }
 .field\:toggle .input[type="checkbox"]:checked::before {
   left: 12px;

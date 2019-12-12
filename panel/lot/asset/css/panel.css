@@ -729,6 +729,21 @@ label.not\:active {
 .alert p .f\:r svg {
   margin-right: -6px;
 }
+.alert p > small + br {
+  display: none;
+}
+.alert p > small + br + small {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -3px;
+  padding: 12px 0 6px;
+}
+.alert p > small + br + small a {
+  font-size: 12px;
+  margin: 0 3px;
+  padding: 0 6px;
+  background: rgba(0, 0, 0, .05);
+}
 
 /* Field */
 .field {
@@ -1172,28 +1187,23 @@ label.not\:active {
 .lot\:page .description {
   margin: 6px 0 0;
 }
+.lot\:pager {
+  margin: 0 -3px;
+}
 .lot\:pager,
 .lot\:pager > span {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin: 0 -3px;
-}
-.lot\:pager > * {
-  margin: 0 3px;
-}
-.lot\:pager > span,
-.lot\:pager > span > a,
-.lot\:pager > span > b,
-.lot\:pager > span > span {
-  font: inherit;
-  padding: 0 6px;
 }
 .lot\:pager > span > a,
 .lot\:pager > span > b,
 .lot\:pager > span > span {
   background: #00f;
   color: #fff;
+  font: inherit;
+  padding: 0 6px;
+  margin: 0 3px;
 }
 .lot\:pager > span > span {
   background: none;

@@ -27,6 +27,14 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 ], $GLOBALS['_'] ?? []);
 
 $p = trim($url->path, '/');
+
+if (null !== $i && stream_resolve_include_path(LOT . DS . explode('::/', $p, 2)[1] . DS . $i)) {
+    $url->clean .= '/' . $i;
+    $url->path .= '/' . $i;
+    $p .= '/' . $i;
+    $GLOBALS['_']['i'] = $_['i'] = $url->i = $i = null;
+}
+
 if (0 === strpos('/' . $p, $pp . '::')) {
     Asset::let(); // Remove all asset(s)
     Route::let(); // Remove all route(s)

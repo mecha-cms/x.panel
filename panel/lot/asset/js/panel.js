@@ -1,5 +1,51 @@
 (function(win, doc, _) {
 
+        function count(x) {
+            return Object.keys(x).length;
+        }
+
+        function isSet(x) {
+            return 'undefined' !== typeof x;
+        }
+
+        var hooks = {};
+
+        _.on = function(name, fn, id) {
+            if (!isSet(hooks[name])) {
+                hooks[name] = {};
+            }
+            if (!isSet(id)) {
+                id = count(hooks[name]);
+            }
+            return hooks[name][id] = fn, _;
+        };
+
+        _.off = function(name, id) {
+            if (!isSet(name)) {
+                return hooks = {}, _;
+            }
+            if (!isSet(id)) {
+                return hooks[name] = {}, _;
+            }
+            return delete hooks[name][id], _;
+        };
+
+        _.fire = function(name, lot, id) {
+            if (!isSet(hooks[name])) {
+                return _;
+            }
+            if (!isSet(id)) {
+                for (var i in hooks[name]) {
+                    hooks[name][i].apply(_, lot);
+                }
+            } else {
+                if (isSet(hooks[name][id])) {
+                    hooks[name][id].apply(_, lot);
+                }
+            }
+            return _;
+        };
+
     _.ASSET_CSS = {
         'css/panel/field/query': {}
     };
@@ -11,12 +57,6 @@
         'js/panel/menu': {},
         'js/panel/tab': {}
     };
-
-    _.READY = new Event('load.panel');
-
-    win.addEventListener('DOMContentLoaded', function() {
-        doc.dispatchEvent(_.READY);
-    });
 
     var src = doc.currentScript.src,
         a = src.split('/'), i,
@@ -41,7 +81,7 @@
     }
 
     // Load JS file(s) on document ready
-    doc.addEventListener('load.panel', function() {
+    _.on('load', function() {
         for (i in _.ASSET_JS) {
             if (!_.ASSET_JS[i] || _.ASSET_JS[i].once) {
                 continue;
@@ -51,6 +91,10 @@
             doc.head.appendChild(script);
             _.ASSET_JS[i].once = true;
         }
+    });
+
+    win.addEventListener('DOMContentLoaded', function() {
+        _.fire('load');
     });
 
 })(window, document, window._ = window._ || {});
