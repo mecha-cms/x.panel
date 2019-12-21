@@ -43,7 +43,7 @@ namespace _\lot\x\panel {
                     ${$v} = '<span class="fix"><span>' . $in[$v] . '</span></span>';
                 } else if (\is_array($in[$v])) {
                     $icon = \_\lot\x\panel\h\icon($in[$v]['icon'] ?? [null, null]);
-                    ${$v} = \str_replace('<svg>', '<svg class="fix">', $icon[0]);
+                    ${$v} = \str_replace('<svg ', '<svg class="fix" ', $icon[0]);
                 }
             }
         }
@@ -260,7 +260,7 @@ namespace _\lot\x\panel {
                 } else if (\is_array($v)) {
                     $v['icon'] = \_\lot\x\panel\h\icon($v['icon'] ?? [null, null]);
                     if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
-                        $v['icon'][1] = '<svg class="caret" viewBox="0 0 24 24"><path d="' . ($v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
+                        $v['icon'][1] = '<svg class="caret" height="12" viewBox="0 0 24 24" width="12"><path d="' . ($v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
                     }
                     $ul = "";
                     $a = (array) ($v['tags'] ?? []);

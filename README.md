@@ -16,3 +16,12 @@ Dependency
 ### Extension
 
  - [User](https://github.com/mecha-cms/x.user)
+
+---
+
+Release Notes
+-------------
+
+### 2.1.1
+
+ - Refactor.

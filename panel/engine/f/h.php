@@ -62,11 +62,11 @@ function icon($in) {
     $icon = \array_replace([null, null], (array) $in);
     if ($icon[0] && false === strpos($icon[0], '<')) {
         $GLOBALS['SVG'][$id = \dechex(\crc32($icon[0]))] = $icon[0];
-        $icon[0] = '<svg><use href="#i:' . $id . '"></use></svg>';
+        $icon[0] = '<svg height="12" width="12"><use href="#i:' . $id . '"></use></svg>';
     }
     if ($icon[1] && false === strpos($icon[1], '<')) {
         $GLOBALS['SVG'][$id = \dechex(\crc32($icon[1]))] = $icon[1];
-        $icon[1] = '<svg><use href="#i:' . $id . '"></use></svg>';
+        $icon[1] = '<svg height="12" width="12"><use href="#i:' . $id . '"></use></svg>';
     }
     return $icon;
 }

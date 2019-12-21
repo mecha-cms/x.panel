@@ -28,7 +28,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 
 $p = trim($url->path, '/');
 
-if (null !== $i && stream_resolve_include_path(LOT . DS . explode('::/', $p, 2)[1] . DS . $i)) {
+if (null !== $i && stream_resolve_include_path(LOT . DS . (explode('::/', $p, 2)[1] ?? P) . DS . $i)) {
     $url->clean .= '/' . $i;
     $url->path .= '/' . $i;
     $p .= '/' . $i;
