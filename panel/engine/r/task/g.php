@@ -195,10 +195,6 @@ function page($_, $lot) {
                     }
                 }
             }
-            // Remove empty folder
-            if (0 === \q(\g($d))) {
-                \rmdir($d);
-            }
         }
     }
     if (\is_file($f = $_['f'])) {
