@@ -190,14 +190,8 @@ function page($_, $lot) {
                     if ("" !== \trim($v)) {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
                         \chmod($ff, 0600);
-                    } else {
-                        \is_file($ff = $d . \DS . $k . '.data') && \unlink($ff);
                     }
                 }
-            }
-            // Remove empty folder
-            if (0 === \q(\g($d))) {
-                \rmdir($d);
             }
         }
     }
