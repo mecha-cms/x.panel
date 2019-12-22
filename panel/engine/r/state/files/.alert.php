@@ -12,10 +12,18 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         $page = new Page($k);
         $link = $page->link;
-        $v = '<alert type="' . c2f($page->type) . '">' . $page->title . '<br><small>' . _\lot\x\panel\h\w($page->description) . '</small><br><small>' . ($link ? '<a href="' . $link . '">' . i('Action') . '</a> ' : "") . '<a href="' . $url . $_['/'] . '::l::' . strtr($k, [
+        $v = '<alert type="' . c2f($page->type) . '">' . $page->title . '<br><small>' . _\lot\x\panel\h\w($page->description) . '</small><br><small>' . ($link ? '<a href="' . $url . $_['/'] . '::f::/f7a17db4' . strtr($k, [
             LOT => "",
             DS => '/'
-        ]) . $url->query('&amp;', ['token' => $_['token']]) . '">' . i('Delete') . '</a></small></alert>';
+        ]) . $url->query('&amp;', [
+            'kick' => strtr($link, [$url . '/' => ""]),
+            'token' => $_['token']
+        ]) . '">' . i('Action') . '</a> ' : "") . '<a href="' . $url . $_['/'] . '::l::' . strtr($k, [
+            LOT => "",
+            DS => '/'
+        ]) . $url->query('&amp;', [
+            'token' => $_['token']
+        ]) . '">' . i('Delete') . '</a></small></alert>';
     }
 }
 
