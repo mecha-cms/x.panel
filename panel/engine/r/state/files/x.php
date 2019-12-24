@@ -109,14 +109,11 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         ]);
         $n = basename($kk);
         $page = new Page($k);
-        $image = glob($kk . DS . 'lot' . DS . 'asset' . DS . '{gif,jpg,jpeg,png}' . DS . $n . '.{gif,jpg,jpeg,png}', GLOB_BRACE | GLOB_NOSORT);
-        $image = $image ? To::URL($image[0]) : null;
         $pages[$k] = [
             'path' => $k,
             'title' => _\lot\x\panel\h\w($page->title),
             'description' => _\lot\x\panel\h\w($page->description),
             'type' => 'Page',
-            'image' => $image,
             'url' => $before . 'g' . $after . '/1' . $url->query('&', ['tab' => ['info']]),
             'time' => $page->time . "",
             'tasks' => [
@@ -144,6 +141,11 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         ++$count;
     }
     $pages = (new Anemon($pages))->sort([1, 'title'], true)->get();
+    // Load image(s) after chunked for the best performance
+    foreach ($pages as $k => &$v) {
+        $v['image'] = (new Page($k))->image(72);
+    }
+    unset($v);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }

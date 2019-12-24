@@ -2,7 +2,7 @@
 
 if (!is_dir($d = LOT . DS . 'asset' . DS . $user->user)) {
     mkdir($d, 0755, true);
-    $_['alert']['success'][] = ['Folder %s created.', '<code>' . _\lot\x\panel\h\path($d) . '</code>'];
+    $_['alert']['success'][] = ['Created folder %s.', '<code>' . _\lot\x\panel\h\path($d) . '</code>'];
     $_SESSION['_']['folder'][$d] = 1;
     $_['kick'] = $url->current;
 }
