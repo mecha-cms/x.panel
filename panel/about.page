@@ -6,6 +6,7 @@ type: Markdown
 version: 2.1.1
 
 use:
+  '.\lot\x\layout': 1
   '.\lot\x\user': 1
 ...
 
