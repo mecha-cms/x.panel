@@ -74,7 +74,7 @@
             continue;
         }
         var link = doc.createElement('link');
-        link.href = src + '/' + i + '.css?' + end;
+        link.href = src + '/' + i + '.min.css?' + end;
         link.rel = 'stylesheet';
         doc.head.appendChild(link);
         _.ASSET_CSS[i].once = true;
@@ -87,7 +87,7 @@
                 continue;
             }
             var script = doc.createElement('script');
-            script.src = src + '/' + i + '.js?' + end;
+            script.src = src + '/' + i + '.min.js?' + end;
             doc.head.appendChild(script);
             _.ASSET_JS[i].once = true;
         }

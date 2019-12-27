@@ -401,6 +401,9 @@ hr {
 fieldset {
   padding: 24px;
 }
+hr {
+  border-style: dashed;
+}
 legend {
   padding: 0 8px;
   margin: 0;
@@ -519,6 +522,7 @@ svg[display="none"] {
   border-color: #f00;
 }
 .button,
+details > summary,
 label {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1348,9 +1352,9 @@ label.not\:active {
 /* Document */
 pre.is\:text {
   background: none;
-  border: 2px inset;
+  border: 1px dotted;
   color: inherit;
-  padding: 12px;
+  padding: 6px 12px;
 }
 .is\:error {
   display: flex;
