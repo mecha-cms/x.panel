@@ -26,6 +26,10 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             'author' => $page['author'],
             'type' => 'Page',
             'link' => 'draft' === ($x = $page->x) ? null : $page->url,
+            'image' => function($path) {
+                // Load image asynchronously for best performance
+                return (new Page($path))->image(72, 72, 50);
+            },
             'time' => $page->time . "",
             'tags' => [
                 'is:' . $x,
@@ -71,11 +75,6 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         ++$count;
     }
     $pages = (new Anemon($pages))->sort($_['sort'], true)->get();
-    // Load image(s) after chunked for the best performance
-    foreach ($pages as $k => &$v) {
-        $v['image'] = (new Page($k))->image(72, 72, 50);
-    }
-    unset($v);
 }
 
 return [

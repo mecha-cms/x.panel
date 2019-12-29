@@ -14,7 +14,10 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
         $v['link'] = 'draft' !== $page->x ? $page->url : null;
         $v['title'] = $page . "";
         $v['description'] = $page->user;
-        $v['image'] = $page->avatar(72);
+        $v['image'] = function($path) {
+            // Load avatar asynchronously for best performance
+            return (new User($path))->avatar(72);
+        };
         // Disable page children feature
         $v['tasks']['enter']['hidden'] = true;
         $v['tasks']['s']['hidden'] = true;
