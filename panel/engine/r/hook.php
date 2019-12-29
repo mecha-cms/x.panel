@@ -49,7 +49,7 @@ function _() {
         })($_f);
         $_ = $GLOBALS['_']; // Update data
         // Filter by path
-        foreach (\step(\trim($_['path']), '/') as $_v) {
+        foreach (\array_values(\step(\trim($_['path']), '/')) as $_v) {
             \is_file($_f = __DIR__ . \DS . 'path' . \DS . \strtr($_v, '/', \DS) . '.php') && (function($_f) {
                 extract($GLOBALS, \EXTR_SKIP);
                 require $_f;
