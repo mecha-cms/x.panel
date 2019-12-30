@@ -32,7 +32,7 @@ function _() {
         }
     }
     foreach ($GLOBALS['X'][1] as $_index) {
-        \is_file($_f = \dirname($_index) . \DS . 'panel.php') && (function($_f) {
+        \is_file($_f = \Path::F($_index) . \DS . 'panel.php') && (function($_f) {
             extract($GLOBALS, \EXTR_SKIP);
             require $_f;
         })($_f);

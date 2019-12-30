@@ -56,7 +56,7 @@ if (is_file($f) && 'zip' === pathinfo($f, PATHINFO_EXTENSION)) {
 }
 
 // Pack
-$name = ($f ? basename($f) : uniqid()) . '.' . date('Y-m-d') . '.zip';
+$name = ($f ? basename($f) : uniqid()) . '@' . date('Y-m-d') . '.zip';
 $o = new ZipStream\Option\Archive();
 $o->setSendHttpHeaders(true);
 
