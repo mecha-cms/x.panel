@@ -202,4 +202,4 @@ abstract class Enum implements \JsonSerializable
     {
         return $this->getValue();
     }
-}
+}

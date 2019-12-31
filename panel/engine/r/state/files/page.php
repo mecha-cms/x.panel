@@ -15,7 +15,9 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
             LOT => "",
             DS => '/'
         ]);
-        $v['tasks']['s']['url'] = $before . 's' . Path::F($after, '/') . $url->query('&', ['layout' => 'page.page', 'tab' => false]) . $url->hash;
+        if (!empty($v['tasks']['s']['url'])) {
+            $v['tasks']['s']['url'] = $before . 's' . Path::F($after, '/') . $url->query('&', ['layout' => 'page.page', 'tab' => false]) . $url->hash;
+        }
         if ($g && null !== $v['author'] && $v['author'] !== $author) {
             $v['hidden'] = true;
         }

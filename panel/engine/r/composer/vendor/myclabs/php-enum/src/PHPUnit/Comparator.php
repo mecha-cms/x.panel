@@ -51,4 +51,4 @@ final class Comparator extends \SebastianBergmann\Comparator\Comparator
 
         return get_class($enum)."::{$enum->getKey()}()";
     }
-}
+}

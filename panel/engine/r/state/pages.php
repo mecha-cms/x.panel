@@ -18,7 +18,8 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
             DS => '/'
         ]);
         $page = new Page($k);
-        $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
+        $add = is_dir($folder = Path::F($k));
+        $create = $add && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
             'title' => _\lot\x\panel\h\w($page->title),
@@ -47,9 +48,10 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
                 's' => [
                     'hidden' => 'draft' === $x || $create,
                     'title' => 'Add',
-                    'description' => ['Add %s', 'Child'],
+                    'description' => $add ? ['Add %s', 'Child'] : ['Missing folder %s', _\lot\x\panel\h\path($folder)],
                     'icon' => 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z',
-                    'url' => $before . 's' . Path::F($after, '/') . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
+                    'url' => $add ? $before . 's' . Path::F($after, '/') . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash : null,
+                    'active' => $add,
                     'stack' => 10
                 ],
                 'g' => [
