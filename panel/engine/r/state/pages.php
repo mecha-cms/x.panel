@@ -22,8 +22,8 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $create = $add && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
-            'title' => _\lot\x\panel\h\w($page->title),
-            'description' => _\lot\x\panel\h\w($page->description),
+            'title' => S . _\lot\x\panel\h\w($page->title) . S,
+            'description' => S . _\lot\x\panel\h\w($page->description) . S,
             'author' => $page['author'],
             'type' => 'Page',
             'link' => 'draft' === ($x = $page->x) ? null : $page->url,
