@@ -39,6 +39,21 @@ return [
             'form' => [
                 // type: Form.Post
                 'lot' => [
+                    'fields' => [
+                        'type' => 'Fields',
+                        'lot' => [ // Hidden field(s)
+                            'token' => [
+                                'type' => 'Hidden',
+                                'value' => $_['token']
+                            ],
+                            'seal' => [
+                                'type' => 'Hidden',
+                                'name' => 'file[seal]',
+                                'value' => '0600'
+                            ]
+                        ],
+                        'stack' => -1
+                    ],
                     1 => [
                         // type: Section
                         'lot' => [
@@ -50,15 +65,6 @@ return [
                                             'fields' => [
                                                 'type' => 'Fields',
                                                 'lot' => [
-                                                    'token' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_['token']
-                                                    ],
-                                                    'seal' => [
-                                                        'type' => 'Hidden',
-                                                        'name' => 'file[seal]',
-                                                        'value' => '0600'
-                                                    ],
                                                     'content' => [
                                                         'type' => 'Source',
                                                         'name' => 'data[content]',

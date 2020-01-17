@@ -1,4 +1,4 @@
-<?php /* dechex(crc32('alert.let')) */
+<?php /* dechex(crc32('error.let')) */
 
 // Invalid token
 if (empty($lot['token']) || $lot['token'] !== $_['token']) {
@@ -9,6 +9,6 @@ if (empty($lot['token']) || $lot['token'] !== $_['token']) {
 $_['alert'] = [];
 $_['kick'] = $lot['kick'] ?? $url;
 
-is_file($f = $_['f']) && unlink($f);
+is_file($f = ENGINE . DS . 'log' . DS . 'error') && unlink($f);
 
 return $_;

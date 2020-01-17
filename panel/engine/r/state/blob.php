@@ -36,6 +36,16 @@ return [
             'form' => [
                 // type: Form.Post
                 'lot' => [
+                    'fields' => [
+                        'type' => 'Fields',
+                        'lot' => [ // Hidden field(s)
+                            'token' => [
+                                'type' => 'Hidden',
+                                'value' => $_['token']
+                            ]
+                        ],
+                        'stack' => -1
+                    ],
                     1 => [
                         // type: Section
                         'lot' => [
@@ -48,10 +58,6 @@ return [
                                             'fields' => [
                                                 'type' => 'Fields',
                                                 'lot' => [
-                                                    'token' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_['token']
-                                                    ],
                                                     'blob' => [
                                                         'title' => 'File',
                                                         'description' => ['Maximum file size allowed to upload is %s.', File::sizer(File::$state['size'][1])],

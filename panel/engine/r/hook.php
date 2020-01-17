@@ -71,6 +71,8 @@ function _() {
                     $_ = $GLOBALS['_'] = $_r;
                 }
             }
+        } else {
+            // Missing `<input name="token">`
         }
         if (!empty($_['alert'])) {
             foreach ((array) $_['alert'] as $_k => $_v) {

@@ -137,7 +137,7 @@ function file($_, $lot) {
             if (\array_key_exists('content', $lot['file'] ?? [])) {
                 \file_put_contents($f, $lot['file']['content'] ?? "");
             }
-            \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
+            @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
@@ -232,7 +232,7 @@ function page($_, $lot) {
                 foreach ((array) $lot['data'] as $k => $v) {
                     if ("" !== \trim($v)) {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
-                        \chmod($ff, 0600);
+                        @\chmod($ff, 0600);
                     }
                 }
             }

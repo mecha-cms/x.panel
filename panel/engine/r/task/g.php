@@ -61,7 +61,7 @@ function file($_, $lot) {
             } else if ($name !== $base) {
                 \rename($_['f'], $f);
             }
-            \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
+            @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
@@ -186,7 +186,7 @@ function page($_, $lot) {
                 foreach ((array) $lot['data'] as $k => $v) {
                     if ("" !== \trim($v)) {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
-                        \chmod($ff, 0600);
+                        @\chmod($ff, 0600);
                     } else {
                         \is_file($ff = $d . \DS . $k . '.data') && \unlink($ff);
                     }
@@ -239,13 +239,13 @@ function state($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        if (\is_file($source = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
-            $source = \realpath($source);
-            $v = \array_replace_recursive((array) require $source, $lot['state'] ?? []);
+        if (\is_file($f = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
+            $f = \realpath($f);
+            $v = \array_replace_recursive((array) require $f, $lot['state'] ?? []);
             $v = $null($v);
-            \file_put_contents($source, '<?php return ' . \z($v) . ';');
-            // \chmod($source, 0600);
-            $_['alert']['success'][] = ['File %s successfully updated.', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>']];
+            \file_put_contents($f, '<?php return ' . \z($v) . ';');
+            @\chmod($f, 0600);
+            $_['alert']['success'][] = ['File %s successfully updated.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
         }
         $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . $e;
     }

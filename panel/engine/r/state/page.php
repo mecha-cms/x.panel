@@ -68,6 +68,21 @@ $lot = [
             'form' => [
                 // type: Form.Post
                 'lot' => [
+                    'fields' => [
+                        'type' => 'Fields',
+                        'lot' => [ // Hidden field(s)
+                            'token' => [
+                                'type' => 'Hidden',
+                                'value' => $_['token']
+                            ],
+                            'seal' => [
+                                'type' => 'Hidden',
+                                'name' => 'file[seal]',
+                                'value' => '0600'
+                            ]
+                        ],
+                        'stack' => -1
+                    ],
                     1 => [
                         // type: Section
                         'lot' => [
@@ -79,15 +94,6 @@ $lot = [
                                             'fields' => [
                                                 'type' => 'Fields',
                                                 'lot' => [
-                                                    'token' => [
-                                                        'type' => 'Hidden',
-                                                        'value' => $_['token']
-                                                    ],
-                                                    'seal' => [
-                                                        'type' => 'Hidden',
-                                                        'name' => 'file[seal]',
-                                                        'value' => '0600'
-                                                    ],
                                                     'title' => [
                                                         'type' => 'Text',
                                                         'alt' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',

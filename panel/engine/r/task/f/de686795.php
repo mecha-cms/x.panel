@@ -1,15 +1,15 @@
 <?php /* dechex(crc32('package')) */
 
-$_['kick'] = $lot['kick'] ?? $url;
-
-// Set response status
-http_response_code(200);
-
 // Invalid token
 if (empty($lot['token']) || $lot['token'] !== $_['token']) {
     $_['alert']['error'][] = 'Invalid token.';
     return $_;
 }
+
+// Set response status
+http_response_code(200);
+
+$_['kick'] = $lot['kick'] ?? $url;
 
 // File or folder does not exists
 if (!$f = $_['f']) {
