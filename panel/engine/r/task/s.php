@@ -52,7 +52,7 @@ function blob($_, $lot) {
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
                     $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-                    $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
+                    $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
                     $_SESSION['_']['file'][$_['f'] = $f] = 1;
                     $_['ff'][] = $f;
                     // Extract package
@@ -61,7 +61,7 @@ function blob($_, $lot) {
                         \extension_loaded('zip') &&
                         ('zip' === $x || 'application/zip' === $type)
                     ) {
-                        $_['kick'] = $url . $_['/'] . '::f::/de686795/' . \strtr($f, [
+                        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::f::/de686795/' . \strtr($f, [
                             \LOT . \DS => "",
                             \DS => '/'
                         ]) . \To::query([
@@ -101,7 +101,7 @@ function data($_, $lot) {
         $lot['file']['content'] = $lot['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
@@ -111,7 +111,6 @@ function file($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
-        'tab'=> false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -140,7 +139,7 @@ function file($_, $lot) {
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-            $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
+            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
     }
@@ -155,7 +154,6 @@ function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
-        'tab'=> false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -173,12 +171,12 @@ function folder($_, $lot) {
             \mkdir($f, \octdec($lot['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             }
             foreach (\step($_['f'] = $f, \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
@@ -196,7 +194,6 @@ function page($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
-        'tab'=> false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -264,7 +261,7 @@ function page($_, $lot) {
 }
 
 function state($_, $lot) {
-    // State must be exists, so there is no such create event, only update
+    // State must exists, so there is no such create event, only update
     return $_;
 }
 

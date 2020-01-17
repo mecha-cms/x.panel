@@ -19,13 +19,17 @@ if (null !== State::get('x.comment')) {
         extract($GLOBALS, EXTR_SKIP);
         $id = uniqid();
         file_put_contents(LOT . DS . '.alert' . DS . $id . '.page', To::page([
-            'title' => i('New %s', 'Comment'),
-            'description' => i('A new %s has been added.', 'comment'),
+            'title' => $title = i('New %s', 'Comment'),
+            'description' => $description = i('A new %s has been added.', 'comment'),
             'type' => 'Info',
             'link' => $url . $_['/'] . '::g::' . strtr($path, [
                 LOT => "",
                 DS => '/'
             ])
         ]));
+        // TODO: Send email about this!
+        if ($email = $state->email) {
+            send($email, $title, '<p>' . $description . '</p><p><a href="' . $url . $_['/'] . '::g::/.alert/1' . '">' . i('Manage') . '</a></p>');
+        }
     });
 }

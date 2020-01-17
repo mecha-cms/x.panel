@@ -20,7 +20,7 @@ function data($_, $lot) {
         $lot['file']['content'] = \is_array($content) ? \json_encode($content) : \s($content);
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
@@ -29,7 +29,6 @@ function data($_, $lot) {
 function file($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'tab' => false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -64,7 +63,7 @@ function file($_, $lot) {
             }
             \chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
-            $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
+            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
             $_SESSION['_']['file'][$_['f'] = $f] = 1;
         }
     }
@@ -79,7 +78,6 @@ function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
-        'tab'=> false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -98,12 +96,12 @@ function folder($_, $lot) {
             // Do nothing
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
             if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
             }
             $_SESSION['_']['folder'][$f] = 1;
         } else {
@@ -123,12 +121,12 @@ function folder($_, $lot) {
             \rmdir($_['f']);
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $url . $_['/'] . '::g::' . \strtr($f, [
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
             }
             foreach (\step($_['f'] = $f, \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
@@ -146,7 +144,6 @@ function page($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
-        'tab'=> false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -223,7 +220,6 @@ function state($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
-        'tab'=> false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -248,9 +244,10 @@ function state($_, $lot) {
             $v = \array_replace_recursive((array) require $source, $lot['state'] ?? []);
             $v = $null($v);
             \file_put_contents($source, '<?php return ' . \z($v) . ';');
+            // \chmod($source, 0600);
             $_['alert']['success'][] = ['File %s successfully updated.', ['<code>' . \_\lot\x\panel\h\path($source) . '</code>']];
         }
-        $_['kick'] = $url . $_['/'] . '::g::' . $_['path'] . $e;
+        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . $e;
     }
     if (!empty($_['alert']['error'])) {
         unset($lot['token']);

@@ -128,8 +128,8 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                         'title' => [
                             'type' => 'Text',
                             'name' => 'state[title]',
-                            'alt' => $state->title ?? 'Title Goes Here',
-                            'value' => $state->title,
+                            'alt' => ($v = $state->title) ?? 'Title Goes Here',
+                            'value' => $v,
                             'width' => true,
                             'stack' => 10
                         ],
@@ -173,7 +173,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                             'type' => 'Text',
                             'name' => 'state[x][user][guard][path]',
                             'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
-                            'alt' => $state->x->user->path,
+                            'alt' => $state->x->user->path ?? null,
                             'value' => $state->x->user->guard->path ?? null,
                             'stack' => 20
                         ]
@@ -209,7 +209,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                         'charset' => [
                             'type' => 'Text',
                             'name' => 'state[charset]',
-                            'alt' => ($v = $site->charset) ?? 'utf-8',
+                            'alt' => ($v = $state->charset) ?? 'utf-8',
                             'value' => $v,
                             'stack' => 30
                         ],
@@ -218,7 +218,7 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                             'type' => 'Text',
                             'name' => 'state[language]',
                             'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
-                            'alt' => ($v = $site->language) ?? 'en',
+                            'alt' => ($v = $state->language) ?? 'en',
                             'value' => $v,
                             'stack' => 40
                         ]
@@ -227,6 +227,25 @@ Route::set($_['/'] . '\:\:g\:\:/.state', 200, function() {
                 ]
             ],
             'stack' => 30
+        ],
+        'alert' => [
+            'title' => 'Notifications',
+            'lot' => [
+                'fields' => [
+                    'type' => 'Fields',
+                    'lot' => [
+                        'email' => [
+                            'description' => 'This email address will be used to receive certain messages to your inbox as the fastest solution for notifications. At this time you may not use it to receive any messages, but some extensions that require an email address may depend on this value.',
+                            'type' => 'Email',
+                            'name' => 'state[email]',
+                            'value' => $state->email,
+                            'stack' => 10
+                        ]
+                    ],
+                    'stack' => 10
+                ]
+            ],
+            'stack' => 40
         ]
     ], $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] ?? []);
     $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['description'] = ['Save to %s', ".\\state.php"];
