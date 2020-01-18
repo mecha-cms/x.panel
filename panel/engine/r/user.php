@@ -22,14 +22,19 @@ if (null !== State::get('x.comment')) {
             'title' => $title = i('New %s', 'Comment'),
             'description' => $description = i('A new %s has been added.', 'comment'),
             'type' => 'Info',
-            'link' => $url . $_['/'] . '::g::' . strtr($path, [
+            'link' => $link = $url . $_['/'] . '::g::' . strtr($path, [
                 LOT => "",
                 DS => '/'
             ])
         ]));
-        // TODO: Send email about this!
+        // Send email about this!
         if ($email = $state->email) {
-            send($email, $title, '<p>' . $description . '</p><p><a href="' . $url . $_['/'] . '::g::/.alert/1' . '">' . i('Manage') . '</a></p>');
+            $comment = new Comment($path);
+            $content  = '<p style="font-size: 120%; font-weight: bold;">' . $comment->author . '</p>';
+            $content .= $comment->content;
+            $content .= '<p style="font-size: 80%; font-style: italic;">' . $comment->time->{r('-', '_', $state->language)} . '</p>';
+            $content .= '<p><a href="' . $link . '" target="_blank">' . i('Manage') . '</a></p>';
+            send($email, $comment->email ?? $email, $title, $content);
         }
     });
 }
