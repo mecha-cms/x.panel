@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" class>
+<html class dir="ltr">
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width" name="viewport">

@@ -79,18 +79,18 @@ if (null !== State::get('x.tag') && (
                     'title' => To::title($v),
                     'author' => $user->user ?? null
                 ]));
-                chmod($f, 0600);
+                @chmod($f, 0600);
                 file_put_contents($ff = $dd . DS . 'id.data', $any);
-                chmod($ff, 0600);
+                @chmod($ff, 0600);
                 file_put_contents($ff = $dd . DS . 'time.data', date('Y-m-d H:i:s'));
-                chmod($ff, 0600);
+                @chmod($ff, 0600);
                 $_['alert']['info'][] = ['%s %s successfully created.', ['Tag', '<code>' . _\lot\x\panel\h\path($f) . '</code>']];
                 ++$any;
             }
         }
         sort($out);
         file_put_contents($f = Path::F($_['f']) . DS . 'kind.data', json_encode($out));
-        chmod($f, 0600);
+        @chmod($f, 0600);
         return $_;
     }, 11);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [

@@ -240,12 +240,11 @@ function state($_, $lot) {
             return $_;
         }
         if (\is_file($f = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
-            $f = \realpath($f);
+            $_['f'] = $f = \realpath($f);
             $v = \array_replace_recursive((array) require $f, $lot['state'] ?? []);
             $v = $null($v);
-            \file_put_contents($f, '<?php return ' . \z($v) . ';');
-            @\chmod($f, 0600);
-            $_['alert']['success'][] = ['File %s successfully updated.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
+            $lot['file']['content'] = '<?php return ' . \z($v) . ';';
+            $_ = file($_, $lot);
         }
         $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . $e;
     }
