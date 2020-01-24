@@ -15,7 +15,7 @@ a[href]:active {
 mark {
   background: #ff0;
 }
-pre {
+pre code {
   background: #333;
   color: #fff;
 }
@@ -495,3 +495,5 @@ pre.is\:text {
     color: inherit;
   }
 }
+
+.hl-name,.hl-strong{font-weight:bold}.hl-code,.hl-emphasis{font-style:italic}.hl-tag{color:#62c8f3}.hl-variable,.hl-template-variable,.hl-selector-id,.hl-selector-class{color:#ade5fc}.hl-string,.hl-bullet{color:#a2fca2}.hl-type,.hl-title,.hl-section,.hl-attribute,.hl-quote,.hl-built_in,.hl-builtin-name{color:#ffa}.hl-number,.hl-symbol,.hl-bullet{color:#d36363}.hl-keyword,.hl-selector-tag,.hl-literal{color:#fcc28c}.hl-comment,.hl-deletion,.hl-code{color:#888}.hl-regexp,.hl-link{color:#c6b4f0}.hl-meta{color:#fc9b9b}.hl-deletion{background-color:#fc9b9b;color:#333}.hl-addition{background-color:#a2fca2;color:#333}.hl a{color:inherit}.hl a:focus,.hl a:hover{color:inherit;text-decoration:underline}

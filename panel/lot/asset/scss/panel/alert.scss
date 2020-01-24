@@ -1,0 +1,36 @@
+.alert {
+  .error {
+    color: #f00;
+  }
+  .info {
+    color: #00f;
+  }
+  .success {
+    color: #0b0;
+  }
+  p {
+    + p {
+      margin-top: ($y / 2);
+    }
+    .f\:r svg {
+      margin-right: -($x / 4);
+    }
+    > small {
+      + br {
+        display: none;
+        + small {
+          display: flex;
+          flex-wrap: wrap;
+          margin: 0 -($x / 8);
+          padding: ($y / 2) 0 ($y / 4);
+          a {
+            font-size: ($z * .75);
+            margin: 0 ($x / 8);
+            padding: 0 ($x / 3);
+            background: rgba(0, 0, 0, .05);
+          }
+        }
+      }
+    }
+  }
+}

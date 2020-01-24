@@ -1,9 +1,17 @@
 <?php
 
+
+
+
+
 Hook::set('get', function() use($_) {
     Asset::let(); // Again: remove all asset(s)
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset' . DS;
-    Asset::set($f . 'css' . DS . 'panel.min.css', 20);
+    if (null !== State::get('x.scss')) {
+        Asset::set($f . 'scss' . DS . 'panel.scss', 20);
+    } else {
+        Asset::set($f . 'css' . DS . 'panel.min.css', 20);
+    }
     Asset::set($f . 'js' . DS . 'panel.min.js', 20);
     extract($GLOBALS);
     $js = $_;

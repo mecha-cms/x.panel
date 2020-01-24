@@ -1,0 +1,614 @@
+.lot\:bar {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: ($y * 2);
+  > ul,
+  > ul > li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: auto;
+    height: inherit;
+  }
+  > ul {
+    display: flex;
+    height: ($y * 2);
+    > li {
+      > a {
+        display: block;
+        height: inherit;
+        padding: 0 ($x * .75);
+        overflow: hidden;
+      }
+      &.active {
+        a {
+          color: inherit;
+        }
+      }
+      &.is\:separator {
+        width: 1px;
+        height: $y;
+        margin: ($y / 2) 0;
+        overflow: hidden;
+        &:first-child,
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+    &:nth-child(2) {
+      flex: 1;
+    }
+  }
+  .field {
+    margin: 0;
+    padding: 0;
+    width: auto;
+    height: inherit;
+    > * {
+      margin-right: 0;
+      margin-left: 0;
+    }
+    label {
+      display: none;
+    }
+    .input {
+      display: block;
+      width: ($x * 8);
+      height: ($y * 2);
+      line-height: ($y * 2);
+      margin: 0;
+      padding: 0 ($x / 1.5);
+      border: 0;
+    }
+  }
+  .title {
+    svg {
+      margin: ($y / 2) -($x / 4) 0;
+      &:first-child {
+        margin-right: ($x / 4);
+      }
+      &:last-child {
+        margin-left: ($x / 4);
+      }
+      &:only-child {
+        margin-right: -($x / 4);
+        margin-left: -($x / 4);
+      }
+      &.caret {
+        &:first-child {
+          margin-right: 0;
+          margin-left: -($x / 2);
+        }
+        &:last-child {
+          margin-right: -($x / 2);
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
+.lot\:button {
+  display: inline-flex;
+  .button {
+    + .button {
+      margin-left: 1px;
+    }
+    .title {
+      svg {
+        &.caret {
+          &:only-child {
+            margin-right: -($x / 2);
+            margin-left: -($x / 2);
+          }
+        }
+      }
+    }
+  }
+}
+
+.lot\:color {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -($x / 4);
+  margin-left: -($x / 4);
+  .input {
+    margin-right: ($x / 4);
+    margin-left: ($x / 4);
+  }
+}
+
+.lot\:file,
+.lot\:page {
+  margin-right: 0;
+  margin-left: 0;
+  padding: 0;
+  display: block;
+  list-style: none;
+  h3,
+  li,
+  p {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    list-style: none;
+    border-color: inherit;
+  }
+  h3 {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    a {
+      &.not\:active {
+        opacity: 1;
+      }
+    }
+    .title {
+      display: inline-flex;
+    }
+  }
+  li {
+    display: flex;
+    background: $color-back;
+    border: 0 solid $color-back;
+    padding: ($y / 4) ($x / 2);
+    margin: 0 -($x / 4);
+    position: relative;
+    overflow: hidden;
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      width: $x;
+      height: $y;
+      position: absolute;
+      top: ($y / 4);
+      left: ($x / 4);
+    }
+    > * {
+      margin: 0 ($x / 8);
+    }
+    > .lot\:task {
+      margin-right: -($x / 4);
+    }
+  }
+  .is\:file,
+  .is\:folder {
+    padding-left: ($x * 1.75);
+  }
+  .is\:file {
+    &::before {
+      background: transparent;
+      border: 1px solid;
+      width: 20px; // Magic :(
+    }
+    &::after {
+      width: 0;
+      height: 0;
+      border: 3px solid; // Magic :(
+      border-top-color: inherit;
+      border-right-color: inherit;
+      left: 20px; // Magic :(
+    }
+  }
+  .is\:folder {
+    &::before {
+      background: $color;
+      height: 18px;
+      top: 11px;
+    }
+    &::after {
+      border-top: 3px solid $color;
+      width: 12px;
+      top: 7px;
+    }
+  }
+  .not\:active:not(:focus):not(:hover) {
+    opacity: .5;
+  }
+  &.count\:0 {
+    display: none;
+  }
+}
+
+.lot\:page {
+  li {
+    padding: ($y / 2) ($x / 4);
+    margin: 0 -($x / 2);
+    > * {
+      margin: 0 ($x / 4);
+    }
+    > div {
+      min-height: ($y * 2.25);
+      &:first-child {
+        + div {
+          flex: 1;
+        }
+      }
+    }
+    &.is\:file,
+    &.is\:folder {
+      padding-left: ($x / 4);
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+  }
+  h3 {
+    font-size: ($z * 1.25);
+  }
+  img,
+  .img {
+    display: block;
+    width: ($y * 2.25);
+    height: ($y * 2.25);
+    max-width: ($y * 2.25);
+    max-height: ($y * 2.25);
+    min-width: 0;
+    min-height: 0;
+  }
+  .description {
+    margin: ($y / 4) 0 0;
+  }
+}
+
+.lot\:input {
+  display: inline-flex;
+  position: relative;
+  * {
+    + * {
+      margin-left: -1px;
+    }
+  }
+  &.width {
+    display: flex;
+  }
+  .fix {
+    width: auto;
+    max-width: 50%;
+    background: rgba(0, 0, 0, .15);
+    cursor: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  svg.fix {
+    width: ($x * 1.5);
+    padding: (($y / 6) + 1) 0; // (($y / 6) + border-y-width) 0
+  }
+  .button {
+    background: none;
+    color: inherit;
+    border-width: 1px;
+    line-height: ($h - 2); // $h - (border-top-width + border-bottom-width)
+    .title {
+      svg {
+        margin: -1px;
+        &:first-child {
+          margin-left: -(($x / 4) + 1); // -(($x / 4) + border-left-width)
+        }
+        &:last-child {
+          margin-right: -(($x / 4) + 1); // -(($x / 4) + border-right-width)
+        }
+        &:only-child {
+          margin-right: -(($x / 4) + 1); // -(($x / 4) + border-right-width)
+          margin-left: -(($x / 4) + 1); // -(($x / 4) + border-left-width)
+        }
+      }
+    }
+    &:focus,
+    &:active {
+      background: rgba(0, 0, 0, .05);
+      color: inherit;
+    }
+  }
+  .lot\:button {
+    .button {
+      + .button {
+        margin-left: -1px;
+      }
+    }
+  }
+}
+
+.lot\:item,
+.lot\:items,
+.lot\:toggle {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -($x / 4);
+  padding: ($x / 4) 0;
+  > * {
+    margin: 0 ($x / 4);
+  }
+  > label {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    > * {
+      margin: 0 ($x / 4);
+    }
+  }
+  &.is\:block {
+    display: block;
+  }
+}
+
+.has\:menu {
+  display: inline-flex;
+  position: relative;
+}
+
+.lot\:menu {
+  &,
+  ul,
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  &,
+  ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9998;
+    background: $color-back;
+    width: ($x * 8);
+    height: auto;
+    line-height: $y;
+    display: none;
+  }
+  ul {
+    top: 0;
+    left: 100%;
+  }
+  li {
+    position: relative;
+    &:hover {
+      > ul {
+        display: block;
+      }
+    }
+    &.is\:separator {
+      width: auto;
+      height: 1px;
+      background: $color;
+      opacity: .125;
+      margin: 0;
+      overflow: hidden;
+      &:first-child,
+      &:last-child {
+        display: none;
+      }
+    }
+    &.is\:current {
+      > a {
+        color: inherit;
+      }
+    }
+    .title {
+      svg {
+        margin: 0 -($x / 4);
+        &:first-child {
+          margin-right: ($x / 4);
+        }
+        &:last-child {
+          margin-left: ($x / 4);
+        }
+        &:only-child {
+          margin-right: -($x / 4);
+          margin-left: -($x / 4);
+        }
+      }
+    }
+  }
+  a {
+    display: block;
+    padding: ($y / 4) ($x / 2);
+    color: $color-link;
+    &:focus {
+      color: $color-link-focus;
+      + ul {
+        display: block;
+      }
+    }
+    &:active {
+      color: $color-link-active;
+    }
+  }
+  &.is\:static {
+    display: block;
+    position: static;
+    width: auto;
+  }
+  &.is\:enter,
+  ul.is\:enter {
+    display: block;
+  }
+  &.a\:r ul {
+    float: none;
+    left: auto;
+    right: 100%;
+  }
+}
+
+.lot\:pager {
+  margin: 0 -($x / 8);
+  &,
+  > span {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  > span {
+    > a,
+    > b,
+    > span {
+      background: $color-back-button;
+      color: $color-button;
+      font: inherit;
+      padding: 0 ($x / 4);
+      margin: 0 ($x / 8);
+    }
+    > a {
+      &:focus {
+        background: $color-back-button-focus;
+        color: $color-button;
+      }
+      &:active {
+        background: $color-back-button-active;
+        color: $color-button;
+      }
+    }
+    > b,
+    > span {
+      background: none;
+      color: inherit;
+    }
+  }
+}
+
+.lot\:tab {
+  > nav {
+    height: ($y * 2);
+    line-height: ($y * 2);
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    ul {
+      display: flex;
+      overflow: hidden;
+    }
+    li {
+      position: relative;
+      border: 1px solid;
+      border-bottom-width: 0;
+      + li {
+        border-left-width: 0;
+      }
+      &.is\:active {
+        z-index: 4;
+        &::before,
+        &::after {
+          content: "";
+          display: block;
+          position: absolute;
+          bottom: 0;
+          width: 9999em;
+          height: 0;
+          border-bottom: 1px solid;
+        }
+        &::before {
+          right: 100%;
+        }
+        &::after {
+          left: 100%;
+        }
+      }
+      &:not(.has\:link) {
+        a {
+          color: inherit;
+        }
+      }
+    }
+    a {
+      display: block;
+      padding: 0 ($x - 2); // Magic :(
+    }
+    .title {
+      svg {
+        margin: ($y / 2) -(($x / 2) - 2);
+        &:first-child {
+          margin-right: ($x / 4);
+        }
+        &:last-child {
+          margin-left: ($x / 4);
+        }
+        &:only-child {
+          margin-right: -(($x / 2) - 2);
+          margin-left: -(($x / 2) - 2);
+        }
+      }
+    }
+  }
+  > section {
+    margin-top: $y;
+    display: none;
+    &.is\:active {
+      display: block;
+    }
+  }
+  &.count\:0 {
+    display: none;
+  }
+  &.count\:1 {
+    > nav {
+      display: none;
+    }
+    > section {
+      margin-top: 0;
+    }
+  }
+}
+
+.lot\:table {
+  border: 1px solid;
+  overflow: auto;
+  .table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    th,
+    td {
+      padding: 0 ($z / 4);
+      border: 0;
+      background: $color;
+      color: $color-back;
+      white-space: nowrap;
+    }
+  }
+}
+
+.lot\:task {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: -($y / 8) -($x / 8);
+  > * {
+    margin: ($y / 8) ($x / 8);
+  }
+  &\.link {
+    margin-right: -($x / 4);
+    margin-left: -($x / 4);
+    > * {
+      margin-right: ($x / 4);
+      margin-left: ($x / 4);
+      .title {
+        span {
+          margin-left: ($x / 8);
+        }
+      }
+    }
+  }
+}
+
+.lot\:desk,
+.lot\:section {
+  padding: $y $x;
+  margin: 0 auto;
+}
+
+.lot\:desk {
+  max-width: (1024 - 8); // Magic :(
+}
+
+.lot\:section {
+  &.count\:0 {
+    display: none;
+  }
+}

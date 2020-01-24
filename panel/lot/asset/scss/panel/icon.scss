@@ -1,0 +1,57 @@
+svg {
+  display: inline-block;
+  width: $x;
+  height: $y;
+  min-width: $x;
+  min-height: $y;
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: top;
+  font-weight: normal;
+  font-style: normal;
+  fill: currentColor;
+  border-color: inherit;
+  position: relative;
+  overflow: hidden;
+  text-indent: -9999px;
+  @include user-select(none);
+  &[display="none"] {
+    display: none;
+  }
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  > span {
+    flex: 1;
+  }
+}
+
+.description {}
+
+.button {
+  .title {
+    svg {
+      margin: 0 -($x / 4);
+      &:first-child {
+        margin-right: ($x / 4);
+      }
+      &:last-child {
+        margin-left: ($x / 4);
+      }
+      &:only-child {
+        margin-right: -($x / 4);
+        margin-left: -($x / 4);
+      }
+      &.caret {
+        &:first-child {
+          margin-right: 0;
+        }
+        &:last-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,284 @@
+*,
+::before,
+::after {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+  box-sizing: border-box;
+}
+
+::-webkit-input-placeholder {
+  @include placeholder(.5);
+}
+
+::-moz-placeholder {
+  @include placeholder(.5);
+}
+
+::placeholder {
+  @include placeholder(.5);
+}
+
+:focus {
+  outline: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  &[href] {
+    color: $color-link;
+    &:focus {
+      color: $color-link-focus;
+    }
+    &:active {
+      color: $color-link-active;
+    }
+  }
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  font: normal normal $z/$h $sans;
+  text-align: left;
+  background: $color-back;
+  color: $color;
+}
+
+abbr {
+  border: 0;
+  text-decoration: none;
+  cursor: inherit;
+  border-bottom: 1px solid transparent;
+  &[title]:hover {
+    border-bottom-color: inherit;
+    cursor: help;
+  }
+}
+
+article,
+aside,
+footer,
+header,
+main,
+nav,
+section {
+  display: block;
+}
+
+b,
+dt,
+legend,
+strong,
+th {
+  font-weight: bolder;
+}
+
+blockquote,
+caption,
+dfn,
+em,
+figcaption,
+i,
+var {
+  font-style: italic;
+}
+
+figure {
+  @extend .text-center;
+}
+
+code {
+  @extend .code;
+}
+
+del,
+s {
+  @extend .strike;
+}
+ins,
+u {
+  @extend .underline;
+}
+
+kbd,
+small,
+sub,
+sup {
+  @extend .small;
+}
+
+sub,
+sup {
+  display: inline;
+  position: relative;
+  vertical-align: middle;
+}
+
+sub {
+  top: .5em;
+}
+
+sup {
+  top: -.5em;
+}
+
+mark {
+  background: $color-back-mark;
+  color: inherit;
+}
+
+pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-weight: normal;
+  font-style: normal;
+  overflow: auto;
+  code {
+    display: block;
+    background: #000;
+    color: #fff;
+    padding: ($y - $z) ($x / 2);
+  }
+  &.is\:text {
+    code {
+      background: none;
+      border: 1px dotted;
+      color: inherit;
+      padding: ($y - $z) ($x / 2);
+    }
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+@for $i from 0 through 5 {
+  h#{$i + 1} {
+    font-size: ($z * (2 - (.25 * $i)));
+    line-height: 1;
+  }
+}
+
+kbd {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 ($z / 2);
+  cursor: pointer;
+}
+
+blockquote,
+dl,
+fieldset,
+figcaption,
+figure,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+ol,
+p,
+pre,
+table,
+ul {
+  @extend .p;
+}
+
+blockquote {
+  font-size: ($z * 1.1);
+  margin-right: $x;
+  margin-left: $x;
+}
+
+figure {
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+  figcaption {
+    margin-top: ($y / 4);
+  }
+}
+
+ol,
+ul,
+dd {
+  margin-left: ($x + $z);
+}
+
+ol,
+ul {
+  &,
+  & & {
+    margin-top: 0;
+    margin-left: $z;
+  }
+}
+
+ul {
+  list-style: square;
+}
+
+fieldset,
+hr {
+  color: inherit;
+  border: 1px solid;
+}
+
+fieldset {
+  padding: $y $x;
+}
+
+hr {
+  border-style: dashed;
+}
+
+legend {
+  padding: 0 ($x / 3);
+  margin: 0;
+  + blockquote,
+  + dl,
+  + fieldset,
+  + figure,
+  + form,
+  + h1,
+  + h2,
+  + h3,
+  + h4,
+  + h5,
+  + h6,
+  + hr,
+  + ol,
+  + p,
+  + pre,
+  + table,
+  + ul,
+  + .p {
+    margin-top: 0;
+  }
+}
+
+hr {
+  border-width: 1px 0 0;
+}

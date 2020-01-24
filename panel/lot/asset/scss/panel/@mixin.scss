@@ -1,0 +1,10 @@
+@mixin placeholder($opacity: 1, $color: inherit) {
+  color: $color;
+  opacity: $opacity;
+}
+
+@mixin user-select($select: normal) {
+  -webkit-user-select: $select;
+  -moz-user-select: $select;
+  user-select: $select;
+}

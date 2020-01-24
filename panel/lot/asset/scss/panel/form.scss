@@ -1,0 +1,195 @@
+.button,
+.input,
+.select,
+.textarea,
+.lot\:input .fix {
+  display: inline-block;
+  vertical-align: middle;
+  background: $color-back;
+  color: $color;
+  border: 1px solid;
+  width: ($x * 8);
+  height: ($y * 1.5);
+  line-height: (($y * 1.5) - ($y / 2) - 2); /* height - (padding-top + padding-bottom) - (border-top-width + border-bottom-width) */
+  padding: ($y / 4) ($x / 2);
+  text-align: left;
+  position: relative;
+  z-index: 0;
+  &:focus {
+    z-index: 1;
+  }
+}
+
+.button {
+  width: auto;
+  text-align: center;
+  background: $color-back-button;
+  color: $color-button;
+  border-width: 0;
+  line-height: $y; // Why?
+  &:focus {
+    background: $color-back-button-focus;
+  }
+  &:active {
+    background: $color-back-button-active;
+  }
+  &[href] {
+    &,
+    &:focus,
+    &:active {
+      color: $color-button;
+    }
+  }
+}
+
+[disabled] {
+  .button&,
+  .input&,
+  .select&,
+  .textarea& {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+}
+
+[readonly] {
+  .input&,
+  .select&,
+  .textarea& {
+    border-style: dotted;
+  }
+}
+
+.input,
+.textarea {
+  &:focus:invalid {
+    color: $color-error;
+    border-color: $color-border-error;
+  }
+}
+
+.button,
+details > summary,
+label {
+  @include user-select(none);
+  cursor: pointer;
+}
+
+.button {
+  &.is\:text {
+    background: none;
+    border: 0;
+    color: $color-link;
+    &:focus {
+      background: none;
+      color: $color-link-focus;
+    }
+    &:active {
+      background: none;
+      color: $color-link-active;
+    }
+  }
+}
+
+.input {
+  &[type="color"],
+  &[type="file"],
+  &[type="range"] {
+    cursor: pointer;
+  }
+}
+
+.input {
+  &[type="file"],
+  &[type="range"] {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: ($z * .75);
+    line-height: $y;
+  }
+}
+
+.input {
+  &[type="checkbox"],
+  &[type="color"],
+  &[type="image"],
+  &[type="radio"] {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    cursor: pointer;
+  }
+}
+
+.input[type="color"] {
+  width: ($x * 1.5);
+  height: ($y * 1.5);
+}
+
+.input[type="image"] {
+  width: auto;
+  height: auto;
+}
+
+.select {
+  cursor: pointer;
+  &:not([multiple]) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  &[multiple] {
+    height: auto;
+    optgroup,
+    option {
+      background: none;
+    }
+  }
+  optgroup,
+  option {
+    background: $color-back;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+  }
+  optgroup {
+    font-weight: bolder;
+    option {
+      font-weight: normal;
+      padding-left: ($x / 3);
+    }
+  }
+}
+
+.width {
+  display: flex;
+  width: 100%;
+}
+
+.textarea {
+  min-height: ($y * 3.75);
+  resize: vertical;
+  overflow: auto;
+  &.height {
+    height: ($y * 10.75);
+  }
+}
+
+label {
+  > input {
+    &[type="checkbox"],
+    &[type="radio"] {
+      + span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  &.not\:active {
+    cursor: not-allowed;
+  }
+}

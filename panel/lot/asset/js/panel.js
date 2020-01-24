@@ -46,9 +46,7 @@
             return _;
         };
 
-    _.ASSET_CSS = {
-        'css/panel/field/query': {}
-    };
+    _.ASSET_CSS = {};
 
     _.ASSET_JS = {
         'js/panel/alert': {},

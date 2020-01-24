@@ -1,0 +1,185 @@
+.bold {
+  font-weight: bolder;
+}
+
+.code {
+  font-family: $mono;
+  font-size: ($z - 3); // Magic :(
+}
+
+.italic {
+  font-style: italic;
+}
+
+.p {
+  * + & {
+    margin-top: $y;
+  }
+}
+
+.small {
+  font-size: ($z * .8);
+}
+
+.strike {
+  text-decration: line-through;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.is\:hidden,
+[hidden] {
+  display: none !important;
+}
+
+.not\:active {
+  opacity: .5;
+  cursor: not-allowed;
+  & + & {
+    opacity: 1;
+  }
+}
+
+.text-center,
+.ta\:c {
+  text-align: center;
+}
+
+.text-justify,
+.ta\:j {
+  text-align: justify;
+}
+
+.text-right,
+.ta\:r {
+  text-align: left;
+}
+
+.text-left,
+.ta\:l {
+  text-align: left;
+}
+
+.align-right,
+.align-left,
+.align-center,
+.a\:r,
+.a\:l,
+.a\:c {
+  display: block;
+  float: none;
+}
+
+* + .align-center,
+* + .a\:c {
+  margin-top: $y;
+}
+
+.align-right,
+.a\:r {
+  margin-top: ($y / 3);
+  margin-bottom: ($y / 1.5);
+  margin-left: $x;
+  float: right;
+  text-align: right;
+}
+
+.align-left,
+.a\:l {
+  margin-top: ($y / 3);
+  margin-right: $x;
+  margin-bottom: ($y / 1.5);
+  float: left;
+  text-align: left;
+  img {
+    display: block;
+  }
+}
+
+.align-center,
+.a\:c {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  img {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+.f\:r {
+  float: right;
+}
+
+.f\:l {
+  float: left;
+}
+
+$sizes: 0, 1, 2;
+
+@each $size in $sizes {
+  .m\:#{$size} {
+    margin: ($y * $size) ($x * $size);
+  }
+  .mt\:#{$size} {
+    margin-top: ($y * $size);
+  }
+  .mr\:#{$size} {
+    margin-right: ($x * $size);
+  }
+  .mb\:#{$size} {
+    margin-bottom: ($y * $size);
+  }
+  .ml\:#{$size} {
+    margin-left: ($x * $size);
+  }
+  .mx\:#{$size} {
+    margin-right: ($x * $size);
+    margin-left: ($x * $size);
+  }
+  .my\:#{$size} {
+    margin-top: ($y * $size);
+    margin-bottom: ($y * $size);
+  }
+  .p\:#{$size} {
+    padding: ($y * $size) ($x * $size);
+  }
+  .pt\:#{$size} {
+    padding-top: ($y * $size);
+  }
+  .pr\:#{$size} {
+    padding-right: ($x * $size);
+  }
+  .pb\:#{$size} {
+    padding-bottom: ($y * $size);
+  }
+  .pl\:#{$size} {
+    padding-left: ($x * $size);
+  }
+  .px\:#{$size} {
+    padding-right: ($x * $size);
+    padding-left: ($x * $size);
+  }
+  .py\:#{$size} {
+    padding-top: ($y * $size);
+    padding-bottom: ($y * $size);
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  caption {
+    margin-bottom: ($y / 4);
+  }
+  th,
+  td {
+    border: 1px solid;
+    padding: ($y / 6) ($x / 3);
+    text-align: inherit;
+    vertical-align: top;
+  }
+}
