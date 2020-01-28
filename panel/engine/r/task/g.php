@@ -64,7 +64,8 @@ function file($_, $lot) {
             @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
-            $_SESSION['_']['file'][$_['f'] = $f] = 1;
+            $_['f'] = $f;
+            $_SESSION['_']['file'][\trim($f, \DS)] = 1;
         }
     }
     if (!empty($_['alert']['error'])) {
@@ -103,7 +104,7 @@ function folder($_, $lot) {
             } else {
                 $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
             }
-            $_SESSION['_']['folder'][$f] = 1;
+            $_SESSION['_']['folder'][\trim($f, \DS)] = 1;
         } else {
             \mkdir($f, $seal = \octdec($lot['folder']['seal'] ?? '0755'), true);
             foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($_['f'], \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
@@ -128,7 +129,8 @@ function folder($_, $lot) {
             } else {
                 $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
             }
-            foreach (\step($_['f'] = $f, \DS) as $v) {
+            $_['f'] = $f;
+            foreach (\step(\trim($f, \DS), \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }

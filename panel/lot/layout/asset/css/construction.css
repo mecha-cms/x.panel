@@ -156,11 +156,6 @@ caption {
 .description {
   color: #888;
 }
-.input.is\:plain {
-  background: none;
-  border: 0;
-  box-shadow: none;
-}
 .lot\:bar {
   background: #1a1a1a;
   color: #ccc;
@@ -417,6 +412,15 @@ pre.is\:text {
 .input[type='checkbox'][disabled],
 .input[type='radio'][disabled] {
   background: #999;
+}
+label.is\:frozen {
+  opacity: 1;
+}
+label.is\:frozen > .input[type="checkbox"] + span {
+  color: #060;
+}
+label.is\:frozen > .input[type="radio"] + span {
+  color: #047;
 }
 .field\:toggle .input[type='checkbox'] {
   width: 30px;

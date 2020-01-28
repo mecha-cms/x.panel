@@ -19,7 +19,7 @@ function description($in, $or = null) {
     }
     $out = [
         0 => 'p',
-        1 => (string) \i(...("" !== $description ? (array) $description : (array) $or)),
+        1 => \w((string) \i(...("" !== $description ? (array) $description : (array) $or)), ['a', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong']),
         2 => []
     ];
     unset($in['tags']);
@@ -30,14 +30,15 @@ function description($in, $or = null) {
 function field($in, $key) {
     $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $in['name'] ?? $key;
-    if ($readonly = !empty($in['read-only'])) {
-        $in['tags'][] = 'is:readonly';
-    }
-    if ($required = !empty($in['required'])) {
-        $in['tags'][] = 'is:required';
-    }
     if ($disabled = isset($in['active']) && !$in['active']) {
         $in['tags'][] = 'not:active';
+    // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
+    } else if ($readonly = !empty($in['frozen'])) {
+        $in['tags'][] = 'is:frozen';
+    }
+    // TODO: Need a better key name
+    if ($required = !empty($in['required'])) {
+        $in['tags'][] = 'is:required';
     }
     $input = [
         0 => 'textarea',
@@ -45,13 +46,13 @@ function field($in, $key) {
         2 => [
             'autofocus' => !empty($in['focus']),
             'class' => "",
-            'disabled' => $disabled,
+            'disabled' => $disabled ?? null,
             'id' => $in['id'],
             'name' => $name,
             'pattern' => $in['pattern'] ?? null,
             'placeholder' => \i(...((array) ($in['alt'] ?? []))),
-            'readonly' => $readonly,
-            'required' => $required
+            'readonly' => $readonly ?? null,
+            'required' => $required ?? null
         ]
     ];
     $in['content'] = $input;
@@ -128,7 +129,7 @@ function title($in, $i = -1, $or = null) {
     ];
     $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
     if (null !== $title && false !== $title) {
-        $title = '<span>' . \i(...((array) $title)) . '</span>';
+        $title = \w('<span>' . \i(...((array) $title)) . '</span>', ['a', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong']);
     }
     $out[1] = $icon[0] . $title . $icon[1];
     unset($in['tags']);

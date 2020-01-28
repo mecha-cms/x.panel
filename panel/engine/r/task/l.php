@@ -48,7 +48,7 @@ function file($_, $lot) {
                 \mkdir($dd, 0775, true);
             }
             \rename($f, $ff);
-            $_SESSION['_']['file'][$ff] = 1;
+            $_SESSION['_']['file'][\trim($ff, \DS)] = 1;
         } else {
             \unlink($f);
         }
@@ -79,8 +79,13 @@ function folder($_, $lot) {
                 if (!\is_dir($dd = \dirname($vv))) {
                     \mkdir($dd, 0775, true);
                 }
-                \rename($v, $vv);
-                $_SESSION['_'][$k->isDir() ? 'folder' : 'file'][$vv] = 1;
+                if (!\is_dir(\dirname($vv))) {
+                    \rename($v, $vv);
+                }
+                if ($k->isDir()) {
+                    \rmdir($v);
+                }
+                $_SESSION['_'][$k->isDir() ? 'folder' : 'file'][\trim($vv, \DS)] = 1;
             } else {
                 if ($k->isDir()) {
                     \rmdir($v);
@@ -90,7 +95,7 @@ function folder($_, $lot) {
             }
         }
         if ($trash) {
-            $_SESSION['_']['folder'][\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS])] = 1;
+            $_SESSION['_']['folder'][\trim(\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]), \DS)] = 1;
         }
         \rmdir($f);
         $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];

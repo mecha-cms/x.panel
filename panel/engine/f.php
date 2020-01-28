@@ -32,7 +32,7 @@ namespace _\lot\x\panel {
             2 => $in[2] ?? []
         ];
         if (!\array_key_exists('title', $in) || false !== $in['title']) {
-            $title = \_\lot\x\panel\h\title($in, -2, \ucfirst($key));
+            $title = \_\lot\x\panel\h\title($in, -2, \To::title($key));
             $out[1] .= '<label' . ("" === \strip_tags($title) ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
         }
         $before = "";
@@ -82,6 +82,8 @@ namespace _\lot\x\panel {
             2 => $in[2] ?? []
         ];
         $append = "";
+        $title = \_\lot\x\panel\h\title($in, 3);
+        $description = \_\lot\x\panel\h\description($in);
         if (isset($in['content'])) {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
@@ -104,6 +106,7 @@ namespace _\lot\x\panel {
             }
             $out[1] .= $append;
         }
+        $out[1] = $title . $description . $out[1];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return "" !== $out[1] ? new \HTML($out) : null;
     }
@@ -150,7 +153,7 @@ namespace _\lot\x\panel {
         $lot = 0 === $chunk ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
         foreach ($lot[$current - 1] ?? [] as $k => $v) {
-            $path = $v['path'] ?? false;
+            $path = \trim($v['path'] ?? "", \DS);
             if (!empty($v['current']) || $path && (
                 isset($_SESSION['_']['file'][$path]) ||
                 isset($_SESSION['_']['folder'][$path])
@@ -189,11 +192,14 @@ namespace _\lot\x\panel {
         ], 0);
         return new \HTML($out);
     }
+    function Folders($in, $key) {
+        return \_\lot\x\panel\Files($in, $key);
+    }
     function Form($in, $key) {
         $out = [
             0 => $in[0] ?? 'form',
             1 => $in[1] ?? "",
-            2 => []
+            2 => $in[2] ?? []
         ];
         if (isset($in['active']) && empty($in['active'])) {
             $out[0] = false;
@@ -213,10 +219,10 @@ namespace _\lot\x\panel {
         $out = [
             0 => $in[0] ?? 'a',
             1 => $in[1] ?? "",
-            2 => []
+            2 => $in[2] ?? []
         ];
         if ("" === $out[1]) {
-            $out[1] = \_\lot\x\panel\h\title($in, -1, \ucfirst($key));
+            $out[1] = \_\lot\x\panel\h\title($in, -1, \To::title($key));
         }
         $tags = [];
         $href = $in['link'] ?? $in['url'] ?? \P;
@@ -226,6 +232,9 @@ namespace _\lot\x\panel {
         }
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $out[2]['href'] = \P === $href ? null : $href;
+        if (isset($in['id'])) {
+            $out[2]['id'] = $in['id'];
+        }
         $out[2]['target'] = $in[2]['target'] ?? (isset($in['link']) ? '_blank' : null);
         $out[2]['title'] = \i(...((array) ($in['description'] ?? [])));
         return new \HTML($out);
@@ -537,11 +546,19 @@ namespace _\lot\x\panel {
         $type = $in['type'] ?? null;
         $title = \_\lot\x\panel\h\title($in, 2);
         $description = \_\lot\x\panel\h\description($in);
-        return new \HTML([
-            0 => 'div',
-            1 => $title . $description . \_\lot\x\panel\h\content($in['content']),
-            2 => ['class' => 'count:1 lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")]
-        ]);
+        $out = [
+            0 => $in[0] ?? 'div',
+            1 => $in[1] ?? $title . $description,
+            2 => $in[2] ?? []
+        ];
+        if (isset($in['content'])) {
+            $out[1] .= \_\lot\x\panel\h\content($in['content']);
+        }
+        $out[2] = \array_replace([
+            'class' => 'count:1 lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : ""),
+            'id' => $in['id'] ?? null
+        ], $out[2]);
+        return new \HTML($out);
     }
     function lot($in, $key) {
         $type = $in['type'] ?? null;
@@ -556,7 +573,10 @@ namespace _\lot\x\panel {
         if (isset($in['lot'])) {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot'], null, $count);
         }
-        $out[2] = \array_replace(['class' => 'count:' . $count . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : "")], $out[2]);
+        $out[2] = \array_replace([
+            'class' => 'count:' . $count . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : ""),
+            'id' => $in['id'] ?? null
+        ], $out[2]);
         return new \HTML($out);
     }
 }

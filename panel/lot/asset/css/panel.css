@@ -463,6 +463,9 @@ hr {
   line-height: 16px;
   margin: 10px 0 0;
 }
+.field .description code {
+  font-size: 10.4px;
+}
 .tag-picker, .tag-picker * {
   box-sizing: border-box;
   font: inherit;
@@ -638,6 +641,9 @@ hr {
   line-height: 1em;
   cursor: pointer;
 }
+.input[type="checkbox"][readonly], .input[type="radio"][readonly] {
+  pointer-events: none;
+}
 .input[type="color"] {
   width: 36px;
   height: 36px;
@@ -687,6 +693,10 @@ hr {
 label > input[type="checkbox"] + span, label > input[type="radio"] + span {
   display: inline-block;
   vertical-align: middle;
+}
+label.is\:frozen {
+  opacity: 0.5;
+  pointer-events: none;
 }
 label.not\:active {
   cursor: not-allowed;
@@ -985,6 +995,10 @@ svg[display="none"] {
 }
 .lot\:page .description {
   margin: 6px 0 0;
+}
+.lot\:field > .description {
+  padding-bottom: 16px;
+  border-bottom: 1px dashed;
 }
 .lot\:input {
   display: inline-flex;

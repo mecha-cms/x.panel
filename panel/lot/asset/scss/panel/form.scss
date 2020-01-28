@@ -124,6 +124,10 @@ label {
     line-height: 1em;
     cursor: pointer;
   }
+  &[type="checkbox"][readonly],
+  &[type="radio"][readonly] {
+    pointer-events: none;
+  }
 }
 
 .input[type="color"] {
@@ -188,6 +192,10 @@ label {
         vertical-align: middle;
       }
     }
+  }
+  &.is\:frozen {
+    opacity: .5;
+    pointer-events: none;
   }
   &.not\:active {
     cursor: not-allowed;

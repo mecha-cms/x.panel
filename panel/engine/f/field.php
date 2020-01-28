@@ -268,7 +268,6 @@ function Field__Items($in, $key) {
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
                 $d = $v['description'] ?? "";
-                $input['disabled'] = isset($v['active']) && !$v['active'];
                 if (isset($v['name'])) {
                     $input['name'] = $v['name'];
                 }
@@ -280,7 +279,17 @@ function Field__Items($in, $key) {
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="not:active"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $class = [];
+            if (isset($v['active']) && !$v['active']) {
+                $input['disabled'] = true;
+                $class[] = 'not:active';
+            // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
+            } else if (!empty($v['frozen'])) {
+                $input['readonly'] = true;
+                $class[] = 'is:frozen';
+            }
+            \sort($class);
+            $a[$t . $k] = '<label' . ($class ? ' class="' . \implode(' ', $class) . '"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($in['block'])) {

@@ -53,7 +53,8 @@ function blob($_, $lot) {
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
                     $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                     $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
-                    $_SESSION['_']['file'][$_['f'] = $f] = 1;
+                    $_['f'] = $f;
+                    $_SESSION['_']['file'][\trim($f, \DS)] = 1;
                     $_['ff'][] = $f;
                     // Extract package
                     if (
@@ -140,7 +141,8 @@ function file($_, $lot) {
             @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
-            $_SESSION['_']['file'][$_['f'] = $f] = 1;
+            $_['f'] = $f;
+            $_SESSION['_']['file'][\trim($f, \DS)] = 1;
         }
     }
     if (!empty($_['alert']['error'])) {
@@ -178,7 +180,8 @@ function folder($_, $lot) {
             } else {
                 $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '/1' . $e;
             }
-            foreach (\step($_['f'] = $f, \DS) as $v) {
+            $_['f'] = $f;
+            foreach (\step(\trim($f, \DS), \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }

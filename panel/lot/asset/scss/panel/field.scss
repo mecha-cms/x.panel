@@ -47,5 +47,8 @@
     font-size: ($z * .75);
     line-height: 16px;
     margin: 10px 0 0;
+    code {
+      font-size: ($z * .65);
+    }
   }
 }

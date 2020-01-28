@@ -255,6 +255,13 @@
   }
 }
 
+.lot\:field {
+  > .description {
+    padding-bottom: ($y - ($h - $z));
+    border-bottom: 1px dashed;
+  }
+}
+
 .lot\:input {
   display: inline-flex;
   position: relative;
