@@ -27,7 +27,7 @@ blockquote, figcaption, caption {
   color: #888;
 }
 .alert p {
-  background: ('error': #fcc, 'info': #ccf, 'success': #cfc);
+  background: #f2f2f2;
   padding: 12px 20px;
 }
 .alert .error {
@@ -126,10 +126,10 @@ blockquote, figcaption, caption {
   color: #999;
 }
 .lot\:bar > ul > li > a:focus, .lot\:bar > ul > li > a:active, .lot\:bar > ul > li.is\:active > a {
-  color: #ccc;
+  color: #e6e6e6;
 }
 .lot\:bar > ul > li > a {
-  color: #b3b3b3;
+  color: #ccc;
 }
 .lot\:bar > ul > li > a:focus > .title svg.caret {
   color: grey;
@@ -197,6 +197,9 @@ blockquote, figcaption, caption {
   background: #fff;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 8px rgba(0, 0, 0, 0.25);
 }
+.lot\:menu li a:focus, .lot\:menu li a:hover, .lot\:menu li.is\:active > a {
+  background: #eef;
+}
 .lot\:menu li.is\:current a.not\:active {
   background: #ea6565;
 }
@@ -216,9 +219,6 @@ blockquote, figcaption, caption {
 }
 .lot\:menu li.is\:separator {
   background: #000;
-}
-.lot\:menu a:focus, .lot\:menu a:hover, .lot\:menu .is\:active > a {
-  background: #eef;
 }
 .lot\:menu .title svg.caret {
   color: #000;

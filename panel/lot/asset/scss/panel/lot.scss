@@ -526,20 +526,20 @@
     }
     a {
       display: block;
-      padding: 0 ($x - 2); // Magic :(
+      padding: 0 ($z * 1.25);
     }
     .title {
       svg {
-        margin: ($y / 2) -(($x / 2) - 2);
+        margin: ($y / 2) -(($z * 1.25) / 2);
         &:first-child {
-          margin-right: ($x / 4);
+          margin-right: (($z * 1.25) / 4);
         }
         &:last-child {
-          margin-left: ($x / 4);
+          margin-left: (($z * 1.25) / 4);
         }
         &:only-child {
-          margin-right: -(($x / 2) - 2);
-          margin-left: -(($x / 2) - 2);
+          margin-right: -(($z * 1.25) / 2);
+          margin-left: -(($z * 1.25) / 2);
         }
       }
     }

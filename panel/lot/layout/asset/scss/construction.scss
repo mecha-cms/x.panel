@@ -90,8 +90,8 @@ $color-back-alert: (
 
 .alert {
   p {
-    background: $color-back-alert;
-    padding: ($y / 2) ($x - (($h - $z) / 2));
+    background: darken($color-back, 5%);
+    padding: ($z * .75) ($z * 1.25);
   }
   @each $k, $v in $color-back-alert {
     .#{$k} {
@@ -239,10 +239,10 @@ $color-back-alert: (
       > a:focus,
       > a:active,
       &.is\:active > a {
-        color: darken($color-back, 20%);
+        color: darken($color-back, 10%);
       }
       > a {
-        color: darken($color-back, 30%);
+        color: darken($color-back, 20%);
         &:focus {
           > .title {
             svg {
@@ -355,6 +355,11 @@ $color-back-alert: (
     box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 4px 8px rgba(0, 0, 0, .25);
   }
   li {
+    a:focus,
+    a:hover,
+    &.is\:active > a {
+      background: $color-back-list-hover;
+    }
     &.is\:current {
       a {
         &.not\:active {
@@ -386,11 +391,6 @@ $color-back-alert: (
     &.is\:separator {
       background: $color;
     }
-  }
-  a:focus,
-  a:hover,
-  .is\:active > a {
-    background: $color-back-list-hover;
   }
   .title {
     svg {

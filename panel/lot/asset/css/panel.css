@@ -1223,16 +1223,16 @@ svg[display="none"] {
 }
 .lot\:tab > nav a {
   display: block;
-  padding: 0 22px;
+  padding: 0 20px;
 }
 .lot\:tab > nav .title svg {
   margin: 12px -10px;
 }
 .lot\:tab > nav .title svg:first-child {
-  margin-right: 6px;
+  margin-right: 5px;
 }
 .lot\:tab > nav .title svg:last-child {
-  margin-left: 6px;
+  margin-left: 5px;
 }
 .lot\:tab > nav .title svg:only-child {
   margin-right: -10px;
