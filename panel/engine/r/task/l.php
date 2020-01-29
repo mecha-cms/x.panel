@@ -79,7 +79,7 @@ function folder($_, $lot) {
                 if (!\is_dir($dd = \dirname($vv))) {
                     \mkdir($dd, 0775, true);
                 }
-                if (!\is_dir(\dirname($vv))) {
+                if (!\is_dir($vv) && !\is_file($vv)) {
                     \rename($v, $vv);
                 }
                 if ($k->isDir()) {

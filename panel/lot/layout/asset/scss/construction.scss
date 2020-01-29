@@ -1,0 +1,619 @@
+@import url('//fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400i,700i|Roboto+Mono:400,700,400i,700i');
+
+
+$x: 24px;
+$y: 24px;
+
+$z: 16px;
+$h: $y;
+
+$sans: 'Roboto Condensed', Roboto, sans-serif;
+$mono: 'Roboto Mono', 'Courier New', Courier, 'Nimbus Mono L', monospace;
+
+$color: #000;
+$color-back: #fff;
+
+$color-back-alert: #eee;
+
+$color-back-input: #ffa;
+$color-back-input-fix: #dda;
+$color-back-button-fix: #bdf;
+
+$color-link: #009;
+$color-link-focus: #900;
+$color-link-active: #900;
+
+$color-secondary: #888;
+
+$color-title: #66a;
+
+$color-button: $color-back;
+$color-back-button: $color-link;
+$color-back-button-focus: $color-link-focus;
+$color-back-button-active: $color-link-active;
+
+$color-back-list-hover: #eef;
+$color-back-list-active: #fec;
+
+$color-back-icon-file: #fea;
+$color-back-icon-folder: #d00;
+
+
+html {
+  font-family: $sans;
+  background: $color-back;
+  color: $color;
+}
+
+a[href] {
+  color: $color-link;
+  &:focus {
+    color: $color-link-focus;
+  }
+  &:active {
+    color: $color-link-active;
+  }
+}
+
+pre {
+  code {
+    background: $color;
+    color: $color-back;
+  }
+}
+
+code,
+.code {
+  font-family: $mono;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $color-title;
+}
+
+blockquote,
+figcaption,
+caption {
+  color: $color-secondary;
+}
+
+$color-back-alert: (
+  'error': #fcc,
+  'info': #ccf,
+  'success': #cfc
+);
+
+.alert {
+  p {
+    background: $color-back-alert;
+    padding: ($y / 2) ($x - (($h - $z) / 2));
+  }
+  @each $k, $v in $color-back-alert {
+    .#{$k} {
+      background: $v;
+      color: inherit;
+    }
+  }
+}
+
+.button,
+.input,
+.select,
+.textarea {
+  background: $color-back-input;
+  color: $color;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25);
+}
+.button {
+  background: $color-back-button;
+  color: $color-button;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+  &:focus {
+    background: $color-back-button-focus;
+    color: $color-button;
+  }
+  &:active {
+    background: $color-back-button-active;
+    color: $color-button;
+  }
+  &[href] {
+    &,
+    &:focus,
+    &:active {
+      color: $color-button;
+    }
+  }
+}
+
+.button {
+  &.is\:text {
+    &,
+    &:focus,
+    &:active {
+      background: none;
+      border: 0;
+      color: $color-link;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    &:focus {
+      color: $color-link-focus;
+    }
+    &:active {
+      color: $color-link-active;
+    }
+  }
+}
+
+[disabled],
+.not\:active {
+  .button& {
+    background: lighten($color-back-button, 25%);
+    opacity: 1;
+    box-shadow: none;
+    &.is\:text {
+      color: lighten($color-link, 25%);
+    }
+  }
+  .input&,
+  .select&,
+  .textarea& {
+    background: lighten($color-back-input, 25%);
+    color: lighten($color, 25%);
+    opacity: 1;
+  }
+  .select & {
+    opacity: 1;
+  }
+}
+
+[readonly] {
+  .input&,
+  .select&,
+  .textarea& {
+    box-shadow: none;
+  }
+}
+
+:focus {
+  &:valid {
+    [pattern]&,
+    [required]&, {
+      .input&,
+      .textarea& {
+        color: #090;
+        border-color: #090;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 0 0 2px rgba(0, 153, 0, .25);
+      }
+    }
+  }
+  &:invalid {
+    .input&,
+    .textarea& {
+      color: #f00;
+      border-color: #f00;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 0 0 2px rgba(255, 0, 0, .25);
+    }
+  }
+}
+
+.input {
+  &[type="checkbox"],
+  &[type="color"],
+  &[type="image"],
+  &[type="radio"],
+  &[type="range"] {
+    background: none;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  &[type="file"],
+  &[type="range"] {
+    background: none;
+    box-shadow: none;
+  }
+}
+
+.select {
+  optgroup,
+  option {
+    background: $color-back;
+  }
+}
+
+.description {
+  color: $color-secondary;
+}
+
+.lot\:bar {
+  background: lighten($color, 10%);
+  color: darken($color-back, 40%);
+  > ul {
+    > li {
+      > a:focus,
+      > a:active,
+      &.is\:active > a {
+        color: darken($color-back, 20%);
+      }
+      > a {
+        color: darken($color-back, 30%);
+        &:focus {
+          > .title {
+            svg {
+              &.caret {
+                color: darken($color-back, 50%);
+              }
+            }
+          }
+        }
+        > .title {
+          svg {
+            &.caret {
+              color: darken($color-back, 60%);
+            }
+          }
+        }
+      }
+      &.is\:separator {
+        background: $color-back;
+      }
+    }
+  }
+  .field {
+    .input {
+      background: $color;
+      color: $color-back;
+    }
+  }
+  .js\:alert {
+    &.is\:active {
+      a {
+        span {
+          color: #0f0;
+        }
+      }
+    }
+  }
+}
+
+.lot\:file,
+.lot\:page {
+  li {
+    background: $color-back;
+    border: 0 solid $color-back;
+    &:focus,
+    &:hover {
+      background: $color-back-list-hover;
+      border-color: $color-back-list-hover;
+    }
+  }
+  h3 {
+    color: inherit;
+  }
+  .lot\:task {
+    &,
+    > * {
+      margin: 0;
+    }
+    > * {
+      .title {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+  .is\:active {
+    background: $color-back-list-active;
+    border-color: $color-back-list-active;
+  }
+  .is\:file {
+    &::before {
+      background: $color-back-icon-file;
+      border-color: $color;
+    }
+    &::after {
+      border-color: $color;
+      border-top-color: inherit;
+      border-right-color: inherit;
+    }
+  }
+  .is\:folder {
+    &::before {
+      background: $color-back-icon-folder;
+    }
+    &::after {
+      border-top-color: darken($color-back-icon-folder, 10%);
+    }
+  }
+}
+
+.lot\:input {
+  .button {
+    background: $color-back-button-fix;
+    box-shadow: none;
+    &:focus,
+    &:active {
+      background: lighten($color-back-button-fix, 20%);
+    }
+  }
+  .fix {
+    background: $color-back-input-fix;
+  }
+}
+
+.lot\:menu {
+  &,
+  ul {
+    background: $color-back;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 4px 8px rgba(0, 0, 0, .25);
+  }
+  li {
+    &.is\:current {
+      a {
+        &.not\:active {
+          background: #ea6565;
+        }
+      }
+      &.is\:active {
+        a {
+          &.not\:active {
+            background: #e16565;
+          }
+        }
+      }
+      > a {
+        background: #d00;
+        color: #fff;
+      }
+      > a:focus,
+      > a:hover,
+      &.is\:active > a {
+        background: #ce0000;
+        color: #fff;
+        &:focus,
+        &:hover {
+          background: #c40000;
+        }
+      }
+    }
+    &.is\:separator {
+      background: $color;
+    }
+  }
+  a:focus,
+  a:hover,
+  .is\:active > a {
+    background: $color-back-list-hover;
+  }
+  .title {
+    svg {
+      &.caret {
+        color: $color;
+        opacity: .25;
+      }
+    }
+  }
+  &.is\:static {
+    box-shadow: none;
+  }
+}
+
+.lot\:menu li.is\:active > a:focus,
+.lot\:menu li.is\:active > a:hover {
+  background: #d5d5ff;
+}
+.lot\:menu a.not\:active {
+  background: #f5f5f5;
+  color: #888;
+  opacity: 1;
+}
+.lot\:menu li.is\:active a.not\:active {
+  background: #eee;
+}
+.lot\:pager > span > a,
+.lot\:pager > span > b,
+.lot\:pager > span > span {
+  background: #009;
+  color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+}
+.lot\:pager > span > a:focus,
+.lot\:pager > span > b:focus,
+.lot\:pager > span > span:focus {
+  background: #900;
+  color: #fff;
+}
+.lot\:pager > span > b,
+.lot\:pager > span > span {
+  background: none;
+  color: inherit;
+  box-shadow: none;
+}
+.lot\:tab > nav li {
+  box-shadow: inset 0 3px 0 #fcc;
+}
+.lot\:tab > nav .is\:active {
+  box-shadow: inset 0 3px 0 #ccf;
+}
+.lot\:tab > nav .has\:link {
+  box-shadow: inset 0 3px 0 #cfc;
+}
+.lot\:tab > nav li.not\:active {
+  opacity: 1;
+}
+.lot\:tab > nav li a.not\:active {
+  opacity: 1;
+  background: #f5f5f5;
+  color: #aaa;
+  box-shadow: inset 0 3px 0 #ddd;
+}
+.lot\:table .table th,
+.lot\:table .table td {
+  background: #eef;
+  color: inherit;
+  cursor: default;
+}
+.lot\:table .table tbody tr:hover td {
+  background: #dde;
+}
+.lot\:table .table th {
+  background: #ccd;
+}
+
+pre.is\:text {
+  background: #fee;
+}
+
+/* Custom Appearance for Modern Browsers */
+.input[type='checkbox'],
+.input[type='radio'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .125);
+}
+.input[type='checkbox'] {
+  background: #090;
+}
+.input[type='radio'] {
+  background: #08a;
+}
+.input[type='checkbox']:focus {
+  background: #060;
+}
+.input[type='radio']:focus {
+  background: #047;
+}
+.input[type='checkbox']::before,
+.input[type='radio']::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .125);
+}
+.input[type='radio'],
+.input[type='radio']::before {
+  border-radius: 100%;
+}
+.input[type='checkbox']:checked::before {
+  top: 1px;
+  right: 5px;
+  bottom: 4px;
+  left: 5px;
+  background: none;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+  visibility: visible;
+  box-shadow: none;
+}
+.input[type='radio']:checked::before {
+  background: none;
+  border: 2px solid #fff;
+  visibility: visible;
+}
+.input[type='checkbox'][disabled],
+.input[type='radio'][disabled] {
+  background: #999;
+}
+label.is\:frozen {
+  opacity: 1;
+}
+label.is\:frozen > .input[type="checkbox"] + span {
+  color: #060;
+}
+label.is\:frozen > .input[type="radio"] + span {
+  color: #047;
+}
+.field\:toggle .input[type='checkbox'] {
+  width: 30px;
+  height: 20px;
+  background: #c00;
+  border-width: 0;
+  border-radius: 10px;
+}
+.field\:toggle .input[type='checkbox']::before {
+  border: 0;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  transform: rotate(0);
+  visibility: visible;
+}
+.field\:toggle .input[type='checkbox']:checked {
+  background: #090;
+}
+.field\:toggle .input[type='checkbox']:focus {
+  background: #800;
+}
+.field\:toggle .input[type='checkbox']:checked:focus {
+  background: #060;
+}
+.field\:toggle .input[type='checkbox']:checked::before {
+  left: 12px;
+}
+.field\:toggle .input[type='checkbox'][disabled] {
+  background: #999;
+}
+.field\:query .tag-picker .tag:not(.editor) {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .25);
+}
+
+@media (min-width: 719px) {
+  .lot\:bar li.is\:main {
+    background: #fff;
+    color: #000;
+  }
+  .lot\:bar li.is\:main > a {
+    color: #009;
+  }
+  .lot\:bar li.is\:main > a:focus,
+  .lot\:bar li.is\:main > a:active {
+    color: #900;
+  }
+  .lot\:bar li.is\:main.is\:active > a {
+    background: inherit;
+    color: inherit;
+    position: relative;
+    z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
+  }
+}
+
+@media (max-width: 720px) {
+  .field > label {
+    font-weight: bolder;
+  }
+  .lot\:tab > nav li {
+    background: none;
+    box-shadow: none;
+  }
+  .lot\:tab > nav li:not(.has\:link) a {
+    color: #009;
+  }
+  .lot\:tab > nav li.is\:active {
+    box-shadow: none;
+  }
+  .lot\:tab > nav li.is\:active a {
+    color: inherit;
+  }
+}
+
+.hl-name,.hl-strong{font-weight:bold}.hl-code,.hl-emphasis{font-style:italic}.hl-tag{color:#62c8f3}.hl-variable,.hl-template-variable,.hl-selector-id,.hl-selector-class{color:#ade5fc}.hl-string,.hl-bullet{color:#a2fca2}.hl-type,.hl-title,.hl-section,.hl-attribute,.hl-quote,.hl-built_in,.hl-builtin-name{color:#ffa}.hl-number,.hl-symbol,.hl-bullet{color:#d36363}.hl-keyword,.hl-selector-tag,.hl-literal{color:#fcc28c}.hl-comment,.hl-deletion,.hl-code{color:#888}.hl-regexp,.hl-link{color:#c6b4f0}.hl-meta{color:#fc9b9b}.hl-deletion{background-color:#fc9b9b;color:#333}.hl-addition{background-color:#a2fca2;color:#333}.hl a{color:inherit}.hl a:focus,.hl a:hover{color:inherit;text-decoration:underline}
