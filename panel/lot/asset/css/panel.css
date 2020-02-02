@@ -229,7 +229,7 @@
 }
 .table th, .table td {
   border: 1px solid;
-  padding: 4px 8px;
+  padding: 4px 12px;
   text-align: inherit;
   vertical-align: top;
 }
@@ -401,6 +401,9 @@ fieldset, hr {
 fieldset {
   padding: 24px 24px;
 }
+fieldset legend {
+  margin-top: -12px;
+}
 hr {
   border-style: dashed;
 }
@@ -419,25 +422,14 @@ hr {
   margin-right: -12px;
   margin-left: -12px;
 }
-.field > * {
-  margin: 0 12px;
-}
-.field > label {
+.field .description {
   display: block;
-  width: 120px;
-  padding: 6px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
+  font-size: 12px;
+  line-height: 16px;
+  margin: 10px 0 0;
 }
-.field > label + div, .field > label + br + div {
-  display: block;
-  flex: 1;
-  position: relative;
-}
-.field > label + br {
-  display: none;
+.field .description code {
+  font-size: 10.4px;
 }
 .field .output {
   display: inline-block;
@@ -457,14 +449,25 @@ hr {
 .field .output.width {
   width: 100%;
 }
-.field .description {
-  display: block;
-  font-size: 12px;
-  line-height: 16px;
-  margin: 10px 0 0;
+.field > * {
+  margin: 0 12px;
 }
-.field .description code {
-  font-size: 10.4px;
+.field > label {
+  display: block;
+  width: 120px;
+  padding: 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.field > label + br {
+  display: none;
+}
+.field > label + div, .field > label + br + div {
+  display: block;
+  flex: 1;
+  position: relative;
 }
 .tag-picker, .tag-picker * {
   box-sizing: border-box;
@@ -655,10 +658,6 @@ hr {
 .select {
   cursor: pointer;
 }
-.select:not([multiple]) {
-  padding-top: 0;
-  padding-bottom: 0;
-}
 .select[multiple] {
   height: auto;
 }
@@ -677,6 +676,10 @@ hr {
 .select optgroup option {
   font-weight: normal;
   padding-left: 8px;
+}
+.select:not([multiple]) {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .width {
   display: flex;
@@ -734,6 +737,12 @@ svg[display="none"] {
 .button .title svg {
   margin: 0 -6px;
 }
+.button .title svg.caret:first-child {
+  margin-right: 0;
+}
+.button .title svg.caret:last-child {
+  margin-left: 0;
+}
 .button .title svg:first-child {
   margin-right: 6px;
 }
@@ -743,24 +752,6 @@ svg[display="none"] {
 .button .title svg:only-child {
   margin-right: -6px;
   margin-left: -6px;
-}
-.button .title svg.caret:first-child {
-  margin-right: 0;
-}
-.button .title svg.caret:last-child {
-  margin-left: 0;
-}
-.alert .error {
-  color: #f00;
-}
-.alert .info {
-  color: #00f;
-}
-.alert .success {
-  color: #0b0;
-}
-.alert p + p {
-  margin-top: 12px;
 }
 .alert p .f\:r svg {
   margin-right: -6px;
@@ -780,6 +771,18 @@ svg[display="none"] {
   padding: 0 8px;
   background: rgba(0, 0, 0, 0.05);
 }
+.alert p + p {
+  margin-top: 12px;
+}
+.alert .error {
+  color: #f00;
+}
+.alert .info {
+  color: #00f;
+}
+.alert .success {
+  color: #0b0;
+}
 .lot\:bar {
   display: flex;
   flex-wrap: wrap;
@@ -796,13 +799,10 @@ svg[display="none"] {
   display: flex;
   height: 48px;
 }
-.lot\:bar > ul > li > a {
-  display: block;
-  height: inherit;
-  padding: 0 18px;
-  overflow: hidden;
+.lot\:bar > ul:nth-child(2) {
+  flex: 1;
 }
-.lot\:bar > ul > li.active a {
+.lot\:bar > ul > li.is\:active > a {
   color: inherit;
 }
 .lot\:bar > ul > li.is\:separator {
@@ -814,21 +814,17 @@ svg[display="none"] {
 .lot\:bar > ul > li.is\:separator:first-child, .lot\:bar > ul > li.is\:separator:last-child {
   display: none;
 }
-.lot\:bar > ul:nth-child(2) {
-  flex: 1;
+.lot\:bar > ul > li > a {
+  display: block;
+  height: inherit;
+  padding: 0 18px;
+  overflow: hidden;
 }
 .lot\:bar .field {
   margin: 0;
   padding: 0;
   width: auto;
   height: inherit;
-}
-.lot\:bar .field > * {
-  margin-right: 0;
-  margin-left: 0;
-}
-.lot\:bar .field label {
-  display: none;
 }
 .lot\:bar .field .input {
   display: block;
@@ -839,8 +835,23 @@ svg[display="none"] {
   padding: 0 16px;
   border: 0;
 }
+.lot\:bar .field label {
+  display: none;
+}
+.lot\:bar .field > * {
+  margin-right: 0;
+  margin-left: 0;
+}
 .lot\:bar .title svg {
   margin: 12px -6px 0;
+}
+.lot\:bar .title svg.caret:first-child {
+  margin-right: 0;
+  margin-left: -12px;
+}
+.lot\:bar .title svg.caret:last-child {
+  margin-right: -12px;
+  margin-left: 0;
 }
 .lot\:bar .title svg:first-child {
   margin-right: 6px;
@@ -852,23 +863,15 @@ svg[display="none"] {
   margin-right: -6px;
   margin-left: -6px;
 }
-.lot\:bar .title svg.caret:first-child {
-  margin-right: 0;
-  margin-left: -12px;
-}
-.lot\:bar .title svg.caret:last-child {
-  margin-right: -12px;
-  margin-left: 0;
-}
 .lot\:button {
   display: inline-flex;
-}
-.lot\:button .button + .button {
-  margin-left: 1px;
 }
 .lot\:button .button .title svg.caret:only-child {
   margin-right: -12px;
   margin-left: -12px;
+}
+.lot\:button .button + .button {
+  margin-left: 1px;
 }
 .lot\:color {
   display: flex;
@@ -900,7 +903,7 @@ svg[display="none"] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.lot\:file h3 a.not\:active, .lot\:page h3 a.not\:active {
+.lot\:file h3 a.not\:active:not(:focus):not(:hover), .lot\:page h3 a.not\:active:not(:focus):not(:hover) {
   opacity: 1;
 }
 .lot\:file h3 .title, .lot\:page h3 .title {
@@ -966,6 +969,12 @@ svg[display="none"] {
   padding: 12px 6px;
   margin: 0 -12px;
 }
+.lot\:page li.is\:file, .lot\:page li.is\:folder {
+  padding-left: 6px;
+}
+.lot\:page li.is\:file::before, .lot\:page li.is\:folder::before, .lot\:page li.is\:file::after, .lot\:page li.is\:folder::after {
+  display: none;
+}
 .lot\:page li > * {
   margin: 0 6px;
 }
@@ -974,12 +983,6 @@ svg[display="none"] {
 }
 .lot\:page li > div:first-child + div {
   flex: 1;
-}
-.lot\:page li.is\:file, .lot\:page li.is\:folder {
-  padding-left: 6px;
-}
-.lot\:page li.is\:file::before, .lot\:page li.is\:folder::before, .lot\:page li.is\:file::after, .lot\:page li.is\:folder::after {
-  display: none;
 }
 .lot\:page h3 {
   font-size: 20px;
@@ -1054,6 +1057,9 @@ svg[display="none"] {
   margin: 0 -6px;
   padding: 6px 0;
 }
+.lot\:item.is\:block, .lot\:items.is\:block, .lot\:toggle.is\:block {
+  display: block;
+}
 .lot\:item > *, .lot\:items > *, .lot\:toggle > * {
   margin: 0 6px;
 }
@@ -1064,9 +1070,6 @@ svg[display="none"] {
 }
 .lot\:item > label > *, .lot\:items > label > *, .lot\:toggle > label > * {
   margin: 0 6px;
-}
-.lot\:item.is\:block, .lot\:items.is\:block, .lot\:toggle.is\:block {
-  display: block;
 }
 .has\:menu {
   display: inline-flex;
@@ -1095,9 +1098,6 @@ svg[display="none"] {
 .lot\:menu li {
   position: relative;
 }
-.lot\:menu li:hover > ul {
-  display: block;
-}
 .lot\:menu li.is\:separator {
   width: auto;
   height: 1px;
@@ -1111,6 +1111,9 @@ svg[display="none"] {
 }
 .lot\:menu li.is\:current > a {
   color: inherit;
+}
+.lot\:menu li:hover > ul {
+  display: block;
 }
 .lot\:menu li .title svg {
   margin: 0 -6px;
@@ -1200,6 +1203,9 @@ svg[display="none"] {
 .lot\:tab > nav li + li {
   border-left-width: 0;
 }
+.lot\:tab > nav li:not(.has\:link) a {
+  color: inherit;
+}
 .lot\:tab > nav li.is\:active {
   z-index: 4;
 }
@@ -1217,9 +1223,6 @@ svg[display="none"] {
 }
 .lot\:tab > nav li.is\:active::after {
   left: 100%;
-}
-.lot\:tab > nav li:not(.has\:link) a {
-  color: inherit;
 }
 .lot\:tab > nav a {
   display: block;
@@ -1275,9 +1278,6 @@ svg[display="none"] {
   flex-wrap: wrap;
   margin: -3px -3px;
 }
-.lot\:task > * {
-  margin: 3px 3px;
-}
 .lot\:task\.link {
   margin-right: -6px;
   margin-left: -6px;
@@ -1288,6 +1288,9 @@ svg[display="none"] {
 }
 .lot\:task\.link > * .title span {
   margin-left: 3px;
+}
+.lot\:task > * {
+  margin: 3px 3px;
 }
 .lot\:desk, .lot\:section {
   padding: 24px 24px;

@@ -34,6 +34,14 @@ svg {
   .title {
     svg {
       margin: 0 -($x / 4);
+      &.caret {
+        &:first-child {
+          margin-right: 0;
+        }
+        &:last-child {
+          margin-left: 0;
+        }
+      }
       &:first-child {
         margin-right: ($x / 4);
       }
@@ -43,14 +51,6 @@ svg {
       &:only-child {
         margin-right: -($x / 4);
         margin-left: -($x / 4);
-      }
-      &.caret {
-        &:first-child {
-          margin-right: 0;
-        }
-        &:last-child {
-          margin-left: 0;
-        }
       }
     }
   }

@@ -189,6 +189,48 @@ $fields = [
     ],
     'hidden[0]' => [
         'type' => 'Hidden'
+    ],
+    'set[0]' => [
+        'type' => 'Set',
+        'title' => 'Group Title',
+        'description' => 'Group description.',
+        'lot' => [
+            0 => [
+                'type' => 'Fields',
+                'title' => 'Fields Title',
+                'description' => 'Fields description.',
+                'lot' => [
+                    0 => [
+                        'type' => 'Text'
+                    ],
+                    1 => [
+                        'type' => 'Text'
+                    ]
+                ]
+            ]
+        ],
+        'stack' => 5
+    ],
+    'set[1]' => [
+        'type' => 'Set',
+        'title' => 'Group Title (<a href="">a link</a>)',
+        'description' => 'Group description.',
+        'lot' => [
+            0 => [
+                'type' => 'Fields',
+                'title' => 'Fields Title',
+                'description' => 'Fields description.',
+                'lot' => [
+                    0 => [
+                        'type' => 'Text'
+                    ],
+                    1 => [
+                        'type' => 'Text'
+                    ]
+                ]
+            ]
+        ],
+        'stack' => 5.1
     ]
 ];
 

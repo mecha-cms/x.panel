@@ -3,25 +3,13 @@
   display: flex;
   margin-right: -($x / 2);
   margin-left: -($x / 2);
-  > * {
-    margin: 0 ($x / 2);
-  }
-  > label {
+  .description {
     display: block;
-    width: ($x * 5);
-    padding: ($y / 4) 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: right;
-    + div,
-    + br + div {
-      display: block;
-      flex: 1;
-      position: relative;
-    }
-    + br {
-      display: none;
+    font-size: ($z * .75);
+    line-height: 16px;
+    margin: 10px 0 0;
+    code {
+      font-size: ($z * .65);
     }
   }
   .output {
@@ -42,13 +30,25 @@
       width: 100%;
     }
   }
-  .description {
+  > * {
+    margin: 0 ($x / 2);
+  }
+  > label {
     display: block;
-    font-size: ($z * .75);
-    line-height: 16px;
-    margin: 10px 0 0;
-    code {
-      font-size: ($z * .65);
+    width: ($x * 5);
+    padding: ($y / 4) 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    + br {
+      display: none;
+    }
+    + div,
+    + br + div {
+      display: block;
+      flex: 1;
+      position: relative;
     }
   }
 }

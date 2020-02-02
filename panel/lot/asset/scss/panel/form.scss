@@ -142,10 +142,6 @@ label {
 
 .select {
   cursor: pointer;
-  &:not([multiple]) {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
   &[multiple] {
     height: auto;
     optgroup,
@@ -166,6 +162,10 @@ label {
       font-weight: normal;
       padding-left: ($x / 3);
     }
+  }
+  &:not([multiple]) {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 

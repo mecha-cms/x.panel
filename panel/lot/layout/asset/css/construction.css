@@ -13,6 +13,9 @@ a[href]:focus {
 a[href]:active {
   color: #900;
 }
+pre.is\:text {
+  background: #fee;
+}
 pre code {
   background: #000;
   color: #fff;
@@ -193,12 +196,23 @@ blockquote, figcaption, caption {
 .lot\:input .fix {
   background: #dda;
 }
+.lot\:menu a.not\:active {
+  background: #f5f5f5;
+  color: #888;
+  opacity: 1;
+}
 .lot\:menu, .lot\:menu ul {
   background: #fff;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 8px rgba(0, 0, 0, 0.25);
 }
-.lot\:menu li a:focus, .lot\:menu li a:hover, .lot\:menu li.is\:active > a {
+.lot\:menu li a:focus, .lot\:menu li a:hover {
   background: #eef;
+}
+.lot\:menu li a:active {
+  background: #e4e4ff;
+}
+.lot\:menu li.is\:active a.not\:active {
+  background: #eee;
 }
 .lot\:menu li.is\:current a.not\:active {
   background: #ea6565;
@@ -210,12 +224,12 @@ blockquote, figcaption, caption {
   background: #d00;
   color: #fff;
 }
-.lot\:menu li.is\:current > a:focus, .lot\:menu li.is\:current > a:hover, .lot\:menu li.is\:current.is\:active > a {
-  background: #ce0000;
+.lot\:menu li.is\:current > a:focus, .lot\:menu li.is\:current > a:hover {
+  background: #d30000;
   color: #fff;
 }
-.lot\:menu li.is\:current > a:focus:focus, .lot\:menu li.is\:current > a:hover:focus, .lot\:menu li.is\:current.is\:active > a:focus, .lot\:menu li.is\:current > a:focus:hover, .lot\:menu li.is\:current > a:hover:hover, .lot\:menu li.is\:current.is\:active > a:hover {
-  background: #c40000;
+.lot\:menu li.is\:current > a:active {
+  background: #c90000;
 }
 .lot\:menu li.is\:separator {
   background: #000;
@@ -227,39 +241,21 @@ blockquote, figcaption, caption {
 .lot\:menu.is\:static {
   box-shadow: none;
 }
-.lot\:menu li.is\:active > a:focus, .lot\:menu li.is\:active > a:hover {
-  background: #d5d5ff;
-}
-.lot\:menu a.not\:active {
-  background: #f5f5f5;
-  color: #888;
-  opacity: 1;
-}
-.lot\:menu li.is\:active a.not\:active {
-  background: #eee;
-}
-.lot\:pager > span > a, .lot\:pager > span > b, .lot\:pager > span > span {
+.lot\:pager > span > a {
   background: #009;
   color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
-.lot\:pager > span > a:focus, .lot\:pager > span > b:focus, .lot\:pager > span > span:focus {
+.lot\:pager > span > a:focus {
   background: #900;
   color: #fff;
 }
-.lot\:pager > span > b, .lot\:pager > span > span {
-  background: none;
-  color: inherit;
-  box-shadow: none;
+.lot\:pager > span > a:active {
+  background: #900;
+  color: #fff;
 }
 .lot\:tab > nav li {
   box-shadow: inset 0 3px 0 #fcc;
-}
-.lot\:tab > nav .is\:active {
-  box-shadow: inset 0 3px 0 #ccf;
-}
-.lot\:tab > nav .has\:link {
-  box-shadow: inset 0 3px 0 #cfc;
 }
 .lot\:tab > nav li.not\:active {
   opacity: 1;
@@ -270,41 +266,34 @@ blockquote, figcaption, caption {
   color: #aaa;
   box-shadow: inset 0 3px 0 #ddd;
 }
+.lot\:tab > nav .has\:link {
+  box-shadow: inset 0 3px 0 #cfc;
+}
+.lot\:tab > nav .is\:active {
+  box-shadow: inset 0 3px 0 #ccf;
+}
 .lot\:table .table th, .lot\:table .table td {
   background: #eef;
   color: inherit;
   cursor: default;
 }
-.lot\:table .table tbody tr:hover td {
-  background: #dde;
-}
 .lot\:table .table th {
   background: #ccd;
 }
-pre.is\:text {
-  background: #fee;
+.lot\:table .table tbody tr:hover td {
+  background: #dde;
 }
-/* Custom Appearance for Modern Browsers */
 .input[type='checkbox'], .input[type='radio'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
 }
-.input[type='checkbox'] {
-  background: #090;
-}
-.input[type='radio'] {
-  background: #08a;
-}
-.input[type='checkbox']:focus {
-  background: #060;
-}
-.input[type='radio']:focus {
-  background: #047;
+.input[type='checkbox'][disabled], .input[type='radio'][disabled] {
+  background: #888;
 }
 .input[type='checkbox']::before, .input[type='radio']::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 2px;
   right: 2px;
@@ -313,8 +302,8 @@ pre.is\:text {
   background: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
 }
-.input[type='radio'], .input[type='radio']::before {
-  border-radius: 100%;
+.input[type='checkbox'] {
+  background: #090;
 }
 .input[type='checkbox']:checked::before {
   top: 1px;
@@ -330,29 +319,41 @@ pre.is\:text {
   visibility: visible;
   box-shadow: none;
 }
+.input[type='checkbox']:focus {
+  background: #060;
+}
+.input[type='radio'] {
+  background: #08a;
+}
 .input[type='radio']:checked::before {
   background: none;
   border: 2px solid #fff;
   visibility: visible;
 }
-.input[type='checkbox'][disabled], .input[type='radio'][disabled] {
-  background: #999;
+.input[type='radio']:focus {
+  background: #005f77;
+}
+.input[type='radio'], .input[type='radio']::before {
+  border-radius: 100%;
 }
 label.is\:frozen {
   opacity: 1;
 }
-label.is\:frozen > .input[type="checkbox"] + span {
+label.is\:frozen > .input[type='checkbox'] + span {
   color: #060;
 }
-label.is\:frozen > .input[type="radio"] + span {
-  color: #047;
+label.is\:frozen > .input[type='radio'] + span {
+  color: #005f77;
 }
 .field\:toggle .input[type='checkbox'] {
-  width: 30px;
+  width: 32px;
   height: 20px;
   background: #c00;
   border-width: 0;
   border-radius: 10px;
+}
+.field\:toggle .input[type='checkbox'][disabled] {
+  background: #888;
 }
 .field\:toggle .input[type='checkbox']::before {
   border: 0;
@@ -367,20 +368,17 @@ label.is\:frozen > .input[type="radio"] + span {
   transform: rotate(0);
   visibility: visible;
 }
+.field\:toggle .input[type='checkbox']:focus {
+  background: #900;
+}
 .field\:toggle .input[type='checkbox']:checked {
   background: #090;
 }
-.field\:toggle .input[type='checkbox']:focus {
-  background: #800;
+.field\:toggle .input[type='checkbox']:checked::before {
+  left: 14px;
 }
 .field\:toggle .input[type='checkbox']:checked:focus {
   background: #060;
-}
-.field\:toggle .input[type='checkbox']:checked::before {
-  left: 12px;
-}
-.field\:toggle .input[type='checkbox'][disabled] {
-  background: #999;
 }
 .field\:query .tag-picker .tag:not(.editor) {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);

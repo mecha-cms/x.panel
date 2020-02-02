@@ -13,15 +13,12 @@
   > ul {
     display: flex;
     height: ($y * 2);
+    &:nth-child(2) {
+      flex: 1;
+    }
     > li {
-      > a {
-        display: block;
-        height: inherit;
-        padding: 0 ($x * .75);
-        overflow: hidden;
-      }
-      &.active {
-        a {
+      &.is\:active {
+        > a {
           color: inherit;
         }
       }
@@ -35,9 +32,12 @@
           display: none;
         }
       }
-    }
-    &:nth-child(2) {
-      flex: 1;
+      > a {
+        display: block;
+        height: inherit;
+        padding: 0 ($x * .75);
+        overflow: hidden;
+      }
     }
   }
   .field {
@@ -45,13 +45,6 @@
     padding: 0;
     width: auto;
     height: inherit;
-    > * {
-      margin-right: 0;
-      margin-left: 0;
-    }
-    label {
-      display: none;
-    }
     .input {
       display: block;
       width: ($x * 8);
@@ -61,20 +54,17 @@
       padding: 0 ($x / 1.5);
       border: 0;
     }
+    label {
+      display: none;
+    }
+    > * {
+      margin-right: 0;
+      margin-left: 0;
+    }
   }
   .title {
     svg {
       margin: ($y / 2) -($x / 4) 0;
-      &:first-child {
-        margin-right: ($x / 4);
-      }
-      &:last-child {
-        margin-left: ($x / 4);
-      }
-      &:only-child {
-        margin-right: -($x / 4);
-        margin-left: -($x / 4);
-      }
       &.caret {
         &:first-child {
           margin-right: 0;
@@ -85,6 +75,16 @@
           margin-left: 0;
         }
       }
+      &:first-child {
+        margin-right: ($x / 4);
+      }
+      &:last-child {
+        margin-left: ($x / 4);
+      }
+      &:only-child {
+        margin-right: -($x / 4);
+        margin-left: -($x / 4);
+      }
     }
   }
 }
@@ -92,9 +92,6 @@
 .lot\:button {
   display: inline-flex;
   .button {
-    + .button {
-      margin-left: 1px;
-    }
     .title {
       svg {
         &.caret {
@@ -104,6 +101,9 @@
           }
         }
       }
+    }
+    + .button {
+      margin-left: 1px;
     }
   }
 }
@@ -141,7 +141,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     a {
-      &.not\:active {
+      &.not\:active:not(:focus):not(:hover) {
         opacity: 1;
       }
     }
@@ -217,6 +217,14 @@
   li {
     padding: ($y / 2) ($x / 4);
     margin: 0 -($x / 2);
+    &.is\:file,
+    &.is\:folder {
+      padding-left: ($x / 4);
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
     > * {
       margin: 0 ($x / 4);
     }
@@ -226,14 +234,6 @@
         + div {
           flex: 1;
         }
-      }
-    }
-    &.is\:file,
-    &.is\:folder {
-      padding-left: ($x / 4);
-      &::before,
-      &::after {
-        display: none;
       }
     }
   }
@@ -327,6 +327,9 @@
   flex-wrap: wrap;
   margin: 0 -($x / 4);
   padding: ($x / 4) 0;
+  &.is\:block {
+    display: block;
+  }
   > * {
     margin: 0 ($x / 4);
   }
@@ -337,9 +340,6 @@
     > * {
       margin: 0 ($x / 4);
     }
-  }
-  &.is\:block {
-    display: block;
   }
 }
 
@@ -374,11 +374,6 @@
   }
   li {
     position: relative;
-    &:hover {
-      > ul {
-        display: block;
-      }
-    }
     &.is\:separator {
       width: auto;
       height: 1px;
@@ -394,6 +389,11 @@
     &.is\:current {
       > a {
         color: inherit;
+      }
+    }
+    &:hover {
+      > ul {
+        display: block;
       }
     }
     .title {
@@ -499,6 +499,11 @@
       + li {
         border-left-width: 0;
       }
+      &:not(.has\:link) {
+        a {
+          color: inherit;
+        }
+      }
       &.is\:active {
         z-index: 4;
         &::before,
@@ -516,11 +521,6 @@
         }
         &::after {
           left: 100%;
-        }
-      }
-      &:not(.has\:link) {
-        a {
-          color: inherit;
         }
       }
     }
@@ -586,9 +586,6 @@
   align-items: center;
   flex-wrap: wrap;
   margin: -($y / 8) -($x / 8);
-  > * {
-    margin: ($y / 8) ($x / 8);
-  }
   &\.link {
     margin-right: -($x / 4);
     margin-left: -($x / 4);
@@ -601,6 +598,9 @@
         }
       }
     }
+  }
+  > * {
+    margin: ($y / 8) ($x / 8);
   }
 }
 
