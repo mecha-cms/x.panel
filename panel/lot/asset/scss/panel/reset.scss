@@ -248,6 +248,9 @@ hr {
 
 fieldset {
   padding: $y $x;
+  legend {
+    margin-top: -($h / 2);
+  }
 }
 
 hr {

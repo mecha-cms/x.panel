@@ -75,7 +75,7 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function Fields($in) {
-        $tags = ['lot', 'lot:field'];
+        $tags = ['lot', 'lot:field', 'p'];
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
@@ -605,6 +605,14 @@ namespace _\lot\x {
                 } else {
                     $out .= \_\lot\x\panel\lot($in, $key);
                 }
+            } else {
+                $out .= \_\lot\x\panel\abort($in, $key, $fn);
+            }
+        } else {
+            if (isset($in['content'])) {
+                $out .= \_\lot\x\panel\content($fn, $in, $key);
+            } else if (isset($in['lot'])) {
+                $out .= \_\lot\x\panel\lot($in, $key);
             } else {
                 $out .= \_\lot\x\panel\abort($in, $key, $fn);
             }

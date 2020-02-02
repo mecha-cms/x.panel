@@ -374,6 +374,18 @@ function Field__Range($in, $key) {
     return \_\lot\x\panel\Field($out, $key);
 }
 
+function Field__Set($in, $key) {
+    $title = \strip_tags($in['title'] ?? "", '<a>');
+    $description = \_\lot\x\panel\h\description($in);
+    $in = \array_replace([
+        0 => 'fieldset',
+        1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description,
+        2 => []
+    ], $in);
+    unset($in['description'], $in['title'], $in['type']);
+    return \_\lot\x\panel($in, $key);
+}
+
 function Field__Source($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][2]['data-state'] = \json_encode(\array_replace($in['state'] ?? [], [
