@@ -19,7 +19,7 @@ function description($in, $or = null) {
     }
     $out = [
         0 => 'p',
-        1 => \w((string) \i(...("" !== $description ? (array) $description : (array) $or)), ['a', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong']),
+        1 => \w('<span>' . \i(...("" !== $description ? (array) $description : (array) $or)) . '</span>', ['a', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']),
         2 => []
     ];
     unset($in['tags']);
@@ -129,7 +129,7 @@ function title($in, $i = -1, $or = null) {
     ];
     $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
     if (null !== $title && false !== $title) {
-        $title = \w('<span>' . \i(...((array) $title)) . '</span>', ['a', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong']);
+        $title = \w('<span>' . \i(...((array) $title)) . '</span>', ['a', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']);
     }
     $out[1] = $icon[0] . $title . $icon[1];
     unset($in['tags']);
