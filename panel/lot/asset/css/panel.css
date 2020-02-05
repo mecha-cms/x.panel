@@ -3,7 +3,7 @@
 }
 .code, code {
   font-family: monospace;
-  font-size: 13px;
+  font-size: 80%;
 }
 .italic {
   font-style: italic;
@@ -12,7 +12,7 @@
   margin-top: 24px;
 }
 .small, kbd, small, sub, sup {
-  font-size: 12.8px;
+  font-size: 70%;
 }
 .strike, del, s {
   text-decration: line-through;
@@ -594,7 +594,7 @@ hr {
 .button[href], .button[href]:focus, .button[href]:active {
   color: #fff;
 }
-.button[disabled], .input[disabled], .select[disabled], .textarea[disabled] {
+.button[disabled], .button.not\:active, .input[disabled], .input.not\:active, .select[disabled], .select.not\:active, .textarea[disabled], .textarea.not\:active {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -624,17 +624,17 @@ hr {
   background: none;
   color: #f00;
 }
-.input[type="color"], .input[type="file"], .input[type="range"] {
+.input[type='color'], .input[type='file'], .input[type='range'] {
   cursor: pointer;
 }
-.input[type="file"], .input[type="range"] {
+.input[type='file'], .input[type='range'] {
   background: none;
   border: 0;
   padding: 0;
   font-size: 12px;
   line-height: 24px;
 }
-.input[type="checkbox"], .input[type="color"], .input[type="image"], .input[type="radio"] {
+.input[type='checkbox'], .input[type='color'], .input[type='image'], .input[type='radio'] {
   margin: 0;
   padding: 0;
   background: none;
@@ -644,14 +644,14 @@ hr {
   line-height: 1em;
   cursor: pointer;
 }
-.input[type="checkbox"][readonly], .input[type="radio"][readonly] {
+.input[type='checkbox'][readonly], .input[type='radio'][readonly] {
   pointer-events: none;
 }
-.input[type="color"] {
+.input[type='color'] {
   width: 36px;
   height: 36px;
 }
-.input[type="image"] {
+.input[type='image'] {
   width: auto;
   height: auto;
 }
@@ -693,7 +693,7 @@ hr {
 .textarea.height {
   height: 258px;
 }
-label > input[type="checkbox"] + span, label > input[type="radio"] + span {
+label > input[type='checkbox'] + span, label > input[type='radio'] + span {
   display: inline-block;
   vertical-align: middle;
 }
@@ -724,7 +724,7 @@ svg {
   -moz-user-select: none;
   user-select: none;
 }
-svg[display="none"] {
+svg[display='none'] {
   display: none;
 }
 .title {
@@ -808,6 +808,7 @@ svg[display="none"] {
 .lot\:bar > ul > li.is\:separator {
   width: 1px;
   height: 24px;
+  background: #000;
   margin: 12px 0;
   overflow: hidden;
 }
@@ -1102,7 +1103,6 @@ svg[display="none"] {
   width: auto;
   height: 1px;
   background: #000;
-  opacity: 0.125;
   margin: 0;
   overflow: hidden;
 }
@@ -1379,9 +1379,16 @@ svg[display="none"] {
   .lot\:bar > ul:first-child > li:last-child {
     flex: 1;
   }
+  .lot\:bar .field {
+    margin: 0;
+  }
+  .lot\:bar .field > * {
+    margin: 0;
+  }
   .lot\:bar .field .input {
     display: block;
     width: 100%;
+    margin: 0;
   }
   .lot\:bar .has\:menu ul ul {
     left: 25%;

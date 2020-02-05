@@ -597,12 +597,18 @@ namespace _\lot\x {
                 if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\content\\" . $type, "\\"))) {
                     $out .= \call_user_func($fn, $in, $key);
                 } else {
+                    if (\defined("\\DEBUG") && \DEBUG) {
+                        $in['title'] = ['Function %s does not exist.', ['<code>' . $fn . '</code>']];
+                    }
                     $out .= \_\lot\x\panel\content($in, $key);
                 }
             } else if (isset($in['lot'])) {
                 if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\lot\\" . $type, "\\"))) {
                     $out .= \call_user_func($fn, $in, $key);
                 } else {
+                    if (\defined("\\DEBUG") && \DEBUG) {
+                        $in['title'] = ['Function %s does not exist.', ['<code>' . $fn . '</code>']];
+                    }
                     $out .= \_\lot\x\panel\lot($in, $key);
                 }
             } else {
@@ -610,7 +616,7 @@ namespace _\lot\x {
             }
         } else {
             if (isset($in['content'])) {
-                $out .= \_\lot\x\panel\content($fn, $in, $key);
+                $out .= \_\lot\x\panel\content($in, $key);
             } else if (isset($in['lot'])) {
                 $out .= \_\lot\x\panel\lot($in, $key);
             } else {

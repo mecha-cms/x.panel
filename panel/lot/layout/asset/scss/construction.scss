@@ -19,6 +19,9 @@ $color-back-input: #ffa;
 $color-back-input-fix: #dda;
 $color-back-button-fix: #bdf;
 
+$color-is-error: #f00;
+$color-is-success: #090;
+
 $color-link: #009;
 $color-link-focus: #900;
 $color-link-active: #900;
@@ -41,6 +44,23 @@ $color-back-icon-folder: #d00;
 $color-back-menu-hover: #eef;
 $color-back-menu-current: #d00;
 
+$color-back-table-data: #eef;
+$color-back-table-title: #ccd;
+$color-back-table-data-hover: #dde;
+
+$color-back-code-block: #333;
+$color-back-text-block: #fee;
+
+$color-accent-tab: #fcc;
+$color-accent-tab-active: #ccf;
+$color-accent-tab-link: #cfc;
+
+$color-back-item: #08a;
+$color-back-items: #090;
+
+$color-back-toggle: #c00;
+$color-back-toggle-active: #090;
+
 
 html {
   font-family: $sans;
@@ -60,10 +80,14 @@ a[href] {
 
 pre {
   &.is\:text {
-    background: #fee;
+    background: $color-back-text-block;
+    code {
+      background: none;
+      color: inherit;
+    }
   }
   code {
-    background: $color;
+    background: $color-back-code-block;
     color: $color-back;
   }
 }
@@ -115,6 +139,7 @@ $color-back-alert: (
   color: $color;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25);
 }
+
 .button {
   background: $color-back-button;
   color: $color-button;
@@ -159,18 +184,19 @@ $color-back-alert: (
 [disabled],
 .not\:active {
   .button& {
-    background: lighten($color-back-button, 25%);
+    background: rgba($color-back-button, .25);
     opacity: 1;
     box-shadow: none;
     &.is\:text {
-      color: lighten($color-link, 25%);
+      background: none;
+      color: rgba($color-link, .25);
     }
   }
   .input&,
   .select&,
   .textarea& {
-    background: lighten($color-back-input, 25%);
-    color: lighten($color, 25%);
+    background: rgba($color-back-input, .25);
+    color: rgba($color, .25);
     opacity: 1;
   }
   .select & {
@@ -192,35 +218,35 @@ $color-back-alert: (
     [required]&, {
       .input&,
       .textarea& {
-        color: #090;
-        border-color: #090;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 0 0 2px rgba(0, 153, 0, .25);
+        color: $color-is-success;
+        border-color: $color-is-success;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 0 0 2px rgba($color-is-success, .25);
       }
     }
   }
   &:invalid {
     .input&,
     .textarea& {
-      color: #f00;
-      border-color: #f00;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 0 0 2px rgba(255, 0, 0, .25);
+      color: $color-is-error;
+      border-color: $color-is-error;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 0 0 2px rgba($color-is-error, .25);
     }
   }
 }
 
 .input {
-  &[type="checkbox"],
-  &[type="color"],
-  &[type="image"],
-  &[type="radio"],
-  &[type="range"] {
+  &[type='checkbox'],
+  &[type='color'],
+  &[type='image'],
+  &[type='radio'],
+  &[type='range'] {
     background: none;
     border: 0;
     padding: 0;
     box-shadow: none;
   }
-  &[type="file"],
-  &[type="range"] {
+  &[type='file'],
+  &[type='range'] {
     background: none;
     box-shadow: none;
   }
@@ -235,6 +261,10 @@ $color-back-alert: (
 
 .description {
   color: $color-secondary;
+}
+
+.is\:separator {
+  opacity: .125;
 }
 
 .lot\:bar {
@@ -357,8 +387,8 @@ $color-back-alert: (
 .lot\:menu {
   a {
     &.not\:active {
-      background: #f5f5f5;
-      color: #888;
+      background: lighten($color-secondary, 60%);
+      color: $color-secondary;
       opacity: 1;
     }
   }
@@ -385,13 +415,13 @@ $color-back-alert: (
     &.is\:current {
       a {
         &.not\:active {
-          background: #ea6565;
+          background: lighten($color-back-menu-current, 10%);
         }
       }
       &.is\:active {
         a {
           &.not\:active {
-            background: #e16565;
+            background: darken(lighten($color-back-menu-current, 10%), 4%);
           }
         }
       }
@@ -446,24 +476,24 @@ $color-back-alert: (
 .lot\:tab {
   > nav {
     li {
-      box-shadow: inset 0 3px 0 #fcc;
+      box-shadow: inset 0 3px 0 $color-accent-tab;
       &.not\:active {
         opacity: 1;
       }
       a {
         &.not\:active {
           opacity: 1;
-          background: #f5f5f5;
-          color: #aaa;
-          box-shadow: inset 0 3px 0 #ddd;
+          background: lighten($color-secondary, 50%);
+          color: $color-secondary;
+          box-shadow: inset 0 3px 0 lighten($color-secondary, 30%);
         }
       }
     }
     .has\:link {
-      box-shadow: inset 0 3px 0 #cfc;
+      box-shadow: inset 0 3px 0 $color-accent-tab-link;
     }
     .is\:active {
-      box-shadow: inset 0 3px 0 #ccf;
+      box-shadow: inset 0 3px 0 $color-accent-tab-active;
     }
   }
 }
@@ -472,18 +502,18 @@ $color-back-alert: (
   .table {
     th,
     td {
-      background: #eef;
+      background: $color-back-table-data;
       color: inherit;
       cursor: default;
     }
     th {
-      background: #ccd;
+      background: $color-back-table-title;
     }
     tbody {
       tr {
         &:hover {
           td {
-            background: #dde;
+            background: $color-back-table-data-hover;
           }
         }
       }
@@ -491,13 +521,8 @@ $color-back-alert: (
   }
 }
 
+
 // Custom Appearance for Modern Browsers
-
-$color-back-item: #08a;
-$color-back-items: #090;
-
-$color-back-toggle: #c00;
-$color-back-toggle-active: #090;
 
 .input {
   &[type='checkbox'],
@@ -630,41 +655,57 @@ label {
 }
 
 @media (min-width: 719px) {
-  .lot\:bar li.is\:main {
-    background: #fff;
-    color: #000;
-  }
-  .lot\:bar li.is\:main > a {
-    color: #009;
-  }
-  .lot\:bar li.is\:main > a:focus,
-  .lot\:bar li.is\:main > a:active {
-    color: #900;
-  }
-  .lot\:bar li.is\:main.is\:active > a {
-    background: inherit;
-    color: inherit;
-    position: relative;
-    z-index: 9999; /* Must be greater than the `.lot:menu` index to hide the top shadow from its drop menu */
+  .lot\:bar {
+    li {
+      &.is\:main {
+        background: $color-back;
+        color: $color;
+        &.is\:active {
+          > a {
+            background: inherit;
+            color: inherit;
+            position: relative;
+            z-index: 9999; /* Must be greater than the `.lot\:menu` index to hide the top shadow from its drop menu */
+          }
+        }
+        > a {
+          color: $color-link;
+          &:focus {
+            color: $color-link-focus;
+          }
+          &:active {
+            color: $color-link-active;
+          }
+        }
+      }
+    }
   }
 }
 
 @media (max-width: 720px) {
-  .field > label {
-    font-weight: bolder;
+  .field {
+    > label {
+      font-weight: bolder;
+    }
   }
-  .lot\:tab > nav li {
-    background: none;
-    box-shadow: none;
-  }
-  .lot\:tab > nav li:not(.has\:link) a {
-    color: #009;
-  }
-  .lot\:tab > nav li.is\:active {
-    box-shadow: none;
-  }
-  .lot\:tab > nav li.is\:active a {
-    color: inherit;
+  .lot\:tab {
+    > nav {
+      li {
+        background: none;
+        box-shadow: none;
+        &.is\:active {
+          box-shadow: none;
+          a {
+            color: inherit;
+          }
+        }
+        &:not(.has\:link) {
+          a {
+            color: $color-link;
+          }
+        }
+      }
+    }
   }
 }
 

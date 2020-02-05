@@ -25,6 +25,7 @@
       &.is\:separator {
         width: 1px;
         height: $y;
+        background: $color;
         margin: ($y / 2) 0;
         overflow: hidden;
         &:first-child,
@@ -378,7 +379,6 @@
       width: auto;
       height: 1px;
       background: $color;
-      opacity: .125;
       margin: 0;
       overflow: hidden;
       &:first-child,

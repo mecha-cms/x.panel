@@ -4,7 +4,7 @@
 
 .code {
   font-family: $mono;
-  font-size: ($z - 3); // Magic :(
+  font-size: 80%; // Magic :(
 }
 
 .italic {
@@ -18,7 +18,7 @@
 }
 
 .small {
-  font-size: ($z * .8);
+  font-size: 70%;
 }
 
 .strike {

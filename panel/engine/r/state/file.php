@@ -1,6 +1,12 @@
 <?php
 
-$f = $_['f'];
+if (is_dir($f = $_['f']) && 'g' === $_['task']) {
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+        'layout' => false
+    ]) . $url->hash);
+}
+
 $type = $f && is_file($f) ? mime_content_type($f) : null;
 $name = 'g' === $_['task'] ? basename($f) : "";
 

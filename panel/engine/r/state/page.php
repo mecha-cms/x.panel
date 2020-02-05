@@ -1,5 +1,12 @@
 <?php
 
+if (is_dir($f = $_['f']) && 'g' === $_['task']) {
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+        'layout' => false
+    ]) . $url->hash);
+}
+
 // Sanitize form data
 Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
@@ -34,7 +41,7 @@ Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
     return $_;
 }, 9.9);
 
-$page = is_file($f = $_['f']) ? new Page($f) : new Page;
+$page = is_file($f) ? new Page($f) : new Page;
 
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 

@@ -193,7 +193,6 @@ $fields = [
     'set[0]' => [
         'type' => 'Set',
         'title' => 'Group Title',
-        'description' => 'Group description.',
         'lot' => [
             0 => [
                 'type' => 'Fields',
@@ -214,7 +213,6 @@ $fields = [
     'set[1]' => [
         'type' => 'Set',
         'title' => 'Group Title (<a href="">a link</a>)',
-        'description' => 'Group description.',
         'lot' => [
             0 => [
                 'type' => 'Fields',
@@ -350,6 +348,13 @@ return [
                                                         'type' => 'Link',
                                                         'title' => 'Disabled Link',
                                                         'stack' => 10.7
+                                                    ],
+                                                    8 => [
+                                                        'active' => false,
+                                                        'type' => 'Link',
+                                                        'tags' => ['is:text'],
+                                                        'title' => 'Disabled Link',
+                                                        'stack' => 10.8
                                                     ]
                                                 ]
                                             ]

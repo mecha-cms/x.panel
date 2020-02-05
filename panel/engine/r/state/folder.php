@@ -1,5 +1,12 @@
 <?php
 
+if (is_file($f = $_['f']) && 'g' === $_['task']) {
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'folder']);
+    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+        'layout' => false
+    ]) . $url->hash);
+}
+
 $name = 'g' === $_['task'] ? basename($_['f']) : "";
 
 if ("" === $name) $name = null;

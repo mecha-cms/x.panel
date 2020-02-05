@@ -1,6 +1,13 @@
 <?php
 
-$name = is_file($f = $_['f']) ? pathinfo($f, PATHINFO_FILENAME) : null;
+if (is_dir($f = $_['f']) && 'g' === $_['task']) {
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+        'layout' => false
+    ]) . $url->hash);
+}
+
+$name = is_file($f) ? pathinfo($f, PATHINFO_FILENAME) : null;
 $content = $name ? file_get_contents($f) : null;
 
 $path = 'g' === $_['task'] ? dirname($f) : $f;

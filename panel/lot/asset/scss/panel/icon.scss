@@ -15,7 +15,7 @@ svg {
   overflow: hidden;
   text-indent: -9999px;
   @include user-select(none);
-  &[display="none"] {
+  &[display='none'] {
     display: none;
   }
 }

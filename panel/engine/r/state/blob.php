@@ -1,5 +1,12 @@
 <?php
 
+if (is_dir($f = $_['f']) && 'g' === $_['task']) {
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+        'layout' => false
+    ]) . $url->hash);
+}
+
 $options = [];
 if (extension_loaded('zip')) {
     $options['extract'] = 'Extract package immediately after uploaded.';

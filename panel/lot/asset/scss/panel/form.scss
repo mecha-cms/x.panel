@@ -42,7 +42,8 @@
   }
 }
 
-[disabled] {
+[disabled],
+.not\:active {
   .button&,
   .input&,
   .select&,
@@ -92,16 +93,16 @@ label {
 }
 
 .input {
-  &[type="color"],
-  &[type="file"],
-  &[type="range"] {
+  &[type='color'],
+  &[type='file'],
+  &[type='range'] {
     cursor: pointer;
   }
 }
 
 .input {
-  &[type="file"],
-  &[type="range"] {
+  &[type='file'],
+  &[type='range'] {
     background: none;
     border: 0;
     padding: 0;
@@ -111,10 +112,10 @@ label {
 }
 
 .input {
-  &[type="checkbox"],
-  &[type="color"],
-  &[type="image"],
-  &[type="radio"] {
+  &[type='checkbox'],
+  &[type='color'],
+  &[type='image'],
+  &[type='radio'] {
     margin: 0;
     padding: 0;
     background: none;
@@ -124,18 +125,18 @@ label {
     line-height: 1em;
     cursor: pointer;
   }
-  &[type="checkbox"][readonly],
-  &[type="radio"][readonly] {
+  &[type='checkbox'][readonly],
+  &[type='radio'][readonly] {
     pointer-events: none;
   }
 }
 
-.input[type="color"] {
+.input[type='color'] {
   width: ($x * 1.5);
   height: ($y * 1.5);
 }
 
-.input[type="image"] {
+.input[type='image'] {
   width: auto;
   height: auto;
 }
@@ -185,8 +186,8 @@ label {
 
 label {
   > input {
-    &[type="checkbox"],
-    &[type="radio"] {
+    &[type='checkbox'],
+    &[type='radio'] {
       + span {
         display: inline-block;
         vertical-align: middle;

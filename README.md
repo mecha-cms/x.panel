@@ -6,6 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.1.5
+
+ - Fixed broken recursive folder delete if `trash` parameter exists.
+ - Added field type: [`Set`](/).
+
 ### 2.1.4
 
  - Fixed [#13](https://github.com/mecha-cms/x.panel/issues/13), somehow.
