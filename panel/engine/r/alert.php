@@ -8,7 +8,7 @@ if (defined('DEBUG') && DEBUG && is_file($f = ENGINE . DS . 'log' . DS . 'error'
     $errors = _\lot\x\panel\h\path(trim(n(file_get_contents($f))));
     $out = i('Please fix ' . (substr_count($errors, "\n") === 0 ? 'this error' : 'these errors') . ':');
     $out .= '<br><br>';
-    $out .= '<code style="display: inline-block; font-size: 70%; line-height: 1.25em;">' . strtr($errors, [
+    $out .= '<code style="display: inline-block; font-size: 70%; line-height: 1.25em;">' . strtr(htmlspecialchars($errors), [
         "\n" => '<br>'
     ]) . '</code>';
     $out .= '<br><br>';
