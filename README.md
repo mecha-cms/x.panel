@@ -9,6 +9,7 @@ Release Notes
 ### 2.1.5
 
  - Fixed broken recursive folder delete if `trash` parameter exists.
+ - Added optional `title` and `description` attribute for `Fields`.
  - Added [`Set`](https://user-images.githubusercontent.com/1669261/73904817-dcea6380-48cf-11ea-9c66-25a61e2c1b8e.png) field type.
 
 ### 2.1.4
