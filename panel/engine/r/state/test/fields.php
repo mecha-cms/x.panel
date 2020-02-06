@@ -192,43 +192,23 @@ $fields = [
     ],
     'set[0]' => [
         'type' => 'Set',
-        'title' => 'Group Title',
+        'title' => 'Group Title and <a href="">Group Title Link</a>',
         'lot' => [
             0 => [
                 'type' => 'Fields',
                 'title' => 'Fields Title',
-                'description' => 'Fields description.',
+                'description' => 'Fields description goes here.',
                 'lot' => [
-                    0 => [
+                    'Field 1' => [
                         'type' => 'Text'
                     ],
-                    1 => [
+                    'Field 2' => [
                         'type' => 'Text'
                     ]
                 ]
             ]
         ],
         'stack' => 5
-    ],
-    'set[1]' => [
-        'type' => 'Set',
-        'title' => 'Group Title (<a href="">a link</a>)',
-        'lot' => [
-            0 => [
-                'type' => 'Fields',
-                'title' => 'Fields Title',
-                'description' => 'Fields description.',
-                'lot' => [
-                    0 => [
-                        'type' => 'Text'
-                    ],
-                    1 => [
-                        'type' => 'Text'
-                    ]
-                ]
-            ]
-        ],
-        'stack' => 5.1
     ]
 ];
 
