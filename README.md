@@ -8,8 +8,9 @@ Release Notes
 
 ### 2.1.6
 
- - Added `Blobs` field type as an alternative to `Blob` field type that accept multiple file upload.
+ - Added `Blobs` field type as an alternative to `Blob` field type that can accept multiple file uploads.
  - Added ability to convert RGB color string into HEX color string for `Color` and `Colors` field type.
+ - The generic file uploading interface now uses `Blobs` field type as the file picker so that you can now upload multiple files there.
 
 ### 2.1.5
 
