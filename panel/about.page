@@ -3,12 +3,14 @@ title: Panel
 description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.1.5
+version: 2.1.6
 
 use:
   '.\lot\x\layout': 1
   '.\lot\x\user': 1
 ...
+
+To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/log-out system.
 
 ![Page](https://user-images.githubusercontent.com/1669261/71335844-2fb5c900-2577-11ea-9b39-4703813566cd.png)
 

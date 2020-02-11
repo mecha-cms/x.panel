@@ -1,9 +1,5 @@
 <?php
 
-
-
-
-
 Hook::set('get', function() use($_) {
     Asset::let(); // Again: remove all asset(s)
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset' . DS;

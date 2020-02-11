@@ -8,6 +8,25 @@ function c(&$out, $in, $tags = []) {
     $out['class'] = $c ? \implode(' ', $c) : null;
 }
 
+function color($color) {
+    // Convert RGB color string into HEX color string
+    // <https://www.regular-expressions.out/numericranges.html>
+    if (0 === \strpos($color, 'rgb') && \preg_match('/^\s*rgba?\s*\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(?:\s*,\s*([01]|0?\.\d+))?\s*\)\s*$/', $color, $m)) {
+        $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
+    }
+    // Validate HEX color string
+    $s = \strlen($color);
+    if ('#' === $color[0] && (4 === $s || 7 === $s) && \ctype_xdigit(\substr($color, 1))) {
+        // Convert short HEX color string into long HEX color string
+        if (4 === $s) {
+            $m = \str_split(\substr($color, 1));
+            $color = '#' . ($m[0] . $m[0]) . ($m[1] . $m[1]) . ($m[2] . $m[2]);
+        }
+        return $color;
+    }
+    return null;
+}
+
 function content($content) {
     return \is_array($content) ? new \HTML($content) : (string) $content;
 }

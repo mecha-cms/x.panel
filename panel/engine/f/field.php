@@ -8,10 +8,20 @@ function Field__($in, $key) {
 
 function Field__Blob($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
-    $name = 'blob[' . \md5($in['name'] ?? $key) . ']';
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['name'] = $name;
+    $out['content'][2]['name'] = $in['name'] ?? $key;
+    $out['content'][2]['type'] = 'file';
+    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    return \_\lot\x\panel\Field($out, $key);
+}
+
+function Field__Blobs($in, $key) {
+    $out = \_\lot\x\panel\h\field($in, $key);
+    $out['content'][0] = 'input';
+    $out['content'][1] = false;
+    $out['content'][2]['multiple'] = true; // TODO: Limit file(s) to upload
+    $out['content'][2]['name'] = ($in['name'] ?? $key) . '[]';
     $out['content'][2]['type'] = 'file';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
     return \_\lot\x\panel\Field($out, $key);
@@ -23,9 +33,7 @@ function Field__Color($in, $key) {
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'color';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    $value = $in['value'] ?? "";
-    // TODO: Convert any color string into HEX color code
-    if ("" !== $value) {
+    if ($value = \_\lot\x\panel\h\color((string) ($in['value'] ?? ""))) {
         $out['content'][2]['title'] = $value;
         $out['content'][2]['value'] = $value;
     }
@@ -46,15 +54,16 @@ function Field__Colors($in, $key) {
                 $v = ['value' => $v];
             }
             $n = $name . '[' . $k . ']';
-            $value = $v['value'] ?? null;
             $input = \_\lot\x\panel\h\field($v, $k);
             $input[0] = 'input';
             $input[1] = false;
             $input[2]['class'] = 'input';
             $input[2]['name'] = $n;
-            $input[2]['title'] = $value;
             $input[2]['type'] = 'color';
-            $input[2]['value'] = $value;
+            if ($value = \_\lot\x\panel\h\color((string) ($v['value'] ?? ""))) {
+                $input[2]['title'] = $value;
+                $input[2]['value'] = $value;
+            }
             $out['content'][1] .= new \HTML($input);
         }
         unset($in['lot']);

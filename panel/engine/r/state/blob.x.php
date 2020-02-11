@@ -26,6 +26,10 @@ Hook::set('do.blob.set', function($_, $lot) use($zip) {
 
 $lot = require __DIR__ . DS . 'blob.php';
 
+// Disable multiple file upload
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['type'] = 'Blob';
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['name'] = 'blob[0]';
+
 // Disable file uploader if it is not possible to extract package with the current environment
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['active'] = $zip;
 

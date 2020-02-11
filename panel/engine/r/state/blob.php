@@ -68,7 +68,7 @@ return [
                                                     'blob' => [
                                                         'title' => 'File',
                                                         'description' => ['Maximum file size allowed to upload is %s.', File::sizer(File::$state['size'][1])],
-                                                        'type' => 'Blob',
+                                                        'type' => 'Blobs',
                                                         'focus' => true,
                                                         'stack' => 10
                                                     ],

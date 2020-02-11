@@ -6,6 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.1.6
+
+ - Added `Blobs` field type as an alternative to `Blob` field type that accept multiple file upload.
+ - Added ability to convert RGB color string into HEX color string for `Color` and `Colors` field type.
+
 ### 2.1.5
 
  - Fixed broken recursive folder delete if `trash` parameter exists.

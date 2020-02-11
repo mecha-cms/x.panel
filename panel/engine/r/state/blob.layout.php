@@ -27,7 +27,8 @@ $description .= '<p>' . i('Please note that this action will first remove all of
     'd' => 0,
     'kick' => URL::short($url->current, false),
     'layout' => false,
-    'token' => $_['token']
+    'token' => $_['token'],
+    'trash' => false
 ]), 'Download current layout as a ZIP file.']) . '</p>';
 
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description']['content'] = $description;

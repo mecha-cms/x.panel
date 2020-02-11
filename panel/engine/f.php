@@ -620,7 +620,7 @@ namespace _\lot\x {
             } else if (isset($in['lot'])) {
                 $out .= \_\lot\x\panel\lot($in, $key);
             } else {
-                $out .= \_\lot\x\panel\abort($in, $key, $fn);
+                // Skip!
             }
         }
         return $out;
