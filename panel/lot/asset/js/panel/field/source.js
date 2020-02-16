@@ -27,9 +27,12 @@
 !function(e,n,t){function r(e,n,t){e.removeEventListener(n,t)}function u(e,n,t){e.addEventListener(n,t,!1)}function o(e,n){return Object.assign(e,n)}function i(e){e&&e.preventDefault()}var a,f,c=e[t],l=setTimeout,s=c.esc,v="blur",p="close",d="ctrlKey",$="disabled",g="focus",b="fromCharCode",h="indexOf",m="lastIndexOf",y="keydown",w="match",E="mousedown",S="mouseup",_="pull",x="push",O="readOnly",R="record",T="redo",L="replace",k="select",j="shiftKey",C="toLowerCase",K="touch",A=K+"end",H=K+"start",N="undo";a=function(e,n){function t(){e[$]||e[O]||l(function(){{var e=X.$(),n=/\W/g,t=".",r=e.before[L](n,t)[m](t),u=e.after[L](n,t)[h](t);e.value}r=0>r?0:r+1,u=0>u?e.after.length:u,q!==e.start&&X[k](r,e.end+u)},0)}function a(){q=X.$().start}function f(t){if(!e[$]&&!e[O]){var r=B[p],u=n.tab,o=t.keyCode,a=(t.key||String[b](o))[C](),f=t[d],c="enter"===a||13===o,h=(t[j],X.$()),m=h.before,y=h.value,E=h.after,S=m.slice(-1),R=E.slice(0,1),L=m[w](RegExp("(?:^|\\n)("+s(u)+"+).*$")),A=L?L[1]:"",H=r[a];f?"z"===a||90===o?(X[N](),K(),i(t)):"y"===a||89===o?(X[T](),K(),i(t)):"]"===a||221===o?(X[x](u),K(),i(t)):("["===a||219===o)&&(X[_](u),K(),i(t)):"\\"!==S&&a===R?(X[k](h.end+1),K(),i(t)):"\\"!==S&&H?(K(),X.wrap(a,H),K(),i(t)):"backspace"===a||8===o?(!y&&m[w](RegExp(s(u)+"$"))?(X[_](u),K(),i(t)):(H=r[S],H&&H===R&&(X.peel(S,R),i(t))),K()):"delete"===a||46===o?(H=r[S],H&&H===R&&(X.peel(S,R),i(t)),K()):c?(H=r[S],H&&H===R?(X.wrap("\n"+u+A,"\n"+A)[v]()[g](),i(t)):(y||A)&&(X.insert("\n",-1,!0)[x](A)[v]()[g](),i(t)),K()):l(K,0)}}function K(){z&&X[R]()}var X=this,Y=X.pop,z=N in c._;c.call(X,e,n);var D="source",n=X.state,I={},W=!(D in n)||n[D];I[p]={"(":")","{":"}","[":"]",'"':'"',"'":"'","<":">"},I[k]=!0,W&&(n[D]=o(I,!0===n[D]?{}:n[D]));var q,B=n[D]||{};W&&(u(e,y,f),B[k]&&(u(e,E,t),u(e,S,a),u(e,A,a),u(e,H,t)),K()),X.pop=function(){return Y.call(X),r(e,y,f),r(e,E,t),r(e,S,a),r(e,A,a),r(e,H,t),z&&X[loss](!0),X},X.state=n};for(f in c)a[f]=c[f];a.prototype=a._=c._,e[t]=a}(window,document,"TE");
 
 
-(function(doc) {
-    var source = doc.querySelectorAll('.field\\:source .textarea'), $$;
-    source.length && source.forEach(function($) {
-        $$ = new TE($, JSON.parse($.getAttribute('data-state') || '{}'));
-    });
-})(document);
+(function(doc, _) {
+    function onChange() {
+        var source = doc.querySelectorAll('.field\\:source .textarea'), $$;
+        source.length && source.forEach(function($) {
+            $$ = new TE($, JSON.parse($.getAttribute('data-state') || '{}'));
+        });
+    } onChange();
+    _.on('change', onChange);
+})(document, _);

@@ -34,7 +34,8 @@ function file($_, $lot) {
     $e = $url->query('&', [
         'layout' => false,
         'tab'=> false,
-        'token' => false
+        'token' => false,
+        'trash' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {

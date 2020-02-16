@@ -611,7 +611,7 @@
 }
 
 .lot\:desk {
-  max-width: (1024 - 8); // Magic :(
+  max-width: ($x * 42.5);
 }
 
 .lot\:section {

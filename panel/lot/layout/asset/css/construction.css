@@ -204,8 +204,8 @@ blockquote, figcaption, caption {
 .lot\:input .fix {
   background: #dda;
 }
-.lot\:menu a.not\:active {
-  background: white;
+.lot\:menu a.not\:active, .lot\:menu a.not\:active:focus, .lot\:menu a.not\:active:hover, .lot\:menu a.not\:active:active {
+  background: #f3f3f3;
   color: #888;
   opacity: 1;
 }

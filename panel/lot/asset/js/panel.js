@@ -46,16 +46,6 @@
             return _;
         };
 
-    _.ASSET_CSS = {};
-
-    _.ASSET_JS = {
-        'js/panel/alert': {},
-        'js/panel/field/query': {},
-        'js/panel/field/source': {},
-        'js/panel/menu': {},
-        'js/panel/tab': {}
-    };
-
     var src = doc.currentScript.src,
         a = src.split('/'), i,
         // `../`
@@ -66,33 +56,15 @@
 
     src = a.join('/');
 
-    // Load CSS file(s) immediately
-    for (i in _.ASSET_CSS) {
-        if (!_.ASSET_CSS[i] || _.ASSET_CSS[i].once) {
-            continue;
-        }
-        var link = doc.createElement('link');
-        link.href = src + '/' + i + '.min.css?' + end;
-        link.rel = 'stylesheet';
-        doc.head.appendChild(link);
-        _.ASSET_CSS[i].once = true;
-    }
+    _.folder = src;
+    _.hooks = hooks;
 
-    // Load JS file(s) on document ready
-    _.on('load', function() {
-        for (i in _.ASSET_JS) {
-            if (!_.ASSET_JS[i] || _.ASSET_JS[i].once) {
-                continue;
-            }
-            var script = doc.createElement('script');
-            script.src = src + '/' + i + '.min.js?' + end;
-            doc.head.appendChild(script);
-            _.ASSET_JS[i].once = true;
-        }
+    _.on('pop', function() {
+        // ...
     });
 
-    win.addEventListener('DOMContentLoaded', function() {
-        _.fire('load');
+    doc.addEventListener('DOMContentLoaded', function() {
+        _.fire('set');
     });
 
 })(window, document, window._ = window._ || {});

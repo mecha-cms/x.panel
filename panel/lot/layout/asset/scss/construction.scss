@@ -387,9 +387,14 @@ $color-back-alert: (
 .lot\:menu {
   a {
     &.not\:active {
-      background: lighten($color-secondary, 60%);
-      color: $color-secondary;
-      opacity: 1;
+      &,
+      &:focus,
+      &:hover,
+      &:active {
+        background: lighten($color-secondary, 42%);
+        color: $color-secondary;
+        opacity: 1;
+      }
     }
   }
   &,
@@ -408,7 +413,7 @@ $color-back-alert: (
     &.is\:active {
       a {
         &.not\:active {
-          background: #eee;
+          background: #eee; // TODO
         }
       }
     }

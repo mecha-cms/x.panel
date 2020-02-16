@@ -6,6 +6,10 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.2.0
+
+ - **TODO:** AJAX system that allows other JavaScript extensions to listen to the AJAX load event.
+
 ### 2.1.6
 
  - Added `Blobs` field type as an alternative to `Blob` field type that can accept multiple file uploads.

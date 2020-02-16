@@ -417,148 +417,6 @@ legend + blockquote, legend + dl, legend + fieldset, legend + figure, legend + f
 hr {
   border-width: 1px 0 0;
 }
-.field {
-  display: flex;
-  margin-right: -12px;
-  margin-left: -12px;
-}
-.field .description {
-  display: block;
-  font-size: 12px;
-  line-height: 16px;
-  margin: 10px 0 0;
-}
-.field .description code {
-  font-size: 10.4px;
-}
-.field .output {
-  display: inline-block;
-  vertical-align: middle;
-  border: 0;
-  background: none;
-  color: inherit;
-  width: auto;
-  height: auto;
-  font: inherit;
-  line-height: 24px;
-  padding: 6px 0;
-  text-align: inherit;
-  position: relative;
-  z-index: 0;
-}
-.field .output.width {
-  width: 100%;
-}
-.field > * {
-  margin: 0 12px;
-}
-.field > label {
-  display: block;
-  width: 120px;
-  padding: 6px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
-}
-.field > label + br {
-  display: none;
-}
-.field > label + div, .field > label + br + div {
-  display: block;
-  flex: 1;
-  position: relative;
-}
-.tag-picker, .tag-picker * {
-  box-sizing: border-box;
-  font: inherit;
-  color: inherit;
-}
-.tag-picker, .tag-picker .tags {
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap;
-  min-height: 1.5em;
-  line-height: 1.5em;
-}
-.tag-picker {
-  border: 1px solid;
-  padding: 0.125em;
-  cursor: text;
-}
-.tag-picker .tag {
-  background: red;
-  color: #000;
-  text-decoration: none;
-  margin: 0.125em;
-  padding: 0 0.5em;
-  height: 1.5em;
-  cursor: pointer;
-  outline: 0;
-}
-.tag-picker .tag[title]::before {
-  content: attr(title);
-}
-.tag-picker .tag[title] a {
-  margin-left: 0.5em;
-  text-decoration: none;
-  color: #fff;
-  outline: 0;
-}
-.tag-picker .tag[title] a::before {
-  content: '\00d7';
-}
-.tag-picker .tag:focus {
-  background: #c00;
-}
-.tag-picker .editor {
-  background: 0 0;
-  color: inherit;
-  cursor: inherit;
-  position: relative;
-  flex: 1;
-}
-.tag-picker .editor span {
-  display: block;
-  height: 100%;
-  outline: 0;
-  position: relative;
-  z-index: 1;
-}
-.tag-picker .editor span + span {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: inherit;
-  white-space: nowrap;
-  z-index: 0;
-  opacity: 0.5;
-}
-.tag-picker .tag + .editor span + span {
-  display: none;
-}
-.tag-picker-source {
-  position: fixed;
-  top: -9999px;
-  left: -9999px;
-}
-.tag-picker-source[disabled] + .tag-picker, .tag-picker-source[disabled] + .tag-picker *, .tag-picker-source[readonly] + .tag-picker .tag[title] a {
-  cursor: not-allowed;
-}
-.field\:query .tag-picker {
-  min-height: 36px;
-  height: auto;
-  padding: 2px;
-}
-.field\:query .tag-picker .tag {
-  height: 26px;
-  /* ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2) */
-  padding: 0 7px;
-  margin: 2px;
-  border: 1px solid transparent;
-}
 .button, .input, .select, .textarea, .lot\:input .fix {
   display: inline-block;
   vertical-align: middle;
@@ -703,6 +561,148 @@ label.is\:frozen {
 }
 label.not\:active {
   cursor: not-allowed;
+}
+.field {
+  display: flex;
+  margin-right: -12px;
+  margin-left: -12px;
+}
+.field .description {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  margin: 10px 0 0;
+}
+.field .description code {
+  font-size: 10.4px;
+}
+.field .output {
+  display: inline-block;
+  vertical-align: middle;
+  border: 0;
+  background: none;
+  color: inherit;
+  width: auto;
+  height: auto;
+  font: inherit;
+  line-height: 24px;
+  padding: 6px 0;
+  text-align: inherit;
+  position: relative;
+  z-index: 0;
+}
+.field .output.width {
+  width: 100%;
+}
+.field > * {
+  margin: 0 12px;
+}
+.field > label {
+  display: block;
+  width: 120px;
+  padding: 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.field > label + br {
+  display: none;
+}
+.field > label + div, .field > label + br + div {
+  display: block;
+  flex: 1;
+  position: relative;
+}
+.tag-picker, .tag-picker * {
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
+}
+.tag-picker, .tag-picker .tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  min-height: 1.5em;
+  line-height: 1.5em;
+}
+.tag-picker {
+  border: 1px solid;
+  padding: 0.125em;
+  cursor: text;
+}
+.tag-picker .tag {
+  background: red;
+  color: #000;
+  text-decoration: none;
+  margin: 0.125em;
+  padding: 0 0.5em;
+  height: 1.5em;
+  cursor: pointer;
+  outline: 0;
+}
+.tag-picker .tag[title]::before {
+  content: attr(title);
+}
+.tag-picker .tag[title] a {
+  margin-left: 0.5em;
+  text-decoration: none;
+  color: #fff;
+  outline: 0;
+}
+.tag-picker .tag[title] a::before {
+  content: '\00d7';
+}
+.tag-picker .tag:focus {
+  background: #c00;
+}
+.tag-picker .editor {
+  background: 0 0;
+  color: inherit;
+  cursor: inherit;
+  position: relative;
+  flex: 1;
+}
+.tag-picker .editor span {
+  display: block;
+  height: 100%;
+  outline: 0;
+  position: relative;
+  z-index: 1;
+}
+.tag-picker .editor span + span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: inherit;
+  white-space: nowrap;
+  z-index: 0;
+  opacity: 0.5;
+}
+.tag-picker .tag + .editor span + span {
+  display: none;
+}
+.tag-picker-source {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+}
+.tag-picker-source[disabled] + .tag-picker, .tag-picker-source[disabled] + .tag-picker *, .tag-picker-source[readonly] + .tag-picker .tag[title] a {
+  cursor: not-allowed;
+}
+.field\:query .tag-picker {
+  min-height: 36px;
+  height: auto;
+  padding: 2px;
+}
+.field\:query .tag-picker .tag {
+  height: 26px;
+  /* ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2) */
+  padding: 0 7px;
+  margin: 2px;
+  border: 1px solid transparent;
 }
 svg {
   display: inline-block;
@@ -1297,7 +1297,7 @@ svg[display='none'] {
   margin: 0 auto;
 }
 .lot\:desk {
-  max-width: 1016;
+  max-width: 1020px;
 }
 .lot\:section.count\:0 {
   display: none;
