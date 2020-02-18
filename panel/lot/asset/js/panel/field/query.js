@@ -11,6 +11,10 @@
 
 (function(doc, _) {
     function onChange() {
+        for (var k in TP.__instance__) {
+            TP.__instance__[k].pop(); // Destroy!
+            delete TP.__instance__[k];
+        }
         var query = doc.querySelectorAll('.field\\:query .input'), $$, c;
         query.length && query.forEach(function($) {
             c = $.className;

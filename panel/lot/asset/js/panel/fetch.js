@@ -2,21 +2,27 @@
 
 
 (function(doc, _) {
+    var root = doc.documentElement,
+        innerHTML = Pjax.switches.innerHTML;
     new Pjax({
         elements: 'a[href]:not([target]),form[action]:not([target])',
-        selectors: ['body>div>main', 'body>div>nav', 'body>svg', 'html', 'title'],
+        selectors: ['body>div>main', 'body>div>nav', 'body>svg', 'title'],
         switches: {
-            html: function(before, after) {
-                before.className = after.className;
+            'body>div>main': innerHTML,
+            'body>div>nav': innerHTML,
+            'body>svg': innerHTML,
+            'title': function(before, after) {
+                before.outerHTML = after.outerHTML;
+                root.className = after.parentNode.parentNode.className;
                 this.onSwitch();
             }
         },
         cacheBust: false
     });
     doc.addEventListener('pjax:send', function() {
-        _.fire('pop');
-    });
+        _.fire('let');
+    }, false);
     doc.addEventListener('pjax:success', function() {
         _.fire('change');
-    });
+    }, false);
 })(document, _);

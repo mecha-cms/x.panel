@@ -1,70 +1,67 @@
 (function(win, doc, _) {
 
-        function count(x) {
-            return Object.keys(x).length;
+    var hooks = {};
+
+    function isSet(x) {
+        return 'undefined' !== typeof x;
+    }
+
+    _.on = function(name, fn) {
+        if (!isSet(hooks[name])) {
+            hooks[name] = [];
         }
-
-        function isSet(x) {
-            return 'undefined' !== typeof x;
+        if (isSet(fn)) {
+            hooks[name].push(fn);
         }
+        return _;
+    };
 
-        var hooks = {};
-
-        _.on = function(name, fn, id) {
-            if (!isSet(hooks[name])) {
-                hooks[name] = {};
-            }
-            if (!isSet(id)) {
-                id = count(hooks[name]);
-            }
-            return hooks[name][id] = fn, _;
-        };
-
-        _.off = function(name, id) {
-            if (!isSet(name)) {
-                return hooks = {}, _;
-            }
-            if (!isSet(id)) {
-                return hooks[name] = {}, _;
-            }
-            return delete hooks[name][id], _;
-        };
-
-        _.fire = function(name, lot, id) {
-            if (!isSet(hooks[name])) {
-                return _;
-            }
-            if (!isSet(id)) {
-                for (var i in hooks[name]) {
-                    hooks[name][i].apply(_, lot);
+    _.off = function(name, fn) {
+        if (!isSet(name)) {
+            return (hooks = {}), _;
+        }
+        if (isSet(hooks[name])) {
+            if (isSet(fn)) {
+                for (var i = 0, j = hooks[name].length; i < j; ++i) {
+                    if (fn === hooks[name][i]) {
+                        hooks[name].splice(i, 1);
+                    }
                 }
             } else {
-                if (isSet(hooks[name][id])) {
-                    hooks[name][id].apply(_, lot);
-                }
+                delete hooks[name];
             }
+        }
+        return _;
+    };
+
+    _.fire = function(name, lot) {
+        if (!isSet(hooks[name])) {
             return _;
-        };
+        }
+        for (var i = 0, j = hooks[name].length; i < j; ++i) {
+            hooks[name][i].apply(_, lot);
+        }
+        return _;
+    };
 
-    var src = doc.currentScript.src,
-        a = src.split('/'), i,
-        // `../`
-        end = a.pop().split('?')[1] || '0';
-
-    // `../`
-    a.pop();
-
-    src = a.join('/');
-
-    _.folder = src;
     _.hooks = hooks;
 
-    _.on('pop', function() {
-        // ...
+    doc.addEventListener('load', function() {
+        _.fire('get');
+    });
+
+    doc.addEventListener('beforeunload', function() {
+        _.fire('let');
     });
 
     doc.addEventListener('DOMContentLoaded', function() {
         _.fire('set');
+    });
+
+    _.on('let', function() {
+        var title = doc.querySelector('title');
+        title = title.getAttribute('data-loading-text');
+        title && (doc.title = title);
     });
 
 })(window, document, window._ = window._ || {});
