@@ -80,10 +80,10 @@ function blob($_, $lot) {
                 }
             }
         }
-    }
-    if (!empty($_['alert']['error'])) {
-        unset($lot['token']);
-        $_SESSION['form'] = $lot;
+        if (!empty($_['alert']['error'])) {
+            unset($_POST['token']);
+            $_SESSION['form'] = $_POST;
+        }
     }
     return $_;
 }
@@ -99,7 +99,9 @@ function data($_, $lot) {
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
         $lot['file']['name'] = "" !== $name ? $name . '.data' : "";
-        $lot['file']['content'] = $lot['data']['content'] ?? "";
+        // Use `$_POST['data']['content']` instead of `$lot['data']['content']` just to be sure
+        // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
+        $lot['file']['content'] = $_POST['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
@@ -136,7 +138,10 @@ function file($_, $lot) {
             $_['f'] = $f;
         } else {
             if (\array_key_exists('content', $lot['file'] ?? [])) {
-                \file_put_contents($f, $lot['file']['content'] ?? "");
+                // Use `$_POST['file']['content']` instead of `$lot['file']['content']` just to be sure
+                // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
+                $lot['file']['content'] = $_POST['file']['content'] ?? "";
+                \file_put_contents($f, $lot['file']['content']);
             }
             @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
@@ -144,10 +149,10 @@ function file($_, $lot) {
             $_['f'] = $f;
             $_SESSION['_']['file'][\trim($f, \DS)] = 1;
         }
-    }
-    if (!empty($_['alert']['error'])) {
-        unset($lot['token']);
-        $_SESSION['form'] = $lot;
+        if (!empty($_['alert']['error'])) {
+            unset($_POST['token']);
+            $_SESSION['form'] = $_POST;
+        }
     }
     return $_;
 }
@@ -185,10 +190,10 @@ function folder($_, $lot) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }
-    }
-    if (!empty($_['alert']['error'])) {
-        unset($lot['token']);
-        $_SESSION['form'] = $lot;
+        if (!empty($_['alert']['error'])) {
+            unset($_POST['token']);
+            $_SESSION['form'] = $_POST;
+        }
     }
     return $_;
 }

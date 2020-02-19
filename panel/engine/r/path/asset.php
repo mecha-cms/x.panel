@@ -9,7 +9,7 @@ if (!is_dir($d = LOT . DS . 'asset' . DS . $user->user)) {
 
 // You cannot edit or delete your own folder
 if (count($_['chops']) < 3) {
-    if ('g' === $_['task']) {
+    if ('g' === $_['task'] && isset($_['i'])) {
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
     }

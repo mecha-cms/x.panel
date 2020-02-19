@@ -8,7 +8,8 @@ Release Notes
 
 ### 2.2.0
 
- - **TODO:** AJAX system that allows other JavaScript extensions to listen to the AJAX load event.
+ - **TODO:** AJAX system that allows other JavaScript extensions to listen to the AJAX loading and loaded events.
+ - Fixed bug where users could not save the file content properly due to the automatic string evaluation by the `e` function.
 
 ### 2.1.6
 
