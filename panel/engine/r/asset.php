@@ -11,7 +11,8 @@ Hook::set('get', function() use($_) {
     }
     Asset::set($f . 'js' . DS . 'panel' . $dot . 'js', 20);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'alert' . $dot . 'js', 20.1);
-    Asset::set($f . 'js' . DS . 'panel' . DS . 'fetch' . $dot . 'js', 20.1);
+    // TODO:
+    // Asset::set($f . 'js' . DS . 'panel' . DS . 'fetch' . $dot . 'js', 20.1);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'menu' . $dot . 'js', 20.1);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'tab' . $dot . 'js', 20.1);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'field' . DS . 'query' . $dot . 'js', 20.2);

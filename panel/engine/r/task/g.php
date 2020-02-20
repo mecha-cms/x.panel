@@ -177,7 +177,7 @@ function page($_, $lot) {
             }
             $page[$k] = $v;
         }
-        $lot['file']['content'] = \To::page($page);
+        $lot['file']['content'] = $_POST['file']['content'] = \To::page($page);
         $lot['file']['name'] = $name . '.' . $x;
         $_f = $_['f']; // Get old file name
         $_ = file($_, $lot); // Move to `file`

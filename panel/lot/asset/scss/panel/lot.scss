@@ -142,7 +142,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     a {
-      &.not\:active:not(:focus):not(:hover) {
+      &.not\:active {
         opacity: 1;
       }
     }
@@ -206,7 +206,7 @@
       top: 7px;
     }
   }
-  .not\:active:not(:focus):not(:hover) {
+  .not\:active {
     opacity: .5;
   }
   &.count\:0 {

@@ -904,7 +904,7 @@ svg[display='none'] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.lot\:file h3 a.not\:active:not(:focus):not(:hover), .lot\:page h3 a.not\:active:not(:focus):not(:hover) {
+.lot\:file h3 a.not\:active, .lot\:page h3 a.not\:active {
   opacity: 1;
 }
 .lot\:file h3 .title, .lot\:page h3 .title {
@@ -960,7 +960,7 @@ svg[display='none'] {
   width: 12px;
   top: 7px;
 }
-.lot\:file .not\:active:not(:focus):not(:hover), .lot\:page .not\:active:not(:focus):not(:hover) {
+.lot\:file .not\:active, .lot\:page .not\:active {
   opacity: 0.5;
 }
 .lot\:file.count\:0, .lot\:page.count\:0 {

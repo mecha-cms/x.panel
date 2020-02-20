@@ -13,6 +13,9 @@ $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '::';
     foreach ($search($folder, 'archive,draft,page', 0) as $k => $v) {
+        if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
+            continue; // Skip placeholder page(s)
+        }
         $after = '::' . strtr($k, [
             LOT => "",
             DS => '/'
@@ -22,15 +25,21 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $create = $add && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
-            'title' => S . _\lot\x\panel\h\w($page->title) . S,
-            'description' => S . _\lot\x\panel\h\w($page->description) . S,
+            'title' => function($path) use($page) {
+                // Load title asynchronously for best performance
+                return S . _\lot\x\panel\h\w($page->title) . S;
+            },
+            'description' => function($path) use($page) {
+                // Load description asynchronously for best performance
+                return S . _\lot\x\panel\h\w($page->description) . S;
+            },
+            'image' => function($path) use($page) {
+                // Load image asynchronously for best performance
+                return $page->image(72, 72, 50);
+            },
             'author' => $page['author'],
             'type' => 'Page',
             'link' => 'draft' === ($x = $page->x) ? null : $page->url,
-            'image' => function($path) {
-                // Load image asynchronously for best performance
-                return (new Page($path))->image(72, 72, 50);
-            },
             'time' => $page->time . "",
             'tags' => [
                 'is:' . $x,

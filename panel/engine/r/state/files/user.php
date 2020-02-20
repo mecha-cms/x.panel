@@ -12,11 +12,11 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         $page = new User($k);
         $v['link'] = 'draft' !== $page->x ? $page->url : null;
-        $v['title'] = $page . "";
-        $v['description'] = $page->user;
-        $v['image'] = function($path) {
+        $v['title'] = S . $page . S;
+        $v['description'] = S . $page->user . S;
+        $v['image'] = function($path) use($page) {
             // Load avatar asynchronously for best performance
-            return (new User($path))->avatar(72);
+            return $page->avatar(72);
         };
         // Disable page children feature
         $v['tasks']['enter']['hidden'] = true;

@@ -60,7 +60,7 @@
 
     _.on('let', function() {
         var title = doc.querySelector('title');
-        title = title.getAttribute('data-loading-text');
+        title = title.getAttribute('data-is-loading');
         title && (doc.title = title);
     });
 

@@ -229,7 +229,7 @@ function page($_, $lot) {
             }
             $page[$k] = $v;
         }
-        $lot['file']['content'] = \To::page($page);
+        $lot['file']['content'] = $_POST['file']['content'] = \To::page($page);
         $lot['file']['name'] = $name . '.' . $x;
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error'])) {

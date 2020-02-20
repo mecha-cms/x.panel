@@ -37,15 +37,18 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
-            'title' => _\lot\x\panel\h\w($page->author),
-            'description' => _\lot\x\panel\h\w(To::excerpt($page->content)),
+            'title' => function($path) use($page) {
+                return S . _\lot\x\panel\h\w($page->author) . S;
+            },
+            'description' => function($path) use($page) {
+                return S . _\lot\x\panel\h\w($page->content) . S;
+            },
+            'image' => function($path) use($page) {
+                return $page->avatar(72);
+            },
             'author' => $page['author'],
             'type' => 'Page',
             'link' => 'draft' === ($x = $page->x) ? null : $page->url,
-            'image' => function($path) {
-                // Load avatar asynchronously for best performance
-                return (new Comment($path))->avatar(72);
-            },
             'time' => $page->time . "",
             'tags' => [
                 'is:' . $x,

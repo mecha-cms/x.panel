@@ -314,17 +314,24 @@ namespace _\lot\x\panel {
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         $path = $in['path'] ?? $key;
-        $title = !empty($in['time']) ? \strtr($in['time'], '-', '/') : null;
-        $image = isset($in['image']) ? (\is_callable($in['image']) ? \call_user_func($in['image'], $path) : $in['image']) : null;
-        $out[1] .= '<div' . (isset($image) && false === $image ? ' hidden' : "") . '>' . (!empty($image) ? '<img alt="" height="72" src="' . $image . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($path, [
+        foreach (['title', 'description', 'image'] as $k) {
+            if (isset($in[$k])) {
+                // Delay `page.*` hook execution with closure(s)
+                if (\is_callable($in[$k])) {
+                    $in[$k] = \call_user_func($in[$k], $path);
+                }
+            }
+        }
+        $date = isset($in['time']) ? \strtr($in['time'], '-', '/') : null;
+        $out[1] .= '<div' . (isset($in['image']) && false === $in['image'] ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($path, [
             \ROOT => "",
             \DS => '/'
         ])), 0, 6) . ';"></span>') . '</div>';
         $out[1] .= '<div><h3>' . \_\lot\x\panel\Link([
             'link' => $in['link'] ?? null,
-            'title' => $in['title'] ?? $title,
+            'title' => $in['title'] ?? $date,
             'url' => $in['url'] ?? null
-        ], $key) . '</h3>' . \_\lot\x\panel\h\description($in, $title) . '</div>';
+        ], $key) . '</h3>' . \_\lot\x\panel\h\description($in, $date) . '</div>';
         $out[1] .= '<div>' . \_\lot\x\panel\Tasks\Link([
             0 => 'p',
             'lot' => $in['tasks'] ?? []
