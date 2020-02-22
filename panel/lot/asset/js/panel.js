@@ -1,6 +1,6 @@
 (function(win, doc, _) {
 
-    var hooks = {};
+    let hooks = {};
 
     function isSet(x) {
         return 'undefined' !== typeof x;
@@ -22,7 +22,7 @@
         }
         if (isSet(hooks[name])) {
             if (isSet(fn)) {
-                for (var i = 0, j = hooks[name].length; i < j; ++i) {
+                for (let i = 0, j = hooks[name].length; i < j; ++i) {
                     if (fn === hooks[name][i]) {
                         hooks[name].splice(i, 1);
                     }
@@ -38,7 +38,7 @@
         if (!isSet(hooks[name])) {
             return _;
         }
-        for (var i = 0, j = hooks[name].length; i < j; ++i) {
+        for (let i = 0, j = hooks[name].length; i < j; ++i) {
             hooks[name][i].apply(_, lot);
         }
         return _;
@@ -59,7 +59,7 @@
     });
 
     _.on('let', function() {
-        var title = doc.querySelector('title');
+        let title = doc.querySelector('title');
         title = title.getAttribute('data-is-loading');
         title && (doc.title = title);
     });

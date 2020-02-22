@@ -14,7 +14,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
         $v['link'] = 'draft' !== $page->x ? $page->url : null;
         $v['title'] = S . $page . S;
         $v['description'] = S . $page->user . S;
-        $v['image'] = function($path) use($page) {
+        $v['image'] = function() use($page) {
             // Load avatar asynchronously for best performance
             return $page->avatar(72);
         };

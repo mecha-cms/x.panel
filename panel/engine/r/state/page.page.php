@@ -52,8 +52,8 @@ if (null !== State::get('x.tag') && (
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty
-        if (empty($lot['data']['kind'])) {
-            unlink(Path::F($_['f']) . DS . 'kind.data');
+        if (empty($lot['data']['kind']) && $f = Path::F($_['f']) . DS . 'kind.data') {
+            unlink($f);
             return $_;
         }
         if (!is_dir($d = LOT . DS . 'tag')) {

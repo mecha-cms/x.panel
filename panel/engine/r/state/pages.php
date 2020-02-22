@@ -25,15 +25,15 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $create = $add && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
-            'title' => function($path) use($page) {
+            'title' => function() use($page) {
                 // Load title asynchronously for best performance
                 return S . _\lot\x\panel\h\w($page->title) . S;
             },
-            'description' => function($path) use($page) {
+            'description' => function() use($page) {
                 // Load description asynchronously for best performance
                 return S . _\lot\x\panel\h\w($page->description) . S;
             },
-            'image' => function($path) use($page) {
+            'image' => function() use($page) {
                 // Load image asynchronously for best performance
                 return $page->image(72, 72, 50);
             },

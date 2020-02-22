@@ -1,9 +1,9 @@
 (function(win, doc, _) {
-    var timer;
+    let timer;
     function onChange() {
-        var bell = doc.querySelector('.js\\:alert');
+        let bell = doc.querySelector('.js\\:alert');
         if (bell) {
-            var a = bell.querySelector('a'),
+            let a = bell.querySelector('a'),
                 svg = a.querySelector('use'),
                 icon = svg.getAttribute('href'),
                 url = a.href;

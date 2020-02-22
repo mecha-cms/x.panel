@@ -1,9 +1,9 @@
 (function(win, doc, _) {
     function onChange() {
-        var tabs = doc.querySelectorAll('.lot\\:tab'),
+        let tabs = doc.querySelectorAll('.lot\\:tab'),
             replaceState = 'replaceState' in win.history,
             setAction = function($) {
-                var href = $.href;
+                let href = $.href;
                 while ($ && $.nodeName.toLowerCase() !== 'form') {
                     $ = $.parentNode;
                 }
@@ -11,7 +11,7 @@
             };
         if (tabs.length) {
             tabs.forEach(function($) {
-                var panes = [].slice.call($.children),
+                let panes = [].slice.call($.children),
                     buttons = panes.shift().querySelectorAll('a');
                 function onClick(e) {
                     if (!this.parentNode.classList.contains('has:link')) {

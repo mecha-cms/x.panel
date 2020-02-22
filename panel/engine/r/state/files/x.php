@@ -21,7 +21,7 @@ if ($i > 1) {
         $index = $index = $_['f'] . DS . 'index.php';
         $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['active'] = false;
         unset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['url']);
-        
+
     }
     if (2 === $i) {
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
@@ -112,13 +112,16 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $page = new Page($k);
         $pages[$k] = [
             'path' => $k,
-            'title' => _\lot\x\panel\h\w($page->title),
-            'description' => _\lot\x\panel\h\w($page->description),
+            'title' => function() use($page) {
+                return S . _\lot\x\panel\h\w($page->title) . S;
+            },
+            'description' => function() use($page) {
+                return S . _\lot\x\panel\h\w($page->description) . S;
+            },
             'type' => 'Page',
             'url' => $before . 'g' . $after . '/1' . $url->query('&', ['tab' => ['info']]),
-            'image' => function($path) {
-                // Load image asynchronously for the best performance
-                return (new Page($path))->image(72, 72, 50);
+            'image' => function() use($page) {
+                return $page->image(72, 72, 50);
             },
             'time' => $page->time . "",
             'tasks' => [

@@ -37,13 +37,13 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
         $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
-            'title' => function($path) use($page) {
+            'title' => function() use($page) {
                 return S . _\lot\x\panel\h\w($page->author) . S;
             },
-            'description' => function($path) use($page) {
+            'description' => function() use($page) {
                 return S . _\lot\x\panel\h\w($page->content) . S;
             },
-            'image' => function($path) use($page) {
+            'image' => function() use($page) {
                 return $page->avatar(72);
             },
             'author' => $page['author'],

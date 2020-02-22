@@ -2,7 +2,7 @@
 
 
 (function(doc, _) {
-    var root = doc.documentElement,
+    let root = doc.documentElement,
         innerHTML = Pjax.switches.innerHTML;
     new Pjax({
         elements: 'a[href]:not([target]),form[action]:not([target])',
@@ -19,6 +19,29 @@
         },
         cacheBust: false
     });
+    function onChange() {
+        let formSubmitButtons = doc.querySelectorAll('form[action] [name][value][type=submit]'),
+            clones = {};
+        formSubmitButtons.forEach(function(button) {
+            let name = button.name, input;
+            function onClick() {
+                clones[this.name] && (clones[this.name].value = this.value);
+            }
+            button.addEventListener('touchstart', onClick, false);
+            button.addEventListener('mousedown', onClick, false);
+            button.addEventListener('click', onClick, false);
+            if (clones[name]) {
+                return;
+            }
+            input = doc.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = button.value;
+            clones[name] = input;
+            button.parentNode.appendChild(input);
+        });
+    } onChange();
+    _.on('change', onChange);
     doc.addEventListener('pjax:send', function() {
         _.fire('let');
     }, false);

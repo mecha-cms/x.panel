@@ -12,7 +12,7 @@
         doHide(0, e);
     }
     function onClickShow(e) {
-        var t = this,
+        let t = this,
             menu = t.nextElementSibling;
         doHide(menu, e);
         setTimeout(function() {
@@ -25,11 +25,11 @@
     }
     function onChange() {
         doc.removeEventListener('click', onClickHide);
-        var dropdowns = doc.querySelectorAll('.has\\:menu');
+        let dropdowns = doc.querySelectorAll('.has\\:menu');
         if (dropdowns.length) {
             doc.addEventListener('click', onClickHide, false);
             dropdowns.forEach(function($) {
-                var menu = $.querySelector('.lot\\:menu');
+                let menu = $.querySelector('.lot\\:menu');
                 if (menu) {
                     menu.previousElementSibling.addEventListener('click', onClickShow, false);
                 }
