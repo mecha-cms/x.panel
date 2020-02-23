@@ -69,6 +69,7 @@ function Field__Colors($in, $key) {
         unset($in['lot']);
     }
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:color']);
+    unset($out['content'][2]['name']);
     return \_\lot\x\panel\Field($out, $key);
 }
 
@@ -136,7 +137,6 @@ function Field__Combo($in, $key) {
             $out['content'][1] .= $v;
         }
         \_\lot\x\panel\h\c($out['content'][2], $in, ['select']);
-        unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
     return \_\lot\x\panel\Field__Text($in, $key);
@@ -243,7 +243,6 @@ function Field__Item($in, $key) {
         }
         $out['content'][1] = \implode($block, $a);
         \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:item']);
-        unset($in['lot']);
         return \_\lot\x\panel\Field($out, $key);
     }
     return \_\lot\x\panel\Field__Text($in, $key);
@@ -308,7 +307,7 @@ function Field__Items($in, $key) {
         }
         $out['content'][1] = \implode($block, $a);
         \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:items']);
-        unset($in['lot']);
+        unset($out['content'][2]['name']);
         return \_\lot\x\panel\Field($out, $key);
     }
     return \_\lot\x\panel\Field__Text($in, $key);
@@ -436,7 +435,7 @@ function Field__Toggle($in, $key) {
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);
-    unset($out['alt']);
+    unset($out['alt'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
     return \_\lot\x\panel\Field($out, $key);
 }
 

@@ -64,4 +64,4 @@
         title && (doc.title = title);
     });
 
-})(window, document, window._ = window._ || {});
+})(this, this.document, this._ = this._ || {});

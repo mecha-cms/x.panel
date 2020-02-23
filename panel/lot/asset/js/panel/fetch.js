@@ -48,4 +48,4 @@
     doc.addEventListener('pjax:success', function() {
         _.fire('change');
     }, false);
-})(document, _);
+})(this.document, this._);
