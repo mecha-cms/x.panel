@@ -403,7 +403,7 @@ namespace _\lot\x\panel {
         };
         $in['content'] = $content = $pager($in['current'] ?? 1, $in['count'] ?? 0, $in['chunk'] ?? 20, $in['peek'] ?? 2, function($i) {
             extract($GLOBALS, \EXTR_SKIP);
-            return $url . $_['/'] . '::g::' . $_['path'] . '/' . $i . $url->query . $url->hash;
+            return $url . $_['/'] . '/::g::/' . $_['path'] . '/' . $i . $url->query . $url->hash;
         }, \i('First'), \i('Previous'), \i('Next'), \i('Last'));
         $out = \_\lot\x\panel\content($in, $key);
         $out[0] = 'p';

@@ -10,8 +10,8 @@ $search = function($folder, $x, $r) {
 
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
-if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '::';
+if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
+    $before = $url . $_['/'] . '/::';
     $g = 1 !== $user['status'];
     foreach ($search($folder, null, 0) as $k => $v) {
         $after = '::' . strtr($k, [
@@ -56,14 +56,14 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
 }
 
 if (count($_['chops']) > 1 && $_['i'] <= 1) {
-    $before = $url . $_['/'] . '::';
+    $before = $url . $_['/'] . '/::';
     $after = '::' . $_['path'];
     $files = array_merge([$folder => [
         'title' => S . '..' . S,
         'description' => 'Exit',
         'type' => 'Folder',
         'tags' => ['is:folder'],
-        'url' => $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query . $url->hash,
+        'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,
         'tasks' => [
             'g' => [
                 'title' => 'Edit',
@@ -105,21 +105,21 @@ return [
                                         'title' => false,
                                         'description' => 'Upload',
                                         'type' => 'Link',
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
                                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                                         'stack' => 10
                                     ],
                                     'file' => [
                                         'type' => 'Link',
                                         'description' => ['New %s', 'File'],
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'file', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'file', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 20
                                     ],
                                     'folder' => [
                                         'type' => 'Link',
                                         'description' => ['New %s', 'Folder'],
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'folder', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'folder', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 30
                                     ]

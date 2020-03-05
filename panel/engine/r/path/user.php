@@ -24,7 +24,7 @@ if (count($_['chops']) > 1) {
 // Prevent user(s) from creating new user
 } else if ('s' === $_['task'] && 1 !== $status) {
     $_['alert']['error'][] = i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
-    $_['kick'] = $url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', [
+    $_['kick'] = $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
         'layout' => false,
         'tab' => false
     ]) . $url->hash;

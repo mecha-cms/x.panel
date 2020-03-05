@@ -24,7 +24,7 @@ function data($_, $lot) {
     ]) . $url->hash;
     $_ = file($_, $lot); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
     }
     return $_;
 }
@@ -54,7 +54,7 @@ function file($_, $lot) {
             \unlink($f);
         }
         $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -100,7 +100,7 @@ function folder($_, $lot) {
         }
         \rmdir($f);
         $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -163,7 +163,7 @@ function _token($_, $lot) {
     if (empty($lot['token']) || $lot['token'] !== $_['token']) {
         extract($GLOBALS, \EXTR_SKIP);
         $_['alert']['error'][] = 'Invalid token.';
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }

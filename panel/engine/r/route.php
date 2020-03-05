@@ -20,7 +20,7 @@ function route() {
             $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
             $_['kick'] = \str_replace('::s::', '::g::', $url->current);
         }
-        if (!\File::exist(\map(\step(\trim($_['path'], '/'), '/'), function($v) {
+        if (!\File::exist(\map(\step($_['path'], '/'), function($v) {
             return __DIR__ . \DS . 'path' . \DS . $v . '.php';
         }))) {
             if (
@@ -68,7 +68,7 @@ function route() {
             $state_f = $state_d . \DS . $_['layout'] . ($_['i'] ? 's' : "") . '.php';
         }
         // Manually set layout type based on file path
-        foreach (\array_reverse(\step(\trim($_['path'], '/'), '/')) as $v) {
+        foreach (\array_reverse(\step($_['path'], '/')) as $v) {
             (function($v) use(&$state_f) {
                 if (\is_file($v)) {
                     extract($GLOBALS, \EXTR_SKIP);
@@ -103,7 +103,7 @@ function route() {
     // Update data
     $_ = $GLOBALS['_'];
     // Filter by path
-    foreach (\array_values(\step(\trim($_['path']), '/')) as $v) {
+    foreach (\array_values(\step($_['path'], '/')) as $v) {
         \is_file($v = __DIR__ . \DS . 'path' . \DS . \strtr($v, '/', \DS) . '.php') && (function($v) {
             extract($GLOBALS, \EXTR_SKIP);
             require $v;
@@ -158,4 +158,4 @@ function route() {
     $this->view('panel');
 }
 
-\Route::set($_['/'] . '*', 200, __NAMESPACE__ . "\\route", 20);
+\Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", 20);

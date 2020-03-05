@@ -2,7 +2,7 @@
 
 if (is_file($f = $_['f']) && 'g' === $_['task']) {
     Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'folder']);
-    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+    Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'layout' => false
     ]) . $url->hash);
 }
@@ -22,7 +22,7 @@ return [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
                         'hidden' => false
                     ],
                     's' => [

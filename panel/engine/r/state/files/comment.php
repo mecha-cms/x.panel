@@ -15,8 +15,8 @@ $search = function($folder, $x, $r) {
     return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
 };
 
-if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '::';
+if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
+    $before = $url . $_['/'] . '/::';
     $author = $user->user;
     foreach ($search($folder, 'archive,draft,page', true) as $k => $v) {
         $after = '::' . strtr($k, [
@@ -80,7 +80,7 @@ if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'page.comment', 'tab' => false]) . $url->hash;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'page.comment', 'tab' => false]) . $url->hash;
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['parent']['hidden'] = true;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] = true;

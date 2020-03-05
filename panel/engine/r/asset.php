@@ -26,6 +26,6 @@ Hook::set('get', function() use($_) {
     }
     // Remove sensitive data
     unset($data['lot'], $data['user']);
-    Asset::script('window._=Object.assign(window._||{},' . json_encode($data) . ');', 0);
+    Asset::script('this._=Object.assign(this._||{},' . json_encode($data) . ');', 0);
     require __DIR__ . DS . 'layout.php';
 }, 20);

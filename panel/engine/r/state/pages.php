@@ -10,8 +10,8 @@ $search = function($folder, $x, $r) {
 
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
-if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '::';
+if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
+    $before = $url . $_['/'] . '/::';
     foreach ($search($folder, 'archive,draft,page', 0) as $k => $v) {
         if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
             continue; // Skip placeholder page(s)
@@ -106,7 +106,7 @@ return [
                                         'title' => false,
                                         'description' => ['Go to %s', 'Parent'],
                                         'type' => 'Link',
-                                        'url' => $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                         'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
                                         'hidden' => count($_['chops']) <= 1,
                                         'stack' => 10
@@ -115,7 +115,7 @@ return [
                                         'title' => false,
                                         'description' => 'Upload',
                                         'type' => 'Link',
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
                                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                                         'hidden' => true,
                                         'stack' => 20
@@ -123,14 +123,14 @@ return [
                                     'page' => [
                                         'type' => 'Link',
                                         'description' => ['New %s', 'Page'],
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 30
                                     ],
                                     'data' => [
                                         'type' => 'Link',
                                         'description' => ['New %s', 'Data'],
-                                        'url' => $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
+                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'hidden' => count($_['chops']) <= 1,
                                         'stack' => 40

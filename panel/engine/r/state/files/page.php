@@ -9,7 +9,7 @@ $g = 1 !== $user['status'];
 $author = $user->user;
 
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
-    $before = $url . $_['/'] . '::';
+    $before = $url . $_['/'] . '/::';
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         $after = '::' . strtr($k, [
             LOT => "",
@@ -24,6 +24,6 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     }
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'page.page', 'tab' => false]) . $url->hash;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'page.page', 'tab' => false]) . $url->hash;
 
 return $lot;

@@ -64,4 +64,6 @@
         title && (doc.title = title);
     });
 
+    doc.documentElement.classList.add('can:fetch');
+
 })(this, this.document, this._ = this._ || {});

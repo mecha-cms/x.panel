@@ -8,7 +8,7 @@ Release Notes
 
 ### 2.2.1
 
- - Removed leading `/` in `$_['path']` and trailing `/` in `$_['/']` for consistency with `$_['i']` and global `$url` properties.
+ - Removed leading `/` in `$_['path']` for consistency with `$_['i']`.
 
 ### 2.2.0
 

@@ -14,11 +14,11 @@ array_shift($chops);
 $task = $chops[0] && 0 === strpos($chops[0], '::') && '::' === substr($chops[0], -2) ? substr(array_shift($chops), 2, -2) : null;
 
 $_['chops'] = $chops;
-$_['path'] = $task ? '/' . implode('/', $chops) : null;
+$_['path'] = $task ? implode('/', $chops) : null;
 $_['task'] = $task;
 
 // Normalize path value and remove any `\..` to prevent directory traversal attack
-$f = LOT . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
+$f = LOT . DS . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
 $_['f'] = stream_resolve_include_path($f) ?: null;
 
 // Make sure to have page offset on `items` view
@@ -45,6 +45,7 @@ foreach ([
 $GLOBALS['I']['%s goes here...'] = "%s goes here\u{2026}";
 $GLOBALS['I']['Content goes here...'] = "Content goes here\u{2026}";
 $GLOBALS['I']['Description goes here...'] = "Description goes here\u{2026}";
+$GLOBALS['I']['You don\'t have permission to change the %s value.'] = 'You don\u{2019}t have permission to change the %s value.';
 
 require __DIR__ . DS . 'f.php';
 require __DIR__ . DS . 'r' . DS . 'alert.php';

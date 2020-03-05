@@ -21,10 +21,10 @@ if ('g' === $_['task'] && $_['f'] === $user->path) {
         'stack' => 20
     ];
 } else {
-    if ($url->clean !== $url . $_['/'] . '::g::' . $_['state']['path']) {
+    if ($url->clean !== $url . $_['/'] . '/::g::' . $_['state']['path']) {
         Alert::error(i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>');
     }
-    Guard::kick($url . $_['/'] . '::g::/user/' . $user->name(true) . $url->query('&', [
+    Guard::kick($url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
         'layout' => false,
         'tab' => false
     ]) . $url->hash);

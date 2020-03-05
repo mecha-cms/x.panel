@@ -12,7 +12,7 @@ if (defined('DEBUG') && DEBUG && is_file($f = ENGINE . DS . 'log' . DS . 'error'
         "\n" => '<br>'
     ]) . '</code>';
     $out .= '<br><br>';
-    $out .= i('If you think you have fixed the error' . (substr_count($errors, "\n") === 0 ? "" : 's') . ', you can then %s.', ['<a href="' . $url . $_['/'] . '::f::/510d4904' . $url->query('&amp;', [
+    $out .= i('If you think you have fixed the error' . (substr_count($errors, "\n") === 0 ? "" : 's') . ', you can then %s.', ['<a href="' . $url . $_['/'] . '/::f::/510d4904' . $url->query('&amp;', [
         'kick' => URL::short($url->current, false),
         'layout' => false,
         'token' => $_['token']

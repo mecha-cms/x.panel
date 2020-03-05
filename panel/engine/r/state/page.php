@@ -2,7 +2,7 @@
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
     Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
-    Guard::kick($url . $_['/'] . '::g::' . $_['path'] . $url->query('&', [
+    Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'layout' => false
     ]) . $url->hash);
 }
@@ -54,7 +54,7 @@ $lot = [
                 'lot' => [
                     'folder' => ['hidden' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '::g::' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
                         'hidden' => false
                     ],
                     's' => [
@@ -195,7 +195,7 @@ $lot = [
                                                                 'lot' => [
                                                                     's' => [
                                                                         'title' => 'Data',
-                                                                        'url' => $url . $_['/'] . '::s::' . Path::F($_['path'], '/') . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
+                                                                        'url' => $url . $_['/'] . '/::s::/' . Path::F($_['path'], '/') . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
                                                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                                                         'stack' => 10
                                                                     ]
@@ -309,7 +309,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
         $files = [];
         if ($page->exist) {
             $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
-            $before = $url . $_['/'] . '::';
+            $before = $url . $_['/'] . '/::';
             foreach (g(Path::F($path), 'data') as $k => $v) {
                 if (1 === $v && isset($p[basename($k, '.data')])) {
                     continue;

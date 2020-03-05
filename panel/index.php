@@ -23,19 +23,18 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'token' => content(LOT . DS . 'user' . DS . Cookie::get('user.key') . DS . 'token.data'),
     'trash' => !empty($state['guard']['trash']),
     'user' => $u = State::get('x.user', true),
-    '/' => $pp = ($u['guard']['path'] ?? $state['guard']['path']) . '/'
+    '/' => $pp = ($u['guard']['path'] ?? $state['guard']['path'])
 ], $GLOBALS['_'] ?? []);
 
-$p = trim($url->path, '/');
+$p = $url['path'];
 
 if (null !== $i && stream_resolve_include_path(LOT . DS . (explode('::/', $p, 2)[1] ?? P) . DS . $i)) {
-    $url->clean .= '/' . $i;
     $url->path .= '/' . $i;
     $p .= '/' . $i;
     $GLOBALS['_']['i'] = $_['i'] = $url->i = $i = null;
 }
 
-if (0 === strpos('/' . $p, $pp . '::')) {
+if (0 === strpos('/' . $p, $pp . '/::')) {
     Asset::let(); // Remove all asset(s)
     Route::let(); // Remove all route(s)
     require __DIR__ . DS . 'engine' . DS . 'fire.php';

@@ -26,7 +26,7 @@ if ($i > 1) {
     if (2 === $i) {
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '::g::' . dirname($_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
+        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
         $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
         if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
@@ -38,7 +38,7 @@ if ($i > 1) {
                         ".\\" => ROOT . DS,
                         "\\" => DS
                     ]) . DS . 'index.php') && $v) {
-                        $use .= '<li><a href="' . $url . $_['/'] . '::g::/' . dirname(Path::R($kk, LOT, '/')) . '/1?tab[0]=info">' . $k . '</a></li>';
+                        $use .= '<li><a href="' . $url . $_['/'] . '/::g::/' . dirname(Path::R($kk, LOT, '/')) . '/1?tab[0]=info">' . $k . '</a></li>';
                     } else {
                         $use .= '<li>' . $k . (0 === $v ? ' <span class="description">(' . i('optional') . ')</span>' : "") . '</li>';
                     }
@@ -99,7 +99,7 @@ $pages = [];
 $count = 0;
 
 if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '::';
+    $before = $url . $_['/'] . '/::';
     foreach (g($folder, 'page', 1) as $k => $v) {
         if ('about.page' !== basename($k)) {
             continue;
@@ -158,6 +158,6 @@ $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] =
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $url . $_['/'] . '::s::' . $_['path'] . $url->query('&', ['layout' => 'blob.x', 'tab' => false]) . $url->hash;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob.x', 'tab' => false]) . $url->hash;
 
 return $lot;

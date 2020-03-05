@@ -21,7 +21,7 @@ function data($_, $lot) {
         $lot['file']['content'] = $_POST['data']['content'] ?? "";
         $_ = file($_, $lot); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
@@ -67,7 +67,7 @@ function file($_, $lot) {
             }
             @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
-            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/' . $name . $e;
+            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
             $_['f'] = $f;
             $_SESSION['_']['file'][\trim($f, \DS)] = 1;
         }
@@ -101,12 +101,12 @@ function folder($_, $lot) {
             // Do nothing
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
             if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \strtr($f, [
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
             $_SESSION['_']['folder'][\trim($f, \DS)] = 1;
         } else {
@@ -126,12 +126,12 @@ function folder($_, $lot) {
             \rmdir($_['f']);
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \strtr($f, [
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
             $_['f'] = $f;
             foreach (\step(\trim($f, \DS), \DS) as $v) {
@@ -245,14 +245,14 @@ function state($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        if (\is_file($f = \LOT . \strtr($lot['path'] ?? $_['path'], '/', \DS))) {
+        if (\is_file($f = \LOT . \DS . \trim(\strtr($lot['path'] ?? $_['path'], '/', \DS), \DS))) {
             $_['f'] = $f = \realpath($f);
             $v = \array_replace_recursive((array) require $f, $lot['state'] ?? []);
             $v = $null($v);
-            $lot['file']['content'] = '<?php return ' . \z($v) . ';';
+            $lot['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
             $_ = file($_, $lot);
         }
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '::g::' . $_['path'] . $e;
+        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . $e;
         if (!empty($_['alert']['error'])) {
             unset($_POST['token']);
             $_SESSION['form'] = $_POST;
