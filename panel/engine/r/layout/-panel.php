@@ -11,7 +11,7 @@ return (function($icons) {
             continue; // Skip hidden folder(s)
         }
         $folders[$n] = [
-            'current' => 0 === strpos($_['path'] . '/', '/' . $n . '/'),
+            'current' => 0 === strpos($_['path'] . '/', $n . '/'),
             'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
             'title' => 'x' === $n ? 'Extension' : To::title($n),
             'url' => $url . $_['/'] . '/::g::/' . $n . '/1' . $url->hash,
@@ -65,7 +65,7 @@ return (function($icons) {
                                             'type' => 'Text',
                                             'alt' => 'Search',
                                             'value' => $_GET['q'] ?? null,
-                                            '2' => ['title' => i('Search in %s', ".\\lot" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))]
+                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))]
                                         ]
                                     ]
                                 ]

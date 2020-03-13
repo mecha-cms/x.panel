@@ -98,7 +98,7 @@ $lot['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
 $pages = [];
 $count = 0;
 
-if (is_dir($folder = LOT . strtr($_['path'], '/', DS))) {
+if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
     $before = $url . $_['/'] . '/::';
     foreach (g($folder, 'page', 1) as $k => $v) {
         if ('about.page' !== basename($k)) {

@@ -69,7 +69,7 @@ function file($_, $lot) {
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
             $_['f'] = $f;
-            $_SESSION['_']['file'][\trim($f, \DS)] = 1;
+            $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
         }
         if (!empty($_['alert']['error'])) {
             unset($_POST['token']);
@@ -79,6 +79,8 @@ function file($_, $lot) {
     return $_;
 }
 
+// TODO: Update event should only update the folder name:
+// Do not allow user to insert / character(s) in the folder name field!
 function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
@@ -108,7 +110,7 @@ function folder($_, $lot) {
             } else {
                 $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
-            $_SESSION['_']['folder'][\trim($f, \DS)] = 1;
+            $_SESSION['_']['folder'][\rtrim($f, \DS)] = 1;
         } else {
             \mkdir($f, $seal = \octdec($lot['folder']['seal'] ?? '0755'), true);
             foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($_['f'], \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
@@ -134,7 +136,7 @@ function folder($_, $lot) {
                 $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
             $_['f'] = $f;
-            foreach (\step(\trim($f, \DS), \DS) as $v) {
+            foreach (\step(\rtrim($f, \DS), \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }

@@ -54,7 +54,7 @@ function blob($_, $lot) {
                     $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
                     $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
                     $_['f'] = $f;
-                    $_SESSION['_']['file'][\trim($f, \DS)] = 1;
+                    $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
                     $_['ff'][] = $f;
                     // Extract package
                     if (
@@ -147,7 +147,7 @@ function file($_, $lot) {
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             $_['f'] = $f;
-            $_SESSION['_']['file'][\trim($f, \DS)] = 1;
+            $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
         }
         if (!empty($_['alert']['error'])) {
             unset($_POST['token']);
@@ -186,7 +186,7 @@ function folder($_, $lot) {
                 $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             }
             $_['f'] = $f;
-            foreach (\step(\trim($f, \DS), \DS) as $v) {
+            foreach (\step(\rtrim($f, \DS), \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }

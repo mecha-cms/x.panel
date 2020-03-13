@@ -49,7 +49,7 @@ function file($_, $lot) {
                 \mkdir($dd, 0775, true);
             }
             \rename($f, $ff);
-            $_SESSION['_']['file'][\trim($ff, \DS)] = 1;
+            $_SESSION['_']['file'][\rtrim($ff, \DS)] = 1;
         } else {
             \unlink($f);
         }
@@ -96,7 +96,7 @@ function folder($_, $lot) {
             }
         }
         if ($trash) {
-            $_SESSION['_']['folder'][\trim(\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]), \DS)] = 1;
+            $_SESSION['_']['folder'][\rtrim(\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]), \DS)] = 1;
         }
         \rmdir($f);
         $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];

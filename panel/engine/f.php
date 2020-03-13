@@ -153,7 +153,7 @@ namespace _\lot\x\panel {
         $lot = 0 === $chunk ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
         foreach ($lot[$current - 1] ?? [] as $k => $v) {
-            $path = \trim($v['path'] ?? "", \DS);
+            $path = \rtrim($v['path'] ?? "", \DS);
             if (!empty($v['current']) || $path && (
                 isset($_SESSION['_']['file'][$path]) ||
                 isset($_SESSION['_']['folder'][$path])
@@ -429,7 +429,7 @@ namespace _\lot\x\panel {
         $lot = 0 === $chunk ? [$lot] : \array_chunk($lot, $chunk, false);
         $count = 0;
         foreach ($lot[$current - 1] ?? [] as $k => $v) {
-            $path = $v['path'] ?? false;
+            $path = \rtrim($v['path'] ?? "", \DS);
             if (!empty($v['current']) || $path && isset($_SESSION['_']['file'][$path])) {
                 $v['tags'][] = 'is:active';
                 unset($_SESSION['_']['file'][$path]);
