@@ -79,8 +79,6 @@ function file($_, $lot) {
     return $_;
 }
 
-// TODO: Update event should only update the folder name:
-// Do not allow user to insert / character(s) in the folder name field!
 function folder($_, $lot) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
@@ -93,7 +91,7 @@ function folder($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \To::folder($lot['folder']['name'] ?? ""); // New folder name
+        $name = \basename($lot['folder']['name'] ?? ""); // New folder name
         $base = \basename($_['f']); // Old folder name
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
