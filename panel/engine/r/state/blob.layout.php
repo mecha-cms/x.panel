@@ -4,7 +4,7 @@ Hook::set('do.blob.set', function($_, $lot) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    $error = 0;
+    $error = !empty($_['alert']['error']);
     foreach ($lot['blob'] ?? [] as $k => $v) {
         if (!empty($v['error'])) {
             $error = 1;
@@ -17,7 +17,7 @@ Hook::set('do.blob.set', function($_, $lot) {
         }
     }
     return $_;
-}, 9.9);
+}, 9.91); // Must come after `do.blob.set` hook in `blob.x.php` file
 
 $lot = require __DIR__ . DS . 'blob.x.php';
 
