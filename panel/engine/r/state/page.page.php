@@ -38,8 +38,8 @@ if (null !== State::get('x.art')) {
 }
 
 if (null !== State::get('x.tag') && (
-    's' === $_['task'] && substr_count($_['path'], '/') > 1 ||
-    'g' === $_['task'] && substr_count($_['path'], '/') > 2
+    's' === $_['task'] && substr_count($_['path'], '/') > 0 ||
+    'g' === $_['task'] && substr_count($_['path'], '/') > 1
 )) {
     // Convert list of tag(s) slug into list of tag(s) ID
     Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) use($user) {
