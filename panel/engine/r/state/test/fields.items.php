@@ -7,27 +7,27 @@ if (Request::is('post')) {
 
 return [
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     0 => [
                                         'title' => 'Test 1',
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => [
                                                     'to-sequence-array' => [
                                                         'title' => 'Items',
                                                         'description' => 'Output as sequence array.',
-                                                        'type' => 'Items',
+                                                        'type' => 'items',
                                                         'flat' => true,
                                                         'value' => ['red', 'green', 'blue'],
                                                         'lot' => [
@@ -43,7 +43,7 @@ return [
                                                     'to-associative-array' => [
                                                         'title' => 'Items',
                                                         'description' => 'Output as associative array.',
-                                                        'type' => 'Items',
+                                                        'type' => 'items',
                                                         'value' => [
                                                             'red' => 11,
                                                             'green' => 1,
@@ -69,21 +69,21 @@ return [
                         'stack' => 20
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
-                                'type' => 'Fields',
+                                'type' => 'fields',
                                 'lot' => [
                                     0 => [
                                         'title' => "",
-                                        'type' => 'Field',
+                                        'type' => 'field',
                                         'lot' => [
                                             'tasks' => [
-                                                'type' => 'Tasks.Button',
+                                                'type' => 'tasks/button',
                                                 'lot' => [
                                                     0 => [
                                                         'title' => 'Test',
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => false,
                                                         'stack' => 10
                                                     ]

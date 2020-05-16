@@ -150,7 +150,7 @@ function route() {
         }
     }
     \State::set('[layout].layout:' . $_['layout'], true);
-    $n = \ltrim($_['chops'][0], '_.-');
+    $n = \ltrim($_['chops'][0] ?? "", '_.-');
     // Update data
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');

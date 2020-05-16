@@ -2,54 +2,54 @@
 
 return [
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     0 => [
                                         'title' => 'From Array',
                                         'lot' => [
                                             'files' => [
-                                                'type' => 'Files',
+                                                'type' => 'files',
                                                 'lot' => [
                                                     0 => [
                                                         'title' => 'Test Folder',
-                                                        'type' => 'Folder',
+                                                        'type' => 'folder',
                                                         'link' => '/'
                                                     ],
                                                     1 => [
                                                         'title' => 'Test File',
-                                                        'type' => 'File',
+                                                        'type' => 'file',
                                                         'link' => '/'
                                                     ],
                                                     2 => [
                                                         'title' => 'Test Folder Disabled',
-                                                        'type' => 'Folder',
+                                                        'type' => 'folder',
                                                         'link' => '/',
                                                         'active' => false
                                                     ],
                                                     3 => [
                                                         'title' => 'Test File Disabled',
-                                                        'type' => 'File',
+                                                        'type' => 'file',
                                                         'link' => '/',
                                                         'active' => false
                                                     ],
                                                     4 => [
                                                         'title' => 'Test Folder Active',
-                                                        'type' => 'Folder',
+                                                        'type' => 'folder',
                                                         'link' => '/',
                                                         'current' => true
                                                     ],
                                                     5 => [
                                                         'title' => 'Test File Active',
-                                                        'type' => 'File',
+                                                        'type' => 'file',
                                                         'link' => '/',
                                                         'current' => true
                                                     ]

@@ -47,9 +47,9 @@ $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 $lot = [
     'bar' => [
-        // type: Bar
+        // type: bar
         'lot' => [
-            // type: List
+            // type: bar/menu
             0 => [
                 'lot' => [
                     'folder' => ['hidden' => true],
@@ -70,20 +70,20 @@ $lot = [
         ]
     ],
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     'fields' => [
-                        'type' => 'Fields',
+                        'type' => 'fields',
                         'lot' => [ // Hidden field(s)
                             'token' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'value' => $_['token']
                             ],
                             'seal' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'name' => 'file[seal]',
                                 'value' => '0600'
                             ]
@@ -91,18 +91,18 @@ $lot = [
                         'stack' => -1
                     ],
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'page' => [
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => [
                                                     'title' => [
-                                                        'type' => 'Text',
+                                                        'type' => 'text',
                                                         'alt' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
                                                         'focus' => true,
                                                         'name' => 'page[title]',
@@ -112,7 +112,7 @@ $lot = [
                                                     ],
                                                     'name' => [
                                                         'title' => 'Slug',
-                                                        'type' => 'Text',
+                                                        'type' => 'text',
                                                         'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
                                                         'alt' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
                                                         'name' => 'page[name]',
@@ -122,7 +122,7 @@ $lot = [
                                                         'stack' => 20
                                                     ],
                                                     'content' => [
-                                                        'type' => 'Source',
+                                                        'type' => 'source',
                                                         'name' => 'page[content]',
                                                         'alt' => 'Content goes here...',
                                                         'value' => $page['content'],
@@ -131,7 +131,7 @@ $lot = [
                                                         'stack' => 30
                                                     ],
                                                     'description' => [
-                                                        'type' => 'Content',
+                                                        'type' => 'content',
                                                         'name' => 'page[description]',
                                                         'alt' => 'Description goes here...',
                                                         'value' => $page['description'],
@@ -139,14 +139,14 @@ $lot = [
                                                         'stack' => 40
                                                     ],
                                                     'author' => [
-                                                        'type' => 'Hidden',
+                                                        'type' => 'hidden',
                                                         'name' => 'page[author]',
                                                         'alt' => $page['author'] ?? '@' . S . To::kebab(i('John Doe')),
                                                         'value' => $page['author'] ?? $user->user,
                                                         'stack' => 50
                                                     ],
                                                     'type' => [
-                                                        'type' => 'Item',
+                                                        'type' => 'item',
                                                         'name' => 'page[type]',
                                                         'value' => $page->type,
                                                         'lot' => [
@@ -164,17 +164,17 @@ $lot = [
                                     'data' => [
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => [
                                                     'link' => [
-                                                        'type' => 'Link',
+                                                        'type' => 'link',
                                                         'name' => 'page[link]',
                                                         'value' => $page['link'],
                                                         'width' => true,
                                                         'stack' => 10
                                                     ],
                                                     'time' => [
-                                                        'type' => 'DateTime',
+                                                        'type' => 'date-time',
                                                         'name' => 'data[time]',
                                                         'value' => $page['time'],
                                                         'hidden' => 's' === $_['task'],
@@ -182,16 +182,16 @@ $lot = [
                                                     ],
                                                     'files' => [
                                                         'title' => "",
-                                                        'type' => 'Field',
+                                                        'type' => 'field',
                                                         'lot' => [
                                                             'files' => [
-                                                                'type' => 'Files',
+                                                                'type' => 'files',
                                                                 'tags' => ['mb:1'],
                                                                 'lot' => [],
                                                                 'stack' => 10
                                                             ],
                                                             'tasks' => [
-                                                                'type' => 'Tasks.Link',
+                                                                'type' => 'tasks/link',
                                                                 'lot' => [
                                                                     's' => [
                                                                         'title' => 'Data',
@@ -217,22 +217,22 @@ $lot = [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
-                                'type' => 'Fields',
+                                'type' => 'fields',
                                 'lot' => [
                                     0 => [
                                         'title' => "",
-                                        'type' => 'Field',
+                                        'type' => 'field',
                                         'lot' => [
                                             'tasks' => [
-                                                'type' => 'Tasks.Button',
+                                                'type' => 'tasks/button',
                                                 'lot' => [
                                                     's' => [
                                                         'title' => 'Update',
                                                         'description' => ['Update as %s', ucfirst($x = $page->x)],
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => $x,
                                                         'hidden' => 's' === $_['task'],
@@ -240,7 +240,7 @@ $lot = [
                                                     ],
                                                     'page' => [
                                                         'title' => 'Publish',
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'page',
                                                         'hidden' => 'page' === $x,
@@ -249,7 +249,7 @@ $lot = [
                                                     'draft' => [
                                                         'title' => 'Save',
                                                         'description' => ['Save as %s', 'Draft'],
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'draft',
                                                         'hidden' => 'draft' === $x,
@@ -258,7 +258,7 @@ $lot = [
                                                     'archive' => [
                                                         'title' => 'Archive',
                                                         'description' => ['Save as %s', 'Archive'],
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'archive',
                                                         'hidden' => 'archive' === $x || 's' === $_['task'],
@@ -266,7 +266,7 @@ $lot = [
                                                     ],
                                                     'l' => [
                                                         'title' => 'Delete',
-                                                        'type' => 'Link',
+                                                        'type' => 'link',
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
                                                             'tab' => false,
                                                             'token' => $_['token'],
@@ -322,7 +322,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                     'path' => $k,
                     'title' => $n = basename($k),
                     'description' => (new File($k))->size,
-                    'type' => 'File',
+                    'type' => 'file',
                     'url' => $before . 'g' . $after . $url->query . $url->hash,
                     'tasks' => [
                         'g' => [

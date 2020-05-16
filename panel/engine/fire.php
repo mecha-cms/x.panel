@@ -39,13 +39,23 @@ foreach ([
     7 => 'Failed to write file to disk.',
     8 => 'A PHP extension stopped the file upload.'
 ] as $k => $v) {
+    if (isset($GLOBALS['I']['#blob:' . $k])) {
+        continue;
+    }
     $GLOBALS['I']['#blob:' . $k] = $v;
 }
 
-$GLOBALS['I']['%s goes here...'] = "%s goes here\u{2026}";
-$GLOBALS['I']['Content goes here...'] = "Content goes here\u{2026}";
-$GLOBALS['I']['Description goes here...'] = "Description goes here\u{2026}";
-$GLOBALS['I']['You don\'t have permission to change the %s value.'] = 'You don\u{2019}t have permission to change the %s value.';
+foreach ([
+    '%s goes here...' => "%s goes here\u{2026}",
+    'Content goes here...' => "Content goes here\u{2026}",
+    'Description goes here...' => "Description goes here\u{2026}",
+    'You don\'t have permission to change the %s value.' => "You don\u{2019}t have permission to change the %s value."
+] as $k => $v) {
+    if (isset($GLOBALS['I'][$k])) {
+        continue;
+    }
+    $GLOBALS['I'][$k] = $v;
+}
 
 require __DIR__ . DS . 'f.php';
 require __DIR__ . DS . 'r' . DS . 'alert.php';

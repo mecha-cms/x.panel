@@ -38,7 +38,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                 return $page->image(72, 72, 50);
             },
             'author' => $page['author'],
-            'type' => 'Page',
+            'type' => 'page',
             'link' => 'draft' === ($x = $page->x) ? null : $page->url,
             'time' => $page->time . "",
             'tags' => [
@@ -90,22 +90,22 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
 
 return [
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
                 'lot' => [
                     0 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tasks' => [
-                                'type' => 'Tasks.Button',
+                                'type' => 'tasks/button',
                                 'lot' => [
                                     'parent' => [
                                         'title' => false,
                                         'description' => ['Go to %s', 'Parent'],
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                         'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
                                         'hidden' => count($_['chops']) <= 1,
@@ -114,21 +114,21 @@ return [
                                     'blob' => [
                                         'title' => false,
                                         'description' => 'Upload',
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
                                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                                         'hidden' => true,
                                         'stack' => 20
                                     ],
                                     'page' => [
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'description' => ['New %s', 'Page'],
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 30
                                     ],
                                     'data' => [
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'description' => ['New %s', 'Data'],
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
@@ -141,15 +141,15 @@ return [
                         ]
                     ],
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'pages' => [
                                         'lot' => [
                                             'pages' => [
-                                                'type' => 'Pages',
+                                                'type' => 'pages',
                                                 'lot' => $pages,
                                                 'chunk' => $_['chunk'],
                                                 'current' => $_['i'],
@@ -163,10 +163,10 @@ return [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'pager' => [
-                                'type' => 'Pager',
+                                'type' => 'pager',
                                 'chunk' => $_['chunk'],
                                 'count' => $count,
                                 'current' => $_['i'],

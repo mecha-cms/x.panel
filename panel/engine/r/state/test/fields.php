@@ -3,7 +3,7 @@
 $fields = [
     'default[0]' => [
         'title' => 'Default',
-        'type' => 'Field',
+        'type' => 'field',
         'content' => '<output class="output">ABCDEF</output>'
     ],
     'unknown[0]' => [
@@ -13,82 +13,82 @@ $fields = [
     ],
     'unknown[1]' => [
         'title' => 'Unknown',
-        'type' => 'Foo',
+        'type' => 'foo',
         'value' => "Foo\nBar\n<b>Baz</b>"
     ],
     'text[0]' => [
         'title' => 'Text',
-        'type' => 'Text',
+        'type' => 'text',
         'alt' => 'Text'
     ],
     'text[1]' => [
         'title' => 'Text',
-        'type' => 'Text',
+        'type' => 'text',
         'before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']
     ],
     'text[2]' => [
         'title' => 'Text',
-        'type' => 'Text',
+        'type' => 'text',
         'after' => '.php'
     ],
     'text[3]' => [
         'title' => 'Text',
-        'type' => 'Text',
+        'type' => 'text',
         'before' => 'IDR',
         'after' => '.00'
     ],
     'text[4]' => [
         'title' => 'Text',
-        'type' => 'Text',
+        'type' => 'text',
         'alt' => 'Text',
         'required' => true
     ],
     'number[0]' => [
         'title' => 'Number',
-        'type' => 'Number',
+        'type' => 'number',
         'min' => 0,
         'max' => 10,
         'step' => .5
     ],
     'range[0]' => [
         'title' => 'Range',
-        'type' => 'Range',
+        'type' => 'range',
         'min' => 0,
         'max' => 10,
         'step' => .5
     ],
     'pass[0]' => [
         'title' => 'Pass',
-        'type' => 'Pass',
+        'type' => 'pass',
         'alt' => 'Pass'
     ],
     'color[0]' => [
         'title' => 'Color',
-        'type' => 'Color'
+        'type' => 'color'
     ],
     'colors[0]' => [
         'title' => 'Colors',
-        'type' => 'Colors',
+        'type' => 'colors',
         'lot' => ['#ff0000', '#00ff00', '#0000ff']
     ],
     'content[0]' => [
         'title' => 'Content',
-        'type' => 'Content',
+        'type' => 'content',
         'alt' => 'Content'
     ],
     'source[0]' => [
         'title' => 'Source',
-        'type' => 'Source',
+        'type' => 'source',
         'alt' => 'Source'
     ],
     'combo[0]' => [
         'title' => 'Combo',
-        'type' => 'Combo',
+        'type' => 'combo',
         'lot' => ['Red', 'Green', 'Blue']
     ],
     'combo[1]' => [
         'title' => 'Combo',
-        'type' => 'Combo',
+        'type' => 'combo',
         'lot' => [
             'red' => 'Red',
             'green' => 'Green',
@@ -101,7 +101,7 @@ $fields = [
     ],
     'combo[2]' => [
         'title' => 'Combo Group',
-        'type' => 'Combo',
+        'type' => 'combo',
         'lot' => [
             'color' => [
                 'title' => 'Color',
@@ -115,7 +115,7 @@ $fields = [
     ],
     'combo[3]' => [
         'title' => 'Combo Group',
-        'type' => 'Combo',
+        'type' => 'combo',
         'lot' => [
             'color' => [
                 'title' => 'Color',
@@ -138,7 +138,7 @@ $fields = [
     ],
     'item[0]' => [
         'title' => 'Item',
-        'type' => 'Item',
+        'type' => 'item',
         'value' => 0,
         'lot' => ['Red', 'Green', [
             'title' => 'Blue',
@@ -147,7 +147,7 @@ $fields = [
     ],
     'item[1]' => [
         'title' => 'Item',
-        'type' => 'Item',
+        'type' => 'item',
         'value' => 2,
         'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
             'title' => 'Item 8',
@@ -156,7 +156,7 @@ $fields = [
     ],
     'items[0]' => [
         'title' => 'Items',
-        'type' => 'Items',
+        'type' => 'items',
         'value' => ['red'],
         'flat' => true,
         'lot' => [
@@ -171,7 +171,7 @@ $fields = [
     ],
     'items[1]' => [
         'title' => 'Items',
-        'type' => 'Items',
+        'type' => 'items',
         'value' => [2, 3],
         'lot' => ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', [
             'title' => 'Item 8',
@@ -180,30 +180,30 @@ $fields = [
     ],
     'toggle[0]' => [
         'title' => 'Toggle',
-        'type' => 'Toggle'
+        'type' => 'toggle'
     ],
     'blob[0]' => [
         'title' => 'Blob',
-        'type' => 'Blob',
+        'type' => 'blob',
         'to' => 'asset'
     ],
     'hidden[0]' => [
-        'type' => 'Hidden'
+        'type' => 'hidden'
     ],
     'set[0]' => [
-        'type' => 'Set',
+        'type' => 'set',
         'title' => 'Group Title and <a href="">Group Title Link</a>',
         'lot' => [
             0 => [
-                'type' => 'Fields',
+                'type' => 'fields',
                 'title' => 'Fields Title',
                 'description' => 'Fields description goes here.',
                 'lot' => [
                     'Field 1' => [
-                        'type' => 'Text'
+                        'type' => 'text'
                     ],
                     'Field 2' => [
-                        'type' => 'Text'
+                        'type' => 'text'
                     ]
                 ]
             ]
@@ -214,22 +214,22 @@ $fields = [
 
 return [
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     0 => [
                                         'title' => 'Test 1',
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => \map($fields, function($field, $key) {
                                                     $field['name'] = $key . '[0]';
                                                     return $field;
@@ -241,7 +241,7 @@ return [
                                         'title' => 'Test 2',
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => \map($fields, function($field, $key) {
                                                     $field['name'] = $key . '[1]';
                                                     $field['width'] = true;
@@ -254,7 +254,7 @@ return [
                                         'title' => 'Test 3',
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => \map($fields, function($field, $key) {
                                                     $field['name'] = $key . '[2]';
                                                     $field['width'] = true;
@@ -270,17 +270,17 @@ return [
                         'stack' => 20
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
-                                'type' => 'Fields',
+                                'type' => 'fields',
                                 'lot' => [
                                     0 => [
-                                        'type' => 'Field',
+                                        'type' => 'field',
                                         'title' => "",
                                         'lot' => [
                                             'tasks' => [
-                                                'type' => 'Tasks.Button',
+                                                'type' => 'tasks/button',
                                                 'lot' => [
                                                     0 => [
                                                         'title' => 'Default',
@@ -288,25 +288,25 @@ return [
                                                         'stack' => 10
                                                     ],
                                                     1 => [
-                                                        'type' => 'Button',
+                                                        'type' => 'button',
                                                         'title' => 'Button',
                                                         'name' => 'x',
                                                         'stack' => 10.1
                                                     ],
                                                     2 => [
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'title' => 'Submit',
                                                         'name' => 'x',
                                                         'stack' => 10.2
                                                     ],
                                                     3 => [
-                                                        'type' => 'Reset',
+                                                        'type' => 'reset',
                                                         'title' => 'Reset',
                                                         'name' => 'x',
                                                         'stack' => 10.3
                                                     ],
                                                     4 => [
-                                                        'type' => 'Link',
+                                                        'type' => 'link',
                                                         'title' => 'Link',
                                                         'link' => 'https://example.com',
                                                         'stack' => 10.4
@@ -325,13 +325,13 @@ return [
                                                     ],
                                                     7 => [
                                                         'active' => false,
-                                                        'type' => 'Link',
+                                                        'type' => 'link',
                                                         'title' => 'Disabled Link',
                                                         'stack' => 10.7
                                                     ],
                                                     8 => [
                                                         'active' => false,
-                                                        'type' => 'Link',
+                                                        'type' => 'link',
                                                         'tags' => ['is:text'],
                                                         'title' => 'Disabled Link',
                                                         'stack' => 10.8

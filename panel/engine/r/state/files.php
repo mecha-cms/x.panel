@@ -24,7 +24,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             'path' => $k,
             'title' => S . $n . S,
             'description' => 0 === $v ? ['Open %s', 'Folder'] : S . (new File($k))->size . S,
-            'type' => 0 === $v ? 'Folder' : 'File',
+            'type' => 0 === $v ? 'folder' : 'file',
             'url' => 0 === $v ? $before . 'g' . $after . '/1' . $url->query . $url->hash : null,
             'link' => 1 === $v ? To::URL($k) : null,
             'tasks' => [
@@ -61,7 +61,7 @@ if (count($_['chops']) > 1 && $_['i'] <= 1) {
     $files = array_merge([$folder => [
         'title' => S . '..' . S,
         'description' => 'Exit',
-        'type' => 'Folder',
+        'type' => 'folder',
         'tags' => ['is:folder'],
         'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,
         'tasks' => [
@@ -89,35 +89,35 @@ if (count($_['chops']) > 1 && $_['i'] <= 1) {
 
 return [
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
                 'lot' => [
                     0 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tasks' => [
-                                'type' => 'Tasks.Button',
+                                'type' => 'tasks/button',
                                 'lot' => [
                                     'blob' => [
                                         'title' => false,
                                         'description' => 'Upload',
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
                                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                                         'stack' => 10
                                     ],
                                     'file' => [
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'description' => ['New %s', 'File'],
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'file', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                         'stack' => 20
                                     ],
                                     'folder' => [
-                                        'type' => 'Link',
+                                        'type' => 'link',
                                         'description' => ['New %s', 'Folder'],
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'folder', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
@@ -129,15 +129,15 @@ return [
                         ]
                     ],
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'files' => [
                                         'lot' => [
                                             'files' => [
-                                                'type' => 'Files',
+                                                'type' => 'files',
                                                 'lot' => $files,
                                                 'chunk' => $_['chunk'],
                                                 'current' => $_['i'],
@@ -151,10 +151,10 @@ return [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'pager' => [
-                                'type' => 'Pager',
+                                'type' => 'pager',
                                 'chunk' => $_['chunk'],
                                 'count' => $count,
                                 'current' => $_['i'],

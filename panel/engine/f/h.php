@@ -112,9 +112,9 @@ function lot($lot, $fn = null, &$count = 0) {
 function p(&$lot, $prefix) {
     foreach ($lot as &$v) {
         $type = $v['type'] ?? null;
-        if ($type !== $prefix && 0 !== \strpos($type, $prefix . '__')) {
+        if ($type !== $prefix && 0 !== \strpos($type, $prefix . '/')) {
             // Add prefix to `type`
-            $type = $prefix . '__' . $type;
+            $type = $prefix . '/' . $type;
         }
         $v['type'] = $type;
     }

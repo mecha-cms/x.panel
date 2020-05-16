@@ -2,10 +2,10 @@
 
 return [
     'bar' => [
-        // type: Bar
+        // type: bar
         'lot' => [
             1 => [
-                // type: List
+                // type: bar/menu
                 'lot' => [
                     1 => [
                         'title' => 'Menu',

@@ -15,9 +15,9 @@ if (extension_loaded('zip')) {
 
 return [
     'bar' => [
-        // type: Bar
+        // type: bar
         'lot' => [
-            // type: List
+            // type: bar/menu
             0 => [
                 'lot' => [
                     'folder' => ['hidden' => true],
@@ -38,43 +38,43 @@ return [
         ]
     ],
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     'fields' => [
-                        'type' => 'Fields',
+                        'type' => 'fields',
                         'lot' => [ // Hidden field(s)
                             'token' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'value' => $_['token']
                             ]
                         ],
                         'stack' => -1
                     ],
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'blob' => [
                                         'title' => 'Upload',
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => [
                                                     'blob' => [
                                                         'title' => 'File',
                                                         'description' => ['Maximum file size allowed to upload is %s.', File::sizer(File::$state['size'][1])],
-                                                        'type' => 'Blobs',
+                                                        'type' => 'blobs',
                                                         'focus' => true,
                                                         'stack' => 10
                                                     ],
                                                     'o' => [
                                                         'title' => "",
-                                                        'type' => 'Items',
+                                                        'type' => 'items',
                                                         'lot' => $options,
                                                         'block' => true,
                                                         'stack' => 20
@@ -90,22 +90,22 @@ return [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
-                                'type' => 'Fields',
+                                'type' => 'fields',
                                 'lot' => [
                                     0 => [
                                         'title' => "",
-                                        'type' => 'Field',
+                                        'type' => 'field',
                                         'lot' => [
                                             'tasks' => [
-                                                'type' => 'Tasks.Button',
+                                                'type' => 'tasks/button',
                                                 'lot' => [
                                                     's' => [
                                                         'title' => 'Upload',
                                                         'description' => ['Upload to %s', _\lot\x\panel\h\path($_['f'])],
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => false,
                                                         'stack' => 10
                                                     ]

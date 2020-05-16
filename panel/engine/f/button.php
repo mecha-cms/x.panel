@@ -1,29 +1,29 @@
-<?php namespace _\lot\x\panel;
+<?php namespace _\lot\x\panel\button;
 
-function Button__($in, $key) {
-    return \_\lot\x\panel\Button($in, $key); // Unknown `Button` type
+function _($in, $key) {
+    return \_\lot\x\panel\button($in, $key); // Unknown `button` type
 }
 
-function Button__Button($in, $key) {
-    $out = \_\lot\x\panel\Button($in, $key);
+function button($in, $key) {
+    $out = \_\lot\x\panel\button($in, $key);
     $out['type'] = 'button';
     return $out;
 }
 
-function Button__Link($in, $key) {
-    $out = \_\lot\x\panel\Link($in, $key);
+function link($in, $key) {
+    $out = \_\lot\x\panel\link($in, $key);
     \_\lot\x\panel\h\c($out, $in, ['button']);
     return $out;
 }
 
-function Button__Reset($in, $key) {
-    $out = \_\lot\x\panel\Button($in, $key);
+function reset($in, $key) {
+    $out = \_\lot\x\panel\button($in, $key);
     $out['type'] = 'reset';
     return $out;
 }
 
-function Button__Submit($in, $key) {
-    $out = \_\lot\x\panel\Button($in, $key);
+function submit($in, $key) {
+    $out = \_\lot\x\panel\button($in, $key);
     $out['type'] = 'submit';
     return $out;
 }

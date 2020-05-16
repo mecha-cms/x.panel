@@ -30,10 +30,10 @@ return (function($icons) {
     _\lot\x\panel\h\icon('M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z'); // Active
     return _\lot\x\panel\lot(['lot' => array_replace_recursive([
         'bar' => [
-            'type' => 'Bar',
+            'type' => 'bar',
             'lot' => [
                 0 => [
-                    'type' => 'List',
+                    'type' => 'bar/menu',
                     'lot' => [
                         'folder' => [
                             'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
@@ -53,16 +53,16 @@ return (function($icons) {
                             'stack' => 10
                         ],
                         'search' => [
-                            'type' => 'Form.Get',
+                            'type' => 'form/get',
                             'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . '/1' . $url->query('&', ['q' => false]) . $url->hash,
                             'name' => 'search',
                             'lot' => [
                                 'fields' => [
-                                    'type' => 'Fields',
+                                    'type' => 'fields',
                                     'lot' => [
                                         'q' => [
                                             'title' => 'Search',
-                                            'type' => 'Text',
+                                            'type' => 'text',
                                             'alt' => 'Search',
                                             'value' => $_GET['q'] ?? null,
                                             '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))]
@@ -76,7 +76,7 @@ return (function($icons) {
                     'stack' => 10
                 ],
                 1 => [
-                    'type' => 'List',
+                    'type' => 'bar/menu',
                     'lot' => [
                         'license' => [
                             'description' => 'Please read the terms and conditions before using this application.',
@@ -132,7 +132,7 @@ return (function($icons) {
                     'stack' => 20
                 ],
                 2 => [
-                    'type' => 'List',
+                    'type' => 'bar/menu',
                     'lot' => [
                         'alert' => [
                             'icon' => 'M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21',
@@ -149,29 +149,29 @@ return (function($icons) {
             'stack' => 10
         ],
         'desk' => [
-            'type' => 'Desk',
+            'type' => 'desk',
             'lot' => [
                 'form' => [
-                    'type' => 'Form.Post',
+                    'type' => 'form/post',
                     'url' => $url->current,
                     'name' => 'edit',
                     'lot' => [
                         0 => [
-                            'type' => 'Section',
+                            'type' => 'section',
                             'lot' => [],
                             'stack' => 10
                         ],
                         'alert' => [
                             'hidden' => "" === $alert,
-                            'type' => 'Section',
+                            'type' => 'section',
                             'content' => $alert,
                             'stack' => 15
                         ],
                         1 => [
-                            'type' => 'Section',
+                            'type' => 'section',
                             'lot' => [
                                 'tabs' => [
-                                    'type' => 'Tabs',
+                                    'type' => 'tabs',
                                     'name' => 0,
                                     'lot' => []
                                 ]
@@ -179,7 +179,7 @@ return (function($icons) {
                             'stack' => 20
                         ],
                         2 => [
-                            'type' => 'Section',
+                            'type' => 'section',
                             'lot' => [],
                             'stack' => 30
                         ]

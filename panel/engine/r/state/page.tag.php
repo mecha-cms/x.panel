@@ -13,9 +13,9 @@ foreach (g($_['f'], 'archive,page') as $k => $v) {
 
 $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
     'bar' => [
-        // type: Bar
+        // type: bar
         'lot' => [
-            // type: List
+            // type: bar/menu
             0 => [
                 'lot' => [
                     's' => [
@@ -28,25 +28,25 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
         ]
     ],
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'page' => [
                                         'name' => 'tag',
                                         'lot' => [
                                             'fields' => [
-                                                // type: Fields
+                                                // type: fields
                                                 'lot' => [
                                                     'id' => [
-                                                        'type' => 'Hidden',
+                                                        'type' => 'hidden',
                                                         'name' => 'data[id]',
                                                         'value' => 's' === $_['task'] ? $id : $page->id
                                                     ],
@@ -70,16 +70,16 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
-                                // type: Fields
+                                // type: fields
                                 'lot' => [
                                     0 => [
-                                        // type: Field
+                                        // type: field
                                         'lot' => [
                                             'tasks' => [
-                                                // type: Tasks.Button
+                                                // type: tasks/button
                                                 'lot' => [
                                                     'l' => ['hidden' => 's' === $_['task'] || $page->name === $user->name]
                                                 ]

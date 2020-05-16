@@ -18,9 +18,9 @@ $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 return [
     'bar' => [
-        // type: Bar
+        // type: bar
         'lot' => [
-            // type: List
+            // type: bar/menu
             0 => [
                 'lot' => [
                     'folder' => ['hidden' => true],
@@ -41,20 +41,20 @@ return [
         ]
     ],
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     'fields' => [
-                        'type' => 'Fields',
+                        'type' => 'fields',
                         'lot' => [ // Hidden field(s)
                             'token' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'value' => $_['token']
                             ],
                             'seal' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'name' => 'file[seal]',
                                 'value' => '0600'
                             ]
@@ -62,18 +62,18 @@ return [
                         'stack' => -1
                     ],
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'data' => [
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => [
                                                     'content' => [
-                                                        'type' => 'Source',
+                                                        'type' => 'source',
                                                         'name' => 'data[content]',
                                                         'alt' => 'Content goes here...',
                                                         'value' => $content,
@@ -82,7 +82,7 @@ return [
                                                         'stack' => 10
                                                     ],
                                                     'name' => [
-                                                        'type' => 'Text',
+                                                        'type' => 'text',
                                                         'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
                                                         'after' => '.data',
                                                         'focus' => true,
@@ -103,28 +103,28 @@ return [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
-                                'type' => 'Fields',
+                                'type' => 'fields',
                                 'lot' => [
                                     0 => [
                                         'title' => "",
-                                        'type' => 'Field',
+                                        'type' => 'field',
                                         'lot' => [
                                             'tasks' => [
-                                                'type' => 'Tasks.Button',
+                                                'type' => 'tasks/button',
                                                 'lot' => [
                                                     's' => [
                                                         'title' => 'g' === $_['task'] ? 'Update' : 'Create',
                                                         'description' => ['Create in %s', _\lot\x\panel\h\path($_['f'])],
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],
                                                     'l' => [
                                                         'title' => 'Delete',
-                                                        'type' => 'Link',
+                                                        'type' => 'link',
                                                         'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
                                                             'layout' => 'data',
                                                             'token' => $_['token'],

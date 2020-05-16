@@ -1,22 +1,22 @@
-<?php namespace _\lot\x\panel;
+<?php namespace _\lot\x\panel\field;
 
-function Field__($in, $key) {
-    $out = \_\lot\x\panel\Field__Content($in, $key);
+function _($in, $key) {
+    $out = \_\lot\x\panel\field\content($in, $key);
     $out['hidden'] = true;
     return $out;
 }
 
-function Field__Blob($in, $key) {
+function blob($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['name'] = $in['name'] ?? $key;
     $out['content'][2]['type'] = 'file';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Blobs($in, $key) {
+function blobs($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -24,10 +24,10 @@ function Field__Blobs($in, $key) {
     $out['content'][2]['name'] = ($in['name'] ?? $key) . '[]';
     $out['content'][2]['type'] = 'file';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Color($in, $key) {
+function color($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -37,10 +37,10 @@ function Field__Color($in, $key) {
         $out['content'][2]['title'] = $value;
         $out['content'][2]['value'] = $value;
     }
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Colors($in, $key) {
+function colors($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'div';
     $name = $in['name'] ?? $key;
@@ -70,10 +70,10 @@ function Field__Colors($in, $key) {
     }
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:color']);
     unset($out['content'][2]['name']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Combo($in, $key) {
+function combo($in, $key) {
     if (isset($in['lot'])) {
         $out = \_\lot\x\panel\h\field($in, $key);
         $value = $in['value'] ?? null;
@@ -137,25 +137,25 @@ function Field__Combo($in, $key) {
             $out['content'][1] .= $v;
         }
         \_\lot\x\panel\h\c($out['content'][2], $in, ['select']);
-        return \_\lot\x\panel\Field($out, $key);
+        return \_\lot\x\panel\field($out, $key);
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }
 
-function Field__Content($in, $key) {
+function content($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Date($in, $key) {
+function date($in, $key) {
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
     }
-    return \_\lot\x\panel\Field__DateTime($in, $key);
+    return \_\lot\x\panel\field\dateTime($in, $key);
 }
 
-function Field__DateTime($in, $key) {
+function dateTime($in, $key) {
     if (!isset($in['alt'])) {
         $in['alt'] = \date('Y-m-d H:i:s');
     }
@@ -170,20 +170,20 @@ function Field__DateTime($in, $key) {
         }
         $in['value'] = (string) $in['value'];
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }
 
-function Field__Email($in, $key) {
+function email($in, $key) {
     if (!isset($in['alt'])) {
         $in['alt'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
     }
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }
 
-function Field__Hidden($in, $key) {
+function hidden($in, $key) {
     return new \HTML([
         0 => 'input',
         1 => false,
@@ -196,7 +196,7 @@ function Field__Hidden($in, $key) {
     ]);
 }
 
-function Field__Item($in, $key) {
+function item($in, $key) {
     if (isset($in['lot'])) {
         $value = $in['value'] ?? null;
         $n = $in['name'] ?? $key;
@@ -243,12 +243,12 @@ function Field__Item($in, $key) {
         }
         $out['content'][1] = \implode($block, $a);
         \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:item']);
-        return \_\lot\x\panel\Field($out, $key);
+        return \_\lot\x\panel\field($out, $key);
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }
 
-function Field__Items($in, $key) {
+function items($in, $key) {
     if (isset($in['lot'])) {
         $value = (array) ($in['value'] ?? []);
         if ($key_as_value = !empty($in['flat'])) {
@@ -308,12 +308,12 @@ function Field__Items($in, $key) {
         $out['content'][1] = \implode($block, $a);
         \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:items']);
         unset($out['content'][2]['name']);
-        return \_\lot\x\panel\Field($out, $key);
+        return \_\lot\x\panel\field($out, $key);
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }
 
-function field__Link($in, $key) {
+function link($in, $key) {
     if (!isset($in['alt'])) {
         $url = $GLOBALS['url'];
         $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
@@ -321,10 +321,10 @@ function field__Link($in, $key) {
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }
 
-function Field__Number($in, $key) {
+function number($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -334,20 +334,20 @@ function Field__Number($in, $key) {
     $out['content'][2]['step'] = $in['step'] ?? null;
     $out['content'][2]['value'] = $in['value'] ?? null;
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Pass($in, $key) {
+function pass($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'password';
     unset($out['content'][2]['value']); // Never show `value` on this field
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Query($in, $key) {
+function query($in, $key) {
     if (!isset($in['alt'])) {
         $in['alt'] = 'foo, bar, baz';
     }
@@ -366,10 +366,10 @@ function Field__Query($in, $key) {
         $out['content'][2]['data-state'] = \json_encode($in['state']);
     }
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Range($in, $key) {
+function range($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -379,10 +379,10 @@ function Field__Range($in, $key) {
     $out['content'][2]['step'] = $in['step'] ?? null;
     $out['content'][2]['value'] = $in['value'] ?? null;
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Set($in, $key) {
+function set($in, $key) {
     $title = \strip_tags($in['title'] ?? "", '<a>');
     $description = \_\lot\x\panel\h\description($in);
     $in = \array_replace([
@@ -394,34 +394,34 @@ function Field__Set($in, $key) {
     return \_\lot\x\panel($in, $key);
 }
 
-function Field__Source($in, $key) {
+function source($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][2]['data-state'] = \json_encode(\array_replace($in['state'] ?? [], [
         'tab' => '  '
     ]));
     \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea', 'code']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Text($in, $key) {
+function text($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
     $out['content'][2]['value'] = $in['value'] ?? null;
     \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__Time($in, $key) {
+function time($in, $key) {
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
     }
-    $out = \_\lot\x\panel\Field__DateTime($in, $key);
+    $out = \_\lot\x\panel\field\dateTime($in, $key);
     return $out;
 }
 
-function Field__Toggle($in, $key) {
+function toggle($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
     $value = $in['value'] ?? null;
     $toggle = new \HTML(['input', false, [
@@ -436,10 +436,10 @@ function Field__Toggle($in, $key) {
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);
     unset($out['alt'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
-    return \_\lot\x\panel\Field($out, $key);
+    return \_\lot\x\panel\field($out, $key);
 }
 
-function Field__URL($in, $key) {
+function URL($in, $key) {
     if (!isset($in['alt'])) {
         $url = $GLOBALS['url'];
         $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
@@ -447,5 +447,5 @@ function Field__URL($in, $key) {
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";
     }
-    return \_\lot\x\panel\Field__Text($in, $key);
+    return \_\lot\x\panel\field\text($in, $key);
 }

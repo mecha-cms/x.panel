@@ -6,6 +6,12 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.*.*
+
+ - **TODO:** Moved from `Pjax` to `F3H`.
+ - Changed field API to use lower-case for data types and to separate sub-types with `/` instead of `.`. So that every data type will look like MIME type, just like the `type` attribute value alternative for every page file. Example: from `Text.DateTime` to `text/date-time`, from `Form.Post` to `form/post`.
+ - **TODO:** Added ability to set custom panel route and GUI through static functions under `_\lot\x\panel\route` namespace.
+
 ### 2.2.1
 
  - Removed leading `/` in `$_['path']` and trailing `/` in `$_['/']` for consistency with `$_['i']` and global `$url` properties.

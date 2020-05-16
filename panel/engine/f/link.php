@@ -1,5 +1,5 @@
-<?php namespace _\lot\x\panel;
+<?php namespace _\lot\x\panel\link;
 
-function Link__($in, $key) {
-    return \_\lot\x\panel\Link($in, $key); // Unknown `Link` type
+function _($in, $key) {
+    return \_\lot\x\panel\link($in, $key); // Unknown `link` type
 }

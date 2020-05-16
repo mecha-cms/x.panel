@@ -1,16 +1,16 @@
 <?php
 
 namespace _\lot\x\panel {
-    function Bar($in, $key) {
+    function bar($in, $key) {
         if (isset($in['lot'])) {
-            \_\lot\x\panel\h\p($in['lot'], 'Bar');
+            \_\lot\x\panel\h\p($in['lot'], 'bar');
         }
         $out = \_\lot\x\panel\lot($in, $key);
         $out[0] = 'nav';
         return $out;
     }
-    function Button($in, $key) {
-        $out = \_\lot\x\panel\Link($in, $key);
+    function button($in, $key) {
+        $out = \_\lot\x\panel\link($in, $key);
         $out[0] = 'button';
         $out['class'] = 'button';
         $out['disabled'] = isset($in['active']) && !$in['active'];
@@ -19,10 +19,10 @@ namespace _\lot\x\panel {
         unset($out['href'], $out['target']);
         return $out;
     }
-    function Field($in, $key) {
+    function field($in, $key) {
         $tags = ['field', 'p'];
         if (isset($in['type'])) {
-            $tags[] = \strtr(\c2f($in['type'], '-', '.'), ['__' => ':']);
+            $tags[] = \strtr(\p2f($in['type'], '-', '/'), ['/' => ':']);
         }
         $id = $in['id'] ?? 'f:' . \dechex(\time());
         $in[2]['id'] = $in[2]['id'] ?? \str_replace('f:', 'field:', $id);
@@ -74,7 +74,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
     }
-    function Fields($in) {
+    function fields($in) {
         $tags = ['lot', 'lot:field', 'p'];
         $out = [
             0 => $in[0] ?? 'div',
@@ -87,20 +87,20 @@ namespace _\lot\x\panel {
         if (isset($in['content'])) {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
-            \_\lot\x\panel\h\p($in['lot'], 'Field');
+            \_\lot\x\panel\h\p($in['lot'], 'field');
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
                 if (null === $v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 $type = $v['type'] ?? null;
-                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . $type, "\\"))) {
-                    if ('Field__Hidden' !== $type) {
+                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . \f2p($type, '-', '/'), "\\"))) {
+                    if ('field/hidden' !== $type) {
                         $out[1] .= \call_user_func($fn, $v, $k);
                     } else {
-                        $append .= \_\lot\x\panel\Field__Hidden($v, $k);
+                        $append .= \_\lot\x\panel\field\hidden($v, $k);
                     }
                 } else {
-                    $append .= \_\lot\x\panel\Field__($v, $k); // Unknown `Field` type
+                    $append .= \_\lot\x\panel\field\_($v, $k); // Unknown `field` type
                 }
                 unset($v);
             }
@@ -110,7 +110,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return "" !== $out[1] ? new \HTML($out) : null;
     }
-    function File($in, $key) {
+    function file($in, $key) {
         $tags = ['is:file'];
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
@@ -127,13 +127,13 @@ namespace _\lot\x\panel {
             'title' => $in['title'] ?? null,
             'url' => $in['url'] ?? null
         ], $key) . '</h3>';
-        $out[1] .= \_\lot\x\panel\Tasks\Link([
+        $out[1] .= \_\lot\x\panel\tasks\link([
             0 => 'p',
             'lot' => $in['tasks'] ?? []
         ], 0);
         return new \HTML($out);
     }
-    function Files($in, $key) {
+    function files($in, $key) {
         $out = [
             0 => 'ul',
             1 => "",
@@ -169,7 +169,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:file']);
         return new \HTML($out);
     }
-    function Folder($in, $key) {
+    function folder($in, $key) {
         $tags = ['is:folder'];
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
@@ -180,22 +180,22 @@ namespace _\lot\x\panel {
             2 => []
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $out[1] .= '<h3>' . \_\lot\x\panel\Link([
+        $out[1] .= '<h3>' . \_\lot\x\panel\link([
             'description' => $in['description'] ?? \i('Open folder'),
             'link' => $in['link'] ?? null,
             'title' => $in['title'] ?? null,
             'url' => $in['url'] ?? null
         ], $key) . '</h3>';
-        $out[1] .= \_\lot\x\panel\Tasks\Link([
+        $out[1] .= \_\lot\x\panel\tasks\link([
             0 => 'p',
             'lot' => $in['tasks'] ?? []
         ], 0);
         return new \HTML($out);
     }
-    function Folders($in, $key) {
-        return \_\lot\x\panel\Files($in, $key);
+    function folders($in, $key) {
+        return \_\lot\x\panel\files($in, $key);
     }
-    function Form($in, $key) {
+    function form($in, $key) {
         $out = [
             0 => $in[0] ?? 'form',
             1 => $in[1] ?? "",
@@ -215,7 +215,7 @@ namespace _\lot\x\panel {
         $out[2]['name'] = $in['name'] ?? $key;
         return new \HTML($out);
     }
-    function Link($in, $key) {
+    function link($in, $key) {
         $out = [
             0 => $in[0] ?? 'a',
             1 => $in[1] ?? "",
@@ -239,7 +239,7 @@ namespace _\lot\x\panel {
         $out[2]['title'] = \i(...((array) ($in['description'] ?? [])));
         return new \HTML($out);
     }
-    function Menu($in, $key, int $i = 0) {
+    function menu($in, $key, int $i = 0) {
         $out = [
             0 => $in[0] ?? 'ul',
             1 => $in[1] ?? "",
@@ -281,7 +281,7 @@ namespace _\lot\x\panel {
                     }
                     if (!isset($v[1])) {
                         if (!empty($v['lot'])) {
-                            $ul = \_\lot\x\panel\Menu($v, $k, $i + 1); // Recurse
+                            $ul = \_\lot\x\panel\menu($v, $k, $i + 1); // Recurse
                             $ul['class'] = 'lot lot:menu';
                             $li[1] = $ul;
                             if ($i < 0) {
@@ -289,11 +289,11 @@ namespace _\lot\x\panel {
                             }
                         }
                         unset($v['tags']);
-                        $li[1] = \_\lot\x\panel\Link($v, $k) . $ul;
+                        $li[1] = \_\lot\x\panel\link($v, $k) . $ul;
                     }
                     \_\lot\x\panel\h\c($li[2], $v, $a);
                 } else {
-                    $li[1] = \_\lot\x\panel\Link(['title' => $v], $k);
+                    $li[1] = \_\lot\x\panel\link(['title' => $v], $k);
                 }
                 $out[1] .= new \HTML($li);
             }
@@ -302,7 +302,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
     }
-    function Page($in, $key) {
+    function page($in, $key) {
         $tags = ['is:file'];
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
@@ -327,18 +327,18 @@ namespace _\lot\x\panel {
             \ROOT => "",
             \DS => '/'
         ])), 0, 6) . ';"></span>') . '</div>';
-        $out[1] .= '<div><h3>' . \_\lot\x\panel\Link([
+        $out[1] .= '<div><h3>' . \_\lot\x\panel\link([
             'link' => $in['link'] ?? null,
             'title' => $in['title'] ?? $date,
             'url' => $in['url'] ?? null
         ], $key) . '</h3>' . \_\lot\x\panel\h\description($in, $date) . '</div>';
-        $out[1] .= '<div>' . \_\lot\x\panel\Tasks\Link([
+        $out[1] .= '<div>' . \_\lot\x\panel\tasks\link([
             0 => 'p',
             'lot' => $in['tasks'] ?? []
         ], 0) . '</div>';
         return new \HTML($out);
     }
-    function Pager($in, $key) {
+    function pager($in, $key) {
         $in['tags'][] = 'lot';
         $in['tags'][] = 'lot:pager';
         $pager = function($current, $count, $chunk, $peek, $fn, $first, $prev, $next, $last) {
@@ -409,7 +409,7 @@ namespace _\lot\x\panel {
         $out[0] = 'p';
         return "" !== $content ? $out : null;
     }
-    function Pages($in, $key) {
+    function pages($in, $key) {
         $out = [
             0 => 'ul',
             1 => "",
@@ -441,7 +441,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:page']);
         return new \HTML($out);
     }
-    function Tab($in, $key) {
+    function tab($in, $key) {
         $out = [
             0 => $in[0] ?? 'section',
             1 => $in[1] ?? "",
@@ -455,7 +455,7 @@ namespace _\lot\x\panel {
         \_\lot\x\panel\h\c($out[2], $in);
         return "" !== $out[1] ? new \HTML($out) : null;
     }
-    function Tabs($in, $key) {
+    function tabs($in, $key) {
         $name = $in['name'] ?? $key;
         $out = [
             0 => $in[0] ?? 'div',
@@ -517,14 +517,14 @@ namespace _\lot\x\panel {
                 }
                 $section[$k] = $vv;
             }
-            $out[1] = '<nav>' . \_\lot\x\panel\Bar__List(['lot' => $nav], $name) . '</nav>';
+            $out[1] = '<nav>' . \_\lot\x\panel\bar\menu(['lot' => $nav], $name) . '</nav>';
             $out[1] .= \implode("", $section);
         }
         $tags[] = 'count:' . $count;
         \_\lot\x\panel\h\c($out[2], $in, $tags);
         return new \HTML($out);
     }
-    function Tasks($in, $key) {
+    function tasks($in, $key) {
         $tags = ['lot', 'lot:task'];
         $out = [
             0 => $in[0] ?? 'div',
@@ -598,7 +598,7 @@ namespace _\lot\x {
             return "";
         }
         $out = "";
-        if ($type = isset($in['type']) ? \strtr($in['type'], '.-', "\\_") : null) {
+        if ($type = isset($in['type']) ? \f2p($in['type'], '-', '/') : null) {
             if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\" . $type, "\\"))) {
                 $out .= \call_user_func($fn, $in, $key);
             } else if (isset($in['content'])) {
@@ -644,5 +644,6 @@ namespace {
     require __DIR__ . DS . 'f' . DS . 'h.php';
     require __DIR__ . DS . 'f' . DS . 'link.php';
     require __DIR__ . DS . 'f' . DS . 'lot.php';
+    require __DIR__ . DS . 'f' . DS . 'route.php';
     require __DIR__ . DS . 'f' . DS . 'tasks.php';
 }

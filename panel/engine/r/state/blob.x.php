@@ -27,7 +27,7 @@ Hook::set('do.blob.set', function($_, $lot) use($zip) {
 $lot = require __DIR__ . DS . 'blob.php';
 
 // Disable multiple file upload
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['type'] = 'Blob';
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['type'] = 'blob';
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['name'] = 'blob[0]';
 
 // Disable file uploader if it is not possible to extract package with the current environment
@@ -36,14 +36,14 @@ $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fiel
 // Force extract package
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o']['hidden'] = true;
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o:extract'] = [
-    'type' => 'Hidden',
+    'type' => 'hidden',
     'name' => 'o[extract]',
     'value' => 1
 ];
 
 // Force delete package
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o:let'] = [
-    'type' => 'Hidden',
+    'type' => 'hidden',
     'name' => 'o[let]',
     'value' => 1
 ];
@@ -52,7 +52,7 @@ $description = '<p>' . i('Make sure that the package you want to upload is struc
 $description .= '<pre><code class="txt">' . i('extension') . '.zip&#xA;&#x2514;&#x2500;&#x2500;&#x20;' . i('extension') . '&#x5C;&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;about.page&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;index.php&#xA;&#x20;&#x20;&#x20;&#x20;&#x2514;&#x2500;&#x2500;&#x20;&#x2026;</code></pre>';
 
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description'] = [
-    'type' => 'Field',
+    'type' => 'field',
     'title' => "",
     'content' => $description,
     'stack' => 20

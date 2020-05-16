@@ -7,11 +7,11 @@ if (null !== State::get('x.art')) {
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['art'] = [
         'lot' => [
             'fields' => [
-                'type' => 'Fields',
+                'type' => 'fields',
                 'lot' => [
                     'css' => [
                         'title' => 'CSS',
-                        'type' => 'Source',
+                        'type' => 'source',
                         'name' => 'data[css]',
                         'alt' => ['%s goes here...', 'CSS'],
                         'value' => $page['css'],
@@ -21,7 +21,7 @@ if (null !== State::get('x.art')) {
                     ],
                     'js' => [
                         'title' => 'JS',
-                        'type' => 'Source',
+                        'type' => 'source',
                         'name' => 'data[js]',
                         'alt' => ['%s goes here...', 'JavaScript'],
                         'value' => $page['js'],
@@ -94,7 +94,7 @@ if (null !== State::get('x.tag') && (
         return $_;
     }, 11);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [
-        'type' => 'Query',
+        'type' => 'query',
         'state' => [
             'max' => 12,
             'x' => true
