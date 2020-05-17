@@ -93,7 +93,7 @@ namespace _\lot\x\panel {
                     continue;
                 }
                 $type = $v['type'] ?? null;
-                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . \f2p($type, '-', '/'), "\\"))) {
+                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . \f2p(\strtr($type, '/', '.')), "\\"))) {
                     if ('field/hidden' !== $type) {
                         $out[1] .= \call_user_func($fn, $v, $k);
                     } else {
@@ -484,10 +484,10 @@ namespace _\lot\x\panel {
                     }
                 }
                 $v[2]['data-name'] = $kk;
-                $v[2]['target'] = $v[2]['target'] ?? '_self';
-                // If `type` is not defined, the default value will be `Tab`
+                $v[2]['target'] = $v[2]['target'] ?? $kk;
+                // If `type` is not defined, the default value will be `tab`
                 if (!\array_key_exists('type', $v)) {
-                    $v['type'] = 'Tab';
+                    $v['type'] = 'tab';
                 }
                 $nav[$kk] = $v;
                 $section[$kk] = $v;
@@ -598,7 +598,7 @@ namespace _\lot\x {
             return "";
         }
         $out = "";
-        if ($type = isset($in['type']) ? \f2p($in['type'], '-', '/') : null) {
+        if ($type = isset($in['type']) ? \f2p(\strtr($in['type'], '/', '.')) : null) {
             if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\" . $type, "\\"))) {
                 $out .= \call_user_func($fn, $in, $key);
             } else if (isset($in['content'])) {

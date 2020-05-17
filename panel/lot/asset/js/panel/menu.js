@@ -1,20 +1,20 @@
 (function(win, doc, _) {
-    function doHide(but, t) {
+    function doHide(but) {
         doc.querySelectorAll('.lot\\:menu.is\\:enter').forEach(function($$) {
-            if ($$ !== but && t !== but.previousElementSibling) {
+            if ($$ !== but) {
                 $$.classList.remove('is:enter');
                 $$.parentNode.classList.remove('is:active');
                 $$.previousElementSibling.classList.remove('is:active');
             }
         });
     }
-    function onClickHide(e) {
-        doHide(0, e);
+    function onClickHide() {
+        doHide(0);
     }
     function onClickShow(e) {
         let t = this,
             menu = t.nextElementSibling;
-        doHide(menu, e);
+        doHide(menu);
         setTimeout(function() {
             t.classList.toggle('is:active');
             t.parentNode.classList.toggle('is:active');

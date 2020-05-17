@@ -14,31 +14,37 @@ function route() {
     }
     extract($GLOBALS, \EXTR_SKIP);
     $f = $_['f'];
+    $route = false;
+    foreach (\step($_['path'], '/') as $v) {
+        if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, '/', '.')))) {
+            $route = $fn;
+            break;
+        }
+    }
     if ('GET' === $_SERVER['REQUEST_METHOD']) {
         // Redirect if file already exists
         if ('s' === $_['task'] && $f && \is_file($f)) {
             $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
             $_['kick'] = \str_replace('::s::', '::g::', $url->current);
         }
-        if (!\File::exist(\map(\step($_['path'], '/'), function($v) {
-            return __DIR__ . \DS . 'path' . \DS . $v . '.php';
-        }))) {
-            if (
+        if (
+            // No route match
+            !$route && (
                 // Trying to get file that does not exist
                 'g' === $_['task'] && !$f ||
                 // Trying to set file from a folder that does not exist
                 's' === $_['task'] && (!$f || !\is_dir($f))
-            ) {
-                $GLOBALS['t'][] = \i('Error');
-                \State::set([
-                    '[layout]' => ['layout:' . $_['layout'] => false],
-                    'is' => [
-                        'error' => 404
-                    ]
-                ]);
-                $this->status(404);
-                $this->view('panel.404');
-            }
+            )
+        ) {
+            $GLOBALS['t'][] = \i('Error');
+            \State::set([
+                '[layout]' => ['layout:' . $_['layout'] => false],
+                'is' => [
+                    'error' => 404
+                ]
+            ]);
+            $this->status(404);
+            $this->view('panel.404');
         }
     }
     // Pre-define state
@@ -102,20 +108,18 @@ function route() {
     })($v);
     // Update data
     $_ = $GLOBALS['_'];
-    // Filter by path
-    foreach (\array_values(\step($_['path'], '/')) as $v) {
-        \is_file($v = __DIR__ . \DS . 'path' . \DS . \strtr($v, '/', \DS) . '.php') && (function($v) {
-            extract($GLOBALS, \EXTR_SKIP);
-            require $v;
-        })($v);
+    // Filter by route function
+    $form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
+    if ($route) {
+        \fire($route, [$_, $form], $this);
     }
     // Update data
     $_ = $GLOBALS['_'];
+    $form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
     // Filter by hook
     $_ = \Hook::fire('_', [$_]);
     // Update data
     $GLOBALS['_'] = $_;
-    $form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
     if (isset($form['token'])) {
         $hooks = \map(\step($_['layout']), function($hook) use($_) {
             return 'do.' . $hook . '.' . ([

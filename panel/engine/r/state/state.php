@@ -14,16 +14,16 @@ if (is_file($f)) {
     foreach ((array) require $f as $k => $v) {
         // Pre-defined field type
         $field = [
-            'type' => 'Text',
+            'type' => 'text',
             'width' => true,
             'value' => is_array($v) ? json_encode($v) : s($v),
             'stack' => $i
         ];
         if (true === $v || false === $v) {
-            $field['type'] = 'Toggle';
+            $field['type'] = 'toggle';
             unset($field['width']);
         } else if (is_float($v) || is_int($v)) {
-            $field['type'] = 'Number';
+            $field['type'] = 'number';
             $field['step'] = is_float($v) ? '.1' : '1';
             unset($field['width']);
         }
@@ -34,9 +34,9 @@ if (is_file($f)) {
 
 return [
     'bar' => [
-        // type: Bar
+        // type: bar
         'lot' => [
-            // type: List
+            // type: bar/menu
             0 => [
                 'lot' => [
                     'folder' => ['hidden' => true],
@@ -49,20 +49,20 @@ return [
         ]
     ],
     'desk' => [
-        // type: Desk
+        // type: desk
         'lot' => [
             'form' => [
-                // type: Form.Post
+                // type: form/post
                 'lot' => [
                     'fields' => [
-                        'type' => 'Fields',
+                        'type' => 'fields',
                         'lot' => [ // Hidden field(s)
                             'token' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'value' => $_['token']
                             ],
                             'seal' => [
-                                'type' => 'Hidden',
+                                'type' => 'hidden',
                                 'name' => 'file[seal]',
                                 'value' => '0600'
                             ]
@@ -70,15 +70,15 @@ return [
                         'stack' => -1
                     ],
                     1 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'tabs' => [
-                                // type: Tabs
+                                // type: tabs
                                 'lot' => [
                                     'file' => [
                                         'lot' => [
                                             'fields' => [
-                                                'type' => 'Fields',
+                                                'type' => 'fields',
                                                 'lot' => $fields,
                                                 'stack' => 10
                                             ]
@@ -93,18 +93,18 @@ return [
                         // type: Section
                         'lot' => [
                             'fields' => [
-                                'type' => 'Fields',
+                                'type' => 'fields',
                                 'lot' => [
                                     0 => [
                                         'title' => "",
-                                        'type' => 'Field',
+                                        'type' => 'field',
                                         'lot' => [
                                             'tasks' => [
-                                                'type' => 'Tasks.Button',
+                                                'type' => 'tasks/button',
                                                 'lot' => [
                                                     's' => [
                                                         'title' => 'g' === $_['task'] ? 'Update' : 'Create',
-                                                        'type' => 'Submit',
+                                                        'type' => 'submit',
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],

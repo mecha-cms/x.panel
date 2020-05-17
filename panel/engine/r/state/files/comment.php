@@ -34,6 +34,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             $hidden = $test && $test !== $author;
         }
         $page = new Comment($k);
+        $a = \State::get('x.comment.anchor.0');
         $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
         $pages[$k] = [
             'path' => $k,
@@ -48,7 +49,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             },
             'author' => $page['author'],
             'type' => 'Page',
-            'link' => 'draft' === ($x = $page->x) ? null : $page->url,
+            'link' => 'draft' === ($x = $page->x) ? null : $page->url . '#' . sprintf($a, $page->id),
             'time' => $page->time . "",
             'tags' => [
                 'is:' . $x,

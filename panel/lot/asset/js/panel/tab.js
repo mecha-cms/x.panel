@@ -4,10 +4,10 @@
             replaceState = 'replaceState' in win.history,
             setAction = function($) {
                 let href = $.href;
-                while ($ && $.nodeName.toLowerCase() !== 'form') {
+                while ($ && 'form' !== $.nodeName.toLowerCase()) {
                     $ = $.parentNode;
                 }
-                $ && $.nodeName.toLowerCase() === 'form' && ($.action = href);
+                $ && 'form' === $.nodeName.toLowerCase() && ($.action = href);
             };
         if (tabs.length) {
             tabs.forEach(function($) {
@@ -30,7 +30,7 @@
                 }
                 buttons.forEach(function($$, i) {
                     $$._index = i;
-                    $$.addEventListener("click", onClick, false);
+                    $$.addEventListener('click', onClick, false);
                 });
             });
         }

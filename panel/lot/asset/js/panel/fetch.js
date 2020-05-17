@@ -30,7 +30,7 @@
     f3h.on('exit', function() {
         _.fire('let');
     });
-    f3h.on('success', function(response) {
+    f3h.on('success', function(response, target) {
         let status = this.status,
             responseElements = $$(selectors, response),
             responseRoot = response.documentElement;
