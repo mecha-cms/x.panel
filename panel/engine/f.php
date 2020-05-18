@@ -484,7 +484,7 @@ namespace _\lot\x\panel {
                     }
                 }
                 $v[2]['data-name'] = $kk;
-                $v[2]['target'] = $v[2]['target'] ?? $kk;
+                $v[2]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
                 // If `type` is not defined, the default value will be `tab`
                 if (!\array_key_exists('type', $v)) {
                     $v['type'] = 'tab';

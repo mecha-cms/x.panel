@@ -27,6 +27,10 @@
                         hooks[name].splice(i, 1);
                     }
                 }
+                // Clean-up empty hook(s)
+                if (0 === j) {
+                    delete hooks[name];
+                }
             } else {
                 delete hooks[name];
             }

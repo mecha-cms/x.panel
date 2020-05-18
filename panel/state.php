@@ -16,6 +16,7 @@ return [
             'application/php' => 1,
             'application/vnd.ms-fontobject' => 1,
             'application/x-httpd-php' => 1,
+            'application/x-javascript' => 1, // :(
             // 'application/x-httpd-php-source' => 1,
             'application/x-tar' => 1,
             'application/x-7z-compressed' => 1,
