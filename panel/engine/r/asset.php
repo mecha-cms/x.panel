@@ -4,14 +4,17 @@ Hook::set('get', function() {
     Asset::let(); // Again: remove all asset(s)
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset' . DS;
     $z = defined('DEBUG') && DEBUG ? '.' : '.min.';
-    if (null !== State::get('x.scss')) {
+    extract($GLOBALS, EXTR_SKIP);
+    if (isset($state->x->scss)) {
         Asset::set($f . 'scss' . DS . 'panel.scss', 20);
     } else {
         Asset::set($f . 'css' . DS . 'panel' . $z . 'css', 20);
     }
     Asset::set($f . 'js' . DS . 'panel' . $z . 'js', 20);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'alert' . $z . 'js', 20.1);
-    Asset::set($f . 'js' . DS . 'panel' . DS . 'fetch' . $z . 'js', 30); // Make sure to put this script on the last stack
+    if (!empty($state->x->panel->fetch)) {
+        Asset::set($f . 'js' . DS . 'panel' . DS . 'fetch' . $z . 'js', 30); // Make sure to put this script on the last stack
+    }
     Asset::set($f . 'js' . DS . 'panel' . DS . 'menu' . $z . 'js', 20.1);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'tab' . $z . 'js', 20.1);
     Asset::set($f . 'js' . DS . 'panel' . DS . 'field' . DS . 'query' . $z . 'js', 20.2);

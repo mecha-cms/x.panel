@@ -64,8 +64,9 @@
 
     _.on('let', function() {
         let title = doc.querySelector('title');
-        title = title.getAttribute('data-is-loading');
-        title && (doc.title = title);
+        var is = title.getAttribute('data-is') || 'pull',
+            titleIs = title.getAttribute('data-is-' + is);
+        titleIs && (doc.title = titleIs);
     });
 
     doc.documentElement.classList.add('can:fetch');

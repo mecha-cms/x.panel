@@ -5,6 +5,7 @@ return [
     'sort' => [-1, 'time'],
     'path' => '/page',
     'peek' => 2,
+    'fetch' => true, // Enable AJAX?
     'guard' => [
         'path' => '/panel',
         // Minimum and maximum file size allowed to upload
@@ -117,6 +118,6 @@ return [
             'zip' => 1,
             '7z' => 1
         ],
-        'trash' => true // Move deleted file(s) to the trash folder
+        'trash' => true // Move deleted file(s) to the trash folder?
     ]
 ];
