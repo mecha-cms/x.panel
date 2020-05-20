@@ -16,7 +16,7 @@ function color($color) {
     }
     // Validate HEX color string
     $s = \strlen($color);
-    if ('#' === $color[0] && (4 === $s || 7 === $s) && \ctype_xdigit(\substr($color, 1))) {
+    if ((4 === $s || 7 === $s) && '#' === $color[0] && \ctype_xdigit(\substr($color, 1))) {
         // Convert short HEX color string into long HEX color string
         if (4 === $s) {
             $m = \str_split(\substr($color, 1));
