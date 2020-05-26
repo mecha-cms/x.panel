@@ -24,9 +24,9 @@ namespace _\lot\x\panel\route {
         $_['layout'] = 'state';
         // Fix #13 <https://stackoverflow.com/a/53893947/1163000>
         $fresh = function($path) {
-            if (\function_exists('opcache_invalidate') && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
+            if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
                 \opcache_invalidate($path, true);
-            } else if (function_exists('apc_compile_file')) {
+            } else if (function_exists("\\apc_compile_file")) {
                 \apc_compile_file($path);
             }
             return $path;
