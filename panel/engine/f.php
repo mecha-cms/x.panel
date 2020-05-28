@@ -211,8 +211,12 @@ namespace _\lot\x\panel {
         }
         $href = $in['link'] ?? $in['url'] ?? null;
         \_\lot\x\panel\h\c($out[2], $in);
-        $out[2]['action'] = $href;
-        $out[2]['name'] = $in['name'] ?? $key;
+        if (!isset($out[2]['action'])) {
+            $out[2]['action'] = $href;
+        }
+        if (!isset($out[2]['name'])) {
+            $out[2]['name'] = $in['name'] ?? $key;
+        }
         return new \HTML($out);
     }
     function link($in, $key) {
