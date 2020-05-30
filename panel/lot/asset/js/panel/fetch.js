@@ -39,10 +39,10 @@
         _.fire('let');
     });
     f3h.on('success', function(response, target) {
-        let status = this.status,
-            responseElements = $$(selectors, response),
-            responseRoot = response.documentElement;
+        let status = this.status;
         if (200 === status || 404 === status) {
+            let responseElements = $$(selectors, response),
+                responseRoot = response.documentElement;
             doc.title = response.title;
             responseRoot && (root.className = responseRoot.className + ' can:fetch');
             elements.forEach(function(element, index) {
