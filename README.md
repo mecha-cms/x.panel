@@ -6,7 +6,7 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### 2.x.x
+### 2.3.0
 
  - Moved from `Pjax` to `F3H`.
  - Changed field API to use lower-case for data types and to separate sub-types with `/` instead of `.`. So that every data type will look like a friendly MIME type format, just like the `type` attribute value alternative for every page file. Example: from `Text.DateTime` to `text/date-time`, from `Form.Post` to `form/post`.
