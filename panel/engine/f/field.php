@@ -79,6 +79,7 @@ function combo($in, $key) {
         $value = $in['value'] ?? null;
         $placeholder = \i(...((array) ($out['alt'] ?? [])));
         $out['content'][0] = 'select';
+        $out['content'][1] = ""; // Remove content because this is no longer a `<textarea>`
         unset($out['value']);
         $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
         $a = [];
