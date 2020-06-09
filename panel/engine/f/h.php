@@ -116,7 +116,7 @@ function p(&$lot, $prefix) {
             // Add prefix to `type`
             $type = $prefix . '/' . $type;
         }
-        $v['type'] = $type;
+        $v['type'] = \trim($type, '/');
     }
     unset($v);
 }

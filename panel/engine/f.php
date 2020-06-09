@@ -22,7 +22,7 @@ namespace _\lot\x\panel {
     function field($in, $key) {
         $tags = ['field', 'p'];
         if (isset($in['type'])) {
-            $tags[] = \strtr(\p2f($in['type'], '-', '/'), ['/' => ':']);
+            $tags[] = \strtr($in['type'], '/', ':');
         }
         $id = $in['id'] ?? 'f:' . \dechex(\time());
         $in[2]['id'] = $in[2]['id'] ?? \str_replace('f:', 'field:', $id);
@@ -93,7 +93,11 @@ namespace _\lot\x\panel {
                     continue;
                 }
                 $type = $v['type'] ?? null;
-                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\" . \f2p(\strtr($type, '/', '.')), "\\"))) {
+                if ($type && \function_exists($fn = __NAMESPACE__ . "\\" . \strtr($type, [
+                    '/' => "\\",
+                    '-' => '_',
+                    '.' => '__'
+                ]))) {
                     if ('field/hidden' !== $type) {
                         $out[1] .= \call_user_func($fn, $v, $k);
                     } else {
@@ -567,7 +571,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         }
         $out[2] = \array_replace([
-            'class' => 'count:1 lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : ""),
+            'class' => 'count:1 lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\strtr($type, '/', '.'))) : ""),
             'id' => $in['id'] ?? null
         ], $out[2]);
         return new \HTML($out);
@@ -586,7 +590,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot'], null, $count);
         }
         $out[2] = \array_replace([
-            'class' => 'count:' . $count . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\c2f($type))) : ""),
+            'class' => 'count:' . $count . ' lot' . (isset($type) ? ' lot:' . \implode(' lot:', \step(\strtr($type, '/', '.'))) : ""),
             'id' => $in['id'] ?? null
         ], $out[2]);
         return new \HTML($out);
@@ -602,11 +606,15 @@ namespace _\lot\x {
             return "";
         }
         $out = "";
-        if ($type = isset($in['type']) ? \f2p(\strtr($in['type'], '/', '.')) : null) {
-            if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\" . $type, "\\"))) {
+        if ($type = isset($in['type']) ? \strtr($in['type'], [
+            '/' => "\\",
+            '-' => '_',
+            '.' => '__'
+        ]) : null) {
+            if ($type && \function_exists($fn = __NAMESPACE__ . "\\panel\\" . $type)) {
                 $out .= \call_user_func($fn, $in, $key);
             } else if (isset($in['content'])) {
-                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\content\\" . $type, "\\"))) {
+                if ($type && \function_exists($fn = __NAMESPACE__ . "\\panel\\content\\" . $type)) {
                     $out .= \call_user_func($fn, $in, $key);
                 } else {
                     if (\defined("\\DEBUG") && \DEBUG) {
@@ -615,7 +623,7 @@ namespace _\lot\x {
                     $out .= \_\lot\x\panel\content($in, $key);
                 }
             } else if (isset($in['lot'])) {
-                if (\function_exists($fn = \rtrim(__NAMESPACE__ . "\\panel\\lot\\" . $type, "\\"))) {
+                if ($type && \function_exists($fn = __NAMESPACE__ . "\\panel\\lot\\" . $type)) {
                     $out .= \call_user_func($fn, $in, $key);
                 } else {
                     if (\defined("\\DEBUG") && \DEBUG) {

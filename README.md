@@ -6,6 +6,10 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.3.1
+
+ - Improved function naming convention. PHP functions should conform to the snake-case naming convention (e.g. `a_b__c\d`).
+
 ### 2.3.0
 
  - Moved from `Pjax` to `F3H`.

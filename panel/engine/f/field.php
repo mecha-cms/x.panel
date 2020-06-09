@@ -153,10 +153,10 @@ function date($in, $key) {
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
     }
-    return \_\lot\x\panel\field\dateTime($in, $key);
+    return \_\lot\x\panel\field\date_time($in, $key);
 }
 
-function dateTime($in, $key) {
+function date_time($in, $key) {
     if (!isset($in['alt'])) {
         $in['alt'] = \date('Y-m-d H:i:s');
     }
@@ -418,7 +418,7 @@ function time($in, $key) {
     if (!isset($in['pattern'])) {
         $in['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
     }
-    $out = \_\lot\x\panel\field\dateTime($in, $key);
+    $out = \_\lot\x\panel\field\date_time($in, $key);
     return $out;
 }
 
@@ -440,7 +440,7 @@ function toggle($in, $key) {
     return \_\lot\x\panel\field($out, $key);
 }
 
-function URL($in, $key) {
+function u_r_l($in, $key) {
     if (!isset($in['alt'])) {
         $url = $GLOBALS['url'];
         $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
