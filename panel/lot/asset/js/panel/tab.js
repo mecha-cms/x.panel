@@ -36,4 +36,4 @@
         }
     } onChange();
     _.on('change', onChange);
-})(this, this.document, this._);
+})(window, document, _);

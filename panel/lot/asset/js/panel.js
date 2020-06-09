@@ -71,4 +71,4 @@
 
     doc.documentElement.classList.add('can:fetch');
 
-})(this, this.document, this._ = this._ || {});
+})(window, document, window._ = window._ || {});

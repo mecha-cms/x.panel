@@ -39,4 +39,4 @@
         });
     } onChange();
     _.on('change', onChange);
-})(this.document, this._);
+})(document, _);
