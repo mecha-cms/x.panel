@@ -9,6 +9,7 @@ Release Notes
 ### 2.3.1
 
  - Improved function naming convention. PHP functions should conform to the snake-case naming convention (e.g. `a_b__c\d`).
+ - Updated [F3H](https://github.com/taufik-nurrohman/f3h) script to version `1.0.11`.
 
 ### 2.3.0
 

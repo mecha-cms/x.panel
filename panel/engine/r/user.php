@@ -2,8 +2,9 @@
 
 (function() {
     extract($GLOBALS);
+    $path = strtr($url->path, ['/index.php' => ""]);
     $p = $_['user']['guard']['path'] ?? $_['user']['path'];
-    if ($url->path === $p && empty($_GET['kick'])) {
+    if ($path === $p && empty($_GET['kick'])) {
         $_GET['kick'] = $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1';
     }
 })();
@@ -29,7 +30,9 @@ if (null !== State::get('x.comment')) {
             $content .= $comment->content;
             $content .= '<p style="font-size: 80%; font-style: italic;">' . $comment->time->{r('-', '_', $state->language)} . '</p>';
             $content .= '<p><a href="' . $link . '" target="_blank">' . i('Manage') . '</a></p>';
-            send($email, $comment->email ?? $email, $title, $content);
+            send($email, $email, $title, $content, [
+                'reply-to' => $comment->email ?? $email
+            ]);
         }
     });
 }
