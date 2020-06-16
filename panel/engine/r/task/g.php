@@ -166,16 +166,40 @@ function page($_, $lot) {
         unset($lot['page']['name'], $lot['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
+        // Remove array item(s) with `null` value
+        $nully = function($v) use(&$nully) {
+            foreach ($v as $kk => $vv) {
+                if (\is_array($vv) && !empty($vv)) {
+                    if ($vv = $nully($vv)) {
+                        $v[$kk] = $vv;
+                    } else {
+                        unset($v[$kk]);
+                    }
+                } else if ("" === $vv || null === $vv || [] === $vv) {
+                    unset($v[$kk]);
+                }
+            }
+            return [] !== $v ? $v : null;
+        };
         foreach ($lot['page'] as $k => $v) {
             if (
+                // Skip `null` value
+                null === $v ||
                 // Skip empty value
-                "" === \trim($v) ||
+                \is_array($v) && 0 === \count($v) ||
+                \is_string($v) && "" === \trim($v) ||
                 // Skip default value
                 isset($p[$k]) && $p[$k] === $v
             ) {
                 continue;
             }
-            $page[$k] = $v;
+            if (\is_array($v)) {
+                if ($v = $nully(\array_replace_recursive($page[$k] ?? [], $v))) {
+                    $page[$k] = $v;
+                }
+            } else {
+                $page[$k] = $v;
+            }
         }
         $lot['file']['content'] = $_POST['file']['content'] = \To::page($page);
         $lot['file']['name'] = $name . '.' . $x;
@@ -230,15 +254,19 @@ function state($_, $lot) {
         'trash' => false
     ]) . $url->hash;
     // Remove array item(s) with `null` value
-    $null = function($v) use(&$null) {
+    $nully = function($v) use(&$nully) {
         foreach ($v as $kk => $vv) {
             if (\is_array($vv) && !empty($vv)) {
-                $v[$kk] = $null($vv);
+                if ($vv = $nully($vv)) {
+                    $v[$kk] = $vv;
+                } else {
+                    unset($v[$kk]);
+                }
             } else if ("" === $vv || null === $vv || [] === $vv) {
                 unset($v[$kk]);
             }
         }
-        return $v;
+        return [] !== $v ? $v : null;
     };
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -248,7 +276,7 @@ function state($_, $lot) {
         if (\is_file($f = \LOT . \DS . \trim(\strtr($lot['path'] ?? $_['path'], '/', \DS), \DS))) {
             $_['f'] = $f = \realpath($f);
             $v = \array_replace_recursive((array) require $f, $lot['state'] ?? []);
-            $v = $null($v);
+            $v = $nully($v);
             $lot['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
             $_ = file($_, $lot);
         }
