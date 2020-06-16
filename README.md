@@ -6,6 +6,10 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.3.2
+
+ - Bug fixes and improvements for page properties with multi-dimensional array (#16)
+
 ### 2.3.1
 
  - Improved function naming convention. PHP functions should conform to the snake-case naming convention (e.g. `a_b__c\d`).
