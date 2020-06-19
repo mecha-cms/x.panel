@@ -1,8 +1,8 @@
 <?php
 
 namespace _\lot\x\panel\route\x {
-    function panel($_, $lot) {
-        if (!empty($lot['tab'][0]) && 'license' === $lot['tab'][0] && !\is_file($f = \ENGINE . \DS . 'log' . \DS . \dechex(\crc32(\ROOT)))) {
+    function panel($_) {
+        if (!empty($_['form']['tab'][0]) && 'license' === $_['form']['tab'][0] && !\is_file($f = \ENGINE . \DS . 'log' . \DS . \dechex(\crc32(\ROOT)))) {
             if (!\is_dir($d = \dirname($f))) {
                 \mkdir($d, 0775, true);
             }
@@ -12,13 +12,13 @@ namespace _\lot\x\panel\route\x {
 }
 
 namespace _\lot\x\panel\route {
-    function __alert($_, $lot) {
+    function __alert($_) {
         // Create folder if not exists
         if (!\is_dir($d = \LOT . \DS . '.alert')) {
             \mkdir($d, 0775, true);
         }
     }
-    function __state($_, $lot) {
+    function __state($_) {
         extract($GLOBALS, \EXTR_SKIP);
         // Force layout to `state`
         $_['layout'] = 'state';
@@ -36,23 +36,23 @@ namespace _\lot\x\panel\route {
         $state_1 = require $fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
         $state_2 = require $fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
         // Sanitize form data
-        \Hook::set('do.state.get', function($_, $lot) use(&$state_0, &$state_1, &$state_2) {
-            if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($lot['state'])) {
+        \Hook::set('do.state.get', function($_) use(&$state_0, &$state_1, &$state_2) {
+            if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($_['form']['state'])) {
                 return $_;
             }
             extract($GLOBALS, \EXTR_SKIP);
-            $lot['state']['title'] = \_\lot\x\panel\h\w($lot['state']['title'] ?? "");
-            $lot['state']['description'] = \_\lot\x\panel\h\w($lot['state']['description'] ?? "");
-            $lot['state']['email'] = \_\lot\x\panel\h\w($lot['state']['email'] ?? "");
-            $lot['state']['charset'] = \strip_tags($lot['state']['charset'] ?? 'utf-8');
-            $lot['state']['language'] = \strip_tags($lot['state']['language'] ?? 'en');
+            $_['form']['state']['title'] = \_\lot\x\panel\h\w($_['form']['state']['title'] ?? "");
+            $_['form']['state']['description'] = \_\lot\x\panel\h\w($_['form']['state']['description'] ?? "");
+            $_['form']['state']['email'] = \_\lot\x\panel\h\w($_['form']['state']['email'] ?? "");
+            $_['form']['state']['charset'] = \strip_tags($_['form']['state']['charset'] ?? 'utf-8');
+            $_['form']['state']['language'] = \strip_tags($_['form']['state']['language'] ?? 'en');
             $default = $state_1['guard']['path'] ?? $state_2['guard']['path'] ?? $state_0['x']['user']['guard']['path'] ?? $state_0['x']['panel']['guard']['path'] ?? "";
             $default = '/' . \trim($default, '/');
-            if (!empty($lot['state']['x']['user']['guard']['path'])) {
-                if ($secret = \To::kebab(\trim($lot['state']['x']['user']['guard']['path'], '/'))) {
-                    $lot['state']['x']['user']['guard']['path'] = $default = '/' . $secret;
+            if (!empty($_['form']['state']['x']['user']['guard']['path'])) {
+                if ($secret = \To::kebab(\trim($_['form']['state']['x']['user']['guard']['path'], '/'))) {
+                    $_['form']['state']['x']['user']['guard']['path'] = $default = '/' . $secret;
                 } else {
-                    unset($lot['state']['x']['user']['guard']['path']);
+                    unset($_['form']['state']['x']['user']['guard']['path']);
                 }
             }
             if ($_['/'] !== $default) {
@@ -63,7 +63,6 @@ namespace _\lot\x\panel\route {
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $default . '</code>'];
                 }
             }
-            $_['form'] = $lot; // Update data
             return $_;
         }, 9.9);
         if (1 !== $user['status'] || 'g' !== $_['task']) {
@@ -325,7 +324,7 @@ namespace _\lot\x\panel\route {
         // Update data
         $GLOBALS['_'] = $_;
     }
-    function asset($_, $lot) {
+    function asset($_) {
         extract($GLOBALS, \EXTR_SKIP);
         if (!\is_dir($d = \LOT . \DS . 'asset' . \DS . $user->user)) {
             \mkdir($d, 0755, true);
@@ -354,7 +353,7 @@ namespace _\lot\x\panel\route {
         // Update data
         $GLOBALS['_'] = $_;
     }
-    function user($_, $lot) {
+    function user($_) {
         extract($GLOBALS, \EXTR_SKIP);
         $status = $user['status'];
         if (\count($_['chops']) > 1) {

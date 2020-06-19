@@ -161,5 +161,5 @@ function title($in, $i = -1, $or = null) {
 }
 
 function w($in, $also = null) {
-    return \w($in, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
+    return \w('<div>' . $in . '</div>', 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
 }
