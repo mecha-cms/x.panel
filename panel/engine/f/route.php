@@ -63,7 +63,7 @@ namespace _\lot\x\panel\route {
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $default . '</code>'];
                 }
             }
-            $_POST = $lot; // Update data
+            $_['form'] = $lot; // Update data
             return $_;
         }, 9.9);
         if (1 !== $user['status'] || 'g' !== $_['task']) {

@@ -3,17 +3,16 @@
 $lot = require __DIR__ . DS . 'page.php';
 
 // Sanitize form data
-Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
+Hook::set(['do.page.get', 'do.page.set'], function($_) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    $lot['page']['email'] = _\lot\x\panel\h\w($lot['page']['email'] ?? "");
+    $_['form']['page']['email'] = _\lot\x\panel\h\w($_['form']['page']['email'] ?? "");
     // Encrypt password
-    if (isset($lot['data']['pass'])) {
-        $name = $lot['data']['name'] ?? $lot['page']['name'] ?? uniqid();
-        $lot['data']['pass'] = P . password_hash($lot['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
+    if (isset($_['form']['data']['pass'])) {
+        $name = $_['form']['data']['name'] ?? $lot['page']['name'] ?? uniqid();
+        $_['form']['data']['pass'] = P . password_hash($_['form']['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
     }
-    $_POST = $lot; // Update data
     return $_;
 }, 9.9);
 

@@ -15,7 +15,7 @@ if ('g' === $_['task'] && $_['f'] === $user->path) {
     // Add exit button
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['exit'] = [
         'title' => 'Exit',
-        'type' => 'Link',
+        'type' => 'link',
         'url' => $url . ($_['user']['guard']['path'] ?? $_['user']['path']) . '/' . $user->name . '?exit=' . $_['token'],
         'tags' => ['is:text'],
         'stack' => 20

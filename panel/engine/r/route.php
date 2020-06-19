@@ -109,18 +109,18 @@ function route() {
     // Update data
     $_ = $GLOBALS['_'];
     // Filter by route function
-    $form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
+    $_['form'] = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
+    $GLOBALS['_']['form'] = $_['form'];
     if ($route) {
-        \fire($route, [$_, $form], $this);
+        \fire($route, [$_], $this);
     }
     // Update data
     $_ = $GLOBALS['_'];
-    $form = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
     // Filter by hook
     $_ = \Hook::fire('_', [$_]);
     // Update data
     $GLOBALS['_'] = $_;
-    if (isset($form['token'])) {
+    if (isset($_['form']['token'])) {
         $hooks = \map(\step($_['layout']), function($hook) use($_) {
             return 'do.' . $hook . '.' . ([
                 'g' => 'get',
@@ -129,7 +129,7 @@ function route() {
             ][$_['task']] ?? '?');
         });
         foreach (\array_reverse($hooks) as $hook) {
-            if ($r = \Hook::fire($hook, [$_, $form])) {
+            if ($r = \Hook::fire($hook, [$_, $_['form']])) {
                 $_ = $r;
             }
         }
@@ -147,7 +147,7 @@ function route() {
     if (isset($_['kick'])) {
         \Guard::kick($_['kick']);
     } else {
-        if (isset($form['token'])) {
+        if (isset($_['form']['token'])) {
             \Guard::kick($url->clean . $url->i . $url->query('&', [
                 'token' => false
             ]) . $url->hash);

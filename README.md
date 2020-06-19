@@ -6,6 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.4.x
+
+ - Removed `$lot` hook parameter and store the form data to `$_['form']` property, for easy form data manipulation during CRUD process.
+ - Fixed bug where creating a new page does not populate the `time` data automatically.
+
 ### 2.3.2
 
  - Bug fixes and improvements for page properties with multi-dimensional array (#16)

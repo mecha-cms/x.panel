@@ -1,11 +1,11 @@
 <?php namespace _\lot\x\panel\task\g;
 
-function blob($_, $lot) {
+function blob($_) {
     // Blob is always new, so there is no such update event
     return $_;
 }
 
-function data($_, $lot) {
+function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -14,20 +14,20 @@ function data($_, $lot) {
         'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
-        $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
-        $lot['file']['name'] = "" !== $name ? $name . '.data' : "";
-        // Use `$_POST['data']['content']` instead of `$lot['data']['content']` just to be sure
+        $name = \basename(\To::file(\lcfirst($_['form']['data']['name'] ?? "")));
+        $_['form']['file']['name'] = "" !== $name ? $name . '.data' : "";
+        // Use `$_POST['data']['content']` instead of `$_['form']['data']['content']` just to be sure
         // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-        $lot['file']['content'] = $_POST['data']['content'] ?? "";
-        $_ = file($_, $lot); // Move to `file`
+        $_['form']['file']['content'] = $_POST['data']['content'] ?? "";
+        $_ = file($_); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+            $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
 }
 
-function file($_, $lot) {
+function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'token' => false,
@@ -38,36 +38,36 @@ function file($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? ""))); // New file name
+        $name = \basename(\To::file(\lcfirst($_['form']['file']['name'] ?? ""))); // New file name
         $base = \basename($_['f']); // Old file name
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         // Special case for PHP file(s)
-        if ('php' === $x && isset($lot['file']['content'])) {
+        if ('php' === $x && isset($_['form']['file']['content'])) {
             // This should be enough to detect PHP syntax error before saving
-            \token_get_all($lot['file']['content'], \TOKEN_PARSE);
+            \token_get_all($_['form']['file']['content'], \TOKEN_PARSE);
         }
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
-        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',')) {
+        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
             $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
             $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (\array_key_exists('content', $lot['file'] ?? [])) {
-                // Use `$_POST['file']['content']` instead of `$lot['file']['content']` just to be sure
+            if (\array_key_exists('content', $_['form']['file'] ?? [])) {
+                // Use `$_POST['file']['content']` instead of `$_['form']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-                $lot['file']['content'] = $_POST['file']['content'] ?? "";
-                \file_put_contents($f, $lot['file']['content']);
+                $_['form']['file']['content'] = $_POST['file']['content'] ?? "";
+                \file_put_contents($f, $_['form']['file']['content']);
                 if ($name !== $base) {
                     \unlink($_['f']);
                 }
             } else if ($name !== $base) {
                 \rename($_['f'], $f);
             }
-            @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
+            @\chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
-            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
+            $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
             $_['f'] = $f;
             $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
         }
@@ -79,7 +79,7 @@ function file($_, $lot) {
     return $_;
 }
 
-function folder($_, $lot) {
+function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -91,7 +91,7 @@ function folder($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \basename($lot['folder']['name'] ?? ""); // New folder name
+        $name = \basename($_['form']['folder']['name'] ?? ""); // New folder name
         $base = \basename($_['f']); // Old folder name
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
@@ -100,17 +100,17 @@ function folder($_, $lot) {
         } else if ($name === $base) {
             // Do nothing
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
-            if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
+            if (!empty($_['form']['o']['kick'])) {
+                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
             $_SESSION['_']['folder'][\rtrim($f, \DS)] = 1;
         } else {
-            \mkdir($f, $seal = \octdec($lot['folder']['seal'] ?? '0755'), true);
+            \mkdir($f, $seal = \octdec($_['form']['folder']['seal'] ?? '0755'), true);
             foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($_['f'], \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
                 $v = $k->getPathname();
                 if ($k->isDir()) {
@@ -125,13 +125,13 @@ function folder($_, $lot) {
             }
             \rmdir($_['f']);
             $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
-            if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
+            if (!empty($_['form']['o']['kick'])) {
+                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
             $_['f'] = $f;
             foreach (\step(\rtrim($f, \DS), \DS) as $v) {
@@ -146,7 +146,7 @@ function folder($_, $lot) {
     return $_;
 }
 
-function page($_, $lot) {
+function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -158,12 +158,12 @@ function page($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \To::kebab($lot['page']['name'] ?? $lot['page']['title'] ?? "");
-        $x = $lot['page']['x'] ?? 'page';
+        $name = \To::kebab($_['form']['page']['name'] ?? $_['form']['page']['title'] ?? "");
+        $x = $_['form']['page']['x'] ?? 'page';
         if ("" === $name) {
             $name = \date('Y-m-d-H-i-s');
         }
-        unset($lot['page']['name'], $lot['page']['x']);
+        unset($_['form']['page']['name'], $_['form']['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
         // Remove array item(s) with `null` value
@@ -181,7 +181,7 @@ function page($_, $lot) {
             }
             return [] !== $v ? $v : null;
         };
-        foreach ($lot['page'] as $k => $v) {
+        foreach ($_['form']['page'] as $k => $v) {
             if (
                 // Skip `null` value
                 null === $v ||
@@ -201,10 +201,10 @@ function page($_, $lot) {
                 $page[$k] = $v;
             }
         }
-        $lot['file']['content'] = $_POST['file']['content'] = \To::page($page);
-        $lot['file']['name'] = $name . '.' . $x;
+        $_['form']['file']['content'] = $_POST['file']['content'] = \To::page($page);
+        $_['form']['file']['name'] = $name . '.' . $x;
         $_f = $_['f']; // Get old file name
-        $_ = file($_, $lot); // Move to `file`
+        $_ = file($_); // Move to `file`
         if (empty($_['alert']['error'])) {
             if (!\is_dir($d = \Path::F($_['f']))) {
                 \mkdir($d, 0755, true);
@@ -212,8 +212,8 @@ function page($_, $lot) {
             if ($_['f'] !== $_f && \is_dir($_d = \Path::F($_f))) {
                 \rename($_d, $d);
             }
-            if (isset($lot['data'])) {
-                foreach ((array) $lot['data'] as $k => $v) {
+            if (isset($_['form']['data'])) {
+                foreach ((array) $_['form']['data'] as $k => $v) {
                     if ("" !== \trim($v)) {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
                         @\chmod($ff, 0600);
@@ -246,7 +246,7 @@ function page($_, $lot) {
     return $_;
 }
 
-function state($_, $lot) {
+function state($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -273,14 +273,14 @@ function state($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        if (\is_file($f = \LOT . \DS . \trim(\strtr($lot['path'] ?? $_['path'], '/', \DS), \DS))) {
+        if (\is_file($f = \LOT . \DS . \trim(\strtr($_['form']['path'] ?? $_['path'], '/', \DS), \DS))) {
             $_['f'] = $f = \realpath($f);
-            $v = \array_replace_recursive((array) require $f, $lot['state'] ?? []);
+            $v = \array_replace_recursive((array) require $f, $_['form']['state'] ?? []);
             $v = $nully($v);
-            $lot['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
-            $_ = file($_, $lot);
+            $_['form']['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
+            $_ = file($_); // Move to `file`
         }
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . $e;
+        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . $e;
         if (!empty($_['alert']['error'])) {
             unset($_POST['token']);
             $_SESSION['form'] = $_POST;
@@ -289,8 +289,8 @@ function state($_, $lot) {
     return $_;
 }
 
-function _token($_, $lot) {
-    if (empty($lot['token']) || $lot['token'] !== $_['token']) {
+function _token($_) {
+    if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     return $_;

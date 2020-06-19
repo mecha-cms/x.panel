@@ -42,9 +42,9 @@ if (null !== State::get('x.tag') && (
     'g' === $_['task'] && substr_count($_['path'], '/') > 1
 )) {
     // Convert list of tag(s) slug into list of tag(s) ID
-    Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) use($user) {
+    Hook::set(['do.page.get', 'do.page.set'], function($_) use($user) {
         // Abort by previous hook’s return value if any
-        if (/* !empty($_['kick']) || */ !empty($_['alert']['error'])) {
+        if (!empty($_['alert']['error'])) {
             return $_;
         }
         // `POST` request only
@@ -52,7 +52,7 @@ if (null !== State::get('x.tag') && (
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty
-        if (empty($lot['data']['kind']) && $f = Path::F($_['f']) . DS . 'kind.data') {
+        if (empty($_['form']['data']['kind']) && $f = Path::F($_['f']) . DS . 'kind.data') {
             unlink($f);
             return $_;
         }
@@ -64,7 +64,7 @@ if (null !== State::get('x.tag') && (
         })[0] ?? 0; // Get the highest tag ID
         $out = [];
         ++$any; // New ID must be unique
-        foreach (preg_split('/\s*,+\s*/', $lot['data']['kind']) as $v) {
+        foreach (preg_split('/\s*,+\s*/', $_['form']['data']['kind']) as $v) {
             if ("" === $v) {
                 continue;
             }

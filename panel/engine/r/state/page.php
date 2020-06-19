@@ -8,23 +8,23 @@ if (is_dir($f = $_['f']) && 'g' === $_['task']) {
 }
 
 // Sanitize form data
-Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
+Hook::set(['do.page.get', 'do.page.set'], function($_) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    $lot['data']['time'] = (string) (new Time($lot['data']['time'] ?? time()));
-    $lot['page']['author'] = strip_tags($lot['page']['author'] ?? "");
-    $lot['page']['id'] = strip_tags($lot['page']['id'] ?? "");
-    $lot['page']['link'] = strip_tags($lot['page']['link'] ?? "");
-    $lot['page']['description'] = _\lot\x\panel\h\w($lot['page']['description'] ?? "", 'a');
-    $lot['page']['title'] = _\lot\x\panel\h\w($lot['page']['title'] ?? "");
-    $lot['page']['x'] = strip_tags($lot['page']['x'] ?? 'page');
-    if (empty($lot['page']['name'])) {
-        $name = To::kebab($lot['page']['title'] ?? "");
-        $lot['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s');
+    $_['form']['data']['time'] = (string) (new Time($_['form']['data']['time'] ?? time()));
+    $_['form']['page']['author'] = strip_tags($_['form']['page']['author'] ?? "");
+    $_['form']['page']['id'] = strip_tags($_['form']['page']['id'] ?? "");
+    $_['form']['page']['link'] = strip_tags($_['form']['page']['link'] ?? "");
+    $_['form']['page']['description'] = _\lot\x\panel\h\w($_['form']['page']['description'] ?? "", 'a');
+    $_['form']['page']['title'] = _\lot\x\panel\h\w($_['form']['page']['title'] ?? "");
+    $_['form']['page']['x'] = strip_tags($_['form']['page']['x'] ?? 'page');
+    if (empty($_['form']['page']['name'])) {
+        $name = To::kebab($_['form']['page']['title'] ?? "");
+        $_['form']['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s');
     }
     // Detect `time` pattern in the page’s file name and remove the `time` field if matched
-    $n = $lot['page']['name'];
+    $n = $_['form']['page']['name'];
     if (
         is_string($n) && (
             // `2017-04-21.page`
@@ -35,9 +35,8 @@ Hook::set(['do.page.get', 'do.page.set'], function($_, $lot) {
         is_numeric(str_replace('-', "", $n)) &&
         preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])(-([0-1]\d|2[0-4])(-([0-5]\d|60)){2})?$/', $n)
     ) {
-        unset($lot['data']['time']);
+        unset($_['form']['data']['time']);
     }
-    $_POST = $lot; // Update data
     return $_;
 }, 9.9);
 

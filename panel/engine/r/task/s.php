@@ -1,6 +1,6 @@
 <?php namespace _\lot\x\panel\task\s;
 
-function blob($_, $lot) {
+function blob($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -16,7 +16,7 @@ function blob($_, $lot) {
         $test_x = ',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? []))) . ',';
         $test_type = ',' . \implode(',', \array_keys(\array_filter(\File::$state['type'] ?? []))) . ',';
         $test_size = \File::$state['size'] ?? [0, 0];
-        foreach ($lot['blob'] ?? [] as $k => $v) {
+        foreach ($_['form']['blob'] ?? [] as $k => $v) {
             // Check for error code
             if (!empty($v['error'])) {
                 $_['alert']['error'][] = '#blob:' . $v['error'];
@@ -52,22 +52,22 @@ function blob($_, $lot) {
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
                     $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-                    $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
+                    $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
                     $_['f'] = $f;
                     $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
                     $_['ff'][] = $f;
                     // Extract package
                     if (
-                        !empty($lot['o']['extract']) &&
+                        !empty($_['form']['o']['extract']) &&
                         \extension_loaded('zip') &&
                         ('zip' === $x || 'application/zip' === $type)
                     ) {
-                        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::f::/de686795/' . \strtr($f, [
+                        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::f::/de686795/' . \strtr($f, [
                             \LOT . \DS => "",
                             \DS => '/'
                         ]) . \To::query([
                             'kick' => \explode('?', \str_replace('::s::', '::g::', $url->current), 2)[0] . '/1',
-                            'let' => !empty($lot['o']['let']) ? 1 : false,
+                            'let' => !empty($_['form']['o']['let']) ? 1 : false,
                             'token' => $_['token']
                         ]);
                     }
@@ -88,7 +88,7 @@ function blob($_, $lot) {
     return $_;
 }
 
-function data($_, $lot) {
+function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -97,20 +97,20 @@ function data($_, $lot) {
         'trash' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
-        $name = \basename(\To::file(\lcfirst($lot['data']['name'] ?? "")));
-        $lot['file']['name'] = "" !== $name ? $name . '.data' : "";
-        // Use `$_POST['data']['content']` instead of `$lot['data']['content']` just to be sure
+        $name = \basename(\To::file(\lcfirst($_['form']['data']['name'] ?? "")));
+        $_['form']['file']['name'] = "" !== $name ? $name . '.data' : "";
+        // Use `$_POST['data']['content']` instead of `$_['form']['data']['content']` just to be sure
         // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-        $lot['file']['content'] = $_POST['data']['content'] ?? "";
-        $_ = file($_, $lot); // Move to `file`
+        $_['form']['file']['content'] = $_POST['data']['content'] ?? "";
+        $_ = file($_); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+            $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
 }
 
-function file($_, $lot) {
+function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -122,30 +122,30 @@ function file($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \basename(\To::file(\lcfirst($lot['file']['name'] ?? "")));
+        $name = \basename(\To::file(\lcfirst($_['form']['file']['name'] ?? "")));
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         // Special case for PHP file(s)
-        if ('php' === $x && isset($lot['file']['content'])) {
+        if ('php' === $x && isset($_['form']['file']['content'])) {
             // This should be enough to detect PHP syntax error before saving
-            \token_get_all($lot['file']['content'], \TOKEN_PARSE);
+            \token_get_all($_['form']['file']['content'], \TOKEN_PARSE);
         }
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
-        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $lot['x[]'] ?? []))) . ',', ',' . $x . ',')) {
+        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
             $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (\array_key_exists('content', $lot['file'] ?? [])) {
-                // Use `$_POST['file']['content']` instead of `$lot['file']['content']` just to be sure
+            if (\array_key_exists('content', $_['form']['file'] ?? [])) {
+                // Use `$_POST['file']['content']` instead of `$_['form']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-                $lot['file']['content'] = $_POST['file']['content'] ?? "";
-                \file_put_contents($f, $lot['file']['content']);
+                $_['form']['file']['content'] = $_POST['file']['content'] ?? "";
+                \file_put_contents($f, $_['form']['file']['content']);
             }
-            @\chmod($f, \octdec($lot['file']['seal'] ?? '0777'));
+            @\chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-            $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
+            $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             $_['f'] = $f;
             $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
         }
@@ -157,7 +157,7 @@ function file($_, $lot) {
     return $_;
 }
 
-function folder($_, $lot) {
+function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -169,21 +169,21 @@ function folder($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \To::folder($lot['folder']['name'] ?? "");
+        $name = \To::folder($_['form']['folder']['name'] ?? "");
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
-            \mkdir($f, \octdec($lot['folder']['seal'] ?? '0755'), true);
+            \mkdir($f, \octdec($_['form']['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-            if (!empty($lot['o']['kick'])) {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
+            if (!empty($_['form']['o']['kick'])) {
+                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
+                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             }
             $_['f'] = $f;
             foreach (\step(\rtrim($f, \DS), \DS) as $v) {
@@ -198,7 +198,7 @@ function folder($_, $lot) {
     return $_;
 }
 
-function page($_, $lot) {
+function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -210,12 +210,12 @@ function page($_, $lot) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \To::kebab($lot['page']['name'] ?? $lot['page']['title'] ?? "");
-        $x = $lot['page']['x'] ?? 'page';
+        $name = \To::kebab($_['form']['page']['name'] ?? $_['form']['page']['title'] ?? "");
+        $x = $_['form']['page']['x'] ?? 'page';
         if ("" === $name) {
             $name = \date('Y-m-d-H-i-s');
         }
-        unset($lot['page']['name'], $lot['page']['x']);
+        unset($_['form']['page']['name'], $_['form']['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
         // Remove array item(s) with `null` value
@@ -233,7 +233,7 @@ function page($_, $lot) {
             }
             return [] !== $v ? $v : null;
         };
-        foreach ($lot['page'] as $k => $v) {
+        foreach ($_['form']['page'] as $k => $v) {
             if (
                 // Skip `null` value
                 null === $v ||
@@ -253,15 +253,15 @@ function page($_, $lot) {
                 $page[$k] = $v;
             }
         }
-        $lot['file']['content'] = $_POST['file']['content'] = \To::page($page);
-        $lot['file']['name'] = $name . '.' . $x;
-        $_ = file($_, $lot); // Move to `file`
+        $_['form']['file']['content'] = $_POST['file']['content'] = \To::page($page);
+        $_['form']['file']['name'] = $name . '.' . $x;
+        $_ = file($_); // Move to `file`
         if (empty($_['alert']['error'])) {
             if (!\is_dir($d = \Path::F($_['f']))) {
                 \mkdir($d, 0755, true);
             }
-            if (isset($lot['data'])) {
-                foreach ((array) $lot['data'] as $k => $v) {
+            if (isset($_['form']['data'])) {
+                foreach ((array) $_['form']['data'] as $k => $v) {
                     if ("" !== \trim($v)) {
                         \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
                         @\chmod($ff, 0600);
@@ -292,13 +292,13 @@ function page($_, $lot) {
     return $_;
 }
 
-function state($_, $lot) {
+function state($_) {
     // State must exists, so there is no such create event, only update
     return $_;
 }
 
-function _token($_, $lot) {
-    if (empty($lot['token']) || $lot['token'] !== $_['token']) {
+function _token($_) {
+    if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     return $_;

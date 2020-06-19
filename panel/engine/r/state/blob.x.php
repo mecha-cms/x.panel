@@ -2,15 +2,15 @@
 
 $zip = extension_loaded('zip');
 
-Hook::set('do.blob.set', function($_, $lot) use($zip) {
+Hook::set('do.blob.set', function($_) use($zip) {
     if (!$zip) {
         $_['alert']['error'][] = ['It is not possible to upload the package due to the missing %s extension.', 'PHP <code>zip</code>'];
     }
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    if (isset($lot['blob']) && is_array($lot['blob'])) {
-        foreach ($lot['blob'] as $blob) {
+    if (isset($_['form']['blob']) && is_array($_['form']['blob'])) {
+        foreach ($_['form']['blob'] as $blob) {
             if (!empty($blob['error'])) {
                 continue;
             }

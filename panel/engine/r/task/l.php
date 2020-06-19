@@ -10,11 +10,11 @@ if (false === strpos(strtr($_['f'], [\LOT . \DS => ""]), \DS)) {
     \Guard::abort('Cound not delete <code>' . $_['f'] . '</code>.');
 }
 
-function blob($_, $lot) {
-    $_ = file($_, $lot);
+function blob($_) {
+    $_ = file($_);
 }
 
-function data($_, $lot) {
+function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -22,14 +22,14 @@ function data($_, $lot) {
         'token' => false,
         'trash' => false
     ]) . $url->hash;
-    $_ = file($_, $lot); // Move to `file`
+    $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
     }
     return $_;
 }
 
-function file($_, $lot) {
+function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -41,7 +41,7 @@ function file($_, $lot) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $trash = !empty($lot['trash']) ? (new \Time($lot['trash']))->name : false;
+    $trash = !empty($_['form']['trash']) ? (new \Time($_['form']['trash']))->name : false;
     if (\is_file($f = $_['f'])) {
         if ($trash) {
             $ff = \strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]);
@@ -54,12 +54,12 @@ function file($_, $lot) {
             \unlink($f);
         }
         $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
 
-function folder($_, $lot) {
+function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'layout' => false,
@@ -71,7 +71,7 @@ function folder($_, $lot) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $trash = !empty($lot['trash']) ? (new \Time($lot['trash']))->name : false;
+    $trash = !empty($_['form']['trash']) ? (new \Time($_['form']['trash']))->name : false;
     if (\is_dir($f = $_['f'])) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($f, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
@@ -100,18 +100,18 @@ function folder($_, $lot) {
         }
         \rmdir($f);
         $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
 
-function page($_, $lot) {
+function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $trash = !empty($lot['trash']) ? (new \Time($lot['trash']))->name : false;
+    $trash = !empty($_['form']['trash']) ? (new \Time($_['form']['trash']))->name : false;
     if (\is_dir($d = \Path::F($_['f']))) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($d, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
@@ -134,7 +134,7 @@ function page($_, $lot) {
     if (\is_file($f = $_['f'])) {
         $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
         $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
-        $_ = file($_, $lot); // Move to `file`
+        $_ = file($_); // Move to `file`
         $alter = [
             'File %s successfully deleted.' => ['%s %s successfully deleted.', [$key, $path]],
             'File %s successfully moved to trash.' => ['%s %s successfully moved to trash.', [$key, $path]]
@@ -154,16 +154,16 @@ function page($_, $lot) {
     return $_;
 }
 
-function state($_, $lot) {
+function state($_) {
     // There is no such delete event for state(s)
     return $_;
 }
 
-function _token($_, $lot) {
-    if (empty($lot['token']) || $lot['token'] !== $_['token']) {
+function _token($_) {
+    if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
         extract($GLOBALS, \EXTR_SKIP);
         $_['alert']['error'][] = 'Invalid token.';
-        $_['kick'] = $lot['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
