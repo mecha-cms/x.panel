@@ -52,7 +52,7 @@ if (null !== State::get('x.tag') && (
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty
-        if (empty($_['form']['data']['kind']) && $f = Path::F($_['f']) . DS . 'kind.data') {
+        if (empty($_['form']['data']['kind']) && is_file($f = Path::F($_['f']) . DS . 'kind.data')) {
             unlink($f);
             return $_;
         }
