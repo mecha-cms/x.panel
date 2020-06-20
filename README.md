@@ -6,10 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### 2.4.x
+### master
 
  - Removed `$lot` hook parameter and store the form data to `$_['form']` property, for easy form data manipulation during CRUD process.
  - Fixed bug where creating a new page does not populate the `time` data automatically.
+ - Changed `#blob:{code}` language string into a more readable language string as the default language string for every blob response code.
 
 ### 2.3.2
 

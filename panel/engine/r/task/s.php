@@ -19,7 +19,7 @@ function blob($_) {
         foreach ($_['form']['blob'] ?? [] as $k => $v) {
             // Check for error code
             if (!empty($v['error'])) {
-                $_['alert']['error'][] = '#blob:' . $v['error'];
+                $_['alert']['error'][] = 'Failed to upload with error code: ' . $v['error'];
             } else {
                 $name = \To::file(\lcfirst($v['name'])) ?? '0';
                 $x = \pathinfo($name, \PATHINFO_EXTENSION);
