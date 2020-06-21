@@ -6,13 +6,14 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### master
+### 2.4.0
 
  - Removed `$lot` hook parameter and store the form data to `$_['form']` property, for easy form data manipulation during CRUD process.
  - Fixed bug where creating a new page does not populate the `time` data automatically.
  - Changed `#blob:{code}` language string into a more readable language string as the default language string for every blob response code.
  - Updated [Tag Picker](https://github.com/taufik-nurrohman/tag-picker) to version 3.0.12.
  - Moved `type` and `x` state data to a separated file, stored in `.\lot\x\panel\state` folder.
+ - Added ability to set custom panel definition through `.\lot\layout\index\panel.php` file.
 
 ### 2.3.2
 

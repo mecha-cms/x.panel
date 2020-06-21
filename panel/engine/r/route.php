@@ -86,12 +86,18 @@ function route() {
         // Update data
         $_ = $GLOBALS['_'];
     }
+    // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
     foreach ($GLOBALS['X'][1] as $v) {
         \is_file($v = \Path::F($v) . \DS . 'panel.php') && (function($v) {
             extract($GLOBALS, \EXTR_SKIP);
             require $v;
         })($v);
     }
+    // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
+    \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (function($v) {
+        extract($GLOBALS, \EXTR_SKIP);
+        require $v;
+    })($v);
     // Update data
     $_ = $GLOBALS['_'];
     // Define lot with no filter

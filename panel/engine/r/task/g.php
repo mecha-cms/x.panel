@@ -166,11 +166,11 @@ function page($_) {
         unset($_['form']['page']['name'], $_['form']['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
-        // Remove array item(s) with `null` value
-        $nully = function($v) use(&$nully) {
+        // Remove array item(s) with empty value
+        $drop = function($v) use(&$drop) {
             foreach ($v as $kk => $vv) {
                 if (\is_array($vv) && !empty($vv)) {
-                    if ($vv = $nully($vv)) {
+                    if ($vv = $drop($vv)) {
                         $v[$kk] = $vv;
                     } else {
                         unset($v[$kk]);
@@ -194,7 +194,7 @@ function page($_) {
                 continue;
             }
             if (\is_array($v)) {
-                if ($v = $nully(\array_replace_recursive($page[$k] ?? [], $v))) {
+                if ($v = $drop(\array_replace_recursive($page[$k] ?? [], $v))) {
                     $page[$k] = $v;
                 }
             } else {
@@ -253,11 +253,11 @@ function state($_) {
         'token' => false,
         'trash' => false
     ]) . $url->hash;
-    // Remove array item(s) with `null` value
-    $nully = function($v) use(&$nully) {
+    // Remove array item(s) with empty value
+    $drop = function($v) use(&$drop) {
         foreach ($v as $kk => $vv) {
             if (\is_array($vv) && !empty($vv)) {
-                if ($vv = $nully($vv)) {
+                if ($vv = $drop($vv)) {
                     $v[$kk] = $vv;
                 } else {
                     unset($v[$kk]);
@@ -276,7 +276,7 @@ function state($_) {
         if (\is_file($f = \LOT . \DS . \trim(\strtr($_['form']['path'] ?? $_['path'], '/', \DS), \DS))) {
             $_['f'] = $f = \realpath($f);
             $v = \array_replace_recursive((array) require $f, $_['form']['state'] ?? []);
-            $v = $nully($v);
+            $v = $drop($v);
             $_['form']['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
             $_ = file($_); // Move to `file`
         }
