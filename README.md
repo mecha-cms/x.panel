@@ -12,6 +12,7 @@ Release Notes
  - Fixed bug where creating a new page does not populate the `time` data automatically.
  - Changed `#blob:{code}` language string into a more readable language string as the default language string for every blob response code.
  - Updated [Tag Picker](https://github.com/taufik-nurrohman/tag-picker) to version 3.0.12.
+ - Moved `type` and `x` state data to a separated file, stored in `.\lot\x\panel\state` folder.
 
 ### 2.3.2
 
