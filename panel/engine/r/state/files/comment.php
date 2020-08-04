@@ -33,24 +33,27 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             $test = (new Page($parent))['author'];
             $hidden = $test && $test !== $author;
         }
-        $page = new Comment($k);
         $a = \State::get('x.comment.anchor.0');
         $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
+        $x = pathinfo($k, PATHINFO_EXTENSION);
         $pages[$k] = [
+            // Load data asynchronously for best performance
+            'invoke' => function($path) use($a, $x) {
+                $page = new Comment($path);
+                return [
+                    'title' => S . _\lot\x\panel\h\w($page->author) . S,
+                    'description' => S . _\lot\x\panel\h\w($page->content) . S,
+                    'link' => 'draft' === $x ? null : $page->url . '#' . sprintf($a, $page->id),
+                    'author' => $page['author'],
+                    'image' => $page->avatar(72),
+                    'tags' => [
+                        'is:' . $x,
+                        'type:comment'
+                    ]
+                ];
+            },
             'path' => $k,
-            'title' => function() use($page) {
-                return S . _\lot\x\panel\h\w($page->author) . S;
-            },
-            'description' => function() use($page) {
-                return S . _\lot\x\panel\h\w($page->content) . S;
-            },
-            'image' => function() use($page) {
-                return $page->avatar(72);
-            },
-            'author' => $page['author'],
-            'type' => 'Page',
-            'link' => 'draft' === ($x = $page->x) ? null : $page->url . '#' . sprintf($a, $page->id),
-            'time' => $page->time . "",
+            'type' => 'page',
             'tags' => [
                 'is:' . $x,
                 'type:comment'
@@ -74,9 +77,14 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             // Hide comment(s) that is not related to the page that is written by the current user
             'hidden' => $hidden
         ];
+        if (!isset($pages[$k][$_['sort'][1]])) {
+            $pages[$k][$_['sort'][1]] = (string) (new Comment($k))->{$_['sort'][1]};
+        }
         ++$count;
     }
-    $pages = (new Anemon($pages))->sort($_['sort'], true)->get();
+    $p = new Anemon($pages);
+    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], $_['i'] - 1)->get();
+    unset($p);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }

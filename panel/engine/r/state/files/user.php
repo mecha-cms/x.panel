@@ -10,18 +10,20 @@ $g = 1 !== $user['status'];
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     $path = $user->path;
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
-        $page = new User($k);
-        $v['link'] = 'draft' !== $page->x ? $page->url : null;
-        $v['title'] = S . $page . S;
-        $v['description'] = S . $page->user . S;
-        $v['image'] = function() use($page) {
-            // Load avatar asynchronously for best performance
-            return $page->avatar(72);
+        // Load data asynchronously for best performance
+        $v['invoke'] = function($path) {
+            $page = new User($path);
+            return [
+                'title' => S . $page . S,
+                'description' => S . $page->user . S,
+                'link' => 'draft' !== $page->x ? $page->url : null,
+                'image' => $page->avatar(72),
+                'tags' => [9999 => 'status:' . $page['status']]
+            ];
         };
         // Disable page children feature
         $v['tasks']['enter']['hidden'] = true;
         $v['tasks']['s']['hidden'] = true;
-        $v['tags'][] = 'status:' . $page['status'];
         if ($g && $v['path'] !== $path) {
             $v['hidden'] = true;
         }

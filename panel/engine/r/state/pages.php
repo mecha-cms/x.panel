@@ -20,31 +20,27 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             LOT => "",
             DS => '/'
         ]);
-        $page = new Page($k);
         $add = is_dir($folder = Path::F($k));
         $create = $add && q(g($folder, 'archive,draft,page')) > 0;
+        $x = pathinfo($k, PATHINFO_EXTENSION);
         $pages[$k] = [
+            // Load data asynchronously for best performance
+            'invoke' => function($path) use($x) {
+                $page = new Page($path);
+                return [
+                    'title' => S . _\lot\x\panel\h\w($page->title) . S,
+                    'description' => S . _\lot\x\panel\h\w($page->description) . S,
+                    'link' => 'draft' === $x ? null : $page->url,
+                    'author' => $page['author'],
+                    'image' => $page->image(72, 72, 50),
+                    'tags' => [
+                        'is:' . $x,
+                        'type:' . c2f($page->type ?? '0')
+                    ]
+                ];
+            },
             'path' => $k,
-            'title' => function() use($page) {
-                // Load title asynchronously for best performance
-                return S . _\lot\x\panel\h\w($page->title) . S;
-            },
-            'description' => function() use($page) {
-                // Load description asynchronously for best performance
-                return S . _\lot\x\panel\h\w($page->description) . S;
-            },
-            'image' => function() use($page) {
-                // Load image asynchronously for best performance
-                return $page->image(72, 72, 50);
-            },
-            'author' => $page['author'],
             'type' => 'page',
-            'link' => 'draft' === ($x = $page->x) ? null : $page->url,
-            'time' => $page->time . "",
-            'tags' => [
-                'is:' . $x,
-                'type:' . c2f($page->type ?? '0')
-            ],
             'tasks' => [
                 'enter' => [
                     'hidden' => 'draft' === $x || !$create,
@@ -83,9 +79,14 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                 ]
             ]
         ];
+        if (!isset($pages[$k][$_['sort'][1]])) {
+            $pages[$k][$_['sort'][1]] = (string) (new Page($k))->{$_['sort'][1]};
+        }
         ++$count;
     }
-    $pages = (new Anemon($pages))->sort($_['sort'], true)->get();
+    $p = new Anemon($pages);
+    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], $_['i'] - 1)->get();
+    unset($p);
 }
 
 return [

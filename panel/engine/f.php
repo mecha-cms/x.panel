@@ -312,6 +312,11 @@ namespace _\lot\x\panel {
     }
     function page($in, $key) {
         $tags = ['is:file'];
+        $path = $in['path'] ?? $key;
+        if (isset($in['invoke']) && \is_callable($in['invoke'])) {
+            $in = \array_replace_recursive($in, \call_user_func($in['invoke'], $path));
+            unset($in['invoke']);
+        }
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
         }
@@ -321,15 +326,6 @@ namespace _\lot\x\panel {
             2 => []
         ];
         \_\lot\x\panel\h\c($out[2], $in, $tags);
-        $path = $in['path'] ?? $key;
-        foreach (['title', 'description', 'image'] as $k) {
-            if (isset($in[$k])) {
-                // Delay `page.*` hook execution with closure(s)
-                if (\is_callable($in[$k])) {
-                    $in[$k] = \call_user_func($in[$k], $path);
-                }
-            }
-        }
         $date = isset($in['time']) ? \strtr($in['time'], '-', '/') : null;
         $out[1] .= '<div' . (isset($in['image']) && false === $in['image'] ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . $in['image'] . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($path, [
             \ROOT => "",

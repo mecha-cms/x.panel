@@ -6,6 +6,10 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### master
+
+ - Added `invoke` property for every item in pages to be invoked within `_\lot\x\panel\page()` that would returns other properties to be merged to the current properties.
+
 ### 2.4.0
 
  - Removed `$lot` hook parameter and store the form data to `$_['form']` property, for easy form data manipulation during CRUD process.
