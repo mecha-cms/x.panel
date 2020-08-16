@@ -9,6 +9,7 @@ Release Notes
 ### master
 
  - Added `invoke` property for every item in pages to be invoked within `_\lot\x\panel\page()` that would returns other properties to be merged to the current properties.
+ - Updated [F3H](https://github.com/taufik-nurrohman/f3h) version to 1.0.13.
 
 ### 2.4.0
 
