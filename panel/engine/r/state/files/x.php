@@ -109,21 +109,24 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             DS => '/'
         ]);
         $n = basename($kk);
-        $page = new Page($k);
         $pages[$k] = [
+            // Load data asynchronously for best performance
+            'invoke' => function($path) {
+                $page = new Page($path);
+                return [
+                    'title' => S . _\lot\x\panel\h\w($page->title) . S,
+                    'description' => S . _\lot\x\panel\h\w($page->description) . S,
+                    'author' => $page['author'],
+                    'image' => $page->image(72, 72, 50),
+                    'tags' => [
+                        'is:page',
+                        'type:' . c2f($page->type ?? '0')
+                    ]
+                ];
+            },
             'path' => $k,
-            'title' => function() use($page) {
-                return S . _\lot\x\panel\h\w($page->title) . S;
-            },
-            'description' => function() use($page) {
-                return S . _\lot\x\panel\h\w($page->description) . S;
-            },
-            'type' => 'Page',
-            'url' => $before . 'g' . $after . '/1' . $url->query('&', ['tab' => ['info']]),
-            'image' => function() use($page) {
-                return $page->image(72, 72, 50);
-            },
-            'time' => $page->time . "",
+            'type' => 'page',
+            'url' => $before . 'g' . $after . '/1' . $url->query('&', ['tab' => ['info']]) . $url->hash,
             'tasks' => [
                 'g' => [
                     'title' => 'Edit',
@@ -144,11 +147,12 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                     'active' => !isset($uses[$n]),
                     'stack' => 30
                 ]
-            ]
+            ],
+            '#title' => From::page(file_get_contents($k))['title'] ?? null
         ];
         ++$count;
     }
-    $pages = (new Anemon($pages))->sort([1, 'title'], true)->get();
+    $pages = (new Anemon($pages))->sort([1, '#title'], true)->get();
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }

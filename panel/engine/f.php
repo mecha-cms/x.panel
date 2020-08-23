@@ -115,10 +115,11 @@ namespace _\lot\x\panel {
         return "" !== $out[1] ? new \HTML($out) : null;
     }
     function file($in, $key) {
-        $tags = ['is:file'];
+        $tags = $in['tags'] ?? [];
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
         }
+        $tags[] = 'is:file';
         $out = [
             0 => 'li',
             1 => "",
@@ -311,7 +312,7 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function page($in, $key) {
-        $tags = ['is:file'];
+        $tags = $in['tags'] ?? [];
         $path = $in['path'] ?? $key;
         if (isset($in['invoke']) && \is_callable($in['invoke'])) {
             $in = \array_replace_recursive($in, \call_user_func($in['invoke'], $path));
@@ -320,6 +321,7 @@ namespace _\lot\x\panel {
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
         }
+        $tags[] = 'is:file';
         $out = [
             0 => 'li',
             1 => "",
