@@ -209,7 +209,7 @@ namespace _\lot\x\panel\route {
                                                                 'description' => 'Choose default page that will open after logged-in.',
                                                                 'type' => 'combo',
                                                                 'name' => 'state[x][panel][path]',
-                                                                'value' => $state_0['x']['panel']['path'] ?? null,
+                                                                'value' => $state_0['x']['panel']['path'] ?? $state_2['path'] ?? null,
                                                                 'lot' => $panes,
                                                                 'stack' => 10
                                                             ],
@@ -219,7 +219,7 @@ namespace _\lot\x\panel\route {
                                                                 'name' => 'state[x][user][guard][path]',
                                                                 'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
                                                                 'alt' => $state_1['guard']['path'] ?? $state_1['path'] ?? null,
-                                                                'value' => $state_0['x']['user']['guard']['path'] ?? null,
+                                                                'value' => $state_0['x']['user']['guard']['path'] ?? $state_1['guard']['path'] ?? $state_1['path'] ?? null,
                                                                 'stack' => 20
                                                             ]
                                                         ],
