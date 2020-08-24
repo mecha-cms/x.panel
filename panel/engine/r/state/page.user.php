@@ -10,7 +10,7 @@ Hook::set(['do.page.get', 'do.page.set'], function($_) {
     $_['form']['page']['email'] = _\lot\x\panel\h\w($_['form']['page']['email'] ?? "");
     // Encrypt password
     if (isset($_['form']['data']['pass'])) {
-        $name = $_['form']['data']['name'] ?? $lot['page']['name'] ?? uniqid();
+        $name = $_['form']['data']['name'] ?? $_['form']['page']['name'] ?? uniqid();
         $_['form']['data']['pass'] = P . password_hash($_['form']['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
     }
     return $_;
