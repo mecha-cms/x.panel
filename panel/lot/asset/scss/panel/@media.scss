@@ -110,6 +110,9 @@
         background: none;
         border-width: 0;
         margin-right: $x;
+        > a {
+          padding: 0;
+        }
         &:last-child {
           margin-right: 0;
         }
@@ -118,11 +121,11 @@
           &::after {
             display: none;
           }
-          a {
+          > a {
             color: inherit;
           }
         }
-        &:not(.has\:link) {
+        &:not(.has\:link):not(.is\:active) {
           a {
             padding: 0;
             color: $color-link;

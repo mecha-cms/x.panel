@@ -1408,16 +1408,19 @@ svg[display='none'] {
     border-width: 0;
     margin-right: 24px;
   }
+  .lot\:tab > nav li > a {
+    padding: 0;
+  }
   .lot\:tab > nav li:last-child {
     margin-right: 0;
   }
   .lot\:tab > nav li.is\:active::before, .lot\:tab > nav li.is\:active::after {
     display: none;
   }
-  .lot\:tab > nav li.is\:active a {
+  .lot\:tab > nav li.is\:active > a {
     color: inherit;
   }
-  .lot\:tab > nav li:not(.has\:link) a {
+  .lot\:tab > nav li:not(.has\:link):not(.is\:active) a {
     padding: 0;
     color: #00f;
   }

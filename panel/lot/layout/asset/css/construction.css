@@ -424,10 +424,10 @@ label.is\:frozen > .input[type='radio'] + span {
   .lot\:tab > nav li.is\:active {
     box-shadow: none;
   }
-  .lot\:tab > nav li.is\:active a {
+  .lot\:tab > nav li.is\:active > a {
     color: inherit;
   }
-  .lot\:tab > nav li:not(.has\:link) a {
+  .lot\:tab > nav li:not(.has\:link):not(.is\:active) a {
     color: #009;
   }
 }

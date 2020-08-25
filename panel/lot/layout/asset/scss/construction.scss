@@ -701,11 +701,11 @@ label {
         box-shadow: none;
         &.is\:active {
           box-shadow: none;
-          a {
+          > a {
             color: inherit;
           }
         }
-        &:not(.has\:link) {
+        &:not(.has\:link):not(.is\:active) {
           a {
             color: $color-link;
           }
