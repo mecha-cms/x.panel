@@ -40,4 +40,5 @@ if (0 === strpos('/' . $p, $pp . '/::')) {
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }
 
+require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'hook.php';
 require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'user.php';

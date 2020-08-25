@@ -7,7 +7,6 @@ $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
 // Hide all button(s)
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['hidden'] = true;
-
 if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         $page = new Page($k);

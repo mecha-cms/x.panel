@@ -85,7 +85,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         ++$count;
     }
     $p = new Anemon($pages);
-    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], $_['i'] - 1)->get();
+    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], $_['i'] - 1, true)->get();
     unset($p);
 }
 
