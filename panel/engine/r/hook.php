@@ -42,6 +42,6 @@ if (null !== State::get('x.comment')) {
             }
         }
         array_unshift($recent, strtr($path, [LOT . DS => ""]));
-        file_put_contents($f, '<?' . 'php return ' . z(array_slice($recent, 0, $state->x->panel->chunk ?? 20)) . ';');
+        file_put_contents($f, '<?' . 'php return ' . z(array_slice($recent, 0, $_['chunk'])) . ';');
     });
 }

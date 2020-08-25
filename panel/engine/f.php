@@ -424,7 +424,7 @@ namespace _\lot\x\panel {
         $lot = [];
         if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
-                if (null ===$v || false === $v || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['hidden'])) {
                     continue;
                 }
                 $lot[$k] = $v;
