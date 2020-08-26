@@ -10,15 +10,25 @@ $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 
 $pages = [];
 $count = 0;
 
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
+
+/*
 $search = function($folder, $x, $r) {
     $q = strtolower($_GET['q'] ?? "");
     return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
 };
 
 if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
+}
+ */
+
+if (is_file($recent = LOT . DS . 'cache' . DS . 'comments.php')) {
     $before = $url . $_['/'] . '/::';
     $author = $user->user;
-    foreach ($search($folder, 'archive,draft,page', true) as $k => $v) {
+    foreach ((array) require $recent as $k) {
+        if (!is_file($k = LOT . DS . $k)) {
+            continue;
+        }
         $after = '::' . strtr($k, [
             LOT => "",
             DS => '/'
@@ -70,7 +80,11 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                     'title' => 'Delete',
                     'description' => 'Delete',
                     'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                    'url' => $before . 'l' . $after . $url->query('&', ['tab' => false, 'token' => $_['token']]),
+                    'url' => $before . 'l' . $after . $url->query('&', [
+                        'tab' => false,
+                        'token' => $_['token'],
+                        'trash' => $trash
+                    ]),
                     'stack' => 30
                 ]
             ],

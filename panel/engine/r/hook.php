@@ -1,5 +1,9 @@
 <?php
 
+Hook::set('on.user.exit', function() {
+    unset($_SESSION['_']); // Clear all file and folder marker(s)
+});
+
 if (null !== State::get('x.comment')) {
     // Send notification
     Hook::set('on.comment.set', function($path) {
