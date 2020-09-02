@@ -152,7 +152,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         ];
         ++$count;
     }
-    $pages = (new Anemon($pages))->sort([1, '#title'], true)->get();
+    $pages = (new Anemon($pages))->sort([1, '#title'], true)->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get();
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }

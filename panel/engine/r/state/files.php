@@ -138,9 +138,7 @@ return [
                                         'lot' => [
                                             'files' => [
                                                 'type' => 'files',
-                                                'lot' => $files,
-                                                'chunk' => $_['chunk'],
-                                                'current' => $_['i'],
+                                                'lot' => (new Anemon($files))->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get(),
                                                 'stack' => 10
                                             ]
                                         ],

@@ -9,9 +9,6 @@ $lot = array_replace_recursive($lot, [
             // type: bar/menu
             0 => [
                 'lot' => [
-                    'link' => [
-                        'url' => $url . $_['/'] . '/::g::/' . $_['chops'][0] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash
-                    ],
                     's' => ['hidden' => true]
                 ]
             ]
@@ -67,7 +64,7 @@ $lot = array_replace_recursive($lot, [
                                                                'description' => 1
                                                            ],
                                                             2 => [
-                                                               'title' => 'Visitor',
+                                                               'title' => 'Reader',
                                                                'description' => 2
                                                            ],
                                                            -1 => [

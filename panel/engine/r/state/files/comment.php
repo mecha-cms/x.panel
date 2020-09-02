@@ -5,30 +5,39 @@ $GLOBALS['_']['layout'] = $_['layout'] = 'page';
 
 $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
+$lot['desk']['lot']['form']['lot'][1]['title'] = ($r = false === strpos($_['path'], '/')) ? ['Recent %s', 'Comments'] : null;
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Comments';
 
-$pages = [];
+$d = strtr($_['f'], [LOT . DS . 'comment' . DS => LOT . DS . 'page' . DS]);
+if (!$r && $f = File::exist([
+    $d . '.archive',
+    $d . '.draft',
+    $d . '.page'
+])) {
+    $page = new Page($f);
+    $lot['desk']['lot']['form']['lot'][1]['title'] = i('Page') . ': <a href="' . $url . $_['/'] . '/::g::/' . strtr($f, [LOT . DS => "", DS => '/']) . '">' . $page->title . '</a>';
+}
+
+$files = $pages = [];
 $count = 0;
 
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
-/*
-$search = function($folder, $x, $r) {
-    $q = strtolower($_GET['q'] ?? "");
-    return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
-};
-
-if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
-}
- */
-
-if (is_file($recent = LOT . DS . 'cache' . DS . 'comments.php')) {
-    $before = $url . $_['/'] . '/::';
-    $author = $user->user;
-    foreach ((array) require $recent as $k) {
-        if (!is_file($k = LOT . DS . $k)) {
+if ($r && is_file($f = LOT . DS . 'cache' . DS . 'comments.php')) {
+    foreach ((array) require $f as $v) {
+        if (!is_file($v = LOT . DS . $v)) {
             continue;
         }
+        $files[$v] = 1;
+    }
+} else {
+    $files = g($_['f'], 'archive,draft,page');
+}
+
+if ($files) {
+    $before = $url . $_['/'] . '/::';
+    $author = $user->user;
+    foreach ($files as $k => $v) {
         $after = '::' . strtr($k, [
             LOT => "",
             DS => '/'
@@ -44,7 +53,6 @@ if (is_file($recent = LOT . DS . 'cache' . DS . 'comments.php')) {
             $hidden = $test && $test !== $author;
         }
         $a = \State::get('x.comment.anchor.0');
-        $create = is_dir($folder = Path::F($k)) && q(g($folder, 'archive,draft,page')) > 0;
         $x = pathinfo($k, PATHINFO_EXTENSION);
         $pages[$k] = [
             // Load data asynchronously for best performance
@@ -97,7 +105,7 @@ if (is_file($recent = LOT . DS . 'cache' . DS . 'comments.php')) {
         ++$count;
     }
     $p = new Anemon($pages);
-    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], $_['i'] - 1)->get();
+    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], ($_['i'] ?? 1) - 1)->get();
     unset($p);
     $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;

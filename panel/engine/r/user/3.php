@@ -3,7 +3,7 @@
 require __DIR__ . DS . '2.php';
 
 // Member user(s) cannot do anything but updating their user file
-if ('g' === $_['task'] && $_['f'] === $user->path) {
+if ('g' === $_['task'] && $user->path === $_['f']) {
     // Hide everything but `link`
     if (isset($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'])) {
         foreach ($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'] as $k => &$v) {

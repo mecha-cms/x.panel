@@ -155,9 +155,6 @@ blockquote, figcaption, caption {
   background: #000;
   color: #fff;
 }
-.lot\:bar .js\:alert.is\:active a span {
-  color: #0f0;
-}
 .lot\:file li, .lot\:page li {
   background: #fff;
   border: 0 solid #fff;

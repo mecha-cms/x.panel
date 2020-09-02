@@ -2,7 +2,7 @@
 
 require __DIR__ . DS . '3.php';
 
-if ('g' === $_['task'] && $_['f'] === $user->path) {
+if ('g' === $_['task'] && $user->path === $_['f']) {
     // Hide navigation bar
     $GLOBALS['_']['lot']['bar']['hidden'] = true;
     $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][0]['title'] = $user['author'];

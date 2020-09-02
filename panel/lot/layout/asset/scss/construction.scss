@@ -308,15 +308,6 @@ $color-back-alert: (
       color: $color-back;
     }
   }
-  .js\:alert {
-    &.is\:active {
-      a {
-        span {
-          color: #0f0;
-        }
-      }
-    }
-  }
 }
 
 .lot\:file,
