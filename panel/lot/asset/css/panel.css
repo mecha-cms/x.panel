@@ -421,7 +421,7 @@ hr {
   display: inline-block;
   vertical-align: middle;
   background: #fff;
-  color: #000;
+  color: inherit;
   border: 1px solid;
   width: 192px;
   height: 36px;

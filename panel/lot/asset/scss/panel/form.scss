@@ -6,7 +6,7 @@
   display: inline-block;
   vertical-align: middle;
   background: $color-back;
-  color: $color;
+  color: inherit;
   border: 1px solid;
   width: ($x * 8);
   height: ($y * 1.5);
