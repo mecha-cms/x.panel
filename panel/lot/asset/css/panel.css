@@ -912,7 +912,6 @@ svg[display='none'] {
 }
 .lot\:file li, .lot\:page li {
   display: flex;
-  background: #fff;
   border: 0 solid #fff;
   padding: 6px 12px;
   margin: 0 -6px;
@@ -938,7 +937,6 @@ svg[display='none'] {
   padding-left: 42px;
 }
 .lot\:file .is\:file::before, .lot\:page .is\:file::before {
-  background: transparent;
   border: 1px solid;
   width: 20px;
 }
@@ -956,8 +954,9 @@ svg[display='none'] {
   top: 11px;
 }
 .lot\:file .is\:folder::after, .lot\:page .is\:folder::after {
-  border-top: 3px solid #000;
+  background: #000;
   width: 12px;
+  height: 3px;
   top: 7px;
 }
 .lot\:file .not\:active, .lot\:page .not\:active {

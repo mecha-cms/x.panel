@@ -13,6 +13,11 @@
     function $$(query, context) {
         return (context || doc).querySelectorAll(query);
     }
+    let is = F3H.state.is;
+    // Ignore navigation link(s) that has sub-menu(s) in it
+    F3H.state.is = function(source, refNow) {
+        return is(source, refNow) && !source.parentNode.classList.contains('has:menu');
+    };
     let root = doc.documentElement,
         selectors = 'body>div>main,body>div>nav,body>svg',
         elements = $$(selectors),

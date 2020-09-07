@@ -39,7 +39,7 @@ return (function($icons) {
                             'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
                             'caret' => false,
                             'title' => false,
-                            'link' => $url,
+                            'url' => $url,
                             'lot' => $list,
                             'tags' => ['is:main'],
                             'stack' => 10
@@ -87,7 +87,7 @@ return (function($icons) {
                         ],
                         'site' => [
                             'current' => false,
-                            'link' => $url,
+                            'url' => $url,
                             'lot' => [
                                 'state' => [
                                     'current' => $url->path === $_['/'] . '/::g::/.state',

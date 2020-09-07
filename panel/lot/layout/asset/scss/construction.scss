@@ -313,7 +313,6 @@ $color-back-alert: (
 .lot\:file,
 .lot\:page {
   li {
-    background: $color-back;
     border: 0 solid $color-back;
     &:focus,
     &:hover {
@@ -347,9 +346,8 @@ $color-back-alert: (
       border-color: $color;
     }
     &::after {
-      border-color: $color;
-      border-top-color: inherit;
-      border-right-color: inherit;
+      border-bottom-color: $color;
+      border-left-color: $color;
     }
   }
   .is\:folder {
@@ -357,7 +355,7 @@ $color-back-alert: (
       background: $color-back-icon-folder;
     }
     &::after {
-      border-top-color: darken($color-back-icon-folder, 10%);
+      background: darken($color-back-icon-folder, 10%);
     }
   }
 }

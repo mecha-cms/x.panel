@@ -152,7 +152,6 @@
   }
   li {
     display: flex;
-    background: $color-back;
     border: 0 solid $color-back;
     padding: ($y / 4) ($x / 2);
     margin: 0 -($x / 4);
@@ -181,7 +180,6 @@
   }
   .is\:file {
     &::before {
-      background: transparent;
       border: 1px solid;
       width: 20px; // Magic :(
     }
@@ -201,8 +199,9 @@
       top: 11px;
     }
     &::after {
-      border-top: 3px solid $color;
+      background: $color;
       width: 12px;
+      height: 3px;
       top: 7px;
     }
   }

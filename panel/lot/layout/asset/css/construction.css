@@ -156,7 +156,6 @@ blockquote, figcaption, caption {
   color: #fff;
 }
 .lot\:file li, .lot\:page li {
-  background: #fff;
   border: 0 solid #fff;
 }
 .lot\:file li:focus, .lot\:page li:focus, .lot\:file li:hover, .lot\:page li:hover {
@@ -181,15 +180,14 @@ blockquote, figcaption, caption {
   border-color: #000;
 }
 .lot\:file .is\:file::after, .lot\:page .is\:file::after {
-  border-color: #000;
-  border-top-color: inherit;
-  border-right-color: inherit;
+  border-bottom-color: #000;
+  border-left-color: #000;
 }
 .lot\:file .is\:folder::before, .lot\:page .is\:folder::before {
   background: #d00;
 }
 .lot\:file .is\:folder::after, .lot\:page .is\:folder::after {
-  border-top-color: #a00;
+  background: #a00;
 }
 .lot\:input .button {
   background: #bdf;
