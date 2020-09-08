@@ -5,6 +5,9 @@ if (\is_file($v = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
     (function($v) {
         extract($GLOBALS, \EXTR_SKIP);
         require $v;
+        if (isset($_) && \is_array($_)) {
+            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+        }
     })($v);
 }
 
@@ -68,7 +71,7 @@ function route() {
         // Auto-detect layout type
         if ($f) {
             $_['layout'] = \is_dir($f) ? 'folder' : 'file';
-            // Update data
+            // Put data
             $GLOBALS['_'] = $_;
             // Auto-set layout type
             $state_f = $state_d . \DS . $_['layout'] . ($_['i'] ? 's' : "") . '.php';
@@ -78,12 +81,14 @@ function route() {
             (function($v) use(&$state_f) {
                 if (\is_file($v)) {
                     extract($GLOBALS, \EXTR_SKIP);
-                    // Update data and require
                     require ($state_f = $v);
+                    if (isset($_) && \is_array($_)) {
+                        $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+                    }
                 }
             })($state_d . \DS . 'file' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
         }
-        // Update data
+        // Get data
         $_ = $GLOBALS['_'];
     }
     // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
@@ -91,28 +96,35 @@ function route() {
         \is_file($v = \Path::F($v) . \DS . 'panel.php') && (function($v) {
             extract($GLOBALS, \EXTR_SKIP);
             require $v;
+            if (isset($_) && \is_array($_)) {
+                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            }
         })($v);
     }
     // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
     \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (function($v) {
         extract($GLOBALS, \EXTR_SKIP);
         require $v;
+        if (isset($_) && \is_array($_)) {
+            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+        }
     })($v);
-    // Update data
-    $_ = $GLOBALS['_'];
     // Define lot with no filter
-    (function($state_f, $_) {
+    (function($state_f) {
         extract($GLOBALS, \EXTR_SKIP);
-        $_['lot'] = \array_replace_recursive((array) (\is_file($state_f) ? require $state_f : []), $_['lot'] ?? []);
-        // Update data
+        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($state_f) ? require $state_f : []));
+        // Put data
         $GLOBALS['_'] = $_;
-    })($state_f, $_);
+    })($state_f);
     // Filter by status
     \is_file($v = __DIR__ . \DS . 'user' . \DS . $user['status'] . '.php') && (function($v) {
         extract($GLOBALS, \EXTR_SKIP);
         require $v;
+        if (isset($_) && \is_array($_)) {
+            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+        }
     })($v);
-    // Update data
+    // Get data
     $_ = $GLOBALS['_'];
     // Filter by route function
     $_['form'] = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
@@ -120,11 +132,11 @@ function route() {
     if ($route) {
         \fire($route, [$_], $this);
     }
-    // Update data
+    // Get data
     $_ = $GLOBALS['_'];
     // Filter by hook
     $_ = \Hook::fire('_', [$_]);
-    // Update data
+    // Put data
     $GLOBALS['_'] = $_;
     if (isset($_['form']['token'])) {
         $hooks = \map(\step($_['layout']), function($hook) use($_) {
@@ -161,7 +173,7 @@ function route() {
     }
     \State::set('[layout].layout:' . $_['layout'], true);
     $n = \ltrim($_['chops'][0] ?? "", '_.-');
-    // Update data
+    // Put data
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');
     $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;

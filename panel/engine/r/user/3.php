@@ -5,15 +5,15 @@ require __DIR__ . DS . '2.php';
 // Member user(s) cannot do anything but updating their user file
 if ('g' === $_['task'] && $user->path === $_['f']) {
     // Hide everything but `link`
-    if (isset($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'])) {
-        foreach ($GLOBALS['_']['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'] as $k => &$v) {
+    if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'])) {
+        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'] as $k => &$v) {
             if ('link' !== $k) {
                 $v['hidden'] = true;
             }
         }
     }
     // Add exit button
-    $GLOBALS['_']['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['exit'] = [
+    $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['exit'] = [
         '2' => [
             'target' => '_top' // Needed to disable the AJAX link
         ],

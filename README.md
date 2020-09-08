@@ -13,6 +13,7 @@ Release Notes
  - Fixed bugs of user creation event which didn&rsquo;t store the pass data correctly.
  - Finished the restore feature.
  - Improved comments page execution time by storing newly created comments into array.
+ - Improved `panel.php` file feature to allow developers to extend data to the `$_` variable directly without using `$GLOBALS`.
 
 ### 2.4.0
 
