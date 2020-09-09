@@ -1,11 +1,11 @@
-.bold {
+.b, b, dt, legend, strong, th {
   font-weight: bolder;
 }
 .code, code {
   font-family: monospace;
   font-size: 80%;
 }
-.italic {
+.i, blockquote, caption, dfn, em, figcaption, i, var {
   font-style: italic;
 }
 * + .p, * + blockquote, * + dl, * + fieldset, * + figcaption, * + figure, * + form, * + h1, * + h2, * + h3, * + h4, * + h5, * + h6, * + hr, * + ol, * + p, * + pre, * + table, * + ul {
@@ -14,10 +14,10 @@
 .small, kbd, small, sub, sup {
   font-size: 70%;
 }
-.strike, del, s {
+.s, del, s {
   text-decration: line-through;
 }
-.underline, ins, u {
+.u, ins, u {
   text-decoration: underline;
 }
 .is\:hidden, [hidden] {
@@ -292,12 +292,6 @@ abbr[title]:hover {
 article, aside, footer, header, main, nav, section {
   display: block;
 }
-b, dt, legend, strong, th {
-  font-weight: bolder;
-}
-blockquote, caption, dfn, em, figcaption, i, var {
-  font-style: italic;
-}
 sub, sup {
   display: inline;
   position: relative;
@@ -324,12 +318,6 @@ pre code {
   display: block;
   background: #000;
   color: #fff;
-  padding: 8px 12px;
-}
-pre.is\:text code {
-  background: none;
-  border: 1px dotted;
-  color: inherit;
   padding: 8px 12px;
 }
 img {
@@ -571,7 +559,7 @@ label.not\:active {
   display: block;
   font-size: 12px;
   line-height: 16px;
-  margin: 10px 0 0;
+  margin: 8px 0 0;
 }
 .field .description code {
   font-size: 10.4px;
@@ -1014,9 +1002,9 @@ svg[display='none'] {
   display: flex;
 }
 .lot\:input .fix {
+  background: none;
   width: auto;
   max-width: 50%;
-  background: rgba(0, 0, 0, 0.15);
   cursor: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1181,10 +1169,6 @@ svg[display='none'] {
   background: none;
   color: inherit;
 }
-.lot\:tab > nav {
-  height: 48px;
-  line-height: 48px;
-}
 .lot\:tab > nav ul, .lot\:tab > nav li {
   margin: 0;
   padding: 0;
@@ -1196,36 +1180,9 @@ svg[display='none'] {
 }
 .lot\:tab > nav li {
   position: relative;
-  border: 1px solid;
-  border-bottom-width: 0;
-}
-.lot\:tab > nav li + li {
-  border-left-width: 0;
-}
-.lot\:tab > nav li:not(.has\:link) a {
-  color: inherit;
-}
-.lot\:tab > nav li.is\:active {
-  z-index: 4;
-}
-.lot\:tab > nav li.is\:active::before, .lot\:tab > nav li.is\:active::after {
-  content: "";
-  display: block;
-  position: absolute;
-  bottom: 0;
-  width: 9999em;
-  height: 0;
-  border-bottom: 1px solid;
-}
-.lot\:tab > nav li.is\:active::before {
-  right: 100%;
-}
-.lot\:tab > nav li.is\:active::after {
-  left: 100%;
 }
 .lot\:tab > nav a {
   display: block;
-  padding: 0 20px;
 }
 .lot\:tab > nav .title svg {
   margin: 12px -10px;
@@ -1301,6 +1258,12 @@ svg[display='none'] {
 .lot\:section.count\:0 {
   display: none;
 }
+pre.is\:text code {
+  display: inline-block;
+  background: none;
+  border: 1px dotted;
+  color: inherit;
+}
 .is\:error {
   display: flex;
   border-top: 4px solid;
@@ -1310,6 +1273,43 @@ svg[display='none'] {
 }
 .is\:error > * {
   flex: 1;
+}
+@media (min-width: 719px) {
+  .lot\:tab > nav {
+    height: 48px;
+    line-height: 48px;
+  }
+  .lot\:tab > nav li {
+    border: 1px solid;
+    border-bottom-width: 0;
+  }
+  .lot\:tab > nav li + li {
+    border-left-width: 0;
+  }
+  .lot\:tab > nav li:not(.has\:link) a {
+    color: inherit;
+  }
+  .lot\:tab > nav li.is\:active {
+    z-index: 4;
+  }
+  .lot\:tab > nav li.is\:active::before, .lot\:tab > nav li.is\:active::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 9999em;
+    height: 0;
+    border-bottom: 1px solid;
+  }
+  .lot\:tab > nav li.is\:active::before {
+    right: 100%;
+  }
+  .lot\:tab > nav li.is\:active::after {
+    left: 100%;
+  }
+  .lot\:tab > nav a {
+    padding: 0 20px;
+  }
 }
 @media (max-width: 720px) {
   .m\:2 {
@@ -1355,7 +1355,7 @@ svg[display='none'] {
     width: auto;
   }
   .field > * + * {
-    margin-top: 6px;
+    margin-top: 8px;
   }
   .field > label {
     width: auto;
@@ -1398,30 +1398,14 @@ svg[display='none'] {
   .lot\:pager > span:first-child, .lot\:pager > span:last-child {
     display: none;
   }
-  .lot\:tab > nav {
-    height: auto;
-    line-height: inherit;
-  }
   .lot\:tab > nav li {
-    background: none;
-    border-width: 0;
     margin-right: 24px;
   }
-  .lot\:tab > nav li > a {
-    padding: 0;
+  .lot\:tab > nav li:not(.has\:link).is\:active a {
+    color: inherit;
   }
   .lot\:tab > nav li:last-child {
     margin-right: 0;
-  }
-  .lot\:tab > nav li.is\:active::before, .lot\:tab > nav li.is\:active::after {
-    display: none;
-  }
-  .lot\:tab > nav li.is\:active > a {
-    color: inherit;
-  }
-  .lot\:tab > nav li:not(.has\:link):not(.is\:active) a {
-    padding: 0;
-    color: #00f;
   }
   .lot\:tab > nav .title svg {
     display: none;

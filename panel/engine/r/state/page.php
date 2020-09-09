@@ -291,13 +291,13 @@ $lot = [
 
 Hook::set('_', function($_) use($page, $trash, $url) {
     $apart = [];
-    if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'])) {
-        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs'] as $k => $v) {
+    if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'])) {
+        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] as $k => $v) {
             foreach ($v as $kk => $vv) {
-                if (empty($vv['lot']['fields']['lot'])) {
+                if (empty($vv['fields']['lot'])) {
                     continue;
                 }
-                foreach ($vv['lot']['fields']['lot'] as $kkk => $vvv) {
+                foreach ($vv['fields']['lot'] as $kkk => $vvv) {
                     $vvvv = $vvv['name'] ?? $kkk;
                     if (0 === strpos($vvvv, 'data[')) {
                         $apart[substr($vvvv, 5, -1)] = 1;
@@ -310,14 +310,12 @@ Hook::set('_', function($_) use($page, $trash, $url) {
             $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
             $before = $url . $_['/'] . '/::';
             foreach (g(Path::F($path), 'data') as $k => $v) {
-                if (1 === $v && isset($p[basename($k, '.data')])) {
-                    continue;
-                }
                 $after = '::' . strtr($k, [
                     LOT => "",
                     DS => '/'
                 ]);
                 $files[$k] = [
+                    'hidden' => isset($p[basename($k, '.data')]),
                     'path' => $k,
                     'title' => $n = basename($k),
                     'description' => (new File($k))->size,

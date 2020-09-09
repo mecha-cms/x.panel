@@ -15,6 +15,8 @@ function route() {
     if (!\Is::user()) {
         \Guard::kick("");
     }
+    // Load default layout content(s)
+    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r.php');
     extract($GLOBALS, \EXTR_SKIP);
     $f = $_['f'];
     $route = false;
@@ -61,35 +63,37 @@ function route() {
             'pages' => isset($_['i'])
         ]
     ]);
-    $state_d = __DIR__ . \DS . 'state';
-    if (\defined("\\DEBUG") && \DEBUG && isset($_GET['test'])) {
-        $state_f = $state_d . \DS . 'test' . \DS . \basename(\urlencode($_GET['test'])) . '.php';
-    } else {
-        $state_f = $state_d . \DS . $_['layout'] . ($_['i'] ? 's' : "") . '.php';
-    }
-    if (!isset($_GET['layout'])) {
+    $dd = __DIR__ . \DS . 'state';
+    $ff = null;
+    if (!$route && !isset($_GET['layout']) && !isset($_['layout'])) {
         // Auto-detect layout type
         if ($f) {
-            $_['layout'] = \is_dir($f) ? 'folder' : 'file';
+            if (\is_dir($f)) {
+                $_['layout'] = 'folder';
+            } else if (\is_file($f)) {
+                $_['layout'] = 'file';
+            }
             // Put data
             $GLOBALS['_'] = $_;
-            // Auto-set layout type
-            $state_f = $state_d . \DS . $_['layout'] . ($_['i'] ? 's' : "") . '.php';
         }
         // Manually set layout type based on file path
         foreach (\array_reverse(\step($_['path'], '/')) as $v) {
-            (function($v) use(&$state_f) {
+            (function($v) use(&$ff) {
                 if (\is_file($v)) {
                     extract($GLOBALS, \EXTR_SKIP);
-                    require ($state_f = $v);
+                    require ($ff = $v);
                     if (isset($_) && \is_array($_)) {
                         $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
                     }
                 }
-            })($state_d . \DS . 'file' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
+            })($dd . \DS . 'file' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
         }
         // Get data
         $_ = $GLOBALS['_'];
+    }
+    // Set layout type
+    if (!$ff) {
+        $ff = $dd . \DS . ($_['layout'] ?? \P) . ($_['i'] ? 's' : "") . '.php';
     }
     // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
     foreach ($GLOBALS['X'][1] as $v) {
@@ -110,12 +114,12 @@ function route() {
         }
     })($v);
     // Define lot with no filter
-    (function($state_f) {
+    (function($ff) {
         extract($GLOBALS, \EXTR_SKIP);
-        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($state_f) ? require $state_f : []));
+        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($ff) ? require $ff : []));
         // Put data
         $GLOBALS['_'] = $_;
-    })($state_f);
+    })($ff);
     // Filter by status
     \is_file($v = __DIR__ . \DS . 'user' . \DS . $user['status'] . '.php') && (function($v) {
         extract($GLOBALS, \EXTR_SKIP);
@@ -129,13 +133,13 @@ function route() {
     // Filter by route function
     $_['form'] = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
     $GLOBALS['_']['form'] = $_['form'];
-    if ($route) {
-        \fire($route, [$_], $this);
+    if ($route && $r = \fire($route, [$_], $this)) {
+        $_ = $r;
     }
-    // Get data
-    $_ = $GLOBALS['_'];
     // Filter by hook
-    $_ = \Hook::fire('_', [$_]);
+    if ($r = \Hook::fire('_', [$_])) {
+        $_ = $r;
+    }
     // Put data
     $GLOBALS['_'] = $_;
     if (isset($_['form']['token'])) {
@@ -171,7 +175,7 @@ function route() {
             ]) . $url->hash);
         }
     }
-    \State::set('[layout].layout:' . $_['layout'], true);
+    \State::set('[layout].layout:' . ($_['layout'] ?? 'blank'), true);
     $n = \ltrim($_['chops'][0] ?? "", '_.-');
     // Put data
     $GLOBALS['_'] = $_;

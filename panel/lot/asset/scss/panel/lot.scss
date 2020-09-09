@@ -274,9 +274,9 @@
     display: flex;
   }
   .fix {
+    background: none;
     width: auto;
     max-width: 50%;
-    background: rgba(0, 0, 0, .15);
     cursor: auto;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -479,8 +479,6 @@
 
 .lot\:tab {
   > nav {
-    height: ($y * 2);
-    line-height: ($y * 2);
     ul,
     li {
       margin: 0;
@@ -493,39 +491,9 @@
     }
     li {
       position: relative;
-      border: 1px solid;
-      border-bottom-width: 0;
-      + li {
-        border-left-width: 0;
-      }
-      &:not(.has\:link) {
-        a {
-          color: inherit;
-        }
-      }
-      &.is\:active {
-        z-index: 4;
-        &::before,
-        &::after {
-          content: "";
-          display: block;
-          position: absolute;
-          bottom: 0;
-          width: 9999em;
-          height: 0;
-          border-bottom: 1px solid;
-        }
-        &::before {
-          right: 100%;
-        }
-        &::after {
-          left: 100%;
-        }
-      }
     }
     a {
       display: block;
-      padding: 0 ($z * 1.25);
     }
     .title {
       svg {

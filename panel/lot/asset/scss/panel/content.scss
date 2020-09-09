@@ -1,3 +1,14 @@
+pre {
+  &.is\:text {
+    code {
+      display: inline-block;
+      background: none;
+      border: 1px dotted;
+      color: inherit;
+    }
+  }
+}
+
 .is\:error {
   display: flex;
   border-top: 4px solid;

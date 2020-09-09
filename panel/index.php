@@ -10,7 +10,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
     'chops' => [],
     'chunk' => $state['chunk'] ?? 20,
-    'layout' => $_GET['layout'] ?? 'file',
+    'layout' => $_GET['layout'] ?? null,
     'sort' => $state['sort'] ?? 1,
     'f' => null,
     'i' => $i = $url['i'],

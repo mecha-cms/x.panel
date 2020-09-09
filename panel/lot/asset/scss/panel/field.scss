@@ -6,8 +6,8 @@
   .description {
     display: block;
     font-size: ($z * .75);
-    line-height: 16px;
-    margin: 10px 0 0;
+    line-height: ($y / 1.5);
+    margin: ($y / 3) 0 0;
     code {
       font-size: ($z * .65);
     }

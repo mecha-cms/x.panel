@@ -7,8 +7,8 @@ $y: 24px;
 $z: 16px;
 $h: $y;
 
-$sans: 'Roboto Condensed', Roboto, sans-serif;
-$mono: 'Roboto Mono', 'Courier New', Courier, 'Nimbus Mono L', monospace;
+$sans: 'Roboto Condensed', sans-serif;
+$mono: 'Roboto Mono', monospace;
 
 $color: #000;
 $color-back: #fff;
@@ -108,8 +108,8 @@ h6 {
 }
 
 blockquote,
-figcaption,
-caption {
+caption,
+figcaption {
   color: $color-secondary;
 }
 
@@ -403,7 +403,7 @@ $color-back-alert: (
     &.is\:active {
       a {
         &.not\:active {
-          background: #eee; // TODO
+          background: lighten($color-secondary, 40%);
         }
       }
     }
@@ -464,31 +464,6 @@ $color-back-alert: (
         background: $color-back-button-active;
         color: $color-button;
       }
-    }
-  }
-}
-
-.lot\:tab {
-  > nav {
-    li {
-      box-shadow: inset 0 3px 0 $color-accent-tab;
-      &.not\:active {
-        opacity: 1;
-      }
-      a {
-        &.not\:active {
-          opacity: 1;
-          background: lighten($color-secondary, 50%);
-          color: $color-secondary;
-          box-shadow: inset 0 3px 0 lighten($color-secondary, 30%);
-        }
-      }
-    }
-    .has\:link {
-      box-shadow: inset 0 3px 0 $color-accent-tab-link;
-    }
-    .is\:active {
-      box-shadow: inset 0 3px 0 $color-accent-tab-active;
     }
   }
 }
@@ -675,31 +650,36 @@ label {
       }
     }
   }
+  .lot\:tab {
+    > nav {
+      li {
+        box-shadow: inset 0 3px 0 $color-accent-tab;
+        &.not\:active {
+          opacity: 1;
+        }
+        a {
+          &.not\:active {
+            opacity: 1;
+            background: lighten($color-secondary, 50%);
+            color: $color-secondary;
+            box-shadow: inset 0 3px 0 lighten($color-secondary, 30%);
+          }
+        }
+      }
+      .has\:link {
+        box-shadow: inset 0 3px 0 $color-accent-tab-link;
+      }
+      .is\:active {
+        box-shadow: inset 0 3px 0 $color-accent-tab-active;
+      }
+    }
+  }
 }
 
 @media (max-width: 720px) {
   .field {
     > label {
       font-weight: bolder;
-    }
-  }
-  .lot\:tab {
-    > nav {
-      li {
-        background: none;
-        box-shadow: none;
-        &.is\:active {
-          box-shadow: none;
-          > a {
-            color: inherit;
-          }
-        }
-        &:not(.has\:link):not(.is\:active) {
-          a {
-            color: $color-link;
-          }
-        }
-      }
     }
   }
 }

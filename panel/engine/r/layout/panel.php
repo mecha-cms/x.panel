@@ -10,10 +10,21 @@
   <body spellcheck="false">
   <?php
 
-$panel = require __DIR__ . DS . '-panel.php';
-$icon = require __DIR__ . DS . '-icon.php'; // Require icon(s) later
+$svg = "";
+$panel = _\lot\x\panel\lot(['lot' => $_['lot']], 0); // Load layout first, to queue the icon data
 
-echo $icon . $panel; // But load icon(s) first
+// Build icon(s)
+if (!empty($GLOBALS['SVG'])) {
+    $svg .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
+    foreach ($GLOBALS['SVG'] as $k => $v) {
+        $svg .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
+        $svg .= 0 === strpos($v, '<') ? $v : '<path d="' . $v . '"></path>';
+        $svg .= '</symbol>';
+    }
+    $svg .= '</svg>';
+}
+
+echo $svg . $panel; // Put icon(s) before layout. Why? Because HTML5!
 
   ?>
   </body>

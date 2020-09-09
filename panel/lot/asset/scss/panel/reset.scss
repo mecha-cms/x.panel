@@ -78,7 +78,7 @@ dt,
 legend,
 strong,
 th {
-  font-weight: bolder;
+  @extend .b;
 }
 
 blockquote,
@@ -88,7 +88,7 @@ em,
 figcaption,
 i,
 var {
-  font-style: italic;
+  @extend .i;
 }
 
 figure {
@@ -101,11 +101,12 @@ code {
 
 del,
 s {
-  @extend .strike;
+  @extend .s;
 }
+
 ins,
 u {
-  @extend .underline;
+  @extend .u;
 }
 
 kbd,
@@ -146,14 +147,6 @@ pre {
     background: #000;
     color: #fff;
     padding: ($y - $z) ($x / 2);
-  }
-  &.is\:text {
-    code {
-      background: none;
-      border: 1px dotted;
-      color: inherit;
-      padding: ($y - $z) ($x / 2);
-    }
   }
 }
 

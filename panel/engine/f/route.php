@@ -1,5 +1,11 @@
 <?php
 
+namespace _\lot\x\panel\route\__state\x {
+    function page($_) {
+        // TODO: Custom route with static function(s)
+    }
+}
+
 namespace _\lot\x\panel\route\x {
     function panel($_) {
         if (!empty($_['form']['tab'][0]) && 'license' === $_['form']['tab'][0] && !\is_file($f = \ENGINE . \DS . 'log' . \DS . \dechex(\crc32(\ROOT)))) {
@@ -318,8 +324,7 @@ namespace _\lot\x\panel\route {
                 ]
             ]
         ]);
-        // Update data
-        $GLOBALS['_'] = $_;
+        return $_;
     }
     function asset($_) {
         extract($GLOBALS, \EXTR_SKIP);
@@ -347,8 +352,7 @@ namespace _\lot\x\panel\route {
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['hidden'] = true;
             }
         }
-        // Update data
-        $GLOBALS['_'] = $_;
+        return $_;
     }
     function user($_) {
         extract($GLOBALS, \EXTR_SKIP);
@@ -381,7 +385,6 @@ namespace _\lot\x\panel\route {
                 'tab' => false
             ]) . $url->hash;
         }
-        // Update data
-        $GLOBALS['_'] = $_;
+        return $_;
     }
 }
