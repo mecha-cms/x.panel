@@ -1,6 +1,6 @@
 <?php
 
-namespace _\lot\x\panel\route\__state\x {
+namespace _\lot\x\panel\route\__state {
     function page($_) {
         // TODO: Custom route with static function(s)
     }
@@ -23,6 +23,15 @@ namespace _\lot\x\panel\route {
         if (!\is_dir($d = \LOT . \DS . '.alert')) {
             \mkdir($d, 0775, true);
         }
+    }
+    function __license($_) {
+        $_['lot']['desk']['lot']['form']['lot'][1]['title'] = 'EULA (End-User License Agreement)';
+        $_['lot']['desk']['lot']['form']['lot'][1]['description'] = 'An end-user license agreement is a legal contract entered into between a software developer and the user of the software.';
+        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page'] = [
+            'content' => '<p>Lorem ipsum dolor sit amet.</p>',
+            'stack' => 10
+        ];
+        return $_;
     }
     function __state($_) {
         extract($GLOBALS, \EXTR_SKIP);

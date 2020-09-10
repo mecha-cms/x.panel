@@ -1,7 +1,7 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/tag/1`
-$GLOBALS['_']['layout'] = $_['layout'] = 'page';
+$_['layout'] = 'page';
 
 $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 

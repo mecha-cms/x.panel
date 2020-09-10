@@ -1,7 +1,7 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/comment/2019-10-11-23-14-06.page`
-$GLOBALS['_']['layout'] = $_['layout'] = [
+$_['layout'] = [
     'archive' => 'page.comment',
     'data' => 'data',
     'draft' => 'page.comment',

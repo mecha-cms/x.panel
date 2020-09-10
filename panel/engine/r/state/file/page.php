@@ -1,7 +1,7 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/page/foo-bar.page`
-$GLOBALS['_']['layout'] = $_['layout'] = [
+$_['layout'] = [
     'archive' => 'page.page',
     'data' => 'data',
     'draft' => 'page.page',

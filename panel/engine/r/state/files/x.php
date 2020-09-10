@@ -24,10 +24,10 @@ if ($i > 1) {
 
     }
     if (2 === $i) {
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
-        $GLOBALS['_']['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
+        $_['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
+        $_['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
+        $_['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
+        $_['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
         if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
             $use = "";
@@ -89,7 +89,7 @@ if ($i > 1) {
 }
 
 // `http://127.0.0.1/panel/::g::/x/1`
-$GLOBALS['_']['layout'] = $_['layout'] = 'page';
+$_['layout'] = 'page';
 
 $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
