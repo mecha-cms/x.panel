@@ -26,6 +26,26 @@ function route() {
             break;
         }
     }
+    $set = function() {
+        // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
+        foreach ($GLOBALS['X'][1] as $v) {
+            \is_file($v = \Path::F($v) . \DS . 'panel.php') && (function($v) {
+                extract($GLOBALS, \EXTR_SKIP);
+                require $v;
+                if (isset($_) && \is_array($_)) {
+                    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+                }
+            })($v);
+        }
+        // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
+        \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (function($v) {
+            extract($GLOBALS, \EXTR_SKIP);
+            require $v;
+            if (isset($_) && \is_array($_)) {
+                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            }
+        })($v);
+    };
     if ('GET' === $_SERVER['REQUEST_METHOD']) {
         // Redirect if file already exists
         if ('s' === $_['task'] && $f && \is_file($f)) {
@@ -48,8 +68,9 @@ function route() {
                     'error' => 404
                 ]
             ]);
-            $this->status(404);
-            $this->view('panel.404');
+            // Load panel definition from other extension(s)
+            $set();
+            $this->layout('404/panel');
         }
     }
     // Pre-define state
@@ -95,30 +116,13 @@ function route() {
     if (!$ff) {
         $ff = $dd . \DS . ($_['layout'] ?? \P) . ($_['i'] ? 's' : "") . '.php';
     }
-    // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
-    foreach ($GLOBALS['X'][1] as $v) {
-        \is_file($v = \Path::F($v) . \DS . 'panel.php') && (function($v) {
-            extract($GLOBALS, \EXTR_SKIP);
-            require $v;
-            if (isset($_) && \is_array($_)) {
-                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-            }
-        })($v);
-    }
-    // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
-    \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (function($v) {
-        extract($GLOBALS, \EXTR_SKIP);
-        require $v;
-        if (isset($_) && \is_array($_)) {
-            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-        }
-    })($v);
+    // Load panel definition from other extension(s)
+    $set();
     // Define lot with no filter
     (function($ff) {
         extract($GLOBALS, \EXTR_SKIP);
         $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($ff) ? require $ff : []));
-        // Put data
-        $GLOBALS['_'] = $_;
+        $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
     })($ff);
     // Filter by status
     \is_file($v = __DIR__ . \DS . 'user' . \DS . $user['status'] . '.php') && (function($v) {
@@ -180,8 +184,13 @@ function route() {
     // Put data
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');
-    $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;
-    $this->view('panel');
+    if (isset($_['lot']['title'])) {
+        $GLOBALS['t'][] = \i($_['lot']['title']); // Custom window title
+        unset($GLOBALS['_']['lot']['title']);
+    } else {
+        $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;
+    }
+    $this->layout('panel');
 }
 
 \Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", 20);

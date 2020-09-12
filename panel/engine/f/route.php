@@ -1,11 +1,5 @@
 <?php
 
-namespace _\lot\x\panel\route\__state {
-    function page($_) {
-        // TODO: Custom route with static function(s)
-    }
-}
-
 namespace _\lot\x\panel\route\x {
     function panel($_) {
         if (!empty($_['form']['tab'][0]) && 'license' === $_['form']['tab'][0] && !\is_file($f = \ENGINE . \DS . 'log' . \DS . \dechex(\crc32(\ROOT)))) {
@@ -47,11 +41,11 @@ namespace _\lot\x\panel\route {
             return $path;
         };
         // Load primary state(s)
-        $state_0 = require $fresh(\ROOT . \DS . 'state.php');
-        $state_1 = require $fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-        $state_2 = require $fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+        $state_r = require $fresh(\ROOT . \DS . 'state.php');
+        $state_user = require $fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+        $state_panel = require $fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
         // Sanitize form data
-        \Hook::set('do.state.get', function($_) use(&$state_0, &$state_1, &$state_2) {
+        \Hook::set('do.state.get', function($_) use($fresh, &$state_r, &$state_user, &$state_panel) {
             if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($_['form']['state'])) {
                 return $_;
             }
@@ -61,23 +55,27 @@ namespace _\lot\x\panel\route {
             $_['form']['state']['email'] = \_\lot\x\panel\h\w($_['form']['state']['email'] ?? "");
             $_['form']['state']['charset'] = \strip_tags($_['form']['state']['charset'] ?? 'utf-8');
             $_['form']['state']['language'] = \strip_tags($_['form']['state']['language'] ?? 'en');
-            $default = $state_1['guard']['path'] ?? $state_2['guard']['path'] ?? $state_0['x']['user']['guard']['path'] ?? $state_0['x']['panel']['guard']['path'] ?? "";
-            $default = '/' . \trim($default, '/');
+            $def = $state_user['guard']['path'] ?? $state_panel['guard']['path'] ?? $state_r['x']['user']['guard']['path'] ?? $state_r['x']['panel']['guard']['path'] ?? $state_user['path'] ?? "";
+            $def = '/' . \trim($def, '/');
             if (!empty($_['form']['state']['x']['user']['guard']['path'])) {
                 if ($secret = \To::kebab(\trim($_['form']['state']['x']['user']['guard']['path'], '/'))) {
-                    $_['form']['state']['x']['user']['guard']['path'] = $default = '/' . $secret;
+                    $_['form']['state']['x']['user']['guard']['path'] = $def = '/' . $secret;
                 } else {
                     unset($_['form']['state']['x']['user']['guard']['path']);
                 }
             }
-            if ($_['/'] !== $default) {
-                $_['/'] = $default;
-                if ($state_2['guard']['path'] === $default) {
-                    $_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_1['path'] . '</code>'];
+            if ($_['/'] !== $def) {
+                if ($state_panel['guard']['path'] === $def) {
+                    $_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['path'] . '</code>'];
                 } else {
-                    $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $default . '</code>'];
+                    $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $def . '</code>'];
                 }
             }
+            $fresh(\ROOT . \DS . 'state.php');
+            $fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+            $fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+            // TODO
+            $_['form']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
             return $_;
         }, 9.9);
         if (1 !== $user['status'] || 'g' !== $_['task']) {
@@ -185,7 +183,7 @@ namespace _\lot\x\panel\route {
                                                             'title' => [
                                                                 'type' => 'text',
                                                                 'name' => 'state[title]',
-                                                                'alt' => ($v = $state_0['title'] ?? null) ?? 'Title Goes Here',
+                                                                'alt' => ($v = $state_r['title'] ?? null) ?? 'Title Goes Here',
                                                                 'value' => $v,
                                                                 'width' => true,
                                                                 'stack' => 10
@@ -194,7 +192,7 @@ namespace _\lot\x\panel\route {
                                                                 'type' => 'content',
                                                                 'name' => 'state[description]',
                                                                 'alt' => 'Description goes here...',
-                                                                'value' => $state_0['description'] ?? null,
+                                                                'value' => $state_r['description'] ?? null,
                                                                 'width' => true,
                                                                 'stack' => 20
                                                             ],
@@ -203,7 +201,7 @@ namespace _\lot\x\panel\route {
                                                                 'description' => 'Choose default page that will open in the home page.',
                                                                 'type' => 'combo',
                                                                 'name' => 'state[path]',
-                                                                'value' => $state_0['path'] ?? null,
+                                                                'value' => $state_r['path'] ?? null,
                                                                 'lot' => $paths,
                                                                 'stack' => 30
                                                             ]
@@ -221,7 +219,7 @@ namespace _\lot\x\panel\route {
                                                                 'description' => 'Choose default page that will open after logged-in.',
                                                                 'type' => 'combo',
                                                                 'name' => 'state[x][panel][path]',
-                                                                'value' => $state_0['x']['panel']['path'] ?? $state_2['path'] ?? null,
+                                                                'value' => $state_r['x']['panel']['path'] ?? $state_panel['path'] ?? null,
                                                                 'lot' => $panes,
                                                                 'stack' => 10
                                                             ],
@@ -230,8 +228,8 @@ namespace _\lot\x\panel\route {
                                                                 'type' => 'text',
                                                                 'name' => 'state[x][user][guard][path]',
                                                                 'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                                'alt' => $state_1['guard']['path'] ?? $state_1['path'] ?? null,
-                                                                'value' => $state_0['x']['user']['guard']['path'] ?? $state_1['guard']['path'] ?? $state_1['path'] ?? null,
+                                                                'alt' => $state_user['guard']['path'] ?? $state_user['path'] ?? null,
+                                                                'value' => $state_r['x']['user']['guard']['path'] ?? $state_user['guard']['path'] ?? null,
                                                                 'stack' => 20
                                                             ]
                                                         ],
@@ -248,7 +246,7 @@ namespace _\lot\x\panel\route {
                                                             'zone' => [
                                                                 'type' => 'combo',
                                                                 'name' => 'state[zone]',
-                                                                'value' => $state_0['zone'] ?? null,
+                                                                'value' => $state_r['zone'] ?? null,
                                                                 'lot' => $zones,
                                                                 'width' => true,
                                                                 'stack' => 10
@@ -256,7 +254,7 @@ namespace _\lot\x\panel\route {
                                                             'direction' => [
                                                                 'type' => 'item',
                                                                 'name' => 'state[direction]',
-                                                                'value' => $state_0['direction'] ?? null,
+                                                                'value' => $state_r['direction'] ?? null,
                                                                 'lot' => [
                                                                     'ltr' => '<abbr title="Left to Right">LTR</abbr>',
                                                                     'rtl' => '<abbr title="Right to Left">RTL</abbr>'
@@ -266,7 +264,7 @@ namespace _\lot\x\panel\route {
                                                             'charset' => [
                                                                 'type' => 'text',
                                                                 'name' => 'state[charset]',
-                                                                'alt' => ($v = $state_0['charset'] ?? null) ?? 'utf-8',
+                                                                'alt' => ($v = $state_r['charset'] ?? null) ?? 'utf-8',
                                                                 'value' => $v,
                                                                 'stack' => 30
                                                             ],
@@ -275,7 +273,7 @@ namespace _\lot\x\panel\route {
                                                                 'type' => 'text',
                                                                 'name' => 'state[language]',
                                                                 'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                                'alt' => ($v = $state_0['language'] ?? null) ?? 'en',
+                                                                'alt' => ($v = $state_r['language'] ?? null) ?? 'en',
                                                                 'value' => $v,
                                                                 'stack' => 40
                                                             ]
@@ -295,7 +293,7 @@ namespace _\lot\x\panel\route {
                                                                 'description' => 'This email address will be used to receive certain messages to your inbox as the fastest solution for notifications. At this time you may not use it to receive any messages, but some extensions that require an email address may depend on this value.',
                                                                 'type' => 'email',
                                                                 'name' => 'state[email]',
-                                                                'value' => $state_0['email'] ?? null,
+                                                                'value' => $state_r['email'] ?? null,
                                                                 'stack' => 10
                                                             ]
                                                         ],
