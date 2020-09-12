@@ -15,7 +15,7 @@ function route() {
     if (!\Is::user()) {
         \Guard::kick("");
     }
-    // Load default layout content(s)
+    // Load default panel definition
     $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r.php');
     extract($GLOBALS, \EXTR_SKIP);
     $f = $_['f'];
@@ -86,7 +86,7 @@ function route() {
     ]);
     $dd = __DIR__ . \DS . 'state';
     $ff = null;
-    if (!$route && !isset($_GET['layout']) && !isset($_['layout'])) {
+    if (!isset($_GET['layout']) && !isset($_['layout'])) {
         // Auto-detect layout type
         if ($f) {
             if (\is_dir($f)) {
@@ -185,10 +185,18 @@ function route() {
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');
     if (isset($_['lot']['title'])) {
-        $GLOBALS['t'][] = \i($_['lot']['title']); // Custom window title
+        $GLOBALS['t'][] = \i($_['lot']['title']); // Custom panel title
         unset($GLOBALS['_']['lot']['title']);
     } else {
         $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;
+    }
+    // Re-populate alert data, just in case!
+    if (isset($alert) && \count($alert) && isset($_['lot']['desk']['lot']['form']['lot']['alert'])) {
+        $alert = (string) $alert;
+        $_['lot']['desk']['lot']['form']['lot']['alert']['hidden'] = !$alert;
+        $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = $alert;
+        // Put data
+        $GLOBALS['_'] = $_;
     }
     $this->layout('panel');
 }

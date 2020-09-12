@@ -4,10 +4,14 @@ require __DIR__ . DS . '2.php';
 
 // Member user(s) cannot do anything but updating their user file
 if ('g' === $_['task'] && $user->path === $_['f']) {
-    // Hide everything but `link`
+    // Hide everything but `email`, `link` and `status`
     if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'])) {
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot'] as $k => &$v) {
-            if ('link' !== $k) {
+            if (
+                'email' !== $k &&
+                'link' !== $k &&
+                'status' !== $k
+            ) {
                 $v['hidden'] = true;
             }
         }

@@ -23,7 +23,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'token' => content(LOT . DS . 'user' . DS . Cookie::get('user.key') . DS . 'token.data'),
     'trash' => !empty($state['guard']['trash']),
     'user' => $u = State::get('x.user', true),
-    '/' => $pp = ($u['guard']['path'] ?? $state['guard']['path'])
+    '/' => $pp = '/' . trim($u['guard']['path'] ?? $state['guard']['path'], '/')
 ], $GLOBALS['_'] ?? []);
 
 $p = $url['path'];

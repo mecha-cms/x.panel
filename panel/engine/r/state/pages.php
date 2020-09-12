@@ -25,9 +25,10 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         $x = pathinfo($k, PATHINFO_EXTENSION);
         $pages[$k] = [
             // Load data asynchronously for best performance
-            'invoke' => function($path) use($x) {
+            'invoke' => function($path) use($user, $x) {
                 $page = new Page($path);
                 return [
+                    'hidden' => 1 !== $user['status'] && $user->user !== $page['author'],
                     'title' => S . _\lot\x\panel\h\w($page->title) . S,
                     'description' => S . _\lot\x\panel\h\w($page->description) . S,
                     'link' => 'draft' === $x ? null : $page->url,

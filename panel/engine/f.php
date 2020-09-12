@@ -315,6 +315,9 @@ namespace _\lot\x\panel {
             $in = \array_replace_recursive($in, \call_user_func($in['invoke'], $path));
             unset($in['invoke']);
         }
+        if (!empty($in['hidden'])) {
+            return;
+        }
         if (isset($in['active']) && !$in['active']) {
             $tags[] = 'not:active';
         }
