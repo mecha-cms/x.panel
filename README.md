@@ -15,6 +15,8 @@ Release Notes
  - Finished the restore feature.
  - Improved comments page execution time by storing newly created comments into array.
  - Improved `panel.php` file feature to allow developers to extend data to the `$_` variable directly without using `$GLOBALS`.
+ - Added ability to set custom panel route through static functions under `_\lot\x\panel\route` namespace.
+ - Added ability to set custom panel title.
 
 ### 2.4.0
 
