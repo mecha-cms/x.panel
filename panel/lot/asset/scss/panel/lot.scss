@@ -17,7 +17,8 @@
       flex: 1;
     }
     > li {
-      &.is\:active {
+      &.is\:active,
+      &.is\:current {
         > a {
           color: inherit;
         }

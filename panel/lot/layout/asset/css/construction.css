@@ -136,7 +136,7 @@ blockquote, caption, figcaption {
   background: #1a1a1a;
   color: #999;
 }
-.lot\:bar > ul > li > a:focus, .lot\:bar > ul > li > a:active, .lot\:bar > ul > li.is\:active > a {
+.lot\:bar > ul > li > a:focus, .lot\:bar > ul > li > a:active, .lot\:bar > ul > li.is\:active > a, .lot\:bar > ul > li.is\:current > a {
   color: #e6e6e6;
 }
 .lot\:bar > ul > li > a {

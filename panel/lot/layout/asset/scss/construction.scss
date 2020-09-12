@@ -275,7 +275,8 @@ $color-back-alert: (
     > li {
       > a:focus,
       > a:active,
-      &.is\:active > a {
+      &.is\:active > a,
+      &.is\:current > a {
         color: darken($color-back, 10%);
       }
       > a {

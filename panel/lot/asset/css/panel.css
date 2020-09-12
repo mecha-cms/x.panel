@@ -790,7 +790,7 @@ svg[display='none'] {
 .lot\:bar > ul:nth-child(2) {
   flex: 1;
 }
-.lot\:bar > ul > li.is\:active > a {
+.lot\:bar > ul > li.is\:active > a, .lot\:bar > ul > li.is\:current > a {
   color: inherit;
 }
 .lot\:bar > ul > li.is\:separator {
