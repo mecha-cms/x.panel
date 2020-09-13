@@ -6,13 +6,13 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### master
+### 2.4.1
 
  - Added `invoke` property for every item in pages to be invoked within `_\lot\x\panel\page()` that would returns other properties to be merged to the current properties.
- - Updated [F3H](https://github.com/taufik-nurrohman/f3h) version to 1.0.13.
+ - Updated [F3H](https://github.com/taufik-nurrohman/f3h) version to 1.0.15.
  - Fixed bugs of user creation event which didn&rsquo;t store the pass data correctly.
  - Finished the restore feature.
- - Improved comments page execution time by storing newly created comments into array.
+ - Improved comments page execution time by storing newly created comments into static array.
  - Improved `panel.php` file feature to allow developers to extend data to the `$_` variable directly without using `$GLOBALS`.
  - Added ability to set custom panel route through static functions under `_\lot\x\panel\route` namespace.
  - Added ability to set custom panel title.
