@@ -30,10 +30,11 @@ if (null !== State::get('x.comment')) {
             ]);
         }
     });
-    // Generate recent comment(s)
+    // Generate recent comment cache
     Hook::set('on.comment.set', function($path) {
         extract($GLOBALS, EXTR_SKIP);
-        if (!is_file($f = ($d = LOT . DS . 'cache') . DS . 'comments.php')) {
+        // `dechex(crc32('comments'))`
+        if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '5f9e962a.php')) {
             if (!is_dir($d)) {
                 mkdir($d, 0775, true);
             }
@@ -48,4 +49,16 @@ if (null !== State::get('x.comment')) {
         array_unshift($recent, strtr($path, [LOT . DS => ""]));
         file_put_contents($f, '<?' . 'php return ' . z(array_slice($recent, 0, $_['chunk'])) . ';');
     });
+    // Generate recent comment cache for the first time
+    if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '5f9e962a.php')) {
+        if (!is_dir($d)) {
+            mkdir($d, 0775, true);
+        }
+        $recent = [];
+        foreach (g(LOT . DS . 'comment', 'archive,draft,page', true) as $k => $v) {
+            $recent[basename($k)] = strtr($k, [LOT . DS => ""]);
+        }
+        krsort($recent);
+        file_put_contents($f, '<?' . 'php return ' . z(array_values(array_slice($recent, 0, $_['chunk']))) . ';');
+    }
 }

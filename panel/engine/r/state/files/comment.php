@@ -23,7 +23,8 @@ $count = 0;
 
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
-if ($r && is_file($f = LOT . DS . 'cache' . DS . 'comments.php')) {
+// `dechex(crc32('comments'))`
+if ($r && is_file($f = LOT . DS . 'cache' . DS . '5f9e962a.php')) {
     foreach ((array) require $f as $v) {
         if (!is_file($v = LOT . DS . $v)) {
             continue;

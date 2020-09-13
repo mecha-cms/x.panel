@@ -147,17 +147,21 @@ function route() {
     // Put data
     $GLOBALS['_'] = $_;
     if (isset($_['form']['token'])) {
-        $hooks = \map(\step($_['layout']), function($hook) use($_) {
-            return 'do.' . $hook . '.' . ([
-                'g' => 'get',
-                'l' => 'let',
-                's' => 'set'
-            ][$_['task']] ?? '?');
-        });
-        foreach (\array_reverse($hooks) as $hook) {
-            if ($r = \Hook::fire($hook, [$_, $_['form']])) {
-                $_ = $r;
+        if (isset($_['layout'])) {
+            $hooks = \map(\step($_['layout']), function($hook) use($_) {
+                return 'do.' . $hook . '.' . ([
+                    'g' => 'get',
+                    'l' => 'let',
+                    's' => 'set'
+                ][$_['task']] ?? '?');
+            });
+            foreach (\array_reverse($hooks) as $hook) {
+                if ($r = \Hook::fire($hook, [$_, $_['form']])) {
+                    $_ = $r;
+                }
             }
+        } else {
+            // Form data has been processed through a blank layout
         }
     } else {
         // Missing `<input name="token">`
@@ -189,14 +193,6 @@ function route() {
         unset($GLOBALS['_']['lot']['title']);
     } else {
         $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;
-    }
-    // Re-populate alert data, just in case!
-    if (isset($alert) && \count($alert) && isset($_['lot']['desk']['lot']['form']['lot']['alert'])) {
-        $alert = (string) $alert;
-        $_['lot']['desk']['lot']['form']['lot']['alert']['hidden'] = !$alert;
-        $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = $alert;
-        // Put data
-        $GLOBALS['_'] = $_;
     }
     $this->layout('panel');
 }

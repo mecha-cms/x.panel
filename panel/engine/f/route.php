@@ -20,13 +20,13 @@ namespace _\lot\x\panel\route {
         }
         $content = <<<HTML
 <h3>General Agreement</h3>
-<p>You are free to use this application personally, either for commercial or for non-commercial purposes. You will only be charged a fee when distributing Mecha along with this control panel feature to your clients who pay for your modified Mecha products.</p>
-<p>In other words, use it for free and pay only if you get paid. If you make a commercial product with this extension included (e.g. getting paid from a client who wants to have a website made of this product or getting paid from a client who has gotten a website from you made of this product), then I would kindly ask you to give a small financial support for about 15 USD per product to keep this project floating around the world wide web.</p>
+<p>You are free to use this application, either for commercial or for non-commercial purposes. You will only be charged a fee when distributing Mecha along with this control panel feature to your clients who pay for your modified Mecha products.</p>
+<p>In other words, use it for free and pay only if you get paid. If you make a commercial product with this extension included (e.g. getting paid from a client who want to have a website made of this product or getting paid from a client who has gotten a website from you made of this product), then I would kindly ask you to give a small financial support for about 15 USD per product to keep this project floating around the world wide web.</p>
 <p>You have the right to determine the price of your project without any interference from me. You may be able to discuss this additional cost with your clients, honestly, without the need to keep anything confidential. I want everything to be transparent so that no one feels aggrieved.</p>
-<p>This agreement applies only to the first person (the developer who created the product). After that, the developer may assign a separate license to their product. For example, making an agreement on how to distribute and resell the purchased products.</p>
-<p>Your custom themes and extensions included in the product are not affected by this license.</p>
+<p>This agreement applies only to the first person (the developer who created the product). After that, you (the developer) may assign a separate license to your product. For example, making an agreement on how to distribute and resell the purchased products.</p>
+<p>Your custom themes and extensions included in the product are not affected by this agreement.</p>
 <h3>Dealing with Mass Production Activities</h3>
-<p>If you have a business mechanism that allows your clients to download packages after making a payment, and you don&#x2019;t want to be tied down to this revenue sharing, then you will need to remove the control panel feature from your downloadable package. Please provide clear guidances separately on how to install the base control panel feature for people who want to download and use your packages.</p>
+<p>If you have a business mechanism that allows your clients to download packages after making a payment, and you don&#x2019;t want to be tied down to this revenue sharing, then you will need to remove the control panel feature from your downloadable package. Please provide a clear guidance separately on how to install the base control panel feature for people who want to download and use your packages.</p>
 <h3>Notes</h3>
 <p>If you are from Indonesia and are having problems with the current rupiah exchange rate against the dollar, you are allowed to consider 15 USD as 150,000 IDR.</p>
 <p><a class="button" href="https://paypal.me/tatautaufik" target="_blank">Donate for 15 USD</a></p>
@@ -34,7 +34,7 @@ namespace _\lot\x\panel\route {
 HTML;
         $_['lot']['title'] = 'End-User License Agreement';
         $_['lot']['desk']['lot']['form']['lot'][1]['title'] = 'End-User License Agreement';
-        $_['lot']['desk']['lot']['form']['lot'][1]['description'] = 'This End-User License Agreement (EULA) is a legal agreement between you (either as an individual or on behalf of an entity) and Mecha, regarding your use of Mecha&#x2019;s control panel extension. This license agreement does not apply when you use Mecha without the control panel feature.';
+        $_['lot']['desk']['lot']['form']['lot'][1]['description'] = 'This End-User License Agreement (EULA) is a legal agreement between you (either as an individual or on behalf of an entity) and Mecha, regarding your use of Mecha&#x2019;s control panel extension. This license agreement does not apply when you use Mecha without the control panel extension.';
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page'] = [
             'content' => $content,
             'stack' => 10
