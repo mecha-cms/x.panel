@@ -15,7 +15,7 @@
   font-size: 70%;
 }
 .s, del, s {
-  text-decration: line-through;
+  text-decoration: line-through;
 }
 .u, ins, u {
   text-decoration: underline;

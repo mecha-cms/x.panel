@@ -6,6 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.4.2
+
+ - Renamed panel form name from `search` to `get`, `edit` to `set`.
+ - Fixed typos in SCSS file.
+
 ### 2.4.1
 
  - Added `invoke` property for every item in pages to be invoked within `_\lot\x\panel\page()` that would returns other properties to be merged to the current properties.

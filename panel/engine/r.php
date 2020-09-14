@@ -54,7 +54,7 @@ return (function($icons) {
                         'search' => [
                             'type' => 'form/get',
                             'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . '/1' . $url->query('&', ['q' => false]) . $url->hash,
-                            'name' => 'search',
+                            'name' => 'get',
                             'lot' => [
                                 'fields' => [
                                     'type' => 'fields',
@@ -157,7 +157,7 @@ return (function($icons) {
                 'form' => [
                     'type' => 'form/post',
                     'url' => $url->current,
-                    'name' => 'edit',
+                    'name' => 'set',
                     'lot' => [
                         0 => [
                             'type' => 'section',
