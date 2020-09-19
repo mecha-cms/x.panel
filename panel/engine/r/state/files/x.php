@@ -30,6 +30,14 @@ if ($i > 1) {
         $_['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
         if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
+            $content = $page->content;
+            // Make URL example(s) in content become usable
+            $content = strtr($content, [
+                '://127.0.0.1/panel/' => '://' . $url->host . $url->d . $_['/'] . '/',
+                '://127.0.0.1' => '://' . $url->host . $url->d,
+                '://github.com/mecha-cms/layout.' => '://mecha-cms.com/store/layout/',
+                '://github.com/mecha-cms/x.' => '://mecha-cms.com/store/extension/',
+            ]);
             $use = "";
             if ($uses = $page->use) {
                 $use .= '<details class="p"><summary><strong>' . i('Dependency') . '</strong> (' . count($uses) . ')</summary><ul>';
@@ -63,8 +71,8 @@ if ($i > 1) {
                     0 => [
                         'title' => $page->title . ' <sup>' . $page->version . '</sup>',
                         'description' => _\lot\x\panel\h\w($page->description, 'a'),
-                        'type' => 'Section',
-                        'content' => $page->content . $use,
+                        'type' => 'section',
+                        'content' => $content . $use,
                         'stack' => 10
                     ]
                 ],

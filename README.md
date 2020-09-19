@@ -6,6 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### master
+
+ - Improved info tab of extension and layout, to convert example URL within page content into usable URL.
+ - Hide search form in license page.
+
 ### 2.4.2
 
  - Renamed panel form name from `search` to `get`, `edit` to `set`.

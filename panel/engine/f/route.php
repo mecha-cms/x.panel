@@ -12,6 +12,8 @@ namespace _\lot\x\panel\route {
             $_['kick'] = $GLOBALS['url'] . $_['/'] . '/::g::/.license';
             return $_;
         }
+        // Hide search form
+        $_['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true;
         if (!\is_file($f = \ENGINE . \DS . 'log' . \DS . \dechex(\crc32(\ROOT)))) {
             if (!\is_dir($d = \dirname($f))) {
                 \mkdir($d, 0775, true);
