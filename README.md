@@ -6,10 +6,10 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### master
+### 2.4.3
 
- - Improved info tab of extension and layout, to convert example URL within page content into usable URL.
- - Hide search form in license page.
+ - Improved info tab of extension and layout, to automatically convert example URL in the page content into usable URL.
+ - Hide search form in the default license page.
 
 ### 2.4.2
 
