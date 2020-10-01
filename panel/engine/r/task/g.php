@@ -275,8 +275,7 @@ function state($_) {
         }
         if (\is_file($f = \LOT . \DS . \trim(\strtr($_['form']['path'] ?? $_['path'], '/', \DS), \DS))) {
             $_['f'] = $f = \realpath($f);
-            $v = \array_replace_recursive((array) require $f, $_['form']['state'] ?? []);
-            $v = $drop($v);
+            $v = $drop($_['form']['state'] ?? []);
             $_['form']['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
             $_ = file($_); // Move to `file`
         }
