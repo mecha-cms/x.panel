@@ -10,7 +10,7 @@ Release Notes
 
  - Improved info tab of extension and layout, to automatically convert example URL in the page content into usable URL.
  - Hide search form in the default license page.
- - State hook should not replace-recursive but override the current state data, to make sure that every boolean data in it will be removed if toggle fields are not checked.
+ - State hook should not replace-recursive but override the current state data, to make sure that all boolean value in it will be removed if some toggle fields are not checked.
 
 ### 2.4.2
 
