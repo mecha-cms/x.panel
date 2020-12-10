@@ -1,12 +1,6 @@
 <?php
 
 namespace _\lot\x\panel\route {
-    function __alert($_) {
-        // Create folder if not exists
-        if (!\is_dir($d = \LOT . \DS . '.alert')) {
-            \mkdir($d, 0775, true);
-        }
-    }
     function __license($_) {
         if ('g' !== $_['task']) {
             $_['kick'] = $GLOBALS['url'] . $_['/'] . '/::g::/.license';
