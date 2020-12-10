@@ -66,14 +66,14 @@
   }
   .title {
     svg {
-      margin: ($y / 2) -($x / 4) 0;
+      margin: ($y / 2) (-$x / 4) 0;
       &.caret {
         &:first-child {
           margin-right: 0;
-          margin-left: -($x / 2);
+          margin-left: (-$x / 2);
         }
         &:last-child {
-          margin-right: -($x / 2);
+          margin-right: (-$x / 2);
           margin-left: 0;
         }
       }
@@ -84,8 +84,8 @@
         margin-left: ($x / 4);
       }
       &:only-child {
-        margin-right: -($x / 4);
-        margin-left: -($x / 4);
+        margin-right: (-$x / 4);
+        margin-left: (-$x / 4);
       }
     }
   }
@@ -98,8 +98,8 @@
       svg {
         &.caret {
           &:only-child {
-            margin-right: -($x / 2);
-            margin-left: -($x / 2);
+            margin-right: (-$x / 2);
+            margin-left: (-$x / 2);
           }
         }
       }
@@ -113,8 +113,8 @@
 .lot\:color {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -($x / 4);
-  margin-left: -($x / 4);
+  margin-right: (-$x / 4);
+  margin-left: (-$x / 4);
   .input {
     margin-right: ($x / 4);
     margin-left: ($x / 4);
@@ -155,7 +155,7 @@
     display: flex;
     border: 0 solid $color-back;
     padding: ($y / 4) ($x / 2);
-    margin: 0 -($x / 4);
+    margin: 0 (-$x / 4);
     position: relative;
     overflow: hidden;
     &::before,
@@ -172,7 +172,7 @@
       margin: 0 ($x / 8);
     }
     > .lot\:task {
-      margin-right: -($x / 4);
+      margin-right: (-$x / 4);
     }
   }
   .is\:file,
@@ -217,7 +217,7 @@
 .lot\:page {
   li {
     padding: ($y / 2) ($x / 4);
-    margin: 0 -($x / 2);
+    margin: 0 (-$x / 2);
     &.is\:file,
     &.is\:folder {
       padding-left: ($x / 4);
@@ -295,14 +295,14 @@
       svg {
         margin: -1px;
         &:first-child {
-          margin-left: -(($x / 4) + 1); // -(($x / 4) + border-left-width)
+          margin-left: (-(($x / 4) + 1)); // -(($x / 4) + border-left-width)
         }
         &:last-child {
-          margin-right: -(($x / 4) + 1); // -(($x / 4) + border-right-width)
+          margin-right: (-(($x / 4) + 1)); // -(($x / 4) + border-right-width)
         }
         &:only-child {
-          margin-right: -(($x / 4) + 1); // -(($x / 4) + border-right-width)
-          margin-left: -(($x / 4) + 1); // -(($x / 4) + border-left-width)
+          margin-right: (-(($x / 4) + 1)); // -(($x / 4) + border-right-width)
+          margin-left: (-(($x / 4) + 1)); // -(($x / 4) + border-left-width)
         }
       }
     }
@@ -326,7 +326,7 @@
 .lot\:toggle {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -($x / 4);
+  margin: 0 (-$x / 4);
   padding: ($x / 4) 0;
   &.is\:block {
     display: block;
@@ -398,7 +398,7 @@
     }
     .title {
       svg {
-        margin: 0 -($x / 4);
+        margin: 0 (-$x / 4);
         &:first-child {
           margin-right: ($x / 4);
         }
@@ -406,8 +406,8 @@
           margin-left: ($x / 4);
         }
         &:only-child {
-          margin-right: -($x / 4);
-          margin-left: -($x / 4);
+          margin-right: (-$x / 4);
+          margin-left: (-$x / 4);
         }
       }
     }
@@ -443,7 +443,7 @@
 }
 
 .lot\:pager {
-  margin: 0 -($x / 8);
+  margin: 0 (-$x / 8);
   &,
   > span {
     display: flex;
@@ -498,7 +498,7 @@
     }
     .title {
       svg {
-        margin: ($y / 2) -(($z * 1.25) / 2);
+        margin: ($y / 2) (-(($z * 1.25) / 2));
         &:first-child {
           margin-right: (($z * 1.25) / 4);
         }
@@ -506,8 +506,8 @@
           margin-left: (($z * 1.25) / 4);
         }
         &:only-child {
-          margin-right: -(($z * 1.25) / 2);
-          margin-left: -(($z * 1.25) / 2);
+          margin-right: (-(($z * 1.25) / 2));
+          margin-left: (-(($z * 1.25) / 2));
         }
       }
     }
@@ -553,10 +553,10 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin: -($y / 8) -($x / 8);
+  margin: (-$y / 8) (-$x / 8);
   &\.link {
-    margin-right: -($x / 4);
-    margin-left: -($x / 4);
+    margin-right: (-$x / 4);
+    margin-left: (-$x / 4);
     > * {
       margin-right: ($x / 4);
       margin-left: ($x / 4);
@@ -579,7 +579,7 @@
 }
 
 .lot\:desk {
-  max-width: ($x * 42.5);
+  max-width: ($x * 36);
 }
 
 .lot\:section {

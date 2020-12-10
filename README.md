@@ -6,6 +6,12 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### master
+
+ - Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - Added simple Node.js build tool in `.\lot\x\panel\lot\asset` folder. Maybe not for everybody.
+ - Narrowed down the panel editor maximum width.
+
 ### 2.4.3
 
  - Improved info tab of extension and layout, to automatically convert example URL in the page content into usable URL.

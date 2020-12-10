@@ -40,13 +40,12 @@ a {
   }
 }
 
-html,
-body {
+:root, body {
   min-height: 100%;
 }
 
-html {
-  font: normal normal $z/$h $sans;
+:root {
+  font: normal normal #{$z}/#{$h} $sans;
   text-align: left;
   background: $color-back;
   color: $color;
@@ -242,7 +241,7 @@ hr {
 fieldset {
   padding: $y $x;
   legend {
-    margin-top: -($h / 2);
+    margin-top: (-$h / 2);
   }
 }
 

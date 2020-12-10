@@ -1,7 +1,7 @@
 .alert {
   p {
     .f\:r svg {
-      margin-right: -($x / 4);
+      margin-right: (-$x / 4);
     }
     > small {
       + br {
@@ -9,7 +9,7 @@
         + small {
           display: flex;
           flex-wrap: wrap;
-          margin: 0 -($x / 8);
+          margin: 0 (-$x / 8);
           padding: ($y / 2) 0 ($y / 4);
           a {
             font-size: ($z * .75);

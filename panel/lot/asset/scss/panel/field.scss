@@ -1,8 +1,8 @@
 
 .field {
   display: flex;
-  margin-right: -($x / 2);
-  margin-left: -($x / 2);
+  margin-right: (-$x / 2);
+  margin-left: (-$x / 2);
   .description {
     display: block;
     font-size: ($z * .75);

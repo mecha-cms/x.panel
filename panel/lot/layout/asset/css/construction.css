@@ -1,5 +1,5 @@
 @import url('//fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400i,700i|Roboto+Mono:400,700,400i,700i');
-html {
+:root {
   font-family: 'Roboto Condensed', sans-serif;
   background: #fff;
   color: #000;

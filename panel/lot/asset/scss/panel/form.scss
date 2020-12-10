@@ -44,19 +44,21 @@
 
 [disabled],
 .not\:active {
-  .button&,
-  .input&,
-  .select&,
-  .textarea& {
+  $suffix: &;
+  .button#{$suffix},
+  .input#{$suffix},
+  .select#{$suffix},
+  .textarea#{$suffix} {
     opacity: .5;
     cursor: not-allowed;
   }
 }
 
 [readonly] {
-  .input&,
-  .select&,
-  .textarea& {
+  $suffix: &;
+  .input#{$suffix},
+  .select#{$suffix},
+  .textarea#{$suffix} {
     border-style: dotted;
   }
 }

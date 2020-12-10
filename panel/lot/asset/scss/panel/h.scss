@@ -42,9 +42,18 @@
   }
 }
 
-.text-center,
-.ta\:c {
-  text-align: center;
+$aligns: (
+  'c': 'center',
+  'e': 'end',
+  'r': 'right',
+  's': 'start'
+);
+
+@each $k, $v in $aligns {
+  .text-#{$v},
+  .ta\:#{$k} {
+    text-align: #{$v};
+  }
 }
 
 .text-justify,
@@ -52,50 +61,18 @@
   text-align: justify;
 }
 
-.text-right,
-.ta\:r {
-  text-align: left;
-}
-
-.text-left,
-.ta\:l {
-  text-align: left;
-}
-
-.align-right,
-.align-left,
 .align-center,
-.a\:r,
+.align-end,
+.align-left,
+.align-right,
+.align-start,
+.a\:c,
+.a\:e,
 .a\:l,
-.a\:c {
+.a\:r,
+.a\:s {
   display: block;
   float: none;
-}
-
-* + .align-center,
-* + .a\:c {
-  margin-top: $y;
-}
-
-.align-right,
-.a\:r {
-  margin-top: ($y / 3);
-  margin-bottom: ($y / 1.5);
-  margin-left: $x;
-  float: right;
-  text-align: right;
-}
-
-.align-left,
-.a\:l {
-  margin-top: ($y / 3);
-  margin-right: $x;
-  margin-bottom: ($y / 1.5);
-  float: left;
-  text-align: left;
-  img {
-    display: block;
-  }
 }
 
 .align-center,
@@ -110,12 +87,70 @@
   }
 }
 
-.f\:r {
+.align-end,
+.a\:e {
+  margin-top: ($y / 3);
+  margin-inline-end: $x;
+  margin-bottom: ($y / 1.5);
+  float: inline-end;
+  text-align: end;
+  img {
+    display: block;
+  }
+}
+
+* + .align-center,
+* + .a\:c {
+  margin-top: $y;
+}
+
+.align-left,
+.a\:l {
+  margin-top: ($y / 3);
+  margin-right: $x;
+  margin-bottom: ($y / 1.5);
+  float: left;
+  text-align: left;
+  img {
+    display: block;
+  }
+}
+
+.align-right,
+.a\:r {
+  margin-top: ($y / 3);
+  margin-bottom: ($y / 1.5);
+  margin-left: $x;
   float: right;
+  text-align: right;
+}
+
+.align-start,
+.a\:s {
+  margin-top: ($y / 3);
+  margin-inline-start: $x;
+  margin-bottom: ($y / 1.5);
+  float: inline-start;
+  text-align: start;
+  img {
+    display: block;
+  }
+}
+
+.f\:e {
+  float: inline-end;
 }
 
 .f\:l {
   float: left;
+}
+
+.f\:r {
+  float: right;
+}
+
+.f\:s {
+  float: inline-start;
 }
 
 $sizes: 0, 1, 2;
@@ -124,17 +159,37 @@ $sizes: 0, 1, 2;
   .m\:#{$size} {
     margin: ($y * $size) ($x * $size);
   }
-  .mt\:#{$size} {
-    margin-top: ($y * $size);
+  .mb\:#{$size} {
+    margin-bottom: ($y * $size);
+  }
+  .me\:#{$size} {
+    margin-block-end: ($y * $size);
+    margin-inline-end: ($x * $size);
+  }
+  .meb\:#{$size} {
+    margin-block-end: ($y * $size);
+  }
+  .mei\:#{$size} {
+    margin-inline-end: ($x * $size);
+  }
+  .ml\:#{$size} {
+    margin-left: ($x * $size);
   }
   .mr\:#{$size} {
     margin-right: ($x * $size);
   }
-  .mb\:#{$size} {
-    margin-bottom: ($y * $size);
+  .ms\:#{$size} {
+    margin-block-start: ($y * $size);
+    margin-inline-start: ($x * $size);
   }
-  .ml\:#{$size} {
-    margin-left: ($x * $size);
+  .msb\:#{$size} {
+    margin-block-start: ($y * $size);
+  }
+  .msi\:#{$size} {
+    margin-inline-start: ($x * $size);
+  }
+  .mt\:#{$size} {
+    margin-top: ($y * $size);
   }
   .mx\:#{$size} {
     margin-right: ($x * $size);
@@ -147,17 +202,37 @@ $sizes: 0, 1, 2;
   .p\:#{$size} {
     padding: ($y * $size) ($x * $size);
   }
-  .pt\:#{$size} {
-    padding-top: ($y * $size);
+  .pb\:#{$size} {
+    padding-bottom: ($y * $size);
+  }
+  .pe\:#{$size} {
+    padding-block-end: ($y * $size);
+    padding-inline-end: ($x * $size);
+  }
+  .peb\:#{$size} {
+    padding-block-end: ($y * $size);
+  }
+  .pei\:#{$size} {
+    padding-inline-end: ($x * $size);
+  }
+  .pl\:#{$size} {
+    padding-left: ($x * $size);
   }
   .pr\:#{$size} {
     padding-right: ($x * $size);
   }
-  .pb\:#{$size} {
-    padding-bottom: ($y * $size);
+  .ps\:#{$size} {
+    padding-block-start: ($y * $size);
+    padding-inline-start: ($x * $size);
   }
-  .pl\:#{$size} {
-    padding-left: ($x * $size);
+  .psb\:#{$size} {
+    padding-block-start: ($y * $size);
+  }
+  .psi\:#{$size} {
+    padding-inline-start: ($x * $size);
+  }
+  .pt\:#{$size} {
+    padding-top: ($y * $size);
   }
   .px\:#{$size} {
     padding-right: ($x * $size);

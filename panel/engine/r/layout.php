@@ -1,5 +1,7 @@
 <?php
 
+State::set('can.fetch', $state->x->panel->fetch ?? false);
+
 if (is_file($f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'layout' . DS . 'index.php')) {
     require $f;
 }

@@ -4,7 +4,6 @@ return [
     'chunk' => 20,
     'sort' => [-1, 'time'],
     'path' => '/page',
-    'peek' => 2,
     // Enable AJAX feature?
     'fetch' => true,
     'guard' => [

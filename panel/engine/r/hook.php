@@ -4,22 +4,17 @@ Hook::set('on.user.exit', function() {
     unset($_SESSION['_']); // Clear all file and folder marker(s)
 });
 
+$email = State::get('email');
+
 if (null !== State::get('x.comment')) {
     // Send notification
-    Hook::set('on.comment.set', function($path) {
-        extract($GLOBALS, EXTR_SKIP);
-        $id = uniqid();
-        file_put_contents(LOT . DS . '.alert' . DS . $id . '.page', To::page([
-            'title' => $title = i('New %s', 'Comment'),
-            'description' => $description = i('A new %s has been added.', 'comment'),
-            'type' => 'Info',
-            'link' => $link = $url . $_['/'] . '/::g::' . strtr($path, [
+    if ($email && Is::email($email)) {
+        Hook::set('on.comment.set', function($path) {
+            extract($GLOBALS, EXTR_SKIP);
+            $link = $url . $_['/'] . '/::g::' . strtr($path, [
                 LOT => "",
                 DS => '/'
-            ])
-        ]));
-        // Send email about this!
-        if ($email = $state->email) {
+            ]);
             $comment = new Comment($path);
             $content  = '<p style="font-size: 120%; font-weight: bold;">' . $comment->author . '</p>';
             $content .= $comment->content;
@@ -28,8 +23,8 @@ if (null !== State::get('x.comment')) {
             send($email, $email, $title, $content, [
                 'reply-to' => $comment->email ?? $email
             ]);
-        }
-    });
+        });
+    }
     // Generate recent comment cache
     Hook::set('on.comment.set', function($path) {
         extract($GLOBALS, EXTR_SKIP);
