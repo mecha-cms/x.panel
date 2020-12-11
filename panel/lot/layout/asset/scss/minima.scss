@@ -8,12 +8,12 @@
 // #83A6B8,#EDF3F6,#39657B
 
 $color: #656869;
-$color-anchor: #39657b;
 $color-back: #fcfdfd;
 $color-back-button: #83a6b8;
 $color-back-input: #edf3f6;
 $color-border: #c5cacd;
 $color-button: #fcfdfd;
+$color-link: #39657b;
 
 :root {
   background: $color-back;
@@ -22,10 +22,10 @@ $color-button: #fcfdfd;
 }
 
 a[href] {
-  color: $color-anchor;
+  color: $color-link;
   &:focus,
   &:active {
-    color: darken($color-anchor, 10%);
+    color: darken($color-link, 10%);
   }
 }
 
@@ -85,6 +85,21 @@ pre {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .125);
 }
 
+.lot\:field {
+  .tag-picker {
+    .tag {
+      &:not(.editor) {
+        background: lighten($color-back-button, 20%);
+        color: inherit;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .125);
+        &:focus {
+          background: lighten($color-back-button, 25%);
+        }
+      }
+    }
+  }
+}
+
 .lot\:input {
   .fix {
     background: lighten($color-back, 1%);
@@ -96,12 +111,68 @@ pre {
   background: $color-back;
   color: $color;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+  a {
+    &:focus,
+    &:hover {
+      background: darken($color-back, 1%);
+    }
+  }
+  li {
+    &:focus,
+    &:hover {
+      > a {
+        background: darken($color-back, 1%);
+      }
+    }
+    &.is\:current {
+      > a {
+        background: darken($color-back, 2%);
+        &:focus,
+        &:hover {
+          background: darken($color-back, 3%);
+        }
+      }
+    }
+  }
+}
+
+.lot\:file {
+  .is\:file {
+    &::before {
+      background: lighten($color-back, 1%);
+      border-color: $color;
+    }
+    &::after {
+      border-bottom-color: $color;
+      border-left-color: $color;
+    }
+  }
+  .is\:folder {
+    &::before {
+      background: darken($color-back-button, 10%);
+    }
+    &::after {
+      background: $color-back-button;
+    }
+  }
 }
 
 .lot\:file,
 .lot\:page {
   li {
     border: 0 solid $color-back;
+    &:hover {
+      background: darken($color-back, 1%);
+      border-color: darken($color-back, 1%);
+    }
+    &.is\:active {
+      background: darken($color-back, 2%);
+      border-color: darken($color-back, 2%);
+      &:hover {
+        background: darken($color-back, 3%);
+        border-color: darken($color-back, 3%);
+      }
+    }
   }
   .lot\:task {
     &,
@@ -114,28 +185,6 @@ pre {
           display: none;
         }
       }
-    }
-  }
-  .is\:active {
-    // background: $color-back-list-active;
-    // border-color: $color-back-list-active;
-  }
-  .is\:file {
-    &::before {
-      // background: $color-back-icon-file;
-      border-color: $color;
-    }
-    &::after {
-      border-bottom-color: $color;
-      border-left-color: $color;
-    }
-  }
-  .is\:folder {
-    &::before {
-      // background: $color-back-icon-folder;
-    }
-    &::after {
-      // background: darken($color-back-icon-folder, 10%);
     }
   }
 }
@@ -174,6 +223,7 @@ pre {
         }
       }
       &:not(.is\:active) {
+        background: darken($color-back, 1%);
         color: lighten($color, 10%);
       }
     }

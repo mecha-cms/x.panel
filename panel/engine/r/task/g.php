@@ -58,14 +58,18 @@ function file($_) {
                 // Use `$_POST['file']['content']` instead of `$_['form']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
                 $_['form']['file']['content'] = $_POST['file']['content'] ?? "";
-                \file_put_contents($f, $_['form']['file']['content']);
-                if ($name !== $base) {
-                    \unlink($_['f']);
+                if (\is_writable($f)) {
+                    \file_put_contents($f, $_['form']['file']['content']);
+                    if ($name !== $base) {
+                        \unlink($_['f']);
+                    }
+                } else {
+                    $_['alert']['error'][] = 'File is not writable.';
                 }
             } else if ($name !== $base) {
                 \rename($_['f'], $f);
             }
-            @\chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
+            \chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
             $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
             $_['f'] = $f;
@@ -214,11 +218,16 @@ function page($_) {
             }
             if (isset($_['form']['data'])) {
                 foreach ((array) $_['form']['data'] as $k => $v) {
+                    $ff = $d . \DS . $k . '.data';
                     if ("" !== \trim($v)) {
-                        \file_put_contents($ff = $d . \DS . $k . '.data', \is_array($v) ? \json_encode($v) : \s($v));
-                        @\chmod($ff, 0600);
+                        if (\is_writable($ff)) {
+                            \file_put_contents($ff, \is_array($v) ? \json_encode($v) : \s($v));
+                            \chmod($ff, 0600);
+                        } else {
+                            $_['alert']['error'][] = 'File is not writable.';
+                        }
                     } else {
-                        \is_file($ff = $d . \DS . $k . '.data') && \unlink($ff);
+                        \is_file($ff) && \unlink($ff);
                     }
                 }
             }

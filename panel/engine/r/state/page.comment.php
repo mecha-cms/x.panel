@@ -51,7 +51,12 @@ $lot = array_replace_recursive($lot, [
                                             'fields' => [
                                                 'lot' => [
                                                     'time' => ['hidden' => true],
-                                                    'link' => ['hidden' => true],
+                                                    'email' => [
+                                                        'type' => 'email',
+                                                        'name' => 'page[email]',
+                                                        'value' => $page['email'],
+                                                        'stack' => 20
+                                                    ],
                                                     'status' => [
                                                         'type' => 'item',
                                                         'name' => 'page[status]',
