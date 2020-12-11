@@ -29,16 +29,23 @@ a[href] {
   }
 }
 
+blockquote,
+caption,
+figcaption,
+.description {
+  color: lighten($color, 10%);
+}
+
 code, .code {
   font-family: 'IBM Plex Mono', monospace;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Work Sans', 'Source Sans Pro', sans-serif;
+fieldset, hr {
+  border-color: $color-border;
 }
 
-hr, legend {
-  border-color: $color-border;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Work Sans', 'Source Sans Pro', sans-serif;
 }
 
 pre {
@@ -76,10 +83,6 @@ pre {
   border-color: $color-border;
   color: darken($color, 10%);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .125);
-}
-
-.description {
-  color: lighten($color, 10%);
 }
 
 .lot\:input {
@@ -187,6 +190,12 @@ pre {
   }
   &[type='checkbox'] {
     background: $color-back-button;
+    &:not(.not\:active):focus {
+      background: lighten($color-back-button, 5%);
+    }
+    &:not(.not\:active):active {
+      background: darken($color-back-button, 10%);
+    }
     &:checked {
       &::before {
         border-right-color: $color-button;
@@ -197,6 +206,12 @@ pre {
   }
   &[type='radio'] {
     background: $color-back-button;
+    &:not(.not\:active):focus {
+      background: lighten($color-back-button, 5%);
+    }
+    &:not(.not\:active):active {
+      background: darken($color-back-button, 10%);
+    }
     &:checked {
       &::before {
         background: none;

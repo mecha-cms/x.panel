@@ -11,11 +11,8 @@ th {
   font-size: 80%;
 }
 
-.i, blockquote,
-caption,
-dfn,
+.i, dfn,
 em,
-figcaption,
 i,
 var {
   font-style: italic;
@@ -719,12 +716,10 @@ dd {
   margin-left: 40px;
 }
 
-ol, ol ol,
-ul,
+ol ol,
 ol ul,
 ul ol,
 ul ul {
-  margin-top: 0;
   margin-left: 16px;
 }
 

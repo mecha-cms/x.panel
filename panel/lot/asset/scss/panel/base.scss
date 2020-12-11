@@ -74,11 +74,8 @@ th {
   @extend .b;
 }
 
-blockquote,
-caption,
 dfn,
 em,
-figcaption,
 i,
 var {
   @extend .i;
@@ -215,9 +212,7 @@ dd {
 
 ol,
 ul {
-  &,
   & & {
-    margin-top: 0;
     margin-left: $z;
   }
 }
