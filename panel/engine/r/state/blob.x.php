@@ -1,10 +1,11 @@
 <?php
 
+$description = ['It is not possible to upload the package due to the missing %s extension.', 'PHP <code>zip</code>'];
 $zip = extension_loaded('zip');
 
-Hook::set('do.blob.set', function($_) use($zip) {
+Hook::set('do.blob.set', function($_) use($description, $zip) {
     if (!$zip) {
-        $_['alert']['error'][] = ['It is not possible to upload the package due to the missing %s extension.', 'PHP <code>zip</code>'];
+        $_['alert']['error'][] = $description;
     }
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
@@ -32,6 +33,9 @@ $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fiel
 
 // Disable file uploader if it is not possible to extract package with the current environment
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['active'] = $zip;
+if (!$zip) {
+    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['blob']['description'] = $description;
+}
 
 // Force extract package
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o']['hidden'] = true;
@@ -48,13 +52,11 @@ $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fiel
     'value' => 1
 ];
 
-$description = '<p>' . i('Make sure that the package you want to upload is structured like this:') . '</p>';
-$description .= '<pre><code class="txt">' . To::kebab(i('extension')) . '.zip&#xA;&#x2514;&#x2500;&#x2500;&#x20;' . To::kebab(i('extension')) . '&#x5C;&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;about.page&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;index.php&#xA;&#x20;&#x20;&#x20;&#x20;&#x2514;&#x2500;&#x2500;&#x20;&#x2026;</code></pre>';
-
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description'] = [
-    'type' => 'field',
+    'hidden' => true,
     'title' => "",
-    'content' => $description,
+    'type' => 'field',
+    'content' => "",
     'stack' => 20
 ];
 

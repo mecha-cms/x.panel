@@ -1,18 +1,19 @@
 <?php
 
+$zip = extension_loaded('zip');
+
 // `http://127.0.0.1/panel/::g::/layout/1`
 $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 if (1 === count($_['chops'])) {
-    if (extension_loaded('zip')) {
-        $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['import'] = [
-            'title' => 'Replace',
-            'description' => 'Replace layout files with the new ones.',
-            'type' => 'Link',
-            'icon' => 'M14,3L12,1H4A2,2 0 0,0 2,3V15A2,2 0 0,0 4,17H11V19L15,16L11,13V15H4V3H14M21,10V21A2,2 0 0,1 19,23H8A2,2 0 0,1 6,21V19H8V21H19V12H14V7H8V13H6V7A2,2 0 0,1 8,5H16L21,10Z',
-            'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob.layout', 'tab' => false]) . $url->hash,
-            'stack' => 10.1
-        ];
-    }
+    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['import'] = [
+        'active' => $zip,
+        'title' => 'Replace',
+        'description' => 'Replace layout files with the new ones.',
+        'type' => 'link',
+        'icon' => 'M14,3L12,1H4A2,2 0 0,0 2,3V15A2,2 0 0,0 4,17H11V19L15,16L11,13V15H4V3H14M21,10V21A2,2 0 0,1 19,23H8A2,2 0 0,1 6,21V19H8V21H19V12H14V7H8V13H6V7A2,2 0 0,1 8,5H16L21,10Z',
+        'url' => $zip ? $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob.layout', 'tab' => false]) . $url->hash : null,
+        'stack' => 10.1
+    ];
     if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
         $page = new Page($f);
         $content = $page->content;

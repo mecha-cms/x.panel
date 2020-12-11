@@ -20,12 +20,12 @@
     "terser": "^5.5.0"
   },
   "scripts": {
-    "build": "npm-run-all --parallel css js",
-    "css": "npm-run-all css:build css:minify",
-    "css:build": "sass --style expanded --no-error-css --no-source-map scss/panel.scss:css/panel.css",
-    "css:minify": "cleancss -02 --output css/panel.min.css css/panel.css",
-    "js": "npm-run-all js:build js:minify",
-    "js:build": "rollup --config package.js",
-    "js:minify": "terser js/panel.js --mangle --output js/panel.min.js"
+    "css": "npm-run-all css:pack css:minify",
+    "css:minify": "cleancss --level 2 --output lot/asset/css/panel.min.css lot/asset/css/panel.css && cleancss --level 2 --output lot/layout/asset/css/minima.min.css lot/layout/asset/css/minima.css",
+    "css:pack": "sass --style expanded --no-charset --no-error-css --no-source-map lot/asset/scss/panel.scss:lot/asset/css/panel.css lot/layout/asset/scss/minima.scss:lot/layout/asset/css/minima.css",
+    "js": "npm-run-all js:pack js:minify",
+    "js:minify": "terser lot/asset/js/panel.js --mangle --output lot/asset/js/panel.min.js",
+    "js:pack": "rollup --config package.js",
+    "pack": "npm-run-all --parallel css js"
   }
 }

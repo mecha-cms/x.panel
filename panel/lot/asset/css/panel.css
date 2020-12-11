@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .b, b,
 dt,
 legend,
@@ -583,12 +582,6 @@ a {
 a[href] {
   color: #00f;
 }
-a[href]:focus {
-  color: #f00;
-}
-a[href]:active {
-  color: #f00;
-}
 
 :root, body {
   min-height: 100%;
@@ -812,6 +805,25 @@ hr {
 .lot\:input .fix:focus {
   z-index: 1;
 }
+.button[disabled], .button.not\:active,
+.input[disabled],
+.input.not\:active,
+.select[disabled],
+.select.not\:active,
+.textarea[disabled],
+.textarea.not\:active,
+.lot\:input .fix[disabled],
+.lot\:input .fix.not\:active {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.button[readonly],
+.input[readonly],
+.select[readonly],
+.textarea[readonly],
+.lot\:input .fix[readonly] {
+  border-style: dotted;
+}
 
 .button {
   width: auto;
@@ -821,42 +833,8 @@ hr {
   border-width: 0;
   line-height: 24px;
 }
-.button:focus {
-  background: #f00;
-}
-.button:active {
-  background: #f00;
-}
-.button[href], .button[href]:focus, .button[href]:active {
+.button[href] {
   color: #fff;
-}
-
-[disabled] .button[disabled], [disabled] .not\:active,
-[disabled] .input[disabled], [disabled] .not\:active,
-[disabled] .select[disabled], [disabled] .not\:active,
-[disabled] .textarea[disabled], [disabled] .not\:active,
-.not\:active .button[disabled],
-.not\:active .not\:active,
-.not\:active .input[disabled],
-.not\:active .not\:active,
-.not\:active .select[disabled],
-.not\:active .not\:active,
-.not\:active .textarea[disabled],
-.not\:active .not\:active {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-[readonly] .input[readonly],
-[readonly] .select[readonly],
-[readonly] .textarea[readonly] {
-  border-style: dotted;
-}
-
-.input:focus:invalid,
-.textarea:focus:invalid {
-  color: #c00;
-  border-color: #f00;
 }
 
 .button,
@@ -868,6 +846,12 @@ label {
   cursor: pointer;
 }
 
+.input:focus:invalid,
+.textarea:focus:invalid {
+  color: #c00;
+  border-color: #f00;
+}
+
 .button.is\:text {
   background: none;
   border: 0;
@@ -875,11 +859,9 @@ label {
 }
 .button.is\:text:focus {
   background: none;
-  color: #f00;
 }
 .button.is\:text:active {
   background: none;
-  color: #f00;
 }
 
 .input[type=color], .input[type=file], .input[type=range] {
@@ -971,6 +953,78 @@ label.is\:frozen {
 }
 label.not\:active {
   cursor: not-allowed;
+}
+
+.input[type=checkbox], .input[type=radio] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.input[type=checkbox][disabled], .input[type=radio][disabled] {
+  background: #000;
+}
+.input[type=checkbox]::before, .input[type=radio]::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  background: #fff;
+}
+.input[type=checkbox] {
+  background: #00f;
+}
+.input[type=checkbox]:checked::before {
+  top: 1px;
+  right: 5px;
+  bottom: 4px;
+  left: 5px;
+  background: none;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+  visibility: visible;
+}
+.input[type=radio] {
+  background: #00f;
+}
+.input[type=radio]:checked::before {
+  background: none;
+  border: 2px solid #fff;
+  visibility: visible;
+}
+.input[type=radio], .input[type=radio]::before {
+  border-radius: 100%;
+}
+
+.field\:toggle .input[type=checkbox] {
+  width: 32px;
+  height: 20px;
+  background: #00f;
+  border-width: 0;
+  border-radius: 10px;
+}
+.field\:toggle .input[type=checkbox][disabled] {
+  background: #000;
+}
+.field\:toggle .input[type=checkbox]::before {
+  border: 0;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  transform: rotate(0);
+  visibility: visible;
+}
+.field\:toggle .input[type=checkbox]:checked::before {
+  left: 14px;
 }
 
 .field {
@@ -1184,6 +1238,10 @@ svg[display=none] {
   margin-left: -6px;
 }
 
+.alert p {
+  background: #f2f2f2;
+  padding: 12px 20px;
+}
 .alert p .f\:r svg {
   margin-right: -6px;
 }
@@ -1204,15 +1262,6 @@ svg[display=none] {
 }
 .alert p + p {
   margin-top: 12px;
-}
-.alert .error {
-  color: #f00;
-}
-.alert .info {
-  color: #00f;
-}
-.alert .success {
-  color: #0b0;
 }
 
 .lot\:bar {
@@ -1611,14 +1660,8 @@ svg[display=none] {
   padding: 6px 12px;
   color: #00f;
 }
-.lot\:menu a:focus {
-  color: #f00;
-}
 .lot\:menu a:focus + ul {
   display: block;
-}
-.lot\:menu a:active {
-  color: #f00;
 }
 .lot\:menu.is\:static {
   display: block;
@@ -1652,14 +1695,6 @@ svg[display=none] {
   font: inherit;
   padding: 0 6px;
   margin: 0 3px;
-}
-.lot\:pager > span > a:focus {
-  background: #f00;
-  color: #fff;
-}
-.lot\:pager > span > a:active {
-  background: #f00;
-  color: #fff;
 }
 .lot\:pager > span > b,
 .lot\:pager > span > span {

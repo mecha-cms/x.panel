@@ -417,13 +417,9 @@
     padding: ($y / 4) ($x / 2);
     color: $color-link;
     &:focus {
-      color: $color-link-focus;
       + ul {
         display: block;
       }
-    }
-    &:active {
-      color: $color-link-active;
     }
   }
   &.is\:static {
@@ -459,16 +455,6 @@
       font: inherit;
       padding: 0 ($x / 4);
       margin: 0 ($x / 8);
-    }
-    > a {
-      &:focus {
-        background: $color-back-button-focus;
-        color: $color-button;
-      }
-      &:active {
-        background: $color-back-button-active;
-        color: $color-button;
-      }
     }
     > b,
     > span {

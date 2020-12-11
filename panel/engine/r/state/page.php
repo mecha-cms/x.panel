@@ -147,7 +147,7 @@ $lot = [
                                                     'type' => [
                                                         'type' => 'item',
                                                         'name' => 'page[type]',
-                                                        'value' => $page->type,
+                                                        'value' => 'text/html' === $page->type ? 'HTML' : $page->type,
                                                         'lot' => [
                                                             'HTML' => 'HTML',
                                                             'Markdown' => null !== State::get('x.markdown') ? 'Markdown' : null

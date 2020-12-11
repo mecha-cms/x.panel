@@ -2,9 +2,9 @@ import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 
 export default {
-  input: 'mjs/panel.mjs',
+  input: 'lot/asset/mjs/panel.mjs',
   output: {
-    file: 'js/panel.js',
+    file: 'lot/asset/js/panel.js',
     format: 'umd',
     name: '_',
     sourcemap: false

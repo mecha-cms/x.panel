@@ -1,5 +1,7 @@
 .alert {
   p {
+    background: darken($color-back, 5%);
+    padding: ($z * .75) ($z * 1.25);
     .f\:r svg {
       margin-right: (-$x / 4);
     }
@@ -23,14 +25,5 @@
     + p {
       margin-top: ($y / 2);
     }
-  }
-  .error {
-    color: #f00;
-  }
-  .info {
-    color: #00f;
-  }
-  .success {
-    color: #0b0;
   }
 }

@@ -9,8 +9,10 @@ Release Notes
 ### master
 
  - Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - Added ability to detect extension and layout package without parent folder.
  - Added simple Node.js build tool in `.\lot\x\panel\lot\asset` folder. Maybe not for everybody.
  - Narrowed down the panel editor maximum width.
+ - Changed the default layout from _Construction_ to _Minima_. _Construction_ layout will be available as separate extension in the future.
 
 ### 2.4.3
 

@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,700,400i,700i|Source+Sans+Pro:400,700,400i,700i|Work+Sans:400,700,400i,700i");
+:root {
+  background: #fcfdfd;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #656869;
+}
+
+a[href] {
+  color: #39657b;
+}
+a[href]:focus, a[href]:active {
+  color: #294858;
+}
+
+code, .code {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Work Sans", "Source Sans Pro", sans-serif;
+}
+
+hr, legend {
+  border-color: #c5cacd;
+}
+
+pre > code {
+  background: #f0f5f8;
+  color: inherit;
+}
+
+.alert p {
+  background: #edf3f3;
+}
+
+.button,
+.button[href] {
+  background: #83a6b8;
+  color: #fcfdfd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+.button:not(.not\:active):focus,
+.button[href]:not(.not\:active):focus {
+  background: #93b2c1;
+  color: #fcfdfd;
+}
+.button:not(.not\:active):active,
+.button[href]:not(.not\:active):active {
+  background: #638fa5;
+  color: #fcfdfd;
+}
+
+.input,
+.select,
+.textarea {
+  background: #edf3f6;
+  border-color: #c5cacd;
+  color: #4c4e4f;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
+}
+
+.description {
+  color: #7e8283;
+}
+
+.lot\:input .fix {
+  background: white;
+  border-color: #c5cacd;
+}
+
+.lot\:menu {
+  background: #fcfdfd;
+  color: #656869;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.lot\:file li,
+.lot\:page li {
+  border: 0 solid #fcfdfd;
+}
+.lot\:file .lot\:task,
+.lot\:file .lot\:task > *,
+.lot\:page .lot\:task,
+.lot\:page .lot\:task > * {
+  margin: 0;
+}
+.lot\:file .lot\:task > * .title span,
+.lot\:page .lot\:task > * .title span {
+  display: none;
+}
+.lot\:file .is\:file::before,
+.lot\:page .is\:file::before {
+  border-color: #656869;
+}
+.lot\:file .is\:file::after,
+.lot\:page .is\:file::after {
+  border-bottom-color: #656869;
+  border-left-color: #656869;
+}
+.lot\:pager > span > a {
+  background: #83a6b8;
+  color: #fcfdfd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+.lot\:pager > span > a:focus {
+  background: #93b2c1;
+  color: #fcfdfd;
+}
+.lot\:pager > span > a:active {
+  background: #638fa5;
+  color: #fcfdfd;
+}
+.lot\:pager > span > b,
+.lot\:pager > span > span {
+  background: none;
+  color: inherit;
+}
+
+.lot\:tab > nav li {
+  border-color: #e0e3e5;
+}
+.lot\:tab > nav li.is\:active::before, .lot\:tab > nav li.is\:active::after {
+  border-color: #e0e3e5;
+}
+.lot\:tab > nav li:not(.is\:active) {
+  color: #7e8283;
+}
+
+.input[type=checkbox]::before, .input[type=radio]::before {
+  background: #fcfdfd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+.input[type=checkbox] {
+  background: #83a6b8;
+}
+.input[type=checkbox]:checked::before {
+  border-right-color: #fcfdfd;
+  border-bottom-color: #fcfdfd;
+  box-shadow: none;
+}
+.input[type=radio] {
+  background: #83a6b8;
+}
+.input[type=radio]:checked::before {
+  background: none;
+  border-color: #fcfdfd;
+}

@@ -18,6 +18,14 @@
   &:focus {
     z-index: 1;
   }
+  &[disabled],
+  &.not\:active {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+  &[readonly] {
+    border-style: dotted;
+  }
 }
 
 .button {
@@ -27,47 +35,8 @@
   color: $color-button;
   border-width: 0;
   line-height: $y; // Why?
-  &:focus {
-    background: $color-back-button-focus;
-  }
-  &:active {
-    background: $color-back-button-active;
-  }
   &[href] {
-    &,
-    &:focus,
-    &:active {
-      color: $color-button;
-    }
-  }
-}
-
-[disabled],
-.not\:active {
-  $suffix: &;
-  .button#{$suffix},
-  .input#{$suffix},
-  .select#{$suffix},
-  .textarea#{$suffix} {
-    opacity: .5;
-    cursor: not-allowed;
-  }
-}
-
-[readonly] {
-  $suffix: &;
-  .input#{$suffix},
-  .select#{$suffix},
-  .textarea#{$suffix} {
-    border-style: dotted;
-  }
-}
-
-.input,
-.textarea {
-  &:focus:invalid {
-    color: $color-error;
-    border-color: $color-border-error;
+    color: $color-button;
   }
 }
 
@@ -78,6 +47,14 @@ label {
   cursor: pointer;
 }
 
+.input,
+.textarea {
+  &:focus:invalid {
+    color: $color-error;
+    border-color: $color-border-error;
+  }
+}
+
 .button {
   &.is\:text {
     background: none;
@@ -85,11 +62,9 @@ label {
     color: $color-link;
     &:focus {
       background: none;
-      color: $color-link-focus;
     }
     &:active {
       background: none;
-      color: $color-link-active;
     }
   }
 }
@@ -202,5 +177,92 @@ label {
   }
   &.not\:active {
     cursor: not-allowed;
+  }
+}
+
+// Custom appearance for modern browser(s)
+.input {
+  &[type='checkbox'],
+  &[type='radio'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    &[disabled] {
+      background: $color;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      bottom: 2px;
+      left: 2px;
+      background: $color-button;
+    }
+  }
+  &[type='checkbox'] {
+    background: $color-back-button;
+    &:checked {
+      &::before {
+        top: 1px;
+        right: 5px;
+        bottom: 4px;
+        left: 5px;
+        background: none;
+        border-right: 2px solid $color-button;
+        border-bottom: 2px solid $color-button;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        transform: rotate(45deg);
+        visibility: visible;
+      }
+    }
+  }
+  &[type='radio'] {
+    background: $color-back-button;
+    &:checked {
+      &::before {
+        background: none;
+        border: 2px solid $color-button;
+        visibility: visible;
+      }
+    }
+    &,
+    &::before {
+      border-radius: 100%;
+    }
+  }
+}
+
+.field\:toggle {
+  .input {
+    &[type='checkbox'] {
+      width: ($z * 2);
+      height: ($z * 1.25);
+      background: $color-back-button;
+      border-width: 0;
+      border-radius: (($z * 1.25) / 2);
+      &[disabled] {
+        background: $color;
+      }
+      &::before {
+        border: 0;
+        width: (($z * 1.25) - 4);
+        height: (($z * 1.25) - 4);
+        top: 2px;
+        left: 2px;
+        background: $color-button;
+        border-radius: ((($z * 1.25) - 4) / 2);
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        transform: rotate(0);
+        visibility: visible;
+      }
+      &:checked {
+        &::before {
+          left: ($z - 2);
+        }
+      }
+    }
   }
 }

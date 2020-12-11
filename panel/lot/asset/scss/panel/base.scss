@@ -31,12 +31,6 @@ a {
   color: inherit;
   &[href] {
     color: $color-link;
-    &:focus {
-      color: $color-link-focus;
-    }
-    &:active {
-      color: $color-link-active;
-    }
   }
 }
 

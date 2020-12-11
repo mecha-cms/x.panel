@@ -55,7 +55,7 @@ if (root.classList.contains('can:fetch')) {
         let title = querySelector('title');
         if (title) {
             if (target && target.nodeName && 'form' === target.nodeName.toLowerCase()) {
-                title.setAttribute('data-is', 'search' === target.name ? 'search' : 'push');
+                title.setAttribute('data-is', 'get' === target.name ? 'search' : 'push');
             } else {
                 title.removeAttribute('data-is');
             }
