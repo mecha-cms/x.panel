@@ -141,10 +141,10 @@ function file($_) {
                 // Use `$_POST['file']['content']` instead of `$_['form']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
                 $_['form']['file']['content'] = $_POST['file']['content'] ?? "";
-                if (\is_writable($f)) {
+                if (\is_writable(\dirname($f))) {
                     \file_put_contents($f, $_['form']['file']['content']);
                 } else {
-                    $_['alert']['error'][] = 'File is not writable.';
+                    $_['alert']['error'][] = 'Folder is not writable.';
                 }
             }
             \chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
@@ -268,11 +268,11 @@ function page($_) {
                 foreach ((array) $_['form']['data'] as $k => $v) {
                     $ff = $d . \DS . $k . '.data';
                     if ("" !== \trim($v)) {
-                        if (\is_writable($ff)) {
+                        if (\is_writable(\dirname($ff))) {
                             \file_put_contents($ff, \is_array($v) ? \json_encode($v) : \s($v));
                             \chmod($ff, 0600);
                         } else {
-                            $_['alert']['error'][] = 'File is not writable.';
+                            $_['alert']['error'][] = 'Folder is not writable.';
                         }
                     }
                 }
