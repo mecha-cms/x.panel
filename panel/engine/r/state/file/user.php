@@ -22,13 +22,13 @@ if (1 !== $status) {
 
 // No use. This field was added only to hide the `pass` data from file list
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['pass'] = [
-    'hidden' => true,
+    'skip' => true,
     'name' => 'data[pass]'
 ];
 
 // No use. This field was added only to hide the `pass` data from file list
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['token'] = [
-    'hidden' => true,
+    'skip' => true,
     'name' => 'data[token]'
 ];
 

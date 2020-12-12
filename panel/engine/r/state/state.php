@@ -49,10 +49,10 @@ return [
             // type: bar/menu
             0 => [
                 'lot' => [
-                    'folder' => ['hidden' => true],
+                    'folder' => ['skip' => true],
                     'link' => [
                         'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
-                        'hidden' => false
+                        'skip' => false
                     ]
                 ]
             ]
@@ -118,7 +118,7 @@ return [
                                                         'name' => false,
                                                         'stack' => 10
                                                     ],
-                                                    'l' => ['hidden' => true]
+                                                    'l' => ['skip' => true]
                                                 ]
                                             ]
                                         ]

@@ -5,7 +5,7 @@ export default {
   input: 'lot/asset/mjs/panel.mjs',
   output: {
     file: 'lot/asset/js/panel.js',
-    format: 'umd',
+    format: 'iife',
     name: '_',
     sourcemap: false
   },

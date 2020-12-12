@@ -31,7 +31,7 @@ if (1 === count($_['chops'])) {
             // License file
             $d . DS . 'LICENSE'
         ] as $p) {
-            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
+            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['skip'] = true;
         }
         $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
             'title' => 'Info',

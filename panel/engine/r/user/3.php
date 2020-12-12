@@ -12,7 +12,7 @@ if ('g' === $_['task'] && $user->path === $_['f']) {
                 'link' !== $k &&
                 'status' !== $k
             ) {
-                $v['hidden'] = true;
+                $v['skip'] = true;
             }
         }
     }

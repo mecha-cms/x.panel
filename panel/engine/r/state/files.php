@@ -20,7 +20,6 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         ]);
         $n = basename($k);
         $files[$v][$k] = [
-            'hidden' => false !== strpos('_.', $n[0]) && $g, // User(s) with status other than `1` cannot see hidden file(s)
             'path' => $k,
             'title' => S . $n . S,
             'description' => 0 === $v ? ['Open %s', 'Folder'] : S . (new File($k))->size . S,
@@ -46,7 +45,8 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                     ]),
                     'stack' => 20
                 ]
-            ]
+            ],
+            'skip' => false !== strpos('_.', $n[0]) && $g // User(s) with status other than `1` cannot see hidden file(s)
         ];
         ++$count;
     }

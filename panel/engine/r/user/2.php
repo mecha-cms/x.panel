@@ -12,12 +12,12 @@ if (isset($_['i'])) {
     $_['lot']['bar']['lot'][0]['lot']['folder']['lot']['asset']['url'] = $url . $_['/'] . '/::g::/asset/' . $user->user . '/1';
     // Hide these menu(s)
     foreach (['block', 'cache', 'layout', 'route', 'trash', 'user', 'x'] as $n) {
-        $_['lot']['bar']['lot'][0]['lot']['folder']['lot'][$n]['hidden'] = true;
+        $_['lot']['bar']['lot'][0]['lot']['folder']['lot'][$n]['skip'] = true;
     }
 }
 
 // Hide main state link
-$_['lot']['bar']['lot'][1]['lot']['site']['lot']['state']['hidden'] = true;
+$_['lot']['bar']['lot'][1]['lot']['site']['lot']['state']['skip'] = true;
 
 // Hide these page(s)
 foreach (['block', 'cache', 'layout', 'route', 'trash', 'x'] as $n) {

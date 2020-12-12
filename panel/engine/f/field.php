@@ -2,7 +2,7 @@
 
 function _($in, $key) {
     $out = \_\lot\x\panel\field\content($in, $key);
-    $out['hidden'] = true;
+    $out['skip'] = true;
     return $out;
 }
 
@@ -47,7 +47,7 @@ function colors($in, $key) {
     if (isset($in['lot'])) {
         \sort($in['lot']);
         foreach ($in['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             if (\is_string($v)) {
@@ -85,7 +85,7 @@ function combo($in, $key) {
         $a = [];
         $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             // Group
@@ -208,7 +208,7 @@ function item($in, $key) {
         $count = 0;
         $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;
@@ -263,7 +263,7 @@ function items($in, $key) {
         $count = 0;
         $sort = !isset($in['sort']) || $in['sort'];
         foreach ($in['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['hidden'])) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;

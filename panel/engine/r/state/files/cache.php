@@ -8,9 +8,9 @@ if (!empty($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files'][
     }
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['hidden'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['folder']['hidden'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['skip'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['skip'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['folder']['skip'] = true;
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['l'] = [
     'title' => 'Refresh',
@@ -22,7 +22,7 @@ $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['l'] = [
         'tab' => false,
         'token' => $_['token']
     ]) . $url->hash,
-    'hidden' => 0 === q(g($_['f'])),
+    'skip' => 0 === q(g($_['f'])),
     'stack' => 10
 ];
 

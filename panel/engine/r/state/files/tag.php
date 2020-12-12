@@ -12,10 +12,10 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         unset($v['link'], $v['url']);
         // Disable page children feature
-        $v['tasks']['enter']['hidden'] = true;
-        $v['tasks']['s']['hidden'] = true;
+        $v['tasks']['enter']['skip'] = true;
+        $v['tasks']['s']['skip'] = true;
         if ($g && null !== $v['author'] && $v['author'] !== $author) {
-            $v['hidden'] = true;
+            $v['skip'] = true;
         }
     }
 }

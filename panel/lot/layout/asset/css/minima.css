@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,700,400i,700i|Source+Sans+Pro:400,700,400i,700i|Work+Sans:400,700,400i,700i");
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,400i,700i|Source+Sans+Pro:400,700,400i,700i");
 :root {
   background: #fcfdfd;
   font-family: "Source Sans Pro", sans-serif;
@@ -20,15 +20,11 @@ figcaption,
 }
 
 code, .code {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Source Code Pro", monospace;
 }
 
 fieldset, hr {
   border-color: #c5cacd;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Work Sans", "Source Sans Pro", sans-serif;
 }
 
 pre > code {
@@ -64,6 +60,16 @@ pre > code {
   border-color: #c5cacd;
   color: #4c4e4f;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.125);
+}
+
+.lot\:bar > ul > li > a:focus, .lot\:bar > ul > li > a:hover {
+  background: #f9fbfb;
+}
+.lot\:bar > ul > li.is\:current > a {
+  background: #f6f9f9;
+}
+.lot\:bar > ul > li.is\:current > a:focus, .lot\:bar > ul > li.is\:current > a:hover {
+  background: #f3f7f7;
 }
 
 .lot\:field .tag-picker .tag:not(.editor) {

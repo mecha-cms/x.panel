@@ -38,7 +38,7 @@ if (!$zip) {
 }
 
 // Force extract package
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o']['hidden'] = true;
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o']['skip'] = true;
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o:extract'] = [
     'type' => 'hidden',
     'name' => 'o[extract]',
@@ -53,10 +53,10 @@ $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fiel
 ];
 
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description'] = [
-    'hidden' => true,
     'title' => "",
     'type' => 'field',
     'content' => "",
+    'skip' => true,
     'stack' => 20
 ];
 

@@ -13,7 +13,7 @@ $uses = [
 ];
 
 if (isset($uses[$_['chops'][1]])) {
-    $lot['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['hidden'] = true;
+    $lot['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['skip'] = true;
 }
 
 if ('POST' !== $_SERVER['REQUEST_METHOD'] && 'php' === pathinfo($_['f'], PATHINFO_EXTENSION)) {

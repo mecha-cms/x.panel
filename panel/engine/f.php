@@ -89,7 +89,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             \_\lot\x\panel\h\p($in['lot'], 'field');
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
-                if (null === $v || false === $v || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
                 $type = $v['type'] ?? null;
@@ -147,7 +147,7 @@ namespace _\lot\x\panel {
         $lot = [];
         if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
-                if (null === $v || false === $v || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
                 $lot[$k] = $v;
@@ -261,7 +261,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             $count = 0;
             foreach ((new \Anemon($in['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
-                if (null === $v || false === $v || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
                 ++$count;
@@ -315,7 +315,7 @@ namespace _\lot\x\panel {
             $in = \array_replace_recursive($in, \call_user_func($in['invoke'], $path));
             unset($in['invoke']);
         }
-        if (!empty($in['hidden'])) {
+        if (!empty($in['skip'])) {
             return;
         }
         if (isset($in['active']) && !$in['active']) {
@@ -424,7 +424,7 @@ namespace _\lot\x\panel {
         $lot = [];
         if (isset($in['lot'])) {
             foreach ($in['lot'] as $k => $v) {
-                if (null === $v || false === $v || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
                 $lot[$k] = $v;
@@ -473,7 +473,7 @@ namespace _\lot\x\panel {
             $lot = (new \Anemon($in['lot']))->sort([1, 'stack'], true)->get();
             $count = 0;
             foreach ($lot as $k => $v) {
-                if (null === $v || false === $v || !empty($v['hidden'])) {
+                if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
                 $kk = $v['name'] ?? $k;
@@ -597,7 +597,7 @@ namespace _\lot\x {
         if (\is_string($in)) {
             return $in;
         }
-        if (!empty($in['hidden'])) {
+        if (!empty($in['skip'])) {
             return "";
         }
         $out = "";

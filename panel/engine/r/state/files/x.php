@@ -24,10 +24,10 @@ if ($i > 1) {
 
     }
     if (2 === $i) {
-        $_['lot']['bar']['lot'][0]['lot']['folder']['hidden'] = true;
+        $_['lot']['bar']['lot'][0]['lot']['folder']['skip'] = true;
         $_['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
         $_['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
-        $_['lot']['bar']['lot'][0]['lot']['link']['hidden'] = false;
+        $_['lot']['bar']['lot'][0]['lot']['link']['skip'] = false;
         if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
             $page = new Page($f);
             $content = $page->content;
@@ -64,7 +64,7 @@ if ($i > 1) {
                 // Custom stack data
                 $d . DS . basename($d)
             ] as $p) {
-                $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['hidden'] = true;
+                $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['skip'] = true;
             }
             $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
                 'lot' => [
@@ -101,7 +101,7 @@ $_['layout'] = 'page';
 
 $lot = require __DIR__ . DS . '..' . DS . $_['layout'] . 's.php';
 
-$lot['bar']['lot'][0]['lot']['search']['hidden'] = true; // Hide search form
+$lot['bar']['lot'][0]['lot']['search']['skip'] = true; // Hide search form
 
 $pages = [];
 $count = 0;
@@ -165,8 +165,8 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
     $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['hidden'] = false;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['skip'] = false;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';

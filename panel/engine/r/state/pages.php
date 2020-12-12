@@ -28,7 +28,6 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             'invoke' => function($path) use($user, $x) {
                 $page = new Page($path);
                 return [
-                    'hidden' => 1 !== $user['status'] && $user->user !== $page['author'],
                     'title' => S . _\lot\x\panel\h\w($page->title) . S,
                     'description' => S . _\lot\x\panel\h\w($page->description) . S,
                     'link' => 'draft' === $x ? null : $page->url,
@@ -37,27 +36,28 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                     'tags' => [
                         'is:' . $x,
                         'type:' . c2f($page->type ?? '0')
-                    ]
+                    ],
+                    'skip' => 1 !== $user['status'] && $user->user !== $page['author']
                 ];
             },
             'path' => $k,
             'type' => 'page',
             'tasks' => [
                 'enter' => [
-                    'hidden' => 'draft' === $x || !$create,
                     'title' => 'Enter',
                     'description' => 'Enter',
                     'icon' => 'M15.5,2C13,2 11,4 11,6.5C11,9 13,11 15.5,11C16.4,11 17.2,10.7 17.9,10.3L21,13.4L22.4,12L19.3,8.9C19.7,8.2 20,7.4 20,6.5C20,4 18,2 15.5,2M4,4A2,2 0 0,0 2,6V20A2,2 0 0,0 4,22H18A2,2 0 0,0 20,20V15L18,13V20H4V6H9.03C9.09,5.3 9.26,4.65 9.5,4H4M15.5,4C16.9,4 18,5.1 18,6.5C18,7.9 16.9,9 15.5,9C14.1,9 13,7.9 13,6.5C13,5.1 14.1,4 15.5,4Z',
                     'url' => $before . 'g' . Path::F($after, '/') . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
+                    'skip' => 'draft' === $x || !$create,
                     'stack' => 10
                 ],
                 's' => [
-                    'hidden' => 'draft' === $x || $create,
                     'title' => 'Add',
                     'description' => $add ? ['Add %s', 'Child'] : ['Missing folder %s', _\lot\x\panel\h\path($folder)],
                     'icon' => 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z',
                     'url' => $add ? $before . 's' . Path::F($after, '/') . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash : null,
                     'active' => $add,
+                    'skip' => 'draft' === $x || $create,
                     'stack' => 10
                 ],
                 'g' => [
@@ -110,7 +110,7 @@ return [
                                         'type' => 'link',
                                         'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', ['tab' => false]) . $url->hash,
                                         'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
-                                        'hidden' => count($_['chops']) <= 1,
+                                        'skip' => count($_['chops']) <= 1,
                                         'stack' => 10
                                     ],
                                     'blob' => [
@@ -119,7 +119,7 @@ return [
                                         'type' => 'link',
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
                                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
-                                        'hidden' => true,
+                                        'skip' => true,
                                         'stack' => 20
                                     ],
                                     'page' => [
@@ -134,7 +134,7 @@ return [
                                         'description' => ['New %s', 'Data'],
                                         'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
                                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'hidden' => count($_['chops']) <= 1,
+                                        'skip' => count($_['chops']) <= 1,
                                         'stack' => 40
                                     ]
                                 ],

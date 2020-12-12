@@ -1,8 +1,5 @@
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global._ = factory());
-}(this, (function () { 'use strict';
+var _ = (function () {
+    'use strict';
 
     const isArray = x => Array.isArray(x);
     const isDefined = x => 'undefined' !== typeof x;
@@ -2489,4 +2486,4 @@
 
     return panel;
 
-})));
+}());

@@ -23,17 +23,17 @@ return [
             // type: bar/menu
             0 => [
                 'lot' => [
-                    'folder' => ['hidden' => true],
+                    'folder' => ['skip' => true],
                     'link' => [
                         'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . $x . $url->query('&', ['layout' => false, 'tab' => ['data']]) . $url->hash,
-                        'hidden' => false
+                        'skip' => false
                     ],
                     's' => [
-                        'hidden' => 's' === $_['task'],
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
                         'description' => ['New %s', 'Data'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['layout' => 'data', 'tab' => false]) . $url->hash,
+                        'skip' => 's' === $_['task'],
                         'stack' => 10.5
                     ]
                 ]
@@ -130,7 +130,7 @@ return [
                                                             'token' => $_['token'],
                                                             'trash' => $trash
                                                         ])),
-                                                        'hidden' => 's' === $_['task'],
+                                                        'skip' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ]
                                                 ]

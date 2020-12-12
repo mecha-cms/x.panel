@@ -29,7 +29,7 @@ $description = '<p>' . i('Please note that this action will first delete all of 
     'trash' => false
 ]), 'Download current layout as a ZIP file.']) . '</p>';
 
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description']['hidden'] = false;
+$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description']['skip'] = false;
 $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description']['content'] = $description;
 
 return $lot;

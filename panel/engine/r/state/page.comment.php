@@ -9,7 +9,7 @@ $lot = array_replace_recursive($lot, [
             // type: bar/menu
             0 => [
                 'lot' => [
-                    's' => ['hidden' => true]
+                    's' => ['skip' => true]
                 ]
             ]
         ]
@@ -38,8 +38,8 @@ $lot = array_replace_recursive($lot, [
                                                         'stack' => 10
                                                     ],
                                                     'content' => ['stack' => 20],
-                                                    'title' => ['hidden' => true],
-                                                    'description' => ['hidden' => true],
+                                                    'title' => ['skip' => true],
+                                                    'description' => ['skip' => true],
                                                     'name' => ['type' => 'hidden']
                                                 ]
                                             ]
@@ -50,7 +50,7 @@ $lot = array_replace_recursive($lot, [
                                         'lot' => [
                                             'fields' => [
                                                 'lot' => [
-                                                    'time' => ['hidden' => true],
+                                                    'time' => ['skip' => true],
                                                     'email' => [
                                                         'type' => 'email',
                                                         'name' => 'page[email]',
@@ -102,7 +102,7 @@ $lot = array_replace_recursive($lot, [
                                                     's' => ['description' => ['Update as %s', ['page' === $page->x ? 'Accepted' : 'Rejected']]],
                                                     'page' => ['title' => 's' === $_['task'] ? 'Publish' : 'Accept'],
                                                     'draft' => ['title' => 's' === $_['task'] ? 'Save' : 'Reject'],
-                                                    'archive' => ['hidden' => true]
+                                                    'archive' => ['skip' => true]
                                                 ]
                                             ]
                                         ]

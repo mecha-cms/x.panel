@@ -22,10 +22,10 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
             ];
         };
         // Disable page children feature
-        $v['tasks']['enter']['hidden'] = true;
-        $v['tasks']['s']['hidden'] = true;
+        $v['tasks']['enter']['skip'] = true;
+        $v['tasks']['s']['skip'] = true;
         if ($g && $v['path'] !== $path) {
-            $v['hidden'] = true;
+            $v['skip'] = true;
         }
         if (
             // Prevent user with status other than `1` from deleting user file(s)
@@ -44,7 +44,7 @@ $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $u
 
 // Prevent user with status other than `1` from creating user file(s)
 if ($g) {
-    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] = true;
+    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
 }
 
 return $lot;

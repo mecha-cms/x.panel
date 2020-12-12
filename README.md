@@ -13,6 +13,7 @@ Release Notes
  - Added simple Node.js build tool in `.\lot\x\panel\lot\asset` folder. Maybe not for everybody.
  - Narrowed down the panel editor maximum width.
  - Changed the default layout from _Construction_ to _Minima_. _Construction_ layout will be available as separate extension in the future.
+ - Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
 
 ### 2.4.3
 

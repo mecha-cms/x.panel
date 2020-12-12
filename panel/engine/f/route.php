@@ -7,7 +7,7 @@ namespace _\lot\x\panel\route {
             return $_;
         }
         // Hide search form
-        $_['lot']['bar']['lot'][0]['lot']['search']['hidden'] = true;
+        $_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true;
         if (!\is_file($f = \ENGINE . \DS . 'log' . \DS . \dechex(\crc32(\ROOT)))) {
             if (!\is_dir($d = \dirname($f))) {
                 \mkdir($d, 0775, true);
@@ -148,13 +148,13 @@ HTML;
                     'lot' => [
                         0 => [
                             'lot' => [
-                                'folder' => ['hidden' => true],
+                                'folder' => ['skip' => true],
                                 'link' => [
-                                    'hidden' => false,
-                                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash
+                                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
+                                    'skip' => false
                                 ],
-                                's' => ['hidden' => true],
-                                'search' => ['hidden' => true] // Hide search form
+                                's' => ['skip' => true],
+                                'search' => ['skip' => true] // Hide search form
                             ]
                         ]
                     ]
@@ -189,8 +189,8 @@ HTML;
                                                         'fields' => [
                                                             // type: fields
                                                             'lot' => [
-                                                                'content' => ['hidden'=> true],
-                                                                'name' => ['hidden' => true],
+                                                                'content' => ['skip' => true],
+                                                                'name' => ['skip' => true],
                                                                 'title' => [
                                                                     'type' => 'text',
                                                                     'name' => 'state[title]',
@@ -325,7 +325,7 @@ HTML;
                                                     'lot' => [
                                                         'tasks' => [
                                                             'lot' => [
-                                                                'l' => ['hidden' => true], // Hide delete button
+                                                                'l' => ['skip' => true], // Hide delete button
                                                                 's' => [
                                                                     'description' => ['Save to %s', ".\\state.php"]
                                                                 ]
@@ -374,7 +374,7 @@ HTML;
             }
             // Hide parent folder link
             if (\count($_['chops']) < 3) {
-                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['hidden'] = true;
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['skip'] = true;
             }
         }
         return $_;
@@ -385,7 +385,7 @@ HTML;
         if (\count($_['chops']) > 1) {
             if (1 !== $status) {
                 // Hide add user link
-                $_['lot']['bar']['lot'][0]['lot']['s']['hidden'] = true;
+                $_['lot']['bar']['lot'][0]['lot']['s']['skip'] = true;
                 // XSS Protection
                 if ('POST' === $_SERVER['REQUEST_METHOD']) {
                     // Prevent user(s) from adding a hidden form (or changing the `page[status]` field value) that

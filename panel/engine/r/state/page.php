@@ -51,17 +51,17 @@ $lot = [
             // type: bar/menu
             0 => [
                 'lot' => [
-                    'folder' => ['hidden' => true],
+                    'folder' => ['skip' => true],
                     'link' => [
                         'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
-                        'hidden' => false
+                        'skip' => false
                     ],
                     's' => [
-                        'hidden' => 's' === $_['task'],
                         'icon' => 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z',
                         'title' => false,
                         'description' => ['New %s', 'Page'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['layout' => 'page', 'tab' => false]) . $url->hash,
+                        'skip' => 's' === $_['task'],
                         'stack' => 10.5
                     ]
                 ]
@@ -117,7 +117,7 @@ $lot = [
                                                         'name' => 'page[name]',
                                                         'value' => $page->name,
                                                         'width' => true,
-                                                        'hidden' => 's' === $_['task'],
+                                                        'skip' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ],
                                                     'content' => [
@@ -176,7 +176,7 @@ $lot = [
                                                         'type' => 'date-time',
                                                         'name' => 'data[time]',
                                                         'value' => $page['time'],
-                                                        'hidden' => 's' === $_['task'],
+                                                        'skip' => 's' === $_['task'],
                                                         'stack' => 20
                                                     ],
                                                     'files' => [
@@ -202,7 +202,7 @@ $lot = [
                                                                 'stack' => 20
                                                             ]
                                                         ],
-                                                        'hidden' => 's' === $_['task'],
+                                                        'skip' => 's' === $_['task'],
                                                         'stack' => 100
                                                     ]
                                                 ],
@@ -234,7 +234,7 @@ $lot = [
                                                         'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => $x,
-                                                        'hidden' => 's' === $_['task'],
+                                                        'skip' => 's' === $_['task'],
                                                         'stack' => 10
                                                     ],
                                                     'page' => [
@@ -242,7 +242,7 @@ $lot = [
                                                         'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'page',
-                                                        'hidden' => 'page' === $x,
+                                                        'skip' => 'page' === $x,
                                                         'stack' => 20
                                                     ],
                                                     'draft' => [
@@ -251,7 +251,7 @@ $lot = [
                                                         'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'draft',
-                                                        'hidden' => 'draft' === $x,
+                                                        'skip' => 'draft' === $x,
                                                         'stack' => 30
                                                     ],
                                                     'archive' => [
@@ -260,7 +260,7 @@ $lot = [
                                                         'type' => 'submit',
                                                         'name' => 'page[x]',
                                                         'value' => 'archive',
-                                                        'hidden' => 'archive' === $x || 's' === $_['task'],
+                                                        'skip' => 'archive' === $x || 's' === $_['task'],
                                                         'stack' => 40
                                                     ],
                                                     'l' => [
@@ -271,7 +271,7 @@ $lot = [
                                                             'token' => $_['token'],
                                                             'trash' => $trash
                                                         ])),
-                                                        'hidden' => 's' === $_['task'],
+                                                        'skip' => 's' === $_['task'],
                                                         'stack' => 50
                                                     ]
                                                 ]
@@ -315,7 +315,6 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                     DS => '/'
                 ]);
                 $files[$k] = [
-                    'hidden' => isset($p[basename($k, '.data')]),
                     'path' => $k,
                     'title' => $n = basename($k),
                     'description' => (new File($k))->size,
@@ -340,7 +339,8 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                             ]),
                             'stack' => 20
                         ]
-                    ]
+                    ],
+                    'skip' => isset($p[basename($k, '.data')])
                 ];
             }
             asort($files);

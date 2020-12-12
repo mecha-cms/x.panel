@@ -20,7 +20,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
             $v['tasks']['s']['url'] = $before . 's' . Path::F($after, '/') . $url->query('&', ['layout' => 'page.page', 'tab' => false]) . $url->hash;
         }
         if ($g && isset($v['author']) && $v['author'] !== $author) {
-            $v['hidden'] = true;
+            $v['skip'] = true;
         }
         if ($comments && $i = q(g($c = strtr(Path::F($k), [LOT . DS . 'page' . DS => LOT . DS . 'comment' . DS]), 'archive,draft,page'))) {
             $v['tasks']['comment'] = [

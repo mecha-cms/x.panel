@@ -20,17 +20,17 @@ return [
             // type: bar/menu
             0 => [
                 'lot' => [
-                    'folder' => ['hidden' => true],
+                    'folder' => ['skip' => true],
                     'link' => [
                         'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
-                        'hidden' => false
+                        'skip' => false
                     ],
                     's' => [
-                        'hidden' => 's' === $_['task'],
                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                         'title' => false,
                         'description' => ['New %s', 'File'],
                         'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['layout' => 'blob', 'tab' => false]) . $url->hash,
+                        'skip' => 's' === $_['task'],
                         'stack' => 10.5
                     ]
                 ]

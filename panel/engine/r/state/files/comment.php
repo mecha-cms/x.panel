@@ -43,7 +43,7 @@ if ($files) {
             LOT => "",
             DS => '/'
         ]);
-        $hidden = false;
+        $skip = false;
         $kk = strtr(dirname($k), [$folder . DS => LOT . DS . 'page' . DS]);
         if ($parent = File::exist([
             $kk . '.draft',
@@ -51,7 +51,7 @@ if ($files) {
             $kk . '.archive'
         ])) {
             $test = (new Page($parent))['author'];
-            $hidden = $test && $test !== $author;
+            $skip = $test && $test !== $author;
         }
         $a = \State::get('x.comment.anchor.0');
         $x = pathinfo($k, PATHINFO_EXTENSION);
@@ -98,7 +98,7 @@ if ($files) {
                 ]
             ],
             // Hide comment(s) that is not related to the page that is written by the current user
-            'hidden' => $hidden
+            'skip' => $skip
         ];
         if (!isset($pages[$k][$_['sort'][1]])) {
             $pages[$k][$_['sort'][1]] = (string) (new Comment($k))->{$_['sort'][1]};
@@ -114,8 +114,8 @@ if ($files) {
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['layout' => 'page.comment', 'tab' => false]) . $url->hash;
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['parent']['hidden'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['hidden'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['data']['hidden'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['parent']['skip'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['data']['skip'] = true;
 
 return $lot;

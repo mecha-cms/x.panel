@@ -97,7 +97,7 @@ function lot($lot, $fn = null, &$count = 0) {
     }
     $out = "";
     foreach ((new \Anemon($lot))->sort([1, 'stack', 10], true) as $k => $v) {
-        if (null === $v || false === $v || !empty($v['hidden'])) {
+        if (null === $v || false === $v || !empty($v['skip'])) {
             continue;
         }
         $v = $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);

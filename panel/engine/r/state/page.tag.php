@@ -50,7 +50,7 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                                         'name' => 'data[id]',
                                                         'value' => 's' === $_['task'] ? $id : $page->id
                                                     ],
-                                                    'content' => ['hidden' => true]
+                                                    'content' => ['skip' => true]
                                                 ]
                                             ]
                                         ],
@@ -60,7 +60,7 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                         'lot' => [
                                             'fields' => [
                                                 'lot' => [
-                                                    'link' => ['hidden' => true]
+                                                    'link' => ['skip' => true]
                                                 ]
                                             ]
                                         ]
@@ -81,7 +81,7 @@ $lot = array_replace_recursive(require __DIR__ . DS . 'page.php', [
                                             'tasks' => [
                                                 // type: tasks/button
                                                 'lot' => [
-                                                    'l' => ['hidden' => 's' === $_['task'] || $page->name === $user->name]
+                                                    'l' => ['skip' => 's' === $_['task'] || $page->name === $user->name]
                                                 ]
                                             ]
                                         ]

@@ -166,7 +166,10 @@ function route() {
     } else {
         // Missing `<input name="token">`
     }
+    // Has alert data from queue
     if (!empty($_['alert'])) {
+        // Make alert section visible
+        $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
         foreach ((array) $_['alert'] as $k => $v) {
             foreach ((array) $v as $vv) {
                 $vv = (array) $vv;
@@ -188,11 +191,15 @@ function route() {
     // Put data
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');
-    if (isset($_['lot']['title'])) {
-        $GLOBALS['t'][] = \i($_['lot']['title']); // Custom panel title
-        unset($GLOBALS['_']['lot']['title']);
+    if (isset($_['title'])) {
+        $GLOBALS['t'][] = \i($_['title']); // Custom panel title
     } else {
         $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;
+    }
+    // Has alert data from previous session
+    if (count($GLOBALS['alert'] ?? [])) {
+        // Make alert section visible
+        $GLOBALS['_']['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
     }
     $this->layout('panel');
 }
