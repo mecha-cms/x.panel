@@ -85,6 +85,7 @@ label {
     padding: 0;
     font-size: ($z * .75);
     line-height: $y;
+    box-shadow: none;
   }
 }
 
@@ -106,16 +107,15 @@ label {
   &[type='radio'][readonly] {
     pointer-events: none;
   }
-}
-
-.input[type='color'] {
-  width: ($x * 1.5);
-  height: ($y * 1.5);
-}
-
-.input[type='image'] {
-  width: auto;
-  height: auto;
+  &[type='color'] {
+    width: ($x * 1.5);
+    height: ($y * 1.5);
+  }
+  &[type='image'] {
+    width: auto;
+    height: auto;
+    box-shadow: none;
+  }
 }
 
 .select {

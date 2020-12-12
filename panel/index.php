@@ -17,7 +17,6 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'kick' => null,
     'lot' => [],
     'path' => null,
-    'peek' => 2,
     'state' => $state,
     'task' => null,
     'token' => content(LOT . DS . 'user' . DS . Cookie::get('user.key') . DS . 'token.data'),

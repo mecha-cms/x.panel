@@ -156,7 +156,6 @@ return [
                                 'chunk' => $_['chunk'],
                                 'count' => $count,
                                 'current' => $_['i'],
-                                'peek' => $_['peek'],
                                 'stack' => 10
                             ]
                         ]

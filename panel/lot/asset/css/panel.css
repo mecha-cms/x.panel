@@ -869,6 +869,7 @@ label {
   padding: 0;
   font-size: 12px;
   line-height: 24px;
+  box-shadow: none;
 }
 
 .input[type=checkbox], .input[type=color], .input[type=image], .input[type=radio] {
@@ -884,15 +885,14 @@ label {
 .input[type=checkbox][readonly], .input[type=radio][readonly] {
   pointer-events: none;
 }
-
 .input[type=color] {
   width: 36px;
   height: 36px;
 }
-
 .input[type=image] {
   width: auto;
   height: auto;
+  box-shadow: none;
 }
 
 .select {
