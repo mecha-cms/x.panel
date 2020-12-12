@@ -26,7 +26,7 @@ function route() {
             break;
         }
     }
-    $set = function() {
+    $set = static function() {
         // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
         foreach ($GLOBALS['X'][1] as $v) {
             \is_file($v = \Path::F($v) . \DS . 'panel.php') && (function($v) {

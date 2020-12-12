@@ -59,9 +59,7 @@ if (is_file($f) && 'zip' === pathinfo($f, PATHINFO_EXTENSION)) {
 $name = ($f ? basename($f) : uniqid()) . '@' . date('Y-m-d') . '.zip';
 $o = new ZipStream\Option\Archive();
 $o->setSendHttpHeaders(true);
-
 $zip = new ZipStream\ZipStream($name, $o);
-
 $d = dirname($f);
 if (is_dir($f)) {
     if (isset($_['form']['d']) && !$_['form']['d']) {
@@ -108,5 +106,7 @@ if (is_dir($f)) {
     ]), $f);
     $zip->finish();
 }
+
+$_['f'] = null; // Stream is not a file
 
 return $_;
