@@ -13,7 +13,7 @@ Release Notes
  - [ ] Added ability to detect extension and layout package without parent folder.
  - [x] Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.
  - [x] Narrowed down the panel editor maximum width.
- - [ ] Changed default layout from _Construction_ to _Dark. _Construction_ layout will be available as separate extension in the future.
+ - [x] Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
  - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
  - [x] Removed `peek` option globally.
 
