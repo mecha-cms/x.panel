@@ -1,0 +1,291 @@
+$base: #222 !default;
+$mix: #fff !default;
+
+$body: 'Nimbus Sans L', sans-serif !default;
+$code: 'Nimbus Mono L', monospace !default;
+
+@function theme($percent: 0%) {
+  @return mix($mix, $base, $percent);
+}
+
+:root {
+  background: theme(0%);
+  font-family: $body;
+  color: theme(60%);
+}
+
+a[href] {
+  color: theme(40%);
+  &:focus,
+  &:active {
+    color: theme(50%);
+  }
+}
+
+blockquote,
+caption,
+figcaption,
+.description {
+  color: theme(50%);
+}
+
+code, .code {
+  font-family: $code;
+}
+
+fieldset, hr {
+  border-color: theme(5%);
+}
+
+pre {
+  > code {
+    background: theme(5%);
+    color: inherit;
+  }
+  &.is\:text {
+    > code {
+      background: none;
+      border-color: theme(5%);
+    }
+  }
+}
+
+.alert {
+  p {
+    background: theme(1%);
+  }
+}
+
+.button {
+  &,
+  &[href] {
+    background: theme(30%);
+    color: theme(95%);
+    &:not(.not\:active) {
+      &:focus {
+        background: theme(40%);
+        color: theme(95%);
+      }
+      &:active {
+        background: theme(20%);
+        color: theme(95%);
+      }
+    }
+  }
+}
+
+.input,
+.select,
+.textarea {
+  background: theme(5%);
+  border-color: theme(10%);
+  color: theme(70%);
+  &:focus {
+    &:invalid {
+      border-color: mix(red, theme(10%), 50%);
+      color: mix(red, theme(70%), 50%);
+    }
+  }
+}
+
+.lot\:bar {
+  > ul {
+    > li {
+      > a {
+        &:focus,
+        &:hover {
+          background: theme(1%);
+        }
+      }
+      &.is\:current {
+        > a {
+          background: theme(2%);
+          &:focus,
+          &:hover {
+            background: theme(3%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.lot\:field {
+  .tag-picker {
+    .tag {
+      &:not(.editor) {
+        background: theme(15%);
+        color: inherit;
+        &:focus {
+          background: theme(20%);
+        }
+      }
+    }
+  }
+}
+
+.lot\:input {
+  .fix {
+    background: theme(4%);
+    border-color: theme(10%);
+  }
+}
+
+.lot\:menu {
+  background: theme(0%);
+  color: theme(60%);
+  a {
+    &:focus,
+    &:hover {
+      background: theme(1%);
+    }
+  }
+  li {
+    &:focus,
+    &:hover {
+      > a {
+        background: theme(1%);
+      }
+    }
+    &.is\:current {
+      > a {
+        background: theme(2%);
+        &:focus,
+        &:hover {
+          background: theme(3%);
+        }
+      }
+    }
+  }
+}
+
+.lot\:file {
+  .is\:file {
+    &::before {
+      background: theme(0%);
+      border-color: theme(30%);
+    }
+    &::after {
+      border-bottom-color: theme(30%);
+      border-left-color: theme(30%);
+    }
+  }
+  .is\:folder {
+    &::before {
+      background: theme(60%);
+    }
+    &::after {
+      background: theme(40%);
+    }
+  }
+}
+
+.lot\:file,
+.lot\:page {
+  li {
+    border: 0 solid theme(0%);
+    &:hover {
+      background: theme(1%);
+      border-color: theme(1%);
+    }
+    &.is\:active {
+      background: theme(2%);
+      border-color: theme(2%);
+      &:hover {
+        background: theme(3%);
+        border-color: theme(3%);
+      }
+    }
+  }
+  .lot\:task {
+    &,
+    > * {
+      margin: 0;
+    }
+    > * {
+      .title {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.lot\:pager {
+  > span {
+    > a {
+      background: theme(30%);
+      color: theme(95%);
+      &:focus {
+        background: theme(40%);
+        color: theme(95%);
+      }
+      &:active {
+        background: theme(20%);
+        color: theme(95%);
+      }
+    }
+    > b,
+    > span {
+      background: none;
+      color: inherit;
+    }
+  }
+}
+
+.lot\:tab {
+  > nav {
+    li {
+      border-color: theme(5%);
+      &.is\:active {
+        &::before,
+        &::after {
+          border-color: theme(5%);
+        }
+      }
+      &:not(.is\:active) {
+        background: theme(1%);
+        color: theme(60%);
+      }
+    }
+  }
+}
+
+.input {
+  &[type='checkbox'],
+  &[type='radio'] {
+    &::before {
+      background: theme(0%);
+    }
+  }
+  &[type='checkbox'] {
+    background: theme(30%);
+    &:not(.not\:active):focus {
+      background: theme(40%);
+    }
+    &:not(.not\:active):active {
+      background: theme(20%);
+    }
+    &:checked {
+      &::before {
+        border-right-color: theme(95%);
+        border-bottom-color: theme(95%);
+      }
+    }
+  }
+  &[type='radio'] {
+    background: theme(30%);
+    &:not(.not\:active):focus {
+      background: theme(40%);
+    }
+    &:not(.not\:active):active {
+      background: theme(20%);
+    }
+    &:checked {
+      &::before {
+        border-color: theme(0%);
+      }
+    }
+  }
+}

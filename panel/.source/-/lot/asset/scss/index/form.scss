@@ -52,6 +52,7 @@ label {
   &:focus:invalid {
     color: $color-error;
     border-color: $color-border-error;
+    box-shadow: none;
   }
 }
 

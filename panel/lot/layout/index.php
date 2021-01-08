@@ -1,3 +1,3 @@
 <?php
 
-Asset::set(__DIR__ . DS . 'asset' . DS . 'css' . DS . 'minima' . (defined('DEBUG') && DEBUG ? '.' : '.min.') . 'css', 20.1);
+Asset::set(__DIR__ . DS . 'asset' . DS . 'css' . DS . 'index' . (defined('DEBUG') && DEBUG ? '.' : '.min.') . 'css', 20.1);

@@ -5,8 +5,10 @@ Hook::set('get', function() {
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset' . DS;
     $z = defined('DEBUG') && DEBUG ? '.' : '.min.';
     extract($GLOBALS, EXTR_SKIP);
-    Asset::set($f . 'css' . DS . 'panel' . $z . 'css', 20);
-    Asset::set($f . 'js' . DS . 'panel' . $z . 'js', 20);
+    Asset::set($f . 'css' . DS . 'r' . $z . 'css', 19.9);
+    Asset::set($f . 'css' . DS . 'index' . $z . 'css', 20);
+    Asset::set($f . 'js' . DS . 'r' . $z . 'js', 19.9);
+    Asset::set($f . 'js' . DS . 'index' . $z . 'js', 20);
     require __DIR__ . DS . 'layout.php';
 }, 20);
 

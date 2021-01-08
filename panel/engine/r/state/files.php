@@ -60,7 +60,7 @@ if (count($_['chops']) > 1 && $_['i'] <= 1) {
     $after = '::' . $_['path'];
     $files = array_merge([$folder => [
         'title' => S . '..' . S,
-        'description' => 'Exit',
+        'description' => ['Go to %s', 'Parent'],
         'type' => 'folder',
         'tags' => ['is:folder'],
         'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,

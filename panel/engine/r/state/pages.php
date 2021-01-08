@@ -8,6 +8,12 @@ $search = function($folder, $x, $r) {
     return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
 };
 
+$page = is_file($f = File::exist([
+    $_['f'] . '.archive',
+    $_['f'] . '.draft',
+    $_['f'] . '.page'
+])) ? new Page($f) : new Page;
+
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
