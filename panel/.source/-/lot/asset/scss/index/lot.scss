@@ -278,9 +278,10 @@
     background: none;
     width: auto;
     max-width: 50%;
-    cursor: auto;
+    cursor: default;
     white-space: nowrap;
     text-overflow: ellipsis;
+    @include user-select(none);
   }
   svg.fix {
     width: ($x * 1.5);
@@ -380,7 +381,7 @@
       width: auto;
       height: 1px;
       background: $color;
-      margin: 0;
+      margin: 0 ($y / 3);
       overflow: hidden;
       &:first-child,
       &:last-child {

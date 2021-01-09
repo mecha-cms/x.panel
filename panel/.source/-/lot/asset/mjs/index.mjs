@@ -1,6 +1,6 @@
 import {D, R, W, getAttribute, getDatum, getElement, getElements, getHTML, getName, getParent, hasClass, letDatum, setAttribute, setDatum, setHTML, theLocation} from '@taufik-nurrohman/document';
 import {off as offEvent, on as onEvent} from '@taufik-nurrohman/event';
-import {fire as fireHook, hooks as theHooks, off as offHook, on as onHook} from '@taufik-nurrohman/hook';
+import {context as contextHook} from '@taufik-nurrohman/hook';
 
 import {hook as doQueryHook} from './index/field/query.mjs';
 import {hook as doSourceHook} from './index/field/source.mjs';
@@ -23,13 +23,15 @@ delete F3H.state.types.JSON;
 
 let f3h = null;
 
+let {fire, hooks, off, on} = contextHook({});
+
 if (hasClass(R, 'can:fetch')) {
     let title = getElement('title'),
         selectors = 'body>div,body>svg',
         elements = getElements(selectors);
     f3h = new F3H(false); // Disable cache
     f3h.on('error', () => {
-        fireHook('error');
+        fire('error');
         theLocation.reload();
     });
     f3h.on('exit', (response, node) => {
@@ -40,7 +42,7 @@ if (hasClass(R, 'can:fetch')) {
                 letDatum(title, 'is');
             }
         }
-        fireHook('let');
+        fire('let');
     });
     f3h.on('success', (response, node) => {
         let status = f3h.status;
@@ -57,14 +59,14 @@ if (hasClass(R, 'can:fetch')) {
                     setHTML(element, getHTML(responseElements[index]));
                 }
             });
-            fireHook('change');
+            fire('change');
         }
     });
-    onHook('change', doMenuHook);
-    onHook('change', doQueryHook);
-    onHook('change', doSourceHook);
-    onHook('change', doTabHook);
-    onHook('let', () => {
+    on('change', doMenuHook);
+    on('change', doQueryHook);
+    on('change', doSourceHook);
+    on('change', doTabHook);
+    on('let', () => {
         if (title) {
             let status = getDatum(title, 'is') || 'pull',
                 value = getDatum(title, 'is-' + status);
@@ -73,9 +75,9 @@ if (hasClass(R, 'can:fetch')) {
     });
 }
 
-onEvent('beforeload', D, () => fireHook('let'));
-onEvent('load', D, () => fireHook('get'));
-onEvent('DOMContentLoaded', D, () => fireHook('set'));
+onEvent('beforeload', D, () => fire('let'));
+onEvent('load', D, () => fire('get'));
+onEvent('DOMContentLoaded', D, () => fire('set'));
 
 doMenuHook();
 doQueryHook();
@@ -84,8 +86,8 @@ doTabHook();
 
 export default {
     f3h,
-    fire: fireHook,
-    hooks: theHooks,
-    off: offHook,
-    on: onHook
+    fire,
+    hooks,
+    off,
+    on
 };

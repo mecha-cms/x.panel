@@ -435,62 +435,70 @@
     return Object.assign.apply(Object, [{}].concat(lot));
   };
 
-  function fire(name, data) {
-    var $ = this;
+  function context($) {
+    var hooks = {};
 
-    if (!isSet(hooks[name])) {
+    function fire(name, data) {
+      if (!isSet(hooks[name])) {
+        return $;
+      }
+
+      hooks[name].forEach(function (then) {
+        return then.apply($, data);
+      });
       return $;
     }
 
-    hooks[name].forEach(function (then) {
-      return then.apply($, data);
-    });
-    return $;
-  }
+    function off(name, then) {
+      if (!isSet(name)) {
+        return hooks = {}, $;
+      }
 
-  var hooks = {};
+      if (isSet(hooks[name])) {
+        if (isSet(then)) {
+          for (var i = 0, _j = hooks[name].length; i < _j; ++i) {
+            if (then === hooks[name][i]) {
+              hooks[name].splice(i, 1);
+              break;
+            }
+          } // Clean-up empty hook(s)
 
-  function off$1(name, then) {
-    var $ = this;
 
-    if (!isSet(name)) {
-      return hooks = {}, $;
-    }
-
-    if (isSet(hooks[name])) {
-      if (isSet(then)) {
-        for (var i = 0, _j = hooks[name].length; i < _j; ++i) {
-          if (then === hooks[name][i]) {
-            hooks[name].splice(i, 1);
-            break;
+          if (0 === j) {
+            delete hooks[name];
           }
-        } // Clean-up empty hook(s)
-
-
-        if (0 === j) {
+        } else {
           delete hooks[name];
         }
-      } else {
-        delete hooks[name];
       }
+
+      return $;
     }
 
+    function on(name, then) {
+      if (!isSet(hooks[name])) {
+        hooks[name] = [];
+      }
+
+      if (isSet(then)) {
+        hooks[name].push(then);
+      }
+
+      return $;
+    }
+
+    $.hooks = hooks;
+    $.fire = fire;
+    $.off = off;
+    $.on = on;
     return $;
   }
 
-  function on$1(name, then) {
-    var $ = this;
-
-    if (!isSet(hooks[name])) {
-      hooks[name] = [];
-    }
-
-    if (isSet(then)) {
-      hooks[name].push(then);
-    }
-
-    return $;
-  }
+  var $ = context({});
+  var fire = $.fire;
+  var off$1 = $.off;
+  var on$1 = $.on;
+  var hooks = $.hooks;
 
   var esc = function esc(pattern, extra) {
     if (extra === void 0) {
@@ -643,6 +651,7 @@
   function getLinks(scope) {
     var id,
         out = {},
+        href,
         link,
         links = getElements('link[rel=dns-prefetch],link[rel=preconnect],link[rel=prefetch],link[rel=preload],link[rel=prerender]', scope),
         toSave;
@@ -652,9 +661,13 @@
         continue;
       }
 
-      link.id = id = link.id || name + ':' + toID(getAttribute(link, 'href') || getText(link));
+      href = getAttribute(link, 'href');
+      link.id = id = link.id || name + ':' + toID(href || getText(link));
       out[id] = toSave = fromElement(link);
-      out[id][toCount(toSave) - 1].href = link.href; // Use the resolved URL!
+
+      if (href) {
+        out[id][toCount(toSave) - 1].href = link.href; // Use the resolved URL!
+      }
     }
 
     return out;
@@ -667,6 +680,7 @@
   function getScripts(scope) {
     var id,
         out = {},
+        src,
         script,
         scripts = getElements('script', scope),
         toSave;
@@ -676,9 +690,13 @@
         continue;
       }
 
-      script.id = id = script.id || name + ':' + toID(getAttribute(script, 'src') || getText(script));
+      src = getAttribute(script, 'src');
+      script.id = id = script.id || name + ':' + toID(src || getText(script));
       out[id] = toSave = fromElement(script);
-      out[id][toCount(toSave) - 1].src = script.src; // Use the resolved URL!
+
+      if (src) {
+        out[id][toCount(toSave) - 1].src = script.src; // Use the resolved URL!
+      }
     }
 
     return out;
@@ -687,6 +705,7 @@
   function getStyles(scope) {
     var id,
         out = {},
+        href,
         style,
         styles = getElements('link[rel=stylesheet],style', scope),
         toSave;
@@ -696,10 +715,11 @@
         continue;
       }
 
-      style.id = id = style.id || name + ':' + toID(getAttribute(style, 'href') || getText(style));
+      href = getAttribute(style, 'href');
+      style.id = id = style.id || name + ':' + toID(href || getText(style));
       out[id] = toSave = fromElement(style);
 
-      if ('link' === toSave[0]) {
+      if (href) {
         out[id][toCount(toSave) - 1].href = style.href; // Use the resolved URL!
       }
     }
@@ -831,16 +851,13 @@
 
 
     if (source[name]) {
-      return $;
+      return;
     }
 
     $.state = state = fromStates(F3H.state, true === state ? {
       cache: state
     } : state || {});
     $.source = source;
-    var fire$1 = fire.bind($),
-        off$2 = off$1.bind($),
-        on$2 = on$1.bind($);
 
     if (state.turbo) {
       state.cache = true; // Enable turbo feature will force enable cache feature
@@ -859,7 +876,12 @@
         scripts = null,
         sources = getSources(state.sources),
         status = null,
-        styles = null; // Store current instance to `F3H.instances`
+        styles = null;
+
+    var _contextHook = context($),
+        fire = _contextHook.fire,
+        hooks = _contextHook.hooks; // Store current instance to `F3H.instances`
+
 
     F3H.instances[source.id || source.name || toObjectCount(F3H.instances)] = $; // Mark current DOM as active to prevent duplicate instance
 
@@ -916,7 +938,7 @@
       nodeCurrent = node; // Store currently selected source element to a variable to be compared later
 
       $.ref = letSlashEnd(refCurrent = ref);
-      fire$1('exit', [D, node]); // Get response from cache if any
+      fire('exit', [D, node]); // Get response from cache if any
 
       if (state.cache) {
         var cache = caches[letSlashEnd(letHash(ref))]; // `[status, response, lot, requestIsDocument]`
@@ -931,13 +953,13 @@
           cache[3] && (links = doUpdateLinks(data[0])); // Update CSS before markup change
 
           cache[3] && (styles = doUpdateStyles(data[0]));
-          fire$1('success', data);
-          fire$1(cache[0], data);
+          fire('success', data);
+          fire(cache[0], data);
           sources = getSources(state.sources); // Update JavaScript after markup change
 
           cache[3] && (scripts = doUpdateScripts(data[0]));
           onSourcesEventsSet(data);
-          fire$1('enter', data);
+          fire('enter', data);
           return;
         }
       }
@@ -963,7 +985,7 @@
       }
 
       on('abort', request, function () {
-        dataSet(), fire$1('abort', [request.response, node]);
+        dataSet(), fire('abort', [request.response, node]);
       });
       on('error', request, fn = function fn() {
         dataSet();
@@ -973,12 +995,12 @@
         requestIsDocument && (links = doUpdateLinks(data[0])); // Update CSS before markup change
 
         requestIsDocument && (styles = doUpdateStyles(data[0]));
-        fire$1('error', data);
+        fire('error', data);
         sources = getSources(state.sources); // Update JavaScript after markup change
 
         requestIsDocument && (scripts = doUpdateScripts(data[0]));
         onSourcesEventsSet(data);
-        fire$1('enter', data);
+        fire('enter', data);
       });
       on('error', requestAsPush, fn);
       on('load', request, fn = function fn() {
@@ -994,8 +1016,8 @@
           var r = letSlashEnd(redirect);
           caches[r] && delete caches[r]; // Trigger hook(s) immediately
 
-          fire$1('success', data);
-          fire$1(status, data); // Do the normal fetch
+          fire('success', data);
+          fire(status, data); // Do the normal fetch
 
           doFetch(nodeCurrent = W, GET, redirect || ref);
           return;
@@ -1007,21 +1029,21 @@
         // Update CSS before markup change
 
         requestIsDocument && (styles = doUpdateStyles(data[0]));
-        fire$1('success', data);
-        fire$1(status, data);
+        fire('success', data);
+        fire(status, data);
         requestIsDocument && useHistory && doScrollTo(R);
         sources = getSources(state.sources); // Update JavaScript after markup change
 
         requestIsDocument && (scripts = doUpdateScripts(data[0]));
         onSourcesEventsSet(data);
-        fire$1('enter', data);
+        fire('enter', data);
       });
       on('load', requestAsPush, fn);
       on('progress', request, function (e) {
-        dataSet(), fire$1('pull', e.lengthComputable ? [e.loaded, e.total] : [0, -1]);
+        dataSet(), fire('pull', e.lengthComputable ? [e.loaded, e.total] : [0, -1]);
       });
       on('progress', requestAsPush, function (e) {
-        dataSet(), fire$1('push', e.lengthComputable ? [e.loaded, e.total] : [0, -1]);
+        dataSet(), fire('push', e.lengthComputable ? [e.loaded, e.total] : [0, -1]);
       });
       return request;
     }
@@ -1070,7 +1092,7 @@
 
     function doFocusToElement(data) {
       if (hooks.focus) {
-        fire$1('focus', data);
+        fire('focus', data);
         return;
       }
 
@@ -1105,7 +1127,7 @@
 
     function doScrollToElement(data) {
       if (hooks.scroll) {
-        fire$1('scroll', data);
+        fire('scroll', data);
         return;
       }
 
@@ -1126,7 +1148,8 @@
 
         if (!toCompare[id]) {
           delete to[id];
-          letElement(getTarget(id));
+          var target = getTarget(id);
+          target && letElement(target);
         }
       }
 
@@ -1279,12 +1302,8 @@
       return doFetchBase(from, type, ref);
     };
 
-    $.fire = fire$1;
-    $.hooks = hooks;
     $.links = links;
     $.lot = null;
-    $.off = off$2;
-    $.on = on$2;
     $.ref = null;
     $.scripts = scripts;
     $.state = state;
@@ -1303,7 +1322,7 @@
       off('keydown', D, onKeyDown);
       off('keyup', D, onKeyUp);
       off('popstate', W, onPopState);
-      fire$1('pop', [D, W]);
+      fire('pop', [D, W]);
       return $.abort();
     };
 
@@ -1362,609 +1381,7 @@
       'JSON': responseTypeJSON
     }
   };
-  F3H.version = '1.1.12';
-
-  var hasValue = function hasValue(x, data) {
-    return -1 !== data.indexOf(x);
-  };
-  /*!
-   *
-   * The MIT License (MIT)
-   *
-   * Copyright © 2020 Taufik Nurrohman
-   *
-   * <https://github.com/taufik-nurrohman/tag-picker>
-   *
-   * Permission is hereby granted, free of charge, to any person obtaining a copy
-   * of this software and associated documentation files (the “Software”), to deal
-   * in the Software without restriction, including without limitation the rights
-   * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   * copies of the Software, and to permit persons to whom the Software is
-   * furnished to do so, subject to the following conditions:
-   *
-   * The above copyright notice and this permission notice shall be included in all
-   * copies or substantial portions of the Software.
-   *
-   * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-   * SOFTWARE.
-   *
-   */
-
-
-  var delay = W.setTimeout,
-      name$1 = 'TP';
-  var KEY_ARROW_LEFT = ['ArrowLeft', 37];
-  var KEY_ARROW_RIGHT = ['ArrowRight', 39];
-  var KEY_DELETE_LEFT = ['Backspace', 8];
-  var KEY_DELETE_RIGHT = ['Delete', 46];
-  var KEY_ENTER = ['Enter', 13];
-  var KEY_TAB = ['Tab', 9];
-
-  function TP(source, state) {
-    if (state === void 0) {
-      state = {};
-    }
-
-    if (!source) return;
-    var $ = this; // Already instantiated, skip!
-
-    if (source[name$1]) {
-      return $;
-    } // Return new instance if `TP` was called without the `new` operator
-
-
-    if (!isInstance($, TP)) {
-      return new TP(source, state);
-    }
-
-    var sourceIsDisabled = function sourceIsDisabled() {
-      return source.disabled;
-    },
-        sourceIsReadOnly = function sourceIsReadOnly() {
-      return source.readOnly;
-    },
-        thePlaceholder = getAttribute(source, 'placeholder'),
-        theTabIndex = getAttribute(source, 'tabindex');
-
-    $.state = state = fromStates(TP.state, isString(state) ? {
-      join: state
-    } : state || {});
-    $.source = source;
-    var fire$1 = fire.bind($),
-        off$2 = off$1.bind($),
-        on$2 = on$1.bind($); // Store current instance to `TP.instances`
-
-    TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
-
-    source[name$1] = 1;
-    var editor = setElement('span', {
-      'class': 'editor tag'
-    }),
-        editorInput = setElement('span', {
-      'contenteditable': sourceIsDisabled() ? false : 'true',
-      'spellcheck': 'false',
-      'style': 'white-space:pre;'
-    }),
-        editorInputPlaceholder = setElement('span'),
-        form = getParentForm(source),
-        // Capture the closest `<form>` element
-    self = setElement('span', {
-      'class': state['class']
-    }),
-        tags = setElement('span', {
-      'class': 'tags'
-    });
-
-    function n(text) {
-      return $.f(text).replace(toPattern('(' + state.escape.join('|').replace(/\\/g, '\\\\') + ')+'), "").trim();
-    }
-
-    function onInput() {
-      if (sourceIsDisabled() || sourceIsReadOnly()) {
-        return setInput("");
-      }
-
-      var tag = n(getText(editorInput)),
-          tags = $.tags,
-          index;
-
-      if (tag) {
-        if (!getTag(tag)) {
-          setTagElement(tag), setTag(tag);
-          index = toCount(tags);
-          fire$1('change', [tag, index]);
-          fire$1('set.tag', [tag, index]);
-        } else {
-          fire$1('has.tag', [tag, toArrayKey(tag, tags)]);
-        }
-
-        setInput("");
-      }
-    }
-
-    function onBlurInput() {
-      onInput();
-      letClasses(self, ['focus', 'focus.input']);
-      fire$1('blur', [$.tags, toCount($.tags)]);
-    }
-
-    function onClickInput() {
-      fire$1('click', [$.tags]);
-    }
-
-    function onFocusInput() {
-      setClass(self, 'focus');
-      setClass(self, 'focus.input');
-      fire$1('focus', [$.tags]);
-    }
-
-    function onKeyDownInput(e) {
-      var escape = state.escape,
-          key = e.key,
-          // Modern browser(s)
-      keyCode = e.keyCode,
-          // Legacy browser(s)
-      keyIsCtrl = e.ctrlKey,
-          keyIsEnter = KEY_ENTER[0] === key || KEY_ENTER[1] === keyCode,
-          keyIsShift = e.shiftKey,
-          keyIsTab = KEY_TAB[0] === key || KEY_TAB[1] === keyCode,
-          tag,
-          theTagLast = getPrev(editor),
-          theTagsCount = toCount($.tags),
-          theTagsMax = state.max,
-          theValueLast = n(getText(editorInput)); // Last value before delay
-      // Set preferred key name
-
-      if (keyIsEnter) {
-        key = '\n';
-      } else if (keyIsTab) {
-        key = '\t';
-      } // Skip `Tab` key
-
-
-      if (keyIsTab) ;else if (sourceIsDisabled() || sourceIsReadOnly()) {
-        // Submit the closest `<form>` element with `Enter` key
-        if (keyIsEnter && sourceIsReadOnly()) {
-          doSubmitTry();
-        }
-
-        eventPreventDefault(e);
-      } else if (hasValue(key, escape) || hasValue(keyCode, escape)) {
-        if (theTagsCount < theTagsMax) {
-          // Add the tag name found in the tag editor
-          onInput();
-        } else {
-          setInput("");
-          fire$1('max.tags', [theTagsMax]);
-        }
-
-        eventPreventDefault(e); // Submit the closest `<form>` element with `Enter` key
-      } else if (keyIsEnter) {
-        doSubmitTry(), eventPreventDefault(e);
-      } else {
-        delay(function () {
-          var text = getText(editorInput) || "",
-              value = n(text); // Last try for buggy key detection on mobile device(s)
-          // Check for the last typed key in the tag editor
-
-          if (hasValue(text.slice(-1), escape)) {
-            if (theTagsCount < theTagsMax) {
-              // Add the tag name found in the tag editor
-              onInput();
-            } else {
-              setInput("");
-              fire$1('max.tags', [theTagsMax]);
-            }
-
-            eventPreventDefault(e); // Escape character only, delete!
-          } else if ("" === value && !keyIsCtrl && !keyIsShift) {
-            if ("" === theValueLast && (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[0] === keyCode)) {
-              letClass(self, 'focus.tag');
-              tag = $.tags[theTagsCount - 1];
-              letTagElement(tag), letTag(tag);
-
-              if (theTagLast) {
-                fire$1('change', [tag, theTagsCount - 1]);
-                fire$1('let.tag', [tag, theTagsCount - 1]);
-              }
-            } else if (KEY_ARROW_LEFT[0] === key || KEY_ARROW_LEFT[1] === keyCode) {
-              // Focus to the last tag
-              theTagLast && theTagLast.focus();
-            }
-          }
-
-          setText(editorInputPlaceholder, value ? "" : thePlaceholder);
-        }, 0);
-      }
-    }
-
-    function setTags(values) {
-      // Remove …
-      if (hasParent(self)) {
-        var prev;
-
-        while (prev = getPrev(editor)) {
-          letTagElement(prev.title);
-        }
-      }
-
-      $.tags = [];
-      source.value = ""; // … then add tag(s)
-
-      values = values ? values.split(state.join) : [];
-
-      for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
-        if (!values[i]) {
-          break;
-        }
-
-        if ("" !== (value = n(values[i]))) {
-          if (getTag(value)) {
-            continue;
-          }
-
-          setTagElement(value), setTag(value);
-          fire$1('change', [value, i]);
-          fire$1('set.tag', [value, i]);
-        }
-      }
-    }
-
-    function onSubmitForm(e) {
-      if (sourceIsDisabled()) {
-        return;
-      }
-
-      var theTagsMin = state.min;
-      onInput(); // Force to add the tag name found in the tag editor
-
-      if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-        setInput("", 1);
-        fire$1('min.tags', [theTagsMin]);
-        eventPreventDefault(e);
-        return;
-      } // Do normal `submit` event
-
-
-      return 1;
-    }
-
-    function onPasteInput() {
-      delay(function () {
-        if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-          setTags(getText(editorInput));
-        }
-
-        setInput("");
-      }, 0);
-    }
-
-    function onClickSelf(e) {
-      if (e && self === e.target) {
-        editorInput.focus(), onClickInput();
-      }
-    }
-
-    function onFocusSource() {
-      editorInput.focus();
-    }
-
-    function onBlurTag() {
-      var t = this,
-          tag = t.title,
-          tags = $.tags;
-      letClasses(self, ['focus', 'focus.tag']);
-      fire$1('blur.tag', [tag, toArrayKey(tag, tags)]);
-    }
-
-    function onClickTag() {
-      var t = this,
-          tag = t.title,
-          tags = $.tags;
-      fire$1('click.tag', [tag, toArrayKey(tag, tags)]);
-    }
-
-    function onFocusTag() {
-      var t = this,
-          tag = t.title,
-          tags = $.tags;
-      setClasses(self, ['focus', 'focus.tag']);
-      fire$1('focus.tag', [tag, toArrayKey(tag, tags)]);
-    }
-
-    function onClickTagX(e) {
-      if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-        var t = this,
-            tag = getParent(t).title,
-            _tags = $.tags,
-            index = toArrayKey(tag, _tags);
-        letTagElement(tag), letTag(tag), setInput("", 1);
-        fire$1('change', [tag, index]);
-        fire$1('click.tag', [tag, index]);
-        fire$1('let.tag', [tag, index]);
-      }
-
-      eventPreventDefault(e);
-    }
-
-    function onKeyDownTag(e) {
-      var key = e.key,
-          // Modern browser(s)
-      keyCode = e.keyCode,
-          // Legacy browser(s)
-      keyIsCtrl = e.ctrlKey,
-          keyIsShift = e.shiftKey,
-          t = this,
-          theTagNext = getNext(t),
-          theTagPrev = getPrev(t);
-
-      if (!keyIsCtrl && !keyIsShift) {
-        // Focus to the previous tag
-        if (!sourceIsReadOnly() && (KEY_ARROW_LEFT[0] === key || KEY_ARROW_LEFT[1] === keyCode)) {
-          theTagPrev && (theTagPrev.focus(), eventPreventDefault(e)); // Focus to the next tag or to the tag input
-        } else if (!sourceIsReadOnly() && (KEY_ARROW_RIGHT[0] === key || KEY_ARROW_RIGHT[1] === keyCode)) {
-          theTagNext && theTagNext !== editor ? theTagNext.focus() : setInput("", 1);
-          eventPreventDefault(e); // Remove tag with `Backspace` or `Delete` key
-        } else if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode || KEY_DELETE_RIGHT[0] === key || KEY_DELETE_RIGHT[1] === keyCode) {
-          if (!sourceIsReadOnly()) {
-            var tag = t.title,
-                _tags2 = $.tags,
-                index = toArrayKey(tag, _tags2);
-            letClass(self, 'focus.tag');
-            letTagElement(tag), letTag(tag); // Focus to the previous tag or to the tag input after remove
-
-            if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode) {
-              theTagPrev ? theTagPrev.focus() : setInput("", 1); // Focus to the next tag or to the tag input after remove
-            } else
-              /* if (
-              KEY_DELETE_RIGHT[0] === key ||
-              KEY_DELETE_RIGHT[1] === keyCode
-              ) */
-              {
-                theTagNext && theTagNext !== editor ? theTagNext.focus() : setInput("", 1);
-              }
-
-            fire$1('change', [tag, index]);
-            fire$1('let.tag', [tag, index]);
-          }
-
-          eventPreventDefault(e);
-        }
-      }
-    }
-
-    function setInput(value, fireFocus) {
-      setText(editorInput, value);
-      setText(editorInputPlaceholder, value ? "" : thePlaceholder);
-      fireFocus && editorInput.focus();
-    }
-
-    setInput("");
-
-    function getTag(tag, fireHooks) {
-      var tags = $.tags,
-          index = toArrayKey(tag, tags);
-      fireHooks && fire$1('get.tag', [tag, index]);
-      return isNumber(index) ? tag : null;
-    }
-
-    function letTag(tag) {
-      var tags = $.tags,
-          index = toArrayKey(tag, tags);
-
-      if (isNumber(index) && index >= 0) {
-        source.value = tags.join(state.join);
-        return $.tags.splice(index, 1), true;
-      }
-
-      return false;
-    }
-
-    function setTag(tag, index) {
-      if (isNumber(index)) {
-        index = index < 0 ? 0 : index;
-        $.tags.splice(index, 0, tag);
-      } else {
-        $.tags.push(tag);
-      } // Update value
-
-
-      source.value = $.tags.join(state.join);
-    }
-
-    function setTagElement(tag, index) {
-      var element = setElement('span', {
-        'class': 'tag',
-        'tabindex': sourceIsDisabled() ? false : '0',
-        'title': tag
-      });
-
-      if (state.x) {
-        var x = setElement('a', {
-          'href': "",
-          'tabindex': '-1',
-          'target': '_top'
-        });
-        on('click', x, onClickTagX);
-        setChildLast(element, x);
-      }
-
-      on('blur', element, onBlurTag);
-      on('click', element, onClickTag);
-      on('focus', element, onFocusTag);
-      on('keydown', element, onKeyDownTag);
-
-      if (hasParent(tags)) {
-        if (isNumber(index) && $.tags[index]) {
-          setPrev(getChildren(tags, index), element);
-        } else {
-          setPrev(editor, element);
-        }
-      }
-    }
-
-    function letTagElement(tag) {
-      var index = toArrayKey(tag, $.tags),
-          element;
-
-      if (isNumber(index) && index >= 0 && (element = getChildren(tags, index))) {
-        off('blur', element, onBlurTag);
-        off('click', element, onClickTag);
-        off('focus', element, onFocusTag);
-        off('keydown', element, onKeyDownTag);
-
-        if (state.x) {
-          var x = getChildFirst(element);
-
-          if (x) {
-            off('click', x, onClickTagX);
-            letElement(x);
-          }
-        }
-
-        letElement(element);
-      }
-    }
-
-    function doSubmitTry() {
-      onSubmitForm() && form && form.submit();
-    }
-
-    setChildLast(self, tags);
-    setChildLast(tags, editor);
-    setChildLast(editor, editorInput);
-    setChildLast(editor, editorInputPlaceholder);
-    setClass(source, state['class'] + '-source');
-    setNext(source, self);
-    setElement(source, {
-      'tabindex': '-1'
-    });
-    on('blur', editorInput, onBlurInput);
-    on('click', editorInput, onClickInput);
-    on('click', self, onClickSelf);
-    on('focus', editorInput, onFocusInput);
-    on('focus', source, onFocusSource);
-    on('keydown', editorInput, onKeyDownInput);
-    on('paste', editorInput, onPasteInput);
-    form && on('submit', form, onSubmitForm);
-    $.blur = function () {
-      return !sourceIsDisabled() && (editorInput.blur(), onBlurInput());
-    }, $;
-    $.click = function () {
-      return self.click();
-    }, onClickSelf(), $; // Default filter for the tag name
-
-    $.f = function (text) {
-      return toCaseLower$1(text || "").replace(/[^ a-z\d-]/g, "");
-    };
-
-    $.fire = fire$1;
-
-    $.focus = function () {
-      if (!sourceIsDisabled()) {
-        editorInput.focus();
-        onFocusInput();
-      }
-
-      return $;
-    };
-
-    $.get = function (tag) {
-      return sourceIsDisabled() ? null : getTag(tag, 1);
-    };
-
-    $.hooks = hooks;
-    $.input = editorInput;
-
-    $.let = function (tag) {
-      if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-        var theTagsMin = state.min;
-        onInput();
-
-        if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-          fire$1('min.tags', [theTagsMin]);
-          return $;
-        }
-
-        letTagElement(tag), letTag(tag);
-      }
-
-      return $;
-    };
-
-    $.off = off$2;
-    $.on = on$2;
-
-    $.pop = function () {
-      if (!source[name$1]) {
-        return $; // Already ejected!
-      }
-
-      delete source[name$1];
-      var tags = $.tags;
-      letClass(source, state['class'] + '-source');
-      off('blur', editorInput, onBlurInput);
-      off('click', editorInput, onClickInput);
-      off('click', self, onClickSelf);
-      off('focus', editorInput, onFocusInput);
-      off('focus', source, onFocusSource);
-      off('keydown', editorInput, onKeyDownInput);
-      off('paste', editorInput, onPasteInput);
-      form && off('submit', form, onSubmitForm);
-      tags.forEach(letTagElement);
-      setElement(source, {
-        'tabindex': theTabIndex
-      });
-      return letElement(self), fire$1('pop', [tags]);
-    };
-
-    $.self = self;
-
-    $.set = function (tag, index) {
-      if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-        var _tags3 = $.tags,
-            theTagsMax = state.max;
-
-        if (!getTag(tag)) {
-          if (toCount(_tags3) < theTagsMax) {
-            setTagElement(tag, index), setTag(tag, index);
-          } else {
-            fire$1('max.tags', [theTagsMax]);
-          }
-        } else {
-          fire$1('has.tag', [tag, toArrayKey(tag, _tags3)]);
-        }
-      }
-
-      return $;
-    };
-
-    $.source = $.output = source;
-    $.state = state;
-    $.tags = [];
-    setTags(source.value); // Fill value(s)
-
-    $.value = function (values) {
-      return !sourceIsDisabled() && !sourceIsReadOnly() && setTags(values);
-    }, $;
-    return $;
-  }
-
-  TP.instances = {};
-  TP.state = {
-    'class': 'tag-picker',
-    'escape': [',', 188],
-    'join': ', ',
-    'max': 9999,
-    'min': 0,
-    'x': false
-  };
-  TP.version = '3.1.8';
+  F3H.version = '1.1.14';
   /*!
    *
    * The MIT License (MIT)
@@ -1993,7 +1410,7 @@
    *
    */
 
-  var name$2 = 'TE';
+  var name$1 = 'TE';
 
   function trim(str, dir) {
     return (str || "")['trim' + (-1 === dir ? 'Left' : 1 === dir ? 'Right' : "")]();
@@ -2007,9 +1424,9 @@
     if (!source) return;
     var $ = this; // Already instantiated, skip!
 
-    if (source[name$2]) {
-      return $;
-    } // Return new instance if `F3H` was called without the `new` operator
+    if (source[name$1]) {
+      return;
+    } // Return new instance if `TE` was called without the `new` operator
 
 
     if (!isInstance($, TE)) {
@@ -2022,9 +1439,9 @@
 
     $.self = $.source = source; // Store current instance to `TE.instances`
 
-    TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
+    TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $; // Mark current DOM as active text editor to prevent duplicate instance
 
-    source[name$2] = 1;
+    source[name$1] = 1;
 
     var any = /^([\s\S]*?)$/,
         // Any character(s)
@@ -2317,11 +1734,11 @@
 
 
     $.pop = function () {
-      if (!source[name$2]) {
+      if (!source[name$1]) {
         return $; // Already ejected!
       }
 
-      return delete source[name$2], $;
+      return delete source[name$1], $;
     }; // Return the text editor state
 
 
@@ -2350,9 +1767,607 @@
     };
   };
 
-  TE.version = '3.2.2';
+  TE.version = '3.2.3';
   TE.x = x;
-  W.F3H = F3H;
-  W.TP = TP;
-  W.TE = TE;
+
+  var hasValue = function hasValue(x, data) {
+    return -1 !== data.indexOf(x);
+  };
+  /*!
+   *
+   * The MIT License (MIT)
+   *
+   * Copyright © 2020 Taufik Nurrohman
+   *
+   * <https://github.com/taufik-nurrohman/tag-picker>
+   *
+   * Permission is hereby granted, free of charge, to any person obtaining a copy
+   * of this software and associated documentation files (the “Software”), to deal
+   * in the Software without restriction, including without limitation the rights
+   * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   * copies of the Software, and to permit persons to whom the Software is
+   * furnished to do so, subject to the following conditions:
+   *
+   * The above copyright notice and this permission notice shall be included in all
+   * copies or substantial portions of the Software.
+   *
+   * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   * SOFTWARE.
+   *
+   */
+
+
+  var delay = W.setTimeout,
+      name$2 = 'TP';
+  var KEY_ARROW_LEFT = ['ArrowLeft', 37];
+  var KEY_ARROW_RIGHT = ['ArrowRight', 39];
+  var KEY_DELETE_LEFT = ['Backspace', 8];
+  var KEY_DELETE_RIGHT = ['Delete', 46];
+  var KEY_ENTER = ['Enter', 13];
+  var KEY_TAB = ['Tab', 9];
+
+  function TP(source, state) {
+    if (state === void 0) {
+      state = {};
+    }
+
+    if (!source) return;
+    var $ = this; // Already instantiated, skip!
+
+    if (source[name$2]) {
+      return;
+    } // Return new instance if `TP` was called without the `new` operator
+
+
+    if (!isInstance($, TP)) {
+      return new TP(source, state);
+    }
+
+    var sourceIsDisabled = function sourceIsDisabled() {
+      return source.disabled;
+    },
+        sourceIsReadOnly = function sourceIsReadOnly() {
+      return source.readOnly;
+    },
+        thePlaceholder = getAttribute(source, 'placeholder'),
+        theTabIndex = getAttribute(source, 'tabindex');
+
+    var _contextHook = context($),
+        fire = _contextHook.fire;
+
+    $.state = state = fromStates(TP.state, isString(state) ? {
+      join: state
+    } : state || {});
+    $.source = source; // Store current instance to `TP.instances`
+
+    TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
+
+    source[name$2] = 1;
+    var editor = setElement('span', {
+      'class': 'editor tag'
+    }),
+        editorInput = setElement('span', {
+      'contenteditable': sourceIsDisabled() ? false : 'true',
+      'spellcheck': 'false',
+      'style': 'white-space:pre;'
+    }),
+        editorInputPlaceholder = setElement('span'),
+        form = getParentForm(source),
+        // Capture the closest `<form>` element
+    self = setElement('span', {
+      'class': state['class']
+    }),
+        tags = setElement('span', {
+      'class': 'tags'
+    });
+
+    function n(text) {
+      return $.f(text).replace(toPattern('(' + state.escape.join('|').replace(/\\/g, '\\\\') + ')+'), "").trim();
+    }
+
+    function onInput() {
+      if (sourceIsDisabled() || sourceIsReadOnly()) {
+        return setInput("");
+      }
+
+      var tag = n(getText(editorInput)),
+          tags = $.tags,
+          index;
+
+      if (tag) {
+        if (!getTag(tag)) {
+          setTagElement(tag), setTag(tag);
+          index = toCount(tags);
+          fire('change', [tag, index]);
+          fire('set.tag', [tag, index]);
+        } else {
+          fire('has.tag', [tag, toArrayKey(tag, tags)]);
+        }
+
+        setInput("");
+      }
+    }
+
+    function onBlurInput() {
+      onInput();
+      letClasses(self, ['focus', 'focus.input']);
+      fire('blur', [$.tags, toCount($.tags)]);
+    }
+
+    function onClickInput() {
+      fire('click', [$.tags]);
+    }
+
+    function onFocusInput() {
+      setClass(self, 'focus');
+      setClass(self, 'focus.input');
+      fire('focus', [$.tags]);
+    }
+
+    function onKeyDownInput(e) {
+      var escape = state.escape,
+          key = e.key,
+          // Modern browser(s)
+      keyCode = e.keyCode,
+          // Legacy browser(s)
+      keyIsCtrl = e.ctrlKey,
+          keyIsEnter = KEY_ENTER[0] === key || KEY_ENTER[1] === keyCode,
+          keyIsShift = e.shiftKey,
+          keyIsTab = KEY_TAB[0] === key || KEY_TAB[1] === keyCode,
+          tag,
+          theTagLast = getPrev(editor),
+          theTagsCount = toCount($.tags),
+          theTagsMax = state.max,
+          theValueLast = n(getText(editorInput)); // Last value before delay
+      // Set preferred key name
+
+      if (keyIsEnter) {
+        key = '\n';
+      } else if (keyIsTab) {
+        key = '\t';
+      } // Skip `Tab` key
+
+
+      if (keyIsTab) ;else if (sourceIsDisabled() || sourceIsReadOnly()) {
+        // Submit the closest `<form>` element with `Enter` key
+        if (keyIsEnter && sourceIsReadOnly()) {
+          doSubmitTry();
+        }
+
+        eventPreventDefault(e);
+      } else if (hasValue(key, escape) || hasValue(keyCode, escape)) {
+        if (theTagsCount < theTagsMax) {
+          // Add the tag name found in the tag editor
+          onInput();
+        } else {
+          setInput("");
+          fire('max.tags', [theTagsMax]);
+        }
+
+        eventPreventDefault(e); // Submit the closest `<form>` element with `Enter` key
+      } else if (keyIsEnter) {
+        doSubmitTry(), eventPreventDefault(e);
+      } else {
+        delay(function () {
+          var text = getText(editorInput) || "",
+              value = n(text); // Last try for buggy key detection on mobile device(s)
+          // Check for the last typed key in the tag editor
+
+          if (hasValue(text.slice(-1), escape)) {
+            if (theTagsCount < theTagsMax) {
+              // Add the tag name found in the tag editor
+              onInput();
+            } else {
+              setInput("");
+              fire('max.tags', [theTagsMax]);
+            }
+
+            eventPreventDefault(e); // Escape character only, delete!
+          } else if ("" === value && !keyIsCtrl && !keyIsShift) {
+            if ("" === theValueLast && (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[0] === keyCode)) {
+              letClass(self, 'focus.tag');
+              tag = $.tags[theTagsCount - 1];
+              letTagElement(tag), letTag(tag);
+
+              if (theTagLast) {
+                fire('change', [tag, theTagsCount - 1]);
+                fire('let.tag', [tag, theTagsCount - 1]);
+              }
+            } else if (KEY_ARROW_LEFT[0] === key || KEY_ARROW_LEFT[1] === keyCode) {
+              // Focus to the last tag
+              theTagLast && theTagLast.focus();
+            }
+          }
+
+          setText(editorInputPlaceholder, value ? "" : thePlaceholder);
+        }, 0);
+      }
+    }
+
+    function setTags(values) {
+      // Remove …
+      if (hasParent(self)) {
+        var prev;
+
+        while (prev = getPrev(editor)) {
+          letTagElement(prev.title);
+        }
+      }
+
+      $.tags = [];
+      source.value = ""; // … then add tag(s)
+
+      values = values ? values.split(state.join) : [];
+
+      for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
+        if (!values[i]) {
+          break;
+        }
+
+        if ("" !== (value = n(values[i]))) {
+          if (getTag(value)) {
+            continue;
+          }
+
+          setTagElement(value), setTag(value);
+          fire('change', [value, i]);
+          fire('set.tag', [value, i]);
+        }
+      }
+    }
+
+    function onSubmitForm(e) {
+      if (sourceIsDisabled()) {
+        return;
+      }
+
+      var theTagsMin = state.min;
+      onInput(); // Force to add the tag name found in the tag editor
+
+      if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+        setInput("", 1);
+        fire('min.tags', [theTagsMin]);
+        eventPreventDefault(e);
+        return;
+      } // Do normal `submit` event
+
+
+      return 1;
+    }
+
+    function onPasteInput() {
+      delay(function () {
+        if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+          setTags(getText(editorInput));
+        }
+
+        setInput("");
+      }, 0);
+    }
+
+    function onClickSelf(e) {
+      if (e && self === e.target) {
+        editorInput.focus(), onClickInput();
+      }
+    }
+
+    function onFocusSource() {
+      editorInput.focus();
+    }
+
+    function onBlurTag() {
+      var t = this,
+          tag = t.title,
+          tags = $.tags;
+      letClasses(self, ['focus', 'focus.tag']);
+      fire('blur.tag', [tag, toArrayKey(tag, tags)]);
+    }
+
+    function onClickTag() {
+      var t = this,
+          tag = t.title,
+          tags = $.tags;
+      fire('click.tag', [tag, toArrayKey(tag, tags)]);
+    }
+
+    function onFocusTag() {
+      var t = this,
+          tag = t.title,
+          tags = $.tags;
+      setClasses(self, ['focus', 'focus.tag']);
+      fire('focus.tag', [tag, toArrayKey(tag, tags)]);
+    }
+
+    function onClickTagX(e) {
+      if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+        var t = this,
+            tag = getParent(t).title,
+            _tags = $.tags,
+            index = toArrayKey(tag, _tags);
+        letTagElement(tag), letTag(tag), setInput("", 1);
+        fire('change', [tag, index]);
+        fire('click.tag', [tag, index]);
+        fire('let.tag', [tag, index]);
+      }
+
+      eventPreventDefault(e);
+    }
+
+    function onKeyDownTag(e) {
+      var key = e.key,
+          // Modern browser(s)
+      keyCode = e.keyCode,
+          // Legacy browser(s)
+      keyIsCtrl = e.ctrlKey,
+          keyIsShift = e.shiftKey,
+          t = this,
+          theTagNext = getNext(t),
+          theTagPrev = getPrev(t);
+
+      if (!keyIsCtrl && !keyIsShift) {
+        // Focus to the previous tag
+        if (!sourceIsReadOnly() && (KEY_ARROW_LEFT[0] === key || KEY_ARROW_LEFT[1] === keyCode)) {
+          theTagPrev && (theTagPrev.focus(), eventPreventDefault(e)); // Focus to the next tag or to the tag input
+        } else if (!sourceIsReadOnly() && (KEY_ARROW_RIGHT[0] === key || KEY_ARROW_RIGHT[1] === keyCode)) {
+          theTagNext && theTagNext !== editor ? theTagNext.focus() : setInput("", 1);
+          eventPreventDefault(e); // Remove tag with `Backspace` or `Delete` key
+        } else if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode || KEY_DELETE_RIGHT[0] === key || KEY_DELETE_RIGHT[1] === keyCode) {
+          if (!sourceIsReadOnly()) {
+            var tag = t.title,
+                _tags2 = $.tags,
+                index = toArrayKey(tag, _tags2);
+            letClass(self, 'focus.tag');
+            letTagElement(tag), letTag(tag); // Focus to the previous tag or to the tag input after remove
+
+            if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode) {
+              theTagPrev ? theTagPrev.focus() : setInput("", 1); // Focus to the next tag or to the tag input after remove
+            } else
+              /* if (
+              KEY_DELETE_RIGHT[0] === key ||
+              KEY_DELETE_RIGHT[1] === keyCode
+              ) */
+              {
+                theTagNext && theTagNext !== editor ? theTagNext.focus() : setInput("", 1);
+              }
+
+            fire('change', [tag, index]);
+            fire('let.tag', [tag, index]);
+          }
+
+          eventPreventDefault(e);
+        }
+      }
+    }
+
+    function setInput(value, fireFocus) {
+      setText(editorInput, value);
+      setText(editorInputPlaceholder, value ? "" : thePlaceholder);
+      fireFocus && editorInput.focus();
+    }
+
+    setInput("");
+
+    function getTag(tag, fireHooks) {
+      var tags = $.tags,
+          index = toArrayKey(tag, tags);
+      fireHooks && fire('get.tag', [tag, index]);
+      return isNumber(index) ? tag : null;
+    }
+
+    function letTag(tag) {
+      var tags = $.tags,
+          index = toArrayKey(tag, tags);
+
+      if (isNumber(index) && index >= 0) {
+        source.value = tags.join(state.join);
+        return $.tags.splice(index, 1), true;
+      }
+
+      return false;
+    }
+
+    function setTag(tag, index) {
+      if (isNumber(index)) {
+        index = index < 0 ? 0 : index;
+        $.tags.splice(index, 0, tag);
+      } else {
+        $.tags.push(tag);
+      } // Update value
+
+
+      source.value = $.tags.join(state.join);
+    }
+
+    function setTagElement(tag, index) {
+      var element = setElement('span', {
+        'class': 'tag',
+        'tabindex': sourceIsDisabled() ? false : '0',
+        'title': tag
+      });
+
+      if (state.x) {
+        var x = setElement('a', {
+          'href': "",
+          'tabindex': '-1',
+          'target': '_top'
+        });
+        on('click', x, onClickTagX);
+        setChildLast(element, x);
+      }
+
+      on('blur', element, onBlurTag);
+      on('click', element, onClickTag);
+      on('focus', element, onFocusTag);
+      on('keydown', element, onKeyDownTag);
+
+      if (hasParent(tags)) {
+        if (isNumber(index) && $.tags[index]) {
+          setPrev(getChildren(tags, index), element);
+        } else {
+          setPrev(editor, element);
+        }
+      }
+    }
+
+    function letTagElement(tag) {
+      var index = toArrayKey(tag, $.tags),
+          element;
+
+      if (isNumber(index) && index >= 0 && (element = getChildren(tags, index))) {
+        off('blur', element, onBlurTag);
+        off('click', element, onClickTag);
+        off('focus', element, onFocusTag);
+        off('keydown', element, onKeyDownTag);
+
+        if (state.x) {
+          var x = getChildFirst(element);
+
+          if (x) {
+            off('click', x, onClickTagX);
+            letElement(x);
+          }
+        }
+
+        letElement(element);
+      }
+    }
+
+    function doSubmitTry() {
+      onSubmitForm() && form && form.submit();
+    }
+
+    setChildLast(self, tags);
+    setChildLast(tags, editor);
+    setChildLast(editor, editorInput);
+    setChildLast(editor, editorInputPlaceholder);
+    setClass(source, state['class'] + '-source');
+    setNext(source, self);
+    setElement(source, {
+      'tabindex': '-1'
+    });
+    on('blur', editorInput, onBlurInput);
+    on('click', editorInput, onClickInput);
+    on('click', self, onClickSelf);
+    on('focus', editorInput, onFocusInput);
+    on('focus', source, onFocusSource);
+    on('keydown', editorInput, onKeyDownInput);
+    on('paste', editorInput, onPasteInput);
+    form && on('submit', form, onSubmitForm);
+    $.blur = function () {
+      return !sourceIsDisabled() && (editorInput.blur(), onBlurInput());
+    }, $;
+    $.click = function () {
+      return self.click();
+    }, onClickSelf(), $; // Default filter for the tag name
+
+    $.f = function (text) {
+      return toCaseLower$1(text || "").replace(/[^ a-z\d-]/g, "");
+    };
+
+    $.focus = function () {
+      if (!sourceIsDisabled()) {
+        editorInput.focus();
+        onFocusInput();
+      }
+
+      return $;
+    };
+
+    $.get = function (tag) {
+      return sourceIsDisabled() ? null : getTag(tag, 1);
+    };
+
+    $.input = editorInput;
+
+    $.let = function (tag) {
+      if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+        var theTagsMin = state.min;
+        onInput();
+
+        if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+          fire('min.tags', [theTagsMin]);
+          return $;
+        }
+
+        letTagElement(tag), letTag(tag);
+      }
+
+      return $;
+    };
+
+    $.pop = function () {
+      if (!source[name$2]) {
+        return $; // Already ejected!
+      }
+
+      delete source[name$2];
+      var tags = $.tags;
+      letClass(source, state['class'] + '-source');
+      off('blur', editorInput, onBlurInput);
+      off('click', editorInput, onClickInput);
+      off('click', self, onClickSelf);
+      off('focus', editorInput, onFocusInput);
+      off('focus', source, onFocusSource);
+      off('keydown', editorInput, onKeyDownInput);
+      off('paste', editorInput, onPasteInput);
+      form && off('submit', form, onSubmitForm);
+      tags.forEach(letTagElement);
+      setElement(source, {
+        'tabindex': theTabIndex
+      });
+      return letElement(self), fire('pop', [tags]);
+    };
+
+    $.self = self;
+
+    $.set = function (tag, index) {
+      if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+        var _tags3 = $.tags,
+            theTagsMax = state.max;
+
+        if (!getTag(tag)) {
+          if (toCount(_tags3) < theTagsMax) {
+            setTagElement(tag, index), setTag(tag, index);
+          } else {
+            fire('max.tags', [theTagsMax]);
+          }
+        } else {
+          fire('has.tag', [tag, toArrayKey(tag, _tags3)]);
+        }
+      }
+
+      return $;
+    };
+
+    $.source = $.output = source;
+    $.state = state;
+    $.tags = [];
+    setTags(source.value); // Fill value(s)
+
+    $.value = function (values) {
+      return !sourceIsDisabled() && !sourceIsReadOnly() && setTags(values);
+    }, $;
+    return $;
+  }
+
+  TP.instances = {};
+  TP.state = {
+    'class': 'tag-picker',
+    'escape': [',', 188],
+    'join': ', ',
+    'max': 9999,
+    'min': 0,
+    'x': false
+  };
+  TP.version = '3.1.9';
+  Object.assign(W, {
+    F3H: F3H,
+    TE: TE,
+    TP: TP
+  });
 })();

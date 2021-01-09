@@ -340,62 +340,70 @@ var _ = function () {
     node.addEventListener(name, then, options);
   };
 
-  function fire(name, data) {
-    var $ = this;
+  function context($) {
+    var hooks = {};
 
-    if (!isSet(hooks[name])) {
+    function fire(name, data) {
+      if (!isSet(hooks[name])) {
+        return $;
+      }
+
+      hooks[name].forEach(function (then) {
+        return then.apply($, data);
+      });
       return $;
     }
 
-    hooks[name].forEach(function (then) {
-      return then.apply($, data);
-    });
-    return $;
-  }
+    function off(name, then) {
+      if (!isSet(name)) {
+        return hooks = {}, $;
+      }
 
-  var hooks = {};
+      if (isSet(hooks[name])) {
+        if (isSet(then)) {
+          for (var i = 0, _j = hooks[name].length; i < _j; ++i) {
+            if (then === hooks[name][i]) {
+              hooks[name].splice(i, 1);
+              break;
+            }
+          } // Clean-up empty hook(s)
 
-  function off$1(name, then) {
-    var $ = this;
 
-    if (!isSet(name)) {
-      return hooks = {}, $;
-    }
-
-    if (isSet(hooks[name])) {
-      if (isSet(then)) {
-        for (var i = 0, _j = hooks[name].length; i < _j; ++i) {
-          if (then === hooks[name][i]) {
-            hooks[name].splice(i, 1);
-            break;
+          if (0 === j) {
+            delete hooks[name];
           }
-        } // Clean-up empty hook(s)
-
-
-        if (0 === j) {
+        } else {
           delete hooks[name];
         }
-      } else {
-        delete hooks[name];
       }
+
+      return $;
     }
 
+    function on(name, then) {
+      if (!isSet(hooks[name])) {
+        hooks[name] = [];
+      }
+
+      if (isSet(then)) {
+        hooks[name].push(then);
+      }
+
+      return $;
+    }
+
+    $.hooks = hooks;
+    $.fire = fire;
+    $.off = off;
+    $.on = on;
     return $;
   }
 
-  function on$1(name, then) {
-    var $ = this;
-
-    if (!isSet(hooks[name])) {
-      hooks[name] = [];
-    }
-
-    if (isSet(then)) {
-      hooks[name].push(then);
-    }
-
-    return $;
-  }
+  var $ = context({});
+  var fire = $.fire;
+  var off$1 = $.off;
+  var on$1 = $.on;
+  var hooks = $.hooks;
 
   var toCount = function toCount(x) {
     return x.length;
@@ -537,6 +545,12 @@ var _ = function () {
   delete F3H.state.types.JSON;
   var f3h = null;
 
+  var _contextHook = context({}),
+      fire$1 = _contextHook.fire,
+      hooks$1 = _contextHook.hooks,
+      off$2 = _contextHook.off,
+      on$2 = _contextHook.on;
+
   if (hasClass(R, 'can:fetch')) {
     var title = getElement('title'),
         selectors = 'body>div,body>svg',
@@ -544,7 +558,7 @@ var _ = function () {
     f3h = new F3H(false); // Disable cache
 
     f3h.on('error', function () {
-      fire('error');
+      fire$1('error');
       theLocation.reload();
     });
     f3h.on('exit', function (response, node) {
@@ -556,7 +570,7 @@ var _ = function () {
         }
       }
 
-      fire('let');
+      fire$1('let');
     });
     f3h.on('success', function (response, node) {
       var status = f3h.status;
@@ -576,14 +590,14 @@ var _ = function () {
             setHTML(element, getHTML(responseElements[index]));
           }
         });
-        fire('change');
+        fire$1('change');
       }
     });
-    on$1('change', hook$2);
-    on$1('change', hook);
-    on$1('change', hook$1);
-    on$1('change', hook$3);
-    on$1('let', function () {
+    on$2('change', hook$2);
+    on$2('change', hook);
+    on$2('change', hook$1);
+    on$2('change', hook$3);
+    on$2('let', function () {
       if (title) {
         var status = getDatum(title, 'is') || 'pull',
             value = getDatum(title, 'is-' + status);
@@ -593,13 +607,13 @@ var _ = function () {
   }
 
   on('beforeload', D, function () {
-    return fire('let');
+    return fire$1('let');
   });
   on('load', D, function () {
-    return fire('get');
+    return fire$1('get');
   });
   on('DOMContentLoaded', D, function () {
-    return fire('set');
+    return fire$1('set');
   });
   hook$2();
   hook();
@@ -607,10 +621,10 @@ var _ = function () {
   hook$3();
   var index = {
     f3h: f3h,
-    fire: fire,
-    hooks: hooks,
-    off: off$1,
-    on: on$1
+    fire: fire$1,
+    hooks: hooks$1,
+    off: off$2,
+    on: on$2
   };
   return index;
 }();

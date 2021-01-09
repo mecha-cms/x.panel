@@ -1159,8 +1159,8 @@ label.not\:active {
   border: 1px solid transparent;
 }
 
-.field\:query .tag-picker .tag a::before {
-  font-family: sans-serif;
+.field\:query .tag-picker-source {
+  position: fixed;
 }
 
 svg {
@@ -1564,9 +1564,12 @@ svg[display='none'] {
   background: none;
   width: auto;
   max-width: 50%;
-  cursor: auto;
+  cursor: default;
   white-space: nowrap;
   text-overflow: ellipsis;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .lot\:input svg.fix {
@@ -1682,7 +1685,7 @@ svg[display='none'] {
   width: auto;
   height: 1px;
   background: #000;
-  margin: 0;
+  margin: 0 8px;
   overflow: hidden;
 }
 

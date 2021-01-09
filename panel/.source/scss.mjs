@@ -29,8 +29,9 @@ function factory(from, to, options = {}) {
 }
 
 !folder.get('lot/asset/css') && folder.set('lot/asset/css', true);
+!folder.get('lot/layout/asset/css') && folder.set('lot/layout/asset/css', true);
 
 factory('.source/-/lot/asset/scss/index.scss', 'lot/asset/css/index.css');
-factory('.source/-/lot/asset/scss/r.scss', 'lot/asset/css/r.css');
+factory('.source/-/lot/asset/scss/0.scss', 'lot/asset/css/0.css');
 
 factory('.source/-/lot/layout/asset/scss/index.scss', 'lot/layout/asset/css/index.css');

@@ -83,6 +83,10 @@ pre.is\:text > code {
   background: #292929;
 }
 
+.lot\:bar > ul > li.is\:separator {
+  background: #2d2d2d;
+}
+
 .lot\:field .tag-picker .tag:not(.editor) {
   background: #434343;
   color: inherit;
@@ -116,6 +120,10 @@ pre.is\:text > code {
 
 .lot\:menu li.is\:current > a:focus, .lot\:menu li.is\:current > a:hover {
   background: #292929;
+}
+
+.lot\:menu li.is\:separator {
+  background: #2d2d2d;
 }
 
 .lot\:file .is\:file::before {

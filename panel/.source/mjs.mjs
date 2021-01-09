@@ -2,7 +2,6 @@ import * as file from '@taufik-nurrohman/file';
 import * as folder from '@taufik-nurrohman/folder';
 
 import {rollup} from 'rollup';
-import alias from '@rollup/plugin-alias';
 import {babel, getBabelOutputPlugin} from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 
@@ -18,12 +17,6 @@ function factory(from, to, name, format, options = {}) {
             sourcemap: false
         },
         plugins: [
-            alias({
-                entries: {
-                    '@taufik-nurrohman/text-editor.history': 'node_modules/@taufik-nurrohman/text-editor/index/history.mjs',
-                    '@taufik-nurrohman/text-editor.source': 'node_modules/@taufik-nurrohman/text-editor/index/source.mjs',
-                }
-            }),
             babel({
                 babelHelpers: 'bundled',
                 plugins: [
@@ -61,5 +54,6 @@ function factory(from, to, name, format, options = {}) {
 
 !folder.get('lot/asset/js') && folder.set('lot/asset/js', true);
 
+factory('.source/-/lot/asset/mjs/0.mjs', 'lot/asset/js/0.js', null, 'iife');
+factory('.source/-/lot/asset/mjs/1.mjs', 'lot/asset/js/1.js', null, 'iife');
 factory('.source/-/lot/asset/mjs/index.mjs', 'lot/asset/js/index.js', '_', 'iife');
-factory('.source/-/lot/asset/mjs/r.mjs', 'lot/asset/js/r.js', null, 'iife');

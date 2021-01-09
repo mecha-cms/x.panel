@@ -8,11 +8,9 @@
       padding: 0 (($z / 2) - 1);
       margin: 2px;
       border: 1px solid transparent;
-      a {
-        &::before {
-          font-family: sans-serif;
-        }
-      }
+    }
+    &-source {
+      position: fixed;
     }
   }
 }

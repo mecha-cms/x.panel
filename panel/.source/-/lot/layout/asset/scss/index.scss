@@ -106,6 +106,9 @@ pre {
           }
         }
       }
+      &.is\:separator {
+        background: theme(5%);
+      }
     }
   }
 }
@@ -155,6 +158,9 @@ pre {
           background: theme(3%);
         }
       }
+    }
+    &.is\:separator {
+      background: theme(5%);
     }
   }
 }
