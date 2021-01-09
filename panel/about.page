@@ -10,21 +10,9 @@ use:
   '.\lot\x\user': 1
 ...
 
-To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/log-out system.
+To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system.
 
-![Page](https://user-images.githubusercontent.com/1669261/71335844-2fb5c900-2577-11ea-9b39-4703813566cd.png)
-
-### Others
-
- - [Assets](https://user-images.githubusercontent.com/1669261/71336159-94bdee80-2578-11ea-9233-0214565c2622.png)
- - [Blob](https://user-images.githubusercontent.com/1669261/71336166-98ea0c00-2578-11ea-9f42-1a7d066a6214.png)
- - [Extensions](https://user-images.githubusercontent.com/1669261/71336169-9982a280-2578-11ea-823d-93864ff9d0f2.png)
- - [File](https://user-images.githubusercontent.com/1669261/71336160-95ef1b80-2578-11ea-92ff-41b016532400.png)
- - [Folder](https://user-images.githubusercontent.com/1669261/71336163-97204880-2578-11ea-9327-4bf787256261.png)
- - [Layout](https://user-images.githubusercontent.com/1669261/71336170-9a1b3900-2578-11ea-9a4d-43b9feec8e9b.png)
- - [Page](https://user-images.githubusercontent.com/1669261/71335844-2fb5c900-2577-11ea-9b39-4703813566cd.png)
- - [Pages](https://user-images.githubusercontent.com/1669261/71336171-9c7d9300-2578-11ea-95d0-49eba19d9333.png)
- - [State](https://user-images.githubusercontent.com/1669261/71336175-9f788380-2578-11ea-803a-c786a9b6f805.png)
+![Page](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
 
 ### Usage
 

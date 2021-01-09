@@ -1,7 +1,7 @@
 GUI Extension for Mecha
 =======================
 
-![Panel](https://user-images.githubusercontent.com/1669261/104020503-eb33b480-51ef-11eb-8e9f-2db6f57b26a9.png)
+![Panel](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
 
 Release Notes
 -------------
