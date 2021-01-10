@@ -159,16 +159,6 @@ function state($_) {
     return $_;
 }
 
-function _token($_) {
-    if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
-        extract($GLOBALS, \EXTR_SKIP);
-        $_['alert']['error'][] = 'Invalid token.';
-        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
-    }
-    return $_;
-}
-
 foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
-    \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.let', __NAMESPACE__ . "\\" . $v, 10);
 }

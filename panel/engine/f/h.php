@@ -46,6 +46,27 @@ function description($in, $or = null) {
     return new \HTML($out);
 }
 
+function error_route_check($_) {
+    $f = $_['f'];
+    if (
+        // Trying to get file that does not exist
+        'g' === $_['task'] && !$f ||
+        // Trying to set file from a folder that does not exist
+        's' === $_['task'] && (!$f || !\is_dir($f))
+    ) {
+        $_['layout'] = '404/panel';
+        $_['title'] = \i('Error');
+        \State::set([
+            '[layout]' => ['type:' . $_['type'] => false],
+            'is' => [
+                'error' => 404
+            ]
+        ]);
+        return $_;
+    }
+    return null;
+}
+
 function field($in, $key) {
     $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $in['name'] ?? $key;

@@ -1,16 +1,5 @@
 <?php namespace _\lot\x\panel;
 
-// Load task(s) before everything else!
-if (\is_file($v = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
-    (static function($v) {
-        extract($GLOBALS, \EXTR_SKIP);
-        require $v;
-        if (isset($_) && \is_array($_)) {
-            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-        }
-    })($v);
-}
-
 function route() {
     if (!\Is::user()) {
         \Guard::kick("");
@@ -52,25 +41,8 @@ function route() {
             $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
             $_['kick'] = \str_replace('::s::', '::g::', $url->current);
         }
-        if (
-            // No route match
-            !$route && (
-                // Trying to get file that does not exist
-                'g' === $_['task'] && !$f ||
-                // Trying to set file from a folder that does not exist
-                's' === $_['task'] && (!$f || !\is_dir($f))
-            )
-        ) {
-            $GLOBALS['t'][] = \i('Error');
-            \State::set([
-                '[layout]' => ['type:' . $_['type'] => false],
-                'is' => [
-                    'error' => 404
-                ]
-            ]);
-            // Load panel definition from other extension(s)
-            $set();
-            $this->layout('404/panel');
+        if (!$route && $r = \_\lot\x\panel\h\error_route_check($_)) {
+            $this->layout($r['layout'] ?? $_['layout'] ?? '404/panel');
         }
     }
     // Pre-define state
@@ -148,6 +120,32 @@ function route() {
     // Put data
     $GLOBALS['_'] = $_;
     if (isset($_['form']['token'])) {
+        if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
+            if ('POST' === $_SERVER['REQUEST_METHOD']) {
+                if ('g' === $_['task'] || 's' === $_['task']) {
+                    $_['alert']['error'][] = 'Invalid token.';
+                }
+            } else {
+                if ('f' === $_['task'] || 'l' === $_['task']) {
+                    $_['alert']['error'][] = 'Invalid token.';
+                    $_['kick'] = $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $url->query('&', ['token' => false]);
+                }
+            }
+        }
+        // Put data
+        $GLOBALS['_'] = $_;
+        // Include form task(s)
+        if (\is_file($v = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
+            (static function($v) {
+                extract($GLOBALS, \EXTR_SKIP);
+                require $v;
+                if (isset($_) && \is_array($_)) {
+                    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+                }
+            })($v);
+        }
+        // Get data
+        $_ = $GLOBALS['_'];
         if (isset($_['type'])) {
             $hooks = \map(\step($_['type'], '/'), function($hook) use($_) {
                 return 'do.' . $hook . '.' . ([
@@ -166,6 +164,9 @@ function route() {
         }
     } else {
         // Missing `<input name="token">`
+        if ('l' === $_['task']) {
+            $_['kick'] = \strtr($url->current, ['::l::' => '::g::']);
+        }
     }
     // Has alert data from queue
     if (!empty($_['alert'])) {
@@ -202,7 +203,7 @@ function route() {
         // Make alert section visible
         $GLOBALS['_']['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
     }
-    $this->layout('200/panel');
+    $this->layout($_['layout'] ?? '200/panel');
 }
 
 \Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", 20);

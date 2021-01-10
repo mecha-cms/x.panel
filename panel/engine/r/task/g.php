@@ -58,7 +58,7 @@ function file($_) {
                 // Use `$_POST['file']['content']` instead of `$_['form']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
                 $_['form']['file']['content'] = $_POST['file']['content'] ?? "";
-                if (\is_writable($f)) {
+                if (!\stream_resolve_include_path($f) || \is_writable($f)) {
                     \file_put_contents($f, $_['form']['file']['content']);
                     if ($name !== $base) {
                         \unlink($_['f']);
@@ -267,14 +267,6 @@ function state($_) {
     return $_;
 }
 
-function _token($_) {
-    if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
-        $_['alert']['error'][] = 'Invalid token.';
-    }
-    return $_;
-}
-
 foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
-    \Hook::set('do.' . $v . '.get', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.get', __NAMESPACE__ . "\\" . $v, 10);
 }

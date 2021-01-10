@@ -291,14 +291,6 @@ function state($_) {
     return $_;
 }
 
-function _token($_) {
-    if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
-        $_['alert']['error'][] = 'Invalid token.';
-    }
-    return $_;
-}
-
 foreach (['blob', 'data', 'file', 'folder', 'page', 'state'] as $v) {
-    \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\_token", 0);
     \Hook::set('do.' . $v . '.set', __NAMESPACE__ . "\\" . $v, 10);
 }

@@ -2,7 +2,7 @@
 
 namespace _\lot\x\panel\route {
     function __license($_) {
-        if ('g' !== $_['task']) {
+        if ('g' !== $_['task'] || isset($_['i'])) {
             $_['kick'] = $GLOBALS['url'] . $_['/'] . '/::g::/.license';
             return $_;
         }
@@ -344,6 +344,9 @@ HTML;
     }
     function asset($_) {
         extract($GLOBALS, \EXTR_SKIP);
+        if ($r = \_\lot\x\panel\h\error_route_check($_)) {
+            return $r;
+        }
         if (!\is_dir($d = \LOT . \DS . 'asset' . \DS . $user->user)) {
             \mkdir($d, 0755, true);
             $_['alert']['success'][] = ['Created folder %s.', '<code>' . \_\lot\x\panel\h\path($d) . '</code>'];
@@ -372,6 +375,9 @@ HTML;
     }
     function user($_) {
         extract($GLOBALS, \EXTR_SKIP);
+        if ($r = \_\lot\x\panel\h\error_route_check($_)) {
+            return $r;
+        }
         $status = $user['status'];
         if (\count($_['chops']) > 1) {
             if (1 !== $status) {

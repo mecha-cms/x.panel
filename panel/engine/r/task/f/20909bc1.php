@@ -1,11 +1,5 @@
 <?php /* dechex(crc32('trash.restore')) */
 
-// Invalid token
-if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
-    $_['alert']['error'][] = 'Invalid token.';
-    return $_;
-}
-
 $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/trash/1';
 
 foreach (g($d = $_['f'], null, true) as $k => $v) {

@@ -16,7 +16,7 @@ Release Notes
  - [x] Narrowed down the panel editor maximum width.
  - [x] Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
  - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
- - [x] Renamed `$_['layout']` with `$_['type']` (#13)
+ - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#13)
  - [x] Removed `peek` option globally.
 
 ### 2.4.3

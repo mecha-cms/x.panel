@@ -1,11 +1,5 @@
 <?php /* dechex(crc32('package')) */
 
-// Invalid token
-if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
-    $_['alert']['error'][] = 'Invalid token.';
-    return $_;
-}
-
 // Set response status
 http_response_code(200);
 

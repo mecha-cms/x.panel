@@ -14,6 +14,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'f' => null,
     'i' => $i = $url['i'],
     'kick' => null,
+    'layout' => null,
     'lot' => [],
     'path' => null,
     'sort' => $state['sort'] ?? 1,
