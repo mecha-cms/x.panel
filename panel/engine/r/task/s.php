@@ -3,10 +3,10 @@
 function blob($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'tab'=> false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -91,10 +91,10 @@ function blob($_) {
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'tab' => ['data'],
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $name = \basename(\To::file(\lcfirst($_['form']['data']['name'] ?? "")));
@@ -113,9 +113,9 @@ function data($_) {
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -164,9 +164,9 @@ function file($_) {
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -205,9 +205,9 @@ function folder($_) {
 function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -222,21 +222,6 @@ function page($_) {
         unset($_['form']['page']['name'], $_['form']['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
-        // Remove array item(s) with empty value
-        $drop = function($v) use(&$drop) {
-            foreach ($v as $kk => $vv) {
-                if (\is_array($vv) && !empty($vv)) {
-                    if ($vv = $drop($vv)) {
-                        $v[$kk] = $vv;
-                    } else {
-                        unset($v[$kk]);
-                    }
-                } else if ("" === $vv || null === $vv || [] === $vv) {
-                    unset($v[$kk]);
-                }
-            }
-            return [] !== $v ? $v : null;
-        };
         foreach ($_['form']['page'] as $k => $v) {
             if (
                 // Skip `null` value
@@ -250,7 +235,7 @@ function page($_) {
                 continue;
             }
             if (\is_array($v)) {
-                if ($v = $drop(\array_replace_recursive($page[$k] ?? [], $v))) {
+                if ($v = \drop(\array_replace_recursive($page[$k] ?? [], $v))) {
                     $page[$k] = $v;
                 }
             } else {

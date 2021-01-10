@@ -17,10 +17,10 @@ function blob($_) {
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'tab' => ['data'],
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
@@ -32,10 +32,10 @@ function data($_) {
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'tab'=> false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -62,10 +62,10 @@ function file($_) {
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'tab'=> false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {

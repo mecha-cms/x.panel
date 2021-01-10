@@ -117,6 +117,17 @@ label {
     height: auto;
     box-shadow: none;
   }
+  &[type='number'] {
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      @include appearance(none);
+      margin: 0;
+    }
+  }
+  &[type='number'],
+  &[type='search'] {
+    @include appearance(textfield);
+  }
 }
 
 .select {
@@ -185,9 +196,7 @@ label {
 .input {
   &[type='checkbox'],
   &[type='radio'] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    @include appearance(none);
     &[disabled] {
       background: $color;
     }

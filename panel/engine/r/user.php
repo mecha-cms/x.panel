@@ -1,6 +1,6 @@
 <?php
 
-(function() {
+(static function() {
     extract($GLOBALS);
     $path = strtr($url->path, ['/index.php' => ""]);
     $p = $_['user']['guard']['path'] ?? $_['user']['path'];

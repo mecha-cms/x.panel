@@ -2,7 +2,7 @@
 
 // Load task(s) before everything else!
 if (\is_file($v = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
-    (function($v) {
+    (static function($v) {
         extract($GLOBALS, \EXTR_SKIP);
         require $v;
         if (isset($_) && \is_array($_)) {
@@ -29,7 +29,7 @@ function route() {
     $set = static function() {
         // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
         foreach ($GLOBALS['X'][1] as $v) {
-            \is_file($v = \Path::F($v) . \DS . 'panel.php') && (function($v) {
+            \is_file($v = \Path::F($v) . \DS . 'panel.php') && (static function($v) {
                 extract($GLOBALS, \EXTR_SKIP);
                 require $v;
                 if (isset($_) && \is_array($_)) {
@@ -38,7 +38,7 @@ function route() {
             })($v);
         }
         // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
-        \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (function($v) {
+        \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (static function($v) {
             extract($GLOBALS, \EXTR_SKIP);
             require $v;
             if (isset($_) && \is_array($_)) {
@@ -63,7 +63,7 @@ function route() {
         ) {
             $GLOBALS['t'][] = \i('Error');
             \State::set([
-                '[layout]' => ['layout:' . $_['layout'] => false],
+                '[layout]' => ['type:' . $_['type'] => false],
                 'is' => [
                     'error' => 404
                 ]
@@ -84,48 +84,49 @@ function route() {
             'pages' => isset($_['i'])
         ]
     ]);
-    $dd = __DIR__ . \DS . 'state';
-    $ff = null;
-    if (!isset($_GET['layout']) && !isset($_['layout'])) {
+    $data = null;
+    if (!isset($_GET['type']) && !isset($_['type'])) {
         // Auto-detect layout type
         if ($f) {
             if (\is_dir($f)) {
-                $_['layout'] = 'folder';
+                $_['type'] = 'folder';
             } else if (\is_file($f)) {
-                $_['layout'] = 'file';
+                $_['type'] = 'file';
             }
             // Put data
             $GLOBALS['_'] = $_;
         }
         // Manually set layout type based on file path
         foreach (\array_reverse(\step($_['path'], '/')) as $v) {
-            (function($v) use(&$ff) {
+            (static function($v) use(&$data) {
                 if (\is_file($v)) {
                     extract($GLOBALS, \EXTR_SKIP);
-                    require ($ff = $v);
+                    require ($data = $v);
                     if (isset($_) && \is_array($_)) {
                         $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
                     }
                 }
-            })($dd . \DS . 'file' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
+            })(__DIR__ . \DS . 'lot' . \DS . 'page' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
         }
         // Get data
         $_ = $GLOBALS['_'];
     }
     // Set layout type
-    if (!$ff) {
-        $ff = $dd . \DS . ($_['layout'] ?? \P) . ($_['i'] ? 's' : "") . '.php';
+    if (!$data) {
+        $k = \explode('/', $_['type'] ?? \P, 2);
+        $k[0] .= ($_['i'] ? 's' : "");
+        $data = __DIR__ . \DS . 'type' . \DS . \implode(\DS, $k) . '.php';
     }
     // Load panel definition from other extension(s)
     $set();
     // Define lot with no filter
-    (function($ff) {
+    (static function($data) {
         extract($GLOBALS, \EXTR_SKIP);
-        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($ff) ? require $ff : []));
+        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($data) ? require $data : []));
         $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-    })($ff);
+    })($data);
     // Filter by status
-    \is_file($v = __DIR__ . \DS . 'user' . \DS . $user['status'] . '.php') && (function($v) {
+    \is_file($v = __DIR__ . \DS . 'lot' . \DS . 'user' . \DS . $user['status'] . '.php') && (static function($v) {
         extract($GLOBALS, \EXTR_SKIP);
         require $v;
         if (isset($_) && \is_array($_)) {
@@ -147,8 +148,8 @@ function route() {
     // Put data
     $GLOBALS['_'] = $_;
     if (isset($_['form']['token'])) {
-        if (isset($_['layout'])) {
-            $hooks = \map(\step($_['layout']), function($hook) use($_) {
+        if (isset($_['type'])) {
+            $hooks = \map(\step($_['type'], '/'), function($hook) use($_) {
                 return 'do.' . $hook . '.' . ([
                     'g' => 'get',
                     'l' => 'let',
@@ -186,7 +187,7 @@ function route() {
             ]) . $url->hash);
         }
     }
-    \State::set('[layout].layout:' . ($_['layout'] ?? 'blank'), true);
+    \State::set('[layout].type:' . ($_['type'] ?? 'blank'), true);
     $n = \ltrim($_['chops'][0] ?? "", '_.-');
     // Put data
     $GLOBALS['_'] = $_;
@@ -201,7 +202,7 @@ function route() {
         // Make alert section visible
         $GLOBALS['_']['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
     }
-    $this->layout('panel');
+    $this->layout('200/panel');
 }
 
 \Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", 20);

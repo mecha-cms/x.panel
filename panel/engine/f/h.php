@@ -78,6 +78,16 @@ function field($in, $key) {
     return $in;
 }
 
+// Fix #13 <https://stackoverflow.com/a/53893947/1163000>
+function fresh($in) {
+    if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
+        \opcache_invalidate($in, true);
+    } else if (\function_exists("\\apc_compile_file")) {
+        \apc_compile_file($in);
+    }
+    return $in;
+}
+
 function icon($in) {
     $icon = \array_replace([null, null], (array) $in);
     if ($icon[0] && false === strpos($icon[0], '<')) {

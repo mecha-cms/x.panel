@@ -9,12 +9,14 @@ Release Notes
 ### master
 
  - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - [ ] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
  - [x] Added `do.task.*` hooks.
  - [ ] Added ability to detect extension and layout package without parent folder.
  - [x] Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.
  - [x] Narrowed down the panel editor maximum width.
  - [x] Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
  - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
+ - [x] Renamed `$_['layout']` with `$_['type']` (#13)
  - [x] Removed `peek` option globally.
 
 ### 2.4.3

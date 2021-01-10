@@ -39,21 +39,12 @@ HTML;
     }
     function __state($_) {
         extract($GLOBALS, \EXTR_SKIP);
-        // Fix #13 <https://stackoverflow.com/a/53893947/1163000>
-        $fresh = function($path) {
-            if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
-                \opcache_invalidate($path, true);
-            } else if (function_exists("\\apc_compile_file")) {
-                \apc_compile_file($path);
-            }
-            return $path;
-        };
         // Load primary state(s)
-        $state_r = require $fresh(\ROOT . \DS . 'state.php');
-        $state_user = require $fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-        $state_panel = require $fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+        $state_r = require \_\lot\x\panel\h\fresh(\ROOT . \DS . 'state.php');
+        $state_user = require \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+        $state_panel = require \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
         // Sanitize form data
-        \Hook::set('do.state.get', function($_) use($fresh, &$state_r, &$state_user, &$state_panel) {
+        \Hook::set('do.state.get', function($_) use(&$state_r, &$state_user, &$state_panel) {
             if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($_['form']['state'])) {
                 return $_;
             }
@@ -79,9 +70,9 @@ HTML;
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $def . '</code>'];
                 }
             }
-            $fresh(\ROOT . \DS . 'state.php');
-            $fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-            $fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+            \_\lot\x\panel\h\fresh(\ROOT . \DS . 'state.php');
+            \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+            \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
             // TODO
             $_['form']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
             return $_;
@@ -89,7 +80,7 @@ HTML;
         if (1 !== $user['status'] || 'g' !== $_['task']) {
             if (\Is::user()) {
                 $_['alert']['error'][] = \i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
-                $_['kick'] = $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash;
+                $_['kick'] = $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['tab' => false, 'type' => false]) . $url->hash;
             } else {
                 $_['kick'] = "";
             }
@@ -97,7 +88,7 @@ HTML;
         if (isset($_['i']) || \count($_['chops']) > 2) {
             $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chops'][0];
         }
-        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'state' . \DS . 'state.php');
+        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
         if (1 === \count($_['chops'])) {
             $panes = $paths = [];
@@ -150,7 +141,7 @@ HTML;
                             'lot' => [
                                 'folder' => ['skip' => true],
                                 'link' => [
-                                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['layout' => false, 'tab' => false]) . $url->hash,
+                                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['tab' => false, 'type' => false]) . $url->hash,
                                     'skip' => false
                                 ],
                                 's' => ['skip' => true],
@@ -406,8 +397,8 @@ HTML;
         } else if ('s' === $_['task'] && 1 !== $status) {
             $_['alert']['error'][] = \i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
             $_['kick'] = $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
-                'layout' => false,
-                'tab' => false
+                'tab' => false,
+                'type' => false
             ]) . $url->hash;
         }
         return $_;

@@ -1,3 +1,9 @@
+@mixin appearance($appearance: none) {
+  -webkit-appearance: $appearance;
+  -moz-appearance: $appearance;
+  appearance: $appearance;
+}
+
 @mixin placeholder($opacity: 1, $color: inherit) {
   color: $color;
   opacity: $opacity;

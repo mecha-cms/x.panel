@@ -8,10 +8,10 @@ function blob($_) {
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'tab' => ['data'],
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $name = \basename(\To::file(\lcfirst($_['form']['data']['name'] ?? "")));
@@ -86,9 +86,9 @@ function file($_) {
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -153,9 +153,9 @@ function folder($_) {
 function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
@@ -170,21 +170,6 @@ function page($_) {
         unset($_['form']['page']['name'], $_['form']['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
-        // Remove array item(s) with empty value
-        $drop = function($v) use(&$drop) {
-            foreach ($v as $kk => $vv) {
-                if (\is_array($vv) && !empty($vv)) {
-                    if ($vv = $drop($vv)) {
-                        $v[$kk] = $vv;
-                    } else {
-                        unset($v[$kk]);
-                    }
-                } else if ("" === $vv || null === $vv || [] === $vv) {
-                    unset($v[$kk]);
-                }
-            }
-            return [] !== $v ? $v : null;
-        };
         foreach ($_['form']['page'] as $k => $v) {
             if (
                 // Skip `null` value
@@ -198,7 +183,7 @@ function page($_) {
                 continue;
             }
             if (\is_array($v)) {
-                if ($v = $drop(\array_replace_recursive($page[$k] ?? [], $v))) {
+                if ($v = \drop(\array_replace_recursive($page[$k] ?? [], $v))) {
                     $page[$k] = $v;
                 }
             } else {
@@ -258,25 +243,10 @@ function page($_) {
 function state($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
-        'layout' => false,
         'token' => false,
-        'trash' => false
+        'trash' => false,
+        'type' => false
     ]) . $url->hash;
-    // Remove array item(s) with empty value
-    $drop = function($v) use(&$drop) {
-        foreach ($v as $kk => $vv) {
-            if (\is_array($vv) && !empty($vv)) {
-                if ($vv = $drop($vv)) {
-                    $v[$kk] = $vv;
-                } else {
-                    unset($v[$kk]);
-                }
-            } else if ("" === $vv || null === $vv || [] === $vv) {
-                unset($v[$kk]);
-            }
-        }
-        return [] !== $v ? $v : null;
-    };
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -284,7 +254,7 @@ function state($_) {
         }
         if (\is_file($f = \LOT . \DS . \trim(\strtr($_['form']['path'] ?? $_['path'], '/', \DS), \DS))) {
             $_['f'] = $f = \realpath($f);
-            $v = $drop($_['form']['state'] ?? []);
+            $v = \drop($_['form']['state'] ?? []);
             $_['form']['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
             $_ = file($_); // Move to `file`
         }

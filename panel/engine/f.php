@@ -347,7 +347,7 @@ namespace _\lot\x\panel {
     function pager($in, $key) {
         $in['tags'][] = 'lot';
         $in['tags'][] = 'lot:pager';
-        $pager = function($current, $count, $chunk, $peek, $fn, $first, $prev, $next, $last) {
+        $pager = static function($current, $count, $chunk, $peek, $fn, $first, $prev, $next, $last) {
             $begin = 1;
             $end = (int) \ceil($count / $chunk);
             $out = "";
