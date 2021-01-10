@@ -25,6 +25,7 @@ return [
     'font/ttf' => 1,
     'font/woff' => 1,
     'font/woff2' => 1,
+    'image/apng' => 1,
     'image/avif' => 1,
     'image/bmp' => 1,
     'image/svg+xml' => 1,

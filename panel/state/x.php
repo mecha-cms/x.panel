@@ -3,7 +3,7 @@
 // Add more file extension(s) other than `File::state['x']` here so that the editor will accept them
 
 return [
-    // 'apng' => 1,
+    'apng' => 1,
     'asc' => 1,
     'asf' => 1,
     'asx' => 1,
