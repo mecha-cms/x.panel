@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . DS . '3.php';
+$_ = _\lot\x\panel\h\_user_action_limit_check($_);
 
 if ('g' === $_['task'] && $user->path === $_['f']) {
     // Hide navigation bar

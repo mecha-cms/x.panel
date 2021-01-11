@@ -41,7 +41,7 @@ function route() {
             $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
             $_['kick'] = \str_replace('::s::', '::g::', $url->current);
         }
-        if (!$route && $r = \_\lot\x\panel\h\error_route_check($_)) {
+        if (!$route && $r = \_\lot\x\panel\h\_error_route_check($_)) {
             $_ = $r;
             $this->layout($_['layout'] ?? '404/panel');
         }

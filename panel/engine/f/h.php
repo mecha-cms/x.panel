@@ -1,5 +1,123 @@
 <?php namespace _\lot\x\panel\h;
 
+function _error_route_check($_) {
+    $f = $_['f'];
+    if (
+        // Trying to get file that does not exist
+        'g' === $_['task'] && !$f ||
+        // Trying to set file from a folder that does not exist
+        's' === $_['task'] && (!$f || !\is_dir($f))
+    ) {
+        $_['title'] = \i('Error');
+        \State::set([
+            '[layout]' => ['type:' . $_['type'] => false],
+            'is' => [
+                'error' => 404
+            ]
+        ]);
+        return $_;
+    }
+    return null;
+}
+
+function _user_action_limit_check($_) {
+    extract($GLOBALS, \EXTR_SKIP);
+    $status = $user['status'];
+    $kick = static function() use($_, $status, $url, $user) {
+        \Alert::error(\i('Permission denied for your current user status: %s', '<code>' . $status . '</code>') . '<br><small>' . $url->current . '</small>');
+        \Guard::kick($url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
+            'tab' => false,
+            'type' => false
+        ]) . $url->hash);
+    };
+    $rules = \is_file($f = __DIR__ . \DS . '..' . \DS . '..' . \DS . 'state' . \DS . 'user' . \DS . $status . '.php') ? (static function($f, $status) {
+        extract($GLOBALS, \EXTR_SKIP);
+        $out = (array) require $f;
+        // Override with `State::set('x.panel.guard.' . $status, [])`
+        return \array_replace_recursive($out, (array) \State::get('x.panel.guard.' . $status, true));
+    })($f, $status) : [];
+    if (isset($rules['bar'])) {
+        // Single menu
+        foreach ([
+            'link' => 0,
+            's' => 0,
+            'search' => 0,
+            'user' => 2
+        ] as $k => $v) {
+            if (!isset($_['lot']['bar']['lot'][$v]['lot'][$k])) {
+                continue;
+            }
+            if (isset($rules['bar'][$k])) {
+                if (false === $rules['bar'][$k]) {
+                    $_['lot']['bar']['lot'][$v]['lot'][$k]['skip'] = true;
+                }
+                if (\is_array($rules['bar'][$k])) {
+                    $_['lot']['bar']['lot'][$v]['lot'][$k] = \array_replace($_['lot']['bar']['lot'][$v]['lot'][$k], $rules['bar'][$k]);
+                }
+            }
+        }
+        // Multiple menu
+        foreach ([
+            'folder' => 0,
+            'site' => 1
+        ] as $k => $v) {
+            if (!isset($_['lot']['bar']['lot'][$v]['lot'][$k]['lot'])) {
+                continue;
+            }
+            if (isset($rules['bar'][$k])) {
+                if (false === $rules['bar'][$k]) {
+                    $_['lot']['bar']['lot'][$v]['lot'][$k]['skip'] = true;
+                }
+                if (\is_array($rules['bar'][$k])) {
+                    foreach ($rules['bar'][$k] as $kk => $vv) {
+                        if (false === $vv) {
+                            $_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk]['skip'] = true;
+                        }
+                        if (\is_array($vv)) {
+                            $_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk] = \array_replace($_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk], $vv);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (isset($rules['route'])) {
+        foreach ($rules['route'] as $k => $v) {
+            if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
+                if (false === $v) {
+                    $kick();
+                }
+                if (\is_callable($v)) {
+                    $v = \call_user_func($v, ...$m[2]);
+                }
+            }
+        }
+    }
+    if (isset($rules['task'])) {
+        foreach ($rules['task'] as $k => $v) {
+            if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
+                $task = \array_shift($m[2]);
+                if (\is_callable($v)) {
+                    $v = \call_user_func($v, ...$m[2]);
+                }
+                if (false === $v) {
+                    $kick();
+                }
+                if (\is_array($v)) {
+                    foreach ($v as $kk => $vv) {
+                        if ('::' . $kk . '::' === $task) {
+                            if (false === $vv) {
+                                $kick();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return $_;
+}
+
 function c(&$out, array $tags0 = [], array $tags1 = []) {
     $a = \explode(' ', $out['class'] ?? "");
     $b = \_\lot\x\panel\h\tags((array) $tags0);
@@ -45,26 +163,6 @@ function description($in, $or = null) {
     unset($in['tags']);
     \_\lot\x\panel\h\c($out[2], ['description' => 1]);
     return new \HTML($out);
-}
-
-function error_route_check($_) {
-    $f = $_['f'];
-    if (
-        // Trying to get file that does not exist
-        'g' === $_['task'] && !$f ||
-        // Trying to set file from a folder that does not exist
-        's' === $_['task'] && (!$f || !\is_dir($f))
-    ) {
-        $_['title'] = \i('Error');
-        \State::set([
-            '[layout]' => ['type:' . $_['type'] => false],
-            'is' => [
-                'error' => 404
-            ]
-        ]);
-        return $_;
-    }
-    return null;
 }
 
 function field($in, $key) {

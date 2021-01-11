@@ -77,14 +77,6 @@ HTML;
             $_['form']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
             return $_;
         }, 9.9);
-        if (1 !== $user['status'] || 'g' !== $_['task']) {
-            if (\Is::user()) {
-                $_['alert']['error'][] = \i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
-                $_['kick'] = $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', ['tab' => false, 'type' => false]) . $url->hash;
-            } else {
-                $_['kick'] = "";
-            }
-        }
         if (isset($_['i']) || \count($_['chops']) > 2) {
             $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chops'][0];
         }
@@ -350,7 +342,7 @@ HTML;
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
         }
-        if ($r = \_\lot\x\panel\h\error_route_check($_)) {
+        if ($r = \_\lot\x\panel\h\_error_route_check($_)) {
             return $r;
         }
         // You cannot edit or delete your own folder
@@ -359,11 +351,6 @@ HTML;
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
         }
         if (1 !== $user['status']) {
-            // Force to enter to the user file(s)
-            if (1 === \count($_['chops']) || $_['chops'][1] !== $user->user) {
-                $_['alert']['error'][] = \i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
-                $_['kick'] = $url . $_['/'] . '/::g::/asset/' . $user->user . '/1';
-            }
             // Hide parent folder link
             if (\count($_['chops']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['skip'] = true;
@@ -372,15 +359,13 @@ HTML;
         return $_;
     }
     function user($_) {
-        if ($r = \_\lot\x\panel\h\error_route_check($_)) {
+        if ($r = \_\lot\x\panel\h\_error_route_check($_)) {
             return $r;
         }
         extract($GLOBALS, \EXTR_SKIP);
         $status = $user['status'];
         if (\count($_['chops']) > 1) {
             if (1 !== $status) {
-                // Hide add user link
-                $_['lot']['bar']['lot'][0]['lot']['s']['skip'] = true;
                 // XSS Protection
                 if ('POST' === $_SERVER['REQUEST_METHOD']) {
                     // Prevent user(s) from adding a hidden form (or changing the `page[status]` field value) that
@@ -391,19 +376,7 @@ HTML;
                     $_['form']['page']['status'] = $status;
                     unset($_POST['data']['status'], $_['form']['data']['status']);
                 }
-                // Prevent user from editing other user file(s)
-                if ('g' === $_['task'] && $_['f'] !== $user->path) {
-                    $_['alert']['error'][] = \i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
-                    $_['kick'] = \dirname($url->clean) . '/1' . $url->hash;
-                }
             }
-        // Prevent user(s) from creating new user
-        } else if ('s' === $_['task'] && 1 !== $status) {
-            $_['alert']['error'][] = \i('Permission denied for your current user status: %s', '<code>' . $user['status'] . '</code>') . '<br><small>' . $url->current . '</small>';
-            $_['kick'] = $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
-                'tab' => false,
-                'type' => false
-            ]) . $url->hash;
         }
         return $_;
     }

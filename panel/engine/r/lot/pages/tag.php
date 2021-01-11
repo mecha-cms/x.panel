@@ -14,7 +14,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
         // Disable page children feature
         $v['tasks']['enter']['skip'] = true;
         $v['tasks']['s']['skip'] = true;
-        if ($g && null !== $v['author'] && $v['author'] !== $author) {
+        if ($g && isset($v['author']) && $v['author'] !== $author) {
             $v['skip'] = true;
         }
     }

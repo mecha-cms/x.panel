@@ -40,7 +40,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
 
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
 $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'User';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['type' => 'page/user', 'tab' => false]) . $url->hash;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['tab' => false, 'type' => 'page/user']) . $url->hash;
 
 // Prevent user with status other than `1` from creating user file(s)
 if ($g) {
