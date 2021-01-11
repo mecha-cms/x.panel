@@ -120,7 +120,7 @@ return (static function($icons) {
                             'caret' => false,
                             'title' => false,
                             'description' => 'Exit',
-                            'url' => $url . ($_['user']['guard']['path'] ?? $_['user']['path']) . '/' . $user->name . '?exit=' . $_['token'] . $url->hash,
+                            'url' => $url . $_['user']['path'] . '/' . $user->name . '?exit=' . $_['token'] . $url->hash,
                             'stack' => 10
                         ]
                     ],
