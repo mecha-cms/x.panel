@@ -9,6 +9,7 @@ Release Notes
 ### master
 
  - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - [ ] Added user action limiter API.
  - [ ] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
  - [x] Added `do.task.*` hooks.
  - [ ] Added ability to detect extension and layout package without parent folder.
