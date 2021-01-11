@@ -12,7 +12,7 @@ function blob($in, $key) {
     $out['content'][1] = false;
     $out['content'][2]['name'] = $in['name'] ?? $key;
     $out['content'][2]['type'] = 'file';
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -23,7 +23,7 @@ function blobs($in, $key) {
     $out['content'][2]['multiple'] = true; // TODO: Limit file(s) to upload
     $out['content'][2]['name'] = ($in['name'] ?? $key) . '[]';
     $out['content'][2]['type'] = 'file';
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -32,7 +32,7 @@ function color($in, $key) {
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'color';
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     if ($value = \_\lot\x\panel\h\color((string) ($in['value'] ?? ""))) {
         $out['content'][2]['title'] = $value;
         $out['content'][2]['value'] = $value;
@@ -68,7 +68,10 @@ function colors($in, $key) {
         }
         unset($in['lot']);
     }
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:color']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
+        'lot' => 1,
+        'lot:color' => 1
+    ]);
     unset($out['content'][2]['name']);
     return \_\lot\x\panel\field($out, $key);
 }
@@ -137,7 +140,7 @@ function combo($in, $key) {
         foreach ($a as $v) {
             $out['content'][1] .= $v;
         }
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['select']);
+        \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['select' => 1]);
         return \_\lot\x\panel\field($out, $key);
     }
     return \_\lot\x\panel\field\text($in, $key);
@@ -145,7 +148,7 @@ function combo($in, $key) {
 
 function content($in, $key) {
     $out = \_\lot\x\panel\h\field($in, $key);
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['textarea' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -243,7 +246,12 @@ function item($in, $key) {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:item']);
+        \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
+            'count:' . $count => 1,
+            'is:block' => !!$block,
+            'lot' => 1,
+            'lot:item' => 1
+        ]);
         return \_\lot\x\panel\field($out, $key);
     }
     return \_\lot\x\panel\field\text($in, $key);
@@ -307,7 +315,12 @@ function items($in, $key) {
             $block = $in['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in, ['count:' . $count, $block ? 'is:block' : null, 'lot', 'lot:items']);
+        \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
+            'count:' . $count => 1,
+            'is:block' => !!$block,
+            'lot' => 1,
+            'lot:items' => 1
+        ]);
         unset($out['content'][2]['name']);
         return \_\lot\x\panel\field($out, $key);
     }
@@ -334,7 +347,7 @@ function number($in, $key) {
     $out['content'][2]['max'] = $in['max'] ?? null;
     $out['content'][2]['step'] = $in['step'] ?? null;
     $out['content'][2]['value'] = $in['value'] ?? null;
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -344,7 +357,7 @@ function pass($in, $key) {
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'password';
     unset($out['content'][2]['value']); // Never show `value` on this field
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -366,7 +379,7 @@ function query($in, $key) {
     if (isset($in['state'])) {
         $out['content'][2]['data-state'] = \json_encode($in['state']);
     }
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -379,7 +392,7 @@ function range($in, $key) {
     $out['content'][2]['max'] = $in['max'] ?? null;
     $out['content'][2]['step'] = $in['step'] ?? null;
     $out['content'][2]['value'] = $in['value'] ?? null;
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -400,7 +413,10 @@ function source($in, $key) {
     $out['content'][2]['data-state'] = \json_encode(\array_replace($in['state'] ?? [], [
         'tab' => '  '
     ]));
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['textarea', 'code']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
+        'code' => 1,
+        'textarea' => 1
+    ]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -410,7 +426,7 @@ function text($in, $key) {
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
     $out['content'][2]['value'] = $in['value'] ?? null;
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['input']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
     return \_\lot\x\panel\field($out, $key);
 }
 
@@ -435,7 +451,10 @@ function toggle($in, $key) {
     $t = \i(...((array) ($in['alt'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    \_\lot\x\panel\h\c($out['content'][2], $in, ['lot', 'lot:toggle']);
+    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
+        'lot' => 1,
+        'lot:toggle' => 1
+    ]);
     unset($out['alt'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
     return \_\lot\x\panel\field($out, $key);
 }

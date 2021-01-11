@@ -18,7 +18,7 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
                 'description' => S . $page->user . S,
                 'link' => 'draft' !== $page->x ? $page->url : null,
                 'image' => $page->avatar(72),
-                'tags' => [9999 => 'status:' . $page['status']]
+                'tags' => ['status:' . $page['status'] => 1]
             ];
         };
         // Disable page children feature

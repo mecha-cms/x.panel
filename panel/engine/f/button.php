@@ -12,7 +12,7 @@ function button($in, $key) {
 
 function link($in, $key) {
     $out = \_\lot\x\panel\link($in, $key);
-    \_\lot\x\panel\h\c($out, $in, ['button']);
+    \_\lot\x\panel\h\c($out, $in['tags'] ?? [], ['button' => 1]);
     return $out;
 }
 

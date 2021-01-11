@@ -1,8 +1,11 @@
 <?php
 
 // Default panel data
-return (function($icons) {
+return (static function($icons) {
     extract($GLOBALS, EXTR_SKIP);
+    if (isset($_['content']) && is_string($_['content'])) {
+        return $_; // Skip!
+    }
     $id = explode('/', $_['path'], 2)[0];
     $folders = [];
     foreach (g(LOT, 0) as $k => $v) {
@@ -38,14 +41,14 @@ return (function($icons) {
                             'title' => false,
                             'url' => $url,
                             'lot' => $list,
-                            'tags' => ['is:main'],
+                            'tags' => ['is:main' => 1],
                             'stack' => 10
                         ],
                         'link' => [
                             'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
                             'title' => false,
                             'description' => 'Back',
-                            'tags' => ['is:main'],
+                            'tags' => ['is:main' => 1],
                             'skip' => true,
                             'stack' => 10
                         ],

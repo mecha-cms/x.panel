@@ -20,9 +20,12 @@ namespace _\lot\x\panel {
         return $out;
     }
     function field($in, $key) {
-        $tags = ['field', 'p'];
+        $tags = [
+            'field' => 1,
+            'p' => 1
+        ];
         if (isset($in['type'])) {
-            $tags[] = \strtr($in['type'], '/', ':');
+            $tags[\strtr($in['type'], '/', ':')] = 1;
         }
         $id = $in['id'] ?? 'f:' . \dechex(\time());
         $in[2]['id'] = $in[2]['id'] ?? \str_replace('f:', 'field:', $id);
@@ -71,11 +74,15 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             $out[1] .= '<div>' . \_\lot\x\panel\h\lot($in['lot']) . '</div>';
         }
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         return new \HTML($out);
     }
     function fields($in) {
-        $tags = ['lot', 'lot:field', 'p'];
+        $tags = [
+            'lot' => 1,
+            'lot:field' => 1,
+            'p' => 1
+        ];
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
@@ -111,21 +118,21 @@ namespace _\lot\x\panel {
             $out[1] .= $append;
         }
         $out[1] = $title . $description . $out[1];
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         return "" !== $out[1] ? new \HTML($out) : null;
     }
     function file($in, $key) {
         $tags = $in['tags'] ?? [];
         if (isset($in['active']) && !$in['active']) {
-            $tags[] = 'not:active';
+            $tags['not:active'] = 1;
         }
-        $tags[] = 'is:file';
+        $tags['is:file'] = 1;
         $out = [
             0 => 'li',
             1 => "",
             2 => []
         ];
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $tags);
         $out[1] .= '<h3>' . \_\lot\x\panel\Link([
             'description' => $in['description'] ?? null,
             'link' => $in['link'] ?? null,
@@ -160,7 +167,7 @@ namespace _\lot\x\panel {
                 isset($_SESSION['_']['file'][$path]) ||
                 isset($_SESSION['_']['folder'][$path])
             )) {
-                $v['tags'][] = 'is:active';
+                $v['tags']['is:active'] = 1;
                 unset($_SESSION['_']['file'][$path]);
                 unset($_SESSION['_']['folder'][$path]);
             }
@@ -168,20 +175,24 @@ namespace _\lot\x\panel {
             ++$count;
         }
         unset($lot);
-        \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:file']);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], [
+            'count:' . $count => 1,
+            'lot' => 1,
+            'lot:file' => 1
+        ]);
         return new \HTML($out);
     }
     function folder($in, $key) {
-        $tags = ['is:folder'];
+        $tags = ['is:folder' => 1];
         if (isset($in['active']) && !$in['active']) {
-            $tags[] = 'not:active';
+            $tags['not:active'] = 1;
         }
         $out = [
             0 => 'li',
             1 => "",
             2 => []
         ];
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         $out[1] .= '<h3>' . \_\lot\x\panel\link([
             'description' => $in['description'] ?? \i('Open folder'),
             'link' => $in['link'] ?? null,
@@ -212,7 +223,7 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
         }
         $href = $in['link'] ?? $in['url'] ?? null;
-        \_\lot\x\panel\h\c($out[2], $in);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? []);
         if (!isset($out[2]['action'])) {
             $out[2]['action'] = $href;
         }
@@ -234,9 +245,9 @@ namespace _\lot\x\panel {
         $href = $in['link'] ?? $in['url'] ?? \P;
         $href = false === $href ? \P : (string) $href;
         if (\P === $href || (isset($in['active']) && !$in['active'])) {
-            $tags[] = 'not:active';
+            $tags['not:active'] = 1;
         }
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         $out[2]['href'] = \P === $href ? null : $href;
         if (isset($in['id'])) {
             $out[2]['id'] = $in['id'];
@@ -251,12 +262,15 @@ namespace _\lot\x\panel {
             1 => $in[1] ?? "",
             2 => $in[2] ?? []
         ];
-        $tags = $i < 0 ? [] : ['lot', 'lot:menu'];
+        $tags = $i < 0 ? [] : [
+            'lot' => 1,
+            'lot:menu' => 1
+        ];
         if (!empty($in['static'])) {
-            $tags[] = 'is:static';
+            $tags['is:static'] = 1;
         }
         if (isset($in['content'])) {
-            $tags[] = 'count:1';
+            $tags['count:1'] = 1;
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
             $count = 0;
@@ -277,35 +291,36 @@ namespace _\lot\x\panel {
                     if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
                         $v['icon'][1] = '<svg class="caret" height="12" viewBox="0 0 24 24" width="12"><path d="' . ($v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
                     }
-                    $ul = "";
                     $a = (array) ($v['tags'] ?? []);
                     if (isset($v['active']) && !$v['active']) {
-                        $a[] = 'not:active';
+                        $a['not:active'] = 1;
                     }
                     if (!empty($v['current'])) {
-                        $a[] = 'is:current';
+                        $a['is:current'] = 1;
                     }
                     if (!isset($v[1])) {
+                        $li[1] = \_\lot\x\panel\link($v, $k);
                         if (!empty($v['lot'])) {
                             $ul = \_\lot\x\panel\menu($v, $k, $i + 1); // Recurse
-                            $ul['class'] = 'lot lot:menu';
-                            $li[1] = $ul;
+                            \_\lot\x\panel\h\c($ul, [
+                                'lot' => 1,
+                                'lot:menu' => 1
+                            ]);
+                            $li[1] .= $ul;
                             if ($i < 0) {
-                                $a[] = 'has:menu';
+                                $a['has:menu'] = 1;
                             }
                         }
-                        unset($v['tags']);
-                        $li[1] = \_\lot\x\panel\link($v, $k) . $ul;
                     }
-                    \_\lot\x\panel\h\c($li[2], $v, $a);
+                    \_\lot\x\panel\h\c($li[2], $a);
                 } else {
                     $li[1] = \_\lot\x\panel\link(['title' => $v], $k);
                 }
                 $out[1] .= new \HTML($li);
             }
-            $tags[] = 'count:' . $count;
+            $tags['count:' . $count] = 1;
         }
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         return new \HTML($out);
     }
     function page($in, $key) {
@@ -319,15 +334,15 @@ namespace _\lot\x\panel {
             return;
         }
         if (isset($in['active']) && !$in['active']) {
-            $tags[] = 'not:active';
+            $tags['not:active'] = 1;
         }
-        $tags[] = 'is:file';
+        $tags['is:file'] = 1;
         $out = [
             0 => 'li',
             1 => "",
             2 => []
         ];
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         $date = isset($in['time']) ? \strtr($in['time'], '-', '/') : null;
         $out[1] .= '<div' . (isset($in['image']) && false === $in['image'] ? ' hidden' : "") . '>' . (!empty($in['image']) ? '<img alt="" height="72" src="' . \htmlspecialchars($in['image']) . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($path, [
             \ROOT => "",
@@ -345,8 +360,8 @@ namespace _\lot\x\panel {
         return new \HTML($out);
     }
     function pager($in, $key) {
-        $in['tags'][] = 'lot';
-        $in['tags'][] = 'lot:pager';
+        $in['tags']['lot'] = 1;
+        $in['tags']['lot:pager'] = 1;
         $pager = static function($current, $count, $chunk, $peek, $fn, $first, $prev, $next, $last) {
             $begin = 1;
             $end = (int) \ceil($count / $chunk);
@@ -434,14 +449,18 @@ namespace _\lot\x\panel {
         foreach ($lot as $k => $v) {
             $path = \rtrim($v['path'] ?? "", \DS);
             if (!empty($v['current']) || $path && isset($_SESSION['_']['file'][$path])) {
-                $v['tags'][] = 'is:active';
+                $v['tags']['is:active'] = 1;
                 unset($_SESSION['_']['file'][$path]);
             }
             $out[1] .= \_\lot\x\panel($v, $k);
             ++$count;
         }
         unset($lot);
-        \_\lot\x\panel\h\c($out[2], $in, ['count:' . $count, 'lot', 'lot:page']);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], [
+            'count:' . $count => 1,
+            'lot' => 1,
+            'lot:page' => 1
+        ]);
         return new \HTML($out);
     }
     function tab($in, $key) {
@@ -455,7 +474,7 @@ namespace _\lot\x\panel {
         } else if (isset($in['lot'])) {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot']);
         }
-        \_\lot\x\panel\h\c($out[2], $in);
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? []);
         return "" !== $out[1] ? new \HTML($out) : null;
     }
     function tabs($in, $key) {
@@ -469,7 +488,11 @@ namespace _\lot\x\panel {
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
             $nav = $section = [];
-            $tags = ['lot', 'lot:tab', 'p'];
+            $tags = [
+                'lot' => 1,
+                'lot:tab' => 1,
+                'p' => 1
+            ];
             $lot = (new \Anemon($in['lot']))->sort([1, 'stack'], true)->get();
             $count = 0;
             foreach ($lot as $k => $v) {
@@ -483,7 +506,7 @@ namespace _\lot\x\panel {
                             'tab' => [$name => $kk]
                         ]);
                     } else {
-                        $v['tags'][] = 'has:link';
+                        $v['tags']['has:link'] = 1;
                     }
                 }
                 $v[2]['data-name'] = $kk;
@@ -505,11 +528,11 @@ namespace _\lot\x\panel {
             $first = \array_keys($nav)[0] ?? null; // The first tab
             $active = $_GET['tab'][$name] ?? $in['active'] ?? $first ?? null;
             if (null !== $active && isset($nav[$active]) && \is_array($nav[$active])) {
-                $nav[$active]['tags'][] = 'is:active';
-                $section[$active]['tags'][] = 'is:active';
+                $nav[$active]['tags']['is:active'] = 1;
+                $section[$active]['tags']['is:active'] = 1;
             } else if (null !== $first && isset($nav[$first]) && \is_array($nav[$first])) {
-                $nav[$first]['tags'][] = 'is:active';
-                $section[$first]['tags'][] = 'is:active';
+                $nav[$first]['tags']['is:active'] = 1;
+                $section[$first]['tags']['is:active'] = 1;
             }
             foreach ($section as $k => $v) {
                 $vv = (string) \_\lot\x\panel($v, $k);
@@ -523,12 +546,15 @@ namespace _\lot\x\panel {
             $out[1] = '<nav>' . \_\lot\x\panel\bar\menu(['lot' => $nav], $name) . '</nav>';
             $out[1] .= \implode("", $section);
         }
-        $tags[] = 'count:' . $count;
-        \_\lot\x\panel\h\c($out[2], $in, $tags);
+        $tags['count:' . $count] = 1;
+        \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
         return new \HTML($out);
     }
     function tasks($in, $key) {
-        $tags = ['lot', 'lot:task'];
+        $tags = [
+            'lot' => 1,
+            'lot:task' => 1
+        ];
         $out = [
             0 => $in[0] ?? 'div',
             1 => $in[1] ?? "",
@@ -536,14 +562,14 @@ namespace _\lot\x\panel {
         ];
         $count = 0;
         if (isset($in['content'])) {
-            $tags[] = 'count:' . ($count = 1);
+            $tags['count:' . ($count = 1)] = 1;
             $out[1] .= \_\lot\x\panel\h\content($in['content']);
         } else if (isset($in['lot'])) {
             $out[1] .= \_\lot\x\panel\h\lot($in['lot'], null, $count);
-            $tags[] = 'count:' . $count;
+            $tags['count:' . $count] = 1;
         }
         if ($count > 0) {
-            \_\lot\x\panel\h\c($out[2], $in, $tags);
+            \_\lot\x\panel\h\c($out[2], $in['tags'] ?? [], $tags);
             return new \HTML($out);
         }
         return null;

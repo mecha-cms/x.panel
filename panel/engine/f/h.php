@@ -1,11 +1,12 @@
 <?php namespace _\lot\x\panel\h;
 
-function c(&$out, $in, $tags = []) {
+function c(&$out, array $tags0 = [], array $tags1 = []) {
     $a = \explode(' ', $out['class'] ?? "");
-    $b = (array) ($in['tags'] ?? []);
-    $c = \array_unique(\array_filter(\array_merge($a, $b, $tags)));
-    \sort($c);
-    $out['class'] = $c ? \implode(' ', $c) : null;
+    $b = \_\lot\x\panel\h\tags((array) $tags0);
+    $c = \_\lot\x\panel\h\tags((array) $tags1);
+    $d = \array_unique(\array_filter(\array_merge($a, $b, $c)));
+    \sort($d);
+    $out['class'] = $d ? \implode(' ', $d) : null;
 }
 
 function color($color) {
@@ -42,7 +43,7 @@ function description($in, $or = null) {
         2 => []
     ];
     unset($in['tags']);
-    \_\lot\x\panel\h\c($out[2], $in, ['description']);
+    \_\lot\x\panel\h\c($out[2], ['description' => 1]);
     return new \HTML($out);
 }
 
@@ -54,7 +55,6 @@ function error_route_check($_) {
         // Trying to set file from a folder that does not exist
         's' === $_['task'] && (!$f || !\is_dir($f))
     ) {
-        $_['layout'] = '404/panel';
         $_['title'] = \i('Error');
         \State::set([
             '[layout]' => ['type:' . $_['type'] => false],
@@ -71,14 +71,14 @@ function field($in, $key) {
     $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $in['name'] ?? $key;
     if ($disabled = isset($in['active']) && !$in['active']) {
-        $in['tags'][] = 'not:active';
+        $in['tags']['not:active'] = 1;
     // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
     } else if ($readonly = !empty($in['frozen'])) {
-        $in['tags'][] = 'is:frozen';
+        $in['tags']['is:frozen'] = 1;
     }
     // TODO: Need a better key name
     if ($required = !empty($in['required'])) {
-        $in['tags'][] = 'is:required';
+        $in['tags']['is:required'] = 1;
     }
     $input = [
         0 => 'textarea',
@@ -159,6 +159,15 @@ function path($in) {
     ]);
 }
 
+function tags($in) {
+    // [0, 1, 2]
+    if (\array_keys($in) === \range(0, \count($in) - 1)) {
+        return $in;
+    }
+    // {0: true, 1: true, 2: true}
+    return \array_keys(\array_filter($in));
+}
+
 function title($in, $i = -1, $or = null) {
     $title = $in['title'] ?? $or;
     if ((!isset($title) || false === $title) && (!isset($in['icon']) || empty($in['icon']))) {
@@ -183,10 +192,10 @@ function title($in, $i = -1, $or = null) {
     }
     $out[1] = $icon[0] . $title . $icon[1];
     unset($in['tags']);
-    \_\lot\x\panel\h\c($out[2], $in, [
-        'title',
-        $title ? 'has:title' : null,
-        $icon[0] || $icon[1] ? 'has:icon' : null
+    \_\lot\x\panel\h\c($out[2], [
+        'has:icon' => !!($icon[0] || $icon[1]),
+        'has:title' => !!$title,
+        'title' => 1
     ]);
     return new \HTML($out);
 }

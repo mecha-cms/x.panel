@@ -185,7 +185,7 @@ $lot = [
                                                         'lot' => [
                                                             'files' => [
                                                                 'type' => 'files',
-                                                                'tags' => ['mb:1'],
+                                                                'tags' => ['mb:1' => 1],
                                                                 'lot' => [],
                                                                 'stack' => 10
                                                             ],

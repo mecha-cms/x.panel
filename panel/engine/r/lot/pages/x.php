@@ -127,8 +127,8 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                     'author' => $page['author'],
                     'image' => $page->image(72, 72, 50),
                     'tags' => [
-                        'is:page',
-                        'type:' . c2f($page->type ?? '0')
+                        'is:page' => 1,
+                        'type:' . c2f($page->type ?? '0') => 1
                     ]
                 ];
             },

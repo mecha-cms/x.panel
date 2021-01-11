@@ -24,7 +24,7 @@ if ('g' === $_['task'] && $user->path === $_['f']) {
         'title' => 'Exit',
         'type' => 'link',
         'url' => $url . ($_['user']['guard']['path'] ?? $_['user']['path']) . '/' . $user->name . '?exit=' . $_['token'],
-        'tags' => ['is:text'],
+        'tags' => ['is:text' => 1],
         'stack' => 20
     ];
 } else {

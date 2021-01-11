@@ -18,6 +18,7 @@ Release Notes
  - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
  - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#13)
  - [x] Removed `peek` option globally.
+ - [x] Property `tags` now accept associative array.
 
 ### 2.4.3
 

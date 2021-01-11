@@ -40,8 +40,8 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                     'author' => $page['author'],
                     'image' => $page->image(72, 72, 50),
                     'tags' => [
-                        'is:' . $x,
-                        'type:' . c2f($page->type ?? '0')
+                        'is:' . $x => 1,
+                        'type:' . c2f($page->type ?? '0') => 1
                     ],
                     'skip' => 1 !== $user['status'] && $user->user !== $page['author']
                 ];

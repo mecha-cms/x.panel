@@ -42,7 +42,8 @@ function route() {
             $_['kick'] = \str_replace('::s::', '::g::', $url->current);
         }
         if (!$route && $r = \_\lot\x\panel\h\error_route_check($_)) {
-            $this->layout($r['layout'] ?? $_['layout'] ?? '404/panel');
+            $_ = $r;
+            $this->layout($_['layout'] ?? '404/panel');
         }
     }
     // Pre-define state

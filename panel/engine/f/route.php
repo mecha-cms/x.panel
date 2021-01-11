@@ -344,21 +344,19 @@ HTML;
     }
     function asset($_) {
         extract($GLOBALS, \EXTR_SKIP);
-        if ($r = \_\lot\x\panel\h\error_route_check($_)) {
-            return $r;
-        }
         if (!\is_dir($d = \LOT . \DS . 'asset' . \DS . $user->user)) {
             \mkdir($d, 0755, true);
             $_['alert']['success'][] = ['Created folder %s.', '<code>' . \_\lot\x\panel\h\path($d) . '</code>'];
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
         }
+        if ($r = \_\lot\x\panel\h\error_route_check($_)) {
+            return $r;
+        }
         // You cannot edit or delete your own folder
-        if (\count($_['chops']) < 3) {
-            if ('g' === $_['task'] && isset($_['i'])) {
-                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
-                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
-            }
+        if (\count($_['chops']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
         }
         if (1 !== $user['status']) {
             // Force to enter to the user file(s)
@@ -367,17 +365,17 @@ HTML;
                 $_['kick'] = $url . $_['/'] . '/::g::/asset/' . $user->user . '/1';
             }
             // Hide parent folder link
-            if (\count($_['chops']) < 3) {
+            if (\count($_['chops']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['skip'] = true;
             }
         }
         return $_;
     }
     function user($_) {
-        extract($GLOBALS, \EXTR_SKIP);
         if ($r = \_\lot\x\panel\h\error_route_check($_)) {
             return $r;
         }
+        extract($GLOBALS, \EXTR_SKIP);
         $status = $user['status'];
         if (\count($_['chops']) > 1) {
             if (1 !== $status) {
