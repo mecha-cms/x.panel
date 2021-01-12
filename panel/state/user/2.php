@@ -22,8 +22,8 @@ return [
             ],
             'x' => false
         ],
-        'link' => function($task, $path) use($user) {
-            return $user->name(true) === $path ? [
+        'link' => function($task, $path) use($_, $url, $user) {
+            return 'user/' . $user->name(true) === $path ? [
                 'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
                     'tab' => false,
                     'type' => false

@@ -28,7 +28,7 @@ function _user_action_limit_check($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $status = $user['status'];
     $kick = static function() use($_, $status, $url, $user) {
-        \Alert::error(\i('Permission denied for your current user status: %s', '<code>' . $status . '</code>') . '<br><small>' . $url->current . '</small>');
+        \Alert::error(\i('Permission denied.') . '<br><small>' . $url->current . '</small>');
         \Guard::kick($url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
             'tab' => false,
             'type' => false
