@@ -1,20 +1,24 @@
 <?php namespace _\lot\x\panel\h;
 
 function _error_route_check($_) {
+    extract($GLOBALS, \EXTR_SKIP);
     $f = $_['f'];
     if (
+        // Trying to set file under a file path
+        's' === $_['task'] && $f && \is_file($f)
+    ) {
+        $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
+        $_['kick'] = \str_replace('::s::', '::g::', $url->current);
+        return $_;
+    } else if (
         // Trying to get file that does not exist
         'g' === $_['task'] && !$f ||
         // Trying to set file from a folder that does not exist
         's' === $_['task'] && (!$f || !\is_dir($f))
     ) {
+        $_['is']['error'] = 404;
         $_['title'] = \i('Error');
-        \State::set([
-            '[layout]' => ['type:' . $_['type'] => false],
-            'is' => [
-                'error' => 404
-            ]
-        ]);
+        $_['[layout]']['type:' . $_['type']] = false;
         return $_;
     }
     return null;
@@ -30,12 +34,7 @@ function _user_action_limit_check($_) {
             'type' => false
         ]) . $url->hash);
     };
-    $rules = \is_file($f = __DIR__ . \DS . '..' . \DS . '..' . \DS . 'state' . \DS . 'user' . \DS . $status . '.php') ? (static function($f, $status) {
-        extract($GLOBALS, \EXTR_SKIP);
-        $out = (array) require $f;
-        // Override with `State::set('x.panel.guard.' . $status, [])`
-        return \array_replace_recursive($out, (array) \State::get('x.panel.guard.' . $status, true));
-    })($f, $status) : [];
+    $rules = (array) \State::get('x.panel.guard.status.' . $status, true);
     if (isset($rules['bar'])) {
         // Single menu
         foreach ([
@@ -48,11 +47,15 @@ function _user_action_limit_check($_) {
                 continue;
             }
             if (isset($rules['bar'][$k])) {
-                if (false === $rules['bar'][$k]) {
+                $vv = $rules['bar'][$k];
+                if (\is_callable($vv)) {
+                    $vv = \call_user_func($vv, $_['task'], $_['path']);
+                }
+                if (false === $vv) {
                     $_['lot']['bar']['lot'][$v]['lot'][$k]['skip'] = true;
                 }
-                if (\is_array($rules['bar'][$k])) {
-                    $_['lot']['bar']['lot'][$v]['lot'][$k] = \array_replace($_['lot']['bar']['lot'][$v]['lot'][$k], $rules['bar'][$k]);
+                if (\is_array($vv)) {
+                    $_['lot']['bar']['lot'][$v]['lot'][$k] = \array_replace($_['lot']['bar']['lot'][$v]['lot'][$k], $vv);
                 }
             }
         }
@@ -70,6 +73,9 @@ function _user_action_limit_check($_) {
                 }
                 if (\is_array($rules['bar'][$k])) {
                     foreach ($rules['bar'][$k] as $kk => $vv) {
+                        if (\is_callable($vv)) {
+                            $vv = \call_user_func($vv, $_['task'], $_['path']);
+                        }
                         if (false === $vv) {
                             $_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk]['skip'] = true;
                         }
@@ -81,18 +87,7 @@ function _user_action_limit_check($_) {
             }
         }
     }
-    if (isset($rules['route'])) {
-        foreach ($rules['route'] as $k => $v) {
-            if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
-                if (false === $v) {
-                    $kick();
-                }
-                if (\is_callable($v)) {
-                    $v = \call_user_func($v, ...$m[2]);
-                }
-            }
-        }
-    }
+    // `task` has a higher priority than `route`
     if (isset($rules['task'])) {
         foreach ($rules['task'] as $k => $v) {
             if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
@@ -111,6 +106,22 @@ function _user_action_limit_check($_) {
                             }
                         }
                     }
+                }
+                $skip_route_check = true;
+            }
+        }
+    }
+    // `route` must comes after `task` to get the `$skip_route_check` value
+    if (isset($rules['route']) && empty($skip_route_check)) {
+        foreach ($rules['route'] as $k => $v) {
+            if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
+                // Replace `::g::` with `g` only
+                $m[2][0] = \strtr($m[2][0], ['::' => ""]);
+                if (\is_callable($v)) {
+                    $v = \call_user_func($v, ...$m[2]);
+                }
+                if (false === $v) {
+                    $kick();
                 }
             }
         }
@@ -258,11 +269,11 @@ function path($in) {
 }
 
 function tags($in) {
-    // [0, 1, 2]
+    // `[0, 1, 2]`
     if (\array_keys($in) === \range(0, \count($in) - 1)) {
         return $in;
     }
-    // {0: true, 1: true, 2: true}
+    // `{0: true, 1: true, 2: true}`
     return \array_keys(\array_filter($in));
 }
 

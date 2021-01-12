@@ -46,3 +46,4 @@ require __DIR__ . DS . 'r' . DS . 'asset.php';
 require __DIR__ . DS . 'r' . DS . 'file.php';
 require __DIR__ . DS . 'r' . DS . 'route.php';
 require __DIR__ . DS . 'r' . DS . 'tag.php';
+require __DIR__ . DS . 'r' . DS . 'user.php';

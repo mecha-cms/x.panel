@@ -208,9 +208,11 @@ pre.is\:text > code {
   border-color: #2d2d2d;
 }
 
-.lot\:tab > nav li:not(.is\:active) {
-  background: #242424;
-  color: #a7a7a7;
+@media (min-width: 720px) {
+  .lot\:tab > nav li:not(.is\:active) {
+    background: #242424;
+    color: #a7a7a7;
+  }
 }
 
 .input[type='checkbox']::before, .input[type='radio']::before {

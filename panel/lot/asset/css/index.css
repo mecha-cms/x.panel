@@ -1920,7 +1920,7 @@ pre.is\:text code {
   flex: 1;
 }
 
-@media (min-width: 719px) {
+@media (min-width: 720px) {
   .lot\:tab > nav {
     height: 48px;
     line-height: 48px;

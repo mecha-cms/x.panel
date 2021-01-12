@@ -5,13 +5,18 @@ function route() {
         \Guard::kick("");
     }
     // Load default panel definition
-    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r.php');
+    $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
     extract($GLOBALS, \EXTR_SKIP);
-    $f = $_['f'];
     $route = false;
+    if ($r = \_\lot\x\panel\h\_error_route_check($_)) {
+        $_ = $GLOBALS['_'] = $r;
+    }
     foreach (\step($_['path'], '/') as $v) {
         if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, '/', '.')))) {
             $route = $fn;
+            // Custom route is available, remove the error status!
+            $_['is']['error'] = $GLOBALS['_']['is']['error'] = false;
+            $_['title'] = $GLOBALS['_']['title'] = null;
             break;
         }
     }
@@ -35,28 +40,18 @@ function route() {
             }
         })($v);
     };
-    if ('GET' === $_SERVER['REQUEST_METHOD']) {
-        // Redirect if file already exists
-        if ('s' === $_['task'] && $f && \is_file($f)) {
-            $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\h\path($f) . '</code>']];
-            $_['kick'] = \str_replace('::s::', '::g::', $url->current);
-        }
-        if (!$route && $r = \_\lot\x\panel\h\_error_route_check($_)) {
-            $_ = $r;
-            $this->layout($_['layout'] ?? '404/panel');
+    $f = $_['f'];
+    // Pre-define state
+    foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
+        if (isset($_[$v]) && \is_array($_[$v])) {
+            \State::set($v, $_[$v]);
         }
     }
-    // Pre-define state
-    \State::set([
-        'has' => [
-            'parent' => \count($_['chops']) > 1,
-        ],
-        'is' => [
-            'error' => false,
-            'page' => !isset($_['i']),
-            'pages' => isset($_['i'])
-        ]
-    ]);
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        if (!$route && !empty($_['is']['error'])) {
+            $this->layout($_['layout'] ?? $_['is']['error'] . '/panel');
+        }
+    }
     $data = null;
     if (!isset($_GET['type']) && !isset($_['type'])) {
         // Auto-detect layout type

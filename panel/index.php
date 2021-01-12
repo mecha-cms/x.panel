@@ -4,6 +4,19 @@ if (!is_dir(LOT . DS . 'user') || null === State::get('x.user')) {
     return;
 }
 
+// Create `$user` variable just in case `user` extension is too late
+// to be loaded due to the default extension order.
+// Because `panel` is less than `user` when sorted alphabetically.
+// At least we have the cookie that is always available in the global scope.
+if (empty($GLOBALS['user']) && $key = Cookie::get('user.key')) {
+    $GLOBALS['user'] = $user = new User(LOT . DS . 'user' . DS . $key . '.page');
+}
+
+// Someone just trying to replace you!
+if (isset($user) && !$user instanceof User) {
+    Guard::abort('<code>$user</code> must be an instance of <code>User</code>.');
+}
+
 $state = State::get('x.panel', true);
 
 $GLOBALS['_'] = $_ = array_replace_recursive([
@@ -21,7 +34,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'state' => $state,
     'task' => null,
     'title' => null,
-    'token' => content(LOT . DS . 'user' . DS . Cookie::get('user.key') . DS . 'token.data'),
+    'token' => $user['token'] ?? null,
     'trash' => !empty($state['guard']['trash']),
     'type' => $_GET['type'] ?? null,
     'user' => $u = State::get('x.user', true),
@@ -42,5 +55,5 @@ if (0 === strpos('/' . $p, $pp . '/::')) {
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }
 
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'hook.php';
-require __DIR__ . DS . 'engine' . DS . 'r' . DS . 'user.php';
+require __DIR__ . DS . 'index' . DS . 'hook.php';
+require __DIR__ . DS . 'index' . DS . 'user.php';

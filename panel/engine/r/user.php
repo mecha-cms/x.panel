@@ -1,10 +1,6 @@
 <?php
 
-(static function() {
-    extract($GLOBALS);
-    $path = strtr($url->path, ['/index.php' => ""]);
-    $p = $_['user']['guard']['path'] ?? $_['user']['path'];
-    if ($path === $p && empty($_GET['kick'])) {
-        $_GET['kick'] = $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1';
-    }
-})();
+$status = $user['status'] ?? -1;
+if (is_file($f = __DIR__ . DS . '..' . DS . '..' . DS . 'state' . DS . 'user' . DS . $status . '.php')) {
+    State::set('x.panel.guard.status.' . $status, (array) require $f);
+}
