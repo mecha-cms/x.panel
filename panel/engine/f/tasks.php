@@ -1,17 +1,17 @@
-<?php namespace _\lot\x\panel\tasks;
+<?php namespace _\lot\x\panel\type\tasks;
 
-function button($in, $key) {
-    if (isset($in['lot'])) {
-        \_\lot\x\panel\h\p($in['lot'], 'button');
+function button($value, $key) {
+    if (isset($value['lot'])) {
+        \_\lot\x\panel\h\p($value['lot'], 'button');
     }
-    $in['tags']['lot:task.button'] = 1;
-    return \_\lot\x\panel\tasks($in, $key);
+    $value['tags']['lot:task.button'] = true;
+    return \_\lot\x\panel\type\tasks($value, $key);
 }
 
-function link($in, $key) {
-    if (isset($in['lot'])) {
-        \_\lot\x\panel\h\p($in['lot'], 'link');
+function link($value, $key) {
+    if (isset($value['lot'])) {
+        \_\lot\x\panel\h\p($value['lot'], 'link');
     }
-    $in['tags']['lot:task.link'] = 1;
-    return \_\lot\x\panel\tasks($in, $key);
+    $value['tags']['lot:task.link'] = true;
+    return \_\lot\x\panel\type\tasks($value, $key);
 }

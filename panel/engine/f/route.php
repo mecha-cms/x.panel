@@ -29,7 +29,7 @@ namespace _\lot\x\panel\route {
 <p>Thank you 💕️</p>
 HTML;
         $_['title'] = 'End-User License Agreement';
-        $_['lot']['desk']['lot']['form']['lot'][1]['title'] = 'End-User License Agreement';
+        $_['lot']['desk']['lot']['form']['lot'][1]['title'] = $_['title'];
         $_['lot']['desk']['lot']['form']['lot'][1]['description'] = 'This End-User License Agreement (EULA) is a legal agreement between you (either as an individual or on behalf of an entity) and Mecha, regarding your use of Mecha&#x2019;s control panel extension. This license agreement does not apply when you use Mecha without the control panel extension.';
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page'] = [
             'content' => $content,

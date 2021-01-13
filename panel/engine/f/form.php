@@ -1,13 +1,13 @@
-<?php namespace _\lot\x\panel\form;
+<?php namespace _\lot\x\panel\type\form;
 
-function get($in, $key) {
-    $out = \_\lot\x\panel\form($in, $key);
+function get($value, $key) {
+    $out = \_\lot\x\panel\type\form($value, $key);
     $out['method'] = 'get';
     return $out;
 }
 
-function post($in, $key) {
-    $out = \_\lot\x\panel\form($in, $key);
+function post($value, $key) {
+    $out = \_\lot\x\panel\type\form($value, $key);
     if (!isset($out['enctype'])) {
         $out['enctype'] = 'multipart/form-data';
     }

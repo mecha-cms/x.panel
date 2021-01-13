@@ -1,52 +1,58 @@
-<?php namespace _\lot\x\panel\field;
+<?php namespace _\lot\x\panel\type\field;
 
-function _($in, $key) {
-    $out = \_\lot\x\panel\field\content($in, $key);
+function _($value, $key) {
+    $out = \_\lot\x\panel\type\field\content($value, $key);
     $out['skip'] = true;
     return $out;
 }
 
-function blob($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function blob($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['name'] = $in['name'] ?? $key;
+    $out['content'][2]['name'] = $value['name'] ?? $key;
     $out['content'][2]['type'] = 'file';
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function blobs($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function blobs($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['multiple'] = true; // TODO: Limit file(s) to upload
-    $out['content'][2]['name'] = ($in['name'] ?? $key) . '[]';
+    $out['content'][2]['name'] = ($value['name'] ?? $key) . '[]';
     $out['content'][2]['type'] = 'file';
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function color($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function color($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'color';
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    if ($value = \_\lot\x\panel\h\color((string) ($in['value'] ?? ""))) {
-        $out['content'][2]['title'] = $value;
-        $out['content'][2]['value'] = $value;
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    if ($_value = \_\lot\x\panel\h\color((string) ($value['value'] ?? ""))) {
+        $out['content'][2]['title'] = $_value;
+        $out['content'][2]['value'] = $_value;
     }
-    return \_\lot\x\panel\field($out, $key);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function colors($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function colors($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'div';
-    $name = $in['name'] ?? $key;
-    if (isset($in['lot'])) {
-        \sort($in['lot']);
-        foreach ($in['lot'] as $k => $v) {
+    $name = $value['name'] ?? $key;
+    if (isset($value['lot'])) {
+        \sort($value['lot']);
+        foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
@@ -54,40 +60,40 @@ function colors($in, $key) {
                 $v = ['value' => $v];
             }
             $n = $name . '[' . $k . ']';
-            $input = \_\lot\x\panel\h\field($v, $k);
-            $input[0] = 'input';
-            $input[1] = false;
-            $input[2]['class'] = 'input';
-            $input[2]['name'] = $n;
-            $input[2]['type'] = 'color';
-            if ($value = \_\lot\x\panel\h\color((string) ($v['value'] ?? ""))) {
-                $input[2]['title'] = $value;
-                $input[2]['value'] = $value;
+            $content = \_\lot\x\panel\h\field($v, $k);
+            $content[0] = 'input';
+            $content[1] = false;
+            $content[2]['class'] = 'input';
+            $content[2]['name'] = $n;
+            $content[2]['type'] = 'color';
+            if ($_value = \_\lot\x\panel\h\color((string) ($v['value'] ?? ""))) {
+                $content[2]['title'] = $_value;
+                $content[2]['value'] = $_value;
             }
-            $out['content'][1] .= new \HTML($input);
+            $out['content'][1] .= new \HTML($content);
         }
-        unset($in['lot']);
+        unset($value['lot']);
     }
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
-        'lot' => 1,
-        'lot:color' => 1
-    ]);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'lot' => true,
+        'lot:color' => true
+    ], $value['tags'] ?? []);
     unset($out['content'][2]['name']);
-    return \_\lot\x\panel\field($out, $key);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function combo($in, $key) {
-    if (isset($in['lot'])) {
-        $out = \_\lot\x\panel\h\field($in, $key);
-        $value = $in['value'] ?? null;
+function combo($value, $key) {
+    if (isset($value['lot'])) {
+        $out = \_\lot\x\panel\h\field($value, $key);
+        $_value = $value['value'] ?? null;
         $placeholder = \i(...((array) ($out['alt'] ?? [])));
         $out['content'][0] = 'select';
         $out['content'][1] = ""; // Remove content because this is no longer a `<textarea>`
         unset($out['value']);
-        $seq = \array_keys($in['lot']) === \range(0, \count($in['lot']) - 1);
+        $seq = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
         $a = [];
-        $sort = !isset($in['sort']) || $in['sort'];
-        foreach ($in['lot'] as $k => $v) {
+        $sort = !isset($value['sort']) || $value['sort'];
+        foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
@@ -101,7 +107,7 @@ function combo($in, $key) {
                 $seq0 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
                 foreach ($v['lot'] as $kk => $vv) {
                     $option = new \HTML(['option', "", [
-                        'selected' => null !== $value && (string) $value === (string) $kk,
+                        'selected' => null !== $_value && (string) $_value === (string) $kk,
                         'value' => $seq0 ? null : $kk
                     ]]);
                     if (\is_array($vv) && \array_key_exists('title', $vv)) {
@@ -122,7 +128,7 @@ function combo($in, $key) {
             // Flat
             } else {
                 $option = new \HTML(['option', $k, [
-                    'selected' => null !== $value && (string) $value === (string) $k,
+                    'selected' => null !== $_value && (string) $_value === (string) $k,
                     'value' => $seq ? null : $k
                 ]]);
                 if (\is_array($v) && \array_key_exists('title', $v)) {
@@ -140,83 +146,87 @@ function combo($in, $key) {
         foreach ($a as $v) {
             $out['content'][1] .= $v;
         }
-        \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['select' => 1]);
-        return \_\lot\x\panel\field($out, $key);
+        \_\lot\x\panel\h\c($out['content'][2], [
+            'select' => true
+        ], $value['tags'] ?? []);
+        return \_\lot\x\panel\type\field($out, $key);
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
-function content($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['textarea' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+function content($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'textarea' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function date($in, $key) {
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
+function date($value, $key) {
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
     }
-    return \_\lot\x\panel\field\date_time($in, $key);
+    return \_\lot\x\panel\type\field\date_time($value, $key);
 }
 
-function date_time($in, $key) {
-    if (!isset($in['alt'])) {
-        $in['alt'] = \date('Y-m-d H:i:s');
+function date_time($value, $key) {
+    if (!isset($value['alt'])) {
+        $value['alt'] = \date('Y-m-d H:i:s');
     }
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])([ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2})?$";
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])([ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2})?$";
     }
-    if (isset($in['value'])) {
-        if (\is_string($in['value']) || \is_numeric($in['value'])) {
-            $in['value'] = new \Time($in['value']);
+    if (isset($value['value'])) {
+        if (\is_string($value['value']) || \is_numeric($value['value'])) {
+            $value['value'] = new \Time($value['value']);
         } else {
-            $in['value'] = \date('Y-m-d H:i:s');
+            $value['value'] = \date('Y-m-d H:i:s');
         }
-        $in['value'] = (string) $in['value'];
+        $value['value'] = (string) $value['value'];
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
-function email($in, $key) {
-    if (!isset($in['alt'])) {
-        $in['alt'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
+function email($value, $key) {
+    if (!isset($value['alt'])) {
+        $value['alt'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
     }
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
-function hidden($in, $key) {
+function hidden($value, $key) {
     return new \HTML([
         0 => 'input',
         1 => false,
         2 => [
-            'id' => $in['id'] ?? 'f:' . \dechex(\crc32($key)),
-            'name' => $in['name'] ?? $key,
+            'id' => $value['id'] ?? 'f:' . \dechex(\crc32($key)),
+            'name' => $value['name'] ?? $key,
             'type' => 'hidden',
-            'value' => $in['value'] ?? null
+            'value' => $value['value'] ?? null
         ]
     ]);
 }
 
-function item($in, $key) {
-    if (isset($in['lot'])) {
-        $value = $in['value'] ?? null;
-        $n = $in['name'] ?? $key;
-        unset($in['name'], $in['alt'], $in['value']);
+function item($value, $key) {
+    if (isset($value['lot'])) {
+        $_value = $value['value'] ?? null;
+        $n = $value['name'] ?? $key;
+        unset($value['name'], $value['alt'], $value['value']);
         $a = [];
-        $out = \_\lot\x\panel\h\field($in, $key);
+        $out = \_\lot\x\panel\h\field($value, $key);
         $out['content'][0] = 'div';
         $count = 0;
-        $sort = !isset($in['sort']) || $in['sort'];
-        foreach ($in['lot'] as $k => $v) {
+        $sort = !isset($value['sort']) || $value['sort'];
+        foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;
-            $input = new \HTML(['input', false, [
-                'checked' => null !== $value && ((string) $value === (string) $k),
+            $content = new \HTML(['input', false, [
+                'checked' => null !== $_value && ((string) $_value === (string) $k),
                 'class' => 'input',
                 'name' => $n,
                 'type' => 'radio',
@@ -225,62 +235,62 @@ function item($in, $key) {
             if (\is_array($v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
                 $d = $v['description'] ?? "";
-                $input['disabled'] = isset($v['active']) && !$v['active'];
+                $content['disabled'] = isset($v['active']) && !$v['active'];
                 if (isset($v['name'])) {
-                    $input['name'] = $v['name'];
+                    $content['name'] = $v['name'];
                 }
                 if (isset($v['value'])) {
-                    $input['value'] = $v['value'];
+                    $content['value'] = $v['value'];
                 }
             } else {
                 $t = \_\lot\x\panel\h\title(['title' => $v], -2) . "";
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label' . ($input['disabled'] ? ' class="disabled"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($content['disabled'] ? ' class="disabled"' : "") . '>' . $content . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
-        if (!isset($in['block'])) {
+        if (!isset($value['block'])) {
             $block = $count > 6 ? '<br>' : ""; // Auto
         } else {
-            $block = $in['block'] ? '<br>' : "";
+            $block = $value['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
-            'count:' . $count => 1,
+        \_\lot\x\panel\h\c($out['content'][2], [
+            'count:' . $count => true,
             'is:block' => !!$block,
-            'lot' => 1,
-            'lot:item' => 1
-        ]);
-        return \_\lot\x\panel\field($out, $key);
+            'lot' => true,
+            'lot:item' => true
+        ], $value['tags'] ?? []);
+        return \_\lot\x\panel\type\field($out, $key);
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
-function items($in, $key) {
-    if (isset($in['lot'])) {
-        $value = (array) ($in['value'] ?? []);
-        if ($key_as_value = !empty($in['flat'])) {
-            $value = \P . \implode(\P, $value) . \P;
+function items($value, $key) {
+    if (isset($value['lot'])) {
+        $_value = (array) ($value['value'] ?? []);
+        if ($key_as_value = !empty($value['flat'])) {
+            $_value = \P . \implode(\P, $_value) . \P;
         }
-        $n = $in['name'] ?? $key;
-        unset($in['name'], $in['alt'], $in['value']);
-        $out = \_\lot\x\panel\h\field($in, $key);
+        $n = $value['name'] ?? $key;
+        unset($value['name'], $value['alt'], $value['value']);
+        $out = \_\lot\x\panel\h\field($value, $key);
         $out['content'][0] = 'div';
         $a = [];
         $count = 0;
-        $sort = !isset($in['sort']) || $in['sort'];
-        foreach ($in['lot'] as $k => $v) {
+        $sort = !isset($value['sort']) || $value['sort'];
+        foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;
             $input = new \HTML(['input', false, [
-                'checked' => $key_as_value ? false !== \strpos($value, \P . $k . \P) : isset($value[$k]),
+                'checked' => $key_as_value ? false !== \strpos($_value, \P . $k . \P) : isset($_value[$k]),
                 'class' => 'input',
                 'name' => $n . '[' . ($key_as_value ? "" : $k) . ']',
                 'type' => 'checkbox',
-                'value' => $key_as_value ? $k : \s($value[$k] ?? true)
+                'value' => $key_as_value ? $k : \s($_value[$k] ?? true)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = \_\lot\x\panel\h\title($v, -2) . "";
@@ -309,163 +319,179 @@ function items($in, $key) {
             $a[$t . $k] = '<label' . ($class ? ' class="' . \implode(' ', $class) . '"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
-        if (!isset($in['block'])) {
+        if (!isset($value['block'])) {
             $block = $count > 6 ? '<br>' : ""; // Auto
         } else {
-            $block = $in['block'] ? '<br>' : "";
+            $block = $value['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
-            'count:' . $count => 1,
+        \_\lot\x\panel\h\c($out['content'][2], [
+            'count:' . $count => true,
             'is:block' => !!$block,
-            'lot' => 1,
-            'lot:items' => 1
-        ]);
+            'lot' => true,
+            'lot:items' => true
+        ], $value['tags'] ?? []);
         unset($out['content'][2]['name']);
-        return \_\lot\x\panel\field($out, $key);
+        return \_\lot\x\panel\type\field($out, $key);
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
-function link($in, $key) {
-    if (!isset($in['alt'])) {
+function link($value, $key) {
+    if (!isset($value['alt'])) {
         $url = $GLOBALS['url'];
-        $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
+        $value['alt'] = \S . $url->protocol . \S . $url->host . \S;
     }
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
-function number($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function number($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'number';
-    $out['content'][2]['min'] = $in['min'] ?? null;
-    $out['content'][2]['max'] = $in['max'] ?? null;
-    $out['content'][2]['step'] = $in['step'] ?? null;
-    $out['content'][2]['value'] = $in['value'] ?? null;
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    $out['content'][2]['min'] = $value['min'] ?? null;
+    $out['content'][2]['max'] = $value['max'] ?? null;
+    $out['content'][2]['step'] = $value['step'] ?? null;
+    $out['content'][2]['value'] = $value['value'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function pass($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function pass($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'password';
     unset($out['content'][2]['value']); // Never show `value` on this field
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function query($in, $key) {
-    if (!isset($in['alt'])) {
-        $in['alt'] = 'foo, bar, baz';
+function query($value, $key) {
+    if (!isset($value['alt'])) {
+        $value['alt'] = 'foo, bar, baz';
     }
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*$";
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*$";
     }
-    if (isset($in['value']) && \is_array($in['value'])) {
-        $in['value'] = \implode(', ', $in['value']);
+    if (isset($value['value']) && \is_array($value['value'])) {
+        $value['value'] = \implode(', ', $value['value']);
     }
-    $out = \_\lot\x\panel\h\field($in, $key);
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
-    $out['content'][2]['value'] = $in['value'] ?? null;
-    if (isset($in['state'])) {
-        $out['content'][2]['data-state'] = \json_encode($in['state']);
+    $out['content'][2]['value'] = $value['value'] ?? null;
+    if (isset($value['state'])) {
+        $out['content'][2]['data-state'] = \json_encode($value['state']);
     }
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function range($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function range($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
+    if (isset($value['range'])) {
+        // `[$min, $value, $max]`
+        $value['min'] = $value['range'][0] ?? 0;
+        $value['value'] = $value['range'][1] ?? 0;
+        $value['max'] = $value['range'][2] ?? 1;
+    }
     $out['content'][2]['type'] = 'range';
-    $out['content'][2]['min'] = $in['min'] ?? null;
-    $out['content'][2]['max'] = $in['max'] ?? null;
-    $out['content'][2]['step'] = $in['step'] ?? null;
-    $out['content'][2]['value'] = $in['value'] ?? null;
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    $out['content'][2]['min'] = $value['min'] ?? null;
+    $out['content'][2]['max'] = $value['max'] ?? null;
+    $out['content'][2]['value'] = $value['value'] ?? null;
+    $out['content'][2]['step'] = $value['step'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function set($in, $key) {
-    $title = \strip_tags($in['title'] ?? "", '<a>');
-    $description = \_\lot\x\panel\h\description($in);
-    $in = \array_replace([
+function set($value, $key) {
+    $title = \strip_tags($value['title'] ?? "", '<a>');
+    $description = \_\lot\x\panel\h\description($value);
+    $value = \array_replace([
         0 => 'fieldset',
         1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description,
         2 => []
-    ], $in);
-    unset($in['description'], $in['title'], $in['type']);
-    return \_\lot\x\panel($in, $key);
+    ], $value);
+    unset($value['description'], $value['title'], $value['type']);
+    return \_\lot\x\panel\type($value, $key);
 }
 
-function source($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
-    $out['content'][2]['data-state'] = \json_encode(\array_replace($in['state'] ?? [], [
+function source($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
+    $out['content'][2]['data-state'] = \json_encode(\array_replace($value['state'] ?? [], [
         'tab' => '  '
     ]));
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
-        'code' => 1,
-        'textarea' => 1
-    ]);
-    return \_\lot\x\panel\field($out, $key);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'code' => true,
+        'textarea' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function text($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
+function text($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
-    $out['content'][2]['value'] = $in['value'] ?? null;
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], ['input' => 1]);
-    return \_\lot\x\panel\field($out, $key);
+    $out['content'][2]['value'] = $value['value'] ?? null;
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'input' => true
+    ], $value['tags'] ?? []);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function time($in, $key) {
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
+function time($value, $key) {
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
     }
-    $out = \_\lot\x\panel\field\date_time($in, $key);
+    $out = \_\lot\x\panel\type\field\date_time($value, $key);
     return $out;
 }
 
-function toggle($in, $key) {
-    $out = \_\lot\x\panel\h\field($in, $key);
-    $value = $in['value'] ?? null;
+function toggle($value, $key) {
+    $out = \_\lot\x\panel\h\field($value, $key);
+    $_value = $value['value'] ?? null;
     $toggle = new \HTML(['input', false, [
-        'checked' => !empty($value),
+        'checked' => !empty($_value),
         'class' => 'input',
-        'name' => $in['name'] ?? $key,
+        'name' => $value['name'] ?? $key,
         'type' => 'checkbox',
         'value' => 'true' // Force value to be `true`
     ]]);
-    $t = \i(...((array) ($in['alt'] ?? \S)));
+    $t = \i(...((array) ($value['alt'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    \_\lot\x\panel\h\c($out['content'][2], $in['tags'] ?? [], [
-        'lot' => 1,
-        'lot:toggle' => 1
-    ]);
+    \_\lot\x\panel\h\c($out['content'][2], [
+        'lot' => true,
+        'lot:toggle' => true
+    ], $value['tags'] ?? []);
     unset($out['alt'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
-    return \_\lot\x\panel\field($out, $key);
+    return \_\lot\x\panel\type\field($out, $key);
 }
 
-function u_r_l($in, $key) {
-    if (!isset($in['alt'])) {
+function u_r_l($value, $key) {
+    if (!isset($value['alt'])) {
         $url = $GLOBALS['url'];
-        $in['alt'] = \S . $url->protocol . \S . $url->host . \S;
+        $value['alt'] = \S . $url->protocol . \S . $url->host . \S;
     }
-    if (!isset($in['pattern'])) {
-        $in['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";
     }
-    return \_\lot\x\panel\field\text($in, $key);
+    return \_\lot\x\panel\type\field\text($value, $key);
 }

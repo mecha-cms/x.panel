@@ -1,5 +1,5 @@
-<?php namespace _\lot\x\panel\bar;
+<?php namespace _\lot\x\panel\type\bar;
 
-function menu($in, $key) {
-    return \_\lot\x\panel\menu($in, $key, -1);
+function menu($value, $key) {
+    return \_\lot\x\panel\type\menu($value, $key, -1);
 }

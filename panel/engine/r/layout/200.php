@@ -11,7 +11,7 @@
   <?php
 
 $svg = "";
-$panel = _\lot\x\panel\lot(['lot' => $_['lot']], 0); // Load layout first, to queue the icon data
+$panel = _\lot\x\panel\type\lot(['lot' => $_['lot']], 0); // Load layout first, to queue the icon data
 
 // Build icon(s)
 if (!empty($GLOBALS['SVG'])) {

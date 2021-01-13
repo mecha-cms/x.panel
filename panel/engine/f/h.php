@@ -157,12 +157,12 @@ function color($color) {
     return null;
 }
 
-function content($content) {
-    return \is_array($content) ? new \HTML($content) : (string) $content;
+function content($value) {
+    return \is_array($value) ? new \HTML($value) : (string) $value;
 }
 
-function description($in, $or = null) {
-    $description = $in['description'] ?? $or;
+function description($value, $or = null) {
+    $description = $value['description'] ?? $or;
     if (!isset($description) || false === $description) {
         return;
     }
@@ -171,60 +171,60 @@ function description($in, $or = null) {
         1 => \w('<span>' . \i(...\array_values("" !== $description ? (array) $description : (array) $or)) . '</span>', ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']),
         2 => []
     ];
-    unset($in['tags']);
+    unset($value['tags']);
     \_\lot\x\panel\h\c($out[2], ['description' => 1]);
     return new \HTML($out);
 }
 
-function field($in, $key) {
-    $in['id'] = $in['id'] ?? 'f:' . \dechex(\crc32($key));
-    $name = $in['name'] ?? $key;
-    if ($disabled = isset($in['active']) && !$in['active']) {
-        $in['tags']['not:active'] = 1;
+function field($value, $key) {
+    $value['id'] = $value['id'] ?? 'f:' . \dechex(\crc32($key));
+    $name = $value['name'] ?? $key;
+    if ($disabled = isset($value['active']) && !$value['active']) {
+        $value['tags']['not:active'] = true;
     // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
-    } else if ($readonly = !empty($in['frozen'])) {
-        $in['tags']['is:frozen'] = 1;
+    } else if ($readonly = !empty($value['frozen'])) {
+        $value['tags']['is:frozen'] = true;
     }
     // TODO: Need a better key name
-    if ($required = !empty($in['required'])) {
-        $in['tags']['is:required'] = 1;
+    if ($required = !empty($value['vital'])) {
+        $value['tags']['is:vital'] = true;
     }
-    $input = [
+    $content = [
         0 => 'textarea',
-        1 => \htmlspecialchars($in['value'] ?? ""),
+        1 => \htmlspecialchars($value['value'] ?? ""),
         2 => [
-            'autofocus' => !empty($in['focus']),
+            'autofocus' => !empty($value['focus']),
             'class' => "",
             'disabled' => $disabled ?? null,
-            'id' => $in['id'],
+            'id' => $value['id'],
             'name' => $name,
-            'pattern' => $in['pattern'] ?? null,
-            'placeholder' => \i(...((array) ($in['alt'] ?? []))),
+            'pattern' => $value['pattern'] ?? null,
+            'placeholder' => \i(...((array) ($value['alt'] ?? []))),
             'readonly' => $readonly ?? null,
             'required' => $required ?? null
         ]
     ];
-    $in['content'] = $input;
-    return $in;
+    $value['content'] = $content;
+    return $value;
 }
 
 // Fix #13 <https://stackoverflow.com/a/53893947/1163000>
-function fresh($in) {
+function fresh($value) {
     if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
-        \opcache_invalidate($in, true);
+        \opcache_invalidate($value, true);
     } else if (\function_exists("\\apc_compile_file")) {
-        \apc_compile_file($in);
+        \apc_compile_file($value);
     }
-    return $in;
+    return $value;
 }
 
-function icon($in) {
-    $icon = \array_replace([null, null], (array) $in);
-    if ($icon[0] && false === strpos($icon[0], '<')) {
+function icon($value) {
+    $icon = \array_replace([null, null], (array) $value);
+    if ($icon[0] && false === \strpos($icon[0], '<')) {
         $GLOBALS['SVG'][$id = \dechex(\crc32($icon[0]))] = $icon[0];
         $icon[0] = '<svg height="12" width="12"><use href="#i:' . $id . '"></use></svg>';
     }
-    if ($icon[1] && false === strpos($icon[1], '<')) {
+    if ($icon[1] && false === \strpos($icon[1], '<')) {
         $GLOBALS['SVG'][$id = \dechex(\crc32($icon[1]))] = $icon[1];
         $icon[1] = '<svg height="12" width="12"><use href="#i:' . $id . '"></use></svg>';
     }
@@ -240,7 +240,7 @@ function lot($lot, $fn = null, &$count = 0) {
         if (null === $v || false === $v || !empty($v['skip'])) {
             continue;
         }
-        $v = $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel($v, $k);
+        $v = $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel\type($v, $k);
         if ($v) {
             ++$count;
         }
@@ -261,25 +261,25 @@ function p(&$lot, $prefix) {
     unset($v);
 }
 
-function path($in) {
-    return \strtr($in, [
+function path($value) {
+    return \strtr($value, [
         '/' => \DS,
         \ROOT => '.'
     ]);
 }
 
-function tags($in) {
+function tags($value) {
     // `[0, 1, 2]`
-    if (\array_keys($in) === \range(0, \count($in) - 1)) {
-        return $in;
+    if (\array_keys($value) === \range(0, \count($value) - 1)) {
+        return $value;
     }
     // `{0: true, 1: true, 2: true}`
-    return \array_keys(\array_filter($in));
+    return \array_keys(\array_filter($value));
 }
 
-function title($in, $i = -1, $or = null) {
-    $title = $in['title'] ?? $or;
-    if ((!isset($title) || false === $title) && (!isset($in['icon']) || empty($in['icon']))) {
+function title($value, $i = -1, $or = null) {
+    $title = $value['title'] ?? $or;
+    if ((!isset($title) || false === $title) && (!isset($value['icon']) || empty($value['icon']))) {
         return;
     }
     $tag = false;
@@ -295,12 +295,12 @@ function title($in, $i = -1, $or = null) {
         1 => "",
         2 => []
     ];
-    $icon = \_\lot\x\panel\h\icon($in['icon'] ?? [null, null]);
+    $icon = \_\lot\x\panel\h\icon($value['icon'] ?? [null, null]);
     if (null !== $title && false !== $title) {
         $title = \w('<span>' . \i(...\array_values((array) $title)) . '</span>', ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']);
     }
     $out[1] = $icon[0] . $title . $icon[1];
-    unset($in['tags']);
+    unset($value['tags']);
     \_\lot\x\panel\h\c($out[2], [
         'has:icon' => !!($icon[0] || $icon[1]),
         'has:title' => !!$title,
@@ -309,6 +309,6 @@ function title($in, $i = -1, $or = null) {
     return new \HTML($out);
 }
 
-function w($in, $also = null) {
-    return \w('<div>' . $in . '</div>', 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
+function w($value, $also = null) {
+    return \w('<div>' . $value . '</div>', 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
 }

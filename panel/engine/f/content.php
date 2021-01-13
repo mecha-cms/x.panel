@@ -1,13 +1,13 @@
-<?php namespace _\lot\x\panel\content;
+<?php namespace _\lot\x\panel\type\content;
 
-function desk($in, $key) {
-    $out = \_\lot\x\panel\content($in, $key);
+function desk($value, $key) {
+    $out = \_\lot\x\panel\type\content($value, $key);
     $out[0] = 'main';
     return $out;
 }
 
-function section($in, $key) {
-    $out = \_\lot\x\panel\content($in, $key);
+function section($value, $key) {
+    $out = \_\lot\x\panel\type\content($value, $key);
     $out[0] = 'section';
     return $out;
 }

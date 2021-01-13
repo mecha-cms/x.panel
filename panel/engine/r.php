@@ -41,14 +41,12 @@ return (static function($icons) {
                             'title' => false,
                             'url' => $url,
                             'lot' => $list,
-                            'tags' => ['is:main' => 1],
                             'stack' => 10
                         ],
                         'link' => [
                             'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
                             'title' => false,
                             'description' => 'Back',
-                            'tags' => ['is:main' => 1],
                             'skip' => true,
                             'stack' => 10
                         ],
