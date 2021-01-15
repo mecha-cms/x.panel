@@ -86,6 +86,16 @@ pre {
       color: mix(red, theme(70%), 50%);
     }
   }
+  &.not\:active,
+  &[disabled] {
+    &,
+    &:focus,
+    &:active {
+      opacity: 1;
+      background: none;
+      border-color: theme(5%);
+    }
+  }
 }
 
 .lot\:bar {
@@ -131,6 +141,14 @@ pre {
   .fix {
     background: theme(4%);
     border-color: theme(10%);
+  }
+  &.not\:active {
+    .fix {
+      opacity: 1;
+      background: none;
+      color: theme(20%);
+      border-color: theme(5%);
+    }
   }
 }
 
@@ -260,9 +278,23 @@ pre {
   }
 }
 
+.not\:active {
+  opacity: 1;
+  color: theme(40%);
+}
+
 .input {
   &[type='checkbox'],
   &[type='radio'] {
+    &.not\:active,
+    &[disabled] {
+      &,
+      &:focus,
+      &:active {
+        opacity: 1;
+        background: theme(20%);
+      }
+    }
     &::before {
       background: theme(0%);
     }

@@ -41,15 +41,14 @@ function description($value, $or = null) {
 function field($value, $key) {
     $value['id'] = $value['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $value['name'] ?? $key;
-    if ($disabled = isset($value['active']) && !$value['active']) {
+    if ($not_active = isset($value['active']) && !$value['active']) {
         $value['tags']['not:active'] = true;
     // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
-    } else if ($readonly = !empty($value['frozen'])) {
+    } else if ($is_frozen = !empty($value['frozen'])) {
         $value['tags']['is:frozen'] = true;
     }
-    // TODO: Need a better key name
-    if ($required = !empty($value['vital'])) {
-        $value['tags']['is:vital'] = true;
+    if ($not_void = isset($value['void']) && !$value['void']) {
+        $value['tags']['not:void'] = true;
     }
     $content = [
         0 => 'textarea',
@@ -57,15 +56,16 @@ function field($value, $key) {
         2 => [
             'autofocus' => !empty($value['focus']),
             'class' => "",
-            'disabled' => $disabled ?? null,
+            'disabled' => $not_active ?? null,
             'id' => $value['id'],
             'name' => $name,
             'pattern' => $value['pattern'] ?? null,
             'placeholder' => \i(...((array) ($value['alt'] ?? []))),
-            'readonly' => $readonly ?? null,
-            'required' => $required ?? null
+            'readonly' => $is_frozen ?? null,
+            'required' => $not_void ?? null
         ]
     ];
+    \_\lot\x\panel\_set_class($content[2], $value['tags'] ?? []);
     $value['content'] = $content;
     return $value;
 }

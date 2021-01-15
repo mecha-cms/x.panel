@@ -2,24 +2,34 @@
 
 function color(string $value) {
     if (0 === \strpos($value, '#')) {
-        return \ctype_xdigit(\substr($value, 1));
+        $i = \strlen($value) - 1;
+        return !((
+            // `#000`
+            3 === $i ||
+            // `#000f`
+            4 === $i ||
+            // `#000000`
+            6 === $i ||
+            // `#000000ff`
+            8 === $i
+        ) && \ctype_xdigit(\substr($value, 1)));
     }
     $v = '([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])';
     if (0 === \strpos($value, 'rgb(')) {
-        return !\preg_match('/^rgb\(\s*' . $v . '\s*,\s*' . $v . '\s*,\s*' . $v . '\s*\)$/', $value);
+        return pattern($value, '/^rgb\(\s*' . $v . '\s*,\s*' . $v . '\s*,\s*' . $v . '\s*\)$/');
     }
     if (0 === \strpos($value, 'rgba(')) {
-        return !\preg_match('/^rgba\(\s*' . $v . '\s*,\s*' . $v . '\s*,\s*' . $v . '\s*,\s*([01]|0?\.\d+)\s*\)$/', $value);
+        return pattern($value, '/^rgba\(\s*' . $v . '\s*,\s*' . $v . '\s*,\s*' . $v . '\s*,\s*([01]|0?\.\d+)\s*\)$/');
     }
-    return true;
+    return true; // Invalid color value
 }
 
 function date(string $value) {
-    return !\preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])$/', $value);
+    return pattern($value, '/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])$/');
 }
 
 function date_time(string $value) {
-    return !\preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])[ ]([0-1]\d|2[0-4])(:([0-5]\d|60)){2}$/', $value);
+    return pattern($value, '/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])[ ]([0-1]\d|2[0-4])(:([0-5]\d|60)){2}$/');
 }
 
 function email(string $value) {
@@ -35,11 +45,15 @@ function link(string $value) {
 }
 
 function name(string $value) {
-    return !\preg_match('/^[a-z\d]+(-[a-z\d]+)*$/', $value);
+    return pattern($value, '/^[a-z\d]+(-[a-z\d]+)*$/');
 }
 
 function number(string $value) {
     return !\is_numeric($value);
+}
+
+function pattern(string $value, string $pattern) {
+    return !\preg_match($pattern, $value);
 }
 
 function range(string $value, array $range = [0, 1]) {
@@ -47,7 +61,7 @@ function range(string $value, array $range = [0, 1]) {
 }
 
 function time(string $value) {
-    return !\preg_match('/^([0-1]\d|2[0-4])(:([0-5]\d|60)){2}$/', $value);
+    return pattern($value, '/^([0-1]\d|2[0-4])(:([0-5]\d|60)){2}$/');
 }
 
 function u_r_l(string $value) {
@@ -56,10 +70,6 @@ function u_r_l(string $value) {
 
 function value(string $value, array $values = []) {
     return !\in_array($value, $values);
-}
-
-function vital(string $value) {
-    return !$value;
 }
 
 function void(string $value) {

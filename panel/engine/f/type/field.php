@@ -225,6 +225,7 @@ function item($value, $key) {
                 continue;
             }
             ++$count;
+            $not_active = isset($v['active']) && !$v['active'];
             $content = new \HTML(['input', false, [
                 'checked' => null !== $_value && ((string) $_value === (string) $k),
                 'class' => 'input',
@@ -235,19 +236,22 @@ function item($value, $key) {
             if (\is_array($v)) {
                 $t = \_\lot\x\panel\to\title($v, -2) . "";
                 $d = $v['description'] ?? "";
-                $content['disabled'] = isset($v['active']) && !$v['active'];
+                $content['disabled'] = $not_active;
                 if (isset($v['name'])) {
                     $content['name'] = $v['name'];
                 }
                 if (isset($v['value'])) {
                     $content['value'] = $v['value'];
                 }
+                \_\lot\x\panel\_set_class($content, [
+                    'not:active' => $not_active
+                ]);
             } else {
                 $t = \_\lot\x\panel\to\title(['title' => $v], -2) . "";
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label' . ($content['disabled'] ? ' class="disabled"' : "") . '>' . $content . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($not_active ? ' class="not:active"' : "") . '>' . $content . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($value['block'])) {

@@ -75,7 +75,7 @@ function field($value, $key) {
             $value['content'][2]['class'] = "" !== $class ? $class : null;
             $value['content'][2]['style'] = "" !== $style ? $style : null;
         }
-        $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' . (!empty($value['width']) ? ' width' : "") : "") . '">' . $before . \_\lot\x\panel\to\content($value['content']) . $after . '</div>' . \_\lot\x\panel\to\description($value) . '</div>';
+        $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' : "") . (!empty($value['width']) ? ' width' : "") . '">' . $before . \_\lot\x\panel\to\content($value['content']) . $after . '</div>' . \_\lot\x\panel\to\description($value) . '</div>';
     } else if (isset($value['lot'])) {
         $out[1] .= '<div>' . \_\lot\x\panel\to\lot($value['lot']) . '</div>';
     }
@@ -178,7 +178,7 @@ function files($value, $key) {
             unset($_SESSION['_']['file'][$path]);
             unset($_SESSION['_']['folder'][$path]);
         }
-        $out[1] .= \_\lot\x\panel($v, $k);
+        $out[1] .= \_\lot\x\panel\type($v, $k);
         ++$count;
     }
     unset($lot);

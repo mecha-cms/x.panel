@@ -66,7 +66,11 @@ u {
   cursor: not-allowed;
 }
 
-.not\:active + .not\:active {
+.not\:active .button[disabled],
+.not\:active .input[disabled],
+.not\:active .not\:active,
+.not\:active .select[disabled],
+.not\:active .textarea[disabled] {
   opacity: 1;
 }
 
@@ -806,6 +810,10 @@ hr {
   border-width: 1px 0 0;
 }
 
+:invalid {
+  box-shadow: none;
+}
+
 .button,
 .input,
 .select,
@@ -829,8 +837,7 @@ hr {
 .button:focus,
 .input:focus,
 .select:focus,
-.textarea:focus,
-.lot\:input .fix:focus {
+.textarea:focus {
   z-index: 1;
 }
 
@@ -840,9 +847,7 @@ hr {
 .select[disabled],
 .select.not\:active,
 .textarea[disabled],
-.textarea.not\:active,
-.lot\:input .fix[disabled],
-.lot\:input .fix.not\:active {
+.textarea.not\:active {
   opacity: .5;
   cursor: not-allowed;
 }
@@ -850,8 +855,7 @@ hr {
 .button[readonly],
 .input[readonly],
 .select[readonly],
-.textarea[readonly],
-.lot\:input .fix[readonly] {
+.textarea[readonly] {
   border-style: dotted;
 }
 
