@@ -34,14 +34,14 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             'invoke' => function($path) use($user, $x) {
                 $page = new Page($path);
                 return [
-                    'title' => S . _\lot\x\panel\h\w($page->title) . S,
-                    'description' => S . _\lot\x\panel\h\w($page->description) . S,
+                    'title' => S . _\lot\x\panel\to\w($page->title) . S,
+                    'description' => S . _\lot\x\panel\to\w($page->description) . S,
                     'link' => 'draft' === $x ? null : $page->url,
                     'author' => $page['author'],
                     'image' => $page->image(72, 72, 50),
                     'tags' => [
-                        'is:' . $x => 1,
-                        'type:' . c2f($page->type ?? '0') => 1
+                        'is:' . $x => true,
+                        'type:' . c2f($page->type ?? '0') => true
                     ],
                     'skip' => 1 !== $user['status'] && $user->user !== $page['author']
                 ];
@@ -59,7 +59,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                 ],
                 's' => [
                     'title' => 'Add',
-                    'description' => $add ? ['Add %s', 'Child'] : ['Missing folder %s', _\lot\x\panel\h\path($folder)],
+                    'description' => $add ? ['Add %s', 'Child'] : ['Missing folder %s', _\lot\x\panel\from\path($folder)],
                     'icon' => 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z',
                     'url' => $add ? $before . 's' . Path::F($after, '/') . $url->query('&', ['tab' => false, 'type' => 'page']) . $url->hash : null,
                     'active' => $add,

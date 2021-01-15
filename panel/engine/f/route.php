@@ -40,18 +40,18 @@ HTML;
     function __state($_) {
         extract($GLOBALS, \EXTR_SKIP);
         // Load primary state(s)
-        $state_r = require \_\lot\x\panel\h\fresh(\ROOT . \DS . 'state.php');
-        $state_user = require \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-        $state_panel = require \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+        $state_r = require \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
+        $state_user = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+        $state_panel = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
         // Sanitize form data
         \Hook::set('do.state.get', function($_) use(&$state_r, &$state_user, &$state_panel) {
             if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($_['form']['state'])) {
                 return $_;
             }
             extract($GLOBALS, \EXTR_SKIP);
-            $_['form']['state']['title'] = \_\lot\x\panel\h\w($_['form']['state']['title'] ?? "");
-            $_['form']['state']['description'] = \_\lot\x\panel\h\w($_['form']['state']['description'] ?? "");
-            $_['form']['state']['email'] = \_\lot\x\panel\h\w($_['form']['state']['email'] ?? "");
+            $_['form']['state']['title'] = \_\lot\x\panel\to\w($_['form']['state']['title'] ?? "");
+            $_['form']['state']['description'] = \_\lot\x\panel\to\w($_['form']['state']['description'] ?? "");
+            $_['form']['state']['email'] = \_\lot\x\panel\to\w($_['form']['state']['email'] ?? "");
             $_['form']['state']['charset'] = \strip_tags($_['form']['state']['charset'] ?? 'utf-8');
             $_['form']['state']['language'] = \strip_tags($_['form']['state']['language'] ?? 'en');
             $def = $state_user['guard']['path'] ?? $state_panel['guard']['path'] ?? $state_r['x']['user']['guard']['path'] ?? $state_r['x']['panel']['guard']['path'] ?? $state_user['path'] ?? "";
@@ -70,9 +70,9 @@ HTML;
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $def . '</code>'];
                 }
             }
-            \_\lot\x\panel\h\fresh(\ROOT . \DS . 'state.php');
-            \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-            \_\lot\x\panel\h\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+            \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
+            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
             // TODO
             $_['form']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
             return $_;
@@ -338,11 +338,11 @@ HTML;
         extract($GLOBALS, \EXTR_SKIP);
         if (!\is_dir($d = \LOT . \DS . 'asset' . \DS . $user->user)) {
             \mkdir($d, 0755, true);
-            $_['alert']['success'][] = ['Created folder %s.', '<code>' . \_\lot\x\panel\h\path($d) . '</code>'];
+            $_['alert']['success'][] = ['Created folder %s.', '<code>' . \_\lot\x\panel\from\path($d) . '</code>'];
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
         }
-        if ($r = \_\lot\x\panel\h\_error_route_check($_)) {
+        if ($r = \_\lot\x\panel\_error_route_check($_)) {
             return $r;
         }
         // You cannot edit or delete your own folder
@@ -359,7 +359,7 @@ HTML;
         return $_;
     }
     function user($_) {
-        if ($r = \_\lot\x\panel\h\_error_route_check($_)) {
+        if ($r = \_\lot\x\panel\_error_route_check($_)) {
             return $r;
         }
         extract($GLOBALS, \EXTR_SKIP);

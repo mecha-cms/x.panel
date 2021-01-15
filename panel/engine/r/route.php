@@ -8,7 +8,7 @@ function route() {
     $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
     extract($GLOBALS, \EXTR_SKIP);
     $route = false;
-    if ($r = \_\lot\x\panel\h\_error_route_check($_)) {
+    if ($r = \_\lot\x\panel\_error_route_check($_)) {
         $_ = $GLOBALS['_'] = $r;
     }
     foreach (\step($_['path'], '/') as $v) {

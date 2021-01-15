@@ -1,7 +1,7 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']);
     Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
     ]) . $url->hash);
@@ -16,8 +16,8 @@ Hook::set(['do.page.get', 'do.page.set'], function($_) {
     $_['form']['page']['author'] = strip_tags($_['form']['page']['author'] ?? "");
     $_['form']['page']['id'] = strip_tags($_['form']['page']['id'] ?? "");
     $_['form']['page']['link'] = strip_tags($_['form']['page']['link'] ?? "");
-    $_['form']['page']['description'] = _\lot\x\panel\h\w($_['form']['page']['description'] ?? "", 'a');
-    $_['form']['page']['title'] = _\lot\x\panel\h\w($_['form']['page']['title'] ?? "");
+    $_['form']['page']['description'] = _\lot\x\panel\to\w($_['form']['page']['description'] ?? "", 'a');
+    $_['form']['page']['title'] = _\lot\x\panel\to\w($_['form']['page']['title'] ?? "");
     $_['form']['page']['x'] = strip_tags($_['form']['page']['x'] ?? 'page');
     if (empty($_['form']['page']['name'])) {
         $name = To::kebab($_['form']['page']['title'] ?? "");
@@ -185,7 +185,7 @@ $lot = [
                                                         'lot' => [
                                                             'files' => [
                                                                 'type' => 'files',
-                                                                'tags' => ['mb:1' => 1],
+                                                                'tags' => ['mb:1' => true],
                                                                 'lot' => [],
                                                                 'stack' => 10
                                                             ],

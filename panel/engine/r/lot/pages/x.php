@@ -70,7 +70,7 @@ if ($i > 1) {
                 'lot' => [
                     0 => [
                         'title' => $page->title . ' <sup>' . $page->version . '</sup>',
-                        'description' => _\lot\x\panel\h\w($page->description, 'a'),
+                        'description' => _\lot\x\panel\to\w($page->description, 'a'),
                         'type' => 'section',
                         'content' => $content . $use,
                         'stack' => 10
@@ -122,13 +122,13 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             'invoke' => function($path) {
                 $page = new Page($path);
                 return [
-                    'title' => S . _\lot\x\panel\h\w($page->title) . S,
-                    'description' => S . _\lot\x\panel\h\w($page->description) . S,
+                    'title' => S . _\lot\x\panel\to\w($page->title) . S,
+                    'description' => S . _\lot\x\panel\to\w($page->description) . S,
                     'author' => $page['author'],
                     'image' => $page->image(72, 72, 50),
                     'tags' => [
-                        'is:page' => 1,
-                        'type:' . c2f($page->type ?? '0') => 1
+                        'is:page' => true,
+                        'type:' . c2f($page->type ?? '0') => true
                     ]
                 ];
             },

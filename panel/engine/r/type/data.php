@@ -1,7 +1,7 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']);
     Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
     ]) . $url->hash);
@@ -117,7 +117,7 @@ return [
                                                 'lot' => [
                                                     's' => [
                                                         'title' => 'g' === $_['task'] ? 'Update' : 'Create',
-                                                        'description' => ['Create in %s', _\lot\x\panel\h\path($_['f'])],
+                                                        'description' => ['Create in %s', _\lot\x\panel\from\path($_['f'])],
                                                         'type' => 'submit',
                                                         'name' => false,
                                                         'stack' => 10

@@ -1,7 +1,7 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\h\path($f) . '</code>', 'file']);
+    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']);
     Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
     ]) . $url->hash);
@@ -11,7 +11,7 @@ $fields = [];
 
 if (is_file($f)) {
     $i = 10;
-    foreach ((array) require _\lot\x\panel\h\fresh($f) as $k => $v) {
+    foreach ((array) require _\lot\x\panel\to\fresh($f) as $k => $v) {
         // Pre-defined field type
         $field = [
             'type' => 'text',

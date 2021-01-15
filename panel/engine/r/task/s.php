@@ -44,14 +44,14 @@ function blob($_) {
             } else {
                 $folder = \LOT . \DS . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \DS);
                 if (\is_file($f = $folder . \DS . $name)) {
-                    $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                    $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
                     continue;
                 }
                 if (!\is_dir($folder)) {
                     \mkdir($folder, \octdec($v['seal'] ?? '0775'), true);
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
-                    $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+                    $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
                     $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
                     $_['f'] = $f;
                     $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
@@ -134,7 +134,7 @@ function file($_) {
         } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
             $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
             if (\array_key_exists('content', $_['form']['file'] ?? [])) {
@@ -148,7 +148,7 @@ function file($_) {
                 }
             }
             \chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
             $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             $_['f'] = $f;
             $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
@@ -180,7 +180,7 @@ function folder($_) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
             \mkdir($f, \octdec($_['form']['folder']['seal'] ?? '0755'), true);
-            $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
             if (!empty($_['form']['o']['kick'])) {
                 $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
@@ -266,7 +266,7 @@ function page($_) {
     }
     if (\is_file($f = $_['f'])) {
         $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
-        $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
+        $path = '<code>' . \_\lot\x\panel\from\path($f) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
             'File %s successfully created.' => ['%s %s successfully created.', [$key, $path]]

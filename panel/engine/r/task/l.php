@@ -53,7 +53,7 @@ function file($_) {
         } else {
             \unlink($f);
         }
-        $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+        $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
         $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -99,7 +99,7 @@ function folder($_) {
             $_SESSION['_']['folder'][\rtrim(\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]), \DS)] = 1;
         }
         \rmdir($f);
-        $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+        $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
         $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -133,7 +133,7 @@ function page($_) {
     }
     if (\is_file($f = $_['f'])) {
         $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
-        $path = '<code>' . \_\lot\x\panel\h\path($f) . '</code>';
+        $path = '<code>' . \_\lot\x\panel\from\path($f) . '</code>';
         $_ = file($_); // Move to `file`
         $alter = [
             'File %s successfully deleted.' => ['%s %s successfully deleted.', [$key, $path]],

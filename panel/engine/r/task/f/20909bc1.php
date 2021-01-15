@@ -3,12 +3,12 @@
 $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/trash/1';
 
 foreach (g($d = $_['f'], null, true) as $k => $v) {
-    $kk = strtr($k, [$d . DS => ""]);
+    $ff = LOT . DS . ($kk = strtr($k, [$d . DS => ""]));
     if (0 === $v) {
-        $_SESSION['_']['folder'][LOT . DS . $kk] = 1;
+        $_SESSION['_']['folder'][$ff] = 1;
         continue;
     }
-    if (!is_dir($dd = dirname($ff = LOT . DS . $kk))) {
+    if (!is_dir($dd = dirname($ff))) {
         mkdir($dd, 0775, true);
     }
     if (is_file($ff)) {

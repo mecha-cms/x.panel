@@ -1,5 +1,5 @@
 <?php
 
-$_ = _\lot\x\panel\h\_user_action_limit_check($_);
+$_ = _\lot\x\panel\_error_user_check($_);
 
 // Full access.

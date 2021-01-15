@@ -3,7 +3,7 @@
 // Default panel data
 return (static function($icons) {
     extract($GLOBALS, EXTR_SKIP);
-    if (isset($_['content']) && is_string($_['content'])) {
+    if (isset($_['content'])) {
         return $_; // Skip!
     }
     $id = explode('/', $_['path'], 2)[0];

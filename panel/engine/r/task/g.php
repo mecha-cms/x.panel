@@ -51,7 +51,7 @@ function file($_) {
         } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
             $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['error'][] = ['File %s already exists.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
             if (\array_key_exists('content', $_['form']['file'] ?? [])) {
@@ -70,7 +70,7 @@ function file($_) {
                 \rename($_['f'], $f);
             }
             \chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
-            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
+            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \_\lot\x\panel\from\path($_['f']) . '</code>'];
             $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
             $_['f'] = $f;
             $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
@@ -100,10 +100,10 @@ function folder($_) {
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['Folder %s already exists.', '<code>' . \_\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['error'][] = ['Folder %s already exists.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
         } else if ($name === $base) {
             // Do nothing
-            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($f = $_['f']) . '</code>'];
+            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\from\path($f = $_['f']) . '</code>'];
             if (!empty($_['form']['o']['kick'])) {
                 $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
@@ -128,7 +128,7 @@ function folder($_) {
                 }
             }
             \rmdir($_['f']);
-            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\h\path($_['f']) . '</code>'];
+            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \_\lot\x\panel\from\path($_['f']) . '</code>'];
             if (!empty($_['form']['o']['kick'])) {
                 $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
@@ -220,7 +220,7 @@ function page($_) {
     }
     if (\is_file($f = $_['f'])) {
         $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
-        $path = '<code>' . \_\lot\x\panel\h\path($_f ?? $f) . '</code>';
+        $path = '<code>' . \_\lot\x\panel\from\path($_f ?? $f) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
             'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]

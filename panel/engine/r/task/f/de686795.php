@@ -24,24 +24,24 @@ if (is_file($f) && 'zip' === pathinfo($f, PATHINFO_EXTENSION)) {
                 $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
             // This prevents user(s) from accidentally overwrite the existing file(s)
             } else if (is_file($ff = dirname($f) . DS . $v)) {
-                $_['alert']['error'][] = ['File %s already exists.', '<code>' . _\lot\x\panel\h\path($ff) . '</code>'];
+                $_['alert']['error'][] = ['File %s already exists.', '<code>' . _\lot\x\panel\from\path($ff) . '</code>'];
             } else {
                 $_SESSION['_']['file'][$ff] = 1;
                 $_SESSION['_']['folder'][rtrim(dirname($ff), DS)] = 1;
             }
         }
         if (!empty($_['alert']['error'])) {
-            $_['alert']['error'][] = ['Package %s could not be extracted due to the previous errors.', '<code>' . _\lot\x\panel\h\path($f) . '</code>'];
+            $_['alert']['error'][] = ['Package %s could not be extracted due to the previous errors.', '<code>' . _\lot\x\panel\from\path($f) . '</code>'];
         } else if (false !== $zip->extractFiles(dirname($f))) {
             unset($zip);
             if (!empty($_['form']['let'])) {
                 if (unlink($f)) {
-                    $_['alert']['success'][] = ['Package %s successfully extracted and deleted.', '<code>' . _\lot\x\panel\h\path($f) . '</code>'];
+                    $_['alert']['success'][] = ['Package %s successfully extracted and deleted.', '<code>' . _\lot\x\panel\from\path($f) . '</code>'];
                 } else {
-                    $_['alert']['error'][] = ['Package %s could not be deleted. Please delete it manually.', '<code>' . _\lot\x\panel\h\path($f) . '</code>'];
+                    $_['alert']['error'][] = ['Package %s could not be deleted. Please delete it manually.', '<code>' . _\lot\x\panel\from\path($f) . '</code>'];
                 }
             } else {
-                $_['alert']['success'][] = ['Package %s successfully extracted.', '<code>' . _\lot\x\panel\h\path($f) . '</code>'];
+                $_['alert']['success'][] = ['Package %s successfully extracted.', '<code>' . _\lot\x\panel\from\path($f) . '</code>'];
             }
         }
         unset($zip);

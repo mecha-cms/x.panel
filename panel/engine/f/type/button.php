@@ -12,9 +12,9 @@ function button($value, $key) {
 
 function link($value, $key) {
     $out = \_\lot\x\panel\type\link($value, $key);
-    \_\lot\x\panel\h\c($out, [
+    \_\lot\x\panel\_set_class($out, \array_replace([
         'button' => true
-    ], $value['tags'] ?? []);
+    ], $value['tags'] ?? []));
     return $out;
 }
 

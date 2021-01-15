@@ -84,7 +84,7 @@ if (null !== State::get('x.tag') && (
                 chmod($ff, 0600);
                 file_put_contents($ff = $dd . DS . 'time.data', date('Y-m-d H:i:s'));
                 chmod($ff, 0600);
-                $_['alert']['info'][] = ['%s %s successfully created.', ['Tag', '<code>' . _\lot\x\panel\h\path($f) . '</code>']];
+                $_['alert']['info'][] = ['%s %s successfully created.', ['Tag', '<code>' . _\lot\x\panel\from\path($f) . '</code>']];
                 ++$any;
             }
         }

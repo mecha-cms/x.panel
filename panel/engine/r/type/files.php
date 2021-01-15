@@ -62,7 +62,7 @@ if (count($_['chops']) > 1 && $_['i'] <= 1) {
         'title' => S . '..' . S,
         'description' => ['Go to %s', 'Parent'],
         'type' => 'folder',
-        'tags' => ['is:folder' => 1],
+        'tags' => ['is:folder' => true],
         'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,
         'tasks' => [
             'g' => [

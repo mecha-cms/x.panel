@@ -60,14 +60,14 @@ if ($files) {
             'invoke' => function($path) use($a, $x) {
                 $page = new Comment($path);
                 return [
-                    'title' => S . _\lot\x\panel\h\w($page->author) . S,
-                    'description' => S . _\lot\x\panel\h\w($page->content) . S,
+                    'title' => S . _\lot\x\panel\to\w($page->author) . S,
+                    'description' => S . _\lot\x\panel\to\w($page->content) . S,
                     'link' => 'draft' === $x ? null : $page->url . '#' . sprintf($a, $page->id),
                     'author' => $page['author'],
                     'image' => $page->avatar(72),
                     'tags' => [
-                        'is:' . $x,
-                        'type:comment'
+                        'is:' . $x => true,
+                        'type:comment' => true
                     ]
                 ];
             },
