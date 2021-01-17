@@ -1,6 +1,6 @@
 <?php /* dechex(crc32('trash.let')) */
 
-$_['kick'] = $_['form']['kick'] ?? $url;
+$_['kick'] = $_['form']['lot']['kick'] ?? $url;
 
 foreach (g(LOT . DS . 'trash', null, true) as $k => $v) {
     0 === $v ? rmdir($k) : unlink($k);

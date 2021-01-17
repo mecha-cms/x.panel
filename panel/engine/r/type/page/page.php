@@ -47,12 +47,12 @@ if (null !== State::get('x.tag') && (
         if (!empty($_['alert']['error'])) {
             return $_;
         }
-        // `POST` request only
-        if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+        // Post request only
+        if ('post' !== $_['form']['type']) {
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty
-        if (empty($_['form']['data']['kind']) && is_file($f = Path::F($_['f']) . DS . 'kind.data')) {
+        if (empty($_['form']['lot']['data']['kind']) && is_file($f = Path::F($_['f']) . DS . 'kind.data')) {
             unlink($f);
             return $_;
         }
@@ -64,7 +64,7 @@ if (null !== State::get('x.tag') && (
         })[0] ?? 0; // Get the highest tag ID
         $out = [];
         ++$any; // New ID must be unique
-        foreach (preg_split('/\s*,+\s*/', $_['form']['data']['kind']) as $v) {
+        foreach (preg_split('/\s*,+\s*/', $_['form']['lot']['data']['kind']) as $v) {
             if ("" === $v) {
                 continue;
             }

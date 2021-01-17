@@ -3,7 +3,7 @@
 // Set response status
 http_response_code(200);
 
-$_['kick'] = $_['form']['kick'] ?? $url;
+$_['kick'] = $_['form']['lot']['kick'] ?? $url;
 
 // File or folder does not exists
 if (!$f = $_['f']) {
@@ -34,7 +34,7 @@ if (is_file($f) && 'zip' === pathinfo($f, PATHINFO_EXTENSION)) {
             $_['alert']['error'][] = ['Package %s could not be extracted due to the previous errors.', '<code>' . _\lot\x\panel\from\path($f) . '</code>'];
         } else if (false !== $zip->extractFiles(dirname($f))) {
             unset($zip);
-            if (!empty($_['form']['let'])) {
+            if (!empty($_['form']['lot']['let'])) {
                 if (unlink($f)) {
                     $_['alert']['success'][] = ['Package %s successfully extracted and deleted.', '<code>' . _\lot\x\panel\from\path($f) . '</code>'];
                 } else {
@@ -56,12 +56,12 @@ $o->setSendHttpHeaders(true);
 $zip = new ZipStream\ZipStream($name, $o);
 $d = dirname($f);
 if (is_dir($f)) {
-    if (isset($_['form']['d']) && !$_['form']['d']) {
+    if (isset($_['form']['lot']['d']) && !$_['form']['lot']['d']) {
         $d = $f; // Remove the root folder too
     }
     // Pack all file(s) but file(s) with these extension(s)
-    if (isset($_['form']['x'])) {
-        $xx = ',' . $_['form']['x'] . ',';
+    if (isset($_['form']['lot']['x'])) {
+        $xx = ',' . $_['form']['lot']['x'] . ',';
         foreach (g($f, 1, true) as $k => $v) {
             if (false !== strpos($xx, ',' . pathinfo($k, PATHINFO_EXTENSION) . ',')) {
                 continue;
@@ -72,8 +72,8 @@ if (is_dir($f)) {
             ]), $k);
         }
     // Pack all file(s) with these extension(s) only
-    } else if (isset($_['form']['v'])) {
-        $xx = ',' . $_['form']['v'] . ',';
+    } else if (isset($_['form']['lot']['v'])) {
+        $xx = ',' . $_['form']['lot']['v'] . ',';
         foreach (g($f, 1, true) as $k => $v) {
             if (false === strpos($xx, ',' . pathinfo($k, PATHINFO_EXTENSION) . ',')) {
                 continue;

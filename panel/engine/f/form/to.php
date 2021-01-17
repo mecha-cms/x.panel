@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\form\info;
+<?php namespace _\lot\x\panel\form\to;
 
 function description(string $value) {
     return \_\lot\x\panel\to\description($value);

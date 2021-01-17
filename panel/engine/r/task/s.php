@@ -8,7 +8,7 @@ function blob($_) {
         'trash' => false,
         'type' => false
     ]) . $url->hash;
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
@@ -16,7 +16,7 @@ function blob($_) {
         $test_x = ',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? []))) . ',';
         $test_type = ',' . \implode(',', \array_keys(\array_filter(\File::$state['type'] ?? []))) . ',';
         $test_size = \File::$state['size'] ?? [0, 0];
-        foreach ($_['form']['blob'] ?? [] as $k => $v) {
+        foreach ($_['form']['lot']['blob'] ?? [] as $k => $v) {
             // Check for error code
             if (!empty($v['error'])) {
                 $_['alert']['error'][] = 'Failed to upload with error code: ' . $v['error'];
@@ -52,22 +52,22 @@ function blob($_) {
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
                     $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-                    $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
+                    $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
                     $_['f'] = $f;
                     $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
                     $_['ff'][] = $f;
                     // Extract package
                     if (
-                        !empty($_['form']['o']['extract']) &&
+                        !empty($_['form']['lot']['o']['extract']) &&
                         \extension_loaded('zip') &&
                         ('zip' === $x || 'application/zip' === $type)
                     ) {
-                        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::f::/de686795/' . \strtr($f, [
+                        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::f::/de686795/' . \strtr($f, [
                             \LOT . \DS => "",
                             \DS => '/'
                         ]) . \To::query([
                             'kick' => \explode('?', \str_replace('::s::', '::g::', $url->current), 2)[0] . '/1',
-                            'let' => !empty($_['form']['o']['let']) ? 1 : false,
+                            'let' => !empty($_['form']['lot']['o']['let']) ? 1 : false,
                             'token' => $_['token']
                         ]);
                     }
@@ -96,15 +96,15 @@ function data($_) {
         'trash' => false,
         'type' => false
     ]) . $url->hash;
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
-        $name = \basename(\To::file(\lcfirst($_['form']['data']['name'] ?? "")));
-        $_['form']['file']['name'] = "" !== $name ? $name . '.data' : "";
-        // Use `$_POST['data']['content']` instead of `$_['form']['data']['content']` just to be sure
+    if ('post' === $_['form']['type']) {
+        $name = \basename(\To::file(\lcfirst($_['form']['lot']['data']['name'] ?? "")));
+        $_['form']['lot']['file']['name'] = "" !== $name ? $name . '.data' : "";
+        // Use `$_POST['data']['content']` instead of `$_['form']['lot']['data']['content']` just to be sure
         // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-        $_['form']['file']['content'] = $_POST['data']['content'] ?? "";
+        $_['form']['lot']['file']['content'] = $_POST['data']['content'] ?? "";
         $_ = file($_); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+            $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
         }
     }
     return $_;
@@ -117,39 +117,39 @@ function file($_) {
         'trash' => false,
         'type' => false
     ]) . $url->hash;
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \basename(\To::file(\lcfirst($_['form']['file']['name'] ?? "")));
+        $name = \basename(\To::file(\lcfirst($_['form']['lot']['file']['name'] ?? "")));
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         // Special case for PHP file(s)
-        if ('php' === $x && isset($_['form']['file']['content'])) {
+        if ('php' === $x && isset($_['form']['lot']['file']['content'])) {
             // This should be enough to detect PHP syntax error before saving
-            \token_get_all($_['form']['file']['content'], \TOKEN_PARSE);
+            \token_get_all($_['form']['lot']['file']['content'], \TOKEN_PARSE);
         }
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
-        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
+        } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['lot']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
             $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
             $_['f'] = $f;
         } else {
-            if (\array_key_exists('content', $_['form']['file'] ?? [])) {
-                // Use `$_POST['file']['content']` instead of `$_['form']['file']['content']` just to be sure
+            if (\array_key_exists('content', $_['form']['lot']['file'] ?? [])) {
+                // Use `$_POST['file']['content']` instead of `$_['form']['lot']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-                $_['form']['file']['content'] = $_POST['file']['content'] ?? "";
+                $_['form']['lot']['file']['content'] = $_POST['file']['content'] ?? "";
                 if (\is_writable(\dirname($f))) {
-                    \file_put_contents($f, $_['form']['file']['content']);
+                    \file_put_contents($f, $_['form']['lot']['file']['content']);
                 } else {
                     $_['alert']['error'][] = 'Folder is not writable.';
                 }
             }
-            \chmod($f, \octdec($_['form']['file']['seal'] ?? '0777'));
+            \chmod($f, \octdec($_['form']['lot']['file']['seal'] ?? '0777'));
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-            $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
+            $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             $_['f'] = $f;
             $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
         }
@@ -168,26 +168,26 @@ function folder($_) {
         'trash' => false,
         'type' => false
     ]) . $url->hash;
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \To::folder($_['form']['folder']['name'] ?? "");
+        $name = \To::folder($_['form']['lot']['folder']['name'] ?? "");
         if ("" === $name) {
             $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
-            \mkdir($f, \octdec($_['form']['folder']['seal'] ?? '0755'), true);
+            \mkdir($f, \octdec($_['form']['lot']['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-            if (!empty($_['form']['o']['kick'])) {
-                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
+            if (!empty($_['form']['lot']['o']['kick'])) {
+                $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
-                $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
+                $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             }
             $_['f'] = $f;
             foreach (\step(\rtrim($f, \DS), \DS) as $v) {
@@ -209,20 +209,20 @@ function page($_) {
         'trash' => false,
         'type' => false
     ]) . $url->hash;
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
-        $name = \To::kebab($_['form']['page']['name'] ?? $_['form']['page']['title'] ?? "");
-        $x = $_['form']['page']['x'] ?? 'page';
+        $name = \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
+        $x = $_['form']['lot']['page']['x'] ?? 'page';
         if ("" === $name) {
             $name = \date('Y-m-d-H-i-s');
         }
-        unset($_['form']['page']['name'], $_['form']['page']['x']);
+        unset($_['form']['lot']['page']['name'], $_['form']['lot']['page']['x']);
         $page = [];
         $p = (array) ($state->x->page->page ?? []);
-        foreach ($_['form']['page'] as $k => $v) {
+        foreach ($_['form']['lot']['page'] as $k => $v) {
             if (
                 // Skip `null` value
                 null === $v ||
@@ -242,15 +242,15 @@ function page($_) {
                 $page[$k] = $v;
             }
         }
-        $_['form']['file']['content'] = $_POST['file']['content'] = \To::page($page);
-        $_['form']['file']['name'] = $name . '.' . $x;
+        $_['form']['lot']['file']['content'] = $_POST['file']['content'] = \To::page($page);
+        $_['form']['lot']['file']['name'] = $name . '.' . $x;
         $_ = file($_); // Move to `file`
         if (empty($_['alert']['error'])) {
             if (!\is_dir($d = \Path::F($_['f']))) {
                 \mkdir($d, 0755, true);
             }
-            if (isset($_['form']['data'])) {
-                foreach ((array) $_['form']['data'] as $k => $v) {
+            if (isset($_['form']['lot']['data'])) {
+                foreach ((array) $_['form']['lot']['data'] as $k => $v) {
                     $ff = $d . \DS . $k . '.data';
                     if ("" !== \trim($v)) {
                         if (\is_writable(\dirname($ff))) {

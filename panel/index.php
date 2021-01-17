@@ -25,6 +25,12 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'chunk' => $state['chunk'] ?? 20,
     'content' => null,
     'f' => null,
+    'form' => [
+        'alert' => [],
+        'to' => [],
+        'lot' => e($GLOBALS['_' . ($k = $_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []),
+        'type' => strtolower($k)
+    ],
     'i' => $i = $url['i'],
     'kick' => null,
     'layout' => null,
@@ -50,8 +56,6 @@ if (null !== $i && stream_resolve_include_path(LOT . DS . (explode('::/', $p, 2)
 }
 
 if (0 === strpos('/' . $p, $pp . '/::')) {
-    Asset::let(); // Remove all asset(s)
-    Route::let(); // Remove all route(s)
     require __DIR__ . DS . 'engine' . DS . 'fire.php';
 }
 

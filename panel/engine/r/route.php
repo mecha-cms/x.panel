@@ -47,7 +47,7 @@ function route() {
             \State::set($v, $_[$v]);
         }
     }
-    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+    if ('get' === $_['form']['type']) {
         if (!$route && !empty($_['is']['error'])) {
             $this->layout($_['layout'] ?? $_['is']['error'] . '/panel');
         }
@@ -104,8 +104,6 @@ function route() {
     // Get data
     $_ = $GLOBALS['_'];
     // Filter by route function
-    $_['form'] = \e($GLOBALS['_' . ($_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []);
-    $GLOBALS['_']['form'] = $_['form'];
     if ($route && $r = \fire($route, [$_], $this)) {
         $_ = $r;
     }
@@ -115,9 +113,9 @@ function route() {
     }
     // Put data
     $GLOBALS['_'] = $_;
-    if (isset($_['form']['token'])) {
-        if (empty($_['form']['token']) || $_['form']['token'] !== $_['token']) {
-            if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    if (isset($_['form']['lot']['token'])) {
+        if (empty($_['form']['lot']['token']) || $_['form']['lot']['token'] !== $_['token']) {
+            if ('post' === $_['form']['type']) {
                 if ('g' === $_['task'] || 's' === $_['task']) {
                     $_['alert']['error'][] = 'Invalid token.';
                 }
@@ -151,7 +149,7 @@ function route() {
                 ][$_['task']] ?? '?');
             });
             foreach (\array_reverse($hooks) as $hook) {
-                if ($r = \Hook::fire($hook, [$_, $_['form']])) {
+                if ($r = \Hook::fire($hook, [$_])) {
                     $_ = $r;
                 }
             }
@@ -178,7 +176,7 @@ function route() {
     if (isset($_['kick'])) {
         \Guard::kick($_['kick']);
     } else {
-        if (isset($_['form']['token'])) {
+        if (isset($_['form']['lot']['token'])) {
             \Guard::kick($url->clean . $url->i . $url->query('&', [
                 'token' => false
             ]) . $url->hash);
@@ -202,4 +200,5 @@ function route() {
     $this->layout($_['layout'] ?? '200/panel');
 }
 
-\Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", 20);
+// Back-end route must be set in the highest priority!
+\Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", -1);

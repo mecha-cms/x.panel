@@ -1,6 +1,6 @@
 <?php namespace _\lot\x\panel\task\l;
 
-if ('POST' === $_SERVER['REQUEST_METHOD'] || empty($_GET['token'])) {
+if ('post' === $_['form']['type'] || empty($_['form']['lot']['token'])) {
     // TODO: Show 404 page?
     \Guard::kick(\str_replace('::l::', '::g::', $url->current));
 }
@@ -24,7 +24,7 @@ function data($_) {
     ]) . $url->hash;
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
     }
     return $_;
 }
@@ -41,7 +41,7 @@ function file($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $trash = !empty($_['form']['trash']) ? (new \Time($_['form']['trash']))->name : false;
+    $trash = !empty($_['form']['lot']['trash']) ? (new \Time($_['form']['lot']['trash']))->name : false;
     if (\is_file($f = $_['f'])) {
         if ($trash) {
             $ff = \strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]);
@@ -54,7 +54,7 @@ function file($_) {
             \unlink($f);
         }
         $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -71,7 +71,7 @@ function folder($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $trash = !empty($_['form']['trash']) ? (new \Time($_['form']['trash']))->name : false;
+    $trash = !empty($_['form']['lot']['trash']) ? (new \Time($_['form']['lot']['trash']))->name : false;
     if (\is_dir($f = $_['f'])) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($f, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();
@@ -100,7 +100,7 @@ function folder($_) {
         }
         \rmdir($f);
         $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-        $_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -111,7 +111,7 @@ function page($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $trash = !empty($_['form']['trash']) ? (new \Time($_['form']['trash']))->name : false;
+    $trash = !empty($_['form']['lot']['trash']) ? (new \Time($_['form']['lot']['trash']))->name : false;
     if (\is_dir($d = \Path::F($_['f']))) {
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($d, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();

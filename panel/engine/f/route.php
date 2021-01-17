@@ -45,22 +45,22 @@ HTML;
         $state_panel = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
         // Sanitize form data
         \Hook::set('do.state.get', function($_) use(&$state_r, &$state_user, &$state_panel) {
-            if ('POST' !== $_SERVER['REQUEST_METHOD'] || !isset($_['form']['state'])) {
+            if ('post' !== $_['form']['type'] || !isset($_['form']['lot']['state'])) {
                 return $_;
             }
             extract($GLOBALS, \EXTR_SKIP);
-            $_['form']['state']['title'] = \_\lot\x\panel\to\w($_['form']['state']['title'] ?? "");
-            $_['form']['state']['description'] = \_\lot\x\panel\to\w($_['form']['state']['description'] ?? "");
-            $_['form']['state']['email'] = \_\lot\x\panel\to\w($_['form']['state']['email'] ?? "");
-            $_['form']['state']['charset'] = \strip_tags($_['form']['state']['charset'] ?? 'utf-8');
-            $_['form']['state']['language'] = \strip_tags($_['form']['state']['language'] ?? 'en');
+            $_['form']['lot']['state']['title'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['title'] ?? "");
+            $_['form']['lot']['state']['description'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['description'] ?? "");
+            $_['form']['lot']['state']['email'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['email'] ?? "");
+            $_['form']['lot']['state']['charset'] = \strip_tags($_['form']['lot']['state']['charset'] ?? 'utf-8');
+            $_['form']['lot']['state']['language'] = \strip_tags($_['form']['lot']['state']['language'] ?? 'en');
             $def = $state_user['guard']['path'] ?? $state_panel['guard']['path'] ?? $state_r['x']['user']['guard']['path'] ?? $state_r['x']['panel']['guard']['path'] ?? $state_user['path'] ?? "";
             $def = '/' . \trim($def, '/');
-            if (!empty($_['form']['state']['x']['user']['guard']['path'])) {
-                if ($secret = \To::kebab(\trim($_['form']['state']['x']['user']['guard']['path'], '/'))) {
-                    $_['form']['state']['x']['user']['guard']['path'] = $def = '/' . $secret;
+            if (!empty($_['form']['lot']['state']['x']['user']['guard']['path'])) {
+                if ($secret = \To::kebab(\trim($_['form']['lot']['state']['x']['user']['guard']['path'], '/'))) {
+                    $_['form']['lot']['state']['x']['user']['guard']['path'] = $def = '/' . $secret;
                 } else {
-                    unset($_['form']['state']['x']['user']['guard']['path']);
+                    unset($_['form']['lot']['state']['x']['user']['guard']['path']);
                 }
             }
             if ($_['/'] !== $def) {
@@ -74,7 +74,7 @@ HTML;
             \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
             \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
             // TODO
-            $_['form']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
+            $_['form']['lot']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
             return $_;
         }, 9.9);
         if (isset($_['i']) || \count($_['chops']) > 2) {
@@ -367,14 +367,14 @@ HTML;
         if (\count($_['chops']) > 1) {
             if (1 !== $status) {
                 // XSS Protection
-                if ('POST' === $_SERVER['REQUEST_METHOD']) {
+                if ('post' === $_['form']['type']) {
                     // Prevent user(s) from adding a hidden form (or changing the `page[status]` field value) that
                     // defines its `status` through developer tools and such by enforcing the `page[status]` value
-                    if (isset($_['form']['page']['status']) && $_['form']['page']['status'] !== $status) {
+                    if (isset($_['form']['lot']['page']['status']) && $_['form']['lot']['page']['status'] !== $status) {
                         $_['alert']['error'][] = ['You don\'t have permission to change the %s value.', '<code>status</code>'];
                     }
-                    $_['form']['page']['status'] = $status;
-                    unset($_POST['data']['status'], $_['form']['data']['status']);
+                    $_['form']['lot']['page']['status'] = $status;
+                    unset($_POST['data']['status'], $_['form']['lot']['data']['status']);
                 }
             }
         }

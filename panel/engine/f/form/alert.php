@@ -1,18 +1,19 @@
-<?php namespace _\lot\x\panel\form\error;
+<?php namespace _\lot\x\panel\form\alert;
 
 function color(string $value) {
     if (0 === \strpos($value, '#')) {
         $i = \strlen($value) - 1;
-        return !((
-            // `#000`
+        $valid = (
+            // `000`
             3 === $i ||
-            // `#000f`
+            // `000f`
             4 === $i ||
-            // `#000000`
+            // `000000`
             6 === $i ||
-            // `#000000ff`
+            // `000000ff`
             8 === $i
-        ) && \ctype_xdigit(\substr($value, 1)));
+        ) && \ctype_xdigit(\substr($value, 1));
+        return !$valid;
     }
     $v = '([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])';
     if (0 === \strpos($value, 'rgb(')) {

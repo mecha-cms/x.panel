@@ -18,48 +18,42 @@ if (0 === strpos($type, 'application/')) {
     $editable = false !== strpos(',javascript,json,ld+json,php,x-httpd-php,x-httpd-php-source,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',');
 }
 
+// <https://stackoverflow.com/a/60861168>
 // -2: Unreadable
 // -1: Missing
 // +0: Empty
 // +1: Printable
 // +2: ASCII
 // +3: Binary
-
-// TODO: Add it to the core! :*
-// <https://stackoverflow.com/a/60861168>
-$check_mode = static function($filename, $printable = false, $buffer_size = 256) {
-    if(is_bool($printable) === false || is_int($buffer_size) === false)
-        return false;
-    $buffer_size = floor($buffer_size);
-    if($buffer_size <= 0)
-        return false;
-    if(is_file($filename)) {
-        if(is_readable($filename)) {
-            $size = filesize($filename);
-            if($size === 0)
+$check_mode = static function($path, $printable = false, $max = 256) {
+    $max = floor($max);
+    if (is_file($path)) {
+        if (is_readable($path)) {
+            $size = filesize($path);
+            if (0 === $size) {
                 return 0; // Empty
-            if($buffer_size > $size)
-                $buffer_size = $size;
-            $chunks = ceil($size / $buffer_size);
-            $handle = fopen($filename, 'rb');
-            for($chunk = 0; $chunk < $chunks; ++$chunk) {
-                $buffer = fread($handle, $buffer_size);
-                if(preg_match('/[\x80-\xFF]/', $buffer)) {
-                    fclose($handle);
+            }
+            if ($max > $size) {
+                $max = $size;
+            }
+            $chunk = ceil($size / $max);
+            $h = fopen($path, 'rb');
+            for ($i = 0; $i < $chunk; ++$i) {
+                $buffer = fread($h, $max);
+                if (preg_match('/[\x80-\xFF]/', $buffer)) {
+                    fclose($h);
                     return 3; // Binary
                 }
-                else
-                    if($printable === true)
-                        $printable = ctype_print($buffer);
+                if ($printable) {
+                    $printable = ctype_print($buffer);
+                }
             }
-            fclose($handle);
-            return $printable === true ? 1 : 2; // Printable or ASCII
+            fclose($h);
+            return $printable ? 1 : 2; // Printable or ASCII
         }
-        else
-            return -2; // Unreadable
+        return -2; // Unreadable
     }
-    else
-        return -1; // Missing
+    return -1; // Missing
 };
 
 if (!$editable) {

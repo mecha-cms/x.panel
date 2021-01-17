@@ -1,6 +1,6 @@
 <?php /* dechex(crc32('trash.restore')) */
 
-$_['kick'] = $_['form']['kick'] ?? $url . $_['/'] . '/::g::/trash/1';
+$_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/trash/1';
 
 foreach (g($d = $_['f'], null, true) as $k => $v) {
     $ff = LOT . DS . ($kk = strtr($k, [$d . DS => ""]));

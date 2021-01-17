@@ -1,11 +1,11 @@
 <?php
 
 Hook::set('do.blob.set', function($_) {
-    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+    if ('post' !== $_['form']['type']) {
         return $_;
     }
     $error = !empty($_['alert']['error']);
-    foreach ($_['form']['blob'] ?? [] as $k => $v) {
+    foreach ($_['form']['lot']['blob'] ?? [] as $k => $v) {
         if (!empty($v['error'])) {
             $error = 1;
             break;

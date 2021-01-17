@@ -7,11 +7,11 @@ Hook::set('do.blob.set', function($_) use($description, $zip) {
     if (!$zip) {
         $_['alert']['error'][] = $description;
     }
-    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+    if ('post' !== $_['form']['type']) {
         return $_;
     }
-    if (isset($_['form']['blob']) && is_array($_['form']['blob'])) {
-        foreach ($_['form']['blob'] as $blob) {
+    if (isset($_['form']['lot']['blob']) && is_array($_['form']['lot']['blob'])) {
+        foreach ($_['form']['lot']['blob'] as $blob) {
             if (!empty($blob['error'])) {
                 continue;
             }

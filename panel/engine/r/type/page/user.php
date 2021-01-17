@@ -4,14 +4,14 @@ $lot = require __DIR__ . DS . '..' . DS . 'page.php';
 
 // Sanitize form data
 Hook::set(['do.page.get', 'do.page.set'], function($_) {
-    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+    if ('post' !== $_['form']['type']) {
         return $_;
     }
-    $_['form']['page']['email'] = _\lot\x\panel\to\w($_['form']['page']['email'] ?? "");
+    $_['form']['lot']['page']['email'] = _\lot\x\panel\to\w($_['form']['lot']['page']['email'] ?? "");
     // Encrypt password
-    if (isset($_['form']['data']['pass'])) {
-        $name = $_['form']['data']['name'] ?? $_['form']['page']['name'] ?? uniqid();
-        $_['form']['data']['pass'] = P . password_hash($_['form']['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
+    if (isset($_['form']['lot']['data']['pass'])) {
+        $name = $_['form']['lot']['data']['name'] ?? $_['form']['lot']['page']['name'] ?? uniqid();
+        $_['form']['lot']['data']['pass'] = P . password_hash($_['form']['lot']['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
     }
     return $_;
 }, 9.9);
