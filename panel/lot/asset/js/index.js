@@ -553,7 +553,7 @@ var _ = function () {
 
   if (hasClass(R, 'can:fetch')) {
     var title = getElement('title'),
-        selectors = 'body>div,body>svg',
+        selectors = 'body>div,body>svg,body>template',
         elements = getElements(selectors);
     f3h = new F3H(false); // Disable cache
 
@@ -620,7 +620,6 @@ var _ = function () {
   hook$1();
   hook$3();
   var index = {
-    f3h: f3h,
     fire: fire$1,
     hooks: hooks$1,
     off: off$2,

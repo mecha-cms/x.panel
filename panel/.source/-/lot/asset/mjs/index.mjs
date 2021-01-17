@@ -27,7 +27,7 @@ let {fire, hooks, off, on} = contextHook({});
 
 if (hasClass(R, 'can:fetch')) {
     let title = getElement('title'),
-        selectors = 'body>div,body>svg',
+        selectors = 'body>div,body>svg,body>template',
         elements = getElements(selectors);
     f3h = new F3H(false); // Disable cache
     f3h.on('error', () => {
@@ -85,7 +85,6 @@ doSourceHook();
 doTabHook();
 
 export default {
-    f3h,
     fire,
     hooks,
     off,
