@@ -8,25 +8,25 @@ Release Notes
 
 ### master
 
- - [x] Added user action limiter API.
+ - [ ] Added ability to detect extension and layout package without parent folder.
  - [x] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
  - [x] Added `do.task.*` hooks.
- - [ ] Added ability to detect extension and layout package without parent folder.
  - [x] Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.
+ - [x] Added user action limiter API.
  - [x] Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
  - [x] Moved `$_['form']` data to the `$_['form']['lot']` context (#20)
  - [x] Moved all GUI function from under namespace `_\lot\x\panel` to `_\lot\x\panel\type` (#21)
  - [x] Narrowed down the panel editor maximum width.
  - [x] Property `tags` now accept associative array.
- - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
- - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#19)
- - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
  - [x] Removed `peek` option globally.
+ - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#19)
+ - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
 
 ### 2.4.3
 
- - Improved info tab of extension and layout, to automatically convert example URL in the page content into usable URL.
  - Hide search form in the default license page.
+ - Improved info tab of extension and layout, to automatically convert example URL in the page content into usable URL.
  - State hook should not replace-recursive but override the current state data, to make sure that all boolean value in it will be removed if some toggle fields are not checked.
 
 ### 2.4.2
@@ -40,10 +40,10 @@ Release Notes
  - Added ability to set custom panel route through static functions under `_\lot\x\panel\route` namespace.
  - Added ability to set custom panel title.
  - Added end-user license agreement page for the panel extension.
- - Fixed bugs of user creation event which didn&rsquo;t store the pass data correctly.
  - Finished the restore feature.
- - Improved comments page execution time by storing newly created comments into static array.
+ - Fixed bugs of user creation event which didn&rsquo;t store the pass data correctly.
  - Improved `panel.php` file feature to allow developers to extend data to the `$_` variable directly without using `$GLOBALS`.
+ - Improved comments page execution time by storing newly created comments into static array.
  - Updated [F3H](https://github.com/taufik-nurrohman/f3h) version to 1.0.15.
 
 ### 2.4.0
@@ -76,8 +76,8 @@ Release Notes
 
 ### 2.2.0
 
- - Added generic JavaScript hook system for external extensions that can be used to enhance the core control panel features.
  - Added AJAX system that allows other JavaScript extensions to listen to the AJAX loading and loaded events.
+ - Added generic JavaScript hook system for external extensions that can be used to enhance the core control panel features.
  - Fixed bug where users could not save the file content properly due to the automatic string evaluation by the `e` function.
 
 ### 2.1.6
@@ -88,8 +88,8 @@ Release Notes
 
 ### 2.1.5
 
- - Added optional `title` and `description` attribute for `Fields`.
  - Added [`Set`](https://user-images.githubusercontent.com/1669261/73904817-dcea6380-48cf-11ea-9c66-25a61e2c1b8e.png) field type.
+ - Added optional `title` and `description` attribute for `Fields`.
  - Fixed broken recursive folder delete if `trash` parameter exists.
 
 ### 2.1.4
@@ -98,9 +98,9 @@ Release Notes
 
 ### 2.1.3
 
- - Added [notification tab](https://user-images.githubusercontent.com/1669261/72582860-ba8ba880-3916-11ea-90b7-c7c3322e8925.png) in the state editor to give a set of fields for author to store their contact details. By default, you will have an email address field there. Developers may add more contact details there to be used on certain extensions.
- - Added [error log notification](https://user-images.githubusercontent.com/1669261/72618638-24836c80-396e-11ea-8705-434506abe2d8.png) in the GUI when debug mode is enabled by the author.
  - **TODO:** Fix this issue: [#13](https://github.com/mecha-cms/x.panel/issues/13)
+ - Added [error log notification](https://user-images.githubusercontent.com/1669261/72618638-24836c80-396e-11ea-8705-434506abe2d8.png) in the GUI when debug mode is enabled by the author.
+ - Added [notification tab](https://user-images.githubusercontent.com/1669261/72582860-ba8ba880-3916-11ea-90b7-c7c3322e8925.png) in the state editor to give a set of fields for author to store their contact details. By default, you will have an email address field there. Developers may add more contact details there to be used on certain extensions.
 
 ### 2.1.2
 
