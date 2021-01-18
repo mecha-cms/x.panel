@@ -90,7 +90,7 @@ return [
                         ]
                     ],
                     2 => [
-                        // type: Section
+                        // type: section
                         'lot' => [
                             'fields' => [
                                 'type' => 'fields',

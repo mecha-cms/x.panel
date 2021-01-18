@@ -135,6 +135,65 @@ function _error_user_check($_) {
     return $_;
 }
 
+function _set() {
+    // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
+    foreach ($GLOBALS['X'][1] as $v) {
+        \is_file($v = \Path::F($v) . \DS . 'panel.php') && (static function($v) {
+            extract($GLOBALS, \EXTR_SKIP);
+            require $v;
+            if (isset($_) && \is_array($_)) {
+                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            }
+        })($v);
+    }
+    // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
+    \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (static function($v) {
+        extract($GLOBALS, \EXTR_SKIP);
+        require $v;
+        if (isset($_) && \is_array($_)) {
+            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+        }
+    })($v);
+}
+
+function _set_asset() {
+    if (!empty($GLOBALS['_']['asset'])) {
+        foreach ((array) $GLOBALS['_']['asset'] as $k => $v) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
+                continue;
+            }
+            if ('script' === $k || 'style' === $k || 'template' === $k) {
+                foreach ((array) $GLOBALS['_']['asset'][$k] as $kk => $vv) {
+                    if (null === $vv || false === $vv || !empty($vv['skip'])) {
+                        continue;
+                    }
+                    if (!\is_numeric($kk)) {
+                        $vv[2]['id'] = $kk;
+                    } else if (!empty($vv['id'])) {
+                        $vv[2]['id'] = $vv['id'];
+                    }
+                    $content = (string) ($vv[1] ?? $vv['content'] ?? "");
+                    $stack = (float) ($vv['stack'] ?? 10);
+                    \call_user_func("\\Asset::" . $k, $content, $stack, (array) ($vv[2] ?? []));
+                }
+                continue;
+            }
+            $path = (string) ($v['path'] ?? $v['link'] ?? $v['url'] ?? $k);
+            $stack = (float) ($v['stack'] ?? 10);
+            if (!\is_numeric($k) && (
+                !empty($v['link']) ||
+                !empty($v['path']) ||
+                !empty($v['url'])
+            )) {
+                $v[2]['id'] = $k;
+            } else if (!empty($v['id'])) {
+                $v[2]['id'] = $v['id'];
+            }
+            \Asset::set($path, $stack, (array) ($v[2] ?? []));
+        }
+    }
+}
+
 function _set_class(&$value, array $tags = []) {
     $a = \explode(' ', $value['class'] ?? "");
     $b = \_\lot\x\panel\from\tags((array) $tags);

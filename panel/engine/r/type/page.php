@@ -102,7 +102,7 @@ $lot = [
                                                 'lot' => [
                                                     'title' => [
                                                         'type' => 'text',
-                                                        'alt' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
+                                                        'hint' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
                                                         'focus' => true,
                                                         'name' => 'page[title]',
                                                         'value' => $page['title'],
@@ -113,7 +113,7 @@ $lot = [
                                                         'title' => 'Slug',
                                                         'type' => 'text',
                                                         'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
-                                                        'alt' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
+                                                        'hint' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
                                                         'name' => 'page[name]',
                                                         'value' => $page->name,
                                                         'width' => true,
@@ -123,7 +123,7 @@ $lot = [
                                                     'content' => [
                                                         'type' => 'source',
                                                         'name' => 'page[content]',
-                                                        'alt' => 'Content goes here...',
+                                                        'hint' => 'Content goes here...',
                                                         'value' => $page['content'],
                                                         'width' => true,
                                                         'height' => true,
@@ -132,7 +132,7 @@ $lot = [
                                                     'description' => [
                                                         'type' => 'content',
                                                         'name' => 'page[description]',
-                                                        'alt' => 'Description goes here...',
+                                                        'hint' => 'Description goes here...',
                                                         'value' => $page['description'],
                                                         'width' => true,
                                                         'stack' => 40
@@ -140,7 +140,7 @@ $lot = [
                                                     'author' => [
                                                         'type' => 'hidden',
                                                         'name' => 'page[author]',
-                                                        'alt' => $page['author'] ?? '@' . S . To::kebab(i('John Doe')),
+                                                        'hint' => $page['author'] ?? '@' . S . To::kebab(i('John Doe')),
                                                         'value' => $page['author'] ?? $user->user,
                                                         'stack' => 50
                                                     ],

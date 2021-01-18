@@ -86,7 +86,7 @@ function combo($value, $key) {
     if (isset($value['lot'])) {
         $out = \_\lot\x\panel\to\field($value, $key);
         $_value = $value['value'] ?? null;
-        $placeholder = \i(...((array) ($out['alt'] ?? [])));
+        $placeholder = \i(...((array) ($out['hint'] ?? [])));
         $out['content'][0] = 'select';
         $out['content'][1] = ""; // Remove content because this is no longer a `<textarea>`
         unset($out['value']);
@@ -170,8 +170,8 @@ function date($value, $key) {
 }
 
 function date_time($value, $key) {
-    if (!isset($value['alt'])) {
-        $value['alt'] = \date('Y-m-d H:i:s');
+    if (!isset($value['hint'])) {
+        $value['hint'] = \date('Y-m-d H:i:s');
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])[ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}$";
@@ -188,8 +188,8 @@ function date_time($value, $key) {
 }
 
 function email($value, $key) {
-    if (!isset($value['alt'])) {
-        $value['alt'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
+    if (!isset($value['hint'])) {
+        $value['hint'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
@@ -214,7 +214,7 @@ function item($value, $key) {
     if (isset($value['lot'])) {
         $_value = $value['value'] ?? null;
         $n = $value['name'] ?? $key;
-        unset($value['name'], $value['alt'], $value['value']);
+        unset($value['name'], $value['hint'], $value['value']);
         $a = [];
         $out = \_\lot\x\panel\to\field($value, $key);
         $out['content'][0] = 'div';
@@ -278,7 +278,7 @@ function items($value, $key) {
             $_value = \P . \implode(\P, $_value) . \P;
         }
         $n = $value['name'] ?? $key;
-        unset($value['name'], $value['alt'], $value['value']);
+        unset($value['name'], $value['hint'], $value['value']);
         $out = \_\lot\x\panel\to\field($value, $key);
         $out['content'][0] = 'div';
         $a = [];
@@ -342,9 +342,9 @@ function items($value, $key) {
 }
 
 function link($value, $key) {
-    if (!isset($value['alt'])) {
+    if (!isset($value['hint'])) {
         $url = $GLOBALS['url'];
-        $value['alt'] = \S . $url->protocol . \S . $url->host . \S;
+        $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
@@ -380,8 +380,8 @@ function pass($value, $key) {
 }
 
 function query($value, $key) {
-    if (!isset($value['alt'])) {
-        $value['alt'] = 'foo, bar, baz';
+    if (!isset($value['hint'])) {
+        $value['hint'] = 'foo, bar, baz';
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*$";
@@ -478,21 +478,21 @@ function toggle($value, $key) {
         'type' => 'checkbox',
         'value' => 'true' // Force value to be `true`
     ]]);
-    $t = \i(...((array) ($value['alt'] ?? \S)));
+    $t = \i(...((array) ($value['hint'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
         'lot' => true,
         'lot:toggle' => true
     ], $value['tags'] ?? []));
-    unset($out['alt'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
+    unset($out['hint'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
     return \_\lot\x\panel\type\field($out, $key);
 }
 
 function u_r_l($value, $key) {
-    if (!isset($value['alt'])) {
+    if (!isset($value['hint'])) {
         $url = $GLOBALS['url'];
-        $value['alt'] = \S . $url->protocol . \S . $url->host . \S;
+        $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";

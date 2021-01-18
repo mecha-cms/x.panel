@@ -78,7 +78,7 @@ return [
                                                         'pattern' => "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$",
                                                         'focus' => true,
                                                         'name' => 'folder[name]',
-                                                        'alt' => 'g' === $_['task'] ? ($name ?? ('s' === $_['task'] ? "foo\\bar\\baz" : 'foo-bar-baz')) : ('s' === $_['task'] ? "foo\\bar\\baz" : 'foo-bar-baz'),
+                                                        'hint' => 'g' === $_['task'] ? ($name ?? ('s' === $_['task'] ? "foo\\bar\\baz" : 'foo-bar-baz')) : ('s' === $_['task'] ? "foo\\bar\\baz" : 'foo-bar-baz'),
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 10

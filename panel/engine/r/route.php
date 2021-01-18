@@ -12,7 +12,10 @@ function route() {
         $_ = $GLOBALS['_'] = $r;
     }
     foreach (\step($_['path'], '/') as $v) {
-        if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, '/', '.')))) {
+        if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, [
+            '.' => '__',
+            '/' => '.'
+        ])))) {
             $route = $fn;
             // Custom route is available, remove the error status!
             $_['is']['error'] = $GLOBALS['_']['is']['error'] = false;
@@ -20,26 +23,8 @@ function route() {
             break;
         }
     }
-    $set = static function() {
-        // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
-        foreach ($GLOBALS['X'][1] as $v) {
-            \is_file($v = \Path::F($v) . \DS . 'panel.php') && (static function($v) {
-                extract($GLOBALS, \EXTR_SKIP);
-                require $v;
-                if (isset($_) && \is_array($_)) {
-                    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-                }
-            })($v);
-        }
-        // Load panel definition from a file stored in `.\lot\layout\index\panel.php`
-        \is_file($v = \LOT . \DS . 'layout' . \DS . 'index' . \DS . 'panel.php') && (static function($v) {
-            extract($GLOBALS, \EXTR_SKIP);
-            require $v;
-            if (isset($_) && \is_array($_)) {
-                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-            }
-        })($v);
-    };
+    \_\lot\x\panel\_set();
+    \_\lot\x\panel\_set_asset();
     $f = $_['f'];
     // Pre-define state
     foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
@@ -49,6 +34,8 @@ function route() {
     }
     if ('get' === $_['form']['type']) {
         if (!$route && !empty($_['is']['error'])) {
+            \_\lot\x\panel\_set();
+            \_\lot\x\panel\_set_asset();
             $this->layout($_['layout'] ?? $_['is']['error'] . '/panel');
         }
     }
@@ -85,8 +72,8 @@ function route() {
         $k[0] .= ($_['i'] ? 's' : "");
         $data = __DIR__ . \DS . 'type' . \DS . \implode(\DS, $k) . '.php';
     }
-    // Load panel definition from other extension(s)
-    $set();
+    \_\lot\x\panel\_set();
+    \_\lot\x\panel\_set_asset();
     // Define lot with no filter
     (static function($data) {
         extract($GLOBALS, \EXTR_SKIP);
@@ -196,44 +183,6 @@ function route() {
     if (\count($GLOBALS['alert'] ?? [])) {
         // Make alert section visible
         $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
-    }
-    // Put data
-    $GLOBALS['_'] = $_;
-    // Load asset(s)
-    if (!empty($_['asset'])) {
-        foreach ((array) $_['asset'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
-                continue;
-            }
-            if ('script' === $k || 'style' === $k || 'template' === $k) {
-                foreach ((array) $_['asset'][$k] as $kk => $vv) {
-                    if (null === $vv || false === $vv || !empty($vv['skip'])) {
-                        continue;
-                    }
-                    if (!\is_numeric($kk)) {
-                        $vv[2]['id'] = $kk;
-                    } else if (!empty($vv['id'])) {
-                        $vv[2]['id'] = $vv['id'];
-                    }
-                    $content = (string) ($vv[1] ?? $vv['content'] ?? "");
-                    $stack = (float) ($vv['stack'] ?? 10);
-                    \call_user_func("\\Asset::" . $k, $content, $stack, (array) ($vv[2] ?? []));
-                }
-                continue;
-            }
-            $path = (string) ($v['path'] ?? $v['link'] ?? $v['url'] ?? $k);
-            $stack = (float) ($v['stack'] ?? 10);
-            if (!\is_numeric($k) && (
-                !empty($v['link']) ||
-                !empty($v['path']) ||
-                !empty($v['url'])
-            )) {
-                $v[2]['id'] = $k;
-            } else if (!empty($v['id'])) {
-                $v[2]['id'] = $v['id'];
-            }
-            \Asset::set($path, $stack, (array) ($v[2] ?? []));
-        }
     }
     $this->layout($_['layout'] ?? '200/panel');
 }

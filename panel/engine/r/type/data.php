@@ -75,7 +75,7 @@ return [
                                                     'content' => [
                                                         'type' => 'source',
                                                         'name' => 'data[content]',
-                                                        'alt' => 'Content goes here...',
+                                                        'hint' => 'Content goes here...',
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
@@ -87,7 +87,7 @@ return [
                                                         'after' => '.data',
                                                         'focus' => true,
                                                         'name' => 'data[name]',
-                                                        'alt' => 'g' === $_['task'] ? ($name ?? 'foo-bar') : 'foo-bar',
+                                                        'hint' => 'g' === $_['task'] ? ($name ?? 'foo-bar') : 'foo-bar',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20

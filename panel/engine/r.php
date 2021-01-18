@@ -61,7 +61,7 @@ return (static function($icons) {
                                         'q' => [
                                             'title' => 'Search',
                                             'type' => 'text',
-                                            'alt' => 'Search',
+                                            'hint' => 'Search',
                                             'value' => $_GET['q'] ?? null,
                                             '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))]
                                         ]

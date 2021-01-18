@@ -122,7 +122,7 @@ return [
                                                     'content' => [
                                                         'type' => 'source',
                                                         'name' => 'file[content]',
-                                                        'alt' => 'Content goes here...',
+                                                        'hint' => 'Content goes here...',
                                                         'value' => $content,
                                                         'width' => true,
                                                         'height' => true,
@@ -134,7 +134,7 @@ return [
                                                         'pattern' => "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(" . implode('|', array_keys(array_filter(File::$state['x']))) . ")$",
                                                         'focus' => true,
                                                         'name' => 'file[name]',
-                                                        'alt' => 'g' === $_['task'] ? ($name ?? 'foo-bar.baz') : 'foo-bar.baz',
+                                                        'hint' => 'g' === $_['task'] ? ($name ?? 'foo-bar.baz') : 'foo-bar.baz',
                                                         'value' => $name,
                                                         'width' => true,
                                                         'stack' => 20

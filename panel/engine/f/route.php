@@ -177,7 +177,7 @@ HTML;
                                                                 'title' => [
                                                                     'type' => 'text',
                                                                     'name' => 'state[title]',
-                                                                    'alt' => ($v = $state_r['title'] ?? null) ?? 'Title Goes Here',
+                                                                    'hint' => ($v = $state_r['title'] ?? null) ?? 'Title Goes Here',
                                                                     'value' => $v,
                                                                     'width' => true,
                                                                     'stack' => 10
@@ -185,7 +185,7 @@ HTML;
                                                                 'description' => [
                                                                     'type' => 'content',
                                                                     'name' => 'state[description]',
-                                                                    'alt' => 'Description goes here...',
+                                                                    'hint' => 'Description goes here...',
                                                                     'value' => $state_r['description'] ?? null,
                                                                     'width' => true,
                                                                     'stack' => 20
@@ -222,7 +222,7 @@ HTML;
                                                                     'type' => 'text',
                                                                     'name' => 'state[x][user][guard][path]',
                                                                     'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                                    'alt' => $state_user['guard']['path'] ?? $state_user['path'] ?? null,
+                                                                    'hint' => $state_user['guard']['path'] ?? $state_user['path'] ?? null,
                                                                     'value' => $state_r['x']['user']['guard']['path'] ?? $state_user['guard']['path'] ?? null,
                                                                     'stack' => 20
                                                                 ]
@@ -258,7 +258,7 @@ HTML;
                                                                 'charset' => [
                                                                     'type' => 'text',
                                                                     'name' => 'state[charset]',
-                                                                    'alt' => ($v = $state_r['charset'] ?? null) ?? 'utf-8',
+                                                                    'hint' => ($v = $state_r['charset'] ?? null) ?? 'utf-8',
                                                                     'value' => $v,
                                                                     'stack' => 30
                                                                 ],
@@ -267,7 +267,7 @@ HTML;
                                                                     'type' => 'text',
                                                                     'name' => 'state[language]',
                                                                     'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                                    'alt' => ($v = $state_r['language'] ?? null) ?? 'en',
+                                                                    'hint' => ($v = $state_r['language'] ?? null) ?? 'en',
                                                                     'value' => $v,
                                                                     'stack' => 40
                                                                 ]

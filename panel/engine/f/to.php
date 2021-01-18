@@ -60,7 +60,7 @@ function field($value, $key) {
             'id' => $value['id'],
             'name' => $name,
             'pattern' => $value['pattern'] ?? null,
-            'placeholder' => \i(...((array) ($value['alt'] ?? []))),
+            'placeholder' => \i(...((array) ($value['hint'] ?? []))),
             'readonly' => $is_frozen ?? null,
             'required' => $not_void ?? null
         ]
