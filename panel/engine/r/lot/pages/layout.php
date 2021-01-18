@@ -21,9 +21,7 @@ if (1 === count($_['chops'])) {
         // Make URL example(s) in content become usable
         $content = strtr($content, [
             '://127.0.0.1/panel/' => '://' . $url->host . $url->d . $_['/'] . '/',
-            '://127.0.0.1' => '://' . $url->host . $url->d,
-            '://github.com/mecha-cms/layout.' => '://mecha-cms.com/store/layout/',
-            '://github.com/mecha-cms/x.' => '://mecha-cms.com/store/extension/',
+            '://127.0.0.1' => '://' . $url->host . $url->d
         ]);
         // Hide some file(s) from the list
         foreach ([
