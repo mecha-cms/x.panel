@@ -193,9 +193,47 @@ function route() {
         $GLOBALS['t'][] = isset($_['path']) ? \i('x' === $n ? 'Extension' : \To::title($n)) : null;
     }
     // Has alert data from previous session
-    if (count($GLOBALS['alert'] ?? [])) {
+    if (\count($GLOBALS['alert'] ?? [])) {
         // Make alert section visible
-        $GLOBALS['_']['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+        $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+    }
+    // Put data
+    $GLOBALS['_'] = $_;
+    // Load asset(s)
+    if (!empty($_['asset'])) {
+        foreach ((array) $_['asset'] as $k => $v) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
+                continue;
+            }
+            if ('script' === $k || 'style' === $k || 'template' === $k) {
+                foreach ((array) $_['asset'][$k] as $kk => $vv) {
+                    if (null === $vv || false === $vv || !empty($vv['skip'])) {
+                        continue;
+                    }
+                    if (!\is_numeric($kk)) {
+                        $vv[2]['id'] = $kk;
+                    } else if (!empty($vv['id'])) {
+                        $vv[2]['id'] = $vv['id'];
+                    }
+                    $content = (string) ($vv[1] ?? $vv['content'] ?? "");
+                    $stack = (float) ($vv['stack'] ?? 10);
+                    \call_user_func("\\Asset::" . $k, $content, $stack, (array) ($vv[2] ?? []));
+                }
+                continue;
+            }
+            $path = (string) ($v['path'] ?? $v['link'] ?? $v['url'] ?? $k);
+            $stack = (float) ($v['stack'] ?? 10);
+            if (!\is_numeric($k) && (
+                !empty($v['link']) ||
+                !empty($v['path']) ||
+                !empty($v['url'])
+            )) {
+                $v[2]['id'] = $k;
+            } else if (!empty($v['id'])) {
+                $v[2]['id'] = $v['id'];
+            }
+            \Asset::set($path, $stack, (array) ($v[2] ?? []));
+        }
     }
     $this->layout($_['layout'] ?? '200/panel');
 }

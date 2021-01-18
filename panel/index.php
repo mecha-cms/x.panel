@@ -21,6 +21,7 @@ $state = State::get('x.panel', true);
 
 $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
+    'asset' => [],
     'chops' => [],
     'chunk' => $state['chunk'] ?? 20,
     'content' => null,

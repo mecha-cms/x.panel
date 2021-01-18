@@ -8,18 +8,20 @@ Release Notes
 
 ### master
 
- - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
- - [ ] Added user action limiter API.
- - [ ] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
+ - [x] Added user action limiter API.
+ - [x] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
  - [x] Added `do.task.*` hooks.
  - [ ] Added ability to detect extension and layout package without parent folder.
  - [x] Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.
- - [x] Narrowed down the panel editor maximum width.
  - [x] Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
- - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
- - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#13)
- - [x] Removed `peek` option globally.
+ - [x] Moved `$_['form']` data to the `$_['form']['lot']` context (#20)
+ - [x] Moved all GUI function from under namespace `_\lot\x\panel` to `_\lot\x\panel\type` (#21)
+ - [x] Narrowed down the panel editor maximum width.
  - [x] Property `tags` now accept associative array.
+ - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
+ - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#19)
+ - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - [x] Removed `peek` option globally.
 
 ### 2.4.3
 
@@ -29,29 +31,29 @@ Release Notes
 
 ### 2.4.2
 
- - Renamed panel form name from `search` to `get`, `edit` to `set`.
  - Fixed typos in SCSS file.
+ - Renamed panel form name from `search` to `get`, `edit` to `set`.
 
 ### 2.4.1
 
  - Added `invoke` property for every item in pages to be invoked within `_\lot\x\panel\page()` that would returns other properties to be merged to the current properties.
- - Updated [F3H](https://github.com/taufik-nurrohman/f3h) version to 1.0.15.
+ - Added ability to set custom panel route through static functions under `_\lot\x\panel\route` namespace.
+ - Added ability to set custom panel title.
+ - Added end-user license agreement page for the panel extension.
  - Fixed bugs of user creation event which didn&rsquo;t store the pass data correctly.
  - Finished the restore feature.
  - Improved comments page execution time by storing newly created comments into static array.
  - Improved `panel.php` file feature to allow developers to extend data to the `$_` variable directly without using `$GLOBALS`.
- - Added ability to set custom panel route through static functions under `_\lot\x\panel\route` namespace.
- - Added ability to set custom panel title.
- - Added end-user license agreement page for the panel extension.
+ - Updated [F3H](https://github.com/taufik-nurrohman/f3h) version to 1.0.15.
 
 ### 2.4.0
 
- - Removed `$lot` hook parameter and store the form data to `$_['form']` property, for easy form data manipulation during CRUD process.
- - Fixed bug where creating a new page does not populate the `time` data automatically.
- - Changed `#blob:{code}` language string into a more readable language string as the default language string for every blob response code.
- - Updated [Tag Picker](https://github.com/taufik-nurrohman/tag-picker) to version 3.0.12.
- - Moved `type` and `x` state data to a separated file, stored in `.\lot\x\panel\state` folder.
  - Added ability to set custom panel definition through `.\lot\layout\index\panel.php` file.
+ - Changed `#blob:{code}` language string into a more readable language string as the default language string for every blob response code.
+ - Fixed bug where creating a new page does not populate the `time` data automatically.
+ - Moved `type` and `x` state data to a separated file, stored in `.\lot\x\panel\state` folder.
+ - Removed `$lot` hook parameter and store the form data to `$_['form']` property, for easy form data manipulation during CRUD process.
+ - Updated [Tag Picker](https://github.com/taufik-nurrohman/tag-picker) to version 3.0.12.
 
 ### 2.3.2
 
@@ -64,9 +66,9 @@ Release Notes
 
 ### 2.3.0
 
- - Moved from `Pjax` to `F3H`.
- - Changed field API to use lower-case for data types and to separate sub-types with `/` instead of `.`. So that every data type will look like a friendly MIME type format, just like the `type` attribute value alternative for every page file. Example: from `Text.DateTime` to `text/date-time`, from `Form.Post` to `form/post`.
  - Added ability to set custom panel route and GUI through static functions under `_\lot\x\panel\route` namespace.
+ - Changed field API to use lower-case for data types and to separate sub-types with `/` instead of `.`. So that every data type will look like a friendly MIME type format, just like the `type` attribute value alternative for every page file. Example: from `Text.DateTime` to `text/date-time`, from `Form.Post` to `form/post`.
+ - Moved from `Pjax` to `F3H`.
 
 ### 2.2.1
 
@@ -86,9 +88,9 @@ Release Notes
 
 ### 2.1.5
 
- - Fixed broken recursive folder delete if `trash` parameter exists.
  - Added optional `title` and `description` attribute for `Fields`.
  - Added [`Set`](https://user-images.githubusercontent.com/1669261/73904817-dcea6380-48cf-11ea-9c66-25a61e2c1b8e.png) field type.
+ - Fixed broken recursive folder delete if `trash` parameter exists.
 
 ### 2.1.4
 
