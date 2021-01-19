@@ -202,6 +202,26 @@ function _set_class(&$value, array $tags = []) {
     $value['class'] = $c ? \implode(' ', $c) : null;
 }
 
+function _set_style(&$value, array $styles = []) {
+    $a = $value['style'] ?? "";
+    $b = \preg_split('/;\s*/', false !== \strpbrk($a, '\'"') ? \preg_replace_callback('/"(?:[^"\\\]|\\\.)*"|\'(?:[^\'\\\]|\\\.)*\'/', function($m) {
+        return \strtr($m[0], [';' => \P]);
+    }, $a) : $a);
+    $c = [];
+    foreach ($b as $bb) {
+        $bbb = \explode(':', $bb, 2);
+        $c[\trim($bbb[0])] = isset($bbb[1]) ? \strtr(\trim($bbb[1]), [\P => ';']) : null;
+    }
+    $d = "";
+    foreach (\array_replace($c, $styles) as $k => $v) {
+        if (null === $v || false === $v) {
+            continue;
+        }
+        $d .= $k . ': ' . (\is_numeric($v) ? $v . 'px' : $v) . ';';
+    }
+    $value['style'] = "" !== $d ? $d : null;
+}
+
 function _set_type_prefix(&$value, $prefix) {
     foreach ($value as &$v) {
         $type = $v['type'] ?? null;

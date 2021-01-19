@@ -98,6 +98,17 @@ pre {
   }
 }
 
+.field {
+  &.not\:active {
+    .fix {
+      opacity: 1;
+      background: none;
+      color: theme(20%);
+      border-color: theme(5%);
+    }
+  }
+}
+
 .lot\:bar {
   > ul {
     > li {
@@ -141,14 +152,6 @@ pre {
   .fix {
     background: theme(4%);
     border-color: theme(10%);
-  }
-  &.not\:active {
-    .fix {
-      opacity: 1;
-      background: none;
-      color: theme(20%);
-      border-color: theme(5%);
-    }
   }
 }
 

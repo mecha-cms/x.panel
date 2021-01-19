@@ -89,6 +89,13 @@ pre.is\:text > code {
   border-color: #2d2d2d;
 }
 
+.field.not\:active .fix {
+  opacity: 1;
+  background: none;
+  color: #4e4e4e;
+  border-color: #2d2d2d;
+}
+
 .lot\:bar > ul > li > a:focus, .lot\:bar > ul > li > a:hover {
   background: #242424;
 }
@@ -117,13 +124,6 @@ pre.is\:text > code {
 .lot\:input .fix {
   background: #2b2b2b;
   border-color: #383838;
-}
-
-.lot\:input.not\:active .fix {
-  opacity: 1;
-  background: none;
-  color: #4e4e4e;
-  border-color: #2d2d2d;
 }
 
 .lot\:menu {

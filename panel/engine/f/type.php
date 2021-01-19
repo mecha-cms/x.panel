@@ -21,8 +21,26 @@ function button($value, $key) {
 }
 
 function field($value, $key) {
+    $is_active = !isset($value['active']) || $value['active'];
+    if ($is_disabled = !empty($value['is']['disabled'])) {
+        $is_active = false;
+    }
+    $is_locked = !empty($value['is']['locked']);
+    $is_required = !empty($value['is']['required']);
+    $tags_status = [
+        'has:pattern' => !empty($value['pattern']),
+        'is:active' => $is_active,
+        'is:disabled' => $is_disabled,
+        'is:locked' => $is_locked,
+        'is:required' => $is_required,
+        'not:active' => !$is_active,
+        'not:disabled' => !$is_disabled,
+        'not:locked' => !$is_locked,
+        'not:required' => !$is_required
+    ];
     $tags = [
         'field' => true,
+        'has:title' => !empty($value['title']),
         'p' => true
     ];
     if (isset($value['type'])) {
@@ -38,7 +56,9 @@ function field($value, $key) {
     if (!\array_key_exists('title', $value) || false !== $value['title']) {
         $title = \_\lot\x\panel\to\title($value, -2, \To::title($key));
         $out[1] .= '<label' . ("" === \strip_tags($title) ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
+        $tags['has:title'] = true;
     }
+    $tags['has:description'] = !empty($value['description']);
     $before = "";
     $after = "";
     foreach (['before', 'after'] as $v) {
@@ -53,33 +73,28 @@ function field($value, $key) {
     }
     if (isset($value['content'])) {
         if (\is_array($value['content'])) {
-            $class = $value['content'][2]['class'] ?? "";
-            $style = "";
+            $tags_status_extra = [];
+            $styles = [];
             if (isset($value['height']) && false !== $value['height']) {
-                if (true === $value['height']) {
-                    $class .= ' height';
-                } else {
-                    $style .= 'height:' . (\is_numeric($value['height']) ? $value['height'] . 'px' : $value['height']) . ';';
+                $tags_status_extra['height'] = true;
+                if (true !== $value['height']) {
+                    $styles['height'] = $value['height'];
                 }
             }
             if (isset($value['width']) && false !== $value['width']) {
-                if (true === $value['width']) {
-                    $class .= ' width';
-                } else {
-                    $style .= 'width:' . (\is_numeric($value['width']) ? $value['width'] . 'px' : $value['width']) . ';';
+                $tags_status_extra['width'] = true;
+                if (true !== $value['width']) {
+                    $styles['width'] = $value['width'];
                 }
             }
-            $class = \explode(' ', $class);
-            \sort($class);
-            $class = \implode(' ', \array_unique(\array_filter($class)));
-            $value['content'][2]['class'] = "" !== $class ? $class : null;
-            $value['content'][2]['style'] = "" !== $style ? $style : null;
+            \_\lot\x\panel\_set_class($value['content'][2], \array_replace($tags_status, $tags_status_extra));
+            \_\lot\x\panel\_set_style($value['content'][2], $styles);
         }
         $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' : "") . (!empty($value['width']) ? ' width' : "") . '">' . $before . \_\lot\x\panel\to\content($value['content']) . $after . '</div>' . \_\lot\x\panel\to\description($value) . '</div>';
     } else if (isset($value['lot'])) {
         $out[1] .= '<div>' . \_\lot\x\panel\to\lot($value['lot']) . '</div>';
     }
-    \_\lot\x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
+    \_\lot\x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
     return new \HTML($out);
 }
 
