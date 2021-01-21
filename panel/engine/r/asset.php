@@ -7,7 +7,6 @@ Hook::set('get', function() {
         if (!empty($assets[$v])) {
             foreach ((array) $assets[$v] as $kk => $vv) {
                 $out[$kk][2] = (array) ($vv[2] ?? []);
-                $out[$kk]['link'] = $vv['link'] ?? null;
                 $out[$kk]['path'] = $vv['path'] ?? null;
                 $out[$kk]['skip'] = true;
                 $out[$kk]['stack'] = (float) ($vv['stack'] ?? 10);
@@ -34,7 +33,7 @@ Hook::set('get', function() {
     $out[$f . 'js' . DS . '0' . $z . 'js'] = ['stack' => 19.8];
     $out[$f . 'js' . DS . '1' . $z . 'js'] = ['stack' => 19.9];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
-    $GLOBALS['_']['asset'] = array_replace_recursive($GLOBALS['_']['asset'] ?? [], $out);
+    $GLOBALS['_']['asset'] = array_replace_recursive($out, $GLOBALS['_']['asset'] ?? []);
     extract($GLOBALS, EXTR_SKIP);
     require __DIR__ . DS . 'layout.php';
 }, 20);

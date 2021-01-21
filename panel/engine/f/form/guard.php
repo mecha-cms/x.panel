@@ -1,9 +1,13 @@
-<?php namespace _\lot\x\panel\form\alert;
+<?php namespace _\lot\x\panel\form\guard;
+
+function any(string $value, array $values = []) {
+    return \in_array($value, $values);
+}
 
 function color(string $value) {
     if (0 === \strpos($value, '#')) {
         $i = \strlen($value) - 1;
-        $valid = (
+        return (
             // `000`
             3 === $i ||
             // `000f`
@@ -13,7 +17,6 @@ function color(string $value) {
             // `000000ff`
             8 === $i
         ) && \ctype_xdigit(\substr($value, 1));
-        return !$valid;
     }
     $v = '([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])';
     if (0 === \strpos($value, 'rgb(')) {
@@ -22,7 +25,7 @@ function color(string $value) {
     if (0 === \strpos($value, 'rgba(')) {
         return pattern($value, '/^rgba\(\s*' . $v . '\s*,\s*' . $v . '\s*,\s*' . $v . '\s*,\s*([01]|0?\.\d+)\s*\)$/');
     }
-    return true; // Invalid color value
+    return false; // Invalid color value
 }
 
 function date(string $value) {
@@ -34,7 +37,7 @@ function date_time(string $value) {
 }
 
 function email(string $value) {
-    return !\Is::email($value);
+    return \Is::email($value);
 }
 
 function i_p(string $value) {
@@ -50,15 +53,15 @@ function name(string $value) {
 }
 
 function number(string $value) {
-    return !\is_numeric($value);
+    return \is_numeric($value);
 }
 
 function pattern(string $value, string $pattern) {
-    return !\preg_match($pattern, $value);
+    return \preg_match($pattern, $value);
 }
 
 function range(string $value, array $range = [0, 1]) {
-    return $value < $range[0] || $value > $range[1];
+    return $value >= $range[0] && $value <= $range[1];
 }
 
 function time(string $value) {
@@ -66,13 +69,9 @@ function time(string $value) {
 }
 
 function u_r_l(string $value) {
-    return !\Is::URL($value);
+    return \Is::URL($value);
 }
 
-function value(string $value, array $values = []) {
-    return !\in_array($value, $values);
-}
-
-function void(string $value) {
-    return "" === \trim($value);
+function void(string $value, $is = true) {
+    return $is === ("" === \trim($value));
 }
