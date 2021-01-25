@@ -109,6 +109,25 @@ pre {
   }
 }
 
+.field\:toggle {
+  .input {
+    &[type='checkbox'] {
+      background: theme(30%);
+      &:not(.not\:active):focus {
+        background: theme(40%);
+      }
+      &:not(.not\:active):active {
+        background: theme(20%);
+      }
+      &:checked {
+        &::before {
+          background: theme(95%);
+        }
+      }
+    }
+  }
+}
+
 .lot\:bar {
   > ul {
     > li {
@@ -135,6 +154,9 @@ pre {
 }
 
 .lot\:field {
+  > .description {
+    border-bottom-color: theme(5%);
+  }
   .tag-picker {
     .tag {
       &:not(.editor) {

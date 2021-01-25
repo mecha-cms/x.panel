@@ -51,7 +51,9 @@ function colors($value, $key) {
     $out['content'][0] = 'div';
     $name = $value['name'] ?? $key;
     if (isset($value['lot'])) {
-        \sort($value['lot']);
+        if (!isset($value['sort']) || $value['sort']) {
+            \sort($value['lot']);
+        }
         foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
@@ -163,6 +165,9 @@ function content($value, $key) {
 }
 
 function date($value, $key) {
+    if (!isset($value['hint'])) {
+        $value['hint'] = \date('Y-m-d');
+    }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
     }
@@ -313,11 +318,11 @@ function items($value, $key) {
             $d = \strip_tags(\i(...((array) $d)));
             $class = [];
             $class[] = (!isset($v['active']) || $v['active'] ? 'is' : 'not') . ':active';
-            $class[] = (!empty($v['is']['locked']) ? 'is' : 'not') . ':locked';
+            $class[] = (!empty($v['lock']) ? 'is' : 'not') . ':lock';
             if (isset($v['active']) && !$v['active']) {
                 $input['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
-            } else if (!empty($v['is']['locked'])) {
+            } else if (!empty($v['lock'])) {
                 $input['readonly'] = true;
             }
             \sort($class);
@@ -409,10 +414,16 @@ function range($value, $key) {
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     if (isset($value['range'])) {
+        // `[$min, $max]`
+        if (2 === \count($value['range'])) {
+            $value['min'] = $value['range'][0] ?? 0;
+            $value['max'] = $value['range'][1] ?? 1;
         // `[$min, $value, $max]`
-        $value['min'] = $value['range'][0] ?? 0;
-        $value['value'] = $value['range'][1] ?? 0;
-        $value['max'] = $value['range'][2] ?? 1;
+        } else {
+            $value['min'] = $value['range'][0] ?? 0;
+            $value['value'] = $value['range'][1] ?? 0;
+            $value['max'] = $value['range'][2] ?? 1;
+        }
     }
     $out['content'][2]['type'] = 'range';
     $out['content'][2]['min'] = $value['min'] ?? null;
@@ -462,6 +473,9 @@ function text($value, $key) {
 }
 
 function time($value, $key) {
+    if (!isset($value['hint'])) {
+        $value['hint'] = \date('H:i:s');
+    }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
     }

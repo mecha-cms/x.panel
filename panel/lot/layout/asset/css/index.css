@@ -96,6 +96,22 @@ pre.is\:text > code {
   border-color: #2d2d2d;
 }
 
+.field\:toggle .input[type='checkbox'] {
+  background: #646464;
+}
+
+.field\:toggle .input[type='checkbox']:not(.not\:active):focus {
+  background: #7a7a7a;
+}
+
+.field\:toggle .input[type='checkbox']:not(.not\:active):active {
+  background: #4e4e4e;
+}
+
+.field\:toggle .input[type='checkbox']:checked::before {
+  background: #f4f4f4;
+}
+
 .lot\:bar > ul > li > a:focus, .lot\:bar > ul > li > a:hover {
   background: #242424;
 }
@@ -110,6 +126,10 @@ pre.is\:text > code {
 
 .lot\:bar > ul > li.is\:separator {
   background: #2d2d2d;
+}
+
+.lot\:field > .description {
+  border-bottom-color: #2d2d2d;
 }
 
 .lot\:field .tag-picker .tag:not(.editor) {

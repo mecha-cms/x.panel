@@ -42,25 +42,33 @@ function field($value, $key) {
     $value['id'] = $value['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $value['name'] ?? $key;
     $is_active = !isset($value['active']) || $value['active'];
-    $is_disabled = !empty($value['is']['disabled']);
-    $is_locked = !empty($value['is']['locked']);
-    $is_required = !empty($value['is']['required']);
+    $is_lock = !empty($value['lock']);
+    $is_vital = !empty($value['vital']);
+    $tags_status = [
+        'has:pattern' => !empty($value['pattern']),
+        'is:active' => $is_active,
+        'is:lock' => $is_lock,
+        'is:vital' => $is_vital,
+        'not:active' => !$is_active,
+        'not:lock' => !$is_lock,
+        'not:vital' => !$is_vital
+    ];
     $content = [
         0 => 'textarea',
         1 => \htmlspecialchars($value['value'] ?? ""),
         2 => [
             'autofocus' => !empty($value['focus']),
             'class' => "",
-            'disabled' => !$is_active || $is_disabled,
+            'disabled' => !$is_active,
             'id' => $value['id'],
             'name' => $name,
             'pattern' => $value['pattern'] ?? null,
             'placeholder' => \i(...((array) ($value['hint'] ?? []))),
-            'readonly' => $is_locked,
-            'required' => $is_required
+            'readonly' => $is_lock,
+            'required' => $is_vital
         ]
     ];
-    \_\lot\x\panel\_set_class($content[2], $value['tags'] ?? []);
+    \_\lot\x\panel\_set_class($content[2], \array_replace($tags_status, $value['tags'] ?? []));
     $value['content'] = $content;
     return $value;
 }

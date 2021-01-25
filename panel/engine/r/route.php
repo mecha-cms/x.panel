@@ -91,7 +91,10 @@ function route() {
     // Get data
     $_ = $GLOBALS['_'];
     // Filter by route function
-    if ($route && $r = \fire($route, [$_], $this)) {
+    $the_end_path = \implode('/', \map(\explode("\\", \substr($route, 20)), function($v) {
+        return \strtr(\p2f($v), ['__' => '.']);
+    }));
+    if ($route && $r = \fire($route, [$_, $the_end_path], $this)) {
         $_ = $r;
     }
     // Filter by hook

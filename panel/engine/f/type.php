@@ -22,21 +22,16 @@ function button($value, $key) {
 
 function field($value, $key) {
     $is_active = !isset($value['active']) || $value['active'];
-    if ($is_disabled = !empty($value['is']['disabled'])) {
-        $is_active = false;
-    }
-    $is_locked = !empty($value['is']['locked']);
-    $is_required = !empty($value['is']['required']);
+    $is_lock = !empty($value['lock']);
+    $is_vital = !empty($value['vital']);
     $tags_status = [
         'has:pattern' => !empty($value['pattern']),
         'is:active' => $is_active,
-        'is:disabled' => $is_disabled,
-        'is:locked' => $is_locked,
-        'is:required' => $is_required,
+        'is:lock' => $is_lock,
+        'is:vital' => $is_vital,
         'not:active' => !$is_active,
-        'not:disabled' => !$is_disabled,
-        'not:locked' => !$is_locked,
-        'not:required' => !$is_required
+        'not:lock' => !$is_lock,
+        'not:vital' => !$is_vital
     ];
     $tags = [
         'field' => true,
