@@ -6,9 +6,13 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### master
+### main
 
  - [ ] Added ability to detect extension and layout package without parent folder.
+ - [ ] Added form value validator and sanitizer API.
+
+### 2.5.0
+
  - [x] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
  - [x] Added `do.task.*` hooks.
  - [x] Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.

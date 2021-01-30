@@ -3,7 +3,7 @@ title: Panel
 description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.4.3
+version: 2.5.0
 
 use:
   '.\lot\x\layout': 1
@@ -12,7 +12,7 @@ use:
 
 To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system.
 
-![Page](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
+![Panel](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
 
 ### Usage
 
