@@ -49,6 +49,10 @@ return [
                             'token' => [
                                 'type' => 'hidden',
                                 'value' => $_['token']
+                            ],
+                            'type' => [
+                                'type' => 'hidden',
+                                'value' => $_['type']
                             ]
                         ],
                         'stack' => -1

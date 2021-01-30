@@ -47,7 +47,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'title' => null,
     'token' => $user['token'] ?? null,
     'trash' => !empty($state['guard']['trash']),
-    'type' => $_GET['type'] ?? null,
+    'type' => $_GET['type'] ?? $_POST['type'] ?? null,
     'user' => $u = State::get('x.user', true),
     '/' => $pp = '/' . trim($u['guard']['path'] ?? $state['guard']['path'], '/')
 ], $GLOBALS['_'] ?? []);

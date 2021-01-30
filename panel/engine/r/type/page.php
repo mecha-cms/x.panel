@@ -77,14 +77,18 @@ $lot = [
                     'fields' => [
                         'type' => 'fields',
                         'lot' => [ // Hidden field(s)
-                            'token' => [
-                                'type' => 'hidden',
-                                'value' => $_['token']
-                            ],
                             'seal' => [
                                 'type' => 'hidden',
                                 'name' => 'file[seal]',
                                 'value' => '0600'
+                            ],
+                            'token' => [
+                                'type' => 'hidden',
+                                'value' => $_['token']
+                            ],
+                            'type' => [
+                                'type' => 'hidden',
+                                'value' => $_['type']
                             ]
                         ],
                         'stack' => -1

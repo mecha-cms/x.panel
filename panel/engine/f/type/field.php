@@ -272,6 +272,7 @@ function item($value, $key) {
             'lot' => true,
             'lot:item' => true
         ], $value['tags'] ?? []));
+        unset($out['content'][2]['name']);
         return \_\lot\x\panel\type\field($out, $key);
     }
     return \_\lot\x\panel\type\field\text($value, $key);

@@ -143,7 +143,7 @@ return (static function($icons) {
                         'alert' => isset($alert) ? [
                             'type' => 'section',
                             'content' => $alert,
-                            'skip' => true,
+                            'skip' => !count($alert),
                             'stack' => 15
                         ] : [],
                         1 => [
