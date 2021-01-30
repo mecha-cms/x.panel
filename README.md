@@ -13,19 +13,19 @@ Release Notes
 
 ### 2.5.0
 
- - [x] Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
- - [x] Added `do.task.*` hooks.
- - [x] Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.
- - [x] Added user action limiter API.
- - [x] Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
- - [x] Moved `$_['form']` data to the `$_['form']['lot']` context (#20)
- - [x] Moved all GUI function from under namespace `_\lot\x\panel` to `_\lot\x\panel\type` (#21)
- - [x] Narrowed down the panel editor maximum width.
- - [x] Property `tags` now accept associative array.
- - [x] Removed `peek` option globally.
- - [x] Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
- - [x] Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#19)
- - [x] Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
+ - Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
+ - Added `do.task.*` hooks.
+ - Added simple Node.js build tool (thanks to [@igoynawamreh](https://github.com/igoynawamreh)). Maybe not for everybody.
+ - Added user action limiter API.
+ - Changed default layout from _Construction_ to _Dark_. _Construction_ layout will be available as separate extension in the future.
+ - Moved `$_['form']` data to the `$_['form']['lot']` context (#20)
+ - Moved all GUI function from under namespace `_\lot\x\panel` to `_\lot\x\panel\type` (#21)
+ - Narrowed down the panel editor maximum width.
+ - Property `tags` now accept associative array.
+ - Removed `peek` option globally.
+ - Removed user notification feature. This is something that can be created by pushing new alert message to the session easily without the need to store junk files. The right navigation icon is now just a log-out button.
+ - Renamed `$_['layout']` with `$_['type']`. The `$_['layout']` property is still there, but it is now will be used as a way to swap current layout with another layout file (#19)
+ - Renamed `hidden` key with `skip` for a shorter name, and to prevent me from being too perfect, by adding another key named `visible`, as an alternative for `hidden`.
 
 ### 2.4.3
 
