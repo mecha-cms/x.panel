@@ -9,6 +9,12 @@
   opacity: $opacity;
 }
 
+@mixin transform($value) {
+  -webkit-transform: $value;
+  -moz-transform: $value;
+  transform: $value;
+}
+
 @mixin user-select($select: normal) {
   -webkit-user-select: $select;
   -moz-user-select: $select;

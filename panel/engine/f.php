@@ -6,6 +6,10 @@ function _abort($value, $key, $fn) {
     }
 }
 
+function _error_form_check($_) {
+    // TODO
+}
+
 function _error_route_check($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $f = $_['f'];
@@ -16,7 +20,8 @@ function _error_route_check($_) {
         $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\from\path($f) . '</code>']];
         $_['kick'] = \str_replace('::s::', '::g::', $url->current);
         return $_;
-    } else if (
+    }
+    if (
         // Trying to get file that does not exist
         'g' === $_['task'] && !$f ||
         // Trying to set file from a folder that does not exist
@@ -25,9 +30,8 @@ function _error_route_check($_) {
         $_['is']['error'] = 404;
         $_['title'] = \i('Error');
         $_['[layout]']['type:' . $_['type']] = false;
-        return $_;
     }
-    return null;
+    return ($GLOBALS['_'] = $_);
 }
 
 function _error_user_check($_) {
@@ -154,6 +158,7 @@ function _set() {
             $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
         }
     })($v);
+    return $GLOBALS['_'];
 }
 
 function _set_asset() {
@@ -169,7 +174,8 @@ function _set_asset() {
                     }
                     if (!\is_numeric($kk)) {
                         $vv[2]['id'] = $kk;
-                    } else if (!empty($vv['id'])) {
+                    }
+                    if (isset($vv['id'])) {
                         $vv[2]['id'] = $vv['id'];
                     }
                     $content = (string) ($vv[1] ?? $vv['content'] ?? "");
@@ -186,12 +192,14 @@ function _set_asset() {
                 !empty($v['url'])
             )) {
                 $v[2]['id'] = $k;
-            } else if (!empty($v['id'])) {
+            }
+            if (isset($v['id'])) {
                 $v[2]['id'] = $v['id'];
             }
             \Asset::set($path, $stack, (array) ($v[2] ?? []));
         }
     }
+    return $GLOBALS['_'];
 }
 
 function _set_class(&$value, array $tags = []) {
@@ -200,6 +208,15 @@ function _set_class(&$value, array $tags = []) {
     $c = \array_unique(\array_filter(\array_merge($a, $b)));
     \sort($c);
     $value['class'] = $c ? \implode(' ', $c) : null;
+}
+
+function _set_state() {
+    foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
+        if (isset($GLOBALS['_'][$v]) && \is_array($GLOBALS['_'][$v])) {
+            \State::set($v, $GLOBALS['_'][$v]);
+        }
+    }
+    return $GLOBALS['_'];
 }
 
 function _set_style(&$value, array $styles = []) {

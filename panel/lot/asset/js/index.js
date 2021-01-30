@@ -505,16 +505,16 @@ var _ = function () {
           if (!hasClass(getParent(t), 'has:link')) {
             if (!hasClass(t, 'not:active')) {
               buttons.forEach(function (button) {
-                letClass(getParent(button), 'is:active');
+                letClass(getParent(button), 'is:current');
 
                 if (panes[button._tabIndex]) {
-                  letClass(panes[button._tabIndex], 'is:active');
+                  letClass(panes[button._tabIndex], 'is:current');
                 }
               });
-              setClass(getParent(t), 'is:active');
+              setClass(getParent(t), 'is:current');
 
               if (panes[t._tabIndex]) {
-                setClass(panes[t._tabIndex], 'is:active');
+                setClass(panes[t._tabIndex], 'is:current');
               }
 
               hasReplaceState && theHistory.replaceState({}, "", t.href);

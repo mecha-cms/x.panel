@@ -94,7 +94,6 @@ label {
     background: none;
     border: 0;
     padding: 0;
-    font-size: ($z * .75);
     line-height: $y;
     box-shadow: none;
   }
@@ -207,6 +206,8 @@ label {
   &[type='checkbox'],
   &[type='radio'] {
     @include appearance(none);
+    background: $color-back-button;
+    &.not\:active,
     &[disabled] {
       background: $color;
     }
@@ -219,30 +220,29 @@ label {
       left: 2px;
       background: $color-button;
     }
+    &:checked {
+      &::before {
+        background: none;
+      }
+    }
   }
   &[type='checkbox'] {
-    background: $color-back-button;
     &:checked {
       &::before {
         top: 1px;
         right: 5px;
         bottom: 4px;
         left: 5px;
-        background: none;
         border-right: 2px solid $color-button;
         border-bottom: 2px solid $color-button;
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        transform: rotate(45deg);
+        @include transform(rotate(45deg));
         visibility: visible;
       }
     }
   }
   &[type='radio'] {
-    background: $color-back-button;
     &:checked {
       &::before {
-        background: none;
         border: 2px solid $color-button;
         visibility: visible;
       }
@@ -259,7 +259,6 @@ label {
     &[type='checkbox'] {
       width: ($z * 2);
       height: ($z * 1.25);
-      background: $color-back-button;
       border-width: 0;
       border-radius: (($z * 1.25) / 2);
       &[disabled] {
@@ -273,9 +272,7 @@ label {
         left: 2px;
         background: $color-button;
         border-radius: ((($z * 1.25) - 4) / 2);
-        -webkit-transform: rotate(0);
-        -moz-transform: rotate(0);
-        transform: rotate(0);
+        @include transform(rotate(0));
         visibility: visible;
       }
       &:checked {

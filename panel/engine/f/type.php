@@ -82,8 +82,10 @@ function field($value, $key) {
                     $styles['width'] = $value['width'];
                 }
             }
-            \_\lot\x\panel\_set_class($value['content'][2], \array_replace($tags_status, $tags_status_extra));
-            \_\lot\x\panel\_set_style($value['content'][2], $styles);
+            if (\is_array($value['content'])) {
+                \_\lot\x\panel\_set_class($value['content'][2], \array_replace($tags_status, $tags_status_extra));
+                \_\lot\x\panel\_set_style($value['content'][2], $styles);
+            }
         }
         $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' : "") . (!empty($value['width']) ? ' width' : "") . '">' . $before . \_\lot\x\panel\to\content($value['content']) . $after . '</div>' . \_\lot\x\panel\to\description($value) . '</div>';
     } else if (isset($value['lot'])) {
@@ -553,13 +555,13 @@ function tabs($value, $key) {
         }
         // TODO: Do not activate tab (activate the first tab) if current tab content is empty
         $first = \array_keys($nav)[0] ?? null; // The first tab
-        $active = $_GET['tab'][$name] ?? $value['active'] ?? $first ?? null;
-        if (null !== $active && isset($nav[$active]) && \is_array($nav[$active])) {
-            $nav[$active]['tags']['is:active'] = true;
-            $section[$active]['tags']['is:active'] = true;
+        $current = $_GET['tab'][$name] ?? $value['current'] ?? $first ?? null;
+        if (null !== $current && isset($nav[$current]) && \is_array($nav[$current])) {
+            $nav[$current]['tags']['is:current'] = true;
+            $section[$current]['tags']['is:current'] = true;
         } else if (null !== $first && isset($nav[$first]) && \is_array($nav[$first])) {
-            $nav[$first]['tags']['is:active'] = true;
-            $section[$first]['tags']['is:active'] = true;
+            $nav[$first]['tags']['is:current'] = true;
+            $section[$first]['tags']['is:current'] = true;
         }
         foreach ($section as $k => $v) {
             $vv = (string) \_\lot\x\panel\type($v, $k);

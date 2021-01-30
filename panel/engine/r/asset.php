@@ -1,6 +1,8 @@
 <?php
 
 Hook::set('get', function() {
+    require __DIR__ . DS . 'layout.php';
+    extract($GLOBALS);
     $assets = Asset::get();
     $out = [];
     foreach (['.css', '.js'] as $v) {
@@ -28,14 +30,20 @@ Hook::set('get', function() {
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset';
     $f = stream_resolve_include_path($f) . DS;
     $z = defined('DEBUG') && DEBUG ? '.' : '.min.';
-    $out[$f . 'css' . DS . '0' . $z . 'css'] = ['stack' => 19.9];
-    $out[$f . 'css' . DS . 'index' . $z . 'css'] = ['stack' => 20];
+    $out['panel.skin.0'] = [
+        'id' => false,
+        'path' => $f . 'css' . DS . '0' . $z . 'css',
+        'stack' => 19.9
+    ];
+    $out['panel.skin'] = [
+        'id' => false,
+        'path' => $f . 'css' . DS . 'index' . $z . 'css',
+        'stack' => 20
+    ];
     $out[$f . 'js' . DS . '0' . $z . 'js'] = ['stack' => 19.8];
     $out[$f . 'js' . DS . '1' . $z . 'js'] = ['stack' => 19.9];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
     $GLOBALS['_']['asset'] = array_replace_recursive($out, $GLOBALS['_']['asset'] ?? []);
-    extract($GLOBALS, EXTR_SKIP);
-    require __DIR__ . DS . 'layout.php';
 }, 20);
 
 Hook::set('layout', function() {
@@ -47,6 +55,6 @@ Hook::set('layout', function() {
         $_['ff'] = To::URL($_['ff']);
     }
     // Remove sensitive data
-    unset($_['lot'], $_['user']);
+    unset($_['asset'], $_['lot'], $_['user']);
     Asset::script('window._=Object.assign(window._||{},' . json_encode($_) . ');', 0);
 }, 20);

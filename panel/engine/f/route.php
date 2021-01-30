@@ -342,8 +342,9 @@ HTML;
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
         }
-        if ($r = \_\lot\x\panel\_error_route_check($_)) {
-            return $r;
+        $_ = \_\lot\x\panel\_error_route_check($_);
+        if (!empty($_['is']['error'])) {
+            return $_;
         }
         // You cannot edit or delete your own folder
         if (\count($_['chops']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
@@ -359,8 +360,9 @@ HTML;
         return $_;
     }
     function user($_) {
-        if ($r = \_\lot\x\panel\_error_route_check($_)) {
-            return $r;
+        $_ = \_\lot\x\panel\_error_route_check($_);
+        if (!empty($_['is']['error'])) {
+            return $_;
         }
         extract($GLOBALS, \EXTR_SKIP);
         $status = $user['status'];

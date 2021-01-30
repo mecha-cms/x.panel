@@ -14,7 +14,7 @@
             color: inherit;
           }
         }
-        &.is\:active {
+        &.is\:current {
           z-index: 4;
           &::before,
           &::after {
@@ -149,7 +149,7 @@
     > nav {
       li {
         margin-right: $x;
-        &:not(.has\:link).is\:active {
+        &:not(.has\:link).is\:current {
           a {
             color: inherit;
           }

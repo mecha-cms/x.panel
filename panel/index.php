@@ -22,6 +22,7 @@ $state = State::get('x.panel', true);
 $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
     'asset' => [],
+    'can' => ['fetch' => !empty($state['fetch'])],
     'chops' => [],
     'chunk' => $state['chunk'] ?? 20,
     'content' => null,
@@ -32,7 +33,10 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
         'lot' => e($GLOBALS['_' . ($k = $_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []),
         'type' => strtolower($k)
     ],
+    'has' => [],
     'i' => $i = $url['i'],
+    'is' => [],
+    'not' => [],
     'kick' => null,
     'layout' => null,
     'lot' => [],

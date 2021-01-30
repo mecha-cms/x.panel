@@ -8,9 +8,7 @@ function route() {
     $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
     extract($GLOBALS, \EXTR_SKIP);
     $route = false;
-    if ($r = \_\lot\x\panel\_error_route_check($_)) {
-        $_ = $GLOBALS['_'] = $r;
-    }
+    $_ = \_\lot\x\panel\_error_route_check($_);
     foreach (\step($_['path'], '/') as $v) {
         if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, [
             '.' => '__',
@@ -23,22 +21,18 @@ function route() {
             break;
         }
     }
-    \_\lot\x\panel\_set();
-    \_\lot\x\panel\_set_asset();
     $f = $_['f'];
-    // Pre-define state
-    foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
-        if (isset($_[$v]) && \is_array($_[$v])) {
-            \State::set($v, $_[$v]);
-        }
-    }
     if ('get' === $_['form']['type']) {
         if (!$route && !empty($_['is']['error'])) {
             \_\lot\x\panel\_set();
             \_\lot\x\panel\_set_asset();
+            \_\lot\x\panel\_set_state();
             $this->layout($_['layout'] ?? $_['is']['error'] . '/panel');
         }
     }
+    \_\lot\x\panel\_set();
+    \_\lot\x\panel\_set_asset();
+    \_\lot\x\panel\_set_state();
     $data = null;
     if (!isset($_GET['type']) && !isset($_['type'])) {
         // Auto-detect layout type

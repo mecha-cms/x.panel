@@ -764,7 +764,7 @@ hr {
 
 legend {
   padding: 0 8px;
-  margin: 0;
+  margin: 0 0 -8px;
 }
 
 legend + blockquote,
@@ -910,7 +910,6 @@ label {
   background: none;
   border: 0;
   padding: 0;
-  font-size: 12px;
   line-height: 24px;
   box-shadow: none;
 }
@@ -1022,9 +1021,10 @@ label.not\:active {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background: #00f;
 }
 
-.input[type='checkbox'][disabled], .input[type='radio'][disabled] {
+.input[type='checkbox'].not\:active, .input[type='checkbox'][disabled], .input[type='radio'].not\:active, .input[type='radio'][disabled] {
   background: #000;
 }
 
@@ -1038,8 +1038,8 @@ label.not\:active {
   background: #fff;
 }
 
-.input[type='checkbox'] {
-  background: #00f;
+.input[type='checkbox']:checked::before, .input[type='radio']:checked::before {
+  background: none;
 }
 
 .input[type='checkbox']:checked::before {
@@ -1047,7 +1047,6 @@ label.not\:active {
   right: 5px;
   bottom: 4px;
   left: 5px;
-  background: none;
   border-right: 2px solid #fff;
   border-bottom: 2px solid #fff;
   -webkit-transform: rotate(45deg);
@@ -1056,12 +1055,7 @@ label.not\:active {
   visibility: visible;
 }
 
-.input[type='radio'] {
-  background: #00f;
-}
-
 .input[type='radio']:checked::before {
-  background: none;
   border: 2px solid #fff;
   visibility: visible;
 }
@@ -1073,7 +1067,6 @@ label.not\:active {
 .field\:toggle .input[type='checkbox'] {
   width: 32px;
   height: 20px;
-  background: #00f;
   border-width: 0;
   border-radius: 10px;
 }
@@ -1831,7 +1824,7 @@ svg[display='none'] {
   display: none;
 }
 
-.lot\:tab > section.is\:active {
+.lot\:tab > section.is\:current {
   display: block;
 }
 
@@ -1939,10 +1932,10 @@ pre.is\:text code {
   .lot\:tab > nav li:not(.has\:link) a {
     color: inherit;
   }
-  .lot\:tab > nav li.is\:active {
+  .lot\:tab > nav li.is\:current {
     z-index: 4;
   }
-  .lot\:tab > nav li.is\:active::before, .lot\:tab > nav li.is\:active::after {
+  .lot\:tab > nav li.is\:current::before, .lot\:tab > nav li.is\:current::after {
     content: "";
     display: block;
     position: absolute;
@@ -1951,10 +1944,10 @@ pre.is\:text code {
     height: 0;
     border-bottom: 1px solid;
   }
-  .lot\:tab > nav li.is\:active::before {
+  .lot\:tab > nav li.is\:current::before {
     right: 100%;
   }
-  .lot\:tab > nav li.is\:active::after {
+  .lot\:tab > nav li.is\:current::after {
     left: 100%;
   }
   .lot\:tab > nav a {
@@ -2054,7 +2047,7 @@ pre.is\:text code {
   .lot\:tab > nav li {
     margin-right: 24px;
   }
-  .lot\:tab > nav li:not(.has\:link).is\:active a {
+  .lot\:tab > nav li:not(.has\:link).is\:current a {
     color: inherit;
   }
   .lot\:tab > nav li:last-child {
