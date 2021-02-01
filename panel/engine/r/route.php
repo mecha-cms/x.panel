@@ -8,7 +8,7 @@ function route() {
     $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
     extract($GLOBALS, \EXTR_SKIP);
     $route = false;
-    $_ = \_\lot\x\panel\_error_route_check($_);
+    $_ = \_\lot\x\panel\_error_route_check();
     foreach (\step($_['path'], '/') as $v) {
         if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, [
             '.' => '__',
@@ -66,8 +66,6 @@ function route() {
         $k[0] .= ($_['i'] ? 's' : "");
         $data = __DIR__ . \DS . 'type' . \DS . \implode(\DS, $k) . '.php';
     }
-    \_\lot\x\panel\_set();
-    \_\lot\x\panel\_set_asset();
     // Define lot with no filter
     (static function($data) {
         extract($GLOBALS, \EXTR_SKIP);

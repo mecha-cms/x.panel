@@ -342,7 +342,7 @@ HTML;
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
         }
-        $_ = \_\lot\x\panel\_error_route_check($_);
+        $_ = \_\lot\x\panel\_error_route_check();
         if (!empty($_['is']['error'])) {
             return $_;
         }
@@ -360,7 +360,7 @@ HTML;
         return $_;
     }
     function user($_) {
-        $_ = \_\lot\x\panel\_error_route_check($_);
+        $_ = \_\lot\x\panel\_error_route_check();
         if (!empty($_['is']['error'])) {
             return $_;
         }

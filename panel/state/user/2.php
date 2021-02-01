@@ -2,42 +2,46 @@
 
 return [
     'bar' => [
-        'folder' => [
-            'asset' => [
-                'url' => $url . $_['/'] . '/::g::/asset/' . $user->user . '/1' . $url->query('&', [
-                    'tab' => false,
-                    'type' => false
-                ]) . $url->hash
+        0 => [
+            'folder' => [
+                'asset' => [
+                    'url' => $url . $_['/'] . '/::g::/asset/' . $user->user . '/1' . $url->query('&', [
+                        'tab' => false,
+                        'type' => false
+                    ]) . $url->hash
+                ],
+                'block' => false,
+                'cache' => false,
+                'layout' => false,
+                'route' => false,
+                'trash' => false,
+                'user' => [
+                    'url' => $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
+                        'tab' => false,
+                        'type' => false
+                    ]) . $url->hash
+                ],
+                'x' => false
             ],
-            'block' => false,
-            'cache' => false,
-            'layout' => false,
-            'route' => false,
-            'trash' => false,
-            'user' => [
-                'url' => $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
-                    'tab' => false,
-                    'type' => false
-                ]) . $url->hash
-            ],
-            'x' => false
+            'link' => static function($task, $path) use($_, $url, $user) {
+                return 'user/' . $user->name(true) === $path ? [
+                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
+                        'tab' => false,
+                        'type' => false
+                    ]) . $url->hash
+                ] : true;
+            },
+            's' => false
         ],
-        'link' => function($task, $path) use($_, $url, $user) {
-            return 'user/' . $user->name(true) === $path ? [
-                'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
-                    'tab' => false,
-                    'type' => false
-                ]) . $url->hash
-            ] : true;
-        },
-        's' => false,
-        'site' => [
-            'state' => false
+        1 => [
+            'site' => [
+                'state' => false
+            ]
         ]
     ],
     'route' => [
         'asset' => false,
-        'asset/*' => function($task, $path) use($_, $user) {
+        'asset/*' => static function($task, $path) use($_, $user) {
             if ($path === $user->user && 'g' === $task) {
                 return isset($_['i']);
             }
@@ -54,7 +58,7 @@ return [
         'trash' => false,
         'trash/*' => false,
         'user' => false,
-        'user/*' => function($path) use($user) {
+        'user/*' => static function($path) use($user) {
             return $user->name(true) === $path;
         },
         'x' => false,
@@ -63,7 +67,7 @@ return [
         '.state/*' => false
     ],
     'task' => [
-        'user/*' => function($path) use($_, $user) {
+        'user/*' => static function($path) use($_, $user) {
             $tasks = [
                 'f' => false,
                 'g' => true,

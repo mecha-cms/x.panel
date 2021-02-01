@@ -6,12 +6,12 @@ function _abort($value, $key, $fn) {
     }
 }
 
-function _error_form_check($_) {
+function _error_form_check() {
     // TODO
 }
 
-function _error_route_check($_) {
-    extract($GLOBALS, \EXTR_SKIP);
+function _error_route_check() {
+    extract($GLOBALS);
     $f = $_['f'];
     if (
         // Trying to set file under a file path
@@ -34,8 +34,8 @@ function _error_route_check($_) {
     return ($GLOBALS['_'] = $_);
 }
 
-function _error_user_check($_) {
-    extract($GLOBALS, \EXTR_SKIP);
+function _error_user_check() {
+    extract($GLOBALS);
     $status = $user['status'];
     $kick = static function() use($_, $status, $url, $user) {
         \Alert::error(\i('Permission denied.') . '<br><small>' . $url->current . '</small>');
@@ -46,55 +46,49 @@ function _error_user_check($_) {
     };
     $rules = (array) \State::get('x.panel.guard.status.' . $status, true);
     if (isset($rules['bar'])) {
-        // Single menu
-        foreach ([
-            'link' => 0,
-            's' => 0,
-            'search' => 0,
-            'user' => 2
-        ] as $k => $v) {
-            if (!isset($_['lot']['bar']['lot'][$v]['lot'][$k])) {
-                continue;
-            }
-            if (isset($rules['bar'][$k])) {
-                $vv = $rules['bar'][$k];
-                if (\is_callable($vv)) {
-                    $vv = \call_user_func($vv, $_['task'], $_['path']);
+        if (\is_array($rules['bar'])) {
+            foreach ($rules['bar'] as $k => $v) {
+                if (!isset($_['lot']['bar']['lot'][$k])) {
+                    continue;
                 }
-                if (false === $vv) {
-                    $_['lot']['bar']['lot'][$v]['lot'][$k]['skip'] = true;
+                if (\is_callable($v)) {
+                    $v = \call_user_func($v, $_['task'], $_['path']);
                 }
-                if (\is_array($vv)) {
-                    $_['lot']['bar']['lot'][$v]['lot'][$k] = \array_replace($_['lot']['bar']['lot'][$v]['lot'][$k], $vv);
+                if (false === $v) {
+                    $_['lot']['bar']['lot'][$k]['skip'] = true;
                 }
-            }
-        }
-        // Multiple menu
-        foreach ([
-            'folder' => 0,
-            'site' => 1
-        ] as $k => $v) {
-            if (!isset($_['lot']['bar']['lot'][$v]['lot'][$k]['lot'])) {
-                continue;
-            }
-            if (isset($rules['bar'][$k])) {
-                if (false === $rules['bar'][$k]) {
-                    $_['lot']['bar']['lot'][$v]['lot'][$k]['skip'] = true;
-                }
-                if (\is_array($rules['bar'][$k])) {
-                    foreach ($rules['bar'][$k] as $kk => $vv) {
+                if (\is_array($v)) {
+                    foreach ($v as $kk => $vv) {
+                        if (!isset($_['lot']['bar']['lot'][$k]['lot'][$kk])) {
+                            continue;
+                        }
                         if (\is_callable($vv)) {
                             $vv = \call_user_func($vv, $_['task'], $_['path']);
                         }
                         if (false === $vv) {
-                            $_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk]['skip'] = true;
+                            $_['lot']['bar']['lot'][$k]['lot'][$kk]['skip'] = true;
                         }
                         if (\is_array($vv)) {
-                            $_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk] = \array_replace($_['lot']['bar']['lot'][$v]['lot'][$k]['lot'][$kk], $vv);
+                            foreach ($vv as $kkk => $vvv) {
+                                if (!isset($_['lot']['bar']['lot'][$k]['lot'][$kk]['lot'][$kkk])) {
+                                    continue;
+                                }
+                                if (\is_callable($vvv)) {
+                                    $vvv = \call_user_func($vvv, $_['task'], $_['path']);
+                                }
+                                if (false === $vvv) {
+                                    $_['lot']['bar']['lot'][$k]['lot'][$kk]['lot'][$kkk]['skip'] = true;
+                                }
+                                if (\is_array($vvv)) {
+                                    $_['lot']['bar']['lot'][$k]['lot'][$kk]['lot'][$kkk] = \array_replace($_['lot']['bar']['lot'][$k]['lot'][$kk]['lot'][$kkk], $vvv);
+                                }
+                            }
                         }
                     }
                 }
             }
+        } else if (empty($rules['bar'])) {
+            $_['lot']['bar']['skip'] = true;
         }
     }
     // `task` has a higher priority than `route`
@@ -136,6 +130,9 @@ function _error_user_check($_) {
             }
         }
     }
+    if (isset($rules['type'])) {
+        // TODO
+    }
     return $_;
 }
 
@@ -162,13 +159,14 @@ function _set() {
 }
 
 function _set_asset() {
-    if (!empty($GLOBALS['_']['asset'])) {
-        foreach ((array) $GLOBALS['_']['asset'] as $k => $v) {
+    extract($GLOBALS);
+    if (!empty($_['asset'])) {
+        foreach ((array) $_['asset'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
             if ('script' === $k || 'style' === $k || 'template' === $k) {
-                foreach ((array) $GLOBALS['_']['asset'][$k] as $kk => $vv) {
+                foreach ((array) $_['asset'][$k] as $kk => $vv) {
                     if (null === $vv || false === $vv || !empty($vv['skip'])) {
                         continue;
                     }
@@ -199,7 +197,7 @@ function _set_asset() {
             \Asset::set($path, $stack, (array) ($v[2] ?? []));
         }
     }
-    return $GLOBALS['_'];
+    return $_;
 }
 
 function _set_class(&$value, array $tags = []) {
@@ -211,12 +209,13 @@ function _set_class(&$value, array $tags = []) {
 }
 
 function _set_state() {
+    extract($GLOBALS);
     foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
-        if (isset($GLOBALS['_'][$v]) && \is_array($GLOBALS['_'][$v])) {
-            \State::set($v, $GLOBALS['_'][$v]);
+        if (isset($_[$v]) && \is_array($_[$v])) {
+            \State::set($v, $_[$v]);
         }
     }
-    return $GLOBALS['_'];
+    return $_;
 }
 
 function _set_style(&$value, array $styles = []) {

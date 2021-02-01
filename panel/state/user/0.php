@@ -1,7 +1,7 @@
 <?php
 
-$rules = require __DIR__ . DS . '2.php';
+$rules = require __DIR__ . DS . '3.php';
 
-// TODO
+$rules['bar'] = false;
 
 return $rules;

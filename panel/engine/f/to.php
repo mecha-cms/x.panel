@@ -30,11 +30,9 @@ function description($value, $or = null) {
     }
     $out = [
         0 => 'p',
-        1 => \w('<span>' . \i(...\array_values("" !== $description ? (array) $description : (array) $or)) . '</span>', ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']),
-        2 => []
+        1 => \w('<span>' . \i(...\array_values("" !== $description ? (array) $description : (array) $or)) . '</span>', ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'strong', 'sub', 'sup']),
+        2 => ['class' => 'description']
     ];
-    unset($value['tags']);
-    \_\lot\x\panel\_set_class($out[2], ['description' => true]);
     return new \HTML($out);
 }
 
@@ -53,12 +51,13 @@ function field($value, $key) {
         'not:lock' => !$is_lock,
         'not:vital' => !$is_vital
     ];
+    $state = $value['state'] ?? [];
     $content = [
         0 => 'textarea',
         1 => \htmlspecialchars($value['value'] ?? ""),
         2 => [
             'autofocus' => !empty($value['focus']),
-            'class' => "",
+            'data-state' => $state ? \json_encode($state) : null,
             'disabled' => !$is_active,
             'id' => $value['id'],
             'name' => $name,
@@ -134,7 +133,7 @@ function title($value, $i = -1, $or = null) {
     ];
     $icon = \_\lot\x\panel\to\icon($value['icon'] ?? [null, null]);
     if (null !== $title && false !== $title) {
-        $title = \w('<span>' . \i(...\array_values((array) $title)) . '</span>', ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']);
+        $title = \w('<span>' . \i(...\array_values((array) $title)) . '</span>', \array_filter(['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', -2 === $i ? null : 'span', 'strong', 'sub', 'sup']));
     }
     $out[1] = $icon[0] . $title . $icon[1];
     unset($value['tags']);

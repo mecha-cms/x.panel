@@ -17,8 +17,12 @@ $_['chops'] = $chops;
 $_['path'] = $task ? implode('/', $chops) : null;
 $_['task'] = $task;
 
-// Normalize path value and remove any `\..` to prevent directory traversal attack
-$f = LOT . DS . str_replace(DS . '..', "", strtr($_['path'], '/', DS));
+// Normalize path value and remove any `../` to prevent directory traversal attack
+$f = LOT . DS . strtr($_['path'], [
+    '/' => DS,
+    '../' => ""
+]);
+
 $_['f'] = stream_resolve_include_path($f) ?: null;
 
 // Make sure to have page offset on `items` view

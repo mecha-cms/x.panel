@@ -401,9 +401,6 @@ function query($value, $key) {
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
     $out['content'][2]['value'] = $value['value'] ?? null;
-    if (isset($value['state'])) {
-        $out['content'][2]['data-state'] = \json_encode($value['state']);
-    }
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
@@ -450,10 +447,8 @@ function set($value, $key) {
 }
 
 function source($value, $key) {
+    $value['state'] = \array_replace(['tab' => '  '], $value['state'] ?? []);
     $out = \_\lot\x\panel\to\field($value, $key);
-    $out['content'][2]['data-state'] = \json_encode(\array_replace($value['state'] ?? [], [
-        'tab' => '  '
-    ]));
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
         'code' => true,
         'textarea' => true
