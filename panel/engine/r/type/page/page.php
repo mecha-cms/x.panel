@@ -106,7 +106,10 @@ if (null !== State::get('x.tag') && (
     ];
 }
 
-$lot['bar']['lot'][0]['lot']['s']['url'] = str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['tab' => false, 'type' => 'page/page']) . $url->hash;
+$lot['bar']['lot'][0]['lot']['s']['url'] = str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', [
+    'tab' => false,
+    'type' => 'page/page'
+]) . $url->hash;
 $lot['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['title'] = 's' === $_['task'] ? 'Publish' : 'Update';
 
 return $lot;

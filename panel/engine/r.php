@@ -52,7 +52,9 @@ return (static function($icons) {
                         ],
                         'search' => [
                             'type' => 'form/get',
-                            'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . '/1' . $url->query('&', ['q' => false]) . $url->hash,
+                            'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . '/1' . $url->query('&', [
+                                'q' => false
+                            ]) . $url->hash,
                             'name' => 'get',
                             'lot' => [
                                 'fields' => [

@@ -104,7 +104,9 @@ function route() {
             } else {
                 if ('f' === $_['task'] || 'l' === $_['task']) {
                     $_['alert']['error'][] = 'Invalid token.';
-                    $_['kick'] = $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $url->query('&', ['token' => false]);
+                    $_['kick'] = $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $url->query('&', [
+                        'token' => false
+                    ]);
                 }
             }
         }

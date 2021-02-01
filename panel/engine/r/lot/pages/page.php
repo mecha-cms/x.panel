@@ -17,7 +17,10 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
             DS => '/'
         ]);
         if (!empty($v['tasks']['s']['url'])) {
-            $v['tasks']['s']['url'] = $before . 's' . Path::F($after, '/') . $url->query('&', ['type' => 'page/page', 'tab' => false]) . $url->hash;
+            $v['tasks']['s']['url'] = $before . 's' . Path::F($after, '/') . $url->query('&', [
+                'tab' => false,
+                'type' => 'page/page'
+            ]) . $url->hash;
         }
         if ($g && isset($v['author']) && $v['author'] !== $author) {
             $v['skip'] = true;
@@ -34,6 +37,9 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     }
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', ['type' => 'page/page', 'tab' => false]) . $url->hash;
+$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+    'tab' => false,
+    'type' => 'page/page'
+]) . $url->hash;
 
 return $lot;

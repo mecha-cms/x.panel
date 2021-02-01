@@ -22,14 +22,20 @@ return [
                 'lot' => [
                     'folder' => ['skip' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['tab' => false, 'type' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                            'tab' => false,
+                            'type' => false
+                        ]) . $url->hash,
                         'skip' => false
                     ],
                     's' => [
                         'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
                         'title' => false,
                         'description' => ['New %s', 'File'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['tab' => false, 'type' => 'blob']) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', [
+                            'tab' => false,
+                            'type' => 'blob'
+                        ]) . $url->hash,
                         'skip' => 's' === $_['task'],
                         'stack' => 10.5
                     ]

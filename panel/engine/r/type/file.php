@@ -77,14 +77,20 @@ return [
                 'lot' => [
                     'folder' => ['skip' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['tab' => false, 'type' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                            'tab' => false,
+                            'type' => false
+                        ]) . $url->hash,
                         'skip' => false
                     ],
                     's' => [
                         'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                         'title' => false,
                         'description' => ['New %s', 'File'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', ['tab' => false, 'type' => 'file']) . $url->hash,
+                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', [
+                            'tab' => false,
+                            'type' => 'file'
+                        ]) . $url->hash,
                         'skip' => 's' === $_['task'],
                         'stack' => 10.5
                     ]

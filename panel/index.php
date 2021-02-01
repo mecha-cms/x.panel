@@ -28,9 +28,9 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'content' => null,
     'f' => null,
     'form' => [
-        'alert' => [],
-        'to' => [],
+        'guard' => [],
         'lot' => e($GLOBALS['_' . ($k = $_SERVER['REQUEST_METHOD'] ?? 'GET')] ?? []),
+        'to' => [],
         'type' => strtolower($k)
     ],
     'has' => [],

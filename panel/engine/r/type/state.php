@@ -41,7 +41,10 @@ return [
                 'lot' => [
                     'folder' => ['skip' => true],
                     'link' => [
-                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', ['tab' => false, 'type' => false]) . $url->hash,
+                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                            'tab' => false,
+                            'type' => false
+                        ]) . $url->hash,
                         'skip' => false
                     ]
                 ]
