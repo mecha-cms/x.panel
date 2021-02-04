@@ -71,6 +71,9 @@ HTML;
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $def . '</code>'];
                 }
             }
+            \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
+            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
             $_['form']['lot']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
         }
         $_['lot'] = \array_replace_recursive($_['lot'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
@@ -218,7 +221,7 @@ HTML;
                                                                     'type' => 'text',
                                                                     'name' => 'state[x][user][guard][path]',
                                                                     'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                                    'hint' => $state_user['guard']['path'] ?? $state_user['path'] ?? null,
+                                                                    'hint' => $state_user['guard']['path'] ?? $state_panel['guard']['path'] ?? $state_user['path'] ?? null,
                                                                     'value' => $state_r['x']['user']['guard']['path'] ?? $state_user['guard']['path'] ?? null,
                                                                     'stack' => 20
                                                                 ]
