@@ -2,7 +2,8 @@
 
 namespace _\lot\x\panel\route {
     function __license($_) {
-        if ('g' !== $_['task'] || isset($_['i'])) {
+        // Disable page offset feature and request type other than `GET`
+        if (isset($_['i']) || 'g' !== $_['task']) {
             $_['kick'] = $GLOBALS['url'] . $_['/'] . '/::g::/.license';
             return $_;
         }
@@ -39,16 +40,16 @@ HTML;
     }
     function __state($_) {
         extract($GLOBALS, \EXTR_SKIP);
+        // Disable page offset and page children feature
+        if (isset($_['i']) || \count($_['chops']) > 2) {
+            $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chops'][0];
+        }
         // Load primary state(s)
         $state_r = require \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
         $state_user = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
         $state_panel = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
-        // Sanitize form data
-        \Hook::set('do.state.get', function($_) use(&$state_r, &$state_user, &$state_panel) {
-            if ('post' !== $_['form']['type'] || !isset($_['form']['lot']['state'])) {
-                return $_;
-            }
-            extract($GLOBALS, \EXTR_SKIP);
+        // Sanitize the form data
+        if ('post' === $_['form']['type'] && isset($_['form']['lot']['state'])) {
             $_['form']['lot']['state']['title'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['title'] ?? "");
             $_['form']['lot']['state']['description'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['description'] ?? "");
             $_['form']['lot']['state']['email'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['email'] ?? "");
@@ -70,15 +71,7 @@ HTML;
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $def . '</code>'];
                 }
             }
-            \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
-            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
-            // TODO
             $_['form']['lot']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
-            return $_;
-        }, 9.9);
-        if (isset($_['i']) || \count($_['chops']) > 2) {
-            $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chops'][0];
         }
         $_['lot'] = \array_replace_recursive($_['lot'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
@@ -328,12 +321,6 @@ HTML;
                     ]
                 ]
             ]);
-        } else if (2 === \count($_['chops'])) {
-            // TODO: Custom state editor for extension(s)
-            if (\is_file($f = \LOT . \DS . 'x' . \DS . $_['chops'][1] . \DS . 'state.php')) {
-                \test(require $f);
-                exit;
-            }
         }
         return $_;
     }
@@ -375,11 +362,14 @@ HTML;
                 if ('post' === $_['form']['type']) {
                     // Prevent user(s) from adding a hidden form (or changing the `page[status]` field value) that
                     // defines its `status` through developer tools and such by enforcing the `page[status]` value
-                    if (isset($_['form']['lot']['page']['status']) && $_['form']['lot']['page']['status'] !== $status) {
+                    if (isset($_['form']['lot']['page']['status']) && $status !== $_['form']['lot']['page']['status']) {
+                        $_['alert']['error'][] = ['You don\'t have permission to change the %s value.', '<code>status</code>'];
+                    }
+                    // Also secure up the external `status` data variant
+                    if (isset($_['form']['lot']['data']['status']) && $status !== $_['form']['lot']['data']['status']) {
                         $_['alert']['error'][] = ['You don\'t have permission to change the %s value.', '<code>status</code>'];
                     }
                     $_['form']['lot']['page']['status'] = $status;
-                    unset($_POST['data']['status'], $_['form']['lot']['data']['status']);
                 }
             }
         }

@@ -22,7 +22,7 @@ function blobs($value, $key) {
     $out = \_\lot\x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
-    $out['content'][2]['multiple'] = true; // TODO: Limit file(s) to upload
+    $out['content'][2]['multiple'] = true;
     $out['content'][2]['name'] = ($value['name'] ?? $key) . '[]';
     $out['content'][2]['type'] = 'file';
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([

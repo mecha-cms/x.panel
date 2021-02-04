@@ -7,7 +7,7 @@ function route() {
     // Load default panel definition
     $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
     extract($GLOBALS, \EXTR_SKIP);
-    $route = false;
+    $route = $type = false;
     $_ = \_\lot\x\panel\_error_route_check();
     foreach (\step($_['path'], '/') as $v) {
         if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, [
@@ -33,8 +33,7 @@ function route() {
     \_\lot\x\panel\_set();
     \_\lot\x\panel\_set_asset();
     \_\lot\x\panel\_set_state();
-    $data = null;
-    if (!isset($_GET['type']) && !isset($_['type'])) {
+    if (!isset($_['type'])) {
         // Auto-detect layout type
         if ($f) {
             if (\is_dir($f)) {
@@ -47,13 +46,14 @@ function route() {
         }
         // Manually set layout type based on file path
         foreach (\array_reverse(\step($_['path'], '/')) as $v) {
-            (static function($v) use(&$data) {
-                if (\is_file($v)) {
+            (static function($_type) use(&$type) {
+                if (\is_file($_type)) {
                     extract($GLOBALS, \EXTR_SKIP);
-                    require ($data = $v);
+                    require $_type;
                     if (isset($_) && \is_array($_)) {
                         $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
                     }
+                    $type = $_type;
                 }
             })(__DIR__ . \DS . 'lot' . \DS . 'page' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
         }
@@ -61,17 +61,19 @@ function route() {
         $_ = $GLOBALS['_'];
     }
     // Set layout type
-    if (!$data) {
+    if (!$type) {
         $k = \explode('/', $_['type'] ?? \P, 2);
         $k[0] .= ($_['i'] ? 's' : "");
-        $data = __DIR__ . \DS . 'type' . \DS . \implode(\DS, $k) . '.php';
+        $type = __DIR__ . \DS . 'type' . \DS . \implode(\DS, $k) . '.php';
     }
-    // Define lot with no filter
-    (static function($data) {
+    // Define lot based on the current type
+    \is_file($type) && (static function($type) {
         extract($GLOBALS, \EXTR_SKIP);
-        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) (\is_file($data) ? require $data : []));
-        $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-    })($data);
+        if (isset($_) && \is_array($_)) {
+            $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) require $type);
+            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+        }
+    })($type);
     // Filter by status
     \is_file($v = __DIR__ . \DS . 'lot' . \DS . 'user' . \DS . $user['status'] . '.php') && (static function($v) {
         extract($GLOBALS, \EXTR_SKIP);
@@ -83,11 +85,15 @@ function route() {
     // Get data
     $_ = $GLOBALS['_'];
     // Filter by route function
-    $the_end_path = \implode('/', \map(\explode("\\", \substr($route, 20)), function($v) {
-        return \strtr(\p2f($v), ['__' => '.']);
-    }));
-    if ($route && $r = \fire($route, [$_, $the_end_path], $this)) {
-        $_ = $r;
+    if ($route) {
+        // Remove `_\lot\x\panel\route` prefix from the captured route function
+        $path = \implode('/', \map(\explode("\\", \substr($route, 20)), function($v) {
+            // Convert property name to file name
+            return \strtr(\p2f($v), ['__' => '.']);
+        }));
+        if ($r = \fire($route, [$_, $path], $this)) {
+            $_ = $r;
+        }
     }
     // Filter by hook
     if ($r = \Hook::fire('_', [$_])) {
@@ -96,7 +102,7 @@ function route() {
     // Put data
     $GLOBALS['_'] = $_;
     if (isset($_['form']['lot']['token'])) {
-        if (empty($_['form']['lot']['token']) || $_['form']['lot']['token'] !== $_['token']) {
+        if (empty($_['form']['lot']['token']) || $_['token'] !== $_['form']['lot']['token']) {
             if ('post' === $_['form']['type']) {
                 if ('g' === $_['task'] || 's' === $_['task']) {
                     $_['alert']['error'][] = 'Invalid token.';
@@ -113,20 +119,19 @@ function route() {
         // Put data
         $GLOBALS['_'] = $_;
         // Include form task(s)
-        if (\is_file($v = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php')) {
-            (static function($v) {
-                extract($GLOBALS, \EXTR_SKIP);
-                require $v;
-                if (isset($_) && \is_array($_)) {
-                    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-                }
-            })($v);
-        }
+        \is_file($v = __DIR__ . \DS . 'task' . \DS . $_['task'] . '.php') && (static function($v) {
+            extract($GLOBALS, \EXTR_SKIP);
+            require $v;
+            if (isset($_) && \is_array($_)) {
+                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            }
+        })($v);
         // Get data
         $_ = $GLOBALS['_'];
         if (isset($_['type'])) {
             $hooks = \map(\step($_['type'], '/'), function($hook) use($_) {
                 return 'do.' . $hook . '.' . ([
+                    'f' => 'fire',
                     'g' => 'get',
                     'l' => 'let',
                     's' => 'set'

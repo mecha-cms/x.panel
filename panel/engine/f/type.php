@@ -92,6 +92,21 @@ function field($value, $key) {
         $out[1] .= '<div>' . \_\lot\x\panel\to\lot($value['lot']) . '</div>';
     }
     \_\lot\x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
+    if (isset($value['form']) && \is_array($value['form'])) {
+        foreach ($value['form'] as $k => $v) {
+            if (null === $v || false === $v) {
+                continue;
+            }
+            if (\is_array($v) || \is_object($v)) {
+                $v = \json_encode($v);
+            }
+            $out[1] .= new \HTML(['input', false, [
+                'name' => $k,
+                'type' => 'hidden',
+                'value' => $v
+            ]]);
+        }
+    }
     return new \HTML($out);
 }
 

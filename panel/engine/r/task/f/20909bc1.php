@@ -12,8 +12,7 @@ foreach (g($d = $_['f'], null, true) as $k => $v) {
         mkdir($dd, 0775, true);
     }
     if (is_file($ff)) {
-        // TODO: Add message if file already exists
-        continue;
+        continue; // File already exists
     }
     rename($k, $ff);
     $_SESSION['_']['file'][$ff] = 1;

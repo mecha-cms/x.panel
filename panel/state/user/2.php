@@ -86,5 +86,7 @@ return [
             }
             return false;
         }
-    ]
+    ],
+    // Prevent user(s) from modifying the `type` value from URL
+    'type' => false
 ];

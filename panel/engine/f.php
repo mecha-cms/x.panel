@@ -6,10 +6,6 @@ function _abort($value, $key, $fn) {
     }
 }
 
-function _error_form_check() {
-    // TODO
-}
-
 function _error_route_check() {
     extract($GLOBALS);
     $f = $_['f'];
@@ -131,7 +127,15 @@ function _error_user_check() {
         }
     }
     if (isset($rules['type'])) {
-        // TODO
+        if (\is_array($rules['type'])) {
+            if (empty($rules['type'][$_GET['type']])) {
+                $kick();
+            }
+        } else if (!$rules['type']) {
+            if ('g' === $_['task'] && isset($_GET['type'])) {
+                $kick();
+            }
+        }
     }
     return $_;
 }
@@ -298,7 +302,6 @@ function type($value, $key) {
     return $out;
 }
 
-require __DIR__ . \DS . 'f' . \DS . 'form.php';
 require __DIR__ . \DS . 'f' . \DS . 'from.php';
 require __DIR__ . \DS . 'f' . \DS . 'route.php';
 require __DIR__ . \DS . 'f' . \DS . 'to.php';

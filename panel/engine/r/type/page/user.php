@@ -2,19 +2,18 @@
 
 $lot = require __DIR__ . DS . '..' . DS . 'page.php';
 
-// Sanitize form data
-Hook::set(['do.page.get', 'do.page.set'], function($_) {
-    if ('post' !== $_['form']['type']) {
-        return $_;
+// Sanitize the form data
+if ('post' === $_['form']['type']) {
+    // Remove all possible HTML tag(s) from the `email` data if any
+    if (isset($_['form']['lot']['page']['email'])) {
+        $_['form']['lot']['page']['email'] = strip_tags($_['form']['lot']['page']['email']);
     }
-    $_['form']['lot']['page']['email'] = _\lot\x\panel\to\w($_['form']['lot']['page']['email'] ?? "");
-    // Encrypt password
+    // Encrypt the `pass` data if any
     if (isset($_['form']['lot']['data']['pass'])) {
         $name = $_['form']['lot']['data']['name'] ?? $_['form']['lot']['page']['name'] ?? uniqid();
         $_['form']['lot']['data']['pass'] = P . password_hash($_['form']['lot']['data']['pass'] . '@' . $name, PASSWORD_DEFAULT);
     }
-    return $_;
-}, 9.9);
+}
 
 $lot = array_replace_recursive($lot, [
     'bar' => [

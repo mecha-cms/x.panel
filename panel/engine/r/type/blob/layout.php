@@ -17,7 +17,7 @@ Hook::set('do.blob.set', function($_) {
         }
     }
     return $_;
-}, 9.91); // Must come after `do.blob.set` hook in `blob.x.php` file
+}, 9.91); // Must come after `do.blob.set` hook in `x.php` file
 
 $lot = require __DIR__ . DS . 'x.php';
 $description = '<p>' . i('Make sure that the package you want to upload is structured like this:') . '</p>';

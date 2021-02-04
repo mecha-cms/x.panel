@@ -9,7 +9,6 @@ Release Notes
 ### main
 
  - [ ] Added ability to detect extension and layout package without parent folder.
- - [ ] Added form value validator and sanitizer API.
 
 ### 2.5.0
 

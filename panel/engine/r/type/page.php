@@ -7,23 +7,42 @@ if (is_dir($f = $_['f']) && 'g' === $_['task']) {
     ]) . $url->hash);
 }
 
-// Sanitize form data
-Hook::set(['do.page.get', 'do.page.set'], function($_) {
-    if ('post' !== $_['form']['type']) {
-        return $_;
-    }
-    $_['form']['lot']['data']['time'] = (string) (new Time($_['form']['lot']['data']['time'] ?? time()));
+// Sanitize the form data
+if ('post' === $_['form']['type']) {
+    // Get current time
+    $time = $_SERVER['REQUEST_TIME'] ?? time();
+    // Set `time` data based on the current `time` data or use the `$time` value
+    $_['form']['lot']['data']['time'] = new Time($_['form']['lot']['data']['time'] ?? $time);
+    // Remove all possible HTML tag(s) from the `author` data
     $_['form']['lot']['page']['author'] = strip_tags($_['form']['lot']['page']['author'] ?? "");
-    $_['form']['lot']['page']['id'] = strip_tags($_['form']['lot']['page']['id'] ?? "");
-    $_['form']['lot']['page']['link'] = strip_tags($_['form']['lot']['page']['link'] ?? "");
-    $_['form']['lot']['page']['description'] = _\lot\x\panel\to\w($_['form']['lot']['page']['description'] ?? "", 'a');
-    $_['form']['lot']['page']['title'] = _\lot\x\panel\to\w($_['form']['lot']['page']['title'] ?? "");
+    // Remove all possible HTML tag(s) from the `id` data if any
+    if (isset($_['form']['lot']['page']['id'])) {
+        $_['form']['lot']['page']['id'] = strip_tags($_['form']['lot']['page']['id']);
+    }
+    // Remove all possible HTML tag(s) from the `link` data if any
+    if (isset($_['form']['lot']['page']['link'])) {
+        $_['form']['lot']['page']['link'] = strip_tags($_['form']['lot']['page']['link']);
+    }
+    // Remove all possible block HTML tag(s) from the `description` data if any
+    if (isset($_['form']['lot']['page']['description'])) {
+        $_['form']['lot']['page']['description'] = _\lot\x\panel\to\w($_['form']['lot']['page']['description'], 'a');
+        // Limit `description` data value to 400 character(s) length
+        $_['form']['lot']['page']['description'] = To::excerpt($_['form']['lot']['page']['description'], true, 400);
+    }
+    // Remove all possible block HTML tag(s) from the `title` data if any
+    if (isset($_['form']['lot']['page']['title'])) {
+        $_['form']['lot']['page']['title'] = _\lot\x\panel\to\w($_['form']['lot']['page']['title']);
+        // Limit `title` data value to 200 character(s) length
+        $_['form']['lot']['page']['title'] = To::excerpt($_['form']['lot']['page']['title'], true, 200);
+    }
+    // Make sure to have a file extension
     $_['form']['lot']['page']['x'] = strip_tags($_['form']['lot']['page']['x'] ?? 'page');
+    // Make sure to have a file name
     if (empty($_['form']['lot']['page']['name'])) {
         $name = To::kebab($_['form']['lot']['page']['title'] ?? "");
-        $_['form']['lot']['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s');
+        $_['form']['lot']['page']['name'] = "" !== $name ? $name : date('Y-m-d-H-i-s', $time);
     }
-    // Detect `time` pattern in the page’s file name and remove the `time` field if matched
+    // Detect `time` pattern in the page’s file name and remove the `time` data if matched
     $n = $_['form']['lot']['page']['name'];
     if (
         is_string($n) && (
@@ -32,13 +51,12 @@ Hook::set(['do.page.get', 'do.page.set'], function($_) {
             // `2017-04-21-14-25-00.page`
             5 === substr_count($n, '-')
         ) &&
-        is_numeric(str_replace('-', "", $n)) &&
+        is_numeric(strtr($n, ['-' => ""])) &&
         preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])(-([0-1]\d|2[0-4])(-([0-5]\d|60)){2})?$/', $n)
     ) {
         unset($_['form']['lot']['data']['time']);
     }
-    return $_;
-}, 9.9);
+}
 
 $page = is_file($f) ? new Page($f) : new Page;
 
