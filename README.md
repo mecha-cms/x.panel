@@ -6,10 +6,6 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### main
-
- - [ ] Added ability to detect extension and layout package without parent folder.
-
 ### 2.5.0
 
  - Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
