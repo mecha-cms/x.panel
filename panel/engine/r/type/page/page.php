@@ -1,10 +1,10 @@
 <?php
 
-$lot = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'page.php';
 
 if (null !== State::get('x.art')) {
     // Add custom CSS and JS field(s)
-    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['art'] = [
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['art'] = [
         'lot' => [
             'fields' => [
                 'type' => 'fields',
@@ -93,7 +93,7 @@ if (null !== State::get('x.tag') && (
         chmod($f, 0600);
         return $_;
     }, 11);
-    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [
         'type' => 'query',
         'state' => [
             'max' => 12,
@@ -106,10 +106,11 @@ if (null !== State::get('x.tag') && (
     ];
 }
 
-$lot['bar']['lot'][0]['lot']['s']['url'] = str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', [
+$_['lot']['bar']['lot'][0]['lot']['s']['url'] = strtr(dirname($url->clean), ['::g::' => '::s::']) . $url->query('&', [
     'tab' => false,
     'type' => 'page/page'
 ]) . $url->hash;
-$lot['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['title'] = 's' === $_['task'] ? 'Publish' : 'Update';
 
-return $lot;
+$_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['title'] = 's' === $_['task'] ? 'Publish' : 'Update';
+
+return $_;

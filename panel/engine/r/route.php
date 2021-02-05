@@ -49,8 +49,8 @@ function route() {
             (static function($_type) use(&$type) {
                 if (\is_file($_type)) {
                     extract($GLOBALS, \EXTR_SKIP);
-                    require $_type;
                     if (isset($_) && \is_array($_)) {
+                        $_ = (array) require $_type;
                         $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
                     }
                     $type = $_type;
@@ -70,7 +70,7 @@ function route() {
     \is_file($type) && (static function($type) {
         extract($GLOBALS, \EXTR_SKIP);
         if (isset($_) && \is_array($_)) {
-            $_['lot'] = \array_replace_recursive($_['lot'] ?? [], (array) require $type);
+            $_ = (array) require $type;
             $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
         }
     })($type);

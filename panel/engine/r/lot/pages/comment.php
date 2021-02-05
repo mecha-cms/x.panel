@@ -3,10 +3,10 @@
 // `http://127.0.0.1/panel/::g::/comment/1`
 $_['type'] = 'page';
 
-$lot = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
 
-$lot['desk']['lot']['form']['lot'][1]['title'] = ($r = false === strpos($_['path'], '/')) ? ['Recent %s', 'Comments'] : null;
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Comments';
+$_['lot']['desk']['lot']['form']['lot'][1]['title'] = ($r = false === strpos($_['path'], '/')) ? ['Recent %s', 'Comments'] : null;
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Comments';
 
 $d = strtr($_['f'], [LOT . DS . 'comment' . DS => LOT . DS . 'page' . DS]);
 if (!$r && $f = File::exist([
@@ -15,7 +15,7 @@ if (!$r && $f = File::exist([
     $d . '.page'
 ])) {
     $page = new Page($f);
-    $lot['desk']['lot']['form']['lot'][1]['title'] = i('Page') . ': <a href="' . $url . $_['/'] . '/::g::/' . strtr($f, [LOT . DS => "", DS => '/']) . '">' . $page->title . '</a>';
+    $_['lot']['desk']['lot']['form']['lot'][1]['title'] = i('Page') . ': <a href="' . $url . $_['/'] . '/::g::/' . strtr($f, [LOT . DS => "", DS => '/']) . '">' . $page->title . '</a>';
 }
 
 $files = $pages = [];
@@ -110,17 +110,17 @@ if ($files) {
     $p = new Anemon($pages);
     $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], ($_['i'] ?? 1) - 1)->get();
     unset($p);
-    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
-    $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
+    $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
     'tab' => false,
     'type' => 'page/comment'
 ]) . $url->hash;
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['parent']['skip'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['data']['skip'] = true;
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['parent']['skip'] = true;
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['data']['skip'] = true;
 
-return $lot;
+return $_;

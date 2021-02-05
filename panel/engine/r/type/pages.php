@@ -103,99 +103,97 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
     unset($p);
 }
 
-return [
-    'desk' => [
-        // type: desk
-        'lot' => [
-            'form' => [
-                // type: form/post
-                '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
-                'lot' => [
-                    0 => [
-                        // type: section
-                        'lot' => [
-                            'tasks' => [
-                                'type' => 'tasks/button',
-                                'lot' => [
-                                    'parent' => [
-                                        'title' => false,
-                                        'description' => ['Go to %s', 'Parent'],
-                                        'type' => 'link',
-                                        'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
-                                            'tab' => false
-                                        ]) . $url->hash,
-                                        'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
-                                        'skip' => count($_['chops']) <= 1,
-                                        'stack' => 10
-                                    ],
-                                    'blob' => [
-                                        'title' => false,
-                                        'description' => 'Upload',
-                                        'type' => 'link',
-                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
-                                            'tab' => false,
-                                            'type' => 'blob'
-                                        ]) . $url->hash,
-                                        'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
-                                        'skip' => true,
-                                        'stack' => 20
-                                    ],
-                                    'page' => [
-                                        'type' => 'link',
-                                        'description' => ['New %s', 'Page'],
-                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
-                                            'tab' => false,
-                                            'type' => 'page'
-                                        ]) . $url->hash,
-                                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'stack' => 30
-                                    ],
-                                    'data' => [
-                                        'type' => 'link',
-                                        'description' => ['New %s', 'Data'],
-                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
-                                            'tab' => false,
-                                            'type' => 'data'
-                                        ]) . $url->hash,
-                                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'skip' => count($_['chops']) <= 1,
-                                        'stack' => 40
-                                    ]
+$desk = [
+    // type: desk
+    'lot' => [
+        'form' => [
+            // type: form/post
+            '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
+            'lot' => [
+                0 => [
+                    // type: section
+                    'lot' => [
+                        'tasks' => [
+                            'type' => 'tasks/button',
+                            'lot' => [
+                                'parent' => [
+                                    'title' => false,
+                                    'description' => ['Go to %s', 'Parent'],
+                                    'type' => 'link',
+                                    'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
+                                        'tab' => false
+                                    ]) . $url->hash,
+                                    'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
+                                    'skip' => count($_['chops']) <= 1,
+                                    'stack' => 10
                                 ],
-                                'stack' => 10
-                            ]
+                                'blob' => [
+                                    'title' => false,
+                                    'description' => 'Upload',
+                                    'type' => 'link',
+                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'tab' => false,
+                                        'type' => 'blob'
+                                    ]) . $url->hash,
+                                    'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
+                                    'skip' => true,
+                                    'stack' => 20
+                                ],
+                                'page' => [
+                                    'type' => 'link',
+                                    'description' => ['New %s', 'Page'],
+                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'tab' => false,
+                                        'type' => 'page'
+                                    ]) . $url->hash,
+                                    'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                                    'stack' => 30
+                                ],
+                                'data' => [
+                                    'type' => 'link',
+                                    'description' => ['New %s', 'Data'],
+                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'tab' => false,
+                                        'type' => 'data'
+                                    ]) . $url->hash,
+                                    'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                                    'skip' => count($_['chops']) <= 1,
+                                    'stack' => 40
+                                ]
+                            ],
+                            'stack' => 10
                         ]
-                    ],
-                    1 => [
-                        // type: section
-                        'lot' => [
-                            'tabs' => [
-                                // type: tabs
-                                'lot' => [
-                                    'pages' => [
-                                        'lot' => [
-                                            'pages' => [
-                                                'type' => 'pages',
-                                                'lot' => $pages,
-                                                'stack' => 10
-                                            ]
-                                        ],
-                                        'stack' => 10
-                                    ]
+                    ]
+                ],
+                1 => [
+                    // type: section
+                    'lot' => [
+                        'tabs' => [
+                            // type: tabs
+                            'lot' => [
+                                'pages' => [
+                                    'lot' => [
+                                        'pages' => [
+                                            'type' => 'pages',
+                                            'lot' => $pages,
+                                            'stack' => 10
+                                        ]
+                                    ],
+                                    'stack' => 10
                                 ]
                             ]
                         ]
-                    ],
-                    2 => [
-                        // type: section
-                        'lot' => [
-                            'pager' => [
-                                'type' => 'pager',
-                                'chunk' => $_['chunk'],
-                                'count' => $count,
-                                'current' => $_['i'],
-                                'stack' => 10
-                            ]
+                    ]
+                ],
+                2 => [
+                    // type: section
+                    'lot' => [
+                        'pager' => [
+                            'type' => 'pager',
+                            'chunk' => $_['chunk'],
+                            'count' => $count,
+                            'current' => $_['i'],
+                            'stack' => 10
                         ]
                     ]
                 ]
@@ -203,3 +201,9 @@ return [
         ]
     ]
 ];
+
+return ($_ = array_replace_recursive($_, [
+    'lot' => [
+        'desk' => $desk
+    ]
+]));

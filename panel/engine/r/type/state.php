@@ -1,10 +1,11 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']);
-    Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']];
+    $_['kick'] = $url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
-    ]) . $url->hash);
+    ]) . $url->hash;
+    return $_;
 }
 
 $fields = [];
@@ -32,97 +33,96 @@ if (is_file($f)) {
     }
 }
 
-return [
-    'bar' => [
-        // type: bar
-        'lot' => [
-            // type: bar/menu
-            0 => [
-                'lot' => [
-                    'folder' => ['skip' => true],
-                    'link' => [
-                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
-                            'tab' => false,
-                            'type' => false
-                        ]) . $url->hash,
-                        'skip' => false
-                    ]
+$bar = [
+    // type: bar
+    'lot' => [
+        // type: bar/menu
+        0 => [
+            'lot' => [
+                'folder' => ['skip' => true],
+                'link' => [
+                    'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                        'tab' => false,
+                        'type' => false
+                    ]) . $url->hash,
+                    'skip' => false
                 ]
             ]
         ]
-    ],
-    'desk' => [
-        // type: desk
-        'lot' => [
-            'form' => [
-                // type: form/post
-                'lot' => [
-                    'fields' => [
-                        'type' => 'fields',
-                        'lot' => [ // Hidden field(s)
-                            'seal' => [
-                                'type' => 'hidden',
-                                'name' => 'file[seal]',
-                                'value' => '0600'
-                            ],
-                            'token' => [
-                                'type' => 'hidden',
-                                'value' => $_['token']
-                            ],
-                            'type' => [
-                                'type' => 'hidden',
-                                'value' => $_['type']
-                            ]
+    ]
+];
+
+$desk = [
+    // type: desk
+    'lot' => [
+        'form' => [
+            // type: form/post
+            'lot' => [
+                'fields' => [
+                    'type' => 'fields',
+                    'lot' => [
+                        'seal' => [
+                            'type' => 'hidden',
+                            'name' => 'file[seal]',
+                            'value' => '0600'
                         ],
-                        'stack' => -1
+                        'token' => [
+                            'type' => 'hidden',
+                            'value' => $_['token']
+                        ],
+                        'type' => [
+                            'type' => 'hidden',
+                            'value' => $_['type']
+                        ]
                     ],
-                    1 => [
-                        // type: section
-                        'lot' => [
-                            'tabs' => [
-                                // type: tabs
-                                'lot' => [
-                                    'file' => [
-                                        'lot' => [
-                                            'fields' => [
-                                                'type' => 'fields',
-                                                'lot' => $fields,
-                                                'stack' => 10
-                                            ]
-                                        ],
-                                        'stack' => 10
-                                    ]
+                    'stack' => -1
+                ],
+                1 => [
+                    // type: section
+                    'lot' => [
+                        'tabs' => [
+                            // type: tabs
+                            'lot' => [
+                                'file' => [
+                                    'lot' => [
+                                        'fields' => [
+                                            'type' => 'fields',
+                                            'lot' => $fields,
+                                            'stack' => 10
+                                        ]
+                                    ],
+                                    'stack' => 10
                                 ]
                             ]
                         ]
-                    ],
-                    2 => [
-                        // type: section
-                        'lot' => [
-                            'fields' => [
-                                'type' => 'fields',
-                                'lot' => [
-                                    0 => [
-                                        'title' => "",
-                                        'type' => 'field',
-                                        'lot' => [
-                                            'tasks' => [
-                                                'type' => 'tasks/button',
-                                                'lot' => [
-                                                    's' => [
-                                                        'title' => 'g' === $_['task'] ? 'Update' : 'Create',
-                                                        'type' => 'submit',
-                                                        'name' => false,
-                                                        'stack' => 10
-                                                    ],
-                                                    'l' => ['skip' => true]
-                                                ]
+                    ]
+                ],
+                2 => [
+                    // type: section
+                    'lot' => [
+                        'fields' => [
+                            'type' => 'fields',
+                            'lot' => [
+                                0 => [
+                                    'title' => "",
+                                    'type' => 'field',
+                                    'lot' => [
+                                        'tasks' => [
+                                            'type' => 'tasks/button',
+                                            'lot' => [
+                                                's' => [
+                                                    'title' => 'g' === $_['task'] ? 'Update' : 'Create',
+                                                    'type' => 'submit',
+                                                    'name' => false,
+                                                    'stack' => 10
+                                                ],
+                                                'l' => ['skip' => true]
                                             ]
                                         ]
                                     ]
-                                ],
-                                'stack' => 10
-                            ]
+                                ]
+                            ],
+                            'stack' => 10
                         ]
                     ]
                 ]
@@ -130,3 +130,10 @@ return [
         ]
     ]
 ];
+
+return ($_ = array_replace_recursive($_, [
+    'lot' => [
+        'bar' => $bar,
+        'desk' => $desk
+    ]
+]));

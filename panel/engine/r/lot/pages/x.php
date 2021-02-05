@@ -15,12 +15,12 @@ $uses = [
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if ($i > 1) {
-    $lot = require __DIR__ . DS . '..' . DS . 'pages.php';
+    $_ = require __DIR__ . DS . '..' . DS . 'pages.php';
     if (isset($uses[$_['chops'][1]])) {
         // Disable delete button where possible
         $index = $index = $_['f'] . DS . 'index.php';
-        $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['active'] = false;
-        unset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['url']);
+        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['active'] = false;
+        unset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['url']);
 
     }
     if (2 === $i) {
@@ -65,9 +65,9 @@ if ($i > 1) {
                 // Custom stack data
                 $d . DS . basename($d)
             ] as $p) {
-                $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['skip'] = true;
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$p]['skip'] = true;
             }
-            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['info'] = [
                 'lot' => [
                     0 => [
                         'title' => $page->title . ' <sup>' . $page->version . '</sup>',
@@ -81,7 +81,7 @@ if ($i > 1) {
             ];
         }
         if (is_file($f = $d . DS . 'LICENSE')) {
-            $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['license'] = [
                 'icon' => false === strpos(file_get_contents($f), '://fsf.org') ? 'M9 10A3.04 3.04 0 0 1 12 7A3.04 3.04 0 0 1 15 10A3.04 3.04 0 0 1 12 13A3.04 3.04 0 0 1 9 10M12 19L16 20V16.92A7.54 7.54 0 0 1 12 18A7.54 7.54 0 0 1 8 16.92V20M12 4A5.78 5.78 0 0 0 7.76 5.74A5.78 5.78 0 0 0 6 10A5.78 5.78 0 0 0 7.76 14.23A5.78 5.78 0 0 0 12 16A5.78 5.78 0 0 0 16.24 14.23A5.78 5.78 0 0 0 18 10A5.78 5.78 0 0 0 16.24 5.74A5.78 5.78 0 0 0 12 4M20 10A8.04 8.04 0 0 1 19.43 12.8A7.84 7.84 0 0 1 18 15.28V23L12 21L6 23V15.28A7.9 7.9 0 0 1 4 10A7.68 7.68 0 0 1 6.33 4.36A7.73 7.73 0 0 1 12 2A7.73 7.73 0 0 1 17.67 4.36A7.68 7.68 0 0 1 20 10Z' : null,
                 'lot' => [
                     0 => [
@@ -94,15 +94,16 @@ if ($i > 1) {
             ];
         }
     }
-    return $lot;
+    return $_;
 }
 
 // `http://127.0.0.1/panel/::g::/x/1`
 $_['type'] = 'page';
 
-$lot = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
 
-$lot['bar']['lot'][0]['lot']['search']['skip'] = true; // Hide search form
+// Hide search form
+$_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true;
 
 $pages = [];
 $count = 0;
@@ -166,18 +167,18 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         ++$count;
     }
     $pages = (new Anemon($pages))->sort([1, '#title'], true)->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get();
-    $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
-    $lot['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
+    $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['skip'] = false;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['skip'] = false;
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
     'tab' => false,
     'type' => 'blob/x'
 ]) . $url->hash;
 
-return $lot;
+return $_;

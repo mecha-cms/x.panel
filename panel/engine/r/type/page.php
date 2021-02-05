@@ -1,11 +1,16 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    Alert::error('Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']);
-    Guard::kick($url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']];
+    $_['kick'] = $url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
-    ]) . $url->hash);
+    ]) . $url->hash;
+    return $_;
 }
+
+$page = is_file($f) ? new Page($f) : new Page;
+
+$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 // Sanitize the form data
 if ('post' === $_['form']['type']) {
@@ -58,260 +63,255 @@ if ('post' === $_['form']['type']) {
     }
 }
 
-$page = is_file($f) ? new Page($f) : new Page;
-
-$trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
-
-$lot = [
-    'bar' => [
-        // type: bar
-        'lot' => [
-            // type: bar/menu
-            0 => [
-                'lot' => [
-                    'folder' => ['skip' => true],
-                    'link' => [
-                        'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
-                            'tab' => false,
-                            'type' => false
-                        ]) . $url->hash,
-                        'skip' => false
-                    ],
-                    's' => [
-                        'icon' => 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z',
-                        'title' => false,
-                        'description' => ['New %s', 'Page'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', [
-                            'tab' => false,
-                            'type' => 'page'
-                        ]) . $url->hash,
-                        'skip' => 's' === $_['task'],
-                        'stack' => 10.5
-                    ]
+$bar = [
+    // type: bar
+    'lot' => [
+        // type: bar/menu
+        0 => [
+            'lot' => [
+                'folder' => ['skip' => true],
+                'link' => [
+                    'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                        'tab' => false,
+                        'type' => false
+                    ]) . $url->hash,
+                    'skip' => false
+                ],
+                's' => [
+                    'icon' => 'M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z',
+                    'title' => false,
+                    'description' => ['New %s', 'Page'],
+                    'url' => strtr(dirname($url->clean), ['::g::' => '::s::']) . $url->query('&', [
+                        'tab' => false,
+                        'type' => 'page'
+                    ]) . $url->hash,
+                    'skip' => 's' === $_['task'],
+                    'stack' => 10.5
                 ]
             ]
         ]
-    ],
-    'desk' => [
-        // type: desk
-        'lot' => [
-            'form' => [
-                // type: form/post
-                'lot' => [
-                    'fields' => [
-                        'type' => 'fields',
-                        'lot' => [ // Hidden field(s)
-                            'seal' => [
-                                'type' => 'hidden',
-                                'name' => 'file[seal]',
-                                'value' => '0600'
-                            ],
-                            'token' => [
-                                'type' => 'hidden',
-                                'value' => $_['token']
-                            ],
-                            'type' => [
-                                'type' => 'hidden',
-                                'value' => $_['type']
-                            ]
+    ]
+];
+
+$desk = [
+    // type: desk
+    'lot' => [
+        'form' => [
+            // type: form/post
+            'lot' => [
+                'fields' => [
+                    'type' => 'fields',
+                    'lot' => [
+                        'seal' => [
+                            'type' => 'hidden',
+                            'name' => 'file[seal]',
+                            'value' => '0600'
                         ],
-                        'stack' => -1
+                        'token' => [
+                            'type' => 'hidden',
+                            'value' => $_['token']
+                        ],
+                        'type' => [
+                            'type' => 'hidden',
+                            'value' => $_['type']
+                        ]
                     ],
-                    1 => [
-                        // type: section
-                        'lot' => [
-                            'tabs' => [
-                                // type: tabs
-                                'lot' => [
-                                    'page' => [
-                                        'lot' => [
-                                            'fields' => [
-                                                'type' => 'fields',
-                                                'lot' => [
-                                                    'title' => [
-                                                        'type' => 'text',
-                                                        'hint' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
-                                                        'focus' => true,
-                                                        'name' => 'page[title]',
-                                                        'value' => $page['title'],
-                                                        'width' => true,
-                                                        'stack' => 10
-                                                    ],
-                                                    'name' => [
-                                                        'title' => 'Slug',
-                                                        'type' => 'text',
-                                                        'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
-                                                        'hint' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
-                                                        'name' => 'page[name]',
-                                                        'value' => $page->name,
-                                                        'width' => true,
-                                                        'skip' => 's' === $_['task'],
-                                                        'stack' => 20
-                                                    ],
-                                                    'content' => [
-                                                        'type' => 'source',
-                                                        'name' => 'page[content]',
-                                                        'hint' => 'Content goes here...',
-                                                        'value' => $page['content'],
-                                                        'width' => true,
-                                                        'height' => true,
-                                                        'stack' => 30
-                                                    ],
-                                                    'description' => [
-                                                        'type' => 'content',
-                                                        'name' => 'page[description]',
-                                                        'hint' => 'Description goes here...',
-                                                        'value' => $page['description'],
-                                                        'width' => true,
-                                                        'stack' => 40
-                                                    ],
-                                                    'author' => [
-                                                        'type' => 'hidden',
-                                                        'name' => 'page[author]',
-                                                        'hint' => $page['author'] ?? '@' . S . To::kebab(i('John Doe')),
-                                                        'value' => $page['author'] ?? $user->user,
-                                                        'stack' => 50
-                                                    ],
-                                                    'type' => [
-                                                        'type' => 'item',
-                                                        'name' => 'page[type]',
-                                                        'value' => 'text/html' === $page->type ? 'HTML' : $page->type,
-                                                        'lot' => [
-                                                            'HTML' => 'HTML',
-                                                            'Markdown' => null !== State::get('x.markdown') ? 'Markdown' : null
-                                                        ],
-                                                        'stack' => 60
-                                                    ]
+                    'stack' => -1
+                ],
+                1 => [
+                    // type: section
+                    'lot' => [
+                        'tabs' => [
+                            // type: tabs
+                            'lot' => [
+                                'page' => [
+                                    'lot' => [
+                                        'fields' => [
+                                            'type' => 'fields',
+                                            'lot' => [
+                                                'title' => [
+                                                    'type' => 'text',
+                                                    'hint' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
+                                                    'focus' => true,
+                                                    'name' => 'page[title]',
+                                                    'value' => $page['title'],
+                                                    'width' => true,
+                                                    'stack' => 10
                                                 ],
-                                                'stack' => 10
-                                            ]
-                                        ],
-                                        'stack' => 10
+                                                'name' => [
+                                                    'title' => 'Slug',
+                                                    'type' => 'text',
+                                                    'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
+                                                    'hint' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
+                                                    'name' => 'page[name]',
+                                                    'value' => $page->name,
+                                                    'width' => true,
+                                                    'skip' => 's' === $_['task'],
+                                                    'stack' => 20
+                                                ],
+                                                'content' => [
+                                                    'type' => 'source',
+                                                    'name' => 'page[content]',
+                                                    'hint' => 'Content goes here...',
+                                                    'value' => $page['content'],
+                                                    'width' => true,
+                                                    'height' => true,
+                                                    'stack' => 30
+                                                ],
+                                                'description' => [
+                                                    'type' => 'content',
+                                                    'name' => 'page[description]',
+                                                    'hint' => 'Description goes here...',
+                                                    'value' => $page['description'],
+                                                    'width' => true,
+                                                    'stack' => 40
+                                                ],
+                                                'author' => [
+                                                    'type' => 'hidden',
+                                                    'name' => 'page[author]',
+                                                    'hint' => $page['author'] ?? '@' . S . To::kebab(i('John Doe')),
+                                                    'value' => $page['author'] ?? $user->user,
+                                                    'stack' => 50
+                                                ],
+                                                'type' => [
+                                                    'type' => 'item',
+                                                    'name' => 'page[type]',
+                                                    'value' => 'text/html' === $page->type ? 'HTML' : $page->type,
+                                                    'lot' => [
+                                                        'HTML' => 'HTML',
+                                                        'Markdown' => null !== State::get('x.markdown') ? 'Markdown' : null
+                                                    ],
+                                                    'stack' => 60
+                                                ]
+                                            ],
+                                            'stack' => 10
+                                        ]
                                     ],
-                                    'data' => [
-                                        'lot' => [
-                                            'fields' => [
-                                                'type' => 'fields',
-                                                'lot' => [
-                                                    'link' => [
-                                                        'type' => 'link',
-                                                        'name' => 'page[link]',
-                                                        'value' => $page['link'],
-                                                        'width' => true,
-                                                        'stack' => 10
-                                                    ],
-                                                    'time' => [
-                                                        'type' => 'date-time',
-                                                        'name' => 'data[time]',
-                                                        'value' => $page['time'],
-                                                        'skip' => 's' === $_['task'],
-                                                        'stack' => 20
-                                                    ],
-                                                    'files' => [
-                                                        'title' => "",
-                                                        'type' => 'field',
-                                                        'lot' => [
-                                                            'files' => [
-                                                                'type' => 'files',
-                                                                'tags' => ['mb:1' => true],
-                                                                'lot' => [],
-                                                                'stack' => 10
-                                                            ],
-                                                            'tasks' => [
-                                                                'type' => 'tasks/link',
-                                                                'lot' => [
-                                                                    's' => [
-                                                                        'title' => 'Data',
-                                                                        'url' => $url . $_['/'] . '/::s::/' . Path::F($_['path'], '/') . $url->query('&', [
-                                                                            'tab' => false,
-                                                                            'type' => 'data'
-                                                                        ]) . $url->hash,
-                                                                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                                                        'stack' => 10
-                                                                    ]
-                                                                ],
-                                                                'stack' => 20
-                                                            ]
-                                                        ],
-                                                        'skip' => 's' === $_['task'],
-                                                        'stack' => 100
-                                                    ]
+                                    'stack' => 10
+                                ],
+                                'data' => [
+                                    'lot' => [
+                                        'fields' => [
+                                            'type' => 'fields',
+                                            'lot' => [
+                                                'link' => [
+                                                    'type' => 'link',
+                                                    'name' => 'page[link]',
+                                                    'value' => $page['link'],
+                                                    'width' => true,
+                                                    'stack' => 10
                                                 ],
-                                                'stack' => 10
-                                            ]
-                                        ],
-                                        'stack' => 20
-                                    ]
+                                                'time' => [
+                                                    'type' => 'date-time',
+                                                    'name' => 'data[time]',
+                                                    'value' => $page['time'],
+                                                    'skip' => 's' === $_['task'],
+                                                    'stack' => 20
+                                                ],
+                                                'files' => [
+                                                    'title' => "",
+                                                    'type' => 'field',
+                                                    'lot' => [
+                                                        'files' => [
+                                                            'type' => 'files',
+                                                            'tags' => ['mb:1' => true],
+                                                            'lot' => [],
+                                                            'stack' => 10
+                                                        ],
+                                                        'tasks' => [
+                                                            'type' => 'tasks/link',
+                                                            'lot' => [
+                                                                's' => [
+                                                                    'title' => 'Data',
+                                                                    'url' => $url . $_['/'] . '/::s::/' . Path::F($_['path'], '/') . $url->query('&', [
+                                                                        'tab' => false,
+                                                                        'type' => 'data'
+                                                                    ]) . $url->hash,
+                                                                    'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                                                                    'stack' => 10
+                                                                ]
+                                                            ],
+                                                            'stack' => 20
+                                                        ]
+                                                    ],
+                                                    'skip' => 's' === $_['task'],
+                                                    'stack' => 100
+                                                ]
+                                            ],
+                                            'stack' => 10
+                                        ]
+                                    ],
+                                    'stack' => 20
                                 ]
                             ]
                         ]
-                    ],
-                    2 => [
-                        // type: section
-                        'lot' => [
-                            'fields' => [
-                                'type' => 'fields',
-                                'lot' => [
-                                    0 => [
-                                        'title' => "",
-                                        'type' => 'field',
-                                        'lot' => [
-                                            'tasks' => [
-                                                'type' => 'tasks/button',
-                                                'lot' => [
-                                                    's' => [
-                                                        'title' => 'Update',
-                                                        'description' => ['Update as %s', ucfirst($x = $page->x)],
-                                                        'type' => 'submit',
-                                                        'name' => 'page[x]',
-                                                        'value' => $x,
-                                                        'skip' => 's' === $_['task'],
-                                                        'stack' => 10
-                                                    ],
-                                                    'page' => [
-                                                        'title' => 'Publish',
-                                                        'type' => 'submit',
-                                                        'name' => 'page[x]',
-                                                        'value' => 'page',
-                                                        'skip' => 'page' === $x,
-                                                        'stack' => 20
-                                                    ],
-                                                    'draft' => [
-                                                        'title' => 'Save',
-                                                        'description' => ['Save as %s', 'Draft'],
-                                                        'type' => 'submit',
-                                                        'name' => 'page[x]',
-                                                        'value' => 'draft',
-                                                        'skip' => 'draft' === $x,
-                                                        'stack' => 30
-                                                    ],
-                                                    'archive' => [
-                                                        'title' => 'Archive',
-                                                        'description' => ['Save as %s', 'Archive'],
-                                                        'type' => 'submit',
-                                                        'name' => 'page[x]',
-                                                        'value' => 'archive',
-                                                        'skip' => 'archive' === $x || 's' === $_['task'],
-                                                        'stack' => 40
-                                                    ],
-                                                    'l' => [
-                                                        'title' => 'Delete',
-                                                        'type' => 'link',
-                                                        'url' => str_replace('::g::', '::l::', $url->clean . $url->query('&', [
-                                                            'tab' => false,
-                                                            'token' => $_['token'],
-                                                            'trash' => $trash
-                                                        ])),
-                                                        'skip' => 's' === $_['task'],
-                                                        'stack' => 50
-                                                    ]
+                    ]
+                ],
+                2 => [
+                    // type: section
+                    'lot' => [
+                        'fields' => [
+                            'type' => 'fields',
+                            'lot' => [
+                                0 => [
+                                    'title' => "",
+                                    'type' => 'field',
+                                    'lot' => [
+                                        'tasks' => [
+                                            'type' => 'tasks/button',
+                                            'lot' => [
+                                                's' => [
+                                                    'title' => 'Update',
+                                                    'description' => ['Update as %s', ucfirst($x = $page->x)],
+                                                    'type' => 'submit',
+                                                    'name' => 'page[x]',
+                                                    'value' => $x,
+                                                    'skip' => 's' === $_['task'],
+                                                    'stack' => 10
+                                                ],
+                                                'page' => [
+                                                    'title' => 'Publish',
+                                                    'type' => 'submit',
+                                                    'name' => 'page[x]',
+                                                    'value' => 'page',
+                                                    'skip' => 'page' === $x,
+                                                    'stack' => 20
+                                                ],
+                                                'draft' => [
+                                                    'title' => 'Save',
+                                                    'description' => ['Save as %s', 'Draft'],
+                                                    'type' => 'submit',
+                                                    'name' => 'page[x]',
+                                                    'value' => 'draft',
+                                                    'skip' => 'draft' === $x,
+                                                    'stack' => 30
+                                                ],
+                                                'archive' => [
+                                                    'title' => 'Archive',
+                                                    'description' => ['Save as %s', 'Archive'],
+                                                    'type' => 'submit',
+                                                    'name' => 'page[x]',
+                                                    'value' => 'archive',
+                                                    'skip' => 'archive' === $x || 's' === $_['task'],
+                                                    'stack' => 40
+                                                ],
+                                                'l' => [
+                                                    'title' => 'Delete',
+                                                    'type' => 'link',
+                                                    'url' => strtr($url->clean . $url->query('&', [
+                                                        'tab' => false,
+                                                        'token' => $_['token'],
+                                                        'trash' => $trash
+                                                    ]), ['::g::' => '::l::']),
+                                                    'skip' => 's' === $_['task'],
+                                                    'stack' => 50
                                                 ]
                                             ]
                                         ]
                                     ]
-                                ],
-                                'stack' => 10
-                            ]
+                                ]
+                            ],
+                            'stack' => 10
                         ]
                     ]
                 ]
@@ -383,4 +383,9 @@ Hook::set('_', function($_) use($page, $trash, $url) {
     return $_;
 }, 20);
 
-return $lot;
+return ($_ = array_replace_recursive($_, [
+    'lot' => [
+        'bar' => $bar,
+        'desk' => $desk
+    ]
+]));

@@ -1,6 +1,6 @@
 <?php
 
-$lot = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'page.php';
 
 // Sanitize the form data
 if ('post' === $_['form']['type']) {
@@ -15,7 +15,7 @@ if ('post' === $_['form']['type']) {
     }
 }
 
-$lot = array_replace_recursive($lot, [
+$_['lot'] = array_replace_recursive($_['lot'] ?? [], [
     'bar' => [
         // type: bar
         'lot' => [
@@ -25,7 +25,7 @@ $lot = array_replace_recursive($lot, [
                     's' => [
                         'icon' => 'M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z',
                         'description' => ['New %s', 'User'],
-                        'url' => str_replace('::g::', '::s::', dirname($url->clean)) . $url->query('&', [
+                        'url' => strtr(dirname($url->clean), ['::g::' => '::s::']) . $url->query('&', [
                             'tab' => false,
                             'type' => 'page/user'
                         ]) . $url->hash
@@ -165,4 +165,4 @@ $lot = array_replace_recursive($lot, [
     ]
 ]);
 
-return $lot;
+return $_;

@@ -91,86 +91,84 @@ if (count($_['chops']) > 1 && $_['i'] <= 1) {
     ]], $files);
 }
 
-return [
-    'desk' => [
-        // type: desk
-        'lot' => [
-            'form' => [
-                // type: form/post
-                '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
-                'lot' => [
-                    0 => [
-                        // type: section
-                        'lot' => [
-                            'tasks' => [
-                                'type' => 'tasks/button',
-                                'lot' => [
-                                    'blob' => [
-                                        'title' => false,
-                                        'description' => 'Upload',
-                                        'type' => 'link',
-                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
-                                            'tab' => false,
-                                            'type' => 'blob'
-                                        ]) . $url->hash,
-                                        'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
-                                        'stack' => 10
-                                    ],
-                                    'file' => [
-                                        'type' => 'link',
-                                        'description' => ['New %s', 'File'],
-                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
-                                            'tab' => false,
-                                            'type' => 'file'
-                                        ]) . $url->hash,
-                                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'stack' => 20
-                                    ],
-                                    'folder' => [
-                                        'type' => 'link',
-                                        'description' => ['New %s', 'Folder'],
-                                        'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
-                                            'tab' => false,
-                                            'type' => 'folder'
-                                        ]) . $url->hash,
-                                        'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                        'stack' => 30
-                                    ]
+$desk = [
+    // type: desk
+    'lot' => [
+        'form' => [
+            // type: form/post
+            '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
+            'lot' => [
+                0 => [
+                    // type: section
+                    'lot' => [
+                        'tasks' => [
+                            'type' => 'tasks/button',
+                            'lot' => [
+                                'blob' => [
+                                    'title' => false,
+                                    'description' => 'Upload',
+                                    'type' => 'link',
+                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'tab' => false,
+                                        'type' => 'blob'
+                                    ]) . $url->hash,
+                                    'icon' => 'M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z',
+                                    'stack' => 10
                                 ],
-                                'stack' => 10
-                            ]
+                                'file' => [
+                                    'type' => 'link',
+                                    'description' => ['New %s', 'File'],
+                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'tab' => false,
+                                        'type' => 'file'
+                                    ]) . $url->hash,
+                                    'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                                    'stack' => 20
+                                ],
+                                'folder' => [
+                                    'type' => 'link',
+                                    'description' => ['New %s', 'Folder'],
+                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'tab' => false,
+                                        'type' => 'folder'
+                                    ]) . $url->hash,
+                                    'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
+                                    'stack' => 30
+                                ]
+                            ],
+                            'stack' => 10
                         ]
-                    ],
-                    1 => [
-                        // type: section
-                        'lot' => [
-                            'tabs' => [
-                                // type: tabs
-                                'lot' => [
-                                    'files' => [
-                                        'lot' => [
-                                            'files' => [
-                                                'type' => 'files',
-                                                'lot' => (new Anemon($files))->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get(),
-                                                'stack' => 10
-                                            ]
-                                        ],
-                                        'stack' => 10
-                                    ]
+                    ]
+                ],
+                1 => [
+                    // type: section
+                    'lot' => [
+                        'tabs' => [
+                            // type: tabs
+                            'lot' => [
+                                'files' => [
+                                    'lot' => [
+                                        'files' => [
+                                            'type' => 'files',
+                                            'lot' => (new Anemon($files))->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get(),
+                                            'stack' => 10
+                                        ]
+                                    ],
+                                    'stack' => 10
                                 ]
                             ]
                         ]
-                    ],
-                    2 => [
-                        // type: section
-                        'lot' => [
-                            'pager' => [
-                                'type' => 'pager',
-                                'chunk' => $_['chunk'],
-                                'count' => $count,
-                                'current' => $_['i'],
-                                'stack' => 10
-                            ]
+                    ]
+                ],
+                2 => [
+                    // type: section
+                    'lot' => [
+                        'pager' => [
+                            'type' => 'pager',
+                            'chunk' => $_['chunk'],
+                            'count' => $count,
+                            'current' => $_['i'],
+                            'stack' => 10
                         ]
                     ]
                 ]
@@ -178,3 +176,9 @@ return [
         ]
     ]
 ];
+
+return ($_ = array_replace_recursive($_, [
+    'lot' => [
+        'desk' => $desk
+    ]
+]));

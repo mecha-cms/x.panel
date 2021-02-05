@@ -6,8 +6,8 @@ $type = strtr($_['type'], [
     '../' => ""
 ]);
 
-if (is_file($lot = __DIR__ . DS . '..' . DS . 'type' . DS . $type . 's.php')) {
-    return require $lot;
+if (is_file($f = __DIR__ . DS . '..' . DS . 'type' . DS . $type . 's.php')) {
+    $_ = (array) require $f;
 }
 
-return [ /* TODO: Error type does not exist */ ];
+return $_;

@@ -1,8 +1,8 @@
 <?php
 
-$lot = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'page.php';
 
-$lot = array_replace_recursive($lot, [
+$_['lot'] = array_replace_recursive($_['lot'] ?? [], [
     'bar' => [
         // type: bar
         'lot' => [
@@ -118,4 +118,4 @@ $lot = array_replace_recursive($lot, [
     ]
 ]);
 
-return $lot;
+return $_;

@@ -8,7 +8,7 @@ $_['type'] = [
     'page' => 'page/user'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['type'];
 
-$lot = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'page.php';
 
 $status = $user['status'];
 $i = $page['status'];
@@ -21,18 +21,18 @@ if (1 !== $status) {
 }
 
 // No use. This field was added only to hide the `pass` data from file list
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['pass'] = [
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['pass'] = [
     'skip' => true,
     'name' => 'data[pass]'
 ];
 
 // No use. This field was added only to hide the `pass` data from file list
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['token'] = [
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['token'] = [
     'skip' => true,
     'name' => 'data[token]'
 ];
 
 // Modify user status list
-$lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] = $any;
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] = $any;
 
-return $lot;
+return $_;

@@ -8,4 +8,6 @@ $_['type'] = [
     'page' => 'page/page'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['type'];
 
-return require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'page.php';
+
+return $_;

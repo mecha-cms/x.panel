@@ -8,8 +8,8 @@ $_['type'] = [
     'page' => 'page/comment'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['type'];
 
-$lot = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'page.php';
 
 // TODO
 
-return $lot;
+return $_;

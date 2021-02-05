@@ -3,13 +3,13 @@
 // `http://127.0.0.1/panel/::g::/user/1`
 $_['type'] = 'page';
 
-$lot = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
 
 $g = 1 !== $user['status'];
 
-if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
+if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
     $path = $user->path;
-    foreach ($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
+    foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
         // Load data asynchronously for best performance
         $v['invoke'] = static function($path) {
             $page = new User($path);
@@ -38,16 +38,16 @@ if (isset($lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['
     }
 }
 
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'User';
-$lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'User';
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
     'tab' => false,
     'type' => 'page/user'
 ]) . $url->hash;
 
 // Prevent user with status other than `1` from creating user file(s)
 if ($g) {
-    $lot['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
+    $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
 }
 
-return $lot;
+return $_;

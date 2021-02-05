@@ -76,7 +76,7 @@ HTML;
             \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
             $_['form']['lot']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
         }
-        $_['lot'] = \array_replace_recursive($_['lot'] ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
+        $_ = \array_replace_recursive($_ ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
         if (1 === \count($_['chops'])) {
             $panes = $paths = [];
@@ -122,7 +122,7 @@ HTML;
                 }
                 return $zones;
             }, '1 year');
-            $_['lot'] = \array_replace_recursive($_['lot'], [
+            $_['lot'] = \array_replace_recursive($_['lot'] ?? [], [
                 'bar' => [
                     'lot' => [
                         0 => [
