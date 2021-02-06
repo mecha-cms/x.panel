@@ -25,13 +25,11 @@ function route() {
     if ('get' === $_['form']['type']) {
         if (!$route && !empty($_['is']['error'])) {
             $_ = \_\lot\x\panel\_set();
-            $_ = \_\lot\x\panel\_set_asset();
             $_ = \_\lot\x\panel\_set_state();
             $this->layout($_['layout'] ?? $_['is']['error'] . '/panel');
         }
     }
     $_ = \_\lot\x\panel\_set();
-    $_ = \_\lot\x\panel\_set_asset();
     $_ = \_\lot\x\panel\_set_state();
     if (!isset($_['type'])) {
         // Auto-detect layout type

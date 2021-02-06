@@ -8,24 +8,6 @@
     <link href="<?= $url; ?>/favicon.ico" rel="icon">
   </head>
   <body spellcheck="false">
-  <?php
-
-$svg = "";
-$panel = _\lot\x\panel\type\lot(['lot' => $_['lot']], 0); // Load layout first, to queue the icon data
-
-// Build icon(s)
-if (!empty($GLOBALS['SVG'])) {
-    $svg .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
-    foreach ($GLOBALS['SVG'] as $k => $v) {
-        $svg .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
-        $svg .= 0 === strpos($v, '<') ? $v : '<path d="' . $v . '"></path>';
-        $svg .= '</symbol>';
-    }
-    $svg .= '</svg>';
-}
-
-echo $svg . $panel; // Put icon(s) before layout. Why? Because HTML5!
-
-  ?>
+    <?= $panel; ?>
   </body>
 </html>

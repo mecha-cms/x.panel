@@ -47,7 +47,26 @@ Hook::set('get', function() {
 }, 20);
 
 Hook::set('layout', function() {
-    extract($GLOBALS);
+    // Load content first to queue the icon data
+    if (isset($GLOBALS['_']['content'])) {
+        $content = _\lot\x\panel\type\lot(['content' => $GLOBALS['_']['content'] ?? []], 0);
+    } else if (isset($GLOBALS['_']['lot'])) {
+        $content = _\lot\x\panel\type\lot(['lot' => $GLOBALS['_']['lot'] ?? []], 0);
+    }
+    extract($GLOBALS, EXTR_SKIP);
+    // Build icon(s)
+    $icons = "";
+    if (!empty($SVG)) {
+        $icons .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
+        foreach ($SVG as $k => $v) {
+            $icons .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
+            $icons .= 0 === strpos($v, '<') ? $v : '<path d="' . $v . '"></path>';
+            $icons .= '</symbol>';
+        }
+        $icons .= '</svg>';
+    }
+    // Put icon(s) before content. Why? Because HTML5!
+    $GLOBALS['panel'] = $icons . $content;
     if (isset($_['f'])) {
         $_['f'] = To::URL($_['f']);
     }
@@ -57,4 +76,5 @@ Hook::set('layout', function() {
     // Remove sensitive data
     unset($_['asset'], $_['lot'], $_['user']);
     Asset::script('window._=Object.assign(window._||{},' . json_encode($_) . ');', 0);
+    _\lot\x\panel\_set_asset();
 }, 20);

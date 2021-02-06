@@ -6,6 +6,10 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### 2.5.1
+
+ - Bug fixes.
+
 ### 2.5.0
 
  - Added `$_['asset']` property to easily load/unload assets in the control panel (#18)
