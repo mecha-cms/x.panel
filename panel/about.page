@@ -3,7 +3,7 @@ title: Panel
 description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.5.1
+version: 2.5.2
 
 use:
   '.\lot\x\layout': 1

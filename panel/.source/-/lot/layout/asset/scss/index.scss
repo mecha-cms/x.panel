@@ -10,6 +10,7 @@ $code: 'Nimbus Mono L', monospace !default;
 
 .is\:dark {
   background: skin(0%);
+  border-color: skin(5%);
   font-family: $body;
   color: skin(60%);
   a[href] {

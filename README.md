@@ -6,7 +6,7 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### 2.5.1
+### 2.5.1, 2.5.2
 
  - Bug fixes.
 
