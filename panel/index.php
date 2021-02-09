@@ -33,6 +33,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     ],
     'has' => [],
     'i' => $i = $url['i'],
+    'icon' => [],
     'is' => [],
     'not' => [],
     'kick' => null,

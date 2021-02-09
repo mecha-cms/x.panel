@@ -6,6 +6,11 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### main
+
+ - Added `$_['icon']` property to store the SVG path icons globally.
+ - Added `description`, `icon`, `title`, `field/description`, `field/title` type.
+
 ### 2.5.1, 2.5.2
 
  - Bug fixes.

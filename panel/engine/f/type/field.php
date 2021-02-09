@@ -192,6 +192,13 @@ function date_time($value, $key) {
     return \_\lot\x\panel\type\field\text($value, $key);
 }
 
+function description($value, $key) {
+    if (!\array_key_exists('max', $value)) {
+        $value['max'] = 400;
+    }
+    return \_\lot\x\panel\type\field\content($value, $key);
+}
+
 function email($value, $key) {
     if (!isset($value['hint'])) {
         $value['hint'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
@@ -239,7 +246,7 @@ function item($value, $key) {
                 'value' => $k
             ]]);
             if (\is_array($v)) {
-                $t = \_\lot\x\panel\to\title($v, -2) . "";
+                $t = \_\lot\x\panel\to\title($v['title'] ?? "", -2);
                 $d = $v['description'] ?? "";
                 $content['disabled'] = !$is_active;
                 if (isset($v['name'])) {
@@ -253,7 +260,7 @@ function item($value, $key) {
                     'not:active' => !$is_active
                 ]);
             } else {
-                $t = \_\lot\x\panel\to\title(['title' => $v], -2) . "";
+                $t = \_\lot\x\panel\to\title($v, -2);
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
@@ -304,7 +311,7 @@ function items($value, $key) {
                 'value' => $key_as_value ? $k : \s($the_value[$k] ?? true)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
-                $t = \_\lot\x\panel\to\title($v, -2) . "";
+                $t = \_\lot\x\panel\to\title($v['title'] ?? "", -2);
                 $d = $v['description'] ?? "";
                 if (isset($v['name'])) {
                     $input['name'] = $v['name'];
@@ -313,7 +320,7 @@ function items($value, $key) {
                     $input['value'] = $v['value'];
                 }
             } else {
-                $t = \_\lot\x\panel\to\title(['title' => $v], -2) . "";
+                $t = \_\lot\x\panel\to\title($v, -2);
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
@@ -428,6 +435,7 @@ function range($value, $key) {
     $out['content'][2]['max'] = $value['max'] ?? null;
     $out['content'][2]['value'] = $value['value'] ?? null;
     $out['content'][2]['step'] = $value['step'] ?? null;
+    unset($out['content'][2]['maxlength'], $out['content'][2]['minlength']);
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
@@ -435,8 +443,8 @@ function range($value, $key) {
 }
 
 function set($value, $key) {
-    $title = \strip_tags($value['title'] ?? "", '<a>');
-    $description = \_\lot\x\panel\to\description($value);
+    $title = \_\lot\x\panel\to\title($value['title'] ?? "", -2);
+    $description = \_\lot\x\panel\to\description($value['description'] ?? "");
     $value = \array_replace([
         0 => 'fieldset',
         1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description,
@@ -477,6 +485,13 @@ function time($value, $key) {
     }
     $out = \_\lot\x\panel\type\field\date_time($value, $key);
     return $out;
+}
+
+function title($value, $key) {
+    if (!\array_key_exists('max', $value)) {
+        $value['max'] = 200;
+    }
+    return \_\lot\x\panel\type\field\text($value, $key);
 }
 
 function toggle($value, $key) {

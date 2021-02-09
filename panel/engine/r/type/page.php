@@ -130,7 +130,7 @@ $desk = [
                                             'type' => 'fields',
                                             'lot' => [
                                                 'title' => [
-                                                    'type' => 'text',
+                                                    'type' => 'title',
                                                     'hint' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
                                                     'focus' => true,
                                                     'name' => 'page[title]',
@@ -159,7 +159,7 @@ $desk = [
                                                     'stack' => 30
                                                 ],
                                                 'description' => [
-                                                    'type' => 'content',
+                                                    'type' => 'description',
                                                     'name' => 'page[description]',
                                                     'hint' => 'Description goes here...',
                                                     'value' => $page['description'],

@@ -56,10 +56,10 @@ Hook::set('layout', function() {
     extract($GLOBALS, EXTR_SKIP);
     // Build icon(s)
     $icons = "";
-    if (!empty($SVG)) {
+    if (!empty($_['icon'])) {
         $icons .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
-        foreach ($SVG as $k => $v) {
-            $icons .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
+        foreach ($_['icon'] as $k => $v) {
+            $icons .= '<symbol id="icon:' . $k . '" viewBox="0 0 24 24">';
             $icons .= 0 === strpos($v, '<') ? $v : '<path d="' . $v . '"></path>';
             $icons .= '</symbol>';
         }
@@ -74,7 +74,7 @@ Hook::set('layout', function() {
         $_['ff'] = To::URL($_['ff']);
     }
     // Remove sensitive data
-    unset($_['asset'], $_['lot'], $_['user']);
+    unset($_['asset'], $_['icon'], $_['lot'], $_['user']);
     Asset::script('window._=Object.assign(window._||{},' . json_encode($_) . ');', 0);
     _\lot\x\panel\_set_asset();
 }, 20);

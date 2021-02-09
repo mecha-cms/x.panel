@@ -23,17 +23,8 @@ function content($value) {
     return \is_array($value) ? new \HTML($value) : (string) $value;
 }
 
-function description($value, $or = null) {
-    $description = $value['description'] ?? $or;
-    if (!isset($description) || false === $description) {
-        return;
-    }
-    $out = [
-        0 => 'p',
-        1 => \w('<span>' . \i(...\array_values("" !== $description ? (array) $description : (array) $or)) . '</span>', ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'strong', 'sub', 'sup']),
-        2 => ['class' => 'description']
-    ];
-    return new \HTML($out);
+function description($value) {
+    return (string) \_\lot\x\panel\type\description(['content' => $value], 0);
 }
 
 function field($value, $key) {
@@ -60,6 +51,8 @@ function field($value, $key) {
             'data-state' => $state ? \json_encode($state) : null,
             'disabled' => !$is_active,
             'id' => $value['id'],
+            'maxlength' => $value['max'] ?? null,
+            'minlength' => $value['min'] ?? null,
             'name' => $name,
             'pattern' => $value['pattern'] ?? null,
             'placeholder' => \i(...((array) ($value['hint'] ?? []))),
@@ -83,16 +76,7 @@ function fresh($value) {
 }
 
 function icon($value) {
-    $icon = \array_replace([null, null], (array) $value);
-    if ($icon[0] && false === \strpos($icon[0], '<')) {
-        $GLOBALS['SVG'][$id = \dechex(\crc32($icon[0]))] = $icon[0];
-        $icon[0] = '<svg height="12" width="12"><use href="#i:' . $id . '"></use></svg>';
-    }
-    if ($icon[1] && false === \strpos($icon[1], '<')) {
-        $GLOBALS['SVG'][$id = \dechex(\crc32($icon[1]))] = $icon[1];
-        $icon[1] = '<svg height="12" width="12"><use href="#i:' . $id . '"></use></svg>';
-    }
-    return $icon;
+    return \_\lot\x\panel\type\icon(['lot' => $value], 0);
 }
 
 function lot($lot, $fn = null, &$count = 0) {
@@ -113,36 +97,11 @@ function lot($lot, $fn = null, &$count = 0) {
     return $out;
 }
 
-function title($value, $i = -1, $or = null) {
-    $title = $value['title'] ?? $or;
-    if ((!isset($title) || false === $title) && (!isset($value['icon']) || empty($value['icon']))) {
-        return;
-    }
-    $tag = false;
-    if (-1 === $i) {
-        $tag = 'span';
-    } else if (0 === $i) {
-        $tag = 'p';
-    } else if ($i > 0) {
-        $tag = 'h' . $i;
-    }
-    $out = [
-        0 => $tag,
-        1 => "",
-        2 => []
-    ];
-    $icon = \_\lot\x\panel\to\icon($value['icon'] ?? [null, null]);
-    if (null !== $title && false !== $title) {
-        $title = \w('<span>' . \i(...\array_values((array) $title)) . '</span>', \array_filter(['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', -2 === $i ? null : 'span', 'strong', 'sub', 'sup']));
-    }
-    $out[1] = $icon[0] . $title . $icon[1];
-    unset($value['tags']);
-    \_\lot\x\panel\_set_class($out[2], [
-        'has:icon' => !!($icon[0] || $icon[1]),
-        'has:title' => !!$title,
-        'title' => 1
-    ]);
-    return new \HTML($out);
+function title($value, $level = -1) {
+    return (string) \_\lot\x\panel\type\title([
+        'content' => $value,
+        'level' => $level
+    ], 0);
 }
 
 function w($value, $also = null) {
