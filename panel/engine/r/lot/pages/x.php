@@ -71,7 +71,7 @@ if ($i > 1) {
                 'lot' => [
                     0 => [
                         'title' => $page->title . ' <sup>' . $page->version . '</sup>',
-                        'description' => _\lot\x\panel\to\w($page->description, 'a'),
+                        'description' => $page->description,
                         'type' => 'section',
                         'content' => $content . $use,
                         'stack' => 10

@@ -41,7 +41,7 @@ if (1 === count($_['chops'])) {
             'lot' => [
                 0 => [
                     'title' => $page->title . ' <sup>' . $page->version . '</sup>',
-                    'description' => _\lot\x\panel\to\w($page->description, 'a'),
+                    'description' => $page->description,
                     'type' => 'section',
                     'content' => $content,
                     'stack' => 10
