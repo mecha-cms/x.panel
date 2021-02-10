@@ -12,7 +12,7 @@ $uses = [
     'y-a-m-l' => 1
 ];
 
-if (isset($uses[$_['chops'][1]])) {
+if (isset($uses[$_['chop'][1]])) {
     $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['skip'] = true;
 }
 

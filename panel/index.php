@@ -23,7 +23,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
     'asset' => [],
     'can' => ['fetch' => !empty($state['fetch'])],
-    'chops' => [],
+    'chop' => [],
     'chunk' => $state['chunk'] ?? 20,
     'content' => null,
     'f' => null,

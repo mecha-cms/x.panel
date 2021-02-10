@@ -42,6 +42,7 @@ a {
   font: normal normal #{$z}/#{$h} $sans;
   text-align: left;
   background: $color-back;
+  border: 0 solid;
   color: $color;
 }
 

@@ -124,7 +124,7 @@ $desk = [
                                         'tab' => false
                                     ]) . $url->hash,
                                     'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
-                                    'skip' => count($_['chops']) <= 1,
+                                    'skip' => count($_['chop']) <= 1,
                                     'stack' => 10
                                 ],
                                 'blob' => [
@@ -157,7 +157,7 @@ $desk = [
                                         'type' => 'data'
                                     ]) . $url->hash,
                                     'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                                    'skip' => count($_['chops']) <= 1,
+                                    'skip' => count($_['chop']) <= 1,
                                     'stack' => 40
                                 ]
                             ],

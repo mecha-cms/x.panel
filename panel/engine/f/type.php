@@ -537,6 +537,10 @@ function pages($value, $key) {
     return new \HTML($out);
 }
 
+function separator($value, $key) {
+    return new \HTML(['hr', false]);
+}
+
 function tab($value, $key) {
     $out = [
         0 => $value[0] ?? 'section',
@@ -586,6 +590,10 @@ function tabs($value, $key) {
                     ]);
                 } else {
                     $v['tags']['has:link'] = true;
+                    if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {
+                        // Make sure link tab has a content to preserve the tab title
+                        $v['content'] = \P;
+                    }
                 }
             }
             $v[2]['data-name'] = $kk;

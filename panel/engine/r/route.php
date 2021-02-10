@@ -26,7 +26,22 @@ function route() {
         if (!$route && !empty($_['is']['error'])) {
             $_ = \_\lot\x\panel\_set();
             $_ = \_\lot\x\panel\_set_state();
-            $this->layout($_['layout'] ?? $_['is']['error'] . '/panel');
+            $_['lot']['bar']['skip'] = true;
+            $_['lot']['desk']['lot']['form']['lot'][0]['skip'] = true;
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = [
+                'alert' => [
+                    'type' => 'title',
+                    'level' => 0,
+                    'content' => 'This page is not real, and has never existed before.',
+                    'icon' => 'M12,2A9,9 0 0,0 3,11V22L6,19L9,22L12,19L15,22L18,19L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z',
+                    'stack' => 10
+                ]
+            ];
+            $_['lot']['desk']['lot']['form']['lot'][2]['skip'] = true;
+            $_['type'] = null; // Set as a blank layout
+            // Put data
+            $GLOBALS['_'] = $_;
+            $this->layout($_['layout'] ?? 'panel');
         }
     }
     $_ = \_\lot\x\panel\_set();
@@ -170,7 +185,7 @@ function route() {
         }
     }
     \State::set('[layout].type:' . ($_['type'] ?? 'blank'), true);
-    $n = \ltrim($_['chops'][0] ?? "", '_.-');
+    $n = \ltrim($_['chop'][0] ?? "", '_.-');
     // Put data
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');
@@ -184,7 +199,7 @@ function route() {
         // Make alert section visible
         $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
     }
-    $this->layout($_['layout'] ?? '200/panel');
+    $this->layout($_['layout'] ?? 'panel');
 }
 
 // Back-end route must be set in the highest priority!

@@ -1,7 +1,7 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/x/foo-bar/1`
-$i = count($_['chops']);
+$i = count($_['chop']);
 $uses = [
     'alert' => 1,
     'asset' => 1,
@@ -16,7 +16,7 @@ $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if ($i > 1) {
     $_ = require __DIR__ . DS . '..' . DS . 'pages.php';
-    if (isset($uses[$_['chops'][1]])) {
+    if (isset($uses[$_['chop'][1]])) {
         // Disable delete button where possible
         $index = $index = $_['f'] . DS . 'index.php';
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['active'] = false;

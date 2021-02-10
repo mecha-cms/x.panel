@@ -132,7 +132,7 @@ function page($_) {
         \rmdir($d);
     }
     if (\is_file($f = $_['f'])) {
-        $key = \ucfirst(\ltrim($_['chops'][0], '_.-'));
+        $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
         $path = '<code>' . \_\lot\x\panel\from\path($f) . '</code>';
         $_ = file($_); // Move to `file`
         $alter = [

@@ -24,7 +24,8 @@ function content($value) {
 }
 
 function description($value) {
-    return (string) \_\lot\x\panel\type\description(['content' => $value], 0);
+    $out = (string) \_\lot\x\panel\type\description(['content' => $value], 0);
+    return "" !== $out ? $out : null;
 }
 
 function field($value, $key) {
@@ -98,10 +99,11 @@ function lot($lot, $fn = null, &$count = 0) {
 }
 
 function title($value, $level = -1) {
-    return (string) \_\lot\x\panel\type\title([
+    $out = (string) \_\lot\x\panel\type\title([
         'content' => $value,
         'level' => $level
     ], 0);
+    return "" !== $out ? $out : null;
 }
 
 function w($value, $also = null) {

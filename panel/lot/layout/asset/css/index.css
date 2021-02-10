@@ -13,6 +13,10 @@
   color: #919191;
 }
 
+.is\:dark a.not\:active {
+  color: #4e4e4e;
+}
+
 .is\:dark blockquote,
 .is\:dark caption,
 .is\:dark figcaption,
@@ -248,6 +252,10 @@
   border-color: #2d2d2d;
 }
 
+.is\:dark .lot\:tab > nav li a:not(.has\:link) {
+  color: inherit;
+}
+
 .is\:dark .lot\:tab > nav li.is\:current::before, .is\:dark .lot\:tab > nav li.is\:current::after {
   border-color: #2d2d2d;
 }
@@ -259,9 +267,9 @@
   }
 }
 
-.is\:dark .not\:active {
+.is\:dark .lot\:tab > nav li.not\:active {
   opacity: 1;
-  color: #7a7a7a;
+  color: #4e4e4e;
 }
 
 .is\:dark .input[type='checkbox'], .is\:dark .input[type='radio'] {

@@ -41,8 +41,8 @@ HTML;
     function __state($_) {
         extract($GLOBALS, \EXTR_SKIP);
         // Disable page offset and page children feature
-        if (isset($_['i']) || \count($_['chops']) > 2) {
-            $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chops'][0];
+        if (isset($_['i']) || \count($_['chop']) > 1) {
+            $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chop'][0];
         }
         // Load primary state(s)
         $state_r = require \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
@@ -78,7 +78,7 @@ HTML;
         }
         $_ = \array_replace_recursive($_ ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
-        if (1 === \count($_['chops'])) {
+        if (1 === \count($_['chop'])) {
             $panes = $paths = [];
             foreach (\glob(\LOT . \DS . '*', \GLOB_NOSORT | \GLOB_ONLYDIR) as $panel) {
                 $n = \basename($panel);
@@ -174,7 +174,7 @@ HTML;
                                                                 'content' => ['skip' => true],
                                                                 'name' => ['skip' => true],
                                                                 'title' => [
-                                                                    'type' => 'text',
+                                                                    'type' => 'title',
                                                                     'name' => 'state[title]',
                                                                     'hint' => ($v = $state_r['title'] ?? null) ?? 'Title Goes Here',
                                                                     'value' => $v,
@@ -182,7 +182,7 @@ HTML;
                                                                     'stack' => 10
                                                                 ],
                                                                 'description' => [
-                                                                    'type' => 'content',
+                                                                    'type' => 'description',
                                                                     'name' => 'state[description]',
                                                                     'hint' => 'Description goes here...',
                                                                     'value' => $state_r['description'] ?? null,
@@ -340,13 +340,13 @@ HTML;
             return $_;
         }
         // You cannot edit or delete your own folder
-        if (\count($_['chops']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
+        if (\count($_['chop']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
         }
         if (1 !== $user['status']) {
             // Hide parent folder link
-            if (\count($_['chops']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
+            if (\count($_['chop']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['skip'] = true;
             }
         }
@@ -359,7 +359,7 @@ HTML;
         }
         extract($GLOBALS, \EXTR_SKIP);
         $status = $user['status'];
-        if (\count($_['chops']) > 1) {
+        if (\count($_['chop']) > 1) {
             if (1 !== $status) {
                 // XSS Protection
                 if ('post' === $_['form']['type']) {

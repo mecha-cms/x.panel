@@ -6,7 +6,7 @@ $_ = require __DIR__ . DS . '..' . DS . 'pages.php';
 
 $zip = extension_loaded('zip');
 
-if (1 === count($_['chops'])) {
+if (1 === count($_['chop'])) {
     $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['import'] = [
         'active' => $zip,
         'title' => 'Replace',

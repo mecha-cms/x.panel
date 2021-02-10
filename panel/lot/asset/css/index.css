@@ -601,6 +601,7 @@ a[href] {
   font: normal normal 16px/24px sans-serif;
   text-align: left;
   background: #fff;
+  border: 0 solid;
   color: #000;
 }
 
@@ -1907,7 +1908,7 @@ pre.is\:text code {
 
 .is\:error {
   display: flex;
-  border-top: 4px solid;
+  border-top-width: 4px;
   align-items: center;
   align-content: center;
   text-align: center;
@@ -1915,6 +1916,14 @@ pre.is\:text code {
 
 .is\:error > * {
   flex: 1;
+}
+
+.is\:error > * .title {
+  display: inline-flex;
+}
+
+.is\:error > * .title > svg + span {
+  margin-left: 6px;
 }
 
 @media (min-width: 720px) {

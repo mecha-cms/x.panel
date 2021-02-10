@@ -1,8 +1,8 @@
 <?php
 
-$GLOBALS['_']['fn'] = $_['fn'] = $fn = array_shift($_['chops']);
-$GLOBALS['_']['chops'] = $_['chops'];
-$GLOBALS['_']['f'] = $_['f'] = stream_resolve_include_path(LOT . DS . implode(DS, $_['chops'])) ?: null;
+$GLOBALS['_']['fn'] = $_['fn'] = $fn = array_shift($_['chop']);
+$GLOBALS['_']['chop'] = $_['chop'];
+$GLOBALS['_']['f'] = $_['f'] = stream_resolve_include_path(LOT . DS . implode(DS, $_['chop'])) ?: null;
 
 if (is_file($_f = __DIR__ . DS . 'f' . DS . $fn . '.php')) {
     Hook::set('do.task.' . $fn, function() use($_f) {

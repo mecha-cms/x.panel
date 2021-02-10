@@ -9,7 +9,8 @@ Release Notes
 ### main
 
  - Added `$_['icon']` property to store the SVG path icons globally.
- - Added `description`, `icon`, `title`, `field/description`, `field/title` type.
+ - Added `description`, `icon`, `separator`, `title`, `field/description`, `field/title` type.
+ - Renamed `$_['chops']` to `$_['chop']`.
 
 ### 2.5.1, 2.5.2
 

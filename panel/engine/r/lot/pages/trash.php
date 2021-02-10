@@ -3,7 +3,7 @@
 $_ = require __DIR__ . DS . '..' . DS . 'pages.php';
 
 if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'])) {
-    $root = 1 === count($_['chops']);
+    $root = 1 === count($_['chop']);
     foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] as $k => &$v) {
         unset($v['tasks']['g']);
         if (isset($v['tasks']['l']['url']) && false !== strpos($v['tasks']['l']['url'], '&trash=')) {

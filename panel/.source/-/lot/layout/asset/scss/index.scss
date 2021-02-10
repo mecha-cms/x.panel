@@ -13,11 +13,16 @@ $code: 'Nimbus Mono L', monospace !default;
   border-color: skin(5%);
   font-family: $body;
   color: skin(60%);
-  a[href] {
-    color: skin(40%);
-    &:focus,
-    &:active {
-      color: skin(50%);
+  a {
+    &[href] {
+      color: skin(40%);
+      &:focus,
+      &:active {
+        color: skin(50%);
+      }
+    }
+    &.not\:active {
+      color: skin(20%);
     }
   }
   blockquote,
@@ -275,6 +280,9 @@ $code: 'Nimbus Mono L', monospace !default;
     > nav {
       li {
         border-color: skin(5%);
+        a:not(.has\:link) {
+          color: inherit;
+        }
         &.is\:current {
           &::before,
           &::after {
@@ -287,12 +295,12 @@ $code: 'Nimbus Mono L', monospace !default;
             color: skin(60%);
           }
         }
+        &.not\:active {
+          opacity: 1;
+          color: skin(20%);
+        }
       }
     }
-  }
-  .not\:active {
-    opacity: 1;
-    color: skin(40%);
   }
   .input {
     &[type='checkbox'],

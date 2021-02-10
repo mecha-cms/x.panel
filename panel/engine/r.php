@@ -172,7 +172,7 @@ return (static function($icons) {
         ]
     ];
     return \array_replace_recursive([
-        'has' => ['parent' => \count($_['chops']) > 1],
+        'has' => ['parent' => \count($_['chop']) > 1],
         'is' => [
             'error' => false,
             'page' => !isset($_['i']),
