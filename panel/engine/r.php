@@ -33,7 +33,6 @@ return (static function($icons) {
             'type' => 'bar',
             'lot' => [
                 0 => [
-                    'type' => 'bar/menu',
                     'lot' => [
                         'folder' => [
                             'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
@@ -76,7 +75,6 @@ return (static function($icons) {
                     'stack' => 10
                 ],
                 1 => [
-                    'type' => 'bar/menu',
                     'lot' => [
                         'license' => [
                             'current' => 'g' === $_['task'] && '.license' === $_['path'],
@@ -110,7 +108,6 @@ return (static function($icons) {
                     'stack' => 20
                 ],
                 2 => [
-                    'type' => 'bar/menu',
                     'lot' => [
                         'user' => [
                             '2' => [

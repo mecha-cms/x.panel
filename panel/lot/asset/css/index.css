@@ -1706,6 +1706,10 @@ svg[display='none'] {
   right: 100%;
 }
 
+.lot\:menu .title {
+  flex: 1;
+}
+
 .lot\:pager {
   margin: 0 -3px;
 }
@@ -1751,6 +1755,23 @@ svg[display='none'] {
 
 .lot\:tab > nav a {
   display: flex;
+}
+
+.lot\:tab > nav .title svg {
+  margin: 0 -8px;
+}
+
+.lot\:tab > nav .title svg:first-child {
+  margin-right: 4px;
+}
+
+.lot\:tab > nav .title svg:last-child {
+  margin-left: 4px;
+}
+
+.lot\:tab > nav .title svg:only-child {
+  margin-right: -8px;
+  margin-left: -8px;
 }
 
 .lot\:tab > section {

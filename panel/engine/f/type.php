@@ -2,7 +2,13 @@
 
 function bar($value, $key) {
     if (isset($value['lot'])) {
-        \_\lot\x\panel\_set_type_prefix($value['lot'], 'bar');
+        foreach ($value['lot'] as &$v) {
+            // If `type` is not defined, the default value will be `links`
+            if (!\array_key_exists('type', $v)) {
+                $v['type'] = 'links';
+            }
+        }
+        unset($v);
     }
     $out = \_\lot\x\panel\type\lot($value, $key);
     $out[0] = 'nav';
@@ -330,6 +336,10 @@ function link($value, $key) {
     return new \HTML($out);
 }
 
+function links($value, $key) {
+    return \_\lot\x\panel\type\menu($value, $key, -1);
+}
+
 function menu($value, $key, int $i = 0) {
     $out = [
         0 => $value[0] ?? 'ul',
@@ -337,7 +347,6 @@ function menu($value, $key, int $i = 0) {
         2 => $value[2] ?? []
     ];
     $tags = \array_replace($i < 0 ? [] : [
-        'is:static' => !empty($value['static']),
         'lot' => true,
         'lot:menu' => true
     ], $value['tags'] ?? []);
@@ -359,9 +368,17 @@ function menu($value, $key, int $i = 0) {
             if (isset($v['type'])) {
                 $li[1] .= \_\lot\x\panel\type($v, $k);
             } else if (\is_array($v)) {
-                $v['icon'] = \_\lot\x\panel\to\icon($v['icon'] ?? []);
+                if (\array_key_exists('icon', $v)) {
+                    $v['icon'] = (array) $v['icon'];
+                }
+                $caret = false;
                 if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
-                    $v['icon'][1] = '<svg class="caret" height="12" viewBox="0 0 24 24" width="12"><path d="' . ($v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z')) . '"></path></svg>';
+                    $v['icon'][1] = $v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z');
+                    $caret = true;
+                }
+                $v['icon'] = \_\lot\x\panel\to\icon($v['icon'] ?? []);
+                if ($caret) {
+                    $v['icon'][1] = \strtr($v['icon'][1], ['<svg ' => '<svg class="caret" ']);
                 }
                 $a = \array_replace([
                     'is:current' => !empty($v['current']),
@@ -542,20 +559,16 @@ function separator($value, $key) {
 }
 
 function tab($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'section',
-        1 => $value[1] ?? "",
-        2 => \array_replace([
-            'data-name' => $key
-        ], $value[2] ?? [])
-    ];
+    unset($value['description'], $value['title']);
     if (isset($value['content'])) {
-        $out[1] .= \_\lot\x\panel\to\content($value['content']);
+        $out = \_\lot\x\panel\type\content\section($value, $key);
     } else if (isset($value['lot'])) {
-        $out[1] .= \_\lot\x\panel\to\lot($value['lot']);
+        $out = \_\lot\x\panel\type\lot\section($value, $key);
     }
-    \_\lot\x\panel\_set_class($out[2], $value['tags'] ?? []);
-    return "" !== $out[1] ? new \HTML($out) : null;
+    if (!isset($value[2]['data-name'])) {
+        $out['data-name'] = $key;
+    }
+    return "" !== $out[1] ? $out : null;
 }
 
 function tabs($value, $key) {
@@ -570,7 +583,7 @@ function tabs($value, $key) {
     if (isset($value['content'])) {
         $out[1] .= \_\lot\x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
-        $nav = $section = [];
+        $links = $sections = [];
         $tags = [
             'lot' => true,
             'lot:tab' => true,
@@ -602,36 +615,33 @@ function tabs($value, $key) {
             if (!\array_key_exists('type', $v)) {
                 $v['type'] = 'tab';
             }
-            $nav[$kk] = $v;
-            $section[$kk] = $v;
-            // Disable dropdown menu view
-            unset(
-                $nav[$kk]['content'],
-                $nav[$kk]['lot'],
-                $nav[$kk]['type']
-            );
+            $links[$kk] = $v;
+            $sections[$kk] = $v;
+            unset($links[$kk]['content'], $links[$kk]['lot'], $links[$kk]['type']);
         }
-        // TODO: Do not activate tab (activate the first tab) if current tab content is empty
-        $first = \array_keys($nav)[0] ?? null; // The first tab
+        $first = \array_keys($links)[0] ?? null; // The first tab
         $current = $_GET['tab'][$name] ?? $value['current'] ?? $first ?? null;
-        if (null !== $current && isset($nav[$current]) && \is_array($nav[$current])) {
-            $nav[$current]['tags']['is:current'] = true;
-            $section[$current]['tags']['is:current'] = true;
-        } else if (null !== $first && isset($nav[$first]) && \is_array($nav[$first])) {
-            $nav[$first]['tags']['is:current'] = true;
-            $section[$first]['tags']['is:current'] = true;
+        if (null !== $current && isset($links[$current]) && \is_array($links[$current])) {
+            $links[$current]['tags']['is:current'] = true;
+            $sections[$current]['tags']['is:current'] = true;
+        } else if (null !== $first && isset($links[$first]) && \is_array($links[$first])) {
+            $links[$first]['tags']['is:current'] = true;
+            $sections[$first]['tags']['is:current'] = true;
         }
-        foreach ($section as $k => $v) {
+        foreach ($sections as $k => $v) {
             $vv = (string) \_\lot\x\panel\type($v, $k);
             if ("" === $vv) {
-                unset($nav[$k]);
+                unset($links[$k]);
             } else {
                 ++$count;
             }
-            $section[$k] = $vv;
+            $sections[$k] = $vv;
         }
-        $out[1] = '<nav>' . \_\lot\x\panel\type\bar\menu(['lot' => $nav], $name) . '</nav>';
-        $out[1] .= \implode("", $section);
+        $out[1] = '<nav>' . \_\lot\x\panel\type([
+            'type' => 'links',
+            'lot' => $links
+        ], $name) . '</nav>';
+        $out[1] .= \implode("", $sections);
     }
     $tags['count:' . $count] = true;
     \_\lot\x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
@@ -745,12 +755,11 @@ function title($value, $key) {
         'has:icon' => !!($icon[0] || $icon[1]),
         'has:title' => !!$title,
         'title' => true,
-        'title:' . $level => true
+        'title:' . $level => $level >= 0
     ]);
     return new \HTML($out);
 }
 
-require __DIR__ . \DS . 'type' . \DS . 'bar.php';
 require __DIR__ . \DS . 'type' . \DS . 'button.php';
 require __DIR__ . \DS . 'type' . \DS . 'content.php';
 require __DIR__ . \DS . 'type' . \DS . 'field.php';

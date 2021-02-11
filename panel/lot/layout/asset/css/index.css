@@ -131,6 +131,11 @@
   background: #2d2d2d;
 }
 
+.is\:dark .lot\:bar .not\:active {
+  opacity: 1;
+  color: #4e4e4e;
+}
+
 .is\:dark .lot\:field > .description {
   border-bottom-color: #2d2d2d;
 }
@@ -172,6 +177,11 @@
 
 .is\:dark .lot\:menu li.is\:separator {
   background: #2d2d2d;
+}
+
+.is\:dark .lot\:menu .not\:active {
+  opacity: 1;
+  color: #4e4e4e;
 }
 
 .is\:dark .lot\:file .is\:file::before {

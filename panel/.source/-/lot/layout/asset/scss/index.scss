@@ -151,6 +151,10 @@ $code: 'Nimbus Mono L', monospace !default;
         }
       }
     }
+    .not\:active {
+      opacity: 1;
+      color: skin(20%);
+    }
   }
   .lot\:field {
     > .description {
@@ -202,6 +206,10 @@ $code: 'Nimbus Mono L', monospace !default;
       &.is\:separator {
         background: skin(5%);
       }
+    }
+    .not\:active {
+      opacity: 1;
+      color: skin(20%);
     }
   }
   .lot\:file {

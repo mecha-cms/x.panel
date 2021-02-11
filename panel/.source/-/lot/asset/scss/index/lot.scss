@@ -395,6 +395,9 @@
     left: auto;
     right: 100%;
   }
+  .title {
+    flex: 1;
+  }
 }
 
 .lot\:pager {
@@ -440,6 +443,21 @@
     }
     a {
       display: flex;
+    }
+    .title {
+      svg {
+        margin: 0 (-($z / 2));
+        &:first-child {
+          margin-right: ($z / 4);
+        }
+        &:last-child {
+          margin-left: ($z / 4);
+        }
+        &:only-child {
+          margin-right: (-($z / 2));
+          margin-left: (-($z / 2));
+        }
+      }
     }
   }
   > section {
