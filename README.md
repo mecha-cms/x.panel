@@ -8,6 +8,7 @@ Release Notes
 
 ### main
 
+ - [x] Added GUI tests menu that will be visible only if `DEBUG` mode is enabled by user.
  - [x] Added `$_['icon']` property to store the SVG path icons globally.
  - [x] Added `description`, `icon`, `separator`, `title`, `field/description`, `field/title` type.
  - [x] Renamed `$_['chops']` to `$_['chop']`.
