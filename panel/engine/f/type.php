@@ -236,7 +236,7 @@ function files($value, $key) {
         'count:' . $count => true,
         'lot' => true,
         'lot:file' => true
-    ]), $value['tags'] ?? []);
+    ], $value['tags'] ?? []));
     return new \HTML($out);
 }
 
