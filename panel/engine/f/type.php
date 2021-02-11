@@ -676,12 +676,13 @@ function content($value, $key) {
         $out[1] .= \_\lot\x\panel\to\content($value['content']);
     }
     $tags = [
+        'content' => true,
         'count:1' => true,
-        'lot' => true
+        'p' => true
     ];
     if (isset($type)) {
         foreach (\step(\strtr($type, '/', '.')) as $v) {
-            $tags['lot:' . $v] = true;
+            $tags['content:' . $v] = true;
         }
     }
     $out[2]['id'] = $value['id'] ?? null;
@@ -704,7 +705,8 @@ function lot($value, $key) {
     }
     $tags = [
         'count:' . $count => true,
-        'lot' => true
+        'lot' => true,
+        'p' => true
     ];
     if (isset($type)) {
         foreach (\step(\strtr($type, '/', '.')) as $v) {

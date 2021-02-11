@@ -35,7 +35,7 @@
         }
       }
       > a {
-        display: block;
+        display: flex;
         height: inherit;
         padding: 0 ($x * .75);
         overflow: hidden;
@@ -62,31 +62,6 @@
     > * {
       margin-right: 0;
       margin-left: 0;
-    }
-  }
-  .title {
-    svg {
-      margin: ($y / 2) (-$x / 4) 0;
-      &.caret {
-        &:first-child {
-          margin-right: 0;
-          margin-left: (-$x / 2);
-        }
-        &:last-child {
-          margin-right: (-$x / 2);
-          margin-left: 0;
-        }
-      }
-      &:first-child {
-        margin-right: ($x / 4);
-      }
-      &:last-child {
-        margin-left: ($x / 4);
-      }
-      &:only-child {
-        margin-right: (-$x / 4);
-        margin-left: (-$x / 4);
-      }
     }
   }
 }
@@ -376,6 +351,7 @@
     left: 100%;
   }
   li {
+    display: flex;
     position: relative;
     &.is\:separator {
       width: auto;
@@ -398,24 +374,10 @@
         display: block;
       }
     }
-    .title {
-      svg {
-        margin: 0 (-$x / 4);
-        &:first-child {
-          margin-right: ($x / 4);
-        }
-        &:last-child {
-          margin-left: ($x / 4);
-        }
-        &:only-child {
-          margin-right: (-$x / 4);
-          margin-left: (-$x / 4);
-        }
-      }
-    }
   }
   a {
-    display: block;
+    display: flex;
+    flex: 1;
     padding: ($y / 4) ($x / 2);
     color: $color-link;
     &:focus {
@@ -423,11 +385,6 @@
         display: block;
       }
     }
-  }
-  &.is\:static {
-    display: block;
-    position: static;
-    width: auto;
   }
   &.is\:enter,
   ul.is\:enter {
@@ -470,34 +427,19 @@
   > nav {
     ul,
     li {
+      display: flex;
       margin: 0;
       padding: 0;
       list-style: none;
     }
     ul {
-      display: flex;
       overflow: hidden;
     }
     li {
       position: relative;
     }
     a {
-      display: block;
-    }
-    .title {
-      svg {
-        margin: ($y / 2) (-(($z * 1.25) / 2));
-        &:first-child {
-          margin-right: (($z * 1.25) / 4);
-        }
-        &:last-child {
-          margin-left: (($z * 1.25) / 4);
-        }
-        &:only-child {
-          margin-right: (-(($z * 1.25) / 2));
-          margin-left: (-(($z * 1.25) / 2));
-        }
-      }
+      display: flex;
     }
   }
   > section {
@@ -516,23 +458,6 @@
     }
     > section {
       margin-top: 0;
-    }
-  }
-}
-
-.lot\:table {
-  border: 1px solid;
-  overflow: auto;
-  .table {
-    border-collapse: separate;
-    border-spacing: 2px;
-    th,
-    td {
-      padding: 0 ($z / 4);
-      border: 0;
-      background: $color;
-      color: $color-back;
-      white-space: nowrap;
     }
   }
 }

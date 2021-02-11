@@ -23,35 +23,29 @@ svg {
 .title {
   display: flex;
   flex-wrap: wrap;
-  > span {
-    flex: 1;
-  }
-}
-
-.description {}
-
-.button {
-  .title {
-    svg {
-      margin: 0 (-$x / 4);
-      &.caret {
-        &:first-child {
-          margin-right: 0;
-        }
-        &:last-child {
-          margin-left: 0;
-        }
-      }
+  align-items: center;
+  > svg {
+    margin: 0 (-$x / 4);
+    &.caret {
       &:first-child {
-        margin-right: ($x / 4);
+        margin-right: 0;
       }
       &:last-child {
-        margin-left: ($x / 4);
-      }
-      &:only-child {
-        margin-right: (-$x / 4);
-        margin-left: (-$x / 4);
+        margin-left: 0;
       }
     }
+    &:first-child {
+      margin-right: ($x / 4);
+    }
+    &:last-child {
+      margin-left: ($x / 4);
+    }
+    &:only-child {
+      margin-right: (-$x / 4);
+      margin-left: (-$x / 4);
+    }
+  }
+  > span {
+    flex: 1;
   }
 }

@@ -761,6 +761,7 @@ fieldset legend {
 
 hr {
   border-style: dashed;
+  border-width: 1px 0 0;
 }
 
 legend {
@@ -805,10 +806,6 @@ legend + pre,
 legend + table,
 legend + ul {
   margin-top: 0;
-}
-
-hr {
-  border-width: 1px 0 0;
 }
 
 :invalid {
@@ -1202,35 +1199,36 @@ svg[display='none'] {
 .title {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.title > svg {
+  margin: 0 -6px;
+}
+
+.title > svg.caret:first-child {
+  margin-right: 0;
+}
+
+.title > svg.caret:last-child {
+  margin-left: 0;
+}
+
+.title > svg:first-child {
+  margin-right: 6px;
+}
+
+.title > svg:last-child {
+  margin-left: 6px;
+}
+
+.title > svg:only-child {
+  margin-right: -6px;
+  margin-left: -6px;
 }
 
 .title > span {
   flex: 1;
-}
-
-.button .title svg {
-  margin: 0 -6px;
-}
-
-.button .title svg.caret:first-child {
-  margin-right: 0;
-}
-
-.button .title svg.caret:last-child {
-  margin-left: 0;
-}
-
-.button .title svg:first-child {
-  margin-right: 6px;
-}
-
-.button .title svg:last-child {
-  margin-left: 6px;
-}
-
-.button .title svg:only-child {
-  margin-right: -6px;
-  margin-left: -6px;
 }
 
 .alert p {
@@ -1305,7 +1303,7 @@ svg[display='none'] {
 }
 
 .lot\:bar > ul > li > a {
-  display: block;
+  display: flex;
   height: inherit;
   padding: 0 18px;
   overflow: hidden;
@@ -1335,33 +1333,6 @@ svg[display='none'] {
 .lot\:bar .field > * {
   margin-right: 0;
   margin-left: 0;
-}
-
-.lot\:bar .title svg {
-  margin: 12px -6px 0;
-}
-
-.lot\:bar .title svg.caret:first-child {
-  margin-right: 0;
-  margin-left: -12px;
-}
-
-.lot\:bar .title svg.caret:last-child {
-  margin-right: -12px;
-  margin-left: 0;
-}
-
-.lot\:bar .title svg:first-child {
-  margin-right: 6px;
-}
-
-.lot\:bar .title svg:last-child {
-  margin-left: 6px;
-}
-
-.lot\:bar .title svg:only-child {
-  margin-right: -6px;
-  margin-left: -6px;
 }
 
 .lot\:button {
@@ -1689,6 +1660,7 @@ svg[display='none'] {
 }
 
 .lot\:menu li {
+  display: flex;
   position: relative;
 }
 
@@ -1712,37 +1684,15 @@ svg[display='none'] {
   display: block;
 }
 
-.lot\:menu li .title svg {
-  margin: 0 -6px;
-}
-
-.lot\:menu li .title svg:first-child {
-  margin-right: 6px;
-}
-
-.lot\:menu li .title svg:last-child {
-  margin-left: 6px;
-}
-
-.lot\:menu li .title svg:only-child {
-  margin-right: -6px;
-  margin-left: -6px;
-}
-
 .lot\:menu a {
-  display: block;
+  display: flex;
+  flex: 1;
   padding: 6px 12px;
   color: #00f;
 }
 
 .lot\:menu a:focus + ul {
   display: block;
-}
-
-.lot\:menu.is\:static {
-  display: block;
-  position: static;
-  width: auto;
 }
 
 .lot\:menu.is\:enter,
@@ -1785,13 +1735,13 @@ svg[display='none'] {
 
 .lot\:tab > nav ul,
 .lot\:tab > nav li {
+  display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .lot\:tab > nav ul {
-  display: flex;
   overflow: hidden;
 }
 
@@ -1800,24 +1750,7 @@ svg[display='none'] {
 }
 
 .lot\:tab > nav a {
-  display: block;
-}
-
-.lot\:tab > nav .title svg {
-  margin: 12px -10px;
-}
-
-.lot\:tab > nav .title svg:first-child {
-  margin-right: 5px;
-}
-
-.lot\:tab > nav .title svg:last-child {
-  margin-left: 5px;
-}
-
-.lot\:tab > nav .title svg:only-child {
-  margin-right: -10px;
-  margin-left: -10px;
+  display: flex;
 }
 
 .lot\:tab > section {
@@ -1839,25 +1772,6 @@ svg[display='none'] {
 
 .lot\:tab.count\:1 > section {
   margin-top: 0;
-}
-
-.lot\:table {
-  border: 1px solid;
-  overflow: auto;
-}
-
-.lot\:table .table {
-  border-collapse: separate;
-  border-spacing: 2px;
-}
-
-.lot\:table .table th,
-.lot\:table .table td {
-  padding: 0 4px;
-  border: 0;
-  background: #000;
-  color: #fff;
-  white-space: nowrap;
 }
 
 .lot\:task {
