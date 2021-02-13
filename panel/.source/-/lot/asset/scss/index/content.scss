@@ -19,7 +19,7 @@ pre {
     flex: 1;
     .title {
       display: inline-flex;
-      > svg + span {
+      > .icon + span {
         margin-left: ($x / 4);
       }
     }

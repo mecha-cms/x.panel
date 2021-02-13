@@ -1,0 +1,20 @@
+.lot\:item {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 (-$x / 4);
+  padding: ($x / 4) 0;
+  &.is\:block {
+    display: block;
+  }
+  > * {
+    margin: 0 ($x / 4);
+  }
+  > label {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    > * {
+      margin: 0 ($x / 4);
+    }
+  }
+}

@@ -4,6 +4,8 @@ function bar($_) {
     $_['title'] = 'Bar';
     $lot = [
         'bar-0' => [
+            'title' => 'Title Goes Here',
+            'description' => 'Description goes here.',
             'type' => 'bar',
             'lot' => [
                 'bar-0' => [

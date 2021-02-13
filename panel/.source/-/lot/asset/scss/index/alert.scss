@@ -2,7 +2,7 @@
   p {
     background: darken($color-back, 5%);
     padding: ($z * .75) ($z * 1.25);
-    .f\:r svg {
+    .f\:r .icon {
       margin-right: (-$x / 4);
     }
     > small {

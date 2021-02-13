@@ -1,0 +1,25 @@
+.lot\:pager {
+  margin: 0 (-$x / 8);
+  &,
+  > span {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  > span {
+    > a,
+    > b,
+    > span {
+      background: $color-back-button;
+      color: $color-button;
+      font: inherit;
+      padding: 0 ($x / 4);
+      margin: 0 ($x / 8);
+    }
+    > b,
+    > span {
+      background: none;
+      color: inherit;
+    }
+  }
+}

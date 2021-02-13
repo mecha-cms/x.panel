@@ -1,10 +1,9 @@
 ---
-title: Panel GUI Test
+title: Panel Test
 type: Markdown
-version: 0.0.0
 
 use:
   '.\lot\x\panel': 1
 ...
 
-Delete this extension to remove the test menu.
+Delete this extension or set the `DEBUG` mode to `false` to remove the test menu.

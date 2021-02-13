@@ -23,9 +23,11 @@ function __test($_) {
     return $_;
 }
 
+require __DIR__ . \DS . 'route' . \DS . 'alert.php';
 require __DIR__ . \DS . 'route' . \DS . 'bar.php';
 require __DIR__ . \DS . 'route' . \DS . 'content.php';
 require __DIR__ . \DS . 'route' . \DS . 'fields.php';
+require __DIR__ . \DS . 'route' . \DS . 'menu.php';
 require __DIR__ . \DS . 'route' . \DS . 'section.php';
 require __DIR__ . \DS . 'route' . \DS . 'separator.php';
 require __DIR__ . \DS . 'route' . \DS . 'tabs.php';

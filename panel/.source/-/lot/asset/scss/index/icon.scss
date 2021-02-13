@@ -1,4 +1,4 @@
-svg {
+.icon {
   display: inline-block;
   width: $x;
   height: $y;
@@ -24,7 +24,7 @@ svg {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  > svg {
+  > .icon {
     margin: 0 (-$x / 4);
     &.caret {
       &:first-child {

@@ -1,0 +1,81 @@
+.lot\:menu {
+  background: $color-back;
+  width: ($x * 8);
+  height: auto;
+  line-height: $y;
+  .lot\:menu {
+    display: none;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 9998;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
+  }
+  ul,
+  li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: flex;
+    position: relative;
+    .title {
+      flex: 1;
+    }
+    &.is\:separator {
+      width: auto;
+      height: 1px;
+      background: $color;
+      margin: 0 ($y / 3);
+      overflow: hidden;
+      &:first-child,
+      &:last-child {
+        display: none;
+      }
+    }
+    &.is\:current {
+      > a {
+        color: inherit;
+      }
+    }
+    &:hover {
+      > .lot\:menu {
+        display: block;
+      }
+    }
+  }
+  a {
+    display: flex;
+    flex: 1;
+    padding: ($y / 4) ($x / 2);
+    color: $color-link;
+    &:focus {
+      + ul {
+        display: block;
+      }
+    }
+  }
+}
+
+.has\:menu {
+  display: inline-flex;
+  position: relative;
+  .lot\:menu {
+    display: none;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9998;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
+    .lot\:menu {
+      top: 0;
+      left: 100%;
+    }
+    &.is\:enter {
+      display: block;
+    }
+  }
+}

@@ -205,7 +205,13 @@ function _set_asset() {
 }
 
 function _set_class(&$value, array $tags = []) {
-    $a = \explode(' ', $value['class'] ?? "");
+    $a = [];
+    foreach (\explode(' ', $value['class'] ?? "") as $v) {
+        if (\array_key_exists($v, $tags) && !$tags[$v]) {
+            continue;
+        }
+        $a[] = $v;
+    }
     $b = \_\lot\x\panel\from\tags((array) $tags);
     $c = \array_unique(\array_filter(\array_merge($a, $b)));
     \sort($c);

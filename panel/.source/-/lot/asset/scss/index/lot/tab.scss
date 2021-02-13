@@ -1,0 +1,53 @@
+.lot\:tab {
+  > nav {
+    ul,
+    li {
+      display: flex;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    ul {
+      overflow: hidden;
+    }
+    li {
+      position: relative;
+    }
+    a {
+      display: flex;
+    }
+    .title {
+      .icon {
+        margin: 0 (-($z / 2));
+        &:first-child {
+          margin-right: ($z / 4);
+        }
+        &:last-child {
+          margin-left: ($z / 4);
+        }
+        &:only-child {
+          margin-right: (-($z / 2));
+          margin-left: (-($z / 2));
+        }
+      }
+    }
+  }
+  > section {
+    margin-top: $y;
+    display: none;
+    &.is\:current {
+      display: block;
+    }
+  }
+  &.count\:0 {
+    display: none;
+  }
+  &.count\:1 {
+    > nav {
+      display: none;
+    }
+    > section {
+      margin-top: 0;
+    }
+  }
+}

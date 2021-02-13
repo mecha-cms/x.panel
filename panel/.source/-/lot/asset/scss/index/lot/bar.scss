@@ -1,0 +1,75 @@
+.lot\:bar {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: ($y * 2);
+  > ul,
+  > ul > li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: auto;
+    height: inherit;
+  }
+  > ul {
+    display: flex;
+    height: ($y * 2);
+    &:nth-child(2) {
+      flex: 1;
+    }
+    > li {
+      &.is\:active,
+      &.is\:current {
+        > a {
+          color: inherit;
+        }
+      }
+      &.is\:separator {
+        width: 1px;
+        height: $y;
+        background: $color;
+        margin: ($y / 2) 0;
+        overflow: hidden;
+        &:first-child,
+        &:last-child {
+          display: none;
+        }
+      }
+      > a {
+        display: flex;
+        height: inherit;
+        padding: 0 ($x * .75);
+        overflow: hidden;
+      }
+    }
+  }
+  .field {
+    margin: 0;
+    padding: 0;
+    width: auto;
+    height: inherit;
+    .input {
+      display: block;
+      width: ($x * 8);
+      height: ($y * 2);
+      line-height: ($y * 2);
+      margin: 0;
+      padding: 0 ($x / 1.5);
+      border: 0;
+    }
+    label {
+      display: none;
+    }
+    > * {
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+  > .title {
+    padding: 0 ($x * .75);
+    font-size: 100%;
+    font-weight: bold;
+  }
+  > .description {
+    display: none;
+  }
+}

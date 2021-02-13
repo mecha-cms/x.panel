@@ -1,0 +1,7 @@
+.lot\:section {
+  padding: $y $x;
+  margin: 0 auto;
+  &.count\:0 {
+    display: none;
+  }
+}

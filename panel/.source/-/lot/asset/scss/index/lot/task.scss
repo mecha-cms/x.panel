@@ -1,0 +1,22 @@
+.lot\:task {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: (-$y / 8) (-$x / 8);
+  &\.link {
+    margin-right: (-$x / 4);
+    margin-left: (-$x / 4);
+    > * {
+      margin-right: ($x / 4);
+      margin-left: ($x / 4);
+      .title {
+        span {
+          margin-left: ($x / 8);
+        }
+      }
+    }
+  }
+  > * {
+    margin: ($y / 8) ($x / 8);
+  }
+}

@@ -1,0 +1,10 @@
+.lot\:field {
+  > .description {
+    padding-bottom: ($y - ($h - $z));
+    border-bottom: 1px dashed;
+  }
+}
+
+@import '../field/lot/button';
+@import '../field/lot/color';
+@import '../field/lot/input';
