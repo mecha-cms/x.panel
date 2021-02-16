@@ -2,21 +2,10 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin: (-$y / 8) (-$x / 8);
+  gap: ($y / 4) ($x / 4);
   &\.link {
-    margin-right: (-$x / 4);
-    margin-left: (-$x / 4);
-    > * {
-      margin-right: ($x / 4);
-      margin-left: ($x / 4);
-      .title {
-        span {
-          margin-left: ($x / 8);
-        }
-      }
+    .title {
+      gap: ($y / 8) ($x / 8);
     }
-  }
-  > * {
-    margin: ($y / 8) ($x / 8);
   }
 }

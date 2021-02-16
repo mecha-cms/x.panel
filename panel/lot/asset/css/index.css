@@ -1184,29 +1184,18 @@ label.not\:active {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.title > .icon {
-  margin: 0 -6px;
-}
-
-.title > .icon.caret:first-child {
-  margin-right: 0;
-}
-
-.title > .icon.caret:last-child {
-  margin-left: 0;
+  gap: 6px 6px;
 }
 
 .title > .icon:first-child {
-  margin-right: 6px;
+  margin-left: -6px;
 }
 
 .title > .icon:last-child {
-  margin-left: 6px;
+  margin-right: -6px;
 }
 
-.title > .icon:only-child {
+.title > .icon.caret {
   margin-right: -6px;
   margin-left: -6px;
 }
@@ -1771,25 +1760,11 @@ label.not\:active {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin: -3px -3px;
+  gap: 6px 6px;
 }
 
-.lot\:task\.link {
-  margin-right: -6px;
-  margin-left: -6px;
-}
-
-.lot\:task\.link > * {
-  margin-right: 6px;
-  margin-left: 6px;
-}
-
-.lot\:task\.link > * .title span {
-  margin-left: 3px;
-}
-
-.lot\:task > * {
-  margin: 3px 3px;
+.lot\:task\.link .title {
+  gap: 3px 3px;
 }
 
 pre.is\:text code {

@@ -225,13 +225,6 @@
   border-color: #292929;
 }
 
-.is\:dark .lot\:file .lot\:task,
-.is\:dark .lot\:file .lot\:task > *,
-.is\:dark .lot\:page .lot\:task,
-.is\:dark .lot\:page .lot\:task > * {
-  margin: 0;
-}
-
 .is\:dark .lot\:file .lot\:task > * .title span,
 .is\:dark .lot\:page .lot\:task > * .title span {
   display: none;
