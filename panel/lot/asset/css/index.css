@@ -1400,6 +1400,31 @@ label.not\:active {
   margin-left: -1px;
 }
 
+.lot\:item, .lot\:items, .lot\:toggle {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -6px;
+  padding: 6px 0;
+}
+
+.lot\:item.is\:block, .is\:block.lot\:items, .is\:block.lot\:toggle {
+  display: block;
+}
+
+.lot\:item > *, .lot\:items > *, .lot\:toggle > * {
+  margin: 0 6px;
+}
+
+.lot\:item > label, .lot\:items > label, .lot\:toggle > label {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.lot\:item > label > *, .lot\:items > label > *, .lot\:toggle > label > * {
+  margin: 0 6px;
+}
+
 .lot\:file, .lot\:page {
   margin-right: 0;
   margin-left: 0;
@@ -1503,31 +1528,6 @@ label.not\:active {
 
 .lot\:file.count\:0, .count\:0.lot\:page {
   display: none;
-}
-
-.lot\:item, .lot\:items, .lot\:toggle {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -6px;
-  padding: 6px 0;
-}
-
-.lot\:item.is\:block, .is\:block.lot\:items, .is\:block.lot\:toggle {
-  display: block;
-}
-
-.lot\:item > *, .lot\:items > *, .lot\:toggle > * {
-  margin: 0 6px;
-}
-
-.lot\:item > label, .lot\:items > label, .lot\:toggle > label {
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.lot\:item > label > *, .lot\:items > label > *, .lot\:toggle > label > * {
-  margin: 0 6px;
 }
 
 .lot\:menu {
@@ -1765,6 +1765,11 @@ label.not\:active {
 
 .lot\:task\.link .title {
   gap: 3px 3px;
+}
+
+.lot\:task\.link .title > .icon {
+  margin-right: 0;
+  margin-left: 0;
 }
 
 pre.is\:text code {
