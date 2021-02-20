@@ -28,21 +28,22 @@ function files($_) {
         ];
     };
     $lot = [
-        'files-0' => [
+        'files' => [
             'type' => 'files',
+            'sort' => \Get::get('sort'),
             'lot' => [
-                0 => $item('folder-1', null, 'folder', 10),
-                1 => $item('folder-2', null, 'folder', 10.1),
-                2 => $item('folder-3', null, 'folder', 10.2),
-                3 => $item('file-1', '0 KB', 'file', 20),
-                4 => $item('file-2', '0 KB', 'file', 20.1),
-                5 => $item('file-3', '0 KB', 'file', 20.2),
-                6 => \array_replace($item('file-4', '0 KB', 'file', 20.3), [
+                $item('folder-1', null, 'folder', 10),
+                $item('folder-2', null, 'folder', 10.1),
+                $item('folder-3', null, 'folder', 10.2),
+                $item('file-1', '1 KB', 'file', 20),
+                $item('file-2', '2.4 KB', 'file', 20.1),
+                $item('file-3', '0 KB', 'file', 20.2),
+                \array_replace($item('file-4', '100 KB', 'file', 20.3), [
                     'current' => true
                 ])
             ],
             'stack' => 10
-        ],
+        ]
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

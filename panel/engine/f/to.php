@@ -80,16 +80,22 @@ function icon($value) {
     return \_\lot\x\panel\type\icon(['lot' => $value], 0);
 }
 
-function lot($lot, $fn = null, &$count = 0) {
+function lot($lot, &$count = 0, $sort = true) {
     if (!\is_array($lot)) {
         return;
     }
+    if ($sort) {
+        if (true === $sort) {
+            $sort = [1, 'stack', 10];
+        }
+        $lot = (new \Anemon($lot))->sort($sort, true);
+    }
     $out = "";
-    foreach ((new \Anemon($lot))->sort([1, 'stack', 10], true) as $k => $v) {
+    foreach ($lot as $k => $v) {
         if (null === $v || false === $v || !empty($v['skip'])) {
             continue;
         }
-        $v = $fn ? \call_user_func($fn, $v, $k) : \_\lot\x\panel\type($v, $k);
+        $v = \_\lot\x\panel\type($v, $k);
         if ($v) {
             ++$count;
         }

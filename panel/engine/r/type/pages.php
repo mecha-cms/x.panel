@@ -31,12 +31,13 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         $x = pathinfo($k, PATHINFO_EXTENSION);
         $pages[$k] = [
             // Load data asynchronously for best performance
-            'invoke' => function($path) use($user, $x) {
+            'invoke' => function($path) use($create, $user, $x) {
                 $page = new Page($path);
                 return [
                     'title' => S . _\lot\x\panel\to\w($page->title) . S,
                     'description' => S . _\lot\x\panel\to\w($page->description) . S,
-                    'link' => 'draft' === $x ? null : $page->url,
+                    'type' => 'page',
+                    'link' => 'draft' === $x ? null : $page->url . ($create ? '/1' : ""),
                     'author' => $page['author'],
                     'image' => $page->image(72, 72, 50),
                     'tags' => [
@@ -47,7 +48,6 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                 ];
             },
             'path' => $k,
-            'type' => 'page',
             'tasks' => [
                 'enter' => [
                     'title' => 'Enter',
@@ -99,7 +99,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
         ++$count;
     }
     $p = new Anemon($pages);
-    $pages = $p->sort($_['sort'], true)->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get();
+    $pages = $p->sort(\array_replace($_['sort'], (array) ($page->sort ?? [])), true)->chunk($_['chunk'], ($_['i'] ?? 1) - 1, true)->get();
     unset($p);
 }
 

@@ -99,8 +99,7 @@ function field($value, $key) {
     }
     if (isset($value['content'])) {
         if (\is_array($value['content'])) {
-            $tags_status_extra = [];
-            $styles = [];
+            $styles = $tags_status_extra = [];
             if (isset($value['height']) && false !== $value['height']) {
                 $tags_status_extra['height'] = true;
                 if (true !== $value['height']) {
@@ -120,7 +119,8 @@ function field($value, $key) {
         }
         $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' : "") . (!empty($value['width']) ? ' width' : "") . '">' . $before . \_\lot\x\panel\to\content($value['content']) . $after . '</div>' . \_\lot\x\panel\to\description($value['description'] ?? "") . '</div>';
     } else if (isset($value['lot'])) {
-        $out[1] .= '<div>' . \_\lot\x\panel\to\lot($value['lot']) . '</div>';
+        $count = 0;
+        $out[1] .= '<div>' . \_\lot\x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true) . '</div>';
     }
     \_\lot\x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
     if (isset($value['form']) && \is_array($value['form'])) {
@@ -224,6 +224,13 @@ function files($value, $key) {
             }
             $lot[$k] = $v;
         }
+        if (!empty($value['sort'])) {
+            $sort = $value['sort'];
+            if (true === $sort) {
+                $sort = [1, 'stack', 10];
+            }
+            $lot = (new \Anemon($lot))->sort($sort)->get();
+        }
     }
     $count = 0;
     foreach ($lot as $k => $v) {
@@ -235,6 +242,9 @@ function files($value, $key) {
             $v['tags']['is:active'] = true;
             unset($_SESSION['_']['file'][$path]);
             unset($_SESSION['_']['folder'][$path]);
+        }
+        if (!\array_key_exists('type', $v)) {
+            $v['type'] = 'file';
         }
         $out[1] .= \_\lot\x\panel\type($v, $k);
         ++$count;
@@ -289,7 +299,8 @@ function form($value, $key) {
     if (isset($value['content'])) {
         $out[1] .= \_\lot\x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
-        $out[1] .= \_\lot\x\panel\to\lot($value['lot']);
+        $count = 0;
+        $out[1] .= \_\lot\x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
     $href = $value['link'] ?? $value['url'] ?? null;
     if (!isset($out[2]['action'])) {
@@ -568,6 +579,13 @@ function pages($value, $key) {
             }
             $lot[$k] = $v;
         }
+        if (!empty($value['sort'])) {
+            $sort = $value['sort'];
+            if (true === $sort) {
+                $sort = [1, 'stack', 10];
+            }
+            $lot = (new \Anemon($lot))->sort($sort)->get();
+        }
     }
     $count = 0;
     foreach ($lot as $k => $v) {
@@ -575,6 +593,9 @@ function pages($value, $key) {
         if (!empty($v['current']) || $path && isset($_SESSION['_']['file'][$path])) {
             $v['tags']['is:active'] = true;
             unset($_SESSION['_']['file'][$path]);
+        }
+        if (!\array_key_exists('type', $v)) {
+            $v['type'] = 'page';
         }
         $out[1] .= \_\lot\x\panel\type($v, $k);
         ++$count;
@@ -697,7 +718,7 @@ function tasks($value, $key) {
         $tags['count:' . ($count = 1)] = true;
         $out[1] .= \_\lot\x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
-        $out[1] .= \_\lot\x\panel\to\lot($value['lot'], null, $count);
+        $out[1] .= \_\lot\x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
         $tags['count:' . $count] = true;
     }
     if ($count > 0) {
@@ -745,7 +766,7 @@ function lot($value, $key) {
         2 => $value[2] ?? []
     ];
     if (isset($value['lot'])) {
-        $out[1] .= \_\lot\x\panel\to\lot($value['lot'], null, $count);
+        $out[1] .= \_\lot\x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
     $tags = [
         'count:' . $count => true,
