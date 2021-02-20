@@ -1324,6 +1324,11 @@ label.not\:active {
   max-width: 864px;
 }
 
+.lot\:desk.width {
+  display: block;
+  max-width: 100%;
+}
+
 .lot\:field > .description {
   padding-bottom: 16px;
   border-bottom: 1px dashed;
