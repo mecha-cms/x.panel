@@ -107,6 +107,11 @@
   border-color: #2d2d2d;
 }
 
+.is\:dark .field .lot\:f .fix {
+  background: #2b2b2b;
+  border-color: #383838;
+}
+
 .is\:dark .field\:toggle .input[type='checkbox']::before {
   background: #e9e9e9;
 }
@@ -119,14 +124,6 @@
   background: #242424;
 }
 
-.is\:dark .lot\:bar > ul > li.is\:current > a {
-  background: #262626;
-}
-
-.is\:dark .lot\:bar > ul > li.is\:current > a:focus, .is\:dark .lot\:bar > ul > li.is\:current > a:hover {
-  background: #292929;
-}
-
 .is\:dark .lot\:bar > ul > li.is\:separator {
   background: #2d2d2d;
 }
@@ -136,22 +133,25 @@
   color: #4e4e4e;
 }
 
-.is\:dark .lot\:field > .description {
+.is\:dark .lot\:bar .not\:active > a {
+  color: inherit;
+}
+
+.is\:dark .lot\:bar .not\:active.is\:current {
+  color: #595959;
+}
+
+.is\:dark .lot\:fields > .description {
   border-bottom-color: #2d2d2d;
 }
 
-.is\:dark .lot\:field .tag-picker .tag:not(.editor) {
+.is\:dark .lot\:fields .tag-picker .tag:not(.editor) {
   background: #434343;
   color: inherit;
 }
 
-.is\:dark .lot\:field .tag-picker .tag:not(.editor):focus {
+.is\:dark .lot\:fields .tag-picker .tag:not(.editor):focus {
   background: #4e4e4e;
-}
-
-.is\:dark .lot\:input .fix {
-  background: #2b2b2b;
-  border-color: #383838;
 }
 
 .is\:dark .lot\:menu {
@@ -184,54 +184,62 @@
   color: #4e4e4e;
 }
 
-.is\:dark .lot\:file .is\:file::before {
+.is\:dark .lot\:menu .not\:active > a {
+  color: inherit;
+}
+
+.is\:dark .lot\:menu .not\:active.is\:current {
+  color: #595959;
+}
+
+.is\:dark .lot\:files .is\:file::before {
   background: #222222;
   border-color: #646464;
 }
 
-.is\:dark .lot\:file .is\:file::after {
+.is\:dark .lot\:files .is\:file::after {
   border-bottom-color: #646464;
   border-left-color: #646464;
 }
 
-.is\:dark .lot\:file .is\:folder::before {
+.is\:dark .lot\:files .is\:folder::before {
   background: #a7a7a7;
 }
 
-.is\:dark .lot\:file .is\:folder::after {
+.is\:dark .lot\:files .is\:folder::after {
   background: #7a7a7a;
 }
 
-.is\:dark .lot\:file li,
-.is\:dark .lot\:page li {
+.is\:dark .lot\:files li,
+.is\:dark .lot\:pages li {
   border: 0 solid #222222;
 }
 
-.is\:dark .lot\:file li:hover,
-.is\:dark .lot\:page li:hover {
+.is\:dark .lot\:files li:hover,
+.is\:dark .lot\:pages li:hover {
   background: #242424;
   border-color: #242424;
 }
 
-.is\:dark .lot\:file li.is\:active,
-.is\:dark .lot\:page li.is\:active {
+.is\:dark .lot\:files li.is\:active,
+.is\:dark .lot\:pages li.is\:active {
   background: #262626;
   border-color: #262626;
 }
 
-.is\:dark .lot\:file li.is\:active:hover,
-.is\:dark .lot\:page li.is\:active:hover {
+.is\:dark .lot\:files li.is\:active:hover,
+.is\:dark .lot\:pages li.is\:active:hover {
   background: #292929;
   border-color: #292929;
 }
 
-.is\:dark .lot\:file .lot\:task,
-.is\:dark .lot\:page .lot\:task {
+.is\:dark .lot\:files .lot\:tasks,
+.is\:dark .lot\:pages .lot\:tasks {
   gap: 0;
 }
 
-.is\:dark .lot\:file .lot\:task > * .title span,
-.is\:dark .lot\:page .lot\:task > * .title span {
+.is\:dark .lot\:files .lot\:tasks > * .title span,
+.is\:dark .lot\:pages .lot\:tasks > * .title span {
   display: none;
 }
 
@@ -256,26 +264,26 @@
   color: inherit;
 }
 
-.is\:dark .lot\:tab > nav li {
+.is\:dark .lot\:tabs > nav li {
   border-color: #2d2d2d;
 }
 
-.is\:dark .lot\:tab > nav li a:not(.has\:link) {
+.is\:dark .lot\:tabs > nav li a:not(.has\:link) {
   color: inherit;
 }
 
-.is\:dark .lot\:tab > nav li.is\:current::before, .is\:dark .lot\:tab > nav li.is\:current::after {
+.is\:dark .lot\:tabs > nav li.is\:current::before, .is\:dark .lot\:tabs > nav li.is\:current::after {
   border-color: #2d2d2d;
 }
 
 @media (min-width: 720px) {
-  .is\:dark .lot\:tab > nav li:not(.is\:current) {
+  .is\:dark .lot\:tabs > nav li:not(.is\:current) {
     background: #242424;
     color: #a7a7a7;
   }
 }
 
-.is\:dark .lot\:tab > nav li.not\:active {
+.is\:dark .lot\:tabs > nav li.not\:active {
   opacity: 1;
   color: #4e4e4e;
 }

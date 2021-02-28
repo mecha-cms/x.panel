@@ -6,7 +6,7 @@ import {hook as doQueryHook} from './index/field/query.mjs';
 import {hook as doSourceHook} from './index/field/source.mjs';
 
 import {hook as doMenuHook} from './index/menu.mjs';
-import {hook as doTabHook} from './index/tab.mjs';
+import {hook as doTabHook} from './index/tabs.mjs';
 
 // Get the default F3H element(s) filter
 let f = F3H.state.is;

@@ -8,11 +8,11 @@ $_['type'] = [
     'page' => 'page/user'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['type'];
 
-$_ = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 $status = $user['status'];
 $i = $page['status'];
-$any = $lot['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] ?? null;
+$any = $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] ?? null;
 
 if (1 !== $status) {
     $any = isset($any[$i]) ? [$i => $any[$i]] : [];

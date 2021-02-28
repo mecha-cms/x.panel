@@ -1,0 +1,6 @@
+.lot\:fields {
+  > .description {
+    padding-bottom: ($y - ($h - $z));
+    border-bottom: 1px dashed;
+  }
+}

@@ -56,11 +56,38 @@ function tabs($_) {
         ],
         'stack' => 20
     ];
+    $tabs_2 = [
+        'type' => 'tabs',
+        'lot' => [
+            'tab-0' => [
+                'title' => 'Tab 1',
+                'description' => 'Default.',
+                'content' => '<p>Content of the first tab.</p>',
+                'stack' => 10
+            ],
+            'tab-1' => [
+                'active' => false,
+                'title' => 'Tab 2',
+                'description' => 'Disabled.',
+                'content' => '<p>Content of the second tab.</p>',
+                'stack' => 20
+            ],
+            'tab-2' => [
+                'title' => 'Tab 3',
+                'description' => 'Linked.',
+                'content' => '<p>Content of the third tab.</p>',
+                'link' => 'https://example.com',
+                'stack' => 30
+            ]
+        ],
+        'stack' => 30
+    ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'][0] = [
         'type' => 'section',
         'lot' => [
             'tabs-0' => $tabs_0,
             'tabs-1' => $tabs_1,
+            'tabs-2' => $tabs_2,
         ]
     ];
     return $_;

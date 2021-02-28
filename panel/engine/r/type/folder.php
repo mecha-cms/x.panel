@@ -81,11 +81,9 @@ $desk = [
                                                     'value' => $_['token']
                                                 ],
                                                 'name' => [
-                                                    'type' => 'text',
-                                                    'pattern' => "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$",
+                                                    'type' => 'path',
                                                     'focus' => true,
                                                     'name' => 'folder[name]',
-                                                    'hint' => 'g' === $_['task'] ? ($name ?? ('s' === $_['task'] ? "foo\\bar\\baz" : 'foo-bar-baz')) : ('s' === $_['task'] ? "foo\\bar\\baz" : 'foo-bar-baz'),
                                                     'value' => $name,
                                                     'width' => true,
                                                     'stack' => 10

@@ -486,7 +486,7 @@ var _ = function () {
   }
 
   function hook$3() {
-    var sources = getElements('.lot\\:tab'),
+    var sources = getElements('.lot\\:tabs'),
         hasReplaceState = ('replaceState' in theHistory),
         doSetFormAction = function doSetFormAction(node) {
       var href = node.href,

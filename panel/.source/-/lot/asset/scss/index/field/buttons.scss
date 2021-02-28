@@ -1,0 +1,10 @@
+.field\:buttons {
+  .lot\:f {
+    display: inline-flex;
+    .button {
+      + .button {
+        margin-left: 1px;
+      }
+    }
+  }
+}

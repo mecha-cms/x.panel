@@ -135,7 +135,6 @@ $desk = [
                                                 'content' => [
                                                     'type' => 'source',
                                                     'name' => 'file[content]',
-                                                    'hint' => 'Content goes here...',
                                                     'value' => $content,
                                                     'width' => true,
                                                     'height' => true,
@@ -143,11 +142,9 @@ $desk = [
                                                     'stack' => 10
                                                 ],
                                                 'name' => [
-                                                    'type' => 'text',
-                                                    'pattern' => "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?\\.(" . implode('|', array_keys(array_filter(File::$state['x']))) . ")$",
+                                                    'type' => 'name',
                                                     'focus' => true,
                                                     'name' => 'file[name]',
-                                                    'hint' => 'g' === $_['task'] ? ($name ?? 'foo-bar.baz') : 'foo-bar.baz',
                                                     'value' => $name,
                                                     'width' => true,
                                                     'stack' => 20

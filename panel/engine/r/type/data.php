@@ -86,19 +86,17 @@ $desk = [
                                                 'content' => [
                                                     'type' => 'source',
                                                     'name' => 'data[content]',
-                                                    'hint' => 'Content goes here...',
                                                     'value' => $content,
                                                     'width' => true,
                                                     'height' => true,
                                                     'stack' => 10
                                                 ],
                                                 'name' => [
-                                                    'type' => 'text',
-                                                    'pattern' => "^([_]?[a-z\\d]+([_-][a-z\\d]+)*)?$",
+                                                    'type' => 'name',
+                                                    'x' => false,
                                                     'after' => '.data',
                                                     'focus' => true,
                                                     'name' => 'data[name]',
-                                                    'hint' => 'g' === $_['task'] ? ($name ?? 'foo-bar') : 'foo-bar',
                                                     'value' => $name,
                                                     'width' => true,
                                                     'stack' => 20

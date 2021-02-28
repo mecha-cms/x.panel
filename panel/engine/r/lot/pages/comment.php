@@ -1,9 +1,9 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/comment/1`
-$_['type'] = 'page';
+$_['type'] = 'pages';
 
-$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 $_['lot']['desk']['lot']['form']['lot'][1]['title'] = ($r = false === strpos($_['path'], '/')) ? ['Recent %s', 'Comments'] : null;
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Comments';

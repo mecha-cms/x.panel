@@ -131,7 +131,6 @@ $desk = [
                                             'lot' => [
                                                 'title' => [
                                                     'type' => 'title',
-                                                    'hint' => 'g' === $_['task'] ? ($page['title'] ?? 'Title Goes Here') : 'Title Goes Here',
                                                     'focus' => true,
                                                     'name' => 'page[title]',
                                                     'value' => $page['title'],
@@ -140,8 +139,8 @@ $desk = [
                                                 ],
                                                 'name' => [
                                                     'title' => 'Slug',
-                                                    'type' => 'text',
-                                                    'pattern' => "^[a-z\\d]+(-[a-z\\d]+)*$",
+                                                    'type' => 'name',
+                                                    'x' => false,
                                                     'hint' => To::kebab('g' === $_['task'] ? ($page->name ?? 'Title Goes Here') : 'Title Goes Here'),
                                                     'name' => 'page[name]',
                                                     'value' => $page->name,
@@ -152,7 +151,6 @@ $desk = [
                                                 'content' => [
                                                     'type' => 'source',
                                                     'name' => 'page[content]',
-                                                    'hint' => 'Content goes here...',
                                                     'value' => $page['content'],
                                                     'width' => true,
                                                     'height' => true,
@@ -161,7 +159,6 @@ $desk = [
                                                 'description' => [
                                                     'type' => 'description',
                                                     'name' => 'page[description]',
-                                                    'hint' => 'Description goes here...',
                                                     'value' => $page['description'],
                                                     'width' => true,
                                                     'stack' => 40

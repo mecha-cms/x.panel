@@ -54,10 +54,12 @@ function colors($value, $key) {
         if (!isset($value['sort']) || $value['sort']) {
             \sort($value['lot']);
         }
+        $count = 0;
         foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
+            ++$count;
             if (\is_string($v)) {
                 $v = ['value' => $v];
             }
@@ -77,8 +79,8 @@ function colors($value, $key) {
         unset($value['lot']);
     }
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
-        'lot' => true,
-        'lot:color' => true
+        'count:' . $count => true,
+        'options' => true
     ], $value['tags'] ?? []));
     unset($out['content'][2]['name']);
     return \_\lot\x\panel\type\field($out, $key);
@@ -157,6 +159,9 @@ function combo($value, $key) {
 }
 
 function content($value, $key) {
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = 'Content goes here...';
+    }
     $out = \_\lot\x\panel\to\field($value, $key);
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
         'textarea' => true
@@ -165,8 +170,9 @@ function content($value, $key) {
 }
 
 function date($value, $key) {
-    if (!isset($value['hint'])) {
-        $value['hint'] = \date('Y-m-d');
+    $v = (string) ($value['value'] ?? "");
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = "" !== $v ? $v : \date('Y-m-d');
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
@@ -175,8 +181,9 @@ function date($value, $key) {
 }
 
 function date_time($value, $key) {
-    if (!isset($value['hint'])) {
-        $value['hint'] = \date('Y-m-d H:i:s');
+    $v = (string) ($value['value'] ?? "");
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = "" !== $v ? $v : \date('Y-m-d H:i:s');
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])[ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}$";
@@ -193,14 +200,17 @@ function date_time($value, $key) {
 }
 
 function description($value, $key) {
-    if (!\array_key_exists('max', $value)) {
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = 'Description goes here...';
+    }
+    if (!isset($value['max'])) {
         $value['max'] = 400;
     }
     return \_\lot\x\panel\type\field\content($value, $key);
 }
 
 function email($value, $key) {
-    if (!isset($value['hint'])) {
+    if (!\array_key_exists('hint', $value)) {
         $value['hint'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
     }
     if (!isset($value['pattern'])) {
@@ -273,12 +283,11 @@ function item($value, $key) {
             $block = $value['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+        \_\lot\x\panel\_set_class($out['content'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'lot' => true,
-            'lot:item' => true
-        ], $value['tags'] ?? []));
+            'options' => true
+        ]);
         unset($out['content'][2]['name']);
         return \_\lot\x\panel\type\field($out, $key);
     }
@@ -343,12 +352,11 @@ function items($value, $key) {
             $block = $value['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+        \_\lot\x\panel\_set_class($out['content'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'lot' => true,
-            'lot:items' => true
-        ], $value['tags'] ?? []));
+            'options' => true
+        ]);
         unset($out['content'][2]['name']);
         return \_\lot\x\panel\type\field($out, $key);
     }
@@ -356,7 +364,7 @@ function items($value, $key) {
 }
 
 function link($value, $key) {
-    if (!isset($value['hint'])) {
+    if (!\array_key_exists('hint', $value)) {
         $url = $GLOBALS['url'];
         $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
     }
@@ -366,7 +374,33 @@ function link($value, $key) {
     return \_\lot\x\panel\type\field\text($value, $key);
 }
 
+function name($value, $key) {
+    $v = (string) ($value['value'] ?? "");
+    $x = $value['x'] ?? \implode('|', \array_keys(\array_filter(\File::$state['x'])));
+    if (\is_array($x)) {
+        $x = \implode('|', \array_keys(\array_filter($x)));
+    }
+    $x = $x ? "\\.(" . $x . ")" : "";
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?" . $x . "$";
+    }
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = "" !== $v ? $v : 'foo-bar.baz';
+    }
+    if (!isset($value['max'])) {
+        // <https://serverfault.com/a/9548>
+        $value['max'] = 255;
+    }
+    if (!isset($value['min'])) {
+        $value['min'] = $x ? 2 : 1;
+    }
+    return \_\lot\x\panel\type\field\text($value, $key);
+}
+
 function number($value, $key) {
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = $value['min'] ?? 0;
+    }
     $out = \_\lot\x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
@@ -393,8 +427,26 @@ function pass($value, $key) {
     return \_\lot\x\panel\type\field($out, $key);
 }
 
+function path($value, $key) {
+    $v = (string) ($value['value'] ?? "");
+    if (!isset($value['pattern'])) {
+        $value['pattern'] = "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$";
+    }
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = "" !== $v ? $v : "foo\\bar\\baz";
+    }
+    if (!isset($value['max'])) {
+        // <https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation>
+        $value['max'] = 260 - (\strlen(\ROOT) + 1);
+    }
+    if (!isset($value['min'])) {
+        $value['min'] = 0;
+    }
+    return \_\lot\x\panel\type\field\text($value, $key);
+}
+
 function query($value, $key) {
-    if (!isset($value['hint'])) {
+    if (!\array_key_exists('hint', $value)) {
         $value['hint'] = 'foo, bar, baz';
     }
     if (!isset($value['pattern'])) {
@@ -456,6 +508,9 @@ function set($value, $key) {
 
 function source($value, $key) {
     $value['state'] = \array_replace(['tab' => '  '], $value['state'] ?? []);
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = 'Content goes here...';
+    }
     $out = \_\lot\x\panel\to\field($value, $key);
     \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
         'code' => true,
@@ -477,8 +532,9 @@ function text($value, $key) {
 }
 
 function time($value, $key) {
-    if (!isset($value['hint'])) {
-        $value['hint'] = \date('H:i:s');
+    $v = (string) ($value['value'] ?? "");
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = "" !== $v ? $v : \date('H:i:s');
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
@@ -488,7 +544,11 @@ function time($value, $key) {
 }
 
 function title($value, $key) {
-    if (!\array_key_exists('max', $value)) {
+    $v = (string) ($value['value'] ?? "");
+    if (!\array_key_exists('hint', $value)) {
+        $value['hint'] = "" !== $v ? $v : 'Title Goes Here';
+    }
+    if (!isset($value['max'])) {
         $value['max'] = 200;
     }
     return \_\lot\x\panel\type\field\text($value, $key);
@@ -507,16 +567,15 @@ function toggle($value, $key) {
     $t = \i(...((array) ($value['hint'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
-        'lot' => true,
-        'lot:toggle' => true
-    ], $value['tags'] ?? []));
+    \_\lot\x\panel\_set_class($out['content'][2], [
+        'options' => true
+    ]);
     unset($out['hint'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
     return \_\lot\x\panel\type\field($out, $key);
 }
 
 function u_r_l($value, $key) {
-    if (!isset($value['hint'])) {
+    if (!\array_key_exists('hint', $value)) {
         $url = $GLOBALS['url'];
         $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
     }

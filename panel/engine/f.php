@@ -275,24 +275,6 @@ function type($value, $key) {
     ]) : null) {
         if ($type && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
             $out .= \call_user_func($fn, $value, $key);
-        } else if (isset($value['content'])) {
-            if ($type && \function_exists($fn = __NAMESPACE__ . "\\type\\content\\" . $type)) {
-                $out .= \call_user_func($fn, $value, $key);
-            } else {
-                if (\defined("\\DEBUG") && \DEBUG) {
-                    $value['title'] = ['Function %s does not exist.', ['<code>' . $fn . '</code>']];
-                }
-                $out .= \_\lot\x\panel\type\content($value, $key);
-            }
-        } else if (isset($value['lot'])) {
-            if ($type && \function_exists($fn = __NAMESPACE__ . "\\type\\lot\\" . $type)) {
-                $out .= \call_user_func($fn, $value, $key);
-            } else {
-                if (\defined("\\DEBUG") && \DEBUG) {
-                    $value['title'] = ['Function %s does not exist.', ['<code>' . $fn . '</code>']];
-                }
-                $out .= \_\lot\x\panel\type\lot($value, $key);
-            }
         } else {
             $out .= \_\lot\x\panel\_abort($value, $key, $fn);
         }

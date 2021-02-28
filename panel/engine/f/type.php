@@ -34,7 +34,7 @@ function button($value, $key) {
 }
 
 function description($value, $key) {
-    $description = $vaue[1] ?? $value['content'] ?? "";
+    $description = $value[1] ?? $value['content'] ?? "";
     $description = \w('<!--0-->' . \i(...((array) $description)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'span', 'strong', 'sub', 'sup']);
     if ('0' !== $description && !$description) {
         return;
@@ -48,6 +48,36 @@ function description($value, $key) {
         'description' => true
     ], $value['tags'] ?? []));
     return new \HTML($out);
+}
+
+function desk($value, $key) {
+    $styles = $tags = [];
+    if (isset($value['width']) && false !== $value['width']) {
+        $tags['width'] = true;
+        if (true !== $value['width']) {
+            $styles['width'] = $value['width'];
+        }
+    }
+    if (!isset($value[2])) {
+        $value[2] = [];
+    }
+    \_\lot\x\panel\_set_class($value[2], $tags);
+    \_\lot\x\panel\_set_style($value[2], $styles);
+    if (isset($value['content'])) {
+        $out = \_\lot\x\panel\type\content($value, $key);
+        $out[0] = 'main';
+        return $out;
+    }
+    if (isset($value['lot'])) {
+        $out = \_\lot\x\panel\type\lot($value, $key);
+        $out[0] = 'main';
+        return $out;
+    }
+    return new \HTML([
+        0 => $value[0] ?? 'main',
+        1 => $value[1] ?? "",
+        2 => $value[2] ?? []
+    ]);
 }
 
 function field($value, $key) {
@@ -117,10 +147,22 @@ function field($value, $key) {
                 \_\lot\x\panel\_set_style($value['content'][2], $styles);
             }
         }
-        $out[1] .= '<div><div class="lot' . ($before || $after ? ' lot:input' : "") . (!empty($value['width']) ? ' width' : "") . '">' . $before . \_\lot\x\panel\to\content($value['content']) . $after . '</div>' . \_\lot\x\panel\to\description($value['description'] ?? "") . '</div>';
+        $out[1] .= '<div>';
+        $out[1] .= $before || $after ? '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">' : "";
+        $out[1] .= $before;
+        $out[1] .= \_\lot\x\panel\to\content($value['content']);
+        $out[1] .= $after;
+        $out[1] .= $before || $after ? '</div>' : "";
+        $out[1] .= \_\lot\x\panel\to\description($value['description'] ?? "");
+        $out[1] .= '</div>';
     } else if (isset($value['lot'])) {
         $count = 0;
-        $out[1] .= '<div>' . \_\lot\x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true) . '</div>';
+        $out[1] .= '<div>';
+        $out[1] .= '<div class="lot">';
+        $out[1] .= \_\lot\x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
+        $out[1] .= '</div>';
+        $out[1] .= \_\lot\x\panel\to\description($value['description'] ?? "");
+        $out[1] .= '</div>';
     }
     \_\lot\x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
     if (isset($value['form']) && \is_array($value['form'])) {
@@ -144,7 +186,7 @@ function field($value, $key) {
 function fields($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:field' => true,
+        'lot:fields' => true,
         'p' => true
     ], $value['tags'] ?? []);
     $out = [
@@ -253,7 +295,7 @@ function files($value, $key) {
     \_\lot\x\panel\_set_class($out[2], \array_replace([
         'count:' . $count => true,
         'lot' => true,
-        'lot:file' => true
+        'lot:files' => true
     ], $value['tags'] ?? []));
     return new \HTML($out);
 }
@@ -370,7 +412,7 @@ function link($value, $key) {
 function links($value, $key) {
     $out = \_\lot\x\panel\type\menu($value, $key, -1);
     \_\lot\x\panel\_set_class($out, [
-        'lot:link' => true,
+        'lot:links' => true,
         'lot:menu' => false
     ]);
     return $out;
@@ -604,9 +646,27 @@ function pages($value, $key) {
     \_\lot\x\panel\_set_class($out[2], \array_replace([
         'count:' . $count => true,
         'lot' => true,
-        'lot:page' => true
+        'lot:pages' => true
     ], $value['tags'] ?? []));
     return new \HTML($out);
+}
+
+function section($value, $key) {
+    if (isset($value['content'])) {
+        $out = \_\lot\x\panel\type\content($value, $key);
+        $out[0] = 'section';
+        return $out;
+    }
+    if (isset($value['lot'])) {
+        $out = \_\lot\x\panel\type\lot($value, $key);
+        $out[0] = 'section';
+        return $out;
+    }
+    return new \HTML([
+        0 => $value[0] ?? 'section',
+        1 => $value[1] ?? "",
+        2 => $value[2] ?? []
+    ]);
 }
 
 function separator($value, $key) {
@@ -615,11 +675,7 @@ function separator($value, $key) {
 
 function tab($value, $key) {
     unset($value['description'], $value['title']);
-    if (isset($value['content'])) {
-        $out = \_\lot\x\panel\type\content\section($value, $key);
-    } else if (isset($value['lot'])) {
-        $out = \_\lot\x\panel\type\lot\section($value, $key);
-    }
+    $out = \_\lot\x\panel\type\section($value, $key);
     if (!isset($value[2]['data-name'])) {
         $out['data-name'] = $key;
     }
@@ -641,10 +697,14 @@ function tabs($value, $key) {
         $links = $sections = [];
         $tags = [
             'lot' => true,
-            'lot:tab' => true,
+            'lot:tabs' => true,
             'p' => true
         ];
-        $lot = (new \Anemon($value['lot']))->sort([1, 'stack'], true)->get();
+        $sort = $value['sort'] ?? true;
+        if (true === $sort) {
+            $sort = [1, 'stack', 10];
+        }
+        $lot = (new \Anemon($value['lot']))->sort($sort, true)->get();
         $count = 0;
         foreach ($lot as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
@@ -666,10 +726,6 @@ function tabs($value, $key) {
             }
             $v[2]['data-name'] = $kk;
             $v[2]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
-            // If `type` is not defined, the default value will be `tab`
-            if (!\array_key_exists('type', $v)) {
-                $v['type'] = 'tab';
-            }
             $links[$kk] = $v;
             $sections[$kk] = $v;
             unset($links[$kk]['content'], $links[$kk]['lot'], $links[$kk]['type']);
@@ -684,6 +740,10 @@ function tabs($value, $key) {
             $sections[$first]['tags']['is:current'] = true;
         }
         foreach ($sections as $k => $v) {
+            // If `type` is not defined, the default value will be `tab`
+            if (!\array_key_exists('type', $v)) {
+                $v['type'] = 'tab';
+            }
             $vv = (string) \_\lot\x\panel\type($v, $k);
             if ("" === $vv) {
                 unset($links[$k]);
@@ -706,7 +766,7 @@ function tabs($value, $key) {
 function tasks($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:task' => true
+        'lot:tasks' => true
     ], $value['tags'] ?? []);
     $out = [
         0 => $value[0] ?? 'div',
@@ -816,9 +876,7 @@ function title($value, $key) {
 }
 
 require __DIR__ . \DS . 'type' . \DS . 'button.php';
-require __DIR__ . \DS . 'type' . \DS . 'content.php';
 require __DIR__ . \DS . 'type' . \DS . 'field.php';
 require __DIR__ . \DS . 'type' . \DS . 'form.php';
 require __DIR__ . \DS . 'type' . \DS . 'link.php';
-require __DIR__ . \DS . 'type' . \DS . 'lot.php';
 require __DIR__ . \DS . 'type' . \DS . 'tasks.php';

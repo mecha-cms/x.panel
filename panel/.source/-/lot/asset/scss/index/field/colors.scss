@@ -1,0 +1,14 @@
+.field\:colors {
+  @extend .field\:item;
+  > label {
+    + div,
+    + br + div {
+      .options {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+  }
+}
+
+

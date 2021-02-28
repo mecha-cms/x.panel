@@ -113,6 +113,12 @@ $code: 'Nimbus Mono L', monospace !default;
         border-color: skin(5%);
       }
     }
+    .lot\:f {
+      .fix {
+        background: skin(4%);
+        border-color: skin(10%);
+      }
+    }
   }
   .field\:toggle {
     .input {
@@ -137,15 +143,6 @@ $code: 'Nimbus Mono L', monospace !default;
             background: skin(1%);
           }
         }
-        &.is\:current {
-          > a {
-            background: skin(2%);
-            &:focus,
-            &:hover {
-              background: skin(3%);
-            }
-          }
-        }
         &.is\:separator {
           background: skin(5%);
         }
@@ -154,9 +151,15 @@ $code: 'Nimbus Mono L', monospace !default;
     .not\:active {
       opacity: 1;
       color: skin(20%);
+      > a {
+        color: inherit;
+      }
+      &.is\:current {
+        color: skin(25%);
+      }
     }
   }
-  .lot\:field {
+  .lot\:fields {
     > .description {
       border-bottom-color: skin(5%);
     }
@@ -170,12 +173,6 @@ $code: 'Nimbus Mono L', monospace !default;
           }
         }
       }
-    }
-  }
-  .lot\:input {
-    .fix {
-      background: skin(4%);
-      border-color: skin(10%);
     }
   }
   .lot\:menu {
@@ -210,9 +207,15 @@ $code: 'Nimbus Mono L', monospace !default;
     .not\:active {
       opacity: 1;
       color: skin(20%);
+      > a {
+        color: inherit;
+      }
+      &.is\:current {
+        color: skin(25%);
+      }
     }
   }
-  .lot\:file {
+  .lot\:files {
     .is\:file {
       &::before {
         background: skin(0%);
@@ -232,8 +235,8 @@ $code: 'Nimbus Mono L', monospace !default;
       }
     }
   }
-  .lot\:file,
-  .lot\:page {
+  .lot\:files,
+  .lot\:pages {
     li {
       border: 0 solid skin(0%);
       &:hover {
@@ -249,7 +252,7 @@ $code: 'Nimbus Mono L', monospace !default;
         }
       }
     }
-    .lot\:task {
+    .lot\:tasks {
       gap: 0;
       > * {
         .title {
@@ -281,7 +284,7 @@ $code: 'Nimbus Mono L', monospace !default;
       }
     }
   }
-  .lot\:tab {
+  .lot\:tabs {
     > nav {
       li {
         border-color: skin(5%);

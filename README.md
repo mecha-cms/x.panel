@@ -10,7 +10,8 @@ Release Notes
 
  - [x] Added GUI tests menu that will be visible only if `DEBUG` mode is enabled by user.
  - [x] Added `$_['icon']` property to store the SVG path icons globally.
- - [x] Added `description`, `icon`, `separator`, `title`, `field/description`, `field/title` type.
+ - [x] Added `description`, `icon`, `separator`, `title`, `field/description`, `field/name`, `field/path`, `field/title` type.
+ - [x] Added `files/*` and `pages/*` type variants.
  - [x] Added `sort` option key to allow user to sort the `lot` data using custom key reference other than `stack`.
  - [x] Added `width` option key for `desk` type to allow user to set custom desk width.
  - [x] Renamed `$_['chops']` to `$_['chop']`.

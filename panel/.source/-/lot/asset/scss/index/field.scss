@@ -48,8 +48,61 @@
       display: block;
       flex: 1;
       position: relative;
+      .lot\:f {
+        display: inline-flex;
+        position: relative;
+        * {
+          + * {
+            margin-left: -1px;
+          }
+        }
+        &.width {
+          display: flex;
+        }
+        .fix {
+          @extend .input;
+          background: none;
+          width: auto;
+          max-width: 50%;
+          cursor: default;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          @include user-select(none);
+          &.icon {
+            width: ($x * 1.5);
+            padding: (($y / 6) + 1) 0; // (($y / 6) + border-y-width) 0
+          }
+        }
+        .button {
+          background: none;
+          color: inherit;
+          border-width: 1px;
+          line-height: ($h - 2); // $h - (border-top-width + border-bottom-width)
+          &:focus,
+          &:active {
+            background: rgba(0, 0, 0, .05);
+            color: inherit;
+          }
+        }
+        .lot\:f {
+          .button {
+            + .button {
+              margin-left: -1px;
+            }
+          }
+        }
+      }
+      .options {
+        display: flex;
+        padding: ($y / 4) 0;
+      }
     }
   }
 }
 
+@import 'field/buttons';
+@import 'field/colors';
+@import 'field/item';
+@import 'field/items';
 @import 'field/query';
+@import 'field/toggle';

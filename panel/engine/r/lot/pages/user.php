@@ -1,9 +1,9 @@
 <?php
 
 // `http://127.0.0.1/panel/::g::/user/1`
-$_['type'] = 'page';
+$_['type'] = 'pages';
 
-$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 $g = 1 !== $user['status'];
 

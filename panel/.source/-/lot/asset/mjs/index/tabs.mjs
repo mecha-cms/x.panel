@@ -3,7 +3,7 @@ import {eventPreventDefault, on} from '@taufik-nurrohman/event';
 import {toCount} from '@taufik-nurrohman/to';
 
 export function hook() {
-    let sources = getElements('.lot\\:tab'),
+    let sources = getElements('.lot\\:tabs'),
         hasReplaceState = 'replaceState' in theHistory,
         doSetFormAction = node => {
             let href = node.href,

@@ -68,8 +68,10 @@ u {
 
 .not\:active .button[disabled],
 .not\:active .input[disabled],
-.not\:active .lot\:input .fix[disabled],
-.lot\:input .not\:active .fix[disabled],
+.not\:active .field > label + div .lot\:f .fix[disabled],
+.field > label + div .lot\:f .not\:active .fix[disabled],
+.not\:active .field > label + br + div .lot\:f .fix[disabled],
+.field > label + br + div .lot\:f .not\:active .fix[disabled],
 .not\:active .not\:active,
 .not\:active .select[disabled],
 .not\:active .textarea[disabled] {
@@ -794,7 +796,8 @@ legend + ul {
 
 .button,
 .input,
-.lot\:input .fix,
+.field > label + div .lot\:f .fix,
+.field > label + br + div .lot\:f .fix,
 .select,
 .textarea {
   display: inline-block;
@@ -814,7 +817,8 @@ legend + ul {
 
 .button:focus,
 .input:focus,
-.lot\:input .fix:focus,
+.field > label + div .lot\:f .fix:focus,
+.field > label + br + div .lot\:f .fix:focus,
 .select:focus,
 .textarea:focus {
   z-index: 1;
@@ -822,9 +826,11 @@ legend + ul {
 
 .button[disabled], .button.not\:active,
 .input[disabled],
-.lot\:input .fix[disabled],
+.field > label + div .lot\:f .fix[disabled],
+.field > label + br + div .lot\:f .fix[disabled],
 .input.not\:active,
-.lot\:input .not\:active.fix,
+.field > label + div .lot\:f .not\:active.fix,
+.field > label + br + div .lot\:f .not\:active.fix,
 .select[disabled],
 .select.not\:active,
 .textarea[disabled],
@@ -835,7 +841,8 @@ legend + ul {
 
 .button[readonly],
 .input[readonly],
-.lot\:input .fix[readonly],
+.field > label + div .lot\:f .fix[readonly],
+.field > label + br + div .lot\:f .fix[readonly],
 .select[readonly],
 .textarea[readonly] {
   border-style: dotted;
@@ -863,7 +870,8 @@ label {
   cursor: pointer;
 }
 
-.input:focus:invalid, .lot\:input .fix:focus:invalid,
+.input:focus:invalid, .field > label + div .lot\:f .fix:focus:invalid,
+.field > label + br + div .lot\:f .fix:focus:invalid,
 .textarea:focus:invalid {
   color: #c00;
   border-color: #f00;
@@ -884,11 +892,16 @@ label {
   background: none;
 }
 
-.input[type='color'], .lot\:input .fix[type='color'], .input[type='file'], .lot\:input .fix[type='file'], .input[type='range'], .lot\:input .fix[type='range'] {
+.input[type='color'], .field > label + div .lot\:f .fix[type='color'],
+.field > label + br + div .lot\:f .fix[type='color'], .input[type='file'], .field > label + div .lot\:f .fix[type='file'],
+.field > label + br + div .lot\:f .fix[type='file'], .input[type='range'], .field > label + div .lot\:f .fix[type='range'],
+.field > label + br + div .lot\:f .fix[type='range'] {
   cursor: pointer;
 }
 
-.input[type='file'], .lot\:input .fix[type='file'], .input[type='range'], .lot\:input .fix[type='range'] {
+.input[type='file'], .field > label + div .lot\:f .fix[type='file'],
+.field > label + br + div .lot\:f .fix[type='file'], .input[type='range'], .field > label + div .lot\:f .fix[type='range'],
+.field > label + br + div .lot\:f .fix[type='range'] {
   background: none;
   border: 0;
   padding: 0;
@@ -896,7 +909,11 @@ label {
   box-shadow: none;
 }
 
-.input[type='checkbox'], .lot\:input .fix[type='checkbox'], .input[type='color'], .lot\:input .fix[type='color'], .input[type='image'], .lot\:input .fix[type='image'], .input[type='radio'], .lot\:input .fix[type='radio'] {
+.input[type='checkbox'], .field > label + div .lot\:f .fix[type='checkbox'],
+.field > label + br + div .lot\:f .fix[type='checkbox'], .input[type='color'], .field > label + div .lot\:f .fix[type='color'],
+.field > label + br + div .lot\:f .fix[type='color'], .input[type='image'], .field > label + div .lot\:f .fix[type='image'],
+.field > label + br + div .lot\:f .fix[type='image'], .input[type='radio'], .field > label + div .lot\:f .fix[type='radio'],
+.field > label + br + div .lot\:f .fix[type='radio'] {
   margin: 0;
   padding: 0;
   background: none;
@@ -907,29 +924,37 @@ label {
   cursor: pointer;
 }
 
-.input[type='checkbox'][readonly], .lot\:input .fix[type='checkbox'][readonly], .input[type='radio'][readonly], .lot\:input .fix[type='radio'][readonly] {
+.input[type='checkbox'][readonly], .field > label + div .lot\:f .fix[type='checkbox'][readonly],
+.field > label + br + div .lot\:f .fix[type='checkbox'][readonly], .input[type='radio'][readonly], .field > label + div .lot\:f .fix[type='radio'][readonly],
+.field > label + br + div .lot\:f .fix[type='radio'][readonly] {
   pointer-events: none;
 }
 
-.input[type='color'], .lot\:input .fix[type='color'] {
+.input[type='color'], .field > label + div .lot\:f .fix[type='color'],
+.field > label + br + div .lot\:f .fix[type='color'] {
   width: 36px;
   height: 36px;
 }
 
-.input[type='image'], .lot\:input .fix[type='image'] {
+.input[type='image'], .field > label + div .lot\:f .fix[type='image'],
+.field > label + br + div .lot\:f .fix[type='image'] {
   width: auto;
   height: auto;
   box-shadow: none;
 }
 
-.input[type='number']::-webkit-inner-spin-button, .lot\:input .fix[type='number']::-webkit-inner-spin-button, .input[type='number']::-webkit-outer-spin-button, .lot\:input .fix[type='number']::-webkit-outer-spin-button {
+.input[type='number']::-webkit-inner-spin-button, .field > label + div .lot\:f .fix[type='number']::-webkit-inner-spin-button,
+.field > label + br + div .lot\:f .fix[type='number']::-webkit-inner-spin-button, .input[type='number']::-webkit-outer-spin-button, .field > label + div .lot\:f .fix[type='number']::-webkit-outer-spin-button,
+.field > label + br + div .lot\:f .fix[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   margin: 0;
 }
 
-.input[type='number'], .lot\:input .fix[type='number'], .input[type='search'], .lot\:input .fix[type='search'] {
+.input[type='number'], .field > label + div .lot\:f .fix[type='number'],
+.field > label + br + div .lot\:f .fix[type='number'], .input[type='search'], .field > label + div .lot\:f .fix[type='search'],
+.field > label + br + div .lot\:f .fix[type='search'] {
   -webkit-appearance: textfield;
   -moz-appearance: textfield;
   appearance: textfield;
@@ -999,18 +1024,26 @@ label.not\:active {
   cursor: not-allowed;
 }
 
-.input[type='checkbox'], .lot\:input .fix[type='checkbox'], .input[type='radio'], .lot\:input .fix[type='radio'] {
+.input[type='checkbox'], .field > label + div .lot\:f .fix[type='checkbox'],
+.field > label + br + div .lot\:f .fix[type='checkbox'], .input[type='radio'], .field > label + div .lot\:f .fix[type='radio'],
+.field > label + br + div .lot\:f .fix[type='radio'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   background: #00f;
 }
 
-.input[type='checkbox'].not\:active, .lot\:input .fix[type='checkbox'].not\:active, .input[type='checkbox'][disabled], .lot\:input .fix[type='checkbox'][disabled], .input[type='radio'].not\:active, .lot\:input .fix[type='radio'].not\:active, .input[type='radio'][disabled], .lot\:input .fix[type='radio'][disabled] {
+.input[type='checkbox'].not\:active, .field > label + div .lot\:f .fix[type='checkbox'].not\:active,
+.field > label + br + div .lot\:f .fix[type='checkbox'].not\:active, .input[type='checkbox'][disabled], .field > label + div .lot\:f .fix[type='checkbox'][disabled],
+.field > label + br + div .lot\:f .fix[type='checkbox'][disabled], .input[type='radio'].not\:active, .field > label + div .lot\:f .fix[type='radio'].not\:active,
+.field > label + br + div .lot\:f .fix[type='radio'].not\:active, .input[type='radio'][disabled], .field > label + div .lot\:f .fix[type='radio'][disabled],
+.field > label + br + div .lot\:f .fix[type='radio'][disabled] {
   background: #000;
 }
 
-.input[type='checkbox']::before, .lot\:input .fix[type='checkbox']::before, .input[type='radio']::before, .lot\:input .fix[type='radio']::before {
+.input[type='checkbox']::before, .field > label + div .lot\:f .fix[type='checkbox']::before,
+.field > label + br + div .lot\:f .fix[type='checkbox']::before, .input[type='radio']::before, .field > label + div .lot\:f .fix[type='radio']::before,
+.field > label + br + div .lot\:f .fix[type='radio']::before {
   content: "";
   position: absolute;
   top: 2px;
@@ -1020,11 +1053,14 @@ label.not\:active {
   background: #fff;
 }
 
-.input[type='checkbox']:checked::before, .lot\:input .fix[type='checkbox']:checked::before, .input[type='radio']:checked::before, .lot\:input .fix[type='radio']:checked::before {
+.input[type='checkbox']:checked::before, .field > label + div .lot\:f .fix[type='checkbox']:checked::before,
+.field > label + br + div .lot\:f .fix[type='checkbox']:checked::before, .input[type='radio']:checked::before, .field > label + div .lot\:f .fix[type='radio']:checked::before,
+.field > label + br + div .lot\:f .fix[type='radio']:checked::before {
   background: none;
 }
 
-.input[type='checkbox']:checked::before, .lot\:input .fix[type='checkbox']:checked::before {
+.input[type='checkbox']:checked::before, .field > label + div .lot\:f .fix[type='checkbox']:checked::before,
+.field > label + br + div .lot\:f .fix[type='checkbox']:checked::before {
   top: 1px;
   right: 5px;
   bottom: 4px;
@@ -1037,27 +1073,33 @@ label.not\:active {
   visibility: visible;
 }
 
-.input[type='radio']:checked::before, .lot\:input .fix[type='radio']:checked::before {
+.input[type='radio']:checked::before, .field > label + div .lot\:f .fix[type='radio']:checked::before,
+.field > label + br + div .lot\:f .fix[type='radio']:checked::before {
   border: 2px solid #fff;
   visibility: visible;
 }
 
-.input[type='radio'], .lot\:input .fix[type='radio'], .input[type='radio']::before, .lot\:input .fix[type='radio']::before {
+.input[type='radio'], .field > label + div .lot\:f .fix[type='radio'],
+.field > label + br + div .lot\:f .fix[type='radio'], .input[type='radio']::before, .field > label + div .lot\:f .fix[type='radio']::before,
+.field > label + br + div .lot\:f .fix[type='radio']::before {
   border-radius: 100%;
 }
 
-.field\:toggle .input[type='checkbox'], .field\:toggle .lot\:input .fix[type='checkbox'], .lot\:input .field\:toggle .fix[type='checkbox'] {
+.field\:toggle .input[type='checkbox'], .field\:toggle .field > label + div .lot\:f .fix[type='checkbox'], .field > label + div .lot\:f .field\:toggle .fix[type='checkbox'],
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox'], .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'] {
   width: 32px;
   height: 20px;
   border-width: 0;
   border-radius: 10px;
 }
 
-.field\:toggle .input[type='checkbox'][disabled], .field\:toggle .lot\:input .fix[type='checkbox'][disabled], .lot\:input .field\:toggle .fix[type='checkbox'][disabled] {
+.field\:toggle .input[type='checkbox'][disabled], .field\:toggle .field > label + div .lot\:f .fix[type='checkbox'][disabled], .field > label + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled],
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox'][disabled], .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled] {
   background: #000;
 }
 
-.field\:toggle .input[type='checkbox']::before, .field\:toggle .lot\:input .fix[type='checkbox']::before, .lot\:input .field\:toggle .fix[type='checkbox']::before {
+.field\:toggle .input[type='checkbox']::before, .field\:toggle .field > label + div .lot\:f .fix[type='checkbox']::before, .field > label + div .lot\:f .field\:toggle .fix[type='checkbox']::before,
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox']::before, .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']::before {
   border: 0;
   width: 16px;
   height: 16px;
@@ -1071,7 +1113,8 @@ label.not\:active {
   visibility: visible;
 }
 
-.field\:toggle .input[type='checkbox']:checked::before, .field\:toggle .lot\:input .fix[type='checkbox']:checked::before, .lot\:input .field\:toggle .fix[type='checkbox']:checked::before {
+.field\:toggle .input[type='checkbox']:checked::before, .field\:toggle .field > label + div .lot\:f .fix[type='checkbox']:checked::before, .field > label + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before,
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox']:checked::before, .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before {
   left: 14px;
 }
 
@@ -1135,6 +1178,100 @@ label.not\:active {
   display: block;
   flex: 1;
   position: relative;
+}
+
+.field > label + div .lot\:f,
+.field > label + br + div .lot\:f {
+  display: inline-flex;
+  position: relative;
+}
+
+.field > label + div .lot\:f * + *,
+.field > label + br + div .lot\:f * + * {
+  margin-left: -1px;
+}
+
+.field > label + div .lot\:f.width,
+.field > label + br + div .lot\:f.width {
+  display: flex;
+}
+
+.field > label + div .lot\:f .fix,
+.field > label + br + div .lot\:f .fix {
+  background: none;
+  width: auto;
+  max-width: 50%;
+  cursor: default;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.field > label + div .lot\:f .fix.icon,
+.field > label + br + div .lot\:f .fix.icon {
+  width: 36px;
+  padding: 5px 0;
+}
+
+.field > label + div .lot\:f .button,
+.field > label + br + div .lot\:f .button {
+  background: none;
+  color: inherit;
+  border-width: 1px;
+  line-height: 22px;
+}
+
+.field > label + div .lot\:f .button:focus, .field > label + div .lot\:f .button:active,
+.field > label + br + div .lot\:f .button:focus,
+.field > label + br + div .lot\:f .button:active {
+  background: rgba(0, 0, 0, 0.05);
+  color: inherit;
+}
+
+.field > label + div .lot\:f .lot\:f .button + .button,
+.field > label + br + div .lot\:f .lot\:f .button + .button {
+  margin-left: -1px;
+}
+
+.field > label + div .options,
+.field > label + br + div .options {
+  display: flex;
+  padding: 6px 0;
+}
+
+.field\:buttons .lot\:f {
+  display: inline-flex;
+}
+
+.field\:buttons .lot\:f .button + .button {
+  margin-left: 1px;
+}
+
+.field\:colors > label + div .options,
+.field\:colors > label + br + div .options {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.field\:item .options, .field\:colors .options, .field\:items .options, .field\:toggle .options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  height: auto;
+  max-height: 100%;
+}
+
+.field\:item .options.is\:block, .field\:colors .options.is\:block, .field\:items .options.is\:block, .field\:toggle .options.is\:block {
+  display: block;
+}
+
+.field\:item .options > label, .field\:colors .options > label, .field\:items .options > label, .field\:toggle .options > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0 8px;
+  white-space: nowrap;
 }
 
 .field\:query .tag-picker {
@@ -1289,7 +1426,8 @@ label.not\:active {
   height: inherit;
 }
 
-.lot\:bar .field .input, .lot\:bar .field .lot\:input .fix, .lot\:input .lot\:bar .field .fix {
+.lot\:bar .field .input, .lot\:bar .field > label + div .lot\:f .fix,
+.lot\:bar .field > label + br + div .lot\:f .fix {
   display: block;
   width: 192px;
   height: 48px;
@@ -1329,108 +1467,12 @@ label.not\:active {
   max-width: 100%;
 }
 
-.lot\:field > .description {
+.lot\:fields > .description {
   padding-bottom: 16px;
   border-bottom: 1px dashed;
 }
 
-.lot\:button {
-  display: inline-flex;
-}
-
-.lot\:button .button .title .icon.caret:only-child {
-  margin-right: -12px;
-  margin-left: -12px;
-}
-
-.lot\:button .button + .button {
-  margin-left: 1px;
-}
-
-.lot\:color {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -6px;
-  margin-left: -6px;
-}
-
-.lot\:color .input, .lot\:color .lot\:input .fix, .lot\:input .lot\:color .fix {
-  margin-right: 6px;
-  margin-left: 6px;
-}
-
-.lot\:input {
-  display: inline-flex;
-  position: relative;
-}
-
-.lot\:input * + * {
-  margin-left: -1px;
-}
-
-.lot\:input.width {
-  display: flex;
-}
-
-.lot\:input .fix {
-  background: none;
-  width: auto;
-  max-width: 50%;
-  cursor: default;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
-.lot\:input .fix.icon {
-  width: 36px;
-  padding: 5px 0;
-}
-
-.lot\:input .button {
-  background: none;
-  color: inherit;
-  border-width: 1px;
-  line-height: 22px;
-}
-
-.lot\:input .button:focus, .lot\:input .button:active {
-  background: rgba(0, 0, 0, 0.05);
-  color: inherit;
-}
-
-.lot\:input .lot\:button .button + .button {
-  margin-left: -1px;
-}
-
-.lot\:item, .lot\:items, .lot\:toggle {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -6px;
-  padding: 6px 0;
-}
-
-.lot\:item.is\:block, .is\:block.lot\:items, .is\:block.lot\:toggle {
-  display: block;
-}
-
-.lot\:item > *, .lot\:items > *, .lot\:toggle > * {
-  margin: 0 6px;
-}
-
-.lot\:item > label, .lot\:items > label, .lot\:toggle > label {
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.lot\:item > label > *, .lot\:items > label > *, .lot\:toggle > label > * {
-  margin: 0 6px;
-}
-
-.lot\:file, .lot\:page {
+.lot\:files, .lot\:pages {
   margin-right: 0;
   margin-left: 0;
   padding: 0;
@@ -1438,11 +1480,11 @@ label.not\:active {
   list-style: none;
 }
 
-.lot\:file h3, .lot\:page h3,
-.lot\:file li,
-.lot\:page li,
-.lot\:file p,
-.lot\:page p {
+.lot\:files h3, .lot\:pages h3,
+.lot\:files li,
+.lot\:pages li,
+.lot\:files p,
+.lot\:pages p {
   margin: 0;
   padding: 0;
   font: inherit;
@@ -1450,24 +1492,24 @@ label.not\:active {
   border-color: inherit;
 }
 
-.lot\:file h3, .lot\:page h3 {
+.lot\:files h3, .lot\:pages h3 {
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.lot\:file h3 a.not\:active, .lot\:page h3 a.not\:active {
+.lot\:files h3 a.not\:active, .lot\:pages h3 a.not\:active {
   opacity: 1;
 }
 
-.lot\:file h3 .title, .lot\:page h3 .title {
+.lot\:files h3 .title, .lot\:pages h3 .title {
   display: inline-flex;
 }
 
 
-.lot\:file li,
-.lot\:page li {
+.lot\:files li,
+.lot\:pages li {
   display: flex;
   border: 0 solid #fff;
   padding: 6px 12px;
@@ -1476,7 +1518,7 @@ label.not\:active {
   overflow: hidden;
 }
 
-.lot\:file li::before, .lot\:page li::before, .lot\:file li::after, .lot\:page li::after {
+.lot\:files li::before, .lot\:pages li::before, .lot\:files li::after, .lot\:pages li::after {
   content: "";
   display: block;
   width: 24px;
@@ -1486,26 +1528,26 @@ label.not\:active {
   left: 6px;
 }
 
-.lot\:file li > *, .lot\:page li > * {
+.lot\:files li > *, .lot\:pages li > * {
   margin: 0 3px;
 }
 
-.lot\:file li > .lot\:task, .lot\:page li > .lot\:task {
+.lot\:files li > .lot\:task, .lot\:pages li > .lot\:task {
   margin-right: -6px;
 }
 
-.lot\:file .is\:file, .lot\:page .is\:file,
-.lot\:file .is\:folder,
-.lot\:page .is\:folder {
+.lot\:files .is\:file, .lot\:pages .is\:file,
+.lot\:files .is\:folder,
+.lot\:pages .is\:folder {
   padding-left: 42px;
 }
 
-.lot\:file .is\:file::before, .lot\:page .is\:file::before {
+.lot\:files .is\:file::before, .lot\:pages .is\:file::before {
   border: 1px solid;
   width: 20px;
 }
 
-.lot\:file .is\:file::after, .lot\:page .is\:file::after {
+.lot\:files .is\:file::after, .lot\:pages .is\:file::after {
   width: 0;
   height: 0;
   border: 3px solid;
@@ -1514,24 +1556,24 @@ label.not\:active {
   left: 20px;
 }
 
-.lot\:file .is\:folder::before, .lot\:page .is\:folder::before {
+.lot\:files .is\:folder::before, .lot\:pages .is\:folder::before {
   background: #000;
   height: 18px;
   top: 11px;
 }
 
-.lot\:file .is\:folder::after, .lot\:page .is\:folder::after {
+.lot\:files .is\:folder::after, .lot\:pages .is\:folder::after {
   background: #000;
   width: 12px;
   height: 3px;
   top: 7px;
 }
 
-.lot\:file .not\:active, .lot\:page .not\:active {
+.lot\:files .not\:active, .lot\:pages .not\:active {
   opacity: .5;
 }
 
-.lot\:file.count\:0, .count\:0.lot\:page {
+.lot\:files.count\:0, .count\:0.lot\:pages {
   display: none;
 }
 
@@ -1623,37 +1665,37 @@ label.not\:active {
   display: block;
 }
 
-.lot\:page li {
+.lot\:pages li {
   padding: 12px 6px;
   margin: 0 -12px;
 }
 
-.lot\:page li.is\:file, .lot\:page li.is\:folder {
+.lot\:pages li.is\:file, .lot\:pages li.is\:folder {
   padding-left: 6px;
 }
 
-.lot\:page li.is\:file::before, .lot\:page li.is\:file::after, .lot\:page li.is\:folder::before, .lot\:page li.is\:folder::after {
+.lot\:pages li.is\:file::before, .lot\:pages li.is\:file::after, .lot\:pages li.is\:folder::before, .lot\:pages li.is\:folder::after {
   display: none;
 }
 
-.lot\:page li > * {
+.lot\:pages li > * {
   margin: 0 6px;
 }
 
-.lot\:page li > div {
+.lot\:pages li > div {
   min-height: 54px;
 }
 
-.lot\:page li > div:first-child + div {
+.lot\:pages li > div:first-child + div {
   flex: 1;
 }
 
-.lot\:page h3 {
+.lot\:pages h3 {
   font-size: 20px;
 }
 
-.lot\:page img,
-.lot\:page .img {
+.lot\:pages img,
+.lot\:pages .img {
   display: block;
   width: 54px;
   height: 54px;
@@ -1663,7 +1705,7 @@ label.not\:active {
   min-height: 0;
 }
 
-.lot\:page .description {
+.lot\:pages .description {
   margin: 6px 0 0;
 }
 
@@ -1703,76 +1745,76 @@ label.not\:active {
   display: none;
 }
 
-.lot\:tab > nav ul,
-.lot\:tab > nav li {
+.lot\:tabs > nav ul,
+.lot\:tabs > nav li {
   display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.lot\:tab > nav ul {
+.lot\:tabs > nav ul {
   overflow: hidden;
 }
 
-.lot\:tab > nav li {
+.lot\:tabs > nav li {
   position: relative;
 }
 
-.lot\:tab > nav a {
+.lot\:tabs > nav a {
   display: flex;
 }
 
-.lot\:tab > nav .title .icon {
+.lot\:tabs > nav .title .icon {
   margin: 0 -8px;
 }
 
-.lot\:tab > nav .title .icon:first-child {
+.lot\:tabs > nav .title .icon:first-child {
   margin-right: 4px;
 }
 
-.lot\:tab > nav .title .icon:last-child {
+.lot\:tabs > nav .title .icon:last-child {
   margin-left: 4px;
 }
 
-.lot\:tab > nav .title .icon:only-child {
+.lot\:tabs > nav .title .icon:only-child {
   margin-right: -8px;
   margin-left: -8px;
 }
 
-.lot\:tab > section {
+.lot\:tabs > section {
   margin-top: 24px;
   display: none;
 }
 
-.lot\:tab > section.is\:current {
+.lot\:tabs > section.is\:current {
   display: block;
 }
 
-.lot\:tab.count\:0 {
+.lot\:tabs.count\:0 {
   display: none;
 }
 
-.lot\:tab.count\:1 > nav {
+.lot\:tabs.count\:1 > nav {
   display: none;
 }
 
-.lot\:tab.count\:1 > section {
+.lot\:tabs.count\:1 > section {
   margin-top: 0;
 }
 
-.lot\:task {
+.lot\:tasks {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 6px 6px;
 }
 
-.lot\:task\.link .title {
+.lot\:tasks\.link .title {
   gap: 3px 3px;
 }
 
-.lot\:task\.link .title > .icon {
+.lot\:tasks\.link .title > .icon {
   margin-right: 0;
   margin-left: 0;
 }
@@ -1805,24 +1847,24 @@ pre.is\:text code {
 }
 
 @media (min-width: 720px) {
-  .lot\:tab > nav {
+  .lot\:tabs > nav {
     height: 48px;
     line-height: 48px;
   }
-  .lot\:tab > nav li {
+  .lot\:tabs > nav li {
     border: 1px solid;
     border-bottom-width: 0;
   }
-  .lot\:tab > nav li + li {
+  .lot\:tabs > nav li + li {
     border-left-width: 0;
   }
-  .lot\:tab > nav li:not(.has\:link) a {
+  .lot\:tabs > nav li:not(.has\:link) a {
     color: inherit;
   }
-  .lot\:tab > nav li.is\:current {
+  .lot\:tabs > nav li.is\:current {
     z-index: 4;
   }
-  .lot\:tab > nav li.is\:current::before, .lot\:tab > nav li.is\:current::after {
+  .lot\:tabs > nav li.is\:current::before, .lot\:tabs > nav li.is\:current::after {
     content: "";
     display: block;
     position: absolute;
@@ -1831,13 +1873,13 @@ pre.is\:text code {
     height: 0;
     border-bottom: 1px solid;
   }
-  .lot\:tab > nav li.is\:current::before {
+  .lot\:tabs > nav li.is\:current::before {
     right: 100%;
   }
-  .lot\:tab > nav li.is\:current::after {
+  .lot\:tabs > nav li.is\:current::after {
     left: 100%;
   }
-  .lot\:tab > nav a {
+  .lot\:tabs > nav a {
     padding: 0 20px;
   }
 }
@@ -1916,7 +1958,8 @@ pre.is\:text code {
   .lot\:bar .field > * {
     margin: 0;
   }
-  .lot\:bar .field .input, .lot\:bar .field .lot\:input .fix, .lot\:input .lot\:bar .field .fix {
+  .lot\:bar .field .input, .lot\:bar .field > label + div .lot\:f .fix,
+  .lot\:bar .field > label + br + div .lot\:f .fix {
     display: block;
     width: 100%;
     margin: 0;
@@ -1931,16 +1974,16 @@ pre.is\:text code {
   .lot\:pager > span:first-child, .lot\:pager > span:last-child {
     display: none;
   }
-  .lot\:tab > nav li {
+  .lot\:tabs > nav li {
     margin-right: 24px;
   }
-  .lot\:tab > nav li:not(.has\:link).is\:current a {
+  .lot\:tabs > nav li:not(.has\:link).is\:current a {
     color: inherit;
   }
-  .lot\:tab > nav li:last-child {
+  .lot\:tabs > nav li:last-child {
     margin-right: 0;
   }
-  .lot\:tab > nav .title svg {
+  .lot\:tabs > nav .title svg {
     display: none;
   }
 }

@@ -93,7 +93,6 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                                     'email' => [
                                                         'type' => 'email',
                                                         'name' => 'page[email]',
-                                                        'hint' => 'g' === $_['task'] ? $page['email'] : null,
                                                         'value' => $page['email'],
                                                         'width' => true,
                                                         'stack' => 11

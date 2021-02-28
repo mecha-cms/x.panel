@@ -54,6 +54,9 @@ function route() {
             } else if (\is_file($f)) {
                 $_['type'] = 'file';
             }
+            if (null !== $_['i']) {
+                $_['type'] .= 's';
+            }
             // Put data
             $GLOBALS['_'] = $_;
         }
@@ -68,16 +71,18 @@ function route() {
                     }
                     $type = $_type;
                 }
-            })(__DIR__ . \DS . 'lot' . \DS . 'page' . ($_['i'] ? 's' : "") . \DS . $v . '.php');
+            })(__DIR__ . \DS . 'lot' . \DS . 'page' . (null !== $_['i'] ? 's' : "") . \DS . $v . '.php');
         }
         // Get data
         $_ = $GLOBALS['_'];
     }
     // Set layout type
     if (!$type) {
-        $k = \explode('/', $_['type'] ?? \P, 2);
-        $k[0] .= ($_['i'] ? 's' : "");
-        $type = __DIR__ . \DS . 'type' . \DS . \implode(\DS, $k) . '.php';
+        $k = \strtr($_['type'], [
+            '/' => \DS,
+            '../' => ""
+        ]);
+        $type = __DIR__ . \DS . 'type' . \DS . $k . '.php';
     }
     // Define lot based on the current type
     \is_file($type) && (static function($type) {

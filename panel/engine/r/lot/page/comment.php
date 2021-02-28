@@ -8,7 +8,7 @@ $_['type'] = [
     'page' => 'page/comment'
 ][pathinfo($_['f'], PATHINFO_EXTENSION)] ?? $_['type'];
 
-$_ = require __DIR__ . DS . '..' . DS . 'page.php';
+$_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 // TODO
 

@@ -15,7 +15,7 @@ $uses = [
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if ($i > 1) {
-    $_ = require __DIR__ . DS . '..' . DS . 'pages.php';
+    $_ = require __DIR__ . DS . '..' . DS . 'index.php';
     if (isset($uses[$_['chop'][1]])) {
         // Disable delete button where possible
         $index = $index = $_['f'] . DS . 'index.php';
@@ -98,9 +98,9 @@ if ($i > 1) {
 }
 
 // `http://127.0.0.1/panel/::g::/x/1`
-$_['type'] = 'page';
+$_['type'] = 'pages';
 
-$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 // Hide search form
 $_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true;

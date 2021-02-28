@@ -1,6 +1,6 @@
 <?php
 
-$_ = require __DIR__ . DS . '..' . DS . 'pages.php';
+$_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'])) {
     $root = 1 === count($_['chop']);

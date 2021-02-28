@@ -111,10 +111,20 @@ function fields($_) {
                 'type' => 'link',
                 'name' => 'default[link]'
             ],
+            'name' => [
+                'title' => 'Name',
+                'type' => 'name',
+                'name' => 'default[name]'
+            ],
             'number' => [
                 'title' => 'Number',
                 'type' => 'number',
                 'name' => 'default[number]'
+            ],
+            'path' => [
+                'title' => 'Path',
+                'type' => 'path',
+                'name' => 'default[path]'
             ],
             'pass' => [
                 'title' => 'Pass',
