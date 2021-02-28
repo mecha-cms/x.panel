@@ -1532,7 +1532,7 @@ label.not\:active {
   margin: 0 3px;
 }
 
-.lot\:files li > .lot\:task, .lot\:pages li > .lot\:task {
+.lot\:files li > .lot\:tasks, .lot\:pages li > .lot\:tasks {
   margin-right: -6px;
 }
 

@@ -2,7 +2,7 @@
 
 if ('post' === $_['form']['type'] || empty($_['form']['lot']['token'])) {
     // TODO: Show 404 page?
-    \Guard::kick(\str_replace('::l::', '::g::', $url->current));
+    \Guard::kick(\strtr($url->current, ['::l::' => '::g::']));
 }
 
 // Prevent user(s) from deleting file(s) above the `.\lot\*` level

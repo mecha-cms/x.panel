@@ -30,6 +30,7 @@ require __DIR__ . \DS . 'route' . \DS . 'description.php';
 require __DIR__ . \DS . 'route' . \DS . 'files.php';
 require __DIR__ . \DS . 'route' . \DS . 'fields.php';
 require __DIR__ . \DS . 'route' . \DS . 'menu.php';
+require __DIR__ . \DS . 'route' . \DS . 'pager.php';
 require __DIR__ . \DS . 'route' . \DS . 'pages.php';
 require __DIR__ . \DS . 'route' . \DS . 'section.php';
 require __DIR__ . \DS . 'route' . \DS . 'separator.php';

@@ -58,7 +58,7 @@ function blob($_) {
                     $_['ff'][] = $f;
                     // Extract package
                     if (
-                        !empty($_['form']['lot']['o']['extract']) &&
+                        !empty($_['form']['lot']['options']['extract']) &&
                         \extension_loaded('zip') &&
                         ('zip' === $x || 'application/zip' === $type)
                     ) {
@@ -67,7 +67,7 @@ function blob($_) {
                             \DS => '/'
                         ]) . \To::query([
                             'kick' => \explode('?', \str_replace('::s::', '::g::', $url->current), 2)[0] . '/1',
-                            'let' => !empty($_['form']['lot']['o']['let']) ? 1 : false,
+                            'let' => !empty($_['form']['lot']['options']['let']) ? 1 : false,
                             'token' => $_['token']
                         ]);
                     }
@@ -181,7 +181,7 @@ function folder($_) {
         } else {
             \mkdir($f, \octdec($_['form']['lot']['folder']['seal'] ?? '0755'), true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-            if (!empty($_['form']['lot']['o']['kick'])) {
+            if (!empty($_['form']['lot']['options']['kick'])) {
                 $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'

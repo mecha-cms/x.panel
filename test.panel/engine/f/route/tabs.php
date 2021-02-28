@@ -87,7 +87,7 @@ function tabs($_) {
         'lot' => [
             'tabs-0' => $tabs_0,
             'tabs-1' => $tabs_1,
-            'tabs-2' => $tabs_2,
+            'tabs-2' => $tabs_2
         ]
     ];
     return $_;

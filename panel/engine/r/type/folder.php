@@ -88,7 +88,7 @@ $desk = [
                                                     'width' => true,
                                                     'stack' => 10
                                                 ],
-                                                'o' => [
+                                                'options' => [
                                                     'title' => "",
                                                     'type' => 'items',
                                                     'block' => true,

@@ -75,7 +75,7 @@ $desk = [
                                                     'focus' => true,
                                                     'stack' => 10
                                                 ],
-                                                'o' => [
+                                                'options' => [
                                                     'title' => "",
                                                     'type' => 'items',
                                                     'lot' => $items,

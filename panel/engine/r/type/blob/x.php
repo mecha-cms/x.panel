@@ -38,17 +38,17 @@ if (!$zip) {
 }
 
 // Force extract package
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o']['skip'] = true;
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o:extract'] = [
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['options']['skip'] = true;
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['options:extract'] = [
     'type' => 'hidden',
-    'name' => 'o[extract]',
+    'name' => 'options[extract]',
     'value' => 1
 ];
 
 // Force delete package
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['o:let'] = [
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['options:let'] = [
     'type' => 'hidden',
-    'name' => 'o[let]',
+    'name' => 'options[let]',
     'value' => 1
 ];
 
