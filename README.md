@@ -6,15 +6,15 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
-### main
+### 2.6.0
 
- - [x] Added GUI tests menu that will be visible only if `DEBUG` mode is enabled by user.
- - [x] Added `$_['icon']` property to store the SVG path icons globally.
- - [x] Added `description`, `icon`, `separator`, `title`, `field/description`, `field/name`, `field/path`, `field/title` type.
- - [x] Added `files/*` and `pages/*` type variants.
- - [x] Added `sort` option key to allow user to sort the `lot` data using custom key reference other than `stack`.
- - [x] Added `width` option key for `desk` type to allow user to set custom desk width.
- - [x] Renamed `$_['chops']` to `$_['chop']`.
+ - Added GUI tests menu that will be visible only if `DEBUG` mode is enabled by user.
+ - Added `$_['icon']` property to store the SVG path icons globally.
+ - Added `description`, `icon`, `separator`, `title`, `field/description`, `field/name`, `field/path`, `field/title` type.
+ - Added `files/*` and `pages/*` type variants.
+ - Added `sort` option key to allow user to sort the `lot` data using custom key reference other than `stack`.
+ - Added `width` option key for `desk` type to allow user to set custom desk width.
+ - Renamed `$_['chops']` to `$_['chop']`.
 
 ### 2.5.1, 2.5.2
 
