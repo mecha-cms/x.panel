@@ -6,6 +6,12 @@ GUI Extension for Mecha
 Release Notes
 -------------
 
+### main
+
+ - [ ] Fixed bug of tags data that is not stored consistently on edit mode.
+ - [x] The `$_['/']` data now will includes the `$url` as prefix.
+ - [x] [@mecha-cms/mecha#96](https://github.com/mecha-cms/mecha/issues/96)
+
 ### 2.6.0
 
  - Added GUI tests menu that will be visible only if `DEBUG` mode is enabled by user.
