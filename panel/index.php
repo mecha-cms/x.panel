@@ -48,7 +48,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'trash' => !empty($state['guard']['trash']),
     'type' => $GLOBALS['_' . $k]['type'] ?? null,
     'user' => $u = State::get('x.user', true),
-    '/' => $pp = '/' . trim($u['guard']['path'] ?? $state['guard']['path'], '/')
+    '/' => $url . ($pp = '/' . trim($u['guard']['path'] ?? $state['guard']['path'], '/'))
 ], $GLOBALS['_'] ?? []);
 
 $p = $url['path'];

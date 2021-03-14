@@ -1,8 +1,8 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'file']];
-    $_['kick'] = $url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($f) . '</code>', 'file']];
+    $_['kick'] = $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
     ]) . $url->hash;
     return $_;
@@ -17,7 +17,7 @@ if ('post' === $_['form']['type']) {
     // Get current time
     $time = $_SERVER['REQUEST_TIME'] ?? time();
     // Set `time` data based on the current `time` data or use the `$time` value
-    $_['form']['lot']['data']['time'] = new Time($_['form']['lot']['data']['time'] ?? $time);
+    $_['form']['lot']['data']['time'] = (string) new Time($_['form']['lot']['data']['time'] ?? $time);
     // Remove all possible HTML tag(s) from the `author` data
     $_['form']['lot']['page']['author'] = strip_tags($_['form']['lot']['page']['author'] ?? "");
     // Remove all possible HTML tag(s) from the `id` data if any
@@ -30,13 +30,13 @@ if ('post' === $_['form']['type']) {
     }
     // Remove all possible block HTML tag(s) from the `description` data if any
     if (isset($_['form']['lot']['page']['description'])) {
-        $_['form']['lot']['page']['description'] = _\lot\x\panel\to\w($_['form']['lot']['page']['description'], 'a');
+        $_['form']['lot']['page']['description'] = x\panel\to\w($_['form']['lot']['page']['description'], 'a');
         // Limit `description` data value to 400 character(s) length
         $_['form']['lot']['page']['description'] = To::excerpt($_['form']['lot']['page']['description'], true, 400);
     }
     // Remove all possible block HTML tag(s) from the `title` data if any
     if (isset($_['form']['lot']['page']['title'])) {
-        $_['form']['lot']['page']['title'] = _\lot\x\panel\to\w($_['form']['lot']['page']['title']);
+        $_['form']['lot']['page']['title'] = x\panel\to\w($_['form']['lot']['page']['title']);
         // Limit `title` data value to 200 character(s) length
         $_['form']['lot']['page']['title'] = To::excerpt($_['form']['lot']['page']['title'], true, 200);
     }
@@ -71,7 +71,7 @@ $bar = [
             'lot' => [
                 'folder' => ['skip' => true],
                 'link' => [
-                    'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                    'url' => $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
                         'tab' => false,
                         'type' => false
                     ]) . $url->hash,
@@ -220,7 +220,7 @@ $desk = [
                                                             'lot' => [
                                                                 's' => [
                                                                     'title' => 'Data',
-                                                                    'url' => $url . $_['/'] . '/::s::/' . Path::F($_['path'], '/') . $url->query('&', [
+                                                                    'url' => $_['/'] . '/::s::/' . Path::F($_['path'], '/') . $url->query('&', [
                                                                         'tab' => false,
                                                                         'type' => 'data'
                                                                     ]) . $url->hash,
@@ -336,7 +336,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
         $files = [];
         if ($page->exist) {
             $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
-            $before = $url . $_['/'] . '/::';
+            $before = $_['/'] . '/::';
             foreach (g(Path::F($path), 'data') as $k => $v) {
                 $after = '::' . strtr($k, [
                     LOT => "",

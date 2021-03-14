@@ -1,8 +1,8 @@
 <?php
 
 if (is_file($f = $_['f']) && 'g' === $_['task']) {
-    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . _\lot\x\panel\from\path($f) . '</code>', 'folder']];
-    $_['kick'] = $url . $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($f) . '</code>', 'folder']];
+    $_['kick'] = $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
     ]) . $url->hash;
     return $_;
@@ -22,7 +22,7 @@ $bar = [
             'lot' => [
                 'folder' => ['skip' => true],
                 'link' => [
-                    'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                    'url' => $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
                         'tab' => false,
                         'type' => false
                     ]) . $url->hash,
@@ -123,7 +123,7 @@ $desk = [
                                             'lot' => [
                                                 's' => [
                                                     'title' => 'g' === $_['task'] ? 'Update' : 'Create',
-                                                    'description' => ['Create in %s', _\lot\x\panel\from\path($_['f'])],
+                                                    'description' => ['Create in %s', x\panel\from\path($_['f'])],
                                                     'type' => 'submit',
                                                     'name' => false,
                                                     'stack' => 10

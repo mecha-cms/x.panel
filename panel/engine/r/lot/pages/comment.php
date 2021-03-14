@@ -15,7 +15,7 @@ if (!$r && $f = File::exist([
     $d . '.page'
 ])) {
     $page = new Page($f);
-    $_['lot']['desk']['lot']['form']['lot'][1]['title'] = i('Page') . ': <a href="' . $url . $_['/'] . '/::g::/' . strtr($f, [LOT . DS => "", DS => '/']) . '">' . $page->title . '</a>';
+    $_['lot']['desk']['lot']['form']['lot'][1]['title'] = i('Page') . ': <a href="' . $_['/'] . '/::g::/' . strtr($f, [LOT . DS => "", DS => '/']) . '">' . $page->title . '</a>';
 }
 
 $files = $pages = [];
@@ -36,7 +36,7 @@ if ($r && is_file($f = LOT . DS . 'cache' . DS . '5f9e962a.php')) {
 }
 
 if ($files) {
-    $before = $url . $_['/'] . '/::';
+    $before = $_['/'] . '/::';
     $author = $user->user;
     foreach ($files as $k => $v) {
         $after = '::' . strtr($k, [
@@ -60,8 +60,8 @@ if ($files) {
             'invoke' => function($path) use($a, $x) {
                 $page = new Comment($path);
                 return [
-                    'title' => S . _\lot\x\panel\to\w($page->author) . S,
-                    'description' => S . _\lot\x\panel\to\w($page->content) . S,
+                    'title' => S . x\panel\to\w($page->author) . S,
+                    'description' => S . x\panel\to\w($page->content) . S,
                     'link' => 'draft' === $x ? null : $page->url . '#' . sprintf($a, $page->id),
                     'author' => $page['author'],
                     'image' => $page->avatar(72),
@@ -114,7 +114,7 @@ if ($files) {
     $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager']['count'] = $count;
 }
 
-$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
     'tab' => false,
     'type' => 'page/comment'
 ]) . $url->hash;

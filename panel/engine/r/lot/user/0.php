@@ -1,6 +1,6 @@
 <?php
 
-$_ = _\lot\x\panel\_error_user_check();
+$_ = x\panel\_error_user_check();
 
 if ('g' === $_['task'] && $user->path === $_['f']) {
     $_['lot']['desk']['lot']['form']['lot'][0]['title'] = $user['author'];

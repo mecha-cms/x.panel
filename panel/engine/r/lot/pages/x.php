@@ -26,7 +26,7 @@ if ($i > 1) {
     if (2 === $i) {
         $_['lot']['bar']['lot'][0]['lot']['folder']['skip'] = true;
         $_['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
-        $_['lot']['bar']['lot'][0]['lot']['link']['url'] = $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
+        $_['lot']['bar']['lot'][0]['lot']['link']['url'] = $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
             'tab' => false,
             'type' => false
         ]) . $url->hash;
@@ -36,8 +36,8 @@ if ($i > 1) {
             $content = $page->content;
             // Make URL example(s) in content become usable
             $content = strtr($content, [
-                '://127.0.0.1/panel/' => '://' . $url->host . $url->d . $_['/'] . '/',
-                '://127.0.0.1' => '://' . $url->host . $url->d
+                '://127.0.0.1/panel/' => '://' . explode(':', $_['/'], 2)[1] . '/',
+                '://127.0.0.1' => '://' . explode(':', $url . "", 2)[1]
             ]);
             $use = "";
             if ($uses = $page->use) {
@@ -47,7 +47,7 @@ if ($i > 1) {
                         ".\\" => ROOT . DS,
                         "\\" => DS
                     ]) . DS . 'index.php') && $v) {
-                        $use .= '<li><a href="' . $url . $_['/'] . '/::g::/' . dirname(Path::R($kk, LOT, '/')) . '/1?tab[0]=info">' . $k . '</a></li>';
+                        $use .= '<li><a href="' . $_['/'] . '/::g::/' . dirname(Path::R($kk, LOT, '/')) . '/1?tab[0]=info">' . $k . '</a></li>';
                     } else {
                         $use .= '<li>' . $k . (0 === $v ? ' <span class="description">(' . i('optional') . ')</span>' : "") . '</li>';
                     }
@@ -109,7 +109,7 @@ $pages = [];
 $count = 0;
 
 if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '/::';
+    $before = $_['/'] . '/::';
     foreach (g($folder, 'page', 1) as $k => $v) {
         if ('about.page' !== basename($k)) {
             continue;
@@ -124,8 +124,8 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             'invoke' => function($path) {
                 $page = new Page($path);
                 return [
-                    'title' => S . _\lot\x\panel\to\w($page->title) . S,
-                    'description' => S . _\lot\x\panel\to\w($page->description) . S,
+                    'title' => S . x\panel\to\w($page->title) . S,
+                    'description' => S . x\panel\to\w($page->description) . S,
                     'author' => $page['author'],
                     'image' => $page->image(72, 72, 50),
                     'tags' => [
@@ -176,7 +176,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['skip'
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title'] = 'Add';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['description'] = false;
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['icon'] = 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z';
-$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
     'tab' => false,
     'type' => 'blob/x'
 ]) . $url->hash;

@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\task\l;
+<?php namespace x\panel\task\l;
 
 if ('post' === $_['form']['type'] || empty($_['form']['lot']['token'])) {
     // TODO: Show 404 page?
@@ -24,7 +24,7 @@ function data($_) {
     ]) . $url->hash;
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
+        $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
     }
     return $_;
 }
@@ -53,8 +53,8 @@ function file($_) {
         } else {
             \unlink($f);
         }
-        $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \x\panel\from\path($f) . '</code>'];
+        $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -86,7 +86,7 @@ function folder($_) {
                 if ($k->isDir()) {
                     \rmdir($v);
                 }
-                $_SESSION['_'][$k->isDir() ? 'folder' : 'file'][\trim($vv, \DS)] = 1;
+                $_SESSION['_'][$k->isDir() ? 'folder' : 'file'][\rtrim($vv, \DS)] = 1;
             } else {
                 if ($k->isDir()) {
                     \rmdir($v);
@@ -99,8 +99,8 @@ function folder($_) {
             $_SESSION['_']['folder'][\rtrim(\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]), \DS)] = 1;
         }
         \rmdir($f);
-        $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \_\lot\x\panel\from\path($f) . '</code>'];
-        $_['kick'] = $_['form']['lot']['kick'] ?? $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
+        $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \x\panel\from\path($f) . '</code>'];
+        $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
 }
@@ -120,7 +120,13 @@ function page($_) {
                 if (!\is_dir($dd = \dirname($vv))) {
                     \mkdir($dd, 0775, true);
                 }
-                \rename($v, $vv);
+                if (!\is_dir($vv) && !\is_file($vv)) {
+                    \rename($v, $vv);
+                }
+                if ($k->isDir()) {
+                    \rmdir($v);
+                }
+                $_SESSION['_'][$k->isDir() ? 'folder' : 'file'][\rtrim($vv, \DS)] = 1;
             } else {
                 if ($k->isDir()) {
                     \rmdir($v);
@@ -133,7 +139,7 @@ function page($_) {
     }
     if (\is_file($f = $_['f'])) {
         $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
-        $path = '<code>' . \_\lot\x\panel\from\path($f) . '</code>';
+        $path = '<code>' . \x\panel\from\path($f) . '</code>';
         $_ = file($_); // Move to `file`
         $alter = [
             'File %s successfully deleted.' => ['%s %s successfully deleted.', [$key, $path]],

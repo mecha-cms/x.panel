@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\route\__test;
+<?php namespace x\panel\route\__test;
 
 function alert($_) {
     $_['title'] = 'Alerts';

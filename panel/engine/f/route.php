@@ -1,10 +1,10 @@
 <?php
 
-namespace _\lot\x\panel\route {
+namespace x\panel\route {
     function __license($_) {
         // Disable page offset feature and request type other than `GET`
         if (isset($_['i']) || 'g' !== $_['task']) {
-            $_['kick'] = $GLOBALS['url'] . $_['/'] . '/::g::/.license';
+            $_['kick'] = $_['/'] . '/::g::/.license';
             return $_;
         }
         // Hide search form
@@ -18,15 +18,16 @@ namespace _\lot\x\panel\route {
         $content = <<<HTML
 <h3>General Agreement</h3>
 <p>You are free to use this application, either for commercial or for non-commercial purposes. You will only be charged a fee when distributing Mecha along with this control panel feature to your clients who pay for your modified Mecha products.</p>
-<p>In other words, use it for free and pay only if you get paid. If you make a commercial product with this extension included (e.g. getting paid from a client who want to have a website made of this product or getting paid from a client who has gotten a website from you made of this product), then I would kindly ask you to give a small financial support for about 15 USD per product to keep this project floating around the world wide web.</p>
-<p>You have the right to determine the price of your project without any interference from me. You may be able to discuss this additional cost with your clients, honestly, without the need to keep anything confidential. I want everything to be transparent so that no one feels aggrieved.</p>
-<p>This agreement applies only to the first person (the developer who created the product). After that, you (the developer) may assign a separate license to your product. For example, making an agreement on how to distribute and resell the purchased products.</p>
+<p>In other words, use it for free, and pay only if you get paid. If you make a commercial product with this extension included (e.g. getting paid from a client who want to have a website made of this product), then I would kindly ask you to give a small financial support for about 20 USD per product to keep this project floating around the world wide web.</p>
+<p>You have the right to determine the price of your project without any interference from me. You may be able to discuss this additional cost with your client, honestly, without the need to keep anything confidential. I want everything to be transparent so that no one feels aggrieved.</p>
+<p>This agreement applies only to the first person (the developer who created the product). After that, you (the developer) may assign a separate license that is still within the scope of the <a href="https://www.gnu.org/licenses/gpl-faq.html" rel="nofollow" target="_blank">GNU General Public License Version 3</a> to your product. For example, making an agreement on how to distribute and resell the purchased products.</p>
 <p>Your custom themes and extensions included in the product are not affected by this agreement.</p>
 <h3>Dealing with Mass Production Activities</h3>
 <p>If you have a business mechanism that allows your clients to download packages after making a payment, and you don&#x2019;t want to be tied down to this revenue sharing, then you will need to remove the control panel feature from your downloadable package. Please provide a clear guidance separately on how to install the base control panel feature for people who want to download and use your packages.</p>
+<p>Support system and forums will always be available free of charge on <a href="https://github.com/mecha-cms/mecha/discussions" rel="nofollow" target="_blank">GitHub</a>.</p>
 <h3>Notes</h3>
-<p>If you are from Indonesia and are having problems with the current rupiah exchange rate against the dollar, you are allowed to consider 15 USD as 150,000 IDR.</p>
-<p><a class="button" href="https://paypal.me/tatautaufik" target="_blank">Donate for 15 USD</a></p>
+<p>If you are from Indonesia and are having problems with the current rupiah exchange rate against the dollar, you are allowed to consider 20 USD as 200,000 IDR.</p>
+<p><a class="button" href="https://paypal.me/tatautaufik" target="_blank">Donate for 20 USD</a></p>
 <p>Thank you 💕️</p>
 HTML;
         $_['title'] = 'End-User License Agreement';
@@ -42,17 +43,17 @@ HTML;
         extract($GLOBALS, \EXTR_SKIP);
         // Disable page offset and page children feature
         if (isset($_['i']) || \count($_['chop']) > 1) {
-            $_['kick'] = $url . $_['/'] . '/::g::/' . $_['chop'][0];
+            $_['kick'] = $_['/'] . '/::g::/' . $_['chop'][0];
         }
         // Load primary state(s)
-        $state_r = require \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
-        $state_user = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-        $state_panel = require \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+        $state_r = require \x\panel\to\fresh(\ROOT . \DS . 'state.php');
+        $state_user = require \x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+        $state_panel = require \x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
         // Sanitize the form data
         if ('post' === $_['form']['type'] && isset($_['form']['lot']['state'])) {
-            $_['form']['lot']['state']['title'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['title'] ?? "");
-            $_['form']['lot']['state']['description'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['description'] ?? "");
-            $_['form']['lot']['state']['email'] = \_\lot\x\panel\to\w($_['form']['lot']['state']['email'] ?? "");
+            $_['form']['lot']['state']['title'] = \x\panel\to\w($_['form']['lot']['state']['title'] ?? "");
+            $_['form']['lot']['state']['description'] = \x\panel\to\w($_['form']['lot']['state']['description'] ?? "");
+            $_['form']['lot']['state']['email'] = \x\panel\to\w($_['form']['lot']['state']['email'] ?? "");
             $_['form']['lot']['state']['charset'] = \strip_tags($_['form']['lot']['state']['charset'] ?? 'utf-8');
             $_['form']['lot']['state']['language'] = \strip_tags($_['form']['lot']['state']['language'] ?? 'en');
             $def = $state_user['guard']['path'] ?? $state_panel['guard']['path'] ?? $state_r['x']['user']['guard']['path'] ?? $state_r['x']['panel']['guard']['path'] ?? $state_user['path'] ?? "";
@@ -64,17 +65,17 @@ HTML;
                     unset($_['form']['lot']['state']['x']['user']['guard']['path']);
                 }
             }
-            if ($_['/'] !== $def) {
+            if ($_['/'] !== $url . $def) {
                 if ($state_panel['guard']['path'] === $def) {
                     $_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['path'] . '</code>'];
                 } else {
                     $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $def . '</code>'];
                 }
             }
-            \_\lot\x\panel\to\fresh(\ROOT . \DS . 'state.php');
-            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
-            \_\lot\x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
-            $_['form']['lot']['kick'] = $url . ($_['/'] = $def) . '/::g::/.state' . $url->query;
+            \x\panel\to\fresh(\ROOT . \DS . 'state.php');
+            \x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'user' . \DS . 'state.php');
+            \x\panel\to\fresh(\LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state.php');
+            $_['form']['lot']['kick'] = ($_['/'] = $url . $def) . '/::g::/.state' . $url->query;
         }
         $_ = \array_replace_recursive($_ ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
@@ -129,7 +130,7 @@ HTML;
                             'lot' => [
                                 'folder' => ['skip' => true],
                                 'link' => [
-                                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
+                                    'url' => $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
                                         'tab' => false,
                                         'type' => false
                                     ]) . $url->hash,
@@ -153,7 +154,7 @@ HTML;
                                             'value' => '../state.php'
                                         ],
                                         // No use. This field was added just to remove error message of
-                                        // empty `file[name]` field generated by `_\lot\x\panel\task\get\file()`
+                                        // empty `file[name]` field generated by `x\panel\task\get\file()`
                                         1 => [
                                             'type' => 'hidden',
                                             'name' => 'file[name]',
@@ -331,11 +332,11 @@ HTML;
         extract($GLOBALS, \EXTR_SKIP);
         if (!\is_dir($d = \LOT . \DS . 'asset' . \DS . $user->user)) {
             \mkdir($d, 0755, true);
-            $_['alert']['success'][] = ['Created folder %s.', '<code>' . \_\lot\x\panel\from\path($d) . '</code>'];
+            $_['alert']['success'][] = ['Created folder %s.', '<code>' . \x\panel\from\path($d) . '</code>'];
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
         }
-        $_ = \_\lot\x\panel\_error_route_check();
+        $_ = \x\panel\_error_route_check();
         if (!empty($_['is']['error'])) {
             return $_;
         }
@@ -353,7 +354,7 @@ HTML;
         return $_;
     }
     function user($_) {
-        $_ = \_\lot\x\panel\_error_route_check();
+        $_ = \x\panel\_error_route_check();
         if (!empty($_['is']['error'])) {
             return $_;
         }

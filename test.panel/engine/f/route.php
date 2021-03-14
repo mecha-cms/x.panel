@@ -1,16 +1,16 @@
-<?php namespace _\lot\x\panel\route;
+<?php namespace x\panel\route;
 
 function __test($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $tests = \is(\get_defined_functions(true)['user'], function($v) {
-        return 0 === \strpos($v, "_\\lot\\x\\panel\\route\\__test\\");
+        return 0 === \strpos($v, "x\\panel\\route\\__test\\");
     });
     $content = '<ul>';
     foreach ($tests as $test) {
-        $path = \implode('/', \map(\explode("\\", \substr($test, 20)), function($v) {
+        $path = \implode('/', \map(\explode("\\", \substr($test, 14)), function($v) {
             return \strtr(\p2f($v), ['__' => '.']);
         }));
-        $content .= '<li><a href="' . $url . $_['/'] . '/::g::/' . $path . '" target="_blank"><code>' . $test . '</code></a></li>';
+        $content .= '<li><a href="' . $_['/'] . '/::g::/' . $path . '" target="_blank"><code>' . $test . '</code></a></li>';
     }
     $content .= '</ul>';
     $_['title'] = 'Tests';

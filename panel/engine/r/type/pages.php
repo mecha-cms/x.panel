@@ -17,7 +17,7 @@ $page = is_file($f = File::exist([
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '/::';
+    $before = $_['/'] . '/::';
     foreach ($search($folder, 'archive,draft,page', 0) as $k => $v) {
         if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
             continue; // Skip placeholder page(s)
@@ -34,8 +34,8 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             'invoke' => function($path) use($create, $user, $x) {
                 $page = new Page($path);
                 return [
-                    'title' => S . _\lot\x\panel\to\w($page->title) . S,
-                    'description' => S . _\lot\x\panel\to\w($page->description) . S,
+                    'title' => S . x\panel\to\w($page->title) . S,
+                    'description' => S . x\panel\to\w($page->description) . S,
                     'type' => 'page',
                     'link' => 'draft' === $x ? null : $page->url . ($create ? '/1' : ""),
                     'author' => $page['author'],
@@ -61,7 +61,7 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
                 ],
                 's' => [
                     'title' => 'Add',
-                    'description' => $add ? ['Add %s', 'Child'] : ['Missing folder %s', _\lot\x\panel\from\path($folder)],
+                    'description' => $add ? ['Add %s', 'Child'] : ['Missing folder %s', x\panel\from\path($folder)],
                     'icon' => 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z',
                     'url' => $add ? $before . 's' . Path::F($after, '/') . $url->query('&', [
                         'tab' => false,
@@ -120,7 +120,7 @@ $desk = [
                                     'title' => false,
                                     'description' => ['Go to %s', 'Parent'],
                                     'type' => 'link',
-                                    'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
+                                    'url' => $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
                                         'tab' => false
                                     ]) . $url->hash,
                                     'icon' => 'M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z',
@@ -131,7 +131,7 @@ $desk = [
                                     'title' => false,
                                     'description' => 'Upload',
                                     'type' => 'link',
-                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                    'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
                                         'tab' => false,
                                         'type' => 'blob'
                                     ]) . $url->hash,
@@ -142,7 +142,7 @@ $desk = [
                                 'page' => [
                                     'type' => 'link',
                                     'description' => ['New %s', 'Page'],
-                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                    'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
                                         'tab' => false,
                                         'type' => 'page'
                                     ]) . $url->hash,
@@ -152,7 +152,7 @@ $desk = [
                                 'data' => [
                                     'type' => 'link',
                                     'description' => ['New %s', 'Data'],
-                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                    'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
                                         'tab' => false,
                                         'type' => 'data'
                                     ]) . $url->hash,

@@ -11,7 +11,7 @@ $search = static function($folder, $x, $r) {
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
 if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
-    $before = $url . $_['/'] . '/::';
+    $before = $_['/'] . '/::';
     $g = 1 !== $user['status'];
     foreach ($search($folder, null, 0) as $k => $v) {
         $after = '::' . strtr($k, [
@@ -58,14 +58,14 @@ if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
 }
 
 if (count($_['chop']) > 1 && $_['i'] <= 1) {
-    $before = $url . $_['/'] . '/::';
+    $before = $_['/'] . '/::';
     $after = '::' . $_['path'];
     $files = array_merge([$folder => [
         'title' => S . '..' . S,
         'description' => ['Go to %s', 'Parent'],
         'type' => 'folder',
         'tags' => ['is:folder' => true],
-        'url' => $url . $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,
+        'url' => $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,
         'tasks' => [
             'g' => [
                 'title' => 'Edit',
@@ -108,7 +108,7 @@ $desk = [
                                     'title' => false,
                                     'description' => 'Upload',
                                     'type' => 'link',
-                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                    'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
                                         'tab' => false,
                                         'type' => 'blob'
                                     ]) . $url->hash,
@@ -118,7 +118,7 @@ $desk = [
                                 'file' => [
                                     'type' => 'link',
                                     'description' => ['New %s', 'File'],
-                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                    'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
                                         'tab' => false,
                                         'type' => 'file'
                                     ]) . $url->hash,
@@ -128,7 +128,7 @@ $desk = [
                                 'folder' => [
                                     'type' => 'link',
                                     'description' => ['New %s', 'Folder'],
-                                    'url' => $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                    'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
                                         'tab' => false,
                                         'type' => 'folder'
                                     ]) . $url->hash,

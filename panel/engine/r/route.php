@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel;
+<?php namespace x\panel;
 
 function route() {
     if (!\Is::user()) {
@@ -8,12 +8,9 @@ function route() {
     $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
     extract($GLOBALS, \EXTR_SKIP);
     $route = $type = false;
-    $_ = \_\lot\x\panel\_error_route_check();
+    $_ = \x\panel\_error_route_check();
     foreach (\step($_['path'], '/') as $v) {
-        if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \f2p(\strtr($v, [
-            '.' => '__',
-            '/' => '.'
-        ])))) {
+        if (\function_exists($fn = __NAMESPACE__ . "\\route\\" . \strtolower(\f2p(\strtr($v, '-', '_'))))) {
             $route = $fn;
             // Custom route is available, remove the error status!
             $_['is']['error'] = $GLOBALS['_']['is']['error'] = false;
@@ -24,8 +21,8 @@ function route() {
     $f = $_['f'];
     if ('get' === $_['form']['type']) {
         if (!$route && !empty($_['is']['error'])) {
-            $_ = \_\lot\x\panel\_set();
-            $_ = \_\lot\x\panel\_set_state();
+            $_ = \x\panel\_set();
+            $_ = \x\panel\_set_state();
             $_['lot']['bar']['skip'] = true;
             $_['lot']['desk']['lot']['form']['lot'][0]['skip'] = true;
             $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = [
@@ -44,8 +41,8 @@ function route() {
             $this->layout($_['layout'] ?? 'panel');
         }
     }
-    $_ = \_\lot\x\panel\_set();
-    $_ = \_\lot\x\panel\_set_state();
+    $_ = \x\panel\_set();
+    $_ = \x\panel\_set_state();
     if (!isset($_['type'])) {
         // Auto-detect layout type
         if ($f) {
@@ -104,10 +101,10 @@ function route() {
     $_ = $GLOBALS['_'];
     // Filter by route function
     if ($route) {
-        // Remove `_\lot\x\panel\route` prefix from the captured route function
-        $path = \implode('/', \map(\explode("\\", \substr($route, 20)), function($v) {
+        // Remove `x\panel\route` prefix from the captured route function
+        $path = \implode('/', \map(\explode("\\", \substr($route, 14)), function($v) {
             // Convert property name to file name
-            return \strtr(\p2f($v), ['__' => '.']);
+            return \strtr(\p2f($v), '_', '-');
         }));
         if ($r = \fire($route, [$_, $path], $this)) {
             $_ = $r;
@@ -128,7 +125,7 @@ function route() {
             } else {
                 if ('f' === $_['task'] || 'l' === $_['task']) {
                     $_['alert']['error'][] = 'Invalid token.';
-                    $_['kick'] = $url . $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $url->query('&', [
+                    $_['kick'] = $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $url->query('&', [
                         'token' => false
                     ]);
                 }
@@ -166,7 +163,9 @@ function route() {
     } else {
         // Missing `<input name="token">`
         if ('l' === $_['task']) {
-            $_['kick'] = \strtr($url->current, ['::l::' => '::g::']);
+            $_['kick'] = \strtr($url->current, [
+                '/::l::/' => '/::g::/'
+            ]);
         }
     }
     // Has alert data from queue
@@ -208,4 +207,6 @@ function route() {
 }
 
 // Back-end route must be set in the highest priority!
-\Route::set($_['/'] . '/*', 200, __NAMESPACE__ . "\\route", -1);
+\Route::set(\strtr($_['/'], [
+    $url . '/' => ""
+]) . '/*', 200, __NAMESPACE__ . "\\route", -1);

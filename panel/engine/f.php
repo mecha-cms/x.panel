@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel;
+<?php namespace x\panel;
 
 function _abort($value, $key, $fn) {
     if (\defined("\\DEBUG") && \DEBUG) {
@@ -13,8 +13,10 @@ function _error_route_check() {
         // Trying to set file under a file path
         's' === $_['task'] && $f && \is_file($f)
     ) {
-        $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \_\lot\x\panel\from\path($f) . '</code>']];
-        $_['kick'] = \str_replace('::s::', '::g::', $url->current);
+        $_['alert']['info'][] = ['File %s already exists.', ['<code>' . \x\panel\from\path($f) . '</code>']];
+        $_['kick'] = \strtr($url->current, [
+            '/::s::/' => '/::g::/'
+        ]);
         return $_;
     }
     if (
@@ -35,7 +37,7 @@ function _error_user_check() {
     $status = $user['status'];
     $kick = static function() use($_, $status, $url, $user) {
         \Alert::error(\i('Permission denied.') . '<br><small>' . $url->current . '</small>');
-        \Guard::kick($url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
+        \Guard::kick($_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
             'tab' => false,
             'type' => false
         ]) . $url->hash);
@@ -90,7 +92,9 @@ function _error_user_check() {
     // `task` has a higher priority than `route`
     if (isset($rules['task'])) {
         foreach ($rules['task'] as $k => $v) {
-            if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
+            if ($m = \Route::is(\strtr($_['/'], [
+                $url . '/' => ""
+            ]) . '/:task/' . $k)) {
                 $task = \array_shift($m[2]);
                 if (\is_callable($v)) {
                     $v = \call_user_func($v, ...$m[2]);
@@ -114,7 +118,9 @@ function _error_user_check() {
     // `route` must comes after `task` to get the `$skip_route_check` value
     if (isset($rules['route']) && empty($skip_route_check)) {
         foreach ($rules['route'] as $k => $v) {
-            if ($m = \Route::is($_['/'] . '/:task/' . $k)) {
+            if ($m = \Route::is(\strtr($_['/'], [
+                $url . '/' => ""
+            ]) . '/:task/' . $k)) {
                 // Replace `::g::` with `g` only
                 $m[2][0] = \strtr($m[2][0], ['::' => ""]);
                 if (\is_callable($v)) {
@@ -212,7 +218,7 @@ function _set_class(&$value, array $tags = []) {
         }
         $a[] = $v;
     }
-    $b = \_\lot\x\panel\from\tags((array) $tags);
+    $b = \x\panel\from\tags((array) $tags);
     $c = \array_unique(\array_filter(\array_merge($a, $b)));
     \sort($c);
     $value['class'] = $c ? \implode(' ', $c) : null;
@@ -268,21 +274,18 @@ function type($value, $key) {
         return "";
     }
     $out = "";
-    if ($type = isset($value['type']) ? \strtr($value['type'], [
-        '/' => "\\",
-        '-' => '_',
-        '.' => '__'
-    ]) : null) {
-        if ($type && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
+    if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')))) {
+        if ("" !== $type && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
             $out .= \call_user_func($fn, $value, $key);
         } else {
-            $out .= \_\lot\x\panel\_abort($value, $key, $fn);
+            $out .= \x\panel\_abort($value, $key, $fn);
         }
     } else {
+        // Automatic!
         if (isset($value['content'])) {
-            $out .= \_\lot\x\panel\type\content($value, $key);
+            $out .= \x\panel\type\content($value, $key);
         } else if (isset($value['lot'])) {
-            $out .= \_\lot\x\panel\type\lot($value, $key);
+            $out .= \x\panel\type\lot($value, $key);
         } else {
             // Skip!
         }

@@ -9,13 +9,14 @@ $email = State::get('email');
 if (null !== State::get('x.comment')) {
     // Send notification
     if ($email && Is::email($email)) {
-        Hook::set('on.comment.set', function($path) {
+        Hook::set('on.comment.set', function($path) use($email) {
             extract($GLOBALS, EXTR_SKIP);
-            $link = $url . $_['/'] . '/::g::' . strtr($path, [
+            $link = $_['/'] . '/::g::' . strtr($path, [
                 LOT => "",
                 DS => '/'
             ]);
             $comment = new Comment($path);
+            $title = i('New Comment');
             $content  = '<p style="font-size: 120%; font-weight: bold;">' . $comment->author . '</p>';
             $content .= $comment->content;
             $content .= '<p style="font-size: 80%; font-style: italic;">' . $comment->time->{r('-', '_', $state->language)} . '</p>';

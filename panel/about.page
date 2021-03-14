@@ -4,6 +4,7 @@ description: GUI extension for Mecha.
 author: Taufik Nurrohman
 type: Markdown
 version: 2.6.0
+price: [20, USD]
 
 use:
   '.\lot\x\layout': 1

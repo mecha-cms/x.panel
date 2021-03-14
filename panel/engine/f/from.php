@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\from;
+<?php namespace x\panel\from;
 
 function path($value) {
     return \strtr($value, [

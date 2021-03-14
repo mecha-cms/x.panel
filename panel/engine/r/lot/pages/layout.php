@@ -13,7 +13,7 @@ if (1 === count($_['chop'])) {
         'description' => 'Replace layout files with the new ones.',
         'type' => 'link',
         'icon' => 'M14,3L12,1H4A2,2 0 0,0 2,3V15A2,2 0 0,0 4,17H11V19L15,16L11,13V15H4V3H14M21,10V21A2,2 0 0,1 19,23H8A2,2 0 0,1 6,21V19H8V21H19V12H14V7H8V13H6V7A2,2 0 0,1 8,5H16L21,10Z',
-        'url' => $zip ? $url . $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+        'url' => $zip ? $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
             'tab' => false,
             'type' => 'blob/layout'
         ]) . $url->hash : null,
@@ -24,8 +24,8 @@ if (1 === count($_['chop'])) {
         $content = $page->content;
         // Make URL example(s) in content become usable
         $content = strtr($content, [
-            '://127.0.0.1/panel/' => '://' . $url->host . $url->d . $_['/'] . '/',
-            '://127.0.0.1' => '://' . $url->host . $url->d
+            '://127.0.0.1/panel/' => '://' . explode(':', $_['/'], 2)[1] . '/',
+            '://127.0.0.1' => '://' . explode(':', $url . "", 2)[1]
         ]);
         // Hide some file(s) from the list
         foreach ([

@@ -328,11 +328,11 @@ var _ = function () {
     return e && e.stopPropagation();
   };
 
-  var off = function off(name, node, then) {
+  var off$1 = function off(name, node, then) {
     node.removeEventListener(name, then);
   };
 
-  var on = function on(name, node, then, options) {
+  var on$1 = function on(name, node, then, options) {
     if (options === void 0) {
       options = false;
     }
@@ -400,16 +400,16 @@ var _ = function () {
   }
 
   var $ = context({});
-  var fire = $.fire;
-  var off$1 = $.off;
-  var on$1 = $.on;
-  var hooks = $.hooks;
+  $.fire;
+  $.off;
+  $.on;
+  $.hooks;
 
   var toCount = function toCount(x) {
     return x.length;
   };
 
-  function hook() {
+  function hook$3() {
     for (var key in TP.instances) {
       TP.instances[key].pop(); // Destroy!
 
@@ -426,7 +426,7 @@ var _ = function () {
     });
   }
 
-  function hook$1() {
+  function hook$2() {
     for (var key in TE.instances) {
       TE.instances[key].pop(); // Destroy!
 
@@ -437,7 +437,7 @@ var _ = function () {
     toCount(sources) && sources.forEach(function (source) {
       var _getDatum;
 
-      var editor = new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
+      new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
     });
   }
 
@@ -468,8 +468,8 @@ var _ = function () {
     eventStopPropagation(e);
   }
 
-  function hook$2() {
-    off('click', D, onClickHideMenus);
+  function hook$1() {
+    off$1('click', D, onClickHideMenus);
     var menuParents = getElements('.has\\:menu');
 
     if (toCount(menuParents)) {
@@ -478,14 +478,14 @@ var _ = function () {
             a = getPrev(menu);
 
         if (menu && a) {
-          on('click', a, onClickShowMenu);
+          on$1('click', a, onClickShowMenu);
         }
       });
-      on('click', D, onClickHideMenus);
+      on$1('click', D, onClickHideMenus);
     }
   }
 
-  function hook$3() {
+  function hook() {
     var sources = getElements('.lot\\:tabs'),
         hasReplaceState = ('replaceState' in theHistory),
         doSetFormAction = function doSetFormAction(node) {
@@ -527,7 +527,7 @@ var _ = function () {
 
         buttons.forEach(function (button, index) {
           button._tabIndex = index;
-          on('click', button, onClickShowTab);
+          on$1('click', button, onClickShowTab);
         });
       });
     }
@@ -546,10 +546,10 @@ var _ = function () {
   var f3h = null;
 
   var _contextHook = context({}),
-      fire$1 = _contextHook.fire,
-      hooks$1 = _contextHook.hooks,
-      off$2 = _contextHook.off,
-      on$2 = _contextHook.on;
+      fire = _contextHook.fire,
+      hooks = _contextHook.hooks,
+      off = _contextHook.off,
+      on = _contextHook.on;
 
   if (hasClass(R, 'can:fetch')) {
     var title = getElement('title'),
@@ -558,7 +558,7 @@ var _ = function () {
     f3h = new F3H(false); // Disable cache
 
     f3h.on('error', function () {
-      fire$1('error');
+      fire('error');
       theLocation.reload();
     });
     f3h.on('exit', function (response, node) {
@@ -570,7 +570,7 @@ var _ = function () {
         }
       }
 
-      fire$1('let');
+      fire('let');
     });
     f3h.on('success', function (response, node) {
       var status = f3h.status;
@@ -590,14 +590,14 @@ var _ = function () {
             setHTML(element, getHTML(responseElements[index]));
           }
         });
-        fire$1('change');
+        fire('change');
       }
     });
-    on$2('change', hook$2);
-    on$2('change', hook);
-    on$2('change', hook$1);
-    on$2('change', hook$3);
-    on$2('let', function () {
+    on('change', hook$1);
+    on('change', hook$3);
+    on('change', hook$2);
+    on('change', hook);
+    on('let', function () {
       if (title) {
         var status = getDatum(title, 'is') || 'pull',
             value = getDatum(title, 'is-' + status);
@@ -606,24 +606,24 @@ var _ = function () {
     });
   }
 
-  on('beforeload', D, function () {
-    return fire$1('let');
+  on$1('beforeload', D, function () {
+    return fire('let');
   });
-  on('load', D, function () {
-    return fire$1('get');
+  on$1('load', D, function () {
+    return fire('get');
   });
-  on('DOMContentLoaded', D, function () {
-    return fire$1('set');
+  on$1('DOMContentLoaded', D, function () {
+    return fire('set');
   });
-  hook$2();
-  hook();
   hook$1();
   hook$3();
+  hook$2();
+  hook();
   var index = {
-    fire: fire$1,
-    hooks: hooks$1,
-    off: off$2,
-    on: on$2
+    fire: fire,
+    hooks: hooks,
+    off: off,
+    on: on
   };
   return index;
 }();

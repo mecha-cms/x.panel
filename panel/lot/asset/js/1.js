@@ -289,20 +289,21 @@
             key = toCaseLower(e.key || String.fromCharCode(k)),
             keyCode = e.keyCode,
             keyIsCtrl = e.ctrlKey,
-            keyIsEnter = 'enter' === key || 13 === keyCode,
-            keyIsShift = e.shiftKey,
-            _$$$ = $.$(),
+            keyIsEnter = 'enter' === key || 13 === keyCode;
+        e.shiftKey;
+
+        var _$$$ = $.$(),
             after = _$$$.after,
             before = _$$$.before,
-            end = _$$$.end,
-            start = _$$$.start,
-            value = _$$$.value,
+            end = _$$$.end;
+
+        _$$$.start;
+        var value = _$$$.value,
             charBefore = before.slice(-1),
             charAfter = after.slice(0, 1),
             lastTabs = before.match(toPattern('(?:^|\\n)(' + esc(tab) + '+).*$', "")),
             tabs = lastTabs ? lastTabs[1] : "",
             closureEnd = closure[key]; // Indent
-
 
         if (theState.push && theState.push.call($, e)) {
           $.push(tab), doUpdateHistory(), eventPreventDefault(e); // Outdent

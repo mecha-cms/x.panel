@@ -49,12 +49,12 @@ Hook::set('get', function() {
 Hook::set('layout', function() {
     // Load content first to queue the icon data
     if (isset($GLOBALS['_']['content'])) {
-        $content = _\lot\x\panel\type\lot([
+        $content = x\panel\type\lot([
             'content' => $GLOBALS['_']['content'] ?? [],
             'tags' => ['p' => false]
         ], 0);
     } else if (isset($GLOBALS['_']['lot'])) {
-        $content = _\lot\x\panel\type\lot([
+        $content = x\panel\type\lot([
             'lot' => $GLOBALS['_']['lot'] ?? [],
             'tags' => ['p' => false]
         ], 0);
@@ -82,5 +82,5 @@ Hook::set('layout', function() {
     // Remove sensitive data
     unset($_['asset'], $_['icon'], $_['lot'], $_['user']);
     Asset::script('window._=Object.assign(window._||{},' . json_encode($_) . ');', 0);
-    _\lot\x\panel\_set_asset();
+    \x\panel\_set_asset();
 }, 20);

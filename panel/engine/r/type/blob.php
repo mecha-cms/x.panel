@@ -14,7 +14,7 @@ $bar = [
             'lot' => [
                 'folder' => ['skip' => true],
                 'link' => [
-                    'url' => $url . $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
+                    'url' => $_['/'] . '/::g::/' . ('g' === $_['task'] ? dirname($_['path']) : $_['path']) . '/1' . $url->query('&', [
                         'tab' => false,
                         'type' => false
                     ]) . $url->hash,
@@ -107,7 +107,7 @@ $desk = [
                                             'lot' => [
                                                 's' => [
                                                     'title' => 'Upload',
-                                                    'description' => ['Upload to %s', _\lot\x\panel\from\path($_['f'])],
+                                                    'description' => ['Upload to %s', x\panel\from\path($_['f'])],
                                                     'type' => 'submit',
                                                     'name' => false,
                                                     'stack' => 10

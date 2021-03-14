@@ -5,7 +5,7 @@ return [
         0 => [
             'folder' => [
                 'asset' => [
-                    'url' => $url . $_['/'] . '/::g::/asset/' . $user->user . '/1' . $url->query('&', [
+                    'url' => $_['/'] . '/::g::/asset/' . $user->user . '/1' . $url->query('&', [
                         'tab' => false,
                         'type' => false
                     ]) . $url->hash
@@ -16,7 +16,7 @@ return [
                 'route' => false,
                 'trash' => false,
                 'user' => [
-                    'url' => $url . $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
+                    'url' => $_['/'] . '/::g::/user/' . $user->name(true) . $url->query('&', [
                         'tab' => false,
                         'type' => false
                     ]) . $url->hash
@@ -25,7 +25,7 @@ return [
             ],
             'link' => static function($task, $path) use($_, $url, $user) {
                 return 'user/' . $user->name(true) === $path ? [
-                    'url' => $url . $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
+                    'url' => $_['/'] . '/::g::' . $_['state']['path'] . '/1' . $url->query('&', [
                         'tab' => false,
                         'type' => false
                     ]) . $url->hash

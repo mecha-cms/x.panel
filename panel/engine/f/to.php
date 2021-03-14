@@ -1,4 +1,4 @@
-<?php namespace _\lot\x\panel\to;
+<?php namespace x\panel\to;
 
 function color($color) {
     // Convert RGB color string into HEX color string
@@ -24,7 +24,7 @@ function content($value) {
 }
 
 function description($value) {
-    $out = (string) \_\lot\x\panel\type\description(['content' => $value], 0);
+    $out = (string) \x\panel\type\description(['content' => $value], 0);
     return "" !== $out ? $out : null;
 }
 
@@ -61,7 +61,7 @@ function field($value, $key) {
             'required' => $is_vital
         ]
     ];
-    \_\lot\x\panel\_set_class($content[2], \array_replace($tags_status, $value['tags'] ?? []));
+    \x\panel\_set_class($content[2], \array_replace($tags_status, $value['tags'] ?? []));
     $value['content'] = $content;
     return $value;
 }
@@ -77,7 +77,7 @@ function fresh($value) {
 }
 
 function icon($value) {
-    return \_\lot\x\panel\type\icon(['lot' => $value], 0);
+    return \x\panel\type\icon(['lot' => $value], 0);
 }
 
 function lot($lot, &$count = 0, $sort = true) {
@@ -95,7 +95,7 @@ function lot($lot, &$count = 0, $sort = true) {
         if (null === $v || false === $v || !empty($v['skip'])) {
             continue;
         }
-        $v = \_\lot\x\panel\type($v, $k);
+        $v = \x\panel\type($v, $k);
         if ($v) {
             ++$count;
         }
@@ -105,7 +105,7 @@ function lot($lot, &$count = 0, $sort = true) {
 }
 
 function title($value, $level = -1) {
-    $out = (string) \_\lot\x\panel\type\title([
+    $out = (string) \x\panel\type\title([
         'content' => $value,
         'level' => $level
     ], 0);

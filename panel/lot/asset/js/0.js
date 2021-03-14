@@ -83,11 +83,11 @@
     return "" + x;
   };
 
-  var toCaseLower = function toCaseLower(x) {
+  var toCaseLower$1 = function toCaseLower(x) {
     return x.toLowerCase();
   };
 
-  var toNumber = function toNumber(x, base) {
+  var toNumber$1 = function toNumber(x, base) {
     if (base === void 0) {
       base = 10;
     }
@@ -95,7 +95,7 @@
     return parseInt(x, base);
   };
 
-  var toValue = function toValue(x) {
+  var toValue$1 = function toValue(x) {
     if (isArray(x)) {
       return x.map(function (v) {
         return toValue(v);
@@ -103,7 +103,7 @@
     }
 
     if (isNumeric(x)) {
-      return toNumber(x);
+      return toNumber$1(x);
     }
 
     if (isObject(x)) {
@@ -123,7 +123,7 @@
 
   var D = document;
   var W = window;
-  var B = D.body;
+  var B$1 = D.body;
   var R = D.documentElement;
 
   var fromElement = function fromElement(node) {
@@ -143,7 +143,7 @@
     }
 
     var value = node.getAttribute(attribute);
-    return parseValue ? toValue(value) : value;
+    return parseValue ? toValue$1(value) : value;
   };
 
   var getAttributes = function getAttributes(node, parseValue) {
@@ -157,7 +157,7 @@
 
     for (var i = 0, j = attributes.length; i < j; ++i) {
       value = attributes[i].value;
-      values[attributes[i].name] = parseValue ? toValue(value) : value;
+      values[attributes[i].name] = parseValue ? toValue$1(value) : value;
     }
 
     return values;
@@ -197,7 +197,7 @@
   };
 
   var getName = function getName(node) {
-    return toCaseLower(node && node.nodeName || "") || null;
+    return toCaseLower$1(node && node.nodeName || "") || null;
   };
 
   var getNext = function getNext(node) {
@@ -495,10 +495,10 @@
   }
 
   var $ = context({});
-  var fire = $.fire;
-  var off$1 = $.off;
-  var on$1 = $.on;
-  var hooks = $.hooks;
+  $.fire;
+  $.off;
+  $.on;
+  $.hooks;
 
   var esc = function esc(pattern, extra) {
     if (extra === void 0) {
@@ -548,7 +548,7 @@
     return -1 !== i ? i : null;
   };
 
-  var toCaseLower$1 = function toCaseLower(x) {
+  var toCaseLower = function toCaseLower(x) {
     return x.toLowerCase();
   };
 
@@ -560,7 +560,7 @@
     return x.length;
   };
 
-  var toNumber$1 = function toNumber(x, base) {
+  var toNumber = function toNumber(x, base) {
     if (base === void 0) {
       base = 10;
     }
@@ -576,7 +576,7 @@
     return Object.keys(x);
   };
 
-  var toValue$1 = function toValue(x) {
+  var toValue = function toValue(x) {
     if (isArray(x)) {
       return x.map(function (v) {
         return toValue(v);
@@ -584,7 +584,7 @@
     }
 
     if (isNumeric(x)) {
-      return toNumber$1(x);
+      return toNumber(x);
     }
 
     if (isObject(x)) {
@@ -595,11 +595,19 @@
       return x;
     }
 
-    return {
-      'false': false,
-      'null': null,
-      'true': true
-    }[x] || x;
+    if ('false' === x) {
+      return false;
+    }
+
+    if ('null' === x) {
+      return null;
+    }
+
+    if ('true' === x) {
+      return true;
+    }
+
+    return x;
   };
   /*!
    *
@@ -630,14 +638,14 @@
    */
 
 
-  var name = 'F3H',
+  var name$2 = 'F3H',
       GET = 'GET',
       POST = 'POST',
       responseTypeHTML = 'document',
       responseTypeJSON = 'json',
       responseTypeTXT = 'text',
       home = '//' + theLocation.hostname,
-      B$1,
+      B,
       H;
 
   function getEventName(node) {
@@ -662,7 +670,7 @@
       }
 
       href = getAttribute(link, 'href');
-      link.id = id = link.id || name + ':' + toID(href || getText(link));
+      link.id = id = link.id || name$2 + ':' + toID(href || getText(link));
       out[id] = toSave = fromElement(link);
 
       if (href) {
@@ -691,7 +699,7 @@
       }
 
       src = getAttribute(script, 'src');
-      script.id = id = script.id || name + ':' + toID(src || getText(script));
+      script.id = id = script.id || name$2 + ':' + toID(src || getText(script));
       out[id] = toSave = fromElement(script);
 
       if (src) {
@@ -716,7 +724,7 @@
       }
 
       href = getAttribute(style, 'href');
-      style.id = id = style.id || name + ':' + toID(href || getText(style));
+      style.id = id = style.id || name$2 + ':' + toID(href || getText(style));
       out[id] = toSave = fromElement(style);
 
       if (href) {
@@ -736,13 +744,9 @@
   }
 
   function isLinkForF3H(node) {
-    var n = toCaseLower$1(name); // Exclude `<link rel="*">` tag that contains `data-f3h` or `f3h` attribute
+    var n = toCaseLower(name$2); // Exclude `<link rel="*">` tag that contains `data-f3h` or `f3h` attribute with `false` value
 
-    if (hasAttribute(node, 'data-' + n) || hasAttribute(node, n)) {
-      return 1;
-    }
-
-    return 0;
+    return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
   }
 
   function isScriptForF3H(node) {
@@ -751,28 +755,35 @@
       return 1;
     }
 
-    var n = toCaseLower$1(name); // Exclude JavaScript tag that contains `data-f3h` or `f3h` attribute
+    var n = toCaseLower(name$2); // Exclude JavaScript tag that contains `data-f3h` or `f3h` attribute with `false` value
 
-    if (hasAttribute(node, 'data-' + n) || hasAttribute(node, n)) {
+    if (toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n))) {
       return 1;
     } // Exclude JavaScript that contains `F3H` instantiation
 
 
-    if (toPattern('\\b' + name + '\\b').test(getText(node) || "")) {
+    if (toPattern('\\b' + name$2 + '\\b').test(getText(node) || "")) {
       return 1;
     }
 
     return 0;
   }
 
+  function isSourceForF3H(node) {
+    var n = toCaseLower(name$2);
+
+    if (!hasAttribute(node, 'data-' + n) && !hasAttribute(node, n)) {
+      return 1; // Default value is `true`
+    } // Exclude anchor tag that contains `data-f3h` or `f3h` attribute with `false` value
+
+
+    return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
+  }
+
   function isStyleForF3H(node) {
-    var n = toCaseLower$1(name); // Exclude CSS tag that contains `data-f3h` or `f3h` attribute
+    var n = toCaseLower(name$2); // Exclude CSS tag that contains `data-f3h` or `f3h` attribute with `false` value
 
-    if (hasAttribute(node, 'data-' + n) || hasAttribute(node, n)) {
-      return 1;
-    }
-
-    return 0;
+    return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
   }
 
   function letHash(ref) {
@@ -814,17 +825,17 @@
 
     for (header in headers) {
       h = headers[header].split(': ');
-      k = toCaseLower$1(h.shift());
-      out[k] = toValue$1(h.join(': '));
+      k = toCaseLower(h.shift());
+      out[k] = toValue(h.join(': '));
     } // Use proxy to make case-insensitive response header’s key
 
 
     return new Proxy(out, {
       get: function get(o, k) {
-        return o[toCaseLower$1(k)] || null;
+        return o[toCaseLower(k)] || null;
       },
       set: function set(o, k, v) {
-        o[toCaseLower$1(k)] = v;
+        o[toCaseLower(k)] = v;
       }
     });
   }
@@ -850,7 +861,7 @@
     } // Already instantiated, skip!
 
 
-    if (source[name]) {
+    if (source[name$2]) {
       return;
     }
 
@@ -885,21 +896,24 @@
 
     F3H.instances[source.id || source.name || toObjectCount(F3H.instances)] = $; // Mark current DOM as active to prevent duplicate instance
 
-    source[name] = 1;
+    source[name$2] = 1;
 
     function getSources(sources, root) {
       ref = getRef();
-      var froms = getElements(sources, root);
+      var froms = getElements(sources, root),
+          to = [];
 
       if (isFunction(state.is)) {
-        var to = [];
         froms.forEach(function (from) {
-          state.is.call($, from, ref) && to.push(from);
+          state.is.call($, from, ref) && isSourceForF3H(from) && to.push(from);
         });
-        return to;
+      } else {
+        froms.forEach(function (from) {
+          isSourceForF3H(from) && to.push(from);
+        });
       }
 
-      return froms;
+      return to;
     } // Include submit button value to the form data ;)
 
 
@@ -1013,7 +1027,7 @@
           // Redirection should delete a cache related to the response URL
           // This is useful for case(s) like, when you have submitted a
           // comment form and then you will be redirected to the same URL
-          var r = letSlashEnd(redirect);
+          var r = letSlashEnd(letHash(redirect));
           caches[r] && delete caches[r]; // Trigger hook(s) immediately
 
           fire('success', data);
@@ -1120,7 +1134,7 @@
       }
 
       var theOffset = getOffset(node);
-      setScroll(B$1, theOffset);
+      setScroll(B, theOffset);
       setScroll(R, theOffset);
     } // Scroll to the first element with `id` or `name` attribute that has the same value as location hash
 
@@ -1173,7 +1187,7 @@
     }
 
     function doUpdateScripts(compare) {
-      return doUpdate(compare, scripts, getScripts, B$1);
+      return doUpdate(compare, scripts, getScripts, B);
     }
 
     function doUpdateStyles(compare) {
@@ -1185,7 +1199,7 @@
       on('keydown', D, onKeyDown);
       on('keyup', D, onKeyUp); // Set body and head variable value once, on document ready
 
-      B$1 = D.body;
+      B = D.body;
       H = D.head; // Make sure all element(s) are captured on document ready
 
       $.links = links = getLinks();
@@ -1311,11 +1325,11 @@
     $.status = null;
 
     $.pop = function () {
-      if (!source[name]) {
+      if (!source[name$2]) {
         return $; // Already ejected!
       }
 
-      delete source[name];
+      delete source[name$2];
       onSourcesEventsLet();
       off('DOMContentLoaded', W, onDocumentReady);
       off('hashchange', W, onHashChange);
@@ -1363,7 +1377,7 @@
       return "" === raw || 0 === raw.search(/[.\/?]/) || 0 === raw.indexOf(home) || 0 === raw.indexOf(theLocation.protocol + home) || -1 === raw.indexOf('://');
     },
     'lot': {
-      'x-requested-with': name
+      'x-requested-with': name$2
     },
     'ref': function ref(source, _ref) {
       return _ref;
@@ -1381,7 +1395,7 @@
       'JSON': responseTypeJSON
     }
   };
-  F3H.version = '1.1.14';
+  F3H.version = '1.1.16';
   /*!
    *
    * The MIT License (MIT)
@@ -1523,8 +1537,8 @@
           X,
           Y;
 
-      x = W.pageXOffset || R.scrollLeft || B.scrollLeft;
-      y = W.pageYOffset || R.scrollTop || B.scrollTop;
+      x = W.pageXOffset || R.scrollLeft || B$1.scrollLeft;
+      y = W.pageYOffset || R.scrollTop || B$1.scrollTop;
       X = source.scrollLeft;
       Y = source.scrollTop;
 
@@ -1803,7 +1817,7 @@
 
 
   var delay = W.setTimeout,
-      name$2 = 'TP';
+      name = 'TP';
   var KEY_ARROW_LEFT = ['ArrowLeft', 37];
   var KEY_ARROW_RIGHT = ['ArrowRight', 39];
   var KEY_DELETE_LEFT = ['Backspace', 8];
@@ -1819,7 +1833,7 @@
     if (!source) return;
     var $ = this; // Already instantiated, skip!
 
-    if (source[name$2]) {
+    if (source[name]) {
       return;
     } // Return new instance if `TP` was called without the `new` operator
 
@@ -1847,7 +1861,7 @@
 
     TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
 
-    source[name$2] = 1;
+    source[name] = 1;
     var editor = setElement('span', {
       'class': 'editor tag'
     }),
@@ -2266,7 +2280,7 @@
     }, onClickSelf(), $; // Default filter for the tag name
 
     $.f = function (text) {
-      return toCaseLower$1(text || "").replace(/[^ a-z\d-]/g, "");
+      return toCaseLower(text || "").replace(/[^ a-z\d-]/g, "");
     };
 
     $.focus = function () {
@@ -2301,11 +2315,11 @@
     };
 
     $.pop = function () {
-      if (!source[name$2]) {
+      if (!source[name]) {
         return $; // Already ejected!
       }
 
-      delete source[name$2];
+      delete source[name];
       var tags = $.tags;
       letClass(source, state['class'] + '-source');
       off('blur', editorInput, onBlurInput);

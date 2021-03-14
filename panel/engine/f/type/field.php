@@ -1,53 +1,53 @@
-<?php namespace _\lot\x\panel\type\field;
+<?php namespace x\panel\type\field;
 
 function _($value, $key) {
-    $out = \_\lot\x\panel\type\field\content($value, $key);
+    $out = \x\panel\type\field\content($value, $key);
     $out['skip'] = true;
     return $out;
 }
 
 function blob($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['name'] = $value['name'] ?? $key;
     $out['content'][2]['type'] = 'file';
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function blobs($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['multiple'] = true;
     $out['content'][2]['name'] = ($value['name'] ?? $key) . '[]';
     $out['content'][2]['type'] = 'file';
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function color($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'color';
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    if ($the_value = \_\lot\x\panel\to\color((string) ($value['value'] ?? ""))) {
+    if ($the_value = \x\panel\to\color((string) ($value['value'] ?? ""))) {
         $out['content'][2]['title'] = $the_value;
         $out['content'][2]['value'] = $the_value;
     }
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function colors($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'div';
     $name = $value['name'] ?? $key;
     if (isset($value['lot'])) {
@@ -64,13 +64,13 @@ function colors($value, $key) {
                 $v = ['value' => $v];
             }
             $n = $name . '[' . $k . ']';
-            $content = \_\lot\x\panel\to\field($v, $k);
+            $content = \x\panel\to\field($v, $k);
             $content[0] = 'input';
             $content[1] = false;
             $content[2]['class'] = 'input';
             $content[2]['name'] = $n;
             $content[2]['type'] = 'color';
-            if ($the_value = \_\lot\x\panel\to\color((string) ($v['value'] ?? ""))) {
+            if ($the_value = \x\panel\to\color((string) ($v['value'] ?? ""))) {
                 $content[2]['title'] = $the_value;
                 $content[2]['value'] = $the_value;
             }
@@ -78,17 +78,17 @@ function colors($value, $key) {
         }
         unset($value['lot']);
     }
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'count:' . $count => true,
         'options' => true
     ], $value['tags'] ?? []));
     unset($out['content'][2]['name']);
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function combo($value, $key) {
     if (isset($value['lot'])) {
-        $out = \_\lot\x\panel\to\field($value, $key);
+        $out = \x\panel\to\field($value, $key);
         $the_value = $value['value'] ?? null;
         $placeholder = \i(...((array) ($out['hint'] ?? [])));
         $out['content'][0] = 'select';
@@ -150,23 +150,23 @@ function combo($value, $key) {
         foreach ($a as $v) {
             $out['content'][1] .= $v;
         }
-        \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+        \x\panel\_set_class($out['content'][2], \array_replace([
             'select' => true
         ], $value['tags'] ?? []));
-        return \_\lot\x\panel\type\field($out, $key);
+        return \x\panel\type\field($out, $key);
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function content($value, $key) {
     if (!\array_key_exists('hint', $value)) {
         $value['hint'] = 'Content goes here...';
     }
-    $out = \_\lot\x\panel\to\field($value, $key);
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    $out = \x\panel\to\field($value, $key);
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'textarea' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function date($value, $key) {
@@ -177,7 +177,7 @@ function date($value, $key) {
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
     }
-    return \_\lot\x\panel\type\field\date_time($value, $key);
+    return \x\panel\type\field\date_time($value, $key);
 }
 
 function date_time($value, $key) {
@@ -196,7 +196,7 @@ function date_time($value, $key) {
         }
         $value['value'] = (string) $value['value'];
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function description($value, $key) {
@@ -206,7 +206,7 @@ function description($value, $key) {
     if (!isset($value['max'])) {
         $value['max'] = 400;
     }
-    return \_\lot\x\panel\type\field\content($value, $key);
+    return \x\panel\type\field\content($value, $key);
 }
 
 function email($value, $key) {
@@ -216,7 +216,7 @@ function email($value, $key) {
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function hidden($value, $key) {
@@ -238,7 +238,7 @@ function item($value, $key) {
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value']);
         $a = [];
-        $out = \_\lot\x\panel\to\field($value, $key);
+        $out = \x\panel\to\field($value, $key);
         $out['content'][0] = 'div';
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
@@ -256,7 +256,7 @@ function item($value, $key) {
                 'value' => $k
             ]]);
             if (\is_array($v)) {
-                $t = \_\lot\x\panel\to\title($v['title'] ?? "", -2);
+                $t = \x\panel\to\title($v['title'] ?? "", -2);
                 $d = $v['description'] ?? "";
                 $content['disabled'] = !$is_active;
                 if (isset($v['name'])) {
@@ -265,12 +265,12 @@ function item($value, $key) {
                 if (isset($v['value'])) {
                     $content['value'] = $v['value'];
                 }
-                \_\lot\x\panel\_set_class($content, [
+                \x\panel\_set_class($content, [
                     'is:active' => $is_active,
                     'not:active' => !$is_active
                 ]);
             } else {
-                $t = \_\lot\x\panel\to\title($v, -2);
+                $t = \x\panel\to\title($v, -2);
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
@@ -283,15 +283,15 @@ function item($value, $key) {
             $block = $value['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\_set_class($out['content'][2], [
+        \x\panel\_set_class($out['content'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
             'options' => true
         ]);
         unset($out['content'][2]['name']);
-        return \_\lot\x\panel\type\field($out, $key);
+        return \x\panel\type\field($out, $key);
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function items($value, $key) {
@@ -302,7 +302,7 @@ function items($value, $key) {
         }
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value']);
-        $out = \_\lot\x\panel\to\field($value, $key);
+        $out = \x\panel\to\field($value, $key);
         $out['content'][0] = 'div';
         $a = [];
         $count = 0;
@@ -320,7 +320,7 @@ function items($value, $key) {
                 'value' => $key_as_value ? $k : \s($the_value[$k] ?? true)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
-                $t = \_\lot\x\panel\to\title($v['title'] ?? "", -2);
+                $t = \x\panel\to\title($v['title'] ?? "", -2);
                 $d = $v['description'] ?? "";
                 if (isset($v['name'])) {
                     $input['name'] = $v['name'];
@@ -329,7 +329,7 @@ function items($value, $key) {
                     $input['value'] = $v['value'];
                 }
             } else {
-                $t = \_\lot\x\panel\to\title($v, -2);
+                $t = \x\panel\to\title($v, -2);
                 $d = "";
             }
             $d = \strip_tags(\i(...((array) $d)));
@@ -352,15 +352,15 @@ function items($value, $key) {
             $block = $value['block'] ? '<br>' : "";
         }
         $out['content'][1] = \implode($block, $a);
-        \_\lot\x\panel\_set_class($out['content'][2], [
+        \x\panel\_set_class($out['content'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
             'options' => true
         ]);
         unset($out['content'][2]['name']);
-        return \_\lot\x\panel\type\field($out, $key);
+        return \x\panel\type\field($out, $key);
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function link($value, $key) {
@@ -371,7 +371,7 @@ function link($value, $key) {
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function name($value, $key) {
@@ -394,14 +394,14 @@ function name($value, $key) {
     if (!isset($value['min'])) {
         $value['min'] = $x ? 2 : 1;
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function number($value, $key) {
     if (!\array_key_exists('hint', $value)) {
         $value['hint'] = $value['min'] ?? 0;
     }
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'number';
@@ -409,22 +409,22 @@ function number($value, $key) {
     $out['content'][2]['max'] = $value['max'] ?? null;
     $out['content'][2]['step'] = $value['step'] ?? null;
     $out['content'][2]['value'] = $value['value'] ?? null;
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function pass($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'password';
     unset($out['content'][2]['value']); // Never show `value` on this field
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function path($value, $key) {
@@ -442,7 +442,7 @@ function path($value, $key) {
     if (!isset($value['min'])) {
         $value['min'] = 0;
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function query($value, $key) {
@@ -455,19 +455,19 @@ function query($value, $key) {
     if (isset($value['value']) && \is_array($value['value'])) {
         $value['value'] = \implode(', ', $value['value']);
     }
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
     $out['content'][2]['value'] = $value['value'] ?? null;
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function range($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     if (isset($value['range'])) {
@@ -488,22 +488,22 @@ function range($value, $key) {
     $out['content'][2]['value'] = $value['value'] ?? null;
     $out['content'][2]['step'] = $value['step'] ?? null;
     unset($out['content'][2]['maxlength'], $out['content'][2]['minlength']);
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function set($value, $key) {
-    $title = \_\lot\x\panel\to\title($value['title'] ?? "", -2);
-    $description = \_\lot\x\panel\to\description($value['description'] ?? "");
+    $title = \x\panel\to\title($value['title'] ?? "", -2);
+    $description = \x\panel\to\description($value['description'] ?? "");
     $value = \array_replace([
         0 => 'fieldset',
         1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description,
         2 => []
     ], $value);
     unset($value['description'], $value['title'], $value['type']);
-    return \_\lot\x\panel\type($value, $key);
+    return \x\panel\type($value, $key);
 }
 
 function source($value, $key) {
@@ -511,24 +511,24 @@ function source($value, $key) {
     if (!\array_key_exists('hint', $value)) {
         $value['hint'] = 'Content goes here...';
     }
-    $out = \_\lot\x\panel\to\field($value, $key);
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    $out = \x\panel\to\field($value, $key);
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'code' => true,
         'textarea' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function text($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
     $out['content'][1] = false;
     $out['content'][2]['type'] = 'text';
     $out['content'][2]['value'] = $value['value'] ?? null;
-    \_\lot\x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['content'][2], \array_replace([
         'input' => true
     ], $value['tags'] ?? []));
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
 function time($value, $key) {
@@ -539,7 +539,7 @@ function time($value, $key) {
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
     }
-    $out = \_\lot\x\panel\type\field\date_time($value, $key);
+    $out = \x\panel\type\field\date_time($value, $key);
     return $out;
 }
 
@@ -551,11 +551,11 @@ function title($value, $key) {
     if (!isset($value['max'])) {
         $value['max'] = 200;
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }
 
 function toggle($value, $key) {
-    $out = \_\lot\x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key);
     $the_value = $value['value'] ?? null;
     $toggle = new \HTML(['input', false, [
         'checked' => !empty($the_value),
@@ -567,14 +567,14 @@ function toggle($value, $key) {
     $t = \i(...((array) ($value['hint'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    \_\lot\x\panel\_set_class($out['content'][2], [
+    \x\panel\_set_class($out['content'][2], [
         'options' => true
     ]);
     unset($out['hint'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
-    return \_\lot\x\panel\type\field($out, $key);
+    return \x\panel\type\field($out, $key);
 }
 
-function u_r_l($value, $key) {
+function u_r_l($value, $key) { // This is not a typo!
     if (!\array_key_exists('hint', $value)) {
         $url = $GLOBALS['url'];
         $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
@@ -582,5 +582,5 @@ function u_r_l($value, $key) {
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";
     }
-    return \_\lot\x\panel\type\field\text($value, $key);
+    return \x\panel\type\field\text($value, $key);
 }

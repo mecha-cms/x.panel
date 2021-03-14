@@ -5,7 +5,7 @@ return [
     'sort' => [-1, 'time'],
     'path' => '/page',
     // Enable AJAX feature?
-    'fetch' => true,
+    'fetch' => false,
     'guard' => [
         'path' => '/panel',
         // Minimum and maximum file size allowed to upload (0 – 120 MB)
