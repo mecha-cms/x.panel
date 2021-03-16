@@ -88,9 +88,11 @@ if (null !== State::get('x.tag') && (
                 ++$any;
             }
         }
-        sort($out);
-        file_put_contents($f = Path::F($_['f']) . DS . 'kind.data', json_encode($out));
-        !defined('DEBUG') || !DEBUG && chmod($f, 0600);
+        if ($out) {
+            sort($out);
+            file_put_contents($f = Path::F($_['f']) . DS . 'kind.data', json_encode($out));
+            !defined('DEBUG') || !DEBUG && chmod($f, 0600);
+        }
         return $_;
     }, 11);
     $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [

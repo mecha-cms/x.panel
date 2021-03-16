@@ -53,6 +53,14 @@
     return 'string' === typeof x;
   };
 
+  var fromStates = function fromStates() {
+    for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+      lot[_key] = arguments[_key];
+    }
+
+    return Object.assign.apply(Object, [{}].concat(lot));
+  };
+
   var fromValue = function fromValue(x) {
     if (isArray(x)) {
       return x.map(function (v) {
@@ -83,19 +91,40 @@
     return "" + x;
   };
 
-  var toCaseLower$1 = function toCaseLower(x) {
+  var toArrayKey = function toArrayKey(x, data) {
+    var i = data.indexOf(x);
+    return -1 !== i ? i : null;
+  };
+
+  var toCaseLower = function toCaseLower(x) {
     return x.toLowerCase();
   };
 
-  var toNumber$1 = function toNumber(x, base) {
+  var toCaseUpper = function toCaseUpper(x) {
+    return x.toUpperCase();
+  };
+
+  var toCount = function toCount(x) {
+    return x.length;
+  };
+
+  var toNumber = function toNumber(x, base) {
     if (base === void 0) {
       base = 10;
     }
 
-    return parseInt(x, base);
+    return base ? parseInt(x, base) : parseFloat(x);
   };
 
-  var toValue$1 = function toValue(x) {
+  var toObjectCount = function toObjectCount(x) {
+    return toCount(toObjectKeys(x));
+  };
+
+  var toObjectKeys = function toObjectKeys(x) {
+    return Object.keys(x);
+  };
+
+  var toValue = function toValue(x) {
     if (isArray(x)) {
       return x.map(function (v) {
         return toValue(v);
@@ -103,7 +132,7 @@
     }
 
     if (isNumeric(x)) {
-      return toNumber$1(x);
+      return toNumber(x);
     }
 
     if (isObject(x)) {
@@ -114,11 +143,19 @@
       return x;
     }
 
-    return {
-      'false': false,
-      'null': null,
-      'true': true
-    }[x] || x;
+    if ('false' === x) {
+      return false;
+    }
+
+    if ('null' === x) {
+      return null;
+    }
+
+    if ('true' === x) {
+      return true;
+    }
+
+    return x;
   };
 
   var D = document;
@@ -143,7 +180,7 @@
     }
 
     var value = node.getAttribute(attribute);
-    return parseValue ? toValue$1(value) : value;
+    return parseValue ? toValue(value) : value;
   };
 
   var getAttributes = function getAttributes(node, parseValue) {
@@ -157,7 +194,7 @@
 
     for (var i = 0, j = attributes.length; i < j; ++i) {
       value = attributes[i].value;
-      values[attributes[i].name] = parseValue ? toValue$1(value) : value;
+      values[attributes[i].name] = parseValue ? toValue(value) : value;
     }
 
     return values;
@@ -197,7 +234,7 @@
   };
 
   var getName = function getName(node) {
-    return toCaseLower$1(node && node.nodeName || "") || null;
+    return toCaseLower(node && node.nodeName || "") || null;
   };
 
   var getNext = function getNext(node) {
@@ -427,14 +464,6 @@
     node.addEventListener(name, then, options);
   };
 
-  var fromStates = function fromStates() {
-    for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-      lot[_key] = arguments[_key];
-    }
-
-    return Object.assign.apply(Object, [{}].concat(lot));
-  };
-
   function context($) {
     var hooks = {};
 
@@ -541,73 +570,6 @@
     node.scrollLeft = data[0];
     node.scrollTop = data[1];
     return node;
-  };
-
-  var toArrayKey = function toArrayKey(x, data) {
-    var i = data.indexOf(x);
-    return -1 !== i ? i : null;
-  };
-
-  var toCaseLower = function toCaseLower(x) {
-    return x.toLowerCase();
-  };
-
-  var toCaseUpper = function toCaseUpper(x) {
-    return x.toUpperCase();
-  };
-
-  var toCount = function toCount(x) {
-    return x.length;
-  };
-
-  var toNumber = function toNumber(x, base) {
-    if (base === void 0) {
-      base = 10;
-    }
-
-    return base ? parseInt(x, base) : parseFloat(x);
-  };
-
-  var toObjectCount = function toObjectCount(x) {
-    return toCount(toObjectKeys(x));
-  };
-
-  var toObjectKeys = function toObjectKeys(x) {
-    return Object.keys(x);
-  };
-
-  var toValue = function toValue(x) {
-    if (isArray(x)) {
-      return x.map(function (v) {
-        return toValue(v);
-      });
-    }
-
-    if (isNumeric(x)) {
-      return toNumber(x);
-    }
-
-    if (isObject(x)) {
-      for (var k in x) {
-        x[k] = toValue(x[k]);
-      }
-
-      return x;
-    }
-
-    if ('false' === x) {
-      return false;
-    }
-
-    if ('null' === x) {
-      return null;
-    }
-
-    if ('true' === x) {
-      return true;
-    }
-
-    return x;
   };
   /*!
    *
@@ -1395,7 +1357,7 @@
       'JSON': responseTypeJSON
     }
   };
-  F3H.version = '1.1.16';
+  F3H.version = '1.1.17';
   /*!
    *
    * The MIT License (MIT)
@@ -1781,7 +1743,7 @@
     };
   };
 
-  TE.version = '3.2.3';
+  TE.version = '3.2.4';
   TE.x = x;
 
   var hasValue = function hasValue(x, data) {
@@ -1890,17 +1852,16 @@
       }
 
       var tag = n(getText(editorInput)),
-          tags = $.tags,
           index;
 
       if (tag) {
         if (!getTag(tag)) {
           setTagElement(tag), setTag(tag);
-          index = toCount(tags);
+          index = toCount($.tags);
           fire('change', [tag, index]);
           fire('set.tag', [tag, index]);
         } else {
-          fire('has.tag', [tag, toArrayKey(tag, tags)]);
+          fire('has.tag', [tag, toArrayKey(tag, $.tags)]);
         }
 
         setInput("");
@@ -2076,33 +2037,29 @@
 
     function onBlurTag() {
       var t = this,
-          tag = t.title,
-          tags = $.tags;
+          tag = t.title;
       letClasses(self, ['focus', 'focus.tag']);
-      fire('blur.tag', [tag, toArrayKey(tag, tags)]);
+      fire('blur.tag', [tag, toArrayKey(tag, $.tags)]);
     }
 
     function onClickTag() {
       var t = this,
-          tag = t.title,
-          tags = $.tags;
-      fire('click.tag', [tag, toArrayKey(tag, tags)]);
+          tag = t.title;
+      fire('click.tag', [tag, toArrayKey(tag, $.tags)]);
     }
 
     function onFocusTag() {
       var t = this,
-          tag = t.title,
-          tags = $.tags;
+          tag = t.title;
       setClasses(self, ['focus', 'focus.tag']);
-      fire('focus.tag', [tag, toArrayKey(tag, tags)]);
+      fire('focus.tag', [tag, toArrayKey(tag, $.tags)]);
     }
 
     function onClickTagX(e) {
       if (!sourceIsDisabled() && !sourceIsReadOnly()) {
         var t = this,
             tag = getParent(t).title,
-            _tags = $.tags,
-            index = toArrayKey(tag, _tags);
+            index = toArrayKey(tag, $.tags);
         letTagElement(tag), letTag(tag), setInput("", 1);
         fire('change', [tag, index]);
         fire('click.tag', [tag, index]);
@@ -2133,8 +2090,7 @@
         } else if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode || KEY_DELETE_RIGHT[0] === key || KEY_DELETE_RIGHT[1] === keyCode) {
           if (!sourceIsReadOnly()) {
             var tag = t.title,
-                _tags2 = $.tags,
-                index = toArrayKey(tag, _tags2);
+                index = toArrayKey(tag, $.tags);
             letClass(self, 'focus.tag');
             letTagElement(tag), letTag(tag); // Focus to the previous tag or to the tag input after remove
 
@@ -2167,19 +2123,18 @@
     setInput("");
 
     function getTag(tag, fireHooks) {
-      var tags = $.tags,
-          index = toArrayKey(tag, tags);
+      var index = toArrayKey(tag, $.tags);
       fireHooks && fire('get.tag', [tag, index]);
       return isNumber(index) ? tag : null;
     }
 
     function letTag(tag) {
-      var tags = $.tags,
-          index = toArrayKey(tag, tags);
+      var index = toArrayKey(tag, $.tags);
 
       if (isNumber(index) && index >= 0) {
-        source.value = tags.join(state.join);
-        return $.tags.splice(index, 1), true;
+        $.tags.splice(index, 1);
+        source.value = $.tags.join(state.join);
+        return true;
       }
 
       return false;
@@ -2341,17 +2296,17 @@
 
     $.set = function (tag, index) {
       if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-        var _tags3 = $.tags,
+        var _tags = $.tags,
             theTagsMax = state.max;
 
         if (!getTag(tag)) {
-          if (toCount(_tags3) < theTagsMax) {
+          if (toCount(_tags) < theTagsMax) {
             setTagElement(tag, index), setTag(tag, index);
           } else {
             fire('max.tags', [theTagsMax]);
           }
         } else {
-          fire('has.tag', [tag, toArrayKey(tag, _tags3)]);
+          fire('has.tag', [tag, toArrayKey(tag, _tags)]);
         }
       }
 
@@ -2378,7 +2333,7 @@
     'min': 0,
     'x': false
   };
-  TP.version = '3.1.9';
+  TP.version = '3.1.10';
   Object.assign(W, {
     F3H: F3H,
     TE: TE,

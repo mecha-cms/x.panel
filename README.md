@@ -8,7 +8,8 @@ Release Notes
 
 ### main
 
- - [ ] Fixed bug of tags data that is not stored consistently on edit mode.
+ - [x] Fixed bug of tags data that is not stored consistently on edit mode.
+ - [x] Renamed `before` and `after` key for field to `value-prefix` and `value-suffix`.
  - [x] The `$_['/']` data now will includes the `$url` as prefix.
  - [x] [@mecha-cms/mecha#96](https://github.com/mecha-cms/mecha/issues/96)
 

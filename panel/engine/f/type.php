@@ -114,14 +114,15 @@ function field($value, $key) {
         $tags['has:title'] = true;
     }
     $tags['has:description'] = !empty($value['description']);
-    $before = "";
-    $after = "";
-    foreach (['before', 'after'] as $v) {
-        if (isset($value[$v])) {
-            if (\is_string($value[$v])) {
-                ${$v} = '<span class="fix"><span>' . $value[$v] . '</span></span>';
-            } else if (\is_array($value[$v])) {
-                $icon = \x\panel\to\icon($value[$v]['icon'] ?? []);
+    $prefix = "";
+    $suffix = "";
+    foreach (['prefix', 'suffix'] as $v) {
+        if (isset($value['value-' . $v])) {
+            $vv = $value['value-' . $v];
+            if (\is_string($vv)) {
+                ${$v} = '<span class="fix"><span>' . $vv . '</span></span>';
+            } else if (\is_array($vv)) {
+                $icon = \x\panel\to\icon($vv['icon'] ?? []);
                 \x\panel\_set_class($icon[0], ['fix' => true]);
                 ${$v} = $icon[0];
             }
@@ -148,11 +149,11 @@ function field($value, $key) {
             }
         }
         $out[1] .= '<div>';
-        $out[1] .= $before || $after ? '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">' : "";
-        $out[1] .= $before;
+        $out[1] .= $prefix || $suffix ? '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">' : "";
+        $out[1] .= $prefix;
         $out[1] .= \x\panel\to\content($value['content']);
-        $out[1] .= $after;
-        $out[1] .= $before || $after ? '</div>' : "";
+        $out[1] .= $suffix;
+        $out[1] .= $prefix || $suffix ? '</div>' : "";
         $out[1] .= \x\panel\to\description($value['description'] ?? "");
         $out[1] .= '</div>';
     } else if (isset($value['lot'])) {

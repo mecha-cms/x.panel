@@ -205,7 +205,7 @@ function page($_) {
                 foreach ((array) $_['form']['lot']['data'] as $k => $v) {
                     $ff = $d . \DS . $k . '.data';
                     if ("" !== \trim($v)) {
-                        if (\is_writable($ff)) {
+                        if (!\stream_resolve_include_path($ff) || \is_writable($ff)) {
                             \file_put_contents($ff, \is_array($v) ? \json_encode($v) : \s($v));
                             !\defined('DEBUG') || !\DEBUG && \chmod($ff, 0600);
                         } else {

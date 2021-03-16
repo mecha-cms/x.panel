@@ -85,6 +85,10 @@ var _ = function () {
     return x.toLowerCase();
   };
 
+  var toCount = function toCount(x) {
+    return x.length;
+  };
+
   var toJSON = function toJSON(x) {
     return JSON.stringify(x);
   };
@@ -94,7 +98,7 @@ var _ = function () {
       base = 10;
     }
 
-    return parseInt(x, base);
+    return base ? parseInt(x, base) : parseFloat(x);
   };
 
   var toValue = function toValue(x) {
@@ -116,11 +120,19 @@ var _ = function () {
       return x;
     }
 
-    return {
-      'false': false,
-      'null': null,
-      'true': true
-    }[x] || x;
+    if ('false' === x) {
+      return false;
+    }
+
+    if ('null' === x) {
+      return null;
+    }
+
+    if ('true' === x) {
+      return true;
+    }
+
+    return x;
   };
 
   var D = document;
@@ -404,10 +416,6 @@ var _ = function () {
   $.off;
   $.on;
   $.hooks;
-
-  var toCount = function toCount(x) {
-    return x.length;
-  };
 
   function hook$3() {
     for (var key in TP.instances) {
