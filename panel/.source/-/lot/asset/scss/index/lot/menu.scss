@@ -23,6 +23,13 @@
     position: relative;
     .title {
       flex: 1;
+      small {
+        float: right;
+        margin-right: (-$x / 4);
+        background: $color;
+        color: $color-back;
+        padding: 0 ($x / 4);
+      }
     }
     &.is\:separator {
       width: auto;

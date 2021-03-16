@@ -1387,6 +1387,12 @@ label.not\:active {
   height: inherit;
 }
 
+.lot\:bar > ul .title small,
+.lot\:bar > ul > li .title small {
+  float: right;
+  margin-left: 6px;
+}
+
 .lot\:bar > ul {
   display: flex;
   height: 48px;
@@ -1608,6 +1614,14 @@ label.not\:active {
 
 .lot\:menu li .title {
   flex: 1;
+}
+
+.lot\:menu li .title small {
+  float: right;
+  margin-right: -6px;
+  background: #000;
+  color: #fff;
+  padding: 0 6px;
 }
 
 .lot\:menu li.is\:separator {

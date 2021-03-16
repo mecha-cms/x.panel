@@ -9,6 +9,12 @@
     list-style: none;
     width: auto;
     height: inherit;
+    .title {
+      small {
+        float: right;
+        margin-left: ($x / 4);
+      }
+    }
   }
   > ul {
     display: flex;

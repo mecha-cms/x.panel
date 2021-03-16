@@ -203,6 +203,12 @@ $code: 'Nimbus Mono L', monospace !default;
       &.is\:separator {
         background: skin(5%);
       }
+      .title {
+        small {
+          background: skin(5%);
+          color: skin(65%);
+        }
+      }
     }
     .not\:active {
       opacity: 1;

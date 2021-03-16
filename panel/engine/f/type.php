@@ -384,11 +384,12 @@ function link($value, $key) {
         2 => $value[2] ?? []
     ];
     if ("" === $out[1]) {
+        $info = $value['info'] ?? "";
         $out[1] = \x\panel\type\title([
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'level' => -1,
-            'content' => $value['title'] ?? \To::title($key)
+            'content' => ($value['title'] ?? \To::title($key)) . ($info ? ' <small>' . $info . '</small>' : "")
         ], $key);
     }
     $href = $value['link'] ?? $value['url'] ?? \P;
@@ -843,7 +844,7 @@ function lot($value, $key) {
 function title($value, $key) {
     $icon = $value['icon'] ?? [];
     $title = $value[1] ?? $value['content'] ?? "";
-    $title = \w('<!--0-->' . \i(...((array) $title)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'strong', 'sub', 'sup']);
+    $title = \w('<!--0-->' . \i(...((array) $title)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'small', 'strong', 'sub', 'sup']);
     if ('0' !== $title && !$title && !$icon) {
         return;
     }

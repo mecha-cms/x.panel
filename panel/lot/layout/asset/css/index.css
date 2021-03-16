@@ -179,6 +179,11 @@
   background: #2d2d2d;
 }
 
+.is\:dark .lot\:menu li .title small {
+  background: #2d2d2d;
+  color: #b2b2b2;
+}
+
 .is\:dark .lot\:menu .not\:active {
   opacity: 1;
   color: #4e4e4e;

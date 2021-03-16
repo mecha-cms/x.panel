@@ -23,6 +23,7 @@ function menu($_) {
                         1 => [
                             'title' => 'Menu 2.2',
                             'url' => '/',
+                            'info' => 24, // Test badge
                             'stack' => 20
                         ],
                         2 => [

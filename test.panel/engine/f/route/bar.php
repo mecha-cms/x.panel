@@ -22,10 +22,12 @@ function bar($_) {
                         ],
                         'menu-2' => [
                             'title' => 'Menu 3',
+                            'info' => 24,
                             'url' => '/',
                             'lot' => [
                                 'menu-2-0' => [
                                     'title' => 'Menu 3.1',
+                                    'info' => 24,
                                     'url' => '/',
                                     'stack' => 10
                                 ],

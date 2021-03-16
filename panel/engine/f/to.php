@@ -113,5 +113,5 @@ function title($value, $level = -1) {
 }
 
 function w($value, $also = null) {
-    return \w('<div>' . $value . '</div>', 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
+    return \w('<!--0-->' . $value, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,small,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
 }
