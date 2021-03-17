@@ -8,6 +8,7 @@ Release Notes
 
 ### main
 
+ - [ ] Improved performance of files/folders listing by deferring the GUI creation.
  - [x] Added badge GUI for `x\panel\type\link` via `info` key.
  - [x] Fixed bug of tags data that is not stored consistently on edit mode.
  - [x] Renamed `before` and `after` key for field to `value-prefix` and `value-suffix`.
