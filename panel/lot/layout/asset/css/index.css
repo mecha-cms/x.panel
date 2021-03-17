@@ -226,14 +226,14 @@
   border-color: #242424;
 }
 
-.is\:dark .lot\:files li.is\:active,
-.is\:dark .lot\:pages li.is\:active {
+.is\:dark .lot\:files li.is\:current,
+.is\:dark .lot\:pages li.is\:current {
   background: #262626;
   border-color: #262626;
 }
 
-.is\:dark .lot\:files li.is\:active:hover,
-.is\:dark .lot\:pages li.is\:active:hover {
+.is\:dark .lot\:files li.is\:current:hover,
+.is\:dark .lot\:pages li.is\:current:hover {
   background: #292929;
   border-color: #292929;
 }

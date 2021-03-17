@@ -226,10 +226,11 @@ function fields($value, $key) {
 }
 
 function file($value, $key) {
-    $tags = \array_replace($value['tags'] ?? [], [
+    $tags = \array_replace([
+        'is:current' => !empty($value['current']),
         'is:file' => true,
         'not:active' => isset($value['active']) && !$value['active']
-    ]);
+    ], $value['tags'] ?? []);
     $out = [
         0 => 'li',
         1 => "",
@@ -273,15 +274,6 @@ function files($value, $key) {
     }
     $count = 0;
     foreach ($lot as $k => $v) {
-        $path = \rtrim($v['path'] ?? "", \DS);
-        if (!empty($v['current']) || $path && (
-            isset($_SESSION['_']['file'][$path]) ||
-            isset($_SESSION['_']['folder'][$path])
-        )) {
-            $v['tags']['is:active'] = true;
-            unset($_SESSION['_']['file'][$path]);
-            unset($_SESSION['_']['folder'][$path]);
-        }
         if (!\array_key_exists('type', $v)) {
             $v['type'] = 'file';
         }
@@ -497,17 +489,11 @@ function menu($value, $key, int $i = 0) {
 
 function page($value, $key) {
     $tags = \array_replace([
+        'is:current' => !empty($value['current']),
         'is:file' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $path = $value['path'] ?? $key;
-    if (isset($value['invoke']) && \is_callable($value['invoke'])) {
-        $value = \array_replace_recursive($value, \call_user_func($value['invoke'], $path));
-        unset($value['invoke']);
-    }
-    if (!empty($value['skip'])) {
-        return;
-    }
     $out = [
         0 => 'li',
         1 => "",
@@ -629,11 +615,6 @@ function pages($value, $key) {
     }
     $count = 0;
     foreach ($lot as $k => $v) {
-        $path = \rtrim($v['path'] ?? "", \DS);
-        if (!empty($v['current']) || $path && isset($_SESSION['_']['file'][$path])) {
-            $v['tags']['is:active'] = true;
-            unset($_SESSION['_']['file'][$path]);
-        }
         if (!\array_key_exists('type', $v)) {
             $v['type'] = 'page';
         }

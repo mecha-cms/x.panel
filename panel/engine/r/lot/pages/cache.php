@@ -1,12 +1,15 @@
 <?php
 
-$_ = require __DIR__ . DS . 'trash.php';
-
-if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'])) {
-    foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] as $k => &$v) {
-        unset($v['tasks']['restore']);
+Hook::set('_', function($_) {
+    if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'])) {
+        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] as $k => &$v) {
+            unset($v['tasks']['restore']);
+        }
     }
-}
+    return $_;
+}, 10.1);
+
+$_ = require __DIR__ . DS . 'trash.php';
 
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['skip'] = true;
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['skip'] = true;

@@ -249,7 +249,7 @@ $code: 'Nimbus Mono L', monospace !default;
         background: skin(1%);
         border-color: skin(1%);
       }
-      &.is\:active {
+      &.is\:current {
         background: skin(2%);
         border-color: skin(2%);
         &:hover {
