@@ -42,7 +42,10 @@ Hook::set('_', function($_) {
                 'title' => S . $n . S,
                 'description' => 0 === $v ? ['Open %s', 'Folder'] : S . (new File($k))->size . S,
                 'type' => 0 === $v ? 'folder' : 'file',
-                'url' => 0 === $v ? $before . 'g' . $after . '/1' . $url->query . $url->hash : null,
+                'url' => 0 === $v ? $before . 'g' . $after . '/1' . $url->query('&', [
+                    'q' => false,
+                    'tab' => false
+                ]) . $url->hash : null,
                 'link' => 1 === $v ? To::URL($k) : null,
                 'tasks' => [
                     'g' => [
@@ -50,6 +53,7 @@ Hook::set('_', function($_) {
                         'description' => 'Edit',
                         'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
                         'url' => $before . 'g' . $after . $url->query('&', [
+                            'q' => false,
                             'tab' => false
                         ]) . $url->hash,
                         'stack' => 10
@@ -59,6 +63,7 @@ Hook::set('_', function($_) {
                         'description' => 'Delete',
                         'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
                         'url' => $before . 'l' . $after . $url->query('&', [
+                            'q' => false,
                             'tab' => false,
                             'token' => $_['token'],
                             'trash' => $trash
@@ -77,13 +82,17 @@ Hook::set('_', function($_) {
                 'title' => S . '..' . S,
                 'description' => ['Go to %s', 'Parent'],
                 'type' => 'folder',
-                'url' => $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query . $url->hash,
+                'url' => $_['/'] . '/::g::/' . dirname($_['path']) . '/1' . $url->query('&', [
+                    'q' => false,
+                    'tab' => false
+                ]) . $url->hash,
                 'tasks' => [
                     'g' => [
                         'title' => 'Edit',
                         'description' => 'Edit Parent Folder',
                         'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
                         'url' => $before . 'g' . $after . $url->query('&', [
+                            'q' => false,
                             'tab' => false
                         ]) . $url->hash,
                         'stack' => 10
@@ -93,6 +102,7 @@ Hook::set('_', function($_) {
                         'description' => 'Delete Parent Folder',
                         'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
                         'url' => $before . 'l' . $after . $url->query('&', [
+                            'q' => false,
                             'tab' => false,
                             'token' => $_['token'],
                             'trash' => $trash
@@ -132,6 +142,7 @@ $desk = [
                                     'description' => 'Upload',
                                     'type' => 'link',
                                     'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'q' => false,
                                         'tab' => false,
                                         'type' => 'blob'
                                     ]) . $url->hash,
@@ -142,6 +153,7 @@ $desk = [
                                     'type' => 'link',
                                     'description' => ['New %s', 'File'],
                                     'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'q' => false,
                                         'tab' => false,
                                         'type' => 'file'
                                     ]) . $url->hash,
@@ -152,6 +164,7 @@ $desk = [
                                     'type' => 'link',
                                     'description' => ['New %s', 'Folder'],
                                     'url' => $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+                                        'q' => false,
                                         'tab' => false,
                                         'type' => 'folder'
                                     ]) . $url->hash,

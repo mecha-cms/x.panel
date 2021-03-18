@@ -15,7 +15,7 @@ Hook::set('_', function($_) use($path, $super) {
             $v['title'] = S . $page . S;
             $v['description'] = S . $page->user . S;
             $v['link'] = 'draft' !== $page->x ? $page->url : false;
-            $v['image'] = $page->avatar(72);
+            $v['image'] = $page->avatar(72) ?? null;
             $v['tags']['status:' . $page->status] = true;
             // Disable page children feature
             $v['tasks']['enter']['skip'] = true;
@@ -44,6 +44,7 @@ $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'User';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+    'q' => false,
     'tab' => false,
     'type' => 'page/user'
 ]) . $url->hash;

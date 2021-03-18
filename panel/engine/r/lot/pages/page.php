@@ -16,6 +16,7 @@ Hook::set('_', function($_) {
             ]);
             if (!empty($v['tasks']['s']['url'])) {
                 $v['tasks']['s']['url'] = $before . 's' . Path::F($after, '/') . $url->query('&', [
+                    'q' => false,
                     'tab' => false,
                     'type' => 'page/page'
                 ]) . $url->hash;
@@ -45,6 +46,7 @@ $_['type'] = 'pages';
 $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+    'q' => false,
     'tab' => false,
     'type' => 'page/page'
 ]) . $url->hash;

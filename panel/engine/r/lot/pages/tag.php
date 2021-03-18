@@ -24,6 +24,7 @@ $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'Tag';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'Tag';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+    'q' => false,
     'tab' => false,
     'type' => 'page/tag'
 ]) . $url->hash;

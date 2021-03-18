@@ -142,6 +142,7 @@ $_['lot']['desk']['lot']['form']['lot'][1]['title'] = ($r = false === strpos($_[
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Comments';
 
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = $_['/'] . '/::s::/' . $_['path'] . $url->query('&', [
+    'q' => false,
     'tab' => false,
     'type' => 'page/comment'
 ]) . $url->hash;
