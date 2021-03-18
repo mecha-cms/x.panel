@@ -41,8 +41,6 @@ function route() {
             $this->layout($_['layout'] ?? 'panel');
         }
     }
-    $_ = \x\panel\_set();
-    $_ = \x\panel\_set_state();
     if (!isset($_['type'])) {
         // Auto-detect layout type
         if ($f) {
@@ -70,9 +68,10 @@ function route() {
                 }
             })(__DIR__ . \DS . 'lot' . \DS . 'page' . (null !== $_['i'] ? 's' : "") . \DS . $v . '.php');
         }
-        // Get data
-        $_ = $GLOBALS['_'];
     }
+    // Get data
+    $_ = \x\panel\_set();
+    $_ = \x\panel\_set_state();
     // Set layout type
     if (!$type) {
         $k = \strtr($_['type'], [
@@ -90,7 +89,7 @@ function route() {
         }
     })($type);
     // Filter by status
-    \is_file($v = __DIR__ . \DS . 'lot' . \DS . 'user' . \DS . $user['status'] . '.php') && (static function($v) {
+    \is_file($v = __DIR__ . \DS . 'lot' . \DS . 'user' . \DS . $user->status . '.php') && (static function($v) {
         extract($GLOBALS, \EXTR_SKIP);
         require $v;
         if (isset($_) && \is_array($_)) {

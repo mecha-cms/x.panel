@@ -377,7 +377,7 @@ function link($value, $key) {
     ];
     if ("" === $out[1]) {
         $info = $value['info'] ?? "";
-        $out[1] = \x\panel\type\title([
+        $out[1] = (string) \x\panel\type\title([
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'level' => -1,
@@ -385,15 +385,18 @@ function link($value, $key) {
         ], $key);
     }
     $href = $value['link'] ?? $value['url'] ?? \P;
-    $href = false === $href ? \P : (string) $href;
     $tags = \array_replace([
         'not:active' => \P === $href || (isset($value['active']) && !$value['active'])
     ], $value['tags'] ?? []);
-    $out[2]['href'] = \P === $href ? null : $href;
+    if (false !== $href) {
+        $out[2]['href'] = \P === $href ? null : $href;
+        $out[2]['target'] = $value[2]['target'] ?? $value['target'] ?? (isset($value['link']) ? '_blank' : null);
+    } else {
+        $out[0] = $value[0] ?? false; // Unwrap!
+    }
     if (isset($value['id'])) {
         $out[2]['id'] = $value['id'];
     }
-    $out[2]['target'] = $value[2]['target'] ?? (isset($value['link']) ? '_blank' : null);
     $out[2]['title'] = \i(...((array) ($value['description'] ?? [])));
     \x\panel\_set_class($out[2], $tags);
     return new \HTML($out);

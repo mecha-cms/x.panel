@@ -335,22 +335,28 @@ HTML;
             $_['alert']['success'][] = ['Created folder %s.', '<code>' . \x\panel\from\path($d) . '</code>'];
             $_SESSION['_']['folder'][$d] = 1;
             $_['kick'] = $url->current;
+            // Update data
+            $GLOBALS['_'] = $_;
         }
         $_ = \x\panel\_error_route_check();
         if (!empty($_['is']['error'])) {
             return $_;
         }
         // You cannot edit or delete your own folder
-        if (\count($_['chop']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url'] = false;
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url'] = false;
-        }
-        if (1 !== $user['status']) {
-            // Hide parent folder link
+        \Hook::set('_', function($_) use($d) {
+            extract($GLOBALS, \EXTR_SKIP);
             if (\count($_['chop']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
-                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['skip'] = true;
+                unset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['g']['url']);
+                unset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$d]['tasks']['l']['url']);
             }
-        }
+            if (1 !== $user->status) {
+                // Hide parent folder link
+                if (\count($_['chop']) < 3 && 'g' === $_['task'] && isset($_['i'])) {
+                    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$_['f']]['skip'] = true;
+                }
+            }
+            return $_;
+        }, 10.2);
         return $_;
     }
     function user($_) {
@@ -359,7 +365,7 @@ HTML;
             return $_;
         }
         extract($GLOBALS, \EXTR_SKIP);
-        $status = $user['status'];
+        $status = $user->status;
         if (\count($_['chop']) > 1) {
             if (1 !== $status) {
                 // XSS Protection

@@ -3,7 +3,7 @@
 Hook::set('_', function($_) {
     if (
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['skip']) &&
-        isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot']) &&
+        empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot']) &&
         isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['type']) &&
         'files' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['type']
     ) {
@@ -16,10 +16,10 @@ Hook::set('_', function($_) {
         };
         $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
         $before = $_['/'] . '/::';
-        $g = 1 !== $user->status;
+        $super = 1 === $user->status;
         if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             foreach ($search($folder, null, 0) as $k => $v) {
-                if (false !== strpos('_.', $n[0]) && $g) {
+                if (false !== strpos('_.', $n[0]) && !$super) {
                     continue; // User(s) with status other than `1` cannot see hidden file(s)
                 }
                 $files[$v][$k] = $v;

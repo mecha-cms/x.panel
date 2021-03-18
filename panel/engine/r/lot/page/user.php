@@ -10,8 +10,8 @@ $_['type'] = [
 
 $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
-$status = $user['status'];
-$i = $page['status'];
+$status = $user->status;
+$i = $page->status;
 $any = $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] ?? null;
 
 if (1 !== $status) {

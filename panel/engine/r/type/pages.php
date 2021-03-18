@@ -3,12 +3,11 @@
 Hook::set('_', function($_) {
     if (
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['skip']) &&
-        isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
+        empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
         isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']) &&
         'pages' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']
     ) {
         extract($GLOBALS, EXTR_SKIP);
-        $pages = [];
         $count = 0;
         $search = static function($folder, $x, $r) {
             $q = strtolower($_GET['q'] ?? "");
@@ -19,24 +18,27 @@ Hook::set('_', function($_) {
             $_['f'] . '.draft',
             $_['f'] . '.page'
         ])) ? new Page($f) : new Page;
+        $pages = [];
         $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
-        $g = 1 === $user->status;
         $author = $user->user;
+        $super = 1 === $user->status;
         if (is_dir($folder = LOT . DS . strtr($_['path'], '/', DS))) {
             foreach ($search($folder, 'archive,draft,page', 0) as $k => $v) {
                 if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
                     continue; // Skip placeholder page(s)
                 }
                 $p = new Page($k);
-                if (!$g && $author !== $p['author']) {
+                if (!$super && $author !== $p['author']) {
                     continue;
                 }
                 $sort = $_['sort'][1] ?? 'time';
-                $pages[$k] = [$sort => (string) ($p->{$sort} ?? "")];
-                unset($p);
+                $pages[$k] = [
+                    $sort => (string) ($p->{$sort} ?? ""),
+                    'page' => $p
+                ];
                 ++$count;
             }
-            $pages = (new Anemon($pages));
+            $pages = new Anemon($pages);
             $pages->sort(array_replace([1, 'path'], $_['sort'], (array) ($page->sort ?? [])), true);
             $pages = $pages->chunk($_['chunk'] ?? 20, ($_['i'] ?? 1) - 1, true)->get();
             $before = $_['/'] . '/::';
@@ -47,7 +49,7 @@ Hook::set('_', function($_) {
                 ]);
                 $can_insert = is_dir($folder = Path::F($k));
                 $can_set = $can_insert && q(g($folder, 'archive,draft,page')) > 0;
-                $p = new Page($k);
+                $p = $v['page'];
                 $title = x\panel\to\w($p->title ?? "");
                 $description = x\panel\to\w($p->description ?? "");
                 $image = $p->image(72, 72, 50) ?? null;
@@ -60,7 +62,6 @@ Hook::set('_', function($_) {
                     'title' => $title ? S . $title . S : null,
                     'description' => $description ? S . $description . S : null,
                     'image' => $image,
-                    'type' => 'page',
                     'time' => $time,
                     'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),
                     'author' => $p['author'],

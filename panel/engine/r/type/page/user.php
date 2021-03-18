@@ -4,6 +4,10 @@ $_ = require __DIR__ . DS . '..' . DS . 'page.php';
 
 // Sanitize the form data
 if ('post' === $_['form']['type']) {
+    // Generate author name if author field is empty
+    if (empty($_['form']['lot']['page']['author'])) {
+        $_['form']['lot']['page']['author'] = To::title($_['form']['lot']['page']['name'] ?? i('User') . ' ' . (q(g(LOT . DS . 'user', 'page'))) + 1);
+    }
     // Remove all possible HTML tag(s) from the `email` data if any
     if (isset($_['form']['lot']['page']['email'])) {
         $_['form']['lot']['page']['email'] = strip_tags($_['form']['lot']['page']['email']);
@@ -25,7 +29,9 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                     's' => [
                         'icon' => 'M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z',
                         'description' => ['New %s', 'User'],
-                        'url' => strtr(dirname($url->clean), ['::g::' => '::s::']) . $url->query('&', [
+                        'url' => strtr(dirname($url->clean), [
+                            '/::g::/' => '/::s::/'
+                        ]) . $url->query('&', [
                             'tab' => false,
                             'type' => 'page/user'
                         ]) . $url->hash
@@ -55,7 +61,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                                     'title' => ['skip' => true],
                                                     'author' => [
                                                         'description' => 's' === $_['task'] ? 'Display name.' : null,
-                                                        'type' => 'text',
+                                                        'type' => 'title',
                                                         'name' => 'page[author]',
                                                         'hint' => 'g' === $_['task'] ? ($page['author'] ?? To::title($page->name ?? i('John Doe'))) : To::title($page->name ?? i('John Doe')),
                                                         'value' => $page['author'],
