@@ -8,6 +8,7 @@ function blob($_) {
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'tab' => ['data'],
         'token' => false,
         'trash' => false,
@@ -30,6 +31,7 @@ function data($_) {
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -86,6 +88,7 @@ function file($_) {
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false,
         'type' => false
@@ -153,6 +156,7 @@ function folder($_) {
 function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false,
         'type' => false
@@ -243,6 +247,7 @@ function page($_) {
 function state($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false,
         'type' => false

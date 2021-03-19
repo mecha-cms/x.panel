@@ -22,7 +22,6 @@ function route() {
     if ('get' === $_['form']['type']) {
         if (!$route && !empty($_['is']['error'])) {
             $_ = \x\panel\_set();
-            $_ = \x\panel\_set_state();
             $_['lot']['bar']['skip'] = true;
             $_['lot']['desk']['lot']['form']['lot'][0]['skip'] = true;
             $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = [
@@ -71,7 +70,6 @@ function route() {
     }
     // Get data
     $_ = \x\panel\_set();
-    $_ = \x\panel\_set_state();
     // Set layout type
     if (!$type) {
         $k = \strtr($_['type'], [

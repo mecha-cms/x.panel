@@ -36,7 +36,7 @@ if (is_file($f) && 'zip' === pathinfo($f, PATHINFO_EXTENSION)) {
             unset($zip);
             if (!empty($_['form']['lot']['let'])) {
                 if (unlink($f)) {
-                    $_['alert']['success'][] = ['Package %s successfully extracted and deleted.', '<code>' . _x\panel\from\path($f) . '</code>'];
+                    $_['alert']['success'][] = ['Package %s successfully extracted and deleted.', '<code>' . x\panel\from\path($f) . '</code>'];
                 } else {
                     $_['alert']['error'][] = ['Package %s could not be deleted. Please delete it manually.', '<code>' . x\panel\from\path($f) . '</code>'];
                 }

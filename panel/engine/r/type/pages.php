@@ -47,11 +47,11 @@ Hook::set('_', function($_) {
                     LOT => "",
                     DS => '/'
                 ]);
-                $can_insert = is_dir($folder = Path::F($k));
-                $can_set = $can_insert && q(g($folder, 'archive,draft,page')) > 0;
+                $can_insert = is_dir($d = Path::F($k));
+                $can_set = $can_insert && q(g($d, 'archive,draft,page')) > 0;
                 $p = $v['page'];
                 $title = x\panel\to\w($p->title ?? "");
-                $description = x\panel\to\w($p->description ?? "");
+                $description = To::excerpt(x\panel\to\w($p->description ?? ""));
                 $image = $p->image(72, 72, 50) ?? null;
                 $type = $p->type ?? null;
                 $time = $p->time ?? null;
@@ -84,7 +84,7 @@ Hook::set('_', function($_) {
                         's' => [
                             'active' => $can_insert,
                             'title' => 'Add',
-                            'description' => $can_insert ? ['Add %s', 'Child'] : ['Missing folder %s', x\panel\from\path($folder)],
+                            'description' => $can_insert ? ['Add %s', 'Child'] : ['Missing folder %s', x\panel\from\path($d)],
                             'icon' => 'M19,19V5H5V19H19M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5C3,3.89 3.9,3 5,3H19M11,7H13V11H17V13H13V17H11V13H7V11H11V7Z',
                             'url' => $can_insert ? $before . 's' . Path::F($after, '/') . $url->query('&', [
                                 'q' => false,
@@ -122,6 +122,58 @@ Hook::set('_', function($_) {
                 if (isset($_SESSION['_']['file'][$k])) {
                     unset($_SESSION['_']['file'][$k]);
                 }
+            }
+            if (
+                empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['lot']) &&
+                empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['lot']) &&
+                isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['type']) &&
+                'files' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['type']
+            ) {
+                $files = [];
+                foreach (g($folder, 'data') as $k => $v) {
+                    $after = '::' . strtr($k, [
+                        LOT => "",
+                        DS => '/'
+                    ]);
+                    $files[$k] = [
+                        'path' => $k,
+                        'current' => !empty($_SESSION['_']['file'][$k]),
+                        'title' => basename($k),
+                        'description' => (new File($k))->size,
+                        'url' => $before . 'g' . $after . $url->query('&', [
+                            'q' => false,
+                            'tab' => false
+                        ]) . $url->hash,
+                        'tasks' => [
+                            'g' => [
+                                'title' => 'Edit',
+                                'description' => 'Edit',
+                                'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
+                                'url' => $before . 'g' . $after . $url->query('&', [
+                                    'q' => false,
+                                    'tab' => false
+                                ]) . $url->hash,
+                                'stack' => 10
+                            ],
+                            'l' => [
+                                'title' => 'Delete',
+                                'description' => 'Delete',
+                                'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
+                                'url' => $before . 'l' . $after . $url->query('&', [
+                                    'q' => false,
+                                    'tab' => false,
+                                    'token' => $_['token'],
+                                    'trash' => $trash
+                                ]),
+                                'stack' => 20
+                            ]
+                        ]
+                    ];
+                    if (isset($_SESSION['_']['file'][$k])) {
+                        unset($_SESSION['_']['file'][$k]);
+                    }
+                }
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['lot'] = $files;
             }
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
@@ -226,7 +278,7 @@ $desk = [
                                             'stack' => 10
                                         ]
                                     ],
-                                    'skip' => count($_['chop']) <= 1,
+                                    'skip' => count($_['chop']) <= 1 || 0 === q(g($_['f'], 'data')),
                                     'stack' => 20
                                 ]
                             ]

@@ -1,21 +1,21 @@
 <?php
 
-$GLOBALS['_']['fn'] = $_['fn'] = $fn = array_shift($_['chop']);
+$GLOBALS['_']['fn'] = $_['fn'] = $id = array_shift($_['chop']);
 $GLOBALS['_']['chop'] = $_['chop'];
 $GLOBALS['_']['f'] = $_['f'] = stream_resolve_include_path(LOT . DS . implode(DS, $_['chop'])) ?: null;
 
-if (function_exists($fn = "\\x\\panel\\task\\f\\" . $fn)) {
-    Hook::set('do.task.' . $fn, function() use($fn) {
+if (function_exists($fn = "x\\panel\\task\\f\\" . $id)) {
+    Hook::set('do.task.' . $id, function() use($fn) {
         return call_user_func($fn, $GLOBALS['_']);
     }, 10);
-} else if (is_file($_f = __DIR__ . DS . 'f' . DS . $fn . '.php')) {
-    Hook::set('do.task.' . $fn, function() use($_f) {
+} else if (is_file($f = __DIR__ . DS . 'f' . DS . $id . '.php')) {
+    Hook::set('do.task.' . $id, function() use($f) {
         extract($GLOBALS, EXTR_SKIP);
-        return require $_f;
+        return require $f;
     }, 10);
 }
 
-if ($r = Hook::fire('do.task.' . $fn, [$_])) {
+if ($r = Hook::fire('do.task.' . $id, [$_])) {
     $_ = $r;
 }
 

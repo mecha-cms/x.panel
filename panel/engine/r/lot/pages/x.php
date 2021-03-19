@@ -140,7 +140,7 @@ Hook::set('_', function($_) use($uses) {
             $pages = $pages->chunk($_['chunk'] ?? 20, ($_['i'] ?? 1) - 1, true)->get();
             $before = $_['/'] . '/::';
             foreach ($pages as $k => $v) {
-                $after = '::' . strtr(dirname($k), [
+                $after = '::' . strtr($d = dirname($k), [
                     LOT => "",
                     DS => '/'
                 ]);
@@ -148,7 +148,7 @@ Hook::set('_', function($_) use($uses) {
                 $can_set = $can_insert && q(g($folder, 'archive,draft,page')) > 0;
                 $p = $v['page'];
                 $title = x\panel\to\w($p->title ?? "");
-                $description = x\panel\to\w($p->description ?? "");
+                $description = To::excerpt(x\panel\to\w($p->description ?? ""));
                 $image = $p->image(72, 72, 50) ?? null;
                 $type = $p->type ?? null;
                 $time = $p->time ?? null;
@@ -156,7 +156,7 @@ Hook::set('_', function($_) use($uses) {
                 $x = $p->x ?? null;
                 $pages[$k] = [
                     'path' => $k,
-                    'current' => !empty($_SESSION['_']['file'][$k]),
+                    'current' => !empty($_SESSION['_']['folder'][$d]),
                     'title' => $title ? S . $title . S : null,
                     'description' => $description ? S . $description . S : null,
                     'image' => $image,

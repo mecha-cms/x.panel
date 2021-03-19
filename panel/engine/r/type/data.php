@@ -94,10 +94,10 @@ $desk = [
                                                 'name' => [
                                                     'type' => 'name',
                                                     'x' => false,
-                                                    'after' => '.data',
                                                     'focus' => true,
                                                     'name' => 'data[name]',
                                                     'value' => $name,
+                                                    'value-suffix' => '.data',
                                                     'width' => true,
                                                     'stack' => 20
                                                 ]

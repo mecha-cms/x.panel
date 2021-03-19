@@ -3,6 +3,7 @@
 function blob($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'tab'=> false,
         'token' => false,
         'trash' => false,
@@ -66,8 +67,11 @@ function blob($_) {
                             \LOT . \DS => "",
                             \DS => '/'
                         ]) . \To::query([
-                            'kick' => \explode('?', \str_replace('::s::', '::g::', $url->current), 2)[0] . '/1',
+                            'kick' => \explode('?', \strtr($url->current, [
+                                '/::s::/' => '/::g::/'
+                            ]), 2)[0] . '/1',
                             'let' => !empty($_['form']['lot']['options']['let']) ? 1 : false,
+                            'q' => false,
                             'token' => $_['token']
                         ]);
                     }
@@ -91,6 +95,7 @@ function blob($_) {
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'tab' => ['data'],
         'token' => false,
         'trash' => false,
@@ -113,6 +118,7 @@ function data($_) {
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false,
         'type' => false
@@ -164,6 +170,7 @@ function file($_) {
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false,
         'type' => false
@@ -205,6 +212,7 @@ function folder($_) {
 function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'q' => false,
         'token' => false,
         'trash' => false,
         'type' => false

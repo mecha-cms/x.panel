@@ -385,7 +385,7 @@ function name($value, $key) {
         $value['pattern'] = "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?" . $x . "$";
     }
     if (!\array_key_exists('hint', $value)) {
-        $value['hint'] = "" !== $v ? $v : 'foo-bar.baz';
+        $value['hint'] = "" !== $v ? $v : 'foo-bar' . ($x ? '.baz' : "");
     }
     if (!isset($value['max'])) {
         // <https://serverfault.com/a/9548>
