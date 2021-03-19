@@ -14,6 +14,7 @@ array_shift($chop);
 $task = $chop[0] && 0 === strpos($chop[0], '::') && '::' === substr($chop[0], -2) ? substr(array_shift($chop), 2, -2) : null;
 
 $_['chop'] = $chop;
+$_['id'] = $chop[0];
 $_['path'] = $task ? implode('/', $chop) : null;
 $_['task'] = $task;
 

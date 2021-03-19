@@ -186,7 +186,7 @@ function route() {
         }
     }
     \State::set('[layout].type:' . ($_['type'] ?? 'blank'), true);
-    $n = \ltrim($_['chop'][0] ?? "", '_.-');
+    $n = \ltrim($_['id'] ?? "", '_.-');
     // Put data
     $GLOBALS['_'] = $_;
     $GLOBALS['t'][] = \i('Panel');

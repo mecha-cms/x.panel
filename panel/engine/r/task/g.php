@@ -223,7 +223,7 @@ function page($_) {
         }
     }
     if (\is_file($f = $_['f'])) {
-        $key = \ucfirst(\ltrim($_['chop'][0], '_.-'));
+        $key = \ucfirst(\ltrim($_['id'], '_.-'));
         $path = '<code>' . \x\panel\from\path($_f ?? $f) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],

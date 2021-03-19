@@ -8,7 +8,8 @@ Release Notes
 
 ### main
 
- - [ ] Added _Data_ tab next to the _Pages_ tab for pages layout.
+ - [x] Added _Data_ tab next to the _Pages_ tab for pages layout.
+ - [x] Added `$_['id']` property that store the first `$_['path']` value.
  - [x] Added badge GUI for `x\panel\type\link` via `info` key.
  - [x] Fixed bug of tags data that is not stored consistently on edit mode.
  - [x] Improved extension page. It is now possible to filter extensions by searching and/or paginating.

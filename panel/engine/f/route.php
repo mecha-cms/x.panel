@@ -43,7 +43,7 @@ HTML;
         extract($GLOBALS, \EXTR_SKIP);
         // Disable page offset and page children feature
         if (isset($_['i']) || \count($_['chop']) > 1) {
-            $_['kick'] = $_['/'] . '/::g::/' . $_['chop'][0];
+            $_['kick'] = $_['/'] . '/::g::/' . $_['id'];
         }
         // Load primary state(s)
         $state_r = require \x\panel\to\fresh(\ROOT . \DS . 'state.php');
