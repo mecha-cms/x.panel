@@ -144,15 +144,14 @@ Hook::set('_', function($_) use($uses) {
                     LOT => "",
                     DS => '/'
                 ]);
-                $can_insert = is_dir($folder = Path::F($k));
-                $can_set = $can_insert && q(g($folder, 'archive,draft,page')) > 0;
+                $is_active = is_file($d . DS . 'index.php');
                 $p = $v['page'];
                 $title = x\panel\to\w($p->title ?? "");
                 $description = To::excerpt(x\panel\to\w($p->description ?? ""));
                 $image = $p->image(72, 72, 50) ?? null;
                 $type = $p->type ?? null;
                 $time = $p->time ?? null;
-                $n = basename(dirname($k));
+                $n = basename($d);
                 $x = $p->x ?? null;
                 $pages[$k] = [
                     'path' => $k,
@@ -181,6 +180,22 @@ Hook::set('_', function($_) use($uses) {
                             ]) . $url->hash,
                             'stack' => 20
                         ],
+                        'toggle' => [
+                            'title' => $is_active ? 'Deactivate' : 'Activate',
+                            'description' => $is_active ? 'Deactivate' : 'Activate',
+                            'icon' => $is_active ? 'M13,9.86V11.18L15,13.18V9.86C17.14,9.31 18.43,7.13 17.87,5C17.32,2.85 15.14,1.56 13,2.11C10.86,2.67 9.57,4.85 10.13,7C10.5,8.4 11.59,9.5 13,9.86M14,4A2,2 0 0,1 16,6A2,2 0 0,1 14,8A2,2 0 0,1 12,6A2,2 0 0,1 14,4M18.73,22L14.86,18.13C14.21,20.81 11.5,22.46 8.83,21.82C6.6,21.28 5,19.29 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V16.27L2,5.27L3.28,4L13,13.72L15,15.72L20,20.72L18.73,22Z' : 'M18,6C18,7.82 16.76,9.41 15,9.86V17A5,5 0 0,1 10,22A5,5 0 0,1 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V9.86C11.23,9.4 10,7.8 10,5.97C10,3.76 11.8,2 14,2C16.22,2 18,3.79 18,6M14,8A2,2 0 0,0 16,6A2,2 0 0,0 14,4A2,2 0 0,0 12,6A2,2 0 0,0 14,8Z',
+                            'url' => !isset($uses[$n]) ? $before . 'f' . strtr($after, [
+                                '::/' => '::/113d1ba5/'
+                            ]) . $url->query('&', [
+                                'kick' => URL::short($url->current, false),
+                                'q' => false,
+                                'tab' => false,
+                                'token' => $_['token'],
+                                'trash' => false
+                            ]) : null,
+                            'skip' => !$is_active && !is_file($d . DS . 'index.x'),
+                            'stack' => 20.1
+                        ],
                         'l' => [
                             'title' => 'Delete',
                             'description' => !isset($uses[$n]) ? 'Delete' : ['Required by %s', 'Panel'],
@@ -196,8 +211,8 @@ Hook::set('_', function($_) use($uses) {
                     ]
                 ];
                 unset($p);
-                if (isset($_SESSION['_']['file'][$k])) {
-                    unset($_SESSION['_']['file'][$k]);
+                if (isset($_SESSION['_']['folder'][$d])) {
+                    unset($_SESSION['_']['folder'][$d]);
                 }
             }
         }
@@ -223,5 +238,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url']
     'tab' => false,
     'type' => 'blob/x'
 ]) . $url->hash;
+
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['title'] = 'Extensions';
 
 return $_;
