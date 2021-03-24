@@ -1,5 +1,6 @@
 ---
 title: Panel Test
+description: Panel GUI tests.
 type: Markdown
 
 use:

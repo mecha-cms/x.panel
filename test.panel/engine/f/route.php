@@ -8,7 +8,7 @@ function __test($_) {
     $content = '<ul>';
     foreach ($tests as $test) {
         $path = \implode('/', \map(\explode("\\", \substr($test, 14)), function($v) {
-            return \strtr(\p2f($v), ['__' => '.']);
+            return \p2f($v);
         }));
         $content .= '<li><a href="' . $_['/'] . '/::g::/' . $path . '" target="_blank"><code>' . $test . '</code></a></li>';
     }
