@@ -30,18 +30,11 @@ Hook::set('get', function() {
     $f = __DIR__ . DS . '..' . DS . '..' . DS . 'lot' . DS . 'asset';
     $f = stream_resolve_include_path($f) . DS;
     $z = defined('DEBUG') && DEBUG ? '.' : '.min.';
-    $out['panel.skin.0'] = [
-        'id' => false,
-        'path' => $f . 'css' . DS . '0' . $z . 'css',
-        'stack' => 19.9
-    ];
     $out['panel.skin'] = [
         'id' => false,
         'path' => $f . 'css' . DS . 'index' . $z . 'css',
         'stack' => 20
     ];
-    $out[$f . 'js' . DS . '0' . $z . 'js'] = ['stack' => 19.8];
-    $out[$f . 'js' . DS . '1' . $z . 'js'] = ['stack' => 19.9];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
     $GLOBALS['_']['asset'] = array_replace_recursive($out, $GLOBALS['_']['asset'] ?? []);
 }, 20);

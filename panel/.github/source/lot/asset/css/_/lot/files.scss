@@ -30,8 +30,8 @@
   li {
     display: flex;
     border: 0 solid $color-back;
-    padding: ($y / 4) ($x / 2);
     margin: 0 (-$x / 4);
+    padding: ($y / 4) ($x / 2);
     position: relative;
     overflow: hidden;
     &::before,

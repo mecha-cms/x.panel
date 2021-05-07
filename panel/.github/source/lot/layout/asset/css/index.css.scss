@@ -244,7 +244,7 @@ $code: 'Nimbus Mono L', monospace !default;
   .lot\:files,
   .lot\:pages {
     li {
-      border: 0 solid skin(0%);
+      border-color: skin(0%);
       &:hover {
         background: skin(1%);
         border-color: skin(1%);

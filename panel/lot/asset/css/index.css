@@ -1,4 +1,5 @@
-.b, b,
+.b,
+b,
 dt,
 legend,
 strong,
@@ -6,19 +7,22 @@ th {
   font-weight: bolder;
 }
 
-.code, code {
+.code,
+code {
   font-family: monospace;
   font-size: 80%;
 }
 
-.i, dfn,
+.i,
+dfn,
 em,
 i,
 var {
   font-style: italic;
 }
 
-* + .p, * + blockquote,
+* + .p,
+* + blockquote,
 * + dl,
 * + fieldset,
 * + figcaption,
@@ -39,19 +43,22 @@ var {
   margin-top: 24px;
 }
 
-.small, kbd,
+.small,
+kbd,
 small,
 sub,
 sup {
   font-size: 70%;
 }
 
-.s, del,
+.s,
+del,
 s {
   text-decoration: line-through;
 }
 
-.u, ins,
+.u,
+ins,
 u {
   text-decoration: underline;
 }
@@ -597,7 +604,8 @@ a[href] {
   color: #00f;
 }
 
-:root, body {
+:root,
+body {
   min-height: 100%;
 }
 
@@ -738,10 +746,9 @@ dd {
 }
 
 ol ol,
-ul ol, ol
-ul,
-ul
-ul {
+ul ol,
+ol ul,
+ul ul {
   margin-left: 16px;
 }
 
@@ -769,7 +776,8 @@ legend {
   margin: 0 0 -8px;
 }
 
-legend + .p, legend + blockquote,
+legend + .p,
+legend + blockquote,
 legend + dl,
 legend + fieldset,
 legend + figcaption,
@@ -824,7 +832,8 @@ legend + ul {
   z-index: 1;
 }
 
-.button[disabled], .button.not\:active,
+.button[disabled],
+.button.not\:active,
 .input[disabled],
 .field > label + div .lot\:f .fix[disabled],
 .field > label + br + div .lot\:f .fix[disabled],
@@ -870,7 +879,8 @@ label {
   cursor: pointer;
 }
 
-.input:focus:invalid, .field > label + div .lot\:f .fix:focus:invalid,
+.input:focus:invalid,
+.field > label + div .lot\:f .fix:focus:invalid,
 .field > label + br + div .lot\:f .fix:focus:invalid,
 .textarea:focus:invalid {
   color: #c00;
@@ -892,15 +902,23 @@ label {
   background: none;
 }
 
-.input[type='color'], .field > label + div .lot\:f .fix[type='color'],
-.field > label + br + div .lot\:f .fix[type='color'], .input[type='file'], .field > label + div .lot\:f .fix[type='file'],
-.field > label + br + div .lot\:f .fix[type='file'], .input[type='range'], .field > label + div .lot\:f .fix[type='range'],
+.input[type='color'],
+.field > label + div .lot\:f .fix[type='color'],
+.field > label + br + div .lot\:f .fix[type='color'],
+.input[type='file'],
+.field > label + div .lot\:f .fix[type='file'],
+.field > label + br + div .lot\:f .fix[type='file'],
+.input[type='range'],
+.field > label + div .lot\:f .fix[type='range'],
 .field > label + br + div .lot\:f .fix[type='range'] {
   cursor: pointer;
 }
 
-.input[type='file'], .field > label + div .lot\:f .fix[type='file'],
-.field > label + br + div .lot\:f .fix[type='file'], .input[type='range'], .field > label + div .lot\:f .fix[type='range'],
+.input[type='file'],
+.field > label + div .lot\:f .fix[type='file'],
+.field > label + br + div .lot\:f .fix[type='file'],
+.input[type='range'],
+.field > label + div .lot\:f .fix[type='range'],
 .field > label + br + div .lot\:f .fix[type='range'] {
   background: none;
   border: 0;
@@ -909,10 +927,17 @@ label {
   box-shadow: none;
 }
 
-.input[type='checkbox'], .field > label + div .lot\:f .fix[type='checkbox'],
-.field > label + br + div .lot\:f .fix[type='checkbox'], .input[type='color'], .field > label + div .lot\:f .fix[type='color'],
-.field > label + br + div .lot\:f .fix[type='color'], .input[type='image'], .field > label + div .lot\:f .fix[type='image'],
-.field > label + br + div .lot\:f .fix[type='image'], .input[type='radio'], .field > label + div .lot\:f .fix[type='radio'],
+.input[type='checkbox'],
+.field > label + div .lot\:f .fix[type='checkbox'],
+.field > label + br + div .lot\:f .fix[type='checkbox'],
+.input[type='color'],
+.field > label + div .lot\:f .fix[type='color'],
+.field > label + br + div .lot\:f .fix[type='color'],
+.input[type='image'],
+.field > label + div .lot\:f .fix[type='image'],
+.field > label + br + div .lot\:f .fix[type='image'],
+.input[type='radio'],
+.field > label + div .lot\:f .fix[type='radio'],
 .field > label + br + div .lot\:f .fix[type='radio'] {
   margin: 0;
   padding: 0;
@@ -924,27 +949,35 @@ label {
   cursor: pointer;
 }
 
-.input[type='checkbox'][readonly], .field > label + div .lot\:f .fix[type='checkbox'][readonly],
-.field > label + br + div .lot\:f .fix[type='checkbox'][readonly], .input[type='radio'][readonly], .field > label + div .lot\:f .fix[type='radio'][readonly],
+.input[type='checkbox'][readonly],
+.field > label + div .lot\:f .fix[type='checkbox'][readonly],
+.field > label + br + div .lot\:f .fix[type='checkbox'][readonly],
+.input[type='radio'][readonly],
+.field > label + div .lot\:f .fix[type='radio'][readonly],
 .field > label + br + div .lot\:f .fix[type='radio'][readonly] {
   pointer-events: none;
 }
 
-.input[type='color'], .field > label + div .lot\:f .fix[type='color'],
+.input[type='color'],
+.field > label + div .lot\:f .fix[type='color'],
 .field > label + br + div .lot\:f .fix[type='color'] {
   width: 36px;
   height: 36px;
 }
 
-.input[type='image'], .field > label + div .lot\:f .fix[type='image'],
+.input[type='image'],
+.field > label + div .lot\:f .fix[type='image'],
 .field > label + br + div .lot\:f .fix[type='image'] {
   width: auto;
   height: auto;
   box-shadow: none;
 }
 
-.input[type='number']::-webkit-inner-spin-button, .field > label + div .lot\:f .fix[type='number']::-webkit-inner-spin-button,
-.field > label + br + div .lot\:f .fix[type='number']::-webkit-inner-spin-button, .input[type='number']::-webkit-outer-spin-button, .field > label + div .lot\:f .fix[type='number']::-webkit-outer-spin-button,
+.input[type='number']::-webkit-inner-spin-button,
+.field > label + div .lot\:f .fix[type='number']::-webkit-inner-spin-button,
+.field > label + br + div .lot\:f .fix[type='number']::-webkit-inner-spin-button,
+.input[type='number']::-webkit-outer-spin-button,
+.field > label + div .lot\:f .fix[type='number']::-webkit-outer-spin-button,
 .field > label + br + div .lot\:f .fix[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -952,8 +985,11 @@ label {
   margin: 0;
 }
 
-.input[type='number'], .field > label + div .lot\:f .fix[type='number'],
-.field > label + br + div .lot\:f .fix[type='number'], .input[type='search'], .field > label + div .lot\:f .fix[type='search'],
+.input[type='number'],
+.field > label + div .lot\:f .fix[type='number'],
+.field > label + br + div .lot\:f .fix[type='number'],
+.input[type='search'],
+.field > label + div .lot\:f .fix[type='search'],
 .field > label + br + div .lot\:f .fix[type='search'] {
   -webkit-appearance: textfield;
   -moz-appearance: textfield;
@@ -1010,7 +1046,8 @@ label {
   height: 258px;
 }
 
-label > input[type='checkbox'] + span, label > input[type='radio'] + span {
+label > input[type='checkbox'] + span,
+label > input[type='radio'] + span {
   display: inline-block;
   vertical-align: middle;
 }
@@ -1024,8 +1061,11 @@ label.not\:active {
   cursor: not-allowed;
 }
 
-.input[type='checkbox'], .field > label + div .lot\:f .fix[type='checkbox'],
-.field > label + br + div .lot\:f .fix[type='checkbox'], .input[type='radio'], .field > label + div .lot\:f .fix[type='radio'],
+.input[type='checkbox'],
+.field > label + div .lot\:f .fix[type='checkbox'],
+.field > label + br + div .lot\:f .fix[type='checkbox'],
+.input[type='radio'],
+.field > label + div .lot\:f .fix[type='radio'],
 .field > label + br + div .lot\:f .fix[type='radio'] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -1033,16 +1073,26 @@ label.not\:active {
   background: #00f;
 }
 
-.input[type='checkbox'].not\:active, .field > label + div .lot\:f .fix[type='checkbox'].not\:active,
-.field > label + br + div .lot\:f .fix[type='checkbox'].not\:active, .input[type='checkbox'][disabled], .field > label + div .lot\:f .fix[type='checkbox'][disabled],
-.field > label + br + div .lot\:f .fix[type='checkbox'][disabled], .input[type='radio'].not\:active, .field > label + div .lot\:f .fix[type='radio'].not\:active,
-.field > label + br + div .lot\:f .fix[type='radio'].not\:active, .input[type='radio'][disabled], .field > label + div .lot\:f .fix[type='radio'][disabled],
+.input[type='checkbox'].not\:active,
+.field > label + div .lot\:f .fix[type='checkbox'].not\:active,
+.field > label + br + div .lot\:f .fix[type='checkbox'].not\:active,
+.input[type='checkbox'][disabled],
+.field > label + div .lot\:f .fix[type='checkbox'][disabled],
+.field > label + br + div .lot\:f .fix[type='checkbox'][disabled],
+.input[type='radio'].not\:active,
+.field > label + div .lot\:f .fix[type='radio'].not\:active,
+.field > label + br + div .lot\:f .fix[type='radio'].not\:active,
+.input[type='radio'][disabled],
+.field > label + div .lot\:f .fix[type='radio'][disabled],
 .field > label + br + div .lot\:f .fix[type='radio'][disabled] {
   background: #000;
 }
 
-.input[type='checkbox']::before, .field > label + div .lot\:f .fix[type='checkbox']::before,
-.field > label + br + div .lot\:f .fix[type='checkbox']::before, .input[type='radio']::before, .field > label + div .lot\:f .fix[type='radio']::before,
+.input[type='checkbox']::before,
+.field > label + div .lot\:f .fix[type='checkbox']::before,
+.field > label + br + div .lot\:f .fix[type='checkbox']::before,
+.input[type='radio']::before,
+.field > label + div .lot\:f .fix[type='radio']::before,
 .field > label + br + div .lot\:f .fix[type='radio']::before {
   content: "";
   position: absolute;
@@ -1053,13 +1103,17 @@ label.not\:active {
   background: #fff;
 }
 
-.input[type='checkbox']:checked::before, .field > label + div .lot\:f .fix[type='checkbox']:checked::before,
-.field > label + br + div .lot\:f .fix[type='checkbox']:checked::before, .input[type='radio']:checked::before, .field > label + div .lot\:f .fix[type='radio']:checked::before,
+.input[type='checkbox']:checked::before,
+.field > label + div .lot\:f .fix[type='checkbox']:checked::before,
+.field > label + br + div .lot\:f .fix[type='checkbox']:checked::before,
+.input[type='radio']:checked::before,
+.field > label + div .lot\:f .fix[type='radio']:checked::before,
 .field > label + br + div .lot\:f .fix[type='radio']:checked::before {
   background: none;
 }
 
-.input[type='checkbox']:checked::before, .field > label + div .lot\:f .fix[type='checkbox']:checked::before,
+.input[type='checkbox']:checked::before,
+.field > label + div .lot\:f .fix[type='checkbox']:checked::before,
 .field > label + br + div .lot\:f .fix[type='checkbox']:checked::before {
   top: 1px;
   right: 5px;
@@ -1073,33 +1127,46 @@ label.not\:active {
   visibility: visible;
 }
 
-.input[type='radio']:checked::before, .field > label + div .lot\:f .fix[type='radio']:checked::before,
+.input[type='radio']:checked::before,
+.field > label + div .lot\:f .fix[type='radio']:checked::before,
 .field > label + br + div .lot\:f .fix[type='radio']:checked::before {
   border: 2px solid #fff;
   visibility: visible;
 }
 
-.input[type='radio'], .field > label + div .lot\:f .fix[type='radio'],
-.field > label + br + div .lot\:f .fix[type='radio'], .input[type='radio']::before, .field > label + div .lot\:f .fix[type='radio']::before,
+.input[type='radio'],
+.field > label + div .lot\:f .fix[type='radio'],
+.field > label + br + div .lot\:f .fix[type='radio'],
+.input[type='radio']::before,
+.field > label + div .lot\:f .fix[type='radio']::before,
 .field > label + br + div .lot\:f .fix[type='radio']::before {
   border-radius: 100%;
 }
 
-.field\:toggle .input[type='checkbox'], .field\:toggle .field > label + div .lot\:f .fix[type='checkbox'], .field > label + div .lot\:f .field\:toggle .fix[type='checkbox'],
-.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox'], .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'] {
+.field\:toggle .input[type='checkbox'],
+.field\:toggle .field > label + div .lot\:f .fix[type='checkbox'],
+.field > label + div .lot\:f .field\:toggle .fix[type='checkbox'],
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox'],
+.field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'] {
   width: 32px;
   height: 20px;
   border-width: 0;
   border-radius: 10px;
 }
 
-.field\:toggle .input[type='checkbox'][disabled], .field\:toggle .field > label + div .lot\:f .fix[type='checkbox'][disabled], .field > label + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled],
-.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox'][disabled], .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled] {
+.field\:toggle .input[type='checkbox'][disabled],
+.field\:toggle .field > label + div .lot\:f .fix[type='checkbox'][disabled],
+.field > label + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled],
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox'][disabled],
+.field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled] {
   background: #000;
 }
 
-.field\:toggle .input[type='checkbox']::before, .field\:toggle .field > label + div .lot\:f .fix[type='checkbox']::before, .field > label + div .lot\:f .field\:toggle .fix[type='checkbox']::before,
-.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox']::before, .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']::before {
+.field\:toggle .input[type='checkbox']::before,
+.field\:toggle .field > label + div .lot\:f .fix[type='checkbox']::before,
+.field > label + div .lot\:f .field\:toggle .fix[type='checkbox']::before,
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox']::before,
+.field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']::before {
   border: 0;
   width: 16px;
   height: 16px;
@@ -1113,8 +1180,11 @@ label.not\:active {
   visibility: visible;
 }
 
-.field\:toggle .input[type='checkbox']:checked::before, .field\:toggle .field > label + div .lot\:f .fix[type='checkbox']:checked::before, .field > label + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before,
-.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox']:checked::before, .field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before {
+.field\:toggle .input[type='checkbox']:checked::before,
+.field\:toggle .field > label + div .lot\:f .fix[type='checkbox']:checked::before,
+.field > label + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before,
+.field\:toggle .field > label + br + div .lot\:f .fix[type='checkbox']:checked::before,
+.field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before {
   left: 14px;
 }
 
@@ -1223,7 +1293,8 @@ label.not\:active {
   line-height: 22px;
 }
 
-.field > label + div .lot\:f .button:focus, .field > label + div .lot\:f .button:active,
+.field > label + div .lot\:f .button:focus,
+.field > label + div .lot\:f .button:active,
 .field > label + br + div .lot\:f .button:focus,
 .field > label + br + div .lot\:f .button:active {
   background: rgba(0, 0, 0, 0.05);
@@ -1255,7 +1326,10 @@ label.not\:active {
   padding-bottom: 0;
 }
 
-.field\:item .options, .field\:colors .options, .field\:items .options, .field\:toggle .options {
+.field\:item .options,
+.field\:colors .options,
+.field\:items .options,
+.field\:toggle .options {
   display: flex;
   flex-wrap: wrap;
   gap: 0 24px;
@@ -1263,15 +1337,122 @@ label.not\:active {
   max-height: 100%;
 }
 
-.field\:item .options.is\:block, .field\:colors .options.is\:block, .field\:items .options.is\:block, .field\:toggle .options.is\:block {
+.field\:item .options.is\:block,
+.field\:colors .options.is\:block,
+.field\:items .options.is\:block,
+.field\:toggle .options.is\:block {
   display: block;
 }
 
-.field\:item .options > label, .field\:colors .options > label, .field\:items .options > label, .field\:toggle .options > label {
+.field\:item .options > label,
+.field\:colors .options > label,
+.field\:items .options > label,
+.field\:toggle .options > label {
   display: inline-flex;
   align-items: center;
   gap: 0 8px;
   white-space: nowrap;
+}
+
+.tag-picker {
+  background: #fff;
+  border: 1px solid #000;
+  padding: .125em;
+  cursor: text;
+}
+
+.tag-picker,
+.tag-picker * {
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
+}
+
+.tag-picker,
+.tag-picker .tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  min-height: 1.5em;
+  line-height: 1.5em;
+}
+
+.tag-picker .tag {
+  background: #f00;
+  color: #000;
+  text-decoration: none;
+  margin: .125em;
+  padding: 0 .5em;
+  height: 1.5em;
+  cursor: pointer;
+  outline: none;
+}
+
+.tag-picker .tag:focus {
+  background: #cc0000;
+}
+
+.tag-picker .tag[title] a {
+  margin-left: .5em;
+  text-decoration: none;
+  color: #fff;
+  outline: none;
+}
+
+.tag-picker .tag[title] a::before {
+  content: '\00d7';
+  font-family: sans-serif;
+}
+
+.tag-picker .tag[title]::before {
+  content: attr(title);
+}
+
+.tag-picker .tag + .editor span + span {
+  display: none;
+}
+
+.tag-picker .editor {
+  background: none;
+  color: inherit;
+  cursor: inherit;
+  position: relative;
+  flex: 1;
+}
+
+.tag-picker .editor span {
+  display: block;
+  height: 100%;
+  outline: none;
+  position: relative;
+  z-index: 1;
+}
+
+.tag-picker .editor span + span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: inherit;
+  white-space: nowrap;
+  z-index: 0;
+  opacity: .5;
+}
+
+.tag-picker-source {
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+}
+
+.tag-picker-source[disabled] + .tag-picker,
+.tag-picker-source[disabled] + .tag-picker * {
+  cursor: not-allowed;
+}
+
+.tag-picker-source[readonly] + .tag-picker .tag[title] a {
+  cursor: not-allowed;
 }
 
 .field\:query .tag-picker {
@@ -1402,7 +1583,8 @@ label.not\:active {
   flex: 1;
 }
 
-.lot\:bar > ul > li.is\:active > a, .lot\:bar > ul > li.is\:current > a {
+.lot\:bar > ul > li.is\:active > a,
+.lot\:bar > ul > li.is\:current > a {
   color: inherit;
 }
 
@@ -1414,7 +1596,8 @@ label.not\:active {
   overflow: hidden;
 }
 
-.lot\:bar > ul > li.is\:separator:first-child, .lot\:bar > ul > li.is\:separator:last-child {
+.lot\:bar > ul > li.is\:separator:first-child,
+.lot\:bar > ul > li.is\:separator:last-child {
   display: none;
 }
 
@@ -1432,7 +1615,8 @@ label.not\:active {
   height: inherit;
 }
 
-.lot\:bar .field .input, .lot\:bar .field > label + div .lot\:f .fix,
+.lot\:bar .field .input,
+.lot\:bar .field > label + div .lot\:f .fix,
 .lot\:bar .field > label + br + div .lot\:f .fix {
   display: block;
   width: 192px;
@@ -1478,7 +1662,8 @@ label.not\:active {
   border-bottom: 1px dashed;
 }
 
-.lot\:files, .lot\:pages {
+.lot\:files,
+.lot\:pages {
   margin-right: 0;
   margin-left: 0;
   padding: 0;
@@ -1486,7 +1671,8 @@ label.not\:active {
   list-style: none;
 }
 
-.lot\:files h3, .lot\:pages h3,
+.lot\:files h3,
+.lot\:pages h3,
 .lot\:files li,
 .lot\:pages li,
 .lot\:files p,
@@ -1498,33 +1684,38 @@ label.not\:active {
   border-color: inherit;
 }
 
-.lot\:files h3, .lot\:pages h3 {
+.lot\:files h3,
+.lot\:pages h3 {
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.lot\:files h3 a.not\:active, .lot\:pages h3 a.not\:active {
+.lot\:files h3 a.not\:active,
+.lot\:pages h3 a.not\:active {
   opacity: 1;
 }
 
-.lot\:files h3 .title, .lot\:pages h3 .title {
+.lot\:files h3 .title,
+.lot\:pages h3 .title {
   display: inline-flex;
 }
-
 
 .lot\:files li,
 .lot\:pages li {
   display: flex;
   border: 0 solid #fff;
-  padding: 6px 12px;
   margin: 0 -6px;
+  padding: 6px 12px;
   position: relative;
   overflow: hidden;
 }
 
-.lot\:files li::before, .lot\:pages li::before, .lot\:files li::after, .lot\:pages li::after {
+.lot\:files li::before,
+.lot\:pages li::before,
+.lot\:files li::after,
+.lot\:pages li::after {
   content: "";
   display: block;
   width: 24px;
@@ -1534,26 +1725,31 @@ label.not\:active {
   left: 6px;
 }
 
-.lot\:files li > *, .lot\:pages li > * {
+.lot\:files li > *,
+.lot\:pages li > * {
   margin: 0 3px;
 }
 
-.lot\:files li > .lot\:tasks, .lot\:pages li > .lot\:tasks {
+.lot\:files li > .lot\:tasks,
+.lot\:pages li > .lot\:tasks {
   margin-right: -6px;
 }
 
-.lot\:files .is\:file, .lot\:pages .is\:file,
+.lot\:files .is\:file,
+.lot\:pages .is\:file,
 .lot\:files .is\:folder,
 .lot\:pages .is\:folder {
   padding-left: 42px;
 }
 
-.lot\:files .is\:file::before, .lot\:pages .is\:file::before {
+.lot\:files .is\:file::before,
+.lot\:pages .is\:file::before {
   border: 1px solid;
   width: 20px;
 }
 
-.lot\:files .is\:file::after, .lot\:pages .is\:file::after {
+.lot\:files .is\:file::after,
+.lot\:pages .is\:file::after {
   width: 0;
   height: 0;
   border: 3px solid;
@@ -1562,24 +1758,28 @@ label.not\:active {
   left: 20px;
 }
 
-.lot\:files .is\:folder::before, .lot\:pages .is\:folder::before {
+.lot\:files .is\:folder::before,
+.lot\:pages .is\:folder::before {
   background: #000;
   height: 18px;
   top: 11px;
 }
 
-.lot\:files .is\:folder::after, .lot\:pages .is\:folder::after {
+.lot\:files .is\:folder::after,
+.lot\:pages .is\:folder::after {
   background: #000;
   width: 12px;
   height: 3px;
   top: 7px;
 }
 
-.lot\:files .not\:active, .lot\:pages .not\:active {
+.lot\:files .not\:active,
+.lot\:pages .not\:active {
   opacity: .5;
 }
 
-.lot\:files.count\:0, .count\:0.lot\:pages {
+.lot\:files.count\:0,
+.count\:0.lot\:pages {
   display: none;
 }
 
@@ -1632,7 +1832,8 @@ label.not\:active {
   overflow: hidden;
 }
 
-.lot\:menu li.is\:separator:first-child, .lot\:menu li.is\:separator:last-child {
+.lot\:menu li.is\:separator:first-child,
+.lot\:menu li.is\:separator:last-child {
   display: none;
 }
 
@@ -1684,14 +1885,6 @@ label.not\:active {
   margin: 0 -12px;
 }
 
-.lot\:pages li.is\:file, .lot\:pages li.is\:folder {
-  padding-left: 6px;
-}
-
-.lot\:pages li.is\:file::before, .lot\:pages li.is\:file::after, .lot\:pages li.is\:folder::before, .lot\:pages li.is\:folder::after {
-  display: none;
-}
-
 .lot\:pages li > * {
   margin: 0 6px;
 }
@@ -1702,6 +1895,18 @@ label.not\:active {
 
 .lot\:pages li > div:first-child + div {
   flex: 1;
+}
+
+.lot\:pages li.is\:file,
+.lot\:pages li.is\:folder {
+  padding-left: 6px;
+}
+
+.lot\:pages li.is\:file::before,
+.lot\:pages li.is\:file::after,
+.lot\:pages li.is\:folder::before,
+.lot\:pages li.is\:folder::after {
+  display: none;
 }
 
 .lot\:pages h3 {
@@ -1878,7 +2083,8 @@ pre.is\:text code {
   .lot\:tabs > nav li.is\:current {
     z-index: 4;
   }
-  .lot\:tabs > nav li.is\:current::before, .lot\:tabs > nav li.is\:current::after {
+  .lot\:tabs > nav li.is\:current::before,
+  .lot\:tabs > nav li.is\:current::after {
     content: "";
     display: block;
     position: absolute;
@@ -1972,7 +2178,8 @@ pre.is\:text code {
   .lot\:bar .field > * {
     margin: 0;
   }
-  .lot\:bar .field .input, .lot\:bar .field > label + div .lot\:f .fix,
+  .lot\:bar .field .input,
+  .lot\:bar .field > label + div .lot\:f .fix,
   .lot\:bar .field > label + br + div .lot\:f .fix {
     display: block;
     width: 100%;
@@ -1985,7 +2192,8 @@ pre.is\:text code {
   .lot\:section {
     padding: 12px 12px;
   }
-  .lot\:pager > span:first-child, .lot\:pager > span:last-child {
+  .lot\:pager > span:first-child,
+  .lot\:pager > span:last-child {
     display: none;
   }
   .lot\:tabs > nav li {
