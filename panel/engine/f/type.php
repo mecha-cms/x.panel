@@ -291,6 +291,7 @@ function files($value, $key) {
 
 function folder($value, $key) {
     $tags = \array_replace([
+        'is:current' => !empty($value['current']),
         'is:folder' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);

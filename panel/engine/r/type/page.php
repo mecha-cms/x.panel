@@ -350,6 +350,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                 ]);
                 $files[$k] = [
                     'path' => $k,
+                    'current' => !empty($_SESSION['_']['file'][$k]),
                     'title' => $n = basename($k),
                     'description' => (new File($k))->size,
                     'url' => $before . 'g' . $after . $url->query('&', [

@@ -3,8 +3,6 @@
 // Tell other(s) that this layout is using dark color scheme!
 $_['is']['dark'] = true;
 $_['is']['light'] = false;
-$_['not']['dark'] = false;
-$_['not']['light'] = true;
 
 $_['asset']['panel.skin.dark'] = [
     'id' => false,
