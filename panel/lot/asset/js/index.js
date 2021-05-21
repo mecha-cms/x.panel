@@ -1770,7 +1770,9 @@
         }
 
         function doSubmitTry() {
-            onSubmitForm() && form && form.submit();
+            onSubmitForm() && form && form.dispatchEvent(new Event('submit', {
+                cancelable: true
+            }));
         }
         setChildLast(self, tags);
         setChildLast(tags, editor);
@@ -1877,7 +1879,7 @@
         'min': 0,
         'x': false
     };
-    TP.version = '3.1.15';
+    TP.version = '3.1.16';
     var that$1 = {};
     that$1._history = [];
     that$1._historyState = -1; // Get history data
@@ -1984,12 +1986,12 @@
             return true;
         }
         if (' ' === key && !s) {
-            var _that$$ = that.$();
-            _that$$.after;
-            var _before = _that$$.before,
+            var _that$$ = that.$(),
+                _after = _that$$.after,
+                _before = _that$$.before,
                 _value = _that$$.value;
             charAfter = charPairs[charBefore = _before.slice(-1)];
-            if (!_value && charAfter && charBefore) {
+            if (!_value && charAfter && charBefore && charAfter === _after[0]) {
                 that.wrap(' ', ' ');
                 return false;
             }

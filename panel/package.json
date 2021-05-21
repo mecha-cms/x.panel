@@ -5,11 +5,11 @@
     "@taufik-nurrohman/f3h": "^1.1.22",
     "@taufik-nurrohman/hook": "^0.1.1",
     "@taufik-nurrohman/is": "^0.1.1",
-    "@taufik-nurrohman/tag-picker": "^3.1.15",
+    "@taufik-nurrohman/tag-picker": "^3.1.16",
     "@taufik-nurrohman/text-editor": "^3.3.2",
     "@taufik-nurrohman/text-editor.history": "^2.1.4",
-    "@taufik-nurrohman/text-editor.source": "^2.1.6",
-    "@taufik-nurrohman/text-editor.source-x-m-l": "^1.1.6",
+    "@taufik-nurrohman/text-editor.source": "^2.1.7",
+    "@taufik-nurrohman/text-editor.source-x-m-l": "^1.1.7",
     "@taufik-nurrohman/to": "^0.0.17"
   },
   "devDependencies": {

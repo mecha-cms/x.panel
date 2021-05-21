@@ -3,7 +3,7 @@
 $GLOBALS['_']['fn'] = $_['fn'] = $id = array_shift($_['chop']);
 $GLOBALS['_']['chop'] = $_['chop'];
 $GLOBALS['_']['f'] = $_['f'] = stream_resolve_include_path(LOT . DS . implode(DS, $_['chop'])) ?: null;
-$GLOBALS['_']['id'] = $_['chop'][0];
+$GLOBALS['_']['id'] = $_['chop'][0] ?? null;
 
 if (function_exists($fn = "x\\panel\\task\\f\\" . $id)) {
     Hook::set('do.task.' . $id, function() use($fn) {
