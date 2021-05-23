@@ -260,7 +260,7 @@ function page($_) {
             if (isset($_['form']['lot']['data'])) {
                 foreach ((array) $_['form']['lot']['data'] as $k => $v) {
                     $ff = $d . \DS . $k . '.data';
-                    if ("" !== \trim($v)) {
+                    if ((\is_array($v) && $v = \drop($v)) || "" !== \trim($v)) {
                         if (\is_writable($dd = \dirname($ff))) {
                             \file_put_contents($ff, \is_array($v) ? \json_encode($v) : \s($v));
                             !\defined('DEBUG') || !\DEBUG && \chmod($ff, 0600);
