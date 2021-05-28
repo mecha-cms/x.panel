@@ -1,23 +1,23 @@
 {
   "dependencies": {
-    "@taufik-nurrohman/document": "^0.1.6",
-    "@taufik-nurrohman/event": "^0.2.1",
+    "@taufik-nurrohman/document": "^0.1.7",
+    "@taufik-nurrohman/event": "^0.2.2",
     "@taufik-nurrohman/f3h": "^1.1.22",
-    "@taufik-nurrohman/hook": "^0.1.1",
-    "@taufik-nurrohman/is": "^0.1.1",
-    "@taufik-nurrohman/tag-picker": "^3.1.16",
-    "@taufik-nurrohman/text-editor": "^3.3.2",
-    "@taufik-nurrohman/text-editor.history": "^2.1.4",
-    "@taufik-nurrohman/text-editor.source": "^2.1.7",
-    "@taufik-nurrohman/text-editor.source-x-m-l": "^1.1.7",
-    "@taufik-nurrohman/to": "^0.0.17"
+    "@taufik-nurrohman/hook": "^0.1.2",
+    "@taufik-nurrohman/is": "^0.1.2",
+    "@taufik-nurrohman/tag-picker": "^3.1.17",
+    "@taufik-nurrohman/text-editor": "^3.3.3",
+    "@taufik-nurrohman/text-editor.history": "^2.1.5",
+    "@taufik-nurrohman/text-editor.source": "^2.1.8",
+    "@taufik-nurrohman/text-editor.source-x-m-l": "^1.1.8",
+    "@taufik-nurrohman/to": "^0.0.18"
   },
   "devDependencies": {
-    "@taufik-nurrohman/factory": "^0.1.14"
+    "@taufik-nurrohman/factory": "^0.1.15"
   },
   "private": true,
   "scripts": {
-    "pack": "pack --clean=false --from=.github/source --js-format=iife --js-name=_ --to=."
+    "pack": "pack --clean=false --from=.github/source --js-format=iife --js-name=_ --js-top='// https://github.com/taufik-nurrohman/f3h\n// https://github.com/taufik-nurrohman/tag-picker\n// https://github.com/taufik-nurrohman/text-editor' --to=."
   },
   "type": "module"
 }
