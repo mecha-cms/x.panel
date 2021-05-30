@@ -1,6 +1,3 @@
-// https://github.com/taufik-nurrohman/f3h
-// https://github.com/taufik-nurrohman/tag-picker
-// https://github.com/taufik-nurrohman/text-editor
 (function() {
     'use strict';
     var isArray = function isArray(x) {
@@ -49,6 +46,12 @@
         } catch (e) {}
         return value;
     };
+    var fromStates = function fromStates() {
+        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+            lot[_key] = arguments[_key];
+        }
+        return Object.assign.apply(Object, [{}].concat(lot));
+    };
     var fromValue = function fromValue(x) {
         if (isArray(x)) {
             return x.map(function(v) {
@@ -76,10 +79,13 @@
         var i = data.indexOf(x);
         return -1 !== i ? i : null;
     };
-    var toCaseLower$1 = function toCaseLower(x) {
+    var toCaseLower = function toCaseLower(x) {
         return x.toLowerCase();
     };
-    var toCount$1 = function toCount(x) {
+    var toCaseUpper = function toCaseUpper(x) {
+        return x.toUpperCase();
+    };
+    var toCount = function toCount(x) {
         return x.length;
     };
     var toEdge = function toEdge(x, edges) {
@@ -94,29 +100,29 @@
     var toJSON = function toJSON(x) {
         return JSON.stringify(x);
     };
-    var toNumber$1 = function toNumber(x, base) {
+    var toNumber = function toNumber(x, base) {
         if (base === void 0) {
             base = 10;
         }
         return base ? parseInt(x, base) : parseFloat(x);
     };
-    var toObjectCount$1 = function toObjectCount(x) {
-        return toCount$1(toObjectKeys$1(x));
+    var toObjectCount = function toObjectCount(x) {
+        return toCount(toObjectKeys(x));
     };
-    var toObjectKeys$1 = function toObjectKeys(x) {
+    var toObjectKeys = function toObjectKeys(x) {
         return Object.keys(x);
     };
     var toObjectValues = function toObjectValues(x) {
         return Object.values(x);
     };
-    var toValue$1 = function toValue(x) {
+    var toValue = function toValue(x) {
         if (isArray(x)) {
             return x.map(function(v) {
                 return toValue(v);
             });
         }
         if (isNumeric(x)) {
-            return toNumber$1(x);
+            return toNumber(x);
         }
         if (isObject(x)) {
             for (var k in x) {
@@ -153,7 +159,7 @@
             return null;
         }
         var value = node.getAttribute(attribute);
-        return parseValue ? toValue$1(value) : value;
+        return parseValue ? toValue(value) : value;
     };
     var getAttributes = function getAttributes(node, parseValue) {
         if (parseValue === void 0) {
@@ -164,7 +170,7 @@
             values = {};
         for (var i = 0, j = attributes.length; i < j; ++i) {
             value = attributes[i].value;
-            values[attributes[i].name] = parseValue ? toValue$1(value) : value;
+            values[attributes[i].name] = parseValue ? toValue(value) : value;
         }
         return values;
     };
@@ -212,7 +218,7 @@
         return "" !== content ? content : null;
     };
     var getName = function getName(node) {
-        return toCaseLower$1(node && node.nodeName || "") || null;
+        return toCaseLower(node && node.nodeName || "") || null;
     };
     var getNext = function getNext(node) {
         return node.nextElementSibling || null;
@@ -457,12 +463,6 @@
         $.on = on;
         return $;
     }
-    var fromStates$2 = function fromStates() {
-        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-            lot[_key] = arguments[_key];
-        }
-        return Object.assign.apply(Object, [{}].concat(lot));
-    };
     var esc = function esc(pattern, extra) {
         if (extra === void 0) {
             extra = "";
@@ -487,53 +487,6 @@
         node.scrollLeft = data[0];
         node.scrollTop = data[1];
         return node;
-    };
-    var toCaseLower = function toCaseLower(x) {
-        return x.toLowerCase();
-    };
-    var toCaseUpper = function toCaseUpper(x) {
-        return x.toUpperCase();
-    };
-    var toCount = function toCount(x) {
-        return x.length;
-    };
-    var toNumber = function toNumber(x, base) {
-        if (base === void 0) {
-            base = 10;
-        }
-        return base ? parseInt(x, base) : parseFloat(x);
-    };
-    var toObjectCount = function toObjectCount(x) {
-        return toCount(toObjectKeys(x));
-    };
-    var toObjectKeys = function toObjectKeys(x) {
-        return Object.keys(x);
-    };
-    var toValue = function toValue(x) {
-        if (isArray(x)) {
-            return x.map(function(v) {
-                return toValue(v);
-            });
-        }
-        if (isNumeric(x)) {
-            return toNumber(x);
-        }
-        if (isObject(x)) {
-            for (var k in x) {
-                x[k] = toValue(x[k]);
-            }
-            return x;
-        }
-        if ('false' === x) {
-            return false;
-        }
-        if ('null' === x) {
-            return null;
-        }
-        if ('true' === x) {
-            return true;
-        }
-        return x;
     };
     var name$2 = 'F3H',
         GET = 'GET',
@@ -722,7 +675,7 @@
         if (source[name$2]) {
             return;
         }
-        $.state = state = fromStates$2(F3H.state, true === state ? {
+        $.state = state = fromStates(F3H.state, true === state ? {
             cache: state
         } : state || {});
         $.source = source;
@@ -1164,13 +1117,7 @@
             'JSON': responseTypeJSON
         }
     };
-    F3H.version = '1.1.22';
-    var fromStates$1 = function fromStates() {
-        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-            lot[_key] = arguments[_key];
-        }
-        return Object.assign.apply(Object, [{}].concat(lot));
-    };
+    F3H.version = '1.1.23';
     var name$1 = 'TE';
 
     function trim(str, dir) {
@@ -1189,11 +1136,11 @@
         if (source[name$1]) {
             return;
         }
-        $.state = state = fromStates$1(TE.state, isString(state) ? {
+        $.state = state = fromStates(TE.state, isString(state) ? {
             tab: state
         } : state || {}); // The `<textarea>` element
         $.self = $.source = source; // Store current instance to `TE.instances`
-        TE.instances[source.id || source.name || toObjectCount$1(TE.instances)] = $; // Mark current DOM as active text editor to prevent duplicate instance
+        TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $; // Mark current DOM as active text editor to prevent duplicate instance
         source[name$1] = 1;
         var any = /^([\s\S]*?)$/,
             // Any character(s)
@@ -1227,7 +1174,7 @@
             if (-1 === mode) {
                 x = y = 0; // Put caret at the start of the editor, scroll to the start of the editor
             } else if (1 === mode) {
-                x = toCount$1(sourceValue()); // Put caret at the end of the editor
+                x = toCount(sourceValue()); // Put caret at the end of the editor
                 y = source.scrollHeight; // Scroll to the end of the editor
             }
             if (isSet(x) && isSet(y)) {
@@ -1246,7 +1193,7 @@
             for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
                 lot[_key] = arguments[_key];
             }
-            var count = toCount$1(lot),
+            var count = toCount(lot),
                 _$$$ = $.$(),
                 start = _$$$.start,
                 end = _$$$.end,
@@ -1304,7 +1251,7 @@
                 // Replace value
                 value = value.replace(from, to);
             }
-            return $.set(before + value + after).select(before = toCount$1(before), before + toCount$1(value));
+            return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
         }; // Insert/replace at caret
         $.insert = function(value, mode, clear) {
             var from = any;
@@ -1328,7 +1275,7 @@
             if (wrap) {
                 return $.replace(any, open + '$1' + close);
             }
-            return $.set(before + open + value + close + after).select(before = toCount$1(before + open), before + toCount$1(value));
+            return $.set(before + open + value + close + after).select(before = toCount(before + open), before + toCount(value));
         }; // Unwrap current selection
         $.peel = function(open, close, wrap) {
             var _$$$5 = $.$(),
@@ -1345,7 +1292,7 @@
             if (openPattern.test(before) && closePattern.test(after)) {
                 before = before.replace(openPattern, "");
                 after = after.replace(closePattern, "");
-                return $.set(before + value + after).select(before = toCount$1(before), before + toCount$1(value));
+                return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
             }
             return $.select();
         };
@@ -1408,7 +1355,7 @@
             after = false !== close ? (afterClean || !tidy ? close : "") + trim(after, -1) : after;
             if (false !== start) value = trim(value, -1);
             if (false !== end) value = trim(value, 1);
-            return $.set(before + value + after).select(before = toCount$1(before), before + toCount$1(value));
+            return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
         }; // Destructor
         $.pop = function() {
             if (!source[name$1]) {
@@ -1430,7 +1377,7 @@
         t.after = c.slice(b);
         t.before = c.slice(0, a);
         t.end = b;
-        t.length = toCount$1(d);
+        t.length = toCount(d);
         t.start = a;
         t.value = d;
         t.toString = function() {
@@ -1439,12 +1386,6 @@
     };
     TE.version = '3.3.3';
     TE.x = x;
-    var fromStates = function fromStates() {
-        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-            lot[_key] = arguments[_key];
-        }
-        return Object.assign.apply(Object, [{}].concat(lot));
-    };
     var hasValue = function hasValue(x, data) {
         return -1 !== data.indexOf(x);
     };
@@ -1483,7 +1424,7 @@
             join: state
         } : state || {});
         $.source = source; // Store current instance to `TP.instances`
-        TP.instances[source.id || source.name || toObjectCount$1(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
+        TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
         source[name] = 1;
         var editor = setElement('span', {
                 'class': 'editor tag'
@@ -1516,7 +1457,7 @@
             if (tag) {
                 if (!getTag(tag)) {
                     setTagElement(tag), setTag(tag);
-                    index = toCount$1($.tags);
+                    index = toCount($.tags);
                     fire('change', [tag, index]);
                     fire('set.tag', [tag, index]);
                 } else {
@@ -1529,7 +1470,7 @@
         function onBlurInput() {
             onInput();
             letClasses(self, ['focus', 'focus.input']);
-            fire('blur', [$.tags, toCount$1($.tags)]);
+            fire('blur', [$.tags, toCount($.tags)]);
         }
 
         function onClickInput() {
@@ -1554,7 +1495,7 @@
                 keyIsTab = KEY_TAB[0] === key || KEY_TAB[1] === keyCode,
                 tag,
                 theTagLast = getPrev(editor),
-                theTagsCount = toCount$1($.tags),
+                theTagsCount = toCount($.tags),
                 theTagsMax = state.max,
                 theValueLast = n(getText(editorInput)); // Last value before delay
             // Set preferred key name
@@ -1646,7 +1587,7 @@
             }
             var theTagsMin = state.min;
             onInput(); // Force to add the tag name found in the tag editor
-            if (theTagsMin > 0 && toCount$1($.tags) < theTagsMin) {
+            if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
                 setInput("", 1);
                 fire('min.tags', [theTagsMin]);
                 offEventDefault(e);
@@ -1857,7 +1798,7 @@
             return self.click(), onClickSelf(), $;
         }; // Default filter for the tag name
         $.f = function(text) {
-            return toCaseLower$1(text || "").replace(/[^ a-z\d-]/g, "");
+            return toCaseLower(text || "").replace(/[^ a-z\d-]/g, "");
         };
         $.focus = function() {
             if (!sourceIsDisabled()) {
@@ -1874,7 +1815,7 @@
             if (!sourceIsDisabled() && !sourceIsReadOnly()) {
                 var theTagsMin = state.min;
                 onInput();
-                if (theTagsMin > 0 && toCount$1($.tags) < theTagsMin) {
+                if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
                     fire('min.tags', [theTagsMin]);
                     return $;
                 }
@@ -1909,7 +1850,7 @@
                 var _tags = $.tags,
                     theTagsMax = state.max;
                 if (!getTag(tag)) {
-                    if (toCount$1(_tags) < theTagsMax) {
+                    if (toCount(_tags) < theTagsMax) {
                         setTagElement(tag, index), setTag(tag, index);
                     } else {
                         fire('max.tags', [theTagsMax]);
@@ -1977,14 +1918,14 @@
     that$1.redo = function() {
         var t = this,
             state;
-        t._historyState = toEdge(t._historyState + 1, [0, toCount$1(t._history) - 1]);
+        t._historyState = toEdge(t._historyState + 1, [0, toCount(t._history) - 1]);
         state = t._history[t._historyState];
         return t.set(state[0]).select(state[1], state[2]);
     }; // Undo current state
     that$1.undo = function() {
         var t = this,
             state;
-        t._historyState = toEdge(t._historyState - 1, [0, toCount$1(t._history) - 1]);
+        t._historyState = toEdge(t._historyState - 1, [0, toCount(t._history) - 1]);
         state = t._history[t._historyState];
         return t.set(state[0]).select(state[1], state[2]);
     };
@@ -2024,8 +1965,8 @@
             after = _t$$.after,
             before = _t$$.before,
             value = _t$$.value,
-            closeCount = toCount$1(close),
-            openCount = toCount$1(open);
+            closeCount = toCount(close),
+            openCount = toCount(open);
         if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === after.slice(0, closeCount) && open === before.slice(-openCount)) {
             return t.peel(open, close, wrap);
         }
@@ -2253,9 +2194,9 @@
                         that.trim("", false).insert(' />', -1).record();
                         return false;
                     } // `<div|></div>`
-                    if ('></' + tagStartMatch[1] + '>' === after.slice(0, toCount$1(tagStartMatch[1]) + 4)) {
+                    if ('></' + tagStartMatch[1] + '>' === after.slice(0, toCount(tagStartMatch[1]) + 4)) {
                         that.select(start + 1).record(); // `<div|</div>`
-                    } else if ('</' + tagStartMatch[1] + '>' === after.slice(0, toCount$1(tagStartMatch[1]) + 3)) {
+                    } else if ('</' + tagStartMatch[1] + '>' === after.slice(0, toCount(tagStartMatch[1]) + 3)) {
                         that.insert('>', -1).record(); // `<div|`
                     } else {
                         that.wrap('>', '</' + tagStartMatch[1] + ('>' === after[0] ? "" : '>')).record();
@@ -2299,7 +2240,7 @@
             if (!_value2) {
                 var _tagMatch = toPattern('^' + tagTokens, "").exec(_after); // `foo|<bar>`
                 if (_tagMatch) {
-                    that.select(_start2, _start2 + toCount$1(_tagMatch[0]));
+                    that.select(_start2, _start2 + toCount(_tagMatch[0]));
                     return false;
                 }
             }
@@ -2368,7 +2309,7 @@
                     that.replace(tagPattern, "", -1);
                     var name = _tagMatch2[0].slice(1).split(/\s+|>/)[0];
                     if (_tagMatch2[0] && '/' !== _tagMatch2[0][1]) {
-                        if ('</' + name + '>' === _after3.slice(0, toCount$1(name) + 3)) {
+                        if ('</' + name + '>' === _after3.slice(0, toCount(name) + 3)) {
                             that.replace(toPattern('^</' + name + '>', ""), "", 1);
                         }
                     }
@@ -2421,7 +2362,7 @@
                     v;
                 while (m = tagTokensLocalPattern.exec(content)) {
                     if (-1 !== m[0].indexOf(caret)) {
-                        that.select(v = m.index, v + toCount$1(m[0]) - 1);
+                        that.select(v = m.index, v + toCount(m[0]) - 1);
                         break;
                     }
                 }
@@ -2475,7 +2416,7 @@
     function onChange_Menu() {
         offEvent('click', D, _clickHideMenus);
         let menuParents = getElements('.has\\:menu');
-        if (toCount$1(menuParents)) {
+        if (toCount(menuParents)) {
             menuParents.forEach(menuParent => {
                 let menu = getElement('.lot\\:menu', menuParent),
                     a = getPrev(menu);
@@ -2496,7 +2437,7 @@
             delete TP.instances[key];
         }
         let sources = getElements('.field\\:query .input');
-        toCount$1(sources) && sources.forEach(source => {
+        toCount(sources) && sources.forEach(source => {
             let c = getClasses(source);
             let picker = new TP(source, getDatum(source, 'state') ?? {});
             setClasses(picker.self, c);
@@ -2561,7 +2502,7 @@
             delete TE.instances[key];
         }
         let sources = getElements('.field\\:source .textarea');
-        toCount$1(sources) && sources.forEach(source => {
+        toCount(sources) && sources.forEach(source => {
             let editor = new TE(source, getDatum(source, 'state') ?? {});
             _setEditorSource(editor.self, editor);
         });
@@ -2575,7 +2516,7 @@
                     form = getParentForm(node);
                 form && (form.action = href);
             };
-        if (toCount$1(sources)) {
+        if (toCount(sources)) {
             sources.forEach(source => {
                 let panes = [].slice.call(getChildren(source)),
                     buttons = getElements('a', panes.shift());

@@ -2,7 +2,7 @@
   "dependencies": {
     "@taufik-nurrohman/document": "^0.1.7",
     "@taufik-nurrohman/event": "^0.2.2",
-    "@taufik-nurrohman/f3h": "^1.1.22",
+    "@taufik-nurrohman/f3h": "^1.1.23",
     "@taufik-nurrohman/hook": "^0.1.2",
     "@taufik-nurrohman/is": "^0.1.2",
     "@taufik-nurrohman/tag-picker": "^3.1.17",
@@ -17,7 +17,7 @@
   },
   "private": true,
   "scripts": {
-    "pack": "pack --clean=false --from=.github/source --js-format=iife --js-name=_ --js-top='// https://github.com/taufik-nurrohman/f3h\n// https://github.com/taufik-nurrohman/tag-picker\n// https://github.com/taufik-nurrohman/text-editor' --to=."
+    "pack": "pack --clean=false --from=.github/source --js-format=iife --js-name=_ --to=."
   },
   "type": "module"
 }
