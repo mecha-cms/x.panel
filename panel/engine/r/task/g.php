@@ -9,7 +9,7 @@ function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'q' => false,
-        'tab' => ['data'],
+        'tab' => $_['form']['lot']['tab'] ?? ['data'],
         'token' => false,
         'trash' => false,
         'type' => false
@@ -32,6 +32,7 @@ function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'q' => false,
+        'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false
     ]) . $url->hash;
@@ -89,6 +90,7 @@ function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'q' => false,
+        'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,
         'type' => false
@@ -157,6 +159,7 @@ function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'q' => false,
+        'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,
         'type' => false
@@ -248,6 +251,7 @@ function state($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
         'q' => false,
+        'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,
         'type' => false

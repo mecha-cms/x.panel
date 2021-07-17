@@ -391,8 +391,8 @@
     var toElement = function toElement(fromArray) {
         return setElement.apply(void 0, fromArray);
     };
-    var toggleClass = function toggleClass(node, name) {
-        return node.classList.toggle(name), node;
+    var toggleClass = function toggleClass(node, name, force) {
+        return node.classList.toggle(name, force), node;
     };
     var theHistory = W.history;
     var theLocation = W.location;
@@ -1049,6 +1049,16 @@
         $.fetch = function(ref, type, from) {
             return doFetchBase(from, type, ref);
         };
+        $.kick = function(ref) {
+            var trigger = setElement('a', {
+                'href': ref
+            });
+            onEvent('click', trigger, onFetch, {
+                once: true
+            });
+            trigger.click();
+            letElement(trigger);
+        };
         $.links = links;
         $.lot = null;
         $.ref = null;
@@ -1117,7 +1127,7 @@
             'JSON': responseTypeJSON
         }
     };
-    F3H.version = '1.1.23';
+    F3H.version = '1.2.0';
     var name$1 = 'TE';
 
     function trim(str, dir) {
@@ -1384,7 +1394,7 @@
             return d;
         };
     };
-    TE.version = '3.3.3';
+    TE.version = '3.3.4';
     TE.x = x;
     var hasValue = function hasValue(x, data) {
         return -1 !== data.indexOf(x);
@@ -1728,15 +1738,13 @@
                 'tabindex': sourceIsDisabled() ? false : '0',
                 'title': tag
             });
-            if (state.x) {
-                var x = setElement('a', {
-                    'href': "",
-                    'tabindex': '-1',
-                    'target': '_top'
-                });
-                onEvent('click', x, onClickTagX);
-                setChildLast(element, x);
-            }
+            var x = setElement('a', {
+                'href': "",
+                'tabindex': '-1',
+                'target': '_top'
+            });
+            onEvent('click', x, onClickTagX);
+            setChildLast(element, x);
             onEvent('blur', element, onBlurTag);
             onEvent('click', element, onClickTag);
             onEvent('focus', element, onFocusTag);
@@ -1758,12 +1766,10 @@
                 offEvent('click', element, onClickTag);
                 offEvent('focus', element, onFocusTag);
                 offEvent('keydown', element, onKeyDownTag);
-                if (state.x) {
-                    var x = getChildFirst(element);
-                    if (x) {
-                        offEvent('click', x, onClickTagX);
-                        letElement(x);
-                    }
+                var x = getChildFirst(element);
+                if (x) {
+                    offEvent('click', x, onClickTagX);
+                    letElement(x);
                 }
                 letElement(element);
             }
@@ -1813,13 +1819,17 @@
         $.input = editorInput;
         $.let = function(tag) {
             if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                var theTagsMin = state.min;
-                onInput();
-                if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-                    fire('min.tags', [theTagsMin]);
-                    return $;
+                if (!tag) {
+                    setTags("");
+                } else {
+                    var theTagsMin = state.min;
+                    onInput();
+                    if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+                        fire('min.tags', [theTagsMin]);
+                        return $;
+                    }
+                    letTagElement(tag), letTag(tag);
                 }
-                letTagElement(tag), letTag(tag);
             }
             return $;
         };
@@ -1846,17 +1856,24 @@
         };
         $.self = self;
         $.set = function(tag, index) {
+            if (!tag) {
+                return $;
+            }
             if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                var _tags = $.tags,
-                    theTagsMax = state.max;
-                if (!getTag(tag)) {
-                    if (toCount(_tags) < theTagsMax) {
-                        setTagElement(tag, index), setTag(tag, index);
-                    } else {
-                        fire('max.tags', [theTagsMax]);
-                    }
+                if (isArray(tag)) {
+                    setTags(tag.join(state.join));
                 } else {
-                    fire('has.tag', [tag, toArrayKey(tag, _tags)]);
+                    var _tags = $.tags,
+                        theTagsMax = state.max;
+                    if (!getTag(tag)) {
+                        if (toCount(_tags) < theTagsMax) {
+                            setTagElement(tag, index), setTag(tag, index);
+                        } else {
+                            fire('max.tags', [theTagsMax]);
+                        }
+                    } else {
+                        fire('has.tag', [tag, toArrayKey(tag, _tags)]);
+                    }
                 }
             }
             return $;
@@ -1865,9 +1882,6 @@
         $.state = state;
         $.tags = [];
         setTags(source.value); // Fill value(s)
-        $.value = function(values) {
-            return !sourceIsDisabled() && !sourceIsReadOnly() && setTags(values), $;
-        };
         return $;
     }
     TP.instances = {};
@@ -1876,10 +1890,9 @@
         'escape': [',', 188],
         'join': ', ',
         'max': 9999,
-        'min': 0,
-        'x': false
+        'min': 0
     };
-    TP.version = '3.1.17';
+    TP.version = '3.2.0';
     var that$1 = {};
     that$1._history = [];
     that$1._historyState = -1; // Get history data
@@ -2462,6 +2475,7 @@
     }
 
     function _onMouseDownSource(e) {
+        let editor = this.editor;
         canMouseDown(editor);
     }
 
@@ -2509,44 +2523,42 @@
     }
     /* Tab(s) */
     function onChange_Tab() {
-        let sources = getElements('.lot\\:tabs'),
-            hasReplaceState = ('replaceState' in theHistory),
-            doSetFormAction = node => {
-                let href = node.href,
-                    form = getParentForm(node);
-                form && (form.action = href);
-            };
-        if (toCount(sources)) {
-            sources.forEach(source => {
-                let panes = [].slice.call(getChildren(source)),
-                    buttons = getElements('a', panes.shift());
+        let sources = getElements('.lot\\:tabs');
+        toCount(sources) && sources.forEach(source => {
+            let panes = [].slice.call(getChildren(source)),
+                input = D.createElement('input'),
+                buttons = [].slice.call(getElements('a', panes.shift()));
+            input.type = 'hidden';
+            input.name = getDatum(source, 'name');
+            setChildLast(source, input);
 
-                function onClick(e) {
-                    let t = this;
-                    if (!hasClass(getParent(t), 'has:link')) {
-                        if (!hasClass(t, 'not:active')) {
-                            buttons.forEach(button => {
-                                letClass(getParent(button), 'is:current');
-                                if (panes[button._tabIndex]) {
-                                    letClass(panes[button._tabIndex], 'is:current');
-                                }
-                            });
-                            setClass(getParent(t), 'is:current');
-                            if (panes[t._tabIndex]) {
-                                setClass(panes[t._tabIndex], 'is:current');
+            function onClick(e) {
+                let t = this;
+                if (!hasClass(getParent(t), 'has:link')) {
+                    if (!hasClass(t, 'not:active')) {
+                        buttons.forEach(button => {
+                            letClass(getParent(button), 'is:current');
+                            if (panes[button._tabIndex]) {
+                                letClass(panes[button._tabIndex], 'is:current');
                             }
-                            hasReplaceState && theHistory.replaceState({}, "", t.href);
-                            doSetFormAction(t);
+                        });
+                        setClass(getParent(t), 'is:current');
+                        if (panes[t._tabIndex]) {
+                            setClass(panes[t._tabIndex], 'is:current');
+                            input.value = getDatum(t, 'name');
                         }
-                        offEventDefault(e);
                     }
+                    offEventDefault(e);
                 }
-                buttons.forEach((button, index) => {
-                    button._tabIndex = index;
-                    onEvent('click', button, onClick);
-                });
-            });
-        }
+            }
+            buttons.forEach((button, index) => {
+                button._tabIndex = index;
+                onEvent('click', button, onClick);
+            }); // let buttonCurrent = buttons.find(button => hasClass(getParent(button), 'is:current'));
+            // if (buttonCurrent) {
+            //     input.value = getDatum(buttonCurrent, 'name');
+            // }
+        });
     }
     /* Fetch(s) */
     // Get default F3H element(s) filter

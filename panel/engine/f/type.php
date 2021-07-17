@@ -671,7 +671,7 @@ function tabs($value, $key) {
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
         2 => \array_replace([
-            'data-name' => $name
+            'data-name' => 'tab[' . $name . ']'
         ], $value[2] ?? [])
     ];
     if (isset($value['content'])) {
@@ -735,10 +735,11 @@ function tabs($value, $key) {
             }
             $sections[$k] = $vv;
         }
-        $out[1] = '<nav>' . \x\panel\type([
+        $out[1] = \x\panel\type([
+            '0' => 'nav',
             'type' => 'links',
             'lot' => $links
-        ], $name) . '</nav>';
+        ], $name);
         $out[1] .= \implode("", $sections);
     }
     $tags['count:' . $count] = true;
