@@ -14,4 +14,13 @@
       width: auto;
     }
   }
+  .option-picker-source {
+    &:not([multiple]) {
+      + .option-picker {
+        &.open {
+          z-index: 9999; // Buggy! :(
+        }
+      }
+    }
+  }
 }

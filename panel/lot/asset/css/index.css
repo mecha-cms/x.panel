@@ -1744,6 +1744,10 @@ label.not\:active {
   width: auto;
 }
 
+.lot\:field.type\:option .option-picker-source:not([multiple]) + .option-picker.open {
+  z-index: 9999;
+}
+
 .tag-picker {
   background: #fff;
   border: 1px solid #000;
