@@ -1,0 +1,17 @@
+@import '../../../../../../../../node_modules/@taufik-nurrohman/option-picker/index.scss';
+
+.lot\:field.type\:option {
+  .option-picker {
+    width: ($x * 8);
+    height: ($y * 1.5);
+    line-height: (($y * 1.5) - ($y / 2) - 2);
+    padding: ($y / 4) ($x / 2);
+    > b {
+      padding: 0;
+    }
+    &.width {
+      display: flex;
+      width: auto;
+    }
+  }
+}

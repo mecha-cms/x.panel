@@ -80,7 +80,7 @@
   .pl\:2 {
     padding-left: $x;
   }
-  .field {
+  .lot\:field {
     flex-direction: column;
     width: auto;
     > * {
@@ -114,7 +114,7 @@
         }
       }
     }
-    .field {
+    .lot\:field {
       margin: 0;
       > * {
         margin: 0;

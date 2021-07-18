@@ -1,6 +1,6 @@
-@import '../../../../../../../node_modules/@taufik-nurrohman/tag-picker/index.scss';
+@import '../../../../../../../../node_modules/@taufik-nurrohman/tag-picker/index.scss';
 
-.field\:query {
+.lot\:field.type\:query {
   .tag-picker {
     min-height: ($y * 1.5);
     height: auto;

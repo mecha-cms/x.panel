@@ -86,78 +86,6 @@ function colors($value, $key) {
     return \x\panel\type\field($out, $key);
 }
 
-function combo($value, $key) {
-    if (isset($value['lot'])) {
-        $out = \x\panel\to\field($value, $key);
-        $the_value = $value['value'] ?? null;
-        $placeholder = \i(...((array) ($out['hint'] ?? [])));
-        $out['content'][0] = 'select';
-        $out['content'][1] = ""; // Remove content because this is no longer a `<textarea>`
-        unset($out['value']);
-        $seq = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
-        $a = [];
-        $sort = !isset($value['sort']) || $value['sort'];
-        foreach ($value['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
-                continue;
-            }
-            // Group
-            if (isset($v['lot'])) {
-                $aa = [];
-                $optgroup = new \HTML(['optgroup', "", [
-                    'disabled' => isset($v['active']) && !$v['active'],
-                    'label' => $t = \trim(\strip_tags(\i(...((array) ($v['title'] ?? $k)))))
-                ]]);
-                $seq0 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
-                foreach ($v['lot'] as $kk => $vv) {
-                    $option = new \HTML(['option', "", [
-                        'selected' => null !== $the_value && (string) $the_value === (string) $kk,
-                        'value' => $seq0 ? null : $kk
-                    ]]);
-                    if (\is_array($vv) && \array_key_exists('title', $vv)) {
-                        $tt = $vv['title'] ?? $kk;
-                        $option['disabled'] = isset($vv['active']) && !$vv['active'];
-                    } else {
-                        $tt = $vv;
-                    }
-                    $option[1] = $tt = \trim(\strip_tags(\i(...((array) $tt))));
-                    $aa[$tt . $kk] = $option;
-                }
-                $sort && \ksort($aa);
-                foreach ($aa as $vv) {
-                    $optgroup[1] .= $vv;
-                }
-                // Add `0` to the end of the key so that option(s) group will come first
-                $a[$t . $k . '0'] = $optgroup;
-            // Flat
-            } else {
-                $option = new \HTML(['option', $k, [
-                    'selected' => null !== $the_value && (string) $the_value === (string) $k,
-                    'value' => $seq ? null : $k
-                ]]);
-                if (\is_array($v) && \array_key_exists('title', $v)) {
-                    $t = $v['title'] ?? $k;
-                    $option['disabled'] = isset($v['active']) && !$v['active'];
-                } else {
-                    $t = $v;
-                }
-                $option[1] = \trim(\strip_tags(\i(...((array) $t))));
-                // Add `1` to the end of the key so that bare option(s) will come last
-                $a[$t . $k . '1'] = $option;
-            }
-        }
-        $sort && \ksort($a);
-        foreach ($a as $v) {
-            $out['content'][1] .= $v;
-        }
-        \x\panel\_set_class($out['content'][2], \array_replace([
-            'select' => true
-        ], $value['tags'] ?? []));
-        return \x\panel\type\field($out, $key);
-    }
-    return \x\panel\type\field\text($value, $key);
-}
-
 function content($value, $key) {
     if (!\array_key_exists('hint', $value)) {
         $value['hint'] = 'Content goes here...';
@@ -413,6 +341,78 @@ function number($value, $key) {
         'input' => true
     ], $value['tags'] ?? []));
     return \x\panel\type\field($out, $key);
+}
+
+function option($value, $key) {
+    if (isset($value['lot'])) {
+        $out = \x\panel\to\field($value, $key);
+        $the_value = $value['value'] ?? null;
+        $placeholder = \i(...((array) ($out['hint'] ?? [])));
+        $out['content'][0] = 'select';
+        $out['content'][1] = ""; // Remove content because this is no longer a `<textarea>`
+        unset($out['value']);
+        $seq = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
+        $a = [];
+        $sort = !isset($value['sort']) || $value['sort'];
+        foreach ($value['lot'] as $k => $v) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
+                continue;
+            }
+            // Group
+            if (isset($v['lot'])) {
+                $aa = [];
+                $optgroup = new \HTML(['optgroup', "", [
+                    'disabled' => isset($v['active']) && !$v['active'],
+                    'label' => $t = \trim(\strip_tags(\i(...((array) ($v['title'] ?? $k)))))
+                ]]);
+                $seq0 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
+                foreach ($v['lot'] as $kk => $vv) {
+                    $option = new \HTML(['option', "", [
+                        'selected' => null !== $the_value && (string) $the_value === (string) $kk,
+                        'value' => $seq0 ? null : $kk
+                    ]]);
+                    if (\is_array($vv) && \array_key_exists('title', $vv)) {
+                        $tt = $vv['title'] ?? $kk;
+                        $option['disabled'] = isset($vv['active']) && !$vv['active'];
+                    } else {
+                        $tt = $vv;
+                    }
+                    $option[1] = $tt = \trim(\strip_tags(\i(...((array) $tt))));
+                    $aa[$tt . $kk] = $option;
+                }
+                $sort && \ksort($aa);
+                foreach ($aa as $vv) {
+                    $optgroup[1] .= $vv;
+                }
+                // Add `0` to the end of the key so that option(s) group will come first
+                $a[$t . $k . '0'] = $optgroup;
+            // Flat
+            } else {
+                $option = new \HTML(['option', $k, [
+                    'selected' => null !== $the_value && (string) $the_value === (string) $k,
+                    'value' => $seq ? null : $k
+                ]]);
+                if (\is_array($v) && \array_key_exists('title', $v)) {
+                    $t = $v['title'] ?? $k;
+                    $option['disabled'] = isset($v['active']) && !$v['active'];
+                } else {
+                    $t = $v;
+                }
+                $option[1] = \trim(\strip_tags(\i(...((array) $t))));
+                // Add `1` to the end of the key so that bare option(s) will come last
+                $a[$t . $k . '1'] = $option;
+            }
+        }
+        $sort && \ksort($a);
+        foreach ($a as $v) {
+            $out['content'][1] .= $v;
+        }
+        \x\panel\_set_class($out['content'][2], \array_replace([
+            'select' => true
+        ], $value['tags'] ?? []));
+        return \x\panel\type\field($out, $key);
+    }
+    return \x\panel\type\field\text($value, $key);
 }
 
 function pass($value, $key) {

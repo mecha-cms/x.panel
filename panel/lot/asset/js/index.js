@@ -75,9 +75,17 @@
         }
         return "" + x;
     };
+    var toArray = function toArray(x) {
+        return isArray(x) ? x : [x];
+    };
     var toArrayKey = function toArrayKey(x, data) {
         var i = data.indexOf(x);
         return -1 !== i ? i : null;
+    };
+    var toCaseCamel = function toCaseCamel(x) {
+        return x.replace(/[-_.](\w)/g, function(m0, m1) {
+            return toCaseUpper(m1);
+        });
     };
     var toCaseLower = function toCaseLower(x) {
         return x.toLowerCase();
@@ -243,6 +251,16 @@
     var getPrev = function getPrev(node) {
         return node.previousElementSibling || null;
     };
+    var getStyle = function getStyle(node, style, parseValue) {
+        if (parseValue === void 0) {
+            parseValue = true;
+        }
+        var value = W.getComputedStyle(node).getPropertyValue(style);
+        if (parseValue) {
+            value = toValue(value);
+        }
+        return value || "" === value || 0 === value ? value : null;
+    };
     var getState = function getState(node, state) {
         return hasState(node, state) && node[state] || null;
     };
@@ -300,6 +318,13 @@
         var parent = getParent(node);
         return node.remove(), parent;
     };
+    var letStyle = function letStyle(node, style) {
+        return node.style[toCaseCamel(style)] = null, node;
+    };
+    var letText = function letText(node) {
+        var state = 'textContent';
+        return hasState(node, state) && (node[state] = ""), node;
+    };
     var setAttribute = function setAttribute(node, attribute, value) {
         if (true === value) {
             value = attribute;
@@ -342,6 +367,18 @@
         node.className = classes; // }
         return node;
     };
+    var setData = function setData(node, data) {
+        var value;
+        for (var datum in data) {
+            value = data[datum];
+            if (value || "" === value || 0 === value) {
+                setDatum(node, datum, value);
+            } else {
+                letDatum(node, datum);
+            }
+        }
+        return node;
+    };
     var setDatum = function setDatum(node, datum, value) {
         if (isArray(value) || isObject(value)) {
             value = toJSON(value);
@@ -378,6 +415,24 @@
     var setPrev = function setPrev(current, node) {
         return getParent(current).insertBefore(node, current), node;
     };
+    var setStyle = function setStyle(node, style, value) {
+        if (isNumber(value)) {
+            value += 'px';
+        }
+        return node.style[toCaseCamel(style)] = fromValue(value), node;
+    };
+    var setStyles = function setStyles(node, styles) {
+        var value;
+        for (var style in styles) {
+            value = styles[style];
+            if (value || "" === value || 0 === value) {
+                setStyle(node, style, value);
+            } else {
+                letStyle(node, style);
+            }
+        }
+        return node;
+    };
     var setText = function setText(node, content, trim) {
         if (trim === void 0) {
             trim = true;
@@ -406,11 +461,24 @@
     var offEventPropagation = function offEventPropagation(e) {
         return e && e.stopPropagation();
     };
+    var offEvents = function offEvents(names, node, then) {
+        names.forEach(function(name) {
+            return offEvent(name, node, then);
+        });
+    };
     var onEvent = function onEvent(name, node, then, options) {
         if (options === void 0) {
             options = false;
         }
         node.addEventListener(name, then, options);
+    };
+    var onEvents = function onEvents(names, node, then, options) {
+        if (options === void 0) {
+            options = false;
+        }
+        names.forEach(function(name) {
+            return onEvent(name, node, then, options);
+        });
     };
 
     function hook($) {
@@ -480,15 +548,15 @@
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
     var x = "!$^*()+=[]{}|:<>,.?/-";
-    var getOffset = function getOffset(node) {
+    var getOffset$1 = function getOffset(node) {
         return [node.offsetLeft, node.offsetTop];
     };
-    var setScroll = function setScroll(node, data) {
+    var setScroll$1 = function setScroll(node, data) {
         node.scrollLeft = data[0];
         node.scrollTop = data[1];
         return node;
     };
-    var name$2 = 'F3H',
+    var name$3 = 'F3H',
         GET = 'GET',
         POST = 'POST',
         responseTypeHTML = 'document',
@@ -518,7 +586,7 @@
                 continue;
             }
             href = getAttribute(link, 'href');
-            link.id = id = link.id || name$2 + ':' + toID(href || getText(link));
+            link.id = id = link.id || name$3 + ':' + toID(href || getText(link));
             out[id] = toSave = fromElement(link);
             if (href) {
                 out[id][toCount(toSave) - 1].href = link.href; // Use the resolved URL!
@@ -543,7 +611,7 @@
                 continue;
             }
             src = getAttribute(script, 'src');
-            script.id = id = script.id || name$2 + ':' + toID(src || getText(script));
+            script.id = id = script.id || name$3 + ':' + toID(src || getText(script));
             out[id] = toSave = fromElement(script);
             if (src) {
                 out[id][toCount(toSave) - 1].src = script.src; // Use the resolved URL!
@@ -564,7 +632,7 @@
                 continue;
             }
             href = getAttribute(style, 'href');
-            style.id = id = style.id || name$2 + ':' + toID(href || getText(style));
+            style.id = id = style.id || name$3 + ':' + toID(href || getText(style));
             out[id] = toSave = fromElement(style);
             if (href) {
                 out[id][toCount(toSave) - 1].href = style.href; // Use the resolved URL!
@@ -582,7 +650,7 @@
     }
 
     function isLinkForF3H(node) {
-        var n = toCaseLower(name$2); // Exclude `<link rel="*">` tag that contains `data-f3h` or `f3h` attribute with `false` value
+        var n = toCaseLower(name$3); // Exclude `<link rel="*">` tag that contains `data-f3h` or `f3h` attribute with `false` value
         return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
     }
 
@@ -591,18 +659,18 @@
         if (node.src && theScript.src === node.src) {
             return 1;
         }
-        var n = toCaseLower(name$2); // Exclude JavaScript tag that contains `data-f3h` or `f3h` attribute with `false` value
+        var n = toCaseLower(name$3); // Exclude JavaScript tag that contains `data-f3h` or `f3h` attribute with `false` value
         if (toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n))) {
             return 1;
         } // Exclude JavaScript that contains `F3H` instantiation
-        if (toPattern('\\b' + name$2 + '\\b').test(getText(node) || "")) {
+        if (toPattern('\\b' + name$3 + '\\b').test(getText(node) || "")) {
             return 1;
         }
         return 0;
     }
 
     function isSourceForF3H(node) {
-        var n = toCaseLower(name$2);
+        var n = toCaseLower(name$3);
         if (!hasAttribute(node, 'data-' + n) && !hasAttribute(node, n)) {
             return 1; // Default value is `true`
         } // Exclude anchor tag that contains `data-f3h` or `f3h` attribute with `false` value
@@ -610,7 +678,7 @@
     }
 
     function isStyleForF3H(node) {
-        var n = toCaseLower(name$2); // Exclude CSS tag that contains `data-f3h` or `f3h` attribute with `false` value
+        var n = toCaseLower(name$3); // Exclude CSS tag that contains `data-f3h` or `f3h` attribute with `false` value
         return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
     }
 
@@ -672,7 +740,7 @@
             state = source;
             source = D;
         } // Already instantiated, skip!
-        if (source[name$2]) {
+        if (source[name$3]) {
             return;
         }
         $.state = state = fromStates(F3H.state, true === state ? {
@@ -700,7 +768,7 @@
             fire = _hook.fire,
             hooks = _hook.hooks; // Store current instance to `F3H.instances`
         F3H.instances[source.id || source.name || toObjectCount(F3H.instances)] = $; // Mark current DOM as active to prevent duplicate instance
-        source[name$2] = 1;
+        source[name$3] = 1;
 
         function getSources(sources, root) {
             ref = getRef();
@@ -897,9 +965,9 @@
             if (!node) {
                 return;
             }
-            var theOffset = getOffset(node);
-            setScroll(B, theOffset);
-            setScroll(R, theOffset);
+            var theOffset = getOffset$1(node);
+            setScroll$1(B, theOffset);
+            setScroll$1(R, theOffset);
         } // Scroll to the first element with `id` or `name` attribute that has the same value as location hash
         function doScrollToElement(data) {
             if (hooks.scroll) {
@@ -1067,10 +1135,10 @@
         $.styles = styles;
         $.status = null;
         $.pop = function() {
-            if (!source[name$2]) {
+            if (!source[name$3]) {
                 return $; // Already ejected!
             }
-            delete source[name$2];
+            delete source[name$3];
             onSourcesEventsLet();
             offEvent('DOMContentLoaded', W, onDocumentReady);
             offEvent('hashchange', W, onHashChange);
@@ -1109,7 +1177,7 @@
             return "" === raw || 0 === raw.search(/[.\/?]/) || 0 === raw.indexOf(home) || 0 === raw.indexOf(theLocation.protocol + home) || -1 === raw.indexOf('://');
         },
         'lot': {
-            'x-requested-with': name$2
+            'x-requested-with': name$3
         },
         'ref': function ref(source, _ref) {
             return _ref;
@@ -1128,6 +1196,520 @@
         }
     };
     F3H.version = '1.2.0';
+    var getOffset = function getOffset(node) {
+        return [node.offsetLeft, node.offsetTop];
+    };
+    var getRect = function getRect(node) {
+        var h, rect, w, x, y, X, Y;
+        if (isWindow(node)) {
+            x = node.pageXOffset || R.scrollLeft || B$1.scrollLeft;
+            y = node.pageYOffset || R.scrollTop || B$1.scrollTop;
+            w = node.innerWidth;
+            h = node.innerHeight;
+        } else {
+            rect = node.getBoundingClientRect();
+            x = rect.left;
+            y = rect.top;
+            w = rect.width;
+            h = rect.height;
+            X = rect.right;
+            Y = rect.bottom;
+        }
+        return [x, y, w, h, X, Y];
+    };
+    var getSize = function getSize(node) {
+        return isWindow(node) ? [node.innerWidth, node.innerHeight] : [node.offsetWidth, node.offsetHeight];
+    };
+    var getScroll = function getScroll(node) {
+        return [node.scrollLeft, node.scrollTop];
+    };
+    var setScroll = function setScroll(node, data) {
+        node.scrollLeft = data[0];
+        node.scrollTop = data[1];
+        return node;
+    };
+    var hasValue = function hasValue(x, data) {
+        return -1 !== data.indexOf(x);
+    };
+    var name$2 = 'OP',
+        PROP_INDEX = 'i',
+        PROP_SOURCE = '$',
+        PROP_VALUE = 'v';
+
+    function OP(source, state) {
+        if (state === void 0) {
+            state = {};
+        }
+        if (!source) return;
+        var $ = this; // Return new instance if `OP` was called without the `new` operator
+        if (!isInstance($, OP)) {
+            return new OP(source, state);
+        } // Already instantiated, skip!
+        if (source[name$2]) {
+            return;
+        }
+        var _hook = hook($),
+            fire = _hook.fire;
+        _hook.hooks;
+        $.state = state = fromStates(OP.state, state);
+        $.options = {};
+        $.source = source; // Store current instance to `OP.instances`
+        OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $; // Mark current DOM as active option picker to prevent duplicate instance
+        source[name$2] = 1;
+
+        function getLot() {
+            return [toValue(getValue()), $.options];
+        }
+
+        function getValue() {
+            if (selectBoxMultiple) {
+                var values = [];
+                for (var i = 0, _j = toCount(selectBoxOptions); i < _j; ++i) {
+                    if (getOptionSelected(selectBoxOptions[i])) {
+                        values.push(getOptionValue(selectBoxOptions[i]));
+                    }
+                }
+                return values;
+            }
+            var value = source.value;
+            return "" !== value ? value : null;
+        }
+
+        function getOptionValue(selectBoxOption) {
+            var value = selectBoxOption.value || getText(selectBoxOption);
+            return "" !== value ? value : null;
+        }
+
+        function getOptionSelected(selectBoxOption) {
+            return hasAttribute(selectBoxOption, 'selected');
+        }
+
+        function getOptionFakeSelected(selectBoxFakeOption) {
+            return hasClass(selectBoxFakeOption, 'active');
+        }
+
+        function letOptionSelected(selectBoxOption) {
+            letAttribute(selectBoxOption, 'selected');
+            selectBoxOption.selected = false;
+        }
+
+        function letOptionFakeSelected(selectBoxFakeOption) {
+            letClass(selectBoxFakeOption, 'active');
+        }
+
+        function setOptionSelected(selectBoxOption) {
+            setAttribute(selectBoxOption, 'selected', true);
+            selectBoxOption.selected = true;
+        }
+
+        function setOptionFakeSelected(selectBoxFakeOption) {
+            setClass(selectBoxFakeOption, 'active');
+        }
+
+        function setLabelContent(content) {
+            content = content || "\u200C";
+            selectBoxFakeLabel.title = content.replace(/<.*?>/g, "");
+            setHTML(selectBoxFakeLabel, content);
+        }
+
+        function setValue(value) {
+            if (selectBoxMultiple) {
+                var values = toArray(_value),
+                    _value;
+                for (var i = 0, _j2 = toCount(selectBoxOptions); i < _j2; ++i) {
+                    _value = getOptionValue(selectBoxOptions[i]);
+                    if (values.includes(toValue(_value))) {
+                        setOptionSelected(selectBoxOptions[i]);
+                    } else {
+                        letOptionSelected(selectBoxOptions[i]);
+                    }
+                }
+            }
+        }
+        var className = state['class'],
+            selectBox = setElement(source, {
+                'class': className + '-source',
+                'tabindex': -1
+            }),
+            selectBoxIsDisabled = function selectBoxIsDisabled() {
+                return selectBox.disabled;
+            },
+            selectBoxItems = getChildren(selectBox),
+            selectBoxMultiple = selectBox.multiple,
+            selectBoxOptionIndex = 0,
+            selectBoxOptions = selectBox.options,
+            selectBoxParent = state.parent || D,
+            selectBoxSize = selectBox.size,
+            selectBoxTitle = selectBox.title,
+            selectBoxValue = getValue(),
+            selectBoxFake = setElement('div', {
+                'class': className,
+                'tabindex': 0,
+                'title': selectBoxTitle
+            }),
+            selectBoxFakeLabel = setElement('b', "\u200C"),
+            selectBoxFakeDropDown = setElement('div', {
+                'tabindex': -1
+            }),
+            selectBoxFakeOptions = [],
+            keyIsCtrl = false,
+            keyIsShift = false;
+        if (selectBoxMultiple && !selectBoxSize) {
+            selectBox.size = selectBoxSize = state.size;
+        }
+        setChildLast(selectBoxFake, selectBoxFakeLabel);
+        setNext(selectBox, selectBoxFake);
+
+        function doBlur() {
+            letClass(selectBoxFake, 'focus');
+            fire('blur', getLot());
+        }
+
+        function doFocus() {
+            setClass(selectBoxFake, 'focus');
+            fire('focus', getLot());
+        }
+
+        function doEnter() {
+            setClass(selectBoxFake, 'open');
+            fire('enter', getLot());
+        }
+
+        function doExit() {
+            if (selectBoxMultiple || selectBoxSize) {
+                return;
+            }
+            letClass(selectBoxFake, 'open');
+            fire('exit', getLot());
+        }
+
+        function doToggle(force) {
+            toggleClass(selectBoxFake, 'open', force);
+            var isOpen = isEnter();
+            fire(isOpen ? 'enter' : 'exit', getLot());
+            return isOpen;
+        }
+
+        function isEnter() {
+            return hasClass(selectBoxFake, 'open');
+        }
+
+        function onSelectBoxFocus() {
+            selectBoxFake.focus();
+        }
+
+        function onSelectBoxFakeOptionClick(e) {
+            if (selectBoxIsDisabled()) {
+                return;
+            }
+            var selectBoxFakeOption = this,
+                selectBoxOption = selectBoxFakeOption[PROP_SOURCE],
+                selectBoxValuePrevious = selectBoxValue;
+            selectBoxValue = selectBoxFakeOption[PROP_VALUE];
+            var selectBoxFakeLabelContent = [],
+                content,
+                index,
+                value;
+            e && e.isTrusted && onSelectBoxFocus();
+            offEventDefault(e);
+            if (selectBoxMultiple && keyIsCtrl) {
+                if (getOptionFakeSelected(selectBoxFakeOption)) {
+                    letOptionSelected(selectBoxOption);
+                    letOptionFakeSelected(selectBoxFakeOption);
+                } else {
+                    setOptionSelected(selectBoxOption);
+                    setOptionFakeSelected(selectBoxFakeOption);
+                }
+                for (var i = 0, _j3 = toCount(selectBoxOptions); i < _j3; ++i) {
+                    if (getOptionSelected(selectBoxOptions[i])) {
+                        content = getText(selectBoxFakeOptions[i]);
+                        index = selectBoxFakeOptions[i][PROP_INDEX];
+                        value = selectBoxFakeOptions[i][PROP_VALUE];
+                        content = '<i class="' + getClasses(selectBoxFakeOptions[i], false) + '" data-index="' + index + '"' + (hasAttribute(selectBoxFakeOptions[i], 'data-value') ? ' data-value="' + value + '"' : "") + '>' + content + '</i>';
+                        selectBoxFakeLabelContent.push(content);
+                    }
+                }
+                setLabelContent(selectBoxFakeLabelContent.join(state.join));
+                fire('change', getLot());
+                return;
+            }
+            content = getText(selectBoxFakeOption);
+            index = selectBoxFakeOption[PROP_INDEX];
+            value = selectBoxFakeOption[PROP_VALUE];
+            content = '<i class="' + getClasses(selectBoxFakeOption, false) + '" data-index="' + index + '"' + (hasAttribute(selectBoxFakeOption, 'data-value') ? ' data-value="' + value + '"' : "") + '>' + content + '</i>';
+            setLabelContent(content);
+            selectBoxFakeOptions.forEach(function(selectBoxFakeOption) {
+                if (selectBoxValue === selectBoxFakeOption[PROP_VALUE]) {
+                    setOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
+                    setOptionFakeSelected(selectBoxFakeOption);
+                } else {
+                    letOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
+                    letOptionFakeSelected(selectBoxFakeOption);
+                }
+            });
+            if (selectBoxValue !== selectBoxValuePrevious) {
+                fire('change', getLot());
+            }
+        }
+
+        function onSelectBoxFakeBlur(e) {
+            doBlur();
+        }
+
+        function onSelectBoxFakeClick(e) {
+            if (selectBoxIsDisabled()) {
+                return;
+            }
+            if (selectBoxSize) {
+                return doEnter();
+            }
+            doToggle() && setSelectBoxFakeOptionsPosition(selectBoxFake);
+        }
+
+        function onSelectBoxFakeFocus(e) {
+            doFocus();
+        }
+
+        function onSelectBoxFakeKeyDown(e) {
+            keyIsCtrl = e.ctrlKey;
+            keyIsShift = e.shiftKey;
+            var key = e.key,
+                selectBoxOptionIndexCurrent = selectBox.selectedIndex,
+                selectBoxFakeOption = selectBoxFakeOptions[selectBoxOptionIndexCurrent],
+                selectBoxFakeOptionIsDisabled = function selectBoxFakeOptionIsDisabled(selectBoxFakeOption) {
+                    return hasClass(selectBoxFakeOption, 'lock');
+                },
+                doClick = function doClick(selectBoxFakeOption) {
+                    return onSelectBoxFakeOptionClick.call(selectBoxFakeOption);
+                },
+                isOpen = isEnter();
+            if ('ArrowDown' === key) {
+                while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
+                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
+                        break;
+                    }
+                }
+                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
+                offEventDefault(e);
+            } else if ('ArrowUp' === key) {
+                while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
+                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
+                        break;
+                    }
+                }
+                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
+                offEventDefault(e);
+            } else if ('End' === key) {
+                selectBoxOptionIndexCurrent = toCount(selectBoxOptions);
+                while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
+                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
+                        break;
+                    }
+                }
+                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
+                offEventDefault(e);
+            } else if ('Enter' === key) {
+                doToggle(), offEventDefault(e);
+            } else if ('Escape' === key) {
+                !selectBoxSize && doExit(); // offEventDefault(e);
+            } else if ('Home' === key) {
+                selectBoxOptionIndexCurrent = 0;
+                while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
+                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
+                        break;
+                    }
+                }
+                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
+                offEventDefault(e);
+            } else if ('Tab' === key) {
+                selectBoxFakeOption && doClick(selectBoxFakeOption);
+                !selectBoxSize && doExit(); // offEventDefault(e);
+            }
+            isOpen && !keyIsCtrl && !keyIsShift && setSelectBoxFakeOptionsPosition(selectBoxFake);
+        }
+
+        function onSelectBoxFakeKeyUp() {
+            keyIsCtrl = keyIsShift = false;
+        }
+
+        function onSelectBoxParentClick(e) {
+            var target = e.target;
+            if (target !== selectBoxFake) {
+                while (target = getParent(target)) {
+                    if (selectBoxFake === target) {
+                        break;
+                    }
+                }
+            }
+            selectBoxFake !== target && doExit();
+        }
+
+        function onSelectBoxWindow() {
+            isEnter() && setSelectBoxFakeOptionsPosition(selectBoxFake);
+        }
+
+        function setSelectBoxFakeOptions(selectBoxItem, parent) {
+            if ('optgroup' === getName(selectBoxItem)) {
+                var selectBoxFakeOptionGroup = setElement('span'),
+                    _selectBoxItems = getChildren(selectBoxItem);
+                selectBoxFakeOptionGroup.title = selectBoxItem.label;
+                for (var i = 0, _j4 = toCount(_selectBoxItems); i < _j4; ++i) {
+                    setSelectBoxFakeOptions(_selectBoxItems[i], selectBoxFakeOptionGroup);
+                }
+                setChildLast(parent, selectBoxFakeOptionGroup);
+                return;
+            }
+            var selectBoxOptionValue = getAttribute(selectBoxItem, 'value', false),
+                selectBoxOptionValueReal = selectBoxOptionValue,
+                selectBoxOptionText = getText(selectBoxItem),
+                selectBoxFakeOption = setElement('a', selectBoxOptionText, {
+                    'title': selectBoxOptionText
+                });
+            selectBoxOptionValue = selectBoxOptionValue || selectBoxOptionText;
+            selectBoxFakeOption[PROP_INDEX] = selectBoxOptionIndex;
+            selectBoxFakeOption[PROP_SOURCE] = selectBoxItem;
+            selectBoxFakeOption[PROP_VALUE] = selectBoxOptionValue;
+            setData(selectBoxFakeOption, {
+                index: selectBoxOptionIndex,
+                value: selectBoxOptionValueReal
+            });
+            $.options[selectBoxOptionValue] = selectBoxOptionText;
+            var selectBoxOptionIsDisabled = selectBoxItem.disabled;
+            if (selectBoxOptionIsDisabled) {
+                setClass(selectBoxFakeOption, 'lock');
+            } else {
+                onEvent('click', selectBoxFakeOption, onSelectBoxFakeOptionClick);
+            }
+            setChildLast(parent, selectBoxFakeOption);
+            selectBoxFakeOptions.push(selectBoxFakeOption);
+            if (isArray(selectBoxValue) && hasValue(selectBoxOptionValue, selectBoxValue) || selectBoxOptionValue === selectBoxValue) {
+                setClass(selectBoxFakeOption, 'active');
+                setLabelContent('<i class="active' + (selectBoxOptionIsDisabled ? ' lock' : "") + '" data-index="' + selectBoxOptionIndex + '"' + (selectBoxOptionValueReal ? ' data-value="' + selectBoxOptionValueReal + '"' : "") + '>' + selectBoxOptionText + '</i>');
+                setOptionSelected(selectBoxItem);
+            } else {
+                letOptionSelected(selectBoxItem);
+            }
+            ++selectBoxOptionIndex;
+        }
+
+        function setSelectBoxFakeOptionsPosition(selectBoxFake) {
+            var selectBoxFakeBorderTopWidth = toNumber(getStyle(selectBoxFake, 'border-top-width')),
+                selectBoxFakeBorderBottomWidth = toNumber(getStyle(selectBoxFake, 'border-bottom-width'));
+            if (!selectBoxSize) {
+                var _getRect = getRect(selectBoxFake),
+                    left = _getRect[0],
+                    top = _getRect[1],
+                    width = _getRect[2],
+                    height = _getRect[3],
+                    heightWindow = getSize(W)[1],
+                    heightMax = heightWindow - top - height;
+                setStyles(selectBoxFakeDropDown, {
+                    'bottom': "",
+                    'left': left,
+                    'max-height': heightMax,
+                    'top': top + height - selectBoxFakeBorderTopWidth,
+                    'width': width
+                });
+                if (heightMax < (heightWindow - height) / 2) {
+                    heightMax = top;
+                    setStyles(selectBoxFakeDropDown, {
+                        'top': "",
+                        'bottom': heightWindow - top - selectBoxFakeBorderBottomWidth,
+                        'max-height': heightMax + selectBoxFakeBorderTopWidth
+                    });
+                    setClass(selectBoxFakeDropDown, 'up');
+                } else {
+                    letClass(selectBoxFakeDropDown, 'up');
+                }
+            }
+            var selectBoxFakeOption = selectBoxFakeOptions.find(function(selectBoxFakeOption) {
+                return hasClass(selectBoxFakeOption, 'active');
+            });
+            if (selectBoxFakeOption) {
+                var _height = getSize(selectBoxFakeOption)[1],
+                    heightParent = getSize(selectBoxFakeDropDown)[1],
+                    _getOffset = getOffset(selectBoxFakeOption),
+                    _left = _getOffset[0],
+                    _top = _getOffset[1],
+                    topScroll = getScroll(selectBoxFakeDropDown)[1];
+                if (_top < topScroll) {
+                    setScroll(selectBoxFakeDropDown, [_left, _top]);
+                } else if (_top + _height - heightParent > topScroll) {
+                    setScroll(selectBoxFakeDropDown, [_left, _top + _height - heightParent]);
+                }
+            }
+            fire('fit', getLot());
+        }
+        onEvents(['resize', 'scroll'], W, onSelectBoxWindow);
+        onEvent('click', selectBoxParent, onSelectBoxParentClick);
+        onEvent('focus', selectBox, onSelectBoxFocus);
+        onEvent('blur', selectBoxFake, onSelectBoxFakeBlur);
+        onEvent('click', selectBoxFake, onSelectBoxFakeClick);
+        onEvent('focus', selectBoxFake, onSelectBoxFakeFocus);
+        onEvent('keydown', selectBoxFake, onSelectBoxFakeKeyDown);
+        onEvent('keyup', selectBoxFake, onSelectBoxFakeKeyUp);
+        var j = toCount(selectBoxItems);
+        if (j) {
+            setChildLast(selectBoxFake, selectBoxFakeDropDown);
+            for (var i = 0; i < j; ++i) {
+                setSelectBoxFakeOptions(selectBoxItems[i], selectBoxFakeDropDown);
+            }
+            if (selectBoxSize) {
+                var selectBoxFakeOption = selectBoxFakeOptions[0],
+                    selectBoxFakeOptionSize = getSize(selectBoxFakeOption),
+                    heightMax = selectBoxFakeOptionSize[1] * selectBoxSize;
+                setStyle(selectBoxFakeDropDown, 'max-height', heightMax);
+            }
+        }
+        if (selectBoxSize) {
+            // Force `open` class
+            setClass(selectBoxFake, 'open');
+        }
+        $.get = function(parseValue) {
+            if (parseValue === void 0) {
+                parseValue = true;
+            }
+            var value = getValue();
+            return parseValue ? toValue(value) : value;
+        };
+        $.pop = function() {
+            if (!source[name$2]) {
+                return $; // Already ejected
+            }
+            delete source[name$2];
+            offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
+            offEvent('click', selectBoxParent, onSelectBoxParentClick);
+            offEvent('focus', selectBox, onSelectBoxFocus);
+            letClass(selectBox, className + '-source');
+            offEvent('blur', selectBoxFake, onSelectBoxFakeBlur);
+            offEvent('click', selectBoxFake, onSelectBoxFakeClick);
+            offEvent('focus', selectBoxFake, onSelectBoxFakeFocus);
+            offEvent('keydown', selectBoxFake, onSelectBoxFakeKeyDown);
+            offEvent('keyup', selectBoxFake, onSelectBoxFakeKeyUp);
+            letText(selectBoxFake);
+            letElement(selectBoxFake);
+            return fire('pop', getLot());
+        };
+        $.set = function(value) {
+            setValue(fromValue(value));
+            selectBoxFakeOptions.forEach(function(selectBoxFakeOption, index) {
+                var selectBoxOption = selectBoxOptions[index];
+                toggleClass(selectBoxFakeOption, 'active', selectBoxOption && getOptionSelected(selectBoxOption));
+            });
+            fire('change', getLot());
+            return $;
+        };
+        $.self = selectBoxFake;
+        return $;
+    }
+    OP.instances = {};
+    OP.state = {
+        'class': 'option-picker',
+        'join': ', ',
+        'parent': null,
+        'size': 5
+    };
+    OP.version = '1.0.1';
     var name$1 = 'TE';
 
     function trim(str, dir) {
@@ -1396,9 +1978,6 @@
     };
     TE.version = '3.3.4';
     TE.x = x;
-    var hasValue = function hasValue(x, data) {
-        return -1 !== data.indexOf(x);
-    };
     var delay = W.setTimeout,
         name = 'TP';
     var KEY_ARROW_LEFT = ['ArrowLeft', 37];
@@ -2394,6 +2973,7 @@
     } = hook(_);
     Object.assign(W, {
         F3H,
+        OP,
         TE,
         TP,
         _
@@ -2440,6 +3020,22 @@
             onEvent('click', D, _clickHideMenus);
         }
     }
+    /* Option(s) */
+    function onChange_Option() {
+        // Destroy!
+        let value;
+        for (let key in OP.instances) {
+            value = OP.instances[key];
+            value.pop();
+            delete OP.instances[key];
+        }
+        let sources = getElements('.lot\\:field.type\\:option .select');
+        toCount(sources) && sources.forEach(source => {
+            let c = getClasses(source);
+            let picker = new OP(source, getDatum(source, 'state') ?? {});
+            setClasses(picker.self, c);
+        });
+    }
     /* Query(s) */
     function onChange_Query() {
         // Destroy!
@@ -2449,7 +3045,7 @@
             value.pop();
             delete TP.instances[key];
         }
-        let sources = getElements('.field\\:query .input');
+        let sources = getElements('.lot\\:field.type\\:query .input');
         toCount(sources) && sources.forEach(source => {
             let c = getClasses(source);
             let picker = new TP(source, getDatum(source, 'state') ?? {});
@@ -2515,7 +3111,7 @@
             _letEditorSource(value.self);
             delete TE.instances[key];
         }
-        let sources = getElements('.field\\:source .textarea');
+        let sources = getElements('.lot\\:field.type\\:source .textarea');
         toCount(sources) && sources.forEach(source => {
             let editor = new TE(source, getDatum(source, 'state') ?? {});
             _setEditorSource(editor.self, editor);
@@ -2609,6 +3205,7 @@
             }
         });
         on('change', onChange_Menu);
+        on('change', onChange_Option);
         on('change', onChange_Query);
         on('change', onChange_Source);
         on('change', onChange_Tab);
@@ -2622,6 +3219,7 @@
     }
     hasClass(R, 'can:fetch') && _setFetchFeature();
     onChange_Menu();
+    onChange_Option();
     onChange_Query();
     onChange_Source();
     onChange_Tab();

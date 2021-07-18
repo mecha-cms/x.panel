@@ -193,7 +193,7 @@ HTML;
                                                                 'path' => [
                                                                     'title' => 'Home',
                                                                     'description' => 'Choose default page that will open in the home page.',
-                                                                    'type' => 'combo',
+                                                                    'type' => 'option',
                                                                     'name' => 'state[path]',
                                                                     'value' => $state_r['path'] ?? null,
                                                                     'lot' => $paths,
@@ -211,7 +211,7 @@ HTML;
                                                                 'path' => [
                                                                     'title' => 'Home',
                                                                     'description' => 'Choose default page that will open after logged-in.',
-                                                                    'type' => 'combo',
+                                                                    'type' => 'option',
                                                                     'name' => 'state[x][panel][path]',
                                                                     'value' => $state_r['x']['panel']['path'] ?? $state_panel['path'] ?? null,
                                                                     'lot' => $panes,
@@ -238,7 +238,7 @@ HTML;
                                                             'type' => 'fields',
                                                             'lot' => [
                                                                 'zone' => [
-                                                                    'type' => 'combo',
+                                                                    'type' => 'option',
                                                                     'name' => 'state[zone]',
                                                                     'value' => $state_r['zone'] ?? null,
                                                                     'lot' => $zones,

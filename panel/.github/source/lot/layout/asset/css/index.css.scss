@@ -104,7 +104,14 @@ $code: 'Nimbus Mono L', monospace !default;
       background: none;
     }
   }
-  .field {
+  .select {
+    optgroup,
+    option {
+      background: skin(5%);
+      color: inherit;
+    }
+  }
+  .lot\:field {
     &.not\:active {
       .fix {
         opacity: 1;
@@ -120,7 +127,7 @@ $code: 'Nimbus Mono L', monospace !default;
       }
     }
   }
-  .field\:toggle {
+  .lot\:field.type\:toggle {
     .input {
       &[type='checkbox'] {
         &::before {
@@ -162,6 +169,34 @@ $code: 'Nimbus Mono L', monospace !default;
   .lot\:fields {
     > .description {
       border-bottom-color: skin(5%);
+    }
+    .option-picker {
+      background: skin(5%);
+      border-color: skin(10%);
+      color: skin(70%);
+      &::after {
+        border-top-color: skin(70%);
+      }
+      &.open {
+        &::after {
+          border-bottom-color: skin(70%);
+        }
+      }
+      > div {
+        background: inherit;
+        border-color: inherit;
+        color: inherit;
+        a {
+          &:hover {
+            background: skin(10%);
+            color: inherit;
+          }
+          &.active {
+            background: skin(10%);
+            color: skin(95%);
+          }
+        }
+      }
     }
     .tag-picker {
       .tag {

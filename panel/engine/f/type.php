@@ -94,12 +94,14 @@ function field($value, $key) {
         'not:vital' => !$is_vital
     ];
     $tags = [
-        'field' => true,
         'has:title' => !empty($value['title']),
+        'lot:field' => true,
         'p' => true
     ];
     if (isset($value['type'])) {
-        $tags[\strtr($value['type'], '/', ':')] = true;
+        if (0 === \strpos($value['type'], 'field/')) {
+            $tags[\strtr($value['type'], ['field/' => 'type:'])] = true;
+        }
     }
     $id = $value['id'] ?? 'f:' . \dechex(\time());
     $value[2]['id'] = $value[2]['id'] ?? \strtr($id, ['f:' => 'field:']);

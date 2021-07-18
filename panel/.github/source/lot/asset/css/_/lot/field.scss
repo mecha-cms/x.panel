@@ -1,7 +1,6 @@
-.field {
+.lot\:field {
   display: flex;
-  margin-right: (-$x / 2);
-  margin-left: (-$x / 2);
+  gap: 0 $x;
   .description {
     display: block;
     font-size: ($z * .75);
@@ -28,9 +27,6 @@
     &.width {
       width: 100%;
     }
-  }
-  > * {
-    margin: 0 ($x / 2);
   }
   > label {
     display: block;
@@ -104,5 +100,6 @@
 @import 'field/colors';
 @import 'field/item';
 @import 'field/items';
+@import 'field/option';
 @import 'field/query';
 @import 'field/toggle';

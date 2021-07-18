@@ -44,6 +44,7 @@ import {
 } from '@taufik-nurrohman/to';
 
 import F3H from '@taufik-nurrohman/f3h';
+import OP from '@taufik-nurrohman/option-picker';
 import TE from '@taufik-nurrohman/text-editor';
 import TP from '@taufik-nurrohman/tag-picker';
 
@@ -74,7 +75,7 @@ const _ = {};
 
 const {fire, hooks, off, on} = hook(_);
 
-Object.assign(W, {F3H, TE, TP, _});
+Object.assign(W, {F3H, OP, TE, TP, _});
 
 
 /* Menu(s) */
@@ -122,6 +123,25 @@ function onChange_Menu() {
 }
 
 
+/* Option(s) */
+
+function onChange_Option() {
+    // Destroy!
+    let value;
+    for (let key in OP.instances) {
+        value = OP.instances[key];
+        value.pop();
+        delete OP.instances[key];
+    }
+    let sources = getElements('.lot\\:field.type\\:option .select');
+    toCount(sources) && sources.forEach(source => {
+        let c = getClasses(source);
+        let picker = new OP(source, getDatum(source, 'state') ?? {});
+        setClasses(picker.self, c);
+    });
+}
+
+
 /* Query(s) */
 
 function onChange_Query() {
@@ -132,7 +152,7 @@ function onChange_Query() {
         value.pop();
         delete TP.instances[key];
     }
-    let sources = getElements('.field\\:query .input');
+    let sources = getElements('.lot\\:field.type\\:query .input');
     toCount(sources) && sources.forEach(source => {
         let c = getClasses(source);
         let picker = new TP(source, getDatum(source, 'state') ?? {});
@@ -198,7 +218,7 @@ function onChange_Source() {
         _letEditorSource(value.self);
         delete TE.instances[key];
     }
-    let sources = getElements('.field\\:source .textarea');
+    let sources = getElements('.lot\\:field.type\\:source .textarea');
     toCount(sources) && sources.forEach(source => {
         let editor = new TE(source, getDatum(source, 'state') ?? {});
         _setEditorSource(editor.self, editor);
@@ -303,6 +323,7 @@ function _setFetchFeature() {
         }
     });
     on('change', onChange_Menu);
+    on('change', onChange_Option);
     on('change', onChange_Query);
     on('change', onChange_Source);
     on('change', onChange_Tab);
@@ -318,6 +339,7 @@ function _setFetchFeature() {
 hasClass(R, 'can:fetch') && _setFetchFeature();
 
 onChange_Menu();
+onChange_Option();
 onChange_Query();
 onChange_Source();
 onChange_Tab();
