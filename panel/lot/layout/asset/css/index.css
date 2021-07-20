@@ -77,10 +77,16 @@
   color: #bdbdbd;
 }
 
+.is\:dark .input:focus,
+.is\:dark .select:focus,
+.is\:dark .textarea:focus {
+  border-color: #434343;
+}
+
 .is\:dark .input:focus:invalid,
 .is\:dark .select:focus:invalid,
 .is\:dark .textarea:focus:invalid {
-  border-color: #9c1c1c;
+  border-color: #a12222;
   color: #de5f5f;
 }
 
@@ -171,6 +177,11 @@
   background: #2d2d2d;
   border-color: #383838;
   color: #bdbdbd;
+}
+
+.is\:dark .lot\:fields .option-picker:focus,
+.is\:dark .lot\:fields .tag-picker:focus {
+  border-color: #434343;
 }
 
 .is\:dark .lot\:fields .option-picker::after {
@@ -330,6 +341,10 @@
 
 .is\:dark .lot\:tabs > nav li a:not(.has\:link) {
   color: inherit;
+}
+
+.is\:dark .lot\:tabs > nav li a:not(.has\:link):focus {
+  color: #bdbdbd;
 }
 
 .is\:dark .lot\:tabs > nav li.is\:current::before,

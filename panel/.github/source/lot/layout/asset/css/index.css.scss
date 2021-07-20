@@ -80,8 +80,9 @@ $code: 'Nimbus Mono L', monospace !default;
     border-color: skin(10%);
     color: skin(70%);
     &:focus {
+      border-color: skin(15%);
       &:invalid {
-        border-color: mix(red, skin(10%), 50%);
+        border-color: mix(red, skin(15%), 50%);
         color: mix(red, skin(70%), 50%);
       }
     }
@@ -175,6 +176,9 @@ $code: 'Nimbus Mono L', monospace !default;
       background: skin(5%);
       border-color: skin(10%);
       color: skin(70%);
+      &:focus {
+        border-color: skin(15%);
+      }
     }
     .option-picker {
       &::after {
@@ -334,6 +338,9 @@ $code: 'Nimbus Mono L', monospace !default;
         border-color: skin(5%);
         a:not(.has\:link) {
           color: inherit;
+          &:focus {
+            color: skin(70%);
+          }
         }
         &.is\:current {
           &::before,
