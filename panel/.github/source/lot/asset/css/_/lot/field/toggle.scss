@@ -1,3 +1,30 @@
 .lot\:field.type\:toggle {
   @extend .lot\:field.type\:item;
+  .input {
+    &[type='checkbox'] {
+      width: ($z * 2);
+      height: ($z * 1.25);
+      border-width: 0;
+      border-radius: (($z * 1.25) / 2);
+      &[disabled] {
+        background: $color;
+      }
+      &::before {
+        border: 0;
+        width: (($z * 1.25) - 4);
+        height: (($z * 1.25) - 4);
+        top: 2px;
+        left: 2px;
+        background: $color-button;
+        border-radius: ((($z * 1.25) - 4) / 2);
+        @include transform(rotate(0));
+        visibility: visible;
+      }
+      &:checked {
+        &::before {
+          left: ($z - 2);
+        }
+      }
+    }
+  }
 }

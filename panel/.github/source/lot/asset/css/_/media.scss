@@ -1,4 +1,19 @@
 @media (min-width: 720px) {
+  .is\:flex {
+    display: flex;
+    gap: $y $x;
+    > * {
+      margin: 0;
+    }
+  }
+  .lot\:fields {
+    &.is\:flex {
+      > .lot\:field {
+        margin: 0;
+        gap: 0 $x;
+      }
+    }
+  }
   .lot\:tabs {
     > nav {
       height: ($y * 2);

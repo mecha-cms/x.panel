@@ -59,6 +59,7 @@
           @extend .input;
           background: none;
           width: auto;
+          min-width: 0;
           max-width: 50%;
           cursor: default;
           white-space: nowrap;
@@ -66,6 +67,7 @@
           @include user-select(none);
           &.icon {
             width: ($x * 1.5);
+            min-width: ($x * 1.5);
             padding: (($y / 6) + 1) 0; // (($y / 6) + border-y-width) 0
           }
         }

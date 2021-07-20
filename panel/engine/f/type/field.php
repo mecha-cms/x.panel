@@ -147,6 +147,11 @@ function email($value, $key) {
     return \x\panel\type\field\text($value, $key);
 }
 
+function flex($value, $key) {
+    $value['tags']['is:flex'] = true;
+    return \x\panel\type\fields($value, $key);
+}
+
 function hidden($value, $key) {
     return new \HTML([
         0 => 'input',

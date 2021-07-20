@@ -102,26 +102,12 @@ $desk = [
     'lot' => [
         'form' => [
             // type: form/post
+            'form' => [
+                'file[seal]' => '0600',
+                'token' => $_['token'],
+                'type' => $_['type']
+            ],
             'lot' => [
-                'fields' => [
-                    'type' => 'fields',
-                    'lot' => [
-                        'seal' => [
-                            'type' => 'hidden',
-                            'name' => 'file[seal]',
-                            'value' => '0600'
-                        ],
-                        'token' => [
-                            'type' => 'hidden',
-                            'value' => $_['token']
-                        ],
-                        'type' => [
-                            'type' => 'hidden',
-                            'value' => $_['type']
-                        ]
-                    ],
-                    'stack' => -1
-                ],
                 1 => [
                     // type: section
                     'lot' => [

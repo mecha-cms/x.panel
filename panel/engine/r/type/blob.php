@@ -41,21 +41,11 @@ $desk = [
     'lot' => [
         'form' => [
             // type: form/post
+            'form' => [
+                'token' => $_['token'],
+                'type' => $_['type']
+            ],
             'lot' => [
-                'fields' => [
-                    'type' => 'fields',
-                    'lot' => [
-                        'token' => [
-                            'type' => 'hidden',
-                            'value' => $_['token']
-                        ],
-                        'type' => [
-                            'type' => 'hidden',
-                            'value' => $_['type']
-                        ]
-                    ],
-                    'stack' => -1
-                ],
                 1 => [
                     // type: section
                     'lot' => [

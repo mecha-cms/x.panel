@@ -116,9 +116,9 @@ function field($value, $key) {
         $tags['has:title'] = true;
     }
     $tags['has:description'] = !empty($value['description']);
-    $prefix = "";
-    $suffix = "";
-    foreach (['prefix', 'suffix'] as $v) {
+    $before = "";
+    $after = "";
+    foreach (['before', 'after'] as $v) {
         if (isset($value['value-' . $v])) {
             $vv = $value['value-' . $v];
             if (\is_string($vv)) {
@@ -151,11 +151,11 @@ function field($value, $key) {
             }
         }
         $out[1] .= '<div>';
-        $out[1] .= $prefix || $suffix ? '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">' : "";
-        $out[1] .= $prefix;
+        $out[1] .= $before || $after ? '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">' : "";
+        $out[1] .= $before;
         $out[1] .= \x\panel\to\content($value['content']);
-        $out[1] .= $suffix;
-        $out[1] .= $prefix || $suffix ? '</div>' : "";
+        $out[1] .= $after;
+        $out[1] .= $before || $after ? '</div>' : "";
         $out[1] .= \x\panel\to\description($value['description'] ?? "");
         $out[1] .= '</div>';
     } else if (isset($value['lot'])) {
@@ -291,6 +291,33 @@ function files($value, $key) {
     return new \HTML($out);
 }
 
+function flex($value, $key) {
+    $lot = (array) ($value['lot'] ?? []);
+    $value['lot'] = [
+        'title' => [
+            'type' => 'title',
+            'content' => $value['title'] ?? null,
+            'level' => $value['level'] ?? 2, // Same with the default level of `x\panel\type\content`
+            'stack' => 10
+        ],
+        'description' => [
+            'type' => 'description',
+            'content' => $value['description'] ?? null,
+            'stack' => 20
+        ],
+        'lot' => [
+            'type' => 'lot',
+            'lot' => $lot,
+            'tags' => [
+                'is:flex' => true
+            ],
+            'stack' => 30
+        ]
+    ];
+    unset($value['description'], $value['title']);
+    return \x\panel\type\lot($value, $key);
+}
+
 function folder($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
@@ -335,6 +362,21 @@ function form($value, $key) {
     } else if (isset($value['lot'])) {
         $count = 0;
         $out[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
+    }
+    if (isset($value['form']) && \is_array($value['form'])) {
+        foreach ($value['form'] as $k => $v) {
+            if (null === $v || false === $v) {
+                continue;
+            }
+            if (\is_array($v) || \is_object($v)) {
+                $v = \json_encode($v);
+            }
+            $out[1] .= new \HTML(['input', false, [
+                'name' => $k,
+                'type' => 'hidden',
+                'value' => $v
+            ]]);
+        }
     }
     $href = $value['link'] ?? $value['url'] ?? null;
     if (!isset($out[2]['action'])) {

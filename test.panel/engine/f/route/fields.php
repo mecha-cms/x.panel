@@ -28,29 +28,6 @@ function fields($_) {
                 'lot' => ['#f00', '#0f0', '#00f'],
                 'sort' => false
             ],
-            'combo' => [
-                'title' => 'Combo',
-                'type' => 'combo',
-                'lot' => [
-                    1 => 'Item 1',
-                    2 => 'Item 2',
-                    3 => [
-                        'title' => 'Item 3',
-                        'value' => 'value:3'
-                    ],
-                    4 => [
-                        'title' => 'Item 4',
-                        'lot' => [
-                            '4.1' => 'Item 4.1',
-                            '4.2' => 'Item 4.2',
-                            '4.3' => [
-                                'title' => 'Item 4.3',
-                                'value' => 'value:4.3'
-                            ]
-                        ]
-                    ]
-                ]
-            ],
             'content' => [
                 'title' => 'Content',
                 'type' => 'content',
@@ -75,6 +52,26 @@ function fields($_) {
                 'title' => 'Email',
                 'type' => 'email',
                 'name' => 'default[email]'
+            ],
+            'flex' => [
+                'type' => 'flex',
+                'lot' => [
+                    'text-1' => [
+                        'title' => 'Field 1',
+                        'type' => 'text',
+                        'width' => true
+                    ],
+                    'text-2' => [
+                        'title' => 'Field 2',
+                        'type' => 'text',
+                        'width' => true
+                    ],
+                    'text-3' => [
+                        'title' => 'Field 3',
+                        'type' => 'text',
+                        'width' => true
+                    ]
+                ]
             ],
             'hidden' => [
                 'title' => 'Hidden',
@@ -121,6 +118,29 @@ function fields($_) {
                 'type' => 'number',
                 'name' => 'default[number]'
             ],
+            'option' => [
+                'title' => 'Option',
+                'type' => 'option',
+                'lot' => [
+                    1 => 'Item 1',
+                    2 => 'Item 2',
+                    3 => [
+                        'title' => 'Item 3',
+                        'value' => 'value:3'
+                    ],
+                    4 => [
+                        'title' => 'Item 4',
+                        'lot' => [
+                            '4.1' => 'Item 4.1',
+                            '4.2' => 'Item 4.2',
+                            '4.3' => [
+                                'title' => 'Item 4.3',
+                                'value' => 'value:4.3'
+                            ]
+                        ]
+                    ]
+                ]
+            ],
             'path' => [
                 'title' => 'Path',
                 'type' => 'path',
@@ -157,6 +177,25 @@ function fields($_) {
                 'title' => 'Text',
                 'type' => 'text',
                 'name' => 'default[text]'
+            ],
+            'text-with-before' => [
+                'title' => 'Text',
+                'type' => 'text',
+                'name' => 'default[text-with-before]',
+                'value-before' => 'http://'
+            ],
+            'text-with-after' => [
+                'title' => 'Text',
+                'type' => 'text',
+                'name' => 'default[text-with-after]',
+                'value-after' => '.html'
+            ],
+            'text-with-before-after' => [
+                'title' => 'Text',
+                'type' => 'text',
+                'name' => 'default[text-with-before-after]',
+                'value-before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
+                'value-after' => 'text'
             ],
             'time' => [
                 'title' => 'Time',

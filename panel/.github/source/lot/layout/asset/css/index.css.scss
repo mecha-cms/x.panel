@@ -170,10 +170,13 @@ $code: 'Nimbus Mono L', monospace !default;
     > .description {
       border-bottom-color: skin(5%);
     }
-    .option-picker {
+    .option-picker,
+    .tag-picker {
       background: skin(5%);
       border-color: skin(10%);
       color: skin(70%);
+    }
+    .option-picker {
       &::after {
         border-top-color: skin(70%);
       }

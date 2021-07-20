@@ -119,7 +119,7 @@ function folder($_) {
             }
             $_SESSION['_']['folder'][\rtrim($f, \DS)] = 1;
         } else {
-            \mkdir($f, $seal = \octdec($_['form']['lot']['folder']['seal'] ?? '0755'), true);
+            \mkdir($f, $seal = \octdec($_['form']['lot']['folder']['seal'] ?? '0775'), true);
             foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($_['f'], \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
                 $v = $k->getPathname();
                 if ($k->isDir()) {

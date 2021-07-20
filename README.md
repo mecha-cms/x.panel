@@ -8,13 +8,17 @@ Release Notes
 
 ### main
 
+ - [x] Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
  - [x] Added _Data_ tab next to the _Pages_ tab for pages layout.
  - [x] Added `$_['id']` property that store the first `$_['path']` value.
+ - [x] Added `form` property to `x\panel\type\field` type to quickly add hidden fields.
+ - [x] Added `form` property to `x\panel\type\form` type to quickly add hidden fields.
  - [x] Added badge GUI for `x\panel\type\link` via `info` key.
  - [x] Fixed bug of tags data that is not stored consistently on edit mode.
  - [x] Improved extension page. It is now possible to filter extensions by searching and/or paginating.
  - [x] Improved performance of files/folders listing by deferring the GUI creation.
- - [x] Renamed `before` and `after` key for field to `value-prefix` and `value-suffix`.
+ - [x] Renamed `before` and `after` key for field to `value-before` and `value-after`.
+ - [x] Renamed `x\panel\type\field\combo` with `x\panel\type\field\option`.
  - [x] The `$_['/']` data now will includes the `$url` as prefix.
  - [x] [@mecha-cms/mecha#96](https://github.com/mecha-cms/mecha/issues/96)
 

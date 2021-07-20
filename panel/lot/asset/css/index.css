@@ -1143,51 +1143,6 @@ label.not\:active {
   border-radius: 100%;
 }
 
-.field\:toggle .input[type='checkbox'],
-.field\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox'],
-.lot\:field > label + div .lot\:f .field\:toggle .fix[type='checkbox'],
-.field\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox'],
-.lot\:field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'] {
-  width: 32px;
-  height: 20px;
-  border-width: 0;
-  border-radius: 10px;
-}
-
-.field\:toggle .input[type='checkbox'][disabled],
-.field\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox'][disabled],
-.lot\:field > label + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled],
-.field\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox'][disabled],
-.lot\:field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox'][disabled] {
-  background: #000;
-}
-
-.field\:toggle .input[type='checkbox']::before,
-.field\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox']::before,
-.lot\:field > label + div .lot\:f .field\:toggle .fix[type='checkbox']::before,
-.field\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox']::before,
-.lot\:field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']::before {
-  border: 0;
-  width: 16px;
-  height: 16px;
-  top: 2px;
-  left: 2px;
-  background: #fff;
-  border-radius: 8px;
-  -webkit-transform: rotate(0);
-  -moz-transform: rotate(0);
-  transform: rotate(0);
-  visibility: visible;
-}
-
-.field\:toggle .input[type='checkbox']:checked::before,
-.field\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox']:checked::before,
-.lot\:field > label + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before,
-.field\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox']:checked::before,
-.lot\:field > label + br + div .lot\:f .field\:toggle .fix[type='checkbox']:checked::before {
-  left: 14px;
-}
-
 .icon {
   display: inline-block;
   width: 24px;
@@ -1449,6 +1404,7 @@ label.not\:active {
 .lot\:field > label + br + div .lot\:f .fix {
   background: none;
   width: auto;
+  min-width: 0;
   max-width: 50%;
   cursor: default;
   white-space: nowrap;
@@ -1461,6 +1417,7 @@ label.not\:active {
 .lot\:field > label + div .lot\:f .fix.icon,
 .lot\:field > label + br + div .lot\:f .fix.icon {
   width: 36px;
+  min-width: 36px;
   padding: 5px 0;
 }
 
@@ -1729,19 +1686,29 @@ label.not\:active {
 }
 
 .lot\:field.type\:option .option-picker {
-  width: 192px;
+  background: #fff;
+  color: inherit;
+  border-color: inherit;
   height: 36px;
   line-height: 22px;
   padding: 6px 12px;
+}
+
+.lot\:field.type\:option .option-picker::after {
+  right: 12px;
+}
+
+.lot\:field.type\:option .option-picker.width {
+  display: flex;
+  width: auto;
 }
 
 .lot\:field.type\:option .option-picker > b {
   padding: 0;
 }
 
-.lot\:field.type\:option .option-picker.width {
-  display: flex;
-  width: auto;
+.lot\:field.type\:option .option-picker > div {
+  line-height: 24px;
 }
 
 .lot\:field.type\:option .option-picker-source:not([multiple]) + .option-picker.open {
@@ -1868,21 +1835,74 @@ label.not\:active {
 }
 
 .lot\:field.type\:query .tag-picker {
+  background: #fff;
+  color: inherit;
+  border-color: inherit;
   min-height: 36px;
   height: auto;
-  padding: 2px;
+  padding: 2px 2px;
+}
+
+.lot\:field.type\:query .tag-picker.width {
+  display: flex;
+  width: auto;
 }
 
 .lot\:field.type\:query .tag-picker .tag {
   height: 26px;
   /* ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2) */
   padding: 0 7px;
-  margin: 2px;
+  margin: 2px 2px;
   border: 1px solid transparent;
 }
 
 .lot\:field.type\:query .tag-picker-source {
   position: fixed;
+}
+
+.lot\:field.type\:toggle .input[type='checkbox'],
+.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox'],
+.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'],
+.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox'],
+.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'] {
+  width: 32px;
+  height: 20px;
+  border-width: 0;
+  border-radius: 10px;
+}
+
+.lot\:field.type\:toggle .input[type='checkbox'][disabled],
+.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox'][disabled],
+.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'][disabled],
+.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox'][disabled],
+.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'][disabled] {
+  background: #000;
+}
+
+.lot\:field.type\:toggle .input[type='checkbox']::before,
+.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox']::before,
+.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']::before,
+.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox']::before,
+.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']::before {
+  border: 0;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-transform: rotate(0);
+  -moz-transform: rotate(0);
+  transform: rotate(0);
+  visibility: visible;
+}
+
+.lot\:field.type\:toggle .input[type='checkbox']:checked::before,
+.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox']:checked::before,
+.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']:checked::before,
+.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox']:checked::before,
+.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']:checked::before {
+  left: 14px;
 }
 
 .lot\:fields > .description {
@@ -2294,6 +2314,17 @@ pre.is\:text code {
 }
 
 @media (min-width: 720px) {
+  .is\:flex {
+    display: flex;
+    gap: 24px 24px;
+  }
+  .is\:flex > * {
+    margin: 0;
+  }
+  .lot\:fields.is\:flex > .lot\:field {
+    margin: 0;
+    gap: 0 24px;
+  }
   .lot\:tabs > nav {
     height: 48px;
     line-height: 48px;

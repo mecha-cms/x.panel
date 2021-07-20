@@ -2,13 +2,20 @@
 
 .lot\:field.type\:query {
   .tag-picker {
+    background: $color-back;
+    color: inherit;
+    border-color: inherit;
     min-height: ($y * 1.5);
     height: auto;
-    padding: 2px;
+    padding: ($y / 12) ($x / 12);
+    &.width {
+      display: flex;
+      width: auto;
+    }
     .tag {
       height: ($y * 1.5) - 4 - 4 - 2; /* ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2) */
       padding: 0 (($z / 2) - 1);
-      margin: 2px;
+      margin: ($y / 12) ($x / 12);
       border: 1px solid transparent;
     }
     &-source {

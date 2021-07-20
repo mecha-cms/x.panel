@@ -2,23 +2,31 @@
 
 .lot\:field.type\:option {
   .option-picker {
-    width: ($x * 8);
+    background: $color-back;
+    color: inherit;
+    border-color: inherit;
     height: ($y * 1.5);
-    line-height: (($y * 1.5) - ($y / 2) - 2);
+    line-height: (($y * 1.5) - ($y / 2) - 2); // See `.input`
     padding: ($y / 4) ($x / 2);
-    > b {
-      padding: 0;
+    &::after {
+      right: ($x / 2);
     }
     &.width {
       display: flex;
       width: auto;
     }
-  }
-  .option-picker-source {
-    &:not([multiple]) {
-      + .option-picker {
-        &.open {
-          z-index: 9999; // Buggy! :(
+    > b {
+      padding: 0;
+    }
+    > div {
+      line-height: $h;
+    }
+    &-source {
+      &:not([multiple]) {
+        + .option-picker {
+          &.open {
+            z-index: 9999; // Buggy! :(
+          }
         }
       }
     }

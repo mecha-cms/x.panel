@@ -186,7 +186,7 @@ function folder($_) {
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
-            \mkdir($f, \octdec($_['form']['lot']['folder']['seal'] ?? '0755'), true);
+            \mkdir($f, \octdec($_['form']['lot']['folder']['seal'] ?? '0775'), true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \x\panel\from\path($f) . '</code>'];
             if (!empty($_['form']['lot']['options']['kick'])) {
                 $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($f, [

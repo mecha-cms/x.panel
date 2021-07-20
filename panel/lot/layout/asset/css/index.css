@@ -166,7 +166,8 @@
   border-bottom-color: #2d2d2d;
 }
 
-.is\:dark .lot\:fields .option-picker {
+.is\:dark .lot\:fields .option-picker,
+.is\:dark .lot\:fields .tag-picker {
   background: #2d2d2d;
   border-color: #383838;
   color: #bdbdbd;
