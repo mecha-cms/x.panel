@@ -31,6 +31,6 @@ $description .= '<p>' . i('Please note that this action will first delete all of
     'type' => false
 ]), 'Download current layout as a ZIP file.']) . '</p>';
 
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description']['content'] = $description;
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description']['lot']['content']['content'] = $description;
 
 return $_;

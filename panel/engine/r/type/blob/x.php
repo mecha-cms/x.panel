@@ -50,7 +50,13 @@ $description .= '<pre><code class="txt">' . To::kebab(i('extension')) . '.zip&#x
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['description'] = [
     'title' => "",
     'type' => 'field',
-    'content' => $description,
+    'lot' => [
+        'content' => [
+            'type' => 'content',
+            'content' => $description,
+            'stack' => 10
+        ]
+    ],
     'stack' => 20
 ];
 
