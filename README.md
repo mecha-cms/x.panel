@@ -17,6 +17,7 @@ Release Notes
  - [x] Added `form` property to `form/*` type to quickly add hidden fields.
  - [x] Added `form` property to `form/*` type to quickly add hidden fields.
  - [x] Added badge GUI for `link` type via `info` key.
+ - [x] Added comment notification badge in the main menu.
  - [x] Fixed bug of tags data that is not stored consistently on edit mode.
  - [x] Improved extension page. It is now possible to filter extensions by searching and/or paginating.
  - [x] Improved performance of files/folders listing by deferring the GUI creation.
