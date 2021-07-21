@@ -72,7 +72,11 @@ function file($_) {
             } else if ($name !== $base) {
                 \rename($_['f'], $f);
             }
-            !\defined('DEBUG') || !\DEBUG && \chmod($f, \octdec($_['form']['lot']['file']['seal'] ?? '0777'));
+            $seal = \octdec($_['form']['lot']['file']['seal'] ?? '0777');
+            if ($seal < 0 || $seal > 0777) {
+                $seal = 0777; // Invalid file permission, return default!
+            }
+            \chmod($f, $seal);
             $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \x\panel\from\path($_['f']) . '</code>'];
             $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
             $_['f'] = $f;
@@ -119,7 +123,11 @@ function folder($_) {
             }
             $_SESSION['_']['folder'][\rtrim($f, \DS)] = 1;
         } else {
-            \mkdir($f, $seal = \octdec($_['form']['lot']['folder']['seal'] ?? '0775'), true);
+            $seal = \octdec($_['form']['lot']['folder']['seal'] ?? '0775');
+            if ($seal < 0 || $seal > 0777) {
+                $seal = 0775; // Invalid file permission, return default!
+            }
+            \mkdir($f, $seal, true);
             foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($_['f'], \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
                 $v = $k->getPathname();
                 if ($k->isDir()) {

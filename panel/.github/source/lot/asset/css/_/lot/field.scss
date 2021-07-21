@@ -87,7 +87,6 @@
           line-height: ($h - 2); // $h - (border-top-width + border-bottom-width)
           &:focus,
           &:active {
-            background: rgba(0, 0, 0, .05);
             color: inherit;
           }
         }

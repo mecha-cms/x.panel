@@ -86,7 +86,7 @@ $code: monospace !default;
       &:invalid {
         border-color: mix(red, dark(15%), 50%);
         color: mix(red, dark(70%), 50%);
-        box-shadow: 0 0 0 3px rgba(0, 255, 255, .025);
+        box-shadow: 0 0 0 3px rgba(255, 0, 0, .15);
       }
     }
     &.not\:active,

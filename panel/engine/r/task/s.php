@@ -153,7 +153,11 @@ function file($_) {
                     $_['alert']['error'][] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($d) . '</code>']];
                 }
             }
-            !\defined('DEBUG') || !\DEBUG && \chmod($f, \octdec($_['form']['lot']['file']['seal'] ?? '0777'));
+            $seal = \octdec($_['form']['lot']['file']['seal'] ?? '0777');
+            if ($seal < 0 || $seal > 0777) {
+                $seal = 0777; // Invalid file permission, return default!
+            }
+            \chmod($f, $seal);
             $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \x\panel\from\path($f) . '</code>'];
             $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             $_['f'] = $f;
@@ -186,7 +190,11 @@ function folder($_) {
         } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
             $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
         } else {
-            \mkdir($f, \octdec($_['form']['lot']['folder']['seal'] ?? '0775'), true);
+            $seal = \octdec($_['form']['lot']['folder']['seal'] ?? '0775');
+            if ($seal < 0 || $seal > 0777) {
+                $seal = 0775; // Invalid file permission, return default!
+            }
+            \mkdir($f, $seal, true);
             $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \x\panel\from\path($f) . '</code>'];
             if (!empty($_['form']['lot']['options']['kick'])) {
                 $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($f, [

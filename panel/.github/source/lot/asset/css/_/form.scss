@@ -119,6 +119,9 @@ label {
   &[type='color'] {
     width: ($x * 1.5);
     height: ($y * 1.5);
+    &::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
   }
   &[type='image'] {
     width: auto;
@@ -254,13 +257,17 @@ label {
   &[type='range'] {
     @include appearance(none);
     &::-webkit-slider-runnable-track {
+      -webkit-appearance: none;
       background: $color;
       border: 0;
       height: 2px;
+      overflow: visible;
     }
     &::-webkit-slider-thumb {
+      -webkit-appearance: none;
       width: ($x / 2);
       height: $y;
+      margin-top: (-$y / 2) + 1; // Magic! :(
       background: $color-back-button;
       border: 0;
       border-radius: 0;
@@ -273,6 +280,7 @@ label {
     &::-moz-range-thumb {
       width: ($x / 2);
       height: $y;
+      margin-top: (-$y / 2) + 1; // Magic! :(
       background: $color-back-button;
       border: 0;
       border-radius: 0;

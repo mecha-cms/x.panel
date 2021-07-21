@@ -3009,7 +3009,7 @@
     function onChange_Menu() {
         offEvent('click', D, _clickHideMenus);
         let menuParents = getElements('.has\\:menu');
-        if (toCount(menuParents)) {
+        if (menuParents && toCount(menuParents)) {
             menuParents.forEach(menuParent => {
                 let menu = getElement('.lot\\:menu', menuParent),
                     a = getPrev(menu);
@@ -3030,7 +3030,7 @@
             delete OP.instances[key];
         }
         let sources = getElements('.lot\\:field.type\\:option .select');
-        toCount(sources) && sources.forEach(source => {
+        sources && toCount(sources) && sources.forEach(source => {
             let c = getClasses(source);
             let picker = new OP(source, getDatum(source, 'state') ?? {});
             setClasses(picker.self, c);
@@ -3046,7 +3046,7 @@
             delete TP.instances[key];
         }
         let sources = getElements('.lot\\:field.type\\:query .input');
-        toCount(sources) && sources.forEach(source => {
+        sources && toCount(sources) && sources.forEach(source => {
             let c = getClasses(source);
             let picker = new TP(source, getDatum(source, 'state') ?? {});
             setClasses(picker.self, c);
@@ -3112,7 +3112,7 @@
             delete TE.instances[key];
         }
         let sources = getElements('.lot\\:field.type\\:source .textarea');
-        toCount(sources) && sources.forEach(source => {
+        sources && toCount(sources) && sources.forEach(source => {
             let editor = new TE(source, getDatum(source, 'state') ?? {});
             _setEditorSource(editor.self, editor);
         });
@@ -3120,7 +3120,7 @@
     /* Tab(s) */
     function onChange_Tab() {
         let sources = getElements('.lot\\:tabs');
-        toCount(sources) && sources.forEach(source => {
+        sources && toCount(sources) && sources.forEach(source => {
             let panes = [].slice.call(getChildren(source)),
                 input = D.createElement('input'),
                 buttons = [].slice.call(getElements('a', panes.shift()));

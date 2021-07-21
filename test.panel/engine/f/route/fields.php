@@ -2,7 +2,7 @@
 
 function fields($_) {
     $_['title'] = 'Fields';
-    $_['lot']['desk']['lot']['form']['lot'][1] = [
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot'][0] = [
         'title' => 'Title Goes Here',
         'description' => 'Description goes here.',
         'type' => 'fields',

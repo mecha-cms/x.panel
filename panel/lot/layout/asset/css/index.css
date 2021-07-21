@@ -90,7 +90,7 @@
 .is\:dark .textarea:focus:invalid {
   border-color: #a12222;
   color: #de5f5f;
-  box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.025);
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.15);
 }
 
 .is\:dark .input.not\:active,
