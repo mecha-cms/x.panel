@@ -29,6 +29,16 @@ if (null !== State::get('x.comment')) {
     // Generate recent comment cache
     Hook::set('on.comment.set', function($path) {
         extract($GLOBALS, EXTR_SKIP);
+        // `dechex(crc32('comments.info'))`
+        if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '8bead58f.php')) {
+            if (!is_dir($d)) {
+                mkdir($d, 0775, true);
+            }
+            file_put_contents($f, '<?' . 'php return [0];');
+        }
+        $info = (array) require $f;
+        $info[0] = $info[0] + 1;
+        file_put_contents($f, '<?' . 'php return ' . z($info) . ';');
         // `dechex(crc32('comments'))`
         if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '5f9e962a.php')) {
             if (!is_dir($d)) {

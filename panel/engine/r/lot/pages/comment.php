@@ -11,6 +11,13 @@ Hook::set('_', function($_) {
             return $_;
         }
         extract($GLOBALS, EXTR_SKIP);
+        // `dechex(crc32('comments.info'))`
+        if (is_file($f = LOT . DS . 'cache' . DS . '8bead58f.php')) {
+            $info = (array) require $f;
+            unlink($f);
+        } else {
+            $info = [0];
+        }
         $d = strtr($_['f'], [
             $folder . DS => LOT . DS . 'page' . DS
         ]);
@@ -30,6 +37,7 @@ Hook::set('_', function($_) {
         $files = $comments = [];
         $count = 0;
         $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
+        $status = $user->status;
         $author = $user->user;
         $anchor = $state->x->comment->anchor[2] ?? 'comment:%s';
         // `dechex(crc32('comments'))`
@@ -55,7 +63,7 @@ Hook::set('_', function($_) {
                     $kk . '.page'
                 ])) {
                     $test = (new Page($page))['author'];
-                    $skip = $test && $test !== $author;
+                    $skip = $test && $test !== $author && $status !== 1;
                 }
                 if ($skip) {
                     continue;
@@ -93,6 +101,7 @@ Hook::set('_', function($_) {
                         'author' => $p['author'],
                         'tags' => [
                             'is:' . $x => true,
+                            'is:current' => $info[0] > 0,
                             'type:comment' => true
                         ],
                         'tasks' => [
@@ -118,6 +127,7 @@ Hook::set('_', function($_) {
                             ]
                         ]
                     ];
+                    --$info[0];
                 }
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $comments;
                 $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager'] = [

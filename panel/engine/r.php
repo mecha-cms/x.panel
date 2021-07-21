@@ -21,6 +21,13 @@ return (static function($icons) {
             'skip' => !q(g($k)) // Hide menu if folder is empty
         ];
     }
+    // `dechex(crc32('comments.info'))`
+    if (isset($folders['comment']) && isset($state->x->comment) && is_file($f = LOT . DS . 'cache' . DS . '8bead58f.php')) {
+        $info = (array) require $f;
+        if (!empty($info[0])) {
+            $folders['comment']['info'] = $info[0];
+        }
+    }
     $i = 10;
     $list = [];
     foreach ((new Anemon($folders))->sort([1, 'title'], true) as $k => $v) {
