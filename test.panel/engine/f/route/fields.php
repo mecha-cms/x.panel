@@ -17,6 +17,31 @@ function fields($_) {
                 'type' => 'blobs',
                 'name' => 'default[blobs]'
             ],
+            'button' => [
+                'title' => 'Button',
+                'hint' => 'A Button',
+                'type' => 'button',
+                'name' => 'default[button]'
+            ],
+            'buttons' => [
+                'title' => 'Buttons',
+                'type' => 'buttons',
+                'name' => 'default[buttons]',
+                'lot' => [
+                    1 => [
+                        'title' => 'Button 1',
+                        'value' => 1
+                    ],
+                    2 => [
+                        'title' => 'Button 2',
+                        'value' => 2
+                    ],
+                    3 => [
+                        'title' => 'Button 3',
+                        'value' => 3
+                    ],
+                ]
+            ],
             'color' => [
                 'title' => 'Color',
                 'type' => 'color',

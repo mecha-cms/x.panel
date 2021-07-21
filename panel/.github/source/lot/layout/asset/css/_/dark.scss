@@ -1,0 +1,469 @@
+$base: #222 !default;
+$mix: #fff !default;
+
+$body: sans-serif !default;
+$code: monospace !default;
+
+@function dark($percent: 0%) {
+  @return mix($mix, $base, $percent);
+}
+
+.is\:dark {
+  background: dark(0%);
+  border-color: dark(5%);
+  font-family: $body;
+  color: dark(60%);
+  a {
+    &[href] {
+      color: dark(40%);
+      &:focus,
+      &:active {
+        color: dark(50%);
+      }
+    }
+    &.not\:active {
+      color: dark(20%);
+    }
+  }
+  blockquote,
+  caption,
+  figcaption,
+  .description {
+    color: dark(50%);
+  }
+  code, .code {
+    font-family: $code;
+  }
+  fieldset, hr,
+  .table td,
+  .table th {
+    border-color: dark(5%);
+  }
+  pre {
+    > code {
+      background: dark(5%);
+      color: inherit;
+    }
+    &.is\:text {
+      > code {
+        background: none;
+        border-color: dark(5%);
+      }
+    }
+  }
+  .alert {
+    p {
+      background: dark(1%);
+    }
+  }
+  .button {
+    &,
+    &[href] {
+      background: dark(30%);
+      color: dark(95%);
+      &:not(.not\:active) {
+        &:focus {
+          background: dark(40%);
+          color: dark(95%);
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+        }
+        &:active {
+          background: dark(20%);
+          color: dark(95%);
+        }
+      }
+    }
+  }
+  .input,
+  .select,
+  .textarea {
+    background: dark(5%);
+    border-color: dark(10%);
+    color: dark(70%);
+    &:focus {
+      border-color: dark(15%);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+      &:invalid {
+        border-color: mix(red, dark(15%), 50%);
+        color: mix(red, dark(70%), 50%);
+        box-shadow: 0 0 0 3px rgba(0, 255, 255, .025);
+      }
+    }
+    &.not\:active,
+    &[disabled] {
+      &,
+      &:focus,
+      &:active {
+        opacity: 1;
+        background: none;
+        border-color: dark(5%);
+        box-shadow: none;
+      }
+    }
+  }
+  .input {
+    &[type='color'],
+    &[type='file'],
+    &[type='image'],
+    &[type='range'] {
+      background: none;
+    }
+  }
+  .select {
+    optgroup,
+    option {
+      background: dark(5%);
+      color: inherit;
+    }
+  }
+  .lot\:field {
+    .lot\:f {
+      > .button,
+      > .fix,
+      > .options > .button {
+        background: dark(4%);
+        border-color: dark(10%);
+        &:focus {
+          background: dark(0%);
+          border-color: dark(15%);
+        }
+      }
+    }
+  }
+  .lot\:field.type\:toggle {
+    .input {
+      &[type='checkbox'] {
+        &::before {
+          background: dark(90%);
+        }
+        &:checked {
+          &::before {
+            background: dark(90%);
+          }
+        }
+      }
+    }
+  }
+  .lot\:bar {
+    > ul {
+      > li {
+        > a {
+          &:focus,
+          &:hover {
+            background: dark(1%);
+          }
+        }
+        &.is\:separator {
+          background: dark(5%);
+        }
+      }
+    }
+    .not\:active {
+      opacity: 1;
+      color: dark(20%);
+      > a {
+        color: inherit;
+      }
+      &.is\:current {
+        color: dark(25%);
+      }
+    }
+    .lot\:field {
+      .input {
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  .lot\:fields {
+    > .description {
+      border-bottom-color: dark(5%);
+    }
+    .option-picker,
+    .tag-picker {
+      background: dark(5%);
+      border-color: dark(10%);
+      color: dark(70%);
+      &:focus,
+      &:focus-within {
+        border-color: dark(15%);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+      }
+    }
+    .option-picker {
+      &::after {
+        border-top-color: dark(70%);
+      }
+      &.open {
+        &::after {
+          border-bottom-color: dark(70%);
+        }
+      }
+      > div {
+        background: inherit;
+        border-color: inherit;
+        color: inherit;
+        a {
+          &:hover {
+            background: dark(10%);
+            color: inherit;
+          }
+          &.active {
+            background: dark(10%);
+            color: dark(95%);
+          }
+        }
+      }
+    }
+    .tag-picker {
+      .tag {
+        &:not(.editor) {
+          background: dark(15%);
+          color: inherit;
+          &:focus {
+            background: dark(20%);
+          }
+        }
+      }
+    }
+  }
+  .lot\:menu {
+    background: dark(0%);
+    color: dark(60%);
+    a {
+      &:focus,
+      &:hover {
+        background: dark(1%);
+      }
+    }
+    li {
+      &:focus,
+      &:hover {
+        > a {
+          background: dark(1%);
+        }
+      }
+      &.is\:current {
+        > a {
+          background: dark(2%);
+          &:focus,
+          &:hover {
+            background: dark(3%);
+          }
+        }
+      }
+      &.is\:separator {
+        background: dark(5%);
+      }
+      .title {
+        small {
+          background: dark(5%);
+          color: dark(65%);
+        }
+      }
+    }
+    .not\:active {
+      opacity: 1;
+      color: dark(20%);
+      > a {
+        color: inherit;
+      }
+      &.is\:current {
+        color: dark(25%);
+      }
+    }
+  }
+  .lot\:files {
+    .is\:file {
+      &::before {
+        background: dark(0%);
+        border-color: dark(30%);
+      }
+      &::after {
+        border-bottom-color: dark(30%);
+        border-left-color: dark(30%);
+      }
+    }
+    .is\:folder {
+      &::before {
+        background: dark(60%);
+      }
+      &::after {
+        background: dark(40%);
+      }
+    }
+  }
+  .lot\:files,
+  .lot\:pages {
+    li {
+      border-color: dark(0%);
+      &:hover {
+        background: dark(1%);
+        border-color: dark(1%);
+      }
+      &.is\:current {
+        background: dark(2%);
+        border-color: dark(2%);
+        &:hover {
+          background: dark(3%);
+          border-color: dark(3%);
+        }
+      }
+    }
+    .lot\:tasks {
+      gap: 0;
+      > * {
+        .title {
+          span {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .lot\:pager {
+    > span {
+      > a {
+        background: dark(30%);
+        color: dark(95%);
+        &:focus {
+          background: dark(40%);
+          color: dark(95%);
+        }
+        &:active {
+          background: dark(20%);
+          color: dark(95%);
+        }
+      }
+      > b,
+      > span {
+        background: none;
+        color: inherit;
+      }
+    }
+  }
+  .lot\:tabs {
+    > nav {
+      li {
+        border-color: dark(5%);
+        a:not(.has\:link) {
+          color: inherit;
+          &:focus {
+            color: dark(70%);
+          }
+        }
+        &.is\:current {
+          &::before,
+          &::after {
+            border-color: dark(5%);
+          }
+        }
+        @media (min-width: 720px) {
+          &:not(.is\:current) {
+            background: dark(1%);
+            color: dark(60%);
+          }
+        }
+        &.not\:active {
+          opacity: 1;
+          color: dark(20%);
+        }
+      }
+    }
+  }
+  .input {
+    &[type='checkbox'],
+    &[type='radio'] {
+      background: dark(30%);
+      &:not(.not\:active):focus {
+        background: dark(40%);
+      }
+      &:not(.not\:active):active {
+        background: dark(20%);
+      }
+      &.not\:active,
+      &[disabled] {
+        &,
+        &:focus,
+        &:active {
+          opacity: 1;
+          background: dark(20%);
+        }
+      }
+      &::before {
+        background: dark(0);
+      }
+      &:checked {
+        &::before {
+          background: none;
+        }
+      }
+    }
+    &[type='checkbox'] {
+      &:checked {
+        &::before {
+          border-right-color: dark(95%);
+          border-bottom-color: dark(95%);
+        }
+      }
+    }
+    &[type='radio'] {
+      &:checked {
+        &::before {
+          border-color: dark(0%);
+        }
+      }
+    }
+    &[type='range'] {
+      &:not(.not\:active) {
+        &:focus {
+          box-shadow: none;
+          &::-webkit-slider-runnable-track {
+            background: dark(15%);
+          }
+          &::-webkit-slider-thumb {
+            background: dark(40%);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+          }
+          &::-moz-range-track {
+            background: dark(15%);
+          }
+          &::-moz-range-thumb {
+            background: dark(40%);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+          }
+        }
+        &:active {
+          &::-webkit-slider-thumb {
+            background: dark(20%);
+          }
+          &::-moz-range-thumb {
+            background: dark(20%);
+          }
+        }
+      }
+      &::-webkit-slider-runnable-track {
+        background: dark(10%);
+      }
+      &::-webkit-slider-thumb {
+        background: dark(30%);
+      }
+      &::-moz-range-track {
+        background: dark(10%);
+      }
+      &::-moz-range-thumb {
+        background: dark(30%);
+      }
+      &.not\:active,
+      &[disabled] {
+        &,
+        &:focus,
+        &:active {
+          opacity: 1;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}

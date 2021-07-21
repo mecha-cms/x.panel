@@ -1,0 +1,12 @@
+$base: #fff !default;
+$mix: #808080 !default;
+
+$body: sans-serif !default;
+$code: monospace !default;
+
+@function light($percent: 0%) {
+  @return mix($mix, $base, $percent);
+}
+
+.is\:light {}
+

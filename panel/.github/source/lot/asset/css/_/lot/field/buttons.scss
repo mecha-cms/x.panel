@@ -1,9 +1,19 @@
 .lot\:field.type\:buttons {
+  > label {
+    + div,
+    + br + div {
+      .options {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+  }
   .lot\:f {
     display: inline-flex;
-    .button {
+    > .button,
+    > .options > .button {
       + .button {
-        margin-left: 1px;
+        margin-left: -1px;
       }
     }
   }

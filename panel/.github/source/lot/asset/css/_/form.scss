@@ -60,7 +60,7 @@ label {
 .textarea {
   &:focus:invalid {
     color: $color-error;
-    border-color: $color-border-error;
+    border-color: $color-error;
     box-shadow: none;
   }
 }
@@ -249,6 +249,33 @@ label {
     &,
     &::before {
       border-radius: 100%;
+    }
+  }
+  &[type='range'] {
+    @include appearance(none);
+    &::-webkit-slider-runnable-track {
+      background: $color;
+      border: 0;
+      height: 2px;
+    }
+    &::-webkit-slider-thumb {
+      width: ($x / 2);
+      height: $y;
+      background: $color-back-button;
+      border: 0;
+      border-radius: 0;
+    }
+    &::-moz-range-track {
+      background: $color;
+      border: 0;
+      height: 2px;
+    }
+    &::-moz-range-thumb {
+      width: ($x / 2);
+      height: $y;
+      background: $color-back-button;
+      border: 0;
+      border-radius: 0;
     }
   }
 }

@@ -12,5 +12,6 @@ return [
         'size' => [0, 125829120],
         // Move deleted file(s) to the trash folder?
         'trash' => true
-    ]
+    ],
+    'skin' => 'minima'
 ];

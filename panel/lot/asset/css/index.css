@@ -75,10 +75,6 @@ u {
 
 .not\:active .button[disabled],
 .not\:active .input[disabled],
-.not\:active .lot\:field > label + div .lot\:f .fix[disabled],
-.lot\:field > label + div .lot\:f .not\:active .fix[disabled],
-.not\:active .lot\:field > label + br + div .lot\:f .fix[disabled],
-.lot\:field > label + br + div .lot\:f .not\:active .fix[disabled],
 .not\:active .not\:active,
 .not\:active .select[disabled],
 .not\:active .textarea[disabled] {
@@ -804,8 +800,6 @@ legend + ul {
 
 .button,
 .input,
-.lot\:field > label + div .lot\:f .fix,
-.lot\:field > label + br + div .lot\:f .fix,
 .select,
 .textarea {
   display: inline-block;
@@ -825,8 +819,6 @@ legend + ul {
 
 .button:focus,
 .input:focus,
-.lot\:field > label + div .lot\:f .fix:focus,
-.lot\:field > label + br + div .lot\:f .fix:focus,
 .select:focus,
 .textarea:focus {
   z-index: 1;
@@ -835,11 +827,7 @@ legend + ul {
 .button[disabled],
 .button.not\:active,
 .input[disabled],
-.lot\:field > label + div .lot\:f .fix[disabled],
-.lot\:field > label + br + div .lot\:f .fix[disabled],
 .input.not\:active,
-.lot\:field > label + div .lot\:f .not\:active.fix,
-.lot\:field > label + br + div .lot\:f .not\:active.fix,
 .select[disabled],
 .select.not\:active,
 .textarea[disabled],
@@ -850,8 +838,6 @@ legend + ul {
 
 .button[readonly],
 .input[readonly],
-.lot\:field > label + div .lot\:f .fix[readonly],
-.lot\:field > label + br + div .lot\:f .fix[readonly],
 .select[readonly],
 .textarea[readonly] {
   border-style: dotted;
@@ -880,11 +866,9 @@ label {
 }
 
 .input:focus:invalid,
-.lot\:field > label + div .lot\:f .fix:focus:invalid,
-.lot\:field > label + br + div .lot\:f .fix:focus:invalid,
 .textarea:focus:invalid {
   color: #c00;
-  border-color: #f00;
+  border-color: #c00;
   box-shadow: none;
 }
 
@@ -903,23 +887,13 @@ label {
 }
 
 .input[type='color'],
-.lot\:field > label + div .lot\:f .fix[type='color'],
-.lot\:field > label + br + div .lot\:f .fix[type='color'],
 .input[type='file'],
-.lot\:field > label + div .lot\:f .fix[type='file'],
-.lot\:field > label + br + div .lot\:f .fix[type='file'],
-.input[type='range'],
-.lot\:field > label + div .lot\:f .fix[type='range'],
-.lot\:field > label + br + div .lot\:f .fix[type='range'] {
+.input[type='range'] {
   cursor: pointer;
 }
 
 .input[type='file'],
-.lot\:field > label + div .lot\:f .fix[type='file'],
-.lot\:field > label + br + div .lot\:f .fix[type='file'],
-.input[type='range'],
-.lot\:field > label + div .lot\:f .fix[type='range'],
-.lot\:field > label + br + div .lot\:f .fix[type='range'] {
+.input[type='range'] {
   background: none;
   border: 0;
   padding: 0;
@@ -928,17 +902,9 @@ label {
 }
 
 .input[type='checkbox'],
-.lot\:field > label + div .lot\:f .fix[type='checkbox'],
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox'],
 .input[type='color'],
-.lot\:field > label + div .lot\:f .fix[type='color'],
-.lot\:field > label + br + div .lot\:f .fix[type='color'],
 .input[type='image'],
-.lot\:field > label + div .lot\:f .fix[type='image'],
-.lot\:field > label + br + div .lot\:f .fix[type='image'],
-.input[type='radio'],
-.lot\:field > label + div .lot\:f .fix[type='radio'],
-.lot\:field > label + br + div .lot\:f .fix[type='radio'] {
+.input[type='radio'] {
   margin: 0;
   padding: 0;
   background: none;
@@ -950,35 +916,23 @@ label {
 }
 
 .input[type='checkbox'][readonly],
-.lot\:field > label + div .lot\:f .fix[type='checkbox'][readonly],
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox'][readonly],
-.input[type='radio'][readonly],
-.lot\:field > label + div .lot\:f .fix[type='radio'][readonly],
-.lot\:field > label + br + div .lot\:f .fix[type='radio'][readonly] {
+.input[type='radio'][readonly] {
   pointer-events: none;
 }
 
-.input[type='color'],
-.lot\:field > label + div .lot\:f .fix[type='color'],
-.lot\:field > label + br + div .lot\:f .fix[type='color'] {
+.input[type='color'] {
   width: 36px;
   height: 36px;
 }
 
-.input[type='image'],
-.lot\:field > label + div .lot\:f .fix[type='image'],
-.lot\:field > label + br + div .lot\:f .fix[type='image'] {
+.input[type='image'] {
   width: auto;
   height: auto;
   box-shadow: none;
 }
 
 .input[type='number']::-webkit-inner-spin-button,
-.lot\:field > label + div .lot\:f .fix[type='number']::-webkit-inner-spin-button,
-.lot\:field > label + br + div .lot\:f .fix[type='number']::-webkit-inner-spin-button,
-.input[type='number']::-webkit-outer-spin-button,
-.lot\:field > label + div .lot\:f .fix[type='number']::-webkit-outer-spin-button,
-.lot\:field > label + br + div .lot\:f .fix[type='number']::-webkit-outer-spin-button {
+.input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -986,11 +940,7 @@ label {
 }
 
 .input[type='number'],
-.lot\:field > label + div .lot\:f .fix[type='number'],
-.lot\:field > label + br + div .lot\:f .fix[type='number'],
-.input[type='search'],
-.lot\:field > label + div .lot\:f .fix[type='search'],
-.lot\:field > label + br + div .lot\:f .fix[type='search'] {
+.input[type='search'] {
   -webkit-appearance: textfield;
   -moz-appearance: textfield;
   appearance: textfield;
@@ -1062,11 +1012,7 @@ label.not\:active {
 }
 
 .input[type='checkbox'],
-.lot\:field > label + div .lot\:f .fix[type='checkbox'],
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox'],
-.input[type='radio'],
-.lot\:field > label + div .lot\:f .fix[type='radio'],
-.lot\:field > label + br + div .lot\:f .fix[type='radio'] {
+.input[type='radio'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -1074,26 +1020,14 @@ label.not\:active {
 }
 
 .input[type='checkbox'].not\:active,
-.lot\:field > label + div .lot\:f .fix[type='checkbox'].not\:active,
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox'].not\:active,
 .input[type='checkbox'][disabled],
-.lot\:field > label + div .lot\:f .fix[type='checkbox'][disabled],
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox'][disabled],
 .input[type='radio'].not\:active,
-.lot\:field > label + div .lot\:f .fix[type='radio'].not\:active,
-.lot\:field > label + br + div .lot\:f .fix[type='radio'].not\:active,
-.input[type='radio'][disabled],
-.lot\:field > label + div .lot\:f .fix[type='radio'][disabled],
-.lot\:field > label + br + div .lot\:f .fix[type='radio'][disabled] {
+.input[type='radio'][disabled] {
   background: #000;
 }
 
 .input[type='checkbox']::before,
-.lot\:field > label + div .lot\:f .fix[type='checkbox']::before,
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox']::before,
-.input[type='radio']::before,
-.lot\:field > label + div .lot\:f .fix[type='radio']::before,
-.lot\:field > label + br + div .lot\:f .fix[type='radio']::before {
+.input[type='radio']::before {
   content: "";
   position: absolute;
   top: 2px;
@@ -1104,17 +1038,11 @@ label.not\:active {
 }
 
 .input[type='checkbox']:checked::before,
-.lot\:field > label + div .lot\:f .fix[type='checkbox']:checked::before,
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox']:checked::before,
-.input[type='radio']:checked::before,
-.lot\:field > label + div .lot\:f .fix[type='radio']:checked::before,
-.lot\:field > label + br + div .lot\:f .fix[type='radio']:checked::before {
+.input[type='radio']:checked::before {
   background: none;
 }
 
-.input[type='checkbox']:checked::before,
-.lot\:field > label + div .lot\:f .fix[type='checkbox']:checked::before,
-.lot\:field > label + br + div .lot\:f .fix[type='checkbox']:checked::before {
+.input[type='checkbox']:checked::before {
   top: 1px;
   right: 5px;
   bottom: 4px;
@@ -1127,20 +1055,48 @@ label.not\:active {
   visibility: visible;
 }
 
-.input[type='radio']:checked::before,
-.lot\:field > label + div .lot\:f .fix[type='radio']:checked::before,
-.lot\:field > label + br + div .lot\:f .fix[type='radio']:checked::before {
+.input[type='radio']:checked::before {
   border: 2px solid #fff;
   visibility: visible;
 }
 
 .input[type='radio'],
-.lot\:field > label + div .lot\:f .fix[type='radio'],
-.lot\:field > label + br + div .lot\:f .fix[type='radio'],
-.input[type='radio']::before,
-.lot\:field > label + div .lot\:f .fix[type='radio']::before,
-.lot\:field > label + br + div .lot\:f .fix[type='radio']::before {
+.input[type='radio']::before {
   border-radius: 100%;
+}
+
+.input[type='range'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.input[type='range']::-webkit-slider-runnable-track {
+  background: #000;
+  border: 0;
+  height: 2px;
+}
+
+.input[type='range']::-webkit-slider-thumb {
+  width: 12px;
+  height: 24px;
+  background: #00f;
+  border: 0;
+  border-radius: 0;
+}
+
+.input[type='range']::-moz-range-track {
+  background: #000;
+  border: 0;
+  height: 2px;
+}
+
+.input[type='range']::-moz-range-thumb {
+  width: 12px;
+  height: 24px;
+  background: #00f;
+  border: 0;
+  border-radius: 0;
 }
 
 .icon {
@@ -1285,9 +1241,7 @@ label.not\:active {
   height: inherit;
 }
 
-.lot\:bar .lot\:field .input,
-.lot\:bar .lot\:field > label + div .lot\:f .fix,
-.lot\:bar .lot\:field > label + br + div .lot\:f .fix {
+.lot\:bar .lot\:field .input {
   display: block;
   width: 192px;
   height: 48px;
@@ -1390,8 +1344,8 @@ label.not\:active {
   position: relative;
 }
 
-.lot\:field > label + div .lot\:f * + *,
-.lot\:field > label + br + div .lot\:f * + * {
+.lot\:field > label + div .lot\:f > * + *,
+.lot\:field > label + br + div .lot\:f > * + * {
   margin-left: -1px;
 }
 
@@ -1402,13 +1356,22 @@ label.not\:active {
 
 .lot\:field > label + div .lot\:f .fix,
 .lot\:field > label + br + div .lot\:f .fix {
+  display: inline-block;
+  vertical-align: middle;
   background: none;
+  border: 1px solid;
   width: auto;
   min-width: 0;
   max-width: 50%;
+  height: 36px;
+  line-height: 22px;
+  padding: 6px 12px;
   cursor: default;
   white-space: nowrap;
+  text-align: left;
   text-overflow: ellipsis;
+  position: relative;
+  z-index: 0;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -1421,25 +1384,26 @@ label.not\:active {
   padding: 5px 0;
 }
 
-.lot\:field > label + div .lot\:f .button,
-.lot\:field > label + br + div .lot\:f .button {
+.lot\:field > label + div .lot\:f > .button,
+.lot\:field > label + div .lot\:f > .options > .button,
+.lot\:field > label + br + div .lot\:f > .button,
+.lot\:field > label + br + div .lot\:f > .options > .button {
   background: none;
   color: inherit;
   border-width: 1px;
   line-height: 22px;
 }
 
-.lot\:field > label + div .lot\:f .button:focus,
-.lot\:field > label + div .lot\:f .button:active,
-.lot\:field > label + br + div .lot\:f .button:focus,
-.lot\:field > label + br + div .lot\:f .button:active {
+.lot\:field > label + div .lot\:f > .button:focus,
+.lot\:field > label + div .lot\:f > .button:active,
+.lot\:field > label + div .lot\:f > .options > .button:focus,
+.lot\:field > label + div .lot\:f > .options > .button:active,
+.lot\:field > label + br + div .lot\:f > .button:focus,
+.lot\:field > label + br + div .lot\:f > .button:active,
+.lot\:field > label + br + div .lot\:f > .options > .button:focus,
+.lot\:field > label + br + div .lot\:f > .options > .button:active {
   background: rgba(0, 0, 0, 0.05);
   color: inherit;
-}
-
-.lot\:field > label + div .lot\:f .lot\:f .button + .button,
-.lot\:field > label + br + div .lot\:f .lot\:f .button + .button {
-  margin-left: -1px;
 }
 
 .lot\:field > label + div .options,
@@ -1448,12 +1412,19 @@ label.not\:active {
   padding: 6px 0;
 }
 
+.lot\:field.type\:buttons > label + div .options,
+.lot\:field.type\:buttons > label + br + div .options {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .lot\:field.type\:buttons .lot\:f {
   display: inline-flex;
 }
 
-.lot\:field.type\:buttons .lot\:f .button + .button {
-  margin-left: 1px;
+.lot\:field.type\:buttons .lot\:f > .button + .button,
+.lot\:field.type\:buttons .lot\:f > .options > .button + .button {
+  margin-left: -1px;
 }
 
 .lot\:field.type\:colors > label + div .options,
@@ -1700,7 +1671,7 @@ label.not\:active {
 
 .lot\:field.type\:option .option-picker.width {
   display: flex;
-  width: auto;
+  width: 100%;
 }
 
 .lot\:field.type\:option .option-picker > b {
@@ -1709,6 +1680,10 @@ label.not\:active {
 
 .lot\:field.type\:option .option-picker > div {
   line-height: 24px;
+}
+
+.lot\:field.type\:option .option-picker-source + .option-picker {
+  margin-left: 0;
 }
 
 .lot\:field.type\:option .option-picker-source:not([multiple]) + .option-picker.open {
@@ -1845,7 +1820,7 @@ label.not\:active {
 
 .lot\:field.type\:query .tag-picker.width {
   display: flex;
-  width: auto;
+  width: 100%;
 }
 
 .lot\:field.type\:query .tag-picker .tag {
@@ -1860,30 +1835,22 @@ label.not\:active {
   position: fixed;
 }
 
-.lot\:field.type\:toggle .input[type='checkbox'],
-.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox'],
-.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'],
-.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox'],
-.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'] {
+.lot\:field.type\:query .tag-picker-source + .tag-picker {
+  margin-left: 0;
+}
+
+.lot\:field.type\:toggle .input[type='checkbox'] {
   width: 32px;
   height: 20px;
   border-width: 0;
   border-radius: 10px;
 }
 
-.lot\:field.type\:toggle .input[type='checkbox'][disabled],
-.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox'][disabled],
-.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'][disabled],
-.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox'][disabled],
-.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox'][disabled] {
+.lot\:field.type\:toggle .input[type='checkbox'][disabled] {
   background: #000;
 }
 
-.lot\:field.type\:toggle .input[type='checkbox']::before,
-.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox']::before,
-.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']::before,
-.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox']::before,
-.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']::before {
+.lot\:field.type\:toggle .input[type='checkbox']::before {
   border: 0;
   width: 16px;
   height: 16px;
@@ -1897,11 +1864,7 @@ label.not\:active {
   visibility: visible;
 }
 
-.lot\:field.type\:toggle .input[type='checkbox']:checked::before,
-.lot\:field.type\:toggle .lot\:field > label + div .lot\:f .fix[type='checkbox']:checked::before,
-.lot\:field > label + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']:checked::before,
-.lot\:field.type\:toggle .lot\:field > label + br + div .lot\:f .fix[type='checkbox']:checked::before,
-.lot\:field > label + br + div .lot\:f .lot\:field.type\:toggle .fix[type='checkbox']:checked::before {
+.lot\:field.type\:toggle .input[type='checkbox']:checked::before {
   left: 14px;
 }
 
@@ -2437,9 +2400,7 @@ pre.is\:text code {
   .lot\:bar .lot\:field > * {
     margin: 0;
   }
-  .lot\:bar .lot\:field .input,
-  .lot\:bar .lot\:field > label + div .lot\:f .fix,
-  .lot\:bar .lot\:field > label + br + div .lot\:f .fix {
+  .lot\:bar .lot\:field .input {
     display: block;
     width: 100%;
     margin: 0;

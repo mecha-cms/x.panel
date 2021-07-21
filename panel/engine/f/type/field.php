@@ -31,6 +31,55 @@ function blobs($value, $key) {
     return \x\panel\type\field($out, $key);
 }
 
+function button($value, $key) {
+    $out = \x\panel\to\field($value, $key);
+    $out['content'][0] = 'button';
+    $out['content'][1] = \i($value['hint'] ?? $value['title'] ?? $value['value'] ?? $key);
+    $out['content'][2]['type'] = 'button';
+    \x\panel\_set_class($out['content'][2], \array_replace([
+        'button' => true
+    ], $value['tags'] ?? []));
+    return \x\panel\type\field($out, $key);
+}
+
+function buttons($value, $key) {
+    $out = \x\panel\to\field($value, $key);
+    $out['content'][0] = 'div';
+    $name = $value['name'] ?? $key;
+    if (isset($value['lot'])) {
+        if (!isset($value['sort']) || $value['sort']) {
+            \sort($value['lot']);
+        }
+        $count = 0;
+        foreach ($value['lot'] as $k => $v) {
+            if (null === $v || false === $v || !empty($v['skip'])) {
+                continue;
+            }
+            ++$count;
+            if (\is_string($v)) {
+                $v = ['value' => $v];
+            }
+            $n = $name . '[' . $k . ']';
+            $content = \x\panel\to\field($v, $k);
+            $content[0] = 'button';
+            $content[1] = \i($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k);
+            \x\panel\_set_class($content[2], \array_replace([
+                'button' => true
+            ], $v['tags'] ?? []));
+            $content[2]['name'] = $n;
+            $content[2]['type'] = 'button';
+            $out['content'][1] .= new \HTML($content);
+        }
+        unset($value['lot']);
+    }
+    \x\panel\_set_class($out['content'][2], \array_replace([
+        'count:' . $count => true,
+        'options' => true
+    ], $value['tags'] ?? []));
+    unset($out['content'][2]['name']);
+    return \x\panel\type\field($out, $key);
+}
+
 function color($value, $key) {
     $out = \x\panel\to\field($value, $key);
     $out['content'][0] = 'input';
@@ -67,7 +116,9 @@ function colors($value, $key) {
             $content = \x\panel\to\field($v, $k);
             $content[0] = 'input';
             $content[1] = false;
-            $content[2]['class'] = 'input';
+            \x\panel\_set_class($content[2], \array_replace([
+                'input' => true
+            ], $v['tags'] ?? []));
             $content[2]['name'] = $n;
             $content[2]['type'] = 'color';
             if ($the_value = \x\panel\to\color((string) ($v['value'] ?? ""))) {
@@ -569,7 +620,7 @@ function toggle($value, $key) {
         'type' => 'checkbox',
         'value' => 'true' // Force value to be `true`
     ]]);
-    $t = \i(...((array) ($value['hint'] ?? \S)));
+    $t = \i(...((array) ($value['hint'] ?? $value['title'] ?? \S)));
     $out['content'][0] = 'div';
     $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
     \x\panel\_set_class($out['content'][2], [

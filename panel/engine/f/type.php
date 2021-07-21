@@ -116,8 +116,7 @@ function field($value, $key) {
         $tags['has:title'] = true;
     }
     $tags['has:description'] = !empty($value['description']);
-    $before = "";
-    $after = "";
+    $before = $after = "";
     foreach (['before', 'after'] as $v) {
         if (isset($value['value-' . $v])) {
             $vv = $value['value-' . $v];
@@ -151,11 +150,11 @@ function field($value, $key) {
             }
         }
         $out[1] .= '<div>';
-        $out[1] .= $before || $after ? '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">' : "";
+        $out[1] .= '<div class="lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">';
         $out[1] .= $before;
         $out[1] .= \x\panel\to\content($value['content']);
         $out[1] .= $after;
-        $out[1] .= $before || $after ? '</div>' : "";
+        $out[1] .= '</div>';
         $out[1] .= \x\panel\to\description($value['description'] ?? "");
         $out[1] .= '</div>';
     } else if (isset($value['lot'])) {

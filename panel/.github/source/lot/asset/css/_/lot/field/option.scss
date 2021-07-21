@@ -13,7 +13,7 @@
     }
     &.width {
       display: flex;
-      width: auto;
+      width: 100%;
     }
     > b {
       padding: 0;
@@ -22,6 +22,9 @@
       line-height: $h;
     }
     &-source {
+      + .option-picker {
+        margin-left: 0;
+      }
       &:not([multiple]) {
         + .option-picker {
           &.open {

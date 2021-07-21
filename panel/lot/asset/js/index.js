@@ -3150,10 +3150,11 @@
             buttons.forEach((button, index) => {
                 button._tabIndex = index;
                 onEvent('click', button, onClick);
-            }); // let buttonCurrent = buttons.find(button => hasClass(getParent(button), 'is:current'));
-            // if (buttonCurrent) {
-            //     input.value = getDatum(buttonCurrent, 'name');
-            // }
+            });
+            let buttonCurrent = buttons.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
+            if (buttonCurrent) {
+                input.value = getDatum(buttonCurrent, 'name');
+            }
         });
     }
     /* Fetch(s) */

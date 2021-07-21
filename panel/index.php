@@ -42,6 +42,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'lot' => [],
     'path' => null,
     'sort' => $state['sort'] ?? 1,
+    'skin' => [],
     'state' => $state,
     'task' => null,
     'title' => null,
