@@ -352,7 +352,7 @@ $code: monospace !default;
     }
   }
   .lot\:tabs {
-    > nav {
+    > .lot\:links {
       li {
         border-color: dark(5%);
         a:not(.has\:link) {

@@ -1,5 +1,5 @@
 .lot\:tabs {
-  > nav {
+  > .lot\:links {
     ul,
     li {
       display: flex;
@@ -32,21 +32,14 @@
       }
     }
   }
-  > section {
-    margin-top: $y;
-    display: none;
-    &.is\:current {
-      display: block;
-    }
-  }
   &.count\:0 {
     display: none;
   }
   &.count\:1 {
-    > nav {
+    > .lot\:links {
       display: none;
     }
-    > section {
+    > .lot\:tab {
       margin-top: 0;
     }
   }

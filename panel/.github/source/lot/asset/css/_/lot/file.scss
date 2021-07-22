@@ -1,0 +1,58 @@
+.lot\:file {
+  display: flex;
+  border: 0 solid $color-back;
+  margin: 0 (-$x / 4);
+  padding: ($y / 4) ($x / 2);
+  position: relative;
+  overflow: hidden;
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    width: $x;
+    height: $y;
+    position: absolute;
+    top: ($y / 4);
+    left: ($x / 4);
+  }
+  > * {
+    margin: 0 ($x / 8);
+  }
+  > .lot\:tasks {
+    margin-right: (-$x / 4);
+  }
+  &.is\:file,
+  &.is\:folder {
+    padding-left: ($x * 1.75);
+  }
+  &.is\:file {
+    &::before {
+      border: 1px solid;
+      width: 20px; // Magic :(
+    }
+    &::after {
+      width: 0;
+      height: 0;
+      border: 3px solid; // Magic :(
+      border-top-color: inherit;
+      border-right-color: inherit;
+      left: 20px; // Magic :(
+    }
+  }
+  &.is\:folder {
+    &::before {
+      background: $color;
+      height: 18px;
+      top: 11px;
+    }
+    &::after {
+      background: $color;
+      width: 12px;
+      height: 3px;
+      top: 7px;
+    }
+  }
+  &.not\:active {
+    opacity: .5;
+  }
+}

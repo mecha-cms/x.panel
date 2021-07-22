@@ -1,0 +1,7 @@
+.lot\:tab {
+  margin-top: $y;
+  display: none;
+  &.is\:current {
+    display: block;
+  }
+}

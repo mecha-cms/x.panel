@@ -14,14 +14,6 @@
         }
       }
     }
-    &.is\:file,
-    &.is\:folder {
-      padding-left: ($x / 4);
-      &::before,
-      &::after {
-        display: none;
-      }
-    }
   }
   h3 {
     font-size: ($z * 1.25);
