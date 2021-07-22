@@ -230,6 +230,8 @@ function file($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
         'is:file' => true,
+        'lot' => true,
+        'lot:file' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $out = [
@@ -321,6 +323,8 @@ function folder($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
         'is:folder' => true,
+        'lot' => true,
+        'lot:folder' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $out = [
@@ -343,6 +347,10 @@ function folder($value, $key) {
 }
 
 function folders($value, $key) {
+    $value['tags'] = \array_replace($value['tags'] ?? [], [
+        'lot:files' => false,
+        'lot:folders' => true
+    ]);
     return \x\panel\type\files($value, $key);
 }
 
@@ -538,6 +546,8 @@ function page($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
         'is:file' => true,
+        'lot' => true,
+        'lot:page' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $path = $value['path'] ?? $key;
