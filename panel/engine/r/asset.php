@@ -37,12 +37,15 @@ Hook::set('get', function() {
     ];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
     $skin = $state->x->panel->skin ?? null;
-    if ($skin && isset($_['skin'][$skin]) && is_file($_['skin'][$skin])) {
-        $out['panel.skin.' . $skin] = [
-            'id' => false,
-            'path' => $_['skin'][$skin],
-            'stack' => 20.1
-        ];
+    if ($skin && isset($_['skin'][$skin])) {
+        $f = !is_array($_['skin'][$skin]) ? $_['skin'][$skin] : ($_['skin'][$skin]['path'] ?? null);
+        if ($f && is_file($f)) {
+            $out['panel.skin.' . $skin] = [
+                'id' => false,
+                'path' => $f,
+                'stack' => 20.1
+            ];
+        }
     }
     $GLOBALS['_']['asset'] = array_replace_recursive($out, $GLOBALS['_']['asset'] ?? []);
 }, 20);

@@ -82,7 +82,7 @@ HTML;
         $_ = \array_replace_recursive($_ ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
         if (1 === \count($_['chop'])) {
-            $panes = $paths = [];
+            $panes = $paths = $skins = [];
             foreach (\glob(\LOT . \DS . '*', \GLOB_NOSORT | \GLOB_ONLYDIR) as $panel) {
                 $n = \basename($panel);
                 if (false !== \strpos('_.-', $n[0])) {
@@ -95,6 +95,21 @@ HTML;
             }
             \asort($panes);
             \asort($paths);
+            if (!empty($_['skin'])) {
+                foreach ($_['skin'] as $k => $v) {
+                    if (!\is_array($v)) {
+                        $v = [
+                            'title' => \S . $k . \S,
+                            'path' => $v
+                        ];
+                    }
+                    $skins[$k] = [
+                        'active' => !empty($v['path']) && \is_file($v['path']),
+                        'title' => $v['title'] ?? \S . $k . \S
+                    ];
+                }
+            }
+            $skins['none'] = 'None';
             $zones = \Cache::hit(__FILE__, function() {
                 $zones = [];
                 $regions = [
@@ -222,7 +237,7 @@ HTML;
                                                                     'type' => 'option',
                                                                     'name' => 'state[x][panel][skin]',
                                                                     'value' => $state_r['x']['panel']['skin'] ?? $state_panel['skin'] ?? null,
-                                                                    'lot' => ['none' => 'None'],
+                                                                    'lot' => $skins,
                                                                     'stack' => 30
                                                                 ]
                                                             ],

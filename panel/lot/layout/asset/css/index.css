@@ -226,7 +226,12 @@
   color: inherit;
 }
 
-.is\:dark .lot\:fields .tag-picker .tag:not(.editor):focus {
+.is\:dark .lot\:fields .tag-picker .tag:not(.editor):focus,
+.is\:dark .lot\:fields .tag-picker .tag:not(.editor):focus-within {
+  background: #4e4e4e;
+}
+
+.is\:dark .lot\:fields .tag-picker.focus\.tags .tag:not(.editor) {
   background: #4e4e4e;
 }
 

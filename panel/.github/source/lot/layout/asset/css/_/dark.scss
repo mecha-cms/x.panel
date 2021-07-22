@@ -221,7 +221,15 @@ $code: monospace !default;
         &:not(.editor) {
           background: dark(15%);
           color: inherit;
-          &:focus {
+          &:focus,
+          &:focus-within {
+            background: dark(20%);
+          }
+        }
+      }
+      &.focus\.tags {
+        .tag {
+          &:not(.editor) {
             background: dark(20%);
           }
         }
