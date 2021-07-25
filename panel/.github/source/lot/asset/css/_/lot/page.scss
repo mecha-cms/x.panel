@@ -1,0 +1,11 @@
+.lot\:page {
+  @extend .lot\:file;
+  &.is\:file,
+  &.is\:folder {
+    padding-left: ($x / 4);
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
