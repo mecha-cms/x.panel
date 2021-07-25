@@ -1235,6 +1235,13 @@
         PROP_INDEX = 'i',
         PROP_SOURCE = '$',
         PROP_VALUE = 'v';
+    var KEY_ARROW_DOWN = 'ArrowDown';
+    var KEY_ARROW_UP = 'ArrowUp';
+    var KEY_END$1 = 'End';
+    var KEY_ENTER$1 = 'Enter';
+    var KEY_ESCAPE = 'Escape';
+    var KEY_START = 'Home';
+    var KEY_TAB$1 = 'Tab';
 
     function OP(source, state) {
         if (state === void 0) {
@@ -1285,7 +1292,7 @@
         }
 
         function getOptionFakeSelected(selectBoxFakeOption) {
-            return hasClass(selectBoxFakeOption, 'active');
+            return hasClass(selectBoxFakeOption, classNameOptionM + 'active');
         }
 
         function letOptionSelected(selectBoxOption) {
@@ -1294,7 +1301,7 @@
         }
 
         function letOptionFakeSelected(selectBoxFakeOption) {
-            letClass(selectBoxFakeOption, 'active');
+            letClass(selectBoxFakeOption, classNameOptionM + 'active');
         }
 
         function setOptionSelected(selectBoxOption) {
@@ -1303,7 +1310,7 @@
         }
 
         function setOptionFakeSelected(selectBoxFakeOption) {
-            setClass(selectBoxFakeOption, 'active');
+            setClass(selectBoxFakeOption, classNameOptionM + 'active');
         }
 
         function setLabelContent(content) {
@@ -1326,10 +1333,18 @@
                 }
             }
         }
-        var className = state['class'],
+        var classNameB = state['class'],
+            classNameE = classNameB + '__',
+            classNameM = classNameB + '--',
+            classNameOptionB = classNameE + 'option',
+            classNameOptionM = classNameOptionB + '--',
+            classNameOptionsB = classNameE + 'options',
+            classNameOptionsM = classNameOptionsB + '--',
+            classNameValueB = classNameE + 'value',
+            classNameValuesB = classNameE + 'values',
             selectBox = setElement(source, {
-                'class': className + '-source',
-                'tabindex': -1
+                'class': classNameE + 'source',
+                'tabindex': '-1'
             }),
             selectBoxIsDisabled = function selectBoxIsDisabled() {
                 return selectBox.disabled;
@@ -1343,17 +1358,20 @@
             selectBoxTitle = selectBox.title,
             selectBoxValue = getValue(),
             selectBoxFake = setElement('div', {
-                'class': className,
-                'tabindex': 0,
+                'class': classNameB,
+                'tabindex': '0',
                 'title': selectBoxTitle
             }),
-            selectBoxFakeLabel = setElement('b', "\u200C"),
+            selectBoxFakeLabel = setElement('div', "\u200C", {
+                'class': classNameValuesB
+            }),
             selectBoxFakeDropDown = setElement('div', {
-                'tabindex': -1
+                'class': classNameOptionsB,
+                'tabindex': '-1'
             }),
             selectBoxFakeOptions = [],
-            keyIsCtrl = false,
-            keyIsShift = false;
+            _keyIsCtrl = false,
+            _keyIsShift = false;
         if (selectBoxMultiple && !selectBoxSize) {
             selectBox.size = selectBoxSize = state.size;
         }
@@ -1361,17 +1379,17 @@
         setNext(selectBox, selectBoxFake);
 
         function doBlur() {
-            letClass(selectBoxFake, 'focus');
+            letClass(selectBoxFake, classNameM + 'focus');
             fire('blur', getLot());
         }
 
         function doFocus() {
-            setClass(selectBoxFake, 'focus');
+            setClass(selectBoxFake, classNameM + 'focus');
             fire('focus', getLot());
         }
 
         function doEnter() {
-            setClass(selectBoxFake, 'open');
+            setClass(selectBoxFake, classNameM + 'open');
             fire('enter', getLot());
         }
 
@@ -1379,19 +1397,23 @@
             if (selectBoxMultiple || selectBoxSize) {
                 return;
             }
-            letClass(selectBoxFake, 'open');
+            letClass(selectBoxFake, classNameM + 'open');
             fire('exit', getLot());
         }
 
         function doToggle(force) {
-            toggleClass(selectBoxFake, 'open', force);
+            toggleClass(selectBoxFake, classNameM + 'open', force);
             var isOpen = isEnter();
             fire(isOpen ? 'enter' : 'exit', getLot());
             return isOpen;
         }
 
+        function doValue(content, value, index, classNames) {
+            return '<span class="' + classNameValueB + ' ' + classNames + '" data-index="' + index + '"' + (value ? ' data-value="' + value + '"' : "") + '>' + content + '</span>';
+        }
+
         function isEnter() {
-            return hasClass(selectBoxFake, 'open');
+            return hasClass(selectBoxFake, classNameM + 'open');
         }
 
         function onSelectBoxFocus() {
@@ -1412,7 +1434,7 @@
                 value;
             e && e.isTrusted && onSelectBoxFocus();
             offEventDefault(e);
-            if (selectBoxMultiple && keyIsCtrl) {
+            if (selectBoxMultiple && _keyIsCtrl) {
                 if (getOptionFakeSelected(selectBoxFakeOption)) {
                     letOptionSelected(selectBoxOption);
                     letOptionFakeSelected(selectBoxFakeOption);
@@ -1425,18 +1447,18 @@
                         content = getText(selectBoxFakeOptions[i]);
                         index = selectBoxFakeOptions[i][PROP_INDEX];
                         value = selectBoxFakeOptions[i][PROP_VALUE];
-                        content = '<i class="' + getClasses(selectBoxFakeOptions[i], false) + '" data-index="' + index + '"' + (hasAttribute(selectBoxFakeOptions[i], 'data-value') ? ' data-value="' + value + '"' : "") + '>' + content + '</i>';
+                        content = doValue(content, value, index, getClasses(selectBoxFakeOptions[i], false));
                         selectBoxFakeLabelContent.push(content);
                     }
                 }
-                setLabelContent(selectBoxFakeLabelContent.join(state.join));
+                setLabelContent(selectBoxFakeLabelContent.join('<span>' + state.join + '</span>'));
                 fire('change', getLot());
                 return;
             }
             content = getText(selectBoxFakeOption);
             index = selectBoxFakeOption[PROP_INDEX];
             value = selectBoxFakeOption[PROP_VALUE];
-            content = '<i class="' + getClasses(selectBoxFakeOption, false) + '" data-index="' + index + '"' + (hasAttribute(selectBoxFakeOption, 'data-value') ? ' data-value="' + value + '"' : "") + '>' + content + '</i>';
+            content = doValue(content, value, index, getClasses(selectBoxFakeOption, false));
             setLabelContent(content);
             selectBoxFakeOptions.forEach(function(selectBoxFakeOption) {
                 if (selectBoxValue === selectBoxFakeOption[PROP_VALUE]) {
@@ -1471,19 +1493,19 @@
         }
 
         function onSelectBoxFakeKeyDown(e) {
-            keyIsCtrl = e.ctrlKey;
-            keyIsShift = e.shiftKey;
+            _keyIsCtrl = e.ctrlKey;
+            _keyIsShift = e.shiftKey;
             var key = e.key,
                 selectBoxOptionIndexCurrent = selectBox.selectedIndex,
                 selectBoxFakeOption = selectBoxFakeOptions[selectBoxOptionIndexCurrent],
                 selectBoxFakeOptionIsDisabled = function selectBoxFakeOptionIsDisabled(selectBoxFakeOption) {
-                    return hasClass(selectBoxFakeOption, 'lock');
+                    return hasClass(selectBoxFakeOption, classNameOptionM + 'lock');
                 },
                 doClick = function doClick(selectBoxFakeOption) {
                     return onSelectBoxFakeOptionClick.call(selectBoxFakeOption);
                 },
                 isOpen = isEnter();
-            if ('ArrowDown' === key) {
+            if (KEY_ARROW_DOWN === key) {
                 while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
                         break;
@@ -1491,7 +1513,7 @@
                 }
                 selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
                 offEventDefault(e);
-            } else if ('ArrowUp' === key) {
+            } else if (KEY_ARROW_UP === key) {
                 while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
                         break;
@@ -1499,7 +1521,7 @@
                 }
                 selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
                 offEventDefault(e);
-            } else if ('End' === key) {
+            } else if (KEY_END$1 === key) {
                 selectBoxOptionIndexCurrent = toCount(selectBoxOptions);
                 while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
@@ -1508,11 +1530,11 @@
                 }
                 selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
                 offEventDefault(e);
-            } else if ('Enter' === key) {
+            } else if (KEY_ENTER$1 === key) {
                 doToggle(), offEventDefault(e);
-            } else if ('Escape' === key) {
+            } else if (KEY_ESCAPE === key) {
                 !selectBoxSize && doExit(); // offEventDefault(e);
-            } else if ('Home' === key) {
+            } else if (KEY_START === key) {
                 selectBoxOptionIndexCurrent = 0;
                 while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
@@ -1521,15 +1543,15 @@
                 }
                 selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
                 offEventDefault(e);
-            } else if ('Tab' === key) {
+            } else if (KEY_TAB$1 === key) {
                 selectBoxFakeOption && doClick(selectBoxFakeOption);
                 !selectBoxSize && doExit(); // offEventDefault(e);
             }
-            isOpen && !keyIsCtrl && !keyIsShift && setSelectBoxFakeOptionsPosition(selectBoxFake);
+            isOpen && !_keyIsCtrl && !_keyIsShift && setSelectBoxFakeOptionsPosition(selectBoxFake);
         }
 
         function onSelectBoxFakeKeyUp() {
-            keyIsCtrl = keyIsShift = false;
+            _keyIsCtrl = _keyIsShift = false;
         }
 
         function onSelectBoxParentClick(e) {
@@ -1550,7 +1572,9 @@
 
         function setSelectBoxFakeOptions(selectBoxItem, parent) {
             if ('optgroup' === getName(selectBoxItem)) {
-                var selectBoxFakeOptionGroup = setElement('span'),
+                var selectBoxFakeOptionGroup = setElement('span', {
+                        'class': classNameE + 'group'
+                    }),
                     _selectBoxItems = getChildren(selectBoxItem);
                 selectBoxFakeOptionGroup.title = selectBoxItem.label;
                 for (var i = 0, _j4 = toCount(_selectBoxItems); i < _j4; ++i) {
@@ -1563,6 +1587,7 @@
                 selectBoxOptionValueReal = selectBoxOptionValue,
                 selectBoxOptionText = getText(selectBoxItem),
                 selectBoxFakeOption = setElement('a', selectBoxOptionText, {
+                    'class': classNameOptionB,
                     'title': selectBoxOptionText
                 });
             selectBoxOptionValue = selectBoxOptionValue || selectBoxOptionText;
@@ -1576,15 +1601,15 @@
             $.options[selectBoxOptionValue] = selectBoxOptionText;
             var selectBoxOptionIsDisabled = selectBoxItem.disabled;
             if (selectBoxOptionIsDisabled) {
-                setClass(selectBoxFakeOption, 'lock');
+                setClass(selectBoxFakeOption, classNameOptionM + 'lock');
             } else {
                 onEvent('click', selectBoxFakeOption, onSelectBoxFakeOptionClick);
             }
             setChildLast(parent, selectBoxFakeOption);
             selectBoxFakeOptions.push(selectBoxFakeOption);
             if (isArray(selectBoxValue) && hasValue(selectBoxOptionValue, selectBoxValue) || selectBoxOptionValue === selectBoxValue) {
-                setClass(selectBoxFakeOption, 'active');
-                setLabelContent('<i class="active' + (selectBoxOptionIsDisabled ? ' lock' : "") + '" data-index="' + selectBoxOptionIndex + '"' + (selectBoxOptionValueReal ? ' data-value="' + selectBoxOptionValueReal + '"' : "") + '>' + selectBoxOptionText + '</i>');
+                setClass(selectBoxFakeOption, classNameOptionM + 'active');
+                setLabelContent(doValue(selectBoxOptionText, selectBoxOptionValueReal, selectBoxOptionIndex, classNameOptionB + ' ' + (selectBoxOptionIsDisabled ? ' ' + classNameOptionM + 'lock' : "")));
                 setOptionSelected(selectBoxItem);
             } else {
                 letOptionSelected(selectBoxItem);
@@ -1617,13 +1642,13 @@
                         'bottom': heightWindow - top - selectBoxFakeBorderBottomWidth,
                         'max-height': heightMax + selectBoxFakeBorderTopWidth
                     });
-                    setClass(selectBoxFakeDropDown, 'up');
+                    setClass(selectBoxFakeDropDown, classNameOptionsM + 'flip');
                 } else {
-                    letClass(selectBoxFakeDropDown, 'up');
+                    letClass(selectBoxFakeDropDown, classNameOptionsM + 'flip');
                 }
             }
             var selectBoxFakeOption = selectBoxFakeOptions.find(function(selectBoxFakeOption) {
-                return hasClass(selectBoxFakeOption, 'active');
+                return hasClass(selectBoxFakeOption, classNameOptionM + 'active');
             });
             if (selectBoxFakeOption) {
                 var _height = getSize(selectBoxFakeOption)[1],
@@ -1663,7 +1688,7 @@
         }
         if (selectBoxSize) {
             // Force `open` class
-            setClass(selectBoxFake, 'open');
+            setClass(selectBoxFake, classNameM + 'open');
         }
         $.get = function(parseValue) {
             if (parseValue === void 0) {
@@ -1680,7 +1705,7 @@
             offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
             offEvent('click', selectBoxParent, onSelectBoxParentClick);
             offEvent('focus', selectBox, onSelectBoxFocus);
-            letClass(selectBox, className + '-source');
+            letClass(selectBox, classNameE + 'source');
             offEvent('blur', selectBoxFake, onSelectBoxFakeBlur);
             offEvent('click', selectBoxFake, onSelectBoxFakeClick);
             offEvent('focus', selectBoxFake, onSelectBoxFakeFocus);
@@ -1694,7 +1719,7 @@
             setValue(fromValue(value));
             selectBoxFakeOptions.forEach(function(selectBoxFakeOption, index) {
                 var selectBoxOption = selectBoxOptions[index];
-                toggleClass(selectBoxFakeOption, 'active', selectBoxOption && getOptionSelected(selectBoxOption));
+                toggleClass(selectBoxFakeOption, classNameOptionM + 'active', selectBoxOption && getOptionSelected(selectBoxOption));
             });
             fire('change', getLot());
             return $;
@@ -1709,7 +1734,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.0.1';
+    OP.version = '1.1.0';
     var name$1 = 'TE';
 
     function trim(str, dir) {
@@ -1980,13 +2005,15 @@
     TE.x = x;
     var delay = W.setTimeout,
         name = 'TP';
-    var KEY_A = ['a', 65];
-    var KEY_ARROW_LEFT = ['ArrowLeft', 37];
-    var KEY_ARROW_RIGHT = ['ArrowRight', 39];
-    var KEY_DELETE_LEFT = ['Backspace', 8];
-    var KEY_DELETE_RIGHT = ['Delete', 46];
-    var KEY_ENTER = ['Enter', 13];
-    var KEY_TAB = ['Tab', 9];
+    var KEY_A = 'a';
+    var KEY_ARROW_LEFT = 'ArrowLeft';
+    var KEY_ARROW_RIGHT = 'ArrowRight';
+    var KEY_BEGIN = 'Home';
+    var KEY_DELETE_LEFT = 'Backspace';
+    var KEY_DELETE_RIGHT = 'Delete';
+    var KEY_END = 'End';
+    var KEY_ENTER = 'Enter';
+    var KEY_TAB = 'Tab';
 
     function TP(source, state) {
         if (state === void 0) {
@@ -2008,342 +2035,58 @@
             },
             thePlaceholder = getAttribute(source, 'placeholder'),
             theTabIndex = getAttribute(source, 'tabindex');
-        var _hook = hook($),
-            fire = _hook.fire;
+        var _hook = hook($);
+        _hook.hooks;
+        var fire = _hook.fire;
         $.state = state = fromStates(TP.state, isString(state) ? {
             join: state
         } : state || {});
         $.source = source; // Store current instance to `TP.instances`
         TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
         source[name] = 1;
-        var editor = setElement('span', {
-                'class': 'editor tag'
+        var classNameB = state['class'],
+            classNameE = classNameB + '__',
+            classNameM = classNameB + '--',
+            form = getParentForm(source),
+            // Capture the closest `<form>` element
+            self = setElement('span', {
+                'class': classNameB,
+                'tabindex': sourceIsDisabled() ? false : '-1'
             }),
-            editorInput = setElement('span', {
+            text = setElement('span', {
+                'class': classNameE + 'tag ' + classNameE + 'text'
+            }),
+            textCopy = setElement('input', {
+                'class': classNameE + 'copy',
+                'type': 'text'
+            }),
+            textInput = setElement('span', {
                 'contenteditable': sourceIsDisabled() ? false : 'true',
                 'spellcheck': 'false',
                 'style': 'white-space:pre;'
             }),
-            editorInputPlaceholder = setElement('span'),
-            form = getParentForm(source),
-            // Capture the closest `<form>` element
-            self = setElement('span', {
-                'class': state['class'],
-                'tabindex': sourceIsDisabled() ? false : '-1'
-            }),
-            tags = setElement('span', {
-                'class': 'tags'
+            textInputHint = setElement('span'),
+            textOutput = setElement('span', {
+                'class': classNameE + 'tags'
             });
+        var currentTagIndex = 0,
+            currentTags = {};
+        var _keyIsShift, _keyIsTab;
 
-        function n(text) {
-            return $.f(text).replace(toPattern('(' + state.escape.join('|').replace(/\\/g, '\\\\') + ')+'), "").trim();
-        }
-
-        function onInput() {
-            if (sourceIsDisabled() || sourceIsReadOnly()) {
-                return setInput("");
-            }
-            var tag = n(getText(editorInput)),
-                index;
-            if (tag) {
-                if (!getTag(tag)) {
-                    setTagElement(tag), setTag(tag);
-                    index = toCount($.tags);
-                    fire('change', [tag, index]);
-                    fire('set.tag', [tag, index]);
-                } else {
-                    fire('has.tag', [tag, toArrayKey(tag, $.tags)]);
-                }
-                setInput("");
+        function getCharBeforeCaret(container) {
+            var range,
+                selection = W.getSelection();
+            if (selection.rangeCount > 0) {
+                range = selection.getRangeAt(0).cloneRange();
+                range.collapse(true);
+                range.setStart(container, 0);
+                return (range + "").slice(-1);
             }
         }
 
-        function onBlurInput() {
-            onInput();
-            letClasses(self, ['focus', 'focus.input']);
-            fire('blur', [$.tags, toCount($.tags)]);
+        function getCurrentTags() {
+            return currentTags;
         }
-
-        function onBlurSelf() {
-            letClasses(self, ['focus.self', 'focus.tags']);
-        }
-
-        function onClickInput() {
-            fire('click', [$.tags]);
-        }
-
-        function onFocusInput() {
-            setClass(self, 'focus');
-            setClass(self, 'focus.input');
-            fire('focus', [$.tags]);
-        }
-
-        function onKeyDownInput(e) {
-            offEventPropagation(e);
-            var escape = state.escape,
-                key = e.key,
-                // Modern browser(s)
-                keyCode = e.keyCode,
-                // Legacy browser(s)
-                keyIsCtrl = e.ctrlKey,
-                keyIsEnter = KEY_ENTER[0] === key || KEY_ENTER[1] === keyCode,
-                keyIsShift = e.shiftKey,
-                keyIsTab = KEY_TAB[0] === key || KEY_TAB[1] === keyCode,
-                tag,
-                theTagLast = getPrev(editor),
-                theTagsCount = toCount($.tags),
-                theTagsMax = state.max,
-                theValueLast = n(getText(editorInput)); // Last value before delay
-            // Set preferred key name
-            if (keyIsEnter) {
-                key = '\n';
-            } else if (keyIsTab) {
-                key = '\t';
-            } // Skip `Tab` key
-            if (keyIsTab);
-            else if (keyIsCtrl && "" === theValueLast && (KEY_A[0] === key || KEY_A[1] === keyCode)) {
-                self.focus(), onFocusSelf(e), offEventDefault(e);
-            } else if (sourceIsDisabled() || sourceIsReadOnly()) {
-                // Submit the closest `<form>` element with `Enter` key
-                if (keyIsEnter && sourceIsReadOnly()) {
-                    doSubmitTry();
-                }
-                offEventDefault(e);
-            } else if (hasValue(key, escape) || hasValue(keyCode, escape)) {
-                if (theTagsCount < theTagsMax) {
-                    // Add the tag name found in the tag editor
-                    onInput();
-                } else {
-                    setInput("");
-                    fire('max.tags', [theTagsMax]);
-                }
-                offEventDefault(e); // Submit the closest `<form>` element with `Enter` key
-            } else if (keyIsEnter) {
-                doSubmitTry(), offEventDefault(e);
-            } else {
-                delay(function() {
-                    var text = getText(editorInput) || "",
-                        value = n(text); // Last try for buggy key detection on mobile device(s)
-                    // Check for the last typed key in the tag editor
-                    if (hasValue(text.slice(-1), escape)) {
-                        if (theTagsCount < theTagsMax) {
-                            // Add the tag name found in the tag editor
-                            onInput();
-                        } else {
-                            setInput("");
-                            fire('max.tags', [theTagsMax]);
-                        }
-                        offEventDefault(e); // Escape character only, delete!
-                    } else if ("" === value && !keyIsCtrl && !keyIsShift) {
-                        if ("" === theValueLast && (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[0] === keyCode)) {
-                            letClass(self, 'focus.tag');
-                            tag = $.tags[theTagsCount - 1];
-                            letTagElement(tag), letTag(tag);
-                            if (theTagLast) {
-                                fire('change', [tag, theTagsCount - 1]);
-                                fire('let.tag', [tag, theTagsCount - 1]);
-                            }
-                        } else if (KEY_ARROW_LEFT[0] === key || KEY_ARROW_LEFT[1] === keyCode) {
-                            // Focus to the last tag
-                            theTagLast && theTagLast.focus();
-                        }
-                    }
-                    setText(editorInputPlaceholder, value ? "" : thePlaceholder);
-                }, 0);
-            }
-        }
-
-        function onKeyDownSelf(e) {
-            $.tags;
-            var key = e.key,
-                // Modern browser(s)
-                keyCode = e.keyCode,
-                // Legacy browser(s)
-                keyIsCtrl = e.ctrlKey,
-                keyIsShift = e.shiftKey;
-            if (!sourceIsReadOnly() && !keyIsCtrl && key && 1 === toCount(key)) {
-                // Typing a single character should delete the entire tag(s)
-                setTags(""), setInput(key, 1), offEventDefault(e);
-            } else if (!keyIsCtrl && !keyIsShift) {
-                if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode || KEY_DELETE_RIGHT[0] === key || KEY_DELETE_RIGHT[1] === keyCode) {
-                    setTags(""), setInput("", 1), offEventDefault(e);
-                } else if (KEY_ARROW_RIGHT[0] === key || KEY_ARROW_RIGHT[1] === keyCode) {
-                    setInput("", 1), offEventDefault(e);
-                }
-            }
-        }
-
-        function setTags(values) {
-            // Remove …
-            if (hasParent(self)) {
-                var prev;
-                while (prev = getPrev(editor)) {
-                    letTagElement(prev.title);
-                }
-            }
-            $.tags = [];
-            source.value = ""; // … then add tag(s)
-            values = values ? values.split(state.join) : [];
-            for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
-                if (!values[i]) {
-                    break;
-                }
-                if ("" !== (value = n(values[i]))) {
-                    if (getTag(value)) {
-                        continue;
-                    }
-                    setTagElement(value), setTag(value);
-                    fire('change', [value, i]);
-                    fire('set.tag', [value, i]);
-                }
-            }
-        }
-
-        function onSubmitForm(e) {
-            if (sourceIsDisabled()) {
-                return;
-            }
-            var theTagsMin = state.min;
-            onInput(); // Force to add the tag name found in the tag editor
-            if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-                setInput("", 1);
-                fire('min.tags', [theTagsMin]);
-                offEventDefault(e);
-                return;
-            } // Do normal `submit` event
-            return 1;
-        }
-
-        function onPasteInput() {
-            delay(function() {
-                if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                    setTags(getText(editorInput));
-                }
-                setInput("");
-            }, 0);
-        }
-
-        function onClickSelf(e) {
-            if (e && self === e.target) {
-                editorInput.focus(), onClickInput();
-            }
-        }
-
-        function onFocusSelf(e) {
-            var key = e.key,
-                keyCode = e.keyCode,
-                keyIsCtrl = e.ctrlKey;
-            if (keyIsCtrl && (KEY_A[0] === key || KEY_A[1] === keyCode)) {
-                setClass(self, 'focus.tags');
-            }
-            setClass(self, 'focus.self');
-        }
-
-        function onFocusSource() {
-            editorInput.focus();
-        }
-
-        function onBlurTag() {
-            var t = this,
-                tag = t.title;
-            letClasses(self, ['focus', 'focus.tag']);
-            fire('blur.tag', [tag, toArrayKey(tag, $.tags)]);
-        }
-
-        function onClickTag() {
-            var t = this,
-                tag = t.title;
-            fire('click.tag', [tag, toArrayKey(tag, $.tags)]);
-        }
-
-        function onFocusTag() {
-            var t = this,
-                tag = t.title;
-            setClasses(self, ['focus', 'focus.tag']);
-            fire('focus.tag', [tag, toArrayKey(tag, $.tags)]);
-        }
-
-        function onClickTagX(e) {
-            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                var t = this,
-                    tag = getParent(t).title,
-                    index = toArrayKey(tag, $.tags);
-                letTagElement(tag), letTag(tag), setInput("", 1);
-                fire('change', [tag, index]);
-                fire('click.tag', [tag, index]);
-                fire('let.tag', [tag, index]);
-            }
-            offEventDefault(e);
-        }
-
-        function onKeyDownTag(e) {
-            offEventPropagation(e);
-            var key = e.key,
-                // Modern browser(s)
-                keyCode = e.keyCode,
-                // Legacy browser(s)
-                keyIsCtrl = e.ctrlKey,
-                keyIsShift = e.shiftKey,
-                t = this,
-                theTagNext = getNext(t),
-                theTagPrev = getPrev(t);
-            if (!sourceIsReadOnly() && !keyIsCtrl && key && 1 === toCount(key)) {
-                // Typing a single character should delete the tag
-                var tag = t.title,
-                    index = toArrayKey(tag, $.tags);
-                letTagElement(tag), letTag(tag), setInput(key, 1), offEventDefault(e);
-                fire('change', [tag, index]);
-                fire('let.tag', [tag, index]);
-            } else if (!keyIsCtrl && !keyIsShift) {
-                // Focus to the previous tag
-                if (!sourceIsReadOnly() && (KEY_ARROW_LEFT[0] === key || KEY_ARROW_LEFT[1] === keyCode)) {
-                    theTagPrev && (theTagPrev.focus(), offEventDefault(e)); // Focus to the next tag or to the tag input
-                } else if (!sourceIsReadOnly() && (KEY_ARROW_RIGHT[0] === key || KEY_ARROW_RIGHT[1] === keyCode)) {
-                    theTagNext && theTagNext !== editor ? theTagNext.focus() : setInput("", 1);
-                    offEventDefault(e); // Remove tag with `Backspace` or `Delete` key
-                } else if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode || KEY_DELETE_RIGHT[0] === key || KEY_DELETE_RIGHT[1] === keyCode) {
-                    if (!sourceIsReadOnly()) {
-                        var _tag = t.title,
-                            _index = toArrayKey(_tag, $.tags);
-                        letClass(self, 'focus.tag');
-                        letTagElement(_tag), letTag(_tag); // Focus to the previous tag or to the tag input after remove
-                        if (KEY_DELETE_LEFT[0] === key || KEY_DELETE_LEFT[1] === keyCode) {
-                            theTagPrev ? theTagPrev.focus() : setInput("", 1); // Focus to the next tag or to the tag input after remove
-                        } else
-                        /* if (
-                        KEY_DELETE_RIGHT[0] === key ||
-                        KEY_DELETE_RIGHT[1] === keyCode
-                        ) */
-                        {
-                            theTagNext && theTagNext !== editor ? theTagNext.focus() : setInput("", 1);
-                        }
-                        fire('change', [_tag, _index]);
-                        fire('let.tag', [_tag, _index]);
-                    }
-                    offEventDefault(e);
-                }
-            } else if (keyIsCtrl) {
-                // Select all tag(s) with `Ctrl+A` key
-                if (KEY_A[0] === key || KEY_A[1] === keyCode) {
-                    self.focus(), onFocusSelf(e), offEventDefault(e);
-                }
-            }
-        }
-
-        function setInput(value, fireFocus) {
-            setText(editorInput, value);
-            setText(editorInputPlaceholder, value ? "" : thePlaceholder);
-            if (fireFocus) {
-                editorInput.focus(); // Move caret to the end!
-                var range = D.createRange(),
-                    selection = W.getSelection();
-                range.selectNodeContents(editorInput);
-                range.collapse(false);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }
-        setInput("");
 
         function getTag(tag, fireHooks) {
             var index = toArrayKey(tag, $.tags);
@@ -2351,14 +2094,16 @@
             return isNumber(index) ? tag : null;
         }
 
-        function letTag(tag) {
-            var index = toArrayKey(tag, $.tags);
-            if (isNumber(index) && index >= 0) {
-                $.tags.splice(index, 1);
-                source.value = $.tags.join(state.join);
-                return true;
+        function setCurrentTags() {
+            currentTags = {}; // Reset!
+            var i,
+                items = getChildren(textOutput),
+                j = toCount(items) - 1; // Minus 1 to skip the tag editor element
+            for (i = 0; i < j; ++i) {
+                if (hasClass(items[i], classNameE + 'tag--focus')) {
+                    currentTags[i] = items[i];
+                }
             }
-            return false;
         }
 
         function setTag(tag, index) {
@@ -2367,44 +2112,76 @@
                 $.tags.splice(index, 0, tag);
             } else {
                 $.tags.push(tag);
-            } // Update value
+            }
             source.value = $.tags.join(state.join);
         }
 
         function setTagElement(tag, index) {
             var element = setElement('span', {
-                'class': 'tag',
+                'class': classNameE + 'tag',
                 'tabindex': sourceIsDisabled() ? false : '0',
                 'title': tag
             });
             var x = setElement('a', {
+                'class': classNameE + 'tag-x',
                 'href': "",
                 'tabindex': '-1',
                 'target': '_top'
             });
             onEvent('click', x, onClickTagX);
             setChildLast(element, x);
-            onEvent('blur', element, onBlurTag);
             onEvent('click', element, onClickTag);
-            onEvent('focus', element, onFocusTag);
-            onEvent('keydown', element, onKeyDownTag);
-            if (hasParent(tags)) {
+            onEvents(['blur', 'focus'], element, onBlurFocusTag);
+            if (hasParent(textOutput)) {
                 if (isNumber(index) && $.tags[index]) {
-                    setPrev(getChildren(tags, index), element);
+                    setPrev(getChildren(textOutput, index), element);
                 } else {
-                    setPrev(editor, element);
+                    setPrev(text, element);
                 }
+            }
+        }
+
+        function setTags(values) {
+            values = values ? values.split(state.join) : []; // Remove all tag(s) …
+            if (hasParent(self)) {
+                var theTagPrev, theTagPrevIndex, theTagPrevTitle;
+                while (theTagPrev = getPrev(text)) {
+                    letTagElement(theTagPrevTitle = theTagPrev.title);
+                    if (!hasValue(theTagPrevTitle, values)) {
+                        theTagPrevIndex = toArrayKey(theTagPrevTitle, $.tags);
+                        fire('change', [theTagPrevTitle, theTagPrevIndex]);
+                        fire('let.tag', [theTagPrevTitle, theTagPrevIndex]);
+                    }
+                }
+            }
+            $.tags = [];
+            source.value = ""; // … then add tag(s)
+            for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
+                if (!values[i]) {
+                    break;
+                }
+                if ("" !== (value = doValidTag(values[i]))) {
+                    setTagElement(value), setTag(value);
+                    fire('change', [value, i]);
+                    fire('set.tag', [value, i]);
+                }
+            }
+        }
+
+        function letTag(tag) {
+            var index = toArrayKey(tag, $.tags);
+            if (isNumber(index) && index >= 0) {
+                $.tags.splice(index, 1);
+                source.value = $.tags.join(state.join);
             }
         }
 
         function letTagElement(tag) {
             var index = toArrayKey(tag, $.tags),
                 element;
-            if (isNumber(index) && index >= 0 && (element = getChildren(tags, index))) {
-                offEvent('blur', element, onBlurTag);
+            if (isNumber(index) && index >= 0 && (element = getChildren(textOutput, index))) {
                 offEvent('click', element, onClickTag);
-                offEvent('focus', element, onFocusTag);
-                offEvent('keydown', element, onKeyDownTag);
+                offEvents(['blur', 'focus'], element, onBlurFocusTag);
                 var x = getChildFirst(element);
                 if (x) {
                     offEvent('click', x, onClickTagX);
@@ -2414,58 +2191,466 @@
             }
         }
 
+        function letTextCopy(selectTextInput) {
+            letElement(textCopy);
+            if (selectTextInput) {
+                setValue("", 1);
+            }
+        }
+
+        function setTextCopy(selectTextCopy) {
+            setChildLast(self, textCopy);
+            textCopy.value = $.tags.join(state.join);
+            if (selectTextCopy) {
+                textCopy.focus();
+                textCopy.select();
+            }
+        }
+
+        function setValue(value, fireFocus) {
+            setText(textInput, value);
+            setText(textInputHint, value ? "" : thePlaceholder);
+            if (fireFocus) {
+                textInput.focus(); // Move caret to the end!
+                var range = D.createRange(),
+                    selection = W.getSelection();
+                range.selectNodeContents(textInput);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+        setValue("");
+
+        function doBlurTags(exceptThisTag) {
+            doToTags(exceptThisTag, function() {
+                letClass(this, classNameE + 'tag--focus');
+            });
+        }
+
+        function doFocusTags(exceptThisTag) {
+            doToTags(exceptThisTag, function() {
+                setClass(this, classNameE + 'tag--focus');
+            });
+        }
+
+        function doInput() {
+            if (sourceIsDisabled() || sourceIsReadOnly()) {
+                return;
+            }
+            var tag = doValidTagChar(getText(textInput)).trim(),
+                pattern = state.pattern;
+            if (pattern && tag) {
+                if (!toPattern(pattern, "").test(tag)) {
+                    fire('not.tag', [tag, -1]);
+                    setValue(tag, 1);
+                    return;
+                }
+            }
+            setValue("");
+            if (tag = doValidTag(tag)) {
+                if (!getTag(tag)) {
+                    setTagElement(tag), setTag(tag);
+                    var index = toCount($.tags);
+                    fire('change', [tag, index]);
+                    fire('set.tag', [tag, index]);
+                } else {
+                    fire('has.tag', [tag, toArrayKey(tag, $.tags)]);
+                }
+            }
+        }
+
         function doSubmitTry() {
             onSubmitForm() && form && form.dispatchEvent(new Event('submit', {
                 cancelable: true
             }));
         }
-        setChildLast(self, tags);
-        setChildLast(tags, editor);
-        setChildLast(editor, editorInput);
-        setChildLast(editor, editorInputPlaceholder);
-        setClass(source, state['class'] + '-source');
+
+        function doToTags(exceptThisTag, then) {
+            var i,
+                items = getChildren(textOutput),
+                j = toCount(items) - 1; // Minus 1 to skip the tag editor element
+            for (i = 0; i < j; ++i) {
+                if (exceptThisTag === items[i]) {
+                    continue;
+                }
+                then.call(items[i], i);
+            }
+        }
+
+        function doValidTag(v) {
+            return doValidTagChar($.f(v)).trim();
+        }
+
+        function doValidTagChar(v) {
+            v = v || "";
+            state.escape.forEach(function(char) {
+                v = v.split(char).join("");
+            });
+            return v;
+        }
+
+        function onBlurFocusTextCopy(e) {
+            var type = e.type;
+            if ('blur' === type) {
+                doBlurTags();
+                letClasses(self, [classNameM + 'focus', classNameM + 'focus-self']);
+            } else {
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-self']);
+            }
+        }
+
+        function onBlurFocusTag(e) {
+            if (sourceIsReadOnly()) {
+                return;
+            }
+            currentTags = {}; // Reset!
+            var t = this,
+                type = e.type,
+                tag = t.title,
+                tags = $.tags,
+                index = toArrayKey(tag, tags),
+                classNameTagM = classNameE + 'tag--';
+            if ('blur' === type) {
+                if (!_keyIsShift || _keyIsTab) {
+                    doBlurTags(t);
+                    letClass(t, classNameTagM + 'focus');
+                    letClasses(self, [classNameM + 'focus', classNameM + 'focus-tag']);
+                }
+            } else {
+                setClass(t, classNameTagM + 'focus');
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-tag']);
+                currentTagIndex = index;
+                currentTags[index] = t;
+            }
+            fire(type + '.tag', [tag, index]);
+        }
+
+        function onBlurFocusText(e) {
+            var tags = $.tags,
+                type = e.type,
+                classNameTextM = classNameE + 'text--';
+            if ('blur' === type) {
+                letClass(text, classNameTextM + 'focus');
+                letClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
+                doInput();
+            } else {
+                setClass(text, classNameTextM + 'focus');
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
+                doBlurTags(text);
+            }
+            fire(type, [tags, toCount(tags)]);
+        }
+
+        function onBlurFocusSelf(e) {
+            var type = e.type;
+            if ('blur' === type) {
+                letClass(self, classNameM + 'focus');
+            } else {
+                setClass(self, classNameM + 'focus');
+            }
+        }
+
+        function onClickSelf(e) {
+            if (e && self === e.target) {
+                textInput.focus();
+            }
+            var tags = $.tags;
+            fire('click', [tags, toCount(tags)]);
+        }
+
+        function onClickTag() {
+            var t = this,
+                tag = t.title,
+                tags = $.tags;
+            fire('click.tag', [tag, toArrayKey(tag, tags)]);
+        }
+
+        function onClickTagX(e) {
+            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                var t = this,
+                    tag = getParent(t).title,
+                    index = toArrayKey(tag, $.tags);
+                letTagElement(tag), letTag(tag), setValue("", 1);
+                fire('change', [tag, index]);
+                fire('click.tag', [tag, index]);
+                fire('let.tag', [tag, index]);
+            }
+            offEventDefault(e);
+        }
+
+        function onCopyCutPasteTextCopy(e) {
+            var type = e.type;
+            if ('copy' === type) {
+                delay(function() {
+                    return letTextCopy(1);
+                });
+            } else if ('cut' === type) {
+                !sourceIsReadOnly() && setTags("");
+                delay(function() {
+                    return letTextCopy(1);
+                });
+            } else if ('paste' === type) {
+                delay(function() {
+                    !sourceIsReadOnly() && setTags(textCopy.value);
+                    letTextCopy(1);
+                });
+            }
+            delay(function() {
+                var tags = $.tags;
+                fire(type, [tags, toCount(tags)]);
+            }, 1);
+        }
+
+        function onBlurSelf() {
+            doBlurTags(), letClass(self, classNameM + 'focus-self');
+        }
+
+        function onFocusSource() {
+            textInput.focus();
+        }
+
+        function onKeyDownSelf(e) {
+            if (sourceIsDisabled()) {
+                return;
+            }
+            $.tags;
+            var key = e.key,
+                keyIsCtrl = e.ctrlKey,
+                keyIsShift = _keyIsShift = e.shiftKey,
+                classNameTagM = classNameE + 'tag--';
+            _keyIsTab = KEY_TAB === key;
+            if (sourceIsReadOnly()) {
+                return;
+            }
+            var theTag, theTagIndex, theTagNext, theTagPrev, theTagTitle, theTags;
+            if (!keyIsCtrl) {
+                // Remove tag(s) with `Backspace` or `Delete` key
+                if (!keyIsShift && (KEY_DELETE_LEFT === key || KEY_DELETE_RIGHT === key)) {
+                    setCurrentTags();
+                    theTags = getCurrentTags();
+                    var isBackspace = KEY_DELETE_LEFT === key;
+                    for (theTagIndex in theTags) {
+                        theTag = theTags[theTagIndex];
+                        letTagElement(theTagTitle = theTag.title), letTag(theTagTitle);
+                    }
+                    currentTagIndex = +(toObjectKeys(theTags)[0] || 0);
+                    if (theTag = getChildren(textOutput, isBackspace ? currentTagIndex - 1 : currentTagIndex)) {
+                        if (text === theTag) {
+                            setValue("", 1);
+                        } else {
+                            theTag.focus();
+                        }
+                    } else {
+                        setValue("", 1);
+                    }
+                    offEventDefault(e); // Focus to the first tag
+                } else if (KEY_BEGIN === key) {
+                    if (theTag = getChildren(textOutput, 0)) {
+                        theTag.focus(), offEventDefault(e);
+                    } // Focus to the last tag
+                } else if (KEY_END === key) {
+                    if (theTag = getChildren(textOutput, toCount($.tags) - 1)) {
+                        theTag.focus(), offEventDefault(e);
+                    } // Focus to the previous tag
+                } else if (KEY_ARROW_LEFT === key) {
+                    if (theTag = getChildren(textOutput, currentTagIndex - 1)) {
+                        var theTagWasFocus = hasClass(theTag, classNameTagM + 'focus');
+                        theTag.focus(), offEventDefault(e);
+                        if (keyIsShift) {
+                            theTagNext = getNext(theTag);
+                            if (theTagWasFocus) {
+                                letClass(theTagNext, classNameTagM + 'focus');
+                            }
+                        } else {
+                            doBlurTags(theTag);
+                        }
+                    } else if (!keyIsShift) {
+                        doBlurTags(getChildren(textOutput, 0));
+                    } // Focus to the next tag or to the tag editor
+                } else if (KEY_ARROW_RIGHT === key) {
+                    if (theTag = getChildren(textOutput, currentTagIndex + 1)) {
+                        var _theTagWasFocus = hasClass(theTag, classNameTagM + 'focus');
+                        text === theTag && !keyIsShift ? setValue("", 1) : theTag.focus(), offEventDefault(e);
+                        if (keyIsShift) {
+                            theTagPrev = getPrev(theTag);
+                            if (_theTagWasFocus) {
+                                letClass(theTagPrev, classNameTagM + 'focus');
+                            }
+                        } else {
+                            doBlurTags(theTag);
+                        }
+                    }
+                }
+            } else {
+                // Select all tag(s) with `Ctrl+A` key
+                if (KEY_A === key) {
+                    setTextCopy(1);
+                    doFocusTags(), setCurrentTags(), offEventDefault(e);
+                }
+            }
+        }
+
+        function onKeyDownText(e) {
+            offEventPropagation(e);
+            if (sourceIsReadOnly()) {
+                offEventDefault(e);
+            }
+            var escapes = state.escape,
+                theTag,
+                theTagLast = getPrev(text),
+                theTagsCount = toCount($.tags),
+                theTagsMax = state.max,
+                theValue = doValidTag(getText(textInput)),
+                key = e.key,
+                keyIsCtrl = e.ctrlKey,
+                keyIsEnter = KEY_ENTER === key;
+            e.shiftKey;
+            var keyIsTab = KEY_TAB === key;
+            if (keyIsEnter) {
+                key = '\n';
+            }
+            if (keyIsTab) {
+                key = '\t';
+            }
+            delay(function() {
+                var theValueAfter = doValidTag(getText(textInput));
+                setText(textInputHint, theValueAfter ? "" : thePlaceholder); // Try to add support for browser(s) without `KeyboardEvent.prototype.key` feature
+                if (hasValue(getCharBeforeCaret(textInput), escapes)) {
+                    if (theTagsCount < theTagsMax) {
+                        // Add the tag name found in the tag editor
+                        doInput();
+                    } else {
+                        setValue("");
+                        fire('max.tags', [theTagsMax]);
+                    }
+                    offEventDefault(e);
+                }
+            }); // Select all tag(s) with `Ctrl+A` key
+            if (keyIsCtrl && "" === theValue && KEY_A === key) {
+                setTextCopy(1);
+                doFocusTags(), setCurrentTags(), offEventDefault(e);
+                return;
+            }
+            if (hasValue(key, escapes)) {
+                if (theTagsCount < theTagsMax) {
+                    // Add the tag name found in the tag editor
+                    doInput();
+                } else {
+                    setValue("");
+                    fire('max.tags', [theTagsMax]);
+                }
+                offEventDefault(e);
+                return;
+            } // Skip `Tab` key
+            if (keyIsTab) {
+                return; // :)
+            } // Submit the closest `<form>` element with `Enter` key
+            if (!keyIsCtrl && keyIsEnter) {
+                doSubmitTry(), offEventDefault(e);
+                return;
+            }
+            if (theTagLast && "" === theValue && !sourceIsReadOnly()) {
+                if (KEY_DELETE_LEFT === key) {
+                    theTag = $.tags[theTagsCount - 1];
+                    letTagElement(theTag), letTag(theTag);
+                    fire('change', [theTag, theTagsCount - 1]);
+                    fire('let.tag', [theTag, theTagsCount - 1]);
+                    offEventDefault(e);
+                    return;
+                }
+                if (KEY_ARROW_LEFT === key) {
+                    theTagLast.focus(); // Focus to the last tag
+                    return;
+                }
+            }
+        }
+
+        function onKeyUpSelf() {
+            _keyIsShift = false;
+        }
+
+        function onPasteText() {
+            delay(function() {
+                if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                    getText(textInput).split(state.join).forEach(function(v) {
+                        if (!hasValue(v, $.tags)) {
+                            setTagElement(v), setTag(v);
+                        }
+                    });
+                }
+                setValue("");
+            });
+        }
+
+        function onSubmitForm(e) {
+            if (sourceIsDisabled()) {
+                return;
+            }
+            var theTagsMin = state.min;
+            doInput(); // Force to add the tag name found in the tag editor
+            if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+                setValue("", 1);
+                fire('min.tags', [theTagsMin]);
+                offEventDefault(e);
+                return;
+            } // Do normal `submit` event
+            return 1;
+        }
+        setChildLast(self, textOutput);
+        setChildLast(text, textInput);
+        setChildLast(text, textInputHint);
+        setChildLast(textOutput, text);
+        setClass(source, classNameE + 'source');
         setNext(source, self);
         setElement(source, {
             'tabindex': '-1'
         });
-        onEvent('blur', editorInput, onBlurInput);
         onEvent('blur', self, onBlurSelf);
-        onEvent('click', editorInput, onClickInput);
         onEvent('click', self, onClickSelf);
-        onEvent('focus', editorInput, onFocusInput);
-        onEvent('focus', self, onFocusSelf);
         onEvent('focus', source, onFocusSource);
-        onEvent('keydown', editorInput, onKeyDownInput);
         onEvent('keydown', self, onKeyDownSelf);
-        onEvent('paste', editorInput, onPasteInput);
+        onEvent('keydown', textInput, onKeyDownText);
+        onEvent('keyup', self, onKeyUpSelf);
+        onEvent('paste', textInput, onPasteText);
+        onEvents(['blur', 'focus'], self, onBlurFocusSelf);
+        onEvents(['blur', 'focus'], textCopy, onBlurFocusTextCopy);
+        onEvents(['blur', 'focus'], textInput, onBlurFocusText);
+        onEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
         form && onEvent('submit', form, onSubmitForm);
         $.blur = function() {
-            return !sourceIsDisabled() && (editorInput.blur(), onBlurInput()), $;
+            return !sourceIsDisabled() && textInput.blur(), $;
         };
         $.click = function() {
             return self.click(), onClickSelf(), $;
         }; // Default filter for the tag name
-        $.f = function(text) {
-            return toCaseLower(text || "").replace(/[^ a-z\d-]/g, "");
+        $.f = function(v) {
+            return toCaseLower(v || "").replace(/[^ a-z\d-]/g, "").trim();
         };
         $.focus = function() {
             if (!sourceIsDisabled()) {
-                editorInput.focus();
-                onFocusInput();
+                setValue(getText(textInput), 1);
             }
             return $;
         };
         $.get = function(tag) {
             return sourceIsDisabled() ? null : getTag(tag, 1);
         };
-        $.input = editorInput;
+        $.input = textInput;
         $.let = function(tag) {
             if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                var theTagsMin = state.min;
                 if (!tag) {
                     setTags("");
+                } else if (isArray(tag)) {
+                    tag.forEach(function(v) {
+                        if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+                            fire('min.tags', [theTagsMin]);
+                            return $;
+                        }
+                        letTagElement(v), letTag(v);
+                    });
                 } else {
-                    var theTagsMin = state.min;
-                    onInput();
                     if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
                         fire('min.tags', [theTagsMin]);
                         return $;
@@ -2481,17 +2666,18 @@
             }
             delete source[name];
             var tags = $.tags;
-            letClass(source, state['class'] + '-source');
-            offEvent('blur', editorInput, onBlurInput);
+            letClass(source, classNameE + 'source');
             offEvent('blur', self, onBlurSelf);
-            offEvent('click', editorInput, onClickInput);
             offEvent('click', self, onClickSelf);
-            offEvent('focus', editorInput, onFocusInput);
-            offEvent('focus', self, onFocusSelf);
             offEvent('focus', source, onFocusSource);
-            offEvent('keydown', editorInput, onKeyDownInput);
             offEvent('keydown', self, onKeyDownSelf);
-            offEvent('paste', editorInput, onPasteInput);
+            offEvent('keydown', textInput, onKeyDownText);
+            offEvent('keyup', self, onKeyUpSelf);
+            offEvent('paste', textInput, onPasteText);
+            offEvents(['blur', 'focus'], self, onBlurFocusSelf);
+            offEvents(['blur', 'focus'], textCopy, onBlurFocusTextCopy);
+            offEvents(['blur', 'focus'], textInput, onBlurFocusText);
+            offEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
             form && offEvent('submit', form, onSubmitForm);
             tags.forEach(letTagElement);
             setElement(source, {
@@ -2508,16 +2694,16 @@
                 if (isArray(tag)) {
                     setTags(tag.join(state.join));
                 } else {
-                    var _tags = $.tags,
+                    var tags = $.tags,
                         theTagsMax = state.max;
                     if (!getTag(tag)) {
-                        if (toCount(_tags) < theTagsMax) {
+                        if (toCount(tags) < theTagsMax) {
                             setTagElement(tag, index), setTag(tag, index);
                         } else {
                             fire('max.tags', [theTagsMax]);
                         }
                     } else {
-                        fire('has.tag', [tag, toArrayKey(tag, _tags)]);
+                        fire('has.tag', [tag, toArrayKey(tag, tags)]);
                     }
                 }
             }
@@ -2532,12 +2718,13 @@
     TP.instances = {};
     TP.state = {
         'class': 'tag-picker',
-        'escape': [',', 188],
+        'escape': [','],
         'join': ', ',
         'max': 9999,
-        'min': 0
+        'min': 0,
+        'pattern': null
     };
-    TP.version = '3.2.1';
+    TP.version = '3.3.1';
     var that$1 = {};
     that$1._history = [];
     that$1._historyState = -1; // Get history data

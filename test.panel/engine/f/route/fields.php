@@ -37,6 +37,7 @@ function fields($_) {
                         'value' => 2
                     ],
                     3 => [
+                        'active' => false,
                         'title' => 'Button 3',
                         'value' => 3
                     ],
@@ -57,6 +58,12 @@ function fields($_) {
                 'title' => 'Content',
                 'type' => 'content',
                 'name' => 'default[content]'
+            ],
+            'content-disabled' => [
+                'active' => false,
+                'title' => 'Content',
+                'type' => 'content',
+                'name' => 'default[content-disabled]'
             ],
             'date' => [
                 'title' => 'Date',
@@ -110,9 +117,16 @@ function fields($_) {
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
-                    3 => 'Item 3'
+                    3 => [
+                        'active' => false,
+                        'title' => 'Item 3'
+                    ],
+                    4 => [
+                        'active' => false,
+                        'title' => 'Item 4'
+                    ]
                 ],
-                'value' => 2
+                'value' => 3
             ],
             'items' => [
                 'title' => 'Items',
@@ -121,7 +135,14 @@ function fields($_) {
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
-                    3 => 'Item 3'
+                    3 => [
+                        'active' => false,
+                        'title' => 'Item 3'
+                    ],
+                    4 => [
+                        'active' => false,
+                        'title' => 'Item 4'
+                    ]
                 ],
                 'value' => [
                     2 => true,
@@ -146,6 +167,7 @@ function fields($_) {
             'option' => [
                 'title' => 'Option',
                 'type' => 'option',
+                'name' => 'default[option]',
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
@@ -163,7 +185,22 @@ function fields($_) {
                                 'value' => 'value:4.3'
                             ]
                         ]
+                    ],
+                    5 => [
+                        'active' => false,
+                        'title' => 'Other'
                     ]
+                ]
+            ],
+            'option-disabled' => [
+                'active' => false,
+                'title' => 'Option',
+                'type' => 'option',
+                'name' => 'default[option-disabled]',
+                'lot' => [
+                    1 => 'Item 1',
+                    2 => 'Item 2',
+                    3 => 'Item 3'
                 ]
             ],
             'path' => [
@@ -181,7 +218,20 @@ function fields($_) {
                 'type' => 'query',
                 'name' => 'default[query]'
             ],
+            'query-disabled' => [
+                'active' => false,
+                'title' => 'Query',
+                'type' => 'query',
+                'name' => 'default[query-disabled]'
+            ],
             'range' => [
+                'title' => 'Range',
+                'type' => 'range',
+                'name' => 'default[range]',
+                'range' => [0, 100]
+            ],
+            'range-disabled' => [
+                'active' => false,
                 'title' => 'Range',
                 'type' => 'range',
                 'name' => 'default[range]',
@@ -202,6 +252,12 @@ function fields($_) {
                 'title' => 'Text',
                 'type' => 'text',
                 'name' => 'default[text]'
+            ],
+            'text-disabled' => [
+                'active' => false,
+                'title' => 'Text',
+                'type' => 'text',
+                'name' => 'default[text-disabled]'
             ],
             'text-with-before' => [
                 'title' => 'Text',

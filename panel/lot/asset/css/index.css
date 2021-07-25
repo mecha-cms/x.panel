@@ -817,32 +817,6 @@ legend + ul {
   z-index: 0;
 }
 
-.button:focus,
-.input:focus,
-.select:focus,
-.textarea:focus {
-  z-index: 1;
-}
-
-.button[disabled],
-.button.not\:active,
-.input[disabled],
-.input.not\:active,
-.select[disabled],
-.select.not\:active,
-.textarea[disabled],
-.textarea.not\:active {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-.button[readonly],
-.input[readonly],
-.select[readonly],
-.textarea[readonly] {
-  border-style: dotted;
-}
-
 .button {
   width: auto;
   text-align: center;
@@ -1006,13 +980,39 @@ label > input[type='radio'] + span {
   vertical-align: middle;
 }
 
-label.is\:frozen {
+label.not\:active {
+  cursor: not-allowed;
+}
+
+label.is\:lock {
   opacity: .5;
   pointer-events: none;
 }
 
-label.not\:active {
+.button:focus,
+.input:focus,
+.select:focus,
+.textarea:focus {
+  z-index: 1;
+}
+
+.button[disabled],
+.button.not\:active,
+.input[disabled],
+.input.not\:active,
+.select[disabled],
+.select.not\:active,
+.textarea[disabled],
+.textarea.not\:active {
+  opacity: .5;
   cursor: not-allowed;
+}
+
+.button[readonly],
+.input[readonly],
+.select[readonly],
+.textarea[readonly] {
+  border-style: dotted;
 }
 
 .input[type='checkbox'],
@@ -1469,6 +1469,11 @@ label.not\:active {
   white-space: nowrap;
 }
 
+.option-picker,
+.option-picker * {
+  box-sizing: border-box;
+}
+
 .option-picker {
   position: relative;
   background: #fff;
@@ -1481,6 +1486,7 @@ label.not\:active {
   width: 12em;
   padding: .25em;
   cursor: pointer;
+  outline: 0;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1489,8 +1495,7 @@ label.not\:active {
   -webkit-tap-highlight-color: transparent;
 }
 
-.option-picker:focus {
-  outline: 0;
+.option-picker--focus {
   border-color: #00f;
 }
 
@@ -1509,89 +1514,25 @@ label.not\:active {
   pointer-events: none;
 }
 
-.option-picker.open::after {
+.option-picker--open::after {
   border-top: 0;
   border-bottom: 6px solid;
 }
 
-.option-picker.open > div {
+.option-picker--open .option-picker__options {
   display: block;
 }
 
-.option-picker *:focus {
+.option-picker * {
   outline: 0;
 }
 
-.option-picker > b {
-  display: block;
-  font: inherit;
-  margin-right: 1.5em;
-  padding: 0 .25em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.option-picker > b > i {
-  font: inherit;
-}
-
-.option-picker > b > i.lock {
-  color: #666;
-}
-
-.option-picker > div {
-  position: fixed;
-  z-index: 9999;
-  background: #fff;
-  border: inherit;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  overflow: auto;
-  display: none;
-}
-
-.option-picker > div a {
-  display: block;
-  padding: 0 .5em;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.option-picker > div a:hover {
-  background: #00f;
-  color: #fff;
-}
-
-.option-picker > div a.active {
-  background: none;
-  color: #00f;
-}
-
-.option-picker > div a.active:hover {
-  background: #00f;
-  color: #fff;
-}
-
-.option-picker > div a.lock {
-  color: #666;
-  cursor: not-allowed;
-}
-
-.option-picker > div a.lock:hover {
-  background: #666;
-  color: #fff;
-}
-
-.option-picker > div span {
+.option-picker__group {
   display: block;
   padding: 0 .5em;
 }
 
-.option-picker > div span[title]::before {
+.option-picker__group[title]::before {
   content: attr(title);
   display: block;
   margin: 0 -.5em;
@@ -1602,55 +1543,91 @@ label.not\:active {
   text-overflow: ellipsis;
 }
 
-.option-picker > div span a {
+.option-picker__group .option-picker__option {
   padding-left: 1.5em;
   margin: 0 -.5em;
 }
 
-.option-picker,
-.option-picker * {
-  box-sizing: border-box;
+.option-picker__option {
+  display: block;
+  padding: 0 .5em;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.option-picker-source {
+.option-picker__option:hover {
+  background: #00f;
+  color: #fff;
+}
+
+.option-picker__option--active {
+  background: none;
+  color: #00f;
+}
+
+.option-picker__option--active:hover {
+  background: #00f;
+  color: #fff;
+}
+
+.option-picker__option--lock {
+  color: #666;
+  cursor: not-allowed;
+}
+
+.option-picker__option--lock:hover {
+  background: #666;
+  color: #fff;
+}
+
+.option-picker__options {
+  position: fixed;
+  z-index: 9999;
+  background: #fff;
+  border: inherit;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  overflow: auto;
+  display: none;
+}
+
+.option-picker__source {
   position: fixed;
   top: -9999px;
   left: -9999px;
 }
 
-.option-picker-source[disabled] + .option-picker {
+.option-picker__source[disabled] + .option-picker {
   color: #666;
   border-color: #666;
   cursor: not-allowed;
 }
 
-.option-picker-source[disabled] + .option-picker::after {
+.option-picker__source[disabled] + .option-picker::after {
   border-top-color: #666;
 }
 
-.option-picker-source[disabled] + .option-picker > b,
-.option-picker-source[disabled] + .option-picker > div {
-  pointer-events: none;
-}
-
-.option-picker-source[disabled] + .option-picker > b a,
-.option-picker-source[disabled] + .option-picker > div a {
+.option-picker__source[disabled] + .option-picker .option-picker__option {
   color: inherit;
 }
 
-.option-picker-source[size] + .option-picker {
+.option-picker__source[disabled] + .option-picker .option-picker__values,
+.option-picker__source[disabled] + .option-picker .option-picker__options {
+  pointer-events: none;
+}
+
+.option-picker__source[size] + .option-picker {
   height: auto;
 }
 
-.option-picker-source[size] + .option-picker::after {
+.option-picker__source[size] + .option-picker::after {
   display: none;
 }
 
-.option-picker-source[size] + .option-picker > b {
-  margin: 0;
-}
-
-.option-picker-source[size] + .option-picker > div {
+.option-picker__source[size] + .option-picker .option-picker__options {
   display: block;
   position: relative;
   z-index: 1;
@@ -1660,8 +1637,29 @@ label.not\:active {
   margin: .25em -.25em -.25em;
 }
 
-.option-picker-source[multiple] + .option-picker > b {
+.option-picker__source[size] + .option-picker .option-picker__values {
+  margin: 0;
+}
+
+.option-picker__source[multiple] + .option-picker .option-picker__values {
   white-space: normal;
+}
+
+.option-picker__values {
+  margin-right: 1.25em;
+  padding: 0 .25em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.option-picker__values .option-picker__value {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
 }
 
 .lot\:field.type\:option .option-picker {
@@ -1682,28 +1680,20 @@ label.not\:active {
   width: 100%;
 }
 
-.lot\:field.type\:option .option-picker > b {
-  padding: 0;
-}
-
-.lot\:field.type\:option .option-picker > div {
+.lot\:field.type\:option .option-picker__options {
   line-height: 24px;
 }
 
-.lot\:field.type\:option .option-picker-source + .option-picker {
+.lot\:field.type\:option .option-picker__source + .option-picker {
   margin-left: 0;
 }
 
-.lot\:field.type\:option .option-picker-source:not([multiple]) + .option-picker.open {
+.lot\:field.type\:option .option-picker__source:not([multiple]) + .option-picker--open {
   z-index: 9999;
 }
 
-.tag-picker {
-  background: #fff;
-  border: 1px solid #000;
-  padding: .125em;
-  cursor: text;
-  outline: 0;
+.lot\:field.type\:option .option-picker__values {
+  padding: 0;
 }
 
 .tag-picker,
@@ -1713,21 +1703,36 @@ label.not\:active {
   color: inherit;
 }
 
-.tag-picker,
-.tag-picker .tags {
+.tag-picker {
+  position: relative;
   display: flex;
   flex: 1;
   flex-wrap: wrap;
   min-height: 1.5em;
   line-height: 1.5em;
+  background: #fff;
+  border: 1px solid #000;
+  padding: .125em;
+  cursor: text;
+  outline: 0;
 }
 
-.tag-picker:focus,
-.tag-picker:focus-within {
+.tag-picker--focus {
   border-color: #00f;
 }
 
-.tag-picker .tag {
+.tag-picker__copy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.tag-picker__tag {
   background: #f00;
   color: #000;
   text-decoration: none;
@@ -1738,32 +1743,31 @@ label.not\:active {
   outline: 0;
 }
 
-.tag-picker .tag:focus,
-.tag-picker .tag:focus-within {
+.tag-picker__tag--focus {
   background: #c00;
 }
 
-.tag-picker .tag[title] a {
+.tag-picker__tag::before {
+  content: attr(title);
+}
+
+.tag-picker__tag + .tag-picker__text span + span {
+  display: none;
+}
+
+.tag-picker__tag-x {
   margin-left: .5em;
   text-decoration: none;
   color: #fff;
   outline: 0;
 }
 
-.tag-picker .tag[title] a::before {
+.tag-picker__tag-x::before {
   content: '\00d7';
   font-family: sans-serif;
 }
 
-.tag-picker .tag[title]::before {
-  content: attr(title);
-}
-
-.tag-picker .tag + .editor span + span {
-  display: none;
-}
-
-.tag-picker .tag.editor {
+.tag-picker__text {
   background: none;
   color: inherit;
   cursor: inherit;
@@ -1771,12 +1775,7 @@ label.not\:active {
   flex: 1;
 }
 
-.tag-picker .tag.editor:focus,
-.tag-picker .tag.editor:focus-within {
-  background: none;
-}
-
-.tag-picker .tag.editor span {
+.tag-picker__text span {
   display: block;
   height: 100%;
   outline: 0;
@@ -1784,7 +1783,11 @@ label.not\:active {
   z-index: 1;
 }
 
-.tag-picker .tag.editor span + span {
+.tag-picker__text span * {
+  display: inline;
+}
+
+.tag-picker__text span + span {
   position: absolute;
   top: 0;
   right: 0;
@@ -1796,41 +1799,46 @@ label.not\:active {
   opacity: .5;
 }
 
-.tag-picker.focus\.tags .tag {
-  background: #c00;
+.tag-picker__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  min-height: 1.5em;
+  line-height: 1.5em;
 }
 
-.tag-picker.focus\.tags .tag.editor {
-  background: none;
-}
-
-.tag-picker-source {
+.tag-picker__source {
   position: fixed;
   top: -9999px;
   left: -9999px;
 }
 
-.tag-picker-source[disabled] + .tag-picker {
+.tag-picker__source[disabled] + .tag-picker {
   background: #eee;
   border-color: #999;
 }
 
-.tag-picker-source[disabled] + .tag-picker,
-.tag-picker-source[disabled] + .tag-picker * {
+.tag-picker__source[disabled] + .tag-picker,
+.tag-picker__source[disabled] + .tag-picker * {
   cursor: not-allowed;
 }
 
-.tag-picker-source[disabled] + .tag-picker .tag[title] {
+.tag-picker__source[disabled] + .tag-picker .tag-picker__tag {
   background: #aaa;
 }
 
-.tag-picker-source[readonly] + .tag-picker {
+.tag-picker__source[readonly] + .tag-picker {
   background: #eee;
   border-color: #999;
 }
 
-.tag-picker-source[readonly] + .tag-picker .tag[title] a {
+.tag-picker__source[readonly] + .tag-picker .tag-picker__tag-x {
   cursor: not-allowed;
+}
+
+.tag-picker__source[disabled] + .tag-picker .tag-picker__text,
+.tag-picker__source[readonly] + .tag-picker .tag-picker__text {
+  background: none;
 }
 
 .lot\:field.type\:query .tag-picker {
@@ -1847,7 +1855,7 @@ label.not\:active {
   width: 100%;
 }
 
-.lot\:field.type\:query .tag-picker .tag {
+.lot\:field.type\:query .tag-picker__tag {
   height: 26px;
   /* ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2) */
   padding: 0 7px;
@@ -1855,11 +1863,11 @@ label.not\:active {
   border: 1px solid transparent;
 }
 
-.lot\:field.type\:query .tag-picker-source {
+.lot\:field.type\:query .tag-picker__source {
   position: fixed;
 }
 
-.lot\:field.type\:query .tag-picker-source + .tag-picker {
+.lot\:field.type\:query .tag-picker__source + .tag-picker {
   margin-left: 0;
 }
 

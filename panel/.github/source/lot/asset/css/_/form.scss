@@ -20,23 +20,6 @@
   z-index: 0;
 }
 
-.button,
-.input,
-.select,
-.textarea {
-  &:focus {
-    z-index: 1;
-  }
-  &[disabled],
-  &.not\:active {
-    opacity: .5;
-    cursor: not-allowed;
-  }
-  &[readonly] {
-    border-style: dotted;
-  }
-}
-
 .button {
   width: auto;
   text-align: center;
@@ -194,12 +177,29 @@ label {
       }
     }
   }
-  &.is\:frozen {
+  &.not\:active {
+    cursor: not-allowed;
+  }
+  &.is\:lock {
     opacity: .5;
     pointer-events: none;
   }
+}
+
+.button,
+.input,
+.select,
+.textarea {
+  &:focus {
+    z-index: 1;
+  }
+  &[disabled],
   &.not\:active {
+    opacity: .5;
     cursor: not-allowed;
+  }
+  &[readonly] {
+    border-style: dotted;
   }
 }
 

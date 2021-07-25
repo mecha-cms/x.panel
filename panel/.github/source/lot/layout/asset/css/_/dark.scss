@@ -89,17 +89,6 @@ $code: monospace !default;
         box-shadow: 0 0 0 3px rgba(255, 0, 0, .15);
       }
     }
-    &.not\:active,
-    &[disabled] {
-      &,
-      &:focus,
-      &:active {
-        opacity: 1;
-        background: none;
-        border-color: dark(5%);
-        box-shadow: none;
-      }
-    }
   }
   .input {
     &[type='color'],
@@ -185,53 +174,64 @@ $code: monospace !default;
       background: dark(5%);
       border-color: dark(10%);
       color: dark(70%);
-      &:focus,
-      &:focus-within {
+      &--focus {
         border-color: dark(15%);
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+      }
+      &.not\:active {
+        opacity: 1;
       }
     }
     .option-picker {
       &::after {
         border-top-color: dark(70%);
       }
-      &.open {
+      &--open {
         &::after {
           border-bottom-color: dark(70%);
         }
       }
-      > div {
-        background: inherit;
-        border-color: inherit;
-        color: inherit;
-        a {
+      &__option {
+        &:hover {
+          background: dark(10%);
+          color: inherit;
+        }
+        &--active {
+          background: dark(10%);
+          color: dark(95%);
           &:hover {
-            background: dark(10%);
-            color: inherit;
-          }
-          &.active {
-            background: dark(10%);
             color: dark(95%);
           }
         }
-      }
-    }
-    .tag-picker {
-      .tag {
-        &:not(.editor) {
-          background: dark(15%);
-          color: inherit;
-          &:focus,
-          &:focus-within {
-            background: dark(20%);
+        &--lock {
+          color: dark(25%);
+          &:hover {
+            background: none;
+            color: dark(25%);
           }
         }
       }
-      &.focus\.tags {
-        .tag {
-          &:not(.editor) {
-            background: dark(20%);
-          }
+      &__options {
+        background: inherit;
+        border-color: inherit;
+        color: inherit;
+      }
+      &__value {
+        background: none !important;
+      }
+    }
+    .tag-picker {
+      &__tag {
+        background: dark(15%);
+        color: inherit;
+        &--focus {
+          background: dark(20%);
+        }
+      }
+      &__text {
+        background: none;
+        &--focus {
+          background: none;
         }
       }
     }
@@ -390,15 +390,6 @@ $code: monospace !default;
       &:not(.not\:active):active {
         background: dark(20%);
       }
-      &.not\:active,
-      &[disabled] {
-        &,
-        &:focus,
-        &:active {
-          opacity: 1;
-          background: dark(20%);
-        }
-      }
       &::before {
         background: dark(0);
       }
@@ -462,15 +453,6 @@ $code: monospace !default;
       }
       &::-moz-range-thumb {
         background: dark(30%);
-      }
-      &.not\:active,
-      &[disabled] {
-        &,
-        &:focus,
-        &:active {
-          opacity: 1;
-          box-shadow: none;
-        }
       }
     }
   }

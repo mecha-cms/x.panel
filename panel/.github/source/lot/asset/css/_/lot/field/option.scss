@@ -15,23 +15,23 @@
       display: flex;
       width: 100%;
     }
-    > b {
-      padding: 0;
-    }
-    > div {
+    &__options {
       line-height: $h;
     }
-    &-source {
+    &__source {
       + .option-picker {
         margin-left: 0;
       }
       &:not([multiple]) {
         + .option-picker {
-          &.open {
+          &--open {
             z-index: 9999; // Buggy! :(
           }
         }
       }
+    }
+    &__values {
+      padding: 0;
     }
   }
 }

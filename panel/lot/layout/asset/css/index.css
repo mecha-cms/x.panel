@@ -93,30 +93,6 @@
   box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.15);
 }
 
-.is\:dark .input.not\:active,
-.is\:dark .input.not\:active:focus,
-.is\:dark .input.not\:active:active,
-.is\:dark .input[disabled],
-.is\:dark .input[disabled]:focus,
-.is\:dark .input[disabled]:active,
-.is\:dark .select.not\:active,
-.is\:dark .select.not\:active:focus,
-.is\:dark .select.not\:active:active,
-.is\:dark .select[disabled],
-.is\:dark .select[disabled]:focus,
-.is\:dark .select[disabled]:active,
-.is\:dark .textarea.not\:active,
-.is\:dark .textarea.not\:active:focus,
-.is\:dark .textarea.not\:active:active,
-.is\:dark .textarea[disabled],
-.is\:dark .textarea[disabled]:focus,
-.is\:dark .textarea[disabled]:active {
-  opacity: 1;
-  background: none;
-  border-color: #2d2d2d;
-  box-shadow: none;
-}
-
 .is\:dark .input[type='color'],
 .is\:dark .input[type='file'],
 .is\:dark .input[type='image'],
@@ -189,50 +165,73 @@
   color: #bdbdbd;
 }
 
-.is\:dark .lot\:fields .option-picker:focus,
-.is\:dark .lot\:fields .option-picker:focus-within,
-.is\:dark .lot\:fields .tag-picker:focus,
-.is\:dark .lot\:fields .tag-picker:focus-within {
+.is\:dark .lot\:fields .option-picker--focus,
+.is\:dark .lot\:fields .tag-picker--focus {
   border-color: #434343;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
+}
+
+.is\:dark .lot\:fields .option-picker.not\:active,
+.is\:dark .lot\:fields .tag-picker.not\:active {
+  opacity: 1;
 }
 
 .is\:dark .lot\:fields .option-picker::after {
   border-top-color: #bdbdbd;
 }
 
-.is\:dark .lot\:fields .option-picker.open::after {
+.is\:dark .lot\:fields .option-picker--open::after {
   border-bottom-color: #bdbdbd;
 }
 
-.is\:dark .lot\:fields .option-picker > div {
+.is\:dark .lot\:fields .option-picker__option:hover {
+  background: #383838;
+  color: inherit;
+}
+
+.is\:dark .lot\:fields .option-picker__option--active {
+  background: #383838;
+  color: #f4f4f4;
+}
+
+.is\:dark .lot\:fields .option-picker__option--active:hover {
+  color: #f4f4f4;
+}
+
+.is\:dark .lot\:fields .option-picker__option--lock {
+  color: #595959;
+}
+
+.is\:dark .lot\:fields .option-picker__option--lock:hover {
+  background: none;
+  color: #595959;
+}
+
+.is\:dark .lot\:fields .option-picker__options {
   background: inherit;
   border-color: inherit;
   color: inherit;
 }
 
-.is\:dark .lot\:fields .option-picker > div a:hover {
-  background: #383838;
-  color: inherit;
+.is\:dark .lot\:fields .option-picker__value {
+  background: none !important;
 }
 
-.is\:dark .lot\:fields .option-picker > div a.active {
-  background: #383838;
-  color: #f4f4f4;
-}
-
-.is\:dark .lot\:fields .tag-picker .tag:not(.editor) {
+.is\:dark .lot\:fields .tag-picker__tag {
   background: #434343;
   color: inherit;
 }
 
-.is\:dark .lot\:fields .tag-picker .tag:not(.editor):focus,
-.is\:dark .lot\:fields .tag-picker .tag:not(.editor):focus-within {
+.is\:dark .lot\:fields .tag-picker__tag--focus {
   background: #4e4e4e;
 }
 
-.is\:dark .lot\:fields .tag-picker.focus\.tags .tag:not(.editor) {
-  background: #4e4e4e;
+.is\:dark .lot\:fields .tag-picker__text {
+  background: none;
+}
+
+.is\:dark .lot\:fields .tag-picker__text--focus {
+  background: none;
 }
 
 .is\:dark .lot\:menu {
@@ -397,22 +396,6 @@
   background: #4e4e4e;
 }
 
-.is\:dark .input[type='checkbox'].not\:active,
-.is\:dark .input[type='checkbox'].not\:active:focus,
-.is\:dark .input[type='checkbox'].not\:active:active,
-.is\:dark .input[type='checkbox'][disabled],
-.is\:dark .input[type='checkbox'][disabled]:focus,
-.is\:dark .input[type='checkbox'][disabled]:active,
-.is\:dark .input[type='radio'].not\:active,
-.is\:dark .input[type='radio'].not\:active:focus,
-.is\:dark .input[type='radio'].not\:active:active,
-.is\:dark .input[type='radio'][disabled],
-.is\:dark .input[type='radio'][disabled]:focus,
-.is\:dark .input[type='radio'][disabled]:active {
-  opacity: 1;
-  background: #4e4e4e;
-}
-
 .is\:dark .input[type='checkbox']::before,
 .is\:dark .input[type='radio']::before {
   background: #222222;
@@ -476,14 +459,4 @@
 
 .is\:dark .input[type='range']::-moz-range-thumb {
   background: #646464;
-}
-
-.is\:dark .input[type='range'].not\:active,
-.is\:dark .input[type='range'].not\:active:focus,
-.is\:dark .input[type='range'].not\:active:active,
-.is\:dark .input[type='range'][disabled],
-.is\:dark .input[type='range'][disabled]:focus,
-.is\:dark .input[type='range'][disabled]:active {
-  opacity: 1;
-  box-shadow: none;
 }
