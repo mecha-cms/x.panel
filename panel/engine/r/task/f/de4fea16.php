@@ -2,10 +2,10 @@
 
 $_['kick'] = $_['form']['lot']['kick'] ?? $url;
 
-foreach (g(LOT . DS . 'cache', null, true) as $k => $v) {
+foreach (g($d = LOT . DS . 'cache', null, true) as $k => $v) {
     0 === $v ? rmdir($k) : unlink($k);
 }
 
-$_['alert']['success'][] = 'Cache successfully refreshed.';
+$_['alert']['success'][$d] = 'Cache successfully refreshed.';
 
 return $_;

@@ -22,39 +22,40 @@ function blob($_) {
             if (!empty($v['error'])) {
                 $_['alert']['error'][] = 'Failed to upload with error code: ' . $v['error'];
             } else {
+                $folder = \LOT . \DS . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \DS);
                 $name = \To::file(\lcfirst($v['name'])) ?? '0';
+                $f = $folder . \DS . $name;
                 $x = \pathinfo($name, \PATHINFO_EXTENSION);
                 $type = $v['type'] ?? 'application/octet-stream';
                 $size = $v['size'] ?? 0;
                 // Check for file extension
                 if ($x && false === \strpos($test_x, ',' . $x . ',')) {
-                    $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+                    $_['alert']['error'][$f] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
                 // Check for file type
                 } else if ($type && false === \strpos($test_type, ',' . $type . ',')) {
-                    $_['alert']['error'][] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
+                    $_['alert']['error'][$f] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
                 }
                 // Check for file size
                 if ($size < $test_size[0]) {
-                    $_['alert']['error'][] = ['Minimum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+                    $_['alert']['error'][$f] = ['Minimum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
                 } else if ($size > $test_size[1]) {
-                    $_['alert']['error'][] = ['Maximum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
+                    $_['alert']['error'][$f] = ['Maximum file size allowed to upload is %s.', '<code>' . \File::sizer($test_size) . '</code>'];
                 }
             }
             if (!empty($_['alert']['error'])) {
                 continue;
             } else {
-                $folder = \LOT . \DS . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \DS);
-                if (\is_file($f = $folder . \DS . $name)) {
-                    $_['alert']['error'][] = ['File %s already exists.', '<code>' . \x\panel\from\path($f) . '</code>'];
+                if (\is_file($f)) {
+                    $_['alert']['error'][$f] = ['File %s already exists.', '<code>' . \x\panel\from\path($f) . '</code>'];
                     continue;
                 }
                 if (!\is_dir($folder)) {
                     \mkdir($folder, \octdec($v['seal'] ?? '0775'), true);
                 }
                 if (\move_uploaded_file($v['tmp_name'], $f)) {
-                    $_['alert']['success'][] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($f) . '</code>'];
+                    $_['alert']['success'][$f] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($f) . '</code>'];
                     $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
-                    $_['f'] = $f;
+                    $_['f'] = $f; // For hook(s)
                     $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
                     $_['ff'][] = $f;
                     // Extract package
@@ -79,7 +80,7 @@ function blob($_) {
                     if (0 === \q(\g($folder))) {
                         \rmdir($folder);
                     }
-                    $_['alert']['error'][] = 'Error.';
+                    $_['alert']['error'][$f] = 'Error.';
                     continue;
                 }
             }
@@ -128,6 +129,7 @@ function file($_) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
+        $f = $_['f'];
         $name = \basename(\To::file(\lcfirst($_['form']['lot']['file']['name'] ?? "")));
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         // Special case for PHP file(s)
@@ -136,32 +138,32 @@ function file($_) {
             \token_get_all($_['form']['lot']['file']['content'], \TOKEN_PARSE);
         }
         if ("" === $name) {
-            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
+            $_['alert']['error'][$f] = ['Please fill out the %s field.', 'Name'];
         } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['lot']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
-            $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
-        } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \x\panel\from\path($f) . '</code>'];
-            $_['f'] = $f;
+            $_['alert']['error'][$f] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+        } else if (\stream_resolve_include_path($ff = $f . \DS . $name)) {
+            $_['alert']['error'][$ff] = [(\is_dir($ff) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \x\panel\from\path($ff) . '</code>'];
+            $_['f'] = $ff; // For hook(s)
         } else {
             if (\array_key_exists('content', $_['form']['lot']['file'] ?? [])) {
                 // Use `$_POST['file']['content']` instead of `$_['form']['lot']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
                 $_['form']['lot']['file']['content'] = $_POST['file']['content'] ?? "";
-                if (\is_writable($d = \dirname($f))) {
-                    \file_put_contents($f, $_['form']['lot']['file']['content']);
+                if (\is_writable($d = \dirname($ff))) {
+                    \file_put_contents($ff, $_['form']['lot']['file']['content']);
                 } else {
-                    $_['alert']['error'][] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($d) . '</code>']];
+                    $_['alert']['error'][$d] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($d) . '</code>']];
                 }
             }
             $seal = \octdec($_['form']['lot']['file']['seal'] ?? '0777');
             if ($seal < 0 || $seal > 0777) {
                 $seal = 0777; // Invalid file permission, return default!
             }
-            \chmod($f, $seal);
-            $_['alert']['success'][] = ['File %s successfully created.', '<code>' . \x\panel\from\path($f) . '</code>'];
+            \chmod($ff, $seal);
+            $_['alert']['success'][$ff] = ['File %s successfully created.', '<code>' . \x\panel\from\path($ff) . '</code>'];
             $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
-            $_['f'] = $f;
-            $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
+            $_['f'] = $ff; // For hook(s)
+            $_SESSION['_']['file'][\rtrim($ff, \DS)] = 1;
         }
         if (!empty($_['alert']['error'])) {
             unset($_POST['token']);
@@ -184,28 +186,30 @@ function folder($_) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
+        $f = $_['f'];
         $name = \To::folder($_['form']['lot']['folder']['name'] ?? "");
         if ("" === $name) {
-            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
-        } else if (\stream_resolve_include_path($f = $_['f'] . \DS . $name)) {
-            $_['alert']['error'][] = [(\is_dir($f) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . $f . '</code>'];
+            $_['alert']['error'][$f] = ['Please fill out the %s field.', 'Name'];
+        } else if (\stream_resolve_include_path($ff = $f . \DS . $name)) {
+            $_['alert']['error'][$ff] = [(\is_dir($ff) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \x\panel\from\path($ff) . '</code>'];
+            $_['f'] = $ff; // For hook(s)
         } else {
             $seal = \octdec($_['form']['lot']['folder']['seal'] ?? '0775');
             if ($seal < 0 || $seal > 0777) {
                 $seal = 0775; // Invalid file permission, return default!
             }
-            \mkdir($f, $seal, true);
-            $_['alert']['success'][] = ['Folder %s successfully created.', '<code>' . \x\panel\from\path($f) . '</code>'];
+            \mkdir($ff, $seal, true);
+            $_['alert']['success'][$ff] = ['Folder %s successfully created.', '<code>' . \x\panel\from\path($ff) . '</code>'];
             if (!empty($_['form']['lot']['options']['kick'])) {
-                $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($f, [
+                $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($ff, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
                 $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . $_['path'] . '/1' . $e;
             }
-            $_['f'] = $f;
-            foreach (\step(\rtrim($f, \DS), \DS) as $v) {
+            $_['f'] = $ff; // For hook(s)
+            foreach (\step(\rtrim($ff, \DS), \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }
@@ -230,6 +234,7 @@ function page($_) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
+        $f = $_['f'];
         $name = \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
         $x = $_['form']['lot']['page']['x'] ?? 'page';
         if ("" === $name) {
@@ -262,7 +267,7 @@ function page($_) {
         $_['form']['lot']['file']['name'] = $name . '.' . $x;
         $_ = file($_); // Move to `file`
         if (empty($_['alert']['error'])) {
-            if (!\is_dir($d = \Path::F($_['f']))) {
+            if (!\is_dir($d = \Path::F($f))) {
                 \mkdir($d, 0755, true);
             }
             if (isset($_['form']['lot']['data'])) {
@@ -271,9 +276,9 @@ function page($_) {
                     if ((\is_array($v) && $v = \drop($v)) || "" !== \trim($v)) {
                         if (\is_writable($dd = \dirname($ff))) {
                             \file_put_contents($ff, \is_array($v) ? \json_encode($v) : \s($v));
-                            !\defined('DEBUG') || !\DEBUG && \chmod($ff, 0600);
+                            \chmod($ff, 0600);
                         } else {
-                            $_['alert']['error'][] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($dd) . '</code>']];
+                            $_['alert']['error'][$dd] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($dd) . '</code>']];
                         }
                     }
                 }
@@ -303,7 +308,7 @@ function page($_) {
 }
 
 function state($_) {
-    // State must exists, so there is no such create event, only update
+    // State must exists, so there is no such create event, only update!
     return $_;
 }
 

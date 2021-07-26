@@ -41,8 +41,9 @@ function file($_) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
+        $f = $_['f'];
         $name = \basename(\To::file(\lcfirst($_['form']['lot']['file']['name'] ?? ""))); // New file name
-        $base = \basename($_['f']); // Old file name
+        $base = \basename($f); // Old file name
         $x = \pathinfo($name, \PATHINFO_EXTENSION);
         // Special case for PHP file(s)
         if ('php' === $x && isset($_['form']['lot']['file']['content'])) {
@@ -50,37 +51,37 @@ function file($_) {
             \token_get_all($_['form']['lot']['file']['content'], \TOKEN_PARSE);
         }
         if ("" === $name) {
-            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
+            $_['alert']['error'][$f] = ['Please fill out the %s field.', 'Name'];
         } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter(\File::$state['x'] ?? $_['form']['lot']['x[]'] ?? []))) . ',', ',' . $x . ',')) {
-            $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
-        } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['File %s already exists.', '<code>' . \x\panel\from\path($f) . '</code>'];
-            $_['f'] = $f;
+            $_['alert']['error'][$f] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+        } else if (\stream_resolve_include_path($ff = \dirname($f) . \DS . $name) && $name !== $base) {
+            $_['alert']['error'][$ff] = ['File %s already exists.', '<code>' . \x\panel\from\path($ff) . '</code>'];
+            $_['f'] = $ff; // For hook(s)
         } else {
             if (\array_key_exists('content', $_['form']['lot']['file'] ?? [])) {
                 // Use `$_POST['file']['content']` instead of `$_['form']['lot']['file']['content']` just to be sure
                 // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
                 $_['form']['lot']['file']['content'] = $_POST['file']['content'] ?? "";
-                if (!\stream_resolve_include_path($f) || \is_writable($f)) {
-                    \file_put_contents($f, $_['form']['lot']['file']['content']);
+                if (!\stream_resolve_include_path($ff) || \is_writable($ff)) {
+                    \file_put_contents($ff, $_['form']['lot']['file']['content']);
                     if ($name !== $base) {
-                        \unlink($_['f']);
+                        \unlink($f);
                     }
                 } else {
-                    $_['alert']['error'][] = ['File %s is not writable.', ['<code>' . \x\panel\from\path($f) . '</code>']];
+                    $_['alert']['error'][$ff] = ['File %s is not writable.', ['<code>' . \x\panel\from\path($ff) . '</code>']];
                 }
             } else if ($name !== $base) {
-                \rename($_['f'], $f);
+                \rename($f, $ff);
             }
             $seal = \octdec($_['form']['lot']['file']['seal'] ?? '0777');
             if ($seal < 0 || $seal > 0777) {
                 $seal = 0777; // Invalid file permission, return default!
             }
-            \chmod($f, $seal);
-            $_['alert']['success'][] = ['File %s successfully updated.', '<code>' . \x\panel\from\path($_['f']) . '</code>'];
+            \chmod($ff, $seal);
+            $_['alert']['success'][$f] = ['File %s successfully ' . ($name !== $base ? 'rename' : 'update') . 'd.', '<code>' . \x\panel\from\path($f) . '</code>'];
             $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
-            $_['f'] = $f;
-            $_SESSION['_']['file'][\rtrim($f, \DS)] = 1;
+            $_['f'] = $ff; // For hook(s)
+            $_SESSION['_']['file'][\rtrim($ff, \DS)] = 1;
         }
         if (!empty($_['alert']['error'])) {
             unset($_POST['token']);
@@ -104,16 +105,18 @@ function folder($_) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
+        $f = $_['f'];
         $name = \basename($_['form']['lot']['folder']['name'] ?? ""); // New folder name
         $base = \basename($_['f']); // Old folder name
         if ("" === $name) {
-            $_['alert']['error'][] = ['Please fill out the %s field.', 'Name'];
-        } else if (\stream_resolve_include_path($f = \dirname($_['f']) . \DS . $name) && $name !== $base) {
-            $_['alert']['error'][] = ['Folder %s already exists.', '<code>' . \x\panel\from\path($f) . '</code>'];
+            $_['alert']['error'][$f] = ['Please fill out the %s field.', 'Name'];
+        } else if (\stream_resolve_include_path($ff = \dirname($f) . \DS . $name) && $name !== $base) {
+            $_['alert']['error'][$ff] = [(\is_dir($ff) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \x\panel\from\path($ff) . '</code>'];
+            $_['f'] = $ff; // For hook(s)
         } else if ($name === $base) {
             // Do nothing
-            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \x\panel\from\path($f = $_['f']) . '</code>'];
-            if (!empty($_['form']['lot']['o']['kick'])) {
+            $_['alert']['success'][$f] = ['Folder %s successfully updated.', '<code>' . \x\panel\from\path($f) . '</code>'];
+            if (!empty($_['form']['lot']['options']['kick'])) {
                 $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($f, [
                     \LOT => "",
                     \DS => '/'
@@ -127,31 +130,31 @@ function folder($_) {
             if ($seal < 0 || $seal > 0777) {
                 $seal = 0775; // Invalid file permission, return default!
             }
-            \mkdir($f, $seal, true);
-            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($_['f'], \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
+            \mkdir($ff, $seal, true);
+            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($f, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
                 $v = $k->getPathname();
                 if ($k->isDir()) {
                     \rmdir($v);
                 } else {
-                    $vv = \strtr($v, [$_['f'] => $f]);
+                    $vv = \strtr($v, [$f => $ff]);
                     if (!\is_dir($d = \dirname($vv))) {
                         \mkdir($d, $seal, true);
                     }
                     \rename($v, $vv);
                 }
             }
-            \rmdir($_['f']);
-            $_['alert']['success'][] = ['Folder %s successfully updated.', '<code>' . \x\panel\from\path($_['f']) . '</code>'];
-            if (!empty($_['form']['lot']['o']['kick'])) {
-                $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($f, [
+            \rmdir($f);
+            $_['alert']['success'][$f] = ['Folder %s successfully updated.', '<code>' . \x\panel\from\path($f) . '</code>'];
+            if (!empty($_['form']['lot']['options']['kick'])) {
+                $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::' . \strtr($ff, [
                     \LOT => "",
                     \DS => '/'
                 ]) . '/1' . $e;
             } else {
                 $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
             }
-            $_['f'] = $f;
-            foreach (\step(\rtrim($f, \DS), \DS) as $v) {
+            $_['f'] = $ff; // For hook(s)
+            foreach (\step(\rtrim($ff, \DS), \DS) as $v) {
                 $_SESSION['_']['folder'][$v] = 1;
             }
         }
@@ -177,6 +180,7 @@ function page($_) {
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
             return $_;
         }
+        $f = $_['f'];
         $name = \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
         $x = $_['form']['lot']['page']['x'] ?? 'page';
         if ("" === $name) {
@@ -207,35 +211,35 @@ function page($_) {
         }
         $_['form']['lot']['file']['content'] = $_POST['file']['content'] = \To::page($page);
         $_['form']['lot']['file']['name'] = $name . '.' . $x;
-        $_f = $_['f']; // Get old file name
         $_ = file($_); // Move to `file`
+        $ff = $_['f']; // Get new file name
         if (empty($_['alert']['error'])) {
-            if (!\is_dir($d = \Path::F($_['f']))) {
-                \mkdir($d, 0755, true);
+            if (!\is_dir($dd = \Path::F($ff))) {
+                \mkdir($dd, 0755, true);
             }
-            if ($_['f'] !== $_f && \is_dir($_d = \Path::F($_f))) {
-                \rename($_d, $d);
+            if ($ff !== $f && \is_dir($d = \Path::F($f))) {
+                \rename($d, $dd);
             }
             if (isset($_['form']['lot']['data'])) {
                 foreach ((array) $_['form']['lot']['data'] as $k => $v) {
-                    $ff = $d . \DS . $k . '.data';
+                    $fff = $dd . \DS . $k . '.data';
                     if ((\is_array($v) && $v = \drop($v)) || "" !== \trim($v)) {
-                        if (!\stream_resolve_include_path($ff) || \is_writable($ff)) {
-                            \file_put_contents($ff, \is_array($v) ? \json_encode($v) : \s($v));
-                            !\defined('DEBUG') || !\DEBUG && \chmod($ff, 0600);
+                        if (!\stream_resolve_include_path($fff) || \is_writable($fff)) {
+                            \file_put_contents($fff, \is_array($v) ? \json_encode($v) : \s($v));
+                            \chmod($fff, 0600);
                         } else {
-                            $_['alert']['error'][] = ['File %s is not writable.', ['<code>' . \x\panel\from\path($ff) . '</code>']];
+                            $_['alert']['error'][$fff] = ['File %s is not writable.', ['<code>' . \x\panel\from\path($fff) . '</code>']];
                         }
                     } else {
-                        \is_file($ff) && \unlink($ff);
+                        \is_file($fff) && \unlink($fff);
                     }
                 }
             }
         }
     }
-    if (\is_file($f = $_['f'])) {
+    if (\is_file($ff = $_['f'])) {
         $key = \ucfirst(\ltrim($_['id'], '_.-'));
-        $path = '<code>' . \x\panel\from\path($_f ?? $f) . '</code>';
+        $path = '<code>' . \x\panel\from\path($f ?? $ff) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
             'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]
@@ -270,7 +274,7 @@ function state($_) {
             return $_;
         }
         if (\is_file($f = \LOT . \DS . \trim(\strtr($_['form']['lot']['path'] ?? $_['path'], '/', \DS), \DS))) {
-            $_['f'] = $f = \realpath($f);
+            $_['f'] = $f = \realpath($f); // For hook(s)
             $v = \drop($_['form']['lot']['state'] ?? []);
             $_['form']['lot']['file']['content'] = $_POST['file']['content'] = '<?php return ' . \z($v) . ';';
             $_ = file($_); // Move to `file`

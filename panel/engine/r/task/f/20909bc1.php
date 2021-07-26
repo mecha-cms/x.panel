@@ -25,6 +25,6 @@ foreach (g($d, 0, true) as $k => $v) {
 
 rmdir($d);
 
-$_['alert']['success'][] = 'Files successfully restored.';
+$_['alert']['success'][$d] = 'Files successfully restored.';
 
 return $_;

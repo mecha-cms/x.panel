@@ -11,7 +11,7 @@ if (false === strpos(strtr($_['f'], [\LOT . \DS => ""]), \DS)) {
 }
 
 function blob($_) {
-    $_ = file($_);
+    return file($_);
 }
 
 function data($_) {
@@ -55,7 +55,7 @@ function file($_) {
         } else {
             \unlink($f);
         }
-        $_['alert']['success'][] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \x\panel\from\path($f) . '</code>'];
+        $_['alert']['success'][$f] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \x\panel\from\path($f) . '</code>'];
         $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;
@@ -102,7 +102,7 @@ function folder($_) {
             $_SESSION['_']['folder'][\rtrim(\strtr($f, [\LOT . \DS => \LOT . \DS . 'trash' . \DS . $trash . \DS]), \DS)] = 1;
         }
         \rmdir($f);
-        $_['alert']['success'][] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \x\panel\from\path($f) . '</code>'];
+        $_['alert']['success'][$f] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \x\panel\from\path($f) . '</code>'];
         $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/1' . $e;
     }
     return $_;

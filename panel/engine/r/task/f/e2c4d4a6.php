@@ -2,10 +2,10 @@
 
 $_['kick'] = $_['form']['lot']['kick'] ?? $url;
 
-foreach (g(LOT . DS . 'trash', null, true) as $k => $v) {
+foreach (g($d = LOT . DS . 'trash', null, true) as $k => $v) {
     0 === $v ? rmdir($k) : unlink($k);
 }
 
-$_['alert']['success'][] = 'Trash is now empty.';
+$_['alert']['success'][$d] = 'Trash is now empty.';
 
 return $_;
