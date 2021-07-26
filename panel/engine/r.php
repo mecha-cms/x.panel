@@ -29,7 +29,7 @@ return (static function($icons) {
         }
     }
     if (isset($folders['trash']) && ($count = q(g(LOT . DS . 'trash', null, true)))) {
-        $folders['trash']['info'] = $count;
+        $folders['trash']['info'] = $count - q(g(LOT . DS . 'trash', 0));
     }
     $i = 10;
     $list = [];

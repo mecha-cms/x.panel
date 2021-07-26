@@ -19,7 +19,10 @@ Hook::set('_', function($_) {
                     foreach (g($k, null, true) as $kk => $vv) {
                         ++$stats[$vv];
                     }
-                    $v['description'] = ['%d folder' . (1 === $stats[0] ? "" : 's') . ', %d file' . (1 === $stats[1] ? "" : 's'), $stats];
+                    $v['description'] = implode(', ', [
+                        i('%d folder' . (1 === $stats[0] ? "" : 's'), $stats[0]),
+                        i('%d file' . (1 === $stats[0] ? "" : 's'), $stats[1])
+                    ]);
                     $v['tasks']['restore'] = [
                         'title' => 'Restore',
                         'description' => 'Restore',
