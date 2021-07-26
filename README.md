@@ -12,10 +12,10 @@ Release Notes
  - [x] Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
  - [x] Added _Data_ tab next to the _Pages_ tab for pages layout.
  - [x] Added `$_['id']` property that store the first `$_['path']` value.
+ - [x] Added `data` property to `field/*` type to quickly add hidden fields.
+ - [x] Added `data` property to `form/*` type to quickly add hidden fields.
  - [x] Added `field/button` and `field/buttons` type. Currently useless. Would be useful when combined with certain JavaScript actions, such as to open a pop-up window.
  - [x] Added `flex` and `field/flex` type.
- - [x] Added `data` property to `form/*` type to quickly add hidden fields.
- - [x] Added `data` property to `form/*` type to quickly add hidden fields.
  - [x] Added badge GUI for `link` type via `info` key.
  - [x] Added comment notification badge in the main menu.
  - [x] Added comments counter in the _Comment_ menu.
