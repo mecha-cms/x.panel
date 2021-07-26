@@ -37,6 +37,9 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
         'lot' => [
             'form' => [
                 // type: form/post
+                'data' => [
+                    'data[id]' => 's' === $_['task'] ? $id : $page->id
+                ],
                 'lot' => [
                     1 => [
                         // type: section
@@ -50,11 +53,6 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                             'fields' => [
                                                 // type: fields
                                                 'lot' => [
-                                                    'id' => [
-                                                        'type' => 'hidden',
-                                                        'name' => 'data[id]',
-                                                        'value' => 's' === $_['task'] ? $id : $page->id
-                                                    ],
                                                     'content' => ['skip' => true]
                                                 ]
                                             ]

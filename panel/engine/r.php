@@ -79,6 +79,9 @@ return (static function($icons) {
                             'stack' => 20
                         ]
                     ],
+                    'tags' => [
+                        'of:lot' => true
+                    ],
                     'stack' => 10
                 ],
                 1 => [
@@ -112,6 +115,9 @@ return (static function($icons) {
                             'stack' => 10
                         ]
                     ],
+                    'tags' => [
+                        'of:links' => true
+                    ],
                     'stack' => 20
                 ],
                 2 => [
@@ -127,6 +133,9 @@ return (static function($icons) {
                             'url' => $url . $_['user']['path'] . '/' . $user->name . '?exit=' . $_['token'] . $url->hash,
                             'stack' => 10
                         ]
+                    ],
+                    'tags' => [
+                        'of:user' => true
                     ],
                     'stack' => 30
                 ]

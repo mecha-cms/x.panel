@@ -95,6 +95,40 @@
   .pl\:2 {
     padding-left: $x;
   }
+  .lot\:bar {
+    .lot\:links {
+      &.of\:lot {
+        flex: 1;
+        width: 100%;
+        min-width: 100%;
+        .lot\:field {
+          margin: 0;
+          > * {
+            margin: 0;
+          }
+          .input {
+            display: block;
+            width: 100%;
+            margin: 0;
+          }
+          .lot\:f {
+            display: flex;
+          }
+        }
+      }
+    }
+    .has\:menu {
+      ul {
+        ul {
+          left: 25%;
+        }
+      }
+    }
+  }
+  .lot\:desk,
+  .lot\:section {
+    padding: ($y / 2) ($x / 2);
+  }
   .lot\:field {
     flex-direction: column;
     width: auto;
@@ -117,40 +151,6 @@
         text-align: inherit;
       }
     }
-  }
-  .lot\:bar {
-    > ul {
-      &:first-child {
-        flex: 1;
-        width: 100%;
-        min-width: 100%;
-        > li:last-child {
-          flex: 1;
-        }
-      }
-    }
-    .lot\:field {
-      margin: 0;
-      > * {
-        margin: 0;
-      }
-      .input {
-        display: block;
-        width: 100%;
-        margin: 0;
-      }
-    }
-    .has\:menu {
-      ul {
-        ul {
-          left: 25%;
-        }
-      }
-    }
-  }
-  .lot\:desk,
-  .lot\:section {
-    padding: ($y / 2) ($x / 2);
   }
   .lot\:pager {
     > span {

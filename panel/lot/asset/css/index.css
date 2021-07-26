@@ -1194,8 +1194,8 @@ label.is\:lock {
   line-height: 48px;
 }
 
-.lot\:bar > ul,
-.lot\:bar > ul > li {
+.lot\:bar .lot\:links > ul,
+.lot\:bar .lot\:links > ul > li {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1203,27 +1203,23 @@ label.is\:lock {
   height: inherit;
 }
 
-.lot\:bar > ul .title small,
-.lot\:bar > ul > li .title small {
+.lot\:bar .lot\:links > ul .title small,
+.lot\:bar .lot\:links > ul > li .title small {
   float: right;
   margin-left: 6px;
 }
 
-.lot\:bar > ul {
+.lot\:bar .lot\:links > ul {
   display: flex;
   height: 48px;
 }
 
-.lot\:bar > ul:nth-child(2) {
-  flex: 1;
-}
-
-.lot\:bar > ul > li.is\:active > a,
-.lot\:bar > ul > li.is\:current > a {
+.lot\:bar .lot\:links > ul > li.is\:active > a,
+.lot\:bar .lot\:links > ul > li.is\:current > a {
   color: inherit;
 }
 
-.lot\:bar > ul > li.is\:separator {
+.lot\:bar .lot\:links > ul > li.is\:separator {
   width: 1px;
   height: 24px;
   background: #000;
@@ -1231,16 +1227,20 @@ label.is\:lock {
   overflow: hidden;
 }
 
-.lot\:bar > ul > li.is\:separator:first-child,
-.lot\:bar > ul > li.is\:separator:last-child {
+.lot\:bar .lot\:links > ul > li.is\:separator:first-child,
+.lot\:bar .lot\:links > ul > li.is\:separator:last-child {
   display: none;
 }
 
-.lot\:bar > ul > li > a {
+.lot\:bar .lot\:links > ul > li > a {
   display: flex;
   height: inherit;
   padding: 0 18px;
   overflow: hidden;
+}
+
+.lot\:bar .lot\:links.of\:links {
+  flex: 1;
 }
 
 .lot\:bar .lot\:field {
@@ -1269,14 +1269,16 @@ label.is\:lock {
   margin-left: 0;
 }
 
-.lot\:bar > .title {
+.lot\:bar > .title,
+.lot\:bar > .description {
+  margin: 0;
   padding: 0 18px;
-  font-size: 100%;
-  font-weight: bold;
+  line-height: inherit;
 }
 
-.lot\:bar > .description {
-  display: none;
+.lot\:bar > .title {
+  font-size: 100%;
+  font-weight: bold;
 }
 
 .lot\:desk {
@@ -2397,6 +2399,32 @@ pre.is\:text code {
   .pl\:2 {
     padding-left: 24px;
   }
+  .lot\:bar .lot\:links.of\:lot {
+    flex: 1;
+    width: 100%;
+    min-width: 100%;
+  }
+  .lot\:bar .lot\:links.of\:lot .lot\:field {
+    margin: 0;
+  }
+  .lot\:bar .lot\:links.of\:lot .lot\:field > * {
+    margin: 0;
+  }
+  .lot\:bar .lot\:links.of\:lot .lot\:field .input {
+    display: block;
+    width: 100%;
+    margin: 0;
+  }
+  .lot\:bar .lot\:links.of\:lot .lot\:field .lot\:f {
+    display: flex;
+  }
+  .lot\:bar .has\:menu ul ul {
+    left: 25%;
+  }
+  .lot\:desk,
+  .lot\:section {
+    padding: 12px 12px;
+  }
   .lot\:field {
     flex-direction: column;
     width: auto;
@@ -2417,32 +2445,6 @@ pre.is\:text code {
     width: auto;
     padding: 0;
     text-align: inherit;
-  }
-  .lot\:bar > ul:first-child {
-    flex: 1;
-    width: 100%;
-    min-width: 100%;
-  }
-  .lot\:bar > ul:first-child > li:last-child {
-    flex: 1;
-  }
-  .lot\:bar .lot\:field {
-    margin: 0;
-  }
-  .lot\:bar .lot\:field > * {
-    margin: 0;
-  }
-  .lot\:bar .lot\:field .input {
-    display: block;
-    width: 100%;
-    margin: 0;
-  }
-  .lot\:bar .has\:menu ul ul {
-    left: 25%;
-  }
-  .lot\:desk,
-  .lot\:section {
-    padding: 12px 12px;
   }
   .lot\:pager > span:first-child,
   .lot\:pager > span:last-child {

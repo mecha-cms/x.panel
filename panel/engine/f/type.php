@@ -9,8 +9,7 @@ function bar($value, $key) {
             // If `type` is not defined, the default value will be `links`
             if (!\array_key_exists('type', $v)) {
                 $v['type'] = 'links';
-                // Remove the wrapper `<div>`
-                $v[0] = false;
+                $v['tags']['p'] = false;
             }
         }
         unset($v);
@@ -167,8 +166,8 @@ function field($value, $key) {
         $out[1] .= '</div>';
     }
     \x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
-    if (isset($value['form']) && \is_array($value['form'])) {
-        foreach ($value['form'] as $k => $v) {
+    if (isset($value['data']) && \is_array($value['data'])) {
+        foreach ($value['data'] as $k => $v) {
             if (null === $v || false === $v) {
                 continue;
             }
@@ -362,8 +361,8 @@ function form($value, $key) {
         $count = 0;
         $out[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
-    if (isset($value['form']) && \is_array($value['form'])) {
-        foreach ($value['form'] as $k => $v) {
+    if (isset($value['data']) && \is_array($value['data'])) {
+        foreach ($value['data'] as $k => $v) {
             if (null === $v || false === $v) {
                 continue;
             }
@@ -447,11 +446,11 @@ function link($value, $key) {
 }
 
 function links($value, $key) {
-    $out = \x\panel\type\menu($value, $key, -1);
-    \x\panel\_set_class($out, [
+    $value['tags'] = \array_replace([
         'lot:links' => true,
         'lot:menu' => false
-    ]);
+    ], $value['tags'] ?? []);
+    $out = \x\panel\type\menu($value, $key, -1);
     return $out;
 }
 

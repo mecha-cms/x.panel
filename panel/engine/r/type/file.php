@@ -106,7 +106,7 @@ $desk = [
     'lot' => [
         'form' => [
             // type: form/post
-            'form' => [
+            'data' => [
                 'token' => $_['token'],
                 'type' => $_['type']
             ],

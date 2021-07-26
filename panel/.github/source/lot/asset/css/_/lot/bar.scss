@@ -2,50 +2,52 @@
   display: flex;
   flex-wrap: wrap;
   line-height: ($y * 2);
-  > ul,
-  > ul > li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    width: auto;
-    height: inherit;
-    .title {
-      small {
-        float: right;
-        margin-left: ($x / 4);
+  .lot\:links {
+    > ul,
+    > ul > li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      width: auto;
+      height: inherit;
+      .title {
+        small {
+          float: right;
+          margin-left: ($x / 4);
+        }
       }
     }
-  }
-  > ul {
-    display: flex;
-    height: ($y * 2);
-    &:nth-child(2) {
-      flex: 1;
-    }
-    > li {
-      &.is\:active,
-      &.is\:current {
+    > ul {
+      display: flex;
+      height: ($y * 2);
+      > li {
+        &.is\:active,
+        &.is\:current {
+          > a {
+            color: inherit;
+          }
+        }
+        &.is\:separator {
+          width: 1px;
+          height: $y;
+          background: $color;
+          margin: ($y / 2) 0;
+          overflow: hidden;
+          &:first-child,
+          &:last-child {
+            display: none;
+          }
+        }
         > a {
-          color: inherit;
+          display: flex;
+          height: inherit;
+          padding: 0 ($x * .75);
+          overflow: hidden;
         }
       }
-      &.is\:separator {
-        width: 1px;
-        height: $y;
-        background: $color;
-        margin: ($y / 2) 0;
-        overflow: hidden;
-        &:first-child,
-        &:last-child {
-          display: none;
-        }
-      }
-      > a {
-        display: flex;
-        height: inherit;
-        padding: 0 ($x * .75);
-        overflow: hidden;
-      }
+    }
+    &.of\:links {
+      flex: 1;
     }
   }
   .lot\:field {
@@ -70,12 +72,14 @@
       margin-left: 0;
     }
   }
-  > .title {
+  > .title,
+  > .description {
+    margin: 0;
     padding: 0 ($x * .75);
+    line-height: inherit;
+  }
+  > .title {
     font-size: 100%;
     font-weight: bold;
-  }
-  > .description {
-    display: none;
   }
 }

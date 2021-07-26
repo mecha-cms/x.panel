@@ -134,16 +134,25 @@ $code: monospace !default;
     }
   }
   .lot\:bar {
-    > ul {
-      > li {
-        > a {
-          &:focus,
-          &:hover {
-            background: dark(1%);
+    .lot\:links {
+      > ul {
+        > li {
+          > a {
+            &:focus,
+            &:hover {
+              background: dark(1%);
+            }
+          }
+          &.is\:separator {
+            background: dark(5%);
           }
         }
-        &.is\:separator {
-          background: dark(5%);
+      }
+    }
+    .lot\:field {
+      .input {
+        &:focus {
+          box-shadow: none;
         }
       }
     }
@@ -155,13 +164,6 @@ $code: monospace !default;
       }
       &.is\:current {
         color: dark(25%);
-      }
-    }
-    .lot\:field {
-      .input {
-        &:focus {
-          box-shadow: none;
-        }
       }
     }
   }

@@ -57,7 +57,7 @@ $desk = [
     'lot' => [
         'form' => [
             // type: form/post
-            'form' => [
+            'data' => [
                 'file[seal]' => '0600',
                 'token' => $_['token'],
                 'type' => $_['type']
