@@ -13,10 +13,11 @@ Hook::set('_', function($_) {
             $q = strtolower($_GET['q'] ?? "");
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };
+        $d = $_['f'];
         $page = is_file($f = File::exist([
-            $_['f'] . '.archive',
-            $_['f'] . '.draft',
-            $_['f'] . '.page'
+            $d . '.archive',
+            $d . '.draft',
+            $d . '.page'
         ])) ? new Page($f) : new Page;
         $pages = [];
         $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
@@ -177,12 +178,12 @@ Hook::set('_', function($_) {
             }
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
-        $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager'] = [
+        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
             'type' => 'pager',
             'chunk' => $_['chunk'] ?? 20,
             'count' => $count,
             'current' => $_['i'] ?? 1,
-            'stack' => 10
+            'stack' => 20
         ];
     }
     return $_;

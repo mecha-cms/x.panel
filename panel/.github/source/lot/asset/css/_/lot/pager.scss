@@ -1,5 +1,6 @@
 .lot\:pager {
-  margin: 0 (-$x / 8);
+  margin-right: (-$x / 8);
+  margin-left: (-$x / 8);
   &,
   > span {
     display: flex;

@@ -626,15 +626,19 @@ function pager($value, $key) {
         }
         return $out;
     };
-    $value['content'] = $content = $pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, function($i) {
+    $content = $pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, function($i) {
         extract($GLOBALS, \EXTR_SKIP);
         return $_['/'] . '/::g::/' . $_['path'] . '/' . $i . $url->query . $url->hash;
     }, \i('First'), \i('Previous'), \i('Next'), \i('Last'));
-    $value['tags'] = \array_replace([
-        'lot' => true,
-        'lot:pager' => true
-    ], $value['tags'] ?? []);
-    $out = \x\panel\type\content($value, $key);
+    $value['lot'] = [
+        'content' => [
+            '0' => false, // Remove the `<div>` wrapper
+            'type' => 'content',
+            'content' => $content,
+            'stack' => 10
+        ]
+    ];
+    $out = \x\panel\type\lot($value, $key);
     $out[0] = 'p';
     return "" !== $content ? $out : null;
 }

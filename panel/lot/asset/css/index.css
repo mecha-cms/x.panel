@@ -2174,7 +2174,8 @@ label.is\:lock {
 }
 
 .lot\:pager {
-  margin: 0 -3px;
+  margin-right: -3px;
+  margin-left: -3px;
 }
 
 .lot\:pager,

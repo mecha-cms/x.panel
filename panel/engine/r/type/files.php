@@ -113,12 +113,12 @@ Hook::set('_', function($_) {
             ]] + $files;
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] = $files;
-        $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager'] = [
+        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['pager'] = [
             'type' => 'pager',
             'chunk' => $_['chunk'] ?? 20,
             'count' => $count,
             'current' => $_['i'] ?? 1,
-            'stack' => 10
+            'stack' => 20
         ];
     }
     return $_;

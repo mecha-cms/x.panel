@@ -130,12 +130,12 @@ Hook::set('_', function($_) {
                     --$info[0];
                 }
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $comments;
-                $_['lot']['desk']['lot']['form']['lot'][2]['lot']['pager'] = [
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
                     'type' => 'pager',
                     'chunk' => $_['chunk'] ?? 20,
                     'count' => $count,
                     'current' => $_['i'] ?? 1,
-                    'stack' => 10
+                    'stack' => 20
                 ];
             }
         }
