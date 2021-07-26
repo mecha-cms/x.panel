@@ -82,7 +82,21 @@ HTML;
         $_ = \array_replace_recursive($_ ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
         if (1 === \count($_['chop'])) {
-            $panes = $paths = $skins = [];
+            $languages = $panes = $paths = $skins = [];
+            if (isset($state->x->language)) {
+                $labels = require \LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state' . \DS . 'language.php';
+                foreach (\glob(\LOT . \DS . 'x' . \DS . 'language' . \DS . 'state' . \DS . '*.php', \GLOB_NOSORT) as $language) {
+                    $label = $labels[$n = \basename($language, '.php')] ?? \S . $n . \S;
+                    if (false !== \strpos($label, '(') && \preg_match('/^\s*([^\(]+)\s*\(\s*([^)]+)\s*\)\s*$/', $label, $m)) {
+                        $label = [
+                            'title' => \S . $m[1] . \S,
+                            'description' => \S . $m[2] . \S
+                        ];
+                    }
+                    $languages[$n] = $label;
+                }
+            }
+            \asort($languages);
             foreach (\glob(\LOT . \DS . '*', \GLOB_NOSORT | \GLOB_ONLYDIR) as $panel) {
                 $n = \basename($panel);
                 if (false !== \strpos('_.-', $n[0])) {
@@ -278,11 +292,12 @@ HTML;
                                                                 ],
                                                                 'language' => [
                                                                     'description' => 'This value does not determine the I18N system on your site unless you want to make an I18N extension that depends on this value.',
-                                                                    'type' => 'text',
+                                                                    'type' => $languages ? 'option' : 'text',
                                                                     'name' => 'state[language]',
                                                                     'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
                                                                     'hint' => ($v = $state_r['language'] ?? null) ?? 'en',
                                                                     'value' => $v,
+                                                                    'lot' => $languages,
                                                                     'stack' => 40
                                                                 ]
                                                             ],

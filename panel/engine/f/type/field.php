@@ -430,6 +430,7 @@ function option($value, $key) {
                     if (\is_array($vv) && \array_key_exists('title', $vv)) {
                         $tt = $vv['title'] ?? $kk;
                         $option['disabled'] = isset($vv['active']) && !$vv['active'];
+                        $option['title'] = $vv['description'] ?? null;
                     } else {
                         $tt = $vv;
                     }
@@ -451,6 +452,7 @@ function option($value, $key) {
                 if (\is_array($v) && \array_key_exists('title', $v)) {
                     $t = $v['title'] ?? $k;
                     $option['disabled'] = isset($v['active']) && !$v['active'];
+                    $option['title'] = $v['description'] ?? null;
                 } else {
                     $t = $v;
                 }
