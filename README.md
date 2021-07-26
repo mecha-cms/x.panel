@@ -14,8 +14,8 @@ Release Notes
  - [x] Added `$_['id']` property that store the first `$_['path']` value.
  - [x] Added `field/button` and `field/buttons` type. Currently useless. Would be useful when combined with certain JavaScript actions, such as to open a pop-up window.
  - [x] Added `flex` and `field/flex` type.
- - [x] Added `form` property to `form/*` type to quickly add hidden fields.
- - [x] Added `form` property to `form/*` type to quickly add hidden fields.
+ - [x] Added `data` property to `form/*` type to quickly add hidden fields.
+ - [x] Added `data` property to `form/*` type to quickly add hidden fields.
  - [x] Added badge GUI for `link` type via `info` key.
  - [x] Added comment notification badge in the main menu.
  - [x] Added comments counter in the _Comment_ menu.
