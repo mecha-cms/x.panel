@@ -201,12 +201,12 @@ $desk = [
                                                     'lot' => [
                                                         'files' => [
                                                             'type' => 'files',
-                                                            'tags' => ['mb:1' => true],
                                                             'lot' => [],
                                                             'stack' => 10
                                                         ],
                                                         'tasks' => [
                                                             'type' => 'tasks/link',
+                                                            '0' => 'p',
                                                             'lot' => [
                                                                 's' => [
                                                                     'title' => 'Data',
@@ -344,8 +344,12 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                 $files[$k] = [
                     'path' => $k,
                     'current' => !empty($_SESSION['_']['file'][$k]),
-                    'title' => $n = basename($k),
+                    'title' => S . ($n = basename($k)) . S,
                     'description' => (new File($k))->size,
+                    'type' => 'file',
+                    'tags' => [
+                        'x:data' => true
+                    ],
                     'url' => $before . 'g' . $after . $url->query('&', [
                         'q' => false,
                         'tab' => false
@@ -380,7 +384,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                     unset($_SESSION['_']['file'][$k]);
                 }
             }
-            asort($files);
+            ksort($files);
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
     }

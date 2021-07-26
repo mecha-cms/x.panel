@@ -67,8 +67,8 @@ Hook::set('_', function($_) {
                     'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),
                     'author' => $p['author'],
                     'tags' => [
-                        'is:' . $x => true,
-                        'type:' . c2f($type) => !empty($type)
+                        'type:' . c2f($type) => !empty($type),
+                        'x:' . $x => true
                     ],
                     'tasks' => [
                         'enter' => [
@@ -141,6 +141,10 @@ Hook::set('_', function($_) {
                         'current' => !empty($_SESSION['_']['file'][$k]),
                         'title' => basename($k),
                         'description' => (new File($k))->size,
+                        'type' => 'file',
+                        'tags' => [
+                            'x:data' => true
+                        ],
                         'url' => $before . 'g' . $after . $url->query('&', [
                             'q' => false,
                             'tab' => false

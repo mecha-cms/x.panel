@@ -1,7 +1,7 @@
 <?php
 
 if (is_dir($f = $_['f']) && 'g' === $_['task']) {
-    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($f) . '</code>', 'file']];
+    $_['alert']['error'][$f] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($f) . '</code>', 'file']];
     $_['kick'] = $_['/'] . '/::g::/' . $_['path'] . $url->query('&', [
         'type' => false
     ]) . $url->hash;
@@ -54,7 +54,7 @@ $desk = [
             // type: form/post
             'data' => [
                 'file[seal]' => '0600',
-                'token' => $_['token'].
+                'token' => $_['token'],
                 'type' => $_['type']
             ],
             'lot' => [
@@ -71,7 +71,7 @@ $desk = [
                                             'lot' => [
                                                 'content' => [
                                                     'type' => 'source',
-                                                    'name' => 'data[content]',
+                                                    'name' => 'file[content]',
                                                     'value' => $content,
                                                     'width' => true,
                                                     'height' => true,
@@ -83,7 +83,7 @@ $desk = [
                                                     'focus' => true,
                                                     'name' => 'data[name]',
                                                     'value' => $name,
-                                                    'value-suffix' => '.data',
+                                                    'value-after' => '.data',
                                                     'width' => true,
                                                     'stack' => 20
                                                 ]

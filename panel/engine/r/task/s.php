@@ -105,9 +105,6 @@ function data($_) {
     if ('post' === $_['form']['type']) {
         $name = \basename(\To::file(\lcfirst($_['form']['lot']['data']['name'] ?? "")));
         $_['form']['lot']['file']['name'] = "" !== $name ? $name . '.data' : "";
-        // Use `$_POST['data']['content']` instead of `$_['form']['lot']['data']['content']` just to be sure
-        // that the value will not be evaluated by the `e` function, especially for JSON-like value(s)
-        $_['form']['lot']['file']['content'] = $_POST['data']['content'] ?? "";
         $_ = file($_); // Move to `file`
         if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
             $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;

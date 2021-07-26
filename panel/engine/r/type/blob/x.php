@@ -4,8 +4,9 @@ $description = ['It is not possible to upload the package due to the missing %s 
 $zip = extension_loaded('zip');
 
 Hook::set('do.blob.set', function($_) use($description, $zip) {
+    $f = $_['f'];
     if (!$zip) {
-        $_['alert']['error'][] = $description;
+        $_['alert']['error'][$f] = $description;
     }
     if ('post' !== $_['form']['type']) {
         return $_;
@@ -18,7 +19,7 @@ Hook::set('do.blob.set', function($_) use($description, $zip) {
             $x = pathinfo($blob['name'], PATHINFO_EXTENSION);
             // Allow ZIP archive(s) only
             if ('zip' !== $x) {
-                $_['alert']['error'][] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+                $_['alert']['error'][$f] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
             }
         }
     }
@@ -40,9 +41,10 @@ if (!$zip) {
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['options']['skip'] = true;
 
 // Force delete package
-$_['lot']['desk']['lot']['form']['form']['options[let]'] = 1;
+$_['lot']['desk']['lot']['form']['data']['options[let]'] = 1;
+
 // Force extract package
-$_['lot']['desk']['lot']['form']['form']['options[extract]'] = 1;
+$_['lot']['desk']['lot']['form']['data']['options[extract]'] = 1;
 
 $description = '<p>' . i('Make sure that the package you want to upload is structured like this:') . '</p>';
 $description .= '<pre><code class="txt">' . To::kebab(i('extension')) . '.zip&#xA;&#x2514;&#x2500;&#x2500;&#x20;' . To::kebab(i('extension')) . '&#x5C;&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;about.page&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;index.php&#xA;&#x20;&#x20;&#x20;&#x20;&#x2514;&#x2500;&#x2500;&#x20;&#x2026;</code></pre>';

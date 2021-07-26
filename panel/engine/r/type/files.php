@@ -42,6 +42,9 @@ Hook::set('_', function($_) {
                 'title' => S . $n . S,
                 'description' => 0 === $v ? ['Open %s', 'Folder'] : S . (new File($k))->size . S,
                 'type' => 0 === $v ? 'folder' : 'file',
+                'tags' => [
+                    'x:' . pathinfo($n, PATHINFO_EXTENSION) => 1 === $v
+                ],
                 'url' => 0 === $v ? $before . 'g' . $after . '/1' . $url->query('&', [
                     'q' => false,
                     'tab' => false

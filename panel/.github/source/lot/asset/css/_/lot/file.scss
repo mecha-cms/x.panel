@@ -3,6 +3,7 @@
   border: 0 solid $color-back;
   margin: 0 (-$x / 4);
   padding: ($y / 4) ($x / 2);
+  list-style: none;
   position: relative;
   overflow: hidden;
   &::before,

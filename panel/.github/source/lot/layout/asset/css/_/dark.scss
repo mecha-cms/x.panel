@@ -304,23 +304,24 @@ $code: monospace !default;
       }
     }
   }
-  .lot\:files,
-  .lot\:pages {
-    li {
-      border-color: dark(0%);
+  .lot\:file,
+  .lot\:page {
+    border-color: dark(0%);
+    &:hover {
+      background: dark(1%);
+      border-color: dark(1%);
+    }
+    &.is\:current {
+      background: dark(2%);
+      border-color: dark(2%);
       &:hover {
-        background: dark(1%);
-        border-color: dark(1%);
-      }
-      &.is\:current {
-        background: dark(2%);
-        border-color: dark(2%);
-        &:hover {
-          background: dark(3%);
-          border-color: dark(3%);
-        }
+        background: dark(3%);
+        border-color: dark(3%);
       }
     }
+  }
+  .lot\:files,
+  .lot\:pages {
     .lot\:tasks {
       gap: 0;
       > * {
@@ -354,7 +355,7 @@ $code: monospace !default;
     }
   }
   .lot\:tabs {
-    > nav {
+    .lot\:links {
       li {
         border-color: dark(5%);
         a:not(.has\:link) {

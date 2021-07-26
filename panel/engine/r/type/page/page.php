@@ -79,27 +79,26 @@ if (null !== State::get('x.tag') && (
                     'title' => To::title($v),
                     'author' => $user->user ?? null
                 ]));
-                !defined('DEBUG') || !DEBUG && chmod($f, 0600);
+                chmod($f, 0600);
                 file_put_contents($ff = $dd . DS . 'id.data', $any);
-                !defined('DEBUG') || !DEBUG && chmod($ff, 0600);
+                chmod($ff, 0600);
                 file_put_contents($ff = $dd . DS . 'time.data', date('Y-m-d H:i:s'));
-                !defined('DEBUG') || !DEBUG && chmod($ff, 0600);
-                $_['alert']['info'][] = ['%s %s successfully created.', ['Tag', '<code>' . x\panel\from\path($f) . '</code>']];
+                chmod($ff, 0600);
+                $_['alert']['info'][$f] = ['%s %s successfully created.', ['Tag', '<code>' . x\panel\from\path($f) . '</code>']];
                 ++$any;
             }
         }
         if ($out) {
             sort($out);
             file_put_contents($f = Path::F($_['f']) . DS . 'kind.data', json_encode($out));
-            !defined('DEBUG') || !DEBUG && chmod($f, 0600);
+            chmod($f, 0600);
         }
         return $_;
     }, 11);
     $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [
         'type' => 'query',
         'state' => [
-            'max' => 12,
-            'x' => true
+            'max' => 12
         ],
         'name' => 'data[kind]',
         'value' => (new Page($_['f']))->query,

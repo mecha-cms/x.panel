@@ -229,6 +229,8 @@ function file($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
         'is:file' => true,
+        'lot' => true,
+        'lot:file' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $out = [
@@ -539,6 +541,8 @@ function page($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
         'is:file' => true,
+        'lot' => true,
+        'lot:page' => true,
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $path = $value['path'] ?? $key;

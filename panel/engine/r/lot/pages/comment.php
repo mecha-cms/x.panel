@@ -89,10 +89,11 @@ Hook::set('_', function($_) {
                     $title = x\panel\to\w($p->author ?? "");
                     $description = To::excerpt(x\panel\to\w($p->content ?? ""));
                     $avatar = $p->avatar(72) ?? null;
+                    $type = $p->type ?? null;
                     $x = $p->x ?? null;
                     $comments[$k] = [
                         'path' => $k,
-                        'current' => !empty($_SESSION['_']['file'][$k]),
+                        'current' => !empty($_SESSION['_']['file'][$k]) || $info[0] > 0,
                         'title' => $title ? S . $title . S : null,
                         'description' => $description ? S . $description . S : null,
                         'image' => $avatar,
@@ -100,9 +101,8 @@ Hook::set('_', function($_) {
                         'link' => 'draft' === $x ? null : $p->url . '#' . sprintf($anchor, $p->id),
                         'author' => $p['author'],
                         'tags' => [
-                            'is:' . $x => true,
-                            'is:current' => $info[0] > 0,
-                            'type:comment' => true
+                            'type:' . c2f($type) => !empty($type),
+                            'x:' . $x => true
                         ],
                         'tasks' => [
                             'g' => [
