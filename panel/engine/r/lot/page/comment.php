@@ -10,6 +10,6 @@ $_['type'] = [
 
 $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
-// TODO
+// TODO: Add ability to reply comment from panel
 
 return $_;

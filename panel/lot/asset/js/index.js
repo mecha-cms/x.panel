@@ -1586,9 +1586,10 @@
             var selectBoxOptionValue = getAttribute(selectBoxItem, 'value', false),
                 selectBoxOptionValueReal = selectBoxOptionValue,
                 selectBoxOptionText = getText(selectBoxItem),
+                selectBoxOptionTitle = selectBoxItem.title,
                 selectBoxFakeOption = setElement('a', selectBoxOptionText, {
                     'class': classNameOptionB,
-                    'title': selectBoxOptionText
+                    'title': selectBoxOptionTitle || selectBoxOptionText
                 });
             selectBoxOptionValue = selectBoxOptionValue || selectBoxOptionText;
             selectBoxFakeOption[PROP_INDEX] = selectBoxOptionIndex;
@@ -1734,7 +1735,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.1.0';
+    OP.version = '1.1.1';
     var name$1 = 'TE';
 
     function trim(str, dir) {

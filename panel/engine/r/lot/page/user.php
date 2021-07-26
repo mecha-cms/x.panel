@@ -21,16 +21,10 @@ if (1 !== $status) {
 }
 
 // No use. This field was added only to hide the `pass` data from file list
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['pass'] = [
-    'skip' => true,
-    'name' => 'data[pass]'
-];
+$_['lot']['desk']['lot']['form']['data']['data[pass]'] = null;
 
 // No use. This field was added only to hide the `pass` data from file list
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['token'] = [
-    'skip' => true,
-    'name' => 'data[token]'
-];
+$_['lot']['desk']['lot']['form']['data']['data[token]'] = null;
 
 // Modify user status list
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] = $any;

@@ -311,6 +311,13 @@ $desk = [
 
 Hook::set('_', function($_) use($page, $trash, $url) {
     $apart = [];
+    if (!empty($_['lot']['desk']['lot']['form']['data'])) {
+        foreach ($_['lot']['desk']['lot']['form']['data'] as $k => $v) {
+            if (0 === strpos($k, 'data[')) {
+                $apart[substr(explode(']', $k, 2)[0], 5)] = 1;
+            }
+        }
+    }
     if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'])) {
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] as $k => $v) {
             foreach ($v as $kk => $vv) {
@@ -320,7 +327,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                 foreach ($vv['fields']['lot'] as $kkk => $vvv) {
                     $vvvv = $vvv['name'] ?? $kkk;
                     if (0 === strpos($vvvv, 'data[')) {
-                        $apart[substr($vvvv, 5, -1)] = 1;
+                        $apart[substr(explode(']', $vvvv, 2)[0], 5)] = 1;
                     }
                 }
             }
