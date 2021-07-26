@@ -15,6 +15,11 @@ Hook::set('_', function($_) {
                 $v['tasks']['l']['description'] = 'Delete permanently';
                 $v['tasks']['l']['url'] = explode('&trash=', $v['tasks']['l']['url'], 2)[0];
                 if ($is_root) {
+                    $stats = [0, 0];
+                    foreach (g($k, null, true) as $kk => $vv) {
+                        ++$stats[$vv];
+                    }
+                    $v['description'] = ['%d folder' . (1 === $stats[0] ? "" : 's') . ', %d file' . (1 === $stats[1] ? "" : 's'), $stats];
                     $v['tasks']['restore'] = [
                         'title' => 'Restore',
                         'description' => 'Restore',
@@ -43,7 +48,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['l'] = [
     'title' => 'Empty',
     'description' => 'Empty the trash folder',
     'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
-    'type' => 'Link',
+    'type' => 'link',
     'url' => $_['/'] . '/::f::/e2c4d4a6' . $url->query('&', [
         'kick' => strtr($_['/'] . '/::g::/trash/1', [
             $url . '/' => ""

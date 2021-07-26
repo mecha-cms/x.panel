@@ -28,6 +28,9 @@ return (static function($icons) {
             $folders['comment']['info'] = $info[0];
         }
     }
+    if (isset($folders['trash']) && ($count = q(g(LOT . DS . 'trash', null, true)))) {
+        $folders['trash']['info'] = $count;
+    }
     $i = 10;
     $list = [];
     foreach ((new Anemon($folders))->sort([1, 'title'], true) as $k => $v) {

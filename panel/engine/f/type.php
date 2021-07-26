@@ -240,7 +240,8 @@ function file($value, $key) {
         'description' => $value['description'] ?? null,
         'link' => $value['link'] ?? null,
         'title' => $value['title'] ?? null,
-        'url' => $value['url'] ?? null
+        'url' => $value['url'] ?? null,
+        'info' => $value['info'] ?? null
     ], $key) . '</h3>';
     $out[1] .= \x\panel\type\tasks\link([
         '0' => 'p',
@@ -331,7 +332,8 @@ function folder($value, $key) {
         'description' => $value['description'] ?? \i('Open folder'),
         'link' => $value['link'] ?? null,
         'title' => $value['title'] ?? null,
-        'url' => $value['url'] ?? null
+        'url' => $value['url'] ?? null,
+        'info' => $value['info'] ?? null
     ], $key) . '</h3>';
     $out[1] .= \x\panel\type\tasks\link([
         '0' => 'p',
