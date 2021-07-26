@@ -323,6 +323,8 @@ function folder($value, $key) {
     $tags = \array_replace([
         'is:current' => !empty($value['current']),
         'is:folder' => true,
+        'lot' => true,
+        'lot:file' => true, // Folder is a file in this case
         'not:active' => isset($value['active']) && !$value['active']
     ], $value['tags'] ?? []);
     $out = [
@@ -428,7 +430,7 @@ function link($value, $key) {
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'level' => -1,
-            'content' => ($value['title'] ?? \To::title($key)) . ($info ? ' <small>' . $info . '</small>' : "")
+            'content' => \i(...((array) ($value['title'] ?? \To::title($key)))) . ($info ? ' <small>' . $info . '</small>' : "")
         ], $key);
     }
     $href = $value['link'] ?? $value['url'] ?? \P;

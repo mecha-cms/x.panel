@@ -166,8 +166,8 @@ Hook::set('_', function($_) use($uses) {
                     ]) . $url->hash,
                     'author' => $p['author'],
                     'tags' => [
-                        'is:' . $x => true,
-                        'type:' . c2f($type) => !empty($type)
+                        'type:' . c2f($type) => !empty($type),
+                        'x:' . $x => true
                     ],
                     'tasks' => [
                         'g' => [
@@ -181,10 +181,10 @@ Hook::set('_', function($_) use($uses) {
                             'stack' => 20
                         ],
                         'toggle' => [
-                            'title' => $is_active ? 'Disable' : 'Enable',
-                            'description' => $is_active ? 'Disable' : 'Enable',
+                            'title' => $is_active ? ['Disable'] : 'Enable',
+                            'description' => isset($uses[$n]) ? ['Required by %s', 'Panel'] : ($is_active ? 'Disable' : 'Enable'),
                             'icon' => $is_active ? 'M13,9.86V11.18L15,13.18V9.86C17.14,9.31 18.43,7.13 17.87,5C17.32,2.85 15.14,1.56 13,2.11C10.86,2.67 9.57,4.85 10.13,7C10.5,8.4 11.59,9.5 13,9.86M14,4A2,2 0 0,1 16,6A2,2 0 0,1 14,8A2,2 0 0,1 12,6A2,2 0 0,1 14,4M18.73,22L14.86,18.13C14.21,20.81 11.5,22.46 8.83,21.82C6.6,21.28 5,19.29 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V16.27L2,5.27L3.28,4L13,13.72L15,15.72L20,20.72L18.73,22Z' : 'M18,6C18,7.82 16.76,9.41 15,9.86V17A5,5 0 0,1 10,22A5,5 0 0,1 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V9.86C11.23,9.4 10,7.8 10,5.97C10,3.76 11.8,2 14,2C16.22,2 18,3.79 18,6M14,8A2,2 0 0,0 16,6A2,2 0 0,0 14,4A2,2 0 0,0 12,6A2,2 0 0,0 14,8Z',
-                            'url' => !isset($uses[$n]) ? $before . 'f' . strtr($after, [
+                            'url' => isset($uses[$n]) ? null : $before . 'f' . strtr($after, [
                                 '::/' => '::/113d1ba5/'
                             ]) . $url->query('&', [
                                 'kick' => URL::short($url->current, false),
@@ -192,20 +192,20 @@ Hook::set('_', function($_) use($uses) {
                                 'tab' => false,
                                 'token' => $_['token'],
                                 'trash' => false
-                            ]) : null,
+                            ]),
                             'skip' => !$is_active && !is_file($d . DS . 'index.x'),
                             'stack' => 20.1
                         ],
                         'l' => [
                             'title' => 'Delete',
-                            'description' => !isset($uses[$n]) ? 'Delete' : ['Required by %s', 'Panel'],
+                            'description' => isset($uses[$n]) ? ['Required by %s', 'Panel'] : 'Delete',
                             'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                            'url' => !isset($uses[$n]) ? $before . 'l' . $after . $url->query('&', [
+                            'url' => isset($uses[$n]) ? null : $before . 'l' . $after . $url->query('&', [
                                 'q' => false,
                                 'tab' => false,
                                 'token' => $_['token'],
                                 'trash' => $trash
-                            ]) : null,
+                            ]),
                             'stack' => 30
                         ]
                     ]
