@@ -6,7 +6,7 @@
       height: ($z * 1.25);
       border-width: 0;
       border-radius: (($z * 1.25) / 2);
-      &[disabled] {
+      &.not\:active {
         background: $color;
       }
       &::before {

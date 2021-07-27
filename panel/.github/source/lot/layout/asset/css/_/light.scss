@@ -1,12 +1,463 @@
-$base: #fff !default;
-$mix: #808080 !default;
+// This theme focuses on dark mode. If you intend to change this file, be sure to check the SCSS structure of dark mode.
+
+$base: #ddd !default;
+$mix: #000 !default;
 
 $body: sans-serif !default;
 $code: monospace !default;
 
-@function light($percent: 0%) {
+@function light($percent: 100%) {
   @return mix($mix, $base, $percent);
 }
 
-.is\:light {}
-
+.is\:light {
+  background: light(100%);
+  border-color: light(95%);
+  font-family: $body;
+  color: light(40%);
+  a {
+    &[href] {
+      color: light(60%);
+      &:focus,
+      &:active {
+        color: light(50%);
+      }
+    }
+    &.not\:active {
+      color: light(80%);
+    }
+  }
+  blockquote,
+  caption,
+  figcaption,
+  .description {
+    color: light(50%);
+  }
+  code, .code {
+    font-family: $code;
+  }
+  fieldset, hr,
+  .table td,
+  .table th {
+    border-color: light(95%);
+  }
+  pre {
+    > code {
+      background: light(95%);
+      color: inherit;
+    }
+    &.is\:text {
+      > code {
+        background: none;
+        border-color: light(95%);
+      }
+    }
+  }
+  .alert {
+    p {
+      background: light(99%);
+    }
+  }
+  .button {
+    &,
+    &[href] {
+      background: light(60%);
+      color: light(95%);
+      &:not(.not\:active) {
+        &:focus {
+          background: light(50%);
+          color: light(95%);
+          box-shadow: 0 0 0 3px rgba(0, 0, 0, .025);
+        }
+        &:active {
+          background: light(70%);
+          color: light(95%);
+        }
+      }
+    }
+  }
+  .input,
+  .select,
+  .textarea {
+    background: light(95%);
+    border-color: light(80%);
+    color: light(30%);
+    &:not(.not\:active) {
+      &:focus {
+        border-color: light(75%);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, .05);
+        &:invalid {
+          border-color: mix(red, light(85%), 50%);
+          color: mix(red, light(30%), 50%);
+          box-shadow: 0 0 0 3px rgba(255, 0, 0, .15);
+        }
+      }
+    }
+  }
+  .input {
+    &[type='color'],
+    &[type='file'],
+    &[type='image'],
+    &[type='range'] {
+      background: none;
+    }
+  }
+  .select {
+    optgroup,
+    option {
+      background: light(95%);
+      color: inherit;
+    }
+  }
+  .lot\:field {
+    .lot\:f {
+      > .button,
+      > .fix,
+      > .options > .button {
+        background: light(96%);
+        border-color: light(80%);
+        &:focus {
+          background: light(100%);
+          border-color: light(75%);
+        }
+      }
+    }
+  }
+  .lot\:field.type\:toggle {
+    .input {
+      &[type='checkbox'] {
+        &::before {
+          background: light(90%);
+        }
+        &:checked {
+          &::before {
+            background: light(90%);
+          }
+        }
+      }
+    }
+  }
+  .lot\:bar {
+    .lot\:links {
+      > ul {
+        > li {
+          > a {
+            &:focus,
+            &:hover {
+              background: light(99%);
+            }
+          }
+          &.is\:separator {
+            background: light(95%);
+          }
+        }
+      }
+    }
+    .lot\:field {
+      .input {
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+    .not\:active {
+      opacity: 1;
+      color: light(80%);
+      > a {
+        color: inherit;
+      }
+      &.is\:current {
+        color: light(75%);
+      }
+    }
+  }
+  .lot\:fields {
+    > .description {
+      border-bottom-color: light(95%);
+    }
+    .option-picker,
+    .tag-picker {
+      background: light(95%);
+      border-color: light(80%);
+      color: light(30%);
+      &--focus:not(.not\:active) {
+        border-color: light(75%);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, .05);
+      }
+    }
+    .option-picker {
+      &::after {
+        border-top-color: light(70%);
+      }
+      &--open {
+        &::after {
+          border-bottom-color: light(70%);
+        }
+      }
+      &__option {
+        &:hover {
+          background: light(90%);
+          color: inherit;
+        }
+        &--active {
+          background: light(90%);
+          color: light(5%);
+          &:hover {
+            color: light(5%);
+          }
+        }
+        &--lock {
+          color: light(75%);
+          &:hover {
+            background: none;
+            color: light(75%);
+          }
+        }
+      }
+      &__options {
+        background: inherit;
+        border-color: inherit;
+        color: inherit;
+      }
+      &__value {
+        background: none !important;
+      }
+    }
+    .tag-picker {
+      &__tag {
+        background: light(85%);
+        color: inherit;
+        &--focus {
+          background: light(80%);
+        }
+      }
+      &__text {
+        background: none;
+        &--focus {
+          background: none;
+        }
+      }
+    }
+  }
+  .lot\:menu {
+    background: light(100%);
+    color: light(40%);
+    a {
+      &:focus,
+      &:hover {
+        background: light(99%);
+      }
+    }
+    li {
+      &:focus,
+      &:hover {
+        > a {
+          background: light(99%);
+        }
+      }
+      &.is\:current {
+        > a {
+          background: light(98%);
+          &:focus,
+          &:hover {
+            background: light(97%);
+          }
+        }
+      }
+      &.is\:separator {
+        background: light(95%);
+      }
+      .title {
+        small {
+          background: light(95%);
+          color: light(35%);
+        }
+      }
+    }
+    .not\:active {
+      opacity: 1;
+      color: light(80%);
+      > a {
+        color: inherit;
+      }
+      &.is\:current {
+        color: light(75%);
+      }
+    }
+  }
+  .is\:file {
+    &::before {
+      background: light(100%);
+      border-color: light(70%);
+    }
+    &::after {
+      border-bottom-color: light(70%);
+      border-left-color: light(70%);
+    }
+  }
+  .is\:folder {
+    &::before {
+      background: light(40%);
+    }
+    &::after {
+      background: light(60%);
+    }
+  }
+  .lot\:file,
+  .lot\:folder,
+  .lot\:page {
+    border-color: light(100%);
+    &:hover {
+      background: light(99%);
+      border-color: light(99%);
+    }
+    &.is\:current {
+      background: light(98%);
+      border-color: light(98%);
+      &:hover {
+        background: light(97%);
+        border-color: light(97%);
+      }
+    }
+  }
+  .lot\:files,
+  .lot\:folders,
+  .lot\:pages {
+    .lot\:tasks {
+      gap: 0;
+      > * {
+        .title {
+          span {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .lot\:pager {
+    > span {
+      > a {
+        background: light(70%);
+        color: light(5%);
+        &:focus {
+          background: light(60%);
+          color: light(5%);
+        }
+        &:active {
+          background: light(80%);
+          color: light(5%);
+        }
+      }
+      > b,
+      > span {
+        background: none;
+        color: inherit;
+      }
+    }
+  }
+  .lot\:tabs {
+    .lot\:links {
+      li {
+        border-color: light(95%);
+        a:not(.has\:link) {
+          color: inherit;
+          &:focus {
+            color: light(30%);
+          }
+        }
+        &.is\:current {
+          &::before,
+          &::after {
+            border-color: light(95%);
+          }
+        }
+        @media (min-width: 720px) {
+          &:not(.is\:current) {
+            background: light(99%);
+            color: light(40%);
+          }
+        }
+        &.not\:active {
+          opacity: 1;
+          color: light(80%);
+        }
+      }
+    }
+  }
+  .input {
+    &[type='checkbox'],
+    &[type='radio'] {
+      background: light(70%);
+      &:not(.not\:active):focus {
+        background: light(60%);
+      }
+      &:not(.not\:active):active {
+        background: light(80%);
+      }
+      &::before {
+        background: light(100%);
+      }
+      &:checked {
+        &::before {
+          background: none;
+        }
+      }
+    }
+    &[type='checkbox'] {
+      &:checked {
+        &::before {
+          border-right-color: light(95%);
+          border-bottom-color: light(95%);
+        }
+      }
+    }
+    &[type='radio'] {
+      &:checked {
+        &::before {
+          border-color: light(100%);
+        }
+      }
+    }
+    &[type='range'] {
+      &:not(.not\:active) {
+        &:focus {
+          box-shadow: none;
+          &::-webkit-slider-runnable-track {
+            background: light(75%);
+          }
+          &::-webkit-slider-thumb {
+            background: light(50%);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, .025);
+          }
+          &::-moz-range-track {
+            background: light(75%);
+          }
+          &::-moz-range-thumb {
+            background: light(50%);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, .025);
+          }
+        }
+        &:active {
+          &::-webkit-slider-thumb {
+            background: light(70%);
+          }
+          &::-moz-range-thumb {
+            background: light(70%);
+          }
+        }
+      }
+      &::-webkit-slider-runnable-track {
+        background: light(80%);
+      }
+      &::-webkit-slider-thumb {
+        background: light(60%);
+      }
+      &::-moz-range-track {
+        background: light(80%);
+      }
+      &::-moz-range-thumb {
+        background: light(60%);
+      }
+    }
+  }
+}

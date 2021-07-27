@@ -226,12 +226,14 @@ function fields($value, $key) {
 }
 
 function file($value, $key) {
+    $is_active = !isset($value['active']) || $value['active'];
     $tags = \array_replace([
+        'is:active' => $is_active,
         'is:current' => !empty($value['current']),
         'is:file' => true,
         'lot' => true,
         'lot:file' => true,
-        'not:active' => isset($value['active']) && !$value['active']
+        'not:active' => !$is_active
     ], $value['tags'] ?? []);
     $out = [
         0 => 'li',
@@ -276,9 +278,16 @@ function files($value, $key) {
         }
     }
     $count = 0;
+    $count_files = 0;
+    $count_folders = 0;
     foreach ($lot as $k => $v) {
         if (!\array_key_exists('type', $v)) {
             $v['type'] = 'file';
+            ++$count_files;
+        } else if ('file' === $v['type']) {
+            ++$count_files;
+        } else if ('folder' === $v['type']) {
+            ++$count_folders;
         }
         $out[1] .= \x\panel\type($v, $k);
         ++$count;
@@ -287,7 +296,8 @@ function files($value, $key) {
     \x\panel\_set_class($out[2], \array_replace([
         'count:' . $count => true,
         'lot' => true,
-        'lot:files' => true
+        'lot:files' => !!$count_files,
+        'lot:folders' => !!$count_folders
     ], $value['tags'] ?? []));
     return new \HTML($out);
 }
@@ -320,12 +330,14 @@ function flex($value, $key) {
 }
 
 function folder($value, $key) {
+    $is_active = !isset($value['active']) || $value['active'];
     $tags = \array_replace([
+        'is:active' => $is_active,
         'is:current' => !empty($value['current']),
         'is:folder' => true,
         'lot' => true,
-        'lot:file' => true, // Folder is a file in this case
-        'not:active' => isset($value['active']) && !$value['active']
+        'lot:folder' => true,
+        'not:active' => !$is_active
     ], $value['tags'] ?? []);
     $out = [
         0 => 'li',
@@ -540,12 +552,14 @@ function menu($value, $key, int $i = 0) {
 }
 
 function page($value, $key) {
+    $is_active = !isset($value['active']) || $value['active'];
     $tags = \array_replace([
+        'is:active' => $is_active,
         'is:current' => !empty($value['current']),
         'is:file' => true,
         'lot' => true,
         'lot:page' => true,
-        'not:active' => isset($value['active']) && !$value['active']
+        'not:active' => !$is_active
     ], $value['tags'] ?? []);
     $path = $value['path'] ?? $key;
     $out = [
@@ -789,9 +803,8 @@ function tabs($value, $key) {
             }
             $sections[$k] = $vv;
         }
-        $out[1] = \x\panel\type([
+        $out[1] = \x\panel\type\links([
             '0' => 'nav',
-            'type' => 'links',
             'lot' => $links
         ], $name);
         $out[1] .= \implode("", $sections);

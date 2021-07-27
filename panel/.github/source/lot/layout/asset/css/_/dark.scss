@@ -80,13 +80,15 @@ $code: monospace !default;
     background: dark(5%);
     border-color: dark(10%);
     color: dark(70%);
-    &:focus {
-      border-color: dark(15%);
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
-      &:invalid {
-        border-color: mix(red, dark(15%), 50%);
-        color: mix(red, dark(70%), 50%);
-        box-shadow: 0 0 0 3px rgba(255, 0, 0, .15);
+    &:not(.not\:active) {
+      &:focus {
+        border-color: dark(15%);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
+        &:invalid {
+          border-color: mix(red, dark(15%), 50%);
+          color: mix(red, dark(70%), 50%);
+          box-shadow: 0 0 0 3px rgba(255, 0, 0, .15);
+        }
       }
     }
   }
@@ -176,12 +178,9 @@ $code: monospace !default;
       background: dark(5%);
       border-color: dark(10%);
       color: dark(70%);
-      &--focus {
+      &--focus:not(.not\:active) {
         border-color: dark(15%);
         box-shadow: 0 0 0 3px rgba(255, 255, 255, .025);
-      }
-      &.not\:active {
-        opacity: 1;
       }
     }
     .option-picker {
@@ -284,27 +283,26 @@ $code: monospace !default;
       }
     }
   }
-  .lot\:files {
-    .is\:file {
-      &::before {
-        background: dark(0%);
-        border-color: dark(30%);
-      }
-      &::after {
-        border-bottom-color: dark(30%);
-        border-left-color: dark(30%);
-      }
+  .is\:file {
+    &::before {
+      background: dark(0%);
+      border-color: dark(30%);
     }
-    .is\:folder {
-      &::before {
-        background: dark(60%);
-      }
-      &::after {
-        background: dark(40%);
-      }
+    &::after {
+      border-bottom-color: dark(30%);
+      border-left-color: dark(30%);
+    }
+  }
+  .is\:folder {
+    &::before {
+      background: dark(60%);
+    }
+    &::after {
+      background: dark(40%);
     }
   }
   .lot\:file,
+  .lot\:folder,
   .lot\:page {
     border-color: dark(0%);
     &:hover {
@@ -321,6 +319,7 @@ $code: monospace !default;
     }
   }
   .lot\:files,
+  .lot\:folders,
   .lot\:pages {
     .lot\:tasks {
       gap: 0;
@@ -394,7 +393,7 @@ $code: monospace !default;
         background: dark(20%);
       }
       &::before {
-        background: dark(0);
+        background: dark(0%);
       }
       &:checked {
         &::before {

@@ -13,5 +13,5 @@ return [
         // Move deleted file(s) to the trash folder?
         'trash' => true
     ],
-    'skin' => 'minima'
+    'skin' => 'default'
 ];

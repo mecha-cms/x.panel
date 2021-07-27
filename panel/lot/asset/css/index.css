@@ -4,7 +4,7 @@ dt,
 legend,
 strong,
 th {
-  font-weight: bolder;
+  font-weight: bold;
 }
 
 .code,
@@ -73,11 +73,7 @@ u {
   cursor: not-allowed;
 }
 
-.not\:active .button[disabled],
-.not\:active .input[disabled],
-.not\:active .not\:active,
-.not\:active .select[disabled],
-.not\:active .textarea[disabled] {
+.not\:active .not\:active {
   opacity: 1;
 }
 
@@ -889,8 +885,10 @@ label {
   cursor: pointer;
 }
 
-.input[type='checkbox'][readonly],
-.input[type='radio'][readonly] {
+.input[type='checkbox'].is\:set,
+.input[type='color'].is\:set,
+.input[type='image'].is\:set,
+.input[type='radio'].is\:set {
   pointer-events: none;
 }
 
@@ -946,7 +944,7 @@ label {
 }
 
 .select optgroup {
-  font-weight: bolder;
+  font-weight: bold;
 }
 
 .select optgroup option {
@@ -980,15 +978,6 @@ label > input[type='radio'] + span {
   vertical-align: middle;
 }
 
-label.not\:active {
-  cursor: not-allowed;
-}
-
-label.is\:lock {
-  opacity: .5;
-  pointer-events: none;
-}
-
 .button:focus,
 .input:focus,
 .select:focus,
@@ -996,22 +985,10 @@ label.is\:lock {
   z-index: 1;
 }
 
-.button[disabled],
-.button.not\:active,
-.input[disabled],
-.input.not\:active,
-.select[disabled],
-.select.not\:active,
-.textarea[disabled],
-.textarea.not\:active {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-.button[readonly],
-.input[readonly],
-.select[readonly],
-.textarea[readonly] {
+.button.is\:set,
+.input.is\:set,
+.select.is\:set,
+.textarea.is\:set {
   border-style: dotted;
 }
 
@@ -1024,9 +1001,7 @@ label.is\:lock {
 }
 
 .input[type='checkbox'].not\:active,
-.input[type='checkbox'][disabled],
-.input[type='radio'].not\:active,
-.input[type='radio'][disabled] {
+.input[type='radio'].not\:active {
   background: #000;
 }
 
@@ -1880,7 +1855,7 @@ label.is\:lock {
   border-radius: 10px;
 }
 
-.lot\:field.type\:toggle .input[type='checkbox'][disabled] {
+.lot\:field.type\:toggle .input[type='checkbox'].not\:active {
   background: #000;
 }
 
@@ -1908,6 +1883,7 @@ label.is\:lock {
 }
 
 .lot\:file,
+.lot\:folder,
 .lot\:page {
   display: flex;
   border: 0 solid #fff;
@@ -1919,8 +1895,10 @@ label.is\:lock {
 }
 
 .lot\:file::before,
+.lot\:folder::before,
 .lot\:page::before,
 .lot\:file::after,
+.lot\:folder::after,
 .lot\:page::after {
   content: "";
   display: block;
@@ -1932,30 +1910,34 @@ label.is\:lock {
 }
 
 .lot\:file > *,
+.lot\:folder > *,
 .lot\:page > * {
   margin: 0 3px;
 }
 
 .lot\:file > .lot\:tasks,
+.lot\:folder > .lot\:tasks,
 .lot\:page > .lot\:tasks {
   margin-right: -6px;
 }
 
-.lot\:file.is\:file,
-.is\:file.lot\:page,
-.lot\:file.is\:folder,
-.is\:folder.lot\:page {
+.lot\:file.not\:active,
+.not\:active.lot\:folder,
+.not\:active.lot\:page {
+  opacity: .5;
+}
+
+.is\:file,
+.is\:folder {
   padding-left: 42px;
 }
 
-.lot\:file.is\:file::before,
-.is\:file.lot\:page::before {
+.is\:file::before {
   border: 1px solid;
   width: 20px;
 }
 
-.lot\:file.is\:file::after,
-.is\:file.lot\:page::after {
+.is\:file::after {
   width: 0;
   height: 0;
   border: 3px solid;
@@ -1964,27 +1946,21 @@ label.is\:lock {
   left: 20px;
 }
 
-.lot\:file.is\:folder::before,
-.is\:folder.lot\:page::before {
+.is\:folder::before {
   background: #000;
   height: 18px;
   top: 11px;
 }
 
-.lot\:file.is\:folder::after,
-.is\:folder.lot\:page::after {
+.is\:folder::after {
   background: #000;
   width: 12px;
   height: 3px;
   top: 7px;
 }
 
-.lot\:file.not\:active,
-.not\:active.lot\:page {
-  opacity: .5;
-}
-
 .lot\:files,
+.lot\:folders,
 .lot\:pages {
   margin-right: 0;
   margin-left: 0;
@@ -1994,8 +1970,10 @@ label.is\:lock {
 }
 
 .lot\:files h3,
+.lot\:folders h3,
 .lot\:pages h3,
 .lot\:files p,
+.lot\:folders p,
 .lot\:pages p {
   margin: 0;
   padding: 0;
@@ -2003,6 +1981,7 @@ label.is\:lock {
 }
 
 .lot\:files h3,
+.lot\:folders h3,
 .lot\:pages h3 {
   flex: 1;
   white-space: nowrap;
@@ -2011,16 +1990,19 @@ label.is\:lock {
 }
 
 .lot\:files h3 a.not\:active,
+.lot\:folders h3 a.not\:active,
 .lot\:pages h3 a.not\:active {
   opacity: 1;
 }
 
 .lot\:files h3 .title,
+.lot\:folders h3 .title,
 .lot\:pages h3 .title {
   display: inline-flex;
 }
 
 .lot\:files.count\:0,
+.count\:0.lot\:folders,
 .count\:0.lot\:pages {
   display: none;
 }

@@ -78,16 +78,16 @@
   color: #bdbdbd;
 }
 
-.is\:dark .input:focus,
-.is\:dark .select:focus,
-.is\:dark .textarea:focus {
+.is\:dark .input:not(.not\:active):focus,
+.is\:dark .select:not(.not\:active):focus,
+.is\:dark .textarea:not(.not\:active):focus {
   border-color: #434343;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
-.is\:dark .input:focus:invalid,
-.is\:dark .select:focus:invalid,
-.is\:dark .textarea:focus:invalid {
+.is\:dark .input:not(.not\:active):focus:invalid,
+.is\:dark .select:not(.not\:active):focus:invalid,
+.is\:dark .textarea:not(.not\:active):focus:invalid {
   border-color: #a12222;
   color: #de5f5f;
   box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.15);
@@ -165,15 +165,10 @@
   color: #bdbdbd;
 }
 
-.is\:dark .lot\:fields .option-picker--focus,
-.is\:dark .lot\:fields .tag-picker--focus {
+.is\:dark .lot\:fields .option-picker--focus:not(.not\:active),
+.is\:dark .lot\:fields .tag-picker--focus:not(.not\:active) {
   border-color: #434343;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
-}
-
-.is\:dark .lot\:fields .option-picker.not\:active,
-.is\:dark .lot\:fields .tag-picker.not\:active {
-  opacity: 1;
 }
 
 .is\:dark .lot\:fields .option-picker::after {
@@ -280,53 +275,59 @@
   color: #595959;
 }
 
-.is\:dark .lot\:files .is\:file::before {
+.is\:dark .is\:file::before {
   background: #222222;
   border-color: #646464;
 }
 
-.is\:dark .lot\:files .is\:file::after {
+.is\:dark .is\:file::after {
   border-bottom-color: #646464;
   border-left-color: #646464;
 }
 
-.is\:dark .lot\:files .is\:folder::before {
+.is\:dark .is\:folder::before {
   background: #a7a7a7;
 }
 
-.is\:dark .lot\:files .is\:folder::after {
+.is\:dark .is\:folder::after {
   background: #7a7a7a;
 }
 
 .is\:dark .lot\:file,
+.is\:dark .lot\:folder,
 .is\:dark .lot\:page {
   border-color: #222222;
 }
 
 .is\:dark .lot\:file:hover,
+.is\:dark .lot\:folder:hover,
 .is\:dark .lot\:page:hover {
   background: #242424;
   border-color: #242424;
 }
 
 .is\:dark .lot\:file.is\:current,
+.is\:dark .lot\:folder.is\:current,
 .is\:dark .lot\:page.is\:current {
   background: #262626;
   border-color: #262626;
 }
 
 .is\:dark .lot\:file.is\:current:hover,
+.is\:dark .lot\:folder.is\:current:hover,
 .is\:dark .lot\:page.is\:current:hover {
   background: #292929;
   border-color: #292929;
 }
 
 .is\:dark .lot\:files .lot\:tasks,
+.is\:dark .lot\:folders .lot\:tasks,
 .is\:dark .lot\:pages .lot\:tasks {
   gap: 0;
 }
 
 .is\:dark .lot\:files .lot\:tasks > * .title span,
+.is\:dark .lot\:folders .lot\:tasks > * .title span,
 .is\:dark .lot\:pages .lot\:tasks > * .title span {
   display: none;
 }
@@ -459,4 +460,468 @@
 
 .is\:dark .input[type='range']::-moz-range-thumb {
   background: #646464;
+}
+
+.is\:light {
+  background: white;
+  border-color: #f4f4f4;
+  font-family: sans-serif;
+  color: #7a7a7a;
+}
+
+.is\:light a[href] {
+  color: #a7a7a7;
+}
+
+.is\:light a[href]:focus,
+.is\:light a[href]:active {
+  color: #919191;
+}
+
+.is\:light a.not\:active {
+  color: lightgray;
+}
+
+.is\:light blockquote,
+.is\:light caption,
+.is\:light figcaption,
+.is\:light .description {
+  color: #919191;
+}
+
+.is\:light code,
+.is\:light .code {
+  font-family: monospace;
+}
+
+.is\:light fieldset,
+.is\:light hr,
+.is\:light .table td,
+.is\:light .table th {
+  border-color: #f4f4f4;
+}
+
+.is\:light pre > code {
+  background: #f4f4f4;
+  color: inherit;
+}
+
+.is\:light pre.is\:text > code {
+  background: none;
+  border-color: #f4f4f4;
+}
+
+.is\:light .alert p {
+  background: #fdfdfd;
+}
+
+.is\:light .button,
+.is\:light .button[href] {
+  background: #a7a7a7;
+  color: #f4f4f4;
+}
+
+.is\:light .button:not(.not\:active):focus,
+.is\:light .button[href]:not(.not\:active):focus {
+  background: #919191;
+  color: #f4f4f4;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.025);
+}
+
+.is\:light .button:not(.not\:active):active,
+.is\:light .button[href]:not(.not\:active):active {
+  background: #bdbdbd;
+  color: #f4f4f4;
+}
+
+.is\:light .input,
+.is\:light .select,
+.is\:light .textarea {
+  background: #f4f4f4;
+  border-color: lightgray;
+  color: #646464;
+}
+
+.is\:light .input:not(.not\:active):focus,
+.is\:light .select:not(.not\:active):focus,
+.is\:light .textarea:not(.not\:active):focus {
+  border-color: #c8c8c8;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.is\:light .input:not(.not\:active):focus:invalid,
+.is\:light .select:not(.not\:active):focus:invalid,
+.is\:light .textarea:not(.not\:active):focus:invalid {
+  border-color: #ef6f6f;
+  color: #b23232;
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.15);
+}
+
+.is\:light .input[type='color'],
+.is\:light .input[type='file'],
+.is\:light .input[type='image'],
+.is\:light .input[type='range'] {
+  background: none;
+}
+
+.is\:light .select optgroup,
+.is\:light .select option {
+  background: #f4f4f4;
+  color: inherit;
+}
+
+.is\:light .lot\:field .lot\:f > .button,
+.is\:light .lot\:field .lot\:f > .fix,
+.is\:light .lot\:field .lot\:f > .options > .button {
+  background: #f6f6f6;
+  border-color: lightgray;
+}
+
+.is\:light .lot\:field .lot\:f > .button:focus,
+.is\:light .lot\:field .lot\:f > .fix:focus,
+.is\:light .lot\:field .lot\:f > .options > .button:focus {
+  background: white;
+  border-color: #c8c8c8;
+}
+
+.is\:light .lot\:field.type\:toggle .input[type='checkbox']::before {
+  background: #e9e9e9;
+}
+
+.is\:light .lot\:field.type\:toggle .input[type='checkbox']:checked::before {
+  background: #e9e9e9;
+}
+
+.is\:light .lot\:bar .lot\:links > ul > li > a:focus,
+.is\:light .lot\:bar .lot\:links > ul > li > a:hover {
+  background: #fdfdfd;
+}
+
+.is\:light .lot\:bar .lot\:links > ul > li.is\:separator {
+  background: #f4f4f4;
+}
+
+.is\:light .lot\:bar .lot\:field .input:focus {
+  box-shadow: none;
+}
+
+.is\:light .lot\:bar .not\:active {
+  opacity: 1;
+  color: lightgray;
+}
+
+.is\:light .lot\:bar .not\:active > a {
+  color: inherit;
+}
+
+.is\:light .lot\:bar .not\:active.is\:current {
+  color: #c8c8c8;
+}
+
+.is\:light .lot\:fields > .description {
+  border-bottom-color: #f4f4f4;
+}
+
+.is\:light .lot\:fields .option-picker,
+.is\:light .lot\:fields .tag-picker {
+  background: #f4f4f4;
+  border-color: lightgray;
+  color: #646464;
+}
+
+.is\:light .lot\:fields .option-picker--focus:not(.not\:active),
+.is\:light .lot\:fields .tag-picker--focus:not(.not\:active) {
+  border-color: #c8c8c8;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.is\:light .lot\:fields .option-picker::after {
+  border-top-color: #bdbdbd;
+}
+
+.is\:light .lot\:fields .option-picker--open::after {
+  border-bottom-color: #bdbdbd;
+}
+
+.is\:light .lot\:fields .option-picker__option:hover {
+  background: #e9e9e9;
+  color: inherit;
+}
+
+.is\:light .lot\:fields .option-picker__option--active {
+  background: #e9e9e9;
+  color: #2d2d2d;
+}
+
+.is\:light .lot\:fields .option-picker__option--active:hover {
+  color: #2d2d2d;
+}
+
+.is\:light .lot\:fields .option-picker__option--lock {
+  color: #c8c8c8;
+}
+
+.is\:light .lot\:fields .option-picker__option--lock:hover {
+  background: none;
+  color: #c8c8c8;
+}
+
+.is\:light .lot\:fields .option-picker__options {
+  background: inherit;
+  border-color: inherit;
+  color: inherit;
+}
+
+.is\:light .lot\:fields .option-picker__value {
+  background: none !important;
+}
+
+.is\:light .lot\:fields .tag-picker__tag {
+  background: #dedede;
+  color: inherit;
+}
+
+.is\:light .lot\:fields .tag-picker__tag--focus {
+  background: lightgray;
+}
+
+.is\:light .lot\:fields .tag-picker__text {
+  background: none;
+}
+
+.is\:light .lot\:fields .tag-picker__text--focus {
+  background: none;
+}
+
+.is\:light .lot\:menu {
+  background: white;
+  color: #7a7a7a;
+}
+
+.is\:light .lot\:menu a:focus,
+.is\:light .lot\:menu a:hover {
+  background: #fdfdfd;
+}
+
+.is\:light .lot\:menu li:focus > a,
+.is\:light .lot\:menu li:hover > a {
+  background: #fdfdfd;
+}
+
+.is\:light .lot\:menu li.is\:current > a {
+  background: #fbfbfb;
+}
+
+.is\:light .lot\:menu li.is\:current > a:focus,
+.is\:light .lot\:menu li.is\:current > a:hover {
+  background: #f8f8f8;
+}
+
+.is\:light .lot\:menu li.is\:separator {
+  background: #f4f4f4;
+}
+
+.is\:light .lot\:menu li .title small {
+  background: #f4f4f4;
+  color: #6f6f6f;
+}
+
+.is\:light .lot\:menu .not\:active {
+  opacity: 1;
+  color: lightgray;
+}
+
+.is\:light .lot\:menu .not\:active > a {
+  color: inherit;
+}
+
+.is\:light .lot\:menu .not\:active.is\:current {
+  color: #c8c8c8;
+}
+
+.is\:light .is\:file::before {
+  background: white;
+  border-color: #bdbdbd;
+}
+
+.is\:light .is\:file::after {
+  border-bottom-color: #bdbdbd;
+  border-left-color: #bdbdbd;
+}
+
+.is\:light .is\:folder::before {
+  background: #7a7a7a;
+}
+
+.is\:light .is\:folder::after {
+  background: #a7a7a7;
+}
+
+.is\:light .lot\:file,
+.is\:light .lot\:folder,
+.is\:light .lot\:page {
+  border-color: white;
+}
+
+.is\:light .lot\:file:hover,
+.is\:light .lot\:folder:hover,
+.is\:light .lot\:page:hover {
+  background: #fdfdfd;
+  border-color: #fdfdfd;
+}
+
+.is\:light .lot\:file.is\:current,
+.is\:light .lot\:folder.is\:current,
+.is\:light .lot\:page.is\:current {
+  background: #fbfbfb;
+  border-color: #fbfbfb;
+}
+
+.is\:light .lot\:file.is\:current:hover,
+.is\:light .lot\:folder.is\:current:hover,
+.is\:light .lot\:page.is\:current:hover {
+  background: #f8f8f8;
+  border-color: #f8f8f8;
+}
+
+.is\:light .lot\:files .lot\:tasks,
+.is\:light .lot\:folders .lot\:tasks,
+.is\:light .lot\:pages .lot\:tasks {
+  gap: 0;
+}
+
+.is\:light .lot\:files .lot\:tasks > * .title span,
+.is\:light .lot\:folders .lot\:tasks > * .title span,
+.is\:light .lot\:pages .lot\:tasks > * .title span {
+  display: none;
+}
+
+.is\:light .lot\:pager > span > a {
+  background: #bdbdbd;
+  color: #2d2d2d;
+}
+
+.is\:light .lot\:pager > span > a:focus {
+  background: #a7a7a7;
+  color: #2d2d2d;
+}
+
+.is\:light .lot\:pager > span > a:active {
+  background: lightgray;
+  color: #2d2d2d;
+}
+
+.is\:light .lot\:pager > span > b,
+.is\:light .lot\:pager > span > span {
+  background: none;
+  color: inherit;
+}
+
+.is\:light .lot\:tabs .lot\:links li {
+  border-color: #f4f4f4;
+}
+
+.is\:light .lot\:tabs .lot\:links li a:not(.has\:link) {
+  color: inherit;
+}
+
+.is\:light .lot\:tabs .lot\:links li a:not(.has\:link):focus {
+  color: #646464;
+}
+
+.is\:light .lot\:tabs .lot\:links li.is\:current::before,
+.is\:light .lot\:tabs .lot\:links li.is\:current::after {
+  border-color: #f4f4f4;
+}
+
+@media (min-width: 720px) {
+  .is\:light .lot\:tabs .lot\:links li:not(.is\:current) {
+    background: #fdfdfd;
+    color: #7a7a7a;
+  }
+}
+
+.is\:light .lot\:tabs .lot\:links li.not\:active {
+  opacity: 1;
+  color: lightgray;
+}
+
+.is\:light .input[type='checkbox'],
+.is\:light .input[type='radio'] {
+  background: #bdbdbd;
+}
+
+.is\:light .input[type='checkbox']:not(.not\:active):focus,
+.is\:light .input[type='radio']:not(.not\:active):focus {
+  background: #a7a7a7;
+}
+
+.is\:light .input[type='checkbox']:not(.not\:active):active,
+.is\:light .input[type='radio']:not(.not\:active):active {
+  background: lightgray;
+}
+
+.is\:light .input[type='checkbox']::before,
+.is\:light .input[type='radio']::before {
+  background: white;
+}
+
+.is\:light .input[type='checkbox']:checked::before,
+.is\:light .input[type='radio']:checked::before {
+  background: none;
+}
+
+.is\:light .input[type='checkbox']:checked::before {
+  border-right-color: #f4f4f4;
+  border-bottom-color: #f4f4f4;
+}
+
+.is\:light .input[type='radio']:checked::before {
+  border-color: white;
+}
+
+.is\:light .input[type='range']:not(.not\:active):focus {
+  box-shadow: none;
+}
+
+.is\:light .input[type='range']:not(.not\:active):focus::-webkit-slider-runnable-track {
+  background: #c8c8c8;
+}
+
+.is\:light .input[type='range']:not(.not\:active):focus::-webkit-slider-thumb {
+  background: #919191;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.025);
+}
+
+.is\:light .input[type='range']:not(.not\:active):focus::-moz-range-track {
+  background: #c8c8c8;
+}
+
+.is\:light .input[type='range']:not(.not\:active):focus::-moz-range-thumb {
+  background: #919191;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.025);
+}
+
+.is\:light .input[type='range']:not(.not\:active):active::-webkit-slider-thumb {
+  background: #bdbdbd;
+}
+
+.is\:light .input[type='range']:not(.not\:active):active::-moz-range-thumb {
+  background: #bdbdbd;
+}
+
+.is\:light .input[type='range']::-webkit-slider-runnable-track {
+  background: lightgray;
+}
+
+.is\:light .input[type='range']::-webkit-slider-thumb {
+  background: #a7a7a7;
+}
+
+.is\:light .input[type='range']::-moz-range-track {
+  background: lightgray;
+}
+
+.is\:light .input[type='range']::-moz-range-thumb {
+  background: #a7a7a7;
 }

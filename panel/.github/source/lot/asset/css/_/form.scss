@@ -94,10 +94,9 @@ label {
     height: 1em;
     line-height: 1em;
     cursor: pointer;
-  }
-  &[type='checkbox'][readonly],
-  &[type='radio'][readonly] {
-    pointer-events: none;
+    &.is\:set {
+      pointer-events: none;
+    }
   }
   &[type='color'] {
     width: ($x * 1.5);
@@ -141,7 +140,7 @@ label {
     padding: 0;
   }
   optgroup {
-    font-weight: bolder;
+    font-weight: bold;
     option {
       font-weight: normal;
       padding-left: ($x / 3);
@@ -177,13 +176,6 @@ label {
       }
     }
   }
-  &.not\:active {
-    cursor: not-allowed;
-  }
-  &.is\:lock {
-    opacity: .5;
-    pointer-events: none;
-  }
 }
 
 .button,
@@ -193,12 +185,7 @@ label {
   &:focus {
     z-index: 1;
   }
-  &[disabled],
-  &.not\:active {
-    opacity: .5;
-    cursor: not-allowed;
-  }
-  &[readonly] {
+  &.is\:set {
     border-style: dotted;
   }
 }
@@ -209,8 +196,7 @@ label {
   &[type='radio'] {
     @include appearance(none);
     background: $color-back-button;
-    &.not\:active,
-    &[disabled] {
+    &.not\:active {
       background: $color;
     }
     &::before {

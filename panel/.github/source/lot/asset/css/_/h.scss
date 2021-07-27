@@ -1,5 +1,5 @@
 .b {
-  font-weight: bolder;
+  font-weight: bold;
 }
 
 .code {
@@ -37,14 +37,8 @@
 .not\:active {
   opacity: .5;
   cursor: not-allowed;
-  & {
-    .button[disabled],
-    .input[disabled],
-    .not\:active,
-    .select[disabled],
-    .textarea[disabled] {
-      opacity: 1;
-    }
+  .not\:active {
+    opacity: 1;
   }
 }
 

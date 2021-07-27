@@ -6,7 +6,7 @@ return [
     'ar' => 'Arabic (العربية)',
     'de' => 'German (Deutsch)',
     'en' => 'English (English)',
-    'es' => 'Spanish, Castilian (Español)',
+    'es' => 'Spanish (Español)',
     'fr' => 'French (Français)',
     'id' => 'Indonesian (Bahasa Indonesia)',
     'ja' => 'Japanese (日本語)',

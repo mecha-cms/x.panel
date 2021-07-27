@@ -1,12 +1,12 @@
 <?php
 
-$_['skin']['minima'] = [
-    'title' => 'Minima',
+$_['skin']['default'] = [
+    'title' => 'Default',
     'path' => stream_resolve_include_path(__DIR__ . DS . '..' . DS . 'asset' . DS . 'css' . DS . 'index' . (defined('DEBUG') && DEBUG ? '.' : '.min.') . 'css')
 ];
 
 // Add dark/light mode variant
-if ('minima' === ($state->x->panel->skin ?? 'none')) {
+if ('default' === ($state->x->panel->skin ?? 'none')) {
     if ('post' === $_['form']['type']) {
         $variant = $_['form']['lot']['cookie']['panel-skin-variant'] ?? null;
         if ($variant) {
@@ -23,10 +23,7 @@ if ('minima' === ($state->x->panel->skin ?? 'none')) {
                 'value' => $variant,
                 'lot' => [
                     'dark' => 'Dark',
-                    'light' => [
-                        'active' => false, // TODO
-                        'title' => 'Light'
-                    ]
+                    'light' => 'Light'
                 ],
                 'stack' => 30.1
             ];
