@@ -835,6 +835,12 @@ label {
   cursor: pointer;
 }
 
+.input.is\:locked,
+.textarea.is\:locked {
+  background: none;
+  border-style: dotted;
+}
+
 .input:focus:invalid,
 .textarea:focus:invalid {
   color: #c00;
@@ -1223,6 +1229,11 @@ label > input[type='radio'] + span {
   padding: 0;
   width: auto;
   height: inherit;
+}
+
+.lot\:bar .lot\:field > label + div,
+.lot\:bar .lot\:field > label + br + div {
+  margin-top: 0;
 }
 
 .lot\:bar .lot\:field .input {
@@ -2189,12 +2200,14 @@ label > input[type='radio'] + span {
   display: none;
 }
 
-.lot\:tab {
+.lot\:tab,
+.content\:tab {
   margin-top: 24px;
   display: none;
 }
 
-.lot\:tab.is\:current {
+.lot\:tab.is\:current,
+.is\:current.content\:tab {
   display: block;
 }
 
@@ -2243,7 +2256,8 @@ label > input[type='radio'] + span {
   display: none;
 }
 
-.lot\:tabs.count\:1 .lot\:tab {
+.lot\:tabs.count\:1 .lot\:tab,
+.lot\:tabs.count\:1 .content\:tab {
   margin-top: 0;
 }
 
@@ -2383,20 +2397,6 @@ pre.is\:text code {
     flex: 1;
     width: 100%;
     min-width: 100%;
-  }
-  .lot\:bar .lot\:links.of\:lot .lot\:field {
-    margin: 0;
-  }
-  .lot\:bar .lot\:links.of\:lot .lot\:field > * {
-    margin: 0;
-  }
-  .lot\:bar .lot\:links.of\:lot .lot\:field .input {
-    display: block;
-    width: 100%;
-    margin: 0;
-  }
-  .lot\:bar .lot\:links.of\:lot .lot\:field .lot\:f {
-    display: flex;
   }
   .lot\:bar .has\:menu ul ul {
     left: 25%;

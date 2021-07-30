@@ -41,6 +41,10 @@ label {
 
 .input,
 .textarea {
+  &.is\:locked {
+    background: none;
+    border-style: dotted;
+  }
   &:focus:invalid {
     color: $color-error;
     border-color: $color-error;

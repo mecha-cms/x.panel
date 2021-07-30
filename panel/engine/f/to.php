@@ -32,15 +32,15 @@ function field($value, $key) {
     $value['id'] = $value['id'] ?? 'f:' . \dechex(\crc32($key));
     $name = $value['name'] ?? $key;
     $is_active = !isset($value['active']) || $value['active'];
-    $is_lock = !empty($value['lock']);
+    $is_locked = !empty($value['locked']);
     $is_vital = !empty($value['vital']);
     $tags_status = [
         'has:pattern' => !empty($value['pattern']),
         'is:active' => $is_active,
-        'is:lock' => $is_lock,
+        'is:locked' => $is_locked,
         'is:vital' => $is_vital,
         'not:active' => !$is_active,
-        'not:lock' => !$is_lock,
+        'not:locked' => !$is_locked,
         'not:vital' => !$is_vital
     ];
     $state = $value['state'] ?? [];
@@ -57,7 +57,7 @@ function field($value, $key) {
             'name' => $name,
             'pattern' => $value['pattern'] ?? null,
             'placeholder' => \i(...((array) ($value['hint'] ?? []))),
-            'readonly' => $is_lock,
+            'readonly' => $is_locked,
             'required' => $is_vital
         ]
     ];

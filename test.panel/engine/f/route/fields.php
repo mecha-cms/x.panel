@@ -65,6 +65,12 @@ function fields($_) {
                 'type' => 'content',
                 'name' => 'default[content-disabled]'
             ],
+            'content-readonly' => [
+                'locked' => true,
+                'title' => 'Content',
+                'type' => 'content',
+                'name' => 'default[content-readonly]'
+            ],
             'date' => [
                 'title' => 'Date',
                 'type' => 'date',
@@ -216,13 +222,22 @@ function fields($_) {
             'query' => [
                 'title' => 'Query',
                 'type' => 'query',
-                'name' => 'default[query]'
+                'name' => 'default[query]',
+                'value' => 'foo, bar'
             ],
             'query-disabled' => [
                 'active' => false,
                 'title' => 'Query',
                 'type' => 'query',
-                'name' => 'default[query-disabled]'
+                'name' => 'default[query-disabled]',
+                'value' => 'foo, bar'
+            ],
+            'query-readonly' => [
+                'locked' => true,
+                'title' => 'Query',
+                'type' => 'query',
+                'name' => 'default[query-readonly]',
+                'value' => 'foo, bar'
             ],
             'range' => [
                 'title' => 'Range',
@@ -258,6 +273,12 @@ function fields($_) {
                 'title' => 'Text',
                 'type' => 'text',
                 'name' => 'default[text-disabled]'
+            ],
+            'text-readonly' => [
+                'locked' => true,
+                'title' => 'Text',
+                'type' => 'text',
+                'name' => 'default[text-readonly]'
             ],
             'text-with-before' => [
                 'title' => 'Text',

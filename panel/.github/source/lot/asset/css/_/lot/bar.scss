@@ -55,6 +55,12 @@
     padding: 0;
     width: auto;
     height: inherit;
+    > label {
+      + div,
+      + br + div {
+        margin-top: 0;
+      }
+    }
     .input {
       display: block;
       width: ($x * 8);

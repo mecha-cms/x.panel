@@ -81,15 +81,15 @@ function desk($value, $key) {
 
 function field($value, $key) {
     $is_active = !isset($value['active']) || $value['active'];
-    $is_lock = !empty($value['lock']);
+    $is_locked = !empty($value['locked']);
     $is_vital = !empty($value['vital']);
     $tags_status = [
         'has:pattern' => !empty($value['pattern']),
         'is:active' => $is_active,
-        'is:lock' => $is_lock,
+        'is:locked' => $is_locked,
         'is:vital' => $is_vital,
         'not:active' => !$is_active,
-        'not:lock' => !$is_lock,
+        'not:locked' => !$is_locked,
         'not:vital' => !$is_vital
     ];
     $tags = [
@@ -442,7 +442,8 @@ function link($value, $key) {
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'level' => -1,
-            'content' => \i(...((array) ($value['title'] ?? \To::title($key)))) . ($info ? ' <small>' . $info . '</small>' : "")
+            'info' => $info,
+            'content' => $value['title'] ?? \To::title($key)
         ], $key);
     }
     $href = $value['link'] ?? $value['url'] ?? \P;
@@ -896,6 +897,7 @@ function lot($value, $key) {
 
 function title($value, $key) {
     $icon = $value['icon'] ?? [];
+    $info = $value['info'] ?? "";
     $title = $value[1] ?? $value['content'] ?? "";
     $title = \w('<!--0-->' . \i(...((array) $title)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'small', 'strong', 'sub', 'sup']);
     if ('0' !== $title && !$title && !$icon) {
@@ -916,6 +918,9 @@ function title($value, $key) {
         2 => $value[2] ?? []
     ];
     $icon = \x\panel\to\icon($value['icon'] ?? []);
+    if ("" !== $info) {
+        $title = \trim($title . ' <small>' . \i(...((array) $info)) . '</small>');
+    }
     $out[1] = $icon[0] . ("" !== $title ? '<span>' . $title . '</span>' : "") . $icon[1];
     \x\panel\_set_class($out[2], [
         'has:icon' => !!($icon[0] || $icon[1]),

@@ -84,7 +84,7 @@ Hook::set('layout', function() {
         $_['ff'] = To::URL($_['ff']);
     }
     // Remove sensitive data
-    unset($_['asset'], $_['icon'], $_['lot'], $_['user']);
+    unset($_['asset'], $_['icon'], $_['lot'], $_['skin'], $_['user']);
     Asset::script('window._=Object.assign(window._||{},' . json_encode($_) . ');', 0);
     \x\panel\_set_asset();
 }, 20);

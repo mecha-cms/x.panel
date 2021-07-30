@@ -28,8 +28,8 @@ return (static function($icons) {
             $folders['comment']['info'] = $info[0];
         }
     }
-    if (isset($folders['trash']) && ($count = q(g(LOT . DS . 'trash', null, true)))) {
-        $folders['trash']['info'] = $count - q(g(LOT . DS . 'trash', 0));
+    if (isset($folders['trash']) && ($count = q(g(LOT . DS . 'trash')))) {
+        $folders['trash']['info'] = q(g(LOT . DS . 'trash', null, true)) - $count;
     }
     $i = 10;
     $list = [];

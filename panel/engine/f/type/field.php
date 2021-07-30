@@ -319,11 +319,11 @@ function items($value, $key) {
             $d = \strip_tags(\i(...((array) $d)));
             $class = [];
             $class[] = (!isset($v['active']) || $v['active'] ? 'is' : 'not') . ':active';
-            $class[] = (!empty($v['lock']) ? 'is' : 'not') . ':lock';
+            $class[] = (!empty($v['locked']) ? 'is' : 'not') . ':locked';
             if (isset($v['active']) && !$v['active']) {
                 $input['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
-            } else if (!empty($v['lock'])) {
+            } else if (!empty($v['locked'])) {
                 $input['readonly'] = true;
             }
             \sort($class);
