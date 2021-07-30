@@ -309,7 +309,9 @@ $desk = [
     ]
 ];
 
-Hook::set('_', function($_) use($page, $trash, $url) {
+$session = $_SESSION['_']['file'] ?? [];
+
+Hook::set('_', function($_) use($page, $session, $trash, $url) {
     $apart = [];
     if (!empty($_['lot']['desk']['lot']['form']['data'])) {
         foreach ($_['lot']['desk']['lot']['form']['data'] as $k => $v) {
@@ -343,7 +345,7 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                 ]);
                 $files[$k] = [
                     'path' => $k,
-                    'current' => !empty($_SESSION['_']['file'][$k]),
+                    'current' => !empty($session[$k]),
                     'title' => S . ($n = basename($k)) . S,
                     'description' => (new File($k))->size,
                     'type' => 'file',
@@ -380,13 +382,17 @@ Hook::set('_', function($_) use($page, $trash, $url) {
                     ],
                     'skip' => isset($p[basename($k, '.data')])
                 ];
-                if (isset($_SESSION['_']['file'][$k])) {
+                if (isset($session[$k])) {
                     unset($_SESSION['_']['file'][$k]);
                 }
             }
             ksort($files);
         }
-        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
+        if ($files) {
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
+        } else {
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['skip'] = true;
+        }
     }
     return $_;
 }, 20);
