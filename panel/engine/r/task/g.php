@@ -178,7 +178,7 @@ function page($_) {
             return $_;
         }
         $f = $_['f'];
-        $name = \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
+        $name = (string) \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
         $x = $_['form']['lot']['page']['x'] ?? 'page';
         if ("" === $name) {
             $name = \date('Y-m-d-H-i-s');

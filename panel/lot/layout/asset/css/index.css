@@ -549,7 +549,7 @@
 .is\:light .button[href]:not(.not\:active):focus {
   background: #a7a7a7;
   color: #2d2d2d;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.015);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .button:not(.not\:active):active,
@@ -570,7 +570,7 @@
 .is\:light .select:not(.not\:active):focus,
 .is\:light .textarea:not(.not\:active):focus {
   border-color: #dedede;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.015);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .input:not(.not\:active):focus:invalid,
@@ -663,7 +663,7 @@
 .is\:light .lot\:fields .option-picker--focus:not(.not\:active),
 .is\:light .lot\:fields .tag-picker--focus:not(.not\:active) {
   border-color: #dedede;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.015);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .lot\:fields .option-picker::after {
@@ -938,7 +938,7 @@
 
 .is\:light .input[type='range']:not(.not\:active):focus::-webkit-slider-thumb {
   background: #a7a7a7;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.015);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .input[type='range']:not(.not\:active):focus::-moz-range-track {
@@ -947,7 +947,7 @@
 
 .is\:light .input[type='range']:not(.not\:active):focus::-moz-range-thumb {
   background: #a7a7a7;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.015);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .input[type='range']:not(.not\:active):active::-webkit-slider-thumb {

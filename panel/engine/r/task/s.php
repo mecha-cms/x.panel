@@ -23,7 +23,7 @@ function blob($_) {
                 $_['alert']['error'][] = 'Failed to upload with error code: ' . $v['error'];
             } else {
                 $folder = \LOT . \DS . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \DS);
-                $name = \To::file(\lcfirst($v['name'])) ?? '0';
+                $name = (string) (\To::file(\lcfirst($v['name'])) ?? '0');
                 $f = $folder . \DS . $name;
                 $x = \pathinfo($name, \PATHINFO_EXTENSION);
                 $type = $v['type'] ?? 'application/octet-stream';
@@ -184,7 +184,7 @@ function folder($_) {
             return $_;
         }
         $f = $_['f'];
-        $name = \To::folder($_['form']['lot']['folder']['name'] ?? "");
+        $name = (string) \To::folder($_['form']['lot']['folder']['name'] ?? "");
         if ("" === $name) {
             $_['alert']['error'][$f] = ['Please fill out the %s field.', 'Name'];
         } else if (\stream_resolve_include_path($ff = $f . \DS . $name)) {
@@ -232,7 +232,7 @@ function page($_) {
             return $_;
         }
         $f = $_['f'];
-        $name = \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
+        $name = (string) \To::kebab($_['form']['lot']['page']['name'] ?? $_['form']['lot']['page']['title'] ?? "");
         $x = $_['form']['lot']['page']['x'] ?? 'page';
         if ("" === $name) {
             $name = \date('Y-m-d-H-i-s');
