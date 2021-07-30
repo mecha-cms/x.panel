@@ -131,7 +131,7 @@ Hook::set('_', function($_) use($uses) {
                 $sort = $_['sort'][1] ?? 'time';
                 $pages[$k] = [
                     'page' => $p,
-                    'title' => (string) ($p->title ?? "")
+                    'title' => strip_tags((string) ($p->title ?? ""))
                 ];
                 ++$count;
             }
