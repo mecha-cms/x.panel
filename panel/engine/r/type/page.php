@@ -338,11 +338,15 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
         if ($page->exist) {
             $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
             $before = $_['/'] . '/::';
+            $count = 0;
             foreach (g(Path::F($path), 'data') as $k => $v) {
                 $after = '::' . strtr($k, [
                     LOT => "",
                     DS => '/'
                 ]);
+                if (!$skip = isset($p[basename($k, '.data')])) {
+                    ++$count;
+                }
                 $files[$k] = [
                     'path' => $k,
                     'current' => !empty($session[$k]),
@@ -380,7 +384,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                             'stack' => 20
                         ]
                     ],
-                    'skip' => isset($p[basename($k, '.data')])
+                    'skip' => $skip
                 ];
                 if (isset($session[$k])) {
                     unset($_SESSION['_']['file'][$k]);
@@ -388,7 +392,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
             }
             ksort($files);
         }
-        if ($files) {
+        if ($count) {
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
         } else {
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['skip'] = true;
