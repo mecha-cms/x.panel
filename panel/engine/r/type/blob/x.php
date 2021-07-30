@@ -41,10 +41,10 @@ if (!$zip) {
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['blob']['lot']['fields']['lot']['options']['skip'] = true;
 
 // Force delete package
-$_['lot']['desk']['lot']['form']['data']['options[let]'] = 1;
+$_['lot']['desk']['lot']['form']['data']['options']['let'] = 1;
 
 // Force extract package
-$_['lot']['desk']['lot']['form']['data']['options[extract]'] = 1;
+$_['lot']['desk']['lot']['form']['data']['options']['extract'] = 1;
 
 $description = '<p>' . i('Make sure that the package you want to upload is structured like this:') . '</p>';
 $description .= '<pre><code class="txt">' . To::kebab(i('extension')) . '.zip&#xA;&#x2514;&#x2500;&#x2500;&#x20;' . To::kebab(i('extension')) . '&#x5C;&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;about.page&#xA;&#x20;&#x20;&#x20;&#x20;&#x251C;&#x2500;&#x2500;&#x20;index.php&#xA;&#x20;&#x20;&#x20;&#x20;&#x2514;&#x2500;&#x2500;&#x20;&#x2026;</code></pre>';

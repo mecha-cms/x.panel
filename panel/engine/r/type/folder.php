@@ -17,7 +17,7 @@ $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 $bar = [
     // type: bar
     'lot' => [
-        // type: bar/menu
+        // type: links
         0 => [
             'lot' => [
                 'folder' => ['skip' => true],

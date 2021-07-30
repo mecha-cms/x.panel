@@ -166,18 +166,13 @@ function field($value, $key) {
         $out[1] .= '</div>';
     }
     \x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
-    if (isset($value['data']) && \is_array($value['data'])) {
-        foreach ($value['data'] as $k => $v) {
-            if (null === $v || false === $v) {
-                continue;
-            }
-            if (\is_array($v) || \is_object($v)) {
-                $v = \json_encode($v);
-            }
+    if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
+        foreach (\explode('&', \substr($data, 1)) as $v) {
+            $vv = \explode('=', $v, 2);
             $out[1] .= new \HTML(['input', false, [
-                'name' => $k,
+                'name' => \urldecode($vv[0]),
                 'type' => 'hidden',
-                'value' => $v
+                'value' => \urldecode($vv[1] ?? 'true')
             ]]);
         }
     }
@@ -379,18 +374,13 @@ function form($value, $key) {
         $count = 0;
         $out[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
-    if (isset($value['data']) && \is_array($value['data'])) {
-        foreach ($value['data'] as $k => $v) {
-            if (null === $v || false === $v) {
-                continue;
-            }
-            if (\is_array($v) || \is_object($v)) {
-                $v = \json_encode($v);
-            }
+    if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
+        foreach (\explode('&', \substr($data, 1)) as $v) {
+            $vv = \explode('=', $v, 2);
             $out[1] .= new \HTML(['input', false, [
-                'name' => $k,
+                'name' => \urldecode($vv[0]),
                 'type' => 'hidden',
-                'value' => $v
+                'value' => \urldecode($vv[1] ?? 'true')
             ]]);
         }
     }

@@ -68,7 +68,7 @@ if ('post' === $_['form']['type']) {
 $bar = [
     // type: bar
     'lot' => [
-        // type: bar/menu
+        // type: links
         0 => [
             'lot' => [
                 'folder' => ['skip' => true],
@@ -103,7 +103,7 @@ $desk = [
         'form' => [
             // type: form/post
             'data' => [
-                'file[seal]' => '0600',
+                'file' => ['seal' => '0600'],
                 'token' => $_['token'],
                 'type' => $_['type']
             ],

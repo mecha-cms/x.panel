@@ -17,7 +17,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
     'bar' => [
         // type: bar
         'lot' => [
-            // type: bar/menu
+            // type: links
             0 => [
                 'lot' => [
                     's' => [
@@ -38,7 +38,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
             'form' => [
                 // type: form/post
                 'data' => [
-                    'data[id]' => 's' === $_['task'] ? $id : $page->id
+                    'data' => ['id' => 's' === $_['task'] ? $id : $page->id]
                 ],
                 'lot' => [
                     1 => [

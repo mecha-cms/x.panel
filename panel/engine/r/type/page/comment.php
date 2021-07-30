@@ -6,7 +6,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
     'bar' => [
         // type: bar
         'lot' => [
-            // type: bar/menu
+            // type: links
             0 => [
                 'lot' => [
                     's' => ['skip' => true]
@@ -20,7 +20,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
             'form' => [
                 // type: form/post
                 'data' => [
-                    'file[name]' => $page->name
+                    'file' => ['name' => $page->name]
                 ],
                 'lot' => [
                     1 => [

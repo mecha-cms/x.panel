@@ -9,7 +9,7 @@ if (extension_loaded('zip')) {
 $bar = [
     // type: bar
     'lot' => [
-        // type: bar/menu
+        // type: links
         0 => [
             'lot' => [
                 'folder' => ['skip' => true],
