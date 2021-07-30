@@ -382,9 +382,10 @@ $code: monospace !default;
       li {
         border-color: variant(5%);
         a:not(.has\:link) {
-          color: inherit;
-          &:focus {
-            color: variant(70%);
+          &:not(.not\:active) {
+            &:focus {
+              color: variant(70%);
+            }
           }
         }
         &.is\:current {
@@ -400,7 +401,6 @@ $code: monospace !default;
           }
         }
         &.not\:active {
-          opacity: 1;
           color: variant(20%);
         }
       }

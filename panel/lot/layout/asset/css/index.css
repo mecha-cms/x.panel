@@ -381,11 +381,7 @@
   border-color: #2d2d2d;
 }
 
-.is\:dark .lot\:tabs .lot\:links li a:not(.has\:link) {
-  color: inherit;
-}
-
-.is\:dark .lot\:tabs .lot\:links li a:not(.has\:link):focus {
+.is\:dark .lot\:tabs .lot\:links li a:not(.has\:link):not(.not\:active):focus {
   color: #bdbdbd;
 }
 
@@ -402,7 +398,6 @@
 }
 
 .is\:dark .lot\:tabs .lot\:links li.not\:active {
-  opacity: 1;
   color: #4e4e4e;
 }
 
@@ -869,11 +864,7 @@
   border-color: #f4f4f4;
 }
 
-.is\:light .lot\:tabs .lot\:links li a:not(.has\:link) {
-  color: inherit;
-}
-
-.is\:light .lot\:tabs .lot\:links li a:not(.has\:link):focus {
+.is\:light .lot\:tabs .lot\:links li a:not(.has\:link):not(.not\:active):focus {
   color: #646464;
 }
 
@@ -890,7 +881,6 @@
 }
 
 .is\:light .lot\:tabs .lot\:links li.not\:active {
-  opacity: 1;
   color: lightgray;
 }
 

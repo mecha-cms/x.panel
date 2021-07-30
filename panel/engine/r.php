@@ -43,6 +43,7 @@ return (static function($icons) {
             'type' => 'bar',
             'lot' => [
                 0 => [
+                    // type: links
                     'lot' => [
                         'folder' => [
                             'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
@@ -74,9 +75,11 @@ return (static function($icons) {
                                             'type' => 'text',
                                             'hint' => 'Search',
                                             'value' => $_GET['q'] ?? null,
-                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))]
+                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))],
+                                            'stack' => 10
                                         ]
-                                    ]
+                                    ],
+                                    'stack' => 10
                                 ]
                             ],
                             'stack' => 20
@@ -88,6 +91,7 @@ return (static function($icons) {
                     'stack' => 10
                 ],
                 1 => [
+                    // type: links
                     'lot' => [
                         'license' => [
                             'current' => 'g' === $_['task'] && '.license' === $_['path'],
@@ -124,6 +128,7 @@ return (static function($icons) {
                     'stack' => 20
                 ],
                 2 => [
+                    // type: links
                     'lot' => [
                         'user' => [
                             '2' => [

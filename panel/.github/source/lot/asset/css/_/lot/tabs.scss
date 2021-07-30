@@ -12,6 +12,12 @@
     }
     li {
       position: relative;
+      &.not\:active {
+        opacity: 1;
+        .not\:active {
+          opacity: .5;
+        }
+      }
     }
     a {
       display: flex;

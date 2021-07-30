@@ -500,13 +500,16 @@ function menu($value, $key, int $i = 0) {
                 1 => $v[1] ?? "",
                 2 => $v[2] ?? []
             ];
-            if (isset($v['type'])) {
-                if ('separator' === $v['type']) {
-                    $li[2]['class'] = 'is:separator';
-                } else {
-                    $li[1] .= \x\panel\type($v, $k);
+            if (\is_array($v)) {
+                // If `type` is not defined, the default value will be `menu`
+                if (!\array_key_exists('type', $v)) {
+                    $v['type'] = 'menu';
+                } else if ('separator' === $v['type']) {
+                    \x\panel\_set_class($li[2], \array_replace([
+                        'is:separator' => true
+                    ], $v['tags'] ?? []));
+                    continue;
                 }
-            } else if (\is_array($v)) {
                 if (\array_key_exists('icon', $v)) {
                     $v['icon'] = (array) $v['icon'];
                 }
@@ -519,26 +522,29 @@ function menu($value, $key, int $i = 0) {
                 if ($caret) {
                     \x\panel\_set_class($v['icon'][1], ['caret' => true]);
                 }
-                $a = \array_replace([
+                $is_active = !isset($v['active']) || $v['active'];
+                $tags_li = \array_replace([
+                    // 'is:active' => $is_active,
                     'is:current' => !empty($v['current']),
-                    'not:active' => isset($v['active']) && !$v['active']
+                    'not:active' => !$is_active
                 ], $v['tags'] ?? []);
                 if (!isset($v[1])) {
-                    $li[1] = \x\panel\type\link($v, $k);
-                    if (!empty($v['lot'])) {
-                        $div = \x\panel\type\menu($v, $k, $i + 1); // Recurse
-                        \x\panel\_set_class($div, [
-                            'lot' => true,
-                            'lot:menu' => true,
-                            'p' => true
-                        ]);
-                        $li[1] .= $div;
-                        if ($i < 0) {
-                            $a['has:menu'] = true;
+                    if ('menu' === $v['type']) {
+                        $li[1] = \x\panel\type\link($v, $k);
+                        if (!empty($v['lot'])) {
+                            $li[1] .= \x\panel\type\menu($v, $k, $i + 1); // Recurse!
+                            if ($i < 0) {
+                                $tags_li['has:menu'] = true;
+                            }
                         }
+                    } else {
+                        if (0 === \strpos($v['type'] . '/', 'form/')) {
+                            $tags_li['has:form'] = true;
+                        }
+                        $li[1] = \x\panel\type($v, $k);
                     }
                 }
-                \x\panel\_set_class($li[2], $a);
+                \x\panel\_set_class($li[2], $tags_li);
             } else {
                 $li[1] = \x\panel\type\link(['title' => $v], $k);
             }

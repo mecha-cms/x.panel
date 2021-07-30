@@ -2227,6 +2227,14 @@ label > input[type='radio'] + span {
   position: relative;
 }
 
+.lot\:tabs .lot\:links li.not\:active {
+  opacity: 1;
+}
+
+.lot\:tabs .lot\:links li.not\:active .not\:active {
+  opacity: .5;
+}
+
 .lot\:tabs .lot\:links a {
   display: flex;
 }
@@ -2398,6 +2406,15 @@ pre.is\:text code {
     width: 100%;
     min-width: 100%;
   }
+  .lot\:bar .has\:form {
+    flex: 1;
+  }
+  .lot\:bar .has\:form .lot\:field .lot\:f {
+    display: flex;
+  }
+  .lot\:bar .has\:form .lot\:field .lot\:f .input {
+    flex: 1;
+  }
   .lot\:bar .has\:menu ul ul {
     left: 25%;
   }
@@ -2416,9 +2433,6 @@ pre.is\:text code {
     width: auto;
     padding: 0;
     text-align: inherit;
-  }
-  .lot\:field > label.count\:0 {
-    display: none;
   }
   .lot\:field > label + div,
   .lot\:field > label + br + div {

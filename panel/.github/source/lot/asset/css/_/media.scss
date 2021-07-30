@@ -103,6 +103,17 @@
         min-width: 100%;
       }
     }
+    .has\:form {
+      flex: 1;
+      .lot\:field {
+        .lot\:f {
+          display: flex;
+          .input {
+            flex: 1;
+          }
+        }
+      }
+    }
     .has\:menu {
       ul {
         ul {
@@ -127,9 +138,6 @@
       width: auto;
       padding: 0;
       text-align: inherit;
-      &.count\:0 {
-        display: none;
-      }
       + div,
       + br + div {
         width: auto;
