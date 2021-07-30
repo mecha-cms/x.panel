@@ -2,7 +2,7 @@
   "dependencies": {
     "@taufik-nurrohman/document": "^0.1.8",
     "@taufik-nurrohman/event": "^0.3.1",
-    "@taufik-nurrohman/f3h": "^1.2.0",
+    "@taufik-nurrohman/f3h": "^1.2.1",
     "@taufik-nurrohman/hook": "^0.1.2",
     "@taufik-nurrohman/is": "^0.1.2",
     "@taufik-nurrohman/option-picker": "^1.1.1",

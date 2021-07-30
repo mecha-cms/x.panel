@@ -548,10 +548,34 @@
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
     var x = "!$^*()+=[]{}|:<>,.?/-";
-    var getOffset$1 = function getOffset(node) {
+    var getOffset = function getOffset(node) {
         return [node.offsetLeft, node.offsetTop];
     };
-    var setScroll$1 = function setScroll(node, data) {
+    var getRect = function getRect(node) {
+        var h, rect, w, x, y, X, Y;
+        if (isWindow(node)) {
+            x = node.pageXOffset || R.scrollLeft || B$1.scrollLeft;
+            y = node.pageYOffset || R.scrollTop || B$1.scrollTop;
+            w = node.innerWidth;
+            h = node.innerHeight;
+        } else {
+            rect = node.getBoundingClientRect();
+            x = rect.left;
+            y = rect.top;
+            w = rect.width;
+            h = rect.height;
+            X = rect.right;
+            Y = rect.bottom;
+        }
+        return [x, y, w, h, X, Y];
+    };
+    var getSize = function getSize(node) {
+        return isWindow(node) ? [node.innerWidth, node.innerHeight] : [node.offsetWidth, node.offsetHeight];
+    };
+    var getScroll = function getScroll(node) {
+        return [node.scrollLeft, node.scrollTop];
+    };
+    var setScroll = function setScroll(node, data) {
         node.scrollLeft = data[0];
         node.scrollTop = data[1];
         return node;
@@ -585,7 +609,7 @@
             if (isLinkForF3H(link = links[i])) {
                 continue;
             }
-            href = getAttribute(link, 'href');
+            href = getAttribute(link, 'href', false);
             link.id = id = link.id || name$3 + ':' + toID(href || getText(link));
             out[id] = toSave = fromElement(link);
             if (href) {
@@ -610,7 +634,7 @@
             if (isScriptForF3H(script = scripts[i])) {
                 continue;
             }
-            src = getAttribute(script, 'src');
+            src = getAttribute(script, 'src', false);
             script.id = id = script.id || name$3 + ':' + toID(src || getText(script));
             out[id] = toSave = fromElement(script);
             if (src) {
@@ -631,7 +655,7 @@
             if (isStyleForF3H(style = styles[i])) {
                 continue;
             }
-            href = getAttribute(style, 'href');
+            href = getAttribute(style, 'href', false);
             style.id = id = style.id || name$3 + ':' + toID(href || getText(style));
             out[id] = toSave = fromElement(style);
             if (href) {
@@ -651,7 +675,7 @@
 
     function isLinkForF3H(node) {
         var n = toCaseLower(name$3); // Exclude `<link rel="*">` tag that contains `data-f3h` or `f3h` attribute with `false` value
-        return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
+        return getAttribute(node, 'data-' + n) || getAttribute(node, n) ? 1 : 0;
     }
 
     function isScriptForF3H(node) {
@@ -660,7 +684,7 @@
             return 1;
         }
         var n = toCaseLower(name$3); // Exclude JavaScript tag that contains `data-f3h` or `f3h` attribute with `false` value
-        if (toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n))) {
+        if (getAttribute(node, 'data-' + n) || getAttribute(node, n)) {
             return 1;
         } // Exclude JavaScript that contains `F3H` instantiation
         if (toPattern('\\b' + name$3 + '\\b').test(getText(node) || "")) {
@@ -674,12 +698,12 @@
         if (!hasAttribute(node, 'data-' + n) && !hasAttribute(node, n)) {
             return 1; // Default value is `true`
         } // Exclude anchor tag that contains `data-f3h` or `f3h` attribute with `false` value
-        return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
+        return getAttribute(node, 'data-' + n) || getAttribute(node, n) ? 1 : 0;
     }
 
     function isStyleForF3H(node) {
         var n = toCaseLower(name$3); // Exclude CSS tag that contains `data-f3h` or `f3h` attribute with `false` value
-        return toValue(getAttribute(node, 'data-' + n) || getAttribute(node, n)) ? 1 : 0;
+        return getAttribute(node, 'data-' + n) || getAttribute(node, n) ? 1 : 0;
     }
 
     function letHash(ref) {
@@ -965,9 +989,9 @@
             if (!node) {
                 return;
             }
-            var theOffset = getOffset$1(node);
-            setScroll$1(B, theOffset);
-            setScroll$1(R, theOffset);
+            var theOffset = getOffset(node);
+            setScroll(B, theOffset);
+            setScroll(R, theOffset);
         } // Scroll to the first element with `id` or `name` attribute that has the same value as location hash
         function doScrollToElement(data) {
             if (hooks.scroll) {
@@ -1161,7 +1185,7 @@
         'is': function is(source, ref) {
             var target = source.target,
                 // Get URL data as-is from the DOM attribute string
-                raw = getAttribute(source, 'href') || getAttribute(source, 'action') || "",
+                raw = getAttribute(source, 'href', false) || getAttribute(source, 'action', false) || "",
                 // Get resolved URL data from the DOM property
                 value = source.href || source.action || "";
             if (target && '_self' !== target) {
@@ -1195,39 +1219,7 @@
             'JSON': responseTypeJSON
         }
     };
-    F3H.version = '1.2.0';
-    var getOffset = function getOffset(node) {
-        return [node.offsetLeft, node.offsetTop];
-    };
-    var getRect = function getRect(node) {
-        var h, rect, w, x, y, X, Y;
-        if (isWindow(node)) {
-            x = node.pageXOffset || R.scrollLeft || B$1.scrollLeft;
-            y = node.pageYOffset || R.scrollTop || B$1.scrollTop;
-            w = node.innerWidth;
-            h = node.innerHeight;
-        } else {
-            rect = node.getBoundingClientRect();
-            x = rect.left;
-            y = rect.top;
-            w = rect.width;
-            h = rect.height;
-            X = rect.right;
-            Y = rect.bottom;
-        }
-        return [x, y, w, h, X, Y];
-    };
-    var getSize = function getSize(node) {
-        return isWindow(node) ? [node.innerWidth, node.innerHeight] : [node.offsetWidth, node.offsetHeight];
-    };
-    var getScroll = function getScroll(node) {
-        return [node.scrollLeft, node.scrollTop];
-    };
-    var setScroll = function setScroll(node, data) {
-        node.scrollLeft = data[0];
-        node.scrollTop = data[1];
-        return node;
-    };
+    F3H.version = '1.2.1';
     var hasValue = function hasValue(x, data) {
         return -1 !== data.indexOf(x);
     };
