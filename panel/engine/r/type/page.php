@@ -334,11 +334,11 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                 }
             }
         }
+        $count = 0;
         $files = [];
         if ($page->exist) {
             $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
             $before = $_['/'] . '/::';
-            $count = 0;
             foreach (g(Path::F($path), 'data') as $k => $v) {
                 $after = '::' . strtr($k, [
                     LOT => "",
