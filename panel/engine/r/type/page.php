@@ -315,6 +315,10 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
     $apart = [];
     if (!empty($_['lot']['desk']['lot']['form']['data'])) {
         foreach ($_['lot']['desk']['lot']['form']['data'] as $k => $v) {
+            if ('data' === $k && is_array($v)) {
+                $apart = array_replace($apart, $v);
+                continue;
+            }
             if (0 === strpos($k, 'data[')) {
                 $apart[substr(explode(']', $k, 2)[0], 5)] = 1;
             }
