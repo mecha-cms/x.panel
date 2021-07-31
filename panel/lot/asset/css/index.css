@@ -2191,12 +2191,14 @@ label > input[type='radio'] + span {
   color: inherit;
 }
 
-.lot\:section {
+.lot\:section,
+.content\:section {
   padding: 24px 24px;
   margin: 0 auto;
 }
 
-.lot\:section.count\:0 {
+.lot\:section.count\:0,
+.count\:0.content\:section {
   display: none;
 }
 
@@ -2419,7 +2421,8 @@ pre.is\:text code {
     left: 25%;
   }
   .lot\:desk,
-  .lot\:section {
+  .lot\:section,
+  .content\:section {
     padding: 12px 12px;
   }
   .lot\:field {

@@ -185,7 +185,10 @@ function route() {
             ]) . $url->hash);
         }
     }
-    \State::set('[layout].type:' . ($_['type'] ?? 'blank'), true);
+    \State::set('[layout]', [
+        'skin:' . ($v = \State::get('x.panel.skin') ?? "") => !empty($v),
+        'type:' . ($_['type'] ?? 'blank') => true
+    ]);
     $n = \ltrim($_['id'] ?? "", '_.-');
     // Put data
     $GLOBALS['_'] = $_;

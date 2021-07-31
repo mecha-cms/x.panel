@@ -6,7 +6,7 @@ $_['skin']['default'] = [
 ];
 
 // Add dark/light mode variant
-if ('default' === ($state->x->panel->skin ?? 'none')) {
+if ('default' === ($state->x->panel->skin ?? P)) {
     if ('post' === $_['form']['type']) {
         $variant = $_['form']['lot']['cookie']['panel-skin-variant'] ?? null;
         if ($variant) {

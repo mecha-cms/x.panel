@@ -470,7 +470,6 @@ function menu($value, $key, int $i = 0) {
         2 => $value[2] ?? []
     ];
     $tags = \array_replace([
-        'count:1' => true,
         'lot' => true,
         'lot:menu' => true,
         'p' => true
@@ -484,7 +483,6 @@ function menu($value, $key, int $i = 0) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
-            ++$count;
             $li = [
                 0 => 'li',
                 1 => $v[1] ?? "",
@@ -539,7 +537,9 @@ function menu($value, $key, int $i = 0) {
                 $li[1] = \x\panel\type\link(['title' => $v], $k);
             }
             $out[1] .= new \HTML($li);
+            ++$count;
         }
+        $tags['count:' . $count] = true;
     }
     \x\panel\_set_class($out[2], $tags);
     if ("" !== $out[1]) {
@@ -800,15 +800,19 @@ function tabs($value, $key) {
             }
             $sections[$k] = $vv;
         }
-        $out[1] = \x\panel\type\links([
-            '0' => 'nav',
-            'lot' => $links
-        ], $name);
-        $out[1] .= \implode("", $sections);
+        if ($links) {
+            $out[1] .= \x\panel\type\links([
+                '0' => 'nav',
+                'lot' => $links
+            ], $name);
+        }
+        if ($sections) {
+            $out[1] .= \implode("", $sections);
+        }
     }
     $tags['count:' . $count] = true;
     \x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
-    return new \HTML($out);
+    return "" !== $out[1] ? new \HTML($out) : null;
 }
 
 function tasks($value, $key) {
@@ -837,9 +841,14 @@ function tasks($value, $key) {
 }
 
 function content($value, $key) {
+    $count = 0;
     $type = $value['type'] ?? null;
-    $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2);
-    $description = \x\panel\to\description($value['description'] ?? "");
+    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2)) {
+        ++$count;
+    }
+    if ($description = \x\panel\to\description($value['description'] ?? "")) {
+        ++$count;
+    }
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? $title . $description,
@@ -847,10 +856,11 @@ function content($value, $key) {
     ];
     if (isset($value['content'])) {
         $out[1] .= \x\panel\to\content($value['content']);
+        ++$count;
     }
     $tags = [
         'content' => true,
-        'count:1' => true,
+        'count:' . $count => true,
         'p' => true
     ];
     if (isset($type)) {
@@ -864,10 +874,14 @@ function content($value, $key) {
 }
 
 function lot($value, $key) {
-    $type = $value['type'] ?? null;
-    $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2);
-    $description = \x\panel\to\description($value['description'] ?? "");
     $count = 0;
+    $type = $value['type'] ?? null;
+    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2)) {
+        ++$count;
+    }
+    if ($description = \x\panel\to\description($value['description'] ?? "")) {
+        ++$count;
+    }
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? $title . $description,

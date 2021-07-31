@@ -171,6 +171,17 @@ function _set() {
 
 function _set_asset() {
     extract($GLOBALS);
+    $skin = $state->x->panel->skin ?? null;
+    if ($skin && isset($_['skin'][$skin])) {
+        $f = \is_array($_['skin'][$skin]) ? ($_['skin'][$skin]['path'] ?? null) : $_['skin'][$skin];
+        if ($f && \is_file($f)) {
+            $_['asset']['panel.skin.' . $skin] = [
+                'id' => false,
+                'path' => $f,
+                'stack' => 20.1
+            ];
+        }
+    }
     if (!empty($_['asset'])) {
         foreach ((array) $_['asset'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {

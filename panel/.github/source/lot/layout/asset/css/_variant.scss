@@ -441,6 +441,18 @@ $code: monospace !default;
       }
     }
     &[type='range'] {
+      &::-webkit-slider-runnable-track {
+        background: variant(10%);
+      }
+      &::-webkit-slider-thumb {
+        background: variant(30%);
+      }
+      &::-moz-range-track {
+        background: variant(10%);
+      }
+      &::-moz-range-thumb {
+        background: variant(30%);
+      }
       &:not(.not\:active) {
         &:focus {
           box-shadow: none;
@@ -467,18 +479,6 @@ $code: monospace !default;
             background: variant(20%);
           }
         }
-      }
-      &::-webkit-slider-runnable-track {
-        background: variant(10%);
-      }
-      &::-webkit-slider-thumb {
-        background: variant(30%);
-      }
-      &::-moz-range-track {
-        background: variant(10%);
-      }
-      &::-moz-range-thumb {
-        background: variant(30%);
       }
     }
   }
