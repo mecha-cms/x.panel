@@ -47,13 +47,28 @@
       .lot\:f {
         display: inline-flex;
         position: relative;
+        &.width {
+          display: flex;
+        }
         > * {
           + * {
             margin-left: -1px;
           }
         }
-        &.width {
-          display: flex;
+        > .width {
+          width: auto;
+          flex: 1;
+        }
+        > .button,
+        > .options > .button {
+          background: none;
+          color: inherit;
+          border-width: 1px;
+          line-height: ($h - 2); // $h - (border-top-width + border-bottom-width)
+          &:focus,
+          &:active {
+            color: inherit;
+          }
         }
         .fix {
           display: inline-block;
@@ -70,6 +85,7 @@
           white-space: nowrap;
           text-align: left;
           text-overflow: ellipsis;
+          overflow: hidden;
           position: relative;
           z-index: 0;
           @include user-select(none);
@@ -77,17 +93,6 @@
             width: ($x * 1.5);
             min-width: ($x * 1.5);
             padding: (($y / 6) + 1) 0; // (($y / 6) + border-y-width) 0
-          }
-        }
-        > .button,
-        > .options > .button {
-          background: none;
-          color: inherit;
-          border-width: 1px;
-          line-height: ($h - 2); // $h - (border-top-width + border-bottom-width)
-          &:focus,
-          &:active {
-            color: inherit;
           }
         }
       }
