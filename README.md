@@ -11,7 +11,8 @@ Release Notes
  - [ ] Added `field/options` type.
  - [x] Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
  - [x] Added _Data_ tab next to the _Pages_ tab for pages layout.
- - [x] Added `$_['id']` property that store the first `$_['path']` value.
+ - [x] Added `$_['id']` property that stores the first `$_['path']` value.
+ - [x] Added `$_['skin']` property that stores the skin title and CSS path.
  - [x] Added `data` property to `field/*` type to quickly add hidden fields.
  - [x] Added `data` property to `form/*` type to quickly add hidden fields.
  - [x] Added `field/button` and `field/buttons` type. Currently useless. Would be useful when combined with certain JavaScript actions, such as to open a pop-up window.
