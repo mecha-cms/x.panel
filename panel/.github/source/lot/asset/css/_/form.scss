@@ -98,7 +98,7 @@ label {
     height: 1em;
     line-height: 1em;
     cursor: pointer;
-    &.is\:set {
+    &.is\:locked {
       pointer-events: none;
     }
   }
@@ -189,7 +189,7 @@ label {
   &:focus {
     z-index: 1;
   }
-  &.is\:set {
+  &.is\:locked {
     border-style: dotted;
   }
 }

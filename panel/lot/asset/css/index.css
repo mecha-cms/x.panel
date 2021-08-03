@@ -891,10 +891,10 @@ label {
   cursor: pointer;
 }
 
-.input[type='checkbox'].is\:set,
-.input[type='color'].is\:set,
-.input[type='image'].is\:set,
-.input[type='radio'].is\:set {
+.input[type='checkbox'].is\:locked,
+.input[type='color'].is\:locked,
+.input[type='image'].is\:locked,
+.input[type='radio'].is\:locked {
   pointer-events: none;
 }
 
@@ -991,10 +991,10 @@ label > input[type='radio'] + span {
   z-index: 1;
 }
 
-.button.is\:set,
-.input.is\:set,
-.select.is\:set,
-.textarea.is\:set {
+.button.is\:locked,
+.input.is\:locked,
+.select.is\:locked,
+.textarea.is\:locked {
   border-style: dotted;
 }
 
@@ -1332,6 +1332,7 @@ label > input[type='radio'] + span {
 .lot\:field > label + br + div {
   display: block;
   flex: 1;
+  min-width: 0;
   position: relative;
 }
 
@@ -1354,6 +1355,7 @@ label > input[type='radio'] + span {
 .lot\:field > label + div .lot\:f > .width,
 .lot\:field > label + br + div .lot\:f > .width {
   width: auto;
+  min-width: 0;
   flex: 1;
 }
 
@@ -2331,6 +2333,7 @@ pre.is\:text code {
   }
   .lot\:fields.is\:flex > .lot\:field {
     margin: 0;
+    min-width: 0;
     gap: 0 24px;
   }
   .lot\:tabs .lot\:links {

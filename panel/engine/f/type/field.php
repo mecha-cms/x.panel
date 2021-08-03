@@ -7,44 +7,32 @@ function _($value, $key) {
 }
 
 function blob($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['name'] = $value['name'] ?? $key;
-    $out['content'][2]['type'] = 'file';
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'file';
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
 function blobs($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['multiple'] = true;
-    $out['content'][2]['name'] = ($value['name'] ?? $key) . '[]';
-    $out['content'][2]['type'] = 'file';
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['multiple'] = true;
+    $out['field'][2]['name'] = ($value['name'] ?? $key) . '[]';
+    $out['field'][2]['type'] = 'file';
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
 function button($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'button';
-    $out['content'][1] = \i($value['hint'] ?? $value['title'] ?? $value['value'] ?? $key);
-    $out['content'][2]['type'] = 'button';
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'button' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'button');
+    $out['field'][1] = \i(...((array) ($value['hint'] ?? $value['title'] ?? $value['value'] ?? $key)));
+    $out['field'][2]['type'] = 'button';
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
 function buttons($value, $key) {
     $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'div';
+    $out['field'][0] = 'div';
     $name = $value['name'] ?? $key;
     if (isset($value['lot'])) {
         if (!isset($value['sort']) || $value['sort']) {
@@ -56,48 +44,46 @@ function buttons($value, $key) {
                 continue;
             }
             ++$count;
-            if (\is_string($v)) {
+            if (!\is_array($v)) {
                 $v = ['value' => $v];
             }
+            $is_active = !isset($v['active']) || $v['active'];
             $n = $name . '[' . $k . ']';
-            $content = \x\panel\to\field($v, $k);
-            $content[0] = 'button';
-            $content[1] = \i($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k);
-            \x\panel\_set_class($content[2], \array_replace([
-                'button' => true
+            $button = \x\panel\to\field($v, $k, 'button')['field'];
+            $button[1] = \i(...((array) ($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k)));
+            $button[2]['name'] = $n;
+            $button[2]['type'] = 'button';
+            \x\panel\_set_class($button[2], \array_replace([
+                'is:active' => $is_active,
+                'not:active' => !$is_active
             ], $v['tags'] ?? []));
-            $content[2]['name'] = $n;
-            $content[2]['type'] = 'button';
-            $out['content'][1] .= new \HTML($content);
+            $out['field'][1] .= new \HTML($button);
         }
         unset($value['lot']);
     }
-    \x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['field'][2], \array_replace([
         'count:' . $count => true,
-        'options' => true
+        'options' => true,
+        'textarea' => false
     ], $value['tags'] ?? []));
-    unset($out['content'][2]['name']);
+    unset($out['field'][2]['name']);
     return \x\panel\type\field($out, $key);
 }
 
 function color($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['type'] = 'color';
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'color';
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     if ($the_value = \x\panel\to\color((string) ($value['value'] ?? ""))) {
-        $out['content'][2]['title'] = $the_value;
-        $out['content'][2]['value'] = $the_value;
+        $out['field'][2]['title'] = $the_value;
+        $out['field'][2]['value'] = $the_value;
     }
     return \x\panel\type\field($out, $key);
 }
 
 function colors($value, $key) {
     $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'div';
+    $out['field'][0] = 'div';
     $name = $value['name'] ?? $key;
     if (isset($value['lot'])) {
         if (!isset($value['sort']) || $value['sort']) {
@@ -113,27 +99,24 @@ function colors($value, $key) {
                 $v = ['value' => $v];
             }
             $n = $name . '[' . $k . ']';
-            $content = \x\panel\to\field($v, $k);
-            $content[0] = 'input';
-            $content[1] = false;
-            \x\panel\_set_class($content[2], \array_replace([
-                'input' => true
-            ], $v['tags'] ?? []));
-            $content[2]['name'] = $n;
-            $content[2]['type'] = 'color';
+            $input = \x\panel\to\field($v, $k, 'input')['field'];
+            \x\panel\_set_class($input[2], $v['tags'] ?? []);
+            $input[2]['name'] = $n;
+            $input[2]['type'] = 'color';
             if ($the_value = \x\panel\to\color((string) ($v['value'] ?? ""))) {
-                $content[2]['title'] = $the_value;
-                $content[2]['value'] = $the_value;
+                $input[2]['title'] = $the_value;
+                $input[2]['value'] = $the_value;
             }
-            $out['content'][1] .= new \HTML($content);
+            $out['field'][1] .= new \HTML($input);
         }
         unset($value['lot']);
     }
-    \x\panel\_set_class($out['content'][2], \array_replace([
+    \x\panel\_set_class($out['field'][2], \array_replace([
         'count:' . $count => true,
-        'options' => true
+        'options' => true,
+        'textarea' => false
     ], $value['tags'] ?? []));
-    unset($out['content'][2]['name']);
+    unset($out['field'][2]['name']);
     return \x\panel\type\field($out, $key);
 }
 
@@ -142,9 +125,7 @@ function content($value, $key) {
         $value['hint'] = 'Content goes here...';
     }
     $out = \x\panel\to\field($value, $key);
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'textarea' => true
-    ], $value['tags'] ?? []));
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -204,16 +185,10 @@ function flex($value, $key) {
 }
 
 function hidden($value, $key) {
-    return new \HTML([
-        0 => 'input',
-        1 => false,
-        2 => [
-            'id' => $value['id'] ?? 'f:' . \dechex(\crc32($key)),
-            'name' => $value['name'] ?? $key,
-            'type' => 'hidden',
-            'value' => $value['value'] ?? null
-        ]
-    ]);
+    if (!\array_key_exists('id', $value)) {
+        $value['id'] = 'f:' . \dechex(\crc32($key));
+    }
+    return \x\panel\type\input\hidden($value, $key);
 }
 
 function item($value, $key) {
@@ -223,7 +198,7 @@ function item($value, $key) {
         unset($value['name'], $value['hint'], $value['value']);
         $a = [];
         $out = \x\panel\to\field($value, $key);
-        $out['content'][0] = 'div';
+        $out['field'][0] = 'div';
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
         foreach ($value['lot'] as $k => $v) {
@@ -231,34 +206,24 @@ function item($value, $key) {
                 continue;
             }
             ++$count;
-            $is_active = !isset($v['active']) || $v['active'];
-            $content = new \HTML(['input', false, [
-                'checked' => null !== $the_value && ((string) $the_value === (string) $k),
-                'class' => 'input',
-                'name' => $n,
-                'type' => 'radio',
-                'value' => $k
-            ]]);
-            if (\is_array($v)) {
-                $t = \x\panel\to\title($v['title'] ?? "", -2);
-                $d = $v['description'] ?? "";
-                $content['disabled'] = !$is_active;
-                if (isset($v['name'])) {
-                    $content['name'] = $v['name'];
-                }
-                if (isset($v['value'])) {
-                    $content['value'] = $v['value'];
-                }
-                \x\panel\_set_class($content, [
-                    'is:active' => $is_active,
-                    'not:active' => !$is_active
-                ]);
-            } else {
-                $t = \x\panel\to\title($v, -2);
-                $d = "";
+            if (!\is_array($v)) {
+                $v = ['title' => $v];
             }
+            $is_active = !isset($v['active']) || $v['active'];
+            $input = \x\panel\to\field($v, $k, 'input')['field'];
+            $input[2]['checked'] = null !== $the_value && ((string) $the_value === (string) $k);
+            $input[2]['type'] = 'radio';
+            $t = \x\panel\to\title($v['title'] ?? "", -2);
+            $d = $v['description'] ?? "";
+            $input[2]['disabled'] = !$is_active;
+            $input[2]['name'] = $v['name'] ?? $n;
+            $input[2]['value'] = $v['value'] ?? $k;
+            \x\panel\_set_class($input[2], [
+                'is:active' => $is_active,
+                'not:active' => !$is_active
+            ]);
             $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label class="' . ($is_active ? 'is' : 'not') . ':active">' . $content . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $a[$t . $k] = '<label class="' . ($is_active ? 'is' : 'not') . ':active">' . (new \HTML($input)) . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($value['block'])) {
@@ -266,13 +231,14 @@ function item($value, $key) {
         } else {
             $block = $value['block'] ? '<br>' : "";
         }
-        $out['content'][1] = \implode($block, $a);
-        \x\panel\_set_class($out['content'][2], [
+        $out['field'][1] = \implode($block, $a);
+        \x\panel\_set_class($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'options' => true
+            'options' => true,
+            'textarea' => false
         ]);
-        unset($out['content'][2]['name']);
+        unset($value['lot'], $out['field'][2]['name']);
         return \x\panel\type\field($out, $key);
     }
     return \x\panel\type\field\text($value, $key);
@@ -287,7 +253,7 @@ function items($value, $key) {
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value']);
         $out = \x\panel\to\field($value, $key);
-        $out['content'][0] = 'div';
+        $out['field'][0] = 'div';
         $a = [];
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
@@ -296,38 +262,28 @@ function items($value, $key) {
                 continue;
             }
             ++$count;
-            $input = new \HTML(['input', false, [
-                'checked' => $key_as_value ? false !== \strpos($the_value, \P . $k . \P) : isset($the_value[$k]),
-                'class' => 'input',
-                'name' => $n . '[' . ($key_as_value ? "" : $k) . ']',
-                'type' => 'checkbox',
-                'value' => $key_as_value ? $k : \s($the_value[$k] ?? true)
-            ]]);
-            if (\is_array($v) && \array_key_exists('title', $v)) {
-                $t = \x\panel\to\title($v['title'] ?? "", -2);
-                $d = $v['description'] ?? "";
-                if (isset($v['name'])) {
-                    $input['name'] = $v['name'];
-                }
-                if (isset($v['value'])) {
-                    $input['value'] = $v['value'];
-                }
-            } else {
-                $t = \x\panel\to\title($v, -2);
-                $d = "";
+            if (!\is_array($v)) {
+                $v = ['title' => $v];
             }
+            $input = \x\panel\to\field($v, $k, 'input')['field'];
+            $input[2]['checked'] = $key_as_value ? false !== \strpos($the_value, \P . $k . \P) : isset($the_value[$k]);
+            $input[2]['type'] = 'checkbox';
+            $t = \x\panel\to\title($v['title'] ?? "", -2);
+            $d = $v['description'] ?? "";
+            $input[2]['name'] = $v['name'] ?? $n . '[' . ($key_as_value ? "" : $k) . ']';
+            $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_value[$k] ?? true));
             $d = \strip_tags(\i(...((array) $d)));
             $class = [];
             $class[] = (!isset($v['active']) || $v['active'] ? 'is' : 'not') . ':active';
             $class[] = (!empty($v['locked']) ? 'is' : 'not') . ':locked';
             if (isset($v['active']) && !$v['active']) {
-                $input['disabled'] = true;
+                $input[2]['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
             } else if (!empty($v['locked'])) {
-                $input['readonly'] = true;
+                $input[2]['readonly'] = true;
             }
             \sort($class);
-            $a[$t . $k] = '<label' . ($class ? ' class="' . \implode(' ', $class) . '"' : "") . '>' . $input . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $a[$t . $k] = '<label' . ($class ? ' class="' . \implode(' ', $class) . '"' : "") . '>' . (new \HTML($input)) . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
         }
         $sort && \ksort($a);
         if (!isset($value['block'])) {
@@ -335,13 +291,14 @@ function items($value, $key) {
         } else {
             $block = $value['block'] ? '<br>' : "";
         }
-        $out['content'][1] = \implode($block, $a);
-        \x\panel\_set_class($out['content'][2], [
+        $out['field'][1] = \implode($block, $a);
+        \x\panel\_set_class($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'options' => true
+            'options' => true,
+            'textarea' => false
         ]);
-        unset($out['content'][2]['name']);
+        unset($value['lot'], $out['field'][2]['name']);
         return \x\panel\type\field($out, $key);
     }
     return \x\panel\type\field\text($value, $key);
@@ -385,103 +342,33 @@ function number($value, $key) {
     if (!\array_key_exists('hint', $value)) {
         $value['hint'] = $value['min'] ?? 0;
     }
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['type'] = 'number';
-    $out['content'][2]['min'] = $value['min'] ?? null;
-    $out['content'][2]['max'] = $value['max'] ?? null;
-    $out['content'][2]['step'] = $value['step'] ?? null;
-    $out['content'][2]['value'] = $value['value'] ?? null;
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'number';
+    $out['field'][2]['min'] = $value['min'] ?? null;
+    $out['field'][2]['max'] = $value['max'] ?? null;
+    $out['field'][2]['step'] = $value['step'] ?? null;
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
 function option($value, $key) {
     if (isset($value['lot'])) {
-        $out = \x\panel\to\field($value, $key);
-        $the_value = $value['value'] ?? null;
-        $placeholder = \i(...((array) ($out['hint'] ?? [])));
-        $out['content'][0] = 'select';
-        $out['content'][1] = ""; // Remove content because this is no longer a `<textarea>`
-        unset($out['value']);
-        $seq = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
-        $a = [];
-        $sort = !isset($value['sort']) || $value['sort'];
-        foreach ($value['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
-                continue;
-            }
-            // Group
-            if (isset($v['lot'])) {
-                $aa = [];
-                $optgroup = new \HTML(['optgroup', "", [
-                    'disabled' => isset($v['active']) && !$v['active'],
-                    'label' => $t = \trim(\strip_tags(\i(...((array) ($v['title'] ?? $k)))))
-                ]]);
-                $seq0 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
-                foreach ($v['lot'] as $kk => $vv) {
-                    $option = new \HTML(['option', "", [
-                        'selected' => null !== $the_value && (string) $the_value === (string) $kk,
-                        'value' => $seq0 ? null : $kk
-                    ]]);
-                    if (\is_array($vv) && \array_key_exists('title', $vv)) {
-                        $tt = $vv['title'] ?? $kk;
-                        $option['disabled'] = isset($vv['active']) && !$vv['active'];
-                        $option['title'] = $vv['description'] ?? null;
-                    } else {
-                        $tt = $vv;
-                    }
-                    $option[1] = $tt = \trim(\strip_tags(\i(...((array) $tt))));
-                    $aa[$tt . $kk] = $option;
-                }
-                $sort && \ksort($aa);
-                foreach ($aa as $vv) {
-                    $optgroup[1] .= $vv;
-                }
-                // Add `0` to the end of the key so that option(s) group will come first
-                $a[$t . $k . '0'] = $optgroup;
-            // Flat
-            } else {
-                $option = new \HTML(['option', $k, [
-                    'selected' => null !== $the_value && (string) $the_value === (string) $k,
-                    'value' => $seq ? null : $k
-                ]]);
-                if (\is_array($v) && \array_key_exists('title', $v)) {
-                    $t = $v['title'] ?? $k;
-                    $option['disabled'] = isset($v['active']) && !$v['active'];
-                    $option['title'] = $v['description'] ?? null;
-                } else {
-                    $t = $v;
-                }
-                $option[1] = \trim(\strip_tags(\i(...((array) $t))));
-                // Add `1` to the end of the key so that bare option(s) will come last
-                $a[$t . $k . '1'] = $option;
-            }
-        }
-        $sort && \ksort($a);
-        foreach ($a as $v) {
-            $out['content'][1] .= $v;
-        }
-        \x\panel\_set_class($out['content'][2], \array_replace([
-            'select' => true
-        ], $value['tags'] ?? []));
+        $out = \x\panel\to\field($value, $key, 'select');
+        unset($value['lot']);
         return \x\panel\type\field($out, $key);
     }
     return \x\panel\type\field\text($value, $key);
 }
 
+function options($value, $key) {
+    // TODO
+}
+
 function pass($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['type'] = 'password';
-    unset($out['content'][2]['value']); // Never show `value` on this field
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'password';
+    unset($out['field'][2]['value']); // Never show `value` on this field
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -513,21 +400,14 @@ function query($value, $key) {
     if (isset($value['value']) && \is_array($value['value'])) {
         $value['value'] = \implode(', ', $value['value']);
     }
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['type'] = 'text';
-    $out['content'][2]['value'] = $value['value'] ?? null;
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'text';
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
 function range($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
+    $out = \x\panel\to\field($value, $key, 'input');
     if (isset($value['range'])) {
         // `[$min, $max]`
         if (2 === \count($value['range'])) {
@@ -540,15 +420,13 @@ function range($value, $key) {
             $value['max'] = $value['range'][2] ?? 1;
         }
     }
-    $out['content'][2]['type'] = 'range';
-    $out['content'][2]['min'] = $value['min'] ?? null;
-    $out['content'][2]['max'] = $value['max'] ?? null;
-    $out['content'][2]['value'] = $value['value'] ?? null;
-    $out['content'][2]['step'] = $value['step'] ?? null;
-    unset($out['content'][2]['maxlength'], $out['content'][2]['minlength']);
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out['field'][2]['type'] = 'range';
+    $out['field'][2]['min'] = $value['min'] ?? null;
+    $out['field'][2]['max'] = $value['max'] ?? null;
+    $out['field'][2]['value'] = $value['value'] ?? null;
+    $out['field'][2]['step'] = $value['step'] ?? null;
+    unset($out['field'][2]['maxlength'], $out['field'][2]['minlength']);
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -570,22 +448,16 @@ function source($value, $key) {
         $value['hint'] = 'Content goes here...';
     }
     $out = \x\panel\to\field($value, $key);
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'code' => true,
-        'textarea' => true
+    \x\panel\_set_class($out['field'][2], \array_replace([
+        'code' => true
     ], $value['tags'] ?? []));
     return \x\panel\type\field($out, $key);
 }
 
 function text($value, $key) {
-    $out = \x\panel\to\field($value, $key);
-    $out['content'][0] = 'input';
-    $out['content'][1] = false;
-    $out['content'][2]['type'] = 'text';
-    $out['content'][2]['value'] = $value['value'] ?? null;
-    \x\panel\_set_class($out['content'][2], \array_replace([
-        'input' => true
-    ], $value['tags'] ?? []));
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'text';
+    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -613,22 +485,20 @@ function title($value, $key) {
 }
 
 function toggle($value, $key) {
-    $out = \x\panel\to\field($value, $key);
+    $out = \x\panel\to\field($value, $key, 'input');
     $the_value = $value['value'] ?? null;
-    $toggle = new \HTML(['input', false, [
-        'checked' => !empty($the_value),
-        'class' => 'input',
-        'name' => $value['name'] ?? $key,
-        'type' => 'checkbox',
-        'value' => 'true' // Force value to be `true`
-    ]]);
+    $input = \x\panel\to\field($value, $key, 'input')['field'];
+    $input[2]['checked'] = !empty($the_value);
+    $input[2]['type'] = 'checkbox';
+    $input[2]['value'] = 'true'; // Force value to be `true`
     $t = \i(...((array) ($value['hint'] ?? $value['title'] ?? \S)));
-    $out['content'][0] = 'div';
-    $out['content'][1] = '<label>' . $toggle . ' <span>' . $t . '</span></label>';
-    \x\panel\_set_class($out['content'][2], [
+    $out['field'][0] = 'div';
+    $out['field'][1] = '<label>' . (new \HTML($input)) . ' <span>' . $t . '</span></label>';
+    \x\panel\_set_class($out['field'][2], [
+        'input' => false,
         'options' => true
     ]);
-    unset($out['hint'], $out['content'][2]['name'], $out['content'][2]['placeholder']);
+    unset($out['hint'], $out['field'][2]['name'], $out['field'][2]['placeholder']);
     return \x\panel\type\field($out, $key);
 }
 

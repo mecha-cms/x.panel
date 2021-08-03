@@ -1600,6 +1600,9 @@
             }
             setChildLast(parent, selectBoxFakeOption);
             selectBoxFakeOptions.push(selectBoxFakeOption);
+            if ("" === selectBoxOptionValueReal) {
+                selectBoxOptionValue = null;
+            }
             if (isArray(selectBoxValue) && hasValue(selectBoxOptionValue, selectBoxValue) || selectBoxOptionValue === selectBoxValue) {
                 setClass(selectBoxFakeOption, classNameOptionM + 'active');
                 setLabelContent(doValue(selectBoxOptionText, selectBoxOptionValueReal, selectBoxOptionIndex, classNameOptionB + ' ' + (selectBoxOptionIsDisabled ? ' ' + classNameOptionM + 'lock' : "")));
@@ -1727,7 +1730,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.1.1';
+    OP.version = '1.1.2';
     var name$1 = 'TE';
 
     function trim(str, dir) {

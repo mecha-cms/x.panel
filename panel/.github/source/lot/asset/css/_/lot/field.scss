@@ -43,6 +43,7 @@
     + br + div {
       display: block;
       flex: 1;
+      min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
       position: relative;
       .lot\:f {
         display: inline-flex;
@@ -57,6 +58,7 @@
         }
         > .width {
           width: auto;
+          min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
           flex: 1;
         }
         > .button,

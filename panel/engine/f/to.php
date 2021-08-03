@@ -28,41 +28,15 @@ function description($value) {
     return "" !== $out ? $out : null;
 }
 
-function field($value, $key) {
-    $value['id'] = $value['id'] ?? 'f:' . \dechex(\crc32($key));
-    $name = $value['name'] ?? $key;
-    $is_active = !isset($value['active']) || $value['active'];
-    $is_locked = !empty($value['locked']);
-    $is_vital = !empty($value['vital']);
-    $tags_status = [
-        'has:pattern' => !empty($value['pattern']),
-        'is:active' => $is_active,
-        'is:locked' => $is_locked,
-        'is:vital' => $is_vital,
-        'not:active' => !$is_active,
-        'not:locked' => !$is_locked,
-        'not:vital' => !$is_vital
-    ];
+function field($value, $key, $type = 'textarea') {
+    if (!\array_key_exists('id', $value)) {
+        $value['id'] = 'f:' . \dechex(\crc32($key));
+    }
     $state = $value['state'] ?? [];
-    $content = [
-        0 => 'textarea',
-        1 => \htmlspecialchars($value['value'] ?? ""),
-        2 => [
-            'autofocus' => !empty($value['focus']),
-            'data-state' => $state ? \json_encode($state) : null,
-            'disabled' => !$is_active,
-            'id' => $value['id'],
-            'maxlength' => $value['max'] ?? null,
-            'minlength' => $value['min'] ?? null,
-            'name' => $name,
-            'pattern' => $value['pattern'] ?? null,
-            'placeholder' => \i(...((array) ($value['hint'] ?? []))),
-            'readonly' => $is_locked,
-            'required' => $is_vital
-        ]
-    ];
-    \x\panel\_set_class($content[2], \array_replace($tags_status, $value['tags'] ?? []));
-    $value['content'] = $content;
+    unset($value['tags']);
+    $content = \fire("\\x\\panel\\type\\" . $type, [$value, $key]);
+    $content['data-state'] = $state ? \json_encode($state) : null;
+    $value['field'] = [$content[0], $content[1], $content[2]]; // Extract!
     return $value;
 }
 
@@ -100,6 +74,67 @@ function lot($lot, &$count = 0, $sort = true) {
             ++$count;
         }
         $out .= $v;
+    }
+    return $out;
+}
+
+function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = 'Previous', $next = 'Next', $last = 'Last') {
+    $begin = 1;
+    $end = (int) \ceil($count / $chunk);
+    $out = "";
+    if ($end <= 1) {
+        return $out;
+    }
+    if ($current <= $peek + $peek) {
+        $min = $begin;
+        $max = \min($begin + $peek + $peek, $end);
+    } else if ($current > $end - $peek - $peek) {
+        $min = $end - $peek - $peek;
+        $max = $end;
+    } else {
+        $min = $current - $peek;
+        $max = $current + $peek;
+    }
+    if ($prev = \i($prev)) {
+        $out = '<span>';
+        if ($current === $begin) {
+            $out .= '<b title="' . $prev . '">' . $prev . '</b>';
+        } else {
+            $out .= '<a href="' . \call_user_func($fn, $current - 1) . '" title="' . $prev . '" rel="prev">' . $prev . '</a>';
+        }
+        $out .= '</span> ';
+    }
+    if (($first = \i($first)) && ($last = \i($last))) {
+        $out .= '<span>';
+        if ($min > $begin) {
+            $out .= '<a href="' . \call_user_func($fn, $begin) . '" title="' . $first . '" rel="prev">' . $begin . '</a>';
+            if ($min > $begin + 1) {
+                $out .= ' <span>&#x2026;</span>';
+            }
+        }
+        for ($i = $min; $i <= $max; ++$i) {
+            if ($current === $i) {
+                $out .= ' <b title="' . $i . '">' . $i . '</b>';
+            } else {
+                $out .= ' <a href="' .\call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+            }
+        }
+        if ($max < $end) {
+            if ($max < $end - 1) {
+                $out .= ' <span>&#x2026;</span>';
+            }
+            $out .= ' <a href="' . \call_user_func($fn, $end) . '" title="' . $last . '" rel="next">' . $end . '</a>';
+        }
+        $out .= '</span>';
+    }
+    if ($next = \i($next)) {
+        $out .= ' <span>';
+        if ($current === $end) {
+            $out .= '<b title="' . $next . '">' . $next . '</b>';
+        } else {
+            $out .= '<a href="' . \call_user_func($fn, $current + 1) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+        }
+        $out .= '</span>';
     }
     return $out;
 }

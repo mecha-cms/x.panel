@@ -68,12 +68,12 @@ $code: monospace !default;
       color: variant(95%);
       &:not(.not\:active) {
         &:focus {
-          background: variant(40%);
+          background: lighten(variant(30%), 10%);
           color: variant(95%);
           box-shadow: $ring;
         }
         &:active {
-          background: variant(20%);
+          background: darken(variant(30%), 10%);
           color: variant(95%);
         }
       }
@@ -411,10 +411,10 @@ $code: monospace !default;
     &[type='radio'] {
       background: variant(30%);
       &:not(.not\:active):focus {
-        background: variant(40%);
+        background: lighten(variant(30%), 10%);
       }
       &:not(.not\:active):active {
-        background: variant(20%);
+        background: darken(variant(30%), 10%);
       }
       &::before {
         background: variant(0%);
@@ -460,23 +460,23 @@ $code: monospace !default;
             background: variant(15%);
           }
           &::-webkit-slider-thumb {
-            background: variant(40%);
+            background: lighten(variant(30%), 10%);
             box-shadow: $ring;
           }
           &::-moz-range-track {
             background: variant(15%);
           }
           &::-moz-range-thumb {
-            background: variant(40%);
+            background: lighten(variant(30%), 10%);
             box-shadow: $ring;
           }
         }
         &:active {
           &::-webkit-slider-thumb {
-            background: variant(20%);
+            background: darken(variant(30%), 10%);
           }
           &::-moz-range-thumb {
-            background: variant(20%);
+            background: darken(variant(30%), 10%);
           }
         }
       }

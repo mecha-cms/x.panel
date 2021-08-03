@@ -59,14 +59,14 @@
 
 .is\:dark .button:not(.not\:active):focus,
 .is\:dark .button[href]:not(.not\:active):focus {
-  background: #7a7a7a;
+  background: #7e7e7e;
   color: #f4f4f4;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
 .is\:dark .button:not(.not\:active):active,
 .is\:dark .button[href]:not(.not\:active):active {
-  background: #4e4e4e;
+  background: #4b4b4b;
   color: #f4f4f4;
 }
 
@@ -408,12 +408,12 @@
 
 .is\:dark .input[type='checkbox']:not(.not\:active):focus,
 .is\:dark .input[type='radio']:not(.not\:active):focus {
-  background: #7a7a7a;
+  background: #7e7e7e;
 }
 
 .is\:dark .input[type='checkbox']:not(.not\:active):active,
 .is\:dark .input[type='radio']:not(.not\:active):active {
-  background: #4e4e4e;
+  background: #4b4b4b;
 }
 
 .is\:dark .input[type='checkbox']::before,
@@ -460,7 +460,7 @@
 }
 
 .is\:dark .input[type='range']:not(.not\:active):focus::-webkit-slider-thumb {
-  background: #7a7a7a;
+  background: #7e7e7e;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
@@ -469,16 +469,16 @@
 }
 
 .is\:dark .input[type='range']:not(.not\:active):focus::-moz-range-thumb {
-  background: #7a7a7a;
+  background: #7e7e7e;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
 .is\:dark .input[type='range']:not(.not\:active):active::-webkit-slider-thumb {
-  background: #4e4e4e;
+  background: #4b4b4b;
 }
 
 .is\:dark .input[type='range']:not(.not\:active):active::-moz-range-thumb {
-  background: #4e4e4e;
+  background: #4b4b4b;
 }
 
 .is\:light {
@@ -542,14 +542,14 @@
 
 .is\:light .button:not(.not\:active):focus,
 .is\:light .button[href]:not(.not\:active):focus {
-  background: #a7a7a7;
+  background: #d7d7d7;
   color: #2d2d2d;
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .button:not(.not\:active):active,
 .is\:light .button[href]:not(.not\:active):active {
-  background: lightgray;
+  background: #a4a4a4;
   color: #2d2d2d;
 }
 
@@ -891,12 +891,12 @@
 
 .is\:light .input[type='checkbox']:not(.not\:active):focus,
 .is\:light .input[type='radio']:not(.not\:active):focus {
-  background: #a7a7a7;
+  background: #d7d7d7;
 }
 
 .is\:light .input[type='checkbox']:not(.not\:active):active,
 .is\:light .input[type='radio']:not(.not\:active):active {
-  background: lightgray;
+  background: #a4a4a4;
 }
 
 .is\:light .input[type='checkbox']::before,
@@ -943,7 +943,7 @@
 }
 
 .is\:light .input[type='range']:not(.not\:active):focus::-webkit-slider-thumb {
-  background: #a7a7a7;
+  background: #d7d7d7;
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -952,14 +952,14 @@
 }
 
 .is\:light .input[type='range']:not(.not\:active):focus::-moz-range-thumb {
-  background: #a7a7a7;
+  background: #d7d7d7;
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .is\:light .input[type='range']:not(.not\:active):active::-webkit-slider-thumb {
-  background: lightgray;
+  background: #a4a4a4;
 }
 
 .is\:light .input[type='range']:not(.not\:active):active::-moz-range-thumb {
-  background: lightgray;
+  background: #a4a4a4;
 }
