@@ -6,6 +6,6 @@ function alert($_) {
     $_['alert']['info'][] = 'This is an info message.';
     $_['alert']['success'][] = 'This is a success message.';
     $_['alert']['success'][] = 'This is another success message.';
-    $_['alert']['foo'][] = 'This is a custom message.';
+    $_['alert']['custom'][] = 'This is a custom message.';
     return $_;
 }

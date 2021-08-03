@@ -2,7 +2,8 @@
 
 function tabs($_) {
     $_['title'] = 'Tabs';
-    $tabs_0 = [
+    $lot = [];
+    $lot['tabs-0'] = [
         'title' => 'Tabs',
         'description' => 'Description goes here.',
         'type' => 'tabs',
@@ -26,7 +27,7 @@ function tabs($_) {
         ],
         'stack' => 10
     ];
-    $tabs_1 = [
+    $lot['tabs-1'] = [
         'type' => 'tabs',
         'lot' => [
             'tab-0' => [
@@ -56,7 +57,7 @@ function tabs($_) {
         ],
         'stack' => 20
     ];
-    $tabs_2 = [
+    $lot['tabs-2'] = [
         'type' => 'tabs',
         'lot' => [
             'tab-0' => [
@@ -82,13 +83,6 @@ function tabs($_) {
         ],
         'stack' => 30
     ];
-    $_['lot']['desk']['lot']['form']['lot'][1]['lot'][0] = [
-        'type' => 'section',
-        'lot' => [
-            'tabs-0' => $tabs_0,
-            'tabs-1' => $tabs_1,
-            'tabs-2' => $tabs_2
-        ]
-    ];
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot'][0]['lot'] = $lot;
     return $_;
 }

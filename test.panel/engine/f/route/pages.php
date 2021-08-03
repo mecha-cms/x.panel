@@ -27,27 +27,26 @@ function pages($_) {
             'stack' => $stack
         ];
     };
-    $lot = [
-        'pages' => [
-            'type' => 'pages',
-            'sort' => \Get::get('sort'),
-            'lot' => [
-                $item('Default Page Example', 'Page description goes here.', 'page', 10),
-                \array_replace($item('Page Example with Image', 'Image placeholder provided by <a href="https://placekitten.com" rel="nofollow" target="_blank">Placekitten</a> service.', 'page', 10.1), [
-                    'image' => 'https://placekitten.com/100/100?image=3'
-                ]),
-                \array_replace($item('Hidden Image View', 'Disabling the thumbnail view.', 'page', 10.2), [
-                    'image' => false
-                ]),
-                \array_replace($item('Disabled Page Example', 'Page description goes here.', 'page', 10.3), [
-                    'active' => false
-                ]),
-                \array_replace($item('Current Page Example', 'Page description goes here.', 'page', 20.1), [
-                    'current' => true
-                ])
-            ],
-            'stack' => 10
-        ]
+    $lot = [];
+    $lot['pages-0'] = [
+        'type' => 'pages',
+        'sort' => \Get::get('sort'),
+        'lot' => [
+            $item('Default Page Example', 'Page description goes here.', 'page', 10),
+            \array_replace($item('Page Example with Image', 'Image placeholder provided by <a href="https://placekitten.com" rel="nofollow" target="_blank">Placekitten</a> service.', 'page', 10.1), [
+                'image' => 'https://placekitten.com/100/100?image=3'
+            ]),
+            \array_replace($item('Hidden Image View', 'Disabling the thumbnail view.', 'page', 10.2), [
+                'image' => false
+            ]),
+            \array_replace($item('Disabled Page Example', 'Page description goes here.', 'page', 10.3), [
+                'active' => false
+            ]),
+            \array_replace($item('Current Page Example', 'Page description goes here.', 'page', 20.1), [
+                'current' => true
+            ])
+        ],
+        'stack' => 10
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;
