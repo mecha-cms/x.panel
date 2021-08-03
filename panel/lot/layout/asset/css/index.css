@@ -59,14 +59,14 @@
 
 .is\:dark .button:not(.not\:active):focus,
 .is\:dark .button[href]:not(.not\:active):focus {
-  background: #7e7e7e;
+  background: #717171;
   color: #f4f4f4;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
 .is\:dark .button:not(.not\:active):active,
 .is\:dark .button[href]:not(.not\:active):active {
-  background: #4b4b4b;
+  background: #575757;
   color: #f4f4f4;
 }
 
@@ -314,7 +314,7 @@
 }
 
 .is\:dark .is\:folder::after {
-  background: #616161;
+  background: #545454;
 }
 
 .is\:dark .lot\:file,
@@ -408,12 +408,12 @@
 
 .is\:dark .input[type='checkbox']:not(.not\:active):focus,
 .is\:dark .input[type='radio']:not(.not\:active):focus {
-  background: #7e7e7e;
+  background: #717171;
 }
 
 .is\:dark .input[type='checkbox']:not(.not\:active):active,
 .is\:dark .input[type='radio']:not(.not\:active):active {
-  background: #4b4b4b;
+  background: #575757;
 }
 
 .is\:dark .input[type='checkbox']::before,
@@ -460,7 +460,7 @@
 }
 
 .is\:dark .input[type='range']:not(.not\:active):focus::-webkit-slider-thumb {
-  background: #7e7e7e;
+  background: #717171;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
@@ -469,16 +469,16 @@
 }
 
 .is\:dark .input[type='range']:not(.not\:active):focus::-moz-range-thumb {
-  background: #7e7e7e;
+  background: #717171;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.025);
 }
 
 .is\:dark .input[type='range']:not(.not\:active):active::-webkit-slider-thumb {
-  background: #4b4b4b;
+  background: #575757;
 }
 
 .is\:dark .input[type='range']:not(.not\:active):active::-moz-range-thumb {
-  background: #4b4b4b;
+  background: #575757;
 }
 
 .is\:light {
@@ -542,14 +542,14 @@
 
 .is\:light .button:not(.not\:active):focus,
 .is\:light .button[href]:not(.not\:active):focus {
-  background: #d7d7d7;
+  background: #cacaca;
   color: #2d2d2d;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.035);
 }
 
 .is\:light .button:not(.not\:active):active,
 .is\:light .button[href]:not(.not\:active):active {
-  background: #a4a4a4;
+  background: #b0b0b0;
   color: #2d2d2d;
 }
 
@@ -565,7 +565,7 @@
 .is\:light .select:not(.not\:active):focus,
 .is\:light .textarea:not(.not\:active):focus {
   border-color: #dedede;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.035);
 }
 
 .is\:light .input:not(.not\:active):focus:invalid,
@@ -658,7 +658,7 @@
 .is\:light .lot\:fields .option-picker--focus:not(.not\:active),
 .is\:light .lot\:fields .tag-picker--focus:not(.not\:active) {
   border-color: #dedede;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.035);
 }
 
 .is\:light .lot\:fields .option-picker::after {
@@ -797,7 +797,7 @@
 }
 
 .is\:light .is\:folder::after {
-  background: #8e8e8e;
+  background: #818181;
 }
 
 .is\:light .lot\:file,
@@ -891,12 +891,12 @@
 
 .is\:light .input[type='checkbox']:not(.not\:active):focus,
 .is\:light .input[type='radio']:not(.not\:active):focus {
-  background: #d7d7d7;
+  background: #cacaca;
 }
 
 .is\:light .input[type='checkbox']:not(.not\:active):active,
 .is\:light .input[type='radio']:not(.not\:active):active {
-  background: #a4a4a4;
+  background: #b0b0b0;
 }
 
 .is\:light .input[type='checkbox']::before,
@@ -943,8 +943,8 @@
 }
 
 .is\:light .input[type='range']:not(.not\:active):focus::-webkit-slider-thumb {
-  background: #d7d7d7;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  background: #cacaca;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.035);
 }
 
 .is\:light .input[type='range']:not(.not\:active):focus::-moz-range-track {
@@ -952,14 +952,14 @@
 }
 
 .is\:light .input[type='range']:not(.not\:active):focus::-moz-range-thumb {
-  background: #d7d7d7;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  background: #cacaca;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.035);
 }
 
 .is\:light .input[type='range']:not(.not\:active):active::-webkit-slider-thumb {
-  background: #a4a4a4;
+  background: #b0b0b0;
 }
 
 .is\:light .input[type='range']:not(.not\:active):active::-moz-range-thumb {
-  background: #a4a4a4;
+  background: #b0b0b0;
 }
