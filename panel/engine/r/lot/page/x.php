@@ -2,17 +2,28 @@
 
 $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
-$uses = [
-    'alert' => 1,
-    'asset' => 1,
-    'layout' => 1,
-    'page' => 1,
-    'panel' => 1,
-    'user' => 1,
-    'y-a-m-l' => 1
-];
+$bounds = [];
 
-if (isset($uses[$_['chop'][1]])) {
+foreach (g(LOT . DS . 'x', 'page', 1) as $k => $v) {
+    if ('about.page' !== basename($k)) {
+        continue;
+    }
+    $p = new Page($k);
+    $title = strip_tags((string) ($p->title ?? ""));
+    $key = strtr(x\panel\from\path(dirname($k)), [
+        "\\" => '/'
+    ]);
+    foreach ((array) $p['use'] as $kk => $vv) {
+        $bounds[strtr($kk, [
+            "\\" => '/'
+        ])][$key] = $title;
+    }
+}
+
+$bound = $bounds[x\panel\from\path(LOT . DS . 'x' . DS . $_['chop'][1])] ?? [];
+
+if (!empty($bound)) {
+    asort($bound);
     $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['l']['skip'] = true;
 }
 
