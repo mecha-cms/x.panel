@@ -29,6 +29,29 @@ if (1 === count($_['chop'])) {
                 '://127.0.0.1/panel/' => '://' . explode(':', $_['/'], 2)[1] . '/',
                 '://127.0.0.1' => '://' . explode(':', $url . "", 2)[1]
             ]);
+            $use = "";
+            if (isset($page['use'])) {
+                $uses = [];
+                foreach ((array) $page['use'] as $k => $v) {
+                    $p = is_file($kk = x\panel\to\path($k) . DS . 'about.page') ? new Page($kk) : null;
+                    $uses[$k] = [$v, $p ? ($p->title ?? $k) : $k, is_file(dirname($kk) . DS . 'index.php')];
+                }
+                $links = [];
+                foreach ($uses as $k => $v) {
+                    if (!empty($v[2])) {
+                        $links[$v[1]] = '<li><a href="' . $_['/'] . '/::g::/' . strtr($k, [
+                            ".\\lot\\" => "",
+                            "\\" => '/'
+                        ]) . '/1?tab[0]=info">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';
+                    } else {
+                        $links[$v[1]] = '<li><s title="' . i('Missing %s extension.', $v[1]) . '">' . $v[1] . '</s></li>';
+                    }
+                }
+                ksort($links);
+                $use .= '<details><summary><strong>' . i('Dependenc' . (1 === ($i = count($uses)) ? 'y' : 'ies')) . '</strong> (' . $i . ')</summary><ul>';
+                $use .= implode("", $links);
+                $use .= '</ul></details>';
+            }
             // Hide some file(s) from the list
             foreach ([
                 // About file
@@ -45,7 +68,7 @@ if (1 === count($_['chop'])) {
                         'title' => $page->title . ' <sup>' . $page->version . '</sup>',
                         'description' => $page->description,
                         'type' => 'section',
-                        'content' => $content,
+                        'content' => $content . $use,
                         'stack' => 10
                     ]
                 ],

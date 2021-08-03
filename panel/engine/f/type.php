@@ -62,7 +62,7 @@ function content($value, $key) {
     }
     $out[2]['id'] = $value['id'] ?? null;
     \x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
-    return new \HTML($out);
+    return "" !== $out[1] ? new \HTML($out) : null;
 }
 
 function description($value, $key) {
@@ -565,7 +565,7 @@ function lot($value, $key) {
     }
     $out[2]['id'] = $value['id'] ?? null;
     \x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
-    return new \HTML($out);
+    return "" !== $out[1] ? new \HTML($out) : null;
 }
 
 function menu($value, $key, int $i = 0) {
@@ -747,19 +747,18 @@ function pages($value, $key) {
 function section($value, $key) {
     if (isset($value['content'])) {
         $out = \x\panel\type\content($value, $key);
-        $out[0] = 'section';
-        return $out;
-    }
-    if (isset($value['lot'])) {
+        $out[0] = $value[0] ?? 'section';
+    } else if (isset($value['lot'])) {
         $out = \x\panel\type\lot($value, $key);
-        $out[0] = 'section';
-        return $out;
+        $out[0] = $value[0] ?? 'section';
+    } else {
+        $out = new \HTML([
+            0 => $value[0] ?? 'section',
+            1 => $value[1] ?? "",
+            2 => $value[2] ?? []
+        ]);
     }
-    return new \HTML([
-        0 => $value[0] ?? 'section',
-        1 => $value[1] ?? "",
-        2 => $value[2] ?? []
-    ]);
+    return isset($out[1]) && "" !== $out[1] ? $out : null;
 }
 
 function select($value, $key) {

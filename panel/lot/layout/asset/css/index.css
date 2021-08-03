@@ -310,11 +310,11 @@
 }
 
 .is\:dark .is\:folder::before {
-  background: #a7a7a7;
+  background: #7a7a7a;
 }
 
 .is\:dark .is\:folder::after {
-  background: #7a7a7a;
+  background: #616161;
 }
 
 .is\:dark .lot\:file,
@@ -793,11 +793,11 @@
 }
 
 .is\:light .is\:folder::before {
-  background: #7a7a7a;
+  background: #a7a7a7;
 }
 
 .is\:light .is\:folder::after {
-  background: #a7a7a7;
+  background: #8e8e8e;
 }
 
 .is\:light .lot\:file,

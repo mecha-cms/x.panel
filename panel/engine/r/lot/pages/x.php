@@ -2,15 +2,6 @@
 
 // `http://127.0.0.1/panel/::g::/x/foo-bar/1`
 $i = count($_['chop']);
-$uses = [
-    'alert' => 1,
-    'asset' => 1,
-    'layout' => 1,
-    'page' => 1,
-    'panel' => 1,
-    'user' => 1,
-    'y-a-m-l' => 1
-];
 
 $trash = $_['trash'] ? date('Y-m-d-H-i-s') : false;
 
@@ -24,12 +15,31 @@ if ($i > 1) {
             'type' => false
         ]) . $url->hash;
         $_['lot']['bar']['lot'][0]['lot']['link']['skip'] = false;
-        Hook::set('_', function($_) use($uses) {
+        Hook::set('_', function($_) {
             extract($GLOBALS, EXTR_SKIP);
-            if (isset($uses[$_['chop'][1]])) {
+            $bounds = [];
+            foreach (g(LOT . DS . 'x', 'page', 1) as $k => $v) {
+                if ('about.page' !== basename($k)) {
+                    continue;
+                }
+                $p = new Page($k);
+                $title = strip_tags((string) ($p->title ?? ""));
+                $key = strtr(x\panel\from\path(dirname($k)), [
+                    "\\" => '/'
+                ]);
+                foreach ((array) $p['use'] as $kk => $vv) {
+                    $bounds[strtr($kk, [
+                        "\\" => '/'
+                    ])][$key] = $title;
+                }
+            }
+            $bound = $bounds[x\panel\from\path(LOT . DS . 'x' . DS . $_['chop'][1])] ?? [];
+            if (!empty($bound)) {
+                asort($bound);
                 // Disable delete button where possible
                 $index = $index = $_['f'] . DS . 'index.php';
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['active'] = false;
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['description'] = ['Required by %s', implode(', ', $bound)];
                 unset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['l']['url']);
             }
             if (is_file($f = ($d = $_['f']) . DS . 'about.page')) {
@@ -41,18 +51,26 @@ if ($i > 1) {
                     '://127.0.0.1' => '://' . explode(':', $url . "", 2)[1]
                 ]);
                 $use = "";
-                if ($uses = $page->use) {
-                    $use .= '<details class="p"><summary><strong>' . i('Dependency') . '</strong> (' . count($uses) . ')</summary><ul>';
-                    foreach ((array) $uses as $k => $v) {
-                        if (is_file($kk = strtr($k, [
-                            ".\\" => ROOT . DS,
-                            "\\" => DS
-                        ]) . DS . 'index.php') && $v) {
-                            $use .= '<li><a href="' . $_['/'] . '/::g::/' . dirname(Path::R($kk, LOT, '/')) . '/1?tab[0]=info">' . $k . '</a></li>';
+                if (isset($page['use'])) {
+                    $uses = [];
+                    foreach ((array) $page['use'] as $k => $v) {
+                        $p = is_file($kk = x\panel\to\path($k) . DS . 'about.page') ? new Page($kk) : null;
+                        $uses[$k] = [$v, $p ? ($p->title ?? $k) : $k, is_file(dirname($kk) . DS . 'index.php')];
+                    }
+                    $links = [];
+                    foreach ($uses as $k => $v) {
+                        if (!empty($v[2])) {
+                            $links[$v[1]] = '<li><a href="' . $_['/'] . '/::g::/' . strtr($k, [
+                                ".\\lot\\" => "",
+                                "\\" => '/'
+                            ]) . '/1?tab[0]=info">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';
                         } else {
-                            $use .= '<li>' . $k . (0 === $v ? ' <span class="description">(' . i('optional') . ')</span>' : "") . '</li>';
+                            $links[$v[1]] = '<li><s title="' . i('Missing %s extension.', $v[1]) . '">' . $v[1] . '</s></li>';
                         }
                     }
+                    ksort($links);
+                    $use .= '<details><summary><strong>' . i('Dependenc' . (1 === ($i = count($uses)) ? 'y' : 'ies')) . '</strong> (' . $i . ')</summary><ul>';
+                    $use .= implode("", $links);
                     $use .= '</ul></details>';
                 }
                 // Hide some file(s) from the list
@@ -105,7 +123,7 @@ $_['type'] = 'pages';
 
 $_ = require __DIR__ . DS . '..' . DS . 'index.php';
 
-Hook::set('_', function($_) use($uses) {
+Hook::set('_', function($_) {
     if (
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['skip']) &&
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
@@ -113,6 +131,7 @@ Hook::set('_', function($_) use($uses) {
         'pages' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']
     ) {
         extract($GLOBALS, EXTR_SKIP);
+        $bounds = [];
         $count = 0;
         $search = static function($folder, $x, $r) {
             $q = strtolower($_GET['q'] ?? "");
@@ -129,10 +148,19 @@ Hook::set('_', function($_) use($uses) {
                 }
                 $p = new Page($k);
                 $sort = $_['sort'][1] ?? 'time';
+                $title = strip_tags((string) ($p->title ?? ""));
+                $key = strtr(x\panel\from\path(dirname($k)), [
+                    "\\" => '/'
+                ]);
                 $pages[$k] = [
                     'page' => $p,
-                    'title' => strip_tags((string) ($p->title ?? ""))
+                    'title' => $title
                 ];
+                foreach ((array) $p['use'] as $kk => $vv) {
+                    $bounds[strtr($kk, [
+                        "\\" => '/'
+                    ])][$key] = $title;
+                }
                 ++$count;
             }
             $pages = new Anemon($pages);
@@ -151,8 +179,11 @@ Hook::set('_', function($_) use($uses) {
                 $image = $p->image(72, 72, 50) ?? null;
                 $type = $p->type ?? null;
                 $time = $p->time ?? null;
-                $n = basename($d);
                 $x = $p->x ?? null;
+                $bound = $bounds[strtr(x\panel\from\path(dirname($k)), [
+                    "\\" => '/'
+                ])] ?? [];
+                asort($bound);
                 $pages[$k] = [
                     'path' => $k,
                     'current' => !empty($_SESSION['_']['folder'][$d]),
@@ -182,9 +213,9 @@ Hook::set('_', function($_) use($uses) {
                         ],
                         'toggle' => [
                             'title' => $is_active ? ['Disable'] : 'Enable',
-                            'description' => isset($uses[$n]) ? ['Required by %s', 'Panel'] : ($is_active ? 'Disable' : 'Enable'),
+                            'description' => !empty($bound) ? ['Required by %s', implode(', ', $bound)] : ($is_active ? 'Disable' : 'Enable'),
                             'icon' => $is_active ? 'M13,9.86V11.18L15,13.18V9.86C17.14,9.31 18.43,7.13 17.87,5C17.32,2.85 15.14,1.56 13,2.11C10.86,2.67 9.57,4.85 10.13,7C10.5,8.4 11.59,9.5 13,9.86M14,4A2,2 0 0,1 16,6A2,2 0 0,1 14,8A2,2 0 0,1 12,6A2,2 0 0,1 14,4M18.73,22L14.86,18.13C14.21,20.81 11.5,22.46 8.83,21.82C6.6,21.28 5,19.29 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V16.27L2,5.27L3.28,4L13,13.72L15,15.72L20,20.72L18.73,22Z' : 'M18,6C18,7.82 16.76,9.41 15,9.86V17A5,5 0 0,1 10,22A5,5 0 0,1 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V9.86C11.23,9.4 10,7.8 10,5.97C10,3.76 11.8,2 14,2C16.22,2 18,3.79 18,6M14,8A2,2 0 0,0 16,6A2,2 0 0,0 14,4A2,2 0 0,0 12,6A2,2 0 0,0 14,8Z',
-                            'url' => isset($uses[$n]) ? null : $before . 'f' . strtr($after, [
+                            'url' => !empty($bound) ? null : $before . 'f' . strtr($after, [
                                 '::/' => '::/113d1ba5/'
                             ]) . $url->query('&', [
                                 'kick' => URL::short($url->current, false),
@@ -198,9 +229,9 @@ Hook::set('_', function($_) use($uses) {
                         ],
                         'l' => [
                             'title' => 'Delete',
-                            'description' => isset($uses[$n]) ? ['Required by %s', 'Panel'] : 'Delete',
+                            'description' => !empty($bound) ? ['Required by %s', implode(', ', $bound)] : 'Delete',
                             'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                            'url' => isset($uses[$n]) ? null : $before . 'l' . $after . $url->query('&', [
+                            'url' => !empty($bound) ? null : $before . 'l' . $after . $url->query('&', [
                                 'q' => false,
                                 'tab' => false,
                                 'token' => $_['token'],

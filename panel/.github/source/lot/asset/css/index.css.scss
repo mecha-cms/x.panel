@@ -42,12 +42,13 @@ $color-link: #00f;
   user-select: $select;
 }
 
-@import '_/h';
 @import '_/base';
 @import '_/form';
 @import '_/icon';
 @import '_/alert';
 @import '_/lot';
 @import '_/content';
+
+@import '_/h';
 
 @import '_/media';

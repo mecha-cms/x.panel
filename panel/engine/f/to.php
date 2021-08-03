@@ -139,6 +139,15 @@ function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = '
     return $out;
 }
 
+function path($value) {
+    return \strtr(\strtr($value, [
+        "\\" => '/'
+    ]), [
+        './' => \ROOT . \DS,
+        '/' => \DS
+    ]);
+}
+
 function title($value, $level = -1) {
     $out = (string) \x\panel\type\title([
         'content' => $value,

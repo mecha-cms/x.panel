@@ -319,10 +319,10 @@ $code: monospace !default;
   }
   .is\:folder {
     &::before {
-      background: variant(60%);
+      background: variant(40%);
     }
     &::after {
-      background: variant(40%);
+      background: darken(variant(40%), 10%);
     }
   }
   .lot\:file,
