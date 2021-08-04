@@ -2,7 +2,7 @@
 
 function route() {
     if (!\Is::user()) {
-        \Guard::kick("");
+        \Guard::kick('/');
     }
     // Load default panel definition
     $GLOBALS['_'] = require __DIR__ . \DS . '..' . \DS . 'r.php';
