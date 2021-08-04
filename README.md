@@ -6,7 +6,7 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 Release Notes
 -------------
 
-### main
+### 2.7.0
 
  - [ ] Added `field/options` type.
  - [x] Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
