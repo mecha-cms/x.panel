@@ -263,6 +263,7 @@ function page($_) {
         $_['form']['lot']['file']['content'] = $_POST['file']['content'] = \To::page($page);
         $_['form']['lot']['file']['name'] = $name . '.' . $x;
         $_ = file($_); // Move to `file`
+        $f = $_['f']; // Get file name
         if (empty($_['alert']['error'])) {
             if (!\is_dir($d = \Path::F($f))) {
                 \mkdir($d, 0755, true);
