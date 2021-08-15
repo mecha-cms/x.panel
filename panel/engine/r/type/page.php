@@ -144,6 +144,11 @@ $desk = [
                                                     'value' => $page['content'],
                                                     'width' => true,
                                                     'height' => true,
+                                                    'state' => [
+                                                        'source' => [
+                                                            'type' => $page['type']
+                                                        ]
+                                                    ],
                                                     'stack' => 30
                                                 ],
                                                 'description' => [

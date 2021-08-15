@@ -36,6 +36,10 @@ import {
 } from '@taufik-nurrohman/event';
 
 import {
+    fromStates
+} from '@taufik-nurrohman/from';
+
+import {
     hook
 } from '@taufik-nurrohman/hook';
 
@@ -60,6 +64,12 @@ import {
     state as stateSource,
     that as thatSource
 } from '@taufik-nurrohman/text-editor.source';
+
+import {
+    canKeyDown as canKeyDownSourceHTML,
+    canMouseDown as canMouseDownSourceHTML,
+    state as stateSourceHTML
+} from '@taufik-nurrohman/text-editor.source-h-t-m-l';
 
 import {
     canKeyDown as canKeyDownSourceXML,
@@ -165,14 +175,42 @@ function onChange_Query() {
 
 Object.assign(TE.prototype, thatHistory, thatSource);
 
-Object.assign(TE.state, stateSource, stateSourceXML);
+TE.prototype.insertXML = thatSourceXML.insert;
+TE.prototype.toggleXML = thatSourceXML.toggle;
+TE.prototype.wrapXML = thatSourceXML.wrap;
+
+TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
 
 function _onKeyDownSource(e) {
     let editor = this.editor,
+        type = editor.state.source.type,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
+    if ('CSS' === editor.state.source.type) {
+        // TODO
+    }
+    if ('HTML' === type) {
+        if (
+            canKeyDownSourceHTML(key, keys, editor) &&
+            canKeyDownSourceXML(key, keys, editor) &&
+            canKeyDownSource(key, keys, editor) &&
+            canKeyDownDentSource(key, keys, editor) &&
+            canKeyDownHistorySource(key, keys, editor)
+        ) {} else {
+            offEventDefault(e);
+            return;
+        }
+    }
+    if ('JS' === type) {
+        // TODO
+    }
+    if ('MD' === type) {
+        // TODO
+    }
+    if ('PHP' === type) {
+        // TODO
+    }
     if (
-        canKeyDownSourceXML(key, keys, editor) &&
         canKeyDownSource(key, keys, editor) &&
         canKeyDownDentSource(key, keys, editor) &&
         canKeyDownHistorySource(key, keys, editor)
@@ -182,8 +220,15 @@ function _onKeyDownSource(e) {
 }
 
 function _onMouseDownSource(e) {
-    let editor = this.editor;
-    canMouseDownSourceXML(editor) || offEventDefault(e);
+    let editor = this.editor,
+        key = e.key,
+        keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
+    if (
+        canMouseDownSourceHTML(key, keys, editor) &&
+        canMouseDownSourceXML(key, keys, editor)
+    ) {} else {
+        offEventDefault(e);
+    }
 }
 
 function _onKeyUpSource(e) {

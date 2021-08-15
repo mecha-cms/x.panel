@@ -17,6 +17,11 @@ if (null !== State::get('x.art')) {
                         'value' => $page['css'],
                         'width' => true,
                         'height' => true,
+                        'state' => [
+                            'source' => [
+                                'type' => 'CSS'
+                            ]
+                        ],
                         'stack' => 10
                     ],
                     'js' => [
@@ -27,6 +32,11 @@ if (null !== State::get('x.art')) {
                         'value' => $page['js'],
                         'width' => true,
                         'height' => true,
+                        'state' => [
+                            'source' => [
+                                'type' => 'JS'
+                            ]
+                        ],
                         'stack' => 20
                     ]
                 ],
