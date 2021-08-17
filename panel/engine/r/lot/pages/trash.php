@@ -15,14 +15,16 @@ Hook::set('_', function($_) {
                 $v['tasks']['l']['description'] = 'Delete permanently';
                 $v['tasks']['l']['url'] = explode('&trash=', $v['tasks']['l']['url'], 2)[0];
                 if ($is_root) {
-                    $stats = [0, 0];
-                    foreach (g($k, null, true) as $kk => $vv) {
-                        ++$stats[$vv];
+                    if (is_dir($k)) {
+                        $stats = [0, 0];
+                        foreach (g($k, null, true) as $kk => $vv) {
+                            ++$stats[$vv];
+                        }
+                        $v['description'] = implode(', ', [
+                            i('%d folder' . (1 === $stats[0] ? "" : 's'), $stats[0]),
+                            i('%d file' . (1 === $stats[0] ? "" : 's'), $stats[1])
+                        ]);
                     }
-                    $v['description'] = implode(', ', [
-                        i('%d folder' . (1 === $stats[0] ? "" : 's'), $stats[0]),
-                        i('%d file' . (1 === $stats[0] ? "" : 's'), $stats[1])
-                    ]);
                     $v['tasks']['restore'] = [
                         'title' => 'Restore',
                         'description' => 'Restore',
