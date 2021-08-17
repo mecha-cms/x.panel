@@ -45,6 +45,9 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
         'lot' => [
             'form' => [
                 // type: form/post
+                'data' => [
+                    'page' => 's' !== $_['task'] ? ['name' => $page->name] : []
+                ],
                 'lot' => [
                     1 => [
                         // type: section
@@ -82,7 +85,6 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                                                 'hint' => To::kebab('g' === $_['task'] ? ($page->name ?? 'John Doe') : 'John Doe'),
                                                                 'focus' => true,
                                                                 'width' => true,
-                                                                'skip' => false,
                                                                 'stack' => 10
                                                             ],
                                                             'pass' => [
