@@ -3,6 +3,8 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 
 ![Panel](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
 
+---
+
 Release Notes
 -------------
 
