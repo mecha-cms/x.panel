@@ -69,7 +69,6 @@ import {
 
 import {
     canKeyDown as canKeyDownSourceHTML,
-    canMouseDown as canMouseDownSourceHTML,
     state as stateSourceHTML
 } from '@taufik-nurrohman/text-editor.source-h-t-m-l';
 
@@ -139,10 +138,10 @@ function onChange_Menu() {
 
 function onChange_Option() {
     // Destroy!
-    let value;
+    let picker;
     for (let key in OP.instances) {
-        value = OP.instances[key];
-        value.pop();
+        picker = OP.instances[key];
+        picker.pop();
         delete OP.instances[key];
     }
     let sources = getElements('.lot\\:field.type\\:option .select');
@@ -158,10 +157,10 @@ function onChange_Option() {
 
 function onChange_Query() {
     // Destroy!
-    let value;
+    let picker;
     for (let key in TP.instances) {
-        value = TP.instances[key];
-        value.pop();
+        picker = TP.instances[key];
+        picker.pop();
         delete TP.instances[key];
     }
     let sources = getElements('.lot\\:field.type\\:query .input');
@@ -179,16 +178,64 @@ Object.assign(TE.prototype, thatHistory, thatSource);
 
 TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
 
-// Set default editor type to `null`
-TE.state.source.type = null;
+// Be sure to remove the default source type
+delete TE.state.source.type;
 
 function _onKeyDownSource(e) {
     let editor = this.editor,
+        type = editor.state.source.type,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
+    if ('CSS' === type) {
+        // TODO
+        // if () {} else {
+        //     offEventDefault(e);
+        // }
+        // return;
+    }
+    if ('HTML' === type) {
+        if (
+            canKeyDownSourceHTML(key, keys, editor) &&
+            canKeyDownSourceXML(key, keys, editor) &&
+            canKeyDownSource(key, keys, editor) &&
+            canKeyDownDentSource(key, keys, editor) &&
+            canKeyDownEnterSource(key, keys, editor) &&
+            canKeyDownHistorySource(key, keys, editor) &&
+            canKeyDownMoveSource(key, keys, editor)
+        ) {} else {
+            offEventDefault(e);
+        }
+        return;
+    }
+    if ('JavaScript' === type) {
+        // TODO
+        // if () {} else {
+        //     offEventDefault(e);
+        // }
+        // return;
+    }
+    if ('PHP' === type) {
+        // TODO
+        // if () {} else {
+        //     offEventDefault(e);
+        // }
+        // return;
+    }
+    if ('XML' === type) {
+        if (
+            canKeyDownSourceXML(key, keys, editor) &&
+            canKeyDownSource(key, keys, editor) &&
+            canKeyDownDentSource(key, keys, editor) &&
+            canKeyDownEnterSource(key, keys, editor) &&
+            canKeyDownHistorySource(key, keys, editor) &&
+            canKeyDownMoveSource(key, keys, editor)
+        ) {} else {
+            offEventDefault(e);
+        }
+        return;
+    }
+    // Default
     if (
-        canKeyDownSourceHTML(key, keys, editor) &&
-        canKeyDownSourceXML(key, keys, editor) &&
         canKeyDownSource(key, keys, editor) &&
         canKeyDownDentSource(key, keys, editor) &&
         canKeyDownEnterSource(key, keys, editor) &&
@@ -199,31 +246,12 @@ function _onKeyDownSource(e) {
     }
 }
 
-// TODO: Editor type
-function _onKeyDownSourceCSS(e) {}
-function _onKeyDownSourceHTML(e) {}
-function _onKeyDownSourceJavaScript(e) {}
-function _onKeyDownSourceMarkdown(e) {}
-function _onKeyDownSourcePHP(e) {}
-
 function _onMouseDownSource(e) {
     let editor = this.editor,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
-    if (
-        canMouseDownSourceHTML(key, keys, editor) &&
-        canMouseDownSourceXML(key, keys, editor)
-    ) {} else {
-        offEventDefault(e);
-    }
+    canMouseDownSourceXML(key, keys, editor) || offEventDefault(e);
 }
-
-// TODO: Editor type
-function _onMouseDownSourceCSS(e) {}
-function _onMouseDownSourceHTML(e) {}
-function _onMouseDownSourceJavaScript(e) {}
-function _onMouseDownSourceMarkdown(e) {}
-function _onMouseDownSourcePHP(e) {}
 
 function _onKeyUpSource(e) {
     let editor = this.editor,
@@ -232,42 +260,36 @@ function _onKeyUpSource(e) {
     canKeyUpSource(key, keys, editor) || offEventDefault(e);
 }
 
-// TODO: Editor type
-function _onKeyUpSourceCSS(e) {}
-function _onKeyUpSourceHTML(e) {}
-function _onKeyUpSourceJavaScript(e) {}
-function _onKeyUpSourceMarkdown(e) {}
-function _onKeyUpSourcePHP(e) {}
-
 function _letEditorSource(self) {
-    delete self.editor;
     offEvent('keydown', self, _onKeyDownSource);
     offEvent('keyup', self, _onKeyUpSource);
     offEvent('mousedown', self, _onMouseDownSource);
     offEvent('touchstart', self, _onMouseDownSource);
 }
 
-function _setEditorSource(self, editor) {
-    self.editor = editor;
+function _setEditorSource(self) {
     onEvent('keydown', self, _onKeyDownSource);
     onEvent('keyup', self, _onKeyUpSource);
     onEvent('mousedown', self, _onMouseDownSource);
     onEvent('touchstart', self, _onMouseDownSource);
+    self.editor.record();
 }
 
 function onChange_Source() {
     // Destroy!
-    let value;
+    let editor;
     for (let key in TE.instances) {
-        value = TE.instances[key];
-        value.pop();
-        _letEditorSource(value.self);
+        editor = TE.instances[key];
+        editor.loss().pop();
+        delete editor.self.editor;
         delete TE.instances[key];
+        _letEditorSource(editor.self);
     }
     let sources = getElements('.lot\\:field.type\\:source .textarea');
     sources && toCount(sources) && sources.forEach(source => {
-        let editor = new TE(source, getDatum(source, 'state') ?? {});
-        _setEditorSource(editor.self, editor);
+        let editor = new TE(source, getDatum(source, 'state') || {});
+        editor.self.editor = editor;
+        _setEditorSource(editor.self);
     });
 }
 

@@ -3484,7 +3484,7 @@
         return true;
     }
 
-    function canMouseDown$1(key, _ref2, that) {
+    function canMouseDown(key, _ref2, that) {
         _ref2.a;
         var c = _ref2.c;
         _ref2.s;
@@ -3736,18 +3736,6 @@
         return x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     }
 
-    function updateType(that) {
-        var _that$$ = that.$(),
-            before = _that$$.before,
-            type = 'HTML';
-        if (toPattern(tagStart('script'), "").test(before) && !toPattern(tagEnd('script'), "").test(before)) {
-            type = 'JS';
-        } else if (toPattern(tagStart('style'), "").test(before) && !toPattern(tagEnd('style'), "").test(before)) {
-            type = 'CSS';
-        }
-        that.state.source.type = type;
-    }
-
     function canKeyDown(key, _ref, that) {
         var a = _ref.a,
             c = _ref.c,
@@ -3756,14 +3744,13 @@
             charIndent = state.sourceHTML.tab || state.source.tab || state.tab || '\t',
             elements = state.sourceHTML.elements || {},
             prompt = state.source.prompt;
-        updateType(that);
         if (c) {
-            var _that$$2 = that.$(),
-                after = _that$$2.after,
-                before = _that$$2.before,
-                end = _that$$2.end,
-                start = _that$$2.start,
-                value = _that$$2.value,
+            var _that$$ = that.$(),
+                after = _that$$.after,
+                before = _that$$.before,
+                end = _that$$.end,
+                start = _that$$.start,
+                value = _that$$.value,
                 lineAfter = after.split('\n').shift(),
                 lineBefore = before.split('\n').pop(),
                 lineMatch = lineBefore.match(/^(\s+)/),
@@ -3831,7 +3818,12 @@
                             extras.rel = 'nofollow';
                             extras.target = '_blank';
                         }
-                        toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), element[3]]);
+                        var tidy = toTidy(element[3] || false);
+                        if (false === tidy && !value) {
+                            // Tidy link with a space if there is no selection
+                            tidy = [' ', ' '];
+                        }
+                        toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), tidy]);
                     });
                 }
                 return that.record(), false;
@@ -3855,10 +3847,10 @@
             return true;
         }
         if ('>' === key) {
-            var _that$$3 = that.$(),
-                _after = _that$$3.after,
-                _before = _that$$3.before,
-                _end = _that$$3.end,
+            var _that$$2 = that.$(),
+                _after = _that$$2.after,
+                _before = _that$$2.before,
+                _end = _that$$2.end,
                 _lineBefore = _before.split('\n').pop(),
                 _m2 = (_lineBefore + '>').match(toPattern(tagStart(tagName) + '$', "")),
                 _n,
@@ -3892,10 +3884,10 @@
             return that.record(), false;
         }
         if ('Enter' === key) {
-            var _that$$4 = that.$(),
-                _after2 = _that$$4.after,
-                _before2 = _that$$4.before,
-                _value = _that$$4.value,
+            var _that$$3 = that.$(),
+                _after2 = _that$$3.after,
+                _before2 = _that$$3.before,
+                _value = _that$$3.value,
                 _lineAfter = _after2.split('\n').shift(),
                 _lineBefore2 = _before2.split('\n').pop(),
                 _lineMatch = _lineBefore2.match(/^(\s+)/),
@@ -3944,16 +3936,6 @@
                 }
             }
         }
-        return true;
-    }
-
-    function canMouseDown(key, _ref2, that) {
-        _ref2.a;
-        _ref2.c;
-        _ref2.s;
-        W.setTimeout(function() {
-            return updateType(that);
-        }, 1);
         return true;
     }
     var state = defaults;
@@ -4017,10 +3999,10 @@
     /* Option(s) */
     function onChange_Option() {
         // Destroy!
-        let value;
+        let picker;
         for (let key in OP.instances) {
-            value = OP.instances[key];
-            value.pop();
+            picker = OP.instances[key];
+            picker.pop();
             delete OP.instances[key];
         }
         let sources = getElements('.lot\\:field.type\\:option .select');
@@ -4033,10 +4015,10 @@
     /* Query(s) */
     function onChange_Query() {
         // Destroy!
-        let value;
+        let picker;
         for (let key in TP.instances) {
-            value = TP.instances[key];
-            value.pop();
+            picker = TP.instances[key];
+            picker.pop();
             delete TP.instances[key];
         }
         let sources = getElements('.lot\\:field.type\\:query .input');
@@ -4048,18 +4030,33 @@
     }
     /* Source(s) */
     Object.assign(TE.prototype, that$2, that$1);
-    TE.state = fromStates({}, TE.state, state$2, state$1, state); // Set default editor type to `null`
-    TE.state.source.type = null;
+    TE.state = fromStates({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
+    delete TE.state.source.type;
 
     function _onKeyDownSource(e) {
         let editor = this.editor,
+            type = editor.state.source.type,
             key = e.key,
             keys = {
                 a: e.altKey,
                 c: e.ctrlKey,
                 s: e.shiftKey
             };
-        if (canKeyDown(key, keys, editor) && canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
+        if ('HTML' === type) {
+            if (canKeyDown(key, keys, editor) && canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
+            else {
+                offEventDefault(e);
+            }
+            return;
+        }
+        if ('XML' === type) {
+            if (canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
+            else {
+                offEventDefault(e);
+            }
+            return;
+        } // Default
+        if (canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
         else {
             offEventDefault(e);
         }
@@ -4073,7 +4070,7 @@
                 c: e.ctrlKey,
                 s: e.shiftKey
             };
-        if (canMouseDown(key, keys, editor) && canMouseDown$1(key, keys, editor));
+        canMouseDown(key, keys, editor);
     }
 
     function _onKeyUpSource(e) {
@@ -4088,34 +4085,35 @@
     }
 
     function _letEditorSource(self) {
-        delete self.editor;
         offEvent('keydown', self, _onKeyDownSource);
         offEvent('keyup', self, _onKeyUpSource);
         offEvent('mousedown', self, _onMouseDownSource);
         offEvent('touchstart', self, _onMouseDownSource);
     }
 
-    function _setEditorSource(self, editor) {
-        self.editor = editor;
+    function _setEditorSource(self) {
         onEvent('keydown', self, _onKeyDownSource);
         onEvent('keyup', self, _onKeyUpSource);
         onEvent('mousedown', self, _onMouseDownSource);
         onEvent('touchstart', self, _onMouseDownSource);
+        self.editor.record();
     }
 
     function onChange_Source() {
         // Destroy!
-        let value;
+        let editor;
         for (let key in TE.instances) {
-            value = TE.instances[key];
-            value.pop();
-            _letEditorSource(value.self);
+            editor = TE.instances[key];
+            editor.loss().pop();
+            delete editor.self.editor;
             delete TE.instances[key];
+            _letEditorSource(editor.self);
         }
         let sources = getElements('.lot\\:field.type\\:source .textarea');
         sources && toCount(sources) && sources.forEach(source => {
-            let editor = new TE(source, getDatum(source, 'state') ?? {});
-            _setEditorSource(editor.self, editor);
+            let editor = new TE(source, getDatum(source, 'state') || {});
+            editor.self.editor = editor;
+            _setEditorSource(editor.self);
         });
     }
     /* Tab(s) */
