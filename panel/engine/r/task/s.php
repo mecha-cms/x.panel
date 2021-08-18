@@ -2,13 +2,14 @@
 
 function blob($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
+    $e = $url->query('&', \array_replace([
+        'parent' => false,
         'q' => false,
-        'tab'=> false,
+        'tab' => false,
         'token' => false,
         'trash' => false,
         'type' => false
-    ]) . $url->hash;
+    ], $_['form']['lot']['query'] ?? [])) . ($_['form']['lot']['hash'] ?? $url->hash);
     if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -95,13 +96,14 @@ function blob($_) {
 
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
+    $e = $url->query('&', \array_replace([
+        'parent' => false,
         'q' => false,
         'tab' => ['data'],
         'token' => false,
         'trash' => false,
         'type' => false
-    ]) . $url->hash;
+    ], $_['form']['lot']['query'] ?? [])) . ($_['form']['lot']['hash'] ?? $url->hash);
     if ('post' === $_['form']['type']) {
         $name = \basename(\To::file(\lcfirst($_['form']['lot']['data']['name'] ?? "")));
         $_['form']['lot']['file']['name'] = "" !== $name ? $name . '.data' : "";
@@ -115,12 +117,14 @@ function data($_) {
 
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
+    $e = $url->query('&', \array_replace([
+        'parent' => false,
         'q' => false,
+        'tab' => false,
         'token' => false,
         'trash' => false,
         'type' => false
-    ]) . $url->hash;
+    ], $_['form']['lot']['query'] ?? [])) . ($_['form']['lot']['hash'] ?? $url->hash);
     if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -172,12 +176,14 @@ function file($_) {
 
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
+    $e = $url->query('&', \array_replace([
+        'parent' => false,
         'q' => false,
+        'tab' => false,
         'token' => false,
         'trash' => false,
         'type' => false
-    ]) . $url->hash;
+    ], $_['form']['lot']['query'] ?? [])) . ($_['form']['lot']['hash'] ?? $url->hash);
     if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -220,12 +226,14 @@ function folder($_) {
 
 function page($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
+    $e = $url->query('&', \array_replace([
+        'parent' => false,
         'q' => false,
+        'tab' => false,
         'token' => false,
         'trash' => false,
         'type' => false
-    ]) . $url->hash;
+    ], $_['form']['lot']['query'] ?? [])) . ($_['form']['lot']['hash'] ?? $url->hash);
     if ('post' === $_['form']['type']) {
         // Abort by previous hook’s return value if any
         if (isset($_['kick']) || !empty($_['alert']['error'])) {

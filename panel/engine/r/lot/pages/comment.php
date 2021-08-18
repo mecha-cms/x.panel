@@ -91,6 +91,16 @@ Hook::set('_', function($_) {
                     $avatar = $p->avatar(72) ?? null;
                     $type = $p->type ?? null;
                     $x = $p->x ?? null;
+                    $parent_count = 0;
+                    $parent_max = $state->x->comment->page->deep ?? 0;
+                    $pp = new Comment($p->path);
+                    while ($parent = $pp['parent']) {
+                        ++$parent_count;
+                        if (!is_file($ff = dirname($pp->path) . DS . $parent . '.page')) {
+                            break;
+                        }
+                        $pp = new Comment($ff);
+                    }
                     $comments[$k] = [
                         'path' => $k,
                         'current' => !empty($_SESSION['_']['file'][$k]) || $info[0] > 0,
@@ -105,6 +115,18 @@ Hook::set('_', function($_) {
                             'x:' . $x => true
                         ],
                         'tasks' => [
+                            'reply' => [
+                                'active' => $can_reply = $parent_count < $parent_max,
+                                'title' => 'Reply',
+                                'description' => $can_reply ? ['Reply to %s', $title] : null,
+                                'icon' => 'M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z',
+                                'url' => $can_reply ? $before . 's' . dirname($after) . $url->query('&', [
+                                    'parent' => $p->name,
+                                    'tab' => false,
+                                    'type' => 'page/comment'
+                                ]) . $url->hash : null,
+                                'stack' => 9.9
+                            ],
                             'g' => [
                                 'title' => 'Edit',
                                 'description' => 'Edit',
@@ -127,6 +149,10 @@ Hook::set('_', function($_) {
                             ]
                         ]
                     ];
+                    unset($ff, $p, $pp);
+                    if (isset($_SESSION['_']['file'][$k])) {
+                        unset($_SESSION['_']['file'][$k]);
+                    }
                     --$info[0];
                 }
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $comments;

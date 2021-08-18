@@ -17,6 +17,7 @@ function blob($_) {
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'parent' => false,
         'q' => false,
         'tab' => ['data'],
         'token' => false,
@@ -33,6 +34,7 @@ function data($_) {
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'parent' => false,
         'q' => false,
         'tab'=> false,
         'token' => false,
@@ -64,6 +66,7 @@ function file($_) {
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
     $e = $url->query('&', [
+        'parent' => false,
         'q' => false,
         'tab'=> false,
         'token' => false,
