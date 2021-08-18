@@ -4048,28 +4048,18 @@
     }
     /* Source(s) */
     Object.assign(TE.prototype, that$2, that$1);
-    TE.prototype.insertXML = that.insert;
-    TE.prototype.toggleXML = that.toggle;
-    TE.prototype.wrapXML = that.wrap;
-    TE.state = fromStates({}, TE.state, state$2, state$1, state);
+    TE.state = fromStates({}, TE.state, state$2, state$1, state); // Set default editor type to `null`
+    TE.state.source.type = null;
 
     function _onKeyDownSource(e) {
         let editor = this.editor,
-            type = editor.state.source.type,
             key = e.key,
             keys = {
                 a: e.altKey,
                 c: e.ctrlKey,
                 s: e.shiftKey
             };
-        if ('HTML' === type || 'text/html' === type) {
-            if (canKeyDown(key, keys, editor) && canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
-            else {
-                offEventDefault(e);
-                return;
-            }
-        }
-        if (canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
+        if (canKeyDown(key, keys, editor) && canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
         else {
             offEventDefault(e);
         }

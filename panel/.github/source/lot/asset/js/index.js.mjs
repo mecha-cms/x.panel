@@ -177,44 +177,18 @@ function onChange_Query() {
 
 Object.assign(TE.prototype, thatHistory, thatSource);
 
-TE.prototype.insertXML = thatSourceXML.insert;
-TE.prototype.toggleXML = thatSourceXML.toggle;
-TE.prototype.wrapXML = thatSourceXML.wrap;
-
 TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
+
+// Set default editor type to `null`
+TE.state.source.type = null;
 
 function _onKeyDownSource(e) {
     let editor = this.editor,
-        type = editor.state.source.type,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
-    if ('CSS' === type || 'text/css' === type) {
-        // TODO
-    }
-    if ('HTML' === type || 'text/html' === type) {
-        if (
-            canKeyDownSourceHTML(key, keys, editor) &&
-            canKeyDownSourceXML(key, keys, editor) &&
-            canKeyDownSource(key, keys, editor) &&
-            canKeyDownDentSource(key, keys, editor) &&
-            canKeyDownEnterSource(key, keys, editor) &&
-            canKeyDownHistorySource(key, keys, editor) &&
-            canKeyDownMoveSource(key, keys, editor)
-        ) {} else {
-            offEventDefault(e);
-            return;
-        }
-    }
-    if ('JavaScript' === type || 'application/javascript' === type) {
-        // TODO
-    }
-    if ('Markdown' === type || 'text/markdown' === type) {
-        // TODO
-    }
-    if ('PHP' === type || 'application/x-httpd-php' === type) {
-        // TODO
-    }
     if (
+        canKeyDownSourceHTML(key, keys, editor) &&
+        canKeyDownSourceXML(key, keys, editor) &&
         canKeyDownSource(key, keys, editor) &&
         canKeyDownDentSource(key, keys, editor) &&
         canKeyDownEnterSource(key, keys, editor) &&
@@ -224,6 +198,13 @@ function _onKeyDownSource(e) {
         offEventDefault(e);
     }
 }
+
+// TODO: Editor type
+function _onKeyDownSourceCSS(e) {}
+function _onKeyDownSourceHTML(e) {}
+function _onKeyDownSourceJavaScript(e) {}
+function _onKeyDownSourceMarkdown(e) {}
+function _onKeyDownSourcePHP(e) {}
 
 function _onMouseDownSource(e) {
     let editor = this.editor,
@@ -237,12 +218,26 @@ function _onMouseDownSource(e) {
     }
 }
 
+// TODO: Editor type
+function _onMouseDownSourceCSS(e) {}
+function _onMouseDownSourceHTML(e) {}
+function _onMouseDownSourceJavaScript(e) {}
+function _onMouseDownSourceMarkdown(e) {}
+function _onMouseDownSourcePHP(e) {}
+
 function _onKeyUpSource(e) {
     let editor = this.editor,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
     canKeyUpSource(key, keys, editor) || offEventDefault(e);
 }
+
+// TODO: Editor type
+function _onKeyUpSourceCSS(e) {}
+function _onKeyUpSourceHTML(e) {}
+function _onKeyUpSourceJavaScript(e) {}
+function _onKeyUpSourceMarkdown(e) {}
+function _onKeyUpSourcePHP(e) {}
 
 function _letEditorSource(self) {
     delete self.editor;

@@ -29,10 +29,17 @@ Hook::set('_', function($_) {
         $page = $file ? new Page($file) : new Page;
         $is_root = false === strpos($_['path'], '/');
         if (!$is_root && $file) {
-            $_['lot']['desk']['lot']['form']['lot'][1]['title'] = i('Page') . ': <a href="' . $_['/'] . '/::g::/' . strtr($file, [
+            $_['lot']['desk']['lot']['form']['lot'][0]['title'] = i('Comment to %s', ['<a href="' . $_['/'] . '/::g::/' . strtr($file, [
                 LOT . DS => "",
                 DS => '/'
-            ]) . '">' . $page->title . '</a>';
+            ]) . '">' . $page->title . '</a>']);
+            $_['lot']['desk']['lot']['form']['lot'][0]['description'] = $page->time->{r('-', '_', $state->language)};
+            if (!$excerpt = $page->excerpt) {
+                if ($excerpt = $page->description) {
+                    $excerpt = '<p>' . $excerpt . '</p>';
+                }
+            }
+            $_['lot']['desk']['lot']['form']['lot'][0]['content'] = $excerpt;
         }
         $files = $comments = [];
         $count = 0;

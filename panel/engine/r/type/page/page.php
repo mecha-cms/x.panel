@@ -34,7 +34,7 @@ if (null !== State::get('x.art')) {
                         'height' => true,
                         'state' => [
                             'source' => [
-                                'type' => 'JS'
+                                'type' => 'JavaScript'
                             ]
                         ],
                         'stack' => 20

@@ -146,7 +146,7 @@ $desk = [
                                                     'height' => true,
                                                     'state' => [
                                                         'source' => [
-                                                            'type' => $page['type']
+                                                            'type' => $page->type
                                                         ]
                                                     ],
                                                     'stack' => 30
@@ -171,7 +171,7 @@ $desk = [
                                                     'value' => 'text/html' === $page->type ? 'HTML' : $page->type,
                                                     'lot' => [
                                                         'HTML' => 'HTML',
-                                                        'Markdown' => null !== State::get('x.markdown') ? 'Markdown' : null
+                                                        'Markdown' => isset($state->x->markdown) ? 'Markdown' : null
                                                     ],
                                                     'stack' => 60
                                                 ]
