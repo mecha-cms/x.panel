@@ -59,7 +59,9 @@ import {
 import {
     canKeyDown as canKeyDownSource,
     canKeyDownDent as canKeyDownDentSource,
+    canKeyDownEnter as canKeyDownEnterSource,
     canKeyDownHistory as canKeyDownHistorySource,
+    canKeyDownMove as canKeyDownMoveSource,
     canKeyUp as canKeyUpSource,
     state as stateSource,
     that as thatSource
@@ -186,34 +188,38 @@ function _onKeyDownSource(e) {
         type = editor.state.source.type,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
-    if ('CSS' === editor.state.source.type) {
+    if ('CSS' === type || 'text/css' === type) {
         // TODO
     }
-    if ('HTML' === type) {
+    if ('HTML' === type || 'text/html' === type) {
         if (
             canKeyDownSourceHTML(key, keys, editor) &&
             canKeyDownSourceXML(key, keys, editor) &&
             canKeyDownSource(key, keys, editor) &&
             canKeyDownDentSource(key, keys, editor) &&
-            canKeyDownHistorySource(key, keys, editor)
+            canKeyDownEnterSource(key, keys, editor) &&
+            canKeyDownHistorySource(key, keys, editor) &&
+            canKeyDownMoveSource(key, keys, editor)
         ) {} else {
             offEventDefault(e);
             return;
         }
     }
-    if ('JS' === type) {
+    if ('JavaScript' === type || 'application/javascript' === type) {
         // TODO
     }
-    if ('MD' === type) {
+    if ('Markdown' === type || 'text/markdown' === type) {
         // TODO
     }
-    if ('PHP' === type) {
+    if ('PHP' === type || 'application/x-httpd-php' === type) {
         // TODO
     }
     if (
         canKeyDownSource(key, keys, editor) &&
         canKeyDownDentSource(key, keys, editor) &&
-        canKeyDownHistorySource(key, keys, editor)
+        canKeyDownEnterSource(key, keys, editor) &&
+        canKeyDownHistorySource(key, keys, editor) &&
+        canKeyDownMoveSource(key, keys, editor)
     ) {} else {
         offEventDefault(e);
     }

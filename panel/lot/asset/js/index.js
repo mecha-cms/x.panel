@@ -2816,21 +2816,27 @@
         "'": "'",
         '<': '>'
     };
+
+    function promisy(type, lot) {
+        return new Promise(function(resolve, reject) {
+            var r = W[type].apply(W, lot);
+            return r ? resolve(r) : reject(r);
+        });
+    }
     var defaults$2 = {
         source: {
-            alert: function alert(key) {
-                return W.alert(key);
-            },
-            confirm: function confirm(key) {
-                return W.confirm(key);
-            },
             pairs: pairs,
-            prompt: function prompt(key, value) {
-                return W.prompt(key, value);
-            },
             type: null
         }
     };
+    ['alert', 'confirm', 'prompt'].forEach(function(type) {
+        defaults$2.source[type] = function() {
+            for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+                lot[_key] = arguments[_key];
+            }
+            return promisy(type, lot);
+        };
+    });
     var that$1 = {};
     that$1.toggle = function(open, close, wrap, tidy) {
         if (tidy === void 0) {
@@ -3003,6 +3009,32 @@
         return true;
     }
 
+    function canKeyDownEnter(key, _ref3, that) {
+        _ref3.a;
+        var c = _ref3.c,
+            s = _ref3.s;
+        if (c && 'Enter' === key) {
+            var _that$$5 = that.$(),
+                after = _that$$5.after,
+                before = _that$$5.before,
+                end = _that$$5.end,
+                start = _that$$5.start,
+                value = _that$$5.value,
+                lineAfter = after.split('\n').shift(),
+                lineBefore = before.split('\n').pop(),
+                lineMatch = lineBefore.match(/^(\s+)/),
+                lineMatchIndent = lineMatch && lineMatch[1] || "";
+            if (before || after) {
+                if (s) {
+                    // Insert line over with `⌘+⇧+↵`
+                    return that.select(start - toCount(lineBefore)).wrap(lineMatchIndent, '\n').insert(value).record(), false;
+                } // Insert line below with `⌘+↵`
+                return that.select(end + toCount(lineAfter)).wrap('\n' + lineMatchIndent, "").insert(value).record(), false;
+            }
+        }
+        return true;
+    }
+
     function canKeyDownHistory(key, _ref4, that) {
         var a = _ref4.a,
             c = _ref4.c;
@@ -3016,6 +3048,91 @@
             if ('z' === key) {
                 that.undo();
                 return false;
+            }
+        }
+        return true;
+    }
+
+    function canKeyDownMove(key, _ref5, that) {
+        var a = _ref5.a,
+            c = _ref5.c;
+        _ref5.s;
+        if (c) {
+            var _that$$6 = that.$(),
+                after = _that$$6.after,
+                before = _that$$6.before,
+                end = _that$$6.end,
+                start = _that$$6.start,
+                value = _that$$6.value,
+                charPair,
+                charPairValue,
+                charPairs = that.state.source.pairs || {},
+                boundaries = [],
+                m;
+            if (value) {
+                if (!a) {
+                    for (charPair in charPairs) {
+                        if (!(charPairValue = charPairs[charPair])) {
+                            continue;
+                        }
+                        boundaries.push('(?:\\' + charPair + '(?:\\\\.|[^\\' + charPair + (charPairValue !== charPair ? '\\' + charPairValue : "") + '])*\\' + charPairValue + ')');
+                    }
+                    boundaries.push('\\w+'); // Word(s)
+                    boundaries.push('\\s+'); // White-space(s)
+                }
+                boundaries.push('[\\s\\S]'); // Last try!
+                if ('ArrowLeft' === key) {
+                    if (m = before.match(toPattern('(' + boundaries.join('|') + ')$', ""))) {
+                        that.insert("").select(start - toCount(m[0])).insert(value);
+                        return that.record(), false;
+                    }
+                    return that.select(), false;
+                }
+                if ('ArrowRight' === key) {
+                    if (m = after.match(toPattern('^(' + boundaries.join('|') + ')', ""))) {
+                        that.insert("").select(end + toCount(m[0]) - toCount(value)).insert(value);
+                        return that.record(), false;
+                    }
+                    return that.select(), false;
+                }
+            }
+            var lineAfter = after.split('\n').shift(),
+                lineBefore = before.split('\n').pop(),
+                lineMatch = lineBefore.match(/^(\s+)/);
+            lineMatch && lineMatch[1] || ""; // Force to select the current line if there is no selection
+            end += toCount(lineAfter);
+            start -= toCount(lineBefore);
+            value = lineBefore + value + lineAfter;
+            if ('ArrowUp' === key) {
+                if (!hasValue('\n', before)) {
+                    return that.select(), false;
+                }
+                that.insert("");
+                that.replace(/^([^\n]*?)(\n|$)/, '$2', 1);
+                that.replace(/(^|\n)([^\n]*?)$/, "", -1);
+                var $ = that.$();
+                before = $.before;
+                start = $.start;
+                lineBefore = before.split('\n').pop();
+                that.select(start = start - toCount(lineBefore)).wrap(value, '\n');
+                that.select(start, start + toCount(value));
+                return that.record(), false;
+            }
+            if ('ArrowDown' === key) {
+                if (!hasValue('\n', after)) {
+                    return that.select(), false;
+                }
+                that.insert("");
+                that.replace(/^([^\n]*?)(\n|$)/, "", 1);
+                that.replace(/(^|\n)([^\n]*?)$/, '$1', -1);
+                var _$ = that.$();
+                after = _$.after;
+                end = _$.end;
+                lineAfter = after.split('\n').shift();
+                that.select(end = end + toCount(lineAfter)).wrap('\n', value);
+                end += 1;
+                that.select(end, end + toCount(value));
+                return that.record(), false;
             }
         }
         return true;
@@ -3053,14 +3170,25 @@
     };
     var that = {};
 
-    function toAttributes$1(attributes) {
+    function toAttributes(attributes) {
         if (!attributes) {
             return "";
-        }
+        } // Sort object by key(s)
+        attributes = toObjectKeys(attributes).sort().reduce(function(r, k) {
+            return r[k] = attributes[k], r;
+        }, {});
         var attribute,
+            v,
             out = "";
         for (attribute in attributes) {
-            out += ' ' + attribute + '="' + fromHTML(fromValue(attributes[attribute])) + '"';
+            v = attributes[attribute];
+            if (false === v || null === v) {
+                continue;
+            }
+            out += ' ' + attribute;
+            if (true !== v) {
+                out += '="' + fromHTML(fromValue(v)) + '"';
+            }
         }
         return out;
     }
@@ -3092,7 +3220,7 @@
         if (false !== (tidy = toTidy$1(tidy))) {
             t.trim(tidy[0], "");
         }
-        return t.insert('<' + name + toAttributes$1(attributes) + (false !== content ? '>' + content + '</' + name + '>' : ' />') + (false !== tidy ? tidy[1] : ""), -1, true);
+        return t.insert('<' + name + toAttributes(attributes) + (false !== content ? '>' + content + '</' + name + '>' : ' />') + (false !== tidy ? tidy[1] : ""), -1, true);
     };
     that.toggle = function(name, content, attributes, tidy) {
         if (content === void 0) {
@@ -3131,7 +3259,7 @@
         if (false !== (tidy = toTidy$1(tidy))) {
             t.trim(tidy[0], tidy[1]);
         }
-        return t.wrap('<' + name + toAttributes$1(attributes) + '>', '</' + name + '>');
+        return t.wrap('<' + name + toAttributes(attributes) + '>', '</' + name + '>');
     };
     that.wrap = function(name, content, attributes, tidy) {
         if (content === void 0) {
@@ -3154,7 +3282,7 @@
         if (false !== (tidy = toTidy$1(tidy))) {
             t.trim(tidy[0], tidy[1]);
         }
-        return t.wrap('<' + name + toAttributes$1(attributes) + '>', '</' + name + '>');
+        return t.wrap('<' + name + toAttributes(attributes) + '>', '</' + name + '>');
     };
 
     function canKeyDown$1(key, _ref, that) {
@@ -3385,6 +3513,7 @@
         return true;
     }
     var state$1 = defaults$1;
+    var protocol = theLocation.protocol;
     var defaults = {
         source: {
             type: 'HTML'
@@ -3474,18 +3603,6 @@
             return '</(' + name + ')>';
         };
 
-    function toAttributes(attributes) {
-        if (!attributes) {
-            return "";
-        }
-        var attribute,
-            out = "";
-        for (attribute in attributes) {
-            out += ' ' + attribute + '="' + fromHTML(fromValue(attributes[attribute])) + '"';
-        }
-        return out;
-    }
-
     function toTidy(tidy) {
         if (false !== tidy) {
             if (isString(tidy)) {
@@ -3508,15 +3625,13 @@
                 h = +(before[1] || 0),
                 attr = before[2] || "",
                 elements = that.state.sourceHTML.elements || {},
-                element = before[0] ? elements[before[0].slice(1, -1).split(/\s/)[0]] : ["", "", {},
-                    ["", ""]
-                ];
+                element = before[0] ? elements[before[0].slice(1, -1).split(/\s/)[0]] : ["", "", {}];
             if (!attr && element[2]) {
                 attr = toAttributes(element[2]);
             } // ``
             t.replace(patternBefore, "", -1);
             t.replace(patternAfter, "", 1);
-            var tidy = element[3];
+            var tidy = element[3] || elements.h1[3];
             if (false !== (tidy = toTidy(tidy))) {
                 t.trim(tidy[0], tidy[1]);
             }
@@ -3658,9 +3773,12 @@
             }
             if ('g' === key) {
                 if (isFunction(prompt)) {
-                    var src = prompt('URL:', value && /^https?:\/\/\S+$/.test(value) ? value : 'http://'),
-                        element = elements.img;
-                    if (src) {
+                    prompt('URL:', value && /^https?:\/\/\S+$/.test(value) ? value : protocol + '//').then(function(src) {
+                        if (!src) {
+                            that.focus();
+                            return;
+                        }
+                        var element = elements.img;
                         if (value) {
                             element[2].alt = value;
                             that.record(); // Record selection
@@ -3682,7 +3800,7 @@
                         } else {
                             that.insert('<' + element[0] + toAttributes(element[2]) + '>' + (false !== tidy ? tidy[1] : ""), -1, true);
                         }
-                    }
+                    });
                 }
                 return that.record(), false;
             }
@@ -3697,21 +3815,24 @@
             }
             if ('l' === key) {
                 if (isFunction(prompt)) {
-                    var href = prompt('URL:', value && /^https?:\/\/\S+$/.test(value) ? value : 'http://'),
-                        _element = elements.a;
-                    if (value) {
-                        that.record(); // Record selection
-                    }
-                    if (href) {
-                        _element[2].href = href;
-                        var local = /[.\/?&#]/.test(href[0]) || /^(data|javascript|mailto):/.test(href) || -1 === href.indexOf('://'),
-                            attr = {};
-                        if (!local) {
-                            attr.rel = 'nofollow';
-                            attr.target = '_blank';
+                    prompt('URL:', value && /^https?:\/\/\S+$/.test(value) ? value : protocol + '//').then(function(href) {
+                        if (!href) {
+                            that.focus();
+                            return;
                         }
-                        toggle.apply(that, [_element[0], _element[1], fromStates(attr, _element[2]), _element[3]]);
-                    }
+                        var element = elements.a;
+                        if (value) {
+                            that.record(); // Record selection
+                        }
+                        element[2].href = href;
+                        var local = /[.\/?&#]/.test(href[0]) || /^(data|javascript|mailto):/.test(href) || -1 === href.indexOf('://'),
+                            extras = {};
+                        if (!local) {
+                            extras.rel = 'nofollow';
+                            extras.target = '_blank';
+                        }
+                        toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), element[3]]);
+                    });
                 }
                 return that.record(), false;
             }
@@ -3723,10 +3844,10 @@
             }
             if ('Enter' === key) {
                 var _m = lineAfter.match(toPattern(tagEnd(tagName) + '\\s*$', "")),
-                    _element2 = elements[_m && _m[1] || 'p'] || elements.p;
-                _element2[3] = ['\n' + lineMatchIndent, '\n' + lineMatchIndent];
+                    element = elements[_m && _m[1] || 'p'] || elements.p;
+                element[3] = ['\n' + lineMatchIndent, '\n' + lineMatchIndent];
                 that.select(s ? start - toCount(lineBefore) : end + toCount(lineAfter));
-                toggle.apply(that, _element2);
+                toggle.apply(that, element);
                 return that.record(), false;
             }
         } // Do nothing
@@ -3741,18 +3862,18 @@
                 _lineBefore = _before.split('\n').pop(),
                 _m2 = (_lineBefore + '>').match(toPattern(tagStart(tagName) + '$', "")),
                 _n,
-                _element3 = elements[_n = _m2 && _m2[1] || ""];
+                _element = elements[_n = _m2 && _m2[1] || ""];
             if (!_n) {
                 return true;
             }
-            if (_element3) {
-                if (false !== _element3[1]) {
+            if (_element) {
+                if (false !== _element[1]) {
                     if ('>' === _after[0]) {
                         that.select(_end + 1);
                     } else {
                         that.insert('>', -1);
                     }
-                    that.insert('</' + _n + '>', 1).insert(_element3[1]);
+                    that.insert('</' + _n + '>', 1).insert(_element[1]);
                 } else {
                     if ('>' === _after[0]) {
                         that.insert(' /', -1).select(_end + 3);
@@ -3784,8 +3905,8 @@
             var continueOnEnterTags = ['li', 'option', 'p', 'td', 'th'],
                 noIndentOnEnterTags = ['script', 'style'];
             if (_m3 = _lineBefore2.match(toPattern(tagStart(tagName) + '$', ""))) {
-                var _element4 = elements[_m3[1]];
-                if (_element4 && false === _element4[1]) {
+                var _element2 = elements[_m3[1]];
+                if (_element2 && false === _element2[1]) {
                     return that.insert('\n' + _lineMatchIndent, -1).record(), false;
                 }
             }
@@ -3941,15 +4062,14 @@
                 c: e.ctrlKey,
                 s: e.shiftKey
             };
-        if ('CSS' === editor.state.source.type);
-        if ('HTML' === type) {
-            if (canKeyDown(key, keys, editor) && canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownHistory(key, keys, editor));
+        if ('HTML' === type || 'text/html' === type) {
+            if (canKeyDown(key, keys, editor) && canKeyDown$1(key, keys, editor) && canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
             else {
                 offEventDefault(e);
                 return;
             }
         }
-        if (canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownHistory(key, keys, editor));
+        if (canKeyDown$2(key, keys, editor) && canKeyDownDent(key, keys, editor) && canKeyDownEnter(key, keys, editor) && canKeyDownHistory(key, keys, editor) && canKeyDownMove(key, keys, editor));
         else {
             offEventDefault(e);
         }

@@ -10,9 +10,9 @@
     "@taufik-nurrohman/tag-picker": "^3.3.2",
     "@taufik-nurrohman/text-editor": "^3.3.7",
     "@taufik-nurrohman/text-editor.history": "^2.1.9",
-    "@taufik-nurrohman/text-editor.source": "^2.1.18",
-    "@taufik-nurrohman/text-editor.source-h-t-m-l": "^1.0.0",
-    "@taufik-nurrohman/text-editor.source-x-m-l": "^1.1.17",
+    "@taufik-nurrohman/text-editor.source": "^2.1.19",
+    "@taufik-nurrohman/text-editor.source-h-t-m-l": "^1.0.1",
+    "@taufik-nurrohman/text-editor.source-x-m-l": "^1.1.19",
     "@taufik-nurrohman/to": "^0.0.18"
   },
   "devDependencies": {
