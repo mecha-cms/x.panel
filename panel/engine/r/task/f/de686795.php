@@ -11,7 +11,7 @@ if (!$f = $_['f']) {
     return $_;
 }
 
-require __DIR__ . DS . '..' . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
+require LOT . DS . 'x' . DS . 'panel' . DS . 'vendor' . DS . 'autoload.php';
 
 // Extract
 if (is_file($f) && 'zip' === pathinfo($f, PATHINFO_EXTENSION)) {
