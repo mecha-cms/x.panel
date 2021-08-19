@@ -138,17 +138,17 @@ function onChange_Menu() {
 
 function onChange_Option() {
     // Destroy!
-    let picker;
+    let $;
     for (let key in OP.instances) {
-        picker = OP.instances[key];
-        picker.pop();
+        $ = OP.instances[key];
+        $.pop();
         delete OP.instances[key];
     }
     let sources = getElements('.lot\\:field.type\\:option .select');
     sources && toCount(sources) && sources.forEach(source => {
         let c = getClasses(source);
-        let picker = new OP(source, getDatum(source, 'state') ?? {});
-        setClasses(picker.self, c);
+        let $ = new OP(source, getDatum(source, 'state') ?? {});
+        setClasses($.self, c);
     });
 }
 
@@ -157,17 +157,17 @@ function onChange_Option() {
 
 function onChange_Query() {
     // Destroy!
-    let picker;
+    let $;
     for (let key in TP.instances) {
-        picker = TP.instances[key];
-        picker.pop();
+        $ = TP.instances[key];
+        $.pop();
         delete TP.instances[key];
     }
     let sources = getElements('.lot\\:field.type\\:query .input');
     sources && toCount(sources) && sources.forEach(source => {
         let c = getClasses(source);
-        let picker = new TP(source, getDatum(source, 'state') ?? {});
-        setClasses(picker.self, c);
+        let $ = new TP(source, getDatum(source, 'state') ?? {});
+        setClasses($.self, c);
     });
 }
 
@@ -182,8 +182,8 @@ TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML
 delete TE.state.source.type;
 
 function _onKeyDownSource(e) {
-    let editor = this.editor,
-        type = editor.state.source.type,
+    let $ = this.$,
+        type = $.state.source.type,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
     if ('CSS' === type) {
@@ -195,13 +195,13 @@ function _onKeyDownSource(e) {
     }
     if ('HTML' === type) {
         if (
-            canKeyDownSourceHTML(key, keys, editor) &&
-            canKeyDownSourceXML(key, keys, editor) &&
-            canKeyDownSource(key, keys, editor) &&
-            canKeyDownDentSource(key, keys, editor) &&
-            canKeyDownEnterSource(key, keys, editor) &&
-            canKeyDownHistorySource(key, keys, editor) &&
-            canKeyDownMoveSource(key, keys, editor)
+            canKeyDownSourceHTML(key, keys, $) &&
+            canKeyDownSourceXML(key, keys, $) &&
+            canKeyDownSource(key, keys, $) &&
+            canKeyDownDentSource(key, keys, $) &&
+            canKeyDownEnterSource(key, keys, $) &&
+            canKeyDownHistorySource(key, keys, $) &&
+            canKeyDownMoveSource(key, keys, $)
         ) {} else {
             offEventDefault(e);
         }
@@ -223,12 +223,12 @@ function _onKeyDownSource(e) {
     }
     if ('XML' === type) {
         if (
-            canKeyDownSourceXML(key, keys, editor) &&
-            canKeyDownSource(key, keys, editor) &&
-            canKeyDownDentSource(key, keys, editor) &&
-            canKeyDownEnterSource(key, keys, editor) &&
-            canKeyDownHistorySource(key, keys, editor) &&
-            canKeyDownMoveSource(key, keys, editor)
+            canKeyDownSourceXML(key, keys, $) &&
+            canKeyDownSource(key, keys, $) &&
+            canKeyDownDentSource(key, keys, $) &&
+            canKeyDownEnterSource(key, keys, $) &&
+            canKeyDownHistorySource(key, keys, $) &&
+            canKeyDownMoveSource(key, keys, $)
         ) {} else {
             offEventDefault(e);
         }
@@ -236,28 +236,28 @@ function _onKeyDownSource(e) {
     }
     // Default
     if (
-        canKeyDownSource(key, keys, editor) &&
-        canKeyDownDentSource(key, keys, editor) &&
-        canKeyDownEnterSource(key, keys, editor) &&
-        canKeyDownHistorySource(key, keys, editor) &&
-        canKeyDownMoveSource(key, keys, editor)
+        canKeyDownSource(key, keys, $) &&
+        canKeyDownDentSource(key, keys, $) &&
+        canKeyDownEnterSource(key, keys, $) &&
+        canKeyDownHistorySource(key, keys, $) &&
+        canKeyDownMoveSource(key, keys, $)
     ) {} else {
         offEventDefault(e);
     }
 }
 
 function _onMouseDownSource(e) {
-    let editor = this.editor,
+    let $ = this.$,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
-    canMouseDownSourceXML(key, keys, editor) || offEventDefault(e);
+    canMouseDownSourceXML(key, keys, $) || offEventDefault(e);
 }
 
 function _onKeyUpSource(e) {
-    let editor = this.editor,
+    let $ = this.$,
         key = e.key,
         keys = {a: e.altKey, c: e.ctrlKey, s: e.shiftKey};
-    canKeyUpSource(key, keys, editor) || offEventDefault(e);
+    canKeyUpSource(key, keys, $) || offEventDefault(e);
 }
 
 function _letEditorSource(self) {
@@ -272,24 +272,23 @@ function _setEditorSource(self) {
     onEvent('keyup', self, _onKeyUpSource);
     onEvent('mousedown', self, _onMouseDownSource);
     onEvent('touchstart', self, _onMouseDownSource);
-    self.editor.record();
+    self.$.record();
 }
 
 function onChange_Source() {
     // Destroy!
-    let editor;
+    let $;
     for (let key in TE.instances) {
-        editor = TE.instances[key];
-        editor.loss().pop();
-        delete editor.self.editor;
+        $ = TE.instances[key];
+        $.loss().pop();
+        delete $.self.$;
         delete TE.instances[key];
-        _letEditorSource(editor.self);
+        _letEditorSource($.self);
     }
     let sources = getElements('.lot\\:field.type\\:source .textarea');
     sources && toCount(sources) && sources.forEach(source => {
-        let editor = new TE(source, getDatum(source, 'state') || {});
-        editor.self.editor = editor;
-        _setEditorSource(editor.self);
+        source.$ = new TE(source, getDatum(source, 'state') ?? {});
+        _setEditorSource(source);
     });
 }
 
