@@ -10,27 +10,26 @@ Release Notes
 
 ### 2.7.0
 
- - [ ] Added `field/options` type.
- - [x] Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
- - [x] Added _Data_ tab next to the _Pages_ tab for pages layout.
- - [x] Added `$_['id']` property that stores the first `$_['path']` value.
- - [x] Added `$_['skin']` property that stores the skin title and CSS path.
- - [x] Added `data` property to `field/*` type to quickly add hidden fields.
- - [x] Added `data` property to `form/*` type to quickly add hidden fields.
- - [x] Added `field/button` and `field/buttons` type. Currently useless. Would be useful when combined with certain JavaScript actions, such as to open a pop-up window.
- - [x] Added `flex` and `field/flex` type.
- - [x] Added ability to reply comment from the panel interface.
- - [x] Added badge GUI for `link` type via `info` key.
- - [x] Added comment notification badge in the main menu.
- - [x] Added comments counter in the _Comment_ menu.
- - [x] Added files/folders counter in the _Trash_ menu.
- - [x] Fixed bug of tags data that is not stored consistently on edit mode.
- - [x] Improved extension page. It is now possible to filter extensions by searching and/or paginating.
- - [x] Improved performance of files/folders listing by deferring the GUI creation.
- - [x] Renamed `before` and `after` key for field to `value-before` and `value-after`.
- - [x] Renamed `field/combo` type with `field/option`.
- - [x] The `$_['/']` data now will includes the `$url` as prefix.
- - [x] [@mecha-cms/mecha#96](https://github.com/mecha-cms/mecha/issues/96)
+ - Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
+ - Added _Data_ tab next to the _Pages_ tab for pages layout.
+ - Added `$_['id']` property that stores the first `$_['path']` value.
+ - Added `$_['skin']` property that stores the skin title and CSS path.
+ - Added `data` property to `field/*` type to quickly add hidden fields.
+ - Added `data` property to `form/*` type to quickly add hidden fields.
+ - Added `field/button` and `field/buttons` type. Currently useless. Would be useful when combined with certain JavaScript actions, such as to open a pop-up window.
+ - Added `flex` and `field/flex` type.
+ - Added ability to reply comment from the panel interface.
+ - Added badge GUI for `link` type via `info` key.
+ - Added comment notification badge in the main menu.
+ - Added comments counter in the _Comment_ menu.
+ - Added files/folders counter in the _Trash_ menu.
+ - Fixed bug of tags data that is not stored consistently on edit mode.
+ - Improved extension page. It is now possible to filter extensions by searching and/or paginating.
+ - Improved performance of files/folders listing by deferring the GUI creation.
+ - Renamed `before` and `after` key for field to `value-before` and `value-after`.
+ - Renamed `field/combo` type with `field/option`.
+ - The `$_['/']` data now will includes the `$url` as prefix.
+ - [@mecha-cms/mecha#96](https://github.com/mecha-cms/mecha/issues/96)
 
 ### 2.6.0
 
