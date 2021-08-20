@@ -9,7 +9,9 @@ if (!is_dir(LOT . DS . 'user') || null === State::get('x.user')) {
 // Because `panel` is less than `user` when sorted alphabetically.
 // At least we have the cookie that is always available in the global scope.
 if (empty($GLOBALS['user']) && $key = Cookie::get('user.key')) {
-    $GLOBALS['user'] = $user = new User(LOT . DS . 'user' . DS . $key . '.page');
+    if (is_file($f = LOT . DS . 'user' . DS . $key . '.page')) {
+        $GLOBALS['user'] = $user = new User($f);
+    }
 }
 
 // Someone just trying to replace you!

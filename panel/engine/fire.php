@@ -5,7 +5,7 @@ $chop = explode('/', $p);
 // `http://127.0.0.1/panel`
 // `http://127.0.0.1/panel/::g::`
 if (count($chop) < 3) {
-    Guard::kick("");
+    Guard::kick('/');
 }
 
 // Remove the first path
