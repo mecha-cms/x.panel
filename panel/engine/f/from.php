@@ -15,4 +15,3 @@ function tags($value) {
     // `{0: true, 1: true, 2: true}`
     return \array_keys(\array_filter($value));
 }
-

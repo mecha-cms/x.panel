@@ -19,4 +19,3 @@ if (is_file($f = $_['f'] . DS . 'index.php')) {
 $_SESSION['_']['folder'][$_['f']] = 1;
 
 return $_;
-
