@@ -269,6 +269,19 @@ legend + ul {
   color: #fff;
 }
 
+.button .title > .icon:first-child {
+  margin-left: -6px;
+}
+
+.button .title > .icon:last-child {
+  margin-right: -6px;
+}
+
+.button .title > .icon.caret {
+  margin-right: -6px;
+  margin-left: -6px;
+}
+
 .button,
 details > summary,
 label {
@@ -423,7 +436,7 @@ label {
 
 label > input[type='checkbox'] + span,
 label > input[type='radio'] + span {
-  display: inline-block;
+  display: inline-flex;
   vertical-align: middle;
 }
 
@@ -561,20 +574,7 @@ label > input[type='radio'] + span {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 6px;
-}
-
-.title > .icon:first-child {
-  margin-left: -6px;
-}
-
-.title > .icon:last-child {
-  margin-right: -6px;
-}
-
-.title > .icon.caret {
-  margin-right: -6px;
-  margin-left: -6px;
+  gap: 0 6px;
 }
 
 .title > span {
@@ -627,15 +627,27 @@ label > input[type='radio'] + span {
   height: inherit;
 }
 
-.lot\:bar .lot\:links > ul .title small,
+.lot\:bar .lot\:links > ul {
+  display: flex;
+  height: 48px;
+}
+
 .lot\:bar .lot\:links > ul > li .title small {
   float: right;
   margin-left: 6px;
 }
 
-.lot\:bar .lot\:links > ul {
-  display: flex;
-  height: 48px;
+.lot\:bar .lot\:links > ul > li .title > .icon:first-child {
+  margin-left: -6px;
+}
+
+.lot\:bar .lot\:links > ul > li .title > .icon:last-child {
+  margin-right: -6px;
+}
+
+.lot\:bar .lot\:links > ul > li .title > .icon.caret {
+  margin-right: -6px;
+  margin-left: -6px;
 }
 
 .lot\:bar .lot\:links > ul > li.is\:active > a,
@@ -1462,6 +1474,7 @@ label > input[type='radio'] + span {
 .lot\:folders h3 .title,
 .lot\:pages h3 .title {
   display: inline-flex;
+  vertical-align: middle;
 }
 
 .lot\:files.count\:0,
@@ -1509,6 +1522,19 @@ label > input[type='radio'] + span {
   background: #000;
   color: #fff;
   padding: 0 6px;
+}
+
+.lot\:menu li .title > .icon:first-child {
+  margin-left: -6px;
+}
+
+.lot\:menu li .title > .icon:last-child {
+  margin-right: -6px;
+}
+
+.lot\:menu li .title > .icon.caret {
+  margin-right: -6px;
+  margin-left: -6px;
 }
 
 .lot\:menu li.is\:separator {

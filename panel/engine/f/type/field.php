@@ -197,8 +197,6 @@ function item($value, $key) {
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value']);
         $a = [];
-        $out = \x\panel\to\field($value, $key);
-        $out['field'][0] = 'div';
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
         foreach ($value['lot'] as $k => $v) {
@@ -210,20 +208,40 @@ function item($value, $key) {
                 $v = ['title' => $v];
             }
             $is_active = !isset($v['active']) || $v['active'];
+            $is_locked = !empty($v['locked']);
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['checked'] = null !== $the_value && ((string) $the_value === (string) $k);
-            $input[2]['type'] = 'radio';
-            $t = \x\panel\to\title($v['title'] ?? "", -2);
-            $d = $v['description'] ?? "";
             $input[2]['disabled'] = !$is_active;
             $input[2]['name'] = $v['name'] ?? $n;
+            $input[2]['type'] = 'radio';
             $input[2]['value'] = $v['value'] ?? $k;
+            unset($input[2]['placeholder']);
             \x\panel\_set_class($input[2], [
                 'is:active' => $is_active,
-                'not:active' => !$is_active
+                'is:locked' => $is_locked,
+                'not:active' => !$is_active,
+                'not:locked' => !$is_locked
             ]);
-            $d = \strip_tags(\i(...((array) $d)));
-            $a[$t . $k] = '<label class="' . ($is_active ? 'is' : 'not') . ':active">' . (new \HTML($input)) . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
+            $title = \x\panel\type\title([
+                'content' => $v['title'] ?? "",
+                'icon' => $v['icon'] ?? [],
+                'level' => -1,
+                '2' => [
+                    'title' => "" !== $description ? $description : null
+                ]
+            ], 0);
+            $label = new \HTML([
+                0 => 'label',
+                1 => (new \HTML($input)) . ' ' . $title
+            ]);
+            \x\panel\_set_class($label, [
+                'is:active' => $is_active,
+                'is:locked' => $is_locked,
+                'not:active' => !$is_active,
+                'not:locked' => !$is_locked
+            ]);
+            $a[$title . $k] = $label;
         }
         $sort && \ksort($a);
         if (!isset($value['block'])) {
@@ -231,6 +249,8 @@ function item($value, $key) {
         } else {
             $block = $value['block'] ? '<br>' : "";
         }
+        $out = \x\panel\to\field($value, $key);
+        $out['field'][0] = 'div';
         $out['field'][1] = \implode($block, $a);
         \x\panel\_set_class($out['field'][2], [
             'count:' . $count => true,
@@ -252,8 +272,6 @@ function items($value, $key) {
         }
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value']);
-        $out = \x\panel\to\field($value, $key);
-        $out['field'][0] = 'div';
         $a = [];
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
@@ -265,25 +283,46 @@ function items($value, $key) {
             if (!\is_array($v)) {
                 $v = ['title' => $v];
             }
+            $is_active = !isset($v['active']) || $v['active'];
+            $is_locked = !empty($v['locked']);
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['checked'] = $key_as_value ? false !== \strpos($the_value, \P . $k . \P) : isset($the_value[$k]);
             $input[2]['type'] = 'checkbox';
-            $t = \x\panel\to\title($v['title'] ?? "", -2);
-            $d = $v['description'] ?? "";
             $input[2]['name'] = $v['name'] ?? $n . '[' . ($key_as_value ? "" : $k) . ']';
             $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_value[$k] ?? true));
-            $d = \strip_tags(\i(...((array) $d)));
-            $class = [];
-            $class[] = (!isset($v['active']) || $v['active'] ? 'is' : 'not') . ':active';
-            $class[] = (!empty($v['locked']) ? 'is' : 'not') . ':locked';
-            if (isset($v['active']) && !$v['active']) {
+            if (!$is_active) {
                 $input[2]['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
-            } else if (!empty($v['locked'])) {
+            } else if ($is_locked) {
                 $input[2]['readonly'] = true;
             }
-            \sort($class);
-            $a[$t . $k] = '<label' . ($class ? ' class="' . \implode(' ', $class) . '"' : "") . '>' . (new \HTML($input)) . ' <span' . ("" !== $d ? ' title="' . $d . '"' : "") . '>' . $t . '</span></label>';
+            unset($input[2]['placeholder']);
+            \x\panel\_set_class($input[2], [
+                'is:active' => $is_active,
+                'is:locked' => $is_locked,
+                'not:active' => !$is_active,
+                'not:locked' => !$is_locked
+            ]);
+            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
+            $title = \x\panel\type\title([
+                'content' => $v['title'] ?? "",
+                'icon' => $v['icon'] ?? [],
+                'level' => -1,
+                '2' => [
+                    'title' => "" !== $description ? $description : null
+                ]
+            ], 0);
+            $label = new \HTML([
+                0 => 'label',
+                1 => (new \HTML($input)) . ' ' . $title
+            ]);
+            \x\panel\_set_class($label, [
+                'is:active' => $is_active,
+                'is:locked' => $is_locked,
+                'not:active' => !$is_active,
+                'not:locked' => !$is_locked
+            ]);
+            $a[$title . $k] = $label;
         }
         $sort && \ksort($a);
         if (!isset($value['block'])) {
@@ -291,6 +330,8 @@ function items($value, $key) {
         } else {
             $block = $value['block'] ? '<br>' : "";
         }
+        $out = \x\panel\to\field($value, $key);
+        $out['field'][0] = 'div';
         $out['field'][1] = \implode($block, $a);
         \x\panel\_set_class($out['field'][2], [
             'count:' . $count => true,
@@ -485,18 +526,36 @@ function title($value, $key) {
 }
 
 function toggle($value, $key) {
-    $out = \x\panel\to\field($value, $key, 'input');
     $the_value = $value['value'] ?? null;
+    $is_active = !isset($v['active']) || $v['active'];
+    $is_locked = !empty($v['locked']);
     $input = \x\panel\to\field($value, $key, 'input')['field'];
     $input[2]['checked'] = !empty($the_value);
     $input[2]['type'] = 'checkbox';
     $input[2]['value'] = 'true'; // Force value to be `true`
-    $t = \i(...((array) ($value['hint'] ?? $value['title'] ?? \S)));
+    unset($input[2]['placeholder']);
+    $title = \x\panel\type\title([
+        'content' => $value['hint'] ?? $value['title'] ?? "",
+        'icon' => $value['icon'] ?? [],
+        'level' => -1
+    ], 0);
+    $label = new \HTML([
+        0 => 'label',
+        1 => (new \HTML($input)) . ' ' . $title
+    ]);
+    \x\panel\_set_class($label, [
+        'is:active' => $is_active,
+        'is:locked' => $is_locked,
+        'not:active' => !$is_active,
+        'not:locked' => !$is_locked
+    ]);
+    $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
-    $out['field'][1] = '<label>' . (new \HTML($input)) . ' <span>' . $t . '</span></label>';
+    $out['field'][1] = $label;
     \x\panel\_set_class($out['field'][2], [
-        'input' => false,
-        'options' => true
+        'count:1' => true,
+        'options' => true,
+        'textarea' => false
     ]);
     unset($out['hint'], $out['field'][2]['name'], $out['field'][2]['placeholder']);
     return \x\panel\type\field($out, $key);

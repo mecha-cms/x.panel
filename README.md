@@ -8,7 +8,7 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 Release Notes
 -------------
 
-### 2.7.0
+### 2.7.1
 
  - Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
  - Added _Data_ tab next to the _Pages_ tab for pages layout.
@@ -24,6 +24,7 @@ Release Notes
  - Added comments counter in the _Comment_ menu.
  - Added files/folders counter in the _Trash_ menu.
  - Fixed bug of tags data that is not stored consistently on edit mode.
+ - Improved `title` type to allow icons in `file`, `folder`, `field/item`, `field/items`, and `field/toggle` type.
  - Improved extension page. It is now possible to filter extensions by searching and/or paginating.
  - Improved performance of files/folders listing by deferring the GUI creation.
  - Renamed `before` and `after` key for field to `value-before` and `value-after`.

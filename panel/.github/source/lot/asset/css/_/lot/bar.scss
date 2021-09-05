@@ -10,17 +10,29 @@
       list-style: none;
       width: auto;
       height: inherit;
-      .title {
-        small {
-          float: right;
-          margin-left: ($x / 4);
-        }
-      }
     }
     > ul {
       display: flex;
       height: ($y * 2);
       > li {
+        .title {
+          small {
+            float: right;
+            margin-left: ($x / 4);
+          }
+          > .icon {
+            &:first-child {
+              margin-left: (-$x / 4);
+            }
+            &:last-child {
+              margin-right: (-$x / 4);
+            }
+            &.caret {
+              margin-right: (-$x / 4);
+              margin-left: (-$x / 4);
+            }
+          }
+        }
         &.is\:active,
         &.is\:current {
           > a {

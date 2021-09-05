@@ -24,19 +24,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: ($y / 4) ($x / 4);
-  > .icon {
-    &:first-child {
-      margin-left: (-$x / 4);
-    }
-    &:last-child {
-      margin-right: (-$x / 4);
-    }
-    &.caret {
-      margin-right: (-$x / 4);
-      margin-left: (-$x / 4);
-    }
-  }
+  gap: 0 ($x / 4);
   > span {
     flex: 1;
   }

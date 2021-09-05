@@ -30,6 +30,20 @@
   &[href] {
     color: $color-button;
   }
+  .title {
+    > .icon {
+      &:first-child {
+        margin-left: (-$x / 4);
+      }
+      &:last-child {
+        margin-right: (-$x / 4);
+      }
+      &.caret {
+        margin-right: (-$x / 4);
+        margin-left: (-$x / 4);
+      }
+    }
+  }
 }
 
 .button,
@@ -175,7 +189,7 @@ label {
     &[type='checkbox'],
     &[type='radio'] {
       + span {
-        display: inline-block;
+        display: inline-flex;
         vertical-align: middle;
       }
     }
