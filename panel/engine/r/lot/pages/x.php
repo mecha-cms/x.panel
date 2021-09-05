@@ -47,8 +47,8 @@ if ($i > 1) {
                 $content = $page->content;
                 // Make URL example(s) in content become usable
                 $content = strtr($content, [
-                    '://127.0.0.1/panel/' => '://' . explode(':', $_['/'], 2)[1] . '/',
-                    '://127.0.0.1' => '://' . explode(':', $url . "", 2)[1]
+                    '://127.0.0.1/panel/' => ':' . explode(':', $_['/'], 2)[1] . '/',
+                    '://127.0.0.1' => ':' . explode(':', $url . "", 2)[1]
                 ]);
                 $use = "";
                 if (isset($page['use'])) {

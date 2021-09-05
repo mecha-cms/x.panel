@@ -27,7 +27,6 @@ function _error_route_check() {
     ) {
         $_['is']['error'] = 404;
         $_['title'] = \i('Error');
-        $_['[layout]']['type:' . $_['type']] = false;
     }
     return ($GLOBALS['_'] = $_);
 }

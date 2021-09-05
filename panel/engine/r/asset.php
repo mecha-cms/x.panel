@@ -36,25 +36,31 @@ Hook::set('get', function() {
         'stack' => 20
     ];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
+    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'option' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'query' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'source' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'menu' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'tab' . $z . 'js'] = ['stack' => 30];
     $GLOBALS['_']['asset'] = array_replace_recursive($_['asset'] ?? [], $out);
 }, 20);
 
 Hook::set('layout', function() {
-    // Load content first to queue the icon data
-    if (isset($GLOBALS['_']['content'])) {
-        $content = x\panel\type\lot([
-            'content' => $GLOBALS['_']['content'] ?? [],
+    extract($GLOBALS);
+    // Load content first to queue the asset and icon data
+    if (isset($_['content'])) {
+        $content = x\panel\type\content([
+            'content' => $_['content'] ?? [],
             'tags' => ['p' => false]
         ], 0);
-    } else if (isset($GLOBALS['_']['lot'])) {
+    } else if (isset($_['lot'])) {
         $content = x\panel\type\lot([
-            'lot' => $GLOBALS['_']['lot'] ?? [],
+            'lot' => $_['lot'] ?? [],
             'tags' => ['p' => false]
         ], 0);
     }
-    extract($GLOBALS, EXTR_SKIP);
-    // Build icon(s)
+    // Build the icon(s)
     $icons = "";
+    $_['icon'] = $GLOBALS['_']['icon'] ?? []; // Refresh!
     if (!empty($_['icon'])) {
         $icons .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
         foreach ($_['icon'] as $k => $v) {
@@ -64,8 +70,6 @@ Hook::set('layout', function() {
         }
         $icons .= '</svg>';
     }
-    // Put icon(s) before content. Why? Because HTML5!
-    $GLOBALS['panel'] = $icons . $content;
     if (isset($_['f'])) {
         $_['f'] = To::URL($_['f']);
     }
@@ -73,7 +77,13 @@ Hook::set('layout', function() {
         $_['ff'] = To::URL($_['ff']);
     }
     // Remove sensitive data
-    unset($_['asset'], $_['icon'], $_['lot'], $_['skin'], $_['user']);
-    Asset::script('window._=Object.assign(window._||{},' . json_encode($_) . ');', 0);
+    unset($_['alert'], $_['asset'], $_['icon'], $_['lot'], $_['skin'], $_['user']);
+    $GLOBALS['_']['asset']['script'][] = [
+        'id' => false,
+        'content' => 'window._=Object.assign(window._||{},' . json_encode($_) . ');',
+        'stack' => 0
+    ];
+    // Put icon(s) before content. Why? Because HTML5!
+    $GLOBALS['panel'] = $icons . $content;
     \x\panel\_set_asset();
 }, 20);

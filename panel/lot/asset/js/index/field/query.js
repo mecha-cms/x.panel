@@ -1,0 +1,1178 @@
+(function() {
+    'use strict';
+    var hasValue = function hasValue(x, data) {
+        return -1 !== data.indexOf(x);
+    };
+    var isArray = function isArray(x) {
+        return Array.isArray(x);
+    };
+    var isDefined = function isDefined(x) {
+        return 'undefined' !== typeof x;
+    };
+    var isInstance = function isInstance(x, of ) {
+        return x && isSet( of ) && x instanceof of ;
+    };
+    var isNull = function isNull(x) {
+        return null === x;
+    };
+    var isNumber = function isNumber(x) {
+        return 'number' === typeof x;
+    };
+    var isNumeric = function isNumeric(x) {
+        return /^-?(?:\d*.)?\d+$/.test(x + "");
+    };
+    var isObject = function isObject(x, isPlain) {
+        if (isPlain === void 0) {
+            isPlain = true;
+        }
+        if ('object' !== typeof x) {
+            return false;
+        }
+        return isPlain ? isInstance(x, Object) : true;
+    };
+    var isSet = function isSet(x) {
+        return isDefined(x) && !isNull(x);
+    };
+    var isString = function isString(x) {
+        return 'string' === typeof x;
+    };
+    var toArrayKey = function toArrayKey(x, data) {
+        var i = data.indexOf(x);
+        return -1 !== i ? i : null;
+    };
+    var toCaseLower = function toCaseLower(x) {
+        return x.toLowerCase();
+    };
+    var toCount = function toCount(x) {
+        return x.length;
+    };
+    var toNumber = function toNumber(x, base) {
+        if (base === void 0) {
+            base = 10;
+        }
+        return base ? parseInt(x, base) : parseFloat(x);
+    };
+    var toObjectCount = function toObjectCount(x) {
+        return toCount(toObjectKeys(x));
+    };
+    var toObjectKeys = function toObjectKeys(x) {
+        return Object.keys(x);
+    };
+    var toValue = function toValue(x) {
+        if (isArray(x)) {
+            return x.map(function(v) {
+                return toValue(v);
+            });
+        }
+        if (isNumeric(x)) {
+            return toNumber(x);
+        }
+        if (isObject(x)) {
+            for (var k in x) {
+                x[k] = toValue(x[k]);
+            }
+            return x;
+        }
+        if ('false' === x) {
+            return false;
+        }
+        if ('null' === x) {
+            return null;
+        }
+        if ('true' === x) {
+            return true;
+        }
+        return x;
+    };
+    var fromJSON = function fromJSON(x) {
+        var value = null;
+        try {
+            value = JSON.parse(x);
+        } catch (e) {}
+        return value;
+    };
+    var fromStates = function fromStates() {
+        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+            lot[_key] = arguments[_key];
+        }
+        var out = lot.shift();
+        for (var i = 0, j = toCount(lot); i < j; ++i) {
+            for (var k in lot[i]) {
+                // Assign value
+                if (!isSet(out[k])) {
+                    out[k] = lot[i][k];
+                    continue;
+                } // Merge array
+                if (isArray(out[k]) && isArray(lot[i][k])) {
+                    out[k] = [
+                        /* Clone! */
+                    ].concat(out[k]);
+                    for (var ii = 0, jj = toCount(lot[i][k]); ii < jj; ++ii) {
+                        if (!hasValue(lot[i][k][ii], out[k])) {
+                            out[k].push(lot[i][k][ii]);
+                        }
+                    } // Merge object recursive
+                } else if (isObject(out[k]) && isObject(lot[i][k])) {
+                    out[k] = fromStates({
+                        /* Clone! */
+                    }, out[k], lot[i][k]); // Replace value
+                } else {
+                    out[k] = lot[i][k];
+                }
+            }
+        }
+        return out;
+    };
+    var fromValue = function fromValue(x) {
+        if (isArray(x)) {
+            return x.map(function(v) {
+                return fromValue(x);
+            });
+        }
+        if (isObject(x)) {
+            for (var k in x) {
+                x[k] = fromValue(x[k]);
+            }
+            return x;
+        }
+        if (false === x) {
+            return 'false';
+        }
+        if (null === x) {
+            return 'null';
+        }
+        if (true === x) {
+            return 'true';
+        }
+        return "" + x;
+    };
+    var D = document;
+    var W = window;
+    var getAttribute = function getAttribute(node, attribute, parseValue) {
+        if (parseValue === void 0) {
+            parseValue = true;
+        }
+        if (!hasAttribute(node, attribute)) {
+            return null;
+        }
+        var value = node.getAttribute(attribute);
+        return parseValue ? toValue(value) : value;
+    };
+    var getChildFirst = function getChildFirst(parent) {
+        return parent.firstElementChild || null;
+    };
+    var getChildren = function getChildren(parent, index) {
+        var children = parent.children;
+        return isNumber(index) ? children[index] || null : children || [];
+    };
+    var getClasses = function getClasses(node, toArray) {
+        if (toArray === void 0) {
+            toArray = true;
+        }
+        var value = (getState(node, 'className') || "").trim();
+        return toArray ? value.split(/\s+/) : value;
+    };
+    var getDatum = function getDatum(node, datum, parseValue) {
+        if (parseValue === void 0) {
+            parseValue = true;
+        }
+        var value = getAttribute(node, 'data-' + datum, parseValue),
+            v = (value + "").trim();
+        if (parseValue && v && ('[' === v[0] && ']' === v.slice(-1) || '{' === v[0] && '}' === v.slice(-1)) && null !== (v = fromJSON(value))) {
+            return v;
+        }
+        return value;
+    };
+    var getElements = function getElements(query, scope) {
+        return (scope || D).querySelectorAll(query);
+    };
+    var getName = function getName(node) {
+        return toCaseLower(node && node.nodeName || "") || null;
+    };
+    var getNext = function getNext(node) {
+        return node.nextElementSibling || null;
+    };
+    var getParent = function getParent(node) {
+        return node.parentNode || null;
+    };
+    var getParentForm = function getParentForm(node) {
+        var state = 'form';
+        if (hasState(node, state) && state === getName(node[state])) {
+            return node[state];
+        }
+        var parent = getParent(node);
+        while (parent) {
+            if (state === getName(parent)) {
+                break;
+            }
+            parent = getParent(parent);
+        }
+        return parent || null;
+    };
+    var getPrev = function getPrev(node) {
+        return node.previousElementSibling || null;
+    };
+    var getState = function getState(node, state) {
+        return hasState(node, state) && node[state] || null;
+    };
+    var getText = function getText(node, trim) {
+        if (trim === void 0) {
+            trim = true;
+        }
+        var state = 'textContent';
+        if (!hasState(node, state)) {
+            return false;
+        }
+        var content = node[state];
+        content = trim ? content.trim() : content;
+        return "" !== content ? content : null;
+    };
+    var hasAttribute = function hasAttribute(node, attribute) {
+        return node.hasAttribute(attribute);
+    };
+    var hasClass = function hasClass(node, value) {
+        return node.classList.contains(value);
+    };
+    var hasParent = function hasParent(node) {
+        return null !== getParent(node);
+    };
+    var hasState = function hasState(node, state) {
+        return state in node;
+    };
+    var letAttribute = function letAttribute(node, attribute) {
+        return node.removeAttribute(attribute), node;
+    };
+    var letClass = function letClass(node, value) {
+        return node.classList.remove(value), node;
+    };
+    var letClasses = function letClasses(node, classes) {
+        if (isArray(classes)) {
+            return classes.forEach(function(name) {
+                return node.classList.remove(name);
+            }), node;
+        }
+        if (isObject(classes)) {
+            for (var name in classes) {
+                classes[name] && node.classList.remove(name);
+            }
+            return node;
+        }
+        return node.className = "", node;
+    };
+    var letElement = function letElement(node) {
+        var parent = getParent(node);
+        return node.remove(), parent;
+    };
+    var setAttribute = function setAttribute(node, attribute, value) {
+        if (true === value) {
+            value = attribute;
+        }
+        return node.setAttribute(attribute, fromValue(value)), node;
+    };
+    var setAttributes = function setAttributes(node, attributes) {
+        var value;
+        for (var attribute in attributes) {
+            value = attributes[attribute];
+            if (value || "" === value || 0 === value) {
+                setAttribute(node, attribute, value);
+            } else {
+                letAttribute(node, attribute);
+            }
+        }
+        return node;
+    };
+    var setChildLast = function setChildLast(parent, node) {
+        return parent.append(node), node;
+    };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
+    var setClasses = function setClasses(node, classes) {
+        if (isArray(classes)) {
+            return classes.forEach(function(name) {
+                return node.classList.add(name);
+            }), node;
+        }
+        if (isObject(classes)) {
+            for (var name in classes) {
+                if (classes[name]) {
+                    node.classList.add(name);
+                } else {
+                    node.classList.remove(name);
+                }
+            }
+        } // if (isString(classes)) {
+        node.className = classes; // }
+        return node;
+    };
+    var setElement = function setElement(node, content, attributes) {
+        node = isString(node) ? D.createElement(node) : node;
+        if (isObject(content)) {
+            attributes = content;
+            content = false;
+        }
+        if (isString(content)) {
+            setHTML(node, content);
+        }
+        if (isObject(attributes)) {
+            setAttributes(node, attributes);
+        }
+        return node;
+    };
+    var setHTML = function setHTML(node, content, trim) {
+        if (trim === void 0) {
+            trim = true;
+        }
+        if (null === content) {
+            return node;
+        }
+        var state = 'innerHTML';
+        return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
+    };
+    var setNext = function setNext(current, node) {
+        return getParent(current).insertBefore(node, getNext(current)), node;
+    };
+    var setPrev = function setPrev(current, node) {
+        return getParent(current).insertBefore(node, current), node;
+    };
+    var setText = function setText(node, content, trim) {
+        if (trim === void 0) {
+            trim = true;
+        }
+        if (null === content) {
+            return node;
+        }
+        var state = 'textContent';
+        return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
+    };
+    var offEvent = function offEvent(name, node, then) {
+        node.removeEventListener(name, then);
+    };
+    var offEventDefault = function offEventDefault(e) {
+        return e && e.preventDefault();
+    };
+    var offEventPropagation = function offEventPropagation(e) {
+        return e && e.stopPropagation();
+    };
+    var offEvents = function offEvents(names, node, then) {
+        names.forEach(function(name) {
+            return offEvent(name, node, then);
+        });
+    };
+    var onEvent = function onEvent(name, node, then, options) {
+        if (options === void 0) {
+            options = false;
+        }
+        node.addEventListener(name, then, options);
+    };
+    var onEvents = function onEvents(names, node, then, options) {
+        if (options === void 0) {
+            options = false;
+        }
+        names.forEach(function(name) {
+            return onEvent(name, node, then, options);
+        });
+    };
+
+    function hook($) {
+        var hooks = {};
+
+        function fire(name, data) {
+            if (!isSet(hooks[name])) {
+                return $;
+            }
+            hooks[name].forEach(function(then) {
+                return then.apply($, data);
+            });
+            return $;
+        }
+
+        function off(name, then) {
+            if (!isSet(name)) {
+                return hooks = {}, $;
+            }
+            if (isSet(hooks[name])) {
+                if (isSet(then)) {
+                    for (var i = 0, _j = hooks[name].length; i < _j; ++i) {
+                        if (then === hooks[name][i]) {
+                            hooks[name].splice(i, 1);
+                            break;
+                        }
+                    } // Clean-up empty hook(s)
+                    if (0 === j) {
+                        delete hooks[name];
+                    }
+                } else {
+                    delete hooks[name];
+                }
+            }
+            return $;
+        }
+
+        function on(name, then) {
+            if (!isSet(hooks[name])) {
+                hooks[name] = [];
+            }
+            if (isSet(then)) {
+                hooks[name].push(then);
+            }
+            return $;
+        }
+        $.hooks = hooks;
+        $.fire = fire;
+        $.off = off;
+        $.on = on;
+        return $;
+    }
+    var isPattern = function isPattern(pattern) {
+        return isInstance(pattern, RegExp);
+    };
+    var toPattern = function toPattern(pattern, opt) {
+        if (isPattern(pattern)) {
+            return pattern;
+        } // No need to escape `/` in the pattern string
+        pattern = pattern.replace(/\//g, '\\/');
+        return new RegExp(pattern, isSet(opt) ? opt : 'g');
+    };
+    var delay = W.setTimeout,
+        name = 'TP';
+    var KEY_A = 'a';
+    var KEY_ARROW_LEFT = 'ArrowLeft';
+    var KEY_ARROW_RIGHT = 'ArrowRight';
+    var KEY_BEGIN = 'Home';
+    var KEY_DELETE_LEFT = 'Backspace';
+    var KEY_DELETE_RIGHT = 'Delete';
+    var KEY_END = 'End';
+    var KEY_ENTER = 'Enter';
+    var KEY_TAB = 'Tab';
+
+    function TP(source, state) {
+        if (state === void 0) {
+            state = {};
+        }
+        if (!source) return;
+        var $ = this; // Already instantiated, skip!
+        if (source[name]) {
+            return;
+        } // Return new instance if `TP` was called without the `new` operator
+        if (!isInstance($, TP)) {
+            return new TP(source, state);
+        }
+        var sourceIsDisabled = function sourceIsDisabled() {
+                return source.disabled;
+            },
+            sourceIsReadOnly = function sourceIsReadOnly() {
+                return source.readOnly;
+            },
+            thePlaceholder = getAttribute(source, 'placeholder'),
+            theTabIndex = getAttribute(source, 'tabindex');
+        var _hook = hook($);
+        _hook.hooks;
+        var fire = _hook.fire;
+        $.state = state = fromStates({}, TP.state, isString(state) ? {
+            join: state
+        } : state || {});
+        $.source = source; // Store current instance to `TP.instances`
+        TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
+        source[name] = 1;
+        var classNameB = state['class'],
+            classNameE = classNameB + '__',
+            classNameM = classNameB + '--',
+            form = getParentForm(source),
+            // Capture the closest `<form>` element
+            self = setElement('span', {
+                'class': classNameB,
+                'tabindex': sourceIsDisabled() ? false : '-1'
+            }),
+            text = setElement('span', {
+                'class': classNameE + 'tag ' + classNameE + 'text'
+            }),
+            textCopy = setElement('input', {
+                'class': classNameE + 'copy',
+                'type': 'text'
+            }),
+            textInput = setElement('span', {
+                'contenteditable': sourceIsDisabled() ? false : 'true',
+                'spellcheck': 'false',
+                'style': 'white-space:pre;'
+            }),
+            textInputHint = setElement('span'),
+            textOutput = setElement('span', {
+                'class': classNameE + 'tags'
+            });
+        var currentTagIndex = 0,
+            currentTags = {};
+        var _keyIsShift, _keyIsTab;
+
+        function getCharBeforeCaret(container) {
+            var range,
+                selection = W.getSelection();
+            if (selection.rangeCount > 0) {
+                range = selection.getRangeAt(0).cloneRange();
+                range.collapse(true);
+                range.setStart(container, 0);
+                return (range + "").slice(-1);
+            }
+        }
+
+        function getCurrentTags() {
+            return currentTags;
+        }
+
+        function getTag(tag, fireHooks) {
+            var index = toArrayKey(tag, $.tags);
+            fireHooks && fire('get.tag', [tag, index]);
+            return isNumber(index) ? tag : null;
+        }
+
+        function setCurrentTags() {
+            currentTags = {}; // Reset!
+            var i,
+                items = getChildren(textOutput),
+                j = toCount(items) - 1; // Minus 1 to skip the tag editor element
+            for (i = 0; i < j; ++i) {
+                if (hasClass(items[i], classNameE + 'tag--focus')) {
+                    currentTags[i] = items[i];
+                }
+            }
+        }
+
+        function setTag(tag, index) {
+            if (isNumber(index)) {
+                index = index < 0 ? 0 : index;
+                $.tags.splice(index, 0, tag);
+            } else {
+                $.tags.push(tag);
+            }
+            source.value = $.tags.join(state.join);
+        }
+
+        function setTagElement(tag, index) {
+            var element = setElement('span', {
+                'class': classNameE + 'tag',
+                'tabindex': sourceIsDisabled() ? false : '0',
+                'title': tag
+            });
+            var x = setElement('a', {
+                'class': classNameE + 'tag-x',
+                'href': "",
+                'tabindex': '-1',
+                'target': '_top'
+            });
+            onEvent('click', x, onClickTagX);
+            setChildLast(element, x);
+            onEvent('click', element, onClickTag);
+            onEvents(['blur', 'focus'], element, onBlurFocusTag);
+            if (hasParent(textOutput)) {
+                if (isNumber(index) && $.tags[index]) {
+                    setPrev(getChildren(textOutput, index), element);
+                } else {
+                    setPrev(text, element);
+                }
+            }
+        }
+
+        function setTags(values) {
+            values = values ? values.split(state.join) : []; // Remove all tag(s) …
+            if (hasParent(self)) {
+                var theTagPrev, theTagPrevIndex, theTagPrevTitle;
+                while (theTagPrev = getPrev(text)) {
+                    letTagElement(theTagPrevTitle = theTagPrev.title);
+                    if (!hasValue(theTagPrevTitle, values)) {
+                        theTagPrevIndex = toArrayKey(theTagPrevTitle, $.tags);
+                        fire('change', [theTagPrevTitle, theTagPrevIndex]);
+                        fire('let.tag', [theTagPrevTitle, theTagPrevIndex]);
+                    }
+                }
+            }
+            $.tags = [];
+            source.value = ""; // … then add tag(s)
+            for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
+                if (!values[i]) {
+                    break;
+                }
+                if ("" !== (value = doValidTag(values[i]))) {
+                    setTagElement(value), setTag(value);
+                    fire('change', [value, i]);
+                    fire('set.tag', [value, i]);
+                }
+            }
+        }
+
+        function letTag(tag) {
+            var index = toArrayKey(tag, $.tags);
+            if (isNumber(index) && index >= 0) {
+                $.tags.splice(index, 1);
+                source.value = $.tags.join(state.join);
+            }
+        }
+
+        function letTagElement(tag) {
+            var index = toArrayKey(tag, $.tags),
+                element;
+            if (isNumber(index) && index >= 0 && (element = getChildren(textOutput, index))) {
+                offEvent('click', element, onClickTag);
+                offEvents(['blur', 'focus'], element, onBlurFocusTag);
+                var x = getChildFirst(element);
+                if (x) {
+                    offEvent('click', x, onClickTagX);
+                    letElement(x);
+                }
+                letElement(element);
+            }
+        }
+
+        function letTextCopy(selectTextInput) {
+            letElement(textCopy);
+            if (selectTextInput) {
+                setValue("", 1);
+            }
+        }
+
+        function setTextCopy(selectTextCopy) {
+            setChildLast(self, textCopy);
+            textCopy.value = $.tags.join(state.join);
+            if (selectTextCopy) {
+                textCopy.focus();
+                textCopy.select();
+            }
+        }
+
+        function setValue(value, fireFocus) {
+            setText(textInput, value);
+            setText(textInputHint, value ? "" : thePlaceholder);
+            if (fireFocus) {
+                textInput.focus(); // Move caret to the end!
+                var range = D.createRange(),
+                    selection = W.getSelection();
+                range.selectNodeContents(textInput);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+        setValue("");
+
+        function doBlurTags(exceptThisTag) {
+            doToTags(exceptThisTag, function() {
+                letClass(this, classNameE + 'tag--focus');
+            });
+        }
+
+        function doFocusTags(exceptThisTag) {
+            doToTags(exceptThisTag, function() {
+                setClass(this, classNameE + 'tag--focus');
+            });
+        }
+
+        function doInput() {
+            if (sourceIsDisabled() || sourceIsReadOnly()) {
+                return;
+            }
+            var tag = doValidTagChar(getText(textInput)).trim(),
+                pattern = state.pattern;
+            if (pattern && tag) {
+                if (!toPattern(pattern, "").test(tag)) {
+                    fire('not.tag', [tag, -1]);
+                    setValue(tag, 1);
+                    return;
+                }
+            }
+            setValue("");
+            if (tag = doValidTag(tag)) {
+                if (!getTag(tag)) {
+                    setTagElement(tag), setTag(tag);
+                    var index = toCount($.tags);
+                    fire('change', [tag, index]);
+                    fire('set.tag', [tag, index]);
+                } else {
+                    fire('has.tag', [tag, toArrayKey(tag, $.tags)]);
+                }
+            }
+        }
+
+        function doSubmitTry() {
+            onSubmitForm() && form && form.dispatchEvent(new Event('submit', {
+                cancelable: true
+            }));
+        }
+
+        function doToTags(exceptThisTag, then) {
+            var i,
+                items = getChildren(textOutput),
+                j = toCount(items) - 1; // Minus 1 to skip the tag editor element
+            for (i = 0; i < j; ++i) {
+                if (exceptThisTag === items[i]) {
+                    continue;
+                }
+                then.call(items[i], i);
+            }
+        }
+
+        function doValidTag(v) {
+            return doValidTagChar($.f(v)).trim();
+        }
+
+        function doValidTagChar(v) {
+            v = v || "";
+            state.escape.forEach(function(char) {
+                v = v.split(char).join("");
+            });
+            return v;
+        }
+
+        function onBlurFocusTextCopy(e) {
+            var type = e.type;
+            if ('blur' === type) {
+                doBlurTags();
+                letClasses(self, [classNameM + 'focus', classNameM + 'focus-self']);
+            } else {
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-self']);
+            }
+        }
+
+        function onBlurFocusTag(e) {
+            if (sourceIsReadOnly()) {
+                return;
+            }
+            currentTags = {}; // Reset!
+            var t = this,
+                type = e.type,
+                tag = t.title,
+                tags = $.tags,
+                index = toArrayKey(tag, tags),
+                classNameTagM = classNameE + 'tag--';
+            if ('blur' === type) {
+                if (!_keyIsShift || _keyIsTab) {
+                    doBlurTags(t);
+                    letClass(t, classNameTagM + 'focus');
+                    letClasses(self, [classNameM + 'focus', classNameM + 'focus-tag']);
+                }
+            } else {
+                setClass(t, classNameTagM + 'focus');
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-tag']);
+                currentTagIndex = index;
+                currentTags[index] = t;
+            }
+            fire(type + '.tag', [tag, index]);
+        }
+
+        function onBlurFocusText(e) {
+            var tags = $.tags,
+                type = e.type,
+                classNameTextM = classNameE + 'text--';
+            if ('blur' === type) {
+                letClass(text, classNameTextM + 'focus');
+                letClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
+                doInput();
+            } else {
+                setClass(text, classNameTextM + 'focus');
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
+                doBlurTags(text);
+            }
+            fire(type, [tags, toCount(tags)]);
+        }
+
+        function onBlurFocusSelf(e) {
+            var type = e.type;
+            if ('blur' === type) {
+                letClass(self, classNameM + 'focus');
+            } else {
+                setClass(self, classNameM + 'focus');
+            }
+        }
+
+        function onClickSelf(e) {
+            if (e && self === e.target) {
+                textInput.focus();
+            }
+            var tags = $.tags;
+            fire('click', [tags, toCount(tags)]);
+        }
+
+        function onClickTag() {
+            var t = this,
+                tag = t.title,
+                tags = $.tags;
+            fire('click.tag', [tag, toArrayKey(tag, tags)]);
+        }
+
+        function onClickTagX(e) {
+            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                var t = this,
+                    tag = getParent(t).title,
+                    index = toArrayKey(tag, $.tags);
+                letTagElement(tag), letTag(tag), setValue("", 1);
+                fire('change', [tag, index]);
+                fire('click.tag', [tag, index]);
+                fire('let.tag', [tag, index]);
+            }
+            offEventDefault(e);
+        }
+
+        function onCopyCutPasteTextCopy(e) {
+            var type = e.type;
+            if ('copy' === type) {
+                delay(function() {
+                    return letTextCopy(1);
+                });
+            } else if ('cut' === type) {
+                !sourceIsReadOnly() && setTags("");
+                delay(function() {
+                    return letTextCopy(1);
+                });
+            } else if ('paste' === type) {
+                delay(function() {
+                    !sourceIsReadOnly() && setTags(textCopy.value);
+                    letTextCopy(1);
+                });
+            }
+            delay(function() {
+                var tags = $.tags;
+                fire(type, [tags, toCount(tags)]);
+            }, 1);
+        }
+
+        function onBlurSelf() {
+            doBlurTags(), letClass(self, classNameM + 'focus-self');
+        }
+
+        function onFocusSource() {
+            textInput.focus();
+        }
+
+        function onKeyDownSelf(e) {
+            if (sourceIsDisabled()) {
+                return;
+            }
+            $.tags;
+            var key = e.key,
+                keyIsCtrl = e.ctrlKey,
+                keyIsShift = _keyIsShift = e.shiftKey,
+                classNameTagM = classNameE + 'tag--';
+            _keyIsTab = KEY_TAB === key;
+            if (sourceIsReadOnly()) {
+                return;
+            }
+            var theTag, theTagIndex, theTagNext, theTagPrev, theTagTitle, theTags;
+            if (!keyIsCtrl) {
+                // Remove tag(s) with `Backspace` or `Delete` key
+                if (!keyIsShift && (KEY_DELETE_LEFT === key || KEY_DELETE_RIGHT === key)) {
+                    setCurrentTags();
+                    theTags = getCurrentTags();
+                    var isBackspace = KEY_DELETE_LEFT === key;
+                    for (theTagIndex in theTags) {
+                        theTag = theTags[theTagIndex];
+                        letTagElement(theTagTitle = theTag.title), letTag(theTagTitle);
+                    }
+                    currentTagIndex = +(toObjectKeys(theTags)[0] || 0);
+                    if (theTag = getChildren(textOutput, isBackspace ? currentTagIndex - 1 : currentTagIndex)) {
+                        if (text === theTag) {
+                            setValue("", 1);
+                        } else {
+                            theTag.focus();
+                        }
+                    } else {
+                        setValue("", 1);
+                    }
+                    offEventDefault(e); // Focus to the first tag
+                } else if (KEY_BEGIN === key) {
+                    if (theTag = getChildren(textOutput, 0)) {
+                        theTag.focus(), offEventDefault(e);
+                    } // Focus to the last tag
+                } else if (KEY_END === key) {
+                    if (theTag = getChildren(textOutput, toCount($.tags) - 1)) {
+                        theTag.focus(), offEventDefault(e);
+                    } // Focus to the previous tag
+                } else if (KEY_ARROW_LEFT === key) {
+                    if (theTag = getChildren(textOutput, currentTagIndex - 1)) {
+                        var theTagWasFocus = hasClass(theTag, classNameTagM + 'focus');
+                        theTag.focus(), offEventDefault(e);
+                        if (keyIsShift) {
+                            theTagNext = getNext(theTag);
+                            if (theTagWasFocus) {
+                                letClass(theTagNext, classNameTagM + 'focus');
+                            }
+                        } else {
+                            doBlurTags(theTag);
+                        }
+                    } else if (!keyIsShift) {
+                        doBlurTags(getChildren(textOutput, 0));
+                    } // Focus to the next tag or to the tag editor
+                } else if (KEY_ARROW_RIGHT === key) {
+                    if (theTag = getChildren(textOutput, currentTagIndex + 1)) {
+                        var _theTagWasFocus = hasClass(theTag, classNameTagM + 'focus');
+                        text === theTag && !keyIsShift ? setValue("", 1) : theTag.focus(), offEventDefault(e);
+                        if (keyIsShift) {
+                            theTagPrev = getPrev(theTag);
+                            if (_theTagWasFocus) {
+                                letClass(theTagPrev, classNameTagM + 'focus');
+                            }
+                        } else {
+                            doBlurTags(theTag);
+                        }
+                    }
+                }
+            } else {
+                // Select all tag(s) with `Ctrl+A` key
+                if (KEY_A === key) {
+                    setTextCopy(1);
+                    doFocusTags(), setCurrentTags(), offEventDefault(e);
+                }
+            }
+        }
+
+        function onKeyDownText(e) {
+            offEventPropagation(e);
+            if (sourceIsReadOnly()) {
+                offEventDefault(e);
+            }
+            var escapes = state.escape,
+                theTag,
+                theTagLast = getPrev(text),
+                theTagsCount = toCount($.tags),
+                theTagsMax = state.max,
+                theValue = doValidTag(getText(textInput)),
+                key = e.key,
+                keyIsCtrl = e.ctrlKey,
+                keyIsEnter = KEY_ENTER === key;
+            e.shiftKey;
+            var keyIsTab = KEY_TAB === key;
+            if (keyIsEnter) {
+                key = '\n';
+            }
+            if (keyIsTab) {
+                key = '\t';
+            }
+            delay(function() {
+                var theValueAfter = doValidTag(getText(textInput));
+                setText(textInputHint, theValueAfter ? "" : thePlaceholder); // Try to add support for browser(s) without `KeyboardEvent.prototype.key` feature
+                if (hasValue(getCharBeforeCaret(textInput), escapes)) {
+                    if (theTagsCount < theTagsMax) {
+                        // Add the tag name found in the tag editor
+                        doInput();
+                    } else {
+                        setValue("");
+                        fire('max.tags', [theTagsMax]);
+                    }
+                    offEventDefault(e);
+                }
+            }); // Select all tag(s) with `Ctrl+A` key
+            if (keyIsCtrl && "" === theValue && KEY_A === key) {
+                setTextCopy(1);
+                doFocusTags(), setCurrentTags(), offEventDefault(e);
+                return;
+            }
+            if (hasValue(key, escapes)) {
+                if (theTagsCount < theTagsMax) {
+                    // Add the tag name found in the tag editor
+                    doInput();
+                } else {
+                    setValue("");
+                    fire('max.tags', [theTagsMax]);
+                }
+                offEventDefault(e);
+                return;
+            } // Skip `Tab` key
+            if (keyIsTab) {
+                return; // :)
+            } // Submit the closest `<form>` element with `Enter` key
+            if (!keyIsCtrl && keyIsEnter) {
+                doSubmitTry(), offEventDefault(e);
+                return;
+            }
+            if (theTagLast && "" === theValue && !sourceIsReadOnly()) {
+                if (KEY_DELETE_LEFT === key) {
+                    theTag = $.tags[theTagsCount - 1];
+                    letTagElement(theTag), letTag(theTag);
+                    fire('change', [theTag, theTagsCount - 1]);
+                    fire('let.tag', [theTag, theTagsCount - 1]);
+                    offEventDefault(e);
+                    return;
+                }
+                if (KEY_ARROW_LEFT === key) {
+                    theTagLast.focus(); // Focus to the last tag
+                    return;
+                }
+            }
+        }
+
+        function onKeyUpSelf() {
+            _keyIsShift = false;
+        }
+
+        function onPasteText() {
+            delay(function() {
+                if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                    getText(textInput).split(state.join).forEach(function(v) {
+                        if (!hasValue(v, $.tags)) {
+                            setTagElement(v), setTag(v);
+                        }
+                    });
+                }
+                setValue("");
+            });
+        }
+
+        function onSubmitForm(e) {
+            if (sourceIsDisabled()) {
+                return;
+            }
+            var theTagsMin = state.min;
+            doInput(); // Force to add the tag name found in the tag editor
+            if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+                setValue("", 1);
+                fire('min.tags', [theTagsMin]);
+                offEventDefault(e);
+                return;
+            } // Do normal `submit` event
+            return 1;
+        }
+        setChildLast(self, textOutput);
+        setChildLast(text, textInput);
+        setChildLast(text, textInputHint);
+        setChildLast(textOutput, text);
+        setClass(source, classNameE + 'source');
+        setNext(source, self);
+        setElement(source, {
+            'tabindex': '-1'
+        });
+        onEvent('blur', self, onBlurSelf);
+        onEvent('click', self, onClickSelf);
+        onEvent('focus', source, onFocusSource);
+        onEvent('keydown', self, onKeyDownSelf);
+        onEvent('keydown', textInput, onKeyDownText);
+        onEvent('keyup', self, onKeyUpSelf);
+        onEvent('paste', textInput, onPasteText);
+        onEvents(['blur', 'focus'], self, onBlurFocusSelf);
+        onEvents(['blur', 'focus'], textCopy, onBlurFocusTextCopy);
+        onEvents(['blur', 'focus'], textInput, onBlurFocusText);
+        onEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
+        form && onEvent('submit', form, onSubmitForm);
+        $.blur = function() {
+            return !sourceIsDisabled() && textInput.blur(), $;
+        };
+        $.click = function() {
+            return self.click(), onClickSelf(), $;
+        }; // Default filter for the tag name
+        $.f = function(v) {
+            return toCaseLower(v || "").replace(/[^ a-z\d-]/g, "").trim();
+        };
+        $.focus = function() {
+            if (!sourceIsDisabled()) {
+                setValue(getText(textInput), 1);
+            }
+            return $;
+        };
+        $.get = function(tag) {
+            return sourceIsDisabled() ? null : getTag(tag, 1);
+        };
+        $.input = textInput;
+        $.let = function(tag) {
+            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                var theTagsMin = state.min;
+                if (!tag) {
+                    setTags("");
+                } else if (isArray(tag)) {
+                    tag.forEach(function(v) {
+                        if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+                            fire('min.tags', [theTagsMin]);
+                            return $;
+                        }
+                        letTagElement(v), letTag(v);
+                    });
+                } else {
+                    if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
+                        fire('min.tags', [theTagsMin]);
+                        return $;
+                    }
+                    letTagElement(tag), letTag(tag);
+                }
+            }
+            return $;
+        };
+        $.pop = function() {
+            if (!source[name]) {
+                return $; // Already ejected!
+            }
+            delete source[name];
+            var tags = $.tags;
+            letClass(source, classNameE + 'source');
+            offEvent('blur', self, onBlurSelf);
+            offEvent('click', self, onClickSelf);
+            offEvent('focus', source, onFocusSource);
+            offEvent('keydown', self, onKeyDownSelf);
+            offEvent('keydown', textInput, onKeyDownText);
+            offEvent('keyup', self, onKeyUpSelf);
+            offEvent('paste', textInput, onPasteText);
+            offEvents(['blur', 'focus'], self, onBlurFocusSelf);
+            offEvents(['blur', 'focus'], textCopy, onBlurFocusTextCopy);
+            offEvents(['blur', 'focus'], textInput, onBlurFocusText);
+            offEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
+            form && offEvent('submit', form, onSubmitForm);
+            tags.forEach(letTagElement);
+            setElement(source, {
+                'tabindex': theTabIndex
+            });
+            return letElement(self), fire('pop', [tags]);
+        };
+        $.self = self;
+        $.set = function(tag, index) {
+            if (!tag) {
+                return $;
+            }
+            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
+                if (isArray(tag)) {
+                    setTags(tag.join(state.join));
+                } else {
+                    var tags = $.tags,
+                        theTagsMax = state.max;
+                    if (!getTag(tag)) {
+                        if (toCount(tags) < theTagsMax) {
+                            setTagElement(tag, index), setTag(tag, index);
+                        } else {
+                            fire('max.tags', [theTagsMax]);
+                        }
+                    } else {
+                        fire('has.tag', [tag, toArrayKey(tag, tags)]);
+                    }
+                }
+            }
+            return $;
+        };
+        $.source = $.output = source;
+        $.state = state;
+        $.tags = [];
+        setTags(source.value); // Fill value(s)
+        return $;
+    }
+    TP.instances = {};
+    TP.state = {
+        'class': 'tag-picker',
+        'escape': [','],
+        'join': ', ',
+        'max': 9999,
+        'min': 0,
+        'pattern': null
+    };
+    TP.version = '3.3.3';
+
+    function onChange() {
+        // Destroy!
+        let $;
+        for (let key in TP.instances) {
+            $ = TP.instances[key];
+            $.pop();
+            delete TP.instances[key];
+        }
+        let sources = getElements('.lot\\:field.type\\:query .input');
+        sources && toCount(sources) && sources.forEach(source => {
+            let c = getClasses(source);
+            let $ = new TP(source, getDatum(source, 'state') ?? {});
+            setClasses($.self, c);
+        });
+    }
+    onChange();
+    W._.on('change', onChange);
+    W.TP = TP;
+})();

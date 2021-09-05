@@ -757,6 +757,11 @@ function pages($value, $key) {
 }
 
 function section($value, $key) {
+    $tags = $value['tags'] ?? [];
+    if (!\array_key_exists('p', $tags)) {
+        $tags['p'] = false;
+    }
+    $value['tags'] = $tags;
     if (isset($value['content'])) {
         $out = \x\panel\type\content($value, $key);
         $out[0] = $value[0] ?? 'section';

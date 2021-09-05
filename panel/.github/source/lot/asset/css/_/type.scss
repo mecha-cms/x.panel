@@ -45,6 +45,8 @@
 $aligns: (
   'c': 'center',
   'e': 'end',
+  'j': 'justify',
+  'l': 'left',
   'r': 'right',
   's': 'start'
 );
@@ -54,11 +56,6 @@ $aligns: (
   .ta\:#{$k} {
     text-align: #{$v};
   }
-}
-
-.text-justify,
-.ta\:j {
-  text-align: justify;
 }
 
 .align-center,

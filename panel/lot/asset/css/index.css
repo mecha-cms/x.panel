@@ -1882,6 +1882,16 @@ figure,
   text-align: end;
 }
 
+.text-justify,
+.ta\:j {
+  text-align: justify;
+}
+
+.text-left,
+.ta\:l {
+  text-align: left;
+}
+
 .text-right,
 .ta\:r {
   text-align: right;
@@ -1890,11 +1900,6 @@ figure,
 .text-start,
 .ta\:s {
   text-align: start;
-}
-
-.text-justify,
-.ta\:j {
-  text-align: justify;
 }
 
 .align-center,

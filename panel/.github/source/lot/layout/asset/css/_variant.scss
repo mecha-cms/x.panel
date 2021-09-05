@@ -6,9 +6,6 @@ $mix: #000 !default;
 $ring: 0 0 0 3px rgba(0, 0, 0, .025) !default;
 $ring-error: 0 0 0 3px rgba(255, 0, 0, .15) !default;
 
-$body: sans-serif !default;
-$code: monospace !default;
-
 @function variant($percent: 0%) {
   @return mix($mix, $base, $percent);
 }
@@ -16,7 +13,6 @@ $code: monospace !default;
 .is\:#{$variant} {
   background: variant(0%);
   border-color: variant(5%);
-  font-family: $body;
   color: variant(60%);
   a {
     &[href] {
@@ -36,13 +32,14 @@ $code: monospace !default;
   .description {
     color: variant(50%);
   }
-  code, .code {
-    font-family: $code;
-  }
   fieldset, hr,
   .table td,
   .table th {
     border-color: variant(5%);
+  }
+  mark {
+    background: variant(10%);
+    color: inherit;
   }
   pre {
     > code {

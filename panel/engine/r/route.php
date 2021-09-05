@@ -185,10 +185,14 @@ function route() {
             ]) . $url->hash);
         }
     }
-    \State::set('[layout]', [
-        'skin:' . ($v = \State::get('x.panel.skin') ?? "") => !empty($v),
-        'type:' . ($_['type'] ?? 'blank') => true
-    ]);
+    if ($v = \State::get('x.panel.skin')) {
+        $_['[layout]']['skin:' . $v] = true;
+        \State::set('[layout].skin:' . $v, true);
+    }
+    if ($v = $_['type'] ?? 'blank') {
+        $_['[layout]']['type:' . $v] = true;
+        \State::set('[layout].type:' . $v, true);
+    }
     $n = \ltrim($_['id'] ?? "", '_.-');
     // Put data
     $GLOBALS['_'] = $_;

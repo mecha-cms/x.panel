@@ -148,9 +148,6 @@ return (static function($icons) {
                     'stack' => 30
                 ]
             ],
-            'tags' => [
-                'p' => false
-            ],
             'stack' => 10
         ],
         'desk' => [
@@ -164,17 +161,11 @@ return (static function($icons) {
                         0 => [
                             'type' => 'section',
                             'lot' => [],
-                            'tags' => [
-                                'p' => false
-                            ],
                             'stack' => 10
                         ],
                         'alert' => isset($alert) ? [
                             'type' => 'section',
                             'content' => $alert,
-                            'tags' => [
-                                'p' => false
-                            ],
                             'skip' => !count($alert),
                             'stack' => 15
                         ] : [],
@@ -187,25 +178,16 @@ return (static function($icons) {
                                     'lot' => []
                                 ]
                             ],
-                            'tags' => [
-                                'p' => false
-                            ],
                             'stack' => 20
                         ],
                         2 => [
                             'type' => 'section',
                             'lot' => [],
-                            'tags' => [
-                                'p' => false
-                            ],
                             'stack' => 30
                         ]
                     ],
                     'stack' => 10
                 ]
-            ],
-            'tags' => [
-                'p' => false
             ],
             'stack' => 20
         ]
