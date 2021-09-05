@@ -20,6 +20,10 @@ function bar($_) {
                         'url' => '/',
                         'stack' => 20
                     ],
+                    'separator' => [
+                        'type' => 'separator',
+                        'stack' => 20.1
+                    ],
                     'menu-2' => [
                         'title' => 'Menu 3',
                         'info' => 24,

@@ -8,12 +8,13 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 Release Notes
 -------------
 
-### 2.7.1
+### 2.7.2
 
  - Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.
  - Added _Data_ tab next to the _Pages_ tab for pages layout.
  - Added `$_['id']` property that stores the first `$_['path']` value.
  - Added `$_['skin']` property that stores the skin title and CSS path.
+ - Added `_.alert()`, `_.confirm()`, and `_.prompt()` methods that return promises, as alternative to the native `alert()`, `confirm()`, and `prompt()` functions.
  - Added `data` property to `field/*` type to quickly add hidden fields.
  - Added `data` property to `form/*` type to quickly add hidden fields.
  - Added `field/button` and `field/buttons` type. Currently useless. Would be useful when combined with certain JavaScript actions, such as to open a pop-up window.
@@ -23,6 +24,7 @@ Release Notes
  - Added comment notification badge in the main menu.
  - Added comments counter in the _Comment_ menu.
  - Added files/folders counter in the _Trash_ menu.
+ - Added typography test.
  - Fixed bug of tags data that is not stored consistently on edit mode.
  - Improved `title` type to allow icons in `file`, `folder`, `field/item`, `field/items`, and `field/toggle` type.
  - Improved extension page. It is now possible to filter extensions by searching and/or paginating.
