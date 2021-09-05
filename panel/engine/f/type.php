@@ -313,7 +313,7 @@ function files($value, $key) {
     $count_files = 0;
     $count_folders = 0;
     foreach ($lot as $k => $v) {
-        if (!\array_key_exists('type', $v)) {
+        if (\is_array($v) && !\array_key_exists('type', $v)) {
             $v['type'] = 'file';
             ++$count_files;
         } else if ('file' === $v['type']) {
@@ -393,6 +393,14 @@ function folder($value, $key) {
 }
 
 function folders($value, $key) {
+    if (isset($value['lot'])) {
+        foreach ($value['lot'] as &$v) {
+            if (\is_array($v) && !\array_key_exists('type', $v)) {
+                $v['type'] = 'folder';
+            }
+        }
+        unset($v);
+    }
     return \x\panel\type\files($value, $key);
 }
 
@@ -603,6 +611,8 @@ function menu($value, $key, int $i = 0) {
                     \x\panel\_set_class($li[2], \array_replace([
                         'is:separator' => true
                     ], $v['tags'] ?? []));
+                    $out[1] .= new \HTML($li);
+                    ++$count;
                     continue;
                 }
                 if (\array_key_exists('icon', $v)) {
@@ -731,7 +741,7 @@ function pages($value, $key) {
     }
     $count = 0;
     foreach ($lot as $k => $v) {
-        if (!\array_key_exists('type', $v)) {
+        if (\is_array($v) && !\array_key_exists('type', $v)) {
             $v['type'] = 'page';
         }
         $out[1] .= \x\panel\type($v, $k);

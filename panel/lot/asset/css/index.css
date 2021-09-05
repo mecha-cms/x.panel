@@ -1541,7 +1541,6 @@ label > input[type='radio'] + span {
   width: auto;
   height: 1px;
   background: #000;
-  margin: 0 8px;
   overflow: hidden;
 }
 
