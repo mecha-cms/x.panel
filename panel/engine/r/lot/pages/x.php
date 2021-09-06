@@ -112,6 +112,22 @@ if ($i > 1) {
                     'stack' => 30
                 ];
             }
+            $version_current = explode('.', $page->version);
+            $version_next = explode('.', Cache::live($n = 'x.' . $_['chop'][1], function() use($n) {
+                return fetch('https://mecha-cms.com/git/version/mecha-cms/' . $n, [
+                    'user-agent' => 'Mecha/' . VERSION
+                ]);
+            }, '1 day'));
+            // Check for major update
+            if (isset($version_current[0]) && isset($version_next[0]) && (int) $version_current[0] < (int) $version_next[0]) {
+                $_['alert']['info'][$d] = ['%s has been released. You have to update it manually. This version may not work properly with your current core version.', [$page->title . ' ' . $version]];
+            // Check for minor update
+            } else if (isset($version_current[1]) && isset($version_next[1]) && (int) $version_current[1] < (int) $version_next[1]) {
+                $_['alert']['info'][$d] = ['%s has been released.', [$page->title . ' ' . $version]];
+            // Check for patch update
+            } else if (isset($version_current[2]) && isset($version_next[2]) && (int) $version_current[2] < (int) $version_next[2]) {
+                $_['alert']['info'][$d] = ['%s has been released. Should be safe to update now.', [$page->title . ' ' . $version]];
+            }
             return $_;
         }, 10.1);
     }
