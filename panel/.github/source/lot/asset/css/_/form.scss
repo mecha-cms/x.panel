@@ -1,49 +1,95 @@
-:invalid {
-  box-shadow: none;
-}
-
 .button,
 .input,
 .select,
 .textarea {
+  background: var(--fill-input);
+  border-radius: var(--radius-input);
+  border: 1px solid var(--stroke-input);
+  box-shadow: var(--shadow-input);
+  color: var(--color-input);
   display: inline-block;
-  vertical-align: middle;
-  background: $color-back;
-  color: inherit;
-  border: 1px solid;
-  width: ($x * 8);
-  height: ($y * 1.5);
-  line-height: (($y * 1.5) - ($y / 2) - 2); /* height - (padding-top + padding-bottom) - (border-top-width + border-bottom-width) */
-  padding: ($y / 4) ($x / 2);
-  text-align: left;
+  height: calc(var(--y) * 1.5);
+  line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // height - (padding-top + padding-bottom) - (border-top-width + border-bottom-width)
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
   position: relative;
+  text-align: left;
+  vertical-align: middle;
+  width: calc(var(--x) * 8);
   z-index: 0;
+  $states: hover, focus, active, disabled;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-input--#{$state});
+      border-radius: var(--radius-input--#{$state});
+      box-shadow: var(--shadow-input--#{$state});
+      color: var(--color-input--#{$state});
+    }
+  }
+}
+
+.output {
+  background: var(--fill-output);
+  border-radius: var(--radius-output);
+  border: 0 solid var(--stroke-output);
+  box-shadow: var(--shadow-output);
+  color: var(--color-output);
+  display: inline-block;
+  font: inherit;
+  height: auto;
+  line-height: var(--h);
+  padding: calc(var(--y) / 4) 0;
+  position: relative;
+  text-align: inherit;
+  vertical-align: middle;
+  width: auto;
+  z-index: 0;
+  $states: hover, focus, active;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-output--#{$state});
+      border-radius: var(--radius-output--#{$state});
+      box-shadow: var(--shadow-output--#{$state});
+      color: var(--color-output--#{$state});
+    }
+  }
 }
 
 .button {
   width: auto;
   text-align: center;
-  background: $color-back-button;
-  color: $color-button;
-  border-width: 0;
-  line-height: $y; // Why?
-  &[href] {
-    color: $color-button;
+  background: var(--fill-button);
+  box-shadow: var(--shadow-button);
+  border-radius: var(--radius-button);
+  border-color: var(--stroke-button);
+  color: var(--color-button);
+  $states: hover, focus, active, disabled;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-button--#{$state});
+      border-color: var(--stroke-button--#{$state});
+      border-radius: var(--radius-button--#{$state});
+      box-shadow: var(--shadow-button--#{$state});
+      color: var(--color-button--#{$state});
+    }
   }
   .title {
     > .icon {
       &:first-child {
-        margin-left: (-$x / 4);
+        margin-left: calc(var(--x) / -4);
       }
       &:last-child {
-        margin-right: (-$x / 4);
+        margin-right: calc(var(--x) / -4);
       }
       &.caret {
-        margin-right: (-$x / 4);
-        margin-left: (-$x / 4);
+        margin-right: calc(var(--x) / -4);
+        margin-left: calc(var(--x) / -4);
       }
     }
   }
+}
+
+.button[href] {
+  @extend .button;
 }
 
 .button,
@@ -54,15 +100,16 @@ label {
 }
 
 .input,
+.select,
 .textarea {
-  &.is\:locked {
-    background: none;
-    border-style: dotted;
-  }
-  &:focus:invalid {
-    color: $color-error;
-    border-color: $color-error;
-    box-shadow: none;
+  $states: read-write, hover, focus, active, invalid, disabled, read-only;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-input--#{$state});
+      border-color: var(--stroke-input--#{$state});
+      box-shadow: var(--shadow-input--#{$state});
+      color: var(--color-input--#{$state});
+    }
   }
 }
 
@@ -70,13 +117,25 @@ label {
   &.is\:text {
     background: none;
     border: 0;
-    color: $color-link;
-    &:focus {
-      background: none;
+    color: var(--color-link);
+    $states: hover, focus, active;
+    @each $state in $states {
+      &:#{$state} {
+        background: none;
+        color: var(--color-link--#{$state});
+      }
     }
-    &:active {
-      background: none;
-    }
+  }
+}
+
+.input,
+.select,
+.textarea {
+  &.is\:locked {
+    @extend .input:read-only;
+  }
+  &.not\:active {
+    @extend .input:disabled;
   }
 }
 
@@ -93,9 +152,9 @@ label {
   &[type='range'] {
     background: none;
     border: 0;
-    padding: 0;
-    line-height: $y;
     box-shadow: none;
+    line-height: var(--y);
+    padding: 0;
   }
 }
 
@@ -104,29 +163,29 @@ label {
   &[type='color'],
   &[type='image'],
   &[type='radio'] {
-    margin: 0;
-    padding: 0;
     background: none;
     border: 0;
-    width: 1em;
+    cursor: pointer;
     height: 1em;
     line-height: 1em;
-    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    width: 1em;
     &.is\:locked {
       pointer-events: none;
     }
   }
   &[type='color'] {
-    width: ($x * 1.5);
-    height: ($y * 1.5);
+    height: calc(var(--y) * 1.5);
+    width: calc(var(--x) * 1.5);
     &::-webkit-color-swatch-wrapper {
       padding: 0;
     }
   }
   &[type='image'] {
-    width: auto;
-    height: auto;
     box-shadow: none;
+    height: auto;
+    width: auto;
   }
   &[type='number'] {
     &::-webkit-inner-spin-button,
@@ -152,21 +211,28 @@ label {
   }
   optgroup,
   option {
-    background: $color-back;
-    color: inherit;
+    background: var(--fill-input);
+    color: var(--color-input);
     margin: 0;
     padding: 0;
+    $states: disabled;
+    @each $state in $states {
+      &:#{$state} {
+        background: var(--fill-input--#{$state});
+        color: var(--fill-input--#{$state});
+      }
+    }
   }
   optgroup {
     font-weight: bold;
     option {
       font-weight: normal;
-      padding-left: ($x / 3);
+      padding-left: calc(var(--x) / 3);
     }
   }
   &:not([multiple]) {
-    padding-top: 0;
     padding-bottom: 0;
+    padding-top: 0;
   }
 }
 
@@ -176,11 +242,11 @@ label {
 }
 
 .textarea {
-  min-height: ($y * 3.75);
-  resize: vertical;
+  min-height: calc(var(--y) * 3.75);
   overflow: auto;
+  resize: vertical;
   &.height {
-    height: ($y * 10.75);
+    height: calc(var(--y) * 10.75);
   }
 }
 
@@ -203,9 +269,6 @@ label {
   &:focus {
     z-index: 1;
   }
-  &.is\:locked {
-    border-style: dotted;
-  }
 }
 
 // Custom appearance for modern browser(s)
@@ -213,18 +276,28 @@ label {
   &[type='checkbox'],
   &[type='radio'] {
     @include appearance(none);
-    background: $color-back-button;
-    &.not\:active {
-      background: $color;
-    }
+    background: var(--fill-button);
+    border-radius: var(--radius-button);
+    border: 0 solid var(--stroke-button);
+    box-shadow: var(--shadow-button);
+    color: var(--color-button);
     &::before {
-      content: "";
-      position: absolute;
-      top: 2px;
-      right: 2px;
+      background: var(--color-button);
       bottom: 2px;
+      content: "";
       left: 2px;
-      background: $color-button;
+      position: absolute;
+      right: 2px;
+      top: 2px;
+    }
+    $states: hover, focus, active, disabled;
+    @each $state in $states {
+      &:#{$state} {
+        background: var(--fill-button--#{$state});
+        border-color: var(--stroke-button--#{$state});
+        box-shadow: var(--shadow-button--#{$state});
+        color: var(--color-button--#{$state});
+      }
     }
     &:checked {
       &::before {
@@ -235,21 +308,30 @@ label {
   &[type='checkbox'] {
     &:checked {
       &::before {
-        top: 1px;
-        right: 5px;
+        @include transform(rotate(45deg));
+        border-bottom: 2px solid var(--color-button);
+        border-right: 2px solid var(--color-button);
         bottom: 4px;
         left: 5px;
-        border-right: 2px solid $color-button;
-        border-bottom: 2px solid $color-button;
-        @include transform(rotate(45deg));
+        right: 5px;
+        top: 1px;
         visibility: visible;
+      }
+    }
+    $states: hover, focus, active, disabled;
+    @each $state in $states {
+      &:#{$state} {
+        &::before {
+          border-bottom-color: var(--color-button--#{$state});
+          border-right-color: var(--color-button--#{$state});
+        }
       }
     }
   }
   &[type='radio'] {
     &:checked {
       &::before {
-        border: 2px solid $color-button;
+        border: 2px solid var(--color-button);
         visibility: visible;
       }
     }
@@ -257,37 +339,74 @@ label {
     &::before {
       border-radius: 100%;
     }
+    $states: hover, focus, active, disabled;
+    @each $state in $states {
+      &:#{$state} {
+        &::before {
+          border-color: var(--color-button--#{$state});
+        }
+      }
+    }
   }
   &[type='range'] {
     @include appearance(none);
     &::-webkit-slider-runnable-track {
       -webkit-appearance: none;
-      background: $color;
+      background: var(--stroke-input);
       border: 0;
       height: 2px;
       overflow: visible;
     }
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: ($x / 2);
-      height: $y;
-      margin-top: (-$y / 2) + 1; // Magic! :(
-      background: $color-back-button;
-      border: 0;
-      border-radius: 0;
+      background: var(--fill-button);
+      border-color: var(--stroke-button);
+      border-radius: var(--radius-button);
+      box-shadow: var(--shadow-button);
+      color: var(--color-button);
+      height: var(--y);
+      margin-top: calc(var(--y) / -2) + 1px; // Magic! :(
+      width: calc(var(--x) / 2);
     }
     &::-moz-range-track {
-      background: $color;
+      background: var(--stroke-input);
       border: 0;
       height: 2px;
     }
     &::-moz-range-thumb {
-      width: ($x / 2);
-      height: $y;
-      margin-top: (-$y / 2) + 1; // Magic! :(
-      background: $color-back-button;
-      border: 0;
-      border-radius: 0;
+      background: var(--fill-button);
+      border-color: var(--stroke-button);
+      border-radius: var(--radius-button);
+      box-shadow: var(--shadow-button);
+      color: var(--color-button);
+      height: var(--y);
+      margin-top: calc(var(--y) / -2) + 1px; // Magic! :(
+      width: calc(var(--x) / 2);
+    }
+  }
+  $states: hover, focus, active, disabled;
+  @each $state in $states {
+    &:#{$state} {
+      &::-webkit-slider-runnable-track {
+        background: var(--stroke-input--#{$state});
+      }
+      &::-moz-range-track {
+        background: var(--stroke-input--#{$state});
+      }
+      &::-webkit-slider-thumb {
+        background: var(--fill-button--#{$state});
+        border-color: var(--stroke-button--#{$state});
+        border-radius: var(--radius-button--#{$state});
+        box-shadow: var(--shadow-button--#{$state});
+        color: var(--color-button--#{$state});
+      }
+      &::-moz-range-thumb {
+        background: var(--fill-button--#{$state});
+        border-color: var(--stroke-button--#{$state});
+        border-radius: var(--radius-button--#{$state});
+        box-shadow: var(--shadow-button--#{$state});
+        color: var(--color-button--#{$state});
+      }
     }
   }
 }

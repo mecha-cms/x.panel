@@ -1,6 +1,6 @@
 .lot\:section {
-  padding: $y $x;
   margin: 0 auto;
+  padding: var(--y) var(--x);
   &.count\:0 {
     display: none;
   }

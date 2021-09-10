@@ -1,35 +1,36 @@
 .lot\:bar {
   display: flex;
   flex-wrap: wrap;
-  line-height: ($y * 2);
+  line-height: calc(var(--y) * 2);
   .lot\:links {
     > ul,
     > ul > li {
+      height: inherit;
+      list-style: none;
       margin: 0;
       padding: 0;
-      list-style: none;
       width: auto;
-      height: inherit;
     }
     > ul {
       display: flex;
-      height: ($y * 2);
+      height: calc(var(--y) * 2);
       > li {
         .title {
           small {
+            color: var(--color-bar-info);
             float: right;
-            margin-left: ($x / 4);
+            margin-left: calc(var(--x) / 4);
           }
           > .icon {
             &:first-child {
-              margin-left: (-$x / 4);
+              margin-left: calc(var(--x) / -4);
             }
             &:last-child {
-              margin-right: (-$x / 4);
+              margin-right: calc(var(--x) / -4);
             }
             &.caret {
-              margin-right: (-$x / 4);
-              margin-left: (-$x / 4);
+              margin-left: calc(var(--x) / -4);
+              margin-right: calc(var(--x) / -4);
             }
           }
         }
@@ -40,11 +41,11 @@
           }
         }
         &.is\:separator {
-          width: 1px;
-          height: $y;
-          background: $color;
-          margin: ($y / 2) 0;
+          background: var(--stroke);
+          height: var(--y);
+          margin: calc(var(--y) / 2) 0;
           overflow: hidden;
+          width: 1px;
           &:first-child,
           &:last-child {
             display: none;
@@ -53,8 +54,8 @@
         > a {
           display: flex;
           height: inherit;
-          padding: 0 ($x * .75);
           overflow: hidden;
+          padding: 0 calc(var(--x) * .75);
         }
       }
     }
@@ -63,10 +64,10 @@
     }
   }
   .lot\:field {
+    height: inherit;
     margin: 0;
     padding: 0;
     width: auto;
-    height: inherit;
     > label {
       + div,
       + br + div {
@@ -74,27 +75,27 @@
       }
     }
     .input {
-      display: block;
-      width: ($x * 8);
-      height: ($y * 2);
-      line-height: ($y * 2);
-      margin: 0;
-      padding: 0 ($x / 1.5);
       border: 0;
+      display: block;
+      height: calc(var(--y) * 2);
+      line-height: calc(var(--y) * 2);
+      margin: 0;
+      padding: 0 calc(var(--x) / 1.5);
+      width: calc(var(--x) * 8);
     }
     label {
       display: none;
     }
     > * {
-      margin-right: 0;
       margin-left: 0;
+      margin-right: 0;
     }
   }
-  > .title,
-  > .description {
-    margin: 0;
-    padding: 0 ($x * .75);
+  > .description,
+  > .title {
     line-height: inherit;
+    margin: 0;
+    padding: 0 calc(var(--x) * .75);
   }
   > .title {
     font-size: 100%;

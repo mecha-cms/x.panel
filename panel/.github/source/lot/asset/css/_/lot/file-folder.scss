@@ -1,26 +1,26 @@
 .lot\:file {
+  border: 0 solid var(--fill);
   display: flex;
-  border: 0 solid $color-back;
-  margin: 0 (-$x / 4);
-  padding: ($y / 4) ($x / 2);
   list-style: none;
-  position: relative;
+  margin: 0 calc(var(--x) / -4);
   overflow: hidden;
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  position: relative;
   &::before,
   &::after {
     content: "";
     display: block;
-    width: $x;
-    height: $y;
+    height: var(--y);
+    left: calc(var(--x) / 4);
     position: absolute;
-    top: ($y / 4);
-    left: ($x / 4);
+    top: calc(var(--y) / 4);
+    width: var(--x);
   }
   > * {
-    margin: 0 ($x / 8);
+    margin: 0 calc(var(--x) / 8);
   }
   > .lot\:tasks {
-    margin-right: (-$x / 4);
+    margin-right: calc(var(--x) / -4);
   }
   &.not\:active {
     opacity: .5;
@@ -33,34 +33,34 @@
 
 .is\:file,
 .is\:folder {
-  padding-left: ($x * 1.75);
+  padding-left: calc(var(--x) * 1.75);
 }
 
 .is\:file {
   &::before {
-    border: 1px solid;
+    border: 1px solid var(--stroke);
     width: 20px; // Magic :(
   }
   &::after {
-    width: 0;
-    height: 0;
-    border: 3px solid; // Magic :(
-    border-top-color: inherit;
+    border: 3px solid var(--stroke); // Magic :(
     border-right-color: inherit;
+    border-top-color: inherit;
+    height: 0;
     left: 20px; // Magic :(
+    width: 0;
   }
 }
 
 .is\:folder {
   &::before {
-    background: $color;
+    background: var(--color);
     height: 18px;
     top: 11px;
   }
   &::after {
-    background: $color;
-    width: 12px;
+    background: var(--color);
     height: 3px;
     top: 7px;
+    width: 12px;
   }
 }

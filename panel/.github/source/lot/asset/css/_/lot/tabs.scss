@@ -3,9 +3,9 @@
     ul,
     li {
       display: flex;
+      list-style: none;
       margin: 0;
       padding: 0;
-      list-style: none;
     }
     ul {
       overflow: hidden;
@@ -24,16 +24,16 @@
     }
     .title {
       .icon {
-        margin: 0 (-($z / 2));
+        margin: 0 calc(var(--z) / -2);
         &:first-child {
-          margin-right: ($z / 4);
+          margin-right: calc(var(--z) / 4);
         }
         &:last-child {
-          margin-left: ($z / 4);
+          margin-left: calc(var(--z) / 4);
         }
         &:only-child {
-          margin-right: (-($z / 2));
-          margin-left: (-($z / 2));
+          margin-left: calc(var(--z) / -2);
+          margin-right: calc(var(--z) / -2);
         }
       }
     }

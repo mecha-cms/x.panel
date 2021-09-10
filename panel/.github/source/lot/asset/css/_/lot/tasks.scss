@@ -1,14 +1,14 @@
 .lot\:tasks {
-  display: flex;
   align-items: center;
+  display: flex;
   flex-wrap: wrap;
-  gap: ($y / 4) ($x / 4);
+  gap: calc(var(--y) / 4) calc(var(--x) / 4);
   &\.link {
     .title {
-      gap: ($y / 8) ($x / 8);
+      gap: calc(var(--y) / 8) calc(var(--x) / 8);
       > .icon {
-        margin-right: 0;
         margin-left: 0;
+        margin-right: 0;
       }
     }
   }

@@ -3,7 +3,8 @@
 }
 
 .code {
-  font-family: $mono;
+  color: var(--color-code);
+  font-family: var(--font-face-mono);
   font-size: 80%; // Magic :(
 }
 
@@ -13,12 +14,12 @@
 
 .p {
   * + & {
-    margin-top: $y;
+    margin-top: var(--y);
   }
 }
 
 .small {
-  font-size: 70%;
+  font-size: 70%; // Magic :(
 }
 
 .s {
@@ -74,22 +75,22 @@ $aligns: (
 
 .align-center,
 .a\:c {
-  margin-right: auto;
   margin-left: auto;
+  margin-right: auto;
   text-align: center;
   img {
     display: block;
-    margin-right: auto;
     margin-left: auto;
+    margin-right: auto;
   }
 }
 
 .align-end,
 .a\:e {
-  margin-top: ($y / 3);
-  margin-inline-end: $x;
-  margin-bottom: ($y / 1.5);
   float: inline-end;
+  margin-bottom: calc(var(--y) / 1.5);
+  margin-inline-end: var(--x);
+  margin-top: calc(var(--y) / 3);
   text-align: end;
   img {
     display: block;
@@ -98,15 +99,15 @@ $aligns: (
 
 * + .align-center,
 * + .a\:c {
-  margin-top: $y;
+  margin-top: var(--y);
 }
 
 .align-left,
 .a\:l {
-  margin-top: ($y / 3);
-  margin-right: $x;
-  margin-bottom: ($y / 1.5);
   float: left;
+  margin-bottom: calc(var(--y) / 1.5);
+  margin-right: var(--x);
+  margin-top: calc(var(--y) / 3);
   text-align: left;
   img {
     display: block;
@@ -115,19 +116,19 @@ $aligns: (
 
 .align-right,
 .a\:r {
-  margin-top: ($y / 3);
-  margin-bottom: ($y / 1.5);
-  margin-left: $x;
   float: right;
+  margin-bottom: calc(var(--y) / 1.5);
+  margin-left: var(--x);
+  margin-top: calc(var(--y) / 3);
   text-align: right;
 }
 
 .align-start,
 .a\:s {
-  margin-top: ($y / 3);
-  margin-inline-start: $x;
-  margin-bottom: ($y / 1.5);
   float: inline-start;
+  margin-bottom: calc(var(--y) / 1.5);
+  margin-inline-start: var(--x);
+  margin-top: calc(var(--y) / 3);
   text-align: start;
   img {
     display: block;
@@ -153,104 +154,62 @@ $aligns: (
 $sizes: 0, 1, 2;
 
 @each $size in $sizes {
-  .m\:#{$size} {
-    margin: ($y * $size) ($x * $size);
-  }
-  .mb\:#{$size} {
-    margin-bottom: ($y * $size);
-  }
-  .me\:#{$size} {
-    margin-block-end: ($y * $size);
-    margin-inline-end: ($x * $size);
-  }
-  .meb\:#{$size} {
-    margin-block-end: ($y * $size);
-  }
-  .mei\:#{$size} {
-    margin-inline-end: ($x * $size);
-  }
-  .ml\:#{$size} {
-    margin-left: ($x * $size);
-  }
-  .mr\:#{$size} {
-    margin-right: ($x * $size);
-  }
-  .ms\:#{$size} {
-    margin-block-start: ($y * $size);
-    margin-inline-start: ($x * $size);
-  }
-  .msb\:#{$size} {
-    margin-block-start: ($y * $size);
-  }
-  .msi\:#{$size} {
-    margin-inline-start: ($x * $size);
-  }
-  .mt\:#{$size} {
-    margin-top: ($y * $size);
+  $types: b bottom, l left, r right, t top;
+  @each $type, $v in $types {
+    .m#{$type}\:#{$size} {
+      @if 0 == $size {
+        margin-#{$v}: 0;
+      } @else {
+        @if left == $v or right == $v {
+          margin-#{$v}: calc(var(--x) * #{$size});
+        } @else {
+          margin-#{$v}: calc(var(--y) * #{$size});
+        }
+      }
+    }
+    .p#{$type}\:#{$size} {
+      @if 0 == $size {
+        padding-#{$v}: 0;
+      } @else {
+        @if left == $v or right == $v {
+          padding-#{$v}: calc(var(--x) * #{$size});
+        } @else {
+          padding-#{$v}: calc(var(--y) * #{$size});
+        }
+      }
+    }
   }
   .mx\:#{$size} {
-    margin-right: ($x * $size);
-    margin-left: ($x * $size);
+    @extend .mr\:#{$size}, .ml\:#{$size};
   }
   .my\:#{$size} {
-    margin-top: ($y * $size);
-    margin-bottom: ($y * $size);
+    @extend .mt\:#{$size}, .mb\:#{$size};
   }
-  .p\:#{$size} {
-    padding: ($y * $size) ($x * $size);
-  }
-  .pb\:#{$size} {
-    padding-bottom: ($y * $size);
-  }
-  .pe\:#{$size} {
-    padding-block-end: ($y * $size);
-    padding-inline-end: ($x * $size);
-  }
-  .peb\:#{$size} {
-    padding-block-end: ($y * $size);
-  }
-  .pei\:#{$size} {
-    padding-inline-end: ($x * $size);
-  }
-  .pl\:#{$size} {
-    padding-left: ($x * $size);
-  }
-  .pr\:#{$size} {
-    padding-right: ($x * $size);
-  }
-  .ps\:#{$size} {
-    padding-block-start: ($y * $size);
-    padding-inline-start: ($x * $size);
-  }
-  .psb\:#{$size} {
-    padding-block-start: ($y * $size);
-  }
-  .psi\:#{$size} {
-    padding-inline-start: ($x * $size);
-  }
-  .pt\:#{$size} {
-    padding-top: ($y * $size);
+  .m\:#{$size} {
+    @extend .mx\:#{$size}, .my\:#{$size};
   }
   .px\:#{$size} {
-    padding-right: ($x * $size);
-    padding-left: ($x * $size);
+    @extend .pr\:#{$size}, .pl\:#{$size};
   }
   .py\:#{$size} {
-    padding-top: ($y * $size);
-    padding-bottom: ($y * $size);
+    @extend .pt\:#{$size}, .pb\:#{$size};
+  }
+  .p\:#{$size} {
+    @extend .px\:#{$size}, .py\:#{$size};
   }
 }
 
 .table {
-  width: 100%;
   border-collapse: collapse;
+  width: 100%;
   caption {
-    margin-bottom: ($y / 4);
+    caption-side: bottom;
+    margin-top: calc(var(--y) / 4);
   }
   th,
   td {
-    border: 1px solid;
-    padding: ($y / 6) ($x / 2);
+    border: 1px solid var(--stroke);
+    padding: calc(var(--y) / 6) calc(var(--x) / 2);
     text-align: inherit;
     vertical-align: top;
   }

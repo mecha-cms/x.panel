@@ -1,25 +1,42 @@
 .lot\:pager {
-  margin-right: (-$x / 8);
-  margin-left: (-$x / 8);
+  margin-right: calc(var(--x) / -8);
+  margin-left: calc(var(--x) / -8);
   &,
   > span {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
   }
   > span {
     > a,
     > b,
     > span {
-      background: $color-back-button;
-      color: $color-button;
+      background: var(--fill-button);
+      border-radius: var(--radius-button);
+      border: 1px solid var(--stroke-button);
+      box-shadow: var(--shadow-button);
+      color: var(--color-button);
       font: inherit;
-      padding: 0 ($x / 4);
-      margin: 0 ($x / 8);
+      margin: 0 calc(var(--x) / 8);
+      padding: 0 calc(var(--x) / 4);
+    }
+    $states: hover, focus, active;
+    @each $state in $states {
+      > a {
+        &:#{$state} {
+          background: var(--fill-button--#{$state});
+          border-color: var(--stroke-button--#{$state});
+          box-shadow: var(--shadow-button--#{$state});
+          color: var(--color-button--#{$state});
+        }
+      }
     }
     > b,
     > span {
       background: none;
+      border-color: transparent;
+      border-radius: 0;
+      box-shadow: none;
       color: inherit;
     }
   }

@@ -1,6 +1,6 @@
 .lot\:tab {
-  margin-top: $y;
   display: none;
+  margin-top: var(--y);
   &.is\:current {
     display: block;
   }

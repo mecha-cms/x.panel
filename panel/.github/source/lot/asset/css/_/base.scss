@@ -1,12 +1,12 @@
 *,
 ::before,
 ::after {
+  box-sizing: border-box;
+  font: inherit;
   margin: 0;
   padding: 0;
-  font: inherit;
   text-decoration: inherit;
   text-transform: inherit;
-  box-sizing: border-box;
 }
 
 ::-webkit-input-placeholder {
@@ -22,15 +22,21 @@
 }
 
 :focus {
-  outline: 0;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
+  outline: 0;
 }
 
 a {
   color: inherit;
   &[href] {
-    color: $color-link;
+    color: var(--color-link);
+    $states: hover, focus, active;
+    @each $state in $states {
+      &:#{$state} {
+        color: var(--color-link--#{$state});
+      }
+    }
   }
 }
 
@@ -39,18 +45,18 @@ a {
 }
 
 :root {
-  font: normal normal #{$z}/#{$h} $sans;
+  background: var(--fill);
+  border: 0 solid var(--stroke);
+  color: var(--color);
+  font: normal normal var(--font-size)/var(--font-height) var(--font-face);
   text-align: left;
-  background: $color-back;
-  border: 0 solid;
-  color: $color;
 }
 
 abbr {
   border: 0;
-  text-decoration: none;
-  cursor: inherit;
   border-bottom: 1px solid transparent;
+  cursor: inherit;
+  text-decoration: none;
   &[title]:hover {
     border-bottom-color: inherit;
     cursor: help;
@@ -123,49 +129,54 @@ sup {
 }
 
 mark {
-  background: $color-back-mark;
-  color: inherit;
+  background: var(--fill-mark);
+  color: var(--color-mark);
 }
 
 pre {
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  font-weight: normal;
   font-style: normal;
+  font-weight: normal;
   overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
   code {
+    background: var(--fill-code--block);
+    border: 0 solid var(--stroke-code--block);
+    color: var(--color-code--block);
     display: block;
-    background: #000;
-    color: #fff;
-    padding: ($y - $z) ($x / 2);
+    padding: calc(var(--y) - var(--z)) calc(var(--x) / 2);
   }
 }
 
 img {
-  max-width: 100%;
   height: auto;
+  max-width: 100%;
 }
 
 button::-moz-focus-inner,
 input::-moz-focus-inner {
-  margin: 0;
-  padding: 0;
   border: 0;
+  margin: 0;
   outline: 0;
+  padding: 0;
 }
 
 @for $i from 0 through 5 {
   h#{$i + 1} {
-    font-size: ($z * (2 - (.25 * $i)));
+    @if 0 == $i {
+      font-size: calc(var(--z) * 2);
+    } @else {
+      font-size: calc(var(--z) * (2 - (#{$i} / 4)));
+    }
     line-height: 1;
   }
 }
 
 kbd {
-  display: inline-block;
-  vertical-align: middle;
-  padding: 0 ($z / 2);
   cursor: pointer;
+  display: inline-block;
+  padding: 0 calc(var(--z) / 2);
+  vertical-align: middle;
 }
 
 blockquote,
@@ -191,46 +202,46 @@ ul {
 }
 
 blockquote {
-  font-size: ($z * 1.1);
-  margin-right: $x;
-  margin-left: $x;
+  font-size: calc(var(--z) * 1.1);
+  margin-right: var(--x);
+  margin-left: var(--x);
 }
 
 figure {
+  figcaption {
+    margin-top: calc(var(--y) / 4);
+  }
   img {
     display: block;
     margin: 0 auto;
-  }
-  figcaption {
-    margin-top: ($y / 4);
   }
 }
 
 ol,
 ul,
 dd {
-  margin-left: ($x + $z);
+  margin-left: calc(var(--x) + var(--z));
 }
 
 ol,
 ul {
   & & {
-    margin-left: $z;
+    margin-left: var(--z);
   }
 }
 
 ul {
-  list-style: square;
+  list-style: disc;
 }
 
 fieldset,
 hr {
+  border: 1px solid var(--stroke);
   color: inherit;
-  border: 1px solid;
 }
 
 fieldset {
-  padding: $y $x;
+  padding: var(--y) var(--x);
 }
 
 hr {
@@ -239,8 +250,8 @@ hr {
 }
 
 legend {
-  padding: 0 ($x / 3);
-  margin: 0 0 (-$x / 3);
+  padding: 0 calc(var(--x) / 3);
+  margin: 0 0 calc(var(--x) / -3);
   + .p {
     margin-top: 0;
   }

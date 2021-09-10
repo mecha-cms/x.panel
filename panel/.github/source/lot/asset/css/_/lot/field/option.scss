@@ -2,21 +2,33 @@
 
 .lot\:field.type\:option {
   .option-picker {
-    background: $color-back;
-    color: inherit;
-    border-color: inherit;
-    height: ($y * 1.5);
-    line-height: (($y * 1.5) - ($y / 2) - 2); // See `.input`
-    padding: ($y / 4) ($x / 2);
+    background: var(--fill-input);
+    border-color: var(--stroke-input);
+    border-radius: var(--radius-input);
+    box-shadow: var(--shadow-input);
+    color: var(--color-input);
+    height: calc(var(--y) * 1.5);
+    line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `.input`
+    padding: calc(var(--y) / 4) calc(var(--x) / 2);
+    $states: hover, focus, active, disabled;
+    @each $state in $states {
+      &:#{$state} {
+        background: var(--fill-input--#{$state});
+        border-color: var(--stroke-input--#{$state});
+        border-radius: var(--radius-input--#{$state});
+        box-shadow: var(--shadow-input--#{$state});
+        color: var(--color-input--#{$state});
+      }
+    }
     &::after {
-      right: ($x / 2);
+      right: calc(var(--x) / 2);
     }
     &.width {
       display: flex;
       width: 100%;
     }
     &__options {
-      line-height: $h;
+      line-height: var(--h);
     }
     &__source {
       + .option-picker {

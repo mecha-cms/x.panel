@@ -1,20 +1,20 @@
 .icon {
-  display: inline-block;
-  width: $x;
-  height: $y;
-  min-width: $x;
-  min-height: $y;
-  max-width: 100%;
-  max-height: 100%;
-  vertical-align: top;
-  font-weight: normal;
-  font-style: normal;
-  fill: currentColor;
-  border-color: inherit;
-  position: relative;
-  overflow: hidden;
-  text-indent: -9999px;
   @include user-select(none);
+  border-color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  font-style: normal;
+  font-weight: normal;
+  height: var(--y);
+  max-height: 100%;
+  max-width: 100%;
+  min-height: var(--y);
+  min-width: var(--x);
+  overflow: hidden;
+  position: relative;
+  text-indent: -9999px;
+  vertical-align: top;
+  width: var(--x);
   &[display='none'] {
     display: none;
   }
@@ -24,7 +24,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 ($x / 4);
+  gap: 0 calc(var(--x) / 4);
   > span {
     flex: 1;
   }

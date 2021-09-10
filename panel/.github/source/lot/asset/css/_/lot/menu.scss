@@ -1,74 +1,76 @@
 .lot\:menu {
-  background: $color-back;
-  width: ($x * 8);
+  background: var(--fill);
   height: auto;
-  line-height: $y;
+  line-height: var(--y);
+  width: calc(var(--x) * 8);
   .lot\:menu {
+    box-shadow: var(--shadow-menu);
     display: none;
+    left: 100%;
     margin: 0;
     position: absolute;
     top: 0;
-    left: 100%;
     z-index: 9998;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
   }
   ul,
   li {
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
   }
-  li {
-    display: flex;
-    position: relative;
-    .title {
-      flex: 1;
-      small {
-        float: right;
-        margin-right: (-$x / 4);
-        background: $color;
-        color: $color-back;
-        padding: 0 ($x / 4);
-      }
-      > .icon {
-        &:first-child {
-          margin-left: (-$x / 4);
+  ul {
+    li {
+      display: flex;
+      position: relative;
+      .title {
+        flex: 1;
+        small {
+          background: var(--fill-menu-info);
+          color: var(--color-menu-info);
+          float: right;
+          margin-right: calc(var(--x) / -4);
+          padding: 0 calc(var(--x) / 4);
         }
+        > .icon {
+          &:first-child {
+            margin-left: calc(var(--x) / -4);
+          }
+          &:last-child {
+            margin-right: calc(var(--x) / 4);
+          }
+          &.caret {
+            margin-left: calc(var(--x) / -4);
+            margin-right: calc(var(--x) / -4);
+          }
+        }
+      }
+      &.is\:separator {
+        background: var(--stroke);
+        height: 1px;
+        overflow: hidden;
+        width: auto;
+        &:first-child,
         &:last-child {
-          margin-right: (-$x / 4);
-        }
-        &.caret {
-          margin-right: (-$x / 4);
-          margin-left: (-$x / 4);
+          display: none;
         }
       }
-    }
-    &.is\:separator {
-      width: auto;
-      height: 1px;
-      background: $color;
-      overflow: hidden;
-      &:first-child,
-      &:last-child {
-        display: none;
+      &.is\:current {
+        > a {
+          color: inherit;
+        }
       }
-    }
-    &.is\:current {
-      > a {
-        color: inherit;
-      }
-    }
-    &:hover {
-      > .lot\:menu {
-        display: block;
+      &:hover {
+        > .lot\:menu {
+          display: block;
+        }
       }
     }
   }
   a {
+    color: var(--color-link);
     display: flex;
     flex: 1;
-    padding: ($y / 4) ($x / 2);
-    color: $color-link;
+    padding: calc(var(--y) / 4) calc(var(--x) / 2);
     &:focus {
       + ul {
         display: block;
@@ -81,16 +83,16 @@
   display: inline-flex;
   position: relative;
   .lot\:menu {
+    box-shadow: var(--shadow-menu);
     display: none;
+    left: 0;
     margin: 0;
     position: absolute;
     top: 100%;
-    left: 0;
     z-index: 9998;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, .25);
     .lot\:menu {
-      top: 0;
       left: 100%;
+      top: 0;
     }
     &.is\:enter {
       display: block;

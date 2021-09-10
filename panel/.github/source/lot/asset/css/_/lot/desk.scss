@@ -1,7 +1,7 @@
 .lot\:desk {
-  padding: $y $x;
   margin: 0 auto;
-  max-width: ($x * 36);
+  max-width: calc(var(--x) * 36);
+  padding: var(--y) var(--x);
   &.width {
     display: block;
     max-width: 100%;

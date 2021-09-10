@@ -1,20 +1,20 @@
 .lot\:files {
-  margin-right: 0;
-  margin-left: 0;
-  padding: 0;
   display: block;
   list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
   h3,
   p {
+    font: inherit;
     margin: 0;
     padding: 0;
-    font: inherit;
   }
   h3 {
     flex: 1;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     a {
       &.not\:active {
         opacity: 1;

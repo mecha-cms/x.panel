@@ -4,26 +4,27 @@
 pre {
   &.is\:text {
     code {
-      display: inline-block;
       background: none;
-      border: 1px dotted;
+      border-style: dotted;
+      border-width: 1px;
       color: inherit;
+      display: inline-block;
     }
   }
 }
 
 .is\:error {
-  display: flex;
-  border-top-width: 4px;
-  align-items: center;
   align-content: center;
+  align-items: center;
+  border-top-width: 4px;
+  display: flex;
   text-align: center;
   > * {
     flex: 1;
     .title {
       display: inline-flex;
       > .icon + span {
-        margin-left: ($x / 4);
+        margin-left: calc(var(--x) / 4);
       }
     }
   }
