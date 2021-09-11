@@ -70,7 +70,6 @@
 }
 
 .input,
-.select,
 .textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
@@ -166,6 +165,21 @@
 }
 
 .select {
+  background: var(--fill-input);
+  border-color: var(--stroke-input);
+  border-radius: var(--radius-input);
+  box-shadow: var(--shadow-input);
+  color: var(--color-input);
+  width: calc(var(--x) * 8);
+  $states: hover, focus, active, disabled;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-input--#{$state}, var(--fill-input));
+      border-color: var(--stroke-input--#{$state}, var(--stroke-input));
+      box-shadow: var(--shadow-input--#{$state}, var(--shadow-input));
+      color: var(--color-input--#{$state}, var(--color-input));
+    }
+  }
   cursor: pointer;
   &[multiple] {
     height: auto;

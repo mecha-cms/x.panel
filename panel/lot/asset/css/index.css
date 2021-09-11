@@ -263,6 +263,10 @@ blockquote {
   margin-left: var(--x);
 }
 
+dd {
+  margin-left: var(--x);
+}
+
 figure figcaption {
   margin-top: calc(var(--y) / 4);
 }
@@ -273,8 +277,7 @@ figure img {
 }
 
 ol,
-ul,
-dd {
+ul {
   margin-left: calc(var(--x) + var(--z));
 }
 
@@ -286,7 +289,7 @@ ul ul {
 }
 
 ul {
-  list-style: disc;
+  list-style: square;
 }
 
 fieldset,
@@ -309,8 +312,27 @@ legend {
   padding: 0 calc(var(--x) / 3);
 }
 
-legend + * {
-  margin-top: 0 !important;
+legend + .p,
+legend + blockquote,
+legend + details,
+legend + dl,
+legend + fieldset,
+legend + figcaption,
+legend + figure,
+legend + form,
+legend + h1,
+legend + h2,
+legend + h3,
+legend + h4,
+legend + h5,
+legend + h6,
+legend + hr,
+legend + ol,
+legend + p,
+legend + pre,
+legend + table,
+legend + ul {
+  margin-top: 0;
 }
 
 .button,
@@ -437,7 +459,6 @@ legend + * {
 }
 
 .input,
-.select,
 .textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
@@ -448,7 +469,6 @@ legend + * {
 }
 
 .input:read-write,
-.select:read-write,
 .textarea:read-write {
   background: var(--fill-input--read-write, var(--fill-input));
   border-color: var(--stroke-input--read-write, var(--stroke-input));
@@ -457,7 +477,6 @@ legend + * {
 }
 
 .input:hover,
-.select:hover,
 .textarea:hover {
   background: var(--fill-input--hover, var(--fill-input));
   border-color: var(--stroke-input--hover, var(--stroke-input));
@@ -466,7 +485,6 @@ legend + * {
 }
 
 .input:focus,
-.select:focus,
 .textarea:focus {
   background: var(--fill-input--focus, var(--fill-input));
   border-color: var(--stroke-input--focus, var(--stroke-input));
@@ -475,7 +493,6 @@ legend + * {
 }
 
 .input:active,
-.select:active,
 .textarea:active {
   background: var(--fill-input--active, var(--fill-input));
   border-color: var(--stroke-input--active, var(--stroke-input));
@@ -484,7 +501,6 @@ legend + * {
 }
 
 .input:invalid,
-.select:invalid,
 .textarea:invalid {
   background: var(--fill-input--invalid, var(--fill-input));
   border-color: var(--stroke-input--invalid, var(--stroke-input));
@@ -493,7 +509,6 @@ legend + * {
 }
 
 .input:read-only,
-.select:read-only,
 .textarea:read-only {
   background: var(--fill-input--read-only, var(--fill-input));
   border-color: var(--stroke-input--read-only, var(--stroke-input));
@@ -502,7 +517,6 @@ legend + * {
 }
 
 .input:disabled,
-.select:disabled,
 .textarea:disabled {
   background: var(--fill-input--disabled, var(--fill-input));
   border-color: var(--stroke-input--disabled, var(--stroke-input));
@@ -602,7 +616,41 @@ legend + * {
 }
 
 .select {
+  background: var(--fill-input);
+  border-color: var(--stroke-input);
+  border-radius: var(--radius-input);
+  box-shadow: var(--shadow-input);
+  color: var(--color-input);
+  width: calc(var(--x) * 8);
   cursor: pointer;
+}
+
+.select:hover {
+  background: var(--fill-input--hover, var(--fill-input));
+  border-color: var(--stroke-input--hover, var(--stroke-input));
+  box-shadow: var(--shadow-input--hover, var(--shadow-input));
+  color: var(--color-input--hover, var(--color-input));
+}
+
+.select:focus {
+  background: var(--fill-input--focus, var(--fill-input));
+  border-color: var(--stroke-input--focus, var(--stroke-input));
+  box-shadow: var(--shadow-input--focus, var(--shadow-input));
+  color: var(--color-input--focus, var(--color-input));
+}
+
+.select:active {
+  background: var(--fill-input--active, var(--fill-input));
+  border-color: var(--stroke-input--active, var(--stroke-input));
+  box-shadow: var(--shadow-input--active, var(--shadow-input));
+  color: var(--color-input--active, var(--color-input));
+}
+
+.select:disabled {
+  background: var(--fill-input--disabled, var(--fill-input));
+  border-color: var(--stroke-input--disabled, var(--stroke-input));
+  box-shadow: var(--shadow-input--disabled, var(--shadow-input));
+  color: var(--color-input--disabled, var(--color-input));
 }
 
 .select[multiple] {

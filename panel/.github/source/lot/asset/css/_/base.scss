@@ -217,6 +217,10 @@ blockquote {
   margin-left: var(--x);
 }
 
+dd {
+  margin-left: var(--x);
+}
+
 figure {
   figcaption {
     margin-top: calc(var(--y) / 4);
@@ -228,8 +232,7 @@ figure {
 }
 
 ol,
-ul,
-dd {
+ul {
   margin-left: calc(var(--x) + var(--z));
 }
 
@@ -241,7 +244,7 @@ ul {
 }
 
 ul {
-  list-style: disc;
+  list-style: square;
 }
 
 fieldset,
@@ -262,7 +265,7 @@ hr {
 legend {
   margin: 0 0 calc(var(--x) / -3);
   padding: 0 calc(var(--x) / 3);
-  + * {
-    margin-top: 0 !important;
+  + .p {
+    margin-top: 0;
   }
 }
