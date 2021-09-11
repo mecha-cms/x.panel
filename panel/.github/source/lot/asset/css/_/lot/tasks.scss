@@ -3,7 +3,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--y) / 4) calc(var(--x) / 4);
-  &\.link {
+  &.are\:links {
     .title {
       gap: calc(var(--y) / 8) calc(var(--x) / 8);
       > .icon {

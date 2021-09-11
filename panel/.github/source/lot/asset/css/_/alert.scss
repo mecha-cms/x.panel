@@ -9,23 +9,6 @@
     .f\:r .icon {
       margin-right: calc(var(--x) / -4);
     }
-    > small {
-      + br {
-        display: none;
-        + small {
-          display: flex;
-          flex-wrap: wrap;
-          margin: 0 calc(var(--x) / -8);
-          padding: calc(var(--y) / 2) 0 calc(var(--y) / 4);
-          a {
-            background: rgba(0, 0, 0, .05);
-            font-size: calc(var(--z) * .75);
-            margin: 0 calc(var(--x) / 8);
-            padding: 0 calc(var(--x) / 3);
-          }
-        }
-      }
-    }
     + p {
       margin-top: calc(var(--y) / 2);
     }

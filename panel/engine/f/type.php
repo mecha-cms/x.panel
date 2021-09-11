@@ -1,6 +1,11 @@
 <?php namespace x\panel\type;
 
 function bar($value, $key) {
+    $tags = $value['tags'] ?? [];
+    if (!\array_key_exists('p', $tags)) {
+        $tags['p'] = false;
+    }
+    $value['tags'] = $tags;
     if (\array_key_exists('title', $value) && !\array_key_exists('level', $value)) {
         $value['level'] = 1;
     }
@@ -83,7 +88,11 @@ function description($value, $key) {
 }
 
 function desk($value, $key) {
-    $styles = $tags = [];
+    $styles = [];
+    $tags = $value['tags'] ?? [];
+    if (!\array_key_exists('p', $tags)) {
+        $tags['p'] = false;
+    }
     if (isset($value['width']) && false !== $value['width']) {
         $tags['width'] = true;
         if (true !== $value['width']) {
@@ -95,6 +104,7 @@ function desk($value, $key) {
     }
     \x\panel\_set_class($value[2], $tags);
     \x\panel\_set_style($value[2], $styles);
+    $value['tags'] = $tags;
     if (isset($value['content'])) {
         $out = \x\panel\type\content($value, $key);
         $out[0] = 'main';

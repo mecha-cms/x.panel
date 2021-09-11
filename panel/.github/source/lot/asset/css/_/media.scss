@@ -20,21 +20,32 @@
       height: calc(var(--y) * 2);
       line-height: calc(var(--y) * 2);
       li {
+        background: var(--fill-tab);
         border: 1px solid var(--stroke-tab);
         border-bottom-width: 0;
+        color: var(--color-tab);
         + li {
-          border-left-width: 0;
+          margin-left: -1px;
         }
-        &:not(.has\:link) {
-          a {
-            color: inherit;
+        &.has\:link {
+          background: var(--fill-tab--link, var(--fill-tab));
+          color: var(--color-tab--link, var(--color-tab));
+          $states: hover, focus, active;
+          @each $state in $states {
+            &:#{$state} {
+              background: var(--fill-tab--link--#{$state}, var(--fill-tab--link, var(--fill-tab)));
+              color: var(--color-tab--link--#{$state}, var(--color-tab--link, var(--color-tab)));
+            }
           }
         }
         &.is\:current {
+          background: var(--fill-tab--current, var(--fill-tab));
+          border-color: var(--stroke-tab--current, var(--stroke-tab));
+          color: var(--color-tab--current, var(--color-tab));
           z-index: 4;
           &::before,
           &::after {
-            border-bottom: 1px solid var(--stroke-tab);
+            border-bottom: 1px solid var(--stroke-tab--current, var(--stroke-tab));
             bottom: 0;
             content: "";
             display: block;
@@ -51,6 +62,7 @@
         }
       }
       a {
+        color: inherit;
         padding: 0 calc(var(--z) * 1.25);
       }
     }
@@ -158,16 +170,8 @@
   }
   .lot\:tabs {
     .lot\:links {
-      li {
-        margin-right: var(--x);
-        &:not(.has\:link).is\:current {
-          a {
-            color: inherit;
-          }
-        }
-        &:last-child {
-          margin-right: 0;
-        }
+      ul {
+        gap: 0 var(--x);
       }
       .title {
         svg {

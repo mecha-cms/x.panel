@@ -12,22 +12,23 @@
     > b,
     > span {
       background: var(--fill-button);
+      border: 1px solid;
+      border-color: var(--stroke-button);
       border-radius: var(--radius-button);
-      border: 1px solid var(--stroke-button);
       box-shadow: var(--shadow-button);
       color: var(--color-button);
       font: inherit;
       margin: 0 calc(var(--x) / 8);
       padding: 0 calc(var(--x) / 4);
     }
-    $states: hover, focus, active;
-    @each $state in $states {
-      > a {
+    > a {
+      $states: hover, focus, active;
+      @each $state in $states {
         &:#{$state} {
-          background: var(--fill-button--#{$state});
-          border-color: var(--stroke-button--#{$state});
-          box-shadow: var(--shadow-button--#{$state});
-          color: var(--color-button--#{$state});
+          background: var(--fill-button--#{$state}, var(--fill-button));
+          border-color: var(--stroke-button--#{$state}, var(--stroke-button));
+          box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
+          color: var(--color-button--#{$state}, var(--color-button));
         }
       }
     }

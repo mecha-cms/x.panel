@@ -29,12 +29,14 @@
 
 a {
   color: inherit;
-  &[href] {
+  &:any-link {
+    background: var(--fill-link, none);
     color: var(--color-link);
     $states: hover, focus, active;
     @each $state in $states {
       &:#{$state} {
-        color: var(--color-link--#{$state});
+        background: var(--fill-link--#{$state}, var(--fill-link, none));
+        color: var(--color-link--#{$state}, var(--color-link));
       }
     }
   }
@@ -58,7 +60,7 @@ abbr {
   cursor: inherit;
   text-decoration: none;
   &[title]:hover {
-    border-bottom-color: inherit;
+    border-bottom-color: var(--stroke);
     cursor: help;
   }
 }
@@ -88,6 +90,7 @@ var {
   @extend .i;
 }
 
+caption,
 figure {
   @extend .text-center;
 }
@@ -115,7 +118,7 @@ sup {
 
 sub,
 sup {
-  display: inline;
+  display: inline-block;
   position: relative;
   vertical-align: middle;
 }
@@ -159,6 +162,13 @@ input::-moz-focus-inner {
   margin: 0;
   outline: 0;
   padding: 0;
+}
+
+button,
+label,
+summary {
+  @include user-select(none);
+  cursor: pointer;
 }
 
 @for $i from 0 through 5 {
@@ -250,9 +260,9 @@ hr {
 }
 
 legend {
-  padding: 0 calc(var(--x) / 3);
   margin: 0 0 calc(var(--x) / -3);
-  + .p {
-    margin-top: 0;
+  padding: 0 calc(var(--x) / 3);
+  + * {
+    margin-top: 0 !important;
   }
 }

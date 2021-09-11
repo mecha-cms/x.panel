@@ -36,11 +36,8 @@
 }
 
 .not\:active {
-  opacity: .5;
+  color: inherit;
   cursor: not-allowed;
-  .not\:active {
-    opacity: 1;
-  }
 }
 
 $aligns: (

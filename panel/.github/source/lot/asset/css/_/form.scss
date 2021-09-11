@@ -1,75 +1,56 @@
 .button,
 .input,
+.output,
 .select,
 .textarea {
-  background: var(--fill-input);
-  border-radius: var(--radius-input);
-  border: 1px solid var(--stroke-input);
-  box-shadow: var(--shadow-input);
-  color: var(--color-input);
+  border: 1px solid transparent;
   display: inline-block;
-  height: calc(var(--y) * 1.5);
-  line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // height - (padding-top + padding-bottom) - (border-top-width + border-bottom-width)
+  height: calc(var(--h) + (var(--y) / 2));
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   position: relative;
   text-align: left;
   vertical-align: middle;
-  width: calc(var(--x) * 8);
+  width: auto;
   z-index: 0;
-  $states: hover, focus, active, disabled;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-input--#{$state});
-      border-radius: var(--radius-input--#{$state});
-      box-shadow: var(--shadow-input--#{$state});
-      color: var(--color-input--#{$state});
-    }
+  &:focus {
+    z-index: 1;
   }
 }
 
-.output {
-  background: var(--fill-output);
-  border-radius: var(--radius-output);
-  border: 0 solid var(--stroke-output);
-  box-shadow: var(--shadow-output);
-  color: var(--color-output);
-  display: inline-block;
-  font: inherit;
-  height: auto;
-  line-height: var(--h);
-  padding: calc(var(--y) / 4) 0;
-  position: relative;
-  text-align: inherit;
-  vertical-align: middle;
-  width: auto;
-  z-index: 0;
-  $states: hover, focus, active;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-output--#{$state});
-      border-radius: var(--radius-output--#{$state});
-      box-shadow: var(--shadow-output--#{$state});
-      color: var(--color-output--#{$state});
-    }
-  }
-}
-
-.button {
-  width: auto;
-  text-align: center;
+.button,
+.button:any-link {
   background: var(--fill-button);
-  box-shadow: var(--shadow-button);
-  border-radius: var(--radius-button);
   border-color: var(--stroke-button);
+  border-radius: var(--radius-button);
+  border-width: 0;
+  box-shadow: var(--shadow-button);
   color: var(--color-button);
+  text-align: center;
   $states: hover, focus, active, disabled;
   @each $state in $states {
     &:#{$state} {
-      background: var(--fill-button--#{$state});
-      border-color: var(--stroke-button--#{$state});
-      border-radius: var(--radius-button--#{$state});
-      box-shadow: var(--shadow-button--#{$state});
-      color: var(--color-button--#{$state});
+      background: var(--fill-button--#{$state}, var(--fill-button));
+      border-color: var(--stroke-button--#{$state}, var(--stroke-button));
+      border-radius: var(--radius-button--#{$state}, var(--radius-button));
+      box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
+      color: var(--color-button--#{$state}, var(--color-button));
+    }
+  }
+  &.as\:link {
+    background: none;
+    border-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    color: var(--color-link);
+    $states: hover, focus, active;
+    @each $state in $states {
+      &:#{$state} {
+        background: none;
+        border-color: transparent;
+        border-radius: 0;
+        box-shadow: none;
+        color: var(--color-link--#{$state}, var(--color-link));
+      }
     }
   }
   .title {
@@ -81,61 +62,30 @@
         margin-right: calc(var(--x) / -4);
       }
       &.caret {
-        margin-right: calc(var(--x) / -4);
         margin-left: calc(var(--x) / -4);
+        margin-right: calc(var(--x) / -4);
       }
     }
   }
 }
 
-.button[href] {
-  @extend .button;
-}
-
-.button,
-details > summary,
-label {
-  @include user-select(none);
-  cursor: pointer;
-}
-
 .input,
 .select,
 .textarea {
-  $states: read-write, hover, focus, active, invalid, disabled, read-only;
+  background: var(--fill-input);
+  border-color: var(--stroke-input);
+  border-radius: var(--radius-input);
+  box-shadow: var(--shadow-input);
+  color: var(--color-input);
+  width: calc(var(--x) * 8);
+  $states: read-write, hover, focus, active, invalid, read-only, disabled;
   @each $state in $states {
     &:#{$state} {
-      background: var(--fill-input--#{$state});
-      border-color: var(--stroke-input--#{$state});
-      box-shadow: var(--shadow-input--#{$state});
-      color: var(--color-input--#{$state});
+      background: var(--fill-input--#{$state}, var(--fill-input));
+      border-color: var(--stroke-input--#{$state}, var(--stroke-input));
+      box-shadow: var(--shadow-input--#{$state}, var(--shadow-input));
+      color: var(--color-input--#{$state}, var(--color-input));
     }
-  }
-}
-
-.button {
-  &.is\:text {
-    background: none;
-    border: 0;
-    color: var(--color-link);
-    $states: hover, focus, active;
-    @each $state in $states {
-      &:#{$state} {
-        background: none;
-        color: var(--color-link--#{$state});
-      }
-    }
-  }
-}
-
-.input,
-.select,
-.textarea {
-  &.is\:locked {
-    @extend .input:read-only;
-  }
-  &.not\:active {
-    @extend .input:disabled;
   }
 }
 
@@ -166,14 +116,11 @@ label {
     background: none;
     border: 0;
     cursor: pointer;
-    height: 1em;
-    line-height: 1em;
+    height: var(--z);
+    line-height: var(--z);
     margin: 0;
     padding: 0;
-    width: 1em;
-    &.is\:locked {
-      pointer-events: none;
-    }
+    width: var(--z);
   }
   &[type='color'] {
     height: calc(var(--y) * 1.5);
@@ -200,6 +147,24 @@ label {
   }
 }
 
+.output {
+  background: var(--fill-output);
+  border-color: var(--stroke-output);
+  border-radius: var(--radius-output);
+  box-shadow: var(--shadow-output);
+  color: var(--color-output);
+  $states: hover, focus, active;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-output--#{$state}, var(--fill-output));
+      border-color: var(--stroke-output--#{$state}, var(--stroke-output));
+      border-radius: var(--radius-output--#{$state}, var(--radius-output));
+      box-shadow: var(--shadow-output--#{$state}, var(--shadow-output));
+      color: var(--color-output--#{$state}, var(--color-output));
+    }
+  }
+}
+
 .select {
   cursor: pointer;
   &[multiple] {
@@ -218,8 +183,8 @@ label {
     $states: disabled;
     @each $state in $states {
       &:#{$state} {
-        background: var(--fill-input--#{$state});
-        color: var(--fill-input--#{$state});
+        background: var(--fill-input--#{$state}, var(--fill-input));
+        color: var(--color-input--#{$state}, var(--color-input));
       }
     }
   }
@@ -262,23 +227,14 @@ label {
   }
 }
 
-.button,
-.input,
-.select,
-.textarea {
-  &:focus {
-    z-index: 1;
-  }
-}
-
 // Custom appearance for modern browser(s)
 .input {
   &[type='checkbox'],
   &[type='radio'] {
     @include appearance(none);
     background: var(--fill-button);
+    border-color: var(--stroke-button);
     border-radius: var(--radius-button);
-    border: 0 solid var(--stroke-button);
     box-shadow: var(--shadow-button);
     color: var(--color-button);
     &::before {
@@ -293,15 +249,10 @@ label {
     $states: hover, focus, active, disabled;
     @each $state in $states {
       &:#{$state} {
-        background: var(--fill-button--#{$state});
-        border-color: var(--stroke-button--#{$state});
-        box-shadow: var(--shadow-button--#{$state});
-        color: var(--color-button--#{$state});
-      }
-    }
-    &:checked {
-      &::before {
-        background: none;
+        background: var(--fill-button--#{$state}, var(--fill-button));
+        border-color: var(--stroke-button--#{$state}, var(--stroke-button));
+        box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
+        color: var(--color-button--#{$state}, var(--color-button));
       }
     }
   }
@@ -309,6 +260,7 @@ label {
     &:checked {
       &::before {
         @include transform(rotate(45deg));
+        background: none;
         border-bottom: 2px solid var(--color-button);
         border-right: 2px solid var(--color-button);
         bottom: 4px;
@@ -329,21 +281,22 @@ label {
     }
   }
   &[type='radio'] {
-    &:checked {
-      &::before {
-        border: 2px solid var(--color-button);
-        visibility: visible;
-      }
-    }
     &,
     &::before {
       border-radius: 100%;
+    }
+    &:checked {
+      &::before {
+        background: none;
+        border: 2px solid var(--color-button);
+        visibility: visible;
+      }
     }
     $states: hover, focus, active, disabled;
     @each $state in $states {
       &:#{$state} {
         &::before {
-          border-color: var(--color-button--#{$state});
+          border-color: var(--color-button--#{$state}, var(--color-button));
         }
       }
     }
@@ -362,6 +315,7 @@ label {
       background: var(--fill-button);
       border-color: var(--stroke-button);
       border-radius: var(--radius-button);
+      border-width: 0;
       box-shadow: var(--shadow-button);
       color: var(--color-button);
       height: var(--y);
@@ -377,6 +331,7 @@ label {
       background: var(--fill-button);
       border-color: var(--stroke-button);
       border-radius: var(--radius-button);
+      border-width: 0;
       box-shadow: var(--shadow-button);
       color: var(--color-button);
       height: var(--y);
@@ -388,24 +343,24 @@ label {
   @each $state in $states {
     &:#{$state} {
       &::-webkit-slider-runnable-track {
-        background: var(--stroke-input--#{$state});
+        background: var(--stroke-input--#{$state}, var(--stroke-input));
       }
       &::-moz-range-track {
-        background: var(--stroke-input--#{$state});
+        background: var(--stroke-input--#{$state}, var(--stroke-input));
       }
       &::-webkit-slider-thumb {
-        background: var(--fill-button--#{$state});
-        border-color: var(--stroke-button--#{$state});
-        border-radius: var(--radius-button--#{$state});
-        box-shadow: var(--shadow-button--#{$state});
-        color: var(--color-button--#{$state});
+        background: var(--fill-button--#{$state}, var(--fill-button));
+        border-color: var(--stroke-button--#{$state}, var(--stroke-button));
+        border-radius: var(--radius-button--#{$state}, var(--radius-button));
+        box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
+        color: var(--color-button--#{$state}, var(--color-button));
       }
       &::-moz-range-thumb {
-        background: var(--fill-button--#{$state});
-        border-color: var(--stroke-button--#{$state});
-        border-radius: var(--radius-button--#{$state});
-        box-shadow: var(--shadow-button--#{$state});
-        color: var(--color-button--#{$state});
+        background: var(--fill-button--#{$state}, var(--fill-button));
+        border-color: var(--stroke-button--#{$state}, var(--stroke-button));
+        border-radius: var(--radius-button--#{$state}, var(--radius-button));
+        box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
+        color: var(--color-button--#{$state}, var(--color-button));
       }
     }
   }

@@ -4,7 +4,7 @@ function button($value, $key) {
     if (isset($value['lot'])) {
         \x\panel\_set_type_prefix($value['lot'], 'button');
     }
-    $value['tags']['lot:tasks.button'] = true;
+    $value['tags']['are:buttons'] = true;
     return \x\panel\type\tasks($value, $key);
 }
 
@@ -12,6 +12,6 @@ function link($value, $key) {
     if (isset($value['lot'])) {
         \x\panel\_set_type_prefix($value['lot'], 'link');
     }
-    $value['tags']['lot:tasks.link'] = true;
+    $value['tags']['are:links'] = true;
     return \x\panel\type\tasks($value, $key);
 }

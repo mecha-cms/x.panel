@@ -8,15 +8,15 @@
       padding: 0;
     }
     ul {
+      flex-wrap: wrap;
       overflow: hidden;
     }
     li {
       position: relative;
       &.not\:active {
-        opacity: 1;
-        .not\:active {
-          opacity: .5;
-        }
+        background: var(--fill-tab--disabled, var(--fill-tab));
+        border-color: var(--stroke-tab--disabled, var(--stroke-tab));
+        color: var(--color-tab--disabled, var(--color-tab));
       }
     }
     a {

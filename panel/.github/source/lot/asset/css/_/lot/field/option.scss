@@ -13,11 +13,11 @@
     $states: hover, focus, active, disabled;
     @each $state in $states {
       &:#{$state} {
-        background: var(--fill-input--#{$state});
-        border-color: var(--stroke-input--#{$state});
-        border-radius: var(--radius-input--#{$state});
-        box-shadow: var(--shadow-input--#{$state});
-        color: var(--color-input--#{$state});
+        background: var(--fill-input--#{$state}, var(--fill-input));
+        border-color: var(--stroke-input--#{$state}, var(--stroke-input));
+        border-radius: var(--radius-input--#{$state}, var(--radius-input));
+        box-shadow: var(--shadow-input--#{$state}, var(--shadow-input));
+        color: var(--color-input--#{$state}, var(--color-input));
       }
     }
     &::after {
@@ -27,7 +27,24 @@
       display: flex;
       width: 100%;
     }
+    &__option {
+      background: var(--fill-menu-link, var(--fill-link, none));
+      color: var(--color-menu-link, var(--color-link));
+      $states: hover, focus, active;
+      @each $state in $states {
+        &:#{$state} {
+          background: var(--fill-menu-link--#{$state}, var(--fill-menu-link, var(--fill-link, none)));
+          color: var(--color-menu-link--#{$state}, var(--color-menu-link, var(--color)));
+        }
+      }
+      &--active {
+        background: var(--fill-menu-link--current, var(--fill-menu-link, var(--fill-link, none)));
+        color: var(--color-menu-link--current, var(--color-menu-link, var(--color)));
+      }
+    }
     &__options {
+      background: var(--fill-menu, var(--fill));
+      border-color: inherit;
       line-height: var(--h);
     }
     &__source {

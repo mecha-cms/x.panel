@@ -1,4 +1,6 @@
 .lot\:bar {
+  background: var(--fill-bar, none);
+  color: var(--color-bar, inherit);
   display: flex;
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
@@ -34,12 +36,6 @@
             }
           }
         }
-        &.is\:active,
-        &.is\:current {
-          > a {
-            color: inherit;
-          }
-        }
         &.is\:separator {
           background: var(--stroke);
           height: var(--y);
@@ -52,10 +48,26 @@
           }
         }
         > a {
+          background: var(--fill-bar-link, var(--fill-link, none));
+          color: var(--color-bar-link, var(--color-link));
           display: flex;
           height: inherit;
           overflow: hidden;
           padding: 0 calc(var(--x) * .75);
+          $states: hover, focus, active;
+          @each $state in $states {
+            &:#{$state} {
+              background: var(--fill-bar-link--#{$state}, var(--fill-bar-link, var(--fill-link--#{$state}, var(--fill-link, none))));
+              color: var(--color-bar-link--#{$state}, var(--color-bar-link, var(--color-link--#{$state}, var(--color-link))));
+            }
+          }
+        }
+        &.is\:active,
+        &.is\:current {
+          > a {
+            background: var(--fill-bar-link--current, none);
+            color: var(--color-bar-link--current, inherit);
+          }
         }
       }
     }

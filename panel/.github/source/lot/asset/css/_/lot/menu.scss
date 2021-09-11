@@ -1,5 +1,5 @@
 .lot\:menu {
-  background: var(--fill);
+  background: var(--fill-menu, var(--fill));
   height: auto;
   line-height: var(--y);
   width: calc(var(--x) * 8);
@@ -56,10 +56,14 @@
       }
       &.is\:current {
         > a {
-          color: inherit;
+          color: var(--color-menu-link--current, inherit);
         }
       }
       &:hover {
+        > a {
+          background: var(--fill-menu-link--hover, var(--fill-menu-link, var(--fill-link, none)));
+          color: var(--color-menu-link--hover, var(--color-menu-link, var(--color-link--hover, var(--color-link))));
+        }
         > .lot\:menu {
           display: block;
         }
@@ -67,10 +71,18 @@
     }
   }
   a {
-    color: var(--color-link);
+    background: var(--fill-menu-link, var(--fill-link, none));
+    color: var(--color-menu-link, var(--color-link));
     display: flex;
     flex: 1;
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
+    $states: hover, focus, active;
+    @each $state in $states {
+      &:#{$state} {
+        background: var(--fill-menu-link--#{$state}, var(--fill-menu-link, var(--fill-link--#{$state}, var(--fill-link, none))));
+        color: var(--color-menu-link--#{$state}, var(--color-menu-link, var(--color-link--#{$state}, var(--color-link))));
+      }
+    }
     &:focus {
       + ul {
         display: block;
