@@ -21,7 +21,6 @@ Release Notes
  - Added `flex` and `field/flex` type.
  - Added ability to reply comment from the panel interface.
  - Added badge GUI for `link` type via `info` key.
- - Added comment notification badge in the main menu.
  - Added comments counter in the _Comment_ menu.
  - Added files/folders counter in the _Trash_ menu.
  - Added typography test.
