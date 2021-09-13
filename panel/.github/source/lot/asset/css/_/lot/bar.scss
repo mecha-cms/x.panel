@@ -1,6 +1,10 @@
 .lot\:bar {
-  background: var(--fill-bar, none);
-  color: var(--color-bar, inherit);
+  background: var(--fill-bar);
+  border: 0 solid;
+  border-color: var(--stroke-bar);
+  border-radius: var(--radius-bar);
+  box-shadow: var(--shadow-bar);
+  color: var(--color-bar);
   display: flex;
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
@@ -17,23 +21,50 @@
       display: flex;
       height: calc(var(--y) * 2);
       > li {
-        .title {
-          small {
-            color: var(--color-bar-info);
-            float: right;
-            margin-left: calc(var(--x) / 4);
+        > a {
+          background: var(--fill-bar-link, var(--fill-link, none));
+          color: var(--color-bar-link, var(--color-link));
+          display: flex;
+          height: inherit;
+          overflow: hidden;
+          padding: 0 calc(var(--x) * .75);
+          .title {
+            .icon {
+              &:first-child {
+                margin-left: calc(var(--x) / -4);
+              }
+              &:last-child {
+                margin-right: calc(var(--x) / -4);
+              }
+              &.caret {
+                margin-left: calc(var(--x) / -4);
+                margin-right: calc(var(--x) / -4);
+              }
+            }
+            .info {
+              background: var(--fill-bar-info);
+              border-radius: var(--radius-bar-info);
+              box-shadow: var(--shadow-bar-info);
+              color: var(--color-bar-info);
+              float: right;
+              line-height: var(--h);
+              margin: calc(var(--y) / 2) 0 0 calc(var(--x) / 4);
+              padding: 0 calc(var(--x) / 4);
+            }
           }
-          > .icon {
-            &:first-child {
-              margin-left: calc(var(--x) / -4);
+          $states: hover, focus, active;
+          @each $state in $states {
+            &:#{$state} {
+              background: var(--fill-bar-link--#{$state}, var(--fill-bar-link));
+              color: var(--color-bar-link--#{$state}, var(--color-bar-link));
             }
-            &:last-child {
-              margin-right: calc(var(--x) / -4);
-            }
-            &.caret {
-              margin-left: calc(var(--x) / -4);
-              margin-right: calc(var(--x) / -4);
-            }
+          }
+        }
+        &.is\:active,
+        &.is\:current {
+          > a {
+            background: var(--fill-bar-link--current, none);
+            color: var(--color-bar-link--current, inherit);
           }
         }
         &.is\:separator {
@@ -47,26 +78,10 @@
             display: none;
           }
         }
-        > a {
-          background: var(--fill-bar-link, var(--fill-link, none));
-          color: var(--color-bar-link, var(--color-link));
-          display: flex;
-          height: inherit;
-          overflow: hidden;
-          padding: 0 calc(var(--x) * .75);
-          $states: hover, focus, active;
-          @each $state in $states {
-            &:#{$state} {
-              background: var(--fill-bar-link--#{$state}, var(--fill-bar-link, var(--fill-link--#{$state}, var(--fill-link, none))));
-              color: var(--color-bar-link--#{$state}, var(--color-bar-link, var(--color-link--#{$state}, var(--color-link))));
-            }
-          }
-        }
-        &.is\:active,
-        &.is\:current {
+        &.not\:active {
           > a {
-            background: var(--fill-bar-link--current, none);
-            color: var(--color-bar-link--current, inherit);
+            background: var(--fill-bar-link--disabled, none);
+            color: var(--color-bar-link--disabled, inherit);
           }
         }
       }

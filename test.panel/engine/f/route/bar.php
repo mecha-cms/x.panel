@@ -7,6 +7,7 @@ function bar($_) {
         'title' => 'Title Goes Here',
         'description' => 'Description goes here.',
         'type' => 'bar',
+        'tags' => ['p' => true],
         'lot' => [
             'bar-0' => [
                 'lot' => [
@@ -86,6 +87,7 @@ function bar($_) {
     ];
     $lot['bar-1'] = [
         'type' => 'bar',
+        'tags' => ['p' => true],
         'lot' => [
             'bar-0' => [
                 'lot' => [
@@ -116,6 +118,7 @@ function bar($_) {
     ];
     $lot['bar-2'] = [
         'type' => 'bar',
+        'tags' => ['p' => true],
         'lot' => [
             'bar-0' => [
                 'lot' => [

@@ -219,11 +219,13 @@
                 if (!hasClass(getParent(t), 'has:link')) {
                     if (!hasClass(t, 'not:active')) {
                         buttons.forEach(button => {
+                            letClass(button, 'is:current');
                             letClass(getParent(button), 'is:current');
                             if (panes[button._tabIndex]) {
                                 letClass(panes[button._tabIndex], 'is:current');
                             }
                         });
+                        setClass(t, 'is:current');
                         setClass(getParent(t), 'is:current');
                         if (panes[t._tabIndex]) {
                             setClass(panes[t._tabIndex], 'is:current');

@@ -143,9 +143,12 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
   code {
-    background: var(--fill-code--block);
-    border: 0 solid var(--stroke-code--block);
-    color: var(--color-code--block);
+    background: var(--fill-code-block);
+    border: 0 solid;
+    border-color: var(--stroke-code-block);
+    border-radius: var(--radius-code-block);
+    box-shadow: var(--shadow-code-block);
+    color: var(--color-code-block);
     display: block;
     padding: calc(var(--y) - var(--z)) calc(var(--x) / 2);
   }

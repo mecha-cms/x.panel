@@ -2,55 +2,18 @@
 
 .lot\:field.type\:query {
   .tag-picker {
-    background: var(--fill-input);
-    border-color: var(--stroke-input);
-    border-radius: var(--radius-input);
-    box-shadow: var(--shadow-input);
-    color: var(--color-input);
     height: auto;
     min-height: calc(var(--y) * 1.5);
     padding: calc(var(--y) / 12) calc(var(--x) / 12);
-    $states: hover, focus, active, disabled;
-    @each $state in $states {
-      &:#{$state} {
-        background: var(--fill-input--#{$state}, var(--fill-input));
-        border-color: var(--stroke-input--#{$state}, var(--stroke-input));
-        border-radius: var(--radius-input--#{$state}, var(--radius-input));
-        box-shadow: var(--shadow-input--#{$state}, var(--shadow-input));
-        color: var(--color-input--#{$state}, var(--color-input));
-      }
-    }
     &.width {
       display: flex;
       width: 100%;
     }
     &__tag {
-      background: var(--fill-button);
-      border: 1px solid;
-      border-color: var(--stroke-button);
-      border-radius: var(--radius-button);
-      box-shadow: var(--shadow-button);
-      color: var(--color-button);
+      border: 1px solid transparent;
       height: calc((var(--y) * 1.5) - 4px - 4px - 2px); // ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2)
       margin: calc(var(--y) / 12) calc(var(--x) / 12);
       padding: 0 calc((var(--z) / 2) - 1px);
-      $states: hover, focus, active;
-      @each $state in $states {
-        &:#{$state} {
-          background: var(--fill-button--#{$state}, var(--fill-button));
-          border-color: var(--stroke-button--#{$state}, var(--stroke-button));
-          border-radius: var(--radius-button--#{$state}, var(--radius-button));
-          box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
-          color: var(--color-button--#{$state}, var(--color-button));
-        }
-      }
-      &--focus {
-        background: var(--fill-button--focus, var(--fill-button));
-        border-color: var(--stroke-button--focus, var(--stroke-button));
-        border-radius: var(--radius-button--focus, var(--radius-button));
-        box-shadow: var(--shadow-button--focus, var(--shadow-button));
-        color: var(--color-button--focus, var(--color-button));
-      }
     }
     &__source {
       position: fixed;

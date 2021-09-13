@@ -1055,7 +1055,7 @@ function title($value, $key) {
     ];
     $icon = \x\panel\to\icon($value['icon'] ?? []);
     if ("" !== $info) {
-        $title = \trim($title . ' <small>' . \i(...((array) $info)) . '</small>');
+        $title = \trim($title . ' <small class="info">' . \i(...((array) $info)) . '</small>');
     }
     $out[1] = $icon[0] . ("" !== $title ? '<span>' . $title . '</span>' : "") . $icon[1];
     \x\panel\_set_class($out[2], [

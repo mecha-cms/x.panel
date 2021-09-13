@@ -12,11 +12,28 @@
       overflow: hidden;
     }
     li {
+      color: var(--color-tab);
       position: relative;
+      &.has\:link {
+        color: var(--color-tab-link, var(--color-tab));
+        $states: hover, focus, active;
+        @each $state in $states {
+          &:#{$state} {
+            color: var(--color-tab-link--#{$state}, var(--color-tab-link, var(--color-tab)));
+          }
+        }
+      }
+      &.is\:current {
+        color: var(--color-tab--current, var(--color-tab));
+        > a {
+          color: inherit;
+        }
+      }
       &.not\:active {
-        background: var(--fill-tab--disabled, var(--fill-tab));
-        border-color: var(--stroke-tab--disabled, var(--stroke-tab));
         color: var(--color-tab--disabled, var(--color-tab));
+        > a {
+          color: inherit;
+        }
       }
     }
     a {

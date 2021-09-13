@@ -1,5 +1,6 @@
 .lot\:menu {
   background: var(--fill-menu, var(--fill));
+  border-radius: var(--radius-menu);
   height: auto;
   line-height: var(--y);
   width: calc(var(--x) * 8);
@@ -12,36 +13,73 @@
     top: 0;
     z-index: 9998;
   }
-  ul,
-  li {
+  > ul,
+  > li {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  ul {
-    li {
+  > ul {
+    > li {
       display: flex;
       position: relative;
-      .title {
-        flex: 1;
-        small {
-          background: var(--fill-menu-info);
-          color: var(--color-menu-info);
-          float: right;
-          margin-right: calc(var(--x) / -4);
-          padding: 0 calc(var(--x) / 4);
+      &:hover {
+        > a {
+          background: var(--fill-menu-link--hover, var(--fill-menu-link));
+          color: var(--color-menu-link--hover, var(--color-menu-link));
         }
-        > .icon {
-          &:first-child {
-            margin-left: calc(var(--x) / -4);
+        > .lot\:menu {
+          display: block;
+        }
+      }
+      > a {
+        background: var(--fill-menu-link, var(--fill-link, none));
+        color: var(--color-menu-link, var(--color-link));
+        display: flex;
+        flex: 1;
+        padding: calc(var(--y) / 4) calc(var(--x) / 2);
+        .title {
+          flex: 1;
+          .icon {
+            &:first-child {
+              margin-left: calc(var(--x) / -4);
+            }
+            &:last-child {
+              margin-right: calc(var(--x) / 4);
+            }
+            &.caret {
+              margin-left: calc(var(--x) / -4);
+              margin-right: calc(var(--x) / -4);
+            }
           }
-          &:last-child {
-            margin-right: calc(var(--x) / 4);
+          .info {
+            background: var(--fill-menu-info);
+            border-radius: var(--radius-menu-info);
+            box-shadow: var(--shadow-menu-info);
+            color: var(--color-menu-info);
+            float: right;
+            margin: 0 calc(var(--x) / -4) 0 0;
+            padding: 0 calc(var(--x) / 4);
           }
-          &.caret {
-            margin-left: calc(var(--x) / -4);
-            margin-right: calc(var(--x) / -4);
+        }
+        $states: hover, focus, active;
+        @each $state in $states {
+          &:#{$state} {
+            background: var(--fill-menu-link--#{$state}, var(--fill-menu-link));
+            color: var(--color-menu-link--#{$state}, var(--color-menu-link));
           }
+        }
+        &:focus {
+          + ul {
+            display: block;
+          }
+        }
+      }
+      &.is\:active,
+      &.is\:current {
+        > a {
+          background: var(--fill-menu-link--current, none);
+          color: var(--color-menu-link--current, inherit);
         }
       }
       &.is\:separator {
@@ -54,38 +92,11 @@
           display: none;
         }
       }
-      &.is\:current {
+      &.not\:active {
         > a {
-          color: var(--color-menu-link--current, inherit);
+          background: var(--fill-menu-link--disabled, none);
+          color: var(--color-menu-link--disabled, inherit);
         }
-      }
-      &:hover {
-        > a {
-          background: var(--fill-menu-link--hover, var(--fill-menu-link, var(--fill-link, none)));
-          color: var(--color-menu-link--hover, var(--color-menu-link, var(--color-link--hover, var(--color-link))));
-        }
-        > .lot\:menu {
-          display: block;
-        }
-      }
-    }
-  }
-  a {
-    background: var(--fill-menu-link, var(--fill-link, none));
-    color: var(--color-menu-link, var(--color-link));
-    display: flex;
-    flex: 1;
-    padding: calc(var(--y) / 4) calc(var(--x) / 2);
-    $states: hover, focus, active;
-    @each $state in $states {
-      &:#{$state} {
-        background: var(--fill-menu-link--#{$state}, var(--fill-menu-link, var(--fill-link--#{$state}, var(--fill-link, none))));
-        color: var(--color-menu-link--#{$state}, var(--color-menu-link, var(--color-link--#{$state}, var(--color-link))));
-      }
-    }
-    &:focus {
-      + ul {
-        display: block;
       }
     }
   }

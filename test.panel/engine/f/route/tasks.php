@@ -20,6 +20,12 @@ function tasks($_) {
                 'title' => 'Task 3',
                 'type' => 'button',
                 'stack' => 30
+            ],
+            3 => [
+                'active' => false,
+                'title' => 'Task 4',
+                'type' => 'button',
+                'stack' => 40
             ]
         ]
     ];
