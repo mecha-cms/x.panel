@@ -494,12 +494,12 @@
             state = {};
         }
         if (!source) return;
-        var $ = this; // Return new instance if `OP` was called without the `new` operator
+        var $ = this; // Already instantiated, skip!
+        if (source[name]) {
+            return source[name];
+        } // Return new instance if `OP` was called without the `new` operator
         if (!isInstance($, OP)) {
             return new OP(source, state);
-        } // Already instantiated, skip!
-        if (source[name]) {
-            return;
         }
         var _hook = hook($),
             fire = _hook.fire;
@@ -508,7 +508,7 @@
         $.options = {};
         $.source = source; // Store current instance to `OP.instances`
         OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $; // Mark current DOM as active option picker to prevent duplicate instance
-        source[name] = 1;
+        source[name] = $;
 
         function getLot() {
             return [toValue(getValue()), $.options];
@@ -538,7 +538,7 @@
         }
 
         function getOptionFakeSelected(selectBoxFakeOption) {
-            return hasClass(selectBoxFakeOption, classNameOptionM + 'active');
+            return hasClass(selectBoxFakeOption, classNameOptionM + 'selected');
         }
 
         function letOptionSelected(selectBoxOption) {
@@ -547,7 +547,7 @@
         }
 
         function letOptionFakeSelected(selectBoxFakeOption) {
-            letClass(selectBoxFakeOption, classNameOptionM + 'active');
+            letClass(selectBoxFakeOption, classNameOptionM + 'selected');
         }
 
         function setOptionSelected(selectBoxOption) {
@@ -556,7 +556,7 @@
         }
 
         function setOptionFakeSelected(selectBoxFakeOption) {
-            setClass(selectBoxFakeOption, classNameOptionM + 'active');
+            setClass(selectBoxFakeOption, classNameOptionM + 'selected');
         }
 
         function setLabelContent(content) {
@@ -585,7 +585,6 @@
             classNameOptionB = classNameE + 'option',
             classNameOptionM = classNameOptionB + '--',
             classNameOptionsB = classNameE + 'options',
-            classNameOptionsM = classNameOptionsB + '--',
             classNameValueB = classNameE + 'value',
             classNameValuesB = classNameE + 'values',
             selectBox = setElement(source, {
@@ -611,6 +610,8 @@
             selectBoxFakeLabel = setElement('div', "\u200C", {
                 'class': classNameValuesB
             }),
+            selectBoxFakeBorderBottomWidth = 0,
+            selectBoxFakeBorderTopWidth = 0,
             selectBoxFakeDropDown = setElement('div', {
                 'class': classNameOptionsB,
                 'tabindex': '-1'
@@ -673,6 +674,7 @@
             var selectBoxFakeOption = this,
                 selectBoxOption = selectBoxFakeOption[PROP_SOURCE],
                 selectBoxValuePrevious = selectBoxValue;
+            selectBoxOptionIndex = selectBoxFakeOption[PROP_INDEX];
             selectBoxValue = selectBoxFakeOption[PROP_VALUE];
             var selectBoxFakeLabelContent = [],
                 content,
@@ -680,7 +682,7 @@
                 value;
             e && e.isTrusted && onSelectBoxFocus();
             offEventDefault(e);
-            if (selectBoxMultiple && _keyIsCtrl) {
+            if (selectBoxMultiple && (_keyIsCtrl || _keyIsShift)) {
                 if (getOptionFakeSelected(selectBoxFakeOption)) {
                     letOptionSelected(selectBoxOption);
                     letOptionFakeSelected(selectBoxFakeOption);
@@ -728,13 +730,16 @@
             if (selectBoxIsDisabled()) {
                 return;
             }
+            selectBoxOptionIndex = selectBox.selectedIndex;
             if (selectBoxSize) {
                 return doEnter();
             }
-            doToggle() && setSelectBoxFakeOptionsPosition(selectBoxFake);
+            selectBoxFakeBorderBottomWidth = toNumber(getStyle(selectBoxFake, 'border-bottom-width'));
+            selectBoxFakeBorderTopWidth = toNumber(getStyle(selectBoxFake, 'border-top-width')), doToggle() && setSelectBoxFakeOptionsPosition(selectBoxFake);
         }
 
         function onSelectBoxFakeFocus(e) {
+            selectBoxOptionIndex = selectBox.selectedIndex;
             doFocus();
         }
 
@@ -742,33 +747,50 @@
             _keyIsCtrl = e.ctrlKey;
             _keyIsShift = e.shiftKey;
             var key = e.key,
-                selectBoxOptionIndexCurrent = selectBox.selectedIndex,
+                selectBoxOptionIndexCurrent = selectBoxOptionIndex,
                 selectBoxFakeOption = selectBoxFakeOptions[selectBoxOptionIndexCurrent],
                 selectBoxFakeOptionIsDisabled = function selectBoxFakeOptionIsDisabled(selectBoxFakeOption) {
-                    return hasClass(selectBoxFakeOption, classNameOptionM + 'lock');
+                    return hasClass(selectBoxFakeOption, classNameOptionM + 'disabled');
                 },
                 doClick = function doClick(selectBoxFakeOption) {
                     return onSelectBoxFakeOptionClick.call(selectBoxFakeOption);
                 },
-                isOpen = isEnter();
+                isOpen = isEnter(); // Cache the enter state
             if (KEY_ARROW_DOWN === key) {
+                // Continue walking down until it finds an option that is not disabled
                 while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
                         break;
                     }
                 }
-                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
+                if (selectBoxFakeOption) {
+                    doClick(selectBoxFakeOption), doToggle(isOpen);
+                }
+                if (selectBoxMultiple && _keyIsShift && (selectBoxFakeOption = selectBoxFakeOptions[selectBoxOptionIndex - 1])) {
+                    // TODO: Preserve selection on the previous option
+                    setOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
+                    setOptionFakeSelected(selectBoxFakeOption);
+                }
                 offEventDefault(e);
             } else if (KEY_ARROW_UP === key) {
+                // Continue walking up until it finds an option that is not disabled
                 while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
                         break;
                     }
                 }
-                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
+                if (selectBoxFakeOption) {
+                    doClick(selectBoxFakeOption), doToggle(isOpen);
+                }
+                if (selectBoxMultiple && _keyIsShift && (selectBoxFakeOption = selectBoxFakeOptions[selectBoxOptionIndex + 1])) {
+                    // TODO: Preserve selection on the next option
+                    setOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
+                    setOptionFakeSelected(selectBoxFakeOption);
+                }
                 offEventDefault(e);
             } else if (KEY_END === key) {
-                selectBoxOptionIndexCurrent = toCount(selectBoxOptions);
+                // Start from the last option position + 1
+                selectBoxOptionIndexCurrent = toCount(selectBoxOptions); // Continue walking up until it finds an option that is not disabled
                 while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
                         break;
@@ -781,7 +803,8 @@
             } else if (KEY_ESCAPE === key) {
                 !selectBoxSize && doExit(); // offEventDefault(e);
             } else if (KEY_START === key) {
-                selectBoxOptionIndexCurrent = 0;
+                // Start from the first option position - 1
+                selectBoxOptionIndexCurrent = -1; // Continue walking up until it finds an option that is not disabled
                 while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption)) {
                         break;
@@ -793,7 +816,7 @@
                 selectBoxFakeOption && doClick(selectBoxFakeOption);
                 !selectBoxSize && doExit(); // offEventDefault(e);
             }
-            isOpen && !_keyIsCtrl && !_keyIsShift && setSelectBoxFakeOptionsPosition(selectBoxFake);
+            isEnter() && !_keyIsCtrl && !_keyIsShift && setSelectBoxFakeOptionsPosition(selectBoxFake);
         }
 
         function onSelectBoxFakeKeyUp() {
@@ -813,13 +836,13 @@
         }
 
         function onSelectBoxWindow() {
-            isEnter() && setSelectBoxFakeOptionsPosition(selectBoxFake);
+            isEnter() && setSelectBoxFakeOptionsPosition(selectBoxFake, 1);
         }
 
         function setSelectBoxFakeOptions(selectBoxItem, parent) {
             if ('optgroup' === getName(selectBoxItem)) {
                 var selectBoxFakeOptionGroup = setElement('span', {
-                        'class': classNameE + 'group'
+                        'class': classNameOptionB + '-group' + (selectBoxItem.disabled ? ' ' + classNameOptionM + 'disabled' : "")
                     }),
                     _selectBoxItems = getChildren(selectBoxItem);
                 selectBoxFakeOptionGroup.title = selectBoxItem.label;
@@ -848,7 +871,7 @@
             $.options[selectBoxOptionValue] = selectBoxOptionText;
             var selectBoxOptionIsDisabled = selectBoxItem.disabled;
             if (selectBoxOptionIsDisabled) {
-                setClass(selectBoxFakeOption, classNameOptionM + 'lock');
+                setClass(selectBoxFakeOption, classNameOptionM + 'disabled');
             } else {
                 onEvent('click', selectBoxFakeOption, onSelectBoxFakeOptionClick);
             }
@@ -858,8 +881,8 @@
                 selectBoxOptionValue = null;
             }
             if (isArray(selectBoxValue) && hasValue(selectBoxOptionValue, selectBoxValue) || selectBoxOptionValue === selectBoxValue) {
-                setClass(selectBoxFakeOption, classNameOptionM + 'active');
-                setLabelContent(doValue(selectBoxOptionText, selectBoxOptionValueReal, selectBoxOptionIndex, classNameOptionB + ' ' + (selectBoxOptionIsDisabled ? ' ' + classNameOptionM + 'lock' : "")));
+                setClass(selectBoxFakeOption, classNameOptionM + 'selected');
+                setLabelContent(doValue(selectBoxOptionText, selectBoxOptionValueReal, selectBoxOptionIndex, classNameOptionB + ' ' + (selectBoxOptionIsDisabled ? ' ' + classNameOptionM + 'disabled' : "")));
                 setOptionSelected(selectBoxItem);
             } else {
                 letOptionSelected(selectBoxItem);
@@ -867,9 +890,7 @@
             ++selectBoxOptionIndex;
         }
 
-        function setSelectBoxFakeOptionsPosition(selectBoxFake) {
-            var selectBoxFakeBorderTopWidth = toNumber(getStyle(selectBoxFake, 'border-top-width')),
-                selectBoxFakeBorderBottomWidth = toNumber(getStyle(selectBoxFake, 'border-bottom-width'));
+        function setSelectBoxFakeOptionsPosition(selectBoxFake, useEvent) {
             if (!selectBoxSize) {
                 var _getRect = getRect(selectBoxFake),
                     left = _getRect[0],
@@ -892,25 +913,29 @@
                         'bottom': heightWindow - top - selectBoxFakeBorderBottomWidth,
                         'max-height': heightMax + selectBoxFakeBorderTopWidth
                     });
-                    setClass(selectBoxFakeDropDown, classNameOptionsM + 'flip');
+                    letClass(selectBoxFake, classNameM + 'down');
+                    setClass(selectBoxFake, classNameM + 'up');
                 } else {
-                    letClass(selectBoxFakeDropDown, classNameOptionsM + 'flip');
+                    letClass(selectBoxFake, classNameM + 'up');
+                    setClass(selectBoxFake, classNameM + 'down');
                 }
             }
-            var selectBoxFakeOption = selectBoxFakeOptions.find(function(selectBoxFakeOption) {
-                return hasClass(selectBoxFakeOption, classNameOptionM + 'active');
-            });
-            if (selectBoxFakeOption) {
-                var _height = getSize(selectBoxFakeOption)[1],
-                    heightParent = getSize(selectBoxFakeDropDown)[1],
-                    _getOffset = getOffset(selectBoxFakeOption),
-                    _left = _getOffset[0],
-                    _top = _getOffset[1],
-                    topScroll = getScroll(selectBoxFakeDropDown)[1];
-                if (_top < topScroll) {
-                    setScroll(selectBoxFakeDropDown, [_left, _top]);
-                } else if (_top + _height - heightParent > topScroll) {
-                    setScroll(selectBoxFakeDropDown, [_left, _top + _height - heightParent]);
+            if (!useEvent) {
+                var selectBoxFakeOption = selectBoxFakeOptions.find(function(selectBoxFakeOption) {
+                    return hasClass(selectBoxFakeOption, classNameOptionM + 'selected');
+                });
+                if (selectBoxFakeOption) {
+                    var _height = getSize(selectBoxFakeOption)[1],
+                        heightParent = getSize(selectBoxFakeDropDown)[1],
+                        _getOffset = getOffset(selectBoxFakeOption),
+                        _left = _getOffset[0],
+                        _top = _getOffset[1],
+                        topScroll = getScroll(selectBoxFakeDropDown)[1];
+                    if (_top < topScroll) {
+                        setScroll(selectBoxFakeDropDown, [_left, _top]);
+                    } else if (_top + _height - heightParent > topScroll) {
+                        setScroll(selectBoxFakeDropDown, [_left, _top + _height - heightParent]);
+                    }
                 }
             }
             fire('fit', getLot());
@@ -937,7 +962,8 @@
             }
         }
         if (selectBoxSize) {
-            // Force `open` class
+            // Force `down` and `open` class
+            setClass(selectBoxFake, classNameM + 'down');
             setClass(selectBoxFake, classNameM + 'open');
         }
         $.get = function(parseValue) {
@@ -969,7 +995,7 @@
             setValue(fromValue(value));
             selectBoxFakeOptions.forEach(function(selectBoxFakeOption, index) {
                 var selectBoxOption = selectBoxOptions[index];
-                toggleClass(selectBoxFakeOption, classNameOptionM + 'active', selectBoxOption && getOptionSelected(selectBoxOption));
+                toggleClass(selectBoxFakeOption, classNameOptionM + 'selected', selectBoxOption && getOptionSelected(selectBoxOption));
             });
             fire('change', getLot());
             return $;
@@ -984,7 +1010,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.1.4';
+    OP.version = '1.2.2';
 
     function onChange() {
         // Destroy!
