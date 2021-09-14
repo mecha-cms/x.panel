@@ -241,12 +241,32 @@ input::-moz-focus-inner {
 }
 
 button,
+input[type='checkbox'],
+input[type='color'],
+input[type='file'],
+input[type='image'],
+input[type='radio'],
+input[type='range'],
 label,
+select,
 summary {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
   cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+input[type='checkbox']:disabled,
+input[type='color']:disabled,
+input[type='file']:disabled,
+input[type='image']:disabled,
+input[type='radio']:disabled,
+input[type='range']:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
 }
 
 h1 {
@@ -553,12 +573,6 @@ legend + ul {
   color: var(--color-input--disabled, var(--color-input));
 }
 
-.input[type='color'],
-.input[type='file'],
-.input[type='range'] {
-  cursor: pointer;
-}
-
 .input[type='file'],
 .input[type='range'] {
   background: none;
@@ -574,7 +588,6 @@ legend + ul {
 .input[type='radio'] {
   background: none;
   border: 0;
-  cursor: pointer;
   height: var(--z);
   line-height: var(--z);
   margin: 0;
@@ -651,7 +664,6 @@ legend + ul {
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: calc(var(--x) * 8);
-  cursor: pointer;
 }
 
 .select:hover {
@@ -1124,7 +1136,6 @@ label > input[type='radio'] + span {
   color: var(--color-bar-link--active, var(--color-bar-link));
 }
 
-.lot\:bar .lot\:links > ul > li.is\:active > a,
 .lot\:bar .lot\:links > ul > li.is\:current > a {
   background: var(--fill-bar-link--current, none);
   color: var(--color-bar-link--current, inherit);
@@ -2261,7 +2272,6 @@ label > input[type='radio'] + span {
   display: block;
 }
 
-.lot\:menu > ul > li.is\:active > a,
 .lot\:menu > ul > li.is\:current > a {
   background: var(--fill-menu-link--current, none);
   color: var(--color-menu-link--current, inherit);

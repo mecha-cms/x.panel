@@ -168,10 +168,32 @@ input::-moz-focus-inner {
 }
 
 button,
+input[type='checkbox'],
+input[type='color'],
+input[type='file'],
+input[type='image'],
+input[type='radio'],
+input[type='range'],
 label,
+select,
 summary {
   @include user-select(none);
   cursor: pointer;
+}
+
+button,
+input,
+input[type='checkbox'],
+input[type='color'],
+input[type='file'],
+input[type='image'],
+input[type='radio'],
+input[type='range'],
+select,
+textarea {
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 @for $i from 0 through 5 {

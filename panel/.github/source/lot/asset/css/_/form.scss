@@ -89,14 +89,6 @@
 }
 
 .input {
-  &[type='color'],
-  &[type='file'],
-  &[type='range'] {
-    cursor: pointer;
-  }
-}
-
-.input {
   &[type='file'],
   &[type='range'] {
     background: none;
@@ -114,7 +106,6 @@
   &[type='radio'] {
     background: none;
     border: 0;
-    cursor: pointer;
     height: var(--z);
     line-height: var(--z);
     margin: 0;
@@ -180,7 +171,6 @@
       color: var(--color-input--#{$state}, var(--color-input));
     }
   }
-  cursor: pointer;
   &[multiple] {
     height: auto;
     optgroup,
