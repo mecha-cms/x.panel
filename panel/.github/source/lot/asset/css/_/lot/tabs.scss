@@ -11,16 +11,28 @@
       flex-wrap: wrap;
       overflow: hidden;
     }
-    li {
+    a {
       color: var(--color-tab);
+      display: flex;
+      $states: hover, focus, active;
+      @each $state in $states {
+        &:#{$state} {
+          color: var(--color-tab--#{$state}, var(--color-tab));
+        }
+      }
+    }
+    li {
       position: relative;
       &.has\:link {
         color: var(--color-tab-link, var(--color-tab));
         $states: hover, focus, active;
         @each $state in $states {
           &:#{$state} {
-            color: var(--color-tab-link--#{$state}, var(--color-tab-link, var(--color-tab)));
+            color: var(--color-tab-link--#{$state}, var(--color-tab-link));
           }
+        }
+        > a {
+          color: inherit;
         }
       }
       &.is\:current {
@@ -35,9 +47,6 @@
           color: inherit;
         }
       }
-    }
-    a {
-      display: flex;
     }
     .title {
       .icon {

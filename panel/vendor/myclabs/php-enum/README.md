@@ -128,4 +128,4 @@ class Action extends Enum
 
 - [Doctrine enum mapping](https://github.com/acelaya/doctrine-enum-type)
 - [Symfony ParamConverter integration](https://github.com/Ex3v/MyCLabsEnumParamConverter)
-- [PHPStan integration](https://github.com/timeweb/phpstan-enum)
+- [PHPStan integration](https://github.com/timeweb/phpstan-enum)

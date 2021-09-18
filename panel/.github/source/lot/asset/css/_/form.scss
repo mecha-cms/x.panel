@@ -76,7 +76,7 @@
   border-radius: var(--radius-input);
   box-shadow: var(--shadow-input);
   color: var(--color-input);
-  width: calc(var(--x) * 8);
+  width: var(--width-input);
   $states: read-write, hover, focus, active, invalid, read-only, disabled;
   @each $state in $states {
     &:#{$state} {
@@ -161,7 +161,7 @@
   border-radius: var(--radius-input);
   box-shadow: var(--shadow-input);
   color: var(--color-input);
-  width: calc(var(--x) * 8);
+  width: var(--width-input);
   $states: hover, focus, active, disabled;
   @each $state in $states {
     &:#{$state} {
@@ -242,7 +242,7 @@ label {
     box-shadow: var(--shadow-button);
     color: var(--color-button);
     &::before {
-      background: var(--color-button);
+      background: var(--fill);
       bottom: 2px;
       content: "";
       left: 2px;
@@ -292,7 +292,8 @@ label {
     &:checked {
       &::before {
         background: none;
-        border: 2px solid var(--color-button);
+        border: 2px solid;
+        border-color: var(--fill);
         visibility: visible;
       }
     }
@@ -300,7 +301,7 @@ label {
     @each $state in $states {
       &:#{$state} {
         &::before {
-          border-color: var(--color-button--#{$state}, var(--color-button));
+          border-color: var(--fill--#{$state}, var(--fill));
         }
       }
     }

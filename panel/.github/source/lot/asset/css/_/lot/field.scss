@@ -43,22 +43,12 @@
           min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
           width: auto;
         }
-        > .button,
-        > .options > .button {
-          background: none;
-          border-width: 1px;
-          color: inherit;
-          line-height: calc(var(--h) - 2); // $h - (border-top-width + border-bottom-width)
-          &:focus,
-          &:active {
-            color: inherit;
-          }
-        }
         .fix {
           @include user-select(none);
-          background: var(--fill-input);
-          border: 1px solid var(--stroke-input);
-          color: var(--color-output);
+          background: var(--fill-fix, var(--fill-input));
+          border: 1px solid;
+          border-color: var(--stroke-fix, var(--stroke-input));
+          color: var(--color-fix, var(--color-output));
           cursor: default;
           display: inline-block;
           height: calc(var(--y) * 1.5);

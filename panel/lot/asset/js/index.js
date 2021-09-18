@@ -48,9 +48,6 @@
     var toCount = function toCount(x) {
         return x.length;
     };
-    var toJSON = function toJSON(x) {
-        return JSON.stringify(x);
-    };
     var toNumber = function toNumber(x, base) {
         if (base === void 0) {
             base = 10;
@@ -88,13 +85,6 @@
             return true;
         }
         return x;
-    };
-    var fromJSON = function fromJSON(x) {
-        var value = null;
-        try {
-            value = JSON.parse(x);
-        } catch (e) {}
-        return value;
     };
     var fromStates = function fromStates() {
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -183,17 +173,6 @@
         }
         return values;
     };
-    var getDatum = function getDatum(node, datum, parseValue) {
-        if (parseValue === void 0) {
-            parseValue = true;
-        }
-        var value = getAttribute(node, 'data-' + datum, parseValue),
-            v = (value + "").trim();
-        if (parseValue && v && ('[' === v[0] && ']' === v.slice(-1) || '{' === v[0] && '}' === v.slice(-1)) && null !== (v = fromJSON(value))) {
-            return v;
-        }
-        return value;
-    };
     var getElement = function getElement(query, scope) {
         return (scope || D).querySelector(query);
     };
@@ -251,9 +230,6 @@
     var letAttribute = function letAttribute(node, attribute) {
         return node.removeAttribute(attribute), node;
     };
-    var letDatum = function letDatum(node, datum) {
-        return letAttribute(node, 'data-' + datum);
-    };
     var letElement = function letElement(node) {
         var parent = getParent(node);
         return node.remove(), parent;
@@ -278,12 +254,6 @@
     };
     var setChildLast = function setChildLast(parent, node) {
         return parent.append(node), node;
-    };
-    var setDatum = function setDatum(node, datum, value) {
-        if (isArray(value) || isObject(value)) {
-            value = toJSON(value);
-        }
-        return setAttribute(node, 'data-' + datum, value);
     };
     var setElement = function setElement(node, content, attributes) {
         node = isString(node) ? D.createElement(node) : node;
@@ -1070,8 +1040,7 @@
     let f3h = null;
 
     function _setFetchFeature() {
-        let title = getElement('title'),
-            selectors = 'body>div,body>svg,body>template',
+        let selectors = 'body>div,body>svg,body>template',
             elements = getElements(selectors);
         f3h = new F3H(false); // Disable cache
         f3h.on('error', () => {
@@ -1079,15 +1048,15 @@
             theLocation.reload();
         });
         f3h.on('exit', (response, node) => {
-            if (title) {
-                if (node && 'form' === getName(node)) {
-                    setDatum(title, 'is', 'get' === node.name ? 'search' : 'push');
-                } else {
-                    letDatum(title, 'is');
-                }
-            }
+            D.title = '░'.repeat(10);
             fire('let');
         });
+
+        function onProgress(from, to) {
+            D.title = '█'.repeat(Math.round(to / from * 10)).padEnd(10, '░');
+        }
+        f3h.on('pull', onProgress);
+        f3h.on('push', onProgress);
         f3h.on('success', (response, node) => {
             let status = f3h.status;
             if (200 === status || 404 === status) {
@@ -1104,13 +1073,6 @@
                     }
                 });
                 fire('change');
-            }
-        });
-        on('let', () => {
-            if (title) {
-                let status = getDatum(title, 'is') || 'pull',
-                    value = getDatum(title, 'is-' + status);
-                value && (D.title = value);
             }
         });
     }

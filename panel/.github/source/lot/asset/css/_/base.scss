@@ -40,6 +40,10 @@ a {
       }
     }
   }
+  &.not\:active {
+    background: var(--fill-link--disabled, var(--fill-link, none));
+    color: var(--color-link--disabled, var(--color-link));
+  }
 }
 
 :root, body {

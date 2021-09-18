@@ -1,2 +1,217 @@
-@import '_/dark';
-@import '_/light';
+$base: #222;
+$mix: #fff;
+
+@function shade($percent: 0%) {
+  @return mix($mix, $base, $percent);
+}
+
+:root {
+  --color-code-block: inherit;
+  --color-fix--hover: inherit;
+  --color-fix: inherit;
+  --color-mark: inherit;
+  --color-output: inherit;
+}
+
+.lot\:files,
+.lot\:folders,
+.lot\:pages {
+  .lot\:tasks {
+    gap: 0;
+    > * {
+      .title {
+        span {
+          display: none; // Remove title text
+        }
+      }
+    }
+  }
+}
+
+.is\:dark {
+  $types: file, folder, page;
+  @each $type in $types {
+    --fill-#{$type}--current: #{shade(2%)};
+    --fill-#{$type}--hover: #{shade(1%)};
+    --fill-#{$type}: #{shade(0%)};
+    --stroke-#{$type}--current: #{shade(2%)};
+    --stroke-#{$type}--hover: #{shade(1%)};
+    --stroke-#{$type}: #{shade(0%)};
+  }
+  --color--disabled: #{shade(20%)};
+  --color-bar-info: #{shade(65%)};
+  --color-bar-link--active: #{shade(50%)};
+  --color-bar-link--current: #{shade(60%)};
+  --color-bar-link--disabled: #{shade(20%)};
+  --color-bar-link--focus: #{shade(50%)};
+  --color-bar-link--hover: #{shade(40%)};
+  --color-bar-link: #{shade(40%)};
+  --color-button--active: #{shade(95%)};
+  --color-button--disabled: #{shade(20%)};
+  --color-button--focus: #{shade(95%)};
+  --color-button--hover: #{shade(95%)};
+  --color-button: #{shade(95%)};
+  --color-input--disabled: #{shade(20%)};
+  --color-input--hover: #{shade(70%)};
+  --color-input--invalid: #{mix(red, shade(70%), 50%)};
+  --color-input: #{shade(70%)};
+  --color-link--active: #{shade(50%)};
+  --color-link--disabled: #{shade(20%)};
+  --color-link--focus: #{shade(50%)};
+  --color-link--hover: #{shade(40%)};
+  --color-link: #{shade(40%)};
+  --color-menu-info: #{shade(65%)};
+  --color-menu-link--active: #{shade(50%)};
+  --color-menu-link--current: #{shade(60%)};
+  --color-menu-link--disabled: #{shade(20%)};
+  --color-menu-link--focus: #{shade(50%)};
+  --color-menu-link--hover: #{shade(40%)};
+  --color-menu-link: #{shade(40%)};
+  --color-tab--active: #{shade(70%)};
+  --color-tab--current: #{shade(60%)};
+  --color-tab--disabled: #{shade(20%)};
+  --color-tab--focus: #{shade(70%)};
+  --color-tab--hover: #{shade(60%)};
+  --color-tab-link--active: #{shade(50%)};
+  --color-tab-link--focus: #{shade(50%)};
+  --color-tab-link--hover: #{shade(40%)};
+  --color-tab-link: #{shade(40%)};
+  --color-tab: #{shade(60%)};
+  --color: #{shade(60%)};
+  --fill-alert: #{shade(1%)};
+  --fill-bar-info: #{shade(5%)};
+  --fill-bar-link--focus: #{shade(1%)};
+  --fill-bar-link--hover: #{shade(1%)};
+  --fill-button--active: #{darken(shade(30%), 5%)};
+  --fill-button--disabled: #{shade(10%)};
+  --fill-button--focus: #{lighten(shade(30%), 5%)};
+  --fill-button--hover: #{shade(30%)};
+  --fill-button: #{shade(30%)};
+  --fill-code-block: #{shade(5%)};
+  --fill-file-icon: #{shade(0%)};
+  --fill-fix--focus: #{shade(0%)};
+  --fill-fix--hover: #{shade(4%)};
+  --fill-fix: #{shade(4%)};
+  --fill-folder-icon: #{shade(40%)};
+  --fill-input--disabled: #{shade(1%)};
+  --fill-input--hover: #{shade(5%)};
+  --fill-input: #{shade(5%)};
+  --fill-mark: #{shade(10%)};
+  --fill-menu-info: #{shade(5%)};
+  --fill-menu-link--current: #{shade(2%)};
+  --fill-menu-link--focus: #{shade(1%)};
+  --fill-menu-link--hover: #{shade(1%)};
+  --fill-tab--current: none;
+  --fill-tab--hover: #{shade(1%)};
+  --fill-tab: #{shade(1%)};
+  --fill: #{shade(0%)};
+  --shadow-button--focus: 0 0 0 3px rgba(255, 255, 255, .025);
+  --shadow-input--focus: 0 0 0 3px rgba(255, 255, 255, .025);
+  --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
+  --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke-file-icon: #{shade(30%)};
+  --stroke-fix--active: #{shade(15%)};
+  --stroke-fix--focus: #{shade(15%)};
+  --stroke-fix--hover: #{shade(10%)};
+  --stroke-fix: #{shade(10%)};
+  --stroke-input--active: #{shade(15%)};
+  --stroke-input--disabled: #{shade(6%)};
+  --stroke-input--focus: #{shade(15%)};
+  --stroke-input--hover: #{shade(10%)};
+  --stroke-input--invalid: #{mix(red, shade(15%), 50%)};
+  --stroke-input: #{shade(10%)};
+  --stroke-output: transparent;
+  --stroke-tab: #{shade(5%)};
+  --stroke: #{shade(5%)};
+  $names: option-picker, tag-picker;
+  @each $name in $names {
+    --color-#{$name}: var(--color-input);
+    --fill-#{$name}: var(--fill-input);
+    --radius-#{$name}: var(--radius-input);
+    --shadow-#{$name}: var(--shadow-input);
+    --stroke-#{$name}: var(--stroke-input);
+    @if option-picker == $name {
+      .#{$name}::after {
+        --stroke-#{$name}--open: var(--color-#{$name});
+        --stroke-#{$name}: var(--color-#{$name});
+        opacity: .5;
+      }
+    }
+    @if tag-picker == $name {
+      --color-#{$name}__tag--disabled: inherit;
+      --color-#{$name}__tag--focus: inherit;
+      --color-#{$name}__tag--hover: inherit;
+      --color-#{$name}__tag--read-only: inherit;
+      --color-#{$name}__tag--selected: inherit;
+      --color-#{$name}__tag: inherit;
+      --fill-#{$name}__tag--disabled: #{shade(10%)};
+      --fill-#{$name}__tag--focus: #{shade(20%)};
+      --fill-#{$name}__tag--hover: #{shade(15%)};
+      --fill-#{$name}__tag--read-only: #{shade(15%)};
+      --fill-#{$name}__tag--selected: #{shade(20%)};
+      --fill-#{$name}__tag: #{shade(15%)};
+    }
+    $states: hover, focus, active;
+    @each $state in $states {
+      --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
+      --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
+      --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
+      --stroke-#{$name}--#{$state}: var(--stroke-input--#{$state}, var(--stroke-input));
+    }
+    .#{$name}__source {
+      $states: read-only, disabled;
+      @each $state in $states {
+        &:#{$state} {
+          + .#{$name} {
+            --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
+            --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
+            --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
+            --stroke-#{$name}--#{$state}: var(--stroke-input--#{$state}, var(--stroke-input));
+          }
+        }
+      }
+    }
+  }
+  blockquote,
+  caption,
+  figcaption,
+  .description {
+    color: #{shade(50%)};
+  }
+  .lot\:menu {
+    a {
+      &:focus,
+      &:hover {
+        --fill-menu-link--current: #{shade(3%)};
+      }
+    }
+  }
+  .is\:folder {
+    &::after {
+      --fill-folder-icon: #{darken(shade(40%), 15%)};
+    }
+  }
+  .lot\:file {
+    &:hover {
+      --fill-file--current: #{shade(3%)};
+      --stroke-file--current: #{shade(3%)};
+    }
+  }
+}
+
+.is\:light {
+  --color-bar-link: #888;
+  --color-input: #333;
+  --color-link: #888;
+  --color-menu-link: #888;
+  --color-tab: #434343;
+  --color: #666;
+  --fill-button: #797979;
+  --fill-input: #fff;
+  --fill-tab--current: none;
+  --fill-tab: #f5f5f5;
+  --fill: #fafafa;
+  --stroke-input: #c4c4c4;
+  --stroke-tab: #d4d4d4;
+  --stroke: #d7d7d7;
+}

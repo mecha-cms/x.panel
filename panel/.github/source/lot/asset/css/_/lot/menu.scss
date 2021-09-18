@@ -1,6 +1,7 @@
 .lot\:menu {
   background: var(--fill-menu, var(--fill));
   border-radius: var(--radius-menu);
+  color: var(--color-menu);
   height: auto;
   line-height: var(--y);
   width: calc(var(--x) * 8);

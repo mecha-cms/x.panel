@@ -102,6 +102,7 @@
     }
     .input {
       border: 0;
+      box-shadow: none;
       display: block;
       height: calc(var(--y) * 2);
       line-height: calc(var(--y) * 2);

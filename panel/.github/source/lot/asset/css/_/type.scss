@@ -36,7 +36,7 @@
 }
 
 .not\:active {
-  color: inherit;
+  color: var(--color--disabled, inherit);
   cursor: not-allowed;
 }
 

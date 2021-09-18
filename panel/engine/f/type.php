@@ -879,10 +879,10 @@ function separator($value, $key) {
 function tab($value, $key) {
     unset($value['description'], $value['title']);
     $out = \x\panel\type\section($value, $key);
-    if (!isset($value[2]['data-name'])) {
+    if ($out && !isset($value[2]['data-name'])) {
         $out['data-name'] = $key;
     }
-    return "" !== $out[1] ? $out : null;
+    return isset($out[1]) && "" !== $out[1] ? $out : null;
 }
 
 function tabs($value, $key) {

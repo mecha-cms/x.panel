@@ -61,8 +61,7 @@ delete F3H.state.types.JSON;
 let f3h = null;
 
 function _setFetchFeature() {
-    let title = getElement('title'),
-        selectors = 'body>div,body>svg,body>template',
+    let selectors = 'body>div,body>svg,body>template',
         elements = getElements(selectors);
     f3h = new F3H(false); // Disable cache
     f3h.on('error', () => {
@@ -70,15 +69,14 @@ function _setFetchFeature() {
         theLocation.reload();
     });
     f3h.on('exit', (response, node) => {
-        if (title) {
-            if (node && 'form' === getName(node)) {
-                setDatum(title, 'is', 'get' === node.name ? 'search' : 'push');
-            } else {
-                letDatum(title, 'is');
-            }
-        }
+        D.title = '░'.repeat(10);
         fire('let');
     });
+    function onProgress(from, to) {
+        D.title = '█'.repeat(Math.round((to / from) * 10)).padEnd(10, '░');
+    }
+    f3h.on('pull', onProgress);
+    f3h.on('push', onProgress);
     f3h.on('success', (response, node) => {
         let status = f3h.status;
         if (200 === status || 404 === status) {
@@ -95,13 +93,6 @@ function _setFetchFeature() {
                 }
             });
             fire('change');
-        }
-    });
-    on('let', () => {
-        if (title) {
-            let status = getDatum(title, 'is') || 'pull',
-                value = getDatum(title, 'is-' + status);
-            value && (D.title = value);
         }
     });
 }
