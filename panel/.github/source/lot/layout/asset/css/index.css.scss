@@ -80,6 +80,7 @@ $mix: #fff;
   --color: #{shade(60%)};
   --fill-alert: #{shade(1%)};
   --fill-bar-info: #{shade(5%)};
+  --fill-bar-link--active: #{shade(1%)};
   --fill-bar-link--focus: #{shade(1%)};
   --fill-bar-link--hover: #{shade(1%)};
   --fill-button--active: #{darken(shade(30%), 5%)};
@@ -93,11 +94,14 @@ $mix: #fff;
   --fill-fix--hover: #{shade(4%)};
   --fill-fix: #{shade(4%)};
   --fill-folder-icon: #{shade(40%)};
+  --fill-input--active: #{shade(5%)};
   --fill-input--disabled: #{shade(1%)};
+  --fill-input--focus: #{shade(5%)};
   --fill-input--hover: #{shade(5%)};
   --fill-input: #{shade(5%)};
   --fill-mark: #{shade(10%)};
   --fill-menu-info: #{shade(5%)};
+  --fill-menu-link--active: #{shade(1%)};
   --fill-menu-link--current: #{shade(2%)};
   --fill-menu-link--focus: #{shade(1%)};
   --fill-menu-link--hover: #{shade(1%)};
@@ -131,6 +135,23 @@ $mix: #fff;
     --shadow-#{$name}: var(--shadow-input);
     --stroke-#{$name}: var(--stroke-input);
     @if option-picker == $name {
+      // TODO
+      --color-#{$name}__option--active: var(--color-input--active);
+      --color-#{$name}__option--disabled: var(--color-input--disabled);
+      --color-#{$name}__option--focus: var(--color-input--focus);
+      --color-#{$name}__option--hover: var(--color-input--hover);
+      --color-#{$name}__option--selected: var(--color-input--active);
+      --color-#{$name}__option: var(--color-input);
+      --color-#{$name}__options--open: var(--color-input);
+      --color-#{$name}__options: var(--color-input);
+      --fill-#{$name}__option--active: rgba(255, 255, 255, .05);
+      --fill-#{$name}__option--focus: rgba(255, 255, 255, .05);
+      --fill-#{$name}__option--hover: rgba(255, 255, 255, .025);
+      --fill-#{$name}__option--selected: rgba(255, 255, 255, .05);
+      --fill-#{$name}__option: var(--fill-input);
+      --fill-#{$name}__options: var(--fill-input);
+      --stroke-#{$name}__options--open: var(--stroke-input--focus);
+      --stroke-#{$name}__options: var(--stroke-input);
       .#{$name}::after {
         --stroke-#{$name}--open: var(--color-#{$name});
         --stroke-#{$name}: var(--color-#{$name});
@@ -138,18 +159,50 @@ $mix: #fff;
       }
     }
     @if tag-picker == $name {
-      --color-#{$name}__tag--disabled: inherit;
-      --color-#{$name}__tag--focus: inherit;
-      --color-#{$name}__tag--hover: inherit;
-      --color-#{$name}__tag--read-only: inherit;
-      --color-#{$name}__tag--selected: inherit;
-      --color-#{$name}__tag: inherit;
+      --color-#{$name}__tag--active: #{shade(65%)};
+      --color-#{$name}__tag--disabled: #{shade(40%)};
+      --color-#{$name}__tag--focus: #{shade(65%)};
+      --color-#{$name}__tag--hover: #{shade(60%)};
+      --color-#{$name}__tag--read-only: #{shade(60%)};
+      --color-#{$name}__tag--selected: #{shade(60%)};
+      --color-#{$name}__tag: #{shade(60%)};
+      --fill-#{$name}__tag--active: #{shade(15%)};
       --fill-#{$name}__tag--disabled: #{shade(10%)};
       --fill-#{$name}__tag--focus: #{shade(20%)};
       --fill-#{$name}__tag--hover: #{shade(15%)};
       --fill-#{$name}__tag--read-only: #{shade(15%)};
       --fill-#{$name}__tag--selected: #{shade(20%)};
       --fill-#{$name}__tag: #{shade(15%)};
+      $states: focus;
+      @each $state in $states {
+        .#{$name}--#{$state} {
+          // Force #1
+          --color-input: var(--color-input--#{$state});
+          --fill-input: var(--fill-input--#{$state});
+          --shadow-input: var(--shadow-input--#{$state});
+          --stroke-input: var(--stroke-input--#{$state});
+          // Force #2
+          --color-#{$name}: var(--color-input);
+          --fill-#{$name}: var(--fill-input);
+          --shadow-#{$name}: var(--shadow-input);
+          --stroke-#{$name}: var(--stroke-input);
+          // Force #3
+          --color-#{$name}--hover: var(--color-input);
+          --fill-#{$name}--hover: var(--fill-input);
+          --shadow-#{$name}--hover: var(--shadow-input);
+          --stroke-#{$name}--hover: var(--stroke-input);
+          // Force #4
+          --color-#{$name}--focus: var(--color-input);
+          --fill-#{$name}--focus: var(--fill-input);
+          --shadow-#{$name}--focus: var(--shadow-input);
+          --stroke-#{$name}--focus: var(--stroke-input);
+          // Force #5
+          --color-#{$name}--active: var(--color-input);
+          --fill-#{$name}--active: var(--fill-input);
+          --shadow-#{$name}--active: var(--shadow-input);
+          --stroke-#{$name}--active: var(--stroke-input);
+        }
+      }
     }
     $states: hover, focus, active;
     @each $state in $states {

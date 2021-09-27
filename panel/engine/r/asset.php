@@ -36,6 +36,10 @@ Hook::set('get', function() {
         'stack' => 20
     ];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
+    $out[$f . 'js' . DS . 'index' . DS . 'f3h' . $z . 'js'] = [
+        'skip' => empty($state->x->panel->fetch),
+        'stack' => 30
+    ];
     $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'option' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'query' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'source' . $z . 'js'] = ['stack' => 30];

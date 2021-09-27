@@ -192,6 +192,9 @@
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
+    var offEventPropagation = function offEventPropagation(e) {
+        return e && e.stopPropagation();
+    };
     var onEvent = function onEvent(name, node, then, options) {
         if (options === void 0) {
             options = false;
@@ -228,19 +231,19 @@
         var $ = this;
         if (!source) {
             return $;
+        } // Already instantiated, skip!
+        if (source[name]) {
+            return source[name];
         } // Return new instance if `TE` was called without the `new` operator
         if (!isInstance($, TE)) {
             return new TE(source, state);
-        } // Already instantiated, skip!
-        if (source[name]) {
-            return $;
         }
         $.state = state = fromStates({}, TE.state, isString(state) ? {
             tab: state
         } : state || {}); // The `<textarea>` element
         $.self = $.source = source; // Store current instance to `TE.instances`
         TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $; // Mark current DOM as active text editor to prevent duplicate instance
-        source[name] = 1;
+        source[name] = $;
         var any = /^([\s\S]*?)$/,
             // Any character(s)
             sourceIsDisabled = function sourceIsDisabled() {
@@ -483,7 +486,7 @@
             return d;
         };
     };
-    TE.version = '3.3.8';
+    TE.version = '3.3.9';
     TE.x = x;
     var that$2 = {};
     that$2._history = [];
@@ -555,7 +558,7 @@
         '<': '>'
     };
 
-    function promisy(type, lot) {
+    function promisify(type, lot) {
         return new Promise(function(resolve, reject) {
             var r = W[type].apply(W, lot);
             return r ? resolve(r) : reject(r);
@@ -572,7 +575,7 @@
             for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
                 lot[_key] = arguments[_key];
             }
-            return promisy(type, lot);
+            return promisify(type, lot);
         };
     });
     var that$1 = {};
@@ -606,20 +609,21 @@
         }
         return t.wrap(open, close, wrap);
     };
+    var CTRL_PREFIX = 'Control-';
 
-    function canKeyDown$2(key, _ref, that) {
-        var a = _ref.a,
-            c = _ref.c,
-            s = _ref.s;
+    function canKeyDown$2(map, that) {
         var charAfter,
             charBefore,
             charIndent = that.state.source.tab || that.state.tab || '\t',
             charPairs = that.state.source.pairs || {},
-            charPairsValues = toObjectValues(charPairs); // Do nothing
-        if (a || c) {
+            charPairsValues = toObjectValues(charPairs),
+            key = map.key,
+            queue = map.queue,
+            keyValue = map + ""; // Do nothing
+        if (queue.Alt || queue.Control) {
             return true;
         }
-        if (' ' === key && !s) {
+        if (' ' === keyValue) {
             var _that$$ = that.$(),
                 _after = _that$$.after,
                 _before = _that$$.before,
@@ -631,7 +635,7 @@
             }
             return true;
         }
-        if ('Enter' === key && !s) {
+        if ('Enter' === keyValue) {
             var _that$$2 = that.$(),
                 _after2 = _that$$2.after,
                 _before2 = _that$$2.before,
@@ -651,7 +655,7 @@
             }
             return true;
         }
-        if ('Backspace' === key && !s) {
+        if ('Backspace' === keyValue) {
             var _that$$3 = that.$(),
                 _after3 = _that$$3.after,
                 _before3 = _that$$3.before,
@@ -700,7 +704,7 @@
         if ('\\' === (charBefore = before.slice(-1))) {
             return true;
         }
-        charAfter = charPairsValues.includes(after[0]) ? after[0] : charPairs[charBefore]; // `|}`
+        charAfter = hasValue(after[0], charPairsValues) ? after[0] : charPairs[charBefore]; // `|}`
         if (!value && after && before && charAfter && key === charAfter) {
             // Move to the next character
             // `}|`
@@ -709,13 +713,13 @@
         }
         for (charBefore in charPairs) {
             charAfter = charPairs[charBefore]; // `{|`
-            if (charBefore === key && charAfter) {
+            if (key === charBefore && charAfter) {
                 // Wrap pair or selection
                 // `{|}` `{|aaa|}`
                 that.wrap(charBefore, charAfter).record();
                 return false;
             } // `|}`
-            if (charAfter === key) {
+            if (key === charAfter) {
                 if (value) {
                     // Wrap selection
                     // `{|aaa|}`
@@ -728,30 +732,26 @@
         return true;
     }
 
-    function canKeyDownDent(key, _ref2, that) {
-        var a = _ref2.a,
-            c = _ref2.c;
-        _ref2.s;
+    function canKeyDownDent(map, that) {
         var charIndent = that.state.source.tab || that.state.tab || '\t';
-        if (!a && c) {
-            // Indent with `⌘+]`
-            if (']' === key) {
-                that.push(charIndent).record();
-                return false;
-            } // Outdent with `⌘+[`
-            if ('[' === key) {
-                that.pull(charIndent).record();
-                return false;
-            }
+        map.key;
+        map.queue;
+        var keyValue = map + ""; // Indent with `⎈]`
+        if (CTRL_PREFIX + ']' === keyValue) {
+            that.push(charIndent).record();
+            return false;
+        } // Outdent with `⎈[`
+        if (CTRL_PREFIX + '[' === keyValue) {
+            that.pull(charIndent).record();
+            return false;
         }
         return true;
     }
 
-    function canKeyDownEnter(key, _ref3, that) {
-        _ref3.a;
-        var c = _ref3.c,
-            s = _ref3.s;
-        if (c && 'Enter' === key) {
+    function canKeyDownEnter(map, that) {
+        map.key;
+        var queue = map.queue;
+        if (queue.Control && queue.Enter) {
             var _that$$5 = that.$(),
                 after = _that$$5.after,
                 before = _that$$5.before,
@@ -763,115 +763,107 @@
                 lineMatch = lineBefore.match(/^(\s+)/),
                 lineMatchIndent = lineMatch && lineMatch[1] || "";
             if (before || after) {
-                if (s) {
-                    // Insert line over with `⌘+⇧+↵`
+                if (queue.Shift) {
+                    // Insert line over with `⎈⇧↵`
                     return that.select(start - toCount(lineBefore)).wrap(lineMatchIndent, '\n').insert(value).record(), false;
-                } // Insert line below with `⌘+↵`
+                } // Insert line below with `⎈↵`
                 return that.select(end + toCount(lineAfter)).wrap('\n' + lineMatchIndent, "").insert(value).record(), false;
             }
         }
         return true;
     }
 
-    function canKeyDownHistory(key, _ref4, that) {
-        var a = _ref4.a,
-            c = _ref4.c;
-        _ref4.s;
-        if (!a && c) {
-            // Redo with `⌘+y`
-            if ('y' === key) {
-                that.redo();
-                return false;
-            } // Undo with `⌘+z`
-            if ('z' === key) {
-                that.undo();
-                return false;
-            }
+    function canKeyDownHistory(map, that) {
+        var keyValue = map + ""; // Redo with `⎈y`
+        if (CTRL_PREFIX + 'y' === keyValue) {
+            return that.redo(), false;
+        } // Undo with `⎈z`
+        if (CTRL_PREFIX + 'z' === keyValue) {
+            return that.undo(), false;
         }
         return true;
     }
 
-    function canKeyDownMove(key, _ref5, that) {
-        var a = _ref5.a,
-            c = _ref5.c;
-        _ref5.s;
-        if (c) {
-            var _that$$6 = that.$(),
-                after = _that$$6.after,
-                before = _that$$6.before,
-                end = _that$$6.end,
-                start = _that$$6.start,
-                value = _that$$6.value,
-                charPair,
-                charPairValue,
-                charPairs = that.state.source.pairs || {},
-                boundaries = [],
-                m;
-            if (value) {
-                if (!a) {
-                    for (charPair in charPairs) {
-                        if (!(charPairValue = charPairs[charPair])) {
-                            continue;
-                        }
-                        boundaries.push('(?:\\' + charPair + '(?:\\\\.|[^\\' + charPair + (charPairValue !== charPair ? '\\' + charPairValue : "") + '])*\\' + charPairValue + ')');
-                    }
-                    boundaries.push('\\w+'); // Word(s)
-                    boundaries.push('\\s+'); // White-space(s)
+    function canKeyDownMove(map, that) {
+        map.key;
+        var queue = map.queue,
+            keyValue = map + "";
+        if (!queue.Control) {
+            return true;
+        }
+        var _that$$6 = that.$(),
+            after = _that$$6.after,
+            before = _that$$6.before,
+            end = _that$$6.end,
+            start = _that$$6.start,
+            value = _that$$6.value,
+            charPair,
+            charPairValue,
+            charPairs = that.state.source.pairs || {},
+            boundaries = [],
+            m;
+        if (value) {
+            for (charPair in charPairs) {
+                if (!(charPairValue = charPairs[charPair])) {
+                    continue;
                 }
-                boundaries.push('[\\s\\S]'); // Last try!
-                if ('ArrowLeft' === key) {
-                    if (m = before.match(toPattern('(' + boundaries.join('|') + ')$', ""))) {
-                        that.insert("").select(start - toCount(m[0])).insert(value);
-                        return that.record(), false;
-                    }
-                    return that.select(), false;
-                }
-                if ('ArrowRight' === key) {
-                    if (m = after.match(toPattern('^(' + boundaries.join('|') + ')', ""))) {
-                        that.insert("").select(end + toCount(m[0]) - toCount(value)).insert(value);
-                        return that.record(), false;
-                    }
-                    return that.select(), false;
-                }
+                boundaries.push('(?:\\' + charPair + '(?:\\\\.|[^\\' + charPair + (charPairValue !== charPair ? '\\' + charPairValue : "") + '])*\\' + charPairValue + ')');
             }
-            var lineAfter = after.split('\n').shift(),
-                lineBefore = before.split('\n').pop(),
-                lineMatch = lineBefore.match(/^(\s+)/);
-            lineMatch && lineMatch[1] || ""; // Force to select the current line if there is no selection
-            end += toCount(lineAfter);
-            start -= toCount(lineBefore);
-            value = lineBefore + value + lineAfter;
-            if ('ArrowUp' === key) {
-                if (!hasValue('\n', before)) {
-                    return that.select(), false;
+            boundaries.push('\\w+'); // Word(s)
+            boundaries.push('\\s+'); // White-space(s)
+            boundaries.push('[\\s\\S]'); // Last try!
+            if (CTRL_PREFIX + 'ArrowLeft' === keyValue) {
+                if (m = before.match(toPattern('(' + boundaries.join('|') + ')$', ""))) {
+                    that.insert("").select(start - toCount(m[0])).insert(value);
+                    return that.record(), false;
                 }
-                that.insert("");
-                that.replace(/^([^\n]*?)(\n|$)/, '$2', 1);
-                that.replace(/(^|\n)([^\n]*?)$/, "", -1);
-                var $ = that.$();
-                before = $.before;
-                start = $.start;
-                lineBefore = before.split('\n').pop();
-                that.select(start = start - toCount(lineBefore)).wrap(value, '\n');
-                that.select(start, start + toCount(value));
-                return that.record(), false;
+                return that.select(), false;
             }
-            if ('ArrowDown' === key) {
-                if (!hasValue('\n', after)) {
-                    return that.select(), false;
+            if (CTRL_PREFIX + 'ArrowRight' === keyValue) {
+                if (m = after.match(toPattern('^(' + boundaries.join('|') + ')', ""))) {
+                    that.insert("").select(end + toCount(m[0]) - toCount(value)).insert(value);
+                    return that.record(), false;
                 }
-                that.insert("");
-                that.replace(/^([^\n]*?)(\n|$)/, "", 1);
-                that.replace(/(^|\n)([^\n]*?)$/, '$1', -1);
-                var _$ = that.$();
-                after = _$.after;
-                end = _$.end;
-                lineAfter = after.split('\n').shift();
-                that.select(end = end + toCount(lineAfter)).wrap('\n', value);
-                end += 1;
-                that.select(end, end + toCount(value));
-                return that.record(), false;
+                return that.select(), false;
             }
+        }
+        var lineAfter = after.split('\n').shift(),
+            lineBefore = before.split('\n').pop(),
+            lineMatch = lineBefore.match(/^(\s+)/);
+        lineMatch && lineMatch[1] || ""; // Force to select the current line if there is no selection
+        end += toCount(lineAfter);
+        start -= toCount(lineBefore);
+        value = lineBefore + value + lineAfter;
+        if (CTRL_PREFIX + 'ArrowUp' === keyValue) {
+            if (!hasValue('\n', before)) {
+                return that.select(), false;
+            }
+            that.insert("");
+            that.replace(/^([^\n]*?)(\n|$)/, '$2', 1);
+            that.replace(/(^|\n)([^\n]*?)$/, "", -1);
+            var $ = that.$();
+            before = $.before;
+            start = $.start;
+            lineBefore = before.split('\n').pop();
+            that.select(start = start - toCount(lineBefore)).wrap(value, '\n');
+            that.select(start, start + toCount(value));
+            return that.record(), false;
+        }
+        if (CTRL_PREFIX + 'ArrowDown' === keyValue) {
+            if (!hasValue('\n', after)) {
+                return that.select(), false;
+            }
+            that.insert("");
+            that.replace(/^([^\n]*?)(\n|$)/, "", 1);
+            that.replace(/(^|\n)([^\n]*?)$/, '$1', -1);
+            var _$ = that.$();
+            after = _$.after;
+            end = _$.end;
+            lineAfter = after.split('\n').shift();
+            that.select(end = end + toCount(lineAfter)).wrap('\n', value);
+            end += 1;
+            that.select(end, end + toCount(value));
+            return that.record(), false;
         }
         return true;
     }
@@ -879,10 +871,7 @@
         return that.record();
     }, 100);
 
-    function canKeyUp(key, _ref7, that) {
-        _ref7.a;
-        _ref7.c;
-        _ref7.s;
+    function canKeyUp(map, that) {
         return bounce(that), true;
     }
     var state$2 = defaults$2;
@@ -1023,13 +1012,13 @@
         return t.wrap('<' + name + toAttributes(attributes) + '>', '</' + name + '>');
     };
 
-    function canKeyDown$1(key, _ref, that) {
-        var a = _ref.a,
-            c = _ref.c,
-            s = _ref.s;
+    function canKeyDown$1(map, that) {
         var state = that.state,
-            charIndent = state.sourceXML.tab || state.tab || '\t'; // Do nothing
-        if (a || c) {
+            charIndent = state.sourceXML.tab || state.tab || '\t',
+            key = map.key,
+            queue = map.queue,
+            keyValue = map + ""; // Do nothing
+        if (queue.Alt || queue.Control) {
             return true;
         }
         if (['-', '>', '/', '?', ' '].includes(key)) {
@@ -1075,7 +1064,7 @@
                     return false;
                 }
             }
-            if (' ' === key) {
+            if (' ' === keyValue) {
                 if (!value) {
                     if ( // `<!--|-->`
                         '-->' === after.slice(0, 3) && '<!--' === before.slice(-4) || // `<?foo|?>`
@@ -1086,7 +1075,7 @@
                 }
             }
         }
-        if ('ArrowLeft' === key && !s) {
+        if ('ArrowLeft' === keyValue) {
             var _that$$2 = that.$(),
                 _before = _that$$2.before,
                 _start = _that$$2.start,
@@ -1099,7 +1088,7 @@
                 }
             }
         }
-        if ('ArrowRight' === key && !s) {
+        if ('ArrowRight' === keyValue) {
             var _that$$3 = that.$(),
                 _after = _that$$3.after,
                 _start2 = _that$$3.start,
@@ -1112,7 +1101,7 @@
                 }
             }
         }
-        if ('Enter' === key && !s) {
+        if ('Enter' === keyValue) {
             var _that$$4 = that.$(),
                 _after2 = _that$$4.after,
                 _before2 = _that$$4.before,
@@ -1138,7 +1127,7 @@
                 }
             }
         }
-        if ('Backspace' === key && !s) {
+        if ('Backspace' === keyValue) {
             var _that$$5 = that.$(),
                 _after3 = _that$$5.after,
                 _before3 = _that$$5.before,
@@ -1197,7 +1186,7 @@
                 }
             }
         }
-        if ('Delete' === key && !s) {
+        if ('Delete' === keyValue) {
             var _that$$6 = that.$(),
                 _after4 = _that$$6.after,
                 _value5 = _that$$6.value;
@@ -1222,11 +1211,10 @@
         return true;
     }
 
-    function canMouseDown(key, _ref2, that) {
-        _ref2.a;
-        var c = _ref2.c;
-        _ref2.s;
-        if (!c) {
+    function canMouseDown(map, that) {
+        map.key;
+        var queue = map.queue;
+        if (!queue.Control) {
             W.setTimeout(function() {
                 var _that$$7 = that.$(),
                     after = _that$$7.after,
@@ -1368,6 +1356,7 @@
                 attr = toAttributes(element[2]);
             } // ``
             t.replace(patternBefore, "", -1);
+            t.replace(/\n+/g, ' ');
             t.replace(patternAfter, "", 1);
             var tidy = element[3] || elements.h1[3];
             if (false !== (tidy = toTidy(tidy))) {
@@ -1473,122 +1462,157 @@
     function decode(x) {
         return x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     }
+    var commands = {};
+    commands.blocks = function() {
+        var that = this;
+        return toggleBlocks(that), that.record(), false;
+    };
+    commands.bold = function() {
+        var that = this,
+            state = that.state,
+            elements = state.sourceHTML.elements || {};
+        return toggle.apply(this, elements.b), false;
+    };
+    commands.code = function() {
+        var that = this;
+        return toggleCodes(that), that.record(), false;
+    };
+    commands.image = function(label, placeholder) {
+        if (label === void 0) {
+            label = 'URL:';
+        }
+        var that = this,
+            _that$$ = that.$(),
+            after = _that$$.after,
+            before = _that$$.before,
+            value = _that$$.value,
+            state = that.state,
+            elements = state.sourceHTML.elements || {},
+            charIndent = state.sourceHTML.tab || state.source.tab || state.tab || '\t',
+            lineBefore = before.split('\n').pop(),
+            lineMatch = lineBefore.match(/^(\s+)/),
+            lineMatchIndent = lineMatch && lineMatch[1] || "",
+            prompt = state.source.prompt;
+        if (isFunction(prompt)) {
+            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function(src) {
+                if (!src) {
+                    that.focus();
+                    return;
+                }
+                var element = elements.img;
+                if (value) {
+                    element[2].alt = value;
+                    that.record(); // Record selection
+                }
+                var tidy = element[3] || false;
+                if (false !== (tidy = toTidy(tidy))) {
+                    that.trim(tidy[0], "");
+                }
+                element[2].src = src;
+                if ((!after || '\n' === after[0]) && (!before || '\n' === before.slice(-1))) {
+                    tidy = elements.figure[3] || false;
+                    if (false !== (tidy = toTidy(tidy))) {
+                        that.trim(tidy[0], tidy[1]);
+                    }
+                    that.insert("");
+                    that.wrap(lineMatchIndent + '<' + elements.figure[0] + toAttributes(elements.figure[2]) + '>\n' + lineMatchIndent + charIndent, lineMatchIndent + '\n</' + elements.figure[0] + '>');
+                    that.insert('<' + element[0] + toAttributes(element[2]) + '>\n' + lineMatchIndent + charIndent, -1);
+                    that.wrap('<' + elements.figcaption[0] + toAttributes(elements.figcaption[2]) + '>', '</' + elements.figcaption[0] + '>').insert(elements.figcaption[1]);
+                } else {
+                    that.insert('<' + element[0] + toAttributes(element[2]) + '>' + (false !== tidy ? tidy[1] : ""), -1, true);
+                }
+            });
+        }
+        return that.record(), false;
+    };
+    commands.italic = function() {
+        var that = this,
+            state = that.state,
+            elements = state.sourceHTML.elements || {};
+        return toggle.apply(this, elements.i), false;
+    };
+    commands.link = function(label, placeholder) {
+        if (label === void 0) {
+            label = 'URL:';
+        }
+        var that = this,
+            _that$$2 = that.$(),
+            value = _that$$2.value,
+            state = that.state,
+            elements = state.sourceHTML.elements || {},
+            prompt = state.source.prompt;
+        if (isFunction(prompt)) {
+            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function(href) {
+                if (!href) {
+                    that.focus();
+                    return;
+                }
+                var element = elements.a;
+                if (value) {
+                    that.record(); // Record selection
+                }
+                element[2].href = href;
+                var local = /[.\/?&#]/.test(href[0]) || /^(data|javascript|mailto):/.test(href) || -1 === href.indexOf('://'),
+                    extras = {};
+                if (!local) {
+                    extras.rel = 'nofollow';
+                    extras.target = '_blank';
+                }
+                var tidy = toTidy(element[3] || false);
+                if (false === tidy && !value) {
+                    // Tidy link with a space if there is no selection
+                    tidy = [' ', ' '];
+                }
+                toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), tidy]);
+            });
+        }
+        return that.record(), false;
+    };
+    commands.quote = function() {
+        var that = this;
+        return toggleQuotes(that), that.record(), false;
+    };
+    commands.underline = function() {
+        var that = this,
+            state = that.state,
+            elements = state.sourceHTML.elements || {};
+        return toggle.apply(this, elements.u), false;
+    };
 
-    function canKeyDown(key, _ref, that) {
-        var a = _ref.a,
-            c = _ref.c,
-            s = _ref.s;
+    function canKeyDown(map, that) {
         var state = that.state,
             charIndent = state.sourceHTML.tab || state.source.tab || state.tab || '\t',
             elements = state.sourceHTML.elements || {},
-            prompt = state.source.prompt;
-        if (c) {
-            var _that$$ = that.$(),
-                after = _that$$.after,
-                before = _that$$.before,
-                end = _that$$.end,
-                start = _that$$.start,
-                value = _that$$.value,
-                lineAfter = after.split('\n').shift(),
+            key = map.key,
+            queue = map.queue;
+        if (queue.Control) {
+            var _that$$3 = that.$(),
+                after = _that$$3.after,
+                before = _that$$3.before,
+                end = _that$$3.end,
+                start = _that$$3.start;
+            _that$$3.value;
+            var lineAfter = after.split('\n').shift(),
                 lineBefore = before.split('\n').pop(),
                 lineMatch = lineBefore.match(/^(\s+)/),
                 lineMatchIndent = lineMatch && lineMatch[1] || "";
-            if ('b' === key) {
-                return toggle.apply(that, elements.b), false;
-            }
-            if ('g' === key) {
-                if (isFunction(prompt)) {
-                    prompt('URL:', value && /^https?:\/\/\S+$/.test(value) ? value : protocol + '//').then(function(src) {
-                        if (!src) {
-                            that.focus();
-                            return;
-                        }
-                        var element = elements.img;
-                        if (value) {
-                            element[2].alt = value;
-                            that.record(); // Record selection
-                        }
-                        var tidy = element[3] || false;
-                        if (false !== (tidy = toTidy(tidy))) {
-                            that.trim(tidy[0], "");
-                        }
-                        element[2].src = src;
-                        if ((!after || '\n' === after[0]) && (!before || '\n' === before.slice(-1))) {
-                            tidy = elements.figure[3] || false;
-                            if (false !== (tidy = toTidy(tidy))) {
-                                that.trim(tidy[0], tidy[1]);
-                            }
-                            that.insert("");
-                            that.wrap(lineMatchIndent + '<' + elements.figure[0] + toAttributes(elements.figure[2]) + '>\n' + lineMatchIndent + charIndent, lineMatchIndent + '\n</' + elements.figure[0] + '>');
-                            that.insert('<' + element[0] + toAttributes(element[2]) + '>\n' + lineMatchIndent + charIndent, -1);
-                            that.wrap('<' + elements.figcaption[0] + toAttributes(elements.figcaption[2]) + '>', '</' + elements.figcaption[0] + '>').insert(elements.figcaption[1]);
-                        } else {
-                            that.insert('<' + element[0] + toAttributes(element[2]) + '>' + (false !== tidy ? tidy[1] : ""), -1, true);
-                        }
-                    });
-                }
-                return that.record(), false;
-            }
-            if ('h' === key) {
-                return toggleBlocks(that), that.record(), false;
-            }
-            if ('i' === key) {
-                return toggle.apply(that, elements.i), false;
-            }
-            if ('k' === key) {
-                return toggleCodes(that), that.record(), false;
-            }
-            if ('l' === key) {
-                if (isFunction(prompt)) {
-                    prompt('URL:', value && /^https?:\/\/\S+$/.test(value) ? value : protocol + '//').then(function(href) {
-                        if (!href) {
-                            that.focus();
-                            return;
-                        }
-                        var element = elements.a;
-                        if (value) {
-                            that.record(); // Record selection
-                        }
-                        element[2].href = href;
-                        var local = /[.\/?&#]/.test(href[0]) || /^(data|javascript|mailto):/.test(href) || -1 === href.indexOf('://'),
-                            extras = {};
-                        if (!local) {
-                            extras.rel = 'nofollow';
-                            extras.target = '_blank';
-                        }
-                        var tidy = toTidy(element[3] || false);
-                        if (false === tidy && !value) {
-                            // Tidy link with a space if there is no selection
-                            tidy = [' ', ' '];
-                        }
-                        toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), tidy]);
-                    });
-                }
-                return that.record(), false;
-            }
-            if ('q' === key) {
-                return toggleQuotes(that), that.record(), false;
-            }
-            if ('u' === key) {
-                return toggle.apply(that, elements.u), false;
-            }
             if ('Enter' === key) {
                 var _m = lineAfter.match(toPattern(tagEnd(tagName) + '\\s*$', "")),
                     element = elements[_m && _m[1] || 'p'] || elements.p;
                 element[3] = ['\n' + lineMatchIndent, '\n' + lineMatchIndent];
-                that.select(s ? start - toCount(lineBefore) : end + toCount(lineAfter));
+                that.select(queue.Shift ? start - toCount(lineBefore) : end + toCount(lineAfter));
                 toggle.apply(that, element);
                 return that.record(), false;
             }
         } // Do nothing
-        if (a || c) {
+        if (queue.Alt || queue.Control) {
             return true;
         }
         if ('>' === key) {
-            var _that$$2 = that.$(),
-                _after = _that$$2.after,
-                _before = _that$$2.before,
-                _end = _that$$2.end,
+            var _that$$4 = that.$(),
+                _after = _that$$4.after,
+                _before = _that$$4.before,
+                _end = _that$$4.end,
                 _lineBefore = _before.split('\n').pop(),
                 _m2 = (_lineBefore + '>').match(toPattern(tagStart(tagName) + '$', "")),
                 _n,
@@ -1622,10 +1646,10 @@
             return that.record(), false;
         }
         if ('Enter' === key) {
-            var _that$$3 = that.$(),
-                _after2 = _that$$3.after,
-                _before2 = _that$$3.before,
-                _value = _that$$3.value,
+            var _that$$5 = that.$(),
+                _after2 = _that$$5.after,
+                _before2 = _that$$5.before,
+                _value = _that$$5.value,
                 _lineAfter = _after2.split('\n').shift(),
                 _lineBefore2 = _before2.split('\n').pop(),
                 _lineMatch = _lineBefore2.match(/^(\s+)/),
@@ -1684,58 +1708,69 @@
     }); // Be sure to remove the default source type
     delete TE.state.source.type;
 
-    function _onKeyDownSource(e) {
-        let $ = this.$,
-            type = $.state.source.type,
-            key = e.key,
-            keys = {
-                a: e.altKey,
-                c: e.ctrlKey,
-                s: e.shiftKey
-            };
-        if ('HTML' === type) {
-            if (canKeyDown(key, keys, $) && canKeyDown$1(key, keys, $) && canKeyDown$2(key, keys, $) && canKeyDownDent(key, keys, $) && canKeyDownEnter(key, keys, $) && canKeyDownHistory(key, keys, $) && canKeyDownMove(key, keys, $));
-            else {
-                offEventDefault(e);
-            }
-            return;
-        }
-        if ('XML' === type) {
-            if (canKeyDown$1(key, keys, $) && canKeyDown$2(key, keys, $) && canKeyDownDent(key, keys, $) && canKeyDownEnter(key, keys, $) && canKeyDownHistory(key, keys, $) && canKeyDownMove(key, keys, $));
-            else {
-                offEventDefault(e);
-            }
-            return;
-        } // Default
-        if (canKeyDown$2(key, keys, $) && canKeyDownDent(key, keys, $) && canKeyDownEnter(key, keys, $) && canKeyDownHistory(key, keys, $) && canKeyDownMove(key, keys, $));
-        else {
-            offEventDefault(e);
-        }
+    function _onBlurSource(e) {
+        this.K.pull();
     }
 
-    function _onMouseDownSource(e) {
-        let $ = this.$,
+    function _onInputSource(e) {
+        this.K.pull();
+    }
+
+    function _onKeyDownSource(e) {
+        let editor = this.TE,
+            map = this.K,
             key = e.key,
-            keys = {
-                a: e.altKey,
-                c: e.ctrlKey,
-                s: e.shiftKey
-            };
-        canMouseDown(key, keys, $);
+            type = editor.state.source.type,
+            command,
+            value;
+        offEventPropagation(e);
+        map.push(key);
+        if (command = map.test()) {
+            value = map.fire(command);
+            if (false === value) {
+                offEventDefault(e);
+            } else if (null === value) {
+                console.error('Unknown command:', command);
+            }
+        } else {
+            if ('HTML' === type) {
+                if (canKeyDown(map, editor) && canKeyDown$1(map, editor) && canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
+                else {
+                    offEventDefault(e);
+                }
+                return;
+            }
+            if ('XML' === type) {
+                if (canKeyDown$1(map, editor) && canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
+                else {
+                    offEventDefault(e);
+                }
+                return;
+            } // Default
+            if (canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
+            else {
+                offEventDefault(e);
+            }
+        }
     }
 
     function _onKeyUpSource(e) {
-        let $ = this.$,
-            key = e.key,
-            keys = {
-                a: e.altKey,
-                c: e.ctrlKey,
-                s: e.shiftKey
-            };
-        canKeyUp(key, keys, $);
+        let editor = this.TE,
+            map = this.K,
+            key = e.key;
+        canKeyUp(map, editor);
+        map.pull(key);
+    }
+
+    function _onMouseDownSource(e) {
+        let editor = this.TE,
+            map = this.K;
+        canMouseDown(map, editor);
     }
 
     function _letEditorSource(self) {
+        offEvent('blur', self, _onBlurSource);
+        offEvent('input', self, _onInputSource);
         offEvent('keydown', self, _onKeyDownSource);
         offEvent('keyup', self, _onKeyUpSource);
         offEvent('mousedown', self, _onMouseDownSource);
@@ -1743,11 +1778,13 @@
     }
 
     function _setEditorSource(self) {
+        onEvent('blur', self, _onBlurSource);
+        onEvent('input', self, _onInputSource);
         onEvent('keydown', self, _onKeyDownSource);
         onEvent('keyup', self, _onKeyUpSource);
         onEvent('mousedown', self, _onMouseDownSource);
         onEvent('touchstart', self, _onMouseDownSource);
-        self.$.record();
+        self.TE.record();
     }
 
     function onChange() {
@@ -1756,13 +1793,34 @@
         for (let key in TE.instances) {
             $ = TE.instances[key];
             $.loss().pop();
-            delete $.self.$;
+            delete $.self.K;
             delete TE.instances[key];
             _letEditorSource($.self);
         }
-        let sources = getElements('.lot\\:field.type\\:source .textarea');
+        let sources = getElements('.lot\\:field.type\\:source .textarea'),
+            editor,
+            map,
+            state,
+            type;
         sources && toCount(sources) && sources.forEach(source => {
-            source.$ = new TE(source, getDatum(source, 'state') ?? {});
+            editor = new TE(source, getDatum(source, 'state') ?? {});
+            state = editor.state;
+            type = state.source.type;
+            map = new W.K(editor);
+            if ('HTML' === type) {
+                map.commands = commands;
+                map.keys['Control-b'] = 'bold';
+                map.keys['Control-e'] = 'code';
+                map.keys['Control-h'] = 'blocks';
+                map.keys['Control-i'] = 'italic';
+                map.keys['Control-k'] = 'link';
+                map.keys['Control-o'] = 'image';
+                map.keys['Control-q'] = 'quote';
+                map.keys['Control-u'] = 'underline';
+            }
+            state.commands = map.commands;
+            state.keys = map.keys;
+            source.K = map;
             _setEditorSource(source);
         });
     }

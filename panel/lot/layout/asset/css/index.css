@@ -79,6 +79,7 @@
   --color: #a7a7a7;
   --fill-alert: #242424;
   --fill-bar-info: #2d2d2d;
+  --fill-bar-link--active: #242424;
   --fill-bar-link--focus: #242424;
   --fill-bar-link--hover: #242424;
   --fill-button--active: #575757;
@@ -92,11 +93,14 @@
   --fill-fix--hover: #2b2b2b;
   --fill-fix: #2b2b2b;
   --fill-folder-icon: #7a7a7a;
+  --fill-input--active: #2d2d2d;
   --fill-input--disabled: #242424;
+  --fill-input--focus: #2d2d2d;
   --fill-input--hover: #2d2d2d;
   --fill-input: #2d2d2d;
   --fill-mark: #383838;
   --fill-menu-info: #2d2d2d;
+  --fill-menu-link--active: #242424;
   --fill-menu-link--current: #262626;
   --fill-menu-link--focus: #242424;
   --fill-menu-link--hover: #242424;
@@ -127,6 +131,22 @@
   --radius-option-picker: var(--radius-input);
   --shadow-option-picker: var(--shadow-input);
   --stroke-option-picker: var(--stroke-input);
+  --color-option-picker__option--active: var(--color-input--active);
+  --color-option-picker__option--disabled: var(--color-input--disabled);
+  --color-option-picker__option--focus: var(--color-input--focus);
+  --color-option-picker__option--hover: var(--color-input--hover);
+  --color-option-picker__option--selected: var(--color-input--active);
+  --color-option-picker__option: var(--color-input);
+  --color-option-picker__options--open: var(--color-input);
+  --color-option-picker__options: var(--color-input);
+  --fill-option-picker__option--active: rgba(255, 255, 255, .05);
+  --fill-option-picker__option--focus: rgba(255, 255, 255, .05);
+  --fill-option-picker__option--hover: rgba(255, 255, 255, .025);
+  --fill-option-picker__option--selected: rgba(255, 255, 255, .05);
+  --fill-option-picker__option: var(--fill-input);
+  --fill-option-picker__options: var(--fill-input);
+  --stroke-option-picker__options--open: var(--stroke-input--focus);
+  --stroke-option-picker__options: var(--stroke-input);
   --color-option-picker--hover: var(--color-input--hover, var(--color-input));
   --fill-option-picker--hover: var(--fill-input--hover, var(--fill-input));
   --shadow-option-picker--hover: var(--shadow-input--hover, var(--shadow-input));
@@ -144,12 +164,14 @@
   --radius-tag-picker: var(--radius-input);
   --shadow-tag-picker: var(--shadow-input);
   --stroke-tag-picker: var(--stroke-input);
-  --color-tag-picker__tag--disabled: inherit;
-  --color-tag-picker__tag--focus: inherit;
-  --color-tag-picker__tag--hover: inherit;
-  --color-tag-picker__tag--read-only: inherit;
-  --color-tag-picker__tag--selected: inherit;
-  --color-tag-picker__tag: inherit;
+  --color-tag-picker__tag--active: #b2b2b2;
+  --color-tag-picker__tag--disabled: #7a7a7a;
+  --color-tag-picker__tag--focus: #b2b2b2;
+  --color-tag-picker__tag--hover: #a7a7a7;
+  --color-tag-picker__tag--read-only: #a7a7a7;
+  --color-tag-picker__tag--selected: #a7a7a7;
+  --color-tag-picker__tag: #a7a7a7;
+  --fill-tag-picker__tag--active: #434343;
   --fill-tag-picker__tag--disabled: #383838;
   --fill-tag-picker__tag--focus: #4e4e4e;
   --fill-tag-picker__tag--hover: #434343;
@@ -188,6 +210,29 @@
   --fill-option-picker--disabled: var(--fill-input--disabled, var(--fill-input));
   --shadow-option-picker--disabled: var(--shadow-input--disabled, var(--shadow-input));
   --stroke-option-picker--disabled: var(--stroke-input--disabled, var(--stroke-input));
+}
+
+.is\:dark .tag-picker--focus {
+  --color-input: var(--color-input--focus);
+  --fill-input: var(--fill-input--focus);
+  --shadow-input: var(--shadow-input--focus);
+  --stroke-input: var(--stroke-input--focus);
+  --color-tag-picker: var(--color-input);
+  --fill-tag-picker: var(--fill-input);
+  --shadow-tag-picker: var(--shadow-input);
+  --stroke-tag-picker: var(--stroke-input);
+  --color-tag-picker--hover: var(--color-input);
+  --fill-tag-picker--hover: var(--fill-input);
+  --shadow-tag-picker--hover: var(--shadow-input);
+  --stroke-tag-picker--hover: var(--stroke-input);
+  --color-tag-picker--focus: var(--color-input);
+  --fill-tag-picker--focus: var(--fill-input);
+  --shadow-tag-picker--focus: var(--shadow-input);
+  --stroke-tag-picker--focus: var(--stroke-input);
+  --color-tag-picker--active: var(--color-input);
+  --fill-tag-picker--active: var(--fill-input);
+  --shadow-tag-picker--active: var(--shadow-input);
+  --stroke-tag-picker--active: var(--stroke-input);
 }
 
 .is\:dark .tag-picker__source:read-only + .tag-picker {

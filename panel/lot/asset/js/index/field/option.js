@@ -604,7 +604,7 @@
             selectBoxValue = getValue(),
             selectBoxFake = setElement('div', {
                 'class': classNameB,
-                'tabindex': '0',
+                'tabindex': selectBoxIsDisabled() ? false : '0',
                 'title': selectBoxTitle
             }),
             selectBoxFakeLabel = setElement('div', "\u200C", {
@@ -1010,7 +1010,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.2.2';
+    OP.version = '1.2.3';
 
     function onChange() {
         // Destroy!
