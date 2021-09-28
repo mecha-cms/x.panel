@@ -5,6 +5,7 @@
     height: auto;
     min-height: calc(var(--y) * 1.5);
     padding: calc(var(--y) / 12) calc(var(--x) / 12);
+    width: var(--width-input);
     &.width {
       display: flex;
       width: 100%;

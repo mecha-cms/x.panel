@@ -10,6 +10,7 @@ Release Notes
 
 ### main
 
+ - [ ] Added `stack` and `stacks` type.
  - [ ] Added version update check feature.
  - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.window` namespace. In the future, users should be able to set custom window via `_.window()`.
 

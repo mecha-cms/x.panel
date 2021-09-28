@@ -7,8 +7,12 @@
   --font-face-sans: sans-serif;
   --font-face-serif: serif;
   --font-face: var(--font-face-sans);
-  --font-size: var(--z);
   --font-height: var(--h);
+  --font-size: var(--z);
+  --width-input: calc(var(--x) * 8);
+  --width-menu: calc(var(--x) * 8);
+  --width-option-picker: var(--width-input);
+  --width-tag-picker: var(--width-input);
   --color--disabled: #666;
   --color-bar-info: #f00;
   --color-bar-link--active: #009;
@@ -76,11 +80,9 @@
   --stroke-input--invalid: #f00;
   --stroke-input: #000;
   --stroke-output: transparent;
+  --stroke-stack: #000;
   --stroke-tab: #000;
   --stroke: #000;
-  --width-input: calc(var(--x) * 8);
-  --width-option-picker: var(--width-input);
-  --width-tag-picker: var(--width-input);
 }
 
 *,
@@ -1672,6 +1674,7 @@ label > input[type='radio'] + span {
   height: calc(var(--y) * 1.5);
   line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px);
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  width: var(--width-input);
 }
 
 .lot\:field.type\:option .option-picker::after {
@@ -1725,6 +1728,7 @@ label > input[type='radio'] + span {
   --stroke-tag-picker--read-only: #666;
   --stroke-tag-picker: #000;
   --stroke-tag-picker__tag: transparent;
+  --width-tag-picker: 100%;
 }
 
 .tag-picker,
@@ -1741,7 +1745,7 @@ label > input[type='radio'] + span {
   border-radius: var(--radius-tag-picker);
   color: var(--color-tag-picker);
   cursor: text;
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   flex: 1;
   font: inherit;
@@ -1974,6 +1978,7 @@ label > input[type='radio'] + span {
   height: auto;
   min-height: calc(var(--y) * 1.5);
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
+  width: var(--width-input);
 }
 
 .lot\:field.type\:query .tag-picker.width {
@@ -2230,7 +2235,7 @@ label > input[type='radio'] + span {
   color: var(--color-menu);
   height: auto;
   line-height: var(--y);
-  width: calc(var(--x) * 8);
+  width: var(--width-menu);
 }
 
 .lot\:menu .lot\:menu {
@@ -2504,6 +2509,115 @@ label > input[type='radio'] + span {
 
 .lot\:section.count\:0,
 .count\:0.content\:section {
+  display: none;
+}
+
+.lot\:stack,
+.content\:stack {
+  background: var(--fill-stack, var(--fill));
+  border: 1px solid transparent;
+  border-color: var(--stroke-stack, var(--stroke));
+  border-radius: var(--radius-stack);
+  box-shadow: var(--shadow-stack);
+  margin: 0 calc(var(--x) / -2);
+  position: relative;
+}
+
+.lot\:stack:focus,
+.content\:stack:focus {
+  background: var(--fill-stack--focus, var(--fill-stack));
+  border-color: var(--stroke-stack--focus, var(--stroke-stack));
+  box-shadow: var(--shadow-stack--focus, var(--shadow-stack));
+}
+
+.lot\:stack:hover,
+.content\:stack:hover {
+  background: var(--fill-stack--hover, var(--fill-stack));
+  border-color: var(--stroke-stack--hover, var(--stroke-stack));
+  box-shadow: var(--shadow-stack--hover, var(--shadow-stack));
+}
+
+.lot\:stack:active,
+.content\:stack:active {
+  background: var(--fill-stack--active, var(--fill-stack));
+  border-color: var(--stroke-stack--active, var(--stroke-stack));
+  box-shadow: var(--shadow-stack--active, var(--shadow-stack));
+}
+
+.lot\:stack > .content,
+.content\:stack > .content,
+.lot\:stack > .lot,
+.content\:stack > .lot,
+.lot\:stack > .title,
+.content\:stack > .title {
+  display: none;
+  padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+}
+
+.lot\:stack > .title,
+.content\:stack > .title {
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+}
+
+.lot\:stack.is\:current,
+.is\:current.content\:stack {
+  background: var(--fill-stack--current, var(--fill-stack));
+  border-color: var(--stroke-stack--current, var(--stroke-stack));
+  box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+}
+
+.lot\:stack.is\:current > .content,
+.is\:current.content\:stack > .content,
+.lot\:stack.is\:current > .lot,
+.is\:current.content\:stack > .lot {
+  border-top: 1px solid transparent;
+  border-top-color: inherit;
+  display: block;
+}
+
+.lot\:stack.is\:current > .title,
+.is\:current.content\:stack > .title {
+  cursor: inherit;
+}
+
+.lot\:stack.not\:active > .title,
+.not\:active.content\:stack > .title {
+  cursor: not-allowed;
+}
+
+.lot\:stack + .lot\:stack,
+.content\:stack + .lot\:stack,
+.lot\:stack + .content\:stack,
+.content\:stack + .content\:stack {
+  margin-top: -1px;
+}
+
+.lot\:stack > .title,
+.content\:stack > .title {
+  font: inherit;
+}
+
+.lot\:stack > .content,
+.content\:stack > .content,
+.lot\:stack > .lot,
+.content\:stack > .lot {
+  display: none;
+}
+
+.lot\:stack.is\:current > .content,
+.is\:current.content\:stack > .content,
+.lot\:stack.is\:current > .lot,
+.is\:current.content\:stack > .lot {
+  display: block;
+}
+
+.lot\:stacks {
+  display: block;
+}
+
+.lot\:stacks.count\:0 {
   display: none;
 }
 

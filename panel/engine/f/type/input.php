@@ -23,12 +23,28 @@ function color($value, $key) {
 function date($value, $key) {
     $out = \x\panel\type\input($value, $key);
     $out['type'] = 'date';
+    if (isset($out['maxlength'])) {
+        $out['max'] = $out['maxlength'];
+        unset($out['maxlength']);
+    }
+    if (isset($out['minlength'])) {
+        $out['min'] = $out['minlength'];
+        unset($out['minlength']);
+    }
     return $out;
 }
 
 function datetime_local($value, $key) {
     $out = \x\panel\type\input($value, $key);
     $out['type'] = 'datetime-local';
+    if (isset($out['maxlength'])) {
+        $out['max'] = $out['maxlength'];
+        unset($out['maxlength']);
+    }
+    if (isset($out['minlength'])) {
+        $out['min'] = $out['minlength'];
+        unset($out['minlength']);
+    }
     return $out;
 }
 
@@ -119,6 +135,14 @@ function text($value, $key) {
 function time($value, $key) {
     $out = \x\panel\type\input($value, $key);
     $out['type'] = 'time';
+    if (isset($out['maxlength'])) {
+        $out['max'] = $out['maxlength'];
+        unset($out['maxlength']);
+    }
+    if (isset($out['minlength'])) {
+        $out['min'] = $out['minlength'];
+        unset($out['minlength']);
+    }
     return $out;
 }
 

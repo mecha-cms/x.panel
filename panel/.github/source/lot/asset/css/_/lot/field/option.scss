@@ -5,6 +5,7 @@
     height: calc(var(--y) * 1.5);
     line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `.input`
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
+    width: var(--width-input);
     &::after {
       right: calc(var(--x) / 2);
     }

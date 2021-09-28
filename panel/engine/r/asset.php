@@ -41,6 +41,7 @@ Hook::set('get', function() {
         'stack' => 30
     ];
     $out[$f . 'js' . DS . 'index' . DS . 'menu' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'stack' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'tab' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'window' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'option' . $z . 'js'] = ['stack' => 40];

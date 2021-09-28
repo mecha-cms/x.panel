@@ -32,8 +32,14 @@
   --font-face-sans: sans-serif;
   --font-face-serif: serif;
   --font-face: var(--font-face-sans);
-  --font-size: var(--z);
   --font-height: var(--h);
+  --font-size: var(--z);
+  --width-input: calc(var(--x) * 8);
+  --width-menu: calc(var(--x) * 8);
+  $names: option-picker, tag-picker;
+  @each $name in $names {
+    --width-#{$name}: var(--width-input);
+  }
   // Pallete
   --color--disabled: #666;
   --color-bar-info: #f00;
@@ -102,13 +108,9 @@
   --stroke-input--invalid: #f00;
   --stroke-input: #000;
   --stroke-output: transparent;
+  --stroke-stack: #000;
   --stroke-tab: #000;
   --stroke: #000;
-  --width-input: calc(var(--x) * 8);
-  $names: option-picker, tag-picker;
-  @each $name in $names {
-    --width-#{$name}: var(--width-input);
-  }
 }
 
 @import '_/base';

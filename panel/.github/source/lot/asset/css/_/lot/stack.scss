@@ -1,0 +1,67 @@
+.lot\:stack {
+  background: var(--fill-stack, var(--fill));
+  border: 1px solid transparent;
+  border-color: var(--stroke-stack, var(--stroke));
+  border-radius: var(--radius-stack);
+  box-shadow: var(--shadow-stack);
+  margin: 0 calc(var(--x) / -2);
+  position: relative;
+  $states: focus, hover, active;
+  @each $state in $states {
+    &:#{$state} {
+      background: var(--fill-stack--#{$state}, var(--fill-stack));
+      border-color: var(--stroke-stack--#{$state}, var(--stroke-stack));
+      box-shadow: var(--shadow-stack--#{$state}, var(--shadow-stack));
+    }
+  }
+  > .content,
+  > .lot,
+  > .title {
+    display: none;
+    padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+  }
+  > .title {
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+  }
+  &.is\:current {
+    background: var(--fill-stack--current, var(--fill-stack));
+    border-color: var(--stroke-stack--current, var(--stroke-stack));
+    box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+    > .content,
+    > .lot {
+      border-top: 1px solid transparent;
+      border-top-color: inherit;
+      display: block;
+    }
+    > .title {
+      cursor: inherit;
+    }
+  }
+  &.not\:active {
+    > .title {
+      cursor: not-allowed;
+    }
+  }
+  + .lot\:stack {
+    margin-top: -1px;
+  }
+}
+
+.lot\:stack > .title {
+  font: inherit;
+}
+
+.lot\:stack.is\:current > .title {
+}
+
+.lot\:stack > .content,
+.lot\:stack > .lot {
+  display: none;
+}
+
+.lot\:stack.is\:current > .content,
+.lot\:stack.is\:current > .lot {
+  display: block;
+}

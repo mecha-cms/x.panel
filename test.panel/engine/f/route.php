@@ -35,6 +35,7 @@ require __DIR__ . \DS . 'route' . \DS . 'pager.php';
 require __DIR__ . \DS . 'route' . \DS . 'pages.php';
 require __DIR__ . \DS . 'route' . \DS . 'section.php';
 require __DIR__ . \DS . 'route' . \DS . 'separator.php';
+require __DIR__ . \DS . 'route' . \DS . 'stacks.php';
 require __DIR__ . \DS . 'route' . \DS . 'tabs.php';
 require __DIR__ . \DS . 'route' . \DS . 'tasks.php';
 require __DIR__ . \DS . 'route' . \DS . 'title.php';

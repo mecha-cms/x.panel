@@ -4,7 +4,7 @@
   color: var(--color-menu);
   height: auto;
   line-height: var(--y);
-  width: calc(var(--x) * 8);
+  width: var(--width-menu);
   .lot\:menu {
     box-shadow: var(--shadow-menu);
     display: none;

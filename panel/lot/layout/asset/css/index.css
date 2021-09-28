@@ -110,6 +110,9 @@
   --fill-menu-link--current: #262626;
   --fill-menu-link--focus: #242424;
   --fill-menu-link--hover: #242424;
+  --fill-stack--current: none;
+  --fill-stack--hover: #242424;
+  --fill-stack: #242424;
   --fill-tab--current: none;
   --fill-tab--hover: #242424;
   --fill-tab: #242424;
@@ -130,6 +133,7 @@
   --stroke-input--invalid: #a12222;
   --stroke-input: #383838;
   --stroke-output: transparent;
+  --stroke-stack: #2d2d2d;
   --stroke-tab: #2d2d2d;
   --stroke: #2d2d2d;
   --color-option-picker: var(--color-input);
