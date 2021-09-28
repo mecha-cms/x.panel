@@ -19,21 +19,27 @@
 }
 
 .is\:dark {
+  --fill-file--active: #242424;
   --fill-file--current: #262626;
   --fill-file--hover: #242424;
   --fill-file: #222222;
+  --stroke-file--active: #242424;
   --stroke-file--current: #262626;
   --stroke-file--hover: #242424;
   --stroke-file: #222222;
+  --fill-folder--active: #242424;
   --fill-folder--current: #262626;
   --fill-folder--hover: #242424;
   --fill-folder: #222222;
+  --stroke-folder--active: #242424;
   --stroke-folder--current: #262626;
   --stroke-folder--hover: #242424;
   --stroke-folder: #222222;
+  --fill-page--active: #242424;
   --fill-page--current: #262626;
   --fill-page--hover: #242424;
   --fill-page: #222222;
+  --stroke-page--active: #242424;
   --stroke-page--current: #262626;
   --stroke-page--hover: #242424;
   --stroke-page: #222222;
@@ -131,22 +137,22 @@
   --radius-option-picker: var(--radius-input);
   --shadow-option-picker: var(--shadow-input);
   --stroke-option-picker: var(--stroke-input);
-  --color-option-picker__option--active: var(--color-input--active);
-  --color-option-picker__option--disabled: var(--color-input--disabled);
-  --color-option-picker__option--focus: var(--color-input--focus);
-  --color-option-picker__option--hover: var(--color-input--hover);
-  --color-option-picker__option--selected: var(--color-input--active);
   --color-option-picker__option: var(--color-input);
   --color-option-picker__options--open: var(--color-input);
   --color-option-picker__options: var(--color-input);
-  --fill-option-picker__option--active: rgba(255, 255, 255, .05);
-  --fill-option-picker__option--focus: rgba(255, 255, 255, .05);
+  --fill-option-picker__option--active: rgba(255, 255, 255, .025);
+  --fill-option-picker__option--focus: rgba(255, 255, 255, .025);
   --fill-option-picker__option--hover: rgba(255, 255, 255, .025);
   --fill-option-picker__option--selected: rgba(255, 255, 255, .05);
-  --fill-option-picker__option: var(--fill-input);
+  --fill-option-picker__option: none;
   --fill-option-picker__options: var(--fill-input);
   --stroke-option-picker__options--open: var(--stroke-input--focus);
   --stroke-option-picker__options: var(--stroke-input);
+  --color-option-picker__option--hover: var(--color-input--hover);
+  --color-option-picker__option--focus: var(--color-input--focus);
+  --color-option-picker__option--active: var(--color-input--active);
+  --color-option-picker__option--selected: var(--color-input--selected);
+  --color-option-picker__option--disabled: var(--color-input--disabled);
   --color-option-picker--hover: var(--color-input--hover, var(--color-input));
   --fill-option-picker--hover: var(--fill-input--hover, var(--fill-input));
   --shadow-option-picker--hover: var(--shadow-input--hover, var(--shadow-input));
@@ -195,17 +201,24 @@
 .is\:dark .option-picker::after {
   --stroke-option-picker--open: var(--color-option-picker);
   --stroke-option-picker: var(--color-option-picker);
-  opacity: .5;
 }
 
-.is\:dark .option-picker__source:read-only + .option-picker {
+.is\:dark .option-picker__option--selected {
+  --fill-option-picker__option--active: rgba(255, 255, 255, .075);
+  --fill-option-picker__option--focus: rgba(255, 255, 255, .075);
+  --fill-option-picker__option--hover: rgba(255, 255, 255, .075);
+}
+
+.is\:dark .option-picker__source:read-only + .option-picker,
+.is\:dark .option-picker__source:read-only + .option-picker--focus {
   --color-option-picker--read-only: var(--color-input--read-only, var(--color-input));
   --fill-option-picker--read-only: var(--fill-input--read-only, var(--fill-input));
   --shadow-option-picker--read-only: var(--shadow-input--read-only, var(--shadow-input));
   --stroke-option-picker--read-only: var(--stroke-input--read-only, var(--stroke-input));
 }
 
-.is\:dark .option-picker__source:disabled + .option-picker {
+.is\:dark .option-picker__source:disabled + .option-picker,
+.is\:dark .option-picker__source:disabled + .option-picker--focus {
   --color-option-picker--disabled: var(--color-input--disabled, var(--color-input));
   --fill-option-picker--disabled: var(--fill-input--disabled, var(--fill-input));
   --shadow-option-picker--disabled: var(--shadow-input--disabled, var(--shadow-input));
@@ -235,14 +248,16 @@
   --stroke-tag-picker--active: var(--stroke-input);
 }
 
-.is\:dark .tag-picker__source:read-only + .tag-picker {
+.is\:dark .tag-picker__source:read-only + .tag-picker,
+.is\:dark .tag-picker__source:read-only + .tag-picker--focus {
   --color-tag-picker--read-only: var(--color-input--read-only, var(--color-input));
   --fill-tag-picker--read-only: var(--fill-input--read-only, var(--fill-input));
   --shadow-tag-picker--read-only: var(--shadow-input--read-only, var(--shadow-input));
   --stroke-tag-picker--read-only: var(--stroke-input--read-only, var(--stroke-input));
 }
 
-.is\:dark .tag-picker__source:disabled + .tag-picker {
+.is\:dark .tag-picker__source:disabled + .tag-picker,
+.is\:dark .tag-picker__source:disabled + .tag-picker--focus {
   --color-tag-picker--disabled: var(--color-input--disabled, var(--color-input));
   --fill-tag-picker--disabled: var(--fill-input--disabled, var(--fill-input));
   --shadow-tag-picker--disabled: var(--shadow-input--disabled, var(--shadow-input));
@@ -257,7 +272,8 @@
 }
 
 .is\:dark .lot\:menu a:focus,
-.is\:dark .lot\:menu a:hover {
+.is\:dark .lot\:menu a:hover,
+.is\:dark .lot\:menu a:active {
   --fill-menu-link--current: #292929;
 }
 
@@ -265,9 +281,22 @@
   --fill-folder-icon: #545454;
 }
 
-.is\:dark .lot\:file:hover {
+.is\:dark .lot\:file:hover,
+.is\:dark .lot\:file:active {
   --fill-file--current: #292929;
   --stroke-file--current: #292929;
+}
+
+.is\:dark .lot\:folder:hover,
+.is\:dark .lot\:folder:active {
+  --fill-folder--current: #292929;
+  --stroke-folder--current: #292929;
+}
+
+.is\:dark .lot\:page:hover,
+.is\:dark .lot\:page:active {
+  --fill-page--current: #292929;
+  --stroke-page--current: #292929;
 }
 
 .is\:light {

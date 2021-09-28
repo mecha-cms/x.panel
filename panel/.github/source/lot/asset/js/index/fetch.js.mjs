@@ -8,6 +8,7 @@ import {
     getParent,
     hasClass,
     setAttribute,
+    setClass,
     setHTML,
     theLocation
 } from '@taufik-nurrohman/document';
@@ -68,5 +69,7 @@ f3h.on('success', (response, node) => {
         fire('change');
     }
 });
+
+setClass(R, 'can:fetch');
 
 W.F3H = F3H;

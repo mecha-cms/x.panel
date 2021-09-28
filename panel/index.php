@@ -4,9 +4,8 @@ if (!is_dir(LOT . DS . 'user') || null === State::get('x.user')) {
     return;
 }
 
-// Create `$user` variable just in case `user` extension is too late
-// to be loaded due to the default extension order.
-// Because `panel` is less than `user` when sorted alphabetically.
+// Create `$user` variable just in case `user` extension is too late to be loaded due to
+// the default extension order because `panel` is less than `user` when sorted alphabetically.
 // At least we have the cookie that is always available in the global scope.
 if (empty($GLOBALS['user']) && $key = Cookie::get('user.key')) {
     if (is_file($f = LOT . DS . 'user' . DS . $key . '.page')) {
@@ -15,7 +14,7 @@ if (empty($GLOBALS['user']) && $key = Cookie::get('user.key')) {
 }
 
 // Someone just trying to replace you!
-if (isset($user) && !$user instanceof User) {
+if (isset($user) && !($user instanceof User)) {
     Guard::abort('<code>$user</code> must be an instance of <code>User</code>.');
 }
 
@@ -35,6 +34,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
         'type' => strtolower($k)
     ],
     'has' => [],
+    'hash' => $url['hash'],
     'i' => $i = $url['i'],
     'icon' => [],
     'id' => null,
@@ -43,6 +43,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'lot' => [],
     'not' => [],
     'path' => null,
+    'query' => e($_GET ?? []),
     'skin' => [],
     'sort' => $state['sort'] ?? 1,
     'state' => $state,

@@ -8,6 +8,11 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 Release Notes
 -------------
 
+### main
+
+ - [ ] Added version update check feature.
+ - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.window` namespace. In the future, users should be able to set custom window via `_.window()`.
+
 ### 2.7.2
 
  - Added [@taufik-nurrohman/option-picker](https://github.com/taufik-nurrohman/option-picker) for consistent select box style.

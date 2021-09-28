@@ -7,7 +7,7 @@ if ('post' === $_['form']['type'] || empty($_['form']['lot']['token'])) {
 
 // Prevent user(s) from deleting file(s) above the `.\lot\*` level
 if (false === strpos(strtr($_['f'], [\LOT . \DS => ""]), \DS)) {
-    \Guard::abort('Cound not delete <code>' . $_['f'] . '</code>.');
+    \Guard::abort('Could not delete <code>' . $_['f'] . '</code>.');
 }
 
 function blob($_) {

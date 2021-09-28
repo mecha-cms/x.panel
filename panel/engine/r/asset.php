@@ -36,15 +36,16 @@ Hook::set('get', function() {
         'stack' => 20
     ];
     $out[$f . 'js' . DS . 'index' . $z . 'js'] = ['stack' => 20];
-    $out[$f . 'js' . DS . 'index' . DS . 'f3h' . $z . 'js'] = [
+    $out[$f . 'js' . DS . 'index' . DS . 'fetch' . $z . 'js'] = [
         'skip' => empty($state->x->panel->fetch),
         'stack' => 30
     ];
-    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'option' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'query' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'source' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'menu' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'tab' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'window' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'option' . $z . 'js'] = ['stack' => 40];
+    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'query' . $z . 'js'] = ['stack' => 40];
+    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'source' . $z . 'js'] = ['stack' => 40];
     $GLOBALS['_']['asset'] = array_replace_recursive($_['asset'] ?? [], $out);
 }, 20);
 
@@ -74,17 +75,37 @@ Hook::set('layout', function() {
         }
         $icons .= '</svg>';
     }
+    $data = [];
     if (isset($_['f'])) {
-        $_['f'] = To::URL($_['f']);
+        $data['f'] = To::URL($_['f']);
     }
     if (isset($_['ff'])) {
-        $_['ff'] = To::URL($_['ff']);
+        $data['ff'] = To::URL($_['ff']);
     }
-    // Remove sensitive data
-    unset($_['alert'], $_['asset'], $_['icon'], $_['lot'], $_['skin'], $_['user']);
+    foreach ([
+        '/',
+        'are',
+        'can',
+        'has',
+        'hash',
+        'i',
+        'id',
+        'is',
+        'not',
+        'path',
+        'query',
+        'title',
+        'token',
+        'trash',
+        'type'
+    ] as $v) {
+        if (isset($_[$v])) {
+            $data[$v] = $_[$v];
+        }
+    }
     $GLOBALS['_']['asset']['script'][] = [
+        'content' => 'window._=Object.assign(window._||{},' . json_encode($data) . ');',
         'id' => false,
-        'content' => 'window._=Object.assign(window._||{},' . json_encode($_) . ');',
         'stack' => 0
     ];
     // Put icon(s) before content. Why? Because HTML5!

@@ -255,6 +255,9 @@
     var setChildLast = function setChildLast(parent, node) {
         return parent.append(node), node;
     };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
     var setElement = function setElement(node, content, attributes) {
         node = isString(node) ? D.createElement(node) : node;
         if (isObject(content)) {
@@ -1054,5 +1057,6 @@
             fire('change');
         }
     });
+    setClass(R, 'can:fetch');
     W.F3H = F3H;
 })();

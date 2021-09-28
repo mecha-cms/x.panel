@@ -31,9 +31,11 @@ $mix: #fff;
 .is\:dark {
   $types: file, folder, page;
   @each $type in $types {
+    --fill-#{$type}--active: #{shade(1%)};
     --fill-#{$type}--current: #{shade(2%)};
     --fill-#{$type}--hover: #{shade(1%)};
     --fill-#{$type}: #{shade(0%)};
+    --stroke-#{$type}--active: #{shade(1%)};
     --stroke-#{$type}--current: #{shade(2%)};
     --stroke-#{$type}--hover: #{shade(1%)};
     --stroke-#{$type}: #{shade(0%)};
@@ -135,27 +137,29 @@ $mix: #fff;
     --shadow-#{$name}: var(--shadow-input);
     --stroke-#{$name}: var(--stroke-input);
     @if option-picker == $name {
-      // TODO
-      --color-#{$name}__option--active: var(--color-input--active);
-      --color-#{$name}__option--disabled: var(--color-input--disabled);
-      --color-#{$name}__option--focus: var(--color-input--focus);
-      --color-#{$name}__option--hover: var(--color-input--hover);
-      --color-#{$name}__option--selected: var(--color-input--active);
       --color-#{$name}__option: var(--color-input);
       --color-#{$name}__options--open: var(--color-input);
       --color-#{$name}__options: var(--color-input);
-      --fill-#{$name}__option--active: rgba(255, 255, 255, .05);
-      --fill-#{$name}__option--focus: rgba(255, 255, 255, .05);
+      --fill-#{$name}__option--active: rgba(255, 255, 255, .025);
+      --fill-#{$name}__option--focus: rgba(255, 255, 255, .025);
       --fill-#{$name}__option--hover: rgba(255, 255, 255, .025);
       --fill-#{$name}__option--selected: rgba(255, 255, 255, .05);
-      --fill-#{$name}__option: var(--fill-input);
+      --fill-#{$name}__option: none;
       --fill-#{$name}__options: var(--fill-input);
       --stroke-#{$name}__options--open: var(--stroke-input--focus);
       --stroke-#{$name}__options: var(--stroke-input);
+      $states: hover, focus, active, selected, disabled;
+      @each $state in $states {
+        --color-#{$name}__option--#{$state}: var(--color-input--#{$state});
+      }
       .#{$name}::after {
         --stroke-#{$name}--open: var(--color-#{$name});
         --stroke-#{$name}: var(--color-#{$name});
-        opacity: .5;
+      }
+      .#{$name}__option--selected {
+        --fill-#{$name}__option--active: rgba(255, 255, 255, .075);
+        --fill-#{$name}__option--focus: rgba(255, 255, 255, .075);
+        --fill-#{$name}__option--hover: rgba(255, 255, 255, .075);
       }
     }
     @if tag-picker == $name {
@@ -187,20 +191,12 @@ $mix: #fff;
           --shadow-#{$name}: var(--shadow-input);
           --stroke-#{$name}: var(--stroke-input);
           // Force #3
-          --color-#{$name}--hover: var(--color-input);
-          --fill-#{$name}--hover: var(--fill-input);
-          --shadow-#{$name}--hover: var(--shadow-input);
-          --stroke-#{$name}--hover: var(--stroke-input);
-          // Force #4
-          --color-#{$name}--focus: var(--color-input);
-          --fill-#{$name}--focus: var(--fill-input);
-          --shadow-#{$name}--focus: var(--shadow-input);
-          --stroke-#{$name}--focus: var(--stroke-input);
-          // Force #5
-          --color-#{$name}--active: var(--color-input);
-          --fill-#{$name}--active: var(--fill-input);
-          --shadow-#{$name}--active: var(--shadow-input);
-          --stroke-#{$name}--active: var(--stroke-input);
+          @each $v in (hover, focus, active) {
+            --color-#{$name}--#{$v}: var(--color-input);
+            --fill-#{$name}--#{$v}: var(--fill-input);
+            --shadow-#{$name}--#{$v}: var(--shadow-input);
+            --stroke-#{$name}--#{$v}: var(--stroke-input);
+          }
         }
       }
     }
@@ -215,7 +211,8 @@ $mix: #fff;
       $states: read-only, disabled;
       @each $state in $states {
         &:#{$state} {
-          + .#{$name} {
+          + .#{$name},
+          + .#{$name}--focus {
             --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
             --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
             --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
@@ -234,7 +231,8 @@ $mix: #fff;
   .lot\:menu {
     a {
       &:focus,
-      &:hover {
+      &:hover,
+      &:active {
         --fill-menu-link--current: #{shade(3%)};
       }
     }
@@ -245,9 +243,24 @@ $mix: #fff;
     }
   }
   .lot\:file {
-    &:hover {
+    &:hover,
+    &:active {
       --fill-file--current: #{shade(3%)};
       --stroke-file--current: #{shade(3%)};
+    }
+  }
+  .lot\:folder {
+    &:hover,
+    &:active {
+      --fill-folder--current: #{shade(3%)};
+      --stroke-folder--current: #{shade(3%)};
+    }
+  }
+  .lot\:page {
+    &:hover,
+    &:active {
+      --fill-page--current: #{shade(3%)};
+      --stroke-page--current: #{shade(3%)};
     }
   }
 }
