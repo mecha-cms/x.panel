@@ -219,6 +219,9 @@ function field($value, $key) {
         $out[1] .= \x\panel\to\description($value['description'] ?? "");
         $out[1] .= '</div>';
         \x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
+        if (!$is_active) {
+            unset($out[2]['tabindex']);
+        }
         if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
             foreach (\explode('&', \substr($data, 1)) as $v) {
                 $vv = \explode('=', $v, 2);
@@ -284,9 +287,10 @@ function file($value, $key) {
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
+        $is_current = !empty($value['current']);
         $tags = \array_replace([
             'is:active' => $is_active,
-            'is:current' => !empty($value['current']),
+            'is:current' => $is_current,
             'is:file' => true,
             'lot' => true,
             'lot:file' => true,
@@ -305,6 +309,9 @@ function file($value, $key) {
             'lot' => $value['tasks'] ?? []
         ], $key);
         \x\panel\_set_class($out[2], $tags);
+        if (!$is_active) {
+            unset($out[2]['tabindex']);
+        }
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -393,9 +400,10 @@ function folder($value, $key) {
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
+        $is_current = !empty($value['current']);
         $tags = \array_replace([
             'is:active' => $is_active,
-            'is:current' => !empty($value['current']),
+            'is:current' => $is_current,
             'is:folder' => true,
             'lot' => true,
             'lot:folder' => true,
@@ -414,6 +422,9 @@ function folder($value, $key) {
             'lot' => $value['tasks'] ?? []
         ], $key);
         \x\panel\_set_class($out[2], $tags);
+        if (!$is_active) {
+            unset($out[2]['tabindex']);
+        }
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -659,9 +670,10 @@ function menu($value, $key, int $i = 0) {
                             \x\panel\_set_class($v['icon'][1], ['caret' => true]);
                         }
                         $is_active = !isset($v['active']) || $v['active'];
+                        $is_current = !empty($v['current']);
                         $tags_li = \array_replace([
                             // 'is:active' => $is_active,
-                            'is:current' => !empty($v['current']),
+                            'is:current' => $is_current,
                             'not:active' => !$is_active
                         ], $v['tags'] ?? []);
                         if (!isset($v[1])) {
@@ -706,9 +718,10 @@ function page($value, $key) {
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
+        $is_current = !empty($value['current']);
         $tags = \array_replace([
             'is:active' => $is_active,
-            'is:current' => !empty($value['current']),
+            'is:current' => $is_current,
             'is:file' => true,
             'lot' => true,
             'lot:page' => true,
@@ -730,6 +743,9 @@ function page($value, $key) {
             'lot' => $value['tasks'] ?? []
         ], $key) . '</div>';
         \x\panel\_set_class($out[2], $tags);
+        if (!$is_active) {
+            unset($out[2]['tabindex']);
+        }
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -955,6 +971,9 @@ function stack($value, $key) {
             $tags['count:' . $count] = true;
         }
         \x\panel\_set_class($out[2], $tags);
+        if (!$is_active) {
+            unset($out[2]['tabindex']);
+        }
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
