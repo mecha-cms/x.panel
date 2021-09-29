@@ -33,10 +33,12 @@ $mix: #fff;
   @each $type in $types {
     --fill-#{$type}--active: #{shade(1%)};
     --fill-#{$type}--current: #{shade(2%)};
+    --fill-#{$type}--focus: #{shade(1%)};
     --fill-#{$type}--hover: #{shade(1%)};
     --fill-#{$type}: #{shade(0%)};
     --stroke-#{$type}--active: #{shade(1%)};
     --stroke-#{$type}--current: #{shade(2%)};
+    --stroke-#{$type}--focus: #{shade(1%)};
     --stroke-#{$type}--hover: #{shade(1%)};
     --stroke-#{$type}: #{shade(0%)};
   }

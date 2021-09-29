@@ -1,11 +1,16 @@
 .lot\:stack {
   background: var(--fill-stack, var(--fill));
-  border: 1px solid transparent;
+  border: 1px solid;
   border-color: var(--stroke-stack, var(--stroke));
   border-radius: var(--radius-stack);
   box-shadow: var(--shadow-stack);
   margin: 0 calc(var(--x) / -2);
   position: relative;
+  z-index: 0;
+  &:focus,
+  &:focus-visible {
+    z-index: 1;
+  }
   $states: focus, hover, active;
   @each $state in $states {
     &:#{$state} {
@@ -21,6 +26,7 @@
     padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
   }
   > .title {
+    @include user-select(none);
     cursor: pointer;
     display: flex;
     font: inherit;
@@ -31,11 +37,11 @@
     box-shadow: var(--shadow-stack--current, var(--shadow-stack));
     > .content,
     > .lot {
-      border-top: 1px solid transparent;
+      border-top: 1px solid;
       border-top-color: inherit;
       display: block;
     }
-    > .title {
+    &:not(.can\:toggle) > .title {
       cursor: inherit;
     }
   }

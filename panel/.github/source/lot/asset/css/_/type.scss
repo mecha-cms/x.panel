@@ -19,7 +19,7 @@
 }
 
 .small {
-  font-size: 70%; // Magic :(
+  font-size: calc(var(--z) * .75);
 }
 
 .s {

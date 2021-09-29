@@ -67,6 +67,7 @@
   --shadow-input--disabled: none;
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
   --shadow-output: none;
+  --stroke-a11y: #009;
   --stroke-button--active: #009;
   --stroke-button--disabled: #66f;
   --stroke-button--focus: #00c;
@@ -115,6 +116,11 @@
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
   outline: 0;
+}
+
+:focus-visible {
+  box-shadow: var(--shadow-a11y, none);
+  outline: 1px solid var(--stroke-a11y, transparent);
 }
 
 a {
@@ -399,6 +405,15 @@ legend + ul {
 .select:focus,
 .textarea:focus {
   z-index: 1;
+}
+
+.button:focus-visible,
+.input:focus-visible,
+.output:focus-visible,
+.select:focus-visible,
+.textarea:focus-visible {
+  box-shadow: none;
+  outline: 0;
 }
 
 .button,
@@ -2041,10 +2056,20 @@ label > input[type='radio'] + span {
   box-shadow: var(--shadow-file);
   display: flex;
   list-style: none;
-  margin: 0 calc(var(--x) / -4);
+  margin: 0;
   overflow: hidden;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   position: relative;
+  z-index: 0;
+}
+
+.lot\:file:focus,
+.lot\:folder:focus,
+.lot\:page:focus,
+.lot\:file:focus-visible,
+.lot\:folder:focus-visible,
+.lot\:page:focus-visible {
+  z-index: 1;
 }
 
 .lot\:file:focus,
@@ -2167,8 +2192,8 @@ label > input[type='radio'] + span {
 
 .is\:folder::before {
   background: var(--fill-folder-icon, var(--color));
-  border-color: var(--stroke-folder-icon, var(--stroke));
   border: 0 solid;
+  border-color: var(--stroke-folder-icon, var(--stroke));
   height: 18px;
   top: 11px;
 }
@@ -2185,8 +2210,8 @@ label > input[type='radio'] + span {
 .lot\:pages {
   display: block;
   list-style: none;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: calc(var(--x) / -4);
+  margin-right: calc(var(--x) / -4);
   padding: 0;
 }
 
@@ -2205,9 +2230,6 @@ label > input[type='radio'] + span {
 .lot\:folders h3,
 .lot\:pages h3 {
   flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .lot\:files h3 a.not\:active,
@@ -2221,6 +2243,14 @@ label > input[type='radio'] + span {
 .lot\:pages h3 .title {
   display: inline-flex;
   vertical-align: middle;
+}
+
+.lot\:files h3 .title > span,
+.lot\:folders h3 .title > span,
+.lot\:pages h3 .title > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lot\:files.count\:0,
@@ -2374,7 +2404,6 @@ label > input[type='radio'] + span {
   border-color: var(--stroke-page, var(--stroke-file, var(--fill)));
   border-radius: var(--radius-page, var(--radius-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
-  margin: 0 calc(var(--x) / -2);
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
 }
 
@@ -2501,6 +2530,11 @@ label > input[type='radio'] + span {
   color: inherit;
 }
 
+.lot\:pages {
+  margin-left: calc(var(--x) / -2);
+  margin-right: calc(var(--x) / -2);
+}
+
 .lot\:section,
 .content\:section {
   margin: 0 auto;
@@ -2515,12 +2549,20 @@ label > input[type='radio'] + span {
 .lot\:stack,
 .content\:stack {
   background: var(--fill-stack, var(--fill));
-  border: 1px solid transparent;
+  border: 1px solid;
   border-color: var(--stroke-stack, var(--stroke));
   border-radius: var(--radius-stack);
   box-shadow: var(--shadow-stack);
   margin: 0 calc(var(--x) / -2);
   position: relative;
+  z-index: 0;
+}
+
+.lot\:stack:focus,
+.content\:stack:focus,
+.lot\:stack:focus-visible,
+.content\:stack:focus-visible {
+  z-index: 1;
 }
 
 .lot\:stack:focus,
@@ -2556,6 +2598,9 @@ label > input[type='radio'] + span {
 
 .lot\:stack > .title,
 .content\:stack > .title {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   cursor: pointer;
   display: flex;
   font: inherit;
@@ -2572,13 +2617,13 @@ label > input[type='radio'] + span {
 .is\:current.content\:stack > .content,
 .lot\:stack.is\:current > .lot,
 .is\:current.content\:stack > .lot {
-  border-top: 1px solid transparent;
+  border-top: 1px solid;
   border-top-color: inherit;
   display: block;
 }
 
-.lot\:stack.is\:current > .title,
-.is\:current.content\:stack > .title {
+.lot\:stack.is\:current:not(.can\:toggle) > .title,
+.is\:current.content\:stack:not(.can\:toggle) > .title {
   cursor: inherit;
 }
 
@@ -2663,6 +2708,9 @@ label > input[type='radio'] + span {
 }
 
 .lot\:tabs .lot\:links li {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   position: relative;
 }
 
@@ -2828,7 +2876,7 @@ kbd,
 small,
 sub,
 sup {
-  font-size: 70%;
+  font-size: calc(var(--z) * .75);
 }
 
 .s,
@@ -3169,9 +3217,11 @@ figure,
     border-radius: var(--radius-tab);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border: 1px solid var(--stroke-tab);
+    border: 1px solid;
+    border-color: var(--stroke-tab);
     border-bottom-width: 0;
     box-shadow: var(--shadow-tab);
+    z-index: 0;
   }
   .lot\:tabs .lot\:links li + li {
     margin-left: -1px;
@@ -3195,7 +3245,7 @@ figure,
   .lot\:tabs .lot\:links li.is\:current {
     background: var(--fill-tab--current, var(--fill-tab));
     border-color: var(--stroke-tab--current, var(--stroke-tab));
-    z-index: 4;
+    z-index: 1;
   }
   .lot\:tabs .lot\:links li.is\:current::before,
   .lot\:tabs .lot\:links li.is\:current::after {

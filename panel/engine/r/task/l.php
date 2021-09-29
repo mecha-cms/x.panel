@@ -19,6 +19,7 @@ function data($_) {
     $e = $url->query('&', [
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab' => ['data'],
         'token' => false,
         'trash' => false,
@@ -36,6 +37,7 @@ function file($_) {
     $e = $url->query('&', [
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab'=> false,
         'token' => false,
         'trash' => false,
@@ -68,6 +70,7 @@ function folder($_) {
     $e = $url->query('&', [
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab'=> false,
         'token' => false,
         'trash' => false,

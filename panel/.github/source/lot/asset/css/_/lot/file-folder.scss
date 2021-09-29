@@ -6,10 +6,15 @@
   box-shadow: var(--shadow-file);
   display: flex;
   list-style: none;
-  margin: 0 calc(var(--x) / -4);
+  margin: 0;
   overflow: hidden;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   position: relative;
+  z-index: 0;
+  &:focus,
+  &:focus-visible {
+    z-index: 1;
+  }
   $states: focus, hover, active;
   @each $state in $states {
     &:#{$state} {
@@ -91,8 +96,8 @@
 .is\:folder {
   &::before {
     background: var(--fill-folder-icon, var(--color));
-    border-color: var(--stroke-folder-icon, var(--stroke));
     border: 0 solid;
+    border-color: var(--stroke-folder-icon, var(--stroke));
     height: 18px;
     top: 11px;
   }

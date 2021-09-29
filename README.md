@@ -10,8 +10,9 @@ Release Notes
 
 ### main
 
- - [ ] Added `stack` and `stacks` type.
  - [ ] Added version update check feature.
+ - [ ] Improved keyboard accessibility. Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>/</kbd> to search. Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> or <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to switch between stacks and tabs.
+ - [x] Added `stack` and `stacks` type.
  - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.window` namespace. In the future, users should be able to set custom window via `_.window()`.
 
 ### 2.7.2

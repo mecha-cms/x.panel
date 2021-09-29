@@ -10,6 +10,7 @@ function data($_) {
     $e = $url->query('&', \array_replace([
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab' => ['data'],
         'token' => false,
         'trash' => false,
@@ -31,6 +32,7 @@ function file($_) {
     $e = $url->query('&', \array_replace([
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,
@@ -96,6 +98,7 @@ function folder($_) {
     $e = $url->query('&', \array_replace([
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,
@@ -172,6 +175,7 @@ function page($_) {
     $e = $url->query('&', \array_replace([
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,
@@ -266,6 +270,7 @@ function state($_) {
     $e = $url->query('&', \array_replace([
         'parent' => false,
         'q' => false,
+        'stack' => false,
         'tab' => $_['form']['lot']['tab'] ?? false,
         'token' => false,
         'trash' => false,

@@ -4,7 +4,6 @@
   border-color: var(--stroke-page, var(--stroke-file, var(--fill)));
   border-radius: var(--radius-page, var(--radius-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
-  margin: 0 calc(var(--x) / -2);
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
   $states: focus, hover, active;
   @each $state in $states {

@@ -22,6 +22,7 @@ function bar($value, $key) {
     } else if (isset($value['content'])) {
         $out = \x\panel\type\content($value, $key);
     }
+    $out['tabindex'] = 0;
     $out[0] = 'nav';
     return $out;
 }
@@ -93,7 +94,7 @@ function desk($value, $key) {
     $out = [
         0 => $value[0] ?? 'main',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $styles = [];
@@ -131,7 +132,7 @@ function field($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
@@ -236,7 +237,7 @@ function fields($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([
@@ -279,7 +280,7 @@ function file($value, $key) {
     $out = [
         0 => $value[0] ?? 'li',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
@@ -312,7 +313,7 @@ function files($value, $key) {
     $out = [
         0 => $value[0] ?? 'ul',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $lot = [];
@@ -388,7 +389,7 @@ function folder($value, $key) {
     $out = [
         0 => $value[0] ?? 'li',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
@@ -540,11 +541,11 @@ function link($value, $key) {
         if ("" === $out[1]) {
             $info = $value['info'] ?? "";
             $out[1] = (string) \x\panel\type\title([
+                'content' => $value['title'] ?? \To::title($key),
                 'description' => $value['description'] ?? null,
                 'icon' => $value['icon'] ?? [],
-                'level' => -1,
                 'info' => $info,
-                'content' => $value['title'] ?? \To::title($key)
+                'level' => -1
             ], $key);
         }
         $href = $value['link'] ?? $value['url'] ?? \P;
@@ -560,7 +561,6 @@ function link($value, $key) {
         if (isset($value['id'])) {
             $out[2]['id'] = $value['id'];
         }
-        $out[2]['title'] = \i(...((array) ($value['description'] ?? [])));
         \x\panel\_set_class($out[2], $tags);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
@@ -702,7 +702,7 @@ function page($value, $key) {
     $out = [
         0 => $value[0] ?? 'li',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
@@ -756,7 +756,7 @@ function pages($value, $key) {
     $out = [
         0 => $value[0] ?? 'ul',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $lot = [];
@@ -909,13 +909,18 @@ function stack($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace([
+            'data-value' => $value['value'] ?? $key,
+            'tabindex' => 0
+        ], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
+        $is_current = !empty($value['current']);
         $tags = \array_replace([
+            'can:toggle' => !empty($value['toggle']),
             'is:active' => $is_active,
-            'is:current' => !empty($value['current']),
+            'is:current' => $is_current,
             'lot' => true,
             'lot:stack' => true,
             'not:active' => !$is_active
@@ -925,12 +930,18 @@ function stack($value, $key) {
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'info' => $value['info'] ?? null,
-            'level' => $value['level'] ?? 3
+            'level' => $value['level'] ?? 3,
+            'tags' => [
+                'is:active' => $is_active,
+                'is:current' => $is_current,
+                'not:active' => !$is_active
+            ]
         ], $key);
-        $out[1] .= \x\panel\type\tasks\link([
-            '0' => 'p',
-            'lot' => $value['tasks'] ?? []
-        ], $key);
+        // TODO
+        // $out[1] .= \x\panel\type\tasks\link([
+        //     '0' => 'p',
+        //     'lot' => $value['tasks'] ?? []
+        // ], $key);
         $count = 1;
         if (isset($value['content'])) {
             $out[1] .= '<div class="content">';
@@ -953,20 +964,26 @@ function stacks($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace([
+            'data-name' => 'stack[' . $name . ']',
+            'tabindex' => 0
+        ], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $lot = [];
         if (isset($value['lot'])) {
             $first = \array_keys($value['lot'])[0] ?? null; // The first stack
-            $current = $_GET['stack'][$name] ?? $value['current'] ?? $first ?? null;
+            $current = \Get::get('stack')[$name] ?? $value['current'] ?? $first ?? null;
             foreach ($value['lot'] as $k => $v) {
                 if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
-                $kk = $v['name'] ?? $k;
-                if (null !== $current && $kk === $current && !\array_key_exists('current', $v)) {
-                    $v['current'] = true;
+                $kk = $v['value'] ?? $k;
+                if (\is_array($v)) {
+                    $v[2]['data-value'] = $kk;
+                    if (null !== $current && $kk === $current && !\array_key_exists('current', $v)) {
+                        $v['current'] = true;
+                    }
                 }
                 $lot[$k] = $v;
             }
@@ -999,8 +1016,8 @@ function stacks($value, $key) {
 function tab($value, $key) {
     unset($value['description'], $value['title']);
     $out = \x\panel\type\section($value, $key);
-    if ($out && !isset($value[2]['data-name'])) {
-        $out['data-name'] = $key;
+    if ($out && !isset($out['data-value'])) {
+        $out['data-value'] = $value['value'] ?? $key;
     }
     return isset($out[1]) && "" !== $out[1] ? $out : null;
 }
@@ -1011,7 +1028,8 @@ function tabs($value, $key) {
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
         2 => \array_replace([
-            'data-name' => 'tab[' . $name . ']'
+            'data-name' => 'tab[' . $name . ']',
+            'tabindex' => 0
         ], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
@@ -1034,8 +1052,12 @@ function tabs($value, $key) {
                 if (null === $v || false === $v || !empty($v['skip'])) {
                     continue;
                 }
-                $kk = $v['name'] ?? $k;
+                $kk = $v['value'] ?? $k;
                 if (\is_array($v)) {
+                    $v[2]['data-value'] = $kk;
+                    $v[2]['tabindex'] = -1;
+                    $v[2]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
+                    $v['tags']['can:toggle'] = !empty($v['toggle']);
                     if (empty($v['url']) && empty($v['link'])) {
                         $v['url'] = $GLOBALS['url']->query('&', [
                             'tab' => [$name => $kk]
@@ -1048,14 +1070,12 @@ function tabs($value, $key) {
                         }
                     }
                 }
-                $v[2]['data-name'] = $kk;
-                $v[2]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
                 $links[$kk] = $v;
                 $sections[$kk] = $v;
                 unset($links[$kk]['content'], $links[$kk]['lot'], $links[$kk]['type']);
             }
             $first = \array_keys($links)[0] ?? null; // The first tab
-            $current = $_GET['tab'][$name] ?? $value['current'] ?? $first ?? null;
+            $current = \Get::get('tab')[$name] ?? $value['current'] ?? $first ?? null;
             if (null !== $current && isset($links[$current]) && \is_array($links[$current])) {
                 $links[$current]['tags']['is:current'] = true;
                 $sections[$current]['tags']['is:current'] = true;
@@ -1087,6 +1107,9 @@ function tabs($value, $key) {
             }
         }
         $tags['count:' . $count] = true;
+        if ($count < 2) {
+            unset($out[2]['tabindex']);
+        }
         \x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
     }
     return "" !== $out[1] ? new \HTML($out) : null;
@@ -1182,12 +1205,15 @@ function title($value, $key) {
         $title = \trim($title . ' <small class="info">' . \i(...((array) $info)) . '</small>');
     }
     $out[1] = $icon[0] . ("" !== $title ? '<span>' . $title . '</span>' : "") . $icon[1];
-    \x\panel\_set_class($out[2], [
+    if (false !== $out[0] && isset($value['description'])) {
+        $out[2]['title'] = \i(...((array) $value['description']));
+    }
+    \x\panel\_set_class($out[2], \array_replace([
         'has:icon' => !!($icon[0] || $icon[1]),
         'has:title' => !!$title,
         'title' => true,
         'title:' . $level => $level >= 0
-    ]);
+    ], $value['tags'] ?? []));
     return new \HTML($out);
 }
 

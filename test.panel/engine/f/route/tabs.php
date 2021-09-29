@@ -20,8 +20,10 @@ function tabs($_) {
             ],
             'tab-2' => [
                 'title' => 'Tab 3',
+                'info' => 'Toggle',
                 'description' => 'Description goes here.',
                 'content' => '<p>Content of the third tab.</p>',
+                'toggle' => true,
                 'stack' => 30
             ]
         ],

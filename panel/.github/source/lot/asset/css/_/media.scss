@@ -24,9 +24,11 @@
         border-radius: var(--radius-tab);
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        border: 1px solid var(--stroke-tab);
+        border: 1px solid;
+        border-color: var(--stroke-tab);
         border-bottom-width: 0;
         box-shadow: var(--shadow-tab);
+        z-index: 0;
         + li {
           margin-left: -1px;
         }
@@ -44,7 +46,7 @@
         &.is\:current {
           background: var(--fill-tab--current, var(--fill-tab));
           border-color: var(--stroke-tab--current, var(--stroke-tab));
-          z-index: 4;
+          z-index: 1;
           &::before,
           &::after {
             border-bottom: 1px solid var(--stroke-tab--current, var(--stroke-tab));

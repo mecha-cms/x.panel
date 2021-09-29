@@ -6,6 +6,9 @@
     var isDefined = function isDefined(x) {
         return 'undefined' !== typeof x;
     };
+    var isFunction = function isFunction(x) {
+        return 'function' === typeof x;
+    };
     var isInstance = function isInstance(x, of ) {
         return x && isSet( of ) && x instanceof of ;
     };
@@ -110,6 +113,9 @@
         var value = node.getAttribute(attribute);
         return parseValue ? toValue(value) : value;
     };
+    var getChildFirst = function getChildFirst(parent) {
+        return parent.firstElementChild || null;
+    };
     var getChildren = function getChildren(parent, index) {
         var children = parent.children;
         return isNumber(index) ? children[index] || null : children || [];
@@ -125,11 +131,20 @@
         }
         return value;
     };
+    var getElement = function getElement(query, scope) {
+        return (scope || D).querySelector(query);
+    };
     var getElements = function getElements(query, scope) {
         return (scope || D).querySelectorAll(query);
     };
+    var getNext = function getNext(node) {
+        return node.nextElementSibling || null;
+    };
     var getParent = function getParent(node) {
         return node.parentNode || null;
+    };
+    var getPrev = function getPrev(node) {
+        return node.previousElementSibling || null;
     };
     var hasAttribute = function hasAttribute(node, attribute) {
         return node.hasAttribute(attribute);
@@ -194,8 +209,14 @@
         var state = 'innerHTML';
         return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
     };
+    var toggleClass = function toggleClass(node, name, force) {
+        return node.classList.toggle(name, force), node;
+    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
+    };
+    var offEventPropagation = function offEventPropagation(e) {
+        return e && e.stopPropagation();
     };
     var onEvent = function onEvent(name, node, then, options) {
         if (options === void 0) {
@@ -208,43 +229,104 @@
         let sources = getElements('.lot\\:tabs');
         sources && toCount(sources) && sources.forEach(source => {
             let panes = [].slice.call(getChildren(source)),
+                tabs = [].slice.call(getElements('a', panes.shift())),
                 input = setElement('input'),
-                buttons = [].slice.call(getElements('a', panes.shift()));
+                name,
+                value;
             input.type = 'hidden';
-            input.name = getDatum(source, 'name');
+            input.name = name = getDatum(source, 'name');
             setChildLast(source, input);
 
             function onClick(e) {
-                let t = this;
-                if (!hasClass(getParent(t), 'has:link')) {
+                let t = this,
+                    parent = getParent(t);
+                if (!hasClass(parent, 'has:link')) {
                     if (!hasClass(t, 'not:active')) {
-                        buttons.forEach(button => {
-                            letClass(button, 'is:current');
-                            letClass(getParent(button), 'is:current');
-                            if (panes[button._tabIndex]) {
-                                letClass(panes[button._tabIndex], 'is:current');
+                        tabs.forEach(tab => {
+                            if (tab !== t) {
+                                letClass(tab, 'is:current');
+                                letClass(getParent(tab), 'is:current');
+                                if (panes[tab._tabIndex]) {
+                                    letClass(panes[tab._tabIndex], 'is:current');
+                                }
                             }
                         });
-                        setClass(t, 'is:current');
-                        setClass(getParent(t), 'is:current');
-                        if (panes[t._tabIndex]) {
-                            setClass(panes[t._tabIndex], 'is:current');
-                            input.value = getDatum(t, 'name');
+                        if (hasClass(parent, 'can:toggle')) {
+                            toggleClass(t, 'is:current');
+                            toggleClass(parent, 'is:current');
+                            if (panes[t._tabIndex]) {
+                                toggleClass(panes[t._tabIndex], 'is:current');
+                                input.value = value = hasClass(t, 'is:current') ? getDatum(t, 'value') : null;
+                            }
+                        } else {
+                            setClass(t, 'is:current');
+                            setClass(parent, 'is:current');
+                            if (panes[t._tabIndex]) {
+                                setClass(panes[t._tabIndex], 'is:current');
+                                input.value = value = getDatum(t, 'value');
+                            }
                         }
+                        W._.fire('change.tab', [name, value]);
                     }
                     offEventDefault(e);
                 }
             }
-            buttons.forEach((button, index) => {
-                button._tabIndex = index;
-                onEvent('click', button, onClick);
+            tabs.forEach((tab, index) => {
+                tab._tabIndex = index;
+                onEvent('click', tab, onClick);
             });
-            let buttonCurrent = buttons.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
-            if (buttonCurrent) {
-                input.value = getDatum(buttonCurrent, 'name');
+            let tabCurrent = tabs.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
+            if (tabCurrent) {
+                input.value = getDatum(tabCurrent, 'name');
             }
+            onEvent('keydown', source, onKeyDown);
         });
     }
     onChange();
+
+    function onKeyDown(e) {
+        let t = this,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey;
+        if (keyIsAlt && keyIsCtrl) {
+            let current, next, parent, prev;
+            if ('PageDown' === key) {
+                current = getElement('nav.lot\\:links a.is\\:current', t);
+                parent = current && getParent(current);
+                if (parent) {
+                    while (next = getNext(parent)) {
+                        if (!hasClass(next, 'not:active')) {
+                            break;
+                        }
+                    }
+                }
+                current = next && getChildFirst(next);
+                if (current) {
+                    isFunction(current.focus) && current.focus();
+                    isFunction(current.click) && current.click();
+                }
+                offEventDefault(e);
+                offEventPropagation(e);
+            } else if ('PageUp' === key) {
+                current = getElement('nav.lot\\:links a.is\\:current', t);
+                parent = current && getParent(current);
+                if (parent) {
+                    while (prev = getPrev(parent)) {
+                        if (!hasClass(prev, 'not:active')) {
+                            break;
+                        }
+                    }
+                }
+                current = prev && getChildFirst(prev);
+                if (current) {
+                    isFunction(current.focus) && current.focus();
+                    isFunction(current.click) && current.click();
+                }
+                offEventDefault(e);
+                offEventPropagation(e);
+            }
+        }
+    }
     W._.on('change', onChange);
 })();

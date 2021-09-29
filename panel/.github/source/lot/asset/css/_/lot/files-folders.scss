@@ -1,8 +1,8 @@
 .lot\:files {
   display: block;
   list-style: none;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: calc(var(--x) / -4);
+  margin-right: calc(var(--x) / -4);
   padding: 0;
   h3,
   p {
@@ -12,9 +12,6 @@
   }
   h3 {
     flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     a {
       &.not\:active {
         opacity: 1;
@@ -23,6 +20,11 @@
     .title {
       display: inline-flex;
       vertical-align: middle;
+      > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
   &.count\:0 {

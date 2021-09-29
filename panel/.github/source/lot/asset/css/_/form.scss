@@ -15,6 +15,10 @@
   &:focus {
     z-index: 1;
   }
+  &:focus-visible {
+    box-shadow: none;
+    outline: 0;
+  }
 }
 
 .button,
