@@ -148,7 +148,7 @@
             }
             offEventDefault(e);
             offEventPropagation(e);
-        } else if ('ArrowLeft' === key) {
+        } else if ('ArrowLeft' === key || 'Escape' === key) {
             parent = isFunction(t.closest) && t.closest('.lot\\:menu.is\\:enter'); // Hide menu then focus to the parent menu link
             if (parent && (current = getPrev(parent))) {
                 letClass(getParent(t), 'is:active');
@@ -188,7 +188,7 @@
             }
             offEventDefault(e);
             offEventPropagation(e);
-        }
+        } else;
     }
 
     function onKeyDownMenuToggle(e) {

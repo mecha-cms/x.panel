@@ -162,6 +162,10 @@ function onKeyDownStack(e) {
             }
             offEventDefault(e);
             offEventPropagation(e);
+        } else if ('End' === key) {
+            // TODO
+        } else if ('Home' === key) {
+            // TODO
         }
     }
 }
@@ -174,13 +178,13 @@ function onKeyDownStacks(e) {
         keyIsShift = e.shiftKey;
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         let current, next, parent, prev;
-        if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
+        if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
             if (current = getElement('a[target^="stack:"]:not(.not\\:active)', t)) {
                 isFunction(current.focus) && current.focus();
             }
             offEventDefault(e);
             offEventPropagation(e);
-        } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
+        } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
             let links = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', t));
             if (current = links.pop()) {
                 isFunction(current.focus) && current.focus();

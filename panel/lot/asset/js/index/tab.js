@@ -377,7 +377,7 @@
                 }
                 offEventDefault(e);
                 offEventPropagation(e);
-            }
+            } else;
         }
     }
 
@@ -389,13 +389,13 @@
             keyIsShift = e.shiftKey;
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             let current;
-            if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
+            if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
                 if (current = getElement('a[target^="tab:"]:not(.not\\:active)', t)) {
                     isFunction(current.focus) && current.focus();
                 }
                 offEventDefault(e);
                 offEventPropagation(e);
-            } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
+            } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
                 let links = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', t));
                 if (current = links.pop()) {
                     isFunction(current.focus) && current.focus();
