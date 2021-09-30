@@ -63,7 +63,6 @@
           vertical-align: middle;
           white-space: nowrap;
           width: auto;
-          z-index: 0;
           &.icon {
             min-width: calc(var(--x) * 1.5);
             padding: calc((var(--y) / 6) + 1px) 0; // (($y / 6) + border-y-width) 0

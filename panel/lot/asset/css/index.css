@@ -44,14 +44,16 @@
   --color-menu-link--hover: #00f;
   --color-menu-link: #00f;
   --color-output: #000;
-  --color-stack--disabled: #66f;
+  --color-stack--disabled: #666;
   --color-stack-link--active: #009;
+  --color-stack-link--disabled: #66f;
   --color-stack-link--focus: #00c;
   --color-stack-link--hover: #00f;
   --color-stack-link: #00f;
   --color-stack: #000;
-  --color-tab--disabled: #66f;
+  --color-tab--disabled: #666;
   --color-tab-link--active: #009;
+  --color-tab-link--disabled: #66f;
   --color-tab-link--focus: #00c;
   --color-tab-link--hover: #00f;
   --color-tab-link: #00f;
@@ -132,6 +134,7 @@
 :focus-visible {
   box-shadow: var(--shadow-a11y, none);
   outline: 2px solid var(--stroke-a11y, transparent);
+  z-index: 1;
 }
 
 a {
@@ -1120,12 +1123,6 @@ label > input[type='radio'] + span {
   overflow: hidden;
   padding: 0 calc(var(--x) * .75);
   position: relative;
-  z-index: 0;
-}
-
-.lot\:bar .lot\:links > ul > li > a:focus,
-.lot\:bar .lot\:links > ul > li > a:focus-visible {
-  z-index: 1;
 }
 
 .lot\:bar .lot\:links > ul > li > a .title .icon:first-child {
@@ -1333,7 +1330,6 @@ label > input[type='radio'] + span {
   vertical-align: middle;
   white-space: nowrap;
   width: auto;
-  z-index: 0;
 }
 
 .lot\:field > label + div .lot\:f .fix.icon,
@@ -2327,11 +2323,6 @@ label > input[type='radio'] + span {
   display: flex;
   flex: 1;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
-  z-index: 0;
-}
-
-.lot\:menu > ul > li > a:focus {
-  z-index: 1;
 }
 
 .lot\:menu > ul > li > a .title {
@@ -2402,6 +2393,10 @@ label > input[type='radio'] + span {
   color: var(--color-menu-link--disabled, inherit);
 }
 
+.lot\:menu.is\:enter {
+  display: block;
+}
+
 .has\:menu {
   display: inline-flex;
   position: relative;
@@ -2417,13 +2412,13 @@ label > input[type='radio'] + span {
   z-index: 9998;
 }
 
+.has\:menu .lot\:menu.is\:enter {
+  display: block;
+}
+
 .has\:menu .lot\:menu .lot\:menu {
   left: 100%;
   top: 0;
-}
-
-.has\:menu .lot\:menu.is\:enter {
-  display: block;
 }
 
 .lot\:page {
@@ -2580,16 +2575,8 @@ label > input[type='radio'] + span {
   border-color: var(--stroke-stack, var(--stroke));
   border-radius: var(--radius-stack);
   box-shadow: var(--shadow-stack);
-  margin: 0 calc(var(--x) / -2);
+  margin: 0;
   position: relative;
-  z-index: 0;
-}
-
-.lot\:stack:focus,
-.content\:stack:focus,
-.lot\:stack:focus-visible,
-.content\:stack:focus-visible {
-  z-index: 1;
 }
 
 .lot\:stack:focus,
@@ -2621,6 +2608,7 @@ label > input[type='radio'] + span {
   color: var(--color-stack);
   cursor: pointer;
   display: block;
+  position: relative;
 }
 
 .lot\:stack > a:hover,
@@ -2638,30 +2626,31 @@ label > input[type='radio'] + span {
   color: var(--color-stack--active, var(--color-stack));
 }
 
-.lot\:stack > a.has\:link,
-.content\:stack > a.has\:link {
-  color: var(--color-stack-link, var(--color-stack));
-}
-
-.lot\:stack > a.has\:link:hover,
-.content\:stack > a.has\:link:hover {
-  color: var(--color-stack-link--hover, var(--color-stack-link));
-}
-
-.lot\:stack > a.has\:link:focus,
-.content\:stack > a.has\:link:focus {
-  color: var(--color-stack-link--focus, var(--color-stack-link));
-}
-
-.lot\:stack > a.has\:link:active,
-.content\:stack > a.has\:link:active {
-  color: var(--color-stack-link--active, var(--color-stack-link));
-}
-
-.lot\:stack > a > .title,
-.content\:stack > a > .title {
+.lot\:stack > a .title,
+.content\:stack > a .title {
   display: flex;
   padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+}
+
+.lot\:stack > a .title .icon,
+.content\:stack > a .title .icon {
+  margin: 0 calc(var(--z) / -4);
+}
+
+.lot\:stack > a .title .icon:first-child,
+.content\:stack > a .title .icon:first-child {
+  margin-right: calc(var(--z) / 4);
+}
+
+.lot\:stack > a .title .icon:last-child,
+.content\:stack > a .title .icon:last-child {
+  margin-left: calc(var(--z) / 4);
+}
+
+.lot\:stack > a .title .icon:only-child,
+.content\:stack > a .title .icon:only-child {
+  margin-left: calc(var(--z) / -4);
+  margin-right: calc(var(--z) / -4);
 }
 
 .lot\:stack > .content,
@@ -2670,6 +2659,26 @@ label > input[type='radio'] + span {
 .content\:stack > .lot {
   display: none;
   padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+}
+
+.lot\:stack.has\:link > a,
+.has\:link.content\:stack > a {
+  color: var(--color-stack-link, var(--color-stack));
+}
+
+.lot\:stack.has\:link > a:hover,
+.has\:link.content\:stack > a:hover {
+  color: var(--color-stack-link--hover, var(--color-stack-link));
+}
+
+.lot\:stack.has\:link > a:focus,
+.has\:link.content\:stack > a:focus {
+  color: var(--color-stack-link--focus, var(--color-stack-link));
+}
+
+.lot\:stack.has\:link > a:active,
+.has\:link.content\:stack > a:active {
+  color: var(--color-stack-link--active, var(--color-stack-link));
 }
 
 .lot\:stack.is\:current,
@@ -2695,6 +2704,7 @@ label > input[type='radio'] + span {
 
 .lot\:stack.not\:active > a,
 .not\:active.content\:stack > a {
+  color: var(--color-stack--disabled, var(--color-stack));
   cursor: not-allowed;
 }
 
@@ -2726,6 +2736,8 @@ label > input[type='radio'] + span {
 
 .lot\:stacks {
   display: block;
+  margin-left: calc(var(--x) / -2);
+  margin-right: calc(var(--x) / -2);
 }
 
 .lot\:stacks.count\:0 {
@@ -3287,7 +3299,6 @@ figure,
     border-color: var(--stroke-tab);
     border-bottom-width: 0;
     box-shadow: var(--shadow-tab);
-    z-index: 0;
   }
   .lot\:tabs .lot\:links li + li {
     margin-left: -1px;

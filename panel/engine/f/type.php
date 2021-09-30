@@ -927,7 +927,7 @@ function stack($value, $key) {
         1 => $value[1] ?? "",
         2 => \array_replace([
             'data-value' => $value['value'] ?? $key,
-            'tabindex' => 0
+            'tabindex' => -1
         ], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
@@ -942,6 +942,7 @@ function stack($value, $key) {
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
         $out[1] .= \x\panel\type\link([
+            '2' => ['tabindex' => -1],
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'info' => $value['info'] ?? null,

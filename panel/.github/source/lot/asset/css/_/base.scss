@@ -30,6 +30,7 @@
 :focus-visible {
   box-shadow: var(--shadow-a11y, none);
   outline: 2px solid var(--stroke-a11y, transparent);
+  z-index: 1;
 }
 
 a {

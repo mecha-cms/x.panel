@@ -41,6 +41,9 @@
     var letClass = function letClass(node, value) {
         return node.classList.remove(value), node;
     };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
     var toggleClass = function toggleClass(node, name, force) {
         return node.classList.toggle(name, force), node;
     };
@@ -73,9 +76,9 @@
     function doHideMenus(but) {
         getElements('.lot\\:menu.is\\:enter').forEach(node => {
             if (but !== node) {
-                letClass(node, 'is:enter');
                 letClass(getParent(node), 'is:active');
                 letClass(getPrev(node), 'is:active');
+                letClass(node, 'is:enter');
             }
         });
     }
@@ -113,9 +116,9 @@
             current = getNext(t);
         doHideMenus(current);
         W.setTimeout(() => {
-            toggleClass(t, 'is:active');
-            toggleClass(getParent(t), 'is:active');
             toggleClass(current, 'is:enter');
+            toggleClass(getParent(t), 'is:active');
+            toggleClass(t, 'is:active');
         }, 1);
         offEventDefault(e);
         offEventPropagation(e);
@@ -129,15 +132,13 @@
             next,
             prev;
         if (parent = getParent(t)) {
-            while (null !== (next = getNext(parent))) {
-                if (!hasClass(next, 'not:active')) {
-                    break;
-                }
+            next = getNext(parent);
+            while (next && (hasClass(next, 'is:separator') || hasClass(next, 'not:active'))) {
+                next = getNext(next);
             }
-            while (null !== (prev = getPrev(parent))) {
-                if (!hasClass(prev, 'not:active')) {
-                    break;
-                }
+            prev = getPrev(parent);
+            while (prev && (hasClass(prev, 'is:separator') || hasClass(prev, 'not:active'))) {
+                prev = getPrev(prev);
             }
         }
         if ('ArrowDown' === key) {
@@ -148,11 +149,28 @@
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowLeft' === key) {
-            // TODO
+            parent = isFunction(t.closest) && t.closest('.lot\\:menu.is\\:enter'); // Hide menu then focus to the parent menu link
+            if (parent && (current = getPrev(parent))) {
+                letClass(getParent(t), 'is:active');
+                letClass(parent, 'is:enter');
+                letClass(t, 'is:active');
+                isFunction(current.focus) && current.focus();
+            }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowRight' === key) {
-            // TODO
+            next = getNext(t);
+            if (next && hasClass(next, 'lot:menu')) {
+                setClass(getParent(t), 'is:active');
+                setClass(next, 'is:enter');
+                setClass(t, 'is:active');
+                W.setTimeout(() => {
+                    if (current = getElement('a[href]:not(.not\\:active)', next)) {
+                        // Focus to the first link of child menu
+                        isFunction(current.focus) && current.focus();
+                    }
+                }, 1);
+            }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowUp' === key) {
@@ -161,7 +179,7 @@
                 current.focus();
             } else {
                 if (current = isFunction(t.closest) && t.closest('.is\\:enter')) {
-                    // Hide menu then focus to the menu parent link
+                    // Hide menu then focus to the parent menu link
                     if (current = getPrev(current)) {
                         fireEvent('click', current);
                         isFunction(current.focus) && current.focus();

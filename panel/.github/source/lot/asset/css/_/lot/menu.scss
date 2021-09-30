@@ -39,10 +39,6 @@
         display: flex;
         flex: 1;
         padding: calc(var(--y) / 4) calc(var(--x) / 2);
-        z-index: 0;
-        &:focus {
-          z-index: 1;
-        }
         .title {
           flex: 1;
           .icon {
@@ -104,6 +100,9 @@
       }
     }
   }
+  &.is\:enter {
+    display: block;
+  }
 }
 
 .has\:menu {
@@ -117,12 +116,12 @@
     position: absolute;
     top: 100%;
     z-index: 9998;
+    &.is\:enter {
+      display: block;
+    }
     .lot\:menu {
       left: 100%;
       top: 0;
-    }
-    &.is\:enter {
-      display: block;
     }
   }
 }

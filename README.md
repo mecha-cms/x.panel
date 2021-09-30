@@ -12,16 +12,22 @@ Release Notes
 
  - [ ] Added version update check feature.
  - [ ] Improved keyboard accessibility:
-   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to switch between menus when focusing on the menu link.
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>PageDown</kbd> to focus to the first stack when focusing on the stacks block.
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>PageDown</kbd> to focus to the first tab when focusing on the tabs block.
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to switch between menu links when focusing on the menu link.
    - Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to toggle the tab panel visibility if `toggle` option is enabled. If tab panel is already hidden, this navigation will works as the way <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> works.
-   - Press <kbd>ArrowDown</kbd> to show the menu and then automatically focus to the first menu link when focusing on the menu trigger.
-   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between stacks and tabs when focusing on the stacks/tabs trigger.
+   - Press <kbd>ArrowDown</kbd> to show the menu and then focus to the first menu link when focusing on the menu trigger.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between stacks when focusing on the stack trigger.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tabs when focusing on the tab trigger.
    - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to toggle the stack panel visibility if `toggle` option is enabled. If stack panel is already hidden, this navigation will works as the way <kbd>ArrowDown</kbd> and <kbd>ArrowUp</kbd> works.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>Escape</kbd> to hide the current menu and then focus to the nearest parent menu link.
+   - Press <kbd>ArrowRight</kbd> to show the child menu and then focus to the first child menu link.
+   - Press <kbd>ArrowUp</kbd> or <kbd>ArrowLeft</kbd> or <kbd>PageUp</kbd> to focus to the last stack when focusing on the stacks block.
+   - Press <kbd>ArrowUp</kbd> or <kbd>ArrowLeft</kbd> or <kbd>PageUp</kbd> to focus to the last tab when focusing on the tabs block.
    - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>/</kbd> to search.
-   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> or <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to switch between stacks and tabs.
    - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the menu visibility when focusing on the menu trigger.
-   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab/stack panel visibility if `toggle` option is enabled.
-   - Press <kbd>PageDown</kbd> or <kbd>PageUp</kbd> to switch between stacks and tabs when focusing on the stacks/tabs trigger.
+   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the stack panel visibility if `toggle` option is enabled.
+   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab panel visibility if `toggle` option is enabled.
  - [x] Added `stack` and `stacks` type.
  - [x] Added `toggle` option for `tab` and `tabs`.
  - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.window` namespace. In the future, users should be able to set custom window via `_.window()`.

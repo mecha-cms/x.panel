@@ -82,6 +82,7 @@
   --color-stack--focus: #bdbdbd;
   --color-stack--hover: #a7a7a7;
   --color-stack-link--active: #919191;
+  --color-stack-link--disabled: #4e4e4e;
   --color-stack-link--focus: #919191;
   --color-stack-link--hover: #7a7a7a;
   --color-stack-link: #7a7a7a;
@@ -92,6 +93,7 @@
   --color-tab--focus: #bdbdbd;
   --color-tab--hover: #a7a7a7;
   --color-tab-link--active: #919191;
+  --color-tab-link--disabled: #4e4e4e;
   --color-tab-link--focus: #919191;
   --color-tab-link--hover: #7a7a7a;
   --color-tab-link: #7a7a7a;

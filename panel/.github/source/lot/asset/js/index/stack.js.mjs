@@ -19,6 +19,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
+    fireEvent,
     offEvent,
     offEventDefault,
     offEventPropagation,
@@ -44,7 +45,7 @@ function onChange() {
         function onClick(e) {
             let t = this,
                 parent = getParent(t);
-            if (!hasClass(t, 'has:link')) {
+            if (!hasClass(parent, 'has:link')) {
                 if (!hasClass(t, 'not:active')) {
                     stacks.forEach(stack => {
                         if (stack !== parent) {
@@ -88,74 +89,76 @@ function onKeyDownStack(e) {
         let current, next, parent, prev;
         if ('ArrowDown' === key || 'PageDown' === key) {
             if (parent = getParent(t)) {
-                while (next = getNext(parent)) {
-                    if (!hasClass(next, 'not:active')) {
-                        break;
-                    }
+                next = getNext(parent);
+                while (next && hasClass(next, 'not:active')) {
+                    next = getNext(next);
                 }
             }
             if (current = next && getChildFirst(next)) {
+                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
-                isFunction(current.click) && current.click();
             }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowLeft' === key) {
-            if (hasClass(t, 'can:toggle') && hasClass(t, 'is:current')) {
+            if (hasClass(getParent(t), 'can:toggle') && hasClass(t, 'is:current')) {
                 current = t;
             } else {
                 if (parent = getParent(t)) {
-                    while (prev = getPrev(parent)) {
-                        if (!hasClass(prev, 'not:active')) {
-                            break;
-                        }
+                    prev = getPrev(parent);
+                    while (prev && hasClass(prev, 'not:active')) {
+                        prev = getPrev(prev);
                     }
                 }
                 current = prev && getChildFirst(prev);
             }
             if (current) {
+                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
-                isFunction(current.click) && current.click();
             }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowRight' === key) {
-            if (hasClass(t, 'can:toggle') && !hasClass(t, 'is:current')) {
+            if (hasClass(getParent(t), 'can:toggle') && hasClass(t, 'is:current')) {
                 current = t;
             } else {
                 if (parent = getParent(t)) {
-                    while (next = getNext(parent)) {
-                        if (!hasClass(next, 'not:active')) {
-                            break;
-                        }
+                    next = getNext(parent);
+                    while (next && hasClass(next, 'not:active')) {
+                        next = getNext(next);
                     }
                 }
                 current = next && getChildFirst(next);
             }
             if (current) {
+                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
-                isFunction(current.click) && current.click();
             }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowUp' === key || 'PageUp' === key) {
             if (parent = getParent(t)) {
-                while (prev = getPrev(parent)) {
-                    if (!hasClass(prev, 'not:active')) {
-                        break;
-                    }
+                prev = getPrev(parent);
+                while (prev && hasClass(prev, 'not:active')) {
+                    prev = getPrev(prev);
                 }
             }
             if (current = prev && getChildFirst(prev)) {
+                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
-                isFunction(current.click) && current.click();
             }
             offEventDefault(e);
             offEventPropagation(e);
         } else if (' ' === key || 'Enter' === key) {
-            if (hasClass(t, 'can:toggle')) {
+            if (hasClass(getParent(t), 'can:toggle')) {
+                fireEvent('click', t);
                 isFunction(t.focus) && t.focus();
-                isFunction(t.click) && t.click();
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
+        } else if ('Escape' === key) {
+            if (isFunction(t.closest) && (parent = t.closest('.lot\\:stacks'))) {
+                isFunction(parent.focus) && parent.focus();
             }
             offEventDefault(e);
             offEventPropagation(e);
@@ -167,36 +170,20 @@ function onKeyDownStacks(e) {
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
-        keyIsCtrl = e.ctrlKey;
-    if (keyIsAlt && keyIsCtrl) {
+        keyIsCtrl = e.ctrlKey,
+        keyIsShift = e.shiftKey;
+    if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         let current, next, parent, prev;
-        if ('PageDown' === key) {
-            current = getElement('a[target^="stack:"].is\\:current', t);
-            if (parent = current && getParent(current)) {
-                while (next = getNext(parent)) {
-                    if (!hasClass(next, 'not:active')) {
-                        break;
-                    }
-                }
-            }
-            if (current = next && getChildFirst(next)) {
+        if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
+            if (current = getElement('a[target^="stack:"]:not(.not\\:active)', t)) {
                 isFunction(current.focus) && current.focus();
-                isFunction(current.click) && current.click();
             }
             offEventDefault(e);
             offEventPropagation(e);
-        } else if ('PageUp' === key) {
-            current = getElement('a[target^="stack:"].is\\:current', t);
-            if (parent = current && getParent(current)) {
-                while (prev = getPrev(parent)) {
-                    if (!hasClass(prev, 'not:active')) {
-                        break;
-                    }
-                }
-            }
-            if (current = prev && getChildFirst(prev)) {
+        } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
+            let links = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', t));
+            if (current = links.pop()) {
                 isFunction(current.focus) && current.focus();
-                isFunction(current.click) && current.click();
             }
             offEventDefault(e);
             offEventPropagation(e);
