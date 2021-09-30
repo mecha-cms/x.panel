@@ -82,6 +82,8 @@
   --stroke-button--hover: #00f;
   --stroke-button: #00f;
   --stroke-code-block: #000;
+  --stroke-file: #fff;
+  --stroke-folder: #fff;
   --stroke-input--active: #000;
   --stroke-input--disabled: #666;
   --stroke-input--focus: #000;
@@ -89,6 +91,7 @@
   --stroke-input--invalid: #f00;
   --stroke-input: #000;
   --stroke-output: transparent;
+  --stroke-page: #fff;
   --stroke-stack: #000;
   --stroke-tab: #000;
   --stroke: #000;
@@ -2070,7 +2073,7 @@ label > input[type='radio'] + span {
 .lot\:page {
   background: var(--fill-file, none);
   border: 0 solid;
-  border-color: var(--stroke-file, transparent);
+  border-color: var(--stroke-file, var(--fill-file, none));
   border-radius: var(--radius-file);
   box-shadow: var(--shadow-file);
   display: flex;
@@ -2094,32 +2097,32 @@ label > input[type='radio'] + span {
 .lot\:file:focus,
 .lot\:folder:focus,
 .lot\:page:focus {
-  background: var(--fill-file--focus, var(--fill-file, var(--fill)));
-  border-color: var(--stroke-file--focus, var(--stroke-file, var(--fill)));
+  background: var(--fill-file--focus, var(--fill-file, none));
+  border-color: var(--stroke-file--focus, var(--stroke-file, var(--fill-file, none)));
   box-shadow: var(--shadow-file--focus, var(--shadow-file));
 }
 
 .lot\:file:hover,
 .lot\:folder:hover,
 .lot\:page:hover {
-  background: var(--fill-file--hover, var(--fill-file, var(--fill)));
-  border-color: var(--stroke-file--hover, var(--stroke-file, var(--fill)));
+  background: var(--fill-file--hover, var(--fill-file, none));
+  border-color: var(--stroke-file--hover, var(--stroke-file, var(--fill-file, none)));
   box-shadow: var(--shadow-file--hover, var(--shadow-file));
 }
 
 .lot\:file:active,
 .lot\:folder:active,
 .lot\:page:active {
-  background: var(--fill-file--active, var(--fill-file, var(--fill)));
-  border-color: var(--stroke-file--active, var(--stroke-file, var(--fill)));
+  background: var(--fill-file--active, var(--fill-file, none));
+  border-color: var(--stroke-file--active, var(--stroke-file, var(--fill-file, none)));
   box-shadow: var(--shadow-file--active, var(--shadow-file));
 }
 
 .lot\:file.is\:current,
 .is\:current.lot\:folder,
 .is\:current.lot\:page {
-  background: var(--fill-file--current, var(--fill-file, var(--fill)));
-  border-color: var(--stroke-file--current, var(--stroke-file, var(--fill)));
+  background: var(--fill-file--current, var(--fill-file, none));
+  border-color: var(--stroke-file--current, var(--stroke-file, var(--fill-file, none)));
   box-shadow: var(--shadow-file--current, var(--shadow-file));
 }
 
@@ -2158,32 +2161,32 @@ label > input[type='radio'] + span {
 
 .lot\:folder {
   background: var(--fill-folder, none);
-  border-color: var(--stroke-folder, transparent);
+  border-color: var(--stroke-folder, var(--fill-folder, none));
   border-radius: var(--radius-folder);
   box-shadow: var(--shadow-folder);
 }
 
 .lot\:folder:focus {
-  background: var(--fill-folder--focus, var(--fill-folder, var(--fill)));
-  border-color: var(--stroke-folder--focus, var(--stroke-folder, var(--fill)));
+  background: var(--fill-folder--focus, var(--fill-folder, none));
+  border-color: var(--stroke-folder--focus, var(--stroke-folder, var(--fill-folder, none)));
   box-shadow: var(--shadow-folder--focus, var(--shadow-folder));
 }
 
 .lot\:folder:hover {
-  background: var(--fill-folder--hover, var(--fill-folder, var(--fill)));
-  border-color: var(--stroke-folder--hover, var(--stroke-folder, var(--fill)));
+  background: var(--fill-folder--hover, var(--fill-folder, none));
+  border-color: var(--stroke-folder--hover, var(--stroke-folder, var(--fill-folder, none)));
   box-shadow: var(--shadow-folder--hover, var(--shadow-folder));
 }
 
 .lot\:folder:active {
-  background: var(--fill-folder--active, var(--fill-folder, var(--fill)));
-  border-color: var(--stroke-folder--active, var(--stroke-folder, var(--fill)));
+  background: var(--fill-folder--active, var(--fill-folder, none));
+  border-color: var(--stroke-folder--active, var(--stroke-folder, var(--fill-folder, none)));
   box-shadow: var(--shadow-folder--active, var(--shadow-folder));
 }
 
 .lot\:folder.is\:current {
-  background: var(--fill-folder--current, var(--fill-folder, var(--fill)));
-  border-color: var(--stroke-folder--current, var(--stroke-folder, var(--fill)));
+  background: var(--fill-folder--current, var(--fill-folder, none));
+  border-color: var(--stroke-folder--current, var(--stroke-folder, var(--fill-folder, none)));
   box-shadow: var(--shadow-folder--current, var(--shadow-folder));
 }
 
@@ -2202,8 +2205,8 @@ label > input[type='radio'] + span {
 .is\:file::after {
   border: 3px solid;
   border-color: var(--stroke-file-icon, var(--stroke));
-  border-right-color: var(--fill);
-  border-top-color: var(--fill);
+  border-right-color: inherit;
+  border-top-color: inherit;
   height: 0;
   left: 20px;
   width: 0;
@@ -2324,6 +2327,11 @@ label > input[type='radio'] + span {
   display: flex;
   flex: 1;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  z-index: 0;
+}
+
+.lot\:menu > ul > li > a:focus {
+  z-index: 1;
 }
 
 .lot\:menu > ul > li > a .title {

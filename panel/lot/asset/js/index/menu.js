@@ -1,10 +1,25 @@
 (function() {
     'use strict';
+    var isDefined = function isDefined(x) {
+        return 'undefined' !== typeof x;
+    };
+    var isFunction = function isFunction(x) {
+        return 'function' === typeof x;
+    };
+    var isNull = function isNull(x) {
+        return null === x;
+    };
+    var isSet = function isSet(x) {
+        return isDefined(x) && !isNull(x);
+    };
     var toCount = function toCount(x) {
         return x.length;
     };
     var D = document;
     var W = window;
+    var getChildFirst = function getChildFirst(parent) {
+        return parent.firstElementChild || null;
+    };
     var getElement = function getElement(query, scope) {
         return (scope || D).querySelector(query);
     };
@@ -20,11 +35,24 @@
     var getPrev = function getPrev(node) {
         return node.previousElementSibling || null;
     };
+    var hasClass = function hasClass(node, value) {
+        return node.classList.contains(value);
+    };
     var letClass = function letClass(node, value) {
         return node.classList.remove(value), node;
     };
     var toggleClass = function toggleClass(node, name, force) {
         return node.classList.toggle(name, force), node;
+    };
+    var event = function event(name, options, cache) {
+        if (cache && isSet(events[name])) {
+            return events[name];
+        }
+        return events[name] = new Event(name, options);
+    };
+    var events = {};
+    var fireEvent = function fireEvent(name, node, options, cache) {
+        node.dispatchEvent(event(name, options, cache));
     };
     var offEvent = function offEvent(name, node, then) {
         node.removeEventListener(name, then);
@@ -42,7 +70,7 @@
         node.addEventListener(name, then, options);
     };
 
-    function _hideMenus(but) {
+    function doHideMenus(but) {
         getElements('.lot\\:menu.is\\:enter').forEach(node => {
             if (but !== node) {
                 letClass(node, 'is:enter');
@@ -52,14 +80,38 @@
         });
     }
 
-    function _clickHideMenus() {
-        _hideMenus(0);
+    function onChange() {
+        offEvent('click', D, onClickDocument);
+        let menuParents = getElements('.has\\:menu'),
+            menuLinks = getElements('.lot\\:menu a[href]:not(.not\\:active)');
+        if (menuParents && toCount(menuParents)) {
+            menuParents.forEach(menuParent => {
+                let menu = getElement('.lot\\:menu', menuParent),
+                    a = getPrev(menu);
+                if (menu && a) {
+                    onEvent('click', a, onClickMenuShow);
+                    onEvent('keydown', a, onKeyDownMenuToggle);
+                }
+            });
+            onEvent('click', D, onClickDocument);
+        }
+        if (menuLinks && toCount(menuLinks)) {
+            menuLinks.forEach(menuLink => {
+                offEvent('keydown', menuLink, onKeyDownMenu);
+                onEvent('keydown', menuLink, onKeyDownMenu);
+            });
+        }
+    }
+    onChange();
+
+    function onClickDocument() {
+        doHideMenus(0);
     }
 
-    function _clickShowMenu(e) {
+    function onClickMenuShow(e) {
         let t = this,
             current = getNext(t);
-        _hideMenus(current);
+        doHideMenus(current);
         W.setTimeout(() => {
             toggleClass(t, 'is:active');
             toggleClass(getParent(t), 'is:active');
@@ -69,20 +121,87 @@
         offEventPropagation(e);
     }
 
-    function onChange() {
-        offEvent('click', D, _clickHideMenus);
-        let menuParents = getElements('.has\\:menu');
-        if (menuParents && toCount(menuParents)) {
-            menuParents.forEach(menuParent => {
-                let menu = getElement('.lot\\:menu', menuParent),
-                    a = getPrev(menu);
-                if (menu && a) {
-                    onEvent('click', a, _clickShowMenu);
+    function onKeyDownMenu(e) {
+        let t = this,
+            key = e.key,
+            current,
+            parent,
+            next,
+            prev;
+        if (parent = getParent(t)) {
+            while (null !== (next = getNext(parent))) {
+                if (!hasClass(next, 'not:active')) {
+                    break;
                 }
-            });
-            onEvent('click', D, _clickHideMenus);
+            }
+            while (null !== (prev = getPrev(parent))) {
+                if (!hasClass(prev, 'not:active')) {
+                    break;
+                }
+            }
+        }
+        if ('ArrowDown' === key) {
+            current = next && getChildFirst(next);
+            if (current && isFunction(current.focus)) {
+                current.focus();
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
+        } else if ('ArrowLeft' === key) {
+            // TODO
+            offEventDefault(e);
+            offEventPropagation(e);
+        } else if ('ArrowRight' === key) {
+            // TODO
+            offEventDefault(e);
+            offEventPropagation(e);
+        } else if ('ArrowUp' === key) {
+            current = prev && getChildFirst(prev);
+            if (current && isFunction(current.focus)) {
+                current.focus();
+            } else {
+                if (current = isFunction(t.closest) && t.closest('.is\\:enter')) {
+                    // Hide menu then focus to the menu parent link
+                    if (current = getPrev(current)) {
+                        fireEvent('click', current);
+                        isFunction(current.focus) && current.focus();
+                    }
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
         }
     }
-    onChange();
+
+    function onKeyDownMenuToggle(e) {
+        let t = this,
+            key = e.key,
+            current,
+            next = getNext(t),
+            parent = getParent(t);
+        if (next && parent && hasClass(next, 'lot:menu')) {
+            if (' ' === key || 'Enter' === key) {
+                fireEvent('click', t);
+                offEventDefault(e);
+                offEventPropagation(e);
+            } else if ('ArrowDown' === key) {
+                if (!hasClass(next, 'is:enter')) {
+                    fireEvent('click', t);
+                }
+                W.setTimeout(() => {
+                    if (current = getElement('a[href]:not(.not\\:active)', next)) {
+                        // Focus to the first link of child menu
+                        isFunction(current.focus) && current.focus();
+                    }
+                }, 1);
+                offEventDefault(e);
+                offEventPropagation(e);
+            } else if ('ArrowUp' === key) {
+                // TODO
+                offEventDefault(e);
+                offEventPropagation(e);
+            }
+        }
+    }
     W._.on('change', onChange);
 })();

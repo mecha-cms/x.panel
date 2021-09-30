@@ -1035,7 +1035,9 @@
     });
 
     function onProgress(from, to) {
-        D.title = '▮'.repeat(Math.round(to / from * 10)).padEnd(10, '▯');
+        if (-1 !== to) {
+            D.title = '▮'.repeat(Math.round(to / from * 10)).padEnd(10, '▯');
+        }
     }
     f3h.on('pull', onProgress);
     f3h.on('push', onProgress);
@@ -1046,7 +1048,7 @@
                 responseRoot = response.documentElement;
             D.title = response.title;
             if (responseRoot) {
-                setAttribute(R, 'class', getAttribute(responseRoot, 'class') + ' can:fetch');
+                setAttribute(R, 'class', getAttribute(responseRoot, 'class'));
             }
             elements.forEach((element, index) => {
                 if (responseElements[index]) {

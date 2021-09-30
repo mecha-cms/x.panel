@@ -1,7 +1,7 @@
 .lot\:file {
   background: var(--fill-file, none);
   border: 0 solid;
-  border-color: var(--stroke-file, transparent);
+  border-color: var(--stroke-file, var(--fill-file, none));
   border-radius: var(--radius-file);
   box-shadow: var(--shadow-file);
   display: flex;
@@ -18,14 +18,14 @@
   $states: focus, hover, active;
   @each $state in $states {
     &:#{$state} {
-      background: var(--fill-file--#{$state}, var(--fill-file, var(--fill)));
-      border-color: var(--stroke-file--#{$state}, var(--stroke-file, var(--fill)));
+      background: var(--fill-file--#{$state}, var(--fill-file, none));
+      border-color: var(--stroke-file--#{$state}, var(--stroke-file, var(--fill-file, none)));
       box-shadow: var(--shadow-file--#{$state}, var(--shadow-file));
     }
   }
   &.is\:current {
-    background: var(--fill-file--current, var(--fill-file, var(--fill)));
-    border-color: var(--stroke-file--current, var(--stroke-file, var(--fill)));
+    background: var(--fill-file--current, var(--fill-file, none));
+    border-color: var(--stroke-file--current, var(--stroke-file, var(--fill-file, none)));
     box-shadow: var(--shadow-file--current, var(--shadow-file));
   }
   &::before,
@@ -52,20 +52,20 @@
 .lot\:folder {
   @extend .lot\:file;
   background: var(--fill-folder, none);
-  border-color: var(--stroke-folder, transparent);
+  border-color: var(--stroke-folder, var(--fill-folder, none));
   border-radius: var(--radius-folder);
   box-shadow: var(--shadow-folder);
   $states: focus, hover, active;
   @each $state in $states {
     &:#{$state} {
-      background: var(--fill-folder--#{$state}, var(--fill-folder, var(--fill)));
-      border-color: var(--stroke-folder--#{$state}, var(--stroke-folder, var(--fill)));
+      background: var(--fill-folder--#{$state}, var(--fill-folder, none));
+      border-color: var(--stroke-folder--#{$state}, var(--stroke-folder, var(--fill-folder, none)));
       box-shadow: var(--shadow-folder--#{$state}, var(--shadow-folder));
     }
   }
   &.is\:current {
-    background: var(--fill-folder--current, var(--fill-folder, var(--fill)));
-    border-color: var(--stroke-folder--current, var(--stroke-folder, var(--fill)));
+    background: var(--fill-folder--current, var(--fill-folder, none));
+    border-color: var(--stroke-folder--current, var(--stroke-folder, var(--fill-folder, none)));
     box-shadow: var(--shadow-folder--current, var(--shadow-folder));
   }
 }
@@ -85,8 +85,8 @@
   &::after {
     border: 3px solid;
     border-color: var(--stroke-file-icon, var(--stroke));
-    border-right-color: var(--fill);
-    border-top-color: var(--fill);
+    border-right-color: inherit;
+    border-top-color: inherit;
     height: 0;
     left: 20px; // Magic :(
     width: 0;
