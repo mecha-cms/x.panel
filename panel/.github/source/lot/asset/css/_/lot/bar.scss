@@ -28,6 +28,12 @@
           height: inherit;
           overflow: hidden;
           padding: 0 calc(var(--x) * .75);
+          position: relative;
+          z-index: 0;
+          &:focus,
+          &:focus-visible {
+            z-index: 1;
+          }
           .title {
             .icon {
               &:first-child {

@@ -1,5 +1,5 @@
 .lot\:stack {
-  background: var(--fill-stack, var(--fill));
+  background: var(--fill-stack, none);
   border: 1px solid;
   border-color: var(--stroke-stack, var(--stroke));
   border-radius: var(--radius-stack);
@@ -19,17 +19,35 @@
       box-shadow: var(--shadow-stack--#{$state}, var(--shadow-stack));
     }
   }
+  > a {
+    @include user-select(none);
+    color: var(--color-stack);
+    cursor: pointer;
+    display: block;
+    $states: hover, focus, active;
+    @each $state in $states {
+      &:#{$state} {
+        color: var(--color-stack--#{$state}, var(--color-stack));
+      }
+    }
+    &.has\:link {
+      color: var(--color-stack-link, var(--color-stack));
+      $states: hover, focus, active;
+      @each $state in $states {
+        &:#{$state} {
+          color: var(--color-stack-link--#{$state}, var(--color-stack-link));
+        }
+      }
+    }
+    > .title {
+      display: flex;
+      padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+    }
+  }
   > .content,
-  > .lot,
-  > .title {
+  > .lot {
     display: none;
     padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
-  }
-  > .title {
-    @include user-select(none);
-    cursor: pointer;
-    display: flex;
-    font: inherit;
   }
   &.is\:current {
     background: var(--fill-stack--current, var(--fill-stack));
@@ -41,33 +59,27 @@
       border-top-color: inherit;
       display: block;
     }
-    &:not(.can\:toggle) > .title {
+    &:not(.can\:toggle) > a {
       cursor: inherit;
     }
   }
   &.not\:active {
-    > .title {
+    > a {
       cursor: not-allowed;
     }
   }
+  &:first-of-type {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &:last-of-type {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
   + .lot\:stack {
     margin-top: -1px;
+    &:not(:last-of-type) {
+      border-radius: 0;
+    }
   }
-}
-
-.lot\:stack > .title {
-  font: inherit;
-}
-
-.lot\:stack.is\:current > .title {
-}
-
-.lot\:stack > .content,
-.lot\:stack > .lot {
-  display: none;
-}
-
-.lot\:stack.is\:current > .content,
-.lot\:stack.is\:current > .lot {
-  display: block;
 }

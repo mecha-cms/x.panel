@@ -11,7 +11,14 @@ Release Notes
 ### main
 
  - [ ] Added version update check feature.
- - [ ] Improved keyboard accessibility. Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>/</kbd> to search. Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> or <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to switch between stacks and tabs.
+ - [ ] Improved keyboard accessibility:
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to toggle the tab panel visibility if `toggle` option is enabled. If tab panel is already hidden, this navigation will works as the way <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> works.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between stacks and tabs when focusing on the stacks/tabs trigger.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to toggle the stack panel visibility if `toggle` option is enabled. If stack panel is already hidden, this navigation will works as the way <kbd>ArrowDown</kbd> and <kbd>ArrowUp</kbd> works.
+   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>/</kbd> to search.
+   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> or <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to switch between stacks and tabs.
+   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab/stack panel visibility if `toggle` option is enabled.
+   - Press <kbd>PageDown</kbd> or <kbd>PageUp</kbd> to switch between stacks and tabs when focusing on the stacks/tabs trigger.
  - [x] Added `stack` and `stacks` type.
  - [x] Added `toggle` option for `tab` and `tabs`.
  - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.window` namespace. In the future, users should be able to set custom window via `_.window()`.

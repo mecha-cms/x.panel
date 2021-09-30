@@ -9,9 +9,9 @@
     }
     ul {
       flex-wrap: wrap;
-      overflow: hidden;
     }
     a {
+      @include user-select(none);
       color: var(--color-tab);
       display: flex;
       $states: hover, focus, active;
@@ -22,7 +22,6 @@
       }
     }
     li {
-      @include user-select(none);
       position: relative;
       &.has\:link {
         color: var(--color-tab-link, var(--color-tab));

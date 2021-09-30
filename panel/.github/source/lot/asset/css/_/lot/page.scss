@@ -1,7 +1,7 @@
 .lot\:page {
   @extend .lot\:file;
-  background: var(--fill-page, var(--fill-file, var(--fill)));
-  border-color: var(--stroke-page, var(--stroke-file, var(--fill)));
+  background: var(--fill-page, var(--fill-file, none));
+  border-color: var(--stroke-page, var(--stroke-file, transparent));
   border-radius: var(--radius-page, var(--radius-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);

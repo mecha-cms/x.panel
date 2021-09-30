@@ -26,11 +26,13 @@
   --color-button--hover: #fff;
   --color-button: #fff;
   --color-code-block: #fff;
+  --color-info: #f00;
   --color-input--disabled: #666;
   --color-input--hover: #000;
   --color-input--invalid: #f00;
   --color-input: #000;
   --color-link--active: #009;
+  --color-link--disabled: #66f;
   --color-link--focus: #00c;
   --color-link--hover: #00f;
   --color-link: #00f;
@@ -42,6 +44,12 @@
   --color-menu-link--hover: #00f;
   --color-menu-link: #00f;
   --color-output: #000;
+  --color-stack--disabled: #66f;
+  --color-stack-link--active: #009;
+  --color-stack-link--focus: #00c;
+  --color-stack-link--hover: #00f;
+  --color-stack-link: #00f;
+  --color-stack: #000;
   --color-tab--disabled: #66f;
   --color-tab-link--active: #009;
   --color-tab-link--focus: #00c;
@@ -67,7 +75,7 @@
   --shadow-input--disabled: none;
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
   --shadow-output: none;
-  --stroke-a11y: #009;
+  --stroke-a11y: rgba(0, 0, 255, .25);
   --stroke-button--active: #009;
   --stroke-button--disabled: #66f;
   --stroke-button--focus: #00c;
@@ -120,7 +128,7 @@
 
 :focus-visible {
   box-shadow: var(--shadow-a11y, none);
-  outline: 1px solid var(--stroke-a11y, transparent);
+  outline: 2px solid var(--stroke-a11y, transparent);
 }
 
 a {
@@ -1050,6 +1058,10 @@ label > input[type='radio'] + span {
   gap: 0 calc(var(--x) / 4);
 }
 
+.title .info {
+  color: var(--color-info);
+}
+
 .title > span {
   flex: 1;
 }
@@ -1104,6 +1116,13 @@ label > input[type='radio'] + span {
   height: inherit;
   overflow: hidden;
   padding: 0 calc(var(--x) * .75);
+  position: relative;
+  z-index: 0;
+}
+
+.lot\:bar .lot\:links > ul > li > a:focus,
+.lot\:bar .lot\:links > ul > li > a:focus-visible {
+  z-index: 1;
 }
 
 .lot\:bar .lot\:links > ul > li > a .title .icon:first-child {
@@ -2049,9 +2068,9 @@ label > input[type='radio'] + span {
 .lot\:file,
 .lot\:folder,
 .lot\:page {
-  background: var(--fill-file, var(--fill));
+  background: var(--fill-file, none);
   border: 0 solid;
-  border-color: var(--stroke-file, var(--fill));
+  border-color: var(--stroke-file, transparent);
   border-radius: var(--radius-file);
   box-shadow: var(--shadow-file);
   display: flex;
@@ -2138,8 +2157,8 @@ label > input[type='radio'] + span {
 }
 
 .lot\:folder {
-  background: var(--fill-folder, var(--fill));
-  border-color: var(--stroke-folder, var(--fill));
+  background: var(--fill-folder, none);
+  border-color: var(--stroke-folder, transparent);
   border-radius: var(--radius-folder);
   box-shadow: var(--shadow-folder);
 }
@@ -2183,8 +2202,8 @@ label > input[type='radio'] + span {
 .is\:file::after {
   border: 3px solid;
   border-color: var(--stroke-file-icon, var(--stroke));
-  border-right-color: inherit;
-  border-top-color: inherit;
+  border-right-color: var(--fill);
+  border-top-color: var(--fill);
   height: 0;
   left: 20px;
   width: 0;
@@ -2400,8 +2419,8 @@ label > input[type='radio'] + span {
 }
 
 .lot\:page {
-  background: var(--fill-page, var(--fill-file, var(--fill)));
-  border-color: var(--stroke-page, var(--stroke-file, var(--fill)));
+  background: var(--fill-page, var(--fill-file, none));
+  border-color: var(--stroke-page, var(--stroke-file, transparent));
   border-radius: var(--radius-page, var(--radius-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
@@ -2548,7 +2567,7 @@ label > input[type='radio'] + span {
 
 .lot\:stack,
 .content\:stack {
-  background: var(--fill-stack, var(--fill));
+  background: var(--fill-stack, none);
   border: 1px solid;
   border-color: var(--stroke-stack, var(--stroke));
   border-radius: var(--radius-stack);
@@ -2586,24 +2605,63 @@ label > input[type='radio'] + span {
   box-shadow: var(--shadow-stack--active, var(--shadow-stack));
 }
 
-.lot\:stack > .content,
-.content\:stack > .content,
-.lot\:stack > .lot,
-.content\:stack > .lot,
-.lot\:stack > .title,
-.content\:stack > .title {
-  display: none;
-  padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
-}
-
-.lot\:stack > .title,
-.content\:stack > .title {
+.lot\:stack > a,
+.content\:stack > a {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  color: var(--color-stack);
   cursor: pointer;
+  display: block;
+}
+
+.lot\:stack > a:hover,
+.content\:stack > a:hover {
+  color: var(--color-stack--hover, var(--color-stack));
+}
+
+.lot\:stack > a:focus,
+.content\:stack > a:focus {
+  color: var(--color-stack--focus, var(--color-stack));
+}
+
+.lot\:stack > a:active,
+.content\:stack > a:active {
+  color: var(--color-stack--active, var(--color-stack));
+}
+
+.lot\:stack > a.has\:link,
+.content\:stack > a.has\:link {
+  color: var(--color-stack-link, var(--color-stack));
+}
+
+.lot\:stack > a.has\:link:hover,
+.content\:stack > a.has\:link:hover {
+  color: var(--color-stack-link--hover, var(--color-stack-link));
+}
+
+.lot\:stack > a.has\:link:focus,
+.content\:stack > a.has\:link:focus {
+  color: var(--color-stack-link--focus, var(--color-stack-link));
+}
+
+.lot\:stack > a.has\:link:active,
+.content\:stack > a.has\:link:active {
+  color: var(--color-stack-link--active, var(--color-stack-link));
+}
+
+.lot\:stack > a > .title,
+.content\:stack > a > .title {
   display: flex;
-  font: inherit;
+  padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+}
+
+.lot\:stack > .content,
+.content\:stack > .content,
+.lot\:stack > .lot,
+.content\:stack > .lot {
+  display: none;
+  padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
 }
 
 .lot\:stack.is\:current,
@@ -2622,14 +2680,26 @@ label > input[type='radio'] + span {
   display: block;
 }
 
-.lot\:stack.is\:current:not(.can\:toggle) > .title,
-.is\:current.content\:stack:not(.can\:toggle) > .title {
+.lot\:stack.is\:current:not(.can\:toggle) > a,
+.is\:current.content\:stack:not(.can\:toggle) > a {
   cursor: inherit;
 }
 
-.lot\:stack.not\:active > .title,
-.not\:active.content\:stack > .title {
+.lot\:stack.not\:active > a,
+.not\:active.content\:stack > a {
   cursor: not-allowed;
+}
+
+.lot\:stack:first-of-type,
+.content\:stack:first-of-type {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.lot\:stack:last-of-type,
+.content\:stack:last-of-type {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .lot\:stack + .lot\:stack,
@@ -2639,23 +2709,11 @@ label > input[type='radio'] + span {
   margin-top: -1px;
 }
 
-.lot\:stack > .title,
-.content\:stack > .title {
-  font: inherit;
-}
-
-.lot\:stack > .content,
-.content\:stack > .content,
-.lot\:stack > .lot,
-.content\:stack > .lot {
-  display: none;
-}
-
-.lot\:stack.is\:current > .content,
-.is\:current.content\:stack > .content,
-.lot\:stack.is\:current > .lot,
-.is\:current.content\:stack > .lot {
-  display: block;
+.lot\:stack + .lot\:stack:not(:last-of-type),
+.content\:stack + .lot\:stack:not(:last-of-type),
+.lot\:stack + .content\:stack:not(:last-of-type),
+.content\:stack + .content\:stack:not(:last-of-type) {
+  border-radius: 0;
 }
 
 .lot\:stacks {
@@ -2687,10 +2745,12 @@ label > input[type='radio'] + span {
 
 .lot\:tabs .lot\:links ul {
   flex-wrap: wrap;
-  overflow: hidden;
 }
 
 .lot\:tabs .lot\:links a {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   color: var(--color-tab);
   display: flex;
 }
@@ -2708,9 +2768,6 @@ label > input[type='radio'] + span {
 }
 
 .lot\:tabs .lot\:links li {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
   position: relative;
 }
 
@@ -3209,8 +3266,9 @@ figure,
     min-width: 0;
   }
   .lot\:tabs .lot\:links {
-    height: calc(var(--y) * 2);
     line-height: calc(var(--y) * 2);
+    border-bottom: 1px solid;
+    border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
   }
   .lot\:tabs .lot\:links li {
     background: var(--fill-tab);
@@ -3247,21 +3305,15 @@ figure,
     border-color: var(--stroke-tab--current, var(--stroke-tab));
     z-index: 1;
   }
-  .lot\:tabs .lot\:links li.is\:current::before,
   .lot\:tabs .lot\:links li.is\:current::after {
-    border-bottom: 1px solid var(--stroke-tab--current, var(--stroke-tab));
-    bottom: 0;
+    border-bottom: 1px solid;
+    border-bottom-color: var(--fill);
+    bottom: -1px;
     content: "";
-    display: block;
-    height: 0;
+    left: 0;
     position: absolute;
-    width: 9999em;
-  }
-  .lot\:tabs .lot\:links li.is\:current::before {
-    right: 100%;
-  }
-  .lot\:tabs .lot\:links li.is\:current::after {
-    left: 100%;
+    right: 0;
+    top: auto;
   }
   .lot\:tabs .lot\:links li.not\:active {
     background: var(--fill-tab--disabled, var(--fill-tab));

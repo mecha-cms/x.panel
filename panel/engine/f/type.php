@@ -941,17 +941,19 @@ function stack($value, $key) {
             'lot:stack' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
-        $out[1] .= \x\panel\type\title([
-            'content' => $value['title'] ?? null,
+        $out[1] .= \x\panel\type\link([
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'info' => $value['info'] ?? null,
-            'level' => $value['level'] ?? 3,
+            'link' => $value['link'] ?? null,
             'tags' => [
                 'is:active' => $is_active,
                 'is:current' => $is_current,
                 'not:active' => !$is_active
-            ]
+            ],
+            'target' => 'stack:' . ($value['value'] ?? $key),
+            'title' => $value['title'] ?? null,
+            'url' => $value['url'] ?? null
         ], $key);
         // TODO
         // $out[1] .= \x\panel\type\tasks\link([
@@ -1003,6 +1005,17 @@ function stacks($value, $key) {
                     if (null !== $current && $kk === $current && !\array_key_exists('current', $v)) {
                         $v['current'] = true;
                     }
+                    if (empty($v['url']) && empty($v['link'])) {
+                        $v['url'] = $GLOBALS['url']->query('&', [
+                            'stack' => [$name => $kk]
+                        ]);
+                    } else {
+                        $v['tags']['has:link'] = true;
+                        if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {
+                            // Make sure link stack has a content to preserve the stack title
+                            $v['content'] = \P;
+                        }
+                    }
                 }
                 $lot[$k] = $v;
             }
@@ -1026,7 +1039,8 @@ function stacks($value, $key) {
         \x\panel\_set_class($out[2], \array_replace([
             'count:' . $count => true,
             'lot' => true,
-            'lot:stacks' => true
+            'lot:stacks' => true,
+            'p' => true
         ], $value['tags'] ?? []));
     }
     return "" !== $out[1] ? new \HTML($out) : null;
@@ -1056,11 +1070,6 @@ function tabs($value, $key) {
             $out[1] .= \x\panel\to\content($value['content']);
         } else if (isset($value['lot'])) {
             $links = $sections = [];
-            $tags = [
-                'lot' => true,
-                'lot:tabs' => true,
-                'p' => true
-            ];
             $sort = $value['sort'] ?? true;
             if (true === $sort) {
                 $sort = [1, 'stack', 10];
@@ -1125,11 +1134,15 @@ function tabs($value, $key) {
                 $out[1] .= \implode("", $sections);
             }
         }
-        $tags['count:' . $count] = true;
         if ($count < 2) {
             unset($out[2]['tabindex']);
         }
-        \x\panel\_set_class($out[2], \array_replace($tags, $value['tags'] ?? []));
+        \x\panel\_set_class($out[2], \array_replace([
+            'count:' . $count => true,
+            'lot' => true,
+            'lot:tabs' => true,
+            'p' => true
+        ], $value['tags'] ?? []));
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }

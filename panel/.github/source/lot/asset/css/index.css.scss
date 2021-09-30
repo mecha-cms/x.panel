@@ -54,11 +54,13 @@
   --color-button--hover: #fff;
   --color-button: #fff;
   --color-code-block: #fff;
+  --color-info: #f00;
   --color-input--disabled: #666;
   --color-input--hover: #000;
   --color-input--invalid: #f00;
   --color-input: #000;
   --color-link--active: #009;
+  --color-link--disabled: #66f;
   --color-link--focus: #00c;
   --color-link--hover: #00f;
   --color-link: #00f;
@@ -70,6 +72,12 @@
   --color-menu-link--hover: #00f;
   --color-menu-link: #00f;
   --color-output: #000;
+  --color-stack--disabled: #66f;
+  --color-stack-link--active: #009;
+  --color-stack-link--focus: #00c;
+  --color-stack-link--hover: #00f;
+  --color-stack-link: #00f;
+  --color-stack: #000;
   --color-tab--disabled: #66f;
   --color-tab-link--active: #009;
   --color-tab-link--focus: #00c;
@@ -95,7 +103,7 @@
   --shadow-input--disabled: none;
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
   --shadow-output: none;
-  --stroke-a11y: #009;
+  --stroke-a11y: rgba(0, 0, 255, .25);
   --stroke-button--active: #009;
   --stroke-button--disabled: #66f;
   --stroke-button--focus: #00c;

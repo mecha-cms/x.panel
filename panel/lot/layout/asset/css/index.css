@@ -23,7 +23,6 @@
   --fill-file--current: #262626;
   --fill-file--focus: #242424;
   --fill-file--hover: #242424;
-  --fill-file: #222222;
   --stroke-file--active: #242424;
   --stroke-file--current: #262626;
   --stroke-file--focus: #242424;
@@ -33,7 +32,6 @@
   --fill-folder--current: #262626;
   --fill-folder--focus: #242424;
   --fill-folder--hover: #242424;
-  --fill-folder: #222222;
   --stroke-folder--active: #242424;
   --stroke-folder--current: #262626;
   --stroke-folder--focus: #242424;
@@ -43,7 +41,6 @@
   --fill-page--current: #262626;
   --fill-page--focus: #242424;
   --fill-page--hover: #242424;
-  --fill-page: #222222;
   --stroke-page--active: #242424;
   --stroke-page--current: #262626;
   --stroke-page--focus: #242424;
@@ -62,6 +59,7 @@
   --color-button--focus: #f4f4f4;
   --color-button--hover: #f4f4f4;
   --color-button: #f4f4f4;
+  --color-info: #919191;
   --color-input--disabled: #4e4e4e;
   --color-input--hover: #bdbdbd;
   --color-input--invalid: #de5f5f;
@@ -78,6 +76,16 @@
   --color-menu-link--focus: #919191;
   --color-menu-link--hover: #7a7a7a;
   --color-menu-link: #7a7a7a;
+  --color-stack--active: #bdbdbd;
+  --color-stack--current: #a7a7a7;
+  --color-stack--disabled: #4e4e4e;
+  --color-stack--focus: #bdbdbd;
+  --color-stack--hover: #a7a7a7;
+  --color-stack-link--active: #919191;
+  --color-stack-link--focus: #919191;
+  --color-stack-link--hover: #7a7a7a;
+  --color-stack-link: #7a7a7a;
+  --color-stack: #a7a7a7;
   --color-tab--active: #bdbdbd;
   --color-tab--current: #a7a7a7;
   --color-tab--disabled: #4e4e4e;

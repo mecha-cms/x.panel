@@ -25,6 +25,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0 calc(var(--x) / 4);
+  .icon {}
+  .info {
+    color: var(--color-info);
+  }
   > span {
     flex: 1;
   }

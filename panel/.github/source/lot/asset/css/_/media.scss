@@ -17,8 +17,9 @@
   }
   .lot\:tabs {
     .lot\:links {
-      height: calc(var(--y) * 2);
       line-height: calc(var(--y) * 2);
+      border-bottom: 1px solid;
+      border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
       li {
         background: var(--fill-tab);
         border-radius: var(--radius-tab);
@@ -47,21 +48,15 @@
           background: var(--fill-tab--current, var(--fill-tab));
           border-color: var(--stroke-tab--current, var(--stroke-tab));
           z-index: 1;
-          &::before,
           &::after {
-            border-bottom: 1px solid var(--stroke-tab--current, var(--stroke-tab));
-            bottom: 0;
+            border-bottom: 1px solid;
+            border-bottom-color: var(--fill);
+            bottom: -1px;
             content: "";
-            display: block;
-            height: 0;
+            left: 0;
             position: absolute;
-            width: 9999em;
-          }
-          &::before {
-            right: 100%;
-          }
-          &::after {
-            left: 100%;
+            right: 0;
+            top: auto;
           }
         }
         &.not\:active {
