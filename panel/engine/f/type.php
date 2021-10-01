@@ -116,12 +116,14 @@ function desk($value, $key) {
         $value['tags'] = $tags;
         if (isset($value['content'])) {
             $out = \x\panel\type\content($value, $key);
-            $out[0] = 'main';
+            $out[0] = $value[0] ?? 'main';
+            $out['tabindex'] = $out['tabindex'] ?? 0;
             return $out;
         }
         if (isset($value['lot'])) {
             $out = \x\panel\type\lot($value, $key);
-            $out[0] = 'main';
+            $out[0] = $value[0] ?? 'main';
+            $out['tabindex'] = $out['tabindex'] ?? 0;
             return $out;
         }
     }
@@ -627,7 +629,7 @@ function menu($value, $key, int $i = 0) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([
@@ -951,7 +953,7 @@ function stack($value, $key) {
             'lot:stack' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
-        $out[1] .= \x\panel\type\link([
+        $out[1] .= '<h3>' . \x\panel\type\link([
             '2' => ['tabindex' => -1],
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
@@ -965,12 +967,7 @@ function stack($value, $key) {
             'target' => 'stack:' . ($value['value'] ?? $key),
             'title' => $value['title'] ?? null,
             'url' => $value['url'] ?? null
-        ], $key);
-        // TODO
-        // $out[1] .= \x\panel\type\tasks\link([
-        //     '0' => 'p',
-        //     'lot' => $value['tasks'] ?? []
-        // ], $key);
+        ], $key) . '</h3>';
         $count = 1;
         if (isset($value['content'])) {
             $out[1] .= '<div class="content">';
@@ -983,6 +980,10 @@ function stack($value, $key) {
             $out[1] .= '</div>';
             $tags['count:' . $count] = true;
         }
+        $out[1] .= \x\panel\type\tasks\link([
+            '0' => 'p',
+            'lot' => $value['tasks'] ?? []
+        ], $key);
         \x\panel\_set_class($out[2], $tags);
         if (!$is_active) {
             unset($out[2]['tabindex']);

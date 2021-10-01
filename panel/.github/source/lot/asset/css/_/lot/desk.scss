@@ -2,6 +2,7 @@
   margin: 0 auto;
   max-width: calc(var(--x) * 36);
   padding: var(--y) var(--x);
+  position: relative;
   &.width {
     display: block;
     max-width: 100%;

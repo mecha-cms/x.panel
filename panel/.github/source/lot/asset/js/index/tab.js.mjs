@@ -2,7 +2,6 @@ import {
     W,
     getChildFirst,
     getChildren,
-    getClasses,
     getDatum,
     getElement,
     getElements,
@@ -13,7 +12,6 @@ import {
     letClass,
     setChildLast,
     setClass,
-    setClasses,
     setElement,
     toggleClass
 } from '@taufik-nurrohman/document';
@@ -45,6 +43,7 @@ function onChange() {
         setChildLast(source, input);
         function onClick(e) {
             let t = this,
+                pane = panes[t._tabIndex],
                 parent = getParent(t);
             if (!hasClass(parent, 'has:link')) {
                 if (!hasClass(t, 'not:active')) {
@@ -52,27 +51,26 @@ function onChange() {
                         if (tab !== t) {
                             letClass(tab, 'is:current');
                             letClass(getParent(tab), 'is:current');
-                            if (panes[tab._tabIndex]) {
-                                letClass(panes[tab._tabIndex], 'is:current');
-                            }
+                            let pane = panes[tab._tabIndex];
+                            pane && letClass(pane, 'is:current');
                         }
                     });
                     if (hasClass(parent, 'can:toggle')) {
                         toggleClass(t, 'is:current');
                         toggleClass(parent, 'is:current');
-                        if (panes[t._tabIndex]) {
-                            toggleClass(panes[t._tabIndex], 'is:current');
+                        if (pane) {
+                            toggleClass(pane, 'is:current');
                             input.value = value = hasClass(t, 'is:current') ? getDatum(t, 'value') : null;
                         }
                     } else {
                         setClass(t, 'is:current');
                         setClass(parent, 'is:current');
-                        if (panes[t._tabIndex]) {
-                            setClass(panes[t._tabIndex], 'is:current');
+                        if (pane) {
+                            setClass(pane, 'is:current');
                             input.value = value = getDatum(t, 'value');
                         }
                     }
-                    W._.fire('change.tab', [name, value]);
+                    pane && W._.fire.apply(pane, ['change.tab', [value, name]]);
                 }
                 offEventDefault(e);
             }
@@ -94,7 +92,7 @@ function onKeyDownTab(e) {
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
-        keyIsCtrl = e.ctrlKey;
+        keyIsCtrl = e.ctrlKey, stop;
     if (!keyIsAlt && !keyIsCtrl) {
         let any, current, next, parent, prev;
         if ('ArrowDown' === key) {
@@ -113,8 +111,7 @@ function onKeyDownTab(e) {
                 fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('ArrowLeft' === key || 'PageUp' === key) {
             if (parent = getParent(t)) {
                 prev = getPrev(parent);
@@ -126,8 +123,7 @@ function onKeyDownTab(e) {
                 fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('ArrowRight' === key || 'PageDown' === key) {
             if (parent = getParent(t)) {
                 next = getNext(parent);
@@ -139,8 +135,7 @@ function onKeyDownTab(e) {
                 fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('ArrowUp' === key) {
             if (hasClass(t, 'can:toggle') && hasClass(t, 'is:current')) {
                 current = t;
@@ -157,40 +152,38 @@ function onKeyDownTab(e) {
                 fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if (' ' === key || 'Enter' === key) {
             if (hasClass(t, 'can:toggle')) {
                 fireEvent('click', t);
                 isFunction(t.focus) && t.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('Escape' === key) {
             if (parent = t.closest('.lot\\:tabs')) {
                 isFunction(parent.focus) && parent.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('End' === key) {
             if (parent = t.closest('.lot\\:tabs')) {
                 any = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', parent));
                 if (current = any.pop()) {
+                    fireEvent('click', current);
                     isFunction(current.focus) && current.focus();
                 }
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('Home' === key) {
             if (parent = t.closest('.lot\\:tabs')) {
                 if (current = getElement('a[target^="tab:"]:not(.not\\:active)', parent)) {
+                    fireEvent('click', current);
                     isFunction(current.focus) && current.focus();
                 }
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         }
     }
+    stop && (offEventDefault(e), offEventPropagation(e));
 }
 
 function onKeyDownTabs(e) {
@@ -198,7 +191,7 @@ function onKeyDownTabs(e) {
         key = e.key,
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
-        keyIsShift = e.shiftKey;
+        keyIsShift = e.shiftKey, stop;
     if (t !== e.target) {
         return;
     }
@@ -206,19 +199,20 @@ function onKeyDownTabs(e) {
         let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
             if (current = getElement('a[target^="tab:"]:not(.not\\:active)', t)) {
+                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
             any = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', t));
             if (current = any.pop()) {
+                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         }
     }
+    stop && (offEventDefault(e), offEventPropagation(e));
 }
 
 W._.on('change', onChange);

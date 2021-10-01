@@ -14,32 +14,36 @@
       box-shadow: var(--shadow-stack--#{$state}, var(--shadow-stack));
     }
   }
-  > a {
+  > h3 {
     @include user-select(none);
     color: var(--color-stack);
-    cursor: pointer;
-    display: block;
-    position: relative;
-    $states: hover, focus, active;
-    @each $state in $states {
-      &:#{$state} {
-        color: var(--color-stack--#{$state}, var(--color-stack));
+    font: inherit;
+    > a {
+      color: inherit;
+      cursor: pointer;
+      display: block;
+      position: relative;
+      $states: hover, focus, active;
+      @each $state in $states {
+        &:#{$state} {
+          color: var(--color-stack--#{$state}, var(--color-stack));
+        }
       }
-    }
-    .title {
-      display: flex;
-      padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
-      .icon {
-        margin: 0 calc(var(--z) / -4);
-        &:first-child {
-          margin-right: calc(var(--z) / 4);
-        }
-        &:last-child {
-          margin-left: calc(var(--z) / 4);
-        }
-        &:only-child {
-          margin-left: calc(var(--z) / -4);
-          margin-right: calc(var(--z) / -4);
+      .title {
+        display: flex;
+        padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+        .icon {
+          margin: 0 calc(var(--z) / -4);
+          &:first-child {
+            margin-right: calc(var(--z) / 4);
+          }
+          &:last-child {
+            margin-left: calc(var(--z) / 4);
+          }
+          &:only-child {
+            margin-left: calc(var(--z) / -4);
+            margin-right: calc(var(--z) / -4);
+          }
         }
       }
     }
@@ -50,12 +54,14 @@
     padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
   }
   &.has\:link {
-    > a {
+    > h3 {
       color: var(--color-stack-link, var(--color-stack));
-      $states: hover, focus, active;
-      @each $state in $states {
-        &:#{$state} {
-          color: var(--color-stack-link--#{$state}, var(--color-stack-link));
+      > a {
+        $states: hover, focus, active;
+        @each $state in $states {
+          &:#{$state} {
+            color: var(--color-stack-link--#{$state}, var(--color-stack-link));
+          }
         }
       }
     }
@@ -70,14 +76,20 @@
       border-top-color: inherit;
       display: block;
     }
-    &:not(.can\:toggle) > a {
-      cursor: inherit;
+    &:not(.can\:toggle) {
+      > h3 {
+        > a {
+          cursor: inherit;
+        }
+      }
     }
   }
   &.not\:active {
-    > a {
-      color: var(--color-stack--disabled, var(--color-stack));
-      cursor: not-allowed;
+    > h3 {
+      > a {
+        color: var(--color-stack--disabled, var(--color-stack));
+        cursor: not-allowed;
+      }
     }
   }
   &:first-of-type {

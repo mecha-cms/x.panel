@@ -40,7 +40,9 @@ Hook::set('get', function() {
         'skip' => empty($state->x->panel->fetch),
         'stack' => 30
     ];
+    $out[$f . 'js' . DS . 'index' . DS . 'file' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'menu' . $z . 'js'] = ['stack' => 30];
+    $out[$f . 'js' . DS . 'index' . DS . 'page' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'stack' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'tab' . $z . 'js'] = ['stack' => 30];
     $out[$f . 'js' . DS . 'index' . DS . 'window' . $z . 'js'] = ['stack' => 30];

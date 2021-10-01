@@ -10,42 +10,36 @@
     ul {
       flex-wrap: wrap;
     }
-    a {
+    li {
       @include user-select(none);
       color: var(--color-tab);
-      display: flex;
-      $states: hover, focus, active;
-      @each $state in $states {
-        &:#{$state} {
-          color: var(--color-tab--#{$state}, var(--color-tab));
-        }
-      }
-    }
-    li {
       position: relative;
-      &.has\:link {
-        color: var(--color-tab-link, var(--color-tab));
+      a {
+        color: inherit;
+        display: flex;
         $states: hover, focus, active;
         @each $state in $states {
           &:#{$state} {
-            color: var(--color-tab-link--#{$state}, var(--color-tab-link));
+            color: var(--color-tab--#{$state}, var(--color-tab));
           }
         }
+      }
+      &.has\:link {
+        color: var(--color-tab-link, var(--color-tab));
         > a {
-          color: inherit;
+          $states: hover, focus, active;
+          @each $state in $states {
+            &:#{$state} {
+              color: var(--color-tab-link--#{$state}, var(--color-tab-link));
+            }
+          }
         }
       }
       &.is\:current {
         color: var(--color-tab--current, var(--color-tab));
-        > a {
-          color: inherit;
-        }
       }
       &.not\:active {
         color: var(--color-tab--disabled, var(--color-tab));
-        > a {
-          color: inherit;
-        }
       }
     }
     .title {

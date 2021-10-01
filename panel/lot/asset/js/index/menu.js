@@ -104,6 +104,11 @@
                 onEvent('keydown', menuLink, onKeyDownMenu);
             });
         }
+        let menus = getElements('.lot\\:menu');
+        menus && toCount(menus) && menus.forEach(menu => {
+            offEvent('keydown', menu, onKeyDownMenus);
+            onEvent('keydown', menu, onKeyDownMenus);
+        });
     }
     onChange();
 
@@ -131,7 +136,8 @@
             current,
             parent,
             next,
-            prev;
+            prev,
+            stop;
         if (parent = getParent(t)) {
             next = getNext(parent);
             while (next && (hasClass(next, 'is:separator') || hasClass(next, 'not:active'))) {
@@ -147,8 +153,7 @@
             if (current && isFunction(current.focus)) {
                 current.focus();
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
             // Hide menu then focus to the parent menu link
             if (parent = t.closest('.lot\\:menu.is\\:enter')) {
@@ -157,12 +162,11 @@
                 letClass(t, 'is:active');
                 if ('Tab' !== key && (current = getPrev(parent))) {
                     isFunction(current.focus) && current.focus();
-                }
+                } // Focus to the self menu
+            } else if ('Escape' === key && (parent = t.closest('.lot\\:menu'))) {
+                isFunction(parent.focus) && parent.focus();
             }
-            if ('Tab' !== key) {
-                offEventDefault(e);
-                offEventPropagation(e);
-            }
+            stop = 'Tab' !== key;
         } else if ('ArrowRight' === key) {
             next = getNext(t);
             if (next && hasClass(next, 'lot:menu')) {
@@ -176,8 +180,7 @@
                     }
                 }, 1);
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('ArrowUp' === key) {
             current = prev && getChildFirst(prev);
             if (current && isFunction(current.focus)) {
@@ -191,8 +194,7 @@
                     }
                 }
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('End' === key) {
             if (parent = t.closest('.lot\\:menu')) {
                 any = [].slice.call(getElements('a[href]:not(.not\\:active)', parent));
@@ -200,17 +202,44 @@
                     isFunction(current.focus) && current.focus();
                 }
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         } else if ('Home' === key) {
             if (parent = t.closest('.lot\\:menu')) {
                 if (current = getElement('a[href]:not(.not\\:active)', parent)) {
                     isFunction(current.focus) && current.focus();
                 }
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            stop = true;
         }
+        stop && (offEventDefault(e), offEventPropagation(e));
+    }
+
+    function onKeyDownMenus(e) {
+        let t = this,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            stop;
+        if (t !== e.target) {
+            return;
+        }
+        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            let any, current;
+            if ('ArrowDown' === key || 'Home' === key) {
+                if (current = getElement('a[href]:not(.not\\:active)', t)) {
+                    isFunction(current.focus) && current.focus();
+                }
+                stop = true;
+            } else if ('ArrowUp' === key || 'End' === key) {
+                any = [].slice.call(getElements('a[href]:not(.not\\:active)', t));
+                if (current = any.pop()) {
+                    isFunction(current.focus) && current.focus();
+                }
+                stop = true;
+            }
+        }
+        stop && (offEventDefault(e), offEventPropagation(e));
     }
 
     function onKeyDownMenuToggle(e) {
@@ -218,17 +247,17 @@
             key = e.key,
             current,
             next = getNext(t),
-            parent = getParent(t);
+            parent = getParent(t),
+            stop;
         if (next && parent && hasClass(next, 'lot:menu')) {
             if (' ' === key || 'Enter' === key || 'Tab' === key) {
                 if ('Tab' === key) {
                     hasClass(next, 'is:enter') && fireEvent('click', t);
                 } else {
                     fireEvent('click', t);
-                    offEventDefault(e);
-                    offEventPropagation(e);
+                    stop = true;
                 }
-            } else if ('ArrowDown' === key || 'ArrowUp' === key) {
+            } else if ('ArrowDown' === key) {
                 if (!hasClass(next, 'is:enter')) {
                     fireEvent('click', t);
                 }
@@ -238,10 +267,10 @@
                         isFunction(current.focus) && current.focus();
                     }
                 }, 1);
-                offEventDefault(e);
-                offEventPropagation(e);
+                stop = true;
             }
         }
+        stop && (offEventDefault(e), offEventPropagation(e));
     }
     W._.on('change', onChange);
 })();
