@@ -66,9 +66,22 @@ onEvent('keydown', W, function(e) {
         // Skip!
     } else if (keyIsCtrl) {
         if ('f' === key && !keyIsAlt && !keyIsShift) {
-            D.forms && D.forms.get && D.forms.get.q && D.forms.get.q.focus();
+            D.forms.get && D.forms.get.q && D.forms.get.q.focus();
             stop = true;
         }
+    }
+    stop && offEventDefault(e);
+});
+
+D.forms.get && D.forms.get.q && onEvent('keydown', D.forms.get.q, function(e) {
+    let t = this,
+        key = e.key,
+        keyIsAlt = e.altKey,
+        keyIsCtrl = e.ctrlKey,
+        keyIsShift = e.shiftKey, stop;
+    if ((keyIsCtrl && 'f' === key || 'Escape' === key) && !keyIsAlt && !keyIsShift) {
+        R.focus();
+        stop = true;
     }
     stop && offEventDefault(e);
 });
