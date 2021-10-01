@@ -58,6 +58,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 
 $p = $url['path'];
 
+// Handle files/folders with numeric name.
 if (null !== $i && stream_resolve_include_path(LOT . DS . (explode('::/', $p, 2)[1] ?? P) . DS . $i)) {
     $url->path .= '/' . $i;
     $p .= '/' . $i;

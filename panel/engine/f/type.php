@@ -429,6 +429,7 @@ function folder($value, $key) {
     return "" !== $out[1] ? new \HTML($out) : null;
 }
 
+// NOTE: `folders` is actually just an alias of `files`. Thus, declaring a `folders` component would not give any difference from `files`. It’s just that the default value of item’s `type` will be automatically assigned as `folder` instead of `file`. Otherwise, they will be treated the same. Both will get class `lot:files` and `lot:folders`, according to the available items. You, then can use those classes to detect whether this component contains only files or only folders, or if both are present.
 function folders($value, $key) {
     if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
