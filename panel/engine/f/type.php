@@ -429,7 +429,11 @@ function folder($value, $key) {
     return "" !== $out[1] ? new \HTML($out) : null;
 }
 
-// NOTE: `folders` is actually just an alias of `files`. Thus, declaring a `folders` component would not give any difference from `files`. It’s just that the default value of item’s `type` will be automatically assigned as `folder` instead of `file`. Otherwise, they will be treated the same. Both will get class `lot:files` and `lot:folders`, according to the available items. You, then can use those classes to detect whether this component contains only files or only folders, or if both are present.
+// NOTE: `folders` is actually just an alias of `files`. Thus, declaring a `folders` block would not give any
+// difference from `files`. It’s just that the default value of item’s `type` will be automatically assigned
+// as `folder` instead of `file`. Otherwise, they will be treated the same. Both will get class `lot:files`
+// and `lot:folders`, according to the available items.
+// Use those classes to detect whether this block contains only files or only folders, or if both are present.
 function folders($value, $key) {
     if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
@@ -623,7 +627,7 @@ function menu($value, $key, int $i = 0) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([
@@ -679,7 +683,9 @@ function menu($value, $key, int $i = 0) {
                         ], $v['tags'] ?? []);
                         if (!isset($v[1])) {
                             if ('menu' === $v['type']) {
-                                $li[1] = \x\panel\type\link($v, $k);
+                                $li[1] = \x\panel\type\link(\array_replace([
+                                    '2' => ['tabindex' => $i < 0 ? null : -1]
+                                ], $v), $k);
                                 if (!empty($v['lot'])) {
                                     $li[1] .= \x\panel\type\menu($v, $k, $i + 1); // Recurse!
                                     if ($i < 0) {
@@ -695,7 +701,10 @@ function menu($value, $key, int $i = 0) {
                         }
                         \x\panel\_set_class($li[2], $tags_li);
                     } else {
-                        $li[1] = \x\panel\type\link(['title' => $v], $k);
+                        $li[1] = \x\panel\type\link([
+                            '2' => ['tabindex' => $i < 0 ? null : -1],
+                            'title' => $v
+                        ], $k);
                     }
                     $out[1] .= new \HTML($li);
                 }
@@ -1153,7 +1162,7 @@ function tasks($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([

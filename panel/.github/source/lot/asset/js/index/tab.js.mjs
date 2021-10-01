@@ -96,7 +96,7 @@ function onKeyDownTab(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey;
     if (!keyIsAlt && !keyIsCtrl) {
-        let current, next, parent, prev;
+        let any, current, next, parent, prev;
         if ('ArrowDown' === key) {
             if (hasClass(t, 'can:toggle') && !hasClass(t, 'is:current')) {
                 current = t;
@@ -167,15 +167,28 @@ function onKeyDownTab(e) {
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('Escape' === key) {
-            if (isFunction(t.closest) && (parent = t.closest('.lot\\:tabs'))) {
+            if (parent = t.closest('.lot\\:tabs')) {
                 isFunction(parent.focus) && parent.focus();
             }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('End' === key) {
-            // TODO
+            if (parent = t.closest('.lot\\:tabs')) {
+                any = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', parent));
+                if (current = any.pop()) {
+                    isFunction(current.focus) && current.focus();
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
         } else if ('Home' === key) {
-            // TODO
+            if (parent = t.closest('.lot\\:tabs')) {
+                if (current = getElement('a[target^="tab:"]:not(.not\\:active)', parent)) {
+                    isFunction(current.focus) && current.focus();
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
         }
     }
 }
@@ -186,8 +199,11 @@ function onKeyDownTabs(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
         keyIsShift = e.shiftKey;
+    if (t !== e.target) {
+        return;
+    }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-        let current, next, parent, prev;
+        let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
             if (current = getElement('a[target^="tab:"]:not(.not\\:active)', t)) {
                 isFunction(current.focus) && current.focus();
@@ -195,8 +211,8 @@ function onKeyDownTabs(e) {
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
-            let links = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', t));
-            if (current = links.pop()) {
+            any = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', t));
+            if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
             }
             offEventDefault(e);

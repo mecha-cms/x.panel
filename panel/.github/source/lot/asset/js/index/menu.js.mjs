@@ -86,7 +86,7 @@ function onClickMenuShow(e) {
 function onKeyDownMenu(e) {
     let t = this,
         key = e.key,
-        current, parent, next, prev;
+        any, current, parent, next, prev;
     if (parent = getParent(t)) {
         next = getNext(parent);
         while (next && (hasClass(next, 'is:separator') || hasClass(next, 'not:active'))) {
@@ -104,17 +104,20 @@ function onKeyDownMenu(e) {
         }
         offEventDefault(e);
         offEventPropagation(e);
-    } else if ('ArrowLeft' === key || 'Escape' === key) {
-        parent = isFunction(t.closest) && t.closest('.lot\\:menu.is\\:enter');
+    } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
         // Hide menu then focus to the parent menu link
-        if (parent && (current = getPrev(parent))) {
+        if (parent = t.closest('.lot\\:menu.is\\:enter')) {
             letClass(getParent(t), 'is:active');
             letClass(parent, 'is:enter');
             letClass(t, 'is:active');
-            isFunction(current.focus) && current.focus();
+            if ('Tab' !== key && (current = getPrev(parent))) {
+                isFunction(current.focus) && current.focus();
+            }
         }
-        offEventDefault(e);
-        offEventPropagation(e);
+        if ('Tab' !== key) {
+            offEventDefault(e);
+            offEventPropagation(e);
+        }
     } else if ('ArrowRight' === key) {
         next = getNext(t);
         if (next && hasClass(next, 'lot:menu')) {
@@ -135,7 +138,7 @@ function onKeyDownMenu(e) {
         if (current && isFunction(current.focus)) {
             current.focus();
         } else {
-            if (current = isFunction(t.closest) && t.closest('.is\\:enter')) {
+            if (current = t.closest('.is\\:enter')) {
                 // Hide menu then focus to the parent menu link
                 if (current = getPrev(current)) {
                     fireEvent('click', current);
@@ -146,9 +149,22 @@ function onKeyDownMenu(e) {
         offEventDefault(e);
         offEventPropagation(e);
     } else if ('End' === key) {
-        // TODO
+        if (parent = t.closest('.lot\\:menu')) {
+            any = [].slice.call(getElements('a[href]:not(.not\\:active)', parent));
+            if (current = any.pop()) {
+                isFunction(current.focus) && current.focus();
+            }
+        }
+        offEventDefault(e);
+        offEventPropagation(e);
     } else if ('Home' === key) {
-        // TODO
+        if (parent = t.closest('.lot\\:menu')) {
+            if (current = getElement('a[href]:not(.not\\:active)', parent)) {
+                isFunction(current.focus) && current.focus();
+            }
+        }
+        offEventDefault(e);
+        offEventPropagation(e);
     }
 }
 
@@ -159,13 +175,20 @@ function onKeyDownMenuToggle(e) {
         next = getNext(t),
         parent = getParent(t);
     if (next && parent && hasClass(next, 'lot:menu')) {
-        if (' ' === key || 'Enter' === key) {
-            fireEvent('click', t);
-            offEventDefault(e);
-            offEventPropagation(e);
-        } else if ('ArrowDown' === key) {
+        if (' ' === key || 'Enter' === key || 'Tab' === key) {
+            if ('Tab' === key) {
+                hasClass(next, 'is:enter') && fireEvent('click', t);
+            } else {
+                fireEvent('click', t);
+                offEventDefault(e);
+                offEventPropagation(e);
+            }
+        } else if ('ArrowDown' === key || 'ArrowUp' === key) {
             if (!hasClass(next, 'is:enter')) {
                 fireEvent('click', t);
+            }
+            if ('ArrowUp' === key) {
+                // TODO
             }
             W.setTimeout(() => {
                 if (current = getElement('a[href]:not(.not\\:active)', next)) {
@@ -173,10 +196,6 @@ function onKeyDownMenuToggle(e) {
                     isFunction(current.focus) && current.focus();
                 }
             }, 1);
-            offEventDefault(e);
-            offEventPropagation(e);
-        } else if ('ArrowUp' === key) {
-            // TODO
             offEventDefault(e);
             offEventPropagation(e);
         }

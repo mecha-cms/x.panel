@@ -86,8 +86,11 @@ function onKeyDownStack(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey;
     if (!keyIsAlt && !keyIsCtrl) {
-        let current, next, parent, prev;
-        if ('ArrowDown' === key || 'PageDown' === key) {
+        let any, current, next, parent, prev;
+        if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
+            if ('ArrowRight' === key) {
+                // TODO
+            }
             if (parent = getParent(t)) {
                 next = getNext(parent);
                 while (next && hasClass(next, 'not:active')) {
@@ -95,48 +98,17 @@ function onKeyDownStack(e) {
                 }
             }
             if (current = next && getChildFirst(next)) {
-                fireEvent('click', current);
-                isFunction(current.focus) && current.focus();
-            }
-            offEventDefault(e);
-            offEventPropagation(e);
-        } else if ('ArrowLeft' === key) {
-            if (hasClass(getParent(t), 'can:toggle') && hasClass(t, 'is:current')) {
-                current = t;
-            } else {
-                if (parent = getParent(t)) {
-                    prev = getPrev(parent);
-                    while (prev && hasClass(prev, 'not:active')) {
-                        prev = getPrev(prev);
-                    }
+                if ('ArrowRight' !== key || !hasClass(getParent(current), 'can:toggle')) {
+                    fireEvent('click', current);
                 }
-                current = prev && getChildFirst(prev);
-            }
-            if (current) {
-                fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
             offEventDefault(e);
             offEventPropagation(e);
-        } else if ('ArrowRight' === key) {
-            if (hasClass(getParent(t), 'can:toggle') && hasClass(t, 'is:current')) {
-                current = t;
-            } else {
-                if (parent = getParent(t)) {
-                    next = getNext(parent);
-                    while (next && hasClass(next, 'not:active')) {
-                        next = getNext(next);
-                    }
-                }
-                current = next && getChildFirst(next);
+        } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
+            if ('ArrowLeft' === key) {
+                // TODO
             }
-            if (current) {
-                fireEvent('click', current);
-                isFunction(current.focus) && current.focus();
-            }
-            offEventDefault(e);
-            offEventPropagation(e);
-        } else if ('ArrowUp' === key || 'PageUp' === key) {
             if (parent = getParent(t)) {
                 prev = getPrev(parent);
                 while (prev && hasClass(prev, 'not:active')) {
@@ -144,7 +116,9 @@ function onKeyDownStack(e) {
                 }
             }
             if (current = prev && getChildFirst(prev)) {
-                fireEvent('click', current);
+                if ('ArrowLeft' !== key || !hasClass(getParent(current), 'can:toggle')) {
+                    fireEvent('click', current);
+                }
                 isFunction(current.focus) && current.focus();
             }
             offEventDefault(e);
@@ -157,15 +131,28 @@ function onKeyDownStack(e) {
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('Escape' === key) {
-            if (isFunction(t.closest) && (parent = t.closest('.lot\\:stacks'))) {
+            if (parent = t.closest('.lot\\:stacks')) {
                 isFunction(parent.focus) && parent.focus();
             }
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('End' === key) {
-            // TODO
+            if (parent = t.closest('.lot\\:stacks')) {
+                any = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', parent));
+                if (current = any.pop()) {
+                    isFunction(current.focus) && current.focus();
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
         } else if ('Home' === key) {
-            // TODO
+            if (parent = t.closest('.lot\\:stacks')) {
+                if (current = getElement('a[target^="stack:"]:not(.not\\:active)', parent)) {
+                    isFunction(current.focus) && current.focus();
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
         }
     }
 }
@@ -176,8 +163,11 @@ function onKeyDownStacks(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
         keyIsShift = e.shiftKey;
+    if (t !== e.target) {
+        return;
+    }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-        let current, next, parent, prev;
+        let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
             if (current = getElement('a[target^="stack:"]:not(.not\\:active)', t)) {
                 isFunction(current.focus) && current.focus();
@@ -185,8 +175,8 @@ function onKeyDownStacks(e) {
             offEventDefault(e);
             offEventPropagation(e);
         } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
-            let links = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', t));
-            if (current = links.pop()) {
+            any = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', t));
+            if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
             }
             offEventDefault(e);

@@ -127,6 +127,7 @@
     function onKeyDownMenu(e) {
         let t = this,
             key = e.key,
+            any,
             current,
             parent,
             next,
@@ -148,16 +149,20 @@
             }
             offEventDefault(e);
             offEventPropagation(e);
-        } else if ('ArrowLeft' === key || 'Escape' === key) {
-            parent = isFunction(t.closest) && t.closest('.lot\\:menu.is\\:enter'); // Hide menu then focus to the parent menu link
-            if (parent && (current = getPrev(parent))) {
+        } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
+            // Hide menu then focus to the parent menu link
+            if (parent = t.closest('.lot\\:menu.is\\:enter')) {
                 letClass(getParent(t), 'is:active');
                 letClass(parent, 'is:enter');
                 letClass(t, 'is:active');
-                isFunction(current.focus) && current.focus();
+                if ('Tab' !== key && (current = getPrev(parent))) {
+                    isFunction(current.focus) && current.focus();
+                }
             }
-            offEventDefault(e);
-            offEventPropagation(e);
+            if ('Tab' !== key) {
+                offEventDefault(e);
+                offEventPropagation(e);
+            }
         } else if ('ArrowRight' === key) {
             next = getNext(t);
             if (next && hasClass(next, 'lot:menu')) {
@@ -178,7 +183,7 @@
             if (current && isFunction(current.focus)) {
                 current.focus();
             } else {
-                if (current = isFunction(t.closest) && t.closest('.is\\:enter')) {
+                if (current = t.closest('.is\\:enter')) {
                     // Hide menu then focus to the parent menu link
                     if (current = getPrev(current)) {
                         fireEvent('click', current);
@@ -188,7 +193,24 @@
             }
             offEventDefault(e);
             offEventPropagation(e);
-        } else;
+        } else if ('End' === key) {
+            if (parent = t.closest('.lot\\:menu')) {
+                any = [].slice.call(getElements('a[href]:not(.not\\:active)', parent));
+                if (current = any.pop()) {
+                    isFunction(current.focus) && current.focus();
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
+        } else if ('Home' === key) {
+            if (parent = t.closest('.lot\\:menu')) {
+                if (current = getElement('a[href]:not(.not\\:active)', parent)) {
+                    isFunction(current.focus) && current.focus();
+                }
+            }
+            offEventDefault(e);
+            offEventPropagation(e);
+        }
     }
 
     function onKeyDownMenuToggle(e) {
@@ -198,11 +220,15 @@
             next = getNext(t),
             parent = getParent(t);
         if (next && parent && hasClass(next, 'lot:menu')) {
-            if (' ' === key || 'Enter' === key) {
-                fireEvent('click', t);
-                offEventDefault(e);
-                offEventPropagation(e);
-            } else if ('ArrowDown' === key) {
+            if (' ' === key || 'Enter' === key || 'Tab' === key) {
+                if ('Tab' === key) {
+                    hasClass(next, 'is:enter') && fireEvent('click', t);
+                } else {
+                    fireEvent('click', t);
+                    offEventDefault(e);
+                    offEventPropagation(e);
+                }
+            } else if ('ArrowDown' === key || 'ArrowUp' === key) {
                 if (!hasClass(next, 'is:enter')) {
                     fireEvent('click', t);
                 }
@@ -212,10 +238,6 @@
                         isFunction(current.focus) && current.focus();
                     }
                 }, 1);
-                offEventDefault(e);
-                offEventPropagation(e);
-            } else if ('ArrowUp' === key) {
-                // TODO
                 offEventDefault(e);
                 offEventPropagation(e);
             }
