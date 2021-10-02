@@ -31,6 +31,8 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
+const targets = 'a[target^="stack:"]:not(.not\\:active)';
+
 function onChange() {
     let sources = getElements('.lot\\:stacks');
     sources && toCount(sources) && sources.forEach(source => {
@@ -43,31 +45,29 @@ function onChange() {
             let t = this,
                 parent = getParent(getParent(t));
             if (!hasClass(parent, 'has:link')) {
-                if (!hasClass(t, 'not:active')) {
-                    stacks.forEach(stack => {
-                        if (stack !== parent) {
-                            letClass(stack, 'is:current');
-                            letClass(getElement('a[target^="stack:"]', stack), 'is:current');
-                        }
-                    });
-                    if (hasClass(parent, 'can:toggle')) {
-                        toggleClass(t, 'is:current');
-                        toggleClass(parent, 'is:current');
-                        input.value = value = hasClass(t, 'is:current') ? getDatum(parent, 'value') : null;
-                    } else {
-                        setClass(t, 'is:current');
-                        setClass(parent, 'is:current');
-                        input.value = value = getDatum(parent, 'value');
+                stacks.forEach(stack => {
+                    if (stack !== parent) {
+                        letClass(stack, 'is:current');
+                        letClass(getElement('a[target^="stack:"]', stack), 'is:current');
                     }
-                    W._.fire.apply(parent, ['change.stack', [value, name]]);
+                });
+                if (hasClass(parent, 'can:toggle')) {
+                    toggleClass(t, 'is:current');
+                    toggleClass(parent, 'is:current');
+                    input.value = value = hasClass(t, 'is:current') ? getDatum(parent, 'value') : null;
+                } else {
+                    setClass(t, 'is:current');
+                    setClass(parent, 'is:current');
+                    input.value = value = getDatum(parent, 'value');
                 }
-                offEventDefault(e);
+                W._.fire.apply(parent, ['change.stack', [value, name]]);
             }
+            offEventDefault(e);
         }
         stacks.forEach(stack => {
-            let t = getElement('a[target^="stack:"]', stack);
-            onEvent('click', t, onClick);
-            onEvent('keydown', t, onKeyDownStack);
+            let target = getElement(targets, stack);
+            onEvent('click', target, onClick);
+            onEvent('keydown', target, onKeyDownStack);
         });
         let stackCurrent = stacks.find((value, key) => 0 !== key && hasClass(value, 'is:current'));
         if (stackCurrent) {
@@ -78,6 +78,9 @@ function onChange() {
 } onChange();
 
 function onKeyDownStack(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -133,7 +136,7 @@ function onKeyDownStack(e) {
             stop = true;
         } else if ('End' === key) {
             if (parent = t.closest('.lot\\:stacks')) {
-                any = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', parent));
+                any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     fireEvent('click', current);
                     isFunction(current.focus) && current.focus();
@@ -142,7 +145,7 @@ function onKeyDownStack(e) {
             stop = true;
         } else if ('Home' === key) {
             if (parent = t.closest('.lot\\:stacks')) {
-                if (current = getElement('a[target^="stack:"]:not(.not\\:active)', parent)) {
+                if (current = getElement(targets, parent)) {
                     fireEvent('click', current);
                     isFunction(current.focus) && current.focus();
                 }
@@ -154,6 +157,9 @@ function onKeyDownStack(e) {
 }
 
 function onKeyDownStacks(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -165,13 +171,13 @@ function onKeyDownStacks(e) {
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
-            if (current = getElement('a[target^="stack:"]:not(.not\\:active)', t)) {
+            if (current = getElement(targets, t)) {
                 fireEvent('click', current);
                 isFunction(current.focus) && current.focus();
             }
             stop = true;
         } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
-            any = [].slice.call(getElements('a[target^="stack:"]:not(.not\\:active)', t));
+            any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
                 fireEvent('click', current);
                 isFunction(current.focus) && current.focus();

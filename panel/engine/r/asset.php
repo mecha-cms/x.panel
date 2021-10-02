@@ -40,15 +40,12 @@ Hook::set('get', function() {
         'skip' => empty($state->x->panel->fetch),
         'stack' => 30
     ];
-    $out[$f . 'js' . DS . 'index' . DS . 'file' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'menu' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'page' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'stack' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'tab' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'window' . $z . 'js'] = ['stack' => 30];
-    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'option' . $z . 'js'] = ['stack' => 40];
-    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'query' . $z . 'js'] = ['stack' => 40];
-    $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . 'source' . $z . 'js'] = ['stack' => 40];
+    foreach (['bar', 'desk', 'file', 'link', 'menu', 'page', 'stack', 'tab', 'task', 'window'] as $v) {
+        $out[$f . 'js' . DS . 'index' . DS . $v . $z . 'js'] = ['stack' => 30];
+    }
+    foreach (['option', 'query', 'source'] as $v) {
+        $out[$f . 'js' . DS . 'index' . DS . 'field' . DS . $v . $z . 'js'] = ['stack' => 40];
+    }
     $GLOBALS['_']['asset'] = array_replace_recursive($_['asset'] ?? [], $out);
 }, 20);
 

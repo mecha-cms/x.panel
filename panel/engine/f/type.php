@@ -1163,7 +1163,7 @@ function tasks($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
+        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([

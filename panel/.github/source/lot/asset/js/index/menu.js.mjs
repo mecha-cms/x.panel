@@ -29,6 +29,8 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
+const targets = 'a[href]:not(.not\\:active)';
+
 function doHideMenus(but) {
     getElements('.lot\\:menu.is\\:enter').forEach(node => {
         if (but !== node) {
@@ -42,7 +44,7 @@ function doHideMenus(but) {
 function onChange() {
     offEvent('click', D, onClickDocument);
     let menuParents = getElements('.has\\:menu'),
-        menuLinks = getElements('.lot\\:menu a[href]:not(.not\\:active)');
+        menuLinks = getElements('.lot\\:menu ' + targets);
     if (menuParents && toCount(menuParents)) {
         menuParents.forEach(menuParent => {
             let menu = getElement('.lot\\:menu', menuParent),
@@ -72,6 +74,9 @@ function onClickDocument() {
 }
 
 function onClickMenuShow(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         current = getNext(t), next;
     doHideMenus(current);
@@ -85,6 +90,9 @@ function onClickMenuShow(e) {
 }
 
 function onKeyDownMenu(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         any, current, parent, next, prev, stop;
@@ -125,7 +133,7 @@ function onKeyDownMenu(e) {
             setClass(next, 'is:enter');
             setClass(t, 'is:active');
             W.setTimeout(() => {
-                if (current = getElement('a[href]:not(.not\\:active)', next)) {
+                if (current = getElement(targets, next)) {
                     // Focus to the first link of child menu
                     isFunction(current.focus) && current.focus();
                 }
@@ -148,7 +156,7 @@ function onKeyDownMenu(e) {
         stop = true;
     } else if ('End' === key) {
         if (parent = t.closest('.lot\\:menu')) {
-            any = [].slice.call(getElements('a[href]:not(.not\\:active)', parent));
+            any = [].slice.call(getElements(targets, parent));
             if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
             }
@@ -156,7 +164,7 @@ function onKeyDownMenu(e) {
         stop = true;
     } else if ('Home' === key) {
         if (parent = t.closest('.lot\\:menu')) {
-            if (current = getElement('a[href]:not(.not\\:active)', parent)) {
+            if (current = getElement(targets, parent)) {
                 isFunction(current.focus) && current.focus();
             }
         }
@@ -166,6 +174,9 @@ function onKeyDownMenu(e) {
 }
 
 function onKeyDownMenus(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -177,12 +188,12 @@ function onKeyDownMenus(e) {
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'Home' === key) {
-            if (current = getElement('a[href]:not(.not\\:active)', t)) {
+            if (current = getElement(targets, t)) {
                 isFunction(current.focus) && current.focus();
             }
             stop = true;
         } else if ('ArrowUp' === key || 'End' === key) {
-            any = [].slice.call(getElements('a[href]:not(.not\\:active)', t));
+            any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
             }
@@ -193,6 +204,9 @@ function onKeyDownMenus(e) {
 }
 
 function onKeyDownMenuToggle(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         current,
@@ -211,7 +225,7 @@ function onKeyDownMenuToggle(e) {
                 fireEvent('click', t);
             }
             W.setTimeout(() => {
-                if (current = getElement('a[href]:not(.not\\:active)', next)) {
+                if (current = getElement(targets, next)) {
                     // Focus to the first link of child menu
                     isFunction(current.focus) && current.focus();
                 }

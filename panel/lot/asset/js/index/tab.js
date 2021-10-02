@@ -234,12 +234,13 @@
         }
         node.addEventListener(name, then, options);
     };
+    const targets = 'a[target^="tab:"]:not(.not\\:active)';
 
     function onChange() {
         let sources = getElements('.lot\\:tabs');
         sources && toCount(sources) && sources.forEach(source => {
             let panes = [].slice.call(getChildren(source)),
-                tabs = [].slice.call(getElements('a[target^="tab:"]', panes.shift())),
+                tabs = [].slice.call(getElements(targets, panes.shift())),
                 input = setElement('input'),
                 name,
                 value;
@@ -252,34 +253,32 @@
                     pane = panes[t._tabIndex],
                     parent = getParent(t);
                 if (!hasClass(parent, 'has:link')) {
-                    if (!hasClass(t, 'not:active')) {
-                        tabs.forEach(tab => {
-                            if (tab !== t) {
-                                letClass(tab, 'is:current');
-                                letClass(getParent(tab), 'is:current');
-                                let pane = panes[tab._tabIndex];
-                                pane && letClass(pane, 'is:current');
-                            }
-                        });
-                        if (hasClass(parent, 'can:toggle')) {
-                            toggleClass(t, 'is:current');
-                            toggleClass(parent, 'is:current');
-                            if (pane) {
-                                toggleClass(pane, 'is:current');
-                                input.value = value = hasClass(t, 'is:current') ? getDatum(t, 'value') : null;
-                            }
-                        } else {
-                            setClass(t, 'is:current');
-                            setClass(parent, 'is:current');
-                            if (pane) {
-                                setClass(pane, 'is:current');
-                                input.value = value = getDatum(t, 'value');
-                            }
+                    tabs.forEach(tab => {
+                        if (tab !== t) {
+                            letClass(tab, 'is:current');
+                            letClass(getParent(tab), 'is:current');
+                            let pane = panes[tab._tabIndex];
+                            pane && letClass(pane, 'is:current');
                         }
-                        pane && W._.fire.apply(pane, ['change.tab', [value, name]]);
+                    });
+                    if (hasClass(parent, 'can:toggle')) {
+                        toggleClass(t, 'is:current');
+                        toggleClass(parent, 'is:current');
+                        if (pane) {
+                            toggleClass(pane, 'is:current');
+                            input.value = value = hasClass(t, 'is:current') ? getDatum(t, 'value') : null;
+                        }
+                    } else {
+                        setClass(t, 'is:current');
+                        setClass(parent, 'is:current');
+                        if (pane) {
+                            setClass(pane, 'is:current');
+                            input.value = value = getDatum(t, 'value');
+                        }
                     }
-                    offEventDefault(e);
+                    pane && W._.fire.apply(pane, ['change.tab', [value, name]]);
                 }
+                offEventDefault(e);
             }
             tabs.forEach((tab, index) => {
                 tab._tabIndex = index;
@@ -296,6 +295,9 @@
     onChange();
 
     function onKeyDownTab(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
         let t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -374,7 +376,7 @@
                 stop = true;
             } else if ('End' === key) {
                 if (parent = t.closest('.lot\\:tabs')) {
-                    any = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', parent));
+                    any = [].slice.call(getElements(targets, parent));
                     if (current = any.pop()) {
                         fireEvent('click', current);
                         isFunction(current.focus) && current.focus();
@@ -383,7 +385,7 @@
                 stop = true;
             } else if ('Home' === key) {
                 if (parent = t.closest('.lot\\:tabs')) {
-                    if (current = getElement('a[target^="tab:"]:not(.not\\:active)', parent)) {
+                    if (current = getElement(targets, parent)) {
                         fireEvent('click', current);
                         isFunction(current.focus) && current.focus();
                     }
@@ -395,6 +397,9 @@
     }
 
     function onKeyDownTabs(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
         let t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -407,13 +412,13 @@
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             let any, current;
             if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
-                if (current = getElement('a[target^="tab:"]:not(.not\\:active)', t)) {
+                if (current = getElement(targets, t)) {
                     fireEvent('click', current);
                     isFunction(current.focus) && current.focus();
                 }
                 stop = true;
             } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
-                any = [].slice.call(getElements('a[target^="tab:"]:not(.not\\:active)', t));
+                any = [].slice.call(getElements(targets, t));
                 if (current = any.pop()) {
                     fireEvent('click', current);
                     isFunction(current.focus) && current.focus();

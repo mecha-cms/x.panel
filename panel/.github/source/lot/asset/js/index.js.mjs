@@ -1,6 +1,11 @@
 import {
+    B,
     D,
-    W
+    R,
+    W,
+    getElement,
+    getFormElement,
+    hasClass
 } from '@taufik-nurrohman/document';
 
 import {
@@ -11,6 +16,10 @@ import {
 import {
     hook
 } from '@taufik-nurrohman/hook';
+
+import {
+    isFunction
+} from '@taufik-nurrohman/is';
 
 import K from '@taufik-nurrohman/key';
 
@@ -46,3 +55,65 @@ W._ = _;
 onEvent('beforeload', D, () => fire('let'));
 onEvent('load', D, () => fire('get'));
 onEvent('DOMContentLoaded', D, () => fire('set'));
+
+const mainSearchForm = getFormElement('get');
+
+onEvent('keydown', W, function(e) {
+    // Since removing events is not possible here, checking if another event has been added is the only way
+    // to prevent the declaration below from executing if previous events have blocked it.
+    if (e.defaultPrevented) {
+        return;
+    }
+    let t = this,
+        key = e.key,
+        keyIsAlt = e.altKey,
+        keyIsCtrl = e.ctrlKey,
+        keyIsShift = e.shiftKey,
+        self = e.target,
+        target, stop;
+    if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+        // Cycle between `lot:bar`, `lot:desk`, `<html>`, and `<window>`
+        if ('F6' === key) {
+            stop = true;
+            if (self === B || self === D || self === R || self === W) {
+                target = getElement('.lot\\:bar');
+            } else if (hasClass(self, 'lot:bar')) {
+                target = getElement('.lot\\:desk');
+            } else if (hasClass(self, 'lot:desk')) {
+                target = R;
+            } else {
+                stop = false; // Use default!
+            }
+            target && isFunction(target.focus) && target.focus();
+        } else if ('F10' === key) {
+            if (target = (getElement('.lot\\:bar a[href]:not(.not\\:active)') || getElement('.lot\\:bar'))) {
+                isFunction(target.focus) && target.focus();
+            }
+            stop = true;
+        }
+    } else if (B !== self && D !== self && R !== self && t !== self) {
+        // Skip!
+    } else if (keyIsCtrl) {
+        if ('f' === key && !keyIsAlt && !keyIsShift) {
+            mainSearchForm && mainSearchForm.q && mainSearchForm.q.focus();
+            stop = true;
+        }
+    }
+    stop && offEventDefault(e);
+});
+
+mainSearchForm && onEvent('keydown', mainSearchForm, function(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
+    let t = this,
+        key = e.key,
+        keyIsAlt = e.altKey,
+        keyIsCtrl = e.ctrlKey,
+        keyIsShift = e.shiftKey, stop;
+    if ((keyIsCtrl && 'f' === key || 'Escape' === key) && !keyIsAlt && !keyIsShift) {
+        R.focus(); // Focus back to the `<html>`!
+        stop = true;
+    }
+    stop && offEventDefault(e);
+});

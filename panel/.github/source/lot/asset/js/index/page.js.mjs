@@ -22,10 +22,12 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
+const targets = '.lot\\:page:not(.not\\:active)';
+
 function onChange() {
     let sources = getElements('.lot\\:pages');
     sources && toCount(sources) && sources.forEach(source => {
-        let files = getElements('.lot\\:page:not(.not\\:active)', source);
+        let files = getElements(targets, source);
         files.forEach(file => {
             if (source === getParent(file)) {
                 onEvent('keydown', file, onKeyDownPage);
@@ -36,6 +38,9 @@ function onChange() {
 } onChange();
 
 function onKeyDownPage(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         any, current, parent, next, prev, stop;
@@ -61,7 +66,7 @@ function onKeyDownPage(e) {
         }
         stop = true;
     } else if ('End' === key) {
-        any = [].slice.call(getElements('.lot\\:page:not(.not\\:active)', getParent(t)));
+        any = [].slice.call(getElements(targets, getParent(t)));
         if (current = any.pop()) {
             isFunction(current.focus) && current.focus();
         }
@@ -72,7 +77,7 @@ function onKeyDownPage(e) {
         }
         stop = true;
     } else if ('Home' === key) {
-        if (current = getElement('.lot\\:page:not(.not\\:active)', getParent(t))) {
+        if (current = getElement(targets, getParent(t))) {
             isFunction(current.focus) && current.focus();
         }
         stop = true;
@@ -81,6 +86,9 @@ function onKeyDownPage(e) {
 }
 
 function onKeyDownPages(e) {
+    if (e.defaultPrevented) {
+        return;
+    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -92,12 +100,12 @@ function onKeyDownPages(e) {
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'Home' === key) {
-            if (current = getElement('.lot\\:page:not(.not\\:active)', t)) {
+            if (current = getElement(targets, t)) {
                 isFunction(current.focus) && current.focus();
             }
             stop = true;
         } else if ('ArrowUp' === key || 'End' === key) {
-            any = [].slice.call(getElements('.lot\\:page:not(.not\\:active)', t));
+            any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
             }
