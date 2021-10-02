@@ -1145,6 +1145,7 @@ function tabs($value, $key) {
             if ($links) {
                 $out[1] .= \x\panel\type\links([
                     '0' => 'nav',
+                    '2' => ['tabindex' => null],
                     'lot' => $links
                 ], $name);
             }
