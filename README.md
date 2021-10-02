@@ -12,7 +12,6 @@ Release Notes
 
  - [ ] Added version update check feature.
  - [ ] Improved keyboard accessibility by adding some navigation shortcuts (this list will be moved to the about page):
-   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between links when focusing on the links list.
    - [ ] Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to switch between desk children when focusing on the desk children.
    - [ ] Press <kbd>ArrowDown</kbd> or <kbd>Home</kbd> to focus to the first desk children when focusing on the desk block.
    - [ ] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between desk children when focusing on the desk children and when the `flex` option is enabled.
@@ -28,6 +27,7 @@ Release Notes
    - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to toggle the tab panel visibility if `toggle` option is enabled. If tab panel is already hidden, this navigation will works as the way <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> works.
    - [x] Press <kbd>ArrowDown</kbd> or <kbd>Home</kbd> to focus to the first menu link when focusing on the menu block.
    - [x] Press <kbd>ArrowDown</kbd> to show the menu and then focus to the first menu link when focusing on the menu trigger.
+   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between links when focusing on the links list.
    - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between stacks when focusing on the stack trigger.
    - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tabs when focusing on the tab trigger.
    - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tasks when focusing on the tasks list.
