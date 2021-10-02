@@ -1236,14 +1236,25 @@ label > input[type='radio'] + span {
 }
 
 .lot\:desk {
-  margin: 0 auto;
-  max-width: calc(var(--x) * 36);
   padding: var(--y) var(--x);
   position: relative;
 }
 
+.lot\:desk > * {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: calc(var(--x) * 36);
+}
+
+.lot\:desk.flex {
+  display: flex;
+}
+
 .lot\:desk.width {
   display: block;
+}
+
+.lot\:desk.width > * {
   max-width: 100%;
 }
 

@@ -9,6 +9,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
+    fireEvent,
     offEventDefault,
     onEvent
 } from '@taufik-nurrohman/event';
@@ -57,6 +58,7 @@ onEvent('load', D, () => fire('get'));
 onEvent('DOMContentLoaded', D, () => fire('set'));
 
 const mainSearchForm = getFormElement('get');
+const mainSearchFormInput = mainSearchForm && mainSearchForm.q;
 
 onEvent('keydown', W, function(e) {
     // Since removing events is not possible here, checking if another event has been added is the only way
@@ -87,6 +89,9 @@ onEvent('keydown', W, function(e) {
             target && isFunction(target.focus) && target.focus();
         } else if ('F10' === key) {
             if (target = (getElement('.lot\\:bar a[href]:not(.not\\:active)') || getElement('.lot\\:bar'))) {
+                if (hasClass(target, 'has:menu')) {
+                    fireEvent('click', target);
+                }
                 isFunction(target.focus) && target.focus();
             }
             stop = true;
@@ -94,15 +99,18 @@ onEvent('keydown', W, function(e) {
     } else if (B !== self && D !== self && R !== self && t !== self) {
         // Skip!
     } else if (keyIsCtrl) {
-        if ('f' === key && !keyIsAlt && !keyIsShift) {
-            mainSearchForm && mainSearchForm.q && mainSearchForm.q.focus();
+        if ('?' === key && !keyIsAlt) {
+            console.info('TODO: Go to the about page.');
+            stop = true;
+        } else if ('f' === key && !keyIsAlt) {
+            mainSearchFormInput && mainSearchFormInput.focus();
             stop = true;
         }
     }
     stop && offEventDefault(e);
 });
 
-mainSearchForm && onEvent('keydown', mainSearchForm, function(e) {
+mainSearchFormInput && onEvent('keydown', mainSearchFormInput, function(e) {
     if (e.defaultPrevented) {
         return;
     }

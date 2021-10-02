@@ -60,26 +60,39 @@ function onKeyDownTask(e) {
             prev = getPrev(prev);
         }
         if ('ArrowLeft' === key) {
-            prev && isFunction(prev.focus) && prev.focus();
-            stop = true;
+            stop = !('selectionStart' in t && 0 !== t.selectionStart);
+            if (prev && stop) {
+                isFunction(prev.focus) && prev.focus();
+                isFunction(prev.select) && prev.select();
+            }
         } else if ('ArrowRight' === key) {
-            next && isFunction(next.focus) && next.focus();
-            stop = true;
+            stop = !('selectionEnd' in t && t.selectionEnd < toCount(t.value || ""));
+            if (next && stop) {
+                isFunction(next.focus) && next.focus();
+                isFunction(next.select) && next.select();
+            }
         } else if ('End' === key) {
-            if (parent = t.closest('.lot\\:tasks')) {
+            stop = !('selectionEnd' in t && toCount(t.value || ""));
+            if (stop && (parent = t.closest('.lot\\:tasks'))) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     isFunction(current.focus) && current.focus();
+                    isFunction(current.select) && current.select();
                 }
+            }
+        } else if ('Escape' === key) {
+            if (parent = t.closest('.lot\\:tasks')) {
+                isFunction(parent.focus) && parent.focus();
             }
             stop = true;
         } else if ('Home' === key) {
-            if (parent = t.closest('.lot\\:tasks')) {
+            stop = !('selectionStart' in t && toCount(t.value || ""));
+            if (stop && (parent = t.closest('.lot\\:tasks'))) {
                 if (current = getElement(targets, parent)) {
                     isFunction(current.focus) && current.focus();
+                    isFunction(current.select) && current.select();
                 }
             }
-            stop = true;
         }
     }
     stop && (offEventDefault(e), offEventPropagation(e));
@@ -103,11 +116,13 @@ function onKeyDownTasks(e) {
             any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
+                isFunction(current.select) && current.select();
             }
             stop = true;
         } else if ('ArrowRight' === key || 'Home' === key) {
             if (current = getElement(targets, t)) {
                 isFunction(current.focus) && current.focus();
+                isFunction(current.select) && current.select();
             }
             stop = true;
         }

@@ -1,10 +1,18 @@
 .lot\:desk {
-  margin: 0 auto;
-  max-width: calc(var(--x) * 36);
   padding: var(--y) var(--x);
   position: relative;
+  > * {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: calc(var(--x) * 36);
+  }
+  &.flex {
+    display: flex; // TODO
+  }
   &.width {
     display: block;
-    max-width: 100%;
+    > * {
+      max-width: 100%;
+    }
   }
 }

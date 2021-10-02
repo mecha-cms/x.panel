@@ -34,6 +34,16 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
+    var event = function event(name, options, cache) {
+        if (cache && isSet(events[name])) {
+            return events[name];
+        }
+        return events[name] = new Event(name, options);
+    };
+    var events = {};
+    var fireEvent = function fireEvent(name, node, options, cache) {
+        node.dispatchEvent(event(name, options, cache));
+    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -174,6 +184,7 @@
     onEvent('load', D, () => fire('get'));
     onEvent('DOMContentLoaded', D, () => fire('set'));
     const mainSearchForm = getFormElement('get');
+    const mainSearchFormInput = mainSearchForm && mainSearchForm.q;
     onEvent('keydown', W, function(e) {
         // Since removing events is not possible here, checking if another event has been added is the only way
         // to prevent the declaration below from executing if previous events have blocked it.
@@ -204,20 +215,26 @@
                 target && isFunction(target.focus) && target.focus();
             } else if ('F10' === key) {
                 if (target = getElement('.lot\\:bar a[href]:not(.not\\:active)') || getElement('.lot\\:bar')) {
+                    if (hasClass(target, 'has:menu')) {
+                        fireEvent('click', target);
+                    }
                     isFunction(target.focus) && target.focus();
                 }
                 stop = true;
             }
         } else if (B !== self && D !== self && R !== self && t !== self);
         else if (keyIsCtrl) {
-            if ('f' === key && !keyIsAlt && !keyIsShift) {
-                mainSearchForm && mainSearchForm.q && mainSearchForm.q.focus();
+            if ('?' === key && !keyIsAlt) {
+                console.info('TODO: Go to the about page.');
+                stop = true;
+            } else if ('f' === key && !keyIsAlt) {
+                mainSearchFormInput && mainSearchFormInput.focus();
                 stop = true;
             }
         }
         stop && offEventDefault(e);
     });
-    mainSearchForm && onEvent('keydown', mainSearchForm, function(e) {
+    mainSearchFormInput && onEvent('keydown', mainSearchFormInput, function(e) {
         if (e.defaultPrevented) {
             return;
         }

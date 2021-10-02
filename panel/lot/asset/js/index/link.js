@@ -49,13 +49,15 @@
     function onChange() {
         let links = getElements('.lot\\:links');
         links && toCount(links) && links.forEach(link => {
-            let linkLinks = getElements(targets, link);
-            linkLinks && toCount(linkLinks) && linkLinks.forEach(linkLink => {
-                offEvent('keydown', linkLink, onKeyDownLink);
-                onEvent('keydown', linkLink, onKeyDownLink);
-            });
-            offEvent('keydown', link, onKeyDownLinks);
-            onEvent('keydown', link, onKeyDownLinks);
+            if (!hasClass(getParent(link), 'lot:tabs')) {
+                let linkLinks = getElements(targets, link);
+                linkLinks && toCount(linkLinks) && linkLinks.forEach(linkLink => {
+                    offEvent('keydown', linkLink, onKeyDownLink);
+                    onEvent('keydown', linkLink, onKeyDownLink);
+                });
+                offEvent('keydown', link, onKeyDownLinks);
+                onEvent('keydown', link, onKeyDownLinks);
+            }
         });
     }
     onChange();
@@ -104,6 +106,10 @@
                     }
                 }
                 stop = true;
+            } else if ('Escape' === key) {
+                if (parent = t.closest('.lot\\:links')) {
+                    isFunction(parent.focus) && parent.focus();
+                }
             } else if ('Home' === key) {
                 if (parent = t.closest('.lot\\:links')) {
                     if (current = getElement(targets, parent)) {

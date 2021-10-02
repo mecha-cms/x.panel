@@ -102,6 +102,12 @@ function desk($value, $key) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
         }
+        if (isset($value['flex']) && false !== $value['flex']) {
+            $tags['flex'] = true;
+            if (true !== $value['flex']) {
+                // TODO
+            }
+        }
         if (isset($value['width']) && false !== $value['width']) {
             $tags['width'] = true;
             if (true !== $value['width']) {
