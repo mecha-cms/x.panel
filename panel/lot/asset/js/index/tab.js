@@ -236,6 +236,10 @@
     };
     const targets = 'a[target^="tab:"]:not(.not\\:active)';
 
+    function fireFocus(node) {
+        node && isFunction(node.focus) && node.focus();
+    }
+
     function onChange() {
         let sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
@@ -302,9 +306,13 @@
             key = e.key,
             keyIsAlt = e.altKey,
             keyIsCtrl = e.ctrlKey,
+            any,
+            current,
+            next,
+            parent,
+            prev,
             stop;
         if (!keyIsAlt && !keyIsCtrl) {
-            let any, current, next, parent, prev;
             if ('ArrowDown' === key) {
                 if (hasClass(t, 'can:toggle') && !hasClass(t, 'is:current')) {
                     current = t;
@@ -318,8 +326,7 @@
                     current = next && getChildFirst(next);
                 }
                 if (current) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             } else if ('ArrowLeft' === key || 'PageUp' === key) {
@@ -330,8 +337,7 @@
                     }
                 }
                 if (current = prev && getChildFirst(prev)) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             } else if ('ArrowRight' === key || 'PageDown' === key) {
@@ -342,8 +348,7 @@
                     }
                 }
                 if (current = next && getChildFirst(next)) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             } else if ('ArrowUp' === key) {
@@ -359,35 +364,29 @@
                     current = prev && getChildFirst(prev);
                 }
                 if (current) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             } else if (' ' === key || 'Enter' === key) {
                 if (hasClass(t, 'can:toggle')) {
-                    fireEvent('click', t);
-                    isFunction(t.focus) && t.focus();
+                    fireEvent('click', t), fireFocus(t);
                 }
                 stop = true;
             } else if ('Escape' === key) {
-                if (parent = t.closest('.lot\\:tabs[tabindex]')) {
-                    isFunction(parent.focus) && parent.focus();
-                }
+                fireFocus(t.closest('.lot\\:tabs[tabindex]'));
                 stop = true;
             } else if ('End' === key) {
                 if (parent = t.closest('.lot\\:tabs[tabindex]')) {
                     any = [].slice.call(getElements(targets, parent));
                     if (current = any.pop()) {
-                        fireEvent('click', current);
-                        isFunction(current.focus) && current.focus();
+                        fireEvent('click', current), fireFocus(current);
                     }
                 }
                 stop = true;
             } else if ('Home' === key) {
                 if (parent = t.closest('.lot\\:tabs[tabindex]')) {
                     if (current = getElement(targets, parent)) {
-                        fireEvent('click', current);
-                        isFunction(current.focus) && current.focus();
+                        fireEvent('click', current), fireFocus(current);
                     }
                 }
                 stop = true;
@@ -405,23 +404,22 @@
             keyIsAlt = e.altKey,
             keyIsCtrl = e.ctrlKey,
             keyIsShift = e.shiftKey,
+            any,
+            current,
             stop;
         if (t !== e.target) {
             return;
         }
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            let any, current;
             if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
                 if (current = getElement(targets, t)) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
                 any = [].slice.call(getElements(targets, t));
                 if (current = any.pop()) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             }

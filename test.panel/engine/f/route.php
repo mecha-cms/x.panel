@@ -27,6 +27,7 @@ require __DIR__ . \DS . 'route' . \DS . 'alert.php';
 require __DIR__ . \DS . 'route' . \DS . 'bar.php';
 require __DIR__ . \DS . 'route' . \DS . 'content.php';
 require __DIR__ . \DS . 'route' . \DS . 'description.php';
+require __DIR__ . \DS . 'route' . \DS . 'desk.php';
 require __DIR__ . \DS . 'route' . \DS . 'fields.php';
 require __DIR__ . \DS . 'route' . \DS . 'files.php';
 require __DIR__ . \DS . 'route' . \DS . 'flex.php';

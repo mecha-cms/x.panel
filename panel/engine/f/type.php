@@ -127,6 +127,12 @@ function desk($value, $key) {
             return $out;
         }
         if (isset($value['lot'])) {
+            foreach ($value['lot'] as &$v) {
+                if (!isset($v[2]['tabindex'])) {
+                    $v[2]['tabindex'] = 0;
+                }
+            }
+            unset($v);
             $out = \x\panel\type\lot($value, $key);
             $out[0] = $value[0] ?? 'main';
             $out['tabindex'] = $out['tabindex'] ?? 0;

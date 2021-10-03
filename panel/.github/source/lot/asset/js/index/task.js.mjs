@@ -27,16 +27,22 @@ import {
 
 const targets = 'a[href]:not(.not\\:active),button:not(:disabled):not(.not\\:active),input:not(:disabled):not(.not\\:active),select:not(:disabled):not(.not\\:active)';
 
+function fireFocus(node) {
+    node && isFunction(node.focus) && node.focus();
+}
+
+function fireSelect(node) {
+    node && isFunction(node.select) && node.select();
+}
+
 function onChange() {
-    let tasks = getElements('.lot\\:tasks[tabindex]');
-    tasks && toCount(tasks) && tasks.forEach(task => {
-        let taskButtons = getElements(targets, task);
-        taskButtons && toCount(taskButtons) && taskButtons.forEach(taskButton => {
-            offEvent('keydown', taskButton, onKeyDownTask);
-            onEvent('keydown', taskButton, onKeyDownTask);
+    let sources = getElements('.lot\\:tasks[tabindex]');
+    sources && toCount(sources) && sources.forEach(source => {
+        let tasks = getElements(targets, source);
+        tasks && toCount(tasks) && tasks.forEach(task => {
+            onEvent('keydown', task, onKeyDownTask);
         });
-        offEvent('keydown', task, onKeyDownTasks);
-        onEvent('keydown', task, onKeyDownTasks);
+        onEvent('keydown', source, onKeyDownTasks);
     });
 } onChange();
 
@@ -60,37 +66,29 @@ function onKeyDownTask(e) {
             prev = getPrev(prev);
         }
         if ('ArrowLeft' === key) {
-            stop = !('selectionStart' in t && 0 !== t.selectionStart);
-            if (prev && stop) {
-                isFunction(prev.focus) && prev.focus();
-                isFunction(prev.select) && prev.select();
+            if (stop = !('selectionStart' in t && 0 !== t.selectionStart)) {
+                fireFocus(prev), fireSelect(prev);
             }
         } else if ('ArrowRight' === key) {
-            stop = !('selectionEnd' in t && t.selectionEnd < toCount(t.value || ""));
-            if (next && stop) {
-                isFunction(next.focus) && next.focus();
-                isFunction(next.select) && next.select();
+            if (stop = !('selectionEnd' in t && t.selectionEnd < toCount(t.value || ""))) {
+                fireFocus(next), fireSelect(next);
             }
         } else if ('End' === key) {
             stop = !('selectionEnd' in t && toCount(t.value || ""));
             if (stop && (parent = t.closest('.lot\\:tasks[tabindex]'))) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
-                    isFunction(current.focus) && current.focus();
-                    isFunction(current.select) && current.select();
+                    fireFocus(current), fireSelect(current);
                 }
             }
         } else if ('Escape' === key) {
-            if (parent = t.closest('.lot\\:tasks[tabindex]')) {
-                isFunction(parent.focus) && parent.focus();
-            }
+            fireFocus(t.closest('.lot\\:tasks[tabindex]'));
             stop = true;
         } else if ('Home' === key) {
             stop = !('selectionStart' in t && toCount(t.value || ""));
             if (stop && (parent = t.closest('.lot\\:tasks[tabindex]'))) {
                 if (current = getElement(targets, parent)) {
-                    isFunction(current.focus) && current.focus();
-                    isFunction(current.select) && current.select();
+                    fireFocus(current), fireSelect(current);
                 }
             }
         }
@@ -106,23 +104,21 @@ function onKeyDownTasks(e) {
         key = e.key,
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
-        keyIsShift = e.shiftKey, stop;
+        keyIsShift = e.shiftKey,
+        any, current, stop;
     if (t !== e.target) {
         return;
     }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-        let any, current, next, parent, prev;
         if ('ArrowLeft' === key || 'End' === key) {
             any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
-                isFunction(current.focus) && current.focus();
-                isFunction(current.select) && current.select();
+                fireFocus(current), fireSelect(current);
             }
             stop = true;
         } else if ('ArrowRight' === key || 'Home' === key) {
             if (current = getElement(targets, t)) {
-                isFunction(current.focus) && current.focus();
-                isFunction(current.select) && current.select();
+                fireFocus(current), fireSelect(current);
             }
             stop = true;
         }

@@ -132,7 +132,6 @@ $desk = [
     'lot' => [
         'form' => [
             // type: form/post
-            '0' => false, // Remove `<form>` wrapper by setting the node name to `false`
             'lot' => [
                 0 => [
                     // type: section

@@ -23,29 +23,9 @@
     };
     var D = document;
     var W = window;
-    var B = D.body;
     var R = D.documentElement;
-    var getElement = function getElement(query, scope) {
-        return (scope || D).querySelector(query);
-    };
     var getFormElement = function getFormElement(nameOrIndex) {
         return D.forms[nameOrIndex] || null;
-    };
-    var getParent = function getParent(node) {
-        return node.parentNode || null;
-    };
-    var hasClass = function hasClass(node, value) {
-        return node.classList.contains(value);
-    };
-    var event = function event(name, options, cache) {
-        if (cache && isSet(events[name])) {
-            return events[name];
-        }
-        return events[name] = new Event(name, options);
-    };
-    var events = {};
-    var fireEvent = function fireEvent(name, node, options, cache) {
-        node.dispatchEvent(event(name, options, cache));
     };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
@@ -188,55 +168,6 @@
     onEvent('DOMContentLoaded', D, () => fire('set'));
     const mainSearchForm = getFormElement('get');
     const mainSearchFormInput = mainSearchForm && mainSearchForm.q;
-    onEvent('keydown', W, function(e) {
-        // Since removing events is not possible here, checking if another event has been added is the only way
-        // to prevent the declaration below from executing if previous events have blocked it.
-        if (e.defaultPrevented) {
-            return;
-        }
-        let t = this,
-            key = e.key,
-            keyIsAlt = e.altKey,
-            keyIsCtrl = e.ctrlKey,
-            keyIsShift = e.shiftKey,
-            self = e.target,
-            target,
-            stop;
-        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            // Cycle between `lot:bar`, `lot:desk`, `<html>`, and `<window>`
-            if ('F6' === key) {
-                stop = true;
-                if (self === B || self === D || self === R || self === W) {
-                    target = getElement('.lot\\:bar');
-                } else if (hasClass(self, 'lot:bar')) {
-                    target = getElement('.lot\\:desk');
-                } else if (hasClass(self, 'lot:desk')) {
-                    target = R;
-                } else {
-                    stop = false; // Use default!
-                }
-                target && isFunction(target.focus) && target.focus();
-            } else if ('F10' === key) {
-                if (target = getElement('.lot\\:bar a[href]:not(.not\\:active)') || getElement('.lot\\:bar')) {
-                    if (hasClass(getParent(target), 'has:menu')) {
-                        fireEvent('click', target);
-                    }
-                    isFunction(target.focus) && target.focus();
-                }
-                stop = true;
-            }
-        } else if (B !== self && D !== self && R !== self && t !== self);
-        else if (keyIsCtrl) {
-            if ('?' === key && !keyIsAlt) {
-                console.info('TODO: Go to the about page.');
-                stop = true;
-            } else if ('f' === key && !keyIsAlt) {
-                mainSearchFormInput && mainSearchFormInput.focus();
-                stop = true;
-            }
-        }
-        stop && offEventDefault(e);
-    });
     mainSearchFormInput && onEvent('keydown', mainSearchFormInput, function(e) {
         if (e.defaultPrevented) {
             return;

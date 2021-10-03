@@ -33,6 +33,10 @@ import {
 
 const targets = 'a[target^="stack:"]:not(.not\\:active)';
 
+function fireFocus(node) {
+    node && isFunction(node.focus) && node.focus();
+}
+
 function onChange() {
     let sources = getElements('.lot\\:stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
@@ -84,9 +88,9 @@ function onKeyDownStack(e) {
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
-        keyIsCtrl = e.ctrlKey, stop;
+        keyIsCtrl = e.ctrlKey,
+        any, current, next, parent, prev, stop;
     if (!keyIsAlt && !keyIsCtrl) {
-        let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
             if ('ArrowRight' === key) {
                 // TODO
@@ -101,8 +105,7 @@ function onKeyDownStack(e) {
                 if ('ArrowRight' !== key || !hasClass(getParent(current), 'can:toggle')) {
                     fireEvent('click', getChildFirst(current));
                 }
-                current = getChildFirst(current);
-                isFunction(current.focus) && current.focus();
+                fireFocus(getChildFirst(current));
             }
             stop = true;
         } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
@@ -119,35 +122,29 @@ function onKeyDownStack(e) {
                 if ('ArrowLeft' !== key || !hasClass(getParent(current), 'can:toggle')) {
                     fireEvent('click', getChildFirst(current));
                 }
-                current = getChildFirst(current);
-                isFunction(current.focus) && current.focus();
+                fireFocus(getChildFirst(current));
             }
             stop = true;
         } else if (' ' === key || 'Enter' === key) {
             if (hasClass(getParent(getParent(t)), 'can:toggle')) {
-                fireEvent('click', t);
-                isFunction(t.focus) && t.focus();
+                fireEvent('click', t), fireFocus(t);
             }
             stop = true;
         } else if ('Escape' === key) {
-            if (parent = t.closest('.lot\\:stacks[tabindex]')) {
-                isFunction(parent.focus) && parent.focus();
-            }
+            fireFocus(t.closest('.lot\\:stacks[tabindex]'));
             stop = true;
         } else if ('End' === key) {
             if (parent = t.closest('.lot\\:stacks[tabindex]')) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
             }
             stop = true;
         } else if ('Home' === key) {
             if (parent = t.closest('.lot\\:stacks[tabindex]')) {
                 if (current = getElement(targets, parent)) {
-                    fireEvent('click', current);
-                    isFunction(current.focus) && current.focus();
+                    fireEvent('click', current), fireFocus(current);
                 }
             }
             stop = true;
@@ -164,23 +161,21 @@ function onKeyDownStacks(e) {
         key = e.key,
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
-        keyIsShift = e.shiftKey, stop;
+        keyIsShift = e.shiftKey,
+        any, current, stop;
     if (t !== e.target) {
         return;
     }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-        let any, current, next, parent, prev;
         if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
             if (current = getElement(targets, t)) {
-                fireEvent('click', current);
-                isFunction(current.focus) && current.focus();
+                fireEvent('click', current), fireFocus(current);
             }
             stop = true;
         } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
             any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
-                fireEvent('click', current);
-                isFunction(current.focus) && current.focus();
+                fireEvent('click', current), fireFocus(current);
             }
             stop = true;
         }

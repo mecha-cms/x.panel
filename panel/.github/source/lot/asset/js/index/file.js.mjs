@@ -22,16 +22,18 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = '.lot\\:file[tabindex]:not(.not\\:active),.lot\\:folder[tabindex]:not(.not\\:active)';
+const targets = ':scope>.lot\\:file[tabindex]:not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.not\\:active)';
+
+function fireFocus(node) {
+    node && isFunction(node.focus) && node.focus();
+}
 
 function onChange() {
     let sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let files = getElements(targets, source);
         files.forEach(file => {
-            if (source === getParent(file)) {
-                onEvent('keydown', file, onKeyDownFile);
-            }
+            onEvent('keydown', file, onKeyDownFile);
         });
         onEvent('keydown', source, onKeyDownFiles);
     });
@@ -56,30 +58,20 @@ function onKeyDownFile(e) {
         prev = getPrev(prev);
     }
     if ('ArrowDown' === key) {
-        if (next && isFunction(next.focus)) {
-            next.focus();
-        }
+        fireFocus(next);
         stop = true;
     } else if ('ArrowUp' === key) {
-        if (prev && isFunction(prev.focus)) {
-            prev.focus();
-        }
+        fireFocus(prev);
         stop = true;
     } else if ('End' === key) {
         any = [].slice.call(getElements(targets, getParent(t)));
-        if (current = any.pop()) {
-            isFunction(current.focus) && current.focus();
-        }
+        fireFocus(any.pop());
         stop = true;
     } else if ('Escape' === key) {
-        if (current = getParent(t)) {
-            isFunction(current.focus) && current.focus();
-        }
+        fireFocus(getParent(t));
         stop = true;
     } else if ('Home' === key) {
-        if (current = getElement(targets, getParent(t))) {
-            isFunction(current.focus) && current.focus();
-        }
+        fireFocus(getElement(targets, getParent(t)));
         stop = true;
     }
     stop && (offEventDefault(e), offEventPropagation(e));
@@ -98,17 +90,13 @@ function onKeyDownFiles(e) {
         return;
     }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-        let any, current, next, parent, prev;
+        let any, current;
         if ('ArrowDown' === key || 'Home' === key) {
-            if (current = getElement(targets, t)) {
-                isFunction(current.focus) && current.focus();
-            }
+            fireFocus(getElement(targets, t));
             stop = true;
         } else if ('ArrowUp' === key || 'End' === key) {
             any = [].slice.call(getElements(targets, t));
-            if (current = any.pop()) {
-                isFunction(current.focus) && current.focus();
-            }
+            fireFocus(any.pop());
             stop = true;
         }
     }

@@ -29,9 +29,6 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
-    var offEvent = function offEvent(name, node, then) {
-        node.removeEventListener(name, then);
-    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -46,16 +43,18 @@
     };
     const targets = 'a[href]:not(.not\\:active)';
 
+    function fireFocus(node) {
+        node && isFunction(node.focus) && node.focus();
+    }
+
     function onChange() {
-        let links = getElements('.lot\\:links[tabindex]');
-        links && toCount(links) && links.forEach(link => {
-            let linkLinks = getElements(targets, link);
-            linkLinks && toCount(linkLinks) && linkLinks.forEach(linkLink => {
-                offEvent('keydown', linkLink, onKeyDownLink);
-                onEvent('keydown', linkLink, onKeyDownLink);
+        let sources = getElements('.lot\\:links[tabindex]');
+        sources && toCount(sources) && sources.forEach(source => {
+            let links = getElements(targets, source);
+            links && toCount(links) && links.forEach(link => {
+                onEvent('keydown', link, onKeyDownLink);
             });
-            offEvent('keydown', link, onKeyDownLinks);
-            onEvent('keydown', link, onKeyDownLinks);
+            onEvent('keydown', source, onKeyDownLinks);
         });
     }
     onChange();
@@ -70,7 +69,6 @@
             keyIsCtrl = e.ctrlKey,
             keyIsShift = e.shiftKey,
             any,
-            current,
             parent,
             next,
             prev,
@@ -87,32 +85,23 @@
                 }
             }
             if ('ArrowLeft' === key) {
-                if (current = prev && getChildFirst(prev)) {
-                    isFunction(current.focus) && current.focus();
-                }
+                fireFocus(prev && getChildFirst(prev));
                 stop = true;
             } else if ('ArrowRight' === key) {
-                if (current = next && getChildFirst(next)) {
-                    isFunction(current.focus) && current.focus();
-                }
+                fireFocus(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
-                if (parent = t.closest('.lot\\:links')) {
+                if (parent = t.closest('.lot\\:links[tabindex]')) {
                     any = [].slice.call(getElements(targets, parent));
-                    if (current = any.pop()) {
-                        isFunction(current.focus) && current.focus();
-                    }
+                    fireFocus(any.pop());
                 }
                 stop = true;
             } else if ('Escape' === key) {
-                if (parent = t.closest('.lot\\:links')) {
-                    isFunction(parent.focus) && parent.focus();
-                }
+                fireFocus(t.closest('.lot\\:links[tabindex]'));
+                stop = true;
             } else if ('Home' === key) {
-                if (parent = t.closest('.lot\\:links')) {
-                    if (current = getElement(targets, parent)) {
-                        isFunction(current.focus) && current.focus();
-                    }
+                if (parent = t.closest('.lot\\:links[tabindex]')) {
+                    fireFocus(getElement(targets, parent));
                 }
                 stop = true;
             }
@@ -129,22 +118,18 @@
             keyIsAlt = e.altKey,
             keyIsCtrl = e.ctrlKey,
             keyIsShift = e.shiftKey,
+            any,
             stop;
         if (t !== e.target) {
             return;
         }
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            let any, current;
             if ('ArrowRight' === key || 'Home' === key) {
-                if (current = getElement(targets, t)) {
-                    isFunction(current.focus) && current.focus();
-                }
+                fireFocus(getElement(targets, t));
                 stop = true;
             } else if ('ArrowLeft' === key || 'End' === key) {
                 any = [].slice.call(getElements(targets, t));
-                if (current = any.pop()) {
-                    isFunction(current.focus) && current.focus();
-                }
+                fireFocus(any.pop());
                 stop = true;
             }
         }

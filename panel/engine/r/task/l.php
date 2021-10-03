@@ -16,15 +16,11 @@ function blob($_) {
 
 function data($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
-        'parent' => false,
-        'q' => false,
-        'stack' => false,
-        'tab' => ['data'],
-        'token' => false,
-        'trash' => false,
-        'type' => false
-    ]) . $url->hash;
+    $hash = $_['form']['lot']['hash'] ?? "";
+    $e = \To::query(\array_replace([
+        'stack' => $_['form']['lot']['stack'] ?? [],
+        'tab' => $_['form']['lot']['tab'] ?? ['data']
+    ], $_['form']['lot']['query'] ?? [])) . ("" !== $hash ? '#' . $hash : "");
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
         $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
@@ -34,15 +30,11 @@ function data($_) {
 
 function file($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
-        'parent' => false,
-        'q' => false,
-        'stack' => false,
-        'tab'=> false,
-        'token' => false,
-        'trash' => false,
-        'type' => false
-    ]) . $url->hash;
+    $hash = $_['form']['lot']['hash'] ?? "";
+    $e = \To::query(\array_replace([
+        'stack' => $_['form']['lot']['stack'] ?? [],
+        'tab' => $_['form']['lot']['tab'] ?? []
+    ], $_['form']['lot']['query'] ?? [])) . ("" !== $hash ? '#' . $hash : "");
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
@@ -67,15 +59,11 @@ function file($_) {
 
 function folder($_) {
     extract($GLOBALS, \EXTR_SKIP);
-    $e = $url->query('&', [
-        'parent' => false,
-        'q' => false,
-        'stack' => false,
-        'tab'=> false,
-        'token' => false,
-        'trash' => false,
-        'type' => false
-    ]) . $url->hash;
+    $hash = $_['form']['lot']['hash'] ?? "";
+    $e = \To::query(\array_replace([
+        'stack' => $_['form']['lot']['stack'] ?? [],
+        'tab' => $_['form']['lot']['tab'] ?? []
+    ], $_['form']['lot']['query'] ?? [])) . ("" !== $hash ? '#' . $hash : "");
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
