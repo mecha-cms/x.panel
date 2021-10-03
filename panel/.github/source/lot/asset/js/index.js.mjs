@@ -5,6 +5,7 @@ import {
     W,
     getElement,
     getFormElement,
+    getParent,
     hasClass
 } from '@taufik-nurrohman/document';
 
@@ -89,7 +90,7 @@ onEvent('keydown', W, function(e) {
             target && isFunction(target.focus) && target.focus();
         } else if ('F10' === key) {
             if (target = (getElement('.lot\\:bar a[href]:not(.not\\:active)') || getElement('.lot\\:bar'))) {
-                if (hasClass(target, 'has:menu')) {
+                if (hasClass(getParent(target), 'has:menu')) {
                     fireEvent('click', target);
                 }
                 isFunction(target.focus) && target.focus();

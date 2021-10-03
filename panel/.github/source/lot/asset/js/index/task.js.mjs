@@ -28,7 +28,7 @@ import {
 const targets = 'a[href]:not(.not\\:active),button:not(:disabled):not(.not\\:active),input:not(:disabled):not(.not\\:active),select:not(:disabled):not(.not\\:active)';
 
 function onChange() {
-    let tasks = getElements('.lot\\:tasks');
+    let tasks = getElements('.lot\\:tasks[tabindex]');
     tasks && toCount(tasks) && tasks.forEach(task => {
         let taskButtons = getElements(targets, task);
         taskButtons && toCount(taskButtons) && taskButtons.forEach(taskButton => {
@@ -73,7 +73,7 @@ function onKeyDownTask(e) {
             }
         } else if ('End' === key) {
             stop = !('selectionEnd' in t && toCount(t.value || ""));
-            if (stop && (parent = t.closest('.lot\\:tasks'))) {
+            if (stop && (parent = t.closest('.lot\\:tasks[tabindex]'))) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     isFunction(current.focus) && current.focus();
@@ -81,13 +81,13 @@ function onKeyDownTask(e) {
                 }
             }
         } else if ('Escape' === key) {
-            if (parent = t.closest('.lot\\:tasks')) {
+            if (parent = t.closest('.lot\\:tasks[tabindex]')) {
                 isFunction(parent.focus) && parent.focus();
             }
             stop = true;
         } else if ('Home' === key) {
             stop = !('selectionStart' in t && toCount(t.value || ""));
-            if (stop && (parent = t.closest('.lot\\:tasks'))) {
+            if (stop && (parent = t.closest('.lot\\:tasks[tabindex]'))) {
                 if (current = getElement(targets, parent)) {
                     isFunction(current.focus) && current.focus();
                     isFunction(current.select) && current.select();

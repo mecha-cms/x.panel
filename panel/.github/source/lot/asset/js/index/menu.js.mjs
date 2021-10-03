@@ -44,10 +44,10 @@ function doHideMenus(but) {
 function onChange() {
     offEvent('click', D, onClickDocument);
     let menuParents = getElements('.has\\:menu'),
-        menuLinks = getElements('.lot\\:menu ' + targets);
+        menuLinks = getElements('.lot\\:menu[tabindex] ' + targets);
     if (menuParents && toCount(menuParents)) {
         menuParents.forEach(menuParent => {
-            let menu = getElement('.lot\\:menu', menuParent),
+            let menu = getElement('.lot\\:menu[tabindex]', menuParent),
                 a = getPrev(menu);
             if (menu && a) {
                 onEvent('click', a, onClickMenuShow);
@@ -62,7 +62,7 @@ function onChange() {
             onEvent('keydown', menuLink, onKeyDownMenu);
         });
     }
-    let menus = getElements('.lot\\:menu');
+    let menus = getElements('.lot\\:menu[tabindex]');
     menus && toCount(menus) && menus.forEach(menu => {
         offEvent('keydown', menu, onKeyDownMenus);
         onEvent('keydown', menu, onKeyDownMenus);
@@ -114,7 +114,7 @@ function onKeyDownMenu(e) {
         stop = true;
     } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
         // Hide menu then focus to the parent menu link
-        if (parent = t.closest('.lot\\:menu.is\\:enter')) {
+        if (parent = t.closest('.lot\\:menu[tabindex].is\\:enter')) {
             letClass(getParent(t), 'is:active');
             letClass(parent, 'is:enter');
             letClass(t, 'is:active');
@@ -145,7 +145,7 @@ function onKeyDownMenu(e) {
         if (current && isFunction(current.focus)) {
             current.focus();
         } else {
-            if (current = t.closest('.is\\:enter')) {
+            if (current = t.closest('.lot\\:menu[tabindex].is\\:enter')) {
                 // Hide menu then focus to the parent menu link
                 if (current = getPrev(current)) {
                     fireEvent('click', current);
@@ -155,7 +155,7 @@ function onKeyDownMenu(e) {
         }
         stop = true;
     } else if ('End' === key) {
-        if (parent = t.closest('.lot\\:menu')) {
+        if (parent = t.closest('.lot\\:menu[tabindex]')) {
             any = [].slice.call(getElements(targets, parent));
             if (current = any.pop()) {
                 isFunction(current.focus) && current.focus();
@@ -163,7 +163,7 @@ function onKeyDownMenu(e) {
         }
         stop = true;
     } else if ('Home' === key) {
-        if (parent = t.closest('.lot\\:menu')) {
+        if (parent = t.closest('.lot\\:menu[tabindex]')) {
             if (current = getElement(targets, parent)) {
                 isFunction(current.focus) && current.focus();
             }

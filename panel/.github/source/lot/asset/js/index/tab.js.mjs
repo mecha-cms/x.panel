@@ -35,7 +35,7 @@ import {
 const targets = 'a[target^="tab:"]:not(.not\\:active)';
 
 function onChange() {
-    let sources = getElements('.lot\\:tabs');
+    let sources = getElements('.lot\\:tabs[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let panes = [].slice.call(getChildren(source)),
             tabs = [].slice.call(getElements(targets, panes.shift())),
@@ -163,12 +163,12 @@ function onKeyDownTab(e) {
             }
             stop = true;
         } else if ('Escape' === key) {
-            if (parent = t.closest('.lot\\:tabs')) {
+            if (parent = t.closest('.lot\\:tabs[tabindex]')) {
                 isFunction(parent.focus) && parent.focus();
             }
             stop = true;
         } else if ('End' === key) {
-            if (parent = t.closest('.lot\\:tabs')) {
+            if (parent = t.closest('.lot\\:tabs[tabindex]')) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     fireEvent('click', current);
@@ -177,7 +177,7 @@ function onKeyDownTab(e) {
             }
             stop = true;
         } else if ('Home' === key) {
-            if (parent = t.closest('.lot\\:tabs')) {
+            if (parent = t.closest('.lot\\:tabs[tabindex]')) {
                 if (current = getElement(targets, parent)) {
                     fireEvent('click', current);
                     isFunction(current.focus) && current.focus();

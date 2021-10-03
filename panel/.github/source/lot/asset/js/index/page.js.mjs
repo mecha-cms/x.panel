@@ -22,10 +22,10 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = '.lot\\:page:not(.not\\:active)';
+const targets = '.lot\\:page[tabindex]:not(.not\\:active)';
 
 function onChange() {
-    let sources = getElements('.lot\\:pages');
+    let sources = getElements('.lot\\:pages[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let files = getElements(targets, source);
         files.forEach(file => {
@@ -56,14 +56,10 @@ function onKeyDownPage(e) {
         prev = getPrev(prev);
     }
     if ('ArrowDown' === key) {
-        if (next && isFunction(next.focus)) {
-            next.focus();
-        }
+        next && isFunction(next.focus) && next.focus();
         stop = true;
     } else if ('ArrowUp' === key) {
-        if (prev && isFunction(prev.focus)) {
-            prev.focus();
-        }
+        prev && isFunction(prev.focus) && prev.focus();
         stop = true;
     } else if ('End' === key) {
         any = [].slice.call(getElements(targets, getParent(t)));

@@ -237,7 +237,7 @@
     const targets = 'a[target^="stack:"]:not(.not\\:active)';
 
     function onChange() {
-        let sources = getElements('.lot\\:stacks');
+        let sources = getElements('.lot\\:stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
             let stacks = [].slice.call(getChildren(source)),
                 input = setElement('input'),
@@ -332,12 +332,12 @@
                 }
                 stop = true;
             } else if ('Escape' === key) {
-                if (parent = t.closest('.lot\\:stacks')) {
+                if (parent = t.closest('.lot\\:stacks[tabindex]')) {
                     isFunction(parent.focus) && parent.focus();
                 }
                 stop = true;
             } else if ('End' === key) {
-                if (parent = t.closest('.lot\\:stacks')) {
+                if (parent = t.closest('.lot\\:stacks[tabindex]')) {
                     any = [].slice.call(getElements(targets, parent));
                     if (current = any.pop()) {
                         fireEvent('click', current);
@@ -346,7 +346,7 @@
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = t.closest('.lot\\:stacks')) {
+                if (parent = t.closest('.lot\\:stacks[tabindex]')) {
                     if (current = getElement(targets, parent)) {
                         fireEvent('click', current);
                         isFunction(current.focus) && current.focus();

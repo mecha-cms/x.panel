@@ -38,10 +38,10 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = '.lot\\:file:not(.not\\:active),.lot\\:folder:not(.not\\:active)';
+    const targets = '.lot\\:file[tabindex]:not(.not\\:active),.lot\\:folder[tabindex]:not(.not\\:active)';
 
     function onChange() {
-        let sources = getElements('.lot\\:files,.lot\\:folders');
+        let sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
             let files = getElements(targets, source);
             files.forEach(file => {

@@ -31,6 +31,9 @@
     var getFormElement = function getFormElement(nameOrIndex) {
         return D.forms[nameOrIndex] || null;
     };
+    var getParent = function getParent(node) {
+        return node.parentNode || null;
+    };
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
@@ -215,7 +218,7 @@
                 target && isFunction(target.focus) && target.focus();
             } else if ('F10' === key) {
                 if (target = getElement('.lot\\:bar a[href]:not(.not\\:active)') || getElement('.lot\\:bar')) {
-                    if (hasClass(target, 'has:menu')) {
+                    if (hasClass(getParent(target), 'has:menu')) {
                         fireEvent('click', target);
                     }
                     isFunction(target.focus) && target.focus();

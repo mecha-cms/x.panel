@@ -47,17 +47,15 @@
     const targets = 'a[href]:not(.not\\:active)';
 
     function onChange() {
-        let links = getElements('.lot\\:links');
+        let links = getElements('.lot\\:links[tabindex]');
         links && toCount(links) && links.forEach(link => {
-            if (!hasClass(getParent(link), 'lot:tabs')) {
-                let linkLinks = getElements(targets, link);
-                linkLinks && toCount(linkLinks) && linkLinks.forEach(linkLink => {
-                    offEvent('keydown', linkLink, onKeyDownLink);
-                    onEvent('keydown', linkLink, onKeyDownLink);
-                });
-                offEvent('keydown', link, onKeyDownLinks);
-                onEvent('keydown', link, onKeyDownLinks);
-            }
+            let linkLinks = getElements(targets, link);
+            linkLinks && toCount(linkLinks) && linkLinks.forEach(linkLink => {
+                offEvent('keydown', linkLink, onKeyDownLink);
+                onEvent('keydown', linkLink, onKeyDownLink);
+            });
+            offEvent('keydown', link, onKeyDownLinks);
+            onEvent('keydown', link, onKeyDownLinks);
         });
     }
     onChange();
