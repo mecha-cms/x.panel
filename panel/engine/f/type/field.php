@@ -180,7 +180,7 @@ function email($value, $key) {
 }
 
 function flex($value, $key) {
-    $value['tags']['is:flex'] = true;
+    $value['tags']['flex'] = true;
     return \x\panel\type\fields($value, $key);
 }
 

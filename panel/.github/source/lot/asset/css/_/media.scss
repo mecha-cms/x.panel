@@ -1,5 +1,5 @@
 @media (min-width: 720px) {
-  .is\:flex {
+  .flex {
     display: flex;
     gap: calc(var(--y) + (var(--h) - var(--z))) calc(var(--x) + (var(--h) - var(--z)));
     > * {
@@ -7,7 +7,7 @@
     }
   }
   .lot\:fields {
-    &.is\:flex {
+    &.flex {
       > .lot\:field {
         gap: 0 var(--x);
         margin: 0;

@@ -1,7 +1,5 @@
 .lot\:stacks {
   display: block;
-  margin-left: calc(var(--x) / -2);
-  margin-right: calc(var(--x) / -2);
   &.count\:0 {
     display: none;
   }

@@ -95,27 +95,8 @@
             any,
             next,
             stop;
-        if (t !== e.target) {
-            return;
-        }
-        let isFlex = hasClass(t, 'flex');
-        if (!keyIsAlt && keyIsCtrl) {
-            if ('?' === key) {
-                console.info('TODO: Go to the about page.');
-                stop = true;
-            } else if ('f' === key) {
-                fireFocus(mainSearchFormInput);
-                stop = true;
-            }
-        } else if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            if ('Arrow' + (isFlex ? 'Left' : 'Up') === key || 'End' === key) {
-                any = [].slice.call(getElements(targets, t));
-                fireFocus(any.pop());
-                stop = true;
-            } else if ('Arrow' + (isFlex ? 'Right' : 'Down') === key || 'Home' === key) {
-                fireFocus(getElement(targets, t));
-                stop = true;
-            } else if ('F6' === key) {
+        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            if ('F6' === key) {
                 // Focus back to `<html>` and continue with the default `F6` key function.
                 // Usually to switch between address bar and window contents in a web browser.
                 fireFocus(R);
@@ -127,6 +108,27 @@
                     }
                     fireFocus(next);
                 }
+                stop = true;
+            }
+        } else if (!keyIsAlt && keyIsCtrl) {
+            if ('?' === key) {
+                console.info('TODO: Go to the about page.');
+                stop = true;
+            } else if ('f' === key) {
+                fireFocus(mainSearchFormInput);
+                stop = true;
+            }
+        } else if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            if (t !== e.target) {
+                return;
+            }
+            let isFlex = hasClass(t, 'flex');
+            if ('Arrow' + (isFlex ? 'Left' : 'Up') === key || 'End' === key) {
+                any = [].slice.call(getElements(targets, t));
+                fireFocus(any.pop());
+                stop = true;
+            } else if ('Arrow' + (isFlex ? 'Right' : 'Down') === key || 'Home' === key) {
+                fireFocus(getElement(targets, t));
                 stop = true;
             }
         }

@@ -193,11 +193,27 @@ function onKeyDownTabs(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
         keyIsShift = e.shiftKey,
-        any, current, stop;
-    if (t !== e.target) {
-        return;
-    }
-    if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+        any, current, next, prev, stop;
+    if (keyIsAlt && keyIsCtrl && !keyIsShift) {
+        current = getElement(targets + '.is\\:current', t);
+        current = current && getParent(current);
+        if ('PageDown' === key) {
+            next = current && getNext(current);
+            if (current = next && getChildFirst(next)) {
+                fireEvent('click', current), fireFocus(current);
+            }
+            stop = true;
+        } else if ('PageUp' === key) {
+            prev = current && getPrev(current);
+            if (current = prev && getChildFirst(prev)) {
+                fireEvent('click', current), fireFocus(current);
+            }
+            stop = true;
+        }
+    } else if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+        if (t !== e.target) {
+            return;
+        }
         if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
             if (current = getElement(targets, t)) {
                 fireEvent('click', current), fireFocus(current);

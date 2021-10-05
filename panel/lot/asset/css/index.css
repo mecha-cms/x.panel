@@ -1247,7 +1247,7 @@ label > input[type='radio'] + span {
 }
 
 .lot\:desk.flex {
-  display: flex;
+  gap: 0;
 }
 
 .lot\:desk.width {
@@ -2754,8 +2754,6 @@ label > input[type='radio'] + span {
 
 .lot\:stacks {
   display: block;
-  margin-left: calc(var(--x) / -2);
-  margin-right: calc(var(--x) / -2);
 }
 
 .lot\:stacks.count\:0 {
@@ -2832,6 +2830,18 @@ label > input[type='radio'] + span {
 
 .lot\:tabs .lot\:links li.not\:active {
   color: var(--color-tab--disabled, var(--color-tab));
+}
+
+.lot\:tabs .lot\:links li.not\:active > a:hover {
+  color: inherit;
+}
+
+.lot\:tabs .lot\:links li.not\:active > a:focus {
+  color: inherit;
+}
+
+.lot\:tabs .lot\:links li.not\:active > a:active {
+  color: inherit;
 }
 
 .lot\:tabs .lot\:links .title .icon {
@@ -3280,14 +3290,14 @@ figure,
 }
 
 @media (min-width: 720px) {
-  .is\:flex {
+  .flex {
     display: flex;
     gap: calc(var(--y) + (var(--h) - var(--z))) calc(var(--x) + (var(--h) - var(--z)));
   }
-  .is\:flex > * {
+  .flex > * {
     margin: 0;
   }
-  .lot\:fields.is\:flex > .lot\:field {
+  .lot\:fields.flex > .lot\:field {
     gap: 0 var(--x);
     margin: 0;
     min-width: 0;

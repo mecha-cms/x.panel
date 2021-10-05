@@ -397,7 +397,7 @@ function flex($value, $key) {
             'type' => 'lot',
             'lot' => $lot,
             'tags' => [
-                'is:flex' => true
+                'flex' => true
             ],
             'stack' => 30
         ]

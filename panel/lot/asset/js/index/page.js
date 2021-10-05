@@ -49,6 +49,8 @@
         sources && toCount(sources) && sources.forEach(source => {
             let pages = getElements(targets, source);
             pages.forEach(page => {
+                let tasks = getElement('.lot\\:tasks[tabindex]', page);
+                tasks && onEvent('keydown', tasks, onKeyDownPageTasks);
                 onEvent('keydown', page, onKeyDownPage);
             });
             onEvent('keydown', source, onKeyDownPages);
@@ -93,6 +95,28 @@
         } else if ('Home' === key) {
             fireFocus(getElement(targets, getParent(t)));
             stop = true;
+        }
+        stop && (offEventDefault(e), offEventPropagation(e));
+    }
+
+    function onKeyDownPageTasks(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
+        let t = this,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            stop;
+        if (t !== e.target) {
+            return;
+        }
+        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            if ('Escape' === key) {
+                fireFocus(t.closest('.lot\\:page[tabindex]:not(.not\\:active)'));
+                stop = true;
+            }
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }

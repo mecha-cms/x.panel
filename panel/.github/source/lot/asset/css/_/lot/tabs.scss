@@ -40,6 +40,14 @@
       }
       &.not\:active {
         color: var(--color-tab--disabled, var(--color-tab));
+        > a {
+          $states: hover, focus, active;
+          @each $state in $states {
+            &:#{$state} {
+              color: inherit;
+            }
+          }
+        }
       }
     }
     .title {
