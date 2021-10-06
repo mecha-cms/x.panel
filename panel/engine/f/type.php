@@ -22,7 +22,7 @@ function bar($value, $key) {
     } else if (isset($value['content'])) {
         $out = \x\panel\type\content($value, $key);
     }
-    $out['tabindex'] = 0;
+    $out['tabindex'] = -1;
     $out[0] = 'nav';
     return $out;
 }
@@ -94,10 +94,10 @@ function desk($value, $key) {
     $out = [
         0 => $value[0] ?? 'main',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
-        $styles = [];
+        $styles = []; // TODO
         $tags = $value['tags'] ?? [];
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
@@ -123,7 +123,7 @@ function desk($value, $key) {
         if (isset($value['content'])) {
             $out = \x\panel\type\content($value, $key);
             $out[0] = $value[0] ?? 'main';
-            $out['tabindex'] = $out['tabindex'] ?? 0;
+            $out['tabindex'] = $out['tabindex'] ?? -1;
             return $out;
         }
         if (isset($value['lot'])) {
@@ -135,7 +135,7 @@ function desk($value, $key) {
             unset($v);
             $out = \x\panel\type\lot($value, $key);
             $out[0] = $value[0] ?? 'main';
-            $out['tabindex'] = $out['tabindex'] ?? 0;
+            $out['tabindex'] = $out['tabindex'] ?? -1;
             return $out;
         }
     }
@@ -334,7 +334,7 @@ function files($value, $key) {
     $out = [
         0 => $value[0] ?? 'ul',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $lot = [];
@@ -601,6 +601,9 @@ function links($value, $key) {
         'lot:links' => true,
         'lot:menu' => false
     ], $value['tags'] ?? []);
+    if (!\array_key_exists('tabindex', $value[2] ?? [])) {
+        $value[2]['tabindex'] = -1;
+    }
     $out = \x\panel\type\menu($value, $key, -1);
     return $out;
 }
@@ -796,7 +799,7 @@ function pages($value, $key) {
     $out = [
         0 => $value[0] ?? 'ul',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $lot = [];
@@ -1176,7 +1179,7 @@ function tasks($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([

@@ -24,7 +24,7 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = 'a[href]:not(.not\\:active)';
+const targets = ':scope>ul>li>a[href]:not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();

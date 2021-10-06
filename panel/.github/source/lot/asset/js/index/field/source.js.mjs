@@ -54,7 +54,7 @@ Object.assign(TE.prototype, thatHistory, thatSource);
 TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
 
 ['alert', 'confirm', 'prompt'].forEach(type => {
-    W._.window[type] && (TE.state.source[type] = W._.window[type]);
+    W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
 });
 
 // Be sure to remove the default source type

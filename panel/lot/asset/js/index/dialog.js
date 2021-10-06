@@ -2,13 +2,13 @@
     'use strict';
     var W = window;
 
-    function setWindow(id, {
+    function setDialog(id, {
         title,
         content,
         tasks
     }) { // TODO
     }
-    W._.window = setWindow;
+    W._.dialog = setDialog;
 
     function promisify(type, lot) {
         return new Promise((resolve, reject) => {
@@ -17,6 +17,6 @@
         });
     } // Prepare for <https://developers.google.com/web/updates/2017/03/dialogs-policy>
     ['alert', 'confirm', 'prompt'].forEach(type => {
-        W._.window[type] = (...lot) => promisify(type, lot);
+        W._.dialog[type] = (...lot) => promisify(type, lot);
     });
 })();
