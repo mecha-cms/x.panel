@@ -2083,6 +2083,10 @@ label > input[type=radio] + span {
   top: 0;
   z-index: 9998;
 }
+.lot\:menu .lot\:menu > .description,
+.lot\:menu .lot\:menu > .title {
+  display: none;
+}
 .lot\:menu > ul,
 .lot\:menu > li {
   list-style: none;
@@ -2161,6 +2165,16 @@ label > input[type=radio] + span {
 .lot\:menu > ul > li.not\:active > a {
   background: var(--fill-menu-link--disabled, none);
   color: var(--color-menu-link--disabled, inherit);
+}
+.lot\:menu > .description {
+  line-height: calc(var(--y) / 1.5);
+  margin: calc(var(--y) / -2) 0 0;
+  padding: calc(var(--y) / 2) calc(var(--x) / 2);
+}
+.lot\:menu > .title {
+  font-size: 100%;
+  line-height: inherit;
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 .lot\:menu.is\:enter {
   display: block;
@@ -2639,7 +2653,9 @@ var {
 kbd,
 small,
 sub,
-sup {
+sup,
+.lot\:field .description,
+.lot\:menu > .description {
   font-size: calc(var(--z) * 0.75);
 }
 

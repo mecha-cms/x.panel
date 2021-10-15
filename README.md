@@ -52,6 +52,7 @@ Release Notes
    - [x] Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab panel visibility if `toggle` option is enabled.
    - [x] Press <kbd>Escape</kbd> to focus to the parent block if possible.
    - [x] Press <kbd>F10</kbd> to focus to the main menu when focusing on the desk block.
+ - [x] Added `description` and `title` option for `menu`.
  - [x] Added `gap` option for `tabs`.
  - [x] Added `stack` and `stacks` type.
  - [x] Added `toggle` option for `tab` and `tabs`.

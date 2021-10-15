@@ -646,6 +646,13 @@ function menu($value, $key, int $i = 0) {
         1 => $value[1] ?? "",
         2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
     ];
+    $count_parent = 0;
+    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4)) {
+        ++$count_parent;
+    }
+    if ($description = \x\panel\to\description($value['description'] ?? "")) {
+        ++$count_parent;
+    }
     if (!isset($value[1])) {
         $tags = \array_replace([
             'lot' => true,
@@ -653,7 +660,7 @@ function menu($value, $key, int $i = 0) {
             'p' => true
         ], $value['tags'] ?? []);
         if (isset($value['content'])) {
-            $tags['count:1'] = true;
+            $tags['count:' . ($count_parent + 1)] = true;
             $out[1] .= \x\panel\to\content($value['content']);
         } else if (isset($value['lot'])) {
             $count = 0;
@@ -727,13 +734,14 @@ function menu($value, $key, int $i = 0) {
                 }
                 ++$count;
             }
-            $tags['count:' . $count] = true;
+            $tags['count:' . ($count_parent + ($count ? 1 : 0))] = true;
         }
         \x\panel\_set_class($out[2], $tags);
         if ("" !== $out[1]) {
             $out[1] = '<ul class="count:' . $count . '">' . $out[1] . '</ul>';
         }
     }
+    $out[1] = $title . $description . $out[1];
     return "" !== $out[1] ? new \HTML($out) : null;
 }
 

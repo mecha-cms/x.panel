@@ -4,6 +4,8 @@ function menu($_) {
     $_['title'] = 'Menus';
     $lot = [];
     $lot['menu-0'] = [
+        'title' => 'Menu Title',
+        'description' => 'Menu description.',
         'type' => 'menu',
         'lot' => [
             0 => [
@@ -13,6 +15,7 @@ function menu($_) {
             ],
             1 => [
                 'title' => 'Menu 2',
+                'description' => 'Description for Menu 2.',
                 'url' => '/',
                 'lot' => [
                     0 => [
