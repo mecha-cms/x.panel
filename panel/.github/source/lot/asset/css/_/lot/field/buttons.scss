@@ -8,13 +8,4 @@
       }
     }
   }
-  .lot\:f {
-    display: inline-flex;
-    > .button,
-    > .options > .button {
-      + .button {
-        margin-left: -1px;
-      }
-    }
-  }
 }

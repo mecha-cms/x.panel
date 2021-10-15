@@ -935,7 +935,7 @@
         };
         $.kick = function(ref) {
             var trigger = setElement('a', {
-                'href': ref
+                'href': ref || getRef()
             });
             onEvent('click', trigger, onFetch, {
                 once: true
@@ -1011,7 +1011,7 @@
             'JSON': responseTypeJSON
         }
     };
-    F3H.version = '1.2.3';
+    F3H.version = '1.2.5';
     let {
         fire
     } = W._; // Get default F3H element(s) filter

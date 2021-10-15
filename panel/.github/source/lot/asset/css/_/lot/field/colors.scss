@@ -1,5 +1,5 @@
 .lot\:field.type\:colors {
-  @extend .lot\:field.type\:item;
+  @extend .lot\:field, .type\:item;
   > label {
     + div,
     + br + div {

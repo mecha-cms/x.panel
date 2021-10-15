@@ -22,7 +22,7 @@
       border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
       li {
         background: var(--fill-tab);
-        border-radius: var(--radius-tab);
+        border-radius: var(--corner-tab);
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         border: 1px solid;

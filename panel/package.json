@@ -2,13 +2,13 @@
   "dependencies": {
     "@taufik-nurrohman/document": "^0.1.10",
     "@taufik-nurrohman/event": "^0.3.1",
-    "@taufik-nurrohman/f3h": "^1.2.3",
+    "@taufik-nurrohman/f3h": "^1.2.5",
     "@taufik-nurrohman/from": "^0.0.9",
     "@taufik-nurrohman/hook": "^0.1.2",
     "@taufik-nurrohman/is": "^0.1.2",
     "@taufik-nurrohman/key": "^2.0.4",
-    "@taufik-nurrohman/option-picker": "^1.2.3",
-    "@taufik-nurrohman/tag-picker": "^3.4.3",
+    "@taufik-nurrohman/option-picker": "^1.2.4",
+    "@taufik-nurrohman/tag-picker": "^3.4.5",
     "@taufik-nurrohman/text-editor": "^3.3.9",
     "@taufik-nurrohman/text-editor.history": "^2.1.11",
     "@taufik-nurrohman/text-editor.source": "^2.2.1",
@@ -17,7 +17,7 @@
     "@taufik-nurrohman/to": "^0.0.18"
   },
   "devDependencies": {
-    "@taufik-nurrohman/factory": "^0.1.20"
+    "@taufik-nurrohman/factory": "^1.0.1"
   },
   "private": true,
   "scripts": {

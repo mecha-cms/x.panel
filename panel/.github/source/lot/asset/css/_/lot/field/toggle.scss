@@ -1,5 +1,5 @@
 .lot\:field.type\:toggle {
-  @extend .lot\:field.type\:item;
+  @extend .lot\:field, .type\:item;
   .input {
     &[type='checkbox'] {
       border-radius: calc((var(--z) * 1.25) / 2);

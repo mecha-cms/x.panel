@@ -2,7 +2,7 @@
   background: var(--fill-file, none);
   border: 0 solid;
   border-color: var(--stroke-file, var(--fill-file, none));
-  border-radius: var(--radius-file);
+  border-radius: var(--corner-file);
   box-shadow: var(--shadow-file);
   display: flex;
   list-style: none;
@@ -53,7 +53,7 @@
   @extend .lot\:file;
   background: var(--fill-folder, none);
   border-color: var(--stroke-folder, var(--fill-folder, none));
-  border-radius: var(--radius-folder);
+  border-radius: var(--corner-folder);
   box-shadow: var(--shadow-folder);
   $states: focus, hover, active;
   @each $state in $states {

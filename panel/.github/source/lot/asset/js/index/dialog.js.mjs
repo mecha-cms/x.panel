@@ -13,6 +13,7 @@ import {
 
 function setDialog(id, {title, content, tasks}) {
     // TODO
+    return {};
 }
 
 W._.dialog = setDialog;

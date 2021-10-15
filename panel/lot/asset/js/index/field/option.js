@@ -493,11 +493,11 @@
         if (state === void 0) {
             state = {};
         }
-        if (!source) return;
-        var $ = this; // Already instantiated, skip!
+        if (!source) return; // Already instantiated, skip!
         if (source[name]) {
             return source[name];
-        } // Return new instance if `OP` was called without the `new` operator
+        }
+        var $ = this; // Return new instance if `OP` was called without the `new` operator
         if (!isInstance($, OP)) {
             return new OP(source, state);
         }
@@ -589,8 +589,9 @@
             classNameValuesB = classNameE + 'values',
             selectBox = setElement(source, {
                 'class': classNameE + 'source',
-                'tabindex': '-1'
+                'tabindex': -1
             }),
+            selectBoxInput = 'input' === getName(selectBox),
             selectBoxIsDisabled = function selectBoxIsDisabled() {
                 return selectBox.disabled;
             },
@@ -604,21 +605,28 @@
             selectBoxValue = getValue(),
             selectBoxFake = setElement('div', {
                 'class': classNameB,
-                'tabindex': selectBoxIsDisabled() ? false : '0',
+                'tabindex': selectBoxIsDisabled() ? false : 0,
                 'title': selectBoxTitle
             }),
-            selectBoxFakeLabel = setElement('div', "\u200C", {
-                'class': classNameValuesB
+            selectBoxFakeLabel = setElement('div', selectBoxInput ? "" : "\u200C", {
+                'class': classNameValuesB,
+                'contenteditable': selectBoxInput ? "" : false
             }),
             selectBoxFakeBorderBottomWidth = 0,
             selectBoxFakeBorderTopWidth = 0,
             selectBoxFakeDropDown = setElement('div', {
                 'class': classNameOptionsB,
-                'tabindex': '-1'
+                'tabindex': -1
             }),
             selectBoxFakeOptions = [],
             _keyIsCtrl = false,
-            _keyIsShift = false;
+            _keyIsShift = false,
+            list = selectBox.list;
+        if (selectBoxInput && list) {
+            selectBoxItems = getChildren(list);
+            selectBoxOptions = list.options;
+            selectBoxSize = null;
+        }
         if (selectBoxMultiple && !selectBoxSize) {
             selectBox.size = selectBoxSize = state.size;
         }
@@ -816,7 +824,10 @@
                 selectBoxFakeOption && doClick(selectBoxFakeOption);
                 !selectBoxSize && doExit(); // offEventDefault(e);
             }
-            isEnter() && !_keyIsCtrl && !_keyIsShift && setSelectBoxFakeOptionsPosition(selectBoxFake);
+            if (isEnter() && !_keyIsCtrl && !_keyIsShift) {
+                selectBoxFakeBorderBottomWidth = toNumber(getStyle(selectBoxFake, 'border-bottom-width'));
+                selectBoxFakeBorderTopWidth = toNumber(getStyle(selectBoxFake, 'border-top-width')), setSelectBoxFakeOptionsPosition(selectBoxFake);
+            }
         }
 
         function onSelectBoxFakeKeyUp() {
@@ -1010,7 +1021,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.2.3';
+    OP.version = '1.2.4';
 
     function onChange() {
         // Destroy!

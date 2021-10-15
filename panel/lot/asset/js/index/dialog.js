@@ -6,7 +6,9 @@
         title,
         content,
         tasks
-    }) { // TODO
+    }) {
+        // TODO
+        return {};
     }
     W._.dialog = setDialog;
 

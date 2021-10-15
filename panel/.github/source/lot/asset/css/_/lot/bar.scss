@@ -2,7 +2,7 @@
   background: var(--fill-bar);
   border: 0 solid;
   border-color: var(--stroke-bar);
-  border-radius: var(--radius-bar);
+  border-radius: var(--corner-bar);
   box-shadow: var(--shadow-bar);
   color: var(--color-bar);
   display: flex;
@@ -44,7 +44,7 @@
             }
             .info {
               background: var(--fill-bar-info);
-              border-radius: var(--radius-bar-info);
+              border-radius: var(--corner-bar-info);
               box-shadow: var(--shadow-bar-info);
               color: var(--color-bar-info);
               float: right;

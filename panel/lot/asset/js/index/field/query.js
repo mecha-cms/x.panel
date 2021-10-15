@@ -450,11 +450,11 @@
         if (state === void 0) {
             state = {};
         }
-        if (!source) return;
-        var $ = this; // Already instantiated, skip!
+        if (!source) return; // Already instantiated, skip!
         if (source[name]) {
             return source[name];
-        } // Return new instance if `TP` was called without the `new` operator
+        }
+        var $ = this; // Return new instance if `TP` was called without the `new` operator
         if (!isInstance($, TP)) {
             return new TP(source, state);
         }
@@ -482,13 +482,14 @@
             // Capture the closest `<form>` element
             self = setElement('div', {
                 'class': classNameB,
-                'tabindex': sourceIsDisabled() ? false : '-1'
+                'tabindex': sourceIsDisabled() ? false : -1
             }),
             text = setElement('span', {
                 'class': classNameE + 'tag ' + classNameE + 'text'
             }),
             textCopy = setElement('input', {
                 'class': classNameE + 'copy',
+                'tabindex': -1,
                 'type': 'text'
             }),
             textInput = setElement('span', {
@@ -550,13 +551,13 @@
         function setTagElement(tag, index) {
             var element = setElement('span', {
                 'class': classNameE + 'tag',
-                'tabindex': sourceIsDisabled() ? false : '0',
+                'tabindex': sourceIsDisabled() || sourceIsReadOnly() ? false : 0,
                 'title': tag
             });
             var x = setElement('a', {
                 'class': classNameE + 'tag-x',
                 'href': "",
-                'tabindex': '-1',
+                'tabindex': -1,
                 'target': '_top'
             });
             onEvent('click', x, onClickTagX);
@@ -762,6 +763,7 @@
             var tags = $.tags,
                 type = e.type,
                 classNameTextM = classNameE + 'text--';
+            letClass(self, classNameM + 'focus-tag');
             if ('blur' === type) {
                 letClass(text, classNameTextM + 'focus');
                 letClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
@@ -843,7 +845,7 @@
         }
 
         function onKeyDownSelf(e) {
-            if (sourceIsDisabled()) {
+            if (sourceIsDisabled() || sourceIsReadOnly()) {
                 return;
             }
             $.tags;
@@ -852,9 +854,6 @@
                 keyIsShift = _keyIsShift = e.shiftKey,
                 classNameTagM = classNameE + 'tag--';
             _keyIsTab = KEY_TAB === key;
-            if (sourceIsReadOnly()) {
-                return;
-            }
             var theTag, theTagIndex, theTagNext, theTagPrev, theTagTitle, theTags;
             if (!keyIsCtrl) {
                 // Remove tag(s) with `Backspace` or `Delete` key
@@ -934,7 +933,7 @@
 
         function onKeyDownText(e) {
             offEventPropagation(e);
-            if (sourceIsReadOnly()) {
+            if (sourceIsReadOnly() && 'Tab' !== e.key) {
                 offEventDefault(e);
             }
             var escapes = state.escape,
@@ -1057,7 +1056,7 @@
         setClass(source, classNameE + 'source');
         setNext(source, self);
         setElement(source, {
-            'tabindex': '-1'
+            'tabindex': -1
         });
         onEvent('blur', self, onBlurSelf);
         onEvent('click', self, onClickSelf);
@@ -1177,7 +1176,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.3';
+    TP.version = '3.4.5';
 
     function onChange() {
         // Destroy!
