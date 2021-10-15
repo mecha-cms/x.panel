@@ -5,12 +5,11 @@
   border-radius: var(--corner-page, var(--corner-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
-  $states: focus, hover, active;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-page--#{$state}, var(--fill-page));
-      border-color: var(--stroke-page--#{$state}, var(--stroke-page));
-      box-shadow: var(--shadow-page--#{$state}, var(--shadow-page));
+  @each $v in (focus, hover, active) {
+    &:#{$v} {
+      background: var(--fill-page--#{$v}, var(--fill-page));
+      border-color: var(--stroke-page--#{$v}, var(--stroke-page));
+      box-shadow: var(--shadow-page--#{$v}, var(--shadow-page));
     }
   }
   &.is\:current {

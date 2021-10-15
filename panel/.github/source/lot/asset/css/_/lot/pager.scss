@@ -22,13 +22,12 @@
       padding: 0 calc(var(--x) / 4);
     }
     > a {
-      $states: hover, focus, active;
-      @each $state in $states {
-        &:#{$state} {
-          background: var(--fill-button--#{$state}, var(--fill-button));
-          border-color: var(--stroke-button--#{$state}, var(--stroke-button));
-          box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
-          color: var(--color-button--#{$state}, var(--color-button));
+      @each $v in (hover, focus, active) {
+        &:#{$v} {
+          background: var(--fill-button--#{$v}, var(--fill-button));
+          border-color: var(--stroke-button--#{$v}, var(--stroke-button));
+          box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
+          color: var(--color-button--#{$v}, var(--color-button));
         }
       }
     }

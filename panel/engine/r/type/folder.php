@@ -59,6 +59,7 @@ $desk = [
                     'lot' => [
                         'tabs' => [
                             // type: tabs
+                            'gap' => false,
                             'lot' => [
                                 'folder' => [
                                     'lot' => [

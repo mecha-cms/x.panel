@@ -18,8 +18,6 @@
   .lot\:tabs {
     .lot\:links {
       line-height: calc(var(--y) * 2);
-      border-bottom: 1px solid;
-      border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
       li {
         background: var(--fill-tab);
         border-radius: var(--corner-tab);
@@ -35,11 +33,10 @@
         &.has\:link {
           background: var(--fill-tab-link, var(--fill-tab));
           border-color: var(--stroke-tab-link, var(--stroke-tab));
-          $states: hover, focus, active;
-          @each $state in $states {
-            &:#{$state} {
-              background: var(--fill-tab-link--#{$state}, var(--fill-tab-link, var(--fill-tab)));
-              border-color: var(--stroke-tab-link--#{$state}, var(--stroke-tab-link, var(--stroke-tab)));
+          @each $v in (hover, focus, active) {
+            &:#{$v} {
+              background: var(--fill-tab-link--#{$v}, var(--fill-tab-link, var(--fill-tab)));
+              border-color: var(--stroke-tab-link--#{$v}, var(--stroke-tab-link, var(--stroke-tab)));
             }
           }
         }
@@ -67,12 +64,32 @@
         padding: 0 calc(var(--z) * 1.25);
       }
     }
+    &.has\:gap {
+      .content\:tab,
+      .lot\:tab {
+        background: var(--fill-tab);
+        border: 1px solid;
+        border-color: var(--stroke-tab);
+        padding: var(--y) var(--x);
+        &.is\:current {
+          background: var(--fill-tab--current, var(--fill-tab));
+          border-color: var(--stroke-tab--current, var(--stroke-tab));
+        }
+      }
+    }
+    &:not(.count\:1):not(.has\:gap) {
+      .content\:tab,
+      .lot\:tab {
+        border-top: 1px solid;
+        border-top-color: var(--stroke-tab);
+        padding-top: var(--y);
+      }
+    }
   }
 }
 
 @media (max-width: 720px) {
-  $types: b bottom, l left, r right, t top;
-  @each $type, $v in $types {
+  @each $type, $v in (b bottom, l left, r right, t top) {
     .m#{$type}\:2 {
       @if left == $v or right == $v {
         margin-#{$v}: var(--x);

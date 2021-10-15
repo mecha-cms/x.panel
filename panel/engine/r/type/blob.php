@@ -51,6 +51,7 @@ $desk = [
                     'lot' => [
                         'tabs' => [
                             // type: tabs
+                            'gap' => false,
                             'lot' => [
                                 'blob' => [
                                     'title' => 'Upload',

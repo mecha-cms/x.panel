@@ -29,8 +29,7 @@
 $base: #222222;
 $mix: #ffffff;
 .is\:dark {
-  $types: file, folder, page;
-  @each $type in $types {
+  @each $type in (file, folder, page) {
     --fill-#{$type}--active: #{shade(1%)};
     --fill-#{$type}--current: #{shade(2%)};
     --fill-#{$type}--focus: #{shade(1%)};
@@ -133,6 +132,7 @@ $mix: #ffffff;
   --shadow-input--focus: 0 0 0 3px rgba(255, 255, 255, .025);
   --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke-code-block: #{shade(5%)};
   --stroke-file-icon: #{shade(30%)};
   --stroke-fix--active: #{shade(15%)};
   --stroke-fix--focus: #{shade(15%)};
@@ -148,8 +148,7 @@ $mix: #ffffff;
   --stroke-stack: #{shade(5%)};
   --stroke-tab: #{shade(5%)};
   --stroke: #{shade(5%)};
-  $names: option-picker, tag-picker;
-  @each $name in $names {
+  @each $name in (option-picker, tag-picker) {
     --color-#{$name}: var(--color-input);
     --corner-#{$name}: var(--corner-input);
     --fill-#{$name}: var(--fill-input);
@@ -167,9 +166,8 @@ $mix: #ffffff;
       --fill-#{$name}__options: var(--fill-input);
       --stroke-#{$name}__options--open: var(--stroke-input--focus);
       --stroke-#{$name}__options: var(--stroke-input);
-      $states: hover, focus, active, selected, disabled;
-      @each $state in $states {
-        --color-#{$name}__option--#{$state}: var(--color-input--#{$state});
+      @each $v in (hover, focus, active, selected, disabled) {
+        --color-#{$name}__option--#{$v}: var(--color-input--#{$v});
       }
       .#{$name}::after {
         --stroke-#{$name}--open: var(--color-#{$name});
@@ -196,14 +194,13 @@ $mix: #ffffff;
       --fill-#{$name}__tag--read-only: #{shade(15%)};
       --fill-#{$name}__tag--selected: #{shade(20%)};
       --fill-#{$name}__tag: #{shade(15%)};
-      $states: focus;
-      @each $state in $states {
-        .#{$name}--#{$state} {
+      @each $v in (focus) {
+        .#{$name}--#{$v} {
           // Force #1
-          --color-input: var(--color-input--#{$state});
-          --fill-input: var(--fill-input--#{$state});
-          --shadow-input: var(--shadow-input--#{$state});
-          --stroke-input: var(--stroke-input--#{$state});
+          --color-input: var(--color-input--#{$v});
+          --fill-input: var(--fill-input--#{$v});
+          --shadow-input: var(--shadow-input--#{$v});
+          --stroke-input: var(--stroke-input--#{$v});
           // Force #2
           --color-#{$name}: var(--color-input);
           --fill-#{$name}: var(--fill-input);
@@ -219,23 +216,21 @@ $mix: #ffffff;
         }
       }
     }
-    $states: hover, focus, active;
-    @each $state in $states {
-      --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
-      --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
-      --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
-      --stroke-#{$name}--#{$state}: var(--stroke-input--#{$state}, var(--stroke-input));
+    @each $v in (hover, focus, active) {
+      --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+      --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+      --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+      --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
     }
     .#{$name}__source {
-      $states: read-only, disabled;
-      @each $state in $states {
-        &:#{$state} {
+      @each $v in (read-only, disabled) {
+        &:#{$v} {
           + .#{$name},
           + .#{$name}--focus {
-            --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
-            --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
-            --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
-            --stroke-#{$name}--#{$state}: var(--stroke-input--#{$state}, var(--stroke-input));
+            --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+            --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+            --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+            --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
           }
         }
       }
@@ -284,11 +279,10 @@ $mix: #ffffff;
   }
 }
 
-$base: #ffffff;
-$mix: #222222;
+$base: #dddddd;
+$mix: #000000;
 .is\:light {
-  $types: file, folder, page;
-  @each $type in $types {
+  @each $type in (file, folder, page) {
     --fill-#{$type}--active: #{shade(1%)};
     --fill-#{$type}--current: #{shade(2%)};
     --fill-#{$type}--focus: #{shade(1%)};
@@ -391,6 +385,7 @@ $mix: #222222;
   --shadow-input--focus: 0 0 0 3px rgba(0, 0, 0, .025);
   --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke-code-block: #{shade(5%)};
   --stroke-file-icon: #{shade(30%)};
   --stroke-fix--active: #{shade(15%)};
   --stroke-fix--focus: #{shade(15%)};
@@ -406,8 +401,7 @@ $mix: #222222;
   --stroke-stack: #{shade(5%)};
   --stroke-tab: #{shade(5%)};
   --stroke: #{shade(5%)};
-  $names: option-picker, tag-picker;
-  @each $name in $names {
+  @each $name in (option-picker, tag-picker) {
     --color-#{$name}: var(--color-input);
     --corner-#{$name}: var(--corner-input);
     --fill-#{$name}: var(--fill-input);
@@ -425,9 +419,8 @@ $mix: #222222;
       --fill-#{$name}__options: var(--fill-input);
       --stroke-#{$name}__options--open: var(--stroke-input--focus);
       --stroke-#{$name}__options: var(--stroke-input);
-      $states: hover, focus, active, selected, disabled;
-      @each $state in $states {
-        --color-#{$name}__option--#{$state}: var(--color-input--#{$state});
+      @each $v in (hover, focus, active, selected, disabled) {
+        --color-#{$name}__option--#{$v}: var(--color-input--#{$v});
       }
       .#{$name}::after {
         --stroke-#{$name}--open: var(--color-#{$name});
@@ -454,14 +447,13 @@ $mix: #222222;
       --fill-#{$name}__tag--read-only: #{shade(15%)};
       --fill-#{$name}__tag--selected: #{shade(20%)};
       --fill-#{$name}__tag: #{shade(15%)};
-      $states: focus;
-      @each $state in $states {
-        .#{$name}--#{$state} {
+      @each $v in (focus) {
+        .#{$name}--#{$v} {
           // Force #1
-          --color-input: var(--color-input--#{$state});
-          --fill-input: var(--fill-input--#{$state});
-          --shadow-input: var(--shadow-input--#{$state});
-          --stroke-input: var(--stroke-input--#{$state});
+          --color-input: var(--color-input--#{$v});
+          --fill-input: var(--fill-input--#{$v});
+          --shadow-input: var(--shadow-input--#{$v});
+          --stroke-input: var(--stroke-input--#{$v});
           // Force #2
           --color-#{$name}: var(--color-input);
           --fill-#{$name}: var(--fill-input);
@@ -477,23 +469,21 @@ $mix: #222222;
         }
       }
     }
-    $states: hover, focus, active;
-    @each $state in $states {
-      --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
-      --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
-      --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
-      --stroke-#{$name}--#{$state}: var(--stroke-input--#{$state}, var(--stroke-input));
+    @each $v in (hover, focus, active) {
+      --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+      --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+      --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+      --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
     }
     .#{$name}__source {
-      $states: read-only, disabled;
-      @each $state in $states {
-        &:#{$state} {
+      @each $v in (read-only, disabled) {
+        &:#{$v} {
           + .#{$name},
           + .#{$name}--focus {
-            --color-#{$name}--#{$state}: var(--color-input--#{$state}, var(--color-input));
-            --fill-#{$name}--#{$state}: var(--fill-input--#{$state}, var(--fill-input));
-            --shadow-#{$name}--#{$state}: var(--shadow-input--#{$state}, var(--shadow-input));
-            --stroke-#{$name}--#{$state}: var(--stroke-input--#{$state}, var(--stroke-input));
+            --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+            --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+            --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+            --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
           }
         }
       }

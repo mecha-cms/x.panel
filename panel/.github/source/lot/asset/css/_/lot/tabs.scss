@@ -17,20 +17,18 @@
       a {
         color: inherit;
         display: flex;
-        $states: hover, focus, active;
-        @each $state in $states {
-          &:#{$state} {
-            color: var(--color-tab--#{$state}, var(--color-tab));
+        @each $v in (hover, focus, active) {
+          &:#{$v} {
+            color: var(--color-tab--#{$v}, var(--color-tab));
           }
         }
       }
       &.has\:link {
         color: var(--color-tab-link, var(--color-tab));
         > a {
-          $states: hover, focus, active;
-          @each $state in $states {
-            &:#{$state} {
-              color: var(--color-tab-link--#{$state}, var(--color-tab-link));
+          @each $v in (hover, focus, active) {
+            &:#{$v} {
+              color: var(--color-tab-link--#{$v}, var(--color-tab-link));
             }
           }
         }
@@ -41,9 +39,8 @@
       &.not\:active {
         color: var(--color-tab--disabled, var(--color-tab));
         > a {
-          $states: hover, focus, active;
-          @each $state in $states {
-            &:#{$state} {
+          @each $v in (hover, focus, active) {
+            &:#{$v} {
               color: inherit;
             }
           }
@@ -72,9 +69,6 @@
   &.count\:1 {
     .lot\:links {
       display: none;
-    }
-    .lot\:tab {
-      margin-top: 0;
     }
   }
 }

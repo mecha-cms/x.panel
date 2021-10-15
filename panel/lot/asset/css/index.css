@@ -2024,9 +2024,8 @@ label > input[type=radio] + span {
 .lot\:folders {
   display: block;
   list-style: none;
-  margin-left: calc(var(--x) / -4);
-  margin-right: calc(var(--x) / -4);
-  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .lot\:files h3,
 .lot\:pages h3,
@@ -2301,11 +2300,6 @@ label > input[type=radio] + span {
   color: inherit;
 }
 
-.lot\:pages {
-  margin-left: calc(var(--x) / -2);
-  margin-right: calc(var(--x) / -2);
-}
-
 .lot\:section,
 .content\:section {
   margin: 0 auto;
@@ -2472,7 +2466,6 @@ label > input[type=radio] + span {
 .lot\:tab,
 .content\:tab {
   display: none;
-  margin-top: var(--y);
 }
 .lot\:tab.is\:current,
 .is\:current.content\:tab {
@@ -2554,10 +2547,6 @@ label > input[type=radio] + span {
 }
 .lot\:tabs.count\:1 .lot\:links {
   display: none;
-}
-.lot\:tabs.count\:1 .lot\:tab,
-.lot\:tabs.count\:1 .content\:tab {
-  margin-top: 0;
 }
 
 .lot\:tasks {
@@ -2981,8 +2970,6 @@ figure,
 
   .lot\:tabs .lot\:links {
     line-height: calc(var(--y) * 2);
-    border-bottom: 1px solid;
-    border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
   }
   .lot\:tabs .lot\:links li {
     background: var(--fill-tab);
@@ -3034,6 +3021,24 @@ figure,
   }
   .lot\:tabs .lot\:links a {
     padding: 0 calc(var(--z) * 1.25);
+  }
+  .lot\:tabs.has\:gap .content\:tab,
+  .lot\:tabs.has\:gap .lot\:tab {
+    background: var(--fill-tab);
+    border: 1px solid;
+    border-color: var(--stroke-tab);
+    padding: var(--y) var(--x);
+  }
+  .lot\:tabs.has\:gap .content\:tab.is\:current,
+  .lot\:tabs.has\:gap .lot\:tab.is\:current {
+    background: var(--fill-tab--current, var(--fill-tab));
+    border-color: var(--stroke-tab--current, var(--stroke-tab));
+  }
+  .lot\:tabs:not(.count\:1):not(.has\:gap) .content\:tab,
+  .lot\:tabs:not(.count\:1):not(.has\:gap) .lot\:tab {
+    border-top: 1px solid;
+    border-top-color: var(--stroke-tab);
+    padding-top: var(--y);
   }
 }
 @media (max-width: 720px) {

@@ -38,11 +38,10 @@ a {
   &:any-link {
     background: var(--fill-link, none);
     color: var(--color-link);
-    $states: hover, focus, active;
-    @each $state in $states {
-      &:#{$state} {
-        background: var(--fill-link--#{$state}, var(--fill-link, none));
-        color: var(--color-link--#{$state}, var(--color-link));
+    @each $v in (hover, focus, active) {
+      &:#{$v} {
+        background: var(--fill-link--#{$v}, var(--fill-link, none));
+        color: var(--color-link--#{$v}, var(--color-link));
       }
     }
   }

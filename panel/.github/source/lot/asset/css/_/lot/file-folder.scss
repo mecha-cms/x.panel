@@ -15,12 +15,11 @@
   &:focus-visible {
     z-index: 1;
   }
-  $states: focus, hover, active;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-file--#{$state}, var(--fill-file, none));
-      border-color: var(--stroke-file--#{$state}, var(--stroke-file, var(--fill-file, none)));
-      box-shadow: var(--shadow-file--#{$state}, var(--shadow-file));
+  @each $v in (focus, hover, active) {
+    &:#{$v} {
+      background: var(--fill-file--#{$v}, var(--fill-file, none));
+      border-color: var(--stroke-file--#{$v}, var(--stroke-file, var(--fill-file, none)));
+      box-shadow: var(--shadow-file--#{$v}, var(--shadow-file));
     }
   }
   &.is\:current {
@@ -55,12 +54,11 @@
   border-color: var(--stroke-folder, var(--fill-folder, none));
   border-radius: var(--corner-folder);
   box-shadow: var(--shadow-folder);
-  $states: focus, hover, active;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-folder--#{$state}, var(--fill-folder, none));
-      border-color: var(--stroke-folder--#{$state}, var(--stroke-folder, var(--fill-folder, none)));
-      box-shadow: var(--shadow-folder--#{$state}, var(--shadow-folder));
+  @each $v in (focus, hover, active) {
+    &:#{$v} {
+      background: var(--fill-folder--#{$v}, var(--fill-folder, none));
+      border-color: var(--stroke-folder--#{$v}, var(--stroke-folder, var(--fill-folder, none)));
+      box-shadow: var(--shadow-folder--#{$v}, var(--shadow-folder));
     }
   }
   &.is\:current {

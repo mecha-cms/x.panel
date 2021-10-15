@@ -1,5 +1,3 @@
 .lot\:pages {
   @extend .lot\:files;
-  margin-left: calc(var(--x) / -2);
-  margin-right: calc(var(--x) / -2);
 }

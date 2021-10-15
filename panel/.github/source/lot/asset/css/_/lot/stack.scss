@@ -6,12 +6,11 @@
   box-shadow: var(--shadow-stack);
   margin: 0;
   position: relative;
-  $states: focus, hover, active;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-stack--#{$state}, var(--fill-stack));
-      border-color: var(--stroke-stack--#{$state}, var(--stroke-stack));
-      box-shadow: var(--shadow-stack--#{$state}, var(--shadow-stack));
+  @each $v in (focus, hover, active) {
+    &:#{$v} {
+      background: var(--fill-stack--#{$v}, var(--fill-stack));
+      border-color: var(--stroke-stack--#{$v}, var(--stroke-stack));
+      box-shadow: var(--shadow-stack--#{$v}, var(--shadow-stack));
     }
   }
   > h3 {
@@ -23,10 +22,9 @@
       cursor: pointer;
       display: block;
       position: relative;
-      $states: hover, focus, active;
-      @each $state in $states {
-        &:#{$state} {
-          color: var(--color-stack--#{$state}, var(--color-stack));
+      @each $v in (hover, focus, active) {
+        &:#{$v} {
+          color: var(--color-stack--#{$v}, var(--color-stack));
         }
       }
       .title {
@@ -57,10 +55,9 @@
     > h3 {
       color: var(--color-stack-link, var(--color-stack));
       > a {
-        $states: hover, focus, active;
-        @each $state in $states {
-          &:#{$state} {
-            color: var(--color-stack-link--#{$state}, var(--color-stack-link));
+        @each $v in (hover, focus, active) {
+          &:#{$v} {
+            color: var(--color-stack-link--#{$v}, var(--color-stack-link));
           }
         }
       }

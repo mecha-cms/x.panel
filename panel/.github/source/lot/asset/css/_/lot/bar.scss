@@ -53,11 +53,10 @@
               padding: 0 calc(var(--x) / 4);
             }
           }
-          $states: hover, focus, active;
-          @each $state in $states {
-            &:#{$state} {
-              background: var(--fill-bar-link--#{$state}, var(--fill-bar-link));
-              color: var(--color-bar-link--#{$state}, var(--color-bar-link));
+          @each $v in (hover, focus, active) {
+            &:#{$v} {
+              background: var(--fill-bar-link--#{$v}, var(--fill-bar-link));
+              color: var(--color-bar-link--#{$v}, var(--color-bar-link));
             }
           }
         }

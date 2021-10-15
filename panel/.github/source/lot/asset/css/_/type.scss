@@ -40,16 +40,7 @@
   cursor: not-allowed;
 }
 
-$aligns: (
-  'c': 'center',
-  'e': 'end',
-  'j': 'justify',
-  'l': 'left',
-  'r': 'right',
-  's': 'start'
-);
-
-@each $k, $v in $aligns {
+@each $k, $v in (c center, e end, j justify, l left, r right, s start) {
   .text-#{$v},
   .ta\:#{$k} {
     text-align: #{$v};
@@ -148,11 +139,8 @@ $aligns: (
   float: inline-start;
 }
 
-$sizes: 0, 1, 2;
-
-@each $size in $sizes {
-  $types: b bottom, l left, r right, t top;
-  @each $type, $v in $types {
+@each $size in (0, 1, 2) {
+  @each $type, $v in (b bottom, l left, r right, t top) {
     .m#{$type}\:#{$size} {
       @if 0 == $size {
         margin-#{$v}: 0;

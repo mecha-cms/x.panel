@@ -30,14 +30,13 @@
   box-shadow: var(--shadow-button);
   color: var(--color-button);
   text-align: center;
-  $states: hover, focus, active, disabled;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-button--#{$state}, var(--fill-button));
-      border-color: var(--stroke-button--#{$state}, var(--stroke-button));
-      border-radius: var(--corner-button--#{$state}, var(--corner-button));
-      box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
-      color: var(--color-button--#{$state}, var(--color-button));
+  @each $v in (hover, focus, active, disabled) {
+    &:#{$v} {
+      background: var(--fill-button--#{$v}, var(--fill-button));
+      border-color: var(--stroke-button--#{$v}, var(--stroke-button));
+      border-radius: var(--corner-button--#{$v}, var(--corner-button));
+      box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
+      color: var(--color-button--#{$v}, var(--color-button));
     }
   }
   &.as\:link {
@@ -46,14 +45,13 @@
     border-radius: 0;
     box-shadow: none;
     color: var(--color-link);
-    $states: hover, focus, active;
-    @each $state in $states {
-      &:#{$state} {
+    @each $v in (hover, focus, active) {
+      &:#{$v} {
         background: none;
         border-color: transparent;
         border-radius: 0;
         box-shadow: none;
-        color: var(--color-link--#{$state}, var(--color-link));
+        color: var(--color-link--#{$v}, var(--color-link));
       }
     }
   }
@@ -81,13 +79,12 @@
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
-  $states: read-write, hover, focus, active, invalid, read-only, disabled;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-input--#{$state}, var(--fill-input));
-      border-color: var(--stroke-input--#{$state}, var(--stroke-input));
-      box-shadow: var(--shadow-input--#{$state}, var(--shadow-input));
-      color: var(--color-input--#{$state}, var(--color-input));
+  @each $v in (read-write, hover, focus, active, invalid, read-only, disabled) {
+    &:#{$v} {
+      background: var(--fill-input--#{$v}, var(--fill-input));
+      border-color: var(--stroke-input--#{$v}, var(--stroke-input));
+      box-shadow: var(--shadow-input--#{$v}, var(--shadow-input));
+      color: var(--color-input--#{$v}, var(--color-input));
     }
   }
 }
@@ -147,14 +144,13 @@
   border-radius: var(--corner-output);
   box-shadow: var(--shadow-output);
   color: var(--color-output);
-  $states: hover, focus, active;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-output--#{$state}, var(--fill-output));
-      border-color: var(--stroke-output--#{$state}, var(--stroke-output));
-      border-radius: var(--corner-output--#{$state}, var(--corner-output));
-      box-shadow: var(--shadow-output--#{$state}, var(--shadow-output));
-      color: var(--color-output--#{$state}, var(--color-output));
+  @each $v in (hover, focus, active) {
+    &:#{$v} {
+      background: var(--fill-output--#{$v}, var(--fill-output));
+      border-color: var(--stroke-output--#{$v}, var(--stroke-output));
+      border-radius: var(--corner-output--#{$v}, var(--corner-output));
+      box-shadow: var(--shadow-output--#{$v}, var(--shadow-output));
+      color: var(--color-output--#{$v}, var(--color-output));
     }
   }
 }
@@ -166,13 +162,12 @@
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
-  $states: hover, focus, active, disabled;
-  @each $state in $states {
-    &:#{$state} {
-      background: var(--fill-input--#{$state}, var(--fill-input));
-      border-color: var(--stroke-input--#{$state}, var(--stroke-input));
-      box-shadow: var(--shadow-input--#{$state}, var(--shadow-input));
-      color: var(--color-input--#{$state}, var(--color-input));
+  @each $v in (hover, focus, active, disabled) {
+    &:#{$v} {
+      background: var(--fill-input--#{$v}, var(--fill-input));
+      border-color: var(--stroke-input--#{$v}, var(--stroke-input));
+      box-shadow: var(--shadow-input--#{$v}, var(--shadow-input));
+      color: var(--color-input--#{$v}, var(--color-input));
     }
   }
   &[multiple] {
@@ -188,11 +183,10 @@
     color: var(--color-input);
     margin: 0;
     padding: 0;
-    $states: disabled;
-    @each $state in $states {
-      &:#{$state} {
-        background: var(--fill-input--#{$state}, var(--fill-input));
-        color: var(--color-input--#{$state}, var(--color-input));
+    @each $v in (disabled) {
+      &:#{$v} {
+        background: var(--fill-input--#{$v}, var(--fill-input));
+        color: var(--color-input--#{$v}, var(--color-input));
       }
     }
   }
@@ -254,13 +248,12 @@ label {
       right: 2px;
       top: 2px;
     }
-    $states: hover, focus, active, disabled;
-    @each $state in $states {
-      &:#{$state} {
-        background: var(--fill-button--#{$state}, var(--fill-button));
-        border-color: var(--stroke-button--#{$state}, var(--stroke-button));
-        box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
-        color: var(--color-button--#{$state}, var(--color-button));
+    @each $v in (hover, focus, active, disabled) {
+      &:#{$v} {
+        background: var(--fill-button--#{$v}, var(--fill-button));
+        border-color: var(--stroke-button--#{$v}, var(--stroke-button));
+        box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
+        color: var(--color-button--#{$v}, var(--color-button));
       }
     }
   }
@@ -278,12 +271,11 @@ label {
         visibility: visible;
       }
     }
-    $states: hover, focus, active, disabled;
-    @each $state in $states {
-      &:#{$state} {
+    @each $v in (hover, focus, active, disabled) {
+      &:#{$v} {
         &::before {
-          border-bottom-color: var(--color-button--#{$state});
-          border-right-color: var(--color-button--#{$state});
+          border-bottom-color: var(--color-button--#{$v});
+          border-right-color: var(--color-button--#{$v});
         }
       }
     }
@@ -301,11 +293,10 @@ label {
         visibility: visible;
       }
     }
-    $states: hover, focus, active, disabled;
-    @each $state in $states {
-      &:#{$state} {
+    @each $v in (hover, focus, active, disabled) {
+      &:#{$v} {
         &::before {
-          border-color: var(--fill--#{$state}, var(--fill));
+          border-color: var(--fill--#{$v}, var(--fill));
         }
       }
     }
@@ -348,26 +339,25 @@ label {
       width: calc(var(--x) / 2);
     }
   }
-  $states: hover, focus, active, disabled;
-  @each $state in $states {
-    &:#{$state} {
+  @each $v in (hover, focus, active, disabled) {
+    &:#{$v} {
       &::-webkit-slider-runnable-track {
-        background: var(--stroke-input--#{$state}, var(--stroke-input));
+        background: var(--stroke-input--#{$v}, var(--stroke-input));
       }
       &::-moz-range-track {
-        background: var(--stroke-input--#{$state}, var(--stroke-input));
+        background: var(--stroke-input--#{$v}, var(--stroke-input));
       }
       &::-webkit-slider-thumb {
-        background: var(--fill-button--#{$state}, var(--fill-button));
-        border-color: var(--stroke-button--#{$state}, var(--stroke-button));
-        box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
-        color: var(--color-button--#{$state}, var(--color-button));
+        background: var(--fill-button--#{$v}, var(--fill-button));
+        border-color: var(--stroke-button--#{$v}, var(--stroke-button));
+        box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
+        color: var(--color-button--#{$v}, var(--color-button));
       }
       &::-moz-range-thumb {
-        background: var(--fill-button--#{$state}, var(--fill-button));
-        border-color: var(--stroke-button--#{$state}, var(--stroke-button));
-        box-shadow: var(--shadow-button--#{$state}, var(--shadow-button));
-        color: var(--color-button--#{$state}, var(--color-button));
+        background: var(--fill-button--#{$v}, var(--fill-button));
+        border-color: var(--stroke-button--#{$v}, var(--stroke-button));
+        box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
+        color: var(--color-button--#{$v}, var(--color-button));
       }
     }
   }

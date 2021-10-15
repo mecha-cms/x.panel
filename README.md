@@ -10,6 +10,8 @@ Release Notes
 
 ### main
 
+ - [ ] Added `column` and `columns` type so we can have sidebars.
+ - [ ] Added `row` and `rows` type.
  - [ ] Added version update check feature.
  - [ ] Improved keyboard accessibility by adding some navigation shortcuts (this list will be moved to the about page):
    - [ ] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between desk children when focusing on the desk children and when the `flex` option is enabled.
@@ -50,10 +52,10 @@ Release Notes
    - [x] Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab panel visibility if `toggle` option is enabled.
    - [x] Press <kbd>Escape</kbd> to focus to the parent block if possible.
    - [x] Press <kbd>F10</kbd> to focus to the main menu when focusing on the desk block.
- - [x] Added `flex` option for `desk` so we can have sidebars.
+ - [x] Added `gap` option for `tabs`.
  - [x] Added `stack` and `stacks` type.
  - [x] Added `toggle` option for `tab` and `tabs`.
- - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.window` namespace. In the future, users should be able to set custom window via `_.window()`.
+ - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.dialog` namespace. In the future, users should be able to set custom dialog window via `_.dialog()`.
 
 ### 2.7.2
 

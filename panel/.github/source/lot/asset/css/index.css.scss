@@ -36,8 +36,7 @@
   --font-size: var(--z);
   --width-input: calc(var(--x) * 8);
   --width-menu: calc(var(--x) * 8);
-  $names: option-picker, tag-picker;
-  @each $name in $names {
+  @each $name in (option-picker, tag-picker) {
     --width-#{$name}: var(--width-input);
   }
   // Pallete

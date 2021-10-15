@@ -1167,6 +1167,7 @@ function tabs($value, $key) {
         }
         \x\panel\_set_class($out[2], \array_replace([
             'count:' . $count => true,
+            'has:gap' => !isset($value['gap']) || $value['gap'],
             'lot' => true,
             'lot:tabs' => true,
             'p' => true
