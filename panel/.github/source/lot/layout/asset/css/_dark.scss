@@ -1,0 +1,245 @@
+.is\:dark {
+  @each $type in (file, folder, page) {
+    --fill-#{$type}--active: #{shade(1%)};
+    --fill-#{$type}--current: #{shade(2%)};
+    --fill-#{$type}--focus: #{shade(1%)};
+    --fill-#{$type}--hover: #{shade(1%)};
+    --stroke-#{$type}--active: #{shade(1%)};
+    --stroke-#{$type}--current: #{shade(2%)};
+    --stroke-#{$type}--focus: #{shade(1%)};
+    --stroke-#{$type}--hover: #{shade(1%)};
+    --stroke-#{$type}: #{shade(0%)};
+    // --fill-#{$type}: #{shade(0%)};
+  }
+  --color--disabled: #{shade(20%)};
+  --color-bar-info: #{shade(65%)};
+  --color-bar-link--active: #{shade(50%)};
+  --color-bar-link--current: #{shade(60%)};
+  --color-bar-link--disabled: #{shade(20%)};
+  --color-bar-link--focus: #{shade(50%)};
+  --color-bar-link--hover: #{shade(40%)};
+  --color-bar-link: #{shade(40%)};
+  --color-button--active: #{shade(95%)};
+  --color-button--disabled: #{shade(20%)};
+  --color-button--focus: #{shade(95%)};
+  --color-button--hover: #{shade(95%)};
+  --color-button: #{shade(95%)};
+  --color-info: #{shade(50%)};
+  --color-input--disabled: #{shade(20%)};
+  --color-input--hover: #{shade(70%)};
+  --color-input--invalid: #{mix(red, shade(70%), 50%)};
+  --color-input: #{shade(70%)};
+  --color-link--active: #{shade(50%)};
+  --color-link--disabled: #{shade(20%)};
+  --color-link--focus: #{shade(50%)};
+  --color-link--hover: #{shade(40%)};
+  --color-link: #{shade(40%)};
+  --color-menu-info: #{shade(65%)};
+  --color-menu-link--active: #{shade(50%)};
+  --color-menu-link--current: #{shade(60%)};
+  --color-menu-link--disabled: #{shade(20%)};
+  --color-menu-link--focus: #{shade(50%)};
+  --color-menu-link--hover: #{shade(40%)};
+  --color-menu-link: #{shade(40%)};
+  --color-stack--active: #{shade(70%)};
+  --color-stack--current: #{shade(60%)};
+  --color-stack--disabled: #{shade(20%)};
+  --color-stack--focus: #{shade(70%)};
+  --color-stack--hover: #{shade(60%)};
+  --color-stack-link--active: #{shade(50%)};
+  --color-stack-link--disabled: #{shade(20%)};
+  --color-stack-link--focus: #{shade(50%)};
+  --color-stack-link--hover: #{shade(40%)};
+  --color-stack-link: #{shade(40%)};
+  --color-stack: #{shade(60%)};
+  --color-tab--active: #{shade(70%)};
+  --color-tab--current: #{shade(60%)};
+  --color-tab--disabled: #{shade(20%)};
+  --color-tab--focus: #{shade(70%)};
+  --color-tab--hover: #{shade(60%)};
+  --color-tab-link--active: #{shade(50%)};
+  --color-tab-link--disabled: #{shade(20%)};
+  --color-tab-link--focus: #{shade(50%)};
+  --color-tab-link--hover: #{shade(40%)};
+  --color-tab-link: #{shade(40%)};
+  --color-tab: #{shade(60%)};
+  --color: #{shade(60%)};
+  --fill-alert: #{shade(1%)};
+  --fill-bar-info: #{shade(5%)};
+  --fill-bar-link--active: #{shade(1%)};
+  --fill-bar-link--focus: #{shade(1%)};
+  --fill-bar-link--hover: #{shade(1%)};
+  --fill-button--active: #{darken(shade(30%), 5%)};
+  --fill-button--disabled: #{shade(5%)};
+  --fill-button--focus: #{lighten(shade(30%), 5%)};
+  --fill-button--hover: #{shade(30%)};
+  --fill-button: #{shade(30%)};
+  --fill-code-block: #{shade(5%)};
+  --fill-file-icon: #{shade(0%)};
+  --fill-fix: #{shade(4%)};
+  --fill-folder-icon: #{shade(40%)};
+  --fill-input--active: #{shade(5%)};
+  --fill-input--disabled: #{shade(1%)};
+  --fill-input--focus: #{shade(5%)};
+  --fill-input--hover: #{shade(5%)};
+  --fill-input: #{shade(5%)};
+  --fill-mark: #{shade(10%)};
+  --fill-menu-info: #{shade(5%)};
+  --fill-menu-link--active: #{shade(1%)};
+  --fill-menu-link--current: #{shade(2%)};
+  --fill-menu-link--focus: #{shade(1%)};
+  --fill-menu-link--hover: #{shade(1%)};
+  --fill-stack--current: none;
+  --fill-stack--hover: #{shade(1%)};
+  --fill-stack: #{shade(1%)};
+  --fill-tab--current: none;
+  --fill-tab--hover: #{shade(1%)};
+  --fill-tab: #{shade(1%)};
+  --fill: #{shade(0%)};
+  --shadow-button--focus: 0 0 0 3px rgba(255, 255, 255, .025);
+  --shadow-input--focus: 0 0 0 3px rgba(255, 255, 255, .025);
+  --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
+  --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke-code-block: #{shade(5%)};
+  --stroke-file-icon: #{shade(30%)};
+  --stroke-fix: #{shade(10%)};
+  --stroke-input--active: #{shade(15%)};
+  --stroke-input--disabled: #{shade(6%)};
+  --stroke-input--focus: #{shade(15%)};
+  --stroke-input--hover: #{shade(10%)};
+  --stroke-input--invalid: #{mix(red, shade(15%), 50%)};
+  --stroke-input: #{shade(10%)};
+  --stroke-output: transparent;
+  --stroke-stack: #{shade(5%)};
+  --stroke-tab: #{shade(5%)};
+  --stroke: #{shade(5%)};
+  @each $name in (option-picker, tag-picker) {
+    --color-#{$name}: var(--color-input);
+    --corner-#{$name}: var(--corner-input);
+    --fill-#{$name}: var(--fill-input);
+    --shadow-#{$name}: var(--shadow-input);
+    --stroke-#{$name}: var(--stroke-input);
+    @if option-picker == $name {
+      --color-#{$name}__option: var(--color-input);
+      --color-#{$name}__options--open: var(--color-input);
+      --color-#{$name}__options: var(--color-input);
+      --fill-#{$name}__option--active: rgba(255, 255, 255, .025);
+      --fill-#{$name}__option--focus: rgba(255, 255, 255, .025);
+      --fill-#{$name}__option--hover: rgba(255, 255, 255, .025);
+      --fill-#{$name}__option--selected: rgba(255, 255, 255, .05);
+      --fill-#{$name}__option: none;
+      --fill-#{$name}__options: var(--fill-input);
+      --stroke-#{$name}__options--open: var(--stroke-input--focus);
+      --stroke-#{$name}__options: var(--stroke-input);
+      @each $v in (hover, focus, active, selected, disabled) {
+        --color-#{$name}__option--#{$v}: var(--color-input--#{$v});
+      }
+      .#{$name}::after {
+        --stroke-#{$name}--open: var(--color-#{$name});
+        --stroke-#{$name}: var(--color-#{$name});
+      }
+      .#{$name}__option--selected {
+        --fill-#{$name}__option--active: rgba(255, 255, 255, .075);
+        --fill-#{$name}__option--focus: rgba(255, 255, 255, .075);
+        --fill-#{$name}__option--hover: rgba(255, 255, 255, .075);
+      }
+    }
+    @if tag-picker == $name {
+      --color-#{$name}__tag--active: #{shade(65%)};
+      --color-#{$name}__tag--disabled: #{shade(40%)};
+      --color-#{$name}__tag--focus: #{shade(65%)};
+      --color-#{$name}__tag--hover: #{shade(60%)};
+      --color-#{$name}__tag--read-only: #{shade(60%)};
+      --color-#{$name}__tag--selected: #{shade(60%)};
+      --color-#{$name}__tag: #{shade(60%)};
+      --fill-#{$name}__tag--active: #{shade(15%)};
+      --fill-#{$name}__tag--disabled: #{shade(10%)};
+      --fill-#{$name}__tag--focus: #{shade(20%)};
+      --fill-#{$name}__tag--hover: #{shade(15%)};
+      --fill-#{$name}__tag--read-only: #{shade(15%)};
+      --fill-#{$name}__tag--selected: #{shade(20%)};
+      --fill-#{$name}__tag: #{shade(15%)};
+      @each $v in (focus) {
+        .#{$name}--#{$v} {
+          // Force #1
+          --color-input: var(--color-input--#{$v});
+          --fill-input: var(--fill-input--#{$v});
+          --shadow-input: var(--shadow-input--#{$v});
+          --stroke-input: var(--stroke-input--#{$v});
+          // Force #2
+          --color-#{$name}: var(--color-input);
+          --fill-#{$name}: var(--fill-input);
+          --shadow-#{$name}: var(--shadow-input);
+          --stroke-#{$name}: var(--stroke-input);
+          // Force #3
+          @each $v in (hover, focus, active) {
+            --color-#{$name}--#{$v}: var(--color-input);
+            --fill-#{$name}--#{$v}: var(--fill-input);
+            --shadow-#{$name}--#{$v}: var(--shadow-input);
+            --stroke-#{$name}--#{$v}: var(--stroke-input);
+          }
+        }
+      }
+    }
+    @each $v in (hover, focus, active) {
+      --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+      --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+      --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+      --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
+    }
+    .#{$name}__source {
+      @each $v in (read-only, disabled) {
+        &:#{$v} {
+          + .#{$name},
+          + .#{$name}--focus {
+            --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+            --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+            --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+            --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
+          }
+        }
+      }
+    }
+  }
+  blockquote,
+  caption,
+  figcaption,
+  .description {
+    color: #{shade(50%)};
+  }
+  .lot\:menu {
+    a {
+      &:focus,
+      &:hover,
+      &:active {
+        --fill-menu-link--current: #{shade(3%)};
+      }
+    }
+  }
+  .is\:folder {
+    &::after {
+      --fill-folder-icon: #{darken(shade(40%), 15%)};
+    }
+  }
+  .lot\:file {
+    &:hover,
+    &:active {
+      --fill-file--current: #{shade(3%)};
+      --stroke-file--current: #{shade(3%)};
+    }
+  }
+  .lot\:folder {
+    &:hover,
+    &:active {
+      --fill-folder--current: #{shade(3%)};
+      --stroke-folder--current: #{shade(3%)};
+    }
+  }
+  .lot\:page {
+    &:hover,
+    &:active {
+      --fill-page--current: #{shade(3%)};
+      --stroke-page--current: #{shade(3%)};
+    }
+  }
+}
