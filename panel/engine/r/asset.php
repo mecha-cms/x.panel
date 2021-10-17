@@ -40,7 +40,7 @@ Hook::set('get', function() {
         'skip' => empty($state->x->panel->fetch),
         'stack' => 30
     ];
-    foreach (['bar', 'desk', 'dialog', 'file', 'link', 'menu', 'page', 'stack', 'tab', 'task'] as $v) {
+    foreach (['bar', 'column', 'dialog', 'file', 'link', 'menu', 'page', 'row', 'stack', 'tab', 'task'] as $v) {
         $out[$f . 'js' . DS . 'index' . DS . $v . $z . 'js'] = ['stack' => 30];
     }
     foreach (['option', 'query', 'source'] as $v) {

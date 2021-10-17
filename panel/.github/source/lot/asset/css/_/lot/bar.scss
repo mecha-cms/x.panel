@@ -60,13 +60,7 @@
             }
           }
         }
-        &.is\:current {
-          > a {
-            background: var(--fill-bar-link--current, none);
-            color: var(--color-bar-link--current, inherit);
-          }
-        }
-        &.is\:separator {
+        &.as\:separator {
           background: var(--stroke);
           height: var(--y);
           margin: calc(var(--y) / 2) 0;
@@ -75,6 +69,12 @@
           &:first-child,
           &:last-child {
             display: none;
+          }
+        }
+        &.is\:current {
+          > a {
+            background: var(--fill-bar-link--current, none);
+            color: var(--color-bar-link--current, inherit);
           }
         }
         &.not\:active {

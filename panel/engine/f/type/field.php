@@ -63,8 +63,8 @@ function buttons($value, $key) {
     }
     \x\panel\_set_class($out['field'][2], \array_replace([
         'count:' . $count => true,
-        'options' => true,
-        'textarea' => false
+        'textarea' => false,
+        'with:options' => true
     ], $value['tags'] ?? []));
     unset($out['field'][2]['name']);
     return \x\panel\type\field($out, $key);
@@ -113,8 +113,8 @@ function colors($value, $key) {
     }
     \x\panel\_set_class($out['field'][2], \array_replace([
         'count:' . $count => true,
-        'options' => true,
-        'textarea' => false
+        'textarea' => false,
+        'with:options' => true
     ], $value['tags'] ?? []));
     unset($out['field'][2]['name']);
     return \x\panel\type\field($out, $key);
@@ -255,8 +255,8 @@ function item($value, $key) {
         \x\panel\_set_class($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'options' => true,
-            'textarea' => false
+            'textarea' => false,
+            'with:options' => true
         ]);
         unset($value['lot'], $out['field'][2]['name']);
         return \x\panel\type\field($out, $key);
@@ -336,8 +336,8 @@ function items($value, $key) {
         \x\panel\_set_class($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'options' => true,
-            'textarea' => false
+            'textarea' => false,
+            'with:options' => true
         ]);
         unset($value['lot'], $out['field'][2]['name']);
         return \x\panel\type\field($out, $key);
@@ -554,8 +554,8 @@ function toggle($value, $key) {
     $out['field'][1] = $label;
     \x\panel\_set_class($out['field'][2], [
         'count:1' => true,
-        'options' => true,
-        'textarea' => false
+        'textarea' => false,
+        'with:options' => true
     ]);
     unset($out['hint'], $out['field'][2]['name'], $out['field'][2]['placeholder']);
     return \x\panel\type\field($out, $key);

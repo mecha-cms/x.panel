@@ -80,13 +80,7 @@
           }
         }
       }
-      &.is\:current {
-        > a {
-          background: var(--fill-menu-link--current, none);
-          color: var(--color-menu-link--current, inherit);
-        }
-      }
-      &.is\:separator {
+      &.as\:separator {
         background: var(--stroke);
         height: 1px;
         overflow: hidden;
@@ -94,6 +88,12 @@
         &:first-child,
         &:last-child {
           display: none;
+        }
+      }
+      &.is\:current {
+        > a {
+          background: var(--fill-menu-link--current, none);
+          color: var(--color-menu-link--current, inherit);
         }
       }
       &.not\:active {

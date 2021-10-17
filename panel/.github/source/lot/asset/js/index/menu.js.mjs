@@ -100,11 +100,11 @@ function onKeyDownMenu(e) {
         any, current, parent, next, prev, stop;
     if (parent = getParent(t)) {
         next = getNext(parent);
-        while (next && (hasClass(next, 'is:separator') || hasClass(next, 'not:active'))) {
+        while (next && (hasClass(next, 'as:separator') || hasClass(next, 'not:active'))) {
             next = getNext(next);
         }
         prev = getPrev(parent);
-        while (prev && (hasClass(prev, 'is:separator') || hasClass(prev, 'not:active'))) {
+        while (prev && (hasClass(prev, 'as:separator') || hasClass(prev, 'not:active'))) {
             prev = getPrev(prev);
         }
     }

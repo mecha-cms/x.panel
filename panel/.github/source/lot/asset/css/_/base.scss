@@ -28,8 +28,8 @@
 }
 
 :focus-visible {
-  box-shadow: var(--shadow-a11y, none);
-  outline: 2px solid var(--stroke-a11y, transparent);
+  box-shadow: var(--shadow--focus-visible, none);
+  outline: 2px solid var(--stroke--focus-visible, transparent);
   z-index: 1;
 }
 

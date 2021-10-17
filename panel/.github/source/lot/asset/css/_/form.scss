@@ -15,8 +15,7 @@
   &:focus {
     z-index: 1;
   }
-  &:focus-visible {
-    box-shadow: none;
+  &:read-write:focus-visible {
     outline: 0;
   }
 }

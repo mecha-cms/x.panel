@@ -11,8 +11,7 @@
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   position: relative;
   z-index: 0;
-  &:focus,
-  &:focus-visible {
+  &:focus {
     z-index: 1;
   }
   @each $v in (focus, hover, active) {
