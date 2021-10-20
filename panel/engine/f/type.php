@@ -1121,6 +1121,7 @@ function stacks($value, $key) {
             'tabindex' => 0
         ], $value[2] ?? [])
     ];
+    $has_current = false;
     if (!isset($value[1])) {
         $lot = [];
         if (isset($value['lot'])) {
@@ -1135,6 +1136,7 @@ function stacks($value, $key) {
                     $v[2]['data-value'] = $kk;
                     if (null !== $current && $kk === $current && !\array_key_exists('current', $v)) {
                         $v['current'] = true;
+                        $has_current = true;
                     }
                     if (empty($v['url']) && empty($v['link'])) {
                         $v['url'] = $GLOBALS['url']->query('&', [
@@ -1169,6 +1171,7 @@ function stacks($value, $key) {
         unset($lot);
         \x\panel\_set_class($out[2], \array_replace([
             'count:' . $count => true,
+            'has:current' => $has_current,
             'lot' => true,
             'lot:stacks' => true,
             'p' => true
@@ -1196,6 +1199,8 @@ function tabs($value, $key) {
             'tabindex' => 0
         ], $value[2] ?? [])
     ];
+    $has_current = false;
+    $has_gap = !isset($value['gap']) || $value['gap'];
     if (!isset($value[1])) {
         if (isset($value['content'])) {
             $out[1] .= \x\panel\to\content($value['content']);
@@ -1238,9 +1243,11 @@ function tabs($value, $key) {
             if (null !== $current && isset($links[$current]) && \is_array($links[$current])) {
                 $links[$current]['tags']['is:current'] = true;
                 $sections[$current]['tags']['is:current'] = true;
+                $has_current = true;
             } else if (null !== $first && isset($links[$first]) && \is_array($links[$first])) {
                 $links[$first]['tags']['is:current'] = true;
                 $sections[$first]['tags']['is:current'] = true;
+                $has_current = true;
             }
             foreach ($sections as $k => $v) {
                 // If `type` is not defined, the default value will be `tab`
@@ -1266,12 +1273,10 @@ function tabs($value, $key) {
                 $out[1] .= \implode("", $sections);
             }
         }
-        if ($count < 2) {
-            unset($out[2]['tabindex']);
-        }
         \x\panel\_set_class($out[2], \array_replace([
             'count:' . $count => true,
-            'has:gap' => !isset($value['gap']) || $value['gap'],
+            'has:current' => $has_current,
+            'has:gap' => $has_gap,
             'lot' => true,
             'lot:tabs' => true,
             'p' => true

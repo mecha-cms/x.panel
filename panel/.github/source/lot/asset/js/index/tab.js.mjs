@@ -50,7 +50,8 @@ function onChange() {
         function onClick(e) {
             let t = this,
                 pane = panes[t._tabIndex],
-                parent = getParent(t);
+                parent = getParent(t),
+                self = parent.closest('.lot\\:tabs'), current;
             if (!hasClass(parent, 'has:link')) {
                 tabs.forEach(tab => {
                     if (tab !== t) {
@@ -63,19 +64,17 @@ function onChange() {
                 if (hasClass(parent, 'can:toggle')) {
                     toggleClass(t, 'is:current');
                     toggleClass(parent, 'is:current');
-                    if (pane) {
-                        toggleClass(pane, 'is:current');
-                        input.value = value = hasClass(t, 'is:current') ? getDatum(t, 'value') : null;
-                    }
                 } else {
                     setClass(t, 'is:current');
                     setClass(parent, 'is:current');
-                    if (pane) {
-                        setClass(pane, 'is:current');
-                        input.value = value = getDatum(t, 'value');
-                    }
                 }
-                pane && W._.fire.apply(pane, ['change.tab', [value, name]]);
+                current = hasClass(t, 'is:current');
+                if (pane) {
+                    input.value = value = current ? getDatum(t, 'value') : null;
+                    toggleClass(pane, 'is:current', current);
+                    toggleClass(self, 'has:current', current);
+                    W._.fire.apply(pane, ['change.tab', [value, name]]);
+                }
             }
             offEventDefault(e);
         }

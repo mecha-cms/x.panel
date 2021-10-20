@@ -253,7 +253,9 @@
 
             function onClick(e) {
                 let t = this,
-                    parent = getParent(getParent(t));
+                    parent = getParent(getParent(t)),
+                    self = parent.closest('.lot\\:stacks'),
+                    current;
                 if (!hasClass(parent, 'has:link')) {
                     stacks.forEach(stack => {
                         if (stack !== parent) {
@@ -264,12 +266,13 @@
                     if (hasClass(parent, 'can:toggle')) {
                         toggleClass(t, 'is:current');
                         toggleClass(parent, 'is:current');
-                        input.value = value = hasClass(t, 'is:current') ? getDatum(parent, 'value') : null;
                     } else {
                         setClass(t, 'is:current');
                         setClass(parent, 'is:current');
-                        input.value = value = getDatum(parent, 'value');
                     }
+                    current = hasClass(t, 'is:current');
+                    input.value = value = current ? getDatum(parent, 'value') : null;
+                    toggleClass(self, 'has:current', current);
                     W._.fire.apply(parent, ['change.stack', [value, name]]);
                 }
                 offEventDefault(e);
