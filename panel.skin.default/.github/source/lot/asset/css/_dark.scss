@@ -129,10 +129,10 @@
       --fill-#{$name}__option--selected: rgba(255, 255, 255, .05);
       --fill-#{$name}__option: none;
       --fill-#{$name}__options: var(--fill-input);
-      --stroke-#{$name}__options--open: var(--stroke-input--focus);
+      --stroke-#{$name}__options--open: var(--stroke-input--focus, var(--stroke-input));
       --stroke-#{$name}__options: var(--stroke-input);
       @each $v in (hover, focus, active, selected, disabled) {
-        --color-#{$name}__option--#{$v}: var(--color-input--#{$v});
+        --color-#{$name}__option--#{$v}: var(--color-input--#{$v}, var(--color-input));
       }
       .#{$name}::after {
         --stroke-#{$name}--open: var(--color-#{$name});

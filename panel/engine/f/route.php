@@ -1,31 +1,6 @@
 <?php
 
 namespace x\panel\route {
-    function __about($_) {
-        // Disable page offset feature and request type other than `GET`
-        if (isset($_['i']) || 'g' !== $_['task']) {
-            $_['kick'] = $_['/'] . '/::g::/.about';
-            return $_;
-        }
-        $system = <<<HTML
-<p><b>TODO</b>: Add system information table here.</p>
-HTML;
-        $keyboard = <<<HTML
-<p><b>TODO</b>: Add keyboard shortcuts table here.</p>
-HTML;
-        $_['title'] = 'About';
-        $_['lot']['desk']['lot']['form']['lot'][1]['title'] = $_['title'];
-        $_['lot']['desk']['lot']['form']['lot'][1]['description'] = 'System information and features.';
-        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['system'] = [
-            'content' => $system,
-            'stack' => 10
-        ];
-        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['keyboard'] = [
-            'content' => $keyboard,
-            'stack' => 20
-        ];
-        return $_;
-    }
     function __license($_) {
         // Disable page offset feature and request type other than `GET`
         if (isset($_['i']) || 'g' !== $_['task']) {

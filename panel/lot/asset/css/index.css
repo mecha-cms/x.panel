@@ -1851,9 +1851,8 @@ label > input[type=radio] + span {
 }
 .lot\:field.type\:query .tag-picker__tag {
   border: 1px solid transparent;
-  height: calc(var(--y) * 1.5 - 4px - 4px - 2px);
   margin: calc(var(--y) / 12) calc(var(--x) / 12);
-  padding: 0 calc(var(--z) / 2 - 1px);
+  padding: 0 calc(var(--z) / 2);
 }
 .lot\:field.type\:query .tag-picker__source {
   position: fixed;

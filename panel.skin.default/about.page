@@ -1,0 +1,10 @@
+---
+title: Default Skin
+description: The default control panel skin.
+author: Taufik Nurrohman
+type: Markdown
+version: 1.0.0
+
+use:
+  '.lot\x\panel': 1
+...

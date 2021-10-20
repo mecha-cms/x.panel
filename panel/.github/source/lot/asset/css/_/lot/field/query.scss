@@ -12,9 +12,8 @@
     }
     &__tag {
       border: 1px solid transparent;
-      height: calc((var(--y) * 1.5) - 4px - 4px - 2px); // ($y * 1.5) - (margin * 2) - (padding:parent * 2) - (border-width:parent * 2)
       margin: calc(var(--y) / 12) calc(var(--x) / 12);
-      padding: 0 calc((var(--z) / 2) - 1px);
+      padding: 0 calc(var(--z) / 2);
     }
     &__source {
       position: fixed;

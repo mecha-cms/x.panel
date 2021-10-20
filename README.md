@@ -13,7 +13,7 @@ Release Notes
  - [ ] Added `column` and `columns` type so we can have sidebars.
  - [ ] Added `row` and `rows` type.
  - [ ] Added version update check feature.
- - [ ] Improved keyboard accessibility by adding some navigation shortcuts (this list will be moved to the about page):
+ - [ ] Improved keyboard accessibility by adding some navigation shortcuts:
    - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>Home</kbd> or <kbd>PageDown</kbd> to focus to the first stack when focusing on the stacks block.
    - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>Home</kbd> or <kbd>PageDown</kbd> to focus to the first tab when focusing on the tabs block.
    - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to switch between menu links when focusing on the menu link.
@@ -47,6 +47,7 @@ Release Notes
  - [x] Added `stack` and `stacks` type.
  - [x] Added `toggle` option for `tab` and `tabs`.
  - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.dialog` namespace. In the future, users should be able to set custom dialog window via `_.dialog()`.
+ - [x] Moved the default skin to a separate extension.
 
 ### 2.7.2
 
