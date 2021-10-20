@@ -6,11 +6,6 @@
   line-height: var(--y);
   width: var(--width-menu);
   .lot\:menu {
-    // Hide title and description in menu children
-    > .description,
-    > .title {
-      display: none;
-    }
     box-shadow: var(--shadow-menu);
     display: none;
     left: 100%;

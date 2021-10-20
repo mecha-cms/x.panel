@@ -1,11 +1,11 @@
 .is\:light {
   @each $type in (file, folder, page) {
     --fill-#{$type}--active: #{shade(98%)};
-    --fill-#{$type}--current: #{shade(96%)};
+    --fill-#{$type}--current: #{shade(97%)};
     --fill-#{$type}--focus: #{shade(98%)};
     --fill-#{$type}--hover: #{shade(98%)};
     --stroke-#{$type}--active: #{shade(98%)};
-    --stroke-#{$type}--current: #{shade(96%)};
+    --stroke-#{$type}--current: #{shade(97%)};
     --stroke-#{$type}--focus: #{shade(98%)};
     --stroke-#{$type}--hover: #{shade(98%)};
     --stroke-#{$type}: #{shade(100%)};
@@ -86,7 +86,7 @@
   --fill-mark: #{shade(90%)};
   --fill-menu-info: #{shade(95%)};
   --fill-menu-link--active: #{shade(98%)};
-  --fill-menu-link--current: #{shade(96%)};
+  --fill-menu-link--current: #{shade(97%)};
   --fill-menu-link--focus: #{shade(98%)};
   --fill-menu-link--hover: #{shade(98%)};
   --fill-stack--current: none;
@@ -212,34 +212,22 @@
       &:focus,
       &:hover,
       &:active {
-        --fill-menu-link--current: #{shade(94%)};
+        --fill-menu-link--current: #{shade(96%)};
       }
     }
   }
   .is\:folder {
     &::after {
-      --fill-folder-icon: #{darken(shade(60%), 15%)};
+      --fill-folder-icon: #{darken(shade(70%), 15%)};
     }
   }
-  .lot\:file {
-    &:hover,
-    &:active {
-      --fill-file--current: #{shade(94%)};
-      --stroke-file--current: #{shade(94%)};
-    }
-  }
-  .lot\:folder {
-    &:hover,
-    &:active {
-      --fill-folder--current: #{shade(94%)};
-      --stroke-folder--current: #{shade(94%)};
-    }
-  }
-  .lot\:page {
-    &:hover,
-    &:active {
-      --fill-page--current: #{shade(94%)};
-      --stroke-page--current: #{shade(94%)};
+  @each $v in (file, folder, page) {
+    .lot\:#{$v} {
+      &:hover,
+      &:active {
+        --fill-#{$v}--current: #{shade(96%)};
+        --stroke-#{$v}--current: #{shade(96%)};
+      }
     }
   }
 }

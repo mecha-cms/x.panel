@@ -1,0 +1,23 @@
+---
+title: Panel
+description: GUI extension for Mecha.
+author: Taufik Nurrohman
+type: Markdown
+version: 2.7.2
+price: [20, USD]
+
+use:
+  '.\lot\x\asset': 1
+  '.\lot\x\layout': 1
+  '.\lot\x\user': 1
+...
+
+To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system.
+
+![Panel](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
+
+### Usage
+
+ - Make sure you have uploaded the required extensions.
+ - Upload the `panel` folder to `.\lot\x` folder.
+ - Now visit your site! You should be redirected to create a new user.

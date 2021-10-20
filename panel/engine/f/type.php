@@ -1273,6 +1273,9 @@ function tabs($value, $key) {
                 $out[1] .= \implode("", $sections);
             }
         }
+        if ($count < 2) {
+            unset($out[2]['tabindex']);
+        }
         \x\panel\_set_class($out[2], \array_replace([
             'count:' . $count => true,
             'has:current' => $has_current,

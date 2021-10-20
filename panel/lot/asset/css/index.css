@@ -178,6 +178,7 @@ body {
   border: 0 solid var(--stroke);
   color: var(--color);
   font: normal normal var(--font-size)/var(--font-height) var(--font-face);
+  scroll-behavior: smooth;
   text-align: left;
 }
 
@@ -204,17 +205,17 @@ section {
 
 sub,
 sup {
-  display: inline-block;
+  line-height: 0;
   position: relative;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 sub {
-  top: 0.5em;
+  top: 0.25em;
 }
 
 sup {
-  top: -0.5em;
+  top: -0.25em;
 }
 
 mark {
@@ -325,7 +326,7 @@ blockquote {
   margin-left: var(--x);
 }
 
-dd {
+dl {
   margin-left: var(--x);
 }
 
@@ -362,37 +363,20 @@ hr {
 fieldset {
   padding: var(--y) var(--x);
 }
+fieldset legend {
+  background: var(--fill-legend, var(--fill));
+  float: left;
+  margin: calc(var(--y) * -1.5) 0 0;
+  padding: 0 calc(var(--x) / 3);
+}
+fieldset legend + * {
+  clear: left;
+  margin-top: 0;
+}
 
 hr {
   border-style: dashed;
   border-width: 1px 0 0;
-}
-
-legend {
-  margin: 0 0 calc(var(--x) / -3);
-  padding: 0 calc(var(--x) / 3);
-}
-legend + .p,
-legend + blockquote,
-legend + details,
-legend + dl,
-legend + fieldset,
-legend + figcaption,
-legend + figure,
-legend + form,
-legend + h1,
-legend + h2,
-legend + h3,
-legend + h4,
-legend + h5,
-legend + h6,
-legend + hr,
-legend + ol,
-legend + p,
-legend + pre,
-legend + table,
-legend + ul {
-  margin-top: 0;
 }
 
 .button,
@@ -582,7 +566,6 @@ legend + ul {
 }
 
 .input[type=checkbox],
-.input[type=color],
 .input[type=image],
 .input[type=radio] {
   background: none;
@@ -595,7 +578,14 @@ legend + ul {
 }
 .input[type=color] {
   height: calc(var(--y) * 1.5);
+  padding: 0;
   width: calc(var(--x) * 1.5);
+}
+.input[type=color]::-moz-color-swatch {
+  border: 0;
+}
+.input[type=color]::-webkit-color-swatch {
+  border: 0;
 }
 .input[type=color]::-webkit-color-swatch-wrapper {
   padding: 0;
@@ -649,6 +639,8 @@ legend + ul {
 }
 
 .select {
+  -moz-padding-start: calc(0.5rem - 3px);
+  appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
   border-radius: var(--corner-input);
@@ -2097,10 +2089,6 @@ label > input[type=radio] + span {
   top: 0;
   z-index: 9998;
 }
-.lot\:menu .lot\:menu > .description,
-.lot\:menu .lot\:menu > .title {
-  display: none;
-}
 .lot\:menu > ul,
 .lot\:menu > li {
   list-style: none;
@@ -2699,6 +2687,7 @@ var {
 * + blockquote,
 * + details,
 * + dl,
+* + dt,
 * + fieldset,
 * + figcaption,
 * + figure,
@@ -3038,6 +3027,11 @@ figure,
   vertical-align: top;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+}
 @media (min-width: 720px) {
   .flex {
     display: flex;

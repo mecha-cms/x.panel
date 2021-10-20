@@ -221,25 +221,13 @@
       --fill-folder-icon: #{darken(shade(40%), 15%)};
     }
   }
-  .lot\:file {
-    &:hover,
-    &:active {
-      --fill-file--current: #{shade(3%)};
-      --stroke-file--current: #{shade(3%)};
-    }
-  }
-  .lot\:folder {
-    &:hover,
-    &:active {
-      --fill-folder--current: #{shade(3%)};
-      --stroke-folder--current: #{shade(3%)};
-    }
-  }
-  .lot\:page {
-    &:hover,
-    &:active {
-      --fill-page--current: #{shade(3%)};
-      --stroke-page--current: #{shade(3%)};
+  @each $v in (file, folder, page) {
+    .lot\:#{$v} {
+      &:hover,
+      &:active {
+        --fill-#{$v}--current: #{shade(3%)};
+        --stroke-#{$v}--current: #{shade(3%)};
+      }
     }
   }
 }

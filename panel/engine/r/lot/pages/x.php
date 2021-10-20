@@ -112,12 +112,14 @@ if ($i > 1) {
                     'stack' => 30
                 ];
             }
+            $git = $page->git ?? 'mecha-cms/' . ($n = 'x.' . $_['chop'][1]);
             $version_current = explode('.', $page->version);
-            $version_next = explode('.', Cache::live($n = 'x.' . $_['chop'][1], function() use($n) {
-                return fetch('https://mecha-cms.com/git/version/mecha-cms/' . $n, [
+            $version_next = explode('.', Cache::live($n, function() use($n) {
+                return fetch('https://mecha-cms.com/git/version/' . $git, [
                     'user-agent' => 'Mecha/' . VERSION
                 ]);
             }, '1 day'));
+            $version = implode('.', $version_next);
             // Check for major update
             if (isset($version_current[0]) && isset($version_next[0]) && (int) $version_current[0] < (int) $version_next[0]) {
                 $_['alert']['info'][$d] = ['%s has been released. You have to update it manually. This version may not work properly with your current core version.', [$page->title . ' ' . $version]];

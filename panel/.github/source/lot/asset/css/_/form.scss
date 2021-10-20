@@ -101,7 +101,6 @@
 
 .input {
   &[type='checkbox'],
-  &[type='color'],
   &[type='image'],
   &[type='radio'] {
     background: none;
@@ -114,7 +113,14 @@
   }
   &[type='color'] {
     height: calc(var(--y) * 1.5);
+    padding: 0;
     width: calc(var(--x) * 1.5);
+    &::-moz-color-swatch {
+      border: 0;
+    }
+    &::-webkit-color-swatch {
+      border: 0;
+    }
     &::-webkit-color-swatch-wrapper {
       padding: 0;
     }
@@ -155,6 +161,8 @@
 }
 
 .select {
+  -moz-padding-start: calc(.5rem - 3px); // <https://github.com/twbs/bootstrap/issues/32636>
+  appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
   border-radius: var(--corner-input);

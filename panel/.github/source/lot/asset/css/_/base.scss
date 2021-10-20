@@ -60,6 +60,7 @@ a {
   border: 0 solid var(--stroke);
   color: var(--color);
   font: normal normal var(--font-size)/var(--font-height) var(--font-face);
+  scroll-behavior: smooth;
   text-align: left;
 }
 
@@ -127,17 +128,17 @@ sup {
 
 sub,
 sup {
-  display: inline-block;
+  line-height: 0;
   position: relative;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 sub {
-  top: .5em;
+  top: .25em;
 }
 
 sup {
-  top: -.5em;
+  top: -.25em;
 }
 
 mark {
@@ -226,6 +227,7 @@ kbd {
 blockquote,
 details,
 dl,
+dt,
 fieldset,
 figcaption,
 figure,
@@ -251,7 +253,7 @@ blockquote {
   margin-left: var(--x);
 }
 
-dd {
+dl {
   margin-left: var(--x);
 }
 
@@ -289,17 +291,19 @@ hr {
 
 fieldset {
   padding: var(--y) var(--x);
+  legend {
+    background: var(--fill-legend, var(--fill));
+    float: left;
+    margin: calc(var(--y) * -1.5) 0 0;
+    padding: 0 calc(var(--x) / 3);
+    + * {
+      clear: left;
+      margin-top: 0;
+    }
+  }
 }
 
 hr {
   border-style: dashed;
   border-width: 1px 0 0;
-}
-
-legend {
-  margin: 0 0 calc(var(--x) / -3);
-  padding: 0 calc(var(--x) / 3);
-  + .p {
-    margin-top: 0;
-  }
 }
