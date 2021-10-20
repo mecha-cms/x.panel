@@ -218,7 +218,7 @@
   }
   .is\:folder {
     &::after {
-      --fill-folder-icon: #{darken(shade(70%), 15%)};
+      --fill-folder-icon: #{darken(shade(60%), 15%)};
     }
   }
   @each $v in (file, folder, page) {

@@ -577,7 +577,7 @@
   --fill-menu-link--current: #f6f6f6;
 }
 .is\:light .is\:folder::after {
-  --fill-folder-icon: #979797;
+  --fill-folder-icon: #818181;
 }
 .is\:light .lot\:file:hover,
 .is\:light .lot\:file:active {
