@@ -486,7 +486,7 @@
             return d;
         };
     };
-    TE.version = '3.3.9';
+    TE.version = '3.3.10';
     TE.x = x;
     var that$2 = {};
     that$2._history = [];
@@ -1465,17 +1465,17 @@
     var commands = {};
     commands.blocks = function() {
         var that = this;
-        return toggleBlocks(that), that.record(), false;
+        return that.record(), toggleBlocks(that), that.record(), false;
     };
     commands.bold = function() {
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
-        return toggle.apply(this, elements.b), false;
+        return that.record(), toggle.apply(this, elements.b), false;
     };
     commands.code = function() {
         var that = this;
-        return toggleCodes(that), that.record(), false;
+        return that.record(), toggleCodes(that), that.record(), false;
     };
     commands.image = function(label, placeholder) {
         if (label === void 0) {
@@ -1529,7 +1529,7 @@
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
-        return toggle.apply(this, elements.i), false;
+        return that.record(), toggle.apply(this, elements.i), false;
     };
     commands.link = function(label, placeholder) {
         if (label === void 0) {
@@ -1570,13 +1570,13 @@
     };
     commands.quote = function() {
         var that = this;
-        return toggleQuotes(that), that.record(), false;
+        return that.record(), toggleQuotes(that), that.record(), false;
     };
     commands.underline = function() {
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
-        return toggle.apply(this, elements.u), false;
+        return that.record(), toggle.apply(this, elements.u), false;
     };
 
     function canKeyDown(map, that) {

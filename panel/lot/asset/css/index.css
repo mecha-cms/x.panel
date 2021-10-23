@@ -234,7 +234,7 @@ pre code {
   background: var(--fill-code-block);
   border: 0 solid;
   border-color: var(--stroke-code-block);
-  border-radius: var(--corner-code-block);
+  border-radius: var(--arc-code-block);
   box-shadow: var(--shadow-code-block);
   color: var(--color-code-block);
   display: block;
@@ -364,14 +364,10 @@ fieldset {
   padding: var(--y) var(--x);
 }
 fieldset legend {
-  background: var(--fill-legend, var(--fill));
-  float: left;
-  margin: calc(var(--y) * -1.5) 0 0;
   padding: 0 calc(var(--x) / 3);
 }
 fieldset legend + * {
-  clear: left;
-  margin-top: 0;
+  margin-top: calc(var(--z) / -2);
 }
 
 hr {
@@ -413,7 +409,7 @@ hr {
 .button:any-link {
   background: var(--fill-button);
   border-color: var(--stroke-button);
-  border-radius: var(--corner-button);
+  border-radius: var(--arc-button);
   border-width: 0;
   box-shadow: var(--shadow-button);
   color: var(--color-button);
@@ -423,7 +419,7 @@ hr {
 .button:any-link:hover {
   background: var(--fill-button--hover, var(--fill-button));
   border-color: var(--stroke-button--hover, var(--stroke-button));
-  border-radius: var(--corner-button--hover, var(--corner-button));
+  border-radius: var(--arc-button--hover, var(--arc-button));
   box-shadow: var(--shadow-button--hover, var(--shadow-button));
   color: var(--color-button--hover, var(--color-button));
 }
@@ -431,7 +427,7 @@ hr {
 .button:any-link:focus {
   background: var(--fill-button--focus, var(--fill-button));
   border-color: var(--stroke-button--focus, var(--stroke-button));
-  border-radius: var(--corner-button--focus, var(--corner-button));
+  border-radius: var(--arc-button--focus, var(--arc-button));
   box-shadow: var(--shadow-button--focus, var(--shadow-button));
   color: var(--color-button--focus, var(--color-button));
 }
@@ -439,7 +435,7 @@ hr {
 .button:any-link:active {
   background: var(--fill-button--active, var(--fill-button));
   border-color: var(--stroke-button--active, var(--stroke-button));
-  border-radius: var(--corner-button--active, var(--corner-button));
+  border-radius: var(--arc-button--active, var(--arc-button));
   box-shadow: var(--shadow-button--active, var(--shadow-button));
   color: var(--color-button--active, var(--color-button));
 }
@@ -447,7 +443,7 @@ hr {
 .button:any-link:disabled {
   background: var(--fill-button--disabled, var(--fill-button));
   border-color: var(--stroke-button--disabled, var(--stroke-button));
-  border-radius: var(--corner-button--disabled, var(--corner-button));
+  border-radius: var(--arc-button--disabled, var(--arc-button));
   box-shadow: var(--shadow-button--disabled, var(--shadow-button));
   color: var(--color-button--disabled, var(--color-button));
 }
@@ -501,7 +497,7 @@ hr {
 .textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
-  border-radius: var(--corner-input);
+  border-radius: var(--arc-input);
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
@@ -612,28 +608,28 @@ hr {
 .output {
   background: var(--fill-output);
   border-color: var(--stroke-output);
-  border-radius: var(--corner-output);
+  border-radius: var(--arc-output);
   box-shadow: var(--shadow-output);
   color: var(--color-output);
 }
 .output:hover {
   background: var(--fill-output--hover, var(--fill-output));
   border-color: var(--stroke-output--hover, var(--stroke-output));
-  border-radius: var(--corner-output--hover, var(--corner-output));
+  border-radius: var(--arc-output--hover, var(--arc-output));
   box-shadow: var(--shadow-output--hover, var(--shadow-output));
   color: var(--color-output--hover, var(--color-output));
 }
 .output:focus {
   background: var(--fill-output--focus, var(--fill-output));
   border-color: var(--stroke-output--focus, var(--stroke-output));
-  border-radius: var(--corner-output--focus, var(--corner-output));
+  border-radius: var(--arc-output--focus, var(--arc-output));
   box-shadow: var(--shadow-output--focus, var(--shadow-output));
   color: var(--color-output--focus, var(--color-output));
 }
 .output:active {
   background: var(--fill-output--active, var(--fill-output));
   border-color: var(--stroke-output--active, var(--stroke-output));
-  border-radius: var(--corner-output--active, var(--corner-output));
+  border-radius: var(--arc-output--active, var(--arc-output));
   box-shadow: var(--shadow-output--active, var(--shadow-output));
   color: var(--color-output--active, var(--color-output));
 }
@@ -643,7 +639,7 @@ hr {
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
-  border-radius: var(--corner-input);
+  border-radius: var(--arc-input);
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
@@ -730,7 +726,7 @@ label > input[type=radio] + span {
   appearance: none;
   background: var(--fill-button);
   border-color: var(--stroke-button);
-  border-radius: var(--corner-button);
+  border-radius: var(--arc-button);
   box-shadow: var(--shadow-button);
   color: var(--color-button);
 }
@@ -839,7 +835,7 @@ label > input[type=radio] + span {
   -webkit-appearance: none;
   background: var(--fill-button);
   border-color: var(--stroke-button);
-  border-radius: var(--corner-button);
+  border-radius: var(--arc-button);
   border-width: 0;
   box-shadow: var(--shadow-button);
   color: var(--color-button);
@@ -855,7 +851,7 @@ label > input[type=radio] + span {
 .input[type=range]::-moz-range-thumb {
   background: var(--fill-button);
   border-color: var(--stroke-button);
-  border-radius: var(--corner-button);
+  border-radius: var(--arc-button);
   border-width: 0;
   box-shadow: var(--shadow-button);
   color: var(--color-button);
@@ -975,7 +971,7 @@ label > input[type=radio] + span {
 
 .alert p {
   background: var(--fill-alert);
-  border-radius: var(--corner-alert);
+  border-radius: var(--arc-alert);
   border: 0 solid var(--stroke-alert);
   box-shadow: var(--shadow-alert);
   color: var(--color-alert);
@@ -992,7 +988,7 @@ label > input[type=radio] + span {
   background: var(--fill-bar);
   border: 0 solid;
   border-color: var(--stroke-bar);
-  border-radius: var(--corner-bar);
+  border-radius: var(--arc-bar);
   box-shadow: var(--shadow-bar);
   color: var(--color-bar);
   display: flex;
@@ -1037,7 +1033,7 @@ label > input[type=radio] + span {
 .lot\:bar .lot\:links > ul > li > a .title .info,
 .lot\:bar .lot\:links > ul > li > .a .title .info {
   background: var(--fill-bar-info);
-  border-radius: var(--corner-bar-info);
+  border-radius: var(--arc-bar-info);
   box-shadow: var(--shadow-bar-info);
   color: var(--color-bar-info);
   float: right;
@@ -1330,7 +1326,7 @@ label > input[type=radio] + span {
   background: var(--fill-option-picker);
   border: 1px solid;
   border-color: var(--stroke-option-picker);
-  border-radius: var(--corner-option-picker);
+  border-radius: var(--arc-option-picker);
   box-shadow: var(--shadow-option-picker);
   color: var(--color-option-picker);
   cursor: pointer;
@@ -1431,7 +1427,7 @@ label > input[type=radio] + span {
   background: var(--fill-option-picker__options, var(--fill-option-picker));
   border: inherit;
   border-color: var(--stroke-option-picker__options, var(--stroke-option-picker));
-  border-radius: var(--corner-option-picker__options, var(--corner-option-picker));
+  border-radius: var(--arc-option-picker__options, var(--arc-option-picker));
   box-shadow: var(--shadow-option-picker__options);
   color: var(--color-option-picker__options, var(--color-option-picker));
   display: none;
@@ -1449,6 +1445,9 @@ label > input[type=radio] + span {
   padding: 0 0.5em;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.option-picker__options .option-picker__option[hidden] {
+  display: none;
 }
 .option-picker__options .option-picker__option:not(.option-picker__option--disabled):hover {
   background: var(--fill-option-picker__option--hover, var(--fill-option-picker__option));
@@ -1541,25 +1540,57 @@ label > input[type=radio] + span {
 .option-picker__source[size] + .option-picker .option-picker__values {
   margin: 0;
 }
-.option-picker__source[size] + .option-picker .option-picker__values[contenteditable] {
-  -moz-user-select: text;
-  -webkit-user-select: text;
-  user-select: text;
-}
 .option-picker__source[multiple] + .option-picker .option-picker__values {
   white-space: normal;
 }
 
+.option-picker__input span {
+  display: block;
+  height: 100%;
+  outline: 0;
+  position: relative;
+  z-index: 1;
+}
+.option-picker__input span * {
+  display: inline;
+  font: inherit;
+}
+.option-picker__input span + span {
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+  padding: inherit;
+  position: absolute;
+  right: 0;
+  top: 0;
+  white-space: nowrap;
+  z-index: 0;
+}
+.option-picker__input span {
+  position: relative;
+  z-index: 1;
+}
+.option-picker__input span + span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.option-picker__input {
+  cursor: text;
+}
+
+.option-picker__input,
 .option-picker__values {
+  display: block;
   margin-right: 1.25em;
   overflow: hidden;
   padding: 0 0.25em;
+  position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.option-picker__values .option-picker__value {
-  display: inline;
-  font: inherit;
 }
 
 .lot\:field.type\:option .option-picker {
@@ -1626,7 +1657,7 @@ label > input[type=radio] + span {
   background: var(--fill-tag-picker);
   border: 1px solid;
   border-color: var(--stroke-tag-picker);
-  border-radius: var(--corner-tag-picker);
+  border-radius: var(--arc-tag-picker);
   color: var(--color-tag-picker);
   cursor: text;
   display: inline-flex;
@@ -1696,40 +1727,40 @@ label > input[type=radio] + span {
   position: relative;
   text-decoration: none;
 }
-.tag-picker__tag:not(.tag-picker__text) {
+.tag-picker__tag:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag);
   border: 0 solid;
   border-color: var(--stroke-tag-picker__tag);
-  border-radius: var(--corner-tag-picker__tag);
+  border-radius: var(--arc-tag-picker__tag);
   box-shadow: var(--shadow-tag-picker__tag);
   color: var(--color-tag-picker__tag);
   cursor: pointer;
 }
-.tag-picker__tag:not(.tag-picker__text):hover {
+.tag-picker__tag:not(.tag-picker__input):hover {
   background: var(--fill-tag-picker__tag--hover, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--hover, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--hover, var(--shadow-tag-picker__tag));
   color: var(--color-tag-picker__tag--hover, var(--color-tag-picker__tag));
 }
-.tag-picker__tag:not(.tag-picker__text):focus {
+.tag-picker__tag:not(.tag-picker__input):focus {
   background: var(--fill-tag-picker__tag--focus, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--focus, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--focus, var(--shadow-tag-picker__tag));
   color: var(--color-tag-picker__tag--focus, var(--color-tag-picker__tag));
 }
-.tag-picker__tag:not(.tag-picker__text):active {
+.tag-picker__tag:not(.tag-picker__input):active {
   background: var(--fill-tag-picker__tag--active, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--active, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--active, var(--shadow-tag-picker__tag));
   color: var(--color-tag-picker__tag--active, var(--color-tag-picker__tag));
 }
-.tag-picker__tag--selected:not(.tag-picker__text) {
+.tag-picker__tag--selected:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag--selected, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--selected, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--selected, var(--shadow-tag-picker__tag));
   color: var(--color-tag-picker__tag--selected, var(--color-tag-picker__tag));
 }
-.tag-picker__tag--disabled:not(.tag-picker__text) {
+.tag-picker__tag--disabled:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag--disabled, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--disabled, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--disabled, var(--shadow-tag-picker__tag));
@@ -1738,7 +1769,7 @@ label > input[type=radio] + span {
 .tag-picker__tag::before {
   content: attr(title);
 }
-.tag-picker__tag + .tag-picker__text span + span {
+.tag-picker__tag + .tag-picker__input span + span {
   display: none;
 }
 .tag-picker__tag-x {
@@ -1761,20 +1792,20 @@ label > input[type=radio] + span {
   font-family: sans-serif;
 }
 
-.tag-picker__text {
+.tag-picker__input {
   flex: 1;
 }
-.tag-picker__text span {
+.tag-picker__input span {
   display: block;
   height: 100%;
   outline: 0;
   position: relative;
   z-index: 1;
 }
-.tag-picker__text span * {
+.tag-picker__input span * {
   display: inline;
 }
-.tag-picker__text span + span {
+.tag-picker__input span + span {
   bottom: 0;
   left: 0;
   opacity: 0.5;
@@ -1808,7 +1839,7 @@ label > input[type=radio] + span {
 .tag-picker__source:read-only + .tag-picker .tag-picker__tag-x {
   cursor: not-allowed;
 }
-.tag-picker__source:read-only + .tag-picker .tag-picker__tag:not(.tag-picker__text) {
+.tag-picker__source:read-only + .tag-picker .tag-picker__tag:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag--read-only, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--read-only, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--read-only, var(--shadow-tag-picker__tag));
@@ -1824,7 +1855,7 @@ label > input[type=radio] + span {
 .tag-picker__source:disabled + .tag-picker * {
   cursor: not-allowed;
 }
-.tag-picker__source:disabled + .tag-picker .tag-picker__tag:not(.tag-picker__text) {
+.tag-picker__source:disabled + .tag-picker .tag-picker__tag:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag--disabled, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--disabled, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--disabled, var(--shadow-tag-picker__tag));
@@ -1887,7 +1918,7 @@ label > input[type=radio] + span {
   background: var(--fill-file, none);
   border: 0 solid;
   border-color: var(--stroke-file, var(--fill-file, none));
-  border-radius: var(--corner-file);
+  border-radius: var(--arc-file);
   box-shadow: var(--shadow-file);
   display: flex;
   list-style: none;
@@ -1963,7 +1994,7 @@ label > input[type=radio] + span {
 .lot\:folder {
   background: var(--fill-folder, none);
   border-color: var(--stroke-folder, var(--fill-folder, none));
-  border-radius: var(--corner-folder);
+  border-radius: var(--arc-folder);
   box-shadow: var(--shadow-folder);
 }
 .lot\:folder:focus {
@@ -2074,7 +2105,7 @@ label > input[type=radio] + span {
 
 .lot\:menu {
   background: var(--fill-menu, var(--fill));
-  border-radius: var(--corner-menu);
+  border-radius: var(--arc-menu);
   color: var(--color-menu);
   height: auto;
   line-height: var(--y);
@@ -2135,7 +2166,7 @@ label > input[type=radio] + span {
 .lot\:menu > ul > li > a .title .info,
 .lot\:menu > ul > li > .a .title .info {
   background: var(--fill-menu-info);
-  border-radius: var(--corner-menu-info);
+  border-radius: var(--arc-menu-info);
   box-shadow: var(--shadow-menu-info);
   color: var(--color-menu-info);
   float: right;
@@ -2219,7 +2250,7 @@ label > input[type=radio] + span {
 .lot\:page {
   background: var(--fill-page, var(--fill-file, none));
   border-color: var(--stroke-page, var(--stroke-file, transparent));
-  border-radius: var(--corner-page, var(--corner-file));
+  border-radius: var(--arc-page, var(--arc-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
 }
@@ -2296,7 +2327,7 @@ label > input[type=radio] + span {
   background: var(--fill-button);
   border: 0 solid;
   border-color: var(--stroke-button);
-  border-radius: var(--corner-button);
+  border-radius: var(--arc-button);
   box-shadow: var(--shadow-button);
   color: var(--color-button);
   font: inherit;
@@ -2348,7 +2379,7 @@ label > input[type=radio] + span {
   background: var(--fill-stack, none);
   border: 1px solid;
   border-color: var(--stroke-stack, var(--stroke));
-  border-radius: var(--corner-stack);
+  border-radius: var(--arc-stack);
   box-shadow: var(--shadow-stack);
   margin: 0;
   position: relative;
@@ -3054,7 +3085,7 @@ figure,
   }
   .lot\:tabs .lot\:links li {
     background: var(--fill-tab);
-    border-radius: var(--corner-tab);
+    border-radius: var(--arc-tab);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border: 1px solid;

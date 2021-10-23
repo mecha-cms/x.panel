@@ -1,5 +1,5 @@
-$base: #222222;
-$mix: #ffffff;
+$base: #222;
+$mix: #fff;
 
 @function shade($percent: 0%) {
   @return mix($mix, $base, $percent);

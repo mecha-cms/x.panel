@@ -17,7 +17,10 @@
     var getNext = function getNext(node) {
         return node.nextElementSibling || null;
     };
-    var getParent = function getParent(node) {
+    var getParent = function getParent(node, query) {
+        if (query) {
+            return node.closest(query) || null;
+        }
         return node.parentNode || null;
     };
     var getPrev = function getPrev(node) {

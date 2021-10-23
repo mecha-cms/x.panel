@@ -24,7 +24,7 @@
 .button:any-link {
   background: var(--fill-button);
   border-color: var(--stroke-button);
-  border-radius: var(--corner-button);
+  border-radius: var(--arc-button);
   border-width: 0;
   box-shadow: var(--shadow-button);
   color: var(--color-button);
@@ -33,7 +33,7 @@
     &:#{$v} {
       background: var(--fill-button--#{$v}, var(--fill-button));
       border-color: var(--stroke-button--#{$v}, var(--stroke-button));
-      border-radius: var(--corner-button--#{$v}, var(--corner-button));
+      border-radius: var(--arc-button--#{$v}, var(--arc-button));
       box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
       color: var(--color-button--#{$v}, var(--color-button));
     }
@@ -74,7 +74,7 @@
 .textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
-  border-radius: var(--corner-input);
+  border-radius: var(--arc-input);
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
@@ -146,14 +146,14 @@
 .output {
   background: var(--fill-output);
   border-color: var(--stroke-output);
-  border-radius: var(--corner-output);
+  border-radius: var(--arc-output);
   box-shadow: var(--shadow-output);
   color: var(--color-output);
   @each $v in (hover, focus, active) {
     &:#{$v} {
       background: var(--fill-output--#{$v}, var(--fill-output));
       border-color: var(--stroke-output--#{$v}, var(--stroke-output));
-      border-radius: var(--corner-output--#{$v}, var(--corner-output));
+      border-radius: var(--arc-output--#{$v}, var(--arc-output));
       box-shadow: var(--shadow-output--#{$v}, var(--shadow-output));
       color: var(--color-output--#{$v}, var(--color-output));
     }
@@ -165,7 +165,7 @@
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
-  border-radius: var(--corner-input);
+  border-radius: var(--arc-input);
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
@@ -243,7 +243,7 @@ label {
     @include appearance(none);
     background: var(--fill-button);
     border-color: var(--stroke-button);
-    border-radius: var(--corner-button);
+    border-radius: var(--arc-button);
     box-shadow: var(--shadow-button);
     color: var(--color-button);
     &::before {
@@ -321,7 +321,7 @@ label {
       -webkit-appearance: none;
       background: var(--fill-button);
       border-color: var(--stroke-button);
-      border-radius: var(--corner-button);
+      border-radius: var(--arc-button);
       border-width: 0;
       box-shadow: var(--shadow-button);
       color: var(--color-button);
@@ -337,7 +337,7 @@ label {
     &::-moz-range-thumb {
       background: var(--fill-button);
       border-color: var(--stroke-button);
-      border-radius: var(--corner-button);
+      border-radius: var(--arc-button);
       border-width: 0;
       box-shadow: var(--shadow-button);
       color: var(--color-button);

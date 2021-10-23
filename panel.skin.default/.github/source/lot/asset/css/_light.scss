@@ -114,8 +114,8 @@
   --stroke-tab: #{shade(65%)};
   --stroke: #{shade(65%)};
   @each $name in (option-picker, tag-picker) {
+    --arc-#{$name}: var(--arc-input);
     --color-#{$name}: var(--color-input);
-    --corner-#{$name}: var(--corner-input);
     --fill-#{$name}: var(--fill-input);
     --shadow-#{$name}: var(--shadow-input);
     --stroke-#{$name}: var(--stroke-input);

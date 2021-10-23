@@ -1,6 +1,6 @@
 .lot\:menu {
   background: var(--fill-menu, var(--fill));
-  border-radius: var(--corner-menu);
+  border-radius: var(--arc-menu);
   color: var(--color-menu);
   height: auto;
   line-height: var(--y);
@@ -55,7 +55,7 @@
           }
           .info {
             background: var(--fill-menu-info);
-            border-radius: var(--corner-menu-info);
+            border-radius: var(--arc-menu-info);
             box-shadow: var(--shadow-menu-info);
             color: var(--color-menu-info);
             float: right;

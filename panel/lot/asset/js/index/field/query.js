@@ -192,7 +192,10 @@
     var getNext = function getNext(node) {
         return node.nextElementSibling || null;
     };
-    var getParent = function getParent(node) {
+    var getParent = function getParent(node, query) {
+        if (query) {
+            return node.closest(query) || null;
+        }
         return node.parentNode || null;
     };
     var getParentForm = function getParentForm(node) {
@@ -200,14 +203,7 @@
         if (hasState(node, state) && state === getName(node[state])) {
             return node[state];
         }
-        var parent = getParent(node);
-        while (parent) {
-            if (state === getName(parent)) {
-                break;
-            }
-            parent = getParent(parent);
-        }
-        return parent || null;
+        return getParent(node, state);
     };
     var getPrev = function getPrev(node) {
         return node.previousElementSibling || null;
@@ -233,8 +229,8 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
-    var hasParent = function hasParent(node) {
-        return null !== getParent(node);
+    var hasParent = function hasParent(node, query) {
+        return null !== getParent(node, query);
     };
     var hasState = function hasState(node, state) {
         return state in node;
@@ -345,33 +341,14 @@
         var state = 'textContent';
         return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
     };
-    var offEvent = function offEvent(name, node, then) {
-        node.removeEventListener(name, then);
-    };
-    var offEventDefault = function offEventDefault(e) {
-        return e && e.preventDefault();
-    };
-    var offEventPropagation = function offEventPropagation(e) {
-        return e && e.stopPropagation();
-    };
-    var offEvents = function offEvents(names, node, then) {
-        names.forEach(function(name) {
-            return offEvent(name, node, then);
-        });
-    };
-    var onEvent = function onEvent(name, node, then, options) {
-        if (options === void 0) {
-            options = false;
-        }
-        node.addEventListener(name, then, options);
-    };
-    var onEvents = function onEvents(names, node, then, options) {
-        if (options === void 0) {
-            options = false;
-        }
-        names.forEach(function(name) {
-            return onEvent(name, node, then, options);
-        });
+    var delay = function delay(then, time) {
+        return function() {
+            var _arguments2 = arguments,
+                _this2 = this;
+            setTimeout(function() {
+                return then.apply(_this2, _arguments2);
+            }, time);
+        };
     };
 
     function hook($) {
@@ -424,6 +401,34 @@
         $.on = on;
         return $;
     }
+    var offEvent = function offEvent(name, node, then) {
+        node.removeEventListener(name, then);
+    };
+    var offEventDefault = function offEventDefault(e) {
+        return e && e.preventDefault();
+    };
+    var offEventPropagation = function offEventPropagation(e) {
+        return e && e.stopPropagation();
+    };
+    var offEvents = function offEvents(names, node, then) {
+        names.forEach(function(name) {
+            return offEvent(name, node, then);
+        });
+    };
+    var onEvent = function onEvent(name, node, then, options) {
+        if (options === void 0) {
+            options = false;
+        }
+        node.addEventListener(name, then, options);
+    };
+    var onEvents = function onEvents(names, node, then, options) {
+        if (options === void 0) {
+            options = false;
+        }
+        names.forEach(function(name) {
+            return onEvent(name, node, then, options);
+        });
+    };
     var isPattern = function isPattern(pattern) {
         return isInstance(pattern, RegExp);
     };
@@ -434,8 +439,7 @@
         pattern = pattern.replace(/\//g, '\\/');
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
-    var delay = W.setTimeout,
-        name = 'TP';
+    var name = 'TP';
     var KEY_A = 'a';
     var KEY_ARROW_LEFT = 'ArrowLeft';
     var KEY_ARROW_RIGHT = 'ArrowRight';
@@ -450,11 +454,13 @@
         if (state === void 0) {
             state = {};
         }
-        if (!source) return; // Already instantiated, skip!
+        var $ = this;
+        if (!source) {
+            return $;
+        } // Already instantiated, skip!
         if (source[name]) {
             return source[name];
-        }
-        var $ = this; // Return new instance if `TP` was called without the `new` operator
+        } // Return new instance if `TP` was called without the `new` operator
         if (!isInstance($, TP)) {
             return new TP(source, state);
         }
@@ -485,7 +491,7 @@
                 'tabindex': sourceIsDisabled() ? false : -1
             }),
             text = setElement('span', {
-                'class': classNameE + 'tag ' + classNameE + 'text'
+                'class': classNameE + 'tag ' + classNameE + 'input'
             }),
             textCopy = setElement('input', {
                 'class': classNameE + 'copy',
@@ -766,11 +772,11 @@
             letClass(self, classNameM + 'focus-tag');
             if ('blur' === type) {
                 letClass(text, classNameTextM + 'focus');
-                letClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
+                letClasses(self, [classNameM + 'focus', classNameM + 'focus-input']);
                 doInput();
             } else {
                 setClass(text, classNameTextM + 'focus');
-                setClasses(self, [classNameM + 'focus', classNameM + 'focus-text']);
+                setClasses(self, [classNameM + 'focus', classNameM + 'focus-input']);
                 doBlurTags(text);
             }
             fire(type, [tags, toCount(tags)]);
@@ -818,22 +824,22 @@
             if ('copy' === type) {
                 delay(function() {
                     return letTextCopy(1);
-                });
+                })();
             } else if ('cut' === type) {
                 !sourceIsReadOnly() && setTags("");
                 delay(function() {
                     return letTextCopy(1);
-                });
+                })();
             } else if ('paste' === type) {
                 delay(function() {
                     !sourceIsReadOnly() && setTags(textCopy.value);
                     letTextCopy(1);
-                });
+                })();
             }
             delay(function() {
                 var tags = $.tags;
                 fire(type, [tags, toCount(tags)]);
-            }, 1);
+            }, 1)();
         }
 
         function onBlurSelf() {
@@ -933,7 +939,7 @@
 
         function onKeyDownText(e) {
             offEventPropagation(e);
-            if (sourceIsReadOnly() && 'Tab' !== e.key) {
+            if (sourceIsReadOnly() && KEY_TAB !== e.key) {
                 offEventDefault(e);
             }
             var escapes = state.escape,
@@ -966,7 +972,7 @@
                     }
                     offEventDefault(e);
                 }
-            }); // Focus to the first tag
+            })(); // Focus to the first tag
             if ("" === theValue && KEY_BEGIN === key) {
                 if (theTag = getChildren(textOutput, 0)) {
                     theTag.focus(), offEventDefault(e);
@@ -1032,7 +1038,7 @@
                     });
                 }
                 setValue("");
-            });
+            })();
         }
 
         function onSubmitForm(e) {
@@ -1176,7 +1182,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.5';
+    TP.version = '3.4.8';
 
     function onChange() {
         // Destroy!

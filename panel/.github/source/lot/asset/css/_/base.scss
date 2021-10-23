@@ -156,7 +156,7 @@ pre {
     background: var(--fill-code-block);
     border: 0 solid;
     border-color: var(--stroke-code-block);
-    border-radius: var(--corner-code-block);
+    border-radius: var(--arc-code-block);
     box-shadow: var(--shadow-code-block);
     color: var(--color-code-block);
     display: block;
@@ -292,13 +292,9 @@ hr {
 fieldset {
   padding: var(--y) var(--x);
   legend {
-    background: var(--fill-legend, var(--fill));
-    float: left;
-    margin: calc(var(--y) * -1.5) 0 0;
     padding: 0 calc(var(--x) / 3);
     + * {
-      clear: left;
-      margin-top: 0;
+      margin-top: calc(var(--z) / -2);
     }
   }
 }

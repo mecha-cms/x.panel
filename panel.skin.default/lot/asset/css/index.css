@@ -157,8 +157,8 @@
   --stroke-stack: #2d2d2d;
   --stroke-tab: #2d2d2d;
   --stroke: #2d2d2d;
+  --arc-option-picker: var(--arc-input);
   --color-option-picker: var(--color-input);
-  --corner-option-picker: var(--corner-input);
   --fill-option-picker: var(--fill-input);
   --shadow-option-picker: var(--shadow-input);
   --stroke-option-picker: var(--stroke-input);
@@ -190,8 +190,8 @@
   --fill-option-picker--active: var(--fill-input--active, var(--fill-input));
   --shadow-option-picker--active: var(--shadow-input--active, var(--shadow-input));
   --stroke-option-picker--active: var(--stroke-input--active, var(--stroke-input));
+  --arc-tag-picker: var(--arc-input);
   --color-tag-picker: var(--color-input);
-  --corner-tag-picker: var(--corner-input);
   --fill-tag-picker: var(--fill-input);
   --shadow-tag-picker: var(--shadow-input);
   --stroke-tag-picker: var(--stroke-input);
@@ -441,8 +441,8 @@
   --stroke-stack: #b2b2b2;
   --stroke-tab: #b2b2b2;
   --stroke: #b2b2b2;
+  --arc-option-picker: var(--arc-input);
   --color-option-picker: var(--color-input);
-  --corner-option-picker: var(--corner-input);
   --fill-option-picker: var(--fill-input);
   --shadow-option-picker: var(--shadow-input);
   --stroke-option-picker: var(--stroke-input);
@@ -474,8 +474,8 @@
   --fill-option-picker--active: var(--fill-input--active, var(--fill-input));
   --shadow-option-picker--active: var(--shadow-input--active, var(--shadow-input));
   --stroke-option-picker--active: var(--stroke-input--active, var(--stroke-input));
+  --arc-tag-picker: var(--arc-input);
   --color-tag-picker: var(--color-input);
-  --corner-tag-picker: var(--corner-input);
   --fill-tag-picker: var(--fill-input);
   --shadow-tag-picker: var(--shadow-input);
   --stroke-tag-picker: var(--stroke-input);

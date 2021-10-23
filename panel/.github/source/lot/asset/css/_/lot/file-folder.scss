@@ -2,7 +2,7 @@
   background: var(--fill-file, none);
   border: 0 solid;
   border-color: var(--stroke-file, var(--fill-file, none));
-  border-radius: var(--corner-file);
+  border-radius: var(--arc-file);
   box-shadow: var(--shadow-file);
   display: flex;
   list-style: none;
@@ -51,7 +51,7 @@
   @extend .lot\:file;
   background: var(--fill-folder, none);
   border-color: var(--stroke-folder, var(--fill-folder, none));
-  border-radius: var(--corner-folder);
+  border-radius: var(--arc-folder);
   box-shadow: var(--shadow-folder);
   @each $v in (focus, hover, active) {
     &:#{$v} {
