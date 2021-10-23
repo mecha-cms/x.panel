@@ -114,7 +114,7 @@ if ($i > 1) {
             }
             $git = $page->git ?? 'mecha-cms/' . ($n = 'x.' . $_['chop'][1]);
             $version_current = explode('.', $page->version);
-            $version_next = explode('.', Cache::live($n, function() use($n) {
+            $version_next = explode('.', Cache::live($n, function() use($git, $n) {
                 return fetch('https://mecha-cms.com/git/version/' . $git, [
                     'user-agent' => 'Mecha/' . VERSION
                 ]);
