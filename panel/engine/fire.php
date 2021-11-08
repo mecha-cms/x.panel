@@ -1,5 +1,24 @@
 <?php
 
+$git = 'mecha-cms/mecha';
+$version_current = explode('.', VERSION);
+$version_next = explode('.', Cache::live($n, function() use($git, $n) {
+    return fetch('https://mecha-cms.com/git/version/' . $git, [
+        'user-agent' => 'Mecha/' . VERSION
+    ]);
+}, '1 day'));
+$version = implode('.', $version_next);
+// Check for major update
+if (isset($version_current[0]) && isset($version_next[0]) && (int) $version_current[0] < (int) $version_next[0]) {
+    $_['alert']['info'][$d] = ['%s has been released. You have to update it manually. This version may not work properly with your current core version.', ['Mecha ' . $version]];
+// Check for minor update
+} else if (isset($version_current[1]) && isset($version_next[1]) && (int) $version_current[1] < (int) $version_next[1]) {
+    $_['alert']['info'][$d] = ['%s has been released.', ['Mecha ' . $version]];
+// Check for patch update
+} else if (isset($version_current[2]) && isset($version_next[2]) && (int) $version_current[2] < (int) $version_next[2]) {
+    $_['alert']['info'][$d] = ['%s has been released. Should be safe to update now.', ['Mecha ' . $version]];
+}
+
 $chop = explode('/', $p);
 
 // `http://127.0.0.1/panel`

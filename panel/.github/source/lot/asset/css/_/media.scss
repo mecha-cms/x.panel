@@ -41,16 +41,19 @@
         &.has\:link {
           background: var(--fill-tab-link, var(--fill-tab));
           border-color: var(--stroke-tab-link, var(--stroke-tab));
+          box-shadow: var(--shadow-tab-link, var(--shadow-tab));
           @each $v in (hover, focus, active) {
             &:#{$v} {
               background: var(--fill-tab-link--#{$v}, var(--fill-tab-link, var(--fill-tab)));
               border-color: var(--stroke-tab-link--#{$v}, var(--stroke-tab-link, var(--stroke-tab)));
+              box-shadow: var(--shadow-tab-link--#{$v}, var(--shadow-tab-link, var(--shadow-tab)));
             }
           }
         }
         &.is\:current {
           background: var(--fill-tab--current, var(--fill-tab));
           border-color: var(--stroke-tab--current, var(--stroke-tab));
+          box-shadow: var(--shadow-tab--current, var(--shadow-tab));
           z-index: 1;
           &::after {
             border-bottom: 1px solid;

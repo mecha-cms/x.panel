@@ -524,13 +524,6 @@ hr {
   box-shadow: var(--shadow-input--active, var(--shadow-input));
   color: var(--color-input--active, var(--color-input));
 }
-.input:invalid,
-.textarea:invalid {
-  background: var(--fill-input--invalid, var(--fill-input));
-  border-color: var(--stroke-input--invalid, var(--stroke-input));
-  box-shadow: var(--shadow-input--invalid, var(--shadow-input));
-  color: var(--color-input--invalid, var(--color-input));
-}
 .input:read-only,
 .textarea:read-only {
   background: var(--fill-input--read-only, var(--fill-input));
@@ -545,18 +538,34 @@ hr {
   box-shadow: var(--shadow-input--disabled, var(--shadow-input));
   color: var(--color-input--disabled, var(--color-input));
 }
+.input[pattern]:focus:valid,
+.input[required]:focus:valid,
+.textarea[pattern]:focus:valid,
+.textarea[required]:focus:valid {
+  background: var(--fill-input--valid, var(--fill-input));
+  border-color: var(--stroke-input--valid, var(--stroke-input));
+  box-shadow: var(--shadow-input--valid, var(--shadow-input));
+  color: var(--color-input--valid, var(--color-input));
+}
+.input[pattern]:focus:invalid,
+.input[required]:focus:invalid,
+.textarea[pattern]:focus:invalid,
+.textarea[required]:focus:invalid {
+  background: var(--fill-input--invalid, var(--fill-input));
+  border-color: var(--stroke-input--invalid, var(--stroke-input));
+  box-shadow: var(--shadow-input--invalid, var(--shadow-input));
+  color: var(--color-input--invalid, var(--color-input));
+}
 
 .input[type=file],
 .input[type=range] {
   background: none;
   border: 0;
   box-shadow: none;
-  height: var(--y);
   line-height: var(--y);
   padding: 0;
 }
 .input[type=file] {
-  height: auto;
   line-height: normal;
 }
 
@@ -3134,22 +3143,27 @@ figure,
   .lot\:tabs .lot\:links li.has\:link {
     background: var(--fill-tab-link, var(--fill-tab));
     border-color: var(--stroke-tab-link, var(--stroke-tab));
+    box-shadow: var(--shadow-tab-link, var(--shadow-tab));
   }
   .lot\:tabs .lot\:links li.has\:link:hover {
     background: var(--fill-tab-link--hover, var(--fill-tab-link, var(--fill-tab)));
     border-color: var(--stroke-tab-link--hover, var(--stroke-tab-link, var(--stroke-tab)));
+    box-shadow: var(--shadow-tab-link--hover, var(--shadow-tab-link, var(--shadow-tab)));
   }
   .lot\:tabs .lot\:links li.has\:link:focus {
     background: var(--fill-tab-link--focus, var(--fill-tab-link, var(--fill-tab)));
     border-color: var(--stroke-tab-link--focus, var(--stroke-tab-link, var(--stroke-tab)));
+    box-shadow: var(--shadow-tab-link--focus, var(--shadow-tab-link, var(--shadow-tab)));
   }
   .lot\:tabs .lot\:links li.has\:link:active {
     background: var(--fill-tab-link--active, var(--fill-tab-link, var(--fill-tab)));
     border-color: var(--stroke-tab-link--active, var(--stroke-tab-link, var(--stroke-tab)));
+    box-shadow: var(--shadow-tab-link--active, var(--shadow-tab-link, var(--shadow-tab)));
   }
   .lot\:tabs .lot\:links li.is\:current {
     background: var(--fill-tab--current, var(--fill-tab));
     border-color: var(--stroke-tab--current, var(--stroke-tab));
+    box-shadow: var(--shadow-tab--current, var(--shadow-tab));
     z-index: 1;
   }
   .lot\:tabs .lot\:links li.is\:current::after {

@@ -75,12 +75,23 @@
   box-shadow: var(--shadow-input);
   color: var(--color-input);
   width: var(--width-input);
-  @each $v in (read-write, hover, focus, active, invalid, read-only, disabled) {
+  @each $v in (read-write, hover, focus, active, read-only, disabled) {
     &:#{$v} {
       background: var(--fill-input--#{$v}, var(--fill-input));
       border-color: var(--stroke-input--#{$v}, var(--stroke-input));
       box-shadow: var(--shadow-input--#{$v}, var(--shadow-input));
       color: var(--color-input--#{$v}, var(--color-input));
+    }
+  }
+  @each $v in (valid, invalid) {
+    &[pattern],
+    &[required] {
+      &:focus:#{$v} {
+        background: var(--fill-input--#{$v}, var(--fill-input));
+        border-color: var(--stroke-input--#{$v}, var(--stroke-input));
+        box-shadow: var(--shadow-input--#{$v}, var(--shadow-input));
+        color: var(--color-input--#{$v}, var(--color-input));
+      }
     }
   }
 }
@@ -91,12 +102,11 @@
     background: none;
     border: 0;
     box-shadow: none;
-    height: var(--y);
+    // height: var(--y);
     line-height: var(--y);
     padding: 0;
   }
   &[type='file'] {
-    height: auto;
     line-height: normal;
   }
 }

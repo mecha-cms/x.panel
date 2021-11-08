@@ -25,7 +25,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'asset' => [],
     'can' => ['fetch' => !empty($state['fetch'])],
     'chop' => [],
-    'chunk' => $state['chunk'] ?? 20,
+    'chunk' => 20,
     'content' => null,
     'f' => null,
     'form' => [
@@ -45,7 +45,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'path' => null,
     'query' => e($_GET ?? []),
     'skin' => [],
-    'sort' => $state['sort'] ?? 1,
+    'sort' => [-1, 'time'],
     'state' => $state,
     'task' => null,
     'title' => null,
