@@ -75,8 +75,8 @@ function onChange() {
                     toggleClass(self, 'has:current', current);
                     W._.fire.apply(pane, ['change.tab', [value, name]]);
                 }
+                offEventDefault(e);
             }
-            offEventDefault(e);
         }
         tabs.forEach((tab, index) => {
             tab._tabIndex = index;

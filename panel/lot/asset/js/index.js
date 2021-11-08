@@ -181,21 +181,6 @@
     onEvent('DOMContentLoaded', D, () => fire('set'));
     const mainSearchForm = getFormElement('get');
     const mainSearchFormInput = mainSearchForm && mainSearchForm.q;
-    mainSearchFormInput && onEvent('keydown', mainSearchFormInput, function(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
-        let key = e.key,
-            keyIsAlt = e.altKey,
-            keyIsCtrl = e.ctrlKey,
-            keyIsShift = e.shiftKey,
-            stop;
-        if ((keyIsCtrl && 'f' === key || 'Escape' === key) && !keyIsAlt && !keyIsShift) {
-            R.focus(); // Focus back to the `<html>`!
-            stop = true;
-        }
-        stop && offEventDefault(e);
-    });
     onEvent('keydown', W, function(e) {
         if (e.defaultPrevented) {
             return;
