@@ -259,7 +259,7 @@
                 let t = this,
                     pane = panes[t._tabIndex],
                     parent = getParent(t),
-                    self = parent.closest('.lot\\:tabs'),
+                    self = getParent(parent, '.lot\\:tabs'),
                     current;
                 if (!hasClass(parent, 'has:link')) {
                     tabs.forEach(tab => {
@@ -375,11 +375,8 @@
                     fireEvent('click', t), fireFocus(t);
                 }
                 stop = true;
-            } else if ('Escape' === key) {
-                fireFocus(t.closest('.lot\\:tabs[tabindex]'));
-                stop = true;
             } else if ('End' === key) {
-                if (parent = t.closest('.lot\\:tabs[tabindex]')) {
+                if (parent = getParent(t, '.lot\\:tabs[tabindex]')) {
                     any = [].slice.call(getElements(targets, parent));
                     if (current = any.pop()) {
                         fireEvent('click', current), fireFocus(current);
@@ -387,7 +384,7 @@
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = t.closest('.lot\\:tabs[tabindex]')) {
+                if (parent = getParent(t, '.lot\\:tabs[tabindex]')) {
                     if (current = getElement(targets, parent)) {
                         fireEvent('click', current), fireFocus(current);
                     }

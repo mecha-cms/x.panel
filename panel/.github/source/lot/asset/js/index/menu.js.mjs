@@ -113,7 +113,7 @@ function onKeyDownMenu(e) {
         stop = true;
     } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
         // Hide menu then focus to the parent menu link
-        if (parent = t.closest('.lot\\:menu[tabindex].is\\:enter')) {
+        if (parent = getParent(t, '.lot\\:menu[tabindex].is\\:enter')) {
             letClass(getParent(t), 'is:active');
             letClass(parent, 'is:enter');
             letClass(t, 'is:active');
@@ -122,7 +122,7 @@ function onKeyDownMenu(e) {
             }
         // Focus to the self menu
         } else if ('Escape' === key) {
-            fireFocus(t.closest('.lot\\:menu[tabindex]'));
+            fireFocus(getParent(t, '.lot\\:menu[tabindex]'));
         }
         stop = 'Tab' !== key;
     } else if ('ArrowRight' === key) {
@@ -142,7 +142,7 @@ function onKeyDownMenu(e) {
         if (current) {
             fireFocus(current);
         } else {
-            if (current = t.closest('.lot\\:menu[tabindex].is\\:enter')) {
+            if (current = getParent(t, '.lot\\:menu[tabindex].is\\:enter')) {
                 // Hide menu then focus to the parent menu link
                 if (current = getPrev(current)) {
                     fireEvent('click', current), fireFocus(current);
@@ -151,13 +151,13 @@ function onKeyDownMenu(e) {
         }
         stop = true;
     } else if ('End' === key) {
-        if (parent = t.closest('.lot\\:menu[tabindex]')) {
+        if (parent = getParent(t, '.lot\\:menu[tabindex]')) {
             any = [].slice.call(getElements(targets, parent));
             fireFocus(any.pop());
         }
         stop = true;
     } else if ('Home' === key) {
-        if (parent = t.closest('.lot\\:menu[tabindex]')) {
+        if (parent = getParent(t, '.lot\\:menu[tabindex]')) {
             fireFocus(getElement(targets, parent));
         }
         stop = true;

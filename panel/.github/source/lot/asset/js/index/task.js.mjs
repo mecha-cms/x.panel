@@ -75,18 +75,15 @@ function onKeyDownTask(e) {
             }
         } else if ('End' === key) {
             stop = !('selectionEnd' in t && toCount(t.value || ""));
-            if (stop && (parent = t.closest('.lot\\:tasks[tabindex]'))) {
+            if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     fireFocus(current), fireSelect(current);
                 }
             }
-        } else if ('Escape' === key) {
-            fireFocus(t.closest('.lot\\:tasks[tabindex]'));
-            stop = true;
         } else if ('Home' === key) {
             stop = !('selectionStart' in t && toCount(t.value || ""));
-            if (stop && (parent = t.closest('.lot\\:tasks[tabindex]'))) {
+            if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
                 if (current = getElement(targets, parent)) {
                     fireFocus(current), fireSelect(current);
                 }

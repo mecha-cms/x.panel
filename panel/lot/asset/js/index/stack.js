@@ -257,7 +257,7 @@
             function onClick(e) {
                 let t = this,
                     parent = getParent(getParent(t)),
-                    self = parent.closest('.lot\\:stacks'),
+                    self = getParent(parent, '.lot\\:stacks'),
                     current;
                 if (!hasClass(parent, 'has:link')) {
                     stacks.forEach(stack => {
@@ -342,11 +342,8 @@
                     fireEvent('click', t), fireFocus(t);
                 }
                 stop = true;
-            } else if ('Escape' === key) {
-                fireFocus(t.closest('.lot\\:stacks[tabindex]'));
-                stop = true;
             } else if ('End' === key) {
-                if (parent = t.closest('.lot\\:stacks[tabindex]')) {
+                if (parent = getParent(t, '.lot\\:stacks[tabindex]')) {
                     any = [].slice.call(getElements(targets, parent));
                     if (current = any.pop()) {
                         fireEvent('click', current), fireFocus(current);
@@ -354,7 +351,7 @@
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = t.closest('.lot\\:stacks[tabindex]')) {
+                if (parent = getParent(t, '.lot\\:stacks[tabindex]')) {
                     if (current = getElement(targets, parent)) {
                         fireEvent('click', current), fireFocus(current);
                     }

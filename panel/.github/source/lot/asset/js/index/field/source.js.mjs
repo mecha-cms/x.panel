@@ -1,7 +1,8 @@
 import {
     W,
     getDatum,
-    getElements
+    getElements,
+    getParent
 } from '@taufik-nurrohman/document';
 
 import {
@@ -201,6 +202,13 @@ function onChange() {
         state = editor.state;
         type = state.source.type;
         map = new W.K(editor);
+        map.keys['Escape'] = function() {
+            let parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
+            if (parent) {
+                return parent.focus(), false;
+            }
+            return true;
+        };
         if ('HTML' === type) {
             map.commands = commandsSourceHTML;
             map.keys['Control-b'] = 'bold';

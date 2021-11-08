@@ -23,9 +23,22 @@
     };
     var D = document;
     var W = window;
+    var B = D.body;
     var R = D.documentElement;
+    var getElement = function getElement(query, scope) {
+        return (scope || D).querySelector(query);
+    };
     var getFormElement = function getFormElement(nameOrIndex) {
         return D.forms[nameOrIndex] || null;
+    };
+    var getParent = function getParent(node, query) {
+        if (query) {
+            return node.closest(query) || null;
+        }
+        return node.parentNode || null;
+    };
+    var hasClass = function hasClass(node, value) {
+        return node.classList.contains(value);
     };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
@@ -180,6 +193,37 @@
         if ((keyIsCtrl && 'f' === key || 'Escape' === key) && !keyIsAlt && !keyIsShift) {
             R.focus(); // Focus back to the `<html>`!
             stop = true;
+        }
+        stop && offEventDefault(e);
+    });
+    onEvent('keydown', W, function(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
+        let target = e.target,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            firstBarFocusable = getElement('.lot\\:bar a:any-link'),
+            parent,
+            stop;
+        if (mainSearchFormInput && 'F3' === key && !keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            mainSearchFormInput.focus();
+            stop = true;
+        } else if (firstBarFocusable && 'F10' === key && !keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            firstBarFocusable.focus();
+            if (parent = getParent(firstBarFocusable)) {
+                if (hasClass(parent, 'has:menu')) {
+                    firstBarFocusable.click();
+                }
+            }
+            stop = true;
+        } else if (B !== target && R !== target && W !== target) {
+            if ('Escape' === key && (parent = getParent(getParent(target), '[tabindex]:not(.not\\:active)'))) {
+                parent.focus();
+                stop = true;
+            }
         }
         stop && offEventDefault(e);
     });

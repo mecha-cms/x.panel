@@ -140,10 +140,8 @@
   --fill-tab--hover: #242424;
   --fill-tab: #242424;
   --fill: #222222;
-  --shadow-button--focus: 0 0 0 3px rgba(255, 255, 255, .025);
-  --shadow-input--focus: 0 0 0 3px rgba(255, 255, 255, .025);
-  --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke--focus-visible: rgba(255, 255, 255, .025);
   --stroke-code-block: #2d2d2d;
   --stroke-file-icon: #646464;
   --stroke-fix: #383838;
@@ -428,6 +426,7 @@
   --shadow-input--focus: 0 0 0 3px rgba(0, 0, 0, .05);
   --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke--focus-visible: rgba(0, 0, 0, .125);
   --stroke-code-block: #b2b2b2;
   --stroke-file-icon: #a7a7a7;
   --stroke-fix: #a7a7a7;

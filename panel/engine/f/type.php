@@ -39,6 +39,7 @@ function button($value, $key) {
 }
 
 function column($value, $key) {
+    $tags = $value['tags'] ?? [];
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
@@ -48,6 +49,7 @@ function column($value, $key) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
         }
+        $value['tags'] = $tags;
         if (isset($value['content'])) {
             return \x\panel\type\content($value, $key);
         }
@@ -65,6 +67,7 @@ function column($value, $key) {
 }
 
 function columns($value, $key) {
+    $tags = \array_replace(['has:gap' => true], $value['tags'] ?? []);
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
@@ -74,6 +77,7 @@ function columns($value, $key) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
         }
+        $value['tags'] = $tags;
         if (isset($value['content'])) {
             return \x\panel\type\content($value, $key);
         }
@@ -146,7 +150,7 @@ function desk($value, $key) {
     $out = [
         0 => $value[0] ?? 'main',
         1 => $value[1] ?? "",
-        2 => $value[2] ?? []
+        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
     ];
     if (!isset($value[1])) {
         $styles = [];
@@ -169,6 +173,7 @@ function desk($value, $key) {
         if (isset($value['content'])) {
             $out = \x\panel\type\content($value, $key);
             $out[0] = $value[0] ?? 'main';
+            $out['tabindex'] = $out['tabindex'] ?? -1;
             return $out;
         }
         if (isset($value['lot'])) {
@@ -180,6 +185,7 @@ function desk($value, $key) {
             unset($v);
             $out = \x\panel\type\lot($value, $key);
             $out[0] = $value[0] ?? 'main';
+            $out['tabindex'] = $out['tabindex'] ?? -1;
             return $out;
         }
     }
@@ -190,7 +196,7 @@ function field($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
+        2 => $value[2] ?? []
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
@@ -277,9 +283,6 @@ function field($value, $key) {
         $out[1] .= \x\panel\to\description($value['description'] ?? "");
         $out[1] .= '</div>';
         \x\panel\_set_class($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
-        if (!$is_active) {
-            unset($out[2]['tabindex']);
-        }
         if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
             foreach (\explode('&', \substr($data, 1)) as $v) {
                 $vv = \explode('=', $v, 2);
@@ -298,7 +301,7 @@ function fields($value, $key) {
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
+        2 => $value[2] ?? []
     ];
     if (!isset($value[1])) {
         $tags = \array_replace([
@@ -889,6 +892,7 @@ function pages($value, $key) {
 }
 
 function row($value, $key) {
+    $tags = $value['tags'] ?? [];
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
@@ -898,6 +902,7 @@ function row($value, $key) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
         }
+        $value['tags'] = $tags;
         if (isset($value['content'])) {
             return \x\panel\type\content($value, $key);
         }
@@ -915,6 +920,7 @@ function row($value, $key) {
 }
 
 function rows($value, $key) {
+    $tags = \array_replace(['has:gap' => true], $value['tags'] ?? []);
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
@@ -924,6 +930,7 @@ function rows($value, $key) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
         }
+        $value['tags'] = $tags;
         if (isset($value['content'])) {
             return \x\panel\type\content($value, $key);
         }

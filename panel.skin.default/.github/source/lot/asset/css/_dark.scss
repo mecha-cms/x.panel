@@ -96,10 +96,8 @@
   --fill-tab--hover: #{shade(1%)};
   --fill-tab: #{shade(1%)};
   --fill: #{shade(0%)};
-  --shadow-button--focus: 0 0 0 3px rgba(255, 255, 255, .025);
-  --shadow-input--focus: 0 0 0 3px rgba(255, 255, 255, .025);
-  --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke--focus-visible: rgba(255, 255, 255, .025);
   --stroke-code-block: #{shade(5%)};
   --stroke-file-icon: #{shade(30%)};
   --stroke-fix: #{shade(10%)};

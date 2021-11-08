@@ -94,16 +94,13 @@
                 fireFocus(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
-                if (parent = t.closest('.lot\\:links[tabindex]')) {
+                if (parent = getParent(t, '.lot\\:links[tabindex]')) {
                     any = [].slice.call(getElements(targets, parent));
                     fireFocus(any.pop());
                 }
                 stop = true;
-            } else if ('Escape' === key) {
-                fireFocus(t.closest('.lot\\:links[tabindex]'));
-                stop = true;
             } else if ('Home' === key) {
-                if (parent = t.closest('.lot\\:links[tabindex]')) {
+                if (parent = getParent(t, '.lot\\:links[tabindex]')) {
                     fireFocus(getElement(targets, parent));
                 }
                 stop = true;

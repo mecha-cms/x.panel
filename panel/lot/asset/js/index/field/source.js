@@ -182,6 +182,12 @@
     var getElements = function getElements(query, scope) {
         return (scope || D).querySelectorAll(query);
     };
+    var getParent = function getParent(node, query) {
+        if (query) {
+            return node.closest(query) || null;
+        }
+        return node.parentNode || null;
+    };
     var hasAttribute = function hasAttribute(node, attribute) {
         return node.hasAttribute(attribute);
     };
@@ -1807,6 +1813,13 @@
             state = editor.state;
             type = state.source.type;
             map = new W.K(editor);
+            map.keys['Escape'] = function() {
+                let parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
+                if (parent) {
+                    return parent.focus(), false;
+                }
+                return true;
+            };
             if ('HTML' === type) {
                 map.commands = commands;
                 map.keys['Control-b'] = 'bold';

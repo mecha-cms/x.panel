@@ -1,0 +1,7 @@
+.lot\:rows {
+  display: flex;
+  flex-direction: column;
+  &.has\:gap {
+    gap: var(--y) var(--x);
+  }
+}

@@ -52,8 +52,6 @@
         sources && toCount(sources) && sources.forEach(source => {
             let files = getElements(targets, source);
             files.forEach(file => {
-                let tasks = getElement('.lot\\:tasks[tabindex]', file);
-                tasks && onEvent('keydown', tasks, onKeyDownFileTasks);
                 onEvent('keydown', file, onKeyDownFile);
             });
             onEvent('keydown', source, onKeyDownFiles);
@@ -92,34 +90,9 @@
             any = [].slice.call(getElements(targets, getParent(t)));
             fireFocus(any.pop());
             stop = true;
-        } else if ('Escape' === key) {
-            fireFocus(getParent(t));
-            stop = true;
         } else if ('Home' === key) {
             fireFocus(getElement(targets, getParent(t)));
             stop = true;
-        }
-        stop && (offEventDefault(e), offEventPropagation(e));
-    }
-
-    function onKeyDownFileTasks(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
-        let t = this,
-            key = e.key,
-            keyIsAlt = e.altKey,
-            keyIsCtrl = e.ctrlKey,
-            keyIsShift = e.shiftKey,
-            stop;
-        if (t !== e.target) {
-            return;
-        }
-        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            if ('Escape' === key) {
-                fireFocus(t.closest('.lot\\:file[tabindex]:not(.not\\:active),.lot\\:folder[tabindex]:not(.not\\:active)'));
-                stop = true;
-            }
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }

@@ -1,36 +1,40 @@
 @import '../../../../../../../../node_modules/@taufik-nurrohman/option-picker/index.scss';
 
-.lot\:field.type\:option {
-  .option-picker {
-    height: calc(var(--y) * 1.5);
-    line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `.input`
-    padding: calc(var(--y) / 4) calc(var(--x) / 2);
-    width: var(--width-input);
-    &::after {
-      right: calc(var(--x) / 2);
+.option-picker {
+  height: calc(var(--y) * 1.5);
+  line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `.input`
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  width: var(--width-input);
+  &.option-picker--focus,
+  &:focus-visible {
+    @extend :focus-visible;
+  }
+  &::after {
+    right: calc(var(--x) / 2);
+  }
+  &.width {
+    display: flex;
+    width: 100%;
+  }
+  &__options {
+    line-height: var(--h);
+  }
+  &__source {
+    + .option-picker.select {
+      margin-left: 0;
     }
-    &.width {
-      display: flex;
-      width: 100%;
-    }
-    &__options {
-      line-height: var(--h);
-    }
-    &__source {
-      + .option-picker {
-        margin-left: 0;
-      }
-      &:not([multiple]) {
-        + .option-picker {
-          &--open {
-            z-index: 9999; // Buggy! :(
-          }
+    &:not([multiple]) {
+      + .option-picker.select {
+        padding-bottom: calc(var(--y) / 4);
+        padding-top: calc(var(--y) / 4);
+        &--open {
+          z-index: 9999; // Buggy! :(
         }
       }
     }
-    &__values {
-      padding-left: 0;
-      padding-right: 0;
-    }
+  }
+  &__values {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

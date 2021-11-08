@@ -132,9 +132,18 @@
   outline: 0;
 }
 
-:focus-visible {
+:focus-visible,
+.tag-picker.tag-picker--focus,
+.tag-picker:focus-visible,
+.option-picker.option-picker--focus,
+.option-picker:focus-visible,
+.button:focus,
+.input:focus,
+.output:focus,
+.select:focus,
+.textarea:focus {
   box-shadow: var(--shadow--focus-visible, none);
-  outline: 2px solid var(--stroke--focus-visible, transparent);
+  outline: 3px solid var(--stroke--focus-visible, transparent);
   z-index: 1;
 }
 
@@ -367,7 +376,7 @@ fieldset legend {
   padding: 0 calc(var(--x) / 3);
 }
 fieldset legend + * {
-  margin-top: calc(var(--z) / -2);
+  margin-top: calc(var(--h) / -2);
 }
 
 hr {
@@ -390,21 +399,6 @@ hr {
   width: auto;
   z-index: 0;
 }
-.button:focus,
-.input:focus,
-.output:focus,
-.select:focus,
-.textarea:focus {
-  z-index: 1;
-}
-.button:read-write:focus-visible,
-.input:read-write:focus-visible,
-.output:read-write:focus-visible,
-.select:read-write:focus-visible,
-.textarea:read-write:focus-visible {
-  outline: 0;
-}
-
 .button,
 .button:any-link {
   background: var(--fill-button);
@@ -557,8 +551,13 @@ hr {
   background: none;
   border: 0;
   box-shadow: none;
+  height: var(--y);
   line-height: var(--y);
   padding: 0;
+}
+.input[type=file] {
+  height: auto;
+  line-height: normal;
 }
 
 .input[type=checkbox],
@@ -635,7 +634,7 @@ hr {
 }
 
 .select {
-  -moz-padding-start: calc(0.5rem - 3px);
+  -moz-padding-start: calc(var(--x) / 2 - 3px);
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
@@ -1118,6 +1117,22 @@ label > input[type=radio] + span {
   font-weight: bold;
 }
 
+.lot\:column,
+.content\:column {
+  flex: 1;
+  margin: 0;
+}
+
+.lot\:columns,
+.content\:columns {
+  display: flex;
+  flex-direction: row;
+}
+.lot\:columns.has\:gap,
+.has\:gap.content\:columns {
+  gap: var(--y) var(--x);
+}
+
 .lot\:desk {
   padding: var(--y) var(--x);
   position: relative;
@@ -1593,29 +1608,33 @@ label > input[type=radio] + span {
   white-space: nowrap;
 }
 
-.lot\:field.type\:option .option-picker {
+.option-picker {
   height: calc(var(--y) * 1.5);
   line-height: calc(var(--y) * 1.5 - var(--y) / 2 - 2px);
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   width: var(--width-input);
 }
-.lot\:field.type\:option .option-picker::after {
+.option-picker::after {
   right: calc(var(--x) / 2);
 }
-.lot\:field.type\:option .option-picker.width {
+.option-picker.width {
   display: flex;
   width: 100%;
 }
-.lot\:field.type\:option .option-picker__options {
+.option-picker__options {
   line-height: var(--h);
 }
-.lot\:field.type\:option .option-picker__source + .option-picker {
+.option-picker__source + .option-picker.select {
   margin-left: 0;
 }
-.lot\:field.type\:option .option-picker__source:not([multiple]) + .option-picker--open {
+.option-picker__source:not([multiple]) + .option-picker.select {
+  padding-bottom: calc(var(--y) / 4);
+  padding-top: calc(var(--y) / 4);
+}
+.option-picker__source:not([multiple]) + .option-picker.select--open {
   z-index: 9999;
 }
-.lot\:field.type\:option .option-picker__values {
+.option-picker__values {
   padding-left: 0;
   padding-right: 0;
 }
@@ -1862,25 +1881,25 @@ label > input[type=radio] + span {
   color: var(--color-tag-picker__tag--disabled, var(--color-tag-picker__tag));
 }
 
-.lot\:field.type\:query .tag-picker {
+.tag-picker {
   height: auto;
   min-height: calc(var(--y) * 1.5);
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
   width: var(--width-input);
 }
-.lot\:field.type\:query .tag-picker.width {
+.tag-picker.width {
   display: flex;
   width: 100%;
 }
-.lot\:field.type\:query .tag-picker__tag {
+.tag-picker__tag {
   border: 1px solid transparent;
   margin: calc(var(--y) / 12) calc(var(--x) / 12);
   padding: 0 calc(var(--z) / 2);
 }
-.lot\:field.type\:query .tag-picker__source {
+.tag-picker__source {
   position: fixed;
 }
-.lot\:field.type\:query .tag-picker__source + .tag-picker {
+.tag-picker__source + .tag-picker.input {
   margin-left: 0;
 }
 
@@ -2362,6 +2381,22 @@ label > input[type=radio] + span {
   border-radius: 0;
   box-shadow: none;
   color: inherit;
+}
+
+.lot\:row,
+.content\:row {
+  flex: 1;
+  margin: 0;
+}
+
+.lot\:rows,
+.content\:rows {
+  display: flex;
+  flex-direction: column;
+}
+.lot\:rows.has\:gap,
+.has\:gap.content\:rows {
+  gap: var(--y) var(--x);
 }
 
 .lot\:section,
