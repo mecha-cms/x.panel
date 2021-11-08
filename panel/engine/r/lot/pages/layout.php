@@ -90,7 +90,7 @@ if (1 === count($_['chop'])) {
         }
         $git = $page->git ?? 'mecha-cms/' . ($n = 'layout.' . To::kebab($page->title));
         $version_current = explode('.', $page->version);
-        $version_next = explode('.', Cache::live($n, function() use($git, $n) {
+        $version_next = explode('.', Cache::live($n, function() use($git) {
             return fetch('https://mecha-cms.com/git/version/' . $git, [
                 'user-agent' => 'Mecha/' . VERSION
             ]);

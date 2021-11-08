@@ -1,8 +1,8 @@
 <?php
 
-$git = 'mecha-cms/mecha';
+$git = 'mecha-cms/' . ($n = 'mecha');
 $version_current = explode('.', VERSION);
-$version_next = explode('.', Cache::live($n, function() use($git, $n) {
+$version_next = explode('.', Cache::live($n, function() use($git) {
     return fetch('https://mecha-cms.com/git/version/' . $git, [
         'user-agent' => 'Mecha/' . VERSION
     ]);

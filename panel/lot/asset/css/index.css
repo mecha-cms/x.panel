@@ -216,15 +216,16 @@ sub,
 sup {
   line-height: 0;
   position: relative;
-  vertical-align: baseline;
 }
 
 sub {
   top: 0.25em;
+  vertical-align: sub;
 }
 
 sup {
   top: -0.25em;
+  vertical-align: super;
 }
 
 mark {
