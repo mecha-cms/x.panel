@@ -1,22 +1,31 @@
-@import '../../../../../../../../node_modules/@taufik-nurrohman/tag-picker/index.scss';
-
 .tag-picker {
   height: auto;
   min-height: calc(var(--y) * 1.5);
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
   width: var(--width-input);
-  &.tag-picker--focus,
-  &:focus-visible {
+  &--focus {
     @extend :focus-visible;
   }
   &.width {
     display: flex;
     width: 100%;
   }
+  &__input {
+    span {
+      min-height: var(--y);
+    }
+  }
   &__tag {
     border: 1px solid transparent;
     margin: calc(var(--y) / 12) calc(var(--x) / 12);
     padding: 0 calc(var(--z) / 2);
+    // Fix link color specifity
+    &-x:any-link {
+      color: var(--color-tag-picker__tag-x);
+      @each $v in (hover, focus, active) {
+        color: var(--color-tag-picker__tag-x--#{$v}, var(--color-tag-picker__tag-x));
+      }
+    }
   }
   &__source {
     position: fixed;

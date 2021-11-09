@@ -49,6 +49,7 @@
               margin-right: calc(var(--x) / 4);
             }
             &.caret {
+              color: var(--color-bar-caret, inherit);
               margin-left: calc(var(--x) / -4);
               margin-right: calc(var(--x) / -4);
             }

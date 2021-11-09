@@ -1,12 +1,10 @@
-@import '../../../../../../../../node_modules/@taufik-nurrohman/option-picker/index.scss';
-
 .option-picker {
   height: calc(var(--y) * 1.5);
   line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `.input`
+  outline: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   width: var(--width-input);
-  &.option-picker--focus,
-  &:focus-visible {
+  &--focus {
     @extend :focus-visible;
   }
   &::after {
@@ -24,7 +22,7 @@
       margin-left: 0;
     }
     &:not([multiple]) {
-      + .option-picker.select {
+      + .option-picker {
         padding-bottom: calc(var(--y) / 4);
         padding-top: calc(var(--y) / 4);
         &--open {

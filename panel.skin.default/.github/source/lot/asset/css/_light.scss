@@ -24,6 +24,7 @@
   --color-button--focus: #{shade(100%)};
   --color-button--hover: #{shade(100%)};
   --color-button: #{shade(100%)};
+  --color-description: #{shade(35%)};
   --color-info: #{shade(50%)};
   --color-input--disabled: #{shade(50%)};
   --color-input--hover: #{shade(20%)};
@@ -114,99 +115,11 @@
   --stroke-stack: #{shade(65%)};
   --stroke-tab: #{shade(65%)};
   --stroke: #{shade(65%)};
-  @each $name in (option-picker, tag-picker) {
-    --arc-#{$name}: var(--arc-input);
-    --color-#{$name}: var(--color-input);
-    --fill-#{$name}: var(--fill-input);
-    --shadow-#{$name}: var(--shadow-input);
-    --stroke-#{$name}: var(--stroke-input);
-    @if option-picker == $name {
-      --color-#{$name}__option: var(--color-input);
-      --color-#{$name}__options--open: var(--color-input);
-      --color-#{$name}__options: var(--color-input);
-      --fill-#{$name}__option--active: rgba(0, 0, 0, .025);
-      --fill-#{$name}__option--focus: rgba(0, 0, 0, .025);
-      --fill-#{$name}__option--hover: rgba(0, 0, 0, .025);
-      --fill-#{$name}__option--selected: rgba(0, 0, 0, .05);
-      --fill-#{$name}__option: none;
-      --fill-#{$name}__options: var(--fill-input);
-      --stroke-#{$name}__options--open: var(--stroke-input--focus, var(--stroke-input));
-      --stroke-#{$name}__options: var(--stroke-input);
-      @each $v in (hover, focus, active, selected, disabled) {
-        --color-#{$name}__option--#{$v}: var(--color-input--#{$v}, var(--color-input));
-      }
-      .#{$name}::after {
-        --stroke-#{$name}--open: var(--color-#{$name});
-        --stroke-#{$name}: var(--color-#{$name});
-      }
-      .#{$name}__option--selected {
-        --fill-#{$name}__option--active: rgba(0, 0, 0, .075);
-        --fill-#{$name}__option--focus: rgba(0, 0, 0, .075);
-        --fill-#{$name}__option--hover: rgba(0, 0, 0, .075);
-      }
-    }
-    @if tag-picker == $name {
-      --color-#{$name}__tag--active: #{shade(35%)};
-      --color-#{$name}__tag--disabled: #{shade(50%)};
-      --color-#{$name}__tag--focus: #{shade(35%)};
-      --color-#{$name}__tag--hover: #{shade(30%)};
-      --color-#{$name}__tag--read-only: #{shade(30%)};
-      --color-#{$name}__tag--selected: #{shade(30%)};
-      --color-#{$name}__tag: #{shade(30%)};
-      --fill-#{$name}__tag--active: #{shade(80%)};
-      --fill-#{$name}__tag--disabled: #{shade(90%)};
-      --fill-#{$name}__tag--focus: #{shade(75%)};
-      --fill-#{$name}__tag--hover: #{shade(80%)};
-      --fill-#{$name}__tag--read-only: #{shade(80%)};
-      --fill-#{$name}__tag--selected: #{shade(75%)};
-      --fill-#{$name}__tag: #{shade(80%)};
-      @each $v in (focus) {
-        .#{$name}--#{$v} {
-          // Force #1
-          --color-input: var(--color-input--#{$v});
-          --fill-input: var(--fill-input--#{$v});
-          --shadow-input: var(--shadow-input--#{$v});
-          --stroke-input: var(--stroke-input--#{$v});
-          // Force #2
-          --color-#{$name}: var(--color-input);
-          --fill-#{$name}: var(--fill-input);
-          --shadow-#{$name}: var(--shadow-input);
-          --stroke-#{$name}: var(--stroke-input);
-          // Force #3
-          @each $v in (hover, focus, active) {
-            --color-#{$name}--#{$v}: var(--color-input);
-            --fill-#{$name}--#{$v}: var(--fill-input);
-            --shadow-#{$name}--#{$v}: var(--shadow-input);
-            --stroke-#{$name}--#{$v}: var(--stroke-input);
-          }
-        }
-      }
-    }
-    @each $v in (hover, focus, active) {
-      --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
-      --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
-      --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
-      --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
-    }
-    .#{$name}__source {
-      @each $v in (read-only, disabled) {
-        &:#{$v} {
-          + .#{$name},
-          + .#{$name}--focus {
-            --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
-            --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
-            --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
-            --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
-          }
-        }
-      }
-    }
-  }
   blockquote,
   caption,
   figcaption,
   .description {
-    color: #{shade(35%)};
+    color: var(--color-description);
   }
   .lot\:menu {
     a {

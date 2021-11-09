@@ -21,6 +21,9 @@
   user-select: $select;
 }
 
+@import '../../../../../node_modules/@taufik-nurrohman/option-picker/index.scss';
+@import '../../../../../node_modules/@taufik-nurrohman/tag-picker/index.scss';
+
 :root {
   // Gap
   --x: 24px;
@@ -124,6 +127,87 @@
   --stroke-stack: #000;
   --stroke-tab: #000;
   --stroke: #000;
+  @each $name in (option-picker, tag-picker) {
+    --arc-#{$name}: var(--arc-input);
+    --color-#{$name}: var(--color-input);
+    --fill-#{$name}: var(--fill-input);
+    --shadow-#{$name}: var(--shadow-input);
+    --stroke-#{$name}: var(--stroke-input);
+    @if option-picker == $name {
+      --color-#{$name}__option--disabled: var(--color--disabled);
+      --color-#{$name}__option--selected: var(--color-link);
+      --color-#{$name}__option: var(--color-input);
+      --color-#{$name}__options--open: var(--color-input);
+      --color-#{$name}__options: var(--color-input);
+      --fill-#{$name}__option--disabled: none;
+      --fill-#{$name}__option--selected: none;
+      --fill-#{$name}__option: none;
+      --fill-#{$name}__options: var(--fill-input);
+      --stroke-#{$name}__options--open: var(--stroke-input--focus, var(--stroke-input));
+      --stroke-#{$name}__options: var(--stroke-input);
+      @each $v in (hover, focus, active) {
+        --color-#{$name}__option--#{$v}: var(--color-button--#{$v}, var(--color-button));
+        --fill-#{$name}__option--#{$v}: var(--fill-button--#{$v}, var(--fill-button));
+      }
+      .#{$name}::after {
+        --stroke-#{$name}--open: var(--color-#{$name});
+        --stroke-#{$name}: var(--color-#{$name});
+      }
+    }
+    @if tag-picker == $name {
+      --color-#{$name}: var(--color-input);
+      --color-#{$name}__tag-x: var(--color-button);
+      --color-#{$name}__tag: var(--color-input);
+      --fill-#{$name}--disabled: var(--fill-input--disabled);
+      --fill-#{$name}--read-only: var(--fill-input--read-only);
+      --fill-#{$name}: var(--fill-input);
+      --fill-#{$name}__tag--disabled: var(--fill-button--disabled);
+      --fill-#{$name}__tag--focus: var(--fill-button--focus);
+      --fill-#{$name}__tag--read-only: var(--fill-button);
+      --fill-#{$name}__tag--selected: var(--fill-button--focus);
+      --fill-#{$name}__tag: var(--fill-button);
+      @each $v in (focus) {
+        .#{$name}--#{$v} {
+          // Force #1
+          --color-input: var(--color-input--#{$v});
+          --fill-input: var(--fill-input--#{$v});
+          --shadow-input: var(--shadow-input--#{$v});
+          --stroke-input: var(--stroke-input--#{$v});
+          // Force #2
+          --color-#{$name}: var(--color-input);
+          --fill-#{$name}: var(--fill-input);
+          --shadow-#{$name}: var(--shadow-input);
+          --stroke-#{$name}: var(--stroke-input);
+          // Force #3
+          @each $v in (hover, focus, active) {
+            --color-#{$name}--#{$v}: var(--color-input);
+            --fill-#{$name}--#{$v}: var(--fill-input);
+            --shadow-#{$name}--#{$v}: var(--shadow-input);
+            --stroke-#{$name}--#{$v}: var(--stroke-input);
+          }
+        }
+      }
+    }
+    @each $v in (hover, focus, active) {
+      --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+      --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+      --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+      --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
+    }
+    .#{$name}__source {
+      @each $v in (read-only, disabled) {
+        &:#{$v} {
+          + .#{$name},
+          + .#{$name}--focus {
+            --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
+            --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));
+            --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input));
+            --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input));
+          }
+        }
+      }
+    }
+  }
 }
 
 @import '_/base';
