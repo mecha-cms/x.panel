@@ -1,7 +1,11 @@
 GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 =============================================================
 
-![Panel](https://user-images.githubusercontent.com/1669261/104103529-31af0f00-52d5-11eb-8e08-fe2c4f2d3b4c.png)
+![Panel Skin Default Dark](https://user-images.githubusercontent.com/1669261/141484343-0568ef0d-f7c5-4991-a8ee-7773379415b2.png)
+
+![Panel Skin Default Light](https://user-images.githubusercontent.com/1669261/141484338-d4a133f5-2c7f-4bc2-95c5-b4c61a531551.png)
+
+![Panel Skin](https://user-images.githubusercontent.com/1669261/141484323-d97a403f-5706-4e84-b5ab-78ebd9eb6bd9.png)
 
 ---
 
