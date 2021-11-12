@@ -45,6 +45,10 @@ function column($value, $key) {
         1 => $value[1] ?? "",
         2 => $value[2] ?? []
     ];
+    if (!empty($value['size'])) {
+        $size = $value['size'];
+        $tags['size:' . $size] = true;
+    }
     if (!isset($value[1])) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
@@ -67,7 +71,8 @@ function column($value, $key) {
 }
 
 function columns($value, $key) {
-    $tags = \array_replace(['has:gap' => true], $value['tags'] ?? []);
+    $has_gap = !\array_key_exists('gap', $value) || $value['gap'];
+    $tags = \array_replace(['has:gap' => $has_gap], $value['tags'] ?? []);
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
@@ -898,6 +903,10 @@ function row($value, $key) {
         1 => $value[1] ?? "",
         2 => $value[2] ?? []
     ];
+    if (!empty($value['size'])) {
+        $size = $value['size'];
+        $tags['size:' . $size] = true;
+    }
     if (!isset($value[1])) {
         if (!\array_key_exists('p', $tags)) {
             $tags['p'] = false;
@@ -920,7 +929,8 @@ function row($value, $key) {
 }
 
 function rows($value, $key) {
-    $tags = \array_replace(['has:gap' => true], $value['tags'] ?? []);
+    $has_gap = !\array_key_exists('gap', $value) || $value['gap'];
+    $tags = \array_replace(['has:gap' => $has_gap], $value['tags'] ?? []);
     $out = [
         0 => $value[0] ?? 'div',
         1 => $value[1] ?? "",
@@ -1056,7 +1066,13 @@ function select($value, $key) {
 }
 
 function separator($value, $key) {
-    return new \HTML(['hr', false]);
+    $out = [
+        0 => $value[0] ?? 'hr',
+        1 => $value[1] ?? false,
+        2 => $value[2] ?? []
+    ];
+    \x\panel\_set_class($out[2], $value['tags'] ?? []);
+    return new \HTML($out);
 }
 
 function stack($value, $key) {

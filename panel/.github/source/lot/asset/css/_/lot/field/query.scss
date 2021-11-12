@@ -23,7 +23,9 @@
     &-x:any-link {
       color: var(--color-tag-picker__tag-x);
       @each $v in (hover, focus, active) {
-        color: var(--color-tag-picker__tag-x--#{$v}, var(--color-tag-picker__tag-x));
+        &:#{$v} {
+          color: var(--color-tag-picker__tag-x--#{$v}, var(--color-tag-picker__tag-x));
+        }
       }
     }
   }
