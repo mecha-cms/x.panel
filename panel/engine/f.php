@@ -146,6 +146,7 @@ function _error_user_check() {
 }
 
 function _set() {
+    \x\panel\_set_state();
     // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
     foreach ($GLOBALS['X'][1] as $v) {
         \is_file($v = \Path::F($v) . \DS . 'panel.php') && (static function($v) {
