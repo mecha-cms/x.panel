@@ -44,7 +44,6 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'not' => [],
     'path' => null,
     'query' => e($_GET ?? []),
-    'skin' => [],
     'sort' => [-1, 'time'],
     'state' => $state,
     'task' => null,

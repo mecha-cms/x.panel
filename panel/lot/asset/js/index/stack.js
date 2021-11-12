@@ -277,8 +277,8 @@
                     input.value = value = current ? getDatum(parent, 'value') : null;
                     toggleClass(self, 'has:current', current);
                     W._.fire.apply(parent, ['change.stack', [value, name]]);
+                    offEventDefault(e);
                 }
-                offEventDefault(e);
             }
             stacks.forEach(stack => {
                 let target = getElement(targets, stack);

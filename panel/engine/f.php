@@ -146,7 +146,6 @@ function _error_user_check() {
 }
 
 function _set() {
-    \x\panel\_set_state();
     // Load panel definition from a file stored in `.\lot\x\*\index\panel.php`
     foreach ($GLOBALS['X'][1] as $v) {
         \is_file($v = \Path::F($v) . \DS . 'panel.php') && (static function($v) {
@@ -165,22 +164,12 @@ function _set() {
             $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
         }
     })($v);
+    \x\panel\_set_state();
     return $GLOBALS['_'];
 }
 
 function _set_asset() {
     extract($GLOBALS);
-    $skin = $state->x->panel->skin ?? null;
-    if ($skin && isset($_['skin'][$skin])) {
-        $f = \is_array($_['skin'][$skin]) ? ($_['skin'][$skin]['path'] ?? null) : $_['skin'][$skin];
-        if ($f && \is_file($f)) {
-            $_['asset']['panel.skin.' . $skin] = [
-                'id' => false,
-                'path' => $f,
-                'stack' => 20.1
-            ];
-        }
-    }
     if (!empty($_['asset'])) {
         foreach ((array) $_['asset'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {

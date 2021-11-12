@@ -1,20 +1,14 @@
 .lot\:stack {
-  background: var(--fill-stack, none);
   border: 1px solid;
   border-color: var(--stroke-stack, var(--stroke));
   border-radius: var(--arc-stack);
-  box-shadow: var(--shadow-stack);
   margin: 0;
   position: relative;
-  @each $v in (focus, hover, active) {
-    &:#{$v} {
-      background: var(--fill-stack--#{$v}, var(--fill-stack));
-      border-color: var(--stroke-stack--#{$v}, var(--stroke-stack));
-      box-shadow: var(--shadow-stack--#{$v}, var(--shadow-stack));
-    }
-  }
   > h3 {
     @include user-select(none);
+    background: var(--fill-stack, none);
+    border-radius: inherit;
+    box-shadow: var(--shadow-stack);
     color: var(--color-stack);
     font: inherit;
     > a {
@@ -46,13 +40,25 @@
       }
     }
   }
+  @each $v in (hover, focus, active) {
+    &:#{$v} {
+      border-color: var(--stroke-stack--#{$v}, var(--stroke-stack));
+      > h3 {
+        background: var(--fill-stack--#{$v}, var(--fill-stack));
+        box-shadow: var(--shadow-stack--#{$v}, var(--shadow-stack));
+      }
+    }
+  }
   > .content,
   > .lot {
     display: none;
     padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
   }
   &.has\:link {
+    border-color: var(--stroke-stack-link, var(--stroke-stack));
     > h3 {
+      background: var(--fill-stack-link, var(--fill-stack));
+      box-shadow: var(--shadow-stack-link, var(--shadow-stack));
       color: var(--color-stack-link, var(--color-stack));
       > a {
         @each $v in (hover, focus, active) {
@@ -64,9 +70,11 @@
     }
   }
   &.is\:current {
-    background: var(--fill-stack--current, var(--fill-stack));
     border-color: var(--stroke-stack--current, var(--stroke-stack));
-    box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+    > h3 {
+      background: var(--fill-stack--current, var(--fill-stack));
+      box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+    }
     > .content,
     > .lot {
       border-top: 1px solid;

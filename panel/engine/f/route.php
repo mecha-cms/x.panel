@@ -82,7 +82,7 @@ HTML;
         $_ = \array_replace_recursive($_ ?? [], require __DIR__ . \DS . '..' . \DS . 'r' . \DS . 'type' . \DS . 'state.php');
         // `http://127.0.0.1/panel/::g::/.state`
         if (1 === \count($_['chop'])) {
-            $languages = $panes = $paths = $skins = [];
+            $languages = $panes = $paths = [];
             if (isset($state->x->language)) {
                 $labels = require \LOT . \DS . 'x' . \DS . 'panel' . \DS . 'state' . \DS . 'language.php';
                 foreach (\glob(\LOT . \DS . 'x' . \DS . 'language' . \DS . 'state' . \DS . '*.php', \GLOB_NOSORT) as $language) {
@@ -109,21 +109,6 @@ HTML;
             }
             \asort($panes);
             \asort($paths);
-            if (!empty($_['skin'])) {
-                foreach ($_['skin'] as $k => $v) {
-                    if (!\is_array($v)) {
-                        $v = [
-                            'title' => \S . $k . \S,
-                            'path' => $v
-                        ];
-                    }
-                    $skins[$k] = [
-                        'active' => !empty($v['path']) && \is_file($v['path']),
-                        'title' => $v['title'] ?? \S . $k . \S
-                    ];
-                }
-            }
-            $skins['none'] = 'None';
             $zones = \Cache::hit(__FILE__, function() {
                 $zones = [];
                 $regions = [
@@ -246,13 +231,6 @@ HTML;
                                                                     'hint' => $state_user['guard']['path'] ?? $state_panel['guard']['path'] ?? $state_user['path'] ?? null,
                                                                     'value' => $state_r['x']['user']['guard']['path'] ?? $state_user['guard']['path'] ?? null,
                                                                     'stack' => 20
-                                                                ],
-                                                                'skin' => [
-                                                                    'type' => 'option',
-                                                                    'name' => 'state[x][panel][skin]',
-                                                                    'value' => $state_r['x']['panel']['skin'] ?? $state_panel['skin'] ?? null,
-                                                                    'lot' => $skins,
-                                                                    'stack' => 30
                                                                 ]
                                                             ],
                                                             'stack' => 10
