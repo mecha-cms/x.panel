@@ -1,16 +1,4 @@
 .is\:dark {
-  @each $type in (file, folder, page) {
-    --fill-#{$type}--active: #{shade(1%)};
-    --fill-#{$type}--current: #{shade(2%)};
-    --fill-#{$type}--focus: #{shade(1%)};
-    --fill-#{$type}--hover: #{shade(1%)};
-    --stroke-#{$type}--active: #{shade(1%)};
-    --stroke-#{$type}--current: #{shade(2%)};
-    --stroke-#{$type}--focus: #{shade(1%)};
-    --stroke-#{$type}--hover: #{shade(1%)};
-    --stroke-#{$type}: #{shade(0%)};
-    // --fill-#{$type}: #{shade(0%)};
-  }
   --color--disabled: #{shade(20%)};
   --color-bar-info: #{shade(65%)};
   --color-bar-link--active: #{shade(50%)};
@@ -112,6 +100,26 @@
   --stroke-stack: #{shade(5%)};
   --stroke-tab: #{shade(5%)};
   --stroke: #{shade(5%)};
+  @each $v in (file, folder, page) {
+    --fill-#{$v}--active: #{shade(1%)};
+    --fill-#{$v}--current: #{shade(2%)};
+    --fill-#{$v}--focus: #{shade(1%)};
+    --fill-#{$v}--hover: #{shade(1%)};
+    --stroke-#{$v}--active: #{shade(1%)};
+    --stroke-#{$v}--current: #{shade(2%)};
+    --stroke-#{$v}--focus: #{shade(1%)};
+    --stroke-#{$v}--hover: #{shade(1%)};
+    --stroke-#{$v}: #{shade(0%)};
+    // --fill-#{$v}: #{shade(0%)};
+  }
+  --color-option-picker__option--disabled: var(--color--disabled);
+  --color-option-picker__option--selected: var(--color);
+  --color-option-picker__option: var(--color);
+  --fill-option-picker__option--selected: rgba(255, 255, 255, .025);
+  @each $v in (hover, focus, active) {
+    --color-option-picker__option--#{$v}: var(--color);
+    --fill-option-picker__option--#{$v}: rgba(255, 255, 255, .05);
+  }
   blockquote,
   caption,
   figcaption,

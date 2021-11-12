@@ -28,33 +28,6 @@
 }
 
 .is\:dark {
-  --fill-file--active: #242424;
-  --fill-file--current: #262626;
-  --fill-file--focus: #242424;
-  --fill-file--hover: #242424;
-  --stroke-file--active: #242424;
-  --stroke-file--current: #262626;
-  --stroke-file--focus: #242424;
-  --stroke-file--hover: #242424;
-  --stroke-file: #222222;
-  --fill-folder--active: #242424;
-  --fill-folder--current: #262626;
-  --fill-folder--focus: #242424;
-  --fill-folder--hover: #242424;
-  --stroke-folder--active: #242424;
-  --stroke-folder--current: #262626;
-  --stroke-folder--focus: #242424;
-  --stroke-folder--hover: #242424;
-  --stroke-folder: #222222;
-  --fill-page--active: #242424;
-  --fill-page--current: #262626;
-  --fill-page--focus: #242424;
-  --fill-page--hover: #242424;
-  --stroke-page--active: #242424;
-  --stroke-page--current: #262626;
-  --stroke-page--focus: #242424;
-  --stroke-page--hover: #242424;
-  --stroke-page: #222222;
   --color--disabled: #4e4e4e;
   --color-bar-info: #b2b2b2;
   --color-bar-link--active: #919191;
@@ -68,6 +41,7 @@
   --color-button--focus: #f4f4f4;
   --color-button--hover: #f4f4f4;
   --color-button: #f4f4f4;
+  --color-description: #919191;
   --color-info: #919191;
   --color-input--disabled: #4e4e4e;
   --color-input--hover: #bdbdbd;
@@ -155,12 +129,49 @@
   --stroke-stack: #2d2d2d;
   --stroke-tab: #2d2d2d;
   --stroke: #2d2d2d;
+  --fill-file--active: #242424;
+  --fill-file--current: #262626;
+  --fill-file--focus: #242424;
+  --fill-file--hover: #242424;
+  --stroke-file--active: #242424;
+  --stroke-file--current: #262626;
+  --stroke-file--focus: #242424;
+  --stroke-file--hover: #242424;
+  --stroke-file: #222222;
+  --fill-folder--active: #242424;
+  --fill-folder--current: #262626;
+  --fill-folder--focus: #242424;
+  --fill-folder--hover: #242424;
+  --stroke-folder--active: #242424;
+  --stroke-folder--current: #262626;
+  --stroke-folder--focus: #242424;
+  --stroke-folder--hover: #242424;
+  --stroke-folder: #222222;
+  --fill-page--active: #242424;
+  --fill-page--current: #262626;
+  --fill-page--focus: #242424;
+  --fill-page--hover: #242424;
+  --stroke-page--active: #242424;
+  --stroke-page--current: #262626;
+  --stroke-page--focus: #242424;
+  --stroke-page--hover: #242424;
+  --stroke-page: #222222;
+  --color-option-picker__option--disabled: var(--color--disabled);
+  --color-option-picker__option--selected: var(--color);
+  --color-option-picker__option: var(--color);
+  --fill-option-picker__option--selected: rgba(255, 255, 255, .025);
+  --color-option-picker__option--hover: var(--color);
+  --fill-option-picker__option--hover: rgba(255, 255, 255, .05);
+  --color-option-picker__option--focus: var(--color);
+  --fill-option-picker__option--focus: rgba(255, 255, 255, .05);
+  --color-option-picker__option--active: var(--color);
+  --fill-option-picker__option--active: rgba(255, 255, 255, .05);
 }
 .is\:dark blockquote,
 .is\:dark caption,
 .is\:dark figcaption,
 .is\:dark .description {
-  color: #919191;
+  color: var(--color-description);
 }
 .is\:dark .lot\:menu a:focus,
 .is\:dark .lot\:menu a:hover,
@@ -227,6 +238,7 @@
   --color-button--focus: white;
   --color-button--hover: white;
   --color-button: white;
+  --color-description: #6f6f6f;
   --color-info: #919191;
   --color-input--disabled: #919191;
   --color-input--hover: #4e4e4e;
@@ -317,12 +329,22 @@
   --stroke-stack: #b2b2b2;
   --stroke-tab: #b2b2b2;
   --stroke: #b2b2b2;
+  --color-option-picker__option--disabled: var(--color--disabled);
+  --color-option-picker__option--selected: var(--color);
+  --color-option-picker__option: var(--color);
+  --fill-option-picker__option--selected: rgba(0, 0, 0, .025);
+  --color-option-picker__option--hover: var(--color);
+  --fill-option-picker__option--hover: rgba(0, 0, 0, .05);
+  --color-option-picker__option--focus: var(--color);
+  --fill-option-picker__option--focus: rgba(0, 0, 0, .05);
+  --color-option-picker__option--active: var(--color);
+  --fill-option-picker__option--active: rgba(0, 0, 0, .05);
 }
 .is\:light blockquote,
 .is\:light caption,
 .is\:light figcaption,
 .is\:light .description {
-  color: #6f6f6f;
+  color: var(--color-description);
 }
 .is\:light .lot\:menu a:focus,
 .is\:light .lot\:menu a:hover,

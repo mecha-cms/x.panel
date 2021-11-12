@@ -115,6 +115,16 @@
   --stroke-stack: #{shade(65%)};
   --stroke-tab: #{shade(65%)};
   --stroke: #{shade(65%)};
+  --color-option-picker__option--disabled: var(--color--disabled);
+  --color-option-picker__option--selected: var(--color);
+  --color-option-picker__option: var(--color);
+  --fill-option-picker__option--selected: rgba(0, 0, 0, .025);
+  @each $v in (hover, focus, active) {
+    --color-option-picker__option--#{$v}: var(--color);
+    --fill-option-picker__option--#{$v}: rgba(0, 0, 0, .05);
+  }
+  @each $v in (hover, focus) {
+  }
   blockquote,
   caption,
   figcaption,
