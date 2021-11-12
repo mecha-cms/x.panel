@@ -41,7 +41,7 @@ function fields($_) {
                         'active' => false,
                         'title' => 'Button 3',
                         'value' => 3
-                    ],
+                    ]
                 ]
             ],
             'color' => [
