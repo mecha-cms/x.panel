@@ -58,9 +58,6 @@ onEvent('beforeload', D, () => fire('let'));
 onEvent('load', D, () => fire('get'));
 onEvent('DOMContentLoaded', D, () => fire('set'));
 
-const mainSearchForm = getFormElement('get');
-const mainSearchFormInput = mainSearchForm && mainSearchForm.q;
-
 onEvent('keydown', W, function(e) {
     if (e.defaultPrevented) {
         return;
@@ -72,6 +69,8 @@ onEvent('keydown', W, function(e) {
         keyIsCtrl = e.ctrlKey,
         keyIsShift = e.shiftKey,
         firstBarFocusable = getElement('.lot\\:bar a:any-link'),
+        mainSearchForm = getFormElement('get'),
+        mainSearchFormInput = mainSearchForm && mainSearchForm.q,
         parent, stop;
     if (mainSearchFormInput && 'F3' === key && !keyIsAlt && !keyIsCtrl && !keyIsShift) {
         mainSearchFormInput.focus();
