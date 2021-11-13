@@ -1,11 +1,11 @@
 ---
 title: Panel Skin: Default
 description: The default control panel skin.
+image: https://user-images.githubusercontent.com/1669261/141484343-0568ef0d-f7c5-4991-a8ee-7773379415b2.png
 author: Taufik Nurrohman
 type: Markdown
 version: 1.1.0
 
-image: https://user-images.githubusercontent.com/1669261/141484343-0568ef0d-f7c5-4991-a8ee-7773379415b2.png
 images:
 - https://user-images.githubusercontent.com/1669261/141484343-0568ef0d-f7c5-4991-a8ee-7773379415b2.png
 - https://user-images.githubusercontent.com/1669261/141484338-d4a133f5-2c7f-4bc2-95c5-b4c61a531551.png

@@ -12,48 +12,48 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 Release Notes
 -------------
 
-### main
+### 2.8.0
 
- - [ ] Added version update check feature.
- - [x] Improved keyboard accessibility by adding some navigation shortcuts:
-   - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>Home</kbd> or <kbd>PageDown</kbd> to focus to the first stack when focusing on the stacks block.
-   - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>Home</kbd> or <kbd>PageDown</kbd> to focus to the first tab when focusing on the tabs block.
-   - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to switch between menu links when focusing on the menu link.
-   - [x] Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to toggle the tab panel visibility if `toggle` option is enabled. If tab panel is already hidden, this navigation will works as the way <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> works.
-   - [x] Press <kbd>ArrowDown</kbd> or <kbd>Home</kbd> to focus to the first menu link when focusing on the menu block.
-   - [x] Press <kbd>ArrowDown</kbd> to show the menu and then focus to the first menu link when focusing on the menu trigger.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between links when focusing on the links list.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between stacks when focusing on the stack trigger.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tabs when focusing on the tab trigger.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tasks when focusing on the tasks list.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to toggle the stack panel visibility if `toggle` option is enabled. If stack panel is already hidden, this navigation will works as the way <kbd>ArrowDown</kbd> and <kbd>ArrowUp</kbd> works.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>End</kbd> to focus to the last link when focusing on the links list.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>End</kbd> to focus to the last task when focusing on the tasks list.
-   - [x] Press <kbd>ArrowLeft</kbd> or <kbd>Escape</kbd> to hide the current menu and then focus to the nearest parent menu link.
-   - [x] Press <kbd>ArrowRight</kbd> or <kbd>Home</kbd> to focus to the first link when focusing on the links list.
-   - [x] Press <kbd>ArrowRight</kbd> or <kbd>Home</kbd> to focus to the first task when focusing on the tasks list.
-   - [x] Press <kbd>ArrowRight</kbd> to show the child menu and then focus to the first child menu link.
-   - [x] Press <kbd>ArrowUp</kbd> or <kbd>ArrowLeft</kbd> or <kbd>End</kbd> or <kbd>PageUp</kbd> to focus to the last stack when focusing on the stacks block.
-   - [x] Press <kbd>ArrowUp</kbd> or <kbd>ArrowLeft</kbd> or <kbd>End</kbd> or <kbd>PageUp</kbd> to focus to the last tab when focusing on the tabs block.
-   - [x] Press <kbd>ArrowUp</kbd> or <kbd>End</kbd> to focus to the last menu link when focusing on the menu block.
-   - [x] Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> to go to the next stack when focusing anywhere in the stacks block.
-   - [x] Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> to go to the next tab when focusing anywhere in the tabs block.
-   - [x] Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to go to the previous stack when focusing anywhere in the stacks block.
-   - [x] Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to go to the previous tab when focusing anywhere in the tabs block.
-   - [x] Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the menu visibility when focusing on the menu trigger.
-   - [x] Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the stack panel visibility if `toggle` option is enabled.
-   - [x] Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab panel visibility if `toggle` option is enabled.
-   - [x] Press <kbd>Escape</kbd> to focus to the parent block if possible.
-   - [x] Press <kbd>F10</kbd> to focus to the first main navigation item if any.
-   - [x] Press <kbd>F3</kbd> to focus to the main search form if any.
- - [x] Added `column` and `columns` type so we can have sidebars.
- - [x] Added `description` and `title` option for `menu`.
- - [x] Added `gap` option for `tabs`.
- - [x] Added `row` and `rows` type.
- - [x] Added `stack` and `stacks` type.
- - [x] Added `toggle` option for `tab` and `tabs`.
- - [x] Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.dialog` namespace. In the future, users should be able to set custom dialog window via `_.dialog()`.
- - [x] Moved the default skin to a separate extension.
+ - Added `column` and `columns` type so we can have sidebars.
+ - Added `description` and `title` option for `menu`.
+ - Added `gap` option for `tabs`.
+ - Added `row` and `rows` type.
+ - Added `stack` and `stacks` type.
+ - Added `toggle` option for `tab` and `tabs`.
+ - Added version update check feature.
+ - Improved keyboard accessibility by adding some navigation shortcuts:
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>Home</kbd> or <kbd>PageDown</kbd> to focus to the first stack when focusing on the stacks block.
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowRight</kbd> or <kbd>Home</kbd> or <kbd>PageDown</kbd> to focus to the first tab when focusing on the tabs block.
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to switch between menu links when focusing on the menu link.
+   - Press <kbd>ArrowDown</kbd> or <kbd>ArrowUp</kbd> to toggle the tab panel visibility if `toggle` option is enabled. If tab panel is already hidden, this navigation will works as the way <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> works.
+   - Press <kbd>ArrowDown</kbd> or <kbd>Home</kbd> to focus to the first menu link when focusing on the menu block.
+   - Press <kbd>ArrowDown</kbd> to show the menu and then focus to the first menu link when focusing on the menu trigger.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between links when focusing on the links list.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between stacks when focusing on the stack trigger.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tabs when focusing on the tab trigger.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to switch between tasks when focusing on the tasks list.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>ArrowRight</kbd> to toggle the stack panel visibility if `toggle` option is enabled. If stack panel is already hidden, this navigation will works as the way <kbd>ArrowDown</kbd> and <kbd>ArrowUp</kbd> works.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>End</kbd> to focus to the last link when focusing on the links list.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>End</kbd> to focus to the last task when focusing on the tasks list.
+   - Press <kbd>ArrowLeft</kbd> or <kbd>Escape</kbd> to hide the current menu and then focus to the nearest parent menu link.
+   - Press <kbd>ArrowRight</kbd> or <kbd>Home</kbd> to focus to the first link when focusing on the links list.
+   - Press <kbd>ArrowRight</kbd> or <kbd>Home</kbd> to focus to the first task when focusing on the tasks list.
+   - Press <kbd>ArrowRight</kbd> to show the child menu and then focus to the first child menu link.
+   - Press <kbd>ArrowUp</kbd> or <kbd>ArrowLeft</kbd> or <kbd>End</kbd> or <kbd>PageUp</kbd> to focus to the last stack when focusing on the stacks block.
+   - Press <kbd>ArrowUp</kbd> or <kbd>ArrowLeft</kbd> or <kbd>End</kbd> or <kbd>PageUp</kbd> to focus to the last tab when focusing on the tabs block.
+   - Press <kbd>ArrowUp</kbd> or <kbd>End</kbd> to focus to the last menu link when focusing on the menu block.
+   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> to go to the next stack when focusing anywhere in the stacks block.
+   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageDown</kbd> to go to the next tab when focusing anywhere in the tabs block.
+   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to go to the previous stack when focusing anywhere in the stacks block.
+   - Press <kbd>Control</kbd><kbd>Alt</kbd><kbd>PageUp</kbd> to go to the previous tab when focusing anywhere in the tabs block.
+   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the menu visibility when focusing on the menu trigger.
+   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the stack panel visibility if `toggle` option is enabled.
+   - Press <kbd>Enter</kbd> or <kbd>Space</kbd> to toggle the tab panel visibility if `toggle` option is enabled.
+   - Press <kbd>Escape</kbd> to focus to the parent block if possible.
+   - Press <kbd>F10</kbd> to focus to the first main navigation item if any.
+   - Press <kbd>F3</kbd> to focus to the main search form if any.
+ - Moved `_.alert()`, `_.confirm()`, and `_.prompt()` to the `_.dialog` namespace. In the future, users should be able to set custom dialog window via `_.dialog()`.
+ - Moved the default skin to a separate extension.
 
 ### 2.7.2
 

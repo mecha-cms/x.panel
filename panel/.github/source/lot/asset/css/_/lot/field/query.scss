@@ -16,7 +16,6 @@
     }
   }
   &__tag {
-    border: 1px solid transparent;
     margin: calc(var(--y) / 12) calc(var(--x) / 12);
     padding: 0 calc(var(--z) / 2);
     // Fix link color specifity
@@ -43,6 +42,9 @@
     }
     + .tag-picker.input {
       margin-left: 0;
+      .tag-picker__tag {
+        border: 1px solid transparent;
+      }
     }
   }
 }

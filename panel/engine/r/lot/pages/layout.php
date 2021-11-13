@@ -88,23 +88,25 @@ if (1 === count($_['chop'])) {
                 'stack' => 30
             ];
         }
-        $git = $page->git ?? 'mecha-cms/' . ($n = 'layout.' . To::kebab($page->title));
-        $version_current = explode('.', $page->version);
-        $version_next = explode('.', Cache::live($n, function() use($git) {
-            return fetch('https://mecha-cms.com/git/version/' . $git, [
-                'user-agent' => 'Mecha/' . VERSION
-            ]);
-        }, '1 day'));
-        $version = implode('.', $version_next);
-        // Check for major update
-        if (isset($version_current[0]) && isset($version_next[0]) && (int) $version_current[0] < (int) $version_next[0]) {
-            $_['alert']['info'][$d] = ['%s has been released. You have to update it manually. This version may not work properly with your current core version.', [$page->title . ' ' . $version]];
-        // Check for minor update
-        } else if (isset($version_current[1]) && isset($version_next[1]) && (int) $version_current[1] < (int) $version_next[1]) {
-            $_['alert']['info'][$d] = ['%s has been released.', [$page->title . ' ' . $version]];
-        // Check for patch update
-        } else if (isset($version_current[2]) && isset($version_next[2]) && (int) $version_current[2] < (int) $version_next[2]) {
-            $_['alert']['info'][$d] = ['%s has been released. Should be safe to update now.', [$page->title . ' ' . $version]];
+        if (is_array($_['state']['sync']) && !empty($_['state']['sync']['version']) || !empty($_['state']['sync'])) {
+            $git = $page->git ?? 'mecha-cms/' . ($n = 'layout.' . To::kebab($page->title));
+            $version_current = explode('.', $page->version);
+            $version_next = explode('.', Cache::live($n, function() use($git) {
+                return fetch('https://mecha-cms.com/git/version/' . $git, [
+                    'user-agent' => 'Mecha/' . VERSION
+                ]);
+            }, '1 day'));
+            $version = implode('.', $version_next);
+            // Check for major update
+            if (isset($version_current[0]) && isset($version_next[0]) && (int) $version_current[0] < (int) $version_next[0]) {
+                $_['alert']['info'][$d] = ['%s has been released. You have to update it manually. This version may not work properly with your current core version.', [$page->title . ' ' . $version]];
+            // Check for minor update
+            } else if (isset($version_current[1]) && isset($version_next[1]) && (int) $version_current[1] < (int) $version_next[1]) {
+                $_['alert']['info'][$d] = ['%s has been released.', [$page->title . ' ' . $version]];
+            // Check for patch update
+            } else if (isset($version_current[2]) && isset($version_next[2]) && (int) $version_current[2] < (int) $version_next[2]) {
+                $_['alert']['info'][$d] = ['%s has been released. Should be safe to update now.', [$page->title . ' ' . $version]];
+            }
         }
         return $_;
     }, 10.1);
