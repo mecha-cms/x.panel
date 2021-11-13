@@ -14,6 +14,7 @@ Release Notes
 
 ### 2.8.0
 
+ - Added CSS variables to support theming by third-party extension and layout.
  - Added `column` and `columns` type so we can have sidebars.
  - Added `description` and `title` option for `menu`.
  - Added `gap` option for `tabs`.
