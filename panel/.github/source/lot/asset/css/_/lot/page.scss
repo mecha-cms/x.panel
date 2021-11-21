@@ -27,12 +27,15 @@
         flex: 1;
       }
     }
+    > .title {
+      display: block;
+      font-size: calc(var(--z) * 1.25);
+    }
   }
-  h3 {
-    font-size: calc(var(--z) * 1.25);
+  .description {
+    margin: calc(var(--y) / 4) 0 0;
   }
-  img,
-  .img {
+  .image {
     display: block;
     height: calc(var(--y) * 2.25);
     max-height: calc(var(--y) * 2.25);
@@ -40,9 +43,6 @@
     min-height: 0;
     min-width: 0;
     width: calc(var(--y) * 2.25);
-  }
-  .description {
-    margin: calc(var(--y) / 4) 0 0;
   }
   &.is\:file,
   &.is\:folder {

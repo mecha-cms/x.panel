@@ -891,12 +891,12 @@ sup {
 }
 
 sub {
-  top: 0.25em;
+  top: 0.125em;
   vertical-align: sub;
 }
 
 sup {
-  top: -0.25em;
+  top: -0.125em;
   vertical-align: super;
 }
 
@@ -1868,9 +1868,6 @@ label > input[type=radio] + span {
   margin-right: auto;
   max-width: calc(var(--x) * 36);
 }
-.lot\:desk.flex {
-  gap: 0;
-}
 .lot\:desk.width {
   display: block;
 }
@@ -2093,6 +2090,7 @@ label > input[type=radio] + span {
 }
 .tag-picker__source + .tag-picker.input .tag-picker__tag {
   border: 1px solid transparent;
+  line-height: calc(var(--y) - 2px);
 }
 
 .lot\:field.type\:toggle .input[type=checkbox] {
@@ -2125,6 +2123,7 @@ label > input[type=radio] + span {
 
 .lot\:file,
 .lot\:page,
+.lot\:card,
 .lot\:folder {
   background: var(--fill-file, none);
   border: 0 solid;
@@ -2141,11 +2140,13 @@ label > input[type=radio] + span {
 }
 .lot\:file:focus,
 .lot\:page:focus,
+.lot\:card:focus,
 .lot\:folder:focus {
   z-index: 1;
 }
 .lot\:file:focus,
 .lot\:page:focus,
+.lot\:card:focus,
 .lot\:folder:focus {
   background: var(--fill-file--focus, var(--fill-file, none));
   border-color: var(--stroke-file--focus, var(--stroke-file, var(--fill-file, none)));
@@ -2153,6 +2154,7 @@ label > input[type=radio] + span {
 }
 .lot\:file:hover,
 .lot\:page:hover,
+.lot\:card:hover,
 .lot\:folder:hover {
   background: var(--fill-file--hover, var(--fill-file, none));
   border-color: var(--stroke-file--hover, var(--stroke-file, var(--fill-file, none)));
@@ -2160,6 +2162,7 @@ label > input[type=radio] + span {
 }
 .lot\:file:active,
 .lot\:page:active,
+.lot\:card:active,
 .lot\:folder:active {
   background: var(--fill-file--active, var(--fill-file, none));
   border-color: var(--stroke-file--active, var(--stroke-file, var(--fill-file, none)));
@@ -2167,6 +2170,7 @@ label > input[type=radio] + span {
 }
 .lot\:file.is\:current,
 .is\:current.lot\:page,
+.is\:current.lot\:card,
 .is\:current.lot\:folder {
   background: var(--fill-file--current, var(--fill-file, none));
   border-color: var(--stroke-file--current, var(--stroke-file, var(--fill-file, none)));
@@ -2174,9 +2178,11 @@ label > input[type=radio] + span {
 }
 .lot\:file::before,
 .lot\:page::before,
+.lot\:card::before,
 .lot\:folder::before,
 .lot\:file::after,
 .lot\:page::after,
+.lot\:card::after,
 .lot\:folder::after {
   content: "";
   display: block;
@@ -2188,16 +2194,19 @@ label > input[type=radio] + span {
 }
 .lot\:file > *,
 .lot\:page > *,
+.lot\:card > *,
 .lot\:folder > * {
   margin: 0 calc(var(--x) / 8);
 }
 .lot\:file > .lot\:tasks,
 .lot\:page > .lot\:tasks,
+.lot\:card > .lot\:tasks,
 .lot\:folder > .lot\:tasks {
   margin-right: calc(var(--x) / -4);
 }
 .lot\:file.not\:active,
 .not\:active.lot\:page,
+.not\:active.lot\:card,
 .not\:active.lot\:folder {
   opacity: 0.5;
 }
@@ -2265,6 +2274,7 @@ label > input[type=radio] + span {
 }
 
 .lot\:files,
+.lot\:cards,
 .lot\:pages,
 .lot\:folders {
   display: block;
@@ -2272,43 +2282,51 @@ label > input[type=radio] + span {
   margin-left: 0;
   margin-right: 0;
 }
-.lot\:files h3,
-.lot\:pages h3,
-.lot\:folders h3,
-.lot\:files p,
-.lot\:pages p,
-.lot\:folders p {
+.lot\:files .description,
+.lot\:cards .description,
+.lot\:pages .description,
+.lot\:folders .description,
+.lot\:files .title,
+.lot\:cards .title,
+.lot\:pages .title,
+.lot\:folders .title {
   font: inherit;
   margin: 0;
   padding: 0;
 }
-.lot\:files h3,
-.lot\:pages h3,
-.lot\:folders h3 {
+.lot\:files .title,
+.lot\:cards .title,
+.lot\:pages .title,
+.lot\:folders .title {
   flex: 1;
 }
-.lot\:files h3 a.not\:active,
-.lot\:files h3 .not\:active.a,
-.lot\:pages h3 a.not\:active,
-.lot\:pages h3 .not\:active.a,
-.lot\:folders h3 a.not\:active,
-.lot\:folders h3 .not\:active.a {
+.lot\:files .title a.not\:active,
+.lot\:files .title .not\:active.a,
+.lot\:cards .title a.not\:active,
+.lot\:cards .title .not\:active.a,
+.lot\:pages .title a.not\:active,
+.lot\:pages .title .not\:active.a,
+.lot\:folders .title a.not\:active,
+.lot\:folders .title .not\:active.a {
   opacity: 1;
 }
-.lot\:files h3 .title,
-.lot\:pages h3 .title,
-.lot\:folders h3 .title {
+.lot\:files .title .title,
+.lot\:cards .title .title,
+.lot\:pages .title .title,
+.lot\:folders .title .title {
   display: inline-flex;
   vertical-align: middle;
 }
-.lot\:files h3 .title > span,
-.lot\:pages h3 .title > span,
-.lot\:folders h3 .title > span {
+.lot\:files .title .title > span,
+.lot\:cards .title .title > span,
+.lot\:pages .title .title > span,
+.lot\:folders .title .title > span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .lot\:files.count\:0,
+.count\:0.lot\:cards,
 .count\:0.lot\:pages,
 .count\:0.lot\:folders {
   display: none;
@@ -2459,47 +2477,61 @@ label > input[type=radio] + span {
   top: 0;
 }
 
-.lot\:page {
+.lot\:page,
+.lot\:card {
   background: var(--fill-page, var(--fill-file, none));
   border-color: var(--stroke-page, var(--stroke-file, transparent));
   border-radius: var(--arc-page, var(--arc-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
 }
-.lot\:page:focus {
+.lot\:page:focus,
+.lot\:card:focus {
   background: var(--fill-page--focus, var(--fill-page));
   border-color: var(--stroke-page--focus, var(--stroke-page));
   box-shadow: var(--shadow-page--focus, var(--shadow-page));
 }
-.lot\:page:hover {
+.lot\:page:hover,
+.lot\:card:hover {
   background: var(--fill-page--hover, var(--fill-page));
   border-color: var(--stroke-page--hover, var(--stroke-page));
   box-shadow: var(--shadow-page--hover, var(--shadow-page));
 }
-.lot\:page:active {
+.lot\:page:active,
+.lot\:card:active {
   background: var(--fill-page--active, var(--fill-page));
   border-color: var(--stroke-page--active, var(--stroke-page));
   box-shadow: var(--shadow-page--active, var(--shadow-page));
 }
-.lot\:page.is\:current {
+.lot\:page.is\:current,
+.is\:current.lot\:card {
   background: var(--fill-page--current, var(--fill-page));
   border-color: var(--stroke-page--current, var(--stroke-page));
   box-shadow: var(--shadow-page--current, var(--shadow-page));
 }
-.lot\:page > * {
+.lot\:page > *,
+.lot\:card > * {
   margin: 0 calc(var(--x) / 4);
 }
-.lot\:page > div {
+.lot\:page > div,
+.lot\:card > div {
   min-height: calc(var(--y) * 2.25);
 }
-.lot\:page > div:first-child + div {
+.lot\:page > div:first-child + div,
+.lot\:card > div:first-child + div {
   flex: 1;
 }
-.lot\:page h3 {
+.lot\:page > div > .title,
+.lot\:card > div > .title {
+  display: block;
   font-size: calc(var(--z) * 1.25);
 }
-.lot\:page img,
-.lot\:page .img {
+.lot\:page .description,
+.lot\:card .description {
+  margin: calc(var(--y) / 4) 0 0;
+}
+.lot\:page .image,
+.lot\:card .image {
   display: block;
   height: calc(var(--y) * 2.25);
   max-height: calc(var(--y) * 2.25);
@@ -2508,17 +2540,20 @@ label > input[type=radio] + span {
   min-width: 0;
   width: calc(var(--y) * 2.25);
 }
-.lot\:page .description {
-  margin: calc(var(--y) / 4) 0 0;
-}
 .lot\:page.is\:file,
-.lot\:page.is\:folder {
+.is\:file.lot\:card,
+.lot\:page.is\:folder,
+.is\:folder.lot\:card {
   padding-left: calc(var(--x) / 4);
 }
 .lot\:page.is\:file::before,
+.is\:file.lot\:card::before,
 .lot\:page.is\:file::after,
+.is\:file.lot\:card::after,
 .lot\:page.is\:folder::before,
-.lot\:page.is\:folder::after {
+.is\:folder.lot\:card::before,
+.lot\:page.is\:folder::after,
+.is\:folder.lot\:card::after {
   display: none;
 }
 
@@ -2574,6 +2609,36 @@ label > input[type=radio] + span {
   border-radius: 0;
   box-shadow: none;
   color: inherit;
+}
+
+.lot\:card {
+  flex-direction: column;
+  width: calc(var(--x) * 11);
+}
+.lot\:card > div > .image {
+  height: calc(var(--x) * 11 - var(--x));
+  margin: 0 0 calc(var(--y) * 0.5);
+  min-height: calc(var(--x) * 11 - var(--x));
+  min-width: calc(var(--x) * 11 - var(--x));
+  width: calc(var(--x) * 11 - var(--x));
+}
+.lot\:card > div > .description,
+.lot\:card > div > .title {
+  white-space: normal;
+  word-wrap: break-word;
+}
+.lot\:card > div > .title .title > span {
+  white-space: normal;
+  word-wrap: break-word;
+}
+.lot\:card > div > .lot\:tasks {
+  margin: var(--y) 0 0;
+}
+
+.lot\:cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .lot\:row,
@@ -2637,8 +2702,8 @@ label > input[type=radio] + span {
   margin: 0;
   position: relative;
 }
-.lot\:stack > h3,
-.content\:stack > h3 {
+.lot\:stack > .title,
+.content\:stack > .title {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -2646,64 +2711,65 @@ label > input[type=radio] + span {
   border-radius: inherit;
   box-shadow: var(--shadow-stack);
   color: var(--color-stack);
+  display: block;
   font: inherit;
 }
-.lot\:stack > h3 > a,
-.lot\:stack > h3 > .a,
-.content\:stack > h3 > a,
-.content\:stack > h3 > .a {
+.lot\:stack > .title > a,
+.lot\:stack > .title > .a,
+.content\:stack > .title > a,
+.content\:stack > .title > .a {
   color: inherit;
   cursor: pointer;
   display: block;
   position: relative;
 }
-.lot\:stack > h3 > a:hover,
-.lot\:stack > h3 > .a:hover,
-.content\:stack > h3 > a:hover,
-.content\:stack > h3 > .a:hover {
+.lot\:stack > .title > a:hover,
+.lot\:stack > .title > .a:hover,
+.content\:stack > .title > a:hover,
+.content\:stack > .title > .a:hover {
   color: var(--color-stack--hover, var(--color-stack));
 }
-.lot\:stack > h3 > a:focus,
-.lot\:stack > h3 > .a:focus,
-.content\:stack > h3 > a:focus,
-.content\:stack > h3 > .a:focus {
+.lot\:stack > .title > a:focus,
+.lot\:stack > .title > .a:focus,
+.content\:stack > .title > a:focus,
+.content\:stack > .title > .a:focus {
   color: var(--color-stack--focus, var(--color-stack));
 }
-.lot\:stack > h3 > a:active,
-.lot\:stack > h3 > .a:active,
-.content\:stack > h3 > a:active,
-.content\:stack > h3 > .a:active {
+.lot\:stack > .title > a:active,
+.lot\:stack > .title > .a:active,
+.content\:stack > .title > a:active,
+.content\:stack > .title > .a:active {
   color: var(--color-stack--active, var(--color-stack));
 }
-.lot\:stack > h3 > a .title,
-.lot\:stack > h3 > .a .title,
-.content\:stack > h3 > a .title,
-.content\:stack > h3 > .a .title {
+.lot\:stack > .title > a .title,
+.lot\:stack > .title > .a .title,
+.content\:stack > .title > a .title,
+.content\:stack > .title > .a .title {
   display: flex;
   padding: calc(var(--y) / 2 - (var(--h) - var(--z)) / 2) calc(var(--y) / 2);
 }
-.lot\:stack > h3 > a .title .icon,
-.lot\:stack > h3 > .a .title .icon,
-.content\:stack > h3 > a .title .icon,
-.content\:stack > h3 > .a .title .icon {
+.lot\:stack > .title > a .title .icon,
+.lot\:stack > .title > .a .title .icon,
+.content\:stack > .title > a .title .icon,
+.content\:stack > .title > .a .title .icon {
   margin: 0 calc(var(--z) / -4);
 }
-.lot\:stack > h3 > a .title .icon:first-child,
-.lot\:stack > h3 > .a .title .icon:first-child,
-.content\:stack > h3 > a .title .icon:first-child,
-.content\:stack > h3 > .a .title .icon:first-child {
+.lot\:stack > .title > a .title .icon:first-child,
+.lot\:stack > .title > .a .title .icon:first-child,
+.content\:stack > .title > a .title .icon:first-child,
+.content\:stack > .title > .a .title .icon:first-child {
   margin-right: calc(var(--z) / 4);
 }
-.lot\:stack > h3 > a .title .icon:last-child,
-.lot\:stack > h3 > .a .title .icon:last-child,
-.content\:stack > h3 > a .title .icon:last-child,
-.content\:stack > h3 > .a .title .icon:last-child {
+.lot\:stack > .title > a .title .icon:last-child,
+.lot\:stack > .title > .a .title .icon:last-child,
+.content\:stack > .title > a .title .icon:last-child,
+.content\:stack > .title > .a .title .icon:last-child {
   margin-left: calc(var(--z) / 4);
 }
-.lot\:stack > h3 > a .title .icon:only-child,
-.lot\:stack > h3 > .a .title .icon:only-child,
-.content\:stack > h3 > a .title .icon:only-child,
-.content\:stack > h3 > .a .title .icon:only-child {
+.lot\:stack > .title > a .title .icon:only-child,
+.lot\:stack > .title > .a .title .icon:only-child,
+.content\:stack > .title > a .title .icon:only-child,
+.content\:stack > .title > .a .title .icon:only-child {
   margin-left: calc(var(--z) / -4);
   margin-right: calc(var(--z) / -4);
 }
@@ -2711,8 +2777,8 @@ label > input[type=radio] + span {
 .content\:stack:hover {
   border-color: var(--stroke-stack--hover, var(--stroke-stack));
 }
-.lot\:stack:hover > h3,
-.content\:stack:hover > h3 {
+.lot\:stack:hover > .title,
+.content\:stack:hover > .title {
   background: var(--fill-stack--hover, var(--fill-stack));
   box-shadow: var(--shadow-stack--hover, var(--shadow-stack));
 }
@@ -2720,8 +2786,8 @@ label > input[type=radio] + span {
 .content\:stack:focus {
   border-color: var(--stroke-stack--focus, var(--stroke-stack));
 }
-.lot\:stack:focus > h3,
-.content\:stack:focus > h3 {
+.lot\:stack:focus > .title,
+.content\:stack:focus > .title {
   background: var(--fill-stack--focus, var(--fill-stack));
   box-shadow: var(--shadow-stack--focus, var(--shadow-stack));
 }
@@ -2729,8 +2795,8 @@ label > input[type=radio] + span {
 .content\:stack:active {
   border-color: var(--stroke-stack--active, var(--stroke-stack));
 }
-.lot\:stack:active > h3,
-.content\:stack:active > h3 {
+.lot\:stack:active > .title,
+.content\:stack:active > .title {
   background: var(--fill-stack--active, var(--fill-stack));
   box-shadow: var(--shadow-stack--active, var(--shadow-stack));
 }
@@ -2745,38 +2811,33 @@ label > input[type=radio] + span {
 .has\:link.content\:stack {
   border-color: var(--stroke-stack-link, var(--stroke-stack));
 }
-.lot\:stack.has\:link > h3,
-.has\:link.content\:stack > h3 {
+.lot\:stack.has\:link > .title,
+.has\:link.content\:stack > .title {
   background: var(--fill-stack-link, var(--fill-stack));
   box-shadow: var(--shadow-stack-link, var(--shadow-stack));
   color: var(--color-stack-link, var(--color-stack));
 }
-.lot\:stack.has\:link > h3 > a:hover,
-.lot\:stack.has\:link > h3 > .a:hover,
-.has\:link.content\:stack > h3 > a:hover,
-.has\:link.content\:stack > h3 > .a:hover {
+.lot\:stack.has\:link > .title > a:hover,
+.lot\:stack.has\:link > .title > .a:hover,
+.has\:link.content\:stack > .title > a:hover,
+.has\:link.content\:stack > .title > .a:hover {
   color: var(--color-stack-link--hover, var(--color-stack-link));
 }
-.lot\:stack.has\:link > h3 > a:focus,
-.lot\:stack.has\:link > h3 > .a:focus,
-.has\:link.content\:stack > h3 > a:focus,
-.has\:link.content\:stack > h3 > .a:focus {
+.lot\:stack.has\:link > .title > a:focus,
+.lot\:stack.has\:link > .title > .a:focus,
+.has\:link.content\:stack > .title > a:focus,
+.has\:link.content\:stack > .title > .a:focus {
   color: var(--color-stack-link--focus, var(--color-stack-link));
 }
-.lot\:stack.has\:link > h3 > a:active,
-.lot\:stack.has\:link > h3 > .a:active,
-.has\:link.content\:stack > h3 > a:active,
-.has\:link.content\:stack > h3 > .a:active {
+.lot\:stack.has\:link > .title > a:active,
+.lot\:stack.has\:link > .title > .a:active,
+.has\:link.content\:stack > .title > a:active,
+.has\:link.content\:stack > .title > .a:active {
   color: var(--color-stack-link--active, var(--color-stack-link));
 }
 .lot\:stack.is\:current,
 .is\:current.content\:stack {
   border-color: var(--stroke-stack--current, var(--stroke-stack));
-}
-.lot\:stack.is\:current > h3,
-.is\:current.content\:stack > h3 {
-  background: var(--fill-stack--current, var(--fill-stack));
-  box-shadow: var(--shadow-stack--current, var(--shadow-stack));
 }
 .lot\:stack.is\:current > .content,
 .is\:current.content\:stack > .content,
@@ -2786,16 +2847,21 @@ label > input[type=radio] + span {
   border-top-color: inherit;
   display: block;
 }
-.lot\:stack.is\:current:not(.can\:toggle) > h3 > a,
-.lot\:stack.is\:current:not(.can\:toggle) > h3 > .a,
-.is\:current.content\:stack:not(.can\:toggle) > h3 > a,
-.is\:current.content\:stack:not(.can\:toggle) > h3 > .a {
+.lot\:stack.is\:current > .title,
+.is\:current.content\:stack > .title {
+  background: var(--fill-stack--current, var(--fill-stack));
+  box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+}
+.lot\:stack.is\:current:not(.can\:toggle) > .title > a,
+.lot\:stack.is\:current:not(.can\:toggle) > .title > .a,
+.is\:current.content\:stack:not(.can\:toggle) > .title > a,
+.is\:current.content\:stack:not(.can\:toggle) > .title > .a {
   cursor: inherit;
 }
-.lot\:stack.not\:active > h3 > a,
-.lot\:stack.not\:active > h3 > .a,
-.not\:active.content\:stack > h3 > a,
-.not\:active.content\:stack > h3 > .a {
+.lot\:stack.not\:active > .title > a,
+.lot\:stack.not\:active > .title > .a,
+.not\:active.content\:stack > .title > a,
+.not\:active.content\:stack > .title > .a {
   color: var(--color-stack--disabled, var(--color-stack));
   cursor: not-allowed;
 }

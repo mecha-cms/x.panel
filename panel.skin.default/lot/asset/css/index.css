@@ -6,11 +6,13 @@
   --shadow-option-picker__options: 0 1px 4px rgba(0, 0, 0, .25);
 }
 
+.lot\:cards .lot\:tasks,
 .lot\:files .lot\:tasks,
 .lot\:folders .lot\:tasks,
 .lot\:pages .lot\:tasks {
   gap: 0;
 }
+.lot\:cards .lot\:tasks > * .title span,
 .lot\:files .lot\:tasks > * .title span,
 .lot\:folders .lot\:tasks > * .title span,
 .lot\:pages .lot\:tasks > * .title span {

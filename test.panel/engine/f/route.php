@@ -25,6 +25,7 @@ function __test($_) {
 
 require __DIR__ . \DS . 'route' . \DS . 'alert.php';
 require __DIR__ . \DS . 'route' . \DS . 'bar.php';
+require __DIR__ . \DS . 'route' . \DS . 'cards.php';
 require __DIR__ . \DS . 'route' . \DS . 'content.php';
 require __DIR__ . \DS . 'route' . \DS . 'description.php';
 require __DIR__ . \DS . 'route' . \DS . 'fields.php';

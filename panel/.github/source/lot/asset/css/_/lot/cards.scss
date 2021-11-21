@@ -1,0 +1,6 @@
+.lot\:cards {
+  @extend .lot\:files;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

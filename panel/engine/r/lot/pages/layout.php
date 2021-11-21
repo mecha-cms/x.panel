@@ -88,7 +88,7 @@ if (1 === count($_['chop'])) {
                 'stack' => 30
             ];
         }
-        if (is_array($_['state']['sync']) && !empty($_['state']['sync']['version']) || !empty($_['state']['sync'])) {
+        if ('get' === $_['form']['type'] && (is_array($_['state']['sync']) && !empty($_['state']['sync']['version']) || !empty($_['state']['sync']))) {
             $git = $page->git ?? 'mecha-cms/' . ($n = 'layout.' . To::kebab($page->title));
             $version_current = explode('.', $page->version);
             $version_next = explode('.', Cache::live($n, function() use($git) {

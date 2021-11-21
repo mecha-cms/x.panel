@@ -1,0 +1,30 @@
+.lot\:card {
+  @extend .lot\:page;
+  flex-direction: column;
+  width: calc(var(--x) * 11);
+  > div {
+    > .image {
+      height: calc(var(--x) * 11 - var(--x));
+      margin: 0 0 calc(var(--y) * .5);
+      min-height: calc(var(--x) * 11 - var(--x));
+      min-width: calc(var(--x) * 11 - var(--x));
+      width: calc(var(--x) * 11 - var(--x));
+    }
+    > .description,
+    > .title {
+      white-space: normal;
+      word-wrap: break-word;
+    }
+    > .title {
+      .title {
+        > span {
+          white-space: normal;
+          word-wrap: break-word;
+        }
+      }
+    }
+    > .lot\:tasks {
+      margin: var(--y) 0 0;
+    }
+  }
+}

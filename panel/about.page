@@ -4,7 +4,7 @@ description: GUI extension for Mecha.
 image: https://user-images.githubusercontent.com/1669261/141484323-d97a403f-5706-4e84-b5ab-78ebd9eb6bd9.png
 author: Taufik Nurrohman
 type: Markdown
-version: 2.8.0
+version: 2.8.1
 price: [20, USD]
 
 use:

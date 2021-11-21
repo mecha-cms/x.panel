@@ -6,9 +6,6 @@
     margin-right: auto;
     max-width: calc(var(--x) * 36);
   }
-  &.flex {
-    gap: 0;
-  }
   &.width {
     display: block;
     > * {

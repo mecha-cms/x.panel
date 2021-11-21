@@ -10,6 +10,8 @@
 @import 'lot/page';
 @import 'lot/pager';
 @import 'lot/pages';
+@import 'lot/card'; // Must come after `page`
+@import 'lot/cards'; // Must come after `pages`
 @import 'lot/row';
 @import 'lot/rows';
 @import 'lot/section';

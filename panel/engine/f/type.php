@@ -38,6 +38,18 @@ function button($value, $key) {
     return $out;
 }
 
+function card($value, $key) {
+    $value['tags']['lot:card'] = true;
+    $value['tags']['lot:page'] = false;
+    return \x\panel\type\page($value, $key);
+}
+
+function cards($value, $key) {
+    $value['tags']['lot:cards'] = true;
+    $value['tags']['lot:pages'] = false;
+    return \x\panel\type\pages($value, $key);
+}
+
 function column($value, $key) {
     $tags = $value['tags'] ?? [];
     $out = [
@@ -362,7 +374,7 @@ function file($value, $key) {
             'lot:file' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
-        $out[1] .= '<h3>' . \x\panel\type\link([
+        $out[1] .= '<h3 class="title">' . \x\panel\type\link([
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
             'info' => $value['info'] ?? null,
@@ -475,7 +487,7 @@ function folder($value, $key) {
             'lot:folder' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
-        $out[1] .= '<h3>' . \x\panel\type\link([
+        $out[1] .= '<h3 class="title">' . \x\panel\type\link([
             'description' => $value['description'] ?? \i('Open folder'),
             'icon' => $value['icon'] ?? [],
             'info' => $value['info'] ?? null,
@@ -816,11 +828,11 @@ function page($value, $key) {
         ], $value['tags'] ?? []);
         $path = $value['path'] ?? $key;
         $date = isset($value['time']) ? \strtr($value['time'], '-', '/') : null;
-        $out[1] .= '<div' . (isset($value['image']) && false === $value['image'] ? ' hidden' : "") . '>' . (!empty($value['image']) ? '<img alt="" height="72" src="' . \htmlspecialchars($value['image']) . '" width="72">' : '<span class="img" style="background: #' . \substr(\md5(\strtr($path, [
+        $out[1] .= '<div' . (isset($value['image']) && false === $value['image'] ? ' hidden' : "") . '>' . (!empty($value['image']) ? '<img alt="" class="image" height="72" src="' . \htmlspecialchars($value['image']) . '" width="72">' : '<span class="image" style="background: #' . \substr(\md5(\strtr($path, [
             \ROOT => "",
             \DS => '/'
         ])), 0, 6) . ';"></span>') . '</div>';
-        $out[1] .= '<div><h3>' . \x\panel\type\link([
+        $out[1] .= '<div><h3 class="title">' . \x\panel\type\link([
             'link' => $value['link'] ?? null,
             'title' => $value['title'] ?? $date,
             'url' => $value['url'] ?? null
@@ -1095,7 +1107,7 @@ function stack($value, $key) {
             'lot:stack' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
-        $out[1] .= '<h3>' . \x\panel\type\link([
+        $out[1] .= '<h3 class="title">' . \x\panel\type\link([
             '2' => ['tabindex' => -1],
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],

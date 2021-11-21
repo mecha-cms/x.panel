@@ -12,9 +12,10 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 Release Notes
 -------------
 
-### 2.8.0
+### 2.8.1
 
  - Added CSS variables to support theming by third-party extension and layout.
+ - Added `card` and `cards` type.
  - Added `column` and `columns` type so we can have sidebars.
  - Added `description` and `title` option for `menu`.
  - Added `gap` option for `tabs`.

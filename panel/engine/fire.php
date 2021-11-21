@@ -1,6 +1,6 @@
 <?php
 
-if (is_array($_['state']['sync']) && !empty($_['state']['sync']['version']) || !empty($_['state']['sync'])) {
+if ('get' === $_['form']['type'] && (is_array($_['state']['sync']) && !empty($_['state']['sync']['version']) || !empty($_['state']['sync']))) {
     $d = $_['f'];
     $git = 'mecha-cms/' . ($n = 'mecha');
     $version_current = explode('.', VERSION);

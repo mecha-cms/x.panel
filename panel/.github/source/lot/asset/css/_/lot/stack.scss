@@ -4,12 +4,13 @@
   border-radius: var(--arc-stack);
   margin: 0;
   position: relative;
-  > h3 {
+  > .title {
     @include user-select(none);
     background: var(--fill-stack, none);
     border-radius: inherit;
     box-shadow: var(--shadow-stack);
     color: var(--color-stack);
+    display: block;
     font: inherit;
     > a {
       color: inherit;
@@ -43,7 +44,7 @@
   @each $v in (hover, focus, active) {
     &:#{$v} {
       border-color: var(--stroke-stack--#{$v}, var(--stroke-stack));
-      > h3 {
+      > .title {
         background: var(--fill-stack--#{$v}, var(--fill-stack));
         box-shadow: var(--shadow-stack--#{$v}, var(--shadow-stack));
       }
@@ -56,7 +57,7 @@
   }
   &.has\:link {
     border-color: var(--stroke-stack-link, var(--stroke-stack));
-    > h3 {
+    > .title {
       background: var(--fill-stack-link, var(--fill-stack));
       box-shadow: var(--shadow-stack-link, var(--shadow-stack));
       color: var(--color-stack-link, var(--color-stack));
@@ -71,18 +72,18 @@
   }
   &.is\:current {
     border-color: var(--stroke-stack--current, var(--stroke-stack));
-    > h3 {
-      background: var(--fill-stack--current, var(--fill-stack));
-      box-shadow: var(--shadow-stack--current, var(--shadow-stack));
-    }
     > .content,
     > .lot {
       border-top: 1px solid;
       border-top-color: inherit;
       display: block;
     }
+    > .title {
+      background: var(--fill-stack--current, var(--fill-stack));
+      box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+    }
     &:not(.can\:toggle) {
-      > h3 {
+      > .title {
         > a {
           cursor: inherit;
         }
@@ -90,7 +91,7 @@
     }
   }
   &.not\:active {
-    > h3 {
+    > .title {
       > a {
         color: var(--color-stack--disabled, var(--color-stack));
         cursor: not-allowed;

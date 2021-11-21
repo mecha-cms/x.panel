@@ -3,13 +3,13 @@
   list-style: none;
   margin-left: 0;
   margin-right: 0;
-  h3,
-  p {
+  .description,
+  .title {
     font: inherit;
     margin: 0;
     padding: 0;
   }
-  h3 {
+  .title {
     flex: 1;
     a {
       &.not\:active {
