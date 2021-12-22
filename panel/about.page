@@ -4,13 +4,17 @@ description: GUI extension for Mecha.
 image: https://user-images.githubusercontent.com/1669261/141484323-d97a403f-5706-4e84-b5ab-78ebd9eb6bd9.png
 author: Taufik Nurrohman
 type: Markdown
-version: 2.8.1
+version: 3.0.0
 price: [20, USD]
 
 use:
+  '.\lot\x\alert': 1
   '.\lot\x\asset': 1
+  '.\lot\x\form': 0
   '.\lot\x\layout': 1
+  '.\lot\x\page': 1
   '.\lot\x\user': 1
+  '.\lot\x\y-a-m-l': 1
 ...
 
 To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system.

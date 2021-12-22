@@ -1,7 +1,6 @@
 <?php
 
-// Add more file type(s) other than `File::state['type']` here so that the editor will accept them
-
+// List of file MIME type allowed to upload
 return [
     'application/octet-stream' => 1,
     'application/pdf' => 1,

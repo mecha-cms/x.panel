@@ -1,7 +1,6 @@
 <?php
 
-// Add more file extension(s) other than `File::state['x']` here so that the editor will accept them
-
+// List of file extension allowed to upload
 return [
     'apng' => 1,
     'asc' => 1,
