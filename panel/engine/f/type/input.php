@@ -1,7 +1,5 @@
 <?php namespace x\panel\type\input;
 
-// TODO
-
 function button($value, $key) {
     $out = \x\panel\type\input($value, $key);
     $out['type'] = 'button';

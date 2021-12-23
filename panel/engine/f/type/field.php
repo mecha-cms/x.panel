@@ -9,7 +9,7 @@ function _($value, $key) {
 function blob($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'file';
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -18,7 +18,7 @@ function blobs($value, $key) {
     $out['field'][2]['multiple'] = true;
     $out['field'][2]['name'] = ($value['name'] ?? $key) . '[]';
     $out['field'][2]['type'] = 'file';
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -26,7 +26,7 @@ function button($value, $key) {
     $out = \x\panel\to\field($value, $key, 'button');
     $out['field'][1] = \i(...((array) ($value['hint'] ?? $value['title'] ?? $value['value'] ?? $key)));
     $out['field'][2]['type'] = 'button';
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -40,7 +40,7 @@ function buttons($value, $key) {
         }
         $count = 0;
         foreach ($value['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;
@@ -53,7 +53,7 @@ function buttons($value, $key) {
             $button[1] = \i(...((array) ($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k)));
             $button[2]['name'] = $n;
             $button[2]['type'] = 'button';
-            \x\panel\_set_class($button[2], \array_replace([
+            \x\panel\_class_set($button[2], \array_replace([
                 'is:active' => $is_active,
                 'not:active' => !$is_active
             ], $v['tags'] ?? []));
@@ -61,7 +61,7 @@ function buttons($value, $key) {
         }
         unset($value['lot']);
     }
-    \x\panel\_set_class($out['field'][2], \array_replace([
+    \x\panel\_class_set($out['field'][2], \array_replace([
         'count:' . $count => true,
         'textarea' => false,
         'with:options' => true
@@ -73,7 +73,7 @@ function buttons($value, $key) {
 function color($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'color';
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     if ($the_value = \x\panel\to\color((string) ($value['value'] ?? ""))) {
         $out['field'][2]['title'] = $the_value;
         $out['field'][2]['value'] = $the_value;
@@ -91,7 +91,7 @@ function colors($value, $key) {
         }
         $count = 0;
         foreach ($value['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;
@@ -100,7 +100,7 @@ function colors($value, $key) {
             }
             $n = $name . '[' . $k . ']';
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            \x\panel\_set_class($input[2], $v['tags'] ?? []);
+            \x\panel\_class_set($input[2], $v['tags'] ?? []);
             $input[2]['name'] = $n;
             $input[2]['type'] = 'color';
             if ($the_value = \x\panel\to\color((string) ($v['value'] ?? ""))) {
@@ -111,7 +111,7 @@ function colors($value, $key) {
         }
         unset($value['lot']);
     }
-    \x\panel\_set_class($out['field'][2], \array_replace([
+    \x\panel\_class_set($out['field'][2], \array_replace([
         'count:' . $count => true,
         'textarea' => false,
         'with:options' => true
@@ -125,7 +125,7 @@ function content($value, $key) {
         $value['hint'] = 'Content goes here...';
     }
     $out = \x\panel\to\field($value, $key);
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -171,7 +171,7 @@ function description($value, $key) {
 
 function email($value, $key) {
     if (!\array_key_exists('hint', $value)) {
-        $value['hint'] = \S . \i('hello') . \S . '@' . \S . $GLOBALS['url']->host . \S;
+        $value['hint'] = \S . \i('hello') . \S . '@' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S;
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
@@ -216,7 +216,7 @@ function item($value, $key) {
             $input[2]['type'] = 'radio';
             $input[2]['value'] = $v['value'] ?? $k;
             unset($input[2]['placeholder']);
-            \x\panel\_set_class($input[2], [
+            \x\panel\_class_set($input[2], [
                 'is:active' => $is_active,
                 'is:locked' => $is_locked,
                 'not:active' => !$is_active,
@@ -235,7 +235,7 @@ function item($value, $key) {
                 0 => 'label',
                 1 => (new \HTML($input)) . ' ' . $title
             ]);
-            \x\panel\_set_class($label, [
+            \x\panel\_class_set($label, [
                 'is:active' => $is_active,
                 'is:locked' => $is_locked,
                 'not:active' => !$is_active,
@@ -252,7 +252,7 @@ function item($value, $key) {
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
         $out['field'][1] = \implode($block, $a);
-        \x\panel\_set_class($out['field'][2], [
+        \x\panel\_class_set($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
             'textarea' => false,
@@ -297,7 +297,7 @@ function items($value, $key) {
                 $input[2]['readonly'] = true;
             }
             unset($input[2]['placeholder']);
-            \x\panel\_set_class($input[2], [
+            \x\panel\_class_set($input[2], [
                 'is:active' => $is_active,
                 'is:locked' => $is_locked,
                 'not:active' => !$is_active,
@@ -316,7 +316,7 @@ function items($value, $key) {
                 0 => 'label',
                 1 => (new \HTML($input)) . ' ' . $title
             ]);
-            \x\panel\_set_class($label, [
+            \x\panel\_class_set($label, [
                 'is:active' => $is_active,
                 'is:locked' => $is_locked,
                 'not:active' => !$is_active,
@@ -333,7 +333,7 @@ function items($value, $key) {
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
         $out['field'][1] = \implode($block, $a);
-        \x\panel\_set_class($out['field'][2], [
+        \x\panel\_class_set($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
             'textarea' => false,
@@ -347,18 +347,17 @@ function items($value, $key) {
 
 function link($value, $key) {
     if (!\array_key_exists('hint', $value)) {
-        $url = $GLOBALS['url'];
-        $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
+        $value['hint'] = \S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S;
     }
     if (!isset($value['pattern'])) {
-        $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)\\/\\/\\S+)$";
+        $value['pattern'] = "^(data:[^\\s,]+,\\S+|(https?:)\\/\\/\\S+)$";
     }
     return \x\panel\type\field\text($value, $key);
 }
 
 function name($value, $key) {
     $v = (string) ($value['value'] ?? "");
-    $x = $value['x'] ?? \implode('|', \array_keys(\array_filter(\File::$state['x'])));
+    $x = $value['x'] ?? \implode('|', \array_keys(\array_filter((array) \State::get('x.panel.guard.file.x', true))));
     if (\is_array($x)) {
         $x = \implode('|', \array_keys(\array_filter($x)));
     }
@@ -388,7 +387,7 @@ function number($value, $key) {
     $out['field'][2]['min'] = $value['min'] ?? null;
     $out['field'][2]['max'] = $value['max'] ?? null;
     $out['field'][2]['step'] = $value['step'] ?? null;
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -409,7 +408,7 @@ function pass($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'password';
     unset($out['field'][2]['value']); // Never show `value` on this field
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -423,7 +422,7 @@ function path($value, $key) {
     }
     if (!isset($value['max'])) {
         // <https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation>
-        $value['max'] = 260 - (\strlen(\ROOT) + 1);
+        $value['max'] = 260 - (\strlen(\PATH) + 1);
     }
     if (!isset($value['min'])) {
         $value['min'] = 0;
@@ -443,7 +442,7 @@ function query($value, $key) {
     }
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -467,7 +466,7 @@ function range($value, $key) {
     $out['field'][2]['value'] = $value['value'] ?? null;
     $out['field'][2]['step'] = $value['step'] ?? null;
     unset($out['field'][2]['maxlength'], $out['field'][2]['minlength']);
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -489,7 +488,7 @@ function source($value, $key) {
         $value['hint'] = 'Content goes here...';
     }
     $out = \x\panel\to\field($value, $key);
-    \x\panel\_set_class($out['field'][2], \array_replace([
+    \x\panel\_class_set($out['field'][2], \array_replace([
         'code' => true
     ], $value['tags'] ?? []));
     return \x\panel\type\field($out, $key);
@@ -498,7 +497,7 @@ function source($value, $key) {
 function text($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
-    \x\panel\_set_class($out['field'][2], $value['tags'] ?? []);
+    \x\panel\_class_set($out['field'][2], $value['tags'] ?? []);
     return \x\panel\type\field($out, $key);
 }
 
@@ -543,7 +542,7 @@ function toggle($value, $key) {
         0 => 'label',
         1 => (new \HTML($input)) . ' ' . $title
     ]);
-    \x\panel\_set_class($label, [
+    \x\panel\_class_set($label, [
         'is:active' => $is_active,
         'is:locked' => $is_locked,
         'not:active' => !$is_active,
@@ -552,7 +551,7 @@ function toggle($value, $key) {
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
     $out['field'][1] = $label;
-    \x\panel\_set_class($out['field'][2], [
+    \x\panel\_class_set($out['field'][2], [
         'count:1' => true,
         'textarea' => false,
         'with:options' => true
@@ -563,8 +562,7 @@ function toggle($value, $key) {
 
 function u_r_l($value, $key) { // This is not a typo!
     if (!\array_key_exists('hint', $value)) {
-        $url = $GLOBALS['url'];
-        $value['hint'] = \S . $url->protocol . \S . $url->host . \S;
+        $value['hint'] = \S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S;
     }
     if (!isset($value['pattern'])) {
         $value['pattern'] = "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";

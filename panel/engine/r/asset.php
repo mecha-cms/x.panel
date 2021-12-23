@@ -1,7 +1,6 @@
 <?php
 
 Hook::set('get', function() {
-    require __DIR__ . DS . 'layout.php';
     extract($GLOBALS);
     $assets = Asset::get();
     $out = [];

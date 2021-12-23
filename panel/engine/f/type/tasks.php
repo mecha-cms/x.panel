@@ -2,7 +2,7 @@
 
 function button($value, $key) {
     if (isset($value['lot'])) {
-        \x\panel\_set_type_prefix($value['lot'], 'button');
+        \x\panel\_type_parent_set($value['lot'], 'button');
     }
     $value['tags']['are:buttons'] = true;
     return \x\panel\type\tasks($value, $key);
@@ -10,7 +10,7 @@ function button($value, $key) {
 
 function link($value, $key) {
     if (isset($value['lot'])) {
-        \x\panel\_set_type_prefix($value['lot'], 'link');
+        \x\panel\_type_parent_set($value['lot'], 'link');
     }
     $value['tags']['are:links'] = true;
     return \x\panel\type\tasks($value, $key);

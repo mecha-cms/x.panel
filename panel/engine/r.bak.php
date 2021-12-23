@@ -6,7 +6,7 @@ return (static function($icons) {
     if (isset($_['content'])) {
         return $_; // Skip!
     }
-    $id = strtok($_['path'], '/');
+    $id = explode('/', $_['path'], 2)[0];
     $folders = [];
     foreach (g(LOT, 0) as $k => $v) {
         $n = basename($k);
@@ -17,23 +17,23 @@ return (static function($icons) {
             'current' => 0 === strpos($_['path'] . '/', $n . '/'),
             'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
             'title' => 'x' === $n ? 'Extension' : To::title($n),
-            'url' => x\panel\to\link(['path' => $n . '/1']),
+            'url' => $_['/'] . '/::g::/' . $n . '/1' . $url->hash,
             'skip' => !q(g($k)) // Hide menu if folder is empty
         ];
     }
     // `dechex(crc32('comments.info'))`
-    if (isset($folders['comment']) && isset($state->x->comment) && is_file($cache = LOT . D . 'cache' . D . '8bead58f.php')) {
-        $info = (array) require $cache;
+    if (isset($folders['comment']) && isset($state->x->comment) && is_file($f = LOT . DS . 'cache' . DS . '8bead58f.php')) {
+        $info = (array) require $f;
         if (!empty($info[0])) {
             $folders['comment']['info'] = $info[0];
         }
     }
-    if (isset($folders['trash']) && ($count = q(g(LOT . D . 'trash')))) {
-        $folders['trash']['info'] = q(g(LOT . D . 'trash', null, true)) - $count;
+    if (isset($folders['trash']) && ($count = q(g(LOT . DS . 'trash')))) {
+        $folders['trash']['info'] = q(g(LOT . DS . 'trash', null, true)) - $count;
     }
     $i = 10;
     $list = [];
-    foreach ((new Anemone($folders))->sort([1, 'title'], true) as $k => $v) {
+    foreach ((new Anemon($folders))->sort([1, 'title'], true) as $k => $v) {
         $v['stack'] = $i;
         $i += 10;
         $list[$k] = $v;
@@ -62,21 +62,20 @@ return (static function($icons) {
                         ],
                         'search' => [
                             'type' => 'form/get',
-                            'url' => x\panel\to\link([
-                                'path' => ($_['file'] ? dirname($_['path']) : $_['path']) . '/1',
-                                'query' => ['query' => false]
-                            ]),
+                            'url' => (is_file($_['f']) ? dirname($url->clean) : $url->clean) . '/1' . $url->query('&', [
+                                'q' => false
+                            ]) . $url->hash,
                             'name' => 'get',
                             'lot' => [
                                 'fields' => [
                                     'type' => 'fields',
                                     'lot' => [
-                                        'query' => [
+                                        'q' => [
                                             'title' => 'Search',
-                                            'type' => 'field/text',
+                                            'type' => 'text',
                                             'hint' => 'Search',
-                                            'value' => $_GET['query'] ?? null,
-                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr($_['file'] ? dirname($_['path']) : $_['path'], '/', "\\"))],
+                                            'value' => $_GET['q'] ?? null,
+                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr(is_file($_['f']) ? dirname($_['path']) : $_['path'], '/', "\\"))],
                                             'stack' => 10
                                         ]
                                     ],
@@ -95,11 +94,11 @@ return (static function($icons) {
                     // type: links
                     'lot' => [
                         'license' => [
-                            'current' => 'get' === $_['task'] && '.license' === $_['path'],
+                            'current' => 'g' === $_['task'] && '.license' === $_['path'],
                             'description' => 'Please read the terms and conditions before using this application.',
                             'icon' => 'M9 10A3.04 3.04 0 0 1 12 7A3.04 3.04 0 0 1 15 10A3.04 3.04 0 0 1 12 13A3.04 3.04 0 0 1 9 10M12 19L16 20V16.92A7.54 7.54 0 0 1 12 18A7.54 7.54 0 0 1 8 16.92V20M12 4A5.78 5.78 0 0 0 7.76 5.74A5.78 5.78 0 0 0 6 10A5.78 5.78 0 0 0 7.76 14.23A5.78 5.78 0 0 0 12 16A5.78 5.78 0 0 0 16.24 14.23A5.78 5.78 0 0 0 18 10A5.78 5.78 0 0 0 16.24 5.74A5.78 5.78 0 0 0 12 4M20 10A8.04 8.04 0 0 1 19.43 12.8A7.84 7.84 0 0 1 18 15.28V23L12 21L6 23V15.28A7.9 7.9 0 0 1 4 10A7.68 7.68 0 0 1 6.33 4.36A7.73 7.73 0 0 1 12 2A7.73 7.73 0 0 1 17.67 4.36A7.68 7.68 0 0 1 20 10Z',
-                            'url' => x\panel\to\link(['path' => '.license']),
-                            'skip' => is_file(ENGINE . D . 'log' . D . dechex(crc32(PATH))),
+                            'url' => $_['/'] . '/::g::/.license',
+                            'skip' => is_file(ENGINE . DS . 'log' . DS . dechex(crc32(ROOT))),
                             'stack' => 0
                         ],
                         'site' => [
@@ -107,9 +106,9 @@ return (static function($icons) {
                             'url' => (string) $url,
                             'lot' => [
                                 'state' => [
-                                    'current' => $url->current(false, false) === strtok(x\panel\to\link(['path' => '.state']), '?&#'),
+                                    'current' => $url . $url->path === $_['/'] . '/::g::/.state',
                                     'icon' => 'M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z',
-                                    'url' => x\panel\to\link(['path' => '.state']),
+                                    'url' => $_['/'] . '/::g::/.state' . $url->hash,
                                     'stack' => 10
                                 ],
                                 'view' => [
@@ -139,7 +138,7 @@ return (static function($icons) {
                             'caret' => false,
                             'title' => false,
                             'description' => i('Exit') . ' ' . $user->user,
-                            'url' => $url . '/' . trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/') . '/' . $user->name . '?exit=' . $_['token'],
+                            'url' => $url . $_['user']['path'] . '/' . $user->name . '?exit=' . $_['token'] . $url->hash,
                             'stack' => 10
                         ]
                     ],
@@ -164,10 +163,10 @@ return (static function($icons) {
                             'lot' => [],
                             'stack' => 10
                         ],
-                        'alert' => !empty($_SESSION['alert']) ? [
+                        'alert' => isset($alert) ? [
                             'type' => 'section',
-                            'content' => self::alert(),
-                            'skip' => !count($_SESSION['alert']),
+                            'content' => $alert,
+                            'skip' => !count($alert),
                             'stack' => 15
                         ] : [],
                         1 => [
@@ -193,13 +192,12 @@ return (static function($icons) {
             'stack' => 20
         ]
     ];
-    return array_replace_recursive([
-        'has' => ['parent' => false !== strpos($_['path'], '/')],
+    return \array_replace_recursive([
+        'has' => ['parent' => \count($_['chop']) > 1],
         'is' => [
             'error' => false,
-            // TODO
-            'page' => true,
-            'pages' => false
+            'page' => !isset($_['i']),
+            'pages' => isset($_['i'])
         ],
         'lot' => $lot
     ], $_);

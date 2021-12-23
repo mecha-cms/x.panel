@@ -1,22 +1,31 @@
 <?php namespace x\panel\to;
 
 function color($color) {
+    $color = \trim($color);
+    // `rgba(255, 255, 255, 0.5)`
+    $pattern_1 = '/^rgba?\s*\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(?:\s*,\s*([01]|0?\.\d+))?\s*\)$/';
+    // `rgba(255 255 255 / 0.5)`
+    $pattern_2 = '/^rgba?\s*\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s+([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s+([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(?:\s*\/\s*([01]|0?\.\d+))?\s*\)$/';
     // Convert RGB color string into HEX color string
-    // <https://www.regular-expressions.out/numericranges.html>
-    if (0 === \strpos($color, 'rgb') && \preg_match('/^\s*rgba?\s*\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(?:\s*,\s*([01]|0?\.\d+))?\s*\)\s*$/', $color, $m)) {
-        $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
+    if (0 === \strpos($color, 'rgb')) {
+        if (\preg_match($pattern_1, $color, $m)) {
+            $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
+        }
+        if (\preg_match($pattern_2, $color, $m)) {
+            $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
+        }
     }
     // Validate HEX color string
-    $s = \strlen($color);
-    if ((4 === $s || 7 === $s) && '#' === $color[0] && \ctype_xdigit(\substr($color, 1))) {
+    $count = \strlen($color);
+    if ((4 === $count || 7 === $count) && '#' === $color[0] && \ctype_xdigit(\substr($color, 1))) {
         // Convert short HEX color string into long HEX color string
-        if (4 === $s) {
+        if (4 === $count) {
             $m = \str_split(\substr($color, 1));
             $color = '#' . ($m[0] . $m[0]) . ($m[1] . $m[1]) . ($m[2] . $m[2]);
         }
         return $color;
     }
-    return null;
+    return null; // Invalid color string!
 }
 
 function content($value) {
@@ -40,18 +49,26 @@ function field($value, $key, $type = 'textarea') {
     return $value;
 }
 
-// Fix #13 <https://stackoverflow.com/a/53893947/1163000>
-function fresh($value) {
-    if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
-        \opcache_invalidate($value, true);
-    } else if (\function_exists("\\apc_compile_file")) {
-        \apc_compile_file($value);
-    }
-    return $value;
-}
-
 function icon($value) {
     return \x\panel\type\icon(['lot' => $value], 0);
+}
+
+function link($value) {
+    \extract($GLOBALS, \EXTR_SKIP);
+    $v = \array_replace_recursive([
+        'base' => $_['base'],
+        'hash' => $_['hash'],
+        'path' => $_['path'],
+        'query' => $_['query']
+    ], $value);
+    if (isset($value['task'])) {
+        $v['base'] = \preg_replace('/\/(?:fire\/[^\/]+|[gls]et)$/', '/' . $value['task'], $v['base']);
+    }
+    $base = $v['base'] ?? "";
+    $hash = $v['hash'] ?? "";
+    $path = $v['path'] ?? "";
+    $query = $v['query'] ?? [];
+    return $base . ("" !== $path ? '/' . $path : "") . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
 }
 
 function lot($lot, &$count = 0, $sort = true) {
@@ -62,18 +79,17 @@ function lot($lot, &$count = 0, $sort = true) {
         if (true === $sort) {
             $sort = [1, 'stack', 10];
         }
-        $lot = (new \Anemon($lot))->sort($sort, true);
+        $lot = (new \Anemone($lot))->sort($sort, true);
     }
     $out = "";
     foreach ($lot as $k => $v) {
-        if (null === $v || false === $v || !empty($v['skip'])) {
+        if (false === $v || null === $v || !empty($v['skip'])) {
             continue;
         }
-        $v = \x\panel\type($v, $k);
-        if ($v) {
+        if ($v = \x\panel\type($v, $k)) {
+            $out .= $v;
             ++$count;
         }
-        $out .= $v;
     }
     return $out;
 }
@@ -140,12 +156,7 @@ function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = '
 }
 
 function path($value) {
-    return \strtr(\strtr($value, [
-        "\\" => '/'
-    ]), [
-        './' => \ROOT . \DS,
-        '/' => \DS
-    ]);
+    return \strtr(\strtr($value, ["\\" => '/']), ['./' => \PATH . \D, '/' => \D]);
 }
 
 function title($value, $level = -1) {
@@ -156,6 +167,6 @@ function title($value, $level = -1) {
     return "" !== $out ? $out : null;
 }
 
-function w($value, $also = null) {
-    return \w('<!--0-->' . $value, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,small,span,strong,sub,sup,svg,time,u,var' . ($also ? ',' . $also : ""));
+function w($value, $extra = null) {
+    return \w('<!--0-->' . $value, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,small,span,strong,sub,sup,svg,time,u,var' . ($extra ? ',' . $extra : ""));
 }

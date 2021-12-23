@@ -1,10 +1,7 @@
 <?php namespace x\panel\from;
 
 function path($value) {
-    return \strtr($value, [
-        '/' => \DS,
-        \ROOT => '.'
-    ]);
+    return \strtr(\strtr($value, [\PATH . \D => '.' . \D]), '/', "\\");
 }
 
 function tags($value) {
