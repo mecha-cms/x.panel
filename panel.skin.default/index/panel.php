@@ -1,26 +1,29 @@
 <?php
 
 $skin = $state->x->panel->skin ?? 'default';
-$variant = $_['form']['lot']['cookie']['panel-skin-variant'] ?? $_COOKIE['panel-skin-variant'] ?? null;
+$variant = $_POST['cookie']['panel-skin-variant'] ?? $_COOKIE['panel-skin-variant'] ?? null;
 
 // Load asset and enable variant option if current `skin` value is `default`
 if ('default' === $skin) {
-    if ('post' === $_['form']['type']) {
+    if ('POST' === $_SERVER['REQUEST_METHOD']) {
         if ($variant) {
-            setcookie('panel-skin-variant', $variant, strtotime('+1 year'), '/', "", true, false);
+            setcookie('panel-skin-variant', $variant, [
+                'expires' => strtotime('+1 year'),
+                'path' => '/'
+            ]);
         }
     }
     $_['asset']['panel.skin.' . $skin] = [
         'id' => false,
-        'path' => stream_resolve_include_path(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'index' . (defined('DEBUG') && DEBUG ? '.' : '.min.') . 'css'),
+        'path' => stream_resolve_include_path(__DIR__ . D . '..' . D . 'lot' . D . 'asset' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'css'),
         'stack' => 30
     ];
     $_['is'][$variant] = true;
 }
 
 // Add `default` skin option
-if ('.state' === $_['path'] && 'g' === $_['task']) {
-    $_['asset'][stream_resolve_include_path(__DIR__ . DS . '..' . DS . 'lot' . DS . 'asset' . DS . 'js' . DS . 'index' . (defined('DEBUG') && DEBUG ? '.' : '.min.') . 'js')] = [
+if ('.state' === $_['path'] && 'get' === $_['task']) {
+    $_['asset'][stream_resolve_include_path(__DIR__ . D . '..' . D . 'lot' . D . 'asset' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'js')] = [
         'id' => false,
         'stack' => 50
     ];

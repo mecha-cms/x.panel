@@ -9,6 +9,5 @@ return [
     'guard' => [
         // Move deleted file(s) to the trash folder?
         'trash' => true
-    ],
-    'skin' => 'default'
+    ]
 ];

@@ -1,16 +1,22 @@
 GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 =============================================================
 
-![Panel Skin Default Dark](https://user-images.githubusercontent.com/1669261/141484343-0568ef0d-f7c5-4991-a8ee-7773379415b2.png)
+![Panel Skin Default Dark](/panel.skin.default/lot/asset/index.png)
 
-![Panel Skin Default Light](https://user-images.githubusercontent.com/1669261/141484338-d4a133f5-2c7f-4bc2-95c5-b4c61a531551.png)
+![Panel Skin Default Light](/panel.skin.default/lot/asset/index/1.png)
 
-![Panel Skin](https://user-images.githubusercontent.com/1669261/141484323-d97a403f-5706-4e84-b5ab-78ebd9eb6bd9.png)
+![Panel Skin](/panel/lot/asset/index.png)
 
 ---
 
 Release Notes
 -------------
+
+### 3.0.0
+
+ - [ ] Added ability to update core, extension and layout directly from the panel.
+ - [ ] Updated for Mecha 3.0.0.
+ - [x] Changed URL pattern from `http://127.0.0.1/panel/::g::/foo/bar/baz/1` to `http://127.0.0.1/panel/get/foo/bar/baz/1` (#23)
 
 ### 2.8.1
 

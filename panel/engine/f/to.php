@@ -56,19 +56,18 @@ function icon($value) {
 function link($value) {
     \extract($GLOBALS, \EXTR_SKIP);
     $v = \array_replace_recursive([
-        'base' => $_['base'],
-        'hash' => $_['hash'],
-        'path' => $_['path'],
-        'query' => $_['query']
+        'base' => $_['base'] ?? "",
+        'hash' => $_['hash'] ?? "",
+        'path' => $_['path'] ?? "",
+        'query' => $_['query'] ?? [],
+        'task' => $_['task'] ?? 'get'
     ], $value);
-    if (isset($value['task'])) {
-        $v['base'] = \preg_replace('/\/(?:fire\/[^\/]+|[gls]et)$/', '/' . $value['task'], $v['base']);
-    }
-    $base = $v['base'] ?? "";
-    $hash = $v['hash'] ?? "";
-    $path = $v['path'] ?? "";
-    $query = $v['query'] ?? [];
-    return $base . ("" !== $path ? '/' . $path : "") . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
+    $base = $v['base'];
+    $hash = $v['hash'];
+    $path = $v['path'];
+    $query = $v['query'];
+    $task = $v['task'];
+    return $base . ("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : "") . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
 }
 
 function lot($lot, &$count = 0, $sort = true) {

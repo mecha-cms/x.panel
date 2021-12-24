@@ -188,22 +188,24 @@ function desk($value, $key) {
         \x\panel\_style_set($value[2], $styles);
         $value['tags'] = $tags;
         if (isset($value['content'])) {
-            $out = \x\panel\type\content($value, $key);
-            $out[0] = $value[0] ?? 'main';
-            $out['tabindex'] = $out['tabindex'] ?? -1;
-            return $out;
+            if ($v = \x\panel\type\content($value, $key)) {
+                $v[0] = $value[0] ?? 'main';
+                $v['tabindex'] = $v['tabindex'] ?? -1;
+                return $v;
+            }
         }
         if (isset($value['lot'])) {
             foreach ($value['lot'] as &$v) {
+                $v['type'] = 'section';
                 if (!\array_key_exists('type', $v)) {
-                    $v['type'] = 'section';
                 }
             }
             unset($v);
-            $out = \x\panel\type\lot($value, $key);
-            $out[0] = $value[0] ?? 'main';
-            $out['tabindex'] = $out['tabindex'] ?? -1;
-            return $out;
+            if ($v = \x\panel\type\lot($value, $key)) {
+                $v[0] = $value[0] ?? 'main';
+                $v['tabindex'] = $v['tabindex'] ?? -1;
+                return $v;
+            }
         }
     }
     return "" !== $out[1] ? new \HTML($out) : null;
@@ -339,6 +341,7 @@ function fields($value, $key) {
                 }
                 $type = \strtolower(\f2p(\strtr($v['type'] ?? "", '-', '_')));
                 if ("" !== $type && \function_exists($fn = __NAMESPACE__ . "\\" . $type)) {
+                    // Put all hidden field(s) at the bottom
                     if ('field/hidden' !== $type) {
                         $out[1] .= \call_user_func($fn, $v, $k);
                     } else {
@@ -1274,9 +1277,7 @@ function tabs($value, $key) {
                     $v[2]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
                     $v['tags']['can:toggle'] = !empty($v['toggle']);
                     if (empty($v['url']) && empty($v['link'])) {
-                        $v['url'] = $GLOBALS['url']->query('&', [
-                            'tab' => [$name => $kk]
-                        ]);
+                        $v['url'] = $GLOBALS['url']->query(['tab' => [$name => $kk]]);
                     } else {
                         $v['tags']['has:link'] = true;
                         if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {

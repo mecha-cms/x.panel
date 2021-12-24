@@ -5,8 +5,8 @@
   font: inherit;
   margin: 0;
   padding: 0;
-  text-decoration: inherit;
-  text-transform: inherit;
+  text-decoration: none;
+  text-transform: none;
 }
 
 ::-webkit-input-placeholder {
@@ -34,21 +34,7 @@
 }
 
 a {
-  color: inherit;
-  &:any-link {
-    background: var(--fill-link, none);
-    color: var(--color-link);
-    @each $v in (hover, focus, active) {
-      &:#{$v} {
-        background: var(--fill-link--#{$v}, var(--fill-link, none));
-        color: var(--color-link--#{$v}, var(--color-link));
-      }
-    }
-  }
-  &.not\:active {
-    background: var(--fill-link--disabled, var(--fill-link, none));
-    color: var(--color-link--disabled, var(--color-link));
-  }
+  @extend .a;
 }
 
 :root, body {

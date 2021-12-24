@@ -62,10 +62,7 @@ return (static function($icons) {
                         ],
                         'search' => [
                             'type' => 'form/get',
-                            'url' => x\panel\to\link([
-                                'path' => ($_['file'] ? dirname($_['path']) : $_['path']) . '/1',
-                                'query' => ['query' => false]
-                            ]),
+                            'url' => x\panel\to\link(['query' => ['query' => false]]),
                             'name' => 'get',
                             'lot' => [
                                 'fields' => [
@@ -73,7 +70,7 @@ return (static function($icons) {
                                     'lot' => [
                                         'query' => [
                                             'title' => 'Search',
-                                            'type' => 'field/text',
+                                            'type' => 'text',
                                             'hint' => 'Search',
                                             'value' => $_GET['query'] ?? null,
                                             '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr($_['file'] ? dirname($_['path']) : $_['path'], '/', "\\"))],
@@ -166,8 +163,8 @@ return (static function($icons) {
                         ],
                         'alert' => !empty($_SESSION['alert']) ? [
                             'type' => 'section',
-                            'content' => self::alert(),
-                            'skip' => !count($_SESSION['alert']),
+                            'content' => Layout::get('alert'),
+                            'skip' => 0 === count($_SESSION['alert']),
                             'stack' => 15
                         ] : [],
                         1 => [

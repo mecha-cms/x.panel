@@ -97,6 +97,16 @@ function _asset_set() {
     }
 }
 
+// Fix #13 <https://stackoverflow.com/a/53893947/1163000>
+function _cache_let($path) {
+    if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
+        \opcache_invalidate($path, true);
+    } else if (\function_exists("\\apc_compile_file")) {
+        \apc_compile_file($path);
+    }
+    return $path;
+}
+
 function _class_set(&$value, array $tags = []) {
     $a = [];
     foreach (\explode(' ', $value['class'] ?? "") as $v) {
@@ -111,14 +121,13 @@ function _class_set(&$value, array $tags = []) {
     $value['class'] = $c ? \implode(' ', $c) : null;
 }
 
-// Fix #13 <https://stackoverflow.com/a/53893947/1163000>
-function _file_cache_let($path) {
-    if (\function_exists("\\opcache_invalidate") && \strlen((string) \ini_get('opcache.restrict_api')) < 1) {
-        \opcache_invalidate($path, true);
-    } else if (\function_exists("\\apc_compile_file")) {
-        \apc_compile_file($path);
+function _state_set() {
+    $_ = $GLOBALS['_'];
+    foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
+        if (isset($_[$v]) && \is_array($_[$v])) {
+            \State::set($v, $_[$v]);
+        }
     }
-    return $path;
 }
 
 function _style_set(&$value, array $styles = []) {

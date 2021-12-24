@@ -13,7 +13,7 @@ $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path,
 // Create `$user` variable just in case `user` extension is too late to be loaded due to the
 // default extension order. Since `panel` is less than `user` when sorted alphabetically, then
 // this `panel` extension will most likely be loaded before `user` extension.
-// At least we have the user’s cookie data which can be used immediately.
+// At least we have the user’s cookie data which can be used immediately as a reference.
 if (empty($user) && $key = cookie('user.key')) {
     if (is_file($file = LOT . D . 'user' . D . $key . '.page')) {
         $GLOBALS['user'] = $user = new User($file);
@@ -33,7 +33,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
     'asset' => [],
     'author' => $user->user ?? null,
-    'base' => $url . ($test ? '/' . $route . '/' . $m[1] : ""),
+    'base' => $url . '/' . $route,
     'can' => ['fetch' => !empty($state->x->panel->fetch)],
     'content' => null,
     'description' => null,
@@ -48,12 +48,19 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'not' => [],
     'path' => $test ? $m[2] : null,
     'query' => $_GET ?? [],
-    'status' => 403,
+    'status' => $f ? 200 : 404,
     'task' => $GLOBALS['_' . $req]['task'] ?? ($test ? $m[1] : null),
     'title' => null,
     'token' => $user->token ?? null,
     'type' => $GLOBALS['_' . $req]['type'] ?? null
 ], $GLOBALS['_'] ?? []);
+
+// Modify default log-in redirection to the panel page if it is not set
+if ('GET' === $req && !array_key_exists('kick', $_GET)) {
+    if ($path === $route) {
+        $_GET['kick'] = '/' . $route . '/get/' . trim($state->x->panel->route ?? 'asset', '/');
+    }
+}
 
 // Load the panel interface only if the location value is at least started with `http://127.0.0.1/panel/`
 if (0 === strpos($path . '/', $route . '/') && $test) {
