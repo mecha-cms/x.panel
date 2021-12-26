@@ -1,24 +1,15 @@
-.alert {
-  p {
-    background: var(--fill-alert);
-    border: 0 solid;
-    border-color: var(--stroke-alert);
-    border-radius: var(--arc-alert);
-    box-shadow: var(--shadow-alert);
-    color: var(--color-alert);
-    padding: calc(var(--z) * .75) calc(var(--z) * 1.25);
-    .f\:r .icon {
-      margin-right: calc(var(--x) / -4);
-    }
-    + p {
-      margin-top: calc(var(--y) / 2);
-    }
-    @each $v in (error, info, success) {
-      &.#{$v} {
-        background: var(--fill-alert--#{$v}, var(--fill-alert));
-        border-color: var(--stroke-alert--#{$v}, var(--stroke-alert));
-        color: var(--color-alert--#{$v}, var(--color-alert));
-      }
-    }
+[role='alert'] {
+  background: var(--fill-alert);
+  border: 0 solid;
+  border-color: var(--stroke-alert);
+  border-radius: var(--arc-alert);
+  box-shadow: var(--shadow-alert);
+  color: var(--color-alert);
+  padding: calc(var(--z) * .75) calc(var(--z) * 1.25);
+  .f\:r .icon {
+    margin-right: calc(var(--x) / -4);
+  }
+  + [role='alert'] {
+    margin-top: calc(var(--y) / 2);
   }
 }

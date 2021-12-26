@@ -1,3 +1,4 @@
+// Disable smooth scrolling when user(s) have `prefers-reduced-motion` enabled
 @media (prefers-reduced-motion: reduce) {
   :root {
     scroll-behavior: auto;

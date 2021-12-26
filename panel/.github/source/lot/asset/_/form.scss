@@ -1,8 +1,15 @@
-.button,
-.input,
-.output,
-.select,
-.textarea {
+[role='button'],
+[role='combobox'],
+[role='listbox'],
+[role='searchbox'],
+[role='spinbutton'],
+[role='textbox'],
+button,
+input,
+output,
+select,
+textarea {
+  accent-color: var(--fill-button);
   border: 1px solid transparent;
   display: inline-block;
   height: calc(var(--h) + (var(--y) / 2));
@@ -17,8 +24,12 @@
   }
 }
 
-.button,
-.button:any-link {
+[role='button'],
+[role='button']:any-link,
+button,
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
   background: var(--fill-button);
   border-color: var(--stroke-button);
   border-radius: var(--arc-button);
@@ -35,7 +46,7 @@
       color: var(--color-button--#{$v}, var(--color-button));
     }
   }
-  &.as\:link {
+  &[role='link'] {
     background: none;
     border-color: transparent;
     border-radius: 0;
@@ -67,8 +78,11 @@
   }
 }
 
-.input,
-.textarea {
+[role='searchbox'],
+[role='spinbutton'],
+[role='textbox'],
+input,
+textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
   border-radius: var(--arc-input);
@@ -96,66 +110,70 @@
   }
 }
 
-.input {
-  &[type='file'],
-  &[type='range'] {
-    background: none;
+[role='slider'],
+input[type='file'],
+input[type='range'] {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  // height: var(--y);
+  line-height: var(--y);
+  padding: 0;
+}
+
+input[type='file'] {
+  line-height: normal;
+}
+
+[role='checkbox'],
+[role='radio'],
+input[type='checkbox'],
+input[type='image'],
+input[type='radio'] {
+  background: none;
+  border: 0;
+  height: var(--z);
+  line-height: var(--z);
+  margin: 0;
+  padding: 0;
+  width: var(--z);
+}
+
+input[type='color'] {
+  height: calc(var(--y) * 1.5);
+  padding: 0;
+  width: calc(var(--x) * 1.5);
+  &::-moz-color-swatch {
     border: 0;
-    box-shadow: none;
-    // height: var(--y);
-    line-height: var(--y);
-    padding: 0;
   }
-  &[type='file'] {
-    line-height: normal;
+  &::-webkit-color-swatch {
+    border: 0;
+  }
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
   }
 }
 
-.input {
-  &[type='checkbox'],
-  &[type='image'],
-  &[type='radio'] {
-    background: none;
-    border: 0;
-    height: var(--z);
-    line-height: var(--z);
+input[type='image'] {
+  box-shadow: none;
+  height: auto;
+  width: auto;
+}
+
+input[type='number'] {
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    @include appearance(none);
     margin: 0;
-    padding: 0;
-    width: var(--z);
-  }
-  &[type='color'] {
-    height: calc(var(--y) * 1.5);
-    padding: 0;
-    width: calc(var(--x) * 1.5);
-    &::-moz-color-swatch {
-      border: 0;
-    }
-    &::-webkit-color-swatch {
-      border: 0;
-    }
-    &::-webkit-color-swatch-wrapper {
-      padding: 0;
-    }
-  }
-  &[type='image'] {
-    box-shadow: none;
-    height: auto;
-    width: auto;
-  }
-  &[type='number'] {
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-      @include appearance(none);
-      margin: 0;
-    }
-  }
-  &[type='number'],
-  &[type='search'] {
-    @include appearance(textfield);
   }
 }
 
-.output {
+input[type='number'],
+input[type='search'] {
+  @include appearance(textfield);
+}
+
+output {
   background: var(--fill-output);
   border-color: var(--stroke-output);
   border-radius: var(--arc-output);
@@ -172,7 +190,9 @@
   }
 }
 
-.select {
+[role='combobox'],
+[role='listbox'],
+select {
   -moz-padding-start: calc((var(--x) / 2) - 3px); // <https://github.com/twbs/bootstrap/issues/32636>
   appearance: none;
   background: var(--fill-input);
@@ -189,13 +209,18 @@
       color: var(--color-input--#{$v}, var(--color-input));
     }
   }
+  &[aria-multiselectable='true'],
   &[multiple] {
     height: auto;
+    [role='group'],
+    [role='option'],
     optgroup,
     option {
       background: none;
     }
   }
+  [role='group'],
+  [role='option'],
   optgroup,
   option {
     background: var(--fill-input);
@@ -209,25 +234,23 @@
       }
     }
   }
+  [role='group'],
   optgroup {
     font-weight: bold;
+    [role='option'],
     option {
       font-weight: normal;
       padding-left: calc(var(--x) / 3);
     }
   }
-  &:not([multiple]) {
+  &:not([multiple]):not([aria-multiselectable='true']) {
     padding-bottom: 0;
     padding-top: 0;
   }
 }
 
-.width {
-  display: flex;
-  width: 100%;
-}
-
-.textarea {
+[role='textbox'][aria-multiline='true'],
+textarea {
   min-height: calc(var(--y) * 3.75);
   overflow: auto;
   resize: vertical;
@@ -236,127 +259,140 @@
   }
 }
 
+.width {
+  display: flex;
+  width: 100%;
+}
+
 label {
-  > input {
-    &[type='checkbox'],
-    &[type='radio'] {
-      + span {
-        display: inline-flex;
-        vertical-align: middle;
-      }
+  [role='checkbox'],
+  [role='radio'],
+  input[type='checkbox'],
+  input[type='radio'] {
+    + span {
+      display: inline-flex;
+      vertical-align: middle;
     }
   }
 }
 
 // Custom appearance for modern browser(s)
-.input {
-  &[type='checkbox'],
-  &[type='radio'] {
-    @include appearance(none);
+[role='checkbox'],
+[role='radio'],
+input[type='checkbox'],
+input[type='radio'] {
+  @include appearance(none);
+  background: var(--fill-button);
+  border-color: var(--stroke-button);
+  border-radius: var(--arc-button);
+  box-shadow: var(--shadow-button);
+  color: var(--color-button);
+  &::before {
+    background: var(--fill);
+    bottom: 2px;
+    content: "";
+    left: 2px;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+  }
+  @each $v in (hover, focus, active, disabled) {
+    &:#{$v} {
+      background: var(--fill-button--#{$v}, var(--fill-button));
+      border-color: var(--stroke-button--#{$v}, var(--stroke-button));
+      box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
+      color: var(--color-button--#{$v}, var(--color-button));
+    }
+  }
+}
+
+[aria-checked='true'][role='checkbox'],
+[aria-checked='true'][role='radio'],
+input[type='checkbox']:checked,
+input[type='radio']:checked {
+  &::before {
+    @include transform(rotate(45deg));
+    background: none;
+    border-bottom: 2px solid var(--color-button);
+    border-right: 2px solid var(--color-button);
+    bottom: 4px;
+    left: 5px;
+    right: 5px;
+    top: 1px;
+    visibility: visible;
+  }
+  @each $v in (hover, focus, active, disabled) {
+    &:#{$v} {
+      &::before {
+        border-bottom-color: var(--color-button--#{$v});
+        border-right-color: var(--color-button--#{$v});
+      }
+    }
+  }
+}
+
+[role='radio'],
+input[type='radio'] {
+  &,
+  &::before {
+    border-radius: 100%;
+  }
+}
+
+[aria-checked='true'][role='radio'],
+input[type='radio']:checked {
+  &::before {
+    background: none;
+    border: 2px solid;
+    border-color: var(--fill);
+    visibility: visible;
+  }
+  @each $v in (hover, focus, active, disabled) {
+    &:#{$v} {
+      &::before {
+        border-color: var(--fill--#{$v}, var(--fill));
+      }
+    }
+  }
+}
+
+// [role='slider'],
+input[type='range'] {
+  @include appearance(none);
+  &::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    background: var(--stroke-input);
+    border: 0;
+    height: 2px;
+    overflow: visible;
+  }
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
     background: var(--fill-button);
     border-color: var(--stroke-button);
     border-radius: var(--arc-button);
+    border-width: 0;
     box-shadow: var(--shadow-button);
     color: var(--color-button);
-    &::before {
-      background: var(--fill);
-      bottom: 2px;
-      content: "";
-      left: 2px;
-      position: absolute;
-      right: 2px;
-      top: 2px;
-    }
-    @each $v in (hover, focus, active, disabled) {
-      &:#{$v} {
-        background: var(--fill-button--#{$v}, var(--fill-button));
-        border-color: var(--stroke-button--#{$v}, var(--stroke-button));
-        box-shadow: var(--shadow-button--#{$v}, var(--shadow-button));
-        color: var(--color-button--#{$v}, var(--color-button));
-      }
-    }
+    height: var(--y);
+    margin-top: calc(calc(var(--y) / -2) + 1px); // Magic! :(
+    width: calc(var(--x) / 2);
   }
-  &[type='checkbox'] {
-    &:checked {
-      &::before {
-        @include transform(rotate(45deg));
-        background: none;
-        border-bottom: 2px solid var(--color-button);
-        border-right: 2px solid var(--color-button);
-        bottom: 4px;
-        left: 5px;
-        right: 5px;
-        top: 1px;
-        visibility: visible;
-      }
-    }
-    @each $v in (hover, focus, active, disabled) {
-      &:#{$v} {
-        &::before {
-          border-bottom-color: var(--color-button--#{$v});
-          border-right-color: var(--color-button--#{$v});
-        }
-      }
-    }
+  &::-moz-range-track {
+    background: var(--stroke-input);
+    border: 0;
+    height: 2px;
   }
-  &[type='radio'] {
-    &,
-    &::before {
-      border-radius: 100%;
-    }
-    &:checked {
-      &::before {
-        background: none;
-        border: 2px solid;
-        border-color: var(--fill);
-        visibility: visible;
-      }
-    }
-    @each $v in (hover, focus, active, disabled) {
-      &:#{$v} {
-        &::before {
-          border-color: var(--fill--#{$v}, var(--fill));
-        }
-      }
-    }
-  }
-  &[type='range'] {
-    @include appearance(none);
-    &::-webkit-slider-runnable-track {
-      -webkit-appearance: none;
-      background: var(--stroke-input);
-      border: 0;
-      height: 2px;
-      overflow: visible;
-    }
-    &::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      background: var(--fill-button);
-      border-color: var(--stroke-button);
-      border-radius: var(--arc-button);
-      border-width: 0;
-      box-shadow: var(--shadow-button);
-      color: var(--color-button);
-      height: var(--y);
-      margin-top: calc(calc(var(--y) / -2) + 1px); // Magic! :(
-      width: calc(var(--x) / 2);
-    }
-    &::-moz-range-track {
-      background: var(--stroke-input);
-      border: 0;
-      height: 2px;
-    }
-    &::-moz-range-thumb {
-      background: var(--fill-button);
-      border-color: var(--stroke-button);
-      border-radius: var(--arc-button);
-      border-width: 0;
-      box-shadow: var(--shadow-button);
-      color: var(--color-button);
-      height: var(--y);
-      margin-top: calc(calc(var(--y) / -2) + 1px); // Magic! :(
-      width: calc(var(--x) / 2);
-    }
+  &::-moz-range-thumb {
+    background: var(--fill-button);
+    border-color: var(--stroke-button);
+    border-radius: var(--arc-button);
+    border-width: 0;
+    box-shadow: var(--shadow-button);
+    color: var(--color-button);
+    height: var(--y);
+    margin-top: calc(calc(var(--y) / -2) + 1px); // Magic! :(
+    width: calc(var(--x) / 2);
   }
   @each $v in (hover, focus, active, disabled) {
     &:#{$v} {

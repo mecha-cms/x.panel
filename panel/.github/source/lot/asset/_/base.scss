@@ -1,20 +1,14 @@
 *,
 ::before,
 ::after {
+  background: none;
   box-sizing: border-box;
+  color: inherit;
   font: inherit;
   margin: 0;
   padding: 0;
   text-decoration: none;
   text-transform: none;
-}
-
-::-webkit-input-placeholder {
-  @include placeholder(.5);
-}
-
-::-moz-placeholder {
-  @include placeholder(.5);
 }
 
 ::placeholder {
@@ -33,6 +27,7 @@
   z-index: 1;
 }
 
+[role='link'],
 a {
   @extend .a;
 }
@@ -88,7 +83,7 @@ var {
 
 caption,
 figure {
-  @extend .text-center;
+  text-align: center;
 }
 
 code {
@@ -98,6 +93,11 @@ code {
 del,
 s {
   @extend .s;
+}
+
+[role='img'],
+img {
+  @extend .img;
 }
 
 ins,
@@ -151,9 +151,8 @@ pre {
   }
 }
 
-img {
-  height: auto;
-  max-width: 100%;
+table {
+  @extend .table;
 }
 
 button::-moz-focus-inner,
@@ -164,13 +163,23 @@ input::-moz-focus-inner {
   padding: 0;
 }
 
+// [role='combobox'],
+[role='button'],
+[role='checkbox'],
+[role='listbox'],
+[role='radio'],
+[role='slider'],
+[role='switch'],
 button,
+input[type='button'],
 input[type='checkbox'],
 input[type='color'],
 input[type='file'],
 input[type='image'],
 input[type='radio'],
 input[type='range'],
+input[type='reset'],
+input[type='submit'],
 label,
 select,
 summary {
@@ -180,12 +189,6 @@ summary {
 
 button,
 input,
-input[type='checkbox'],
-input[type='color'],
-input[type='file'],
-input[type='image'],
-input[type='radio'],
-input[type='range'],
 select,
 textarea {
   &:disabled {
@@ -226,6 +229,7 @@ h4,
 h5,
 h6,
 hr,
+nav,
 ol,
 p,
 pre,
@@ -248,6 +252,7 @@ figure {
   figcaption {
     margin-top: calc(var(--y) / 4);
   }
+  [role='img'],
   img {
     display: block;
     margin: 0 auto;
