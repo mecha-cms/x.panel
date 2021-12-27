@@ -31,7 +31,6 @@ function _asset_get() {
             ];
         }
     }
-    \x\panel\_asset_let();
     $f = __DIR__ . \D . '..' . \D . 'lot' . \D . 'asset';
     $f = \stream_resolve_include_path($f) . \D;
     $z = \defined("\\TEST") && \TEST ? '.' : '.min.';
@@ -42,7 +41,7 @@ function _asset_get() {
     ];
     $data[$f . \D . 'index' . $z . 'js'] = ['stack' => 20];
     $data[$f . \D . 'index' . \D . 'fetch' . $z . 'js'] = [
-        'skip' => empty($state->x->panel->fetch),
+        'skip' => !\State::get('x.panel.fetch'),
         'stack' => 30
     ];
     foreach (['bar', 'column', 'dialog', 'file', 'link', 'menu', 'page', 'row', 'stack', 'tab', 'task'] as $v) {

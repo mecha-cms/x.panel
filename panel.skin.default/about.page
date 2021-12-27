@@ -1,14 +1,13 @@
 ---
 title: Panel Skin: Default
 description: The default control panel skin.
-image: '/lot/x/panel.skin.default/lot/asset/index.png'
+image: /lot/x/panel.skin.default/lot/asset/index.png
+images:
+- /lot/x/panel.skin.default/lot/asset/index.png
+- /lot/x/panel.skin.default/lot/asset/index/1.png
 author: Taufik Nurrohman
 type: Markdown
 version: 2.0.0
-
-images:
-- '/lot/x/panel.skin.default/lot/asset/index.png'
-- '/lot/x/panel.skin.default/lot/asset/index/1.png'
 
 use:
   '.lot\x\panel': 1

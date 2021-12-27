@@ -84,6 +84,7 @@ function route($_) {
 \Hook::set('route', function($path, $query, $hash) use($_) {
     if (\Is::user()) {
         \x\panel\_asset_get();
+        \x\panel\_asset_let();
         \Hook::fire('route.panel', [$_, $path, $query, $hash]);
     }
 }, 0);
