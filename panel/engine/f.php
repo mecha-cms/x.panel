@@ -41,7 +41,7 @@ function _asset_get() {
     ];
     $data[$f . \D . 'index' . $z . 'js'] = ['stack' => 20];
     $data[$f . \D . 'index' . \D . 'fetch' . $z . 'js'] = [
-        'skip' => !\State::get('x.panel.fetch'),
+        'skip' => empty($GLOBALS['_']['can']['fetch']),
         'stack' => 30
     ];
     foreach (['bar', 'column', 'dialog', 'file', 'link', 'menu', 'page', 'row', 'stack', 'tab', 'task'] as $v) {
@@ -122,6 +122,9 @@ function _class_set(&$value, array $tags = []) {
 
 function _state_set() {
     $_ = $GLOBALS['_'];
+    if ($_['status'] >= 400) {
+        $_['is']['error'] = $_['status'];
+    }
     foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
         if (isset($_[$v]) && \is_array($_[$v])) {
             \State::set($v, $_[$v]);
@@ -171,16 +174,22 @@ function type($value, $key) {
     $out = "";
     if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')))) {
         if (\function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
-            $out .= \call_user_func($fn, $value, $key);
+            if ($v = \call_user_func($fn, $value, $key)) {
+                $out .= $v;
+            }
         } else {
             $out .= \x\panel\_abort($value, $key, $fn);
         }
     } else {
         // Automatically forms an interface based on the presence of `content` or `lot` property
         if (isset($value['content'])) {
-            $out .= \x\panel\type\content($value, $key);
+            if ($v = \x\panel\type\content($value, $key)) {
+                $out .= $v;
+            }
         } else if (isset($value['lot'])) {
-            $out .= \x\panel\type\lot($value, $key);
+            if ($v = \x\panel\type\lot($value, $key)) {
+                $out .= $v;
+            }
         } else {
             // Skip!
         }

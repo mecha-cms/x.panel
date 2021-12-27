@@ -5,7 +5,8 @@ import {
     getNext,
     getParent,
     getPrev,
-    hasClass
+    hasClass,
+    setClass
 } from '@taufik-nurrohman/document';
 
 import {
@@ -22,17 +23,19 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
+const targets = ':scope>.lot\\:page[tabindex]:not(.has\\:event-page):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange() {
-    let sources = getElements('.lot\\:pages[tabindex]');
+    let sources = getElements('.lot\\:pages[tabindex]:not(.has\\:event-pages)');
     sources && toCount(sources) && sources.forEach(source => {
+        setClass(source, 'has:event-pages');
         let pages = getElements(targets, source);
         pages.forEach(page => {
+            setClass(page, 'has:event-page');
             onEvent('keydown', page, onKeyDownPage);
         });
         onEvent('keydown', source, onKeyDownPages);

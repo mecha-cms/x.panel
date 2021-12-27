@@ -13,10 +13,10 @@ function bar($value, $key) {
         $out = \x\panel\type\content($value, $key);
     } else if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
+            $v['tags']['p'] = false;
             // If `type` is not defined, the default value will be `links`
             if (!\array_key_exists('type', $v)) {
                 $v['type'] = 'links';
-                $v['tags']['p'] = false;
             }
         }
         unset($v);
@@ -196,8 +196,8 @@ function desk($value, $key) {
         }
         if (isset($value['lot'])) {
             foreach ($value['lot'] as &$v) {
-                $v['type'] = 'section';
                 if (!\array_key_exists('type', $v)) {
+                    $v['type'] = 'section';
                 }
             }
             unset($v);
@@ -580,25 +580,25 @@ function icon($value, $key) {
     if ($icon[0] && false === \strpos($icon[0], '<')) {
         // Named icon(s)
         if (isset($icons[$icon[0]])) {
-            $icon[0] = new \HTML(['svg', '<use href="#icon:' . $icon[0] . '"></use>', $v]);
+            $icon[0] = new \HTML(['svg', '<use href="#i:' . $icon[0] . '"></use>', $v]);
         // Inline icon(s)
         } else {
             if (!isset($icons[$id = \dechex(\crc32($icon[0]))])) {
                 $GLOBALS['_']['icon'][$id] = $icon[0];
             }
-            $icon[0] = new \HTML(['svg', '<use href="#icon:' . $id . '"></use>', $v]);
+            $icon[0] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
         }
     }
     if ($icon[1] && false === \strpos($icon[1], '<')) {
         // Named icon(s)
         if (isset($icons[$icon[1]])) {
-            $icon[1] = new \HTML(['svg', '<use href="#icon:' . $icon[1] . '"></use>', $v]);
+            $icon[1] = new \HTML(['svg', '<use href="#i:' . $icon[1] . '"></use>', $v]);
         // Inline icon(s)
         } else {
             if (!isset($icons[$id = \dechex(\crc32($icon[1]))])) {
                 $GLOBALS['_']['icon'][$id] = $icon[1];
             }
-            $icon[1] = new \HTML(['svg', '<use href="#icon:' . $id . '"></use>', $v]);
+            $icon[1] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
         }
     }
     return $icon;
@@ -754,7 +754,7 @@ function menu($value, $key, int $i = 0) {
                 $li = [
                     0 => $v[0] ?? 'li',
                     1 => $v[1] ?? "",
-                    2 => $v[2] ?? []
+                    2 => $v[2] ?? ['role' => 'none']
                 ];
                 if (!isset($v[1])) {
                     if (\is_array($v)) {
@@ -765,6 +765,8 @@ function menu($value, $key, int $i = 0) {
                         if (!\array_key_exists('type', $v)) {
                             $v['type'] = 'menu';
                         } else if ('separator' === $v['type']) {
+                            $li[2]['aria-orientation'] = $i < 0 ? 'horizontal' : 'vertical';
+                            $li[2]['role'] = 'separator';
                             \x\panel\_class_set($li[2], \array_replace([
                                 'as:separator' => true
                             ], $v['tags'] ?? []));
@@ -793,11 +795,20 @@ function menu($value, $key, int $i = 0) {
                         ], $v['tags'] ?? []);
                         if (!isset($v[1])) {
                             if ('menu' === $v['type']) {
-                                $li[1] = \x\panel\type\link(\array_replace([
-                                    '2' => ['tabindex' => $i < 0 ? null : -1]
-                                ], $v), $k);
+                                $v[2] = \array_replace([
+                                    'role' => 'menuitem',
+                                    'tabindex' => $i < 0 ? null : -1
+                                ], $v[3] ?? []);
+                                $li[1] = \x\panel\type\link($v, $k);
                                 if (!empty($v['lot'])) {
-                                    $li[1] .= \x\panel\type\menu($v, $k, $i + 1); // Recurse!
+                                    $li[1]['aria-expanded'] = 'false';
+                                    $li[1]['aria-haspopup'] = 'true';
+                                    $li[1] .= \x\panel\type\menu(\array_replace($v, [
+                                        '2' => [
+                                            'role' => null,
+                                            'tabindex' => -1
+                                        ]
+                                    ]), $k, $i + 1); // Recurse!
                                     if ($i < 0) {
                                         $tags_li['has:menu'] = true;
                                     }
@@ -812,7 +823,11 @@ function menu($value, $key, int $i = 0) {
                         \x\panel\_class_set($li[2], $tags_li);
                     } else {
                         $li[1] = \x\panel\type\link([
-                            '2' => ['tabindex' => $i < 0 ? null : -1],
+                            '2' => [
+                                'aria-disabled' => 'true',
+                                'role' => 'none',
+                                'tabindex' => $i < 0 ? null : -1
+                            ],
                             'title' => $v
                         ], $k);
                     }
@@ -824,7 +839,7 @@ function menu($value, $key, int $i = 0) {
         }
         \x\panel\_class_set($out[2], $tags);
         if ("" !== $out[1]) {
-            $out[1] = '<ul class="count:' . $count . '">' . $out[1] . '</ul>';
+            $out[1] = '<ul class="count:' . $count . '" role="' . ($value[3]['role'] ?? 'menu' . ($i < 0 ? 'bar' : "")) . '">' . $out[1] . '</ul>';
         }
     }
     $out[1] = $title . $description . $out[1];
@@ -1270,11 +1285,16 @@ function tabs($value, $key) {
                 if (false === $v || null === $v || !empty($v['skip'])) {
                     continue;
                 }
+                $id = \substr(\uniqid(), 6);
                 $kk = $v['value'] ?? $k;
                 if (\is_array($v)) {
-                    $v[2]['data-value'] = $kk;
-                    $v[2]['tabindex'] = -1;
-                    $v[2]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
+                    $v[3]['aria-controls'] = 'c:' . $id;
+                    $v[3]['aria-selected'] = 'false';
+                    $v[3]['data-value'] = $kk;
+                    $v[3]['id'] = 't:' . $id;
+                    $v[3]['role'] = 'tab';
+                    $v[3]['tabindex'] = -1;
+                    $v[3]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
                     $v['tags']['can:toggle'] = !empty($v['toggle']);
                     if (empty($v['url']) && empty($v['link'])) {
                         $v['url'] = $GLOBALS['url']->query(['tab' => [$name => $kk]]);
@@ -1288,16 +1308,27 @@ function tabs($value, $key) {
                 }
                 $links[$kk] = $v;
                 $sections[$kk] = $v;
-                unset($links[$kk]['content'], $links[$kk]['lot'], $links[$kk]['type']);
+                $sections[$kk][2]['aria-labelledby'] = 't:' . $id;
+                $sections[$kk][2]['id'] = 'c:' . $id;
+                $sections[$kk][2]['role'] = 'tabpanel';
+                unset(
+                    $links[$kk]['content'],
+                    $links[$kk]['lot'],
+                    $links[$kk]['type'],
+                    $sections[$kk][2]['aria-controls'],
+                    $sections[$kk][2]['aria-selected']
+                );
             }
             $first = \array_keys($links)[0] ?? null; // The first tab
             $current = $_GET['tab'][$name] ?? $value['current'] ?? $first ?? null;
             if (null !== $current && isset($links[$current]) && \is_array($links[$current])) {
                 $links[$current]['tags']['is:current'] = true;
+                $links[$current][3]['aria-selected'] = 'true';
                 $sections[$current]['tags']['is:current'] = true;
                 $has_current = true;
             } else if (null !== $first && isset($links[$first]) && \is_array($links[$first])) {
                 $links[$first]['tags']['is:current'] = true;
+                $links[$current][3]['aria-selected'] = 'true';
                 $sections[$first]['tags']['is:current'] = true;
                 $has_current = true;
             }
@@ -1318,6 +1349,7 @@ function tabs($value, $key) {
                 $out[1] .= \x\panel\type\links([
                     '0' => 'nav',
                     '2' => ['tabindex' => null],
+                    '3' => ['role' => 'tablist'],
                     'lot' => $links
                 ], $name);
             }

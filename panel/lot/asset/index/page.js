@@ -29,6 +29,9 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -41,17 +44,19 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
+    const targets = ':scope>.lot\\:page[tabindex]:not(.has\\:event-page):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:pages[tabindex]');
+        let sources = getElements('.lot\\:pages[tabindex]:not(.has\\:event-pages)');
         sources && toCount(sources) && sources.forEach(source => {
+            setClass(source, 'has:event-pages');
             let pages = getElements(targets, source);
             pages.forEach(page => {
+                setClass(page, 'has:event-page');
                 onEvent('keydown', page, onKeyDownPage);
             });
             onEvent('keydown', source, onKeyDownPages);

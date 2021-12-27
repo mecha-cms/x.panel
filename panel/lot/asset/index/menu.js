@@ -1,19 +1,57 @@
 (function() {
     'use strict';
+    var isArray = function isArray(x) {
+        return Array.isArray(x);
+    };
     var isDefined = function isDefined(x) {
         return 'undefined' !== typeof x;
     };
     var isFunction = function isFunction(x) {
         return 'function' === typeof x;
     };
+    var isInstance = function isInstance(x, of ) {
+        return x && isSet( of ) && x instanceof of ;
+    };
     var isNull = function isNull(x) {
         return null === x;
+    };
+    var isObject = function isObject(x, isPlain) {
+        if (isPlain === void 0) {
+            isPlain = true;
+        }
+        if ('object' !== typeof x) {
+            return false;
+        }
+        return isPlain ? isInstance(x, Object) : true;
     };
     var isSet = function isSet(x) {
         return isDefined(x) && !isNull(x);
     };
     var toCount = function toCount(x) {
         return x.length;
+    };
+    var fromValue = function fromValue(x) {
+        if (isArray(x)) {
+            return x.map(function(v) {
+                return fromValue(x);
+            });
+        }
+        if (isObject(x)) {
+            for (var k in x) {
+                x[k] = fromValue(x[k]);
+            }
+            return x;
+        }
+        if (false === x) {
+            return 'false';
+        }
+        if (null === x) {
+            return 'null';
+        }
+        if (true === x) {
+            return 'true';
+        }
+        return "" + x;
     };
     var D = document;
     var W = window;
@@ -43,6 +81,12 @@
     };
     var letClass = function letClass(node, value) {
         return node.classList.remove(value), node;
+    };
+    var setAttribute = function setAttribute(node, attribute, value) {
+        if (true === value) {
+            value = attribute;
+        }
+        return node.setAttribute(attribute, fromValue(value)), node;
     };
     var setClass = function setClass(node, value) {
         return node.classList.add(value), node;
@@ -81,12 +125,15 @@
         node && isFunction(node.focus) && node.focus();
     }
 
-    function doHideMenus(but) {
+    function doHideMenus(but, trigger) {
         getElements('.lot\\:menu[tabindex].is\\:enter').forEach(node => {
             if (but !== node) {
                 letClass(getParent(node), 'is:active');
                 letClass(getPrev(node), 'is:active');
                 letClass(node, 'is:enter');
+                if (trigger) {
+                    setAttribute(trigger, 'aria-expanded', 'false');
+                }
             }
         });
     }
@@ -99,7 +146,8 @@
             menuParents.forEach(menuParent => {
                 let menu = getElement('.lot\\:menu[tabindex]', menuParent),
                     a = getPrev(menu);
-                if (menu && a) {
+                if (menu && a && !hasClass(a, 'has:event-menu-item')) {
+                    setClass(a, 'has:event-menu-item');
                     onEvent('click', a, onClickMenuShow);
                     onEvent('keydown', a, onKeyDownMenuToggle);
                 }
@@ -108,11 +156,15 @@
         }
         if (menuLinks && toCount(menuLinks)) {
             menuLinks.forEach(menuLink => {
-                onEvent('keydown', menuLink, onKeyDownMenu);
+                if (!hasClass(menuLink, 'has:event-menu-item')) {
+                    setClass(menuLink, 'has:event-menu-item');
+                    onEvent('keydown', menuLink, onKeyDownMenu);
+                }
             });
         }
-        let sources = getElements('.lot\\:menu[tabindex]');
+        let sources = getElements('.lot\\:menu[tabindex]:not(.has\\:event-menu)');
         sources && toCount(sources) && sources.forEach(source => {
+            setClass(source, 'has:event-menu');
             onEvent('keydown', source, onKeyDownMenus);
         });
     }
@@ -128,11 +180,12 @@
         }
         let t = this,
             current = getNext(t);
-        doHideMenus(current);
+        doHideMenus(current, t);
         W.setTimeout(() => {
             toggleClass(current, 'is:enter');
             toggleClass(getParent(t), 'is:active');
             toggleClass(t, 'is:active');
+            setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
         }, 1);
         offEventDefault(e);
         offEventPropagation(e);

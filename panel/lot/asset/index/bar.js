@@ -29,6 +29,9 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -41,17 +44,19 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = ':scope>[tabindex]:not(.not\\:active)';
+    const targets = ':scope>[tabindex]:not(.has\\:event-bar-item):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:bar[tabindex]');
+        let sources = getElements('.lot\\:bar[tabindex]:not(.has\\:event-bar)');
         sources && toCount(sources) && sources.forEach(source => {
+            setClass(source, 'has:event-bar');
             let items = getElements(targets, source);
             items.forEach(item => {
+                setClass(item, 'has:event-bar-item');
                 onEvent('keydown', item, onKeyDownBarItem);
             });
             onEvent('keydown', source, onKeyDownBar);

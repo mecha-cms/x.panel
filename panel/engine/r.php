@@ -16,9 +16,9 @@ return (static function($icons) {
         $folders[$n] = [
             'current' => 0 === strpos($_['path'] . '/', $n . '/'),
             'icon' => $icons[$n] ?? 'M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z',
+            'skip' => !q(g($k)), // Hide menu if folder is empty
             'title' => 'x' === $n ? 'Extension' : To::title($n),
-            'url' => x\panel\to\link(['path' => $n . '/1']),
-            'skip' => !q(g($k)) // Hide menu if folder is empty
+            'url' => x\panel\to\link(['path' => $n . '/1'])
         ];
     }
     // `dechex(crc32('comments.info'))`
@@ -40,151 +40,151 @@ return (static function($icons) {
     }
     $lot = [
         'bar' => [
-            'type' => 'bar',
             'lot' => [
                 0 => [
-                    // type: links
                     'lot' => [
                         'folder' => [
-                            'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
                             'caret' => false,
-                            'title' => false,
-                            'url' => (string) $url,
+                            'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
                             'lot' => $list,
-                            'stack' => 10
+                            'stack' => 10,
+                            'title' => false,
+                            'url' => (string) $url
                         ],
                         'link' => [
-                            'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
-                            'title' => false,
                             'description' => 'Back',
+                            'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
                             'skip' => true,
-                            'stack' => 10
+                            'stack' => 10,
+                            'title' => false
                         ],
                         'search' => [
-                            'type' => 'form/get',
-                            'url' => x\panel\to\link(['query' => ['query' => false]]),
-                            'name' => 'get',
+                            '2' => ['role' => 'search'],
                             'lot' => [
                                 'fields' => [
-                                    'type' => 'fields',
                                     'lot' => [
                                         'query' => [
+                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr($_['file'] ? dirname($_['path']) : $_['path'], '/', "\\"))],
+                                            'hint' => 'Search',
+                                            'stack' => 10,
                                             'title' => 'Search',
                                             'type' => 'text',
-                                            'hint' => 'Search',
                                             'value' => $_GET['query'] ?? null,
-                                            '2' => ['title' => i('Search in %s', ".\\lot\\" . strtr($_['file'] ? dirname($_['path']) : $_['path'], '/', "\\"))],
-                                            'stack' => 10
                                         ]
                                     ],
-                                    'stack' => 10
+                                    'stack' => 10,
+                                    'type' => 'fields'
                                 ]
                             ],
-                            'stack' => 20
+                            'name' => 'get',
+                            'stack' => 20,
+                            'type' => 'form/get',
+                            'url' => x\panel\to\link(['query' => ['query' => false]])
                         ]
                     ],
-                    'tags' => [
-                        'of:lot' => true
-                    ],
-                    'stack' => 10
+                    'stack' => 10,
+                    'tags' => ['of:lot' => true],
+                    'type' => 'links'
                 ],
                 1 => [
-                    // type: links
                     'lot' => [
                         'license' => [
                             'current' => 'get' === $_['task'] && '.license' === $_['path'],
                             'description' => 'Please read the terms and conditions before using this application.',
-                            'icon' => 'M9 10A3.04 3.04 0 0 1 12 7A3.04 3.04 0 0 1 15 10A3.04 3.04 0 0 1 12 13A3.04 3.04 0 0 1 9 10M12 19L16 20V16.92A7.54 7.54 0 0 1 12 18A7.54 7.54 0 0 1 8 16.92V20M12 4A5.78 5.78 0 0 0 7.76 5.74A5.78 5.78 0 0 0 6 10A5.78 5.78 0 0 0 7.76 14.23A5.78 5.78 0 0 0 12 16A5.78 5.78 0 0 0 16.24 14.23A5.78 5.78 0 0 0 18 10A5.78 5.78 0 0 0 16.24 5.74A5.78 5.78 0 0 0 12 4M20 10A8.04 8.04 0 0 1 19.43 12.8A7.84 7.84 0 0 1 18 15.28V23L12 21L6 23V15.28A7.9 7.9 0 0 1 4 10A7.68 7.68 0 0 1 6.33 4.36A7.73 7.73 0 0 1 12 2A7.73 7.73 0 0 1 17.67 4.36A7.68 7.68 0 0 1 20 10Z',
-                            'url' => x\panel\to\link(['path' => '.license']),
+                            'icon' => 'M12,3C10.73,3 9.6,3.8 9.18,5H3V7H4.95L2,14C1.53,16 3,17 5.5,17C8,17 9.56,16 9,14L6.05,7H9.17C9.5,7.85 10.15,8.5 11,8.83V20H2V22H22V20H13V8.82C13.85,8.5 14.5,7.85 14.82,7H17.95L15,14C14.53,16 16,17 18.5,17C21,17 22.56,16 22,14L19.05,7H21V5H14.83C14.4,3.8 13.27,3 12,3M12,5A1,1 0 0,1 13,6A1,1 0 0,1 12,7A1,1 0 0,1 11,6A1,1 0 0,1 12,5M5.5,10.25L7,14H4L5.5,10.25M18.5,10.25L20,14H17L18.5,10.25Z',
                             'skip' => is_file(ENGINE . D . 'log' . D . dechex(crc32(PATH))),
-                            'stack' => 0
+                            'stack' => 0,
+                            'url' => x\panel\to\link([
+                                'path' => '.license',
+                                'task' => 'get'
+                            ])
                         ],
                         'site' => [
                             'current' => false,
-                            'url' => (string) $url,
                             'lot' => [
                                 'state' => [
                                     'current' => $url->current(false, false) === strtok(x\panel\to\link(['path' => '.state']), '?&#'),
                                     'icon' => 'M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z',
-                                    'url' => x\panel\to\link(['path' => '.state']),
-                                    'stack' => 10
+                                    'stack' => 10,
+                                    'url' => x\panel\to\link([
+                                        'path' => '.state',
+                                        'task' => 'get'
+                                    ])
                                 ],
                                 'view' => [
                                     'current' => false,
                                     'icon' => 'M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z',
-                                    'title' => 'View',
                                     'link' => (string) $url,
-                                    'stack' => 30
+                                    'stack' => 30,
+                                    'title' => 'View'
                                 ]
                             ],
-                            'stack' => 10
+                            'stack' => 10,
+                            'url' => (string) $url
                         ]
                     ],
-                    'tags' => [
-                        'of:links' => true
-                    ],
-                    'stack' => 20
+                    'stack' => 20,
+                    'tags' => ['of:links' => true],
+                    'type' => 'links'
                 ],
                 2 => [
-                    // type: links
                     'lot' => [
                         'user' => [
-                            '2' => [
-                                'target' => '_top' // Needed to disable the AJAX link
-                            ],
-                            'icon' => 'M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z',
+                            '2' => ['target' => '_top'], // Needed to disable the AJAX link
                             'caret' => false,
-                            'title' => false,
                             'description' => i('Exit') . ' ' . $user->user,
-                            'url' => $url . '/' . trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/') . '/' . $user->name . '?exit=' . $_['token'],
-                            'stack' => 10
+                            'icon' => 'M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z',
+                            'stack' => 10,
+                            'title' => false,
+                            'url' => $url . '/' . trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/') . '/' . $user->name . '?exit=' . $_['token']
                         ]
                     ],
-                    'tags' => [
-                        'of:user' => true
-                    ],
-                    'stack' => 30
+                    'stack' => 30,
+                    'tags' => ['of:user' => true],
+                    'type' => 'links'
                 ]
             ],
-            'stack' => 10
+            'stack' => 10,
+            'type' => 'bar'
         ],
         'desk' => [
             'type' => 'desk',
             'lot' => [
                 'form' => [
-                    'type' => 'form/post',
-                    'url' => $url->current,
-                    'name' => 'set',
                     'lot' => [
                         0 => [
-                            'type' => 'section',
                             'lot' => [],
-                            'stack' => 10
+                            'stack' => 10,
+                            'type' => 'section'
                         ],
                         'alert' => !empty($_SESSION['alert']) ? [
-                            'type' => 'section',
-                            'content' => Layout::get('alert'),
+                            'content' => Layout::alert('panel'),
                             'skip' => 0 === count($_SESSION['alert']),
-                            'stack' => 15
+                            'stack' => 15,
+                            'type' => 'section'
                         ] : [],
                         1 => [
-                            'type' => 'section',
                             'lot' => [
                                 'tabs' => [
-                                    'type' => 'tabs',
+                                    'gap' => false,
+                                    'lot' => [],
                                     'name' => 0,
-                                    'lot' => []
+                                    'type' => 'tabs'
                                 ]
                             ],
-                            'stack' => 20
+                            'stack' => 20,
+                            'type' => 'section'
                         ],
                         2 => [
-                            'type' => 'section',
                             'lot' => [],
-                            'stack' => 30
+                            'stack' => 30,
+                            'type' => 'section'
                         ]
                     ],
-                    'stack' => 10
+                    'name' => 'set',
+                    'stack' => 10,
+                    'type' => 'form/post',
+                    'url' => $url->current
                 ]
             ],
             'stack' => 20
@@ -194,9 +194,8 @@ return (static function($icons) {
         'has' => ['parent' => false !== strpos($_['path'], '/')],
         'is' => [
             'error' => false,
-            // TODO
-            'page' => true,
-            'pages' => false
+            'page' => empty($_['part']),
+            'pages' => !empty($_['part'])
         ],
         'lot' => $lot
     ], $_);

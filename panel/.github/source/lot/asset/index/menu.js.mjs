@@ -9,6 +9,7 @@ import {
     getPrev,
     hasClass,
     letClass,
+    setAttribute,
     setClass,
     toggleClass
 } from '@taufik-nurrohman/document';
@@ -35,12 +36,15 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
-function doHideMenus(but) {
+function doHideMenus(but, trigger) {
     getElements('.lot\\:menu[tabindex].is\\:enter').forEach(node => {
         if (but !== node) {
             letClass(getParent(node), 'is:active');
             letClass(getPrev(node), 'is:active');
             letClass(node, 'is:enter');
+            if (trigger) {
+                setAttribute(trigger, 'aria-expanded', 'false');
+            }
         }
     });
 }
@@ -53,7 +57,8 @@ function onChange() {
         menuParents.forEach(menuParent => {
             let menu = getElement('.lot\\:menu[tabindex]', menuParent),
                 a = getPrev(menu);
-            if (menu && a) {
+            if (menu && a && !hasClass(a, 'has:event-menu-item')) {
+                setClass(a, 'has:event-menu-item');
                 onEvent('click', a, onClickMenuShow);
                 onEvent('keydown', a, onKeyDownMenuToggle);
             }
@@ -62,11 +67,15 @@ function onChange() {
     }
     if (menuLinks && toCount(menuLinks)) {
         menuLinks.forEach(menuLink => {
-            onEvent('keydown', menuLink, onKeyDownMenu);
+            if (!hasClass(menuLink, 'has:event-menu-item')) {
+                setClass(menuLink, 'has:event-menu-item');
+                onEvent('keydown', menuLink, onKeyDownMenu);
+            }
         });
     }
-    let sources = getElements('.lot\\:menu[tabindex]');
+    let sources = getElements('.lot\\:menu[tabindex]:not(.has\\:event-menu)');
     sources && toCount(sources) && sources.forEach(source => {
+        setClass(source, 'has:event-menu');
         onEvent('keydown', source, onKeyDownMenus);
     });
 } onChange();
@@ -81,11 +90,12 @@ function onClickMenuShow(e) {
     }
     let t = this,
         current = getNext(t), next;
-    doHideMenus(current);
+    doHideMenus(current, t);
     W.setTimeout(() => {
         toggleClass(current, 'is:enter');
         toggleClass(getParent(t), 'is:active');
         toggleClass(t, 'is:active');
+        setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
     }, 1);
     offEventDefault(e);
     offEventPropagation(e);

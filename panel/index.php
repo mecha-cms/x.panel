@@ -25,9 +25,17 @@ if (!empty($user) && !($user instanceof User)) {
     abort('<code>$user</code> must be an instance of <code>User</code>.');
 }
 
-// File/folder path can take from the current location path or from the current location path
-// without the numeric suffix which is commonly used to indicate the current pagination offset.
-$f = $test ? (stream_resolve_include_path(LOT . D . $m[2]) ?: stream_resolve_include_path(LOT . D . preg_replace('/\/[1-9]\d*$/', "", $m[2]))) : null;
+// File/folder path takes from the current path or from the current path without the
+// numeric suffix which is commonly used to indicate current pagination offset.
+$f = $part = 0;
+if ($test) {
+    if (!$f = stream_resolve_include_path(LOT . D . $m[2])) {
+        if (preg_match('/^(.*)\/([1-9]\d*)$/', $m[2], $mm)) {
+            $f = stream_resolve_include_path(LOT . D . $mm[1]);
+            $part = (int) $mm[2];
+        }
+    }
+}
 
 $GLOBALS['_'] = $_ = array_replace_recursive([
     'alert' => [],
@@ -37,8 +45,8 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'can' => ['fetch' => !empty($state->x->panel->fetch)],
     'content' => null,
     'description' => null,
-    'file' => is_file($f) ? $f : null,
-    'folder' => is_dir($f) ? $f : null,
+    'file' => $f && is_file($f) ? $f : null,
+    'folder' => $f && is_dir($f) ? $f : null,
     'has' => [],
     'hash' => $url['hash'],
     'icon' => [],
@@ -46,6 +54,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'kick' => null,
     'lot' => [],
     'not' => [],
+    'part' => (int) $part,
     'path' => $test ? $m[2] : null,
     'query' => $_GET ?? [],
     'status' => $f ? 200 : 404,

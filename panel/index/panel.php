@@ -28,7 +28,7 @@ function route($_) {
     if (!empty($_['icon'])) {
         $icon .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
         foreach ($_['icon'] as $k => $v) {
-            $icon .= '<symbol id="icon:' . $k . '" viewBox="0 0 24 24">';
+            $icon .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
             $icon .= 0 === \strpos($v, '<') ? $v : '<path d="' . $v . '"></path>';
             $icon .= '</symbol>';
         }
@@ -50,6 +50,7 @@ function route($_) {
         'hash',
         'is',
         'not',
+        'part',
         'path',
         'query',
         'status',
@@ -83,8 +84,22 @@ function route($_) {
 // Load `route.panel` hook only if user is active!
 \Hook::set('route', function($path, $query, $hash) use($_) {
     if (\Is::user()) {
+        // Load pre-defined route(s)
+        (static function($_) {
+            \extract($GLOBALS, \EXTR_SKIP);
+            require __DIR__ . \D . 'panel' . \D . 'route.php';
+            if (isset($_)) {
+                // Update panel data from the route file!
+                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            }
+        })($_);
         \x\panel\_asset_get();
         \x\panel\_asset_let();
+        $_ = $GLOBALS['_'];
+        if ($kick = $_['kick']) {
+            // Force redirect!
+            \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);
+        }
         \Hook::fire('route.panel', [$_, $path, $query, $hash]);
     }
 }, 0);

@@ -237,15 +237,16 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = 'a[target^="stack:"]:not(.not\\:active)';
+    const targets = 'a[target^="stack:"]:not(.has\\:event-stack):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:stacks[tabindex]');
+        let sources = getElements('.lot\\:stacks[tabindex]:not(.has\\:event-stacks)');
         sources && toCount(sources) && sources.forEach(source => {
+            setClass(source, 'has:event-stacks');
             let stacks = [].slice.call(getChildren(source)),
                 input = setElement('input'),
                 name,
@@ -282,6 +283,7 @@
             }
             stacks.forEach(stack => {
                 let target = getElement(targets, stack);
+                setClass(target, 'has:event-stack');
                 onEvent('click', target, onClick);
                 onEvent('keydown', target, onKeyDownStack);
             });

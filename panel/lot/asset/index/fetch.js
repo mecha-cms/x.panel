@@ -1025,8 +1025,8 @@
     delete F3H.state.types.CSS;
     delete F3H.state.types.JS;
     delete F3H.state.types.JSON;
-    let selectors = 'body>div,body>svg,body>template',
-        elements = getElements(selectors),
+    let targets = 'body>div,body>svg,body>template',
+        elements = getElements(targets),
         f3h = new F3H(false); // Disable cache
     f3h.on('error', () => {
         fire('error');
@@ -1034,6 +1034,7 @@
     });
     f3h.on('exit', (response, node) => {
         D.title = '▯'.repeat(10);
+        setAttribute(R, 'aria-busy', 'true');
         fire('let');
     });
 
@@ -1047,9 +1048,10 @@
     f3h.on('success', (response, node) => {
         let status = f3h.status;
         if (200 === status || 404 === status) {
-            let responseElements = getElements(selectors, response),
+            let responseElements = getElements(targets, response),
                 responseRoot = response.documentElement;
             D.title = response.title;
+            letAttribute(R, 'aria-busy');
             if (responseRoot) {
                 setAttribute(R, 'class', getAttribute(responseRoot, 'class'));
             }

@@ -164,7 +164,7 @@
     var letClass = function letClass(node, value) {
         return node.classList.remove(value), node;
     };
-    var setAttribute = function setAttribute(node, attribute, value) {
+    var setAttribute$1 = function setAttribute(node, attribute, value) {
         if (true === value) {
             value = attribute;
         }
@@ -175,7 +175,7 @@
         for (var attribute in attributes) {
             value = attributes[attribute];
             if (value || "" === value || 0 === value) {
-                setAttribute(node, attribute, value);
+                setAttribute$1(node, attribute, value);
             } else {
                 letAttribute(node, attribute);
             }
@@ -237,15 +237,16 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = 'a[target^="tab:"]:not(.not\\:active)';
+    const targets = 'a[target^="tab:"]:not(.has\\:event-tab):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:tabs[tabindex]');
+        let sources = getElements('.lot\\:tabs[tabindex]:not(.has\\:event-tabs)');
         sources && toCount(sources) && sources.forEach(source => {
+            setClass(source, 'has:event-tabs');
             let panes = [].slice.call(getChildren(source)),
                 tabs = [].slice.call(getElements(targets, panes.shift())),
                 input = setElement('input'),
@@ -266,6 +267,7 @@
                         if (tab !== t) {
                             letClass(tab, 'is:current');
                             letClass(getParent(tab), 'is:current');
+                            setAttribute(tab, 'aria-selected', 'false');
                             let pane = panes[tab._tabIndex];
                             pane && letClass(pane, 'is:current');
                         }
@@ -273,9 +275,11 @@
                     if (hasClass(parent, 'can:toggle')) {
                         toggleClass(t, 'is:current');
                         toggleClass(parent, 'is:current');
+                        setAttribute(tab, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
                     } else {
                         setClass(t, 'is:current');
                         setClass(parent, 'is:current');
+                        setAttribute(tab, 'aria-selected', 'true');
                     }
                     current = hasClass(t, 'is:current');
                     if (pane) {
@@ -288,6 +292,7 @@
                 }
             }
             tabs.forEach((tab, index) => {
+                setClass(tab, 'has:event-tab');
                 tab._tabIndex = index;
                 onEvent('click', tab, onClick);
                 onEvent('keydown', tab, onKeyDownTab);

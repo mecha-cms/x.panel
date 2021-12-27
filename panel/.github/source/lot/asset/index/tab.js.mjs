@@ -32,15 +32,16 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = 'a[target^="tab:"]:not(.not\\:active)';
+const targets = 'a[target^="tab:"]:not(.has\\:event-tab):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange() {
-    let sources = getElements('.lot\\:tabs[tabindex]');
+    let sources = getElements('.lot\\:tabs[tabindex]:not(.has\\:event-tabs)');
     sources && toCount(sources) && sources.forEach(source => {
+        setClass(source, 'has:event-tabs');
         let panes = [].slice.call(getChildren(source)),
             tabs = [].slice.call(getElements(targets, panes.shift())),
             input = setElement('input'), name, value;
@@ -57,6 +58,7 @@ function onChange() {
                     if (tab !== t) {
                         letClass(tab, 'is:current');
                         letClass(getParent(tab), 'is:current');
+                        setAttribute(tab, 'aria-selected', 'false');
                         let pane = panes[tab._tabIndex];
                         pane && letClass(pane, 'is:current');
                     }
@@ -64,9 +66,11 @@ function onChange() {
                 if (hasClass(parent, 'can:toggle')) {
                     toggleClass(t, 'is:current');
                     toggleClass(parent, 'is:current');
+                    setAttribute(tab, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
                 } else {
                     setClass(t, 'is:current');
                     setClass(parent, 'is:current');
+                    setAttribute(tab, 'aria-selected', 'true');
                 }
                 current = hasClass(t, 'is:current');
                 if (pane) {
@@ -79,6 +83,7 @@ function onChange() {
             }
         }
         tabs.forEach((tab, index) => {
+            setClass(tab, 'has:event-tab');
             tab._tabIndex = index;
             onEvent('click', tab, onClick);
             onEvent('keydown', tab, onKeyDownTab);

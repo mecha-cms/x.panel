@@ -1,5 +1,9 @@
 <?php
 
+if (!is_file(LOT . D . 'layout' . D . 'alert' . D . 'panel.php')) {
+    Layout::set('alert/panel', __DIR__ . D . '..' . D . 'lot' . D . 'layout' . D . 'alert' . D . 'panel.php');
+}
+
 if (!is_file(LOT . D . 'layout' . D . 'panel.php')) {
     Layout::set('panel', __DIR__ . D . '..' . D . 'lot' . D . 'layout' . D . 'panel.php');
 }
@@ -17,4 +21,4 @@ foreach ([
 }
 
 require __DIR__ . D . 'r' . D . 'alert.php';
-// require __DIR__ . D . 'r' . D . 'file.php';
+require __DIR__ . D . 'r' . D . 'file.php';

@@ -29,6 +29,9 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -41,17 +44,19 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = ':scope>.lot\\:file[tabindex]:not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.not\\:active)';
+    const targets = ':scope>.lot\\:file[tabindex]:not(.has\\:event-file):not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.has\\:event-file):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
+        let sources = getElements('.lot\\:files[tabindex]:not(.has\\:event-files),.lot\\:folders[tabindex]:not(.has\\:event-files)');
         sources && toCount(sources) && sources.forEach(source => {
+            setClass(source, 'has:event-files');
             let files = getElements(targets, source);
             files.forEach(file => {
+                setClass(file, 'has:event-file');
                 onEvent('keydown', file, onKeyDownFile);
             });
             onEvent('keydown', source, onKeyDownFiles);

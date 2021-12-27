@@ -7,7 +7,8 @@ import {
     getNext,
     getParent,
     getPrev,
-    hasClass
+    hasClass,
+    setClass
 } from '@taufik-nurrohman/document';
 
 import {
@@ -24,17 +25,19 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>ul>li>a[href]:not(.not\\:active)';
+const targets = ':scope>ul>li>a[href]:not(.has\\:event-link):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange() {
-    let sources = getElements('.lot\\:links[tabindex]');
+    let sources = getElements('.lot\\:links[tabindex]:not(.has\\:event-links)');
     sources && toCount(sources) && sources.forEach(source => {
+        setClass(source, 'has:event-links');
         let links = getElements(targets, source);
         links && toCount(links) && links.forEach(link => {
+            setClass(link, 'has:event-link');
             onEvent('keydown', link, onKeyDownLink);
         });
         onEvent('keydown', source, onKeyDownLinks);
