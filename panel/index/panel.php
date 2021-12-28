@@ -84,9 +84,10 @@ function route($_) {
 // Load `route.panel` hook only if user is active!
 \Hook::set('route', function($path, $query, $hash) use($_) {
     if (\Is::user()) {
-        // Load pre-defined route(s)
+        // Load pre-defined route(s) and type(s)
         (static function($_) {
             \extract($GLOBALS, \EXTR_SKIP);
+            require __DIR__ . \D . 'panel' . \D . 'type.php'; // Type must be set before route!
             require __DIR__ . \D . 'panel' . \D . 'route.php';
             if (isset($_)) {
                 // Update panel data from the route file!
@@ -95,7 +96,7 @@ function route($_) {
         })($_);
         \x\panel\_asset_get();
         \x\panel\_asset_let();
-        $_ = $GLOBALS['_'];
+        $_ = \Hook::fire('_', [$GLOBALS['_']]);
         if ($kick = $_['kick']) {
             // Force redirect!
             \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);

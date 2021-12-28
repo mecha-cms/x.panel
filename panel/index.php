@@ -33,6 +33,7 @@ if ($test) {
         if (preg_match('/^(.*)\/([1-9]\d*)$/', $m[2], $mm)) {
             $f = stream_resolve_include_path(LOT . D . $mm[1]);
             $part = (int) $mm[2];
+            $m[2] = $mm[1]; // Path without the numeric suffix
         }
     }
 }

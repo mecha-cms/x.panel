@@ -125,6 +125,9 @@ function _state_set() {
     if ($_['status'] >= 400) {
         $_['is']['error'] = $_['status'];
     }
+    if (null !== $_['type']) {
+        $_['[layout]']['type:' . $_['type']] = true;
+    }
     foreach (['are', 'can', 'has', 'is', 'not', '[layout]'] as $v) {
         if (isset($_[$v]) && \is_array($_[$v])) {
             \State::set($v, $_[$v]);

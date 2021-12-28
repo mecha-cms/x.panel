@@ -29,6 +29,9 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
+    var setClass = function setClass(node, value) {
+        return node.classList.add(value), node;
+    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };

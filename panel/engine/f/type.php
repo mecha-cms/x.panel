@@ -888,7 +888,8 @@ function page($value, $key) {
 
 function pager($value, $key) {
     $content = \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function($i) {
-        return \x\panel\to\link(['path' => \preg_match('/\/[1-9]\d*$/', "", $GLOBALS['_']['path'])]);
+        $_ = $GLOBALS['_'];
+        return \x\panel\to\link(['path' => $_['path'] . '/' . $i]);
     });
     $value['lot'] = [
         'content' => [

@@ -12,9 +12,7 @@ function button($value, $key) {
 
 function link($value, $key) {
     $out = \x\panel\type\link($value, $key);
-    \x\panel\_class_set($out, \array_replace([
-        'button' => true
-    ], $value['tags'] ?? []));
+    $out['role'] = 'button';
     return $out;
 }
 

@@ -5,6 +5,7 @@ function button($value, $key) {
         \x\panel\_type_parent_set($value['lot'], 'button');
     }
     $value['tags']['are:buttons'] = true;
+    $value[2]['role'] = 'group';
     return \x\panel\type\tasks($value, $key);
 }
 
@@ -13,5 +14,6 @@ function link($value, $key) {
         \x\panel\_type_parent_set($value['lot'], 'link');
     }
     $value['tags']['are:links'] = true;
+    $value[2]['role'] = 'group';
     return \x\panel\type\tasks($value, $key);
 }
