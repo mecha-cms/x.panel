@@ -28,10 +28,10 @@ function bar($value, $key) {
 }
 
 function button($value, $key) {
+    $value['tags']['not:active'] = $not_active = isset($value['active']) && !$value['active'];
     $out = \x\panel\type\link($value, $key);
     $out[0] = 'button';
-    $out['class'] = 'button';
-    $out['disabled'] = isset($value['active']) && !$value['active'];
+    $out['disabled'] = $not_active;
     $out['name'] = $value['name'] ?? $key;
     $out['value'] = $value['value'] ?? null;
     unset($out['href'], $out['target']);
@@ -616,7 +616,6 @@ function input($value, $key) {
     $is_vital = !empty($value['vital']);
     $tags = \array_replace([
         'has:pattern' => $has_pattern,
-        'input' => true,
         'is:active' => $is_active,
         'is:locked' => $is_locked,
         'is:vital' => $is_vital,
@@ -1101,8 +1100,7 @@ function select($value, $key) {
             'is:active' => $is_active,
             'is:vital' => $is_vital,
             'not:active' => !$is_active,
-            'not:vital' => !$is_vital,
-            'select' => true
+            'not:vital' => !$is_vital
         ], $value['tags'] ?? []);
         $out[2]['autofocus'] = !empty($value['focus']);
         $out[2]['disabled'] = !$is_active;
@@ -1417,8 +1415,7 @@ function textarea($value, $key) {
         'is:vital' => $is_vital,
         'not:active' => !$is_active,
         'not:locked' => !$is_locked,
-        'not:vital' => !$is_vital,
-        'textarea' => true
+        'not:vital' => !$is_vital
     ], $value['tags'] ?? []);
     if ($has_pattern) {
         $out[2]['pattern'] = $value['pattern'];

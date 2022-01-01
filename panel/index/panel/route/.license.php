@@ -9,6 +9,9 @@ if (!empty($_['part']) || 'get' !== $_['task']) {
     return $_;
 }
 
+// Hide license link
+$_['lot']['bar']['lot'][1]['lot']['license']['skip'] = true;
+
 // Hide search form
 $_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true;
 

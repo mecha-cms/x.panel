@@ -1,16 +1,4 @@
 .is\:light {
-  @each $type in (file, folder, page) {
-    --fill-#{$type}--active: #{shade(98%)};
-    --fill-#{$type}--current: #{shade(97%)};
-    --fill-#{$type}--focus: #{shade(98%)};
-    --fill-#{$type}--hover: #{shade(98%)};
-    --stroke-#{$type}--active: #{shade(98%)};
-    --stroke-#{$type}--current: #{shade(97%)};
-    --stroke-#{$type}--focus: #{shade(98%)};
-    --stroke-#{$type}--hover: #{shade(98%)};
-    --stroke-#{$type}: #{shade(100%)};
-    // --fill-#{$type}: #{shade(100%)};
-  }
   --color--disabled: #{shade(65%)};
   --color-bar-info: #{shade(30%)};
   --color-bar-link--active: #{shade(30%)};
@@ -101,11 +89,14 @@
   --shadow-input--focus: 0 0 0 3px rgba(0, 0, 0, .05);
   --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
   --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --stroke--active: #{shade(45%)};
   --stroke--focus-visible: rgba(0, 0, 0, .125);
+  --stroke--focus: #{shade(55%)};
+  --stroke--hover: #{shade(55%)};
   --stroke-code-block: #{shade(65%)};
   --stroke-file-icon: #{shade(60%)};
   --stroke-fix: #{shade(60%)};
-  --stroke-input--active: #{shade(60%)};
+  --stroke-input--active: #{shade(50%)};
   --stroke-input--disabled: #{shade(75%)};
   --stroke-input--focus: #{shade(50%)};
   --stroke-input--hover: #{shade(60%)};
@@ -115,6 +106,18 @@
   --stroke-stack: #{shade(65%)};
   --stroke-tab: #{shade(65%)};
   --stroke: #{shade(65%)};
+  @each $type in (file, folder, page) {
+    --fill-#{$type}--active: #{shade(98%)};
+    --fill-#{$type}--current: #{shade(97%)};
+    --fill-#{$type}--focus: #{shade(98%)};
+    --fill-#{$type}--hover: #{shade(98%)};
+    --stroke-#{$type}--active: #{shade(98%)};
+    --stroke-#{$type}--current: #{shade(97%)};
+    --stroke-#{$type}--focus: #{shade(98%)};
+    --stroke-#{$type}--hover: #{shade(98%)};
+    --stroke-#{$type}: #{shade(100%)};
+    // --fill-#{$type}: #{shade(100%)};
+  }
   --color-option-picker__option--disabled: var(--color--disabled);
   --color-option-picker__option--selected: var(--color);
   --color-option-picker__option: var(--color);

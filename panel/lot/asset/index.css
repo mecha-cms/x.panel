@@ -2038,7 +2038,8 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:field,
 .lot\:field.type\:toggle,
 .lot\:field.type\:items,
-.lot\:field.type\:colors {
+.lot\:field.type\:colors,
+.lot\:field.type\:blobs {
   display: flex;
   gap: 0 var(--x);
 }
@@ -2054,7 +2055,8 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:field > label,
 .lot\:field.type\:toggle > label,
 .lot\:field.type\:items > label,
-.lot\:field.type\:colors > label {
+.lot\:field.type\:colors > label,
+.lot\:field.type\:blobs > label {
   display: block;
   overflow: hidden;
   padding: calc(var(--y) / 4) 0;
@@ -2066,17 +2068,20 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:field > label + br,
 .lot\:field.type\:toggle > label + br,
 .lot\:field.type\:items > label + br,
-.lot\:field.type\:colors > label + br {
+.lot\:field.type\:colors > label + br,
+.lot\:field.type\:blobs > label + br {
   display: none;
 }
 .lot\:field > label + div,
 .lot\:field.type\:toggle > label + div,
 .lot\:field.type\:items > label + div,
 .lot\:field.type\:colors > label + div,
+.lot\:field.type\:blobs > label + div,
 .lot\:field > label + br + div,
 .lot\:field.type\:toggle > label + br + div,
 .lot\:field.type\:items > label + br + div,
-.lot\:field.type\:colors > label + br + div {
+.lot\:field.type\:colors > label + br + div,
+.lot\:field.type\:blobs > label + br + div {
   display: block;
   flex: 1;
   min-width: 0;
@@ -2135,6 +2140,31 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:field > label + br + div .with\:options {
   display: flex;
   padding: calc(var(--y) / 4) 0;
+}
+
+.lot\:field.type\:blob > label + div input,
+.lot\:field.type\:blobs > label + div input,
+.lot\:field.type\:blob > label + br + div input {
+  border: 1px dashed;
+  border-color: var(--stroke);
+  height: auto;
+  line-height: normal;
+  padding: var(--y) var(--x);
+}
+.lot\:field.type\:blob > label + div input:hover,
+.lot\:field.type\:blobs > label + div input:hover,
+.lot\:field.type\:blob > label + br + div input:hover {
+  border-color: var(--stroke--hover, var(--stroke));
+}
+.lot\:field.type\:blob > label + div input:focus,
+.lot\:field.type\:blobs > label + div input:focus,
+.lot\:field.type\:blob > label + br + div input:focus {
+  border-color: var(--stroke--focus, var(--stroke));
+}
+.lot\:field.type\:blob > label + div input:active,
+.lot\:field.type\:blobs > label + div input:active,
+.lot\:field.type\:blob > label + br + div input:active {
+  border-color: var(--stroke--active, var(--stroke));
 }
 
 .lot\:field.type\:buttons > label + div .with\:options,
@@ -2253,13 +2283,13 @@ input[type=range]:disabled::-moz-range-thumb {
   line-height: calc(var(--y) - 2px);
 }
 
-.lot\:field.type\:toggle .input[type=checkbox] {
+.lot\:field.type\:toggle input[type=checkbox] {
   border-radius: calc(var(--z) * 1.25 / 2);
   border-width: 0;
   height: calc(var(--z) * 1.25);
   width: calc(var(--z) * 2);
 }
-.lot\:field.type\:toggle .input[type=checkbox]::before {
+.lot\:field.type\:toggle input[type=checkbox]::before {
   -webkit-transform: rotate(0);
   -moz-transform: rotate(0);
   transform: rotate(0);
@@ -2272,7 +2302,7 @@ input[type=range]:disabled::-moz-range-thumb {
   visibility: visible;
   width: calc(var(--z) * 1.25 - 4px);
 }
-.lot\:field.type\:toggle .input[type=checkbox]:checked::before {
+.lot\:field.type\:toggle input[type=checkbox]:checked::before {
   left: calc(var(--z) - 2px);
 }
 
@@ -3463,6 +3493,7 @@ table td {
   }
 
   .lot\:field,
+  .lot\:field.type\:blobs,
   .lot\:field.type\:colors,
   .lot\:field.type\:items,
   .lot\:field.type\:toggle {
@@ -3470,12 +3501,14 @@ table td {
     width: auto;
   }
   .lot\:field > * + *,
+  .lot\:field.type\:blobs > * + *,
   .lot\:field.type\:colors > * + *,
   .lot\:field.type\:items > * + *,
   .lot\:field.type\:toggle > * + * {
     margin-top: calc(var(--y) / 3);
   }
   .lot\:field > label,
+  .lot\:field.type\:blobs > label,
   .lot\:field.type\:colors > label,
   .lot\:field.type\:items > label,
   .lot\:field.type\:toggle > label {
@@ -3484,10 +3517,12 @@ table td {
     width: auto;
   }
   .lot\:field > label + div,
+  .lot\:field.type\:blobs > label + div,
   .lot\:field.type\:colors > label + div,
   .lot\:field.type\:items > label + div,
   .lot\:field.type\:toggle > label + div,
   .lot\:field > label + br + div,
+  .lot\:field.type\:blobs > label + br + div,
   .lot\:field.type\:colors > label + br + div,
   .lot\:field.type\:items > label + br + div,
   .lot\:field.type\:toggle > label + br + div {

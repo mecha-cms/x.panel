@@ -1,0 +1,19 @@
+.lot\:field.type\:blob {
+  > label {
+    + div,
+    + br + div {
+      input {
+        border: 1px dashed;
+        border-color: var(--stroke);
+        height: auto;
+        line-height: normal;
+        padding: var(--y) var(--x);
+        @each $v in (hover, focus, active) {
+          &:#{$v} {
+            border-color: var(--stroke--#{$v}, var(--stroke));
+          }
+        }
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@ function description($value) {
 
 function field($value, $key, $type = 'textarea') {
     if (!\array_key_exists('id', $value)) {
-        $value['id'] = 'f:' . \dechex(\crc32($key));
+        $value['id'] = 'f:' . \substr(\uniqid(), 6);
     }
     $state = $value['state'] ?? [];
     unset($value['tags']);
@@ -58,16 +58,18 @@ function link($value) {
     $v = \array_replace_recursive([
         'base' => $_['base'] ?? "",
         'hash' => $_['hash'] ?? "",
+        'part' => $_['part'] ?? 0,
         'path' => $_['path'] ?? "",
         'query' => $_['query'] ?? [],
         'task' => $_['task'] ?? 'get'
     ], $value);
     $base = $v['base'];
     $hash = $v['hash'];
+    $part = $v['part'];
     $path = $v['path'];
     $query = $v['query'];
     $task = $v['task'];
-    return $base . ("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : "") . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
+    return $base . ("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : "") . (!\is_int($part) || 0 === $part ? "" : '/' . $part) . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
 }
 
 function lot($lot, &$count = 0, $sort = true) {

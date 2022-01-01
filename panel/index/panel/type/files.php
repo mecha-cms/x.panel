@@ -76,7 +76,8 @@ Hook::set('_', function($_) {
                 'title' => S . $n . S,
                 'type' => 0 === $v ? 'folder' : 'file',
                 'url' => 0 === $v ? x\panel\to\link([
-                    'path' => $path . '/1',
+                    'part' => 1,
+                    'path' => $path,
                     'query' => [
                         'query' => false,
                         'tab' => false
@@ -127,7 +128,8 @@ Hook::set('_', function($_) {
                 'title' => S . '..' . S,
                 'type' => 'folder',
                 'url' => x\panel\to\link([
-                    'path' => dirname($path) . '/1',
+                    'part' => 1,
+                    'path' => dirname($path),
                     'query' => [
                         'query' => false,
                         'tab' => false

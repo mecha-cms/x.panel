@@ -7,7 +7,8 @@ import {
     getNext,
     getParent,
     getPrev,
-    hasClass
+    hasClass,
+    setClass
 } from '@taufik-nurrohman/document';
 
 import {
