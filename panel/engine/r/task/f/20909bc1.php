@@ -1,4 +1,4 @@
-<?php /* dechex(crc32('trash.restore')) */
+<?php
 
 $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/trash/1';
 

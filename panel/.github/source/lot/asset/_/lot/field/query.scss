@@ -31,16 +31,16 @@
   &__source {
     position: fixed;
     &:not(:read-only) {
-      + .tag-picker.input {
-        // This is a fake `<input>` element with `tabindex`, so this will always match with the `:read-only` pseudo class
-        // But this element does not mean to be styled as a read-only `<input>` element, so we need to normalize it!
+      // This is a fake `<input>` element with `tabindex`, so this will always match with the `:read-only` pseudo class
+      // But this element does not mean to be styled as a read-only `<input>` element, so we need to normalize it!
+      + .tag-picker {
         --color-input--read-only: var(--color-input);
         --fill-input--read-only: var(--fill-input);
         --shadow-input--read-only: var(--shadow-input);
         --stroke-input--read-only: var(--stroke-input);
       }
     }
-    + .tag-picker.input {
+    + .tag-picker {
       margin-left: 0;
       .tag-picker__tag {
         border: 1px solid transparent;

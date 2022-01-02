@@ -1,4 +1,4 @@
-<?php /* dechex(crc32('x.toggle')) */
+<?php
 
 $_['kick'] = $_['form']['lot']['kick'] ?? $url;
 

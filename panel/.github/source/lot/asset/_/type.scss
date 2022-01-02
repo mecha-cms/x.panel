@@ -26,6 +26,12 @@
   font-size: 90%; // Magic :(
 }
 
+.height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .i {
   font-style: italic;
 }
@@ -53,7 +59,6 @@
   text-decoration: underline;
 }
 
-.is\:hidden,
 [hidden] {
   display: none !important;
 }
@@ -221,4 +226,9 @@
     text-align: inherit;
     vertical-align: top;
   }
+}
+
+.width {
+  display: flex;
+  width: 100%;
 }

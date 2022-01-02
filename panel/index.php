@@ -10,10 +10,9 @@ $route = trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user',
 $req = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
 
-// Create `$user` variable just in case `user` extension is too late to be loaded due to the
-// default extension order. Since `panel` is less than `user` when sorted alphabetically, then
-// this `panel` extension will most likely be loaded before `user` extension. Here we use the
-// user’s cookie data to reconstruct the variable which can be used immediately as a reference.
+// Create `$user` variable just in case `user` extension is too late to be loaded due to the default extension order.
+// Since `panel` is less than `user` when sorted alphabetically, then this `panel` extension will most likely be loaded
+// before `user` extension. Here we use the user’s cookie data to reconstruct the variable.
 if (empty($user) && $key = cookie('user.key')) {
     if (is_file($file = LOT . D . 'user' . D . $key . '.page')) {
         $GLOBALS['user'] = $user = new User($file);

@@ -1,4 +1,4 @@
-<?php /* dechex(crc32('trash.let')) */
+<?php
 
 $_['kick'] = $_['form']['lot']['kick'] ?? $url;
 

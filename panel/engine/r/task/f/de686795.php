@@ -1,4 +1,4 @@
-<?php /* dechex(crc32('package')) */
+<?php
 
 // Set response status
 http_response_code(200);

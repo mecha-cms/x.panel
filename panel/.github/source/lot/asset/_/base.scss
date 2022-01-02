@@ -155,12 +155,29 @@ table {
   @extend .table;
 }
 
-button::-moz-focus-inner,
-input::-moz-focus-inner {
+::-moz-color-swatch {
+  border: 0;
+}
+
+::-moz-focus-inner {
   border: 0;
   margin: 0;
   outline: 0;
   padding: 0;
+}
+
+::-webkit-color-swatch {
+  border: 0;
+}
+
+::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  @include appearance(none);
+  margin: 0;
 }
 
 // [role='combobox'],
@@ -185,6 +202,11 @@ select,
 summary {
   @include user-select(none);
   cursor: pointer;
+}
+
+input[type='number'],
+input[type='search'] {
+  @include appearance(textfield);
 }
 
 button,

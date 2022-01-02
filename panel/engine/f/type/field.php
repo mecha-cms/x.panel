@@ -61,9 +61,9 @@ function buttons($value, $key) {
         }
         unset($value['lot']);
     }
+    $out['field'][2]['role'] = 'group';
     \x\panel\_class_set($out['field'][2], \array_replace([
         'count:' . $count => true,
-        'textarea' => false,
         'with:options' => true
     ], $value['tags'] ?? []));
     unset($out['field'][2]['name']);
@@ -111,9 +111,9 @@ function colors($value, $key) {
         }
         unset($value['lot']);
     }
+    $out['field'][2]['role'] = 'group';
     \x\panel\_class_set($out['field'][2], \array_replace([
         'count:' . $count => true,
-        'textarea' => false,
         'with:options' => true
     ], $value['tags'] ?? []));
     unset($out['field'][2]['name']);
@@ -252,10 +252,10 @@ function item($value, $key) {
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
         $out['field'][1] = \implode($block, $a);
+        $out['field'][2]['role'] = 'group';
         \x\panel\_class_set($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'textarea' => false,
             'with:options' => true
         ]);
         unset($value['lot'], $out['field'][2]['name']);
@@ -333,10 +333,10 @@ function items($value, $key) {
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
         $out['field'][1] = \implode($block, $a);
+        $out['field'][2]['role'] = 'group';
         \x\panel\_class_set($out['field'][2], [
             'count:' . $count => true,
             'is:block' => !!$block,
-            'textarea' => false,
             'with:options' => true
         ]);
         unset($value['lot'], $out['field'][2]['name']);
@@ -530,6 +530,7 @@ function toggle($value, $key) {
     $is_locked = !empty($v['locked']);
     $input = \x\panel\to\field($value, $key, 'input')['field'];
     $input[2]['checked'] = !empty($the_value);
+    $input[2]['role'] = 'switch';
     $input[2]['type'] = 'checkbox';
     $input[2]['value'] = 'true'; // Force value to be `true`
     unset($input[2]['placeholder']);
@@ -551,9 +552,9 @@ function toggle($value, $key) {
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
     $out['field'][1] = $label;
+    $out['field'][2]['role'] = 'group';
     \x\panel\_class_set($out['field'][2], [
         'count:1' => true,
-        'textarea' => false,
         'with:options' => true
     ]);
     unset($out['hint'], $out['field'][2]['name'], $out['field'][2]['placeholder']);

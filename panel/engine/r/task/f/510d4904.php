@@ -1,4 +1,4 @@
-<?php /* dechex(crc32('error.let')) */
+<?php
 
 $_['alert'] = [];
 $_['kick'] = $_['form']['lot']['kick'] ?? $url;

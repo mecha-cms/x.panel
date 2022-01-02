@@ -110,19 +110,20 @@ textarea {
   }
 }
 
-[role='slider'],
-input[type='file'],
-input[type='range'] {
-  background: none;
-  border: 0;
-  box-shadow: none;
-  // height: var(--y);
-  line-height: var(--y);
-  padding: 0;
-}
-
-input[type='file'] {
-  line-height: normal;
+input {
+  &[type='color'] {
+    height: calc(var(--y) * 1.5);
+    padding: 0;
+    width: calc(var(--x) * 1.5);
+  }
+  &[type='file'] {
+    line-height: normal;
+  }
+  &[type='image'] {
+    box-shadow: none;
+    height: auto;
+    width: auto;
+  }
 }
 
 [role='checkbox'],
@@ -139,38 +140,15 @@ input[type='radio'] {
   width: var(--z);
 }
 
-input[type='color'] {
-  height: calc(var(--y) * 1.5);
-  padding: 0;
-  width: calc(var(--x) * 1.5);
-  &::-moz-color-swatch {
-    border: 0;
-  }
-  &::-webkit-color-swatch {
-    border: 0;
-  }
-  &::-webkit-color-swatch-wrapper {
-    padding: 0;
-  }
-}
-
-input[type='image'] {
+[role='slider'],
+input[type='file'],
+input[type='range'] {
+  background: none;
+  border: 0;
   box-shadow: none;
-  height: auto;
-  width: auto;
-}
-
-input[type='number'] {
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    @include appearance(none);
-    margin: 0;
-  }
-}
-
-input[type='number'],
-input[type='search'] {
-  @include appearance(textfield);
+  // height: var(--y);
+  line-height: var(--y);
+  padding: 0;
 }
 
 output {
@@ -257,11 +235,6 @@ textarea {
   &.height {
     height: calc(var(--y) * 10.75);
   }
-}
-
-.width {
-  display: flex;
-  width: 100%;
 }
 
 label {
@@ -356,7 +329,33 @@ input[type='radio']:checked {
   }
 }
 
-// [role='slider'],
+input[type='checkbox'],
+input[type='radio'] {
+  &[role='switch'] {
+    border-radius: calc((var(--z) * 1.25) / 2);
+    border-width: 0;
+    height: calc(var(--z) * 1.25);
+    width: calc(var(--z) * 2);
+    &::before {
+      @include transform(rotate(0));
+      background: var(--color-button);
+      border-radius: calc(((var(--z) * 1.25) - 4px) / 2);
+      border: 0;
+      height: calc((var(--z) * 1.25) - 4px);
+      left: 2px;
+      top: 2px;
+      visibility: visible;
+      width: calc((var(--z) * 1.25) - 4px);
+    }
+    &:checked {
+      &::before {
+        left: calc(var(--z) - 2px);
+      }
+    }
+  }
+}
+
+[role='slider'],
 input[type='range'] {
   @include appearance(none);
   &::-webkit-slider-runnable-track {

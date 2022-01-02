@@ -887,8 +887,10 @@ function page($value, $key) {
 
 function pager($value, $key) {
     $content = \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function($i) {
-        $_ = $GLOBALS['_'];
-        return \x\panel\to\link(['path' => $_['path'] . '/' . $i]);
+        return \x\panel\to\link([
+            'part' => $i,
+            'path' => $GLOBALS['_']['path']
+        ]);
     });
     $value['lot'] = [
         'content' => [
