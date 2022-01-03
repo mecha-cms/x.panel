@@ -282,7 +282,7 @@ function field($value, $key) {
                 \x\panel\_style_set($value['field'][2], $styles);
             }
             $r = \x\panel\to\content($value['field']);
-            $out[1] .= '<div class="count:' . ($r ? '1' : '0') . ' lot lot:f' . (!empty($value['width']) ? ' width' : "") . '">';
+            $out[1] .= '<div class="count:' . ($r ? '1' : '0') . (!empty($value['width']) ? ' width' : "") . ' with:fields" role="group">';
             $out[1] .= $before . $r . $after;
             $out[1] .= '</div>';
         } else if (isset($value['content'])) {

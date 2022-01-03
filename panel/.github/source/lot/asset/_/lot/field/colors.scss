@@ -1,8 +1,7 @@
 .lot\:field.type\:colors {
   @extend .lot\:field, .type\:item;
   > label {
-    + div,
-    + br + div {
+    + div {
       .with\:options {
         padding-bottom: 0;
         padding-top: 0;

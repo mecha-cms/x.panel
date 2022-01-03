@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'fetch' => true, // Enable AJAX feature?
+    'fetch' => false, // Enable AJAX feature?
     'route' => '/page/1',
     'sync' => [
         'version' => true // Enable version update check

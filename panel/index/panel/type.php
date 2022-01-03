@@ -1,6 +1,6 @@
 <?php
 
-// Set pre-defined panel type
+// Set pre-defined panel type by path type
 if (null === $_['type']) {
     if ($_['file']) {
         // `/path/to/file.txt`

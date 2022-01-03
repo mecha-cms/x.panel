@@ -87,7 +87,9 @@ function route($_) {
         // Load pre-defined route(s) and type(s)
         (static function($_) {
             \extract($GLOBALS, \EXTR_SKIP);
-            require __DIR__ . \D . 'panel' . \D . 'type.php'; // Type must be set before route!
+            // Task(s) and type(s) must be defined before route(s)!
+            require __DIR__ . \D . 'panel' . \D . 'task.php';
+            require __DIR__ . \D . 'panel' . \D . 'type.php';
             require __DIR__ . \D . 'panel' . \D . 'route.php';
             if (isset($_)) {
                 // Update panel data from the route file!

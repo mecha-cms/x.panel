@@ -19,16 +19,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: calc(var(--x) * 5);
-    + br {
-      display: none;
-    }
-    + div,
-    + br + div {
+    + div {
       display: block;
       flex: 1;
       min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
       position: relative;
-      .lot\:f {
+      .with\:fields {
         display: inline-flex;
         position: relative;
         &.width {

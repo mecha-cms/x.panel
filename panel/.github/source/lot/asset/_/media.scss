@@ -154,9 +154,9 @@
     .has\:form {
       flex: 1;
       .lot\:field {
-        .lot\:f {
+        .with\:fields {
           display: flex;
-          .input {
+          input {
             flex: 1;
           }
         }
@@ -186,8 +186,7 @@
       padding: 0;
       text-align: inherit;
       width: auto;
-      + div,
-      + br + div {
+      + div {
         padding: 0;
         text-align: inherit;
         width: auto;

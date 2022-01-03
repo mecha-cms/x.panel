@@ -923,6 +923,63 @@ pre code {
   margin: 0;
 }
 
+::-ms-browse {
+  background: rgba(128, 128, 128, 0.025);
+  border: 0;
+  color: var(--color-link);
+  font: inherit;
+  margin: 0;
+  margin-inline-end: calc(var(--x) / 2);
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+}
+::-ms-browse:hover {
+  color: var(--color-link--hover, var(--color-link));
+}
+::-ms-browse:focus {
+  color: var(--color-link--focus, var(--color-link));
+}
+::-ms-browse:active {
+  color: var(--color-link--active, var(--color-link));
+}
+
+::-webkit-file-upload-button {
+  background: rgba(128, 128, 128, 0.025);
+  border: 0;
+  color: var(--color-link);
+  font: inherit;
+  margin: 0;
+  margin-inline-end: calc(var(--x) / 2);
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+}
+::-webkit-file-upload-button:hover {
+  color: var(--color-link--hover, var(--color-link));
+}
+::-webkit-file-upload-button:focus {
+  color: var(--color-link--focus, var(--color-link));
+}
+::-webkit-file-upload-button:active {
+  color: var(--color-link--active, var(--color-link));
+}
+
+::file-selector-button {
+  background: rgba(128, 128, 128, 0.025);
+  border: 0;
+  color: var(--color-link);
+  font: inherit;
+  margin: 0;
+  margin-inline-end: calc(var(--x) / 2);
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+}
+::file-selector-button:hover {
+  color: var(--color-link--hover, var(--color-link));
+}
+::file-selector-button:focus {
+  color: var(--color-link--focus, var(--color-link));
+}
+::file-selector-button:active {
+  color: var(--color-link--active, var(--color-link));
+}
+
 [role=button],
 [role=checkbox],
 [role=listbox],
@@ -1986,8 +2043,7 @@ input[type=range]:disabled::-moz-range-thumb {
   padding: 0;
   width: auto;
 }
-.lot\:bar .lot\:field > label + div,
-.lot\:bar .lot\:field > label + br + div {
+.lot\:bar .lot\:field > label + div {
   margin-top: 0;
 }
 .lot\:bar .lot\:field input {
@@ -2105,46 +2161,31 @@ input[type=range]:disabled::-moz-range-thumb {
   white-space: nowrap;
   width: calc(var(--x) * 5);
 }
-.lot\:field > label + br,
-.lot\:field.type\:items > label + br,
-.lot\:field.type\:colors > label + br,
-.lot\:field.type\:blobs > label + br {
-  display: none;
-}
 .lot\:field > label + div,
 .lot\:field.type\:items > label + div,
 .lot\:field.type\:colors > label + div,
-.lot\:field.type\:blobs > label + div,
-.lot\:field > label + br + div,
-.lot\:field.type\:items > label + br + div,
-.lot\:field.type\:colors > label + br + div,
-.lot\:field.type\:blobs > label + br + div {
+.lot\:field.type\:blobs > label + div {
   display: block;
   flex: 1;
   min-width: 0;
   position: relative;
 }
-.lot\:field > label + div .lot\:f,
-.lot\:field > label + br + div .lot\:f {
+.lot\:field > label + div .with\:fields {
   display: inline-flex;
   position: relative;
 }
-.lot\:field > label + div .lot\:f.width,
-.lot\:field > label + br + div .lot\:f.width {
+.lot\:field > label + div .with\:fields.width {
   display: flex;
 }
-.lot\:field > label + div .lot\:f > * + *,
-.lot\:field > label + br + div .lot\:f > * + * {
+.lot\:field > label + div .with\:fields > * + * {
   margin-left: -1px;
 }
-.lot\:field > label + div .lot\:f > .width,
-.lot\:field > label + br + div .lot\:f > .width {
+.lot\:field > label + div .with\:fields > .width {
   flex: 1;
   min-width: 0;
   width: auto;
 }
-.lot\:field > label + div .lot\:f .fix,
-.lot\:field > label + br + div .lot\:f .fix {
+.lot\:field > label + div .with\:fields .fix {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -2167,21 +2208,18 @@ input[type=range]:disabled::-moz-range-thumb {
   white-space: nowrap;
   width: auto;
 }
-.lot\:field > label + div .lot\:f .fix.icon,
-.lot\:field > label + br + div .lot\:f .fix.icon {
+.lot\:field > label + div .with\:fields .fix.icon {
   min-width: calc(var(--x) * 1.5);
   padding: calc(var(--y) / 6 + 1px) 0;
   width: calc(var(--x) * 1.5);
 }
-.lot\:field > label + div .with\:options,
-.lot\:field > label + br + div .with\:options {
+.lot\:field > label + div .with\:options {
   display: flex;
   padding: calc(var(--y) / 4) 0;
 }
 
 .lot\:field.type\:blob > label + div input,
-.lot\:field.type\:blobs > label + div input,
-.lot\:field.type\:blob > label + br + div input {
+.lot\:field.type\:blobs > label + div input {
   border: 1px dashed;
   border-color: var(--stroke);
   height: auto;
@@ -2189,107 +2227,24 @@ input[type=range]:disabled::-moz-range-thumb {
   padding: var(--y) var(--x);
 }
 .lot\:field.type\:blob > label + div input:hover,
-.lot\:field.type\:blobs > label + div input:hover,
-.lot\:field.type\:blob > label + br + div input:hover {
+.lot\:field.type\:blobs > label + div input:hover {
   border-color: var(--stroke--hover, var(--stroke));
 }
 .lot\:field.type\:blob > label + div input:focus,
-.lot\:field.type\:blobs > label + div input:focus,
-.lot\:field.type\:blob > label + br + div input:focus {
+.lot\:field.type\:blobs > label + div input:focus {
   border-color: var(--stroke--focus, var(--stroke));
 }
 .lot\:field.type\:blob > label + div input:active,
-.lot\:field.type\:blobs > label + div input:active,
-.lot\:field.type\:blob > label + br + div input:active {
+.lot\:field.type\:blobs > label + div input:active {
   border-color: var(--stroke--active, var(--stroke));
 }
-.lot\:field.type\:blob > label + div input::-ms-browse,
-.lot\:field.type\:blobs > label + div input::-ms-browse,
-.lot\:field.type\:blob > label + br + div input::-ms-browse {
-  background: none;
-  border: 0;
-  color: var(--color-link);
-  font: inherit;
-  margin: 0;
-  margin-inline-end: calc(var(--x) / 2);
-  padding: 0;
-}
-.lot\:field.type\:blob > label + div input::-ms-browse:hover,
-.lot\:field.type\:blobs > label + div input::-ms-browse:hover,
-.lot\:field.type\:blob > label + br + div input::-ms-browse:hover {
-  color: var(--color-link--hover, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::-ms-browse:focus,
-.lot\:field.type\:blobs > label + div input::-ms-browse:focus,
-.lot\:field.type\:blob > label + br + div input::-ms-browse:focus {
-  color: var(--color-link--focus, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::-ms-browse:active,
-.lot\:field.type\:blobs > label + div input::-ms-browse:active,
-.lot\:field.type\:blob > label + br + div input::-ms-browse:active {
-  color: var(--color-link--active, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::-webkit-file-upload-button,
-.lot\:field.type\:blobs > label + div input::-webkit-file-upload-button,
-.lot\:field.type\:blob > label + br + div input::-webkit-file-upload-button {
-  background: none;
-  border: 0;
-  color: var(--color-link);
-  font: inherit;
-  margin: 0;
-  margin-inline-end: calc(var(--x) / 2);
-  padding: 0;
-}
-.lot\:field.type\:blob > label + div input::-webkit-file-upload-button:hover,
-.lot\:field.type\:blobs > label + div input::-webkit-file-upload-button:hover,
-.lot\:field.type\:blob > label + br + div input::-webkit-file-upload-button:hover {
-  color: var(--color-link--hover, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::-webkit-file-upload-button:focus,
-.lot\:field.type\:blobs > label + div input::-webkit-file-upload-button:focus,
-.lot\:field.type\:blob > label + br + div input::-webkit-file-upload-button:focus {
-  color: var(--color-link--focus, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::-webkit-file-upload-button:active,
-.lot\:field.type\:blobs > label + div input::-webkit-file-upload-button:active,
-.lot\:field.type\:blob > label + br + div input::-webkit-file-upload-button:active {
-  color: var(--color-link--active, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::file-selector-button,
-.lot\:field.type\:blobs > label + div input::file-selector-button,
-.lot\:field.type\:blob > label + br + div input::file-selector-button {
-  background: none;
-  border: 0;
-  color: var(--color-link);
-  font: inherit;
-  margin: 0;
-  margin-inline-end: calc(var(--x) / 2);
-  padding: 0;
-}
-.lot\:field.type\:blob > label + div input::file-selector-button:hover,
-.lot\:field.type\:blobs > label + div input::file-selector-button:hover,
-.lot\:field.type\:blob > label + br + div input::file-selector-button:hover {
-  color: var(--color-link--hover, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::file-selector-button:focus,
-.lot\:field.type\:blobs > label + div input::file-selector-button:focus,
-.lot\:field.type\:blob > label + br + div input::file-selector-button:focus {
-  color: var(--color-link--focus, var(--color-link));
-}
-.lot\:field.type\:blob > label + div input::file-selector-button:active,
-.lot\:field.type\:blobs > label + div input::file-selector-button:active,
-.lot\:field.type\:blob > label + br + div input::file-selector-button:active {
-  color: var(--color-link--active, var(--color-link));
-}
 
-.lot\:field.type\:buttons > label + div .with\:options,
-.lot\:field.type\:buttons > label + br + div .with\:options {
+.lot\:field.type\:buttons > label + div .with\:options {
   padding-bottom: 0;
   padding-top: 0;
 }
 
-.lot\:field.type\:colors > label + div .with\:options,
-.lot\:field.type\:colors > label + br + div .with\:options {
+.lot\:field.type\:colors > label + div .with\:options {
   padding-bottom: 0;
   padding-top: 0;
 }
@@ -3575,10 +3530,10 @@ table td {
   .lot\:bar .has\:form {
     flex: 1;
   }
-  .lot\:bar .has\:form .lot\:field .lot\:f {
+  .lot\:bar .has\:form .lot\:field .with\:fields {
     display: flex;
   }
-  .lot\:bar .has\:form .lot\:field .lot\:f .input {
+  .lot\:bar .has\:form .lot\:field .with\:fields input {
     flex: 1;
   }
   .lot\:bar .has\:menu ul ul {
@@ -3615,11 +3570,7 @@ table td {
   .lot\:field > label + div,
   .lot\:field.type\:blobs > label + div,
   .lot\:field.type\:colors > label + div,
-  .lot\:field.type\:items > label + div,
-  .lot\:field > label + br + div,
-  .lot\:field.type\:blobs > label + br + div,
-  .lot\:field.type\:colors > label + br + div,
-  .lot\:field.type\:items > label + br + div {
+  .lot\:field.type\:items > label + div {
     padding: 0;
     text-align: inherit;
     width: auto;

@@ -96,8 +96,7 @@
     padding: 0;
     width: auto;
     > label {
-      + div,
-      + br + div {
+      + div {
         margin-top: 0;
       }
     }

@@ -3,6 +3,7 @@
 // Disable page offset feature and request type other than `GET`
 if (!empty($_['part']) || 'get' !== $_['task']) {
     $_['kick'] = x\panel\to\link([
+        'part' => 0,
         'path' => '.license',
         'task' => 'get'
     ]);

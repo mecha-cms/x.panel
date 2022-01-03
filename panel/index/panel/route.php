@@ -1,6 +1,15 @@
 <?php
 
-require __DIR__ . D . 'type.php';
+foreach (array_values(step(($_['task'] ?? 'get') . "\\" . strtr($_['type'] ?? P, '/', "\\"), "\\")) as $v) {
+    // Function-based task
+    if (is_callable($f = "x\\panel\\task\\" . $v)) {
+        if ($_ = call_user_func($f, $_)) {
+            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
+        }
+    }
+}
+
+$_ = $GLOBALS['_'];
 
 foreach (array_reverse(step($_['path'], '/')) as $v) {
     // Function-based route

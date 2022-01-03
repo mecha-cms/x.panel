@@ -180,6 +180,23 @@ table {
   margin: 0;
 }
 
+@each $v in (-ms-browse, -webkit-file-upload-button, file-selector-button) {
+  ::#{$v} {
+    background: rgba(128, 128, 128, .025);
+    border: 0;
+    color: var(--color-link);
+    font: inherit;
+    margin: 0;
+    margin-inline-end: calc(var(--x) / 2);
+    padding: calc(var(--y) / 4) calc(var(--x) / 2);
+    @each $w in (hover, focus, active) {
+      &:#{$w} {
+        color: var(--color-link--#{$w}, var(--color-link));
+      }
+    }
+  }
+}
+
 // [role='combobox'],
 [role='button'],
 [role='checkbox'],
