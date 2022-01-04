@@ -40,6 +40,11 @@ function folder($_) {
     if (!empty($_['alert']['error'])) {
         return $_;
     }
+    $name = (string) \To::folder($_POST['folder']['name'] ?? "");
+    if ("" === $name) {
+        $_['alert']['error'][] = ['Please fill out the %s field.', ['Name']];
+        return $_;
+    }
     test($_POST);
     exit;
 }

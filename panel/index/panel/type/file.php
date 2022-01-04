@@ -177,7 +177,7 @@ $desk = [
                                                     'description' => ['Save to %s', x\panel\from\path($file)],
                                                     'name' => 'task',
                                                     'stack' => 10,
-                                                    'title' => 'g' === $_['task'] ? 'Update' : 'Create',
+                                                    'title' => 'get' === $_['task'] ? 'Update' : 'Create',
                                                     'type' => 'submit',
                                                     'value' => $_['task']
                                                 ],

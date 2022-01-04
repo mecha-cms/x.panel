@@ -99,9 +99,34 @@ function route($_) {
         \x\panel\_asset_get();
         \x\panel\_asset_let();
         $_ = \Hook::fire('_', [$GLOBALS['_']]);
+        if (!empty($_['alert'])) {
+            // Has alert data from queue
+            $has_alert = true;
+            // Make alert section visible
+            $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+            foreach ((array) $_['alert'] as $k => $v) {
+                foreach ((array) $v as $vv) {
+                    $vv = (array) $vv;
+                    \call_user_func("\\Alert::" . $k, ...$vv);
+                }
+            }
+        }
         if ($kick = $_['kick']) {
             // Force redirect!
             \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);
+        } else {
+            if (isset($_REQUEST['token'])) {
+                \kick(\x\panel\to\link(['query' => ['token' => false]]));
+            }
+        }
+        if (!empty($_SESSION['alert'])) {
+            // Has alert data from previous session
+            $has_alert = true;
+            // Make alert section visible
+            $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+        }
+        if (!empty($has_alert)) {
+            $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
         \Hook::fire('route.panel', [$_, $path, $query, $hash]);
     }
