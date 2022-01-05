@@ -1,15 +1,5 @@
 <?php
 
-if ($_['file'] && 'get' === $_['task']) {
-    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($_['file']) . '</code>', 'folder']];
-    $_['kick'] = x\panel\to\link([
-        'path' => $_['path'],
-        'query' => ['type' => false],
-        'task' => 'get'
-    ]);
-    return $_;
-}
-
 $folder = $_['folder'];
 
 $name = 'get' === $_['task'] ? basename($_['folder']) : "";
@@ -90,7 +80,7 @@ $desk = [
                                                     'stack' => 20,
                                                     'title' => "",
                                                     'type' => 'items',
-                                                    'value' => 'set' === $_['task'] ? ['kick' => 1] : []
+                                                    'value' => 'set' === $_['task'] ? ['kick' => true] : []
                                                 ]
                                             ],
                                             'stack' => 10,

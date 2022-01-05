@@ -177,7 +177,7 @@ return (static function($icons) {
                         ],
                         'alert' => [
                             'content' => "",
-                            'skip' => 0 === count($_SESSION['alert']),
+                            'skip' => 0 === count($_SESSION['alert'] ?? []),
                             'stack' => 15,
                             'type' => 'section'
                         ],

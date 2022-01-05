@@ -1,15 +1,5 @@
 <?php
 
-if ($_['folder'] && 'get' === $_['task']) {
-    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($_['folder']) . '</code>', 'file']];
-    $_['kick'] = x\panel\to\link([
-        'path' => $_['path'],
-        'query' => ['type' => false],
-        'task' => 'get'
-    ]);
-    return $_;
-}
-
 $file = $_['file'];
 
 $type = $file ? mime_content_type($file) : null;
@@ -101,6 +91,7 @@ $bar = [
                     'title' => false,
                     'url' => x\panel\to\link([
                         'part' => 0,
+                        'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
                         'query' => [
                             'tab' => false,
                             'type' => 'file'
