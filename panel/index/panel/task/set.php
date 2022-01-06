@@ -66,6 +66,7 @@ function file($_) {
             'query' => \array_replace_recursive([
                 'stack' => $_POST['stack'] ?? null,
                 'tab' => $_POST['tab'] ?? null,
+                'trash' => null,
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
@@ -108,12 +109,13 @@ function folder($_) {
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \strtr($self, [
-                    \LOT => "",
+                    \LOT . \D => "",
                     \D => '/'
                 ]),
                 'query' => \array_replace_recursive([
                     'stack' => $_POST['stack'] ?? null,
                     'tab' => $_POST['tab'] ?? null,
+                    'trash' => null,
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
@@ -124,6 +126,7 @@ function folder($_) {
                 'query' => \array_replace_recursive([
                     'stack' => $_POST['stack'] ?? null,
                     'tab' => $_POST['tab'] ?? null,
+                    'trash' => null,
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'

@@ -52,7 +52,7 @@ $desk = [
             // `form/post`
             'data' => [
                 'token' => $_['token'],
-                'trash' => 'let' === $_['task'] ? (!empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null) : null,
+                'trash' => !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null,
                 'type' => $_['type']
             ],
             'lot' => [
