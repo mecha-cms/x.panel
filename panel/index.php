@@ -5,7 +5,7 @@ if (!is_dir(LOT . D . 'user') || !isset($state->x->user)) {
 }
 
 $path = trim($url->path ?? "", '/');
-$route = trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
+$route = trim($state->x->panel->guard->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 
 $req = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
@@ -66,12 +66,12 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 
 // Modify default log-in redirection to the panel page if it is not set
 if ('GET' === $req && !array_key_exists('kick', $_GET)) {
-    if ($path === $route) {
+    if ($path === trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/')) {
         $_GET['kick'] = '/' . $route . '/get/' . trim($state->x->panel->route ?? 'asset', '/');
     }
 }
 
 // Load the panel interface only if the location value is at least started with `http://127.0.0.1/panel/`
-if (0 === strpos($path . '/', $route . '/') && $test) {
+if (!empty($user) && 0 === strpos($path . '/', $route . '/') && $test) {
     require __DIR__ . D . 'index' . D . 'panel.php';
 }

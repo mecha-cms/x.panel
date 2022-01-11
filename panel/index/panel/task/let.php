@@ -1,6 +1,6 @@
 <?php namespace x\panel\task\let;
 
-// Prevent user(s) from deleting file(s) above the `.\lot\*` level
+// Prevent user(s) from deleting file(s)/folder(s) above the `.\lot\*` level
 if ('POST' === $_SERVER['REQUEST_METHOD'] && false === \strpos(\strtr($source = $_['file'] ?? $_['folder'], [\LOT . \D => ""]), \D)) {
     \abort('Could not delete <code>' . \x\panel\from\path($source) . '</code> because it is above the <code>' . \x\panel\from\path(\LOT) . '</code> directory level.');
 }
