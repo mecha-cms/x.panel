@@ -10,8 +10,7 @@ function color($color) {
     if (0 === \strpos($color, 'rgb')) {
         if (\preg_match($pattern_1, $color, $m)) {
             $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
-        }
-        if (\preg_match($pattern_2, $color, $m)) {
+        } else if (\preg_match($pattern_2, $color, $m)) {
             $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
         }
     }
