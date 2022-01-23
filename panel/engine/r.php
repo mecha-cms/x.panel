@@ -22,8 +22,10 @@ return (static function($icons) {
                 'part' => 1,
                 'path' => $n,
                 'query' => [
-                    'tab' => false,
-                    'type' => false
+                    'kick' => null,
+                    'query' => null,
+                    'tab' => null,
+                    'type' => null
                 ],
                 'task' => 'get'
             ])
@@ -87,7 +89,7 @@ return (static function($icons) {
                             'name' => 'get',
                             'stack' => 20,
                             'type' => 'form/get',
-                            'url' => x\panel\to\link(['query' => ['query' => false]])
+                            'url' => x\panel\to\link(['query' => ['query' => null]])
                         ]
                     ],
                     'stack' => 10,
@@ -106,8 +108,10 @@ return (static function($icons) {
                                 'part' => 0,
                                 'path' => '.license',
                                 'query' => [
-                                    'tab' => false,
-                                    'type' => false
+                                    'kick' => null,
+                                    'query' => null,
+                                    'tab' => null,
+                                    'type' => null
                                 ],
                                 'task' => 'get'
                             ])
@@ -123,8 +127,10 @@ return (static function($icons) {
                                         'part' => 0,
                                         'path' => '.state',
                                         'query' => [
-                                            'tab' => false,
-                                            'type' => false
+                                            'kick' => null,
+                                            'query' => null,
+                                            'tab' => null,
+                                            'type' => null
                                         ],
                                         'task' => 'get'
                                     ])

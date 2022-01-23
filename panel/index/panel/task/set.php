@@ -1,14 +1,110 @@
 <?php namespace x\panel\task\set;
 
 function blob($_) {
+    // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    if (!empty($_['alert']['error'])) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    test($_POST);
-    exit;
+    $test_size = (array) (\State::get('x.panel.guard.file.size', true) ?? [0, 0]);
+    $test_type = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.type', true) ?? [])))) . \P;
+    $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
+    foreach ($_POST['blob'] ?? [] as $k => $v) {
+        // Check for error code
+        if (!empty($v['status'])) {
+            $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
+        } else {
+            $folder = \LOT . \D . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \D);
+            $name = (string) (\To::file(\lcfirst($v['name'])) ?? \uniqid());
+            $blob = $folder . \D . $name;
+            $size = $v['size'] ?? 0;
+            $type = $v['type'] ?? 'application/octet-stream';
+            $x = \pathinfo($name, \PATHINFO_EXTENSION);
+            // Check for file extension
+            if ($x && false === \strpos($test_x, \P . $x . \P)) {
+                $_['alert']['error'][$blob] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+            // Check for file type
+            } else if ($type && false === \strpos($test_type, \P . $type . \P)) {
+                $_['alert']['error'][$blob] = ['File type %s is not allowed.', '<code>' . $type . '</code>'];
+            }
+            // Check for file size
+            if ($size < $test_size[0]) {
+                $_['alert']['error'][$blob] = ['Minimum file size allowed to upload is %s.', '<code>' . \size($test_size) . '</code>'];
+            } else if ($size > $test_size[1]) {
+                $_['alert']['error'][$blob] = ['Maximum file size allowed to upload is %s.', '<code>' . \size($test_size) . '</code>'];
+            }
+        }
+        if (!empty($_['alert']['error'])) {
+            continue;
+        } else {
+            if (isset($blob) && \is_file($blob)) {
+                $_['alert']['error'][$blob] = ['File %s already exists.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+                continue;
+            }
+            if (isset($folder) && !\is_dir($folder)) {
+                \mkdir($folder, 0775, true);
+            }
+            // TODO: Check syntax error in PHP file
+            if (\move_uploaded_file($v['blob'], $blob)) {
+                $_['alert']['success'][$blob] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+                $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+                    'hash' => $_POST['hash'] ?? null,
+                    'part' => 1,
+                    'query' => \array_replace_recursive([
+                        'stack' => $_POST['stack'] ?? null,
+                        'tab' => $_POST['tab'] ?? null,
+                        'trash' => null,
+                        'type' => null
+                    ], $_POST['query'] ?? []),
+                    'task' => 'get'
+                ]);
+                $_['file'] = $blob; // For hook(s)
+                $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
+                // Extract package
+                if (!empty($_POST['options']['extract']) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
+                    $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+                        'hash' => $_POST['hash'] ?? null,
+                        'part' => 0,
+                        'path' => strtr($blob, [
+                            \LOT . \D => "",
+                            \D => '/'
+                        ]),
+                        'query' => \array_replace_recursive([
+                            'kick' => \x\panel\to\link([
+                                'base' => null,
+                                'part' => 0,
+                                'query' => [
+                                    'kick' => null,
+                                    'let' => !empty($_POST['options']['let']) ? 1 : null
+                                ],
+                                'task' => 'get'
+                            ]),
+                            'stack' => $_POST['stack'] ?? null,
+                            'tab' => $_POST['tab'] ?? null,
+                            'token' => $_['token'],
+                            'trash' => null,
+                            'type' => null
+                        ], $_POST['query'] ?? []),
+                        'task' => 'fire/de686795'
+                    ]);
+                }
+            } else {
+                if (0 === \q(\g($folder))) {
+                    \rmdir($folder);
+                }
+                $_['alert']['error'][$blob] = 'Error.';
+                continue;
+            }
+        }
+    }
+    if (!empty($_['alert']['error'])) {
+        unset($_POST['token']);
+        $_SESSION['form'] = $_POST;
+    }
+    return $_;
 }
 
 function data($_) {
@@ -100,7 +196,7 @@ function folder($_) {
     } else {
         $seal = \octdec($_POST['folder']['seal'] ?? '0775');
         if ($seal < 0 || $seal > 0777) {
-            $seal = 0775; // Invalid file permission, return default!
+            $seal = 0775; // Invalid folder permission, return default!
         }
         \mkdir($self, $seal, true);
         $_['alert']['success'][$self] = ['Folder %s successfully created.', '<code>' . \x\panel\from\path($self) . '</code>'];
