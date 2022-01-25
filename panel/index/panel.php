@@ -98,7 +98,8 @@ function route($_) {
         })($_);
         \x\panel\_asset_get();
         \x\panel\_asset_let();
-        $_ = \Hook::fire('_', [$GLOBALS['_']]);
+        $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
+        $_ = $GLOBALS['_'] = \Hook::fire(\strtr('do.' . ($_['type'] ?? \P) . '.' . ($_['task'] ?? 'get'), "\\", '/'), [$_]) ?? $_;
         if (!empty($_['alert'])) {
             // Has alert data from queue
             $has_alert = true;

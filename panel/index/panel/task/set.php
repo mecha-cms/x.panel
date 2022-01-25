@@ -13,11 +13,11 @@ function blob($_) {
     $test_type = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.type', true) ?? [])))) . \P;
     $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
     foreach ($_POST['blob'] ?? [] as $k => $v) {
-        // Check for error code
+        // Check for status code
         if (!empty($v['status'])) {
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
         } else {
-            $folder = \LOT . \D . \strtr(\trim($v['to'] ?? $_['path'], '/'), '/', \D);
+            $folder = \LOT . \D . \strtr(\trim($v['parent'] ?? $_['path'], '/'), '/', \D);
             $name = (string) (\To::file(\lcfirst($v['name'])) ?? \uniqid());
             $blob = $folder . \D . $name;
             $size = $v['size'] ?? 0;
@@ -36,68 +36,70 @@ function blob($_) {
             } else if ($size > $test_size[1]) {
                 $_['alert']['error'][$blob] = ['Maximum file size allowed to upload is %s.', '<code>' . \size($test_size) . '</code>'];
             }
+            // Check for syntax error in PHP file
+            if ('php' === $x) {
+                // This should be enough to detect PHP syntax error before saving
+                \token_get_all(\file_get_contents($v['blob']), \TOKEN_PARSE);
+            }
         }
         if (!empty($_['alert']['error'])) {
             continue;
-        } else {
-            if (isset($blob) && \is_file($blob)) {
-                $_['alert']['error'][$blob] = ['File %s already exists.', '<code>' . \x\panel\from\path($blob) . '</code>'];
-                continue;
+        }
+        if (isset($blob) && \is_file($blob)) {
+            $_['alert']['error'][$blob] = ['File %s already exists.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+            continue;
+        }
+        if (isset($folder) && !\is_dir($folder)) {
+            \mkdir($folder, 0775, true);
+        }
+        if (\is_int($file = \store($v, $blob))) {
+            if (0 === \q(\g($folder))) {
+                \rmdir($folder);
             }
-            if (isset($folder) && !\is_dir($folder)) {
-                \mkdir($folder, 0775, true);
-            }
-            // TODO: Check syntax error in PHP file
-            if (\move_uploaded_file($v['blob'], $blob)) {
-                $_['alert']['success'][$blob] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($blob) . '</code>'];
-                $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
-                    'hash' => $_POST['hash'] ?? null,
-                    'part' => 1,
-                    'query' => \array_replace_recursive([
-                        'stack' => $_POST['stack'] ?? null,
-                        'tab' => $_POST['tab'] ?? null,
-                        'trash' => null,
-                        'type' => null
-                    ], $_POST['query'] ?? []),
-                    'task' => 'get'
-                ]);
-                $_['file'] = $blob; // For hook(s)
-                $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
-                // Extract package
-                if (!empty($_POST['options']['extract']) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
-                    $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
-                        'hash' => $_POST['hash'] ?? null,
+            $_['alert']['error'][] = 'Failed to upload with status code: ' . $file;
+            continue;
+        }
+        $_['alert']['success'][$blob] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            'hash' => $_POST['hash'] ?? null,
+            'part' => 1,
+            'query' => \array_replace_recursive([
+                'stack' => $_POST['stack'] ?? null,
+                'tab' => $_POST['tab'] ?? null,
+                'trash' => null,
+                'type' => null
+            ], $_POST['query'] ?? []),
+            'task' => 'get'
+        ]);
+        $_['file'] = $blob; // For hook(s)
+        $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
+        // Extract package
+        if (!empty($_POST['options']['extract']) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
+            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+                'hash' => $_POST['hash'] ?? null,
+                'part' => 0,
+                'path' => strtr($blob, [
+                    \LOT . \D => "",
+                    \D => '/'
+                ]),
+                'query' => \array_replace_recursive([
+                    'kick' => \x\panel\to\link([
+                        'base' => null,
                         'part' => 0,
-                        'path' => strtr($blob, [
-                            \LOT . \D => "",
-                            \D => '/'
-                        ]),
-                        'query' => \array_replace_recursive([
-                            'kick' => \x\panel\to\link([
-                                'base' => null,
-                                'part' => 0,
-                                'query' => [
-                                    'kick' => null,
-                                    'let' => !empty($_POST['options']['let']) ? 1 : null
-                                ],
-                                'task' => 'get'
-                            ]),
-                            'stack' => $_POST['stack'] ?? null,
-                            'tab' => $_POST['tab'] ?? null,
-                            'token' => $_['token'],
-                            'trash' => null,
-                            'type' => null
-                        ], $_POST['query'] ?? []),
-                        'task' => 'fire/de686795'
-                    ]);
-                }
-            } else {
-                if (0 === \q(\g($folder))) {
-                    \rmdir($folder);
-                }
-                $_['alert']['error'][$blob] = 'Error.';
-                continue;
-            }
+                        'query' => [
+                            'kick' => null,
+                            'let' => !empty($_POST['options']['let']) ? 1 : null
+                        ],
+                        'task' => 'get'
+                    ]),
+                    'stack' => $_POST['stack'] ?? null,
+                    'tab' => $_POST['tab'] ?? null,
+                    'token' => $_['token'],
+                    'trash' => null,
+                    'type' => null
+                ], $_POST['query'] ?? []),
+                'task' => 'fire/de686795'
+            ]);
         }
     }
     if (!empty($_['alert']['error'])) {

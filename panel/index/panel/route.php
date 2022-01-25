@@ -1,11 +1,9 @@
 <?php
 
-foreach (array_values(step(($_['task'] ?? 'get') . "\\" . strtr($_['type'] ?? P, '/', "\\"), "\\")) as $v) {
+foreach (array_values(step(($task = $_['task'] ?? 'get') . "\\" . strtr($type = $_['type'] ?? P, '/', "\\"), "\\")) as $v) {
     // Function-based task
     if (is_callable($f = "x\\panel\\task\\" . $v)) {
-        if ($_ = call_user_func($f, $_)) {
-            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
-        }
+        Hook::set(strtr('do.' . $type . '.' . $task, "\\", '/'), $f, 10);
     }
 }
 
