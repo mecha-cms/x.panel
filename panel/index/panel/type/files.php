@@ -28,8 +28,9 @@ Hook::set('_', function($_) {
             uksort($files[0], 'strnatcmp');
             uksort($files[1], 'strnatcmp');
             $files = array_merge($files[0], $files[1]);
+            $_['count'] = $count;
         }
-        $files = array_chunk($files, 20, true)[($_['part'] ?? 1) - 1] ?? [];
+        $files = array_chunk($files, $_['chunk'] ?? 20, true)[($_['part'] ?? 1) - 1] ?? [];
         foreach ($files as $k => $v) {
             $path = strtr($k, [
                 LOT . D => "",
@@ -52,8 +53,8 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'query' => false,
-                                'tab' => false
+                                'query' => null,
+                                'tab' => null
                             ]
                         ])
                     ],
@@ -66,8 +67,8 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'query' => false,
-                                'tab' => false,
+                                'query' => null,
+                                'tab' => null,
                                 'token' => $_['token'],
                                 'trash' => $trash
                             ],
@@ -81,8 +82,8 @@ Hook::set('_', function($_) {
                     'part' => 1,
                     'path' => $path,
                     'query' => [
-                        'query' => false,
-                        'tab' => false
+                        'query' => null,
+                        'tab' => null
                     ],
                     'task' => 'get'
                 ]) : null
@@ -105,8 +106,8 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'query' => false,
-                                'tab' => false
+                                'query' => null,
+                                'tab' => null
                             ],
                             'task' => 'get'
                         ])
@@ -120,8 +121,8 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'query' => false,
-                                'tab' => false,
+                                'query' => null,
+                                'tab' => null,
                                 'token' => $_['token'],
                                 'trash' => $trash
                             ],
@@ -135,8 +136,8 @@ Hook::set('_', function($_) {
                     'part' => 1,
                     'path' => dirname($path),
                     'query' => [
-                        'query' => false,
-                        'tab' => false
+                        'query' => null,
+                        'tab' => null
                     ],
                     'task' => 'get'
                 ])
@@ -144,8 +145,8 @@ Hook::set('_', function($_) {
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] = $files;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['pager'] = [
-            'chunk' => 20,
-            'count' => $count,
+            'chunk' => $_['chunk'] ?? 20,
+            'count' => $_['count'] ?? 0,
             'current' => $_['part'] ?? 1,
             'stack' => 20,
             'type' => 'pager'
@@ -174,8 +175,8 @@ $desk = [
                                     'url' => x\panel\to\link([
                                         'part' => 0,
                                         'query' => [
-                                            'query' => false,
-                                            'tab' => false,
+                                            'query' => null,
+                                            'tab' => null,
                                             'type' => 'blob'
                                         ],
                                         'task' => 'set'
@@ -189,8 +190,8 @@ $desk = [
                                     'url' => x\panel\to\link([
                                         'part' => 0,
                                         'query' => [
-                                            'query' => false,
-                                            'tab' => false,
+                                            'query' => null,
+                                            'tab' => null,
                                             'type' => 'file'
                                         ],
                                         'task' => 'set'
@@ -204,8 +205,8 @@ $desk = [
                                     'url' => x\panel\to\link([
                                         'part' => 0,
                                         'query' => [
-                                            'query' => false,
-                                            'tab' => false,
+                                            'query' => null,
+                                            'tab' => null,
                                             'type' => 'folder'
                                         ],
                                         'task' => 'set'
