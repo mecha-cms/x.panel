@@ -1325,11 +1325,13 @@ function tabs($value, $key) {
             if (null !== $current && isset($links[$current]) && \is_array($links[$current])) {
                 $links[$current]['tags']['is:current'] = true;
                 $links[$current][3]['aria-selected'] = 'true';
+                $links[$current][3]['tabindex'] = 0;
                 $sections[$current]['tags']['is:current'] = true;
                 $has_current = true;
             } else if (null !== $first && isset($links[$first]) && \is_array($links[$first])) {
                 $links[$first]['tags']['is:current'] = true;
-                $links[$current][3]['aria-selected'] = 'true';
+                $links[$first][3]['aria-selected'] = 'true';
+                $links[$first][3]['tabindex'] = 0;
                 $sections[$first]['tags']['is:current'] = true;
                 $has_current = true;
             }

@@ -196,7 +196,7 @@ function onChange() {
         delete TE.instances[key];
         _letEditorSource($.self);
     }
-    let sources = getElements('.lot\\:field.type\\:source .textarea'), editor, map, state, type;
+    let sources = getElements('.lot\\:field.type\\:source textarea'), editor, map, state, type;
     sources && toCount(sources) && sources.forEach(source => {
         editor = new TE(source, getDatum(source, 'state') ?? {});
         state = editor.state;

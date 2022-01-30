@@ -87,10 +87,9 @@ function route($_) {
         // Load pre-defined route(s) and type(s)
         (static function($_) {
             \extract($GLOBALS, \EXTR_SKIP);
-            // Task(s) and type(s) must be defined before route(s)!
+            require __DIR__ . \D . 'panel' . \D . 'route.php';
             require __DIR__ . \D . 'panel' . \D . 'task.php';
             require __DIR__ . \D . 'panel' . \D . 'type.php';
-            require __DIR__ . \D . 'panel' . \D . 'route.php';
             if (isset($_)) {
                 // Update panel data from the route file!
                 $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);

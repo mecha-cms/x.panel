@@ -1,14 +1,5 @@
 <?php
 
-foreach (array_values(step(($task = $_['task'] ?? 'get') . "\\" . strtr($type = $_['type'] ?? P, '/', "\\"), "\\")) as $v) {
-    // Function-based task
-    if (is_callable($f = "x\\panel\\task\\" . $v)) {
-        Hook::set(strtr('do.' . $type . '.' . $task, "\\", '/'), $f, 10);
-    }
-}
-
-$_ = $GLOBALS['_'];
-
 foreach (array_reverse(step($_['path'], '/')) as $v) {
     // Function-based route
     if (is_callable($f = "x\\panel\\route\\" . f2p($v))) {

@@ -10,6 +10,7 @@ import {
     getPrev,
     hasClass,
     letClass,
+    setAttribute,
     setChildLast,
     setClass,
     setElement,
@@ -56,21 +57,24 @@ function onChange() {
             if (!hasClass(parent, 'has:link')) {
                 tabs.forEach(tab => {
                     if (tab !== t) {
-                        letClass(tab, 'is:current');
                         letClass(getParent(tab), 'is:current');
+                        letClass(tab, 'is:current');
                         setAttribute(tab, 'aria-selected', 'false');
+                        setAttribute(tab, 'tabindex', '-1');
                         let pane = panes[tab._tabIndex];
                         pane && letClass(pane, 'is:current');
                     }
                 });
                 if (hasClass(parent, 'can:toggle')) {
-                    toggleClass(t, 'is:current');
                     toggleClass(parent, 'is:current');
-                    setAttribute(tab, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
+                    toggleClass(t, 'is:current');
+                    setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
+                    setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
                 } else {
-                    setClass(t, 'is:current');
                     setClass(parent, 'is:current');
-                    setAttribute(tab, 'aria-selected', 'true');
+                    setClass(t, 'is:current');
+                    setAttribute(t, 'aria-selected', 'true');
+                    setAttribute(t, 'tabindex', '0');
                 }
                 current = hasClass(t, 'is:current');
                 if (pane) {

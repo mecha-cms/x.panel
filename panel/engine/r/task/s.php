@@ -92,21 +92,6 @@ function blob($_) {
 }
 
 function data($_) {
-    extract($GLOBALS, \EXTR_SKIP);
-    $hash = $_['form']['lot']['hash'] ?? "";
-    $e = \To::query(\array_replace([
-        'stack' => $_['form']['lot']['stack'] ?? [],
-        'tab' => $_['form']['lot']['tab'] ?? ['data']
-    ], $_['form']['lot']['query'] ?? [])) . ("" !== $hash ? '#' . $hash : "");
-    if ('post' === $_['form']['type']) {
-        $name = \basename(\To::file(\lcfirst($_['form']['lot']['data']['name'] ?? "")));
-        $_['form']['lot']['file']['name'] = "" !== $name ? $name . '.data' : "";
-        $_ = file($_); // Move to `file`
-        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
-        }
-    }
-    return $_;
 }
 
 function file($_) {

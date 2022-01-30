@@ -6,19 +6,30 @@ function blob($_) {
 }
 
 function data($_) {
-    extract($GLOBALS, \EXTR_SKIP);
-    $hash = $_['form']['lot']['hash'] ?? "";
-    $e = \To::query(\array_replace([
-        'stack' => $_['form']['lot']['stack'] ?? [],
-        'tab' => $_['form']['lot']['tab'] ?? ['data']
-    ], $_['form']['lot']['query'] ?? [])) . ("" !== $hash ? '#' . $hash : "");
-    if ('post' === $_['form']['type']) {
-        $name = \basename(\To::file(\lcfirst($_['form']['lot']['data']['name'] ?? "")));
-        $_['form']['lot']['file']['name'] = "" !== $name ? $name . '.data' : "";
-        $_ = file($_); // Move to `file`
-        if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['f']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-            $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION) . $e;
-        }
+    // Method not allowed!
+    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
+        return $_;
+    }
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+        return $_;
+    }
+    $name = \basename(\To::file(\lcfirst($_POST['data']['name'] ?? "")));
+    $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
+    $_ = file($_); // Move to `file`
+    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['folder']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
+        $_['kick'] = $_POST['kick'] ?? x\panel\to\link([
+            'hash' => $_POST['hash'] ?? null,
+            'part' => 0,
+            'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
+            'query' => \array_replace_recursive([
+                'query' => null,
+                'stack' => $_POST['stack'] ?? null,
+                'tab' => $_POST['tab'] ?? null,
+                'type' => null
+            ], $_POST['query'] ?? []),
+            'task' => 'get'
+        ]);
     }
     return $_;
 }

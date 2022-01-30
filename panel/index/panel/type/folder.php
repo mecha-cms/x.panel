@@ -6,6 +6,8 @@ $name = 'get' === $_['task'] ? basename($_['folder']) : "";
 
 if ("" === $name) $name = null;
 
+$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
+
 $bar = [
     // `bar`
     'lot' => [
@@ -52,7 +54,7 @@ $desk = [
             // `form/post`
             'data' => [
                 'token' => $_['token'],
-                'trash' => !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null,
+                'trash' => $trash,
                 'type' => $_['type']
             ],
             'lot' => [

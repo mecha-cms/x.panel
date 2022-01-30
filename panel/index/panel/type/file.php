@@ -1,6 +1,20 @@
 <?php
 
-$file = $_['file'];
+if (is_dir($file = $_['file'] ?? $_['folder']) && 'get' === $_['task']) {
+    $_['alert']['error'][$file] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file) . '</code>', 'file']];
+    $_['kick'] = x\panel\to\link([
+        'part' => 1,
+        'path' => dirname($_['path']),
+        'query' => [
+            'query' => null,
+            'stack' => null,
+            'tab' => null,
+            'type' => null
+        ],
+        'task' => 'get'
+    ]);
+    return $_;
+}
 
 $type = $file ? mime_content_type($file) : null;
 $editable = 'set' === $_['task'];
@@ -62,7 +76,7 @@ $content = 'get' === $_['task'] && $file && $editable ? file_get_contents($file)
 if ("" === $content) $content = null;
 if ("" === $name) $name = null;
 
-$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
+$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
 
 $bar = [
     // `bar`
@@ -111,7 +125,7 @@ $desk = [
             // `form/post`
             'data' => [
                 'token' => $_['token'],
-                'trash' => !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null,
+                'trash' => $trash,
                 'type' => $_['type']
             ],
             'lot' => [

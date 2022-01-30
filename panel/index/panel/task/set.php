@@ -110,14 +110,32 @@ function blob($_) {
 }
 
 function data($_) {
+    // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    if (!empty($_['alert']['error'])) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    test($_POST);
-    exit;
+    $name = \basename(\To::file(\lcfirst($_POST['data']['name'] ?? "")));
+    $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
+    $_ = file($_); // Move to `file`
+    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
+        $_['kick'] = $_POST['kick'] ?? x\panel\to\link([
+            'hash' => $_POST['hash'] ?? null,
+            'part' => 0,
+            'path' => $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
+            'query' => \array_replace_recursive([
+                'query' => null,
+                'stack' => $_POST['stack'] ?? null,
+                'tab' => $_POST['tab'] ?? null,
+                'type' => null
+            ], $_POST['query'] ?? []),
+            'task' => 'get'
+        ]);
+    }
+    return $_;
 }
 
 function file($_) {

@@ -1803,7 +1803,7 @@
             delete TE.instances[key];
             _letEditorSource($.self);
         }
-        let sources = getElements('.lot\\:field.type\\:source .textarea'),
+        let sources = getElements('.lot\\:field.type\\:source textarea'),
             editor,
             map,
             state,

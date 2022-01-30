@@ -280,9 +280,7 @@ input[type='radio'] {
 }
 
 [aria-checked='true'][role='checkbox'],
-[aria-checked='true'][role='radio'],
-input[type='checkbox']:checked,
-input[type='radio']:checked {
+input[type='checkbox']:checked {
   &::before {
     @include transform(rotate(45deg));
     background: none;
