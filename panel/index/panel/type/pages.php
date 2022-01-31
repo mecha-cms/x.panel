@@ -160,7 +160,7 @@ Hook::set('_', function($_) {
                     ]);
                     $files[$k] = [
                         'current' => !empty($_SESSION['_']['file'][$k]),
-                        'description' => size($k),
+                        'description' => size(filesize($k)),
                         'path' => $k,
                         'tags' => [
                             'x:data' => true

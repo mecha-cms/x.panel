@@ -78,7 +78,6 @@ function file($_) {
         }
         \chmod($self, $seal);
         $_['alert']['success'][$file] = ['File %s successfully ' . ($name !== $base ? 'rename' : 'update') . 'd.', '<code>' . \x\panel\from\path($file) . '</code>'];
-        $_['kick'] = $_['form']['lot']['kick'] ?? $_['/'] . '/::g::/' . \dirname($_['path']) . '/' . $name . $e;
         $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,

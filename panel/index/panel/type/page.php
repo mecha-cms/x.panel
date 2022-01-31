@@ -381,7 +381,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                 }
                 $files[$k] = [
                     'current' => !empty($session[$k]),
-                    'description' => size($k),
+                    'description' => size(filesize($k)),
                     'path' => $k,
                     'skip' => $skip,
                     'tags' => [
@@ -429,7 +429,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                     'type' => 'file',
                     'url' => x\panel\to\link([
                         'part' => 0,
-                        'path' => $end,
+                        'path' => $pp,
                         'query' => [
                             'query' => null,
                             'stack' => null,
