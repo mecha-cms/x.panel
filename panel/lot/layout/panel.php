@@ -1,4 +1,3 @@
-<?php status($status); ?>
 <!DOCTYPE html>
 <html class dir="ltr">
   <head>

@@ -19,12 +19,31 @@ if (null === $_['type']) {
 // Set
 $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], $_);
 
-is_file($f = __DIR__ . D . 'type' . D . strtr($_['type'] ?? 'blank', '/', D) . '.php') && (static function($f) {
-    extract($GLOBALS, EXTR_SKIP);
-    if ($_ = require $f) {
-        $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
-    }
-})($f);
+foreach (array_reverse(step(strtr($_['type'] ?? 'blank', '/', D), D)) as $v) {
+    is_file($f = __DIR__ . D . 'type' . D . $v . '.php') && (static function($f) {
+        extract($GLOBALS, EXTR_SKIP);
+        if ($_ = require $f) {
+            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
+        }
+    })($f);
+}
 
 // Get
 $_ = $GLOBALS['_'];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

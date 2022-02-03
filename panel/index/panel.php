@@ -5,7 +5,8 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 
 $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
 
-function route($_) {
+function route($data) {
+    $_ = $data['_'];
     $id = \strtok($_['path'], '/');
     $GLOBALS['t'][] = \i('Panel');
     $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : \To::title($id)));
@@ -34,12 +35,12 @@ function route($_) {
         }
         $icon .= '</svg>';
     }
-    $data = [];
+    $js = [];
     if (isset($_['file'])) {
-        $data['file'] = \To::URL($_['file']);
+        $js['file'] = \To::URL($_['file']);
     }
     if (isset($_['folder'])) {
-        $data['folder'] = \To::URL($_['folder']);
+        $js['folder'] = \To::URL($_['folder']);
     }
     foreach ([
         'are',
@@ -60,29 +61,30 @@ function route($_) {
         'type'
     ] as $v) {
         if (isset($_[$v])) {
-            $data[$v] = $_[$v];
+            $js[$v] = $_[$v];
         }
     }
     $GLOBALS['_']['asset']['script'][] = [
-        'content' => 'window._=Object.assign(window._||{},' . \json_encode($data) . ');',
+        'content' => 'window._=Object.assign(window._||{},' . \json_encode($js) . ');',
         'id' => false,
         'stack' => 0
     ];
     // Put icon(s) before content
     $GLOBALS['content'] = $icon . $content;
     $GLOBALS['description'] = $_['description'] ?? null;
-    $GLOBALS['status'] = is_int($_['status']) ? $_['status'] : 404;
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();
     \x\panel\_state_set();
-    \Hook::fire('layout', ['panel']);
+    $data['content'] = \Hook::fire('layout', ['panel']);
+    $data['status'] = is_int($_['status']) ? $_['status'] : 404;
+    return $data;
 }
 
 // Remove front-end route(s)!
 \Hook::let('route');
 
 // Load `route.panel` hook only if user is active!
-\Hook::set('route', function($path, $query, $hash) use($_) {
+\Hook::set('route', function($data, $path, $query, $hash) use($_) {
     if (\Is::user()) {
         // Load pre-defined route(s) and type(s)
         (static function($_) {
@@ -113,11 +115,12 @@ function route($_) {
         }
         if ($kick = $_['kick']) {
             // Force redirect!
-            \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);
-        } else {
-            if (isset($_REQUEST['token'])) {
-                \kick(\x\panel\to\link(['query' => ['token' => false]]));
-            }
+            $data['kick'] = \is_array($kick) ? \x\panel\to\link($kick) : $kick;
+            return $data;
+        }
+        if (isset($_REQUEST['token'])) {
+            $data['kick'] = \x\panel\to\link(['query' => ['token' => null]]);
+            return $data;
         }
         if (!empty($_SESSION['alert'])) {
             // Has alert data from previous session
@@ -128,7 +131,8 @@ function route($_) {
         if (!empty($has_alert)) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
-        \Hook::fire('route.panel', [$_, $path, $query, $hash]);
+        $data['_'] = $_;
+        return \Hook::fire('route.panel', [$data, $path, $query, $hash]);
     }
 }, 0);
 
