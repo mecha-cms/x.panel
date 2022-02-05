@@ -41,6 +41,7 @@ function blob($_) {
                 // This should be enough to detect PHP syntax error before saving
                 \token_get_all(\file_get_contents($v['blob']), \TOKEN_PARSE);
             }
+            $v['name'] = $name; // Safe file name!
         }
         if (!empty($_['alert']['error'])) {
             continue;
@@ -52,7 +53,7 @@ function blob($_) {
         if (isset($folder) && !\is_dir($folder)) {
             \mkdir($folder, 0775, true);
         }
-        if (\is_int($file = \store($v, $blob))) {
+        if (\is_int($file = \store($folder, $v))) {
             if (0 === \q(\g($folder))) {
                 \rmdir($folder);
             }

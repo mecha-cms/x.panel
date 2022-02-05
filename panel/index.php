@@ -13,9 +13,11 @@ $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path,
 // Create `$user` variable just in case `user` extension is too late to be loaded due to the default extension order.
 // Since `panel` is less than `user` when sorted alphabetically, then this `panel` extension will most likely be loaded
 // before `user` extension. Here we use the user’s cookie data to reconstruct the variable.
-if (empty($user) && $key = cookie('user.key')) {
+if (empty($user) && ($key = cookie('user.key')) && ($token = cookie('user.token'))) {
     if (is_file($file = LOT . D . 'user' . D . $key . '.page')) {
-        $GLOBALS['user'] = $user = new User($file);
+        if ($token === content(LOT . D . 'user' . D . $key . D . 'token.data')) {
+            $GLOBALS['user'] = $user = new User($file);
+        }
     }
 }
 
