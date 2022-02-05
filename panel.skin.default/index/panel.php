@@ -1,16 +1,13 @@
 <?php
 
 $skin = $state->x->panel->skin ?? 'default';
-$variant = $_POST['cookie']['panel-skin-variant'] ?? $_COOKIE['panel-skin-variant'] ?? null;
+$variant = $_POST['cookie']['variant'] ?? cookie('panel.skin.default.variant') ?? null;
 
 // Load asset and enable variant option if current `skin` value is `default`
 if ('default' === $skin) {
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
         if ($variant) {
-            setcookie('panel-skin-variant', $variant, [
-                'expires' => strtotime('+1 year'),
-                'path' => '/'
-            ]);
+            cookie('panel.skin.default.variant', $variant, strtotime('+1 year'));
         }
     }
     $_['asset']['panel.skin.' . $skin] = [
@@ -18,7 +15,7 @@ if ('default' === $skin) {
         'path' => stream_resolve_include_path(__DIR__ . D . '..' . D . 'lot' . D . 'asset' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'css'),
         'stack' => 30
     ];
-    $_['is'][$variant] = true;
+    $_['is'][$variant ?? 'dark'] = true;
 }
 
 // Add `default` skin option
@@ -39,7 +36,7 @@ if ('.state' === $_['path'] && 'get' === $_['task']) {
     ];
     if ('default' === $skin) {
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['panel']['lot']['fields']['lot']['variant'] = [
-            'name' => 'cookie[panel-skin-variant]',
+            'name' => 'cookie[variant]',
             'type' => 'item',
             'value' => $variant,
             'lot' => [
