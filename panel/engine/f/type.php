@@ -244,7 +244,7 @@ function field($value, $key) {
         $value[2]['id'] = $value[2]['id'] ?? \strtr($id, ['f:' => 'field:']);
         if (!\array_key_exists('title', $value) || false !== $value['title']) {
             $title = \x\panel\to\title($value['title'] ?? \To::title($key), -2);
-            $out[1] .= '<label' . ("" === \strip_tags($title) ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
+            $out[1] .= '<label' . ("" === \strip_tags($title ?? "") ? ' class="count:0"' : "") . ' for="' . $id . '">' . $title . '</label>';
             $tags['has:title'] = true;
         }
         $tags['has:description'] = !empty($value['description']);

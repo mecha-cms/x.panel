@@ -17,7 +17,7 @@ function data($_) {
     $name = \basename(\To::file(\lcfirst($_POST['data']['name'] ?? "")));
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
-    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['folder']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
+    if (empty($_['alert']['error']) && isset($_['folder']) && $parent = \glob(\dirname($_['folder']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
         $_['kick'] = $_POST['kick'] ?? x\panel\to\link([
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,

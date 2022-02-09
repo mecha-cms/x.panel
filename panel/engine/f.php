@@ -157,7 +157,7 @@ function _style_set(&$value, array $styles = []) {
 
 function _type_parent_set(&$value, $parent) {
     foreach ($value as &$v) {
-        $type = $v['type'] ?? null;
+        $type = $v['type'] ?? "";
         if ($type !== $parent && 0 !== \strpos($type, $parent . '/')) {
             // Add parent to `type`
             $type = $parent . '/' . $type;

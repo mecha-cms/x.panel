@@ -4,13 +4,22 @@ namespace wapmorgan\UnifiedArchive;
 use Exception;
 use InvalidArgumentException;
 use wapmorgan\UnifiedArchive\Formats\BasicFormat;
+use wapmorgan\UnifiedArchive\Formats\Bzip;
+use wapmorgan\UnifiedArchive\Formats\Cab;
+use wapmorgan\UnifiedArchive\Formats\Gzip;
+use wapmorgan\UnifiedArchive\Formats\Iso;
+use wapmorgan\UnifiedArchive\Formats\Lzma;
+use wapmorgan\UnifiedArchive\Formats\Rar;
+use wapmorgan\UnifiedArchive\Formats\SevenZip;
+use wapmorgan\UnifiedArchive\Formats\Tar;
+use wapmorgan\UnifiedArchive\Formats\Zip;
 
 /**
  * Class which represents archive in one of supported formats.
  */
 class UnifiedArchive
 {
-    const VERSION = '0.1.2';
+    const VERSION = '0.1.3';
 
     const ZIP = 'zip';
     const SEVEN_ZIP = '7zip';
@@ -28,19 +37,19 @@ class UnifiedArchive
 
     /** @var array List of archive format handlers */
     protected static $formatHandlers = [
-        self::ZIP => 'Zip',
-        self::SEVEN_ZIP => 'SevenZip',
-        self::RAR => 'Rar',
-        self::GZIP => 'Gzip',
-        self::BZIP => 'Bzip',
-        self::LZMA => 'Lzma',
-        self::ISO => 'Iso',
-        self::CAB => 'Cab',
-        self::TAR => 'Tar',
-        self::TAR_GZIP => 'Tar',
-        self::TAR_BZIP => 'Tar',
-        self::TAR_LZMA => 'Tar',
-        self::TAR_LZW => 'Tar',
+        self::ZIP => Zip::class,
+        self::SEVEN_ZIP => SevenZip::class,
+        self::RAR => Rar::class,
+        self::GZIP => Gzip::class,
+        self::BZIP => Bzip::class,
+        self::LZMA => Lzma::class,
+        self::ISO => Iso::class,
+        self::CAB => Cab::class,
+        self::TAR => Tar::class,
+        self::TAR_GZIP => Tar::class,
+        self::TAR_BZIP => Tar::class,
+        self::TAR_LZMA => Tar::class,
+        self::TAR_LZW => Tar::class,
     ];
 
     /** @var array List of archive formats with support state */
@@ -68,7 +77,8 @@ class UnifiedArchive
     protected $archiveSize;
 
     /**
-     * Creates instance with right type.
+     * Creates instance with right type
+     *
      * @param  string $fileName Filename
      * @return UnifiedArchive|null Returns UnifiedArchive in case of successful reading of the file
      * @throws \Exception
@@ -90,6 +100,7 @@ class UnifiedArchive
 
     /**
      * Checks whether archive can be opened with current system configuration
+     *
      * @param string $fileName
      * @return boolean
      */
@@ -98,11 +109,8 @@ class UnifiedArchive
         self::checkRequirements();
 
         $type = self::detectArchiveType($fileName);
-        if ($type !== false && self::canOpenType($type)) {
-            return true;
-        }
 
-        return false;
+        return $type !== false && self::canOpenType($type);
     }
 
     /**
@@ -115,13 +123,25 @@ class UnifiedArchive
     {
         self::checkRequirements();
 
-        return (isset(self::$enabledTypes[$type]))
+        return isset(self::$enabledTypes[$type])
             ? self::$enabledTypes[$type]
             : false;
     }
 
     /**
-     * Detect archive type by its filename or content.
+     * @param string $type One of predefined archive types
+     * @return bool
+     */
+    public static function canCreateType($type)
+    {
+        self::checkRequirements();
+        return isset(self::$enabledTypes[$type])
+            ? call_user_func([static::$formatHandlers[$type], 'canCreateArchive'])
+            : false;
+    }
+
+    /**
+     * Detect archive type by its filename or content
      *
      * @param string $fileName
      * @param bool $contentCheck
@@ -206,7 +226,7 @@ class UnifiedArchive
     }
 
     /**
-     * Opens the file as one of supported formats.
+     * Opens the file as one of supported formats
      *
      * @param string $fileName Filename
      * @param string $type Archive type.
@@ -222,7 +242,7 @@ class UnifiedArchive
         if (!isset(static::$formatHandlers[$type]))
             throw new Exception('Unsupported archive type: '.$type.' of archive '.$fileName);
 
-        $handler_class = __NAMESPACE__.'\\Formats\\'.static::$formatHandlers[$type];
+        $handler_class = static::$formatHandlers[$type];
 
         $this->archive = new $handler_class($fileName);
         $this->scanArchive();
@@ -241,7 +261,7 @@ class UnifiedArchive
     }
 
     /**
-     * Closes archive.
+     * Closes archive
      */
     public function __destruct()
     {
@@ -252,20 +272,20 @@ class UnifiedArchive
      * Returns an instance of class implementing PclZipOriginalInterface
      * interface.
      *
-     * @return \wapmorgan\UnifiedArchive\PclzipZipInterface Returns an instance of a class
-     * implementing PclZipOriginalInterface
+     * @return PclzipZipInterface Returns an instance of a class implementing PclZipOriginalInterface
      * @throws Exception
      */
     public function getPclZipInterface()
     {
         if ($this->type !== self::ZIP)
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException('Format '.$this->type.' does not support PclZip-interface');
 
-        return new $this->archive->getPclZip();
+        return $this->archive->getPclZip();
     }
 
     /**
      * Counts number of files
+     *
      * @return int
      */
     public function countFiles()
@@ -275,6 +295,7 @@ class UnifiedArchive
 
     /**
      * Counts size of all uncompressed data (bytes)
+     *
      * @return int
      */
     public function countUncompressedFilesSize()
@@ -284,6 +305,7 @@ class UnifiedArchive
 
     /**
      * Returns size of archive
+     *
      * @return int
      */
     public function getArchiveSize()
@@ -293,6 +315,7 @@ class UnifiedArchive
 
     /**
      * Returns type of archive
+     *
      * @return string
      */
     public function getArchiveType()
@@ -302,6 +325,7 @@ class UnifiedArchive
 
     /**
      * Counts size of all compressed data (in bytes)
+     *
      * @return int
      */
     public function countCompressedFilesSize()
@@ -311,6 +335,7 @@ class UnifiedArchive
 
     /**
      * Returns list of files
+     *
      * @return array List of files
      */
     public function getFileNames()
@@ -320,6 +345,7 @@ class UnifiedArchive
 
     /**
      * Checks that file exists in archive
+     *
      * @param string $fileName
      * @return bool
      */
@@ -330,6 +356,7 @@ class UnifiedArchive
 
     /**
      * Returns file metadata
+     *
      * @param string $fileName
      * @return ArchiveEntry|bool
      */
@@ -344,8 +371,7 @@ class UnifiedArchive
     /**
      * Returns file content
      *
-     * @param $fileName
-     *
+     * @param string $fileName
      * @return bool|string
      * @throws \Exception
      */
@@ -359,8 +385,9 @@ class UnifiedArchive
 
     /**
      * Returns a resource for reading file from archive
+     *
      * @param string $fileName
-     * @return bool|resource|string
+     * @return bool|resource
      */
     public function getFileResource($fileName)
     {
@@ -371,7 +398,8 @@ class UnifiedArchive
     }
 
     /**
-     * Unpacks files to disk.
+     * Unpacks files to disk
+     *
      * @param string $outputFolder Extraction output dir.
      * @param string|array|null $files One files or list of files or null to extract all content.
      * @param bool $expandFilesList Should be expanded paths like 'src/' to all files inside 'src/' dir or not.
@@ -393,7 +421,8 @@ class UnifiedArchive
     }
 
     /**
-     * Updates existing archive by removing files from it.
+     * Updates existing archive by removing files from it
+     *
      * Only 7zip and zip types support deletion.
      * @param string|string[] $fileOrFiles
      * @param bool $expandFilesList
@@ -415,6 +444,7 @@ class UnifiedArchive
 
     /**
      * Updates existing archive by adding new files
+     *
      * @param string[] $fileOrFiles See [[archiveFiles]] method for file list format.
      * @return int|bool False if failed, number of added files if success
      * @throws Exception
@@ -431,6 +461,7 @@ class UnifiedArchive
 
     /**
      * Adds file into archive
+     *
      * @param string $file
      * @param string|null $inArchiveName If not passed, full path will be preserved.
      * @return bool
@@ -447,7 +478,8 @@ class UnifiedArchive
     }
 
     /**
-     * Adds directory contents to archive.
+     * Adds directory contents to archive
+     *
      * @param string $directory
      * @param string|null $inArchivePath If not passed, full paths will be preserved.
      * @return bool
@@ -469,10 +501,10 @@ class UnifiedArchive
      * @param string|string[]|array<string,string> $fileOrFiles List of files. Can be one of three formats:
      *                             1. A string containing path to file or directory.
      *                                  File will have it's basename.
-     *                                  `UnifiedArchive::archiveFiles(['/etc/php.ini'], 'archive.zip)` will store
+     *                                  `UnifiedArchive::archiveFiles('/etc/php.ini', 'archive.zip)` will store
      * file with 'php.ini' name.
      *                                  Directory contents will be stored in archive root.
-     *                                  `UnifiedArchive::archiveFiles(['/var/log/'], 'archive.zip')` will store all
+     *                                  `UnifiedArchive::archiveFiles('/var/log/', 'archive.zip')` will store all
      * directory contents in archive root.
      *                             2. An array with strings containing pats to files or directories.
      *                                  Files and directories will be stored with full paths.
@@ -487,7 +519,7 @@ class UnifiedArchive
      * @param string $archiveName File name of archive. Type of archive will be determined via it's name.
      * @param bool $emulate If true, emulation mode is performed instead of real archiving.
      *
-     * @return array|bool|int
+     * @return array|bool|int Count of stored files is returned.
      * @throws Exception
      */
     public static function archiveFiles($fileOrFiles, $archiveName, $emulate = false)
@@ -523,13 +555,14 @@ class UnifiedArchive
         if (!isset(static::$formatHandlers[$archiveType]))
             throw new Exception('Unsupported archive type: '.$archiveType.' of archive '.$archiveName);
 
-        $handler_class = __NAMESPACE__.'\\Formats\\'.static::$formatHandlers[$archiveType];
+        $handler_class = static::$formatHandlers[$archiveType];
 
         return $handler_class::createArchive($files_list, $archiveName);
     }
 
     /**
      * Creates an archive with one file
+     *
      * @param string $file
      * @param string $archiveName
      * @return bool
@@ -545,6 +578,7 @@ class UnifiedArchive
 
     /**
      * Creates an archive with full directory contents
+     *
      * @param string $directory
      * @param string $archiveName
      * @return bool
@@ -576,13 +610,14 @@ class UnifiedArchive
             self::$enabledTypes[self::TAR_GZIP] = (class_exists('\Archive_Tar') || class_exists('\PharData')) && extension_loaded('zlib');
             self::$enabledTypes[self::TAR_BZIP] = (class_exists('\Archive_Tar') || class_exists('\PharData')) && extension_loaded('bz2');
             self::$enabledTypes[self::TAR_LZMA] = class_exists('\Archive_Tar') && extension_loaded('lzma2');
-            self::$enabledTypes[self::TAR_LZMA] = class_exists('\Archive_Tar') && LzwStreamWrapper::isBinaryAvailable();
+            self::$enabledTypes[self::TAR_LZW] = class_exists('\Archive_Tar') && LzwStreamWrapper::isBinaryAvailable();
         }
     }
 
     /**
      * Deprecated method for extracting files
-     * @param $outputFolder
+     *
+     * @param string $outputFolder
      * @param string|array|null $files
      * @deprecated 0.1.0
      * @see extractFiles()
@@ -596,8 +631,9 @@ class UnifiedArchive
 
     /**
      * Deprecated method for archiving files
-     * @param $filesOrFiles
-     * @param $archiveName
+     *
+     * @param string|array $filesOrFiles
+     * @param string $archiveName
      * @deprecated 0.1.0
      * @see archiveFiles()
      * @return mixed
@@ -610,6 +646,7 @@ class UnifiedArchive
 
     /**
      * Expands files list
+     *
      * @param $archiveFiles
      * @param $files
      * @return array
@@ -684,5 +721,21 @@ class UnifiedArchive
                 $map[$destination.basename($node)] = $node;
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function canAddFiles()
+    {
+        return call_user_func([static::$formatHandlers[$this->type], 'canAddFiles']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canDeleteFiles()
+    {
+        return call_user_func([static::$formatHandlers[$this->type], 'canDeleteFiles']);
     }
 }

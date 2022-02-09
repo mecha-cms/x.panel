@@ -1,14 +1,13 @@
 <?php
 namespace wapmorgan\UnifiedArchive\Formats;
 
-use Archive7z\Archive7z;
 use Exception;
 use wapmorgan\UnifiedArchive\ArchiveEntry;
 use wapmorgan\UnifiedArchive\ArchiveInformation;
 
 class SevenZip extends BasicFormat
 {
-    /** @var \Archive7z\Archive7z */
+    /** @var Archive7z */
     protected $sevenZip;
 
     /**
@@ -34,7 +33,9 @@ class SevenZip extends BasicFormat
     {
         $information = new ArchiveInformation();
         foreach ($this->sevenZip->getEntries() as $entry) {
-            $information->files[] = $entry->getPath();
+            $information->files[] = method_exists($entry, 'getUnixPath')
+                ? $entry->getUnixPath()
+                : str_replace('\\', '/', $entry->getPath());
             $information->compressedFilesSize += (int)$entry->getPackedSize();
             $information->uncompressedFilesSize += (int)$entry->getSize();
         }
@@ -206,5 +207,32 @@ class SevenZip extends BasicFormat
             throw new Exception('Could not create archive: '.$e->getMessage(), $e->getCode(), $e);
         }
         return count($files);
+    }
+
+    /**
+     * @return bool
+     * @throws \Archive7z\Exception
+     */
+    public static function canCreateArchive()
+    {
+        return static::canAddFiles();
+    }
+
+    /**
+     * @return bool
+     * @throws \Archive7z\Exception
+     */
+    public static function canAddFiles()
+    {
+        $version = Archive7z::getBinaryVersion();
+        return $version !== false && version_compare('9.30', $version, '<=');
+    }
+
+    /**
+     * @return bool
+     */
+    public static function canDeleteFiles()
+    {
+        return true;
     }
 }

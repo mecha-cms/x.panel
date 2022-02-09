@@ -76,7 +76,7 @@ $desk = [
             // `form/post`
             'data' => [
                 'file' => ['seal' => '0600'],
-                'tab' => 'set' === $_['task'] ? ['data'] : null,
+                'tab' => 'get' === $_['task'] || 'set' === $_['task'] ? ['data'] : null,
                 'token' => $_['token'],
                 'trash' => $trash,
                 'type' => $_['type']

@@ -123,7 +123,7 @@ function data($_) {
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $_POST['kick'] ?? x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
