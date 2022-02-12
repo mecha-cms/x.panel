@@ -5,7 +5,7 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 
 $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
 
-function route($r) {
+function route($content, $path, $query, $hash, $r) {
     $_ = $r['_'];
     $id = \strtok($_['path'], '/');
     $GLOBALS['t'][] = \i('Panel');
@@ -75,19 +75,20 @@ function route($r) {
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();
     \x\panel\_state_set();
-    $r['layout'] = 'panel';
-    $r['status'] = (int) ($_['status'] ?? 404);
-    return $r;
+    return \Layout::panel([], (int) ($_['status'] ?? 404));
 }
 
 // Remove all front-end route(s)
 \Hook::let('route');
 
-// Except final front-end route(s)
+// But final front-end route(s)
 \Hook::set('route', "x\\layout\\route", 1000);
 
 // Load `route.panel` hook only if user is active!
-\Hook::set('route', function($r, $path, $query, $hash) use($_) {
+\Hook::set('route', function($content, $path, $query, $hash) use($_) {
+    if (null !== $content) {
+        return $content;
+    }
     if (\Is::user()) {
         // Load pre-defined route(s) and type(s)
         (static function($_) {
@@ -118,12 +119,10 @@ function route($r) {
         }
         if ($kick = $_['kick']) {
             // Force redirect!
-            $r['kick'] = \is_array($kick) ? \x\panel\to\link($kick) : $kick;
-            return $r;
+            \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);
         }
         if (isset($_REQUEST['token'])) {
-            $r['kick'] = \x\panel\to\link(['query' => ['token' => null]]);
-            return $r;
+            \kick(\x\panel\to\link(['query' => ['token' => null]]));
         }
         if (!empty($_SESSION['alert'])) {
             // Has alert data from previous session
@@ -135,7 +134,7 @@ function route($r) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
         $r['_'] = $_;
-        return \Hook::fire('route.panel', [$r, $path, $query, $hash]);
+        return \Hook::fire('route.panel', [$content, $path, $query, $hash, $r]);
     }
 }, 0);
 
