@@ -71,17 +71,20 @@ function route($r) {
     ];
     // Put icon(s) before content
     $GLOBALS['content'] = $icon . $content;
-    $GLOBALS['description'] = $_['description'] ?? null;
+    $GLOBALS['description'] = (string) ($_['description'] ?? "");
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();
     \x\panel\_state_set();
-    $r['content'] = \Hook::fire('layout', ['panel']);
-    $r['status'] = is_int($_['status']) ? $_['status'] : 404;
+    $r['layout'] = 'panel';
+    $r['status'] = (int) ($_['status'] ?? 404);
     return $r;
 }
 
-// Remove front-end route(s)!
+// Remove all front-end route(s)
 \Hook::let('route');
+
+// Except final front-end route(s)
+\Hook::set('route', "x\\layout\\route", 1000);
 
 // Load `route.panel` hook only if user is active!
 \Hook::set('route', function($r, $path, $query, $hash) use($_) {
