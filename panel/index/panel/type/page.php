@@ -16,7 +16,7 @@ if (is_dir($file = $_['file'] ?? $_['folder']) && 'get' === $_['task']) {
     return $_;
 }
 
-$page = is_file($file) ? new Page($file) : new Page;
+$_['page'] = $page = is_file($file) ? new Page($file) : new Page;
 
 $has_folder = is_dir($folder = dirname($file) . D . pathinfo($file, PATHINFO_FILENAME));
 
