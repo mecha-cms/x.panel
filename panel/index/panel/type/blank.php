@@ -1,3 +1,3 @@
 <?php
 
-// Yo!
+return $_;

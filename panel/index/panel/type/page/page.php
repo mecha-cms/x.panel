@@ -1,35 +1,40 @@
 <?php
 
-return $_; // TODO
-
-if (null !== State::get('x.tag') && (
+if (isset($state->x->tag) && (
     'set' === $_['task'] && substr_count($_['path'], '/') > 0 ||
     'get' === $_['task'] && substr_count($_['path'], '/') > 1
 )) {
     // Convert list of tag(s) slug into list of tag(s) ID
-    Hook::set(['do.page.get', 'do.page.set'], function($_) use($user) {
-        // Abort by previous hook’s return value if any
-        if (!empty($_['alert']['error'])) {
+    Hook::set([
+        'do.page.get',
+        'do.page.set'
+    ], function($_) use($user) {
+        // Method not allowed!
+        if ('POST' !== $_SERVER['REQUEST_METHOD']) {
             return $_;
         }
-        // Post request only
-        if ('post' !== $_['form']['type']) {
+        // Abort by previous hook’s return value if any
+        if (isset($_['kick']) || !empty($_['alert']['error'])) {
+            return $_;
+        }
+        // Abort if current page is not a file
+        if (!is_file($file = $_['file'])) {
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty
-        if (empty($_['form']['lot']['data']['kind']) && is_file($f = Path::F($_['f']) . DS . 'kind.data')) {
-            unlink($f);
+        if (empty($_POST['data']['kind']) && is_file($data = dirname($file) . D . pathinfo($file, PATHINFO_FILENAME) . D . 'kind.data')) {
+            unlink($data);
             return $_;
         }
-        if (!is_dir($d = LOT . DS . 'tag')) {
+        if (!is_dir($d = LOT . D . 'tag')) {
             mkdir($d, 0775, true);
         }
-        $any = map(Tags::from(LOT . DS . 'tag', 'archive,page')->sort([-1, 'id']), function($tag) {
+        $any = map(Tags::from(LOT . D . 'tag', 'archive,page')->sort([-1, 'id']), static function($tag) {
             return $tag->id;
         })[0] ?? 0; // Get the highest tag ID
         $out = [];
         ++$any; // New ID must be unique
-        foreach (preg_split('/\s*,+\s*/', $_['form']['lot']['data']['kind']) as $v) {
+        foreach (preg_split('/\s*,+\s*/', $_POST['data']['kind']) as $v) {
             if ("" === $v) {
                 continue;
             }
@@ -37,7 +42,7 @@ if (null !== State::get('x.tag') && (
                 $out[] = $id;
             } else {
                 $out[] = $any;
-                if (!is_dir($dd = $d . DS . $v)) {
+                if (!is_dir($dd = $d . D . $v)) {
                     mkdir($dd, 0775, true);
                 }
                 file_put_contents($f = $dd . '.page', To::page([
@@ -45,9 +50,9 @@ if (null !== State::get('x.tag') && (
                     'author' => $user->user ?? null
                 ]));
                 chmod($f, 0600);
-                file_put_contents($ff = $dd . DS . 'id.data', $any);
+                file_put_contents($ff = $dd . D . 'id.data', $any);
                 chmod($ff, 0600);
-                file_put_contents($ff = $dd . DS . 'time.data', date('Y-m-d H:i:s'));
+                file_put_contents($ff = $dd . D . 'time.data', date('Y-m-d H:i:s'));
                 chmod($ff, 0600);
                 $_['alert']['info'][$f] = ['%s %s successfully created.', ['Tag', '<code>' . x\panel\from\path($f) . '</code>']];
                 ++$any;
@@ -55,28 +60,32 @@ if (null !== State::get('x.tag') && (
         }
         if ($out) {
             sort($out);
-            file_put_contents($f = Path::F($_['f']) . DS . 'kind.data', json_encode($out));
-            chmod($f, 0600);
+            file_put_contents($data, json_encode($out));
+            chmod($data, 0600);
         }
         return $_;
     }, 11);
     $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['tags'] = [
-        'type' => 'query',
-        'state' => [
-            'max' => 12
-        ],
         'name' => 'data[kind]',
-        'value' => (new Page($_['f']))->query,
-        'width' => true,
-        'stack' => 41
+        'stack' => 41,
+        'state' => ['max' => 12],
+        'type' => 'query',
+        'value' => (new Page($_['file']))->query,
+        'width' => true
     ];
 }
 
-$_['lot']['bar']['lot'][0]['lot']['s']['url'] = strtr(dirname($url->clean), ['::g::' => '::s::']) . $url->query('&', [
-    'tab' => false,
-    'type' => 'page/page'
-]) . $url->hash;
+$_['lot']['bar']['lot'][0]['lot']['set']['url'] = x\panel\to\link([
+    'part' => 0,
+    'query' => [
+        'query' => null,
+        'stack' => null,
+        'tab' => null,
+        'type' => 'page/page'
+    ],
+    'task' => 'set'
+]);
 
-$_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['s']['title'] = 's' === $_['task'] ? 'Publish' : 'Update';
+$_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['set']['title'] = 'set' === $_['task'] ? 'Publish' : 'Update';
 
 return $_;

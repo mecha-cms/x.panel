@@ -1,6 +1,20 @@
 <?php
 
-$folder = $_['folder'];
+if (is_file($folder = $_['folder'] ?? $_['file']) && 'get' === $_['task']) {
+    $_['alert']['error'][$folder] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($folder) . '</code>', 'folder']];
+    $_['kick'] = x\panel\to\link([
+        'part' => 1,
+        'path' => dirname($_['path']),
+        'query' => [
+            'query' => null,
+            'stack' => null,
+            'tab' => null,
+            'type' => null
+        ],
+        'task' => 'get'
+    ]);
+    return $_;
+}
 
 $name = 'get' === $_['task'] ? basename($_['folder']) : "";
 
@@ -136,6 +150,8 @@ $desk = [
         ]
     ]
 ];
+
+$GLOBALS['folder'] = is_dir($folder) ? new Folder($folder) : new Folder;
 
 return ($_ = array_replace_recursive($_, [
     'lot' => [

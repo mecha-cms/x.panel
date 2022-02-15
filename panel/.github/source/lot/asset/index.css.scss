@@ -26,6 +26,10 @@
 @import '../../../../node_modules/@taufik-nurrohman/option-picker/index.scss';
 @import '../../../../node_modules/@taufik-nurrohman/tag-picker/index.scss';
 
+.tag-picker__tag:focus {
+  outline: 0;
+}
+
 :root {
   // Gap
   --x: 24px;
@@ -157,17 +161,13 @@
       }
     }
     @if tag-picker == $name {
-      --color-#{$name}: var(--color-input);
-      --color-#{$name}__tag-x: var(--color-button);
-      --color-#{$name}__tag: var(--color-input);
-      --fill-#{$name}--disabled: var(--fill-input--disabled);
-      --fill-#{$name}--read-only: var(--fill-input--read-only);
-      --fill-#{$name}: var(--fill-input);
-      --fill-#{$name}__tag--disabled: var(--fill-button--disabled);
-      --fill-#{$name}__tag--focus: var(--fill-button--focus);
-      --fill-#{$name}__tag--read-only: var(--fill-button);
-      --fill-#{$name}__tag--selected: var(--fill-button--focus);
-      --fill-#{$name}__tag: var(--fill-button);
+      --color-#{$name}__tag-x: #fff;
+      --color-#{$name}__tag: #000;
+      --fill-#{$name}__tag--disabled: #f66;
+      --fill-#{$name}__tag--focus: #c00;
+      --fill-#{$name}__tag--read-only: #f66;
+      --fill-#{$name}__tag--selected: #c00;
+      --fill-#{$name}__tag: #f00;
       @each $v in (focus) {
         .#{$name}--#{$v} {
           // Force #1
@@ -190,6 +190,11 @@
         }
       }
     }
+    --arc-#{$name}: var(--arc-input);
+    --color-#{$name}: var(--color-input);
+    --fill-#{$name}: var(--fill-input);
+    --shadow-#{$name}: var(--shadow-input);
+    --stroke-#{$name}: var(--stroke-input);
     @each $v in (hover, focus, active) {
       --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
       --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));

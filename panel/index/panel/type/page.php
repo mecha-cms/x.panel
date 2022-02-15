@@ -16,7 +16,7 @@ if (is_dir($file = $_['file'] ?? $_['folder']) && 'get' === $_['task']) {
     return $_;
 }
 
-$_['page'] = $page = is_file($file) ? new Page($file) : new Page;
+$page = is_file($file) ? new Page($file) : new Page;
 
 $has_folder = is_dir($folder = dirname($file) . D . pathinfo($file, PATHINFO_FILENAME));
 
@@ -453,6 +453,8 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
     }
     return $_;
 }, 20);
+
+$GLOBALS['page'] = $page;
 
 return ($_ = array_replace_recursive($_, [
     'lot' => [

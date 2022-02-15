@@ -557,6 +557,10 @@
   color: var(--color-tag-picker__tag--disabled, var(--color-tag-picker__tag));
 }
 
+.tag-picker__tag:focus {
+  outline: 0;
+}
+
 :root {
   --x: 24px;
   --y: 24px;
@@ -678,6 +682,11 @@
   --fill-option-picker__option--focus: var(--fill-button--focus, var(--fill-button));
   --color-option-picker__option--active: var(--color-button--active, var(--color-button));
   --fill-option-picker__option--active: var(--fill-button--active, var(--fill-button));
+  --arc-option-picker: var(--arc-input);
+  --color-option-picker: var(--color-input);
+  --fill-option-picker: var(--fill-input);
+  --shadow-option-picker: var(--shadow-input);
+  --stroke-option-picker: var(--stroke-input);
   --color-option-picker--hover: var(--color-input--hover, var(--color-input));
   --fill-option-picker--hover: var(--fill-input--hover, var(--fill-input));
   --shadow-option-picker--hover: var(--shadow-input--hover, var(--shadow-input));
@@ -695,17 +704,18 @@
   --fill-tag-picker: var(--fill-input);
   --shadow-tag-picker: var(--shadow-input);
   --stroke-tag-picker: var(--stroke-input);
+  --color-tag-picker__tag-x: #fff;
+  --color-tag-picker__tag: #000;
+  --fill-tag-picker__tag--disabled: #f66;
+  --fill-tag-picker__tag--focus: #c00;
+  --fill-tag-picker__tag--read-only: #f66;
+  --fill-tag-picker__tag--selected: #c00;
+  --fill-tag-picker__tag: #f00;
+  --arc-tag-picker: var(--arc-input);
   --color-tag-picker: var(--color-input);
-  --color-tag-picker__tag-x: var(--color-button);
-  --color-tag-picker__tag: var(--color-input);
-  --fill-tag-picker--disabled: var(--fill-input--disabled);
-  --fill-tag-picker--read-only: var(--fill-input--read-only);
   --fill-tag-picker: var(--fill-input);
-  --fill-tag-picker__tag--disabled: var(--fill-button--disabled);
-  --fill-tag-picker__tag--focus: var(--fill-button--focus);
-  --fill-tag-picker__tag--read-only: var(--fill-button);
-  --fill-tag-picker__tag--selected: var(--fill-button--focus);
-  --fill-tag-picker__tag: var(--fill-button);
+  --shadow-tag-picker: var(--shadow-input);
+  --stroke-tag-picker: var(--stroke-input);
   --color-tag-picker--hover: var(--color-input--hover, var(--color-input));
   --fill-tag-picker--hover: var(--fill-input--hover, var(--fill-input));
   --shadow-tag-picker--hover: var(--shadow-input--hover, var(--shadow-input));

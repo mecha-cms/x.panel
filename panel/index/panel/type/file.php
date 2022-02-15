@@ -209,6 +209,8 @@ $desk = [
     ]
 ];
 
+$GLOBALS['file'] = is_file($file) ? new File($file) : new File;
+
 return ($_ = array_replace_recursive($_, [
     'lot' => [
         'bar' => $bar,

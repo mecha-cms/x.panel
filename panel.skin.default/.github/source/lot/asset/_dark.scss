@@ -118,7 +118,12 @@
   --color-option-picker__option--disabled: var(--color--disabled);
   --color-option-picker__option--selected: var(--color);
   --color-option-picker__option: var(--color);
+  --color-tag-picker__tag-x: #{shade(95%)};
+  --color-tag-picker__tag: #{shade(75%)};
   --fill-option-picker__option--selected: rgba(255, 255, 255, .025);
+  --fill-tag-picker__tag--focus: #{shade(20%)};
+  --fill-tag-picker__tag--selected: #{shade(20%)};
+  --fill-tag-picker__tag: #{shade(15%)};
   @each $v in (hover, focus, active) {
     --color-option-picker__option--#{$v}: var(--color);
     --fill-option-picker__option--#{$v}: rgba(255, 255, 255, .05);

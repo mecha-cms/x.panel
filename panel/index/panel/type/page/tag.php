@@ -11,8 +11,6 @@ if ('set' === $_['task']) {
     ++$id;
 }
 
-$page = $_['page']; // Inherit from `../page.php`
-
 $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
     'bar' => [
         // `bar`

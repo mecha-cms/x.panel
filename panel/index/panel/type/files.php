@@ -243,4 +243,8 @@ $desk = [
     ]
 ];
 
-return ($_ = array_replace_recursive($_, ['lot' => ['desk' => $desk]]));
+return ($_ = array_replace_recursive($_, [
+    'lot' => [
+        'desk' => $desk
+    ]
+]));
