@@ -21,6 +21,9 @@ Release Notes
  - [ ] Added ability to update core, extension and layout directly from the panel.
  - [ ] Updated for Mecha 3.0.0.
  - [x] Changed URL pattern from `http://127.0.0.1/panel/::g::/foo/bar/baz/1` to `http://127.0.0.1/panel/get/foo/bar/baz/1` (#23)
+ - [x] Changed `locked` property to `fix` property.
+ - [x] Renamed `height` and `width` class to `has:height` and `has:width`.
+ - [x] Renamed `is:locked` and `not:locked` class to `is:fix` and `not:fix`.
 
 ### 2.8.1
 
