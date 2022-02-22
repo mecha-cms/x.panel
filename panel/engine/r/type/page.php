@@ -33,14 +33,14 @@ if ('post' === $_['form']['type']) {
     // Remove all possible block HTML tag(s) from the `description` data if any
     if (isset($_['form']['lot']['page']['description'])) {
         $_['form']['lot']['page']['description'] = x\panel\to\w($_['form']['lot']['page']['description'], 'a');
-        // Limit `description` data value to 400 character(s) length
-        $_['form']['lot']['page']['description'] = To::excerpt($_['form']['lot']['page']['description'], true, 400);
+        // Limit `description` data value to 1275 character(s) length
+        $_['form']['lot']['page']['description'] = To::description($_['form']['lot']['page']['description'], true, 1275);
     }
     // Remove all possible block HTML tag(s) from the `title` data if any
     if (isset($_['form']['lot']['page']['title'])) {
         $_['form']['lot']['page']['title'] = x\panel\to\w($_['form']['lot']['page']['title']);
-        // Limit `title` data value to 200 character(s) length
-        $_['form']['lot']['page']['title'] = To::excerpt($_['form']['lot']['page']['title'], true, 200);
+        // Limit `title` data value to 255 character(s) length
+        $_['form']['lot']['page']['title'] = To::description($_['form']['lot']['page']['title'], true, 255);
     }
     // Make sure to have a file extension
     $_['form']['lot']['page']['x'] = strip_tags($_['form']['lot']['page']['x'] ?? 'page');

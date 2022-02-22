@@ -39,14 +39,14 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
     if (isset($_POST['page']['description'])) {
         // Remove all block HTML tag(s) from the `description` data if any
         $_POST['page']['description'] = x\panel\to\w($_POST['page']['description'], 'a');
-        // Limit `description` data value to 400 character(s)
-        $_POST['page']['description'] = To::description($_POST['page']['description'], 400);
+        // Limit `description` data value to 1275 character(s)
+        $_POST['page']['description'] = To::description($_POST['page']['description'], 1275);
     }
     if (isset($_POST['page']['title'])) {
         // Remove all block HTML tag(s) from the `title` data if any
         $_POST['page']['title'] = x\panel\to\w($_POST['page']['title']);
-        // Limit `title` data value to 200 character(s)
-        $_POST['page']['title'] = To::description($_POST['page']['title'], 200);
+        // Limit `title` data value to 255 character(s)
+        $_POST['page']['title'] = To::description($_POST['page']['title'], 255);
     }
     // Make sure to have a file extension
     $_POST['page']['x'] = strip_tags($_POST['page']['x'] ?? 'page');

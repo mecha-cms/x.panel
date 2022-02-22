@@ -1596,8 +1596,8 @@ textarea {
   overflow: auto;
   resize: vertical;
 }
-[role=textbox][aria-multiline=true].height,
-textarea.height {
+[role=textbox][aria-multiline=true].has\:height,
+textarea.has\:height {
   height: calc(var(--y) * 10.75);
 }
 
@@ -2126,10 +2126,10 @@ input[type=range]:disabled::-moz-range-thumb {
   margin-right: auto;
   max-width: calc(var(--x) * 36);
 }
-.lot\:desk.width {
+.lot\:desk.has\:width {
   display: block;
 }
-.lot\:desk.width > * {
+.lot\:desk.has\:width > * {
   max-width: 100%;
 }
 
@@ -2174,13 +2174,13 @@ input[type=range]:disabled::-moz-range-thumb {
   display: inline-flex;
   position: relative;
 }
-.lot\:field > label + div .with\:fields.width {
+.lot\:field > label + div .with\:fields.has\:width {
   display: flex;
 }
 .lot\:field > label + div .with\:fields > * + * {
   margin-left: -1px;
 }
-.lot\:field > label + div .with\:fields > .width {
+.lot\:field > label + div .with\:fields > .has\:width {
   flex: 1;
   min-width: 0;
   width: auto;
@@ -2282,7 +2282,7 @@ input[type=range]:disabled::-moz-range-thumb {
 .option-picker::after {
   right: calc(var(--x) / 2);
 }
-.option-picker.width {
+.option-picker.has\:width {
   display: flex;
   width: 100%;
 }
@@ -2310,7 +2310,7 @@ input[type=range]:disabled::-moz-range-thumb {
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
   width: var(--width-input);
 }
-.tag-picker.width {
+.tag-picker.has\:width {
   display: flex;
   width: 100%;
 }
@@ -3329,6 +3329,11 @@ u {
   display: none !important;
 }
 
+.has\:width {
+  display: flex;
+  width: 100%;
+}
+
 .not\:active {
   color: var(--color--disabled, inherit);
   cursor: not-allowed;
@@ -3352,11 +3357,6 @@ table td {
   padding: calc(var(--y) / 6) calc(var(--x) / 2);
   text-align: inherit;
   vertical-align: top;
-}
-
-.width {
-  display: flex;
-  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

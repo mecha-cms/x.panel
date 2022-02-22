@@ -164,7 +164,7 @@ function description($value, $key) {
         $value['hint'] = 'Description goes here...';
     }
     if (!isset($value['max'])) {
-        $value['max'] = 400;
+        $value['max'] = 1275; // 255 * 5
     }
     return \x\panel\type\field\content($value, $key);
 }
@@ -208,7 +208,7 @@ function item($value, $key) {
                 $v = ['title' => $v];
             }
             $is_active = !isset($v['active']) || $v['active'];
-            $is_locked = !empty($v['locked']);
+            $is_fix = !empty($v['fix']);
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['checked'] = null !== $the_value && ((string) $the_value === (string) $k);
             $input[2]['disabled'] = !$is_active;
@@ -218,9 +218,9 @@ function item($value, $key) {
             unset($input[2]['placeholder']);
             \x\panel\_class_set($input[2], [
                 'is:active' => $is_active,
-                'is:locked' => $is_locked,
+                'is:fix' => $is_fix,
                 'not:active' => !$is_active,
-                'not:locked' => !$is_locked
+                'not:fix' => !$is_fix
             ]);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
             $title = \x\panel\type\title([
@@ -237,9 +237,9 @@ function item($value, $key) {
             ]);
             \x\panel\_class_set($label, [
                 'is:active' => $is_active,
-                'is:locked' => $is_locked,
+                'is:fix' => $is_fix,
                 'not:active' => !$is_active,
-                'not:locked' => !$is_locked
+                'not:fix' => !$is_fix
             ]);
             $a[$title . $k] = $label;
         }
@@ -284,7 +284,7 @@ function items($value, $key) {
                 $v = ['title' => $v];
             }
             $is_active = !isset($v['active']) || $v['active'];
-            $is_locked = !empty($v['locked']);
+            $is_fix = !empty($v['fix']);
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['checked'] = $key_as_value ? false !== \strpos($the_value, \P . $k . \P) : isset($the_value[$k]);
             $input[2]['type'] = 'checkbox';
@@ -293,15 +293,15 @@ function items($value, $key) {
             if (!$is_active) {
                 $input[2]['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
-            } else if ($is_locked) {
+            } else if ($is_fix) {
                 $input[2]['readonly'] = true;
             }
             unset($input[2]['placeholder']);
             \x\panel\_class_set($input[2], [
                 'is:active' => $is_active,
-                'is:locked' => $is_locked,
+                'is:fix' => $is_fix,
                 'not:active' => !$is_active,
-                'not:locked' => !$is_locked
+                'not:fix' => !$is_fix
             ]);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
             $title = \x\panel\type\title([
@@ -318,9 +318,9 @@ function items($value, $key) {
             ]);
             \x\panel\_class_set($label, [
                 'is:active' => $is_active,
-                'is:locked' => $is_locked,
+                'is:fix' => $is_fix,
                 'not:active' => !$is_active,
-                'not:locked' => !$is_locked
+                'not:fix' => !$is_fix
             ]);
             $a[$title . $k] = $label;
         }
@@ -519,7 +519,7 @@ function title($value, $key) {
         $value['hint'] = "" !== $v ? $v : 'Title Goes Here';
     }
     if (!isset($value['max'])) {
-        $value['max'] = 200;
+        $value['max'] = 255;
     }
     return \x\panel\type\field\text($value, $key);
 }
@@ -527,7 +527,7 @@ function title($value, $key) {
 function toggle($value, $key) {
     $the_value = $value['value'] ?? null;
     $is_active = !isset($v['active']) || $v['active'];
-    $is_locked = !empty($v['locked']);
+    $is_fix = !empty($v['fix']);
     $input = \x\panel\to\field($value, $key, 'input')['field'];
     $input[2]['checked'] = !empty($the_value);
     $input[2]['role'] = 'switch';
@@ -545,9 +545,9 @@ function toggle($value, $key) {
     ]);
     \x\panel\_class_set($label, [
         'is:active' => $is_active,
-        'is:locked' => $is_locked,
+        'is:fix' => $is_fix,
         'not:active' => !$is_active,
-        'not:locked' => !$is_locked
+        'not:fix' => !$is_fix
     ]);
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';

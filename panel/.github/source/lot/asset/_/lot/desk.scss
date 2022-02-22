@@ -6,7 +6,7 @@
     margin-right: auto;
     max-width: calc(var(--x) * 36);
   }
-  &.width {
+  &.has\:width {
     display: block;
     > * {
       max-width: 100%;

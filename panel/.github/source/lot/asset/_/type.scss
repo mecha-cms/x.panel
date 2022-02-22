@@ -63,154 +63,15 @@
   display: none !important;
 }
 
+.has\:width {
+  display: flex;
+  width: 100%;
+}
+
 .not\:active {
   color: var(--color--disabled, inherit);
   cursor: not-allowed;
 }
-
-// @each $k, $v in (c center, e end, j justify, l left, r right, s start) {
-//   .text-#{$v},
-//   .ta\:#{$k} {
-//     text-align: #{$v};
-//   }
-// }
-//
-// .align-center,
-// .align-end,
-// .align-left,
-// .align-right,
-// .align-start,
-// .a\:c,
-// .a\:e,
-// .a\:l,
-// .a\:r,
-// .a\:s {
-//   display: block;
-//   float: none;
-// }
-//
-// .align-center,
-// .a\:c {
-//   margin-left: auto;
-//   margin-right: auto;
-//   text-align: center;
-//   img {
-//     display: block;
-//     margin-left: auto;
-//     margin-right: auto;
-//   }
-// }
-//
-// .align-end,
-// .a\:e {
-//   float: inline-end;
-//   margin-bottom: calc(var(--y) / 1.5);
-//   margin-inline-end: var(--x);
-//   margin-top: calc(var(--y) / 3);
-//   text-align: end;
-//   img {
-//     display: block;
-//   }
-// }
-//
-// * + .align-center,
-// * + .a\:c {
-//   margin-top: var(--y);
-// }
-//
-// .align-left,
-// .a\:l {
-//   float: left;
-//   margin-bottom: calc(var(--y) / 1.5);
-//   margin-right: var(--x);
-//   margin-top: calc(var(--y) / 3);
-//   text-align: left;
-//   img {
-//     display: block;
-//   }
-// }
-//
-// .align-right,
-// .a\:r {
-//   float: right;
-//   margin-bottom: calc(var(--y) / 1.5);
-//   margin-left: var(--x);
-//   margin-top: calc(var(--y) / 3);
-//   text-align: right;
-// }
-//
-// .align-start,
-// .a\:s {
-//   float: inline-start;
-//   margin-bottom: calc(var(--y) / 1.5);
-//   margin-inline-start: var(--x);
-//   margin-top: calc(var(--y) / 3);
-//   text-align: start;
-//   img {
-//     display: block;
-//   }
-// }
-//
-// .f\:e {
-//   float: inline-end;
-// }
-//
-// .f\:l {
-//   float: left;
-// }
-//
-// .f\:r {
-//   float: right;
-// }
-//
-// .f\:s {
-//   float: inline-start;
-// }
-//
-// @each $size in (0, 1, 2) {
-//   @each $type, $v in (b bottom, l left, r right, t top) {
-//     .m#{$type}\:#{$size} {
-//       @if 0 == $size {
-//         margin-#{$v}: 0;
-//       } @else {
-//         @if left == $v or right == $v {
-//           margin-#{$v}: calc(var(--x) * #{$size});
-//         } @else {
-//           margin-#{$v}: calc(var(--y) * #{$size});
-//         }
-//       }
-//     }
-//     .p#{$type}\:#{$size} {
-//       @if 0 == $size {
-//         padding-#{$v}: 0;
-//       } @else {
-//         @if left == $v or right == $v {
-//           padding-#{$v}: calc(var(--x) * #{$size});
-//         } @else {
-//           padding-#{$v}: calc(var(--y) * #{$size});
-//         }
-//       }
-//     }
-//   }
-//   .mx\:#{$size} {
-//     @extend .mr\:#{$size}, .ml\:#{$size};
-//   }
-//   .my\:#{$size} {
-//     @extend .mt\:#{$size}, .mb\:#{$size};
-//   }
-//   .m\:#{$size} {
-//     @extend .mx\:#{$size}, .my\:#{$size};
-//   }
-//   .px\:#{$size} {
-//     @extend .pr\:#{$size}, .pl\:#{$size};
-//   }
-//   .py\:#{$size} {
-//     @extend .pt\:#{$size}, .pb\:#{$size};
-//   }
-//   .p\:#{$size} {
-//     @extend .px\:#{$size}, .py\:#{$size};
-//   }
-// }
 
 .table {
   border-collapse: collapse;
@@ -226,9 +87,4 @@
     text-align: inherit;
     vertical-align: top;
   }
-}
-
-.width {
-  display: flex;
-  width: 100%;
 }

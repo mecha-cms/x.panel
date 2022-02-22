@@ -176,7 +176,7 @@ function desk($value, $key) {
             $tags['p'] = false;
         }
         if (isset($value['width']) && false !== $value['width']) {
-            $tags['width'] = true;
+            $tags['has:width'] = true;
             if (true !== $value['width']) {
                 $styles['width'] = $value['width'];
             }
@@ -219,7 +219,7 @@ function field($value, $key) {
     ];
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
-        $is_locked = !empty($value['locked']);
+        $is_fix = !empty($value['fix']);
         $is_vital = !empty($value['vital']);
         $tags = [
             'has:title' => !empty($value['title']),
@@ -229,10 +229,10 @@ function field($value, $key) {
         $tags_status = [
             'has:pattern' => !empty($value['pattern']),
             'is:active' => $is_active,
-            'is:locked' => $is_locked,
+            'is:fix' => $is_fix,
             'is:vital' => $is_vital,
             'not:active' => !$is_active,
-            'not:locked' => !$is_locked,
+            'not:fix' => !$is_fix,
             'not:vital' => !$is_vital
         ];
         if (isset($value['type'])) {
@@ -263,13 +263,13 @@ function field($value, $key) {
         }
         $styles = $tags_status_extra = [];
         if (isset($value['height']) && false !== $value['height']) {
-            $tags_status_extra['height'] = true;
+            $tags_status_extra['has:height'] = true;
             if (true !== $value['height']) {
                 $styles['height'] = $value['height'];
             }
         }
         if (isset($value['width']) && false !== $value['width']) {
-            $tags_status_extra['width'] = true;
+            $tags_status_extra['has:width'] = true;
             if (true !== $value['width']) {
                 $styles['width'] = $value['width'];
             }
@@ -282,7 +282,7 @@ function field($value, $key) {
                 \x\panel\_style_set($value['field'][2], $styles);
             }
             $r = \x\panel\to\content($value['field']);
-            $out[1] .= '<div class="count:' . ($r ? '1' : '0') . (!empty($value['width']) ? ' width' : "") . ' with:fields" role="group">';
+            $out[1] .= '<div class="count:' . ($r ? '1' : '0') . (!empty($value['width']) ? ' has:width' : "") . ' with:fields" role="group">';
             $out[1] .= $before . $r . $after;
             $out[1] .= '</div>';
         } else if (isset($value['content'])) {
@@ -612,15 +612,15 @@ function input($value, $key) {
     ];
     $has_pattern = \array_key_exists('pattern', $value);
     $is_active = !isset($value['active']) || $value['active'];
-    $is_locked = !empty($value['locked']);
+    $is_fix = !empty($value['fix']);
     $is_vital = !empty($value['vital']);
     $tags = \array_replace([
         'has:pattern' => $has_pattern,
         'is:active' => $is_active,
-        'is:locked' => $is_locked,
+        'is:fix' => $is_fix,
         'is:vital' => $is_vital,
         'not:active' => !$is_active,
-        'not:locked' => !$is_locked,
+        'not:fix' => !$is_fix,
         'not:vital' => !$is_vital
     ], $value['tags'] ?? []);
     if ($has_pattern) {
@@ -633,7 +633,7 @@ function input($value, $key) {
     $out[2]['minlength'] = $value['min'] ?? null;
     $out[2]['name'] = $value['name'] ?? $key;
     $out[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
-    $out[2]['readonly'] = $is_locked;
+    $out[2]['readonly'] = $is_fix;
     $out[2]['required'] = $is_vital;
     $out[2]['value'] = $value['value'] ?? null;
     \x\panel\_class_set($out[2], $tags);
@@ -1410,15 +1410,15 @@ function textarea($value, $key) {
     ];
     $has_pattern = \array_key_exists('pattern', $value);
     $is_active = !isset($value['active']) || $value['active'];
-    $is_locked = !empty($value['locked']);
+    $is_fix = !empty($value['fix']);
     $is_vital = !empty($value['vital']);
     $tags = \array_replace([
         'has:pattern' => $has_pattern,
         'is:active' => $is_active,
-        'is:locked' => $is_locked,
+        'is:fix' => $is_fix,
         'is:vital' => $is_vital,
         'not:active' => !$is_active,
-        'not:locked' => !$is_locked,
+        'not:fix' => !$is_fix,
         'not:vital' => !$is_vital
     ], $value['tags'] ?? []);
     if ($has_pattern) {
@@ -1431,7 +1431,7 @@ function textarea($value, $key) {
     $out[2]['minlength'] = $value['min'] ?? null;
     $out[2]['name'] = $value['name'] ?? $key;
     $out[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
-    $out[2]['readonly'] = $is_locked;
+    $out[2]['readonly'] = $is_fix;
     $out[2]['required'] = $is_vital;
     \x\panel\_class_set($out[2], $tags);
     return new \HTML($out);

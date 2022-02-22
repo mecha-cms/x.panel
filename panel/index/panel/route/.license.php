@@ -40,7 +40,7 @@ $content = <<<HTML
 <p>Support system and forums will always be available free of charge on <a href="https://github.com/mecha-cms/mecha/discussions" rel="nofollow" target="_blank">GitHub</a>.</p>
 <h3>Notes</h3>
 <p>If you are from Indonesia and are having problems with the current rupiah exchange rate against the dollar, you are allowed to consider 20 USD as 200,000 IDR.</p>
-<p><a href="https://paypal.me/tatautaufik" role="button" target="_blank">Donate for 20 USD</a></p>
+<p><a href="https://paypal.me/tatautaufik/20" role="button" target="_blank">Donate for 20 USD</a></p>
 <p>Thank you 💕️</p>
 HTML;
 

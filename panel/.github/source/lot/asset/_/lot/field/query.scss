@@ -6,7 +6,7 @@
   &--focus {
     @extend :focus-visible;
   }
-  &.width {
+  &.has\:width {
     display: flex;
     width: 100%;
   }

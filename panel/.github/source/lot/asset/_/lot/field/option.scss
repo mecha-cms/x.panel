@@ -10,7 +10,7 @@
   &::after {
     right: calc(var(--x) / 2);
   }
-  &.width {
+  &.has\:width {
     display: flex;
     width: 100%;
   }
