@@ -1,12 +1,11 @@
 <?php
 
-Hook::set('_', function($_) {
+Hook::set('_', function($_) use($state) {
     if (
         !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
         !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']) &&
         'pages' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']
     ) {
-        extract($GLOBALS, EXTR_SKIP);
         $can_comment = isset($state->x->comment);
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
             $path = strtr($k, [LOT . D => "", D => '/']);

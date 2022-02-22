@@ -1,13 +1,12 @@
 <?php
 
-Hook::set('_', function($_) {
+Hook::set('_', function($_) use($state, $user) {
     if (
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['skip']) &&
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
         isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']) &&
         'pages' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']
     ) {
-        extract($GLOBALS, EXTR_SKIP);
         $count = 0;
         $search = static function($folder, $x, $r) {
             $q = strtolower($_GET['query'] ?? "");
@@ -54,7 +53,7 @@ Hook::set('_', function($_) {
                 $p = $v['page'];
                 $title = x\panel\to\w($p->title ?? "");
                 $description = To::description(x\panel\to\w($p->description ?? ""));
-                $image = $p->image(72, 72, 50) ?? null;
+                $image = $p->image(72, 72) ?? null;
                 $type = $p->type ?? null;
                 $time = $p->time ?? null;
                 $x = $p->x ?? null;
