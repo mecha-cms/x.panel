@@ -45,7 +45,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
     'can' => ['fetch' => !empty($state->x->panel->fetch)],
-    'chunk' => 20,
+    'chunk' => null, // Default is `20`
     'content' => null,
     'count' => 0,
     'description' => null,
@@ -61,7 +61,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'part' => (int) $part,
     'path' => $test ? $m[2] : null,
     'query' => $_GET ?? [],
-    'sort' => [1, 'path'],
+    'sort' => null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
     'task' => $GLOBALS['_' . $req]['task'] ?? ($test ? $m[1] : null),
     'title' => null,

@@ -43,9 +43,8 @@ function file($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $file = $_['file'];
-    $name = \basename(\To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
-    $base = \basename($file); // Old file name
+    $base = \basename((string) ($file = $_['file'])); // Old file name
+    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     // Special case for PHP file(s)
     if ('php' === $x && isset($_POST['file']['content'])) {
@@ -109,9 +108,8 @@ function folder($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = $_['folder'];
-    $name = (string) \To::folder(\basename($_POST['folder']['name'] ?? "")); // New folder name
-    $base = \basename($folder); // Old folder name
+    $base = \basename((string) ($folder = $_['folder'])); // Old folder name
+    $name = \basename((string) \To::folder($_POST['folder']['name'] ?? "")); // New folder name
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
     } else if (\stream_resolve_include_path($self = \dirname($folder) . \D . $name) && $name !== $base) {
@@ -212,14 +210,91 @@ function folder($_) {
 }
 
 function page($_) {
+    // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    if (!empty($_['alert']['error'])) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    test($_POST);
-    exit;
+    $base = \basename((string) ($file = $_['file'])); // Old file name
+    $name = (string) \To::kebab($_POST['page']['name'] ?? $_POST['page']['title'] ?? "");
+    $x = $_POST['page']['x'] ?? \pathinfo($name, \PATHINFO_EXTENSION);
+    if ("" === $name) {
+        $name = \date('Y-m-d-H-i-s');
+    }
+    unset($_POST['page']['name'], $_POST['page']['x']);
+    $page = [];
+    $p = (array) ($state->x->page->page ?? []);
+    foreach ($_POST['page'] as $k => $v) {
+        if (
+            // Skip `null` value
+            null === $v ||
+            // Skip empty value
+            \is_array($v) && !$v ||
+            \is_string($v) && "" === \trim($v) ||
+            // Skip default value
+            isset($p[$k]) && $p[$k] === $v
+        ) {
+            continue;
+        }
+        if (\is_array($v)) {
+            if ($v = \drop(\array_replace_recursive($page[$k] ?? [], $v))) {
+                $page[$k] = $v;
+            }
+        } else {
+            $page[$k] = $v;
+        }
+    }
+    $_POST['file']['content'] = \To::page($page);
+    $_POST['file']['name'] = $name . '.' . $x;
+    $_ = file($_); // Move to `file`
+    $self = $_['file']; // Get new file name
+    if (empty($_['alert']['error'])) {
+        if (!\is_dir($folder = \dirname($self) . \D . \pathinfo($self, \PATHINFO_FILENAME))) {
+            \mkdir($folder, 0755, true);
+        }
+        if ($self !== $file && \is_dir($d = \dirname($file) . \D . \pathinfo($file, \PATHINFO_FILENAME))) {
+            \rename($d, $folder);
+        }
+        if (isset($_POST['data'])) {
+            foreach ((array) $_POST['data'] as $k => $v) {
+                $f = $folder . \D . $k . '.data';
+                if ((\is_array($v) && $v = \drop($v)) || "" !== \trim((string) $v)) {
+                    if (!\stream_resolve_include_path($f) || \is_writable($f)) {
+                        \file_put_contents($f, \is_array($v) ? \json_encode($v) : \s($v));
+                        \chmod($f, 0600);
+                    } else {
+                        $_['alert']['error'][$f] = ['File %s is not writable.', ['<code>' . \x\panel\from\path($f) . '</code>']];
+                    }
+                } else {
+                    \is_file($f) && \unlink($f);
+                }
+            }
+        }
+    }
+    if (\is_file($self = $_['file'])) {
+        $id = \strtok($_['path'], '/');
+        $key = \ucfirst(\ltrim($id, '_.-'));
+        $path = '<code>' . \x\panel\from\path($file ?? $self) . '</code>';
+        $alter = [
+            'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
+            'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]
+        ];
+        foreach ($_['alert'] as $k => &$v) {
+            foreach ($v as $kk => &$vv) {
+                if (\is_array($vv)) {
+                    if (isset($alter[$vv[0]])) {
+                        $vv = \array_replace($vv, $alter[$vv[0]]);
+                    }
+                } else if (\is_string($vv)) {
+                    $vv = $alter[$vv] ?? $vv;
+                }
+            }
+        }
+    }
+    return $_;
 }
 
 function state($_) {

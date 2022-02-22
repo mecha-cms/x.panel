@@ -101,7 +101,7 @@ $bar = [
                     'stack' => 10.5,
                     'title' => false,
                     'url' => x\panel\to\link([
-                        'path' => dirname($_['path']),
+                        'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
                         'query' => [
                             'query' => null,
                             'stack' => null,

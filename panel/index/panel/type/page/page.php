@@ -77,6 +77,7 @@ if (isset($state->x->tag) && (
 
 $_['lot']['bar']['lot'][0]['lot']['set']['url'] = x\panel\to\link([
     'part' => 0,
+    'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
     'query' => [
         'query' => null,
         'stack' => null,

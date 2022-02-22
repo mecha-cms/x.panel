@@ -23,6 +23,7 @@ Hook::set('_', function($_) {
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $author = $user->user;
         $super = 1 === $user->status;
+        $_['sort'] = array_replace([1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
         if (is_dir($folder = LOT . D . strtr($_['path'], '/', D))) {
             foreach ($search($folder, 'archive,draft,page', 0) as $k => $v) {
                 if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
@@ -41,7 +42,7 @@ Hook::set('_', function($_) {
             }
             $_['count'] = $count;
             $pages = new Anemone($pages);
-            $pages->sort(array_replace([1, 'path'], (array) ($_['sort'] ?? []), (array) ($page->sort ?? [])), true);
+            $pages->sort($_['sort'], true);
             $pages = $pages->chunk($page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($k, [
