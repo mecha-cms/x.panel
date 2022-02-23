@@ -2755,7 +2755,16 @@ input[type=range]:disabled::-moz-range-thumb {
   max-width: calc(var(--y) * 2.25);
   min-height: 0;
   min-width: 0;
+  overflow: hidden;
+  position: relative;
   width: calc(var(--y) * 2.25);
+}
+.lot\:page .image .icon,
+.lot\:card .image .icon {
+  left: 50%;
+  margin: calc(var(--y) * -0.5) auto auto calc(var(--x) * -0.5);
+  position: absolute;
+  top: 50%;
 }
 .lot\:page.is\:file,
 .is\:file.lot\:card,

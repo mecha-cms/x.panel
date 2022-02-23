@@ -42,7 +42,15 @@
     max-width: calc(var(--y) * 2.25);
     min-height: 0;
     min-width: 0;
+    overflow: hidden;
+    position: relative;
     width: calc(var(--y) * 2.25);
+    .icon {
+      left: 50%;
+      margin: calc(var(--y) * -.5) auto auto calc(var(--x) * -.5);
+      position: absolute;
+      top: 50%;
+    }
   }
   &.is\:file,
   &.is\:folder {

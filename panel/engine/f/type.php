@@ -862,17 +862,31 @@ function page($value, $key) {
             'lot:page' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
+        $div = new \HTML(['div', "", []]);
+        $icon = $value['icon'] ?? "";
+        $image = $value['image'] ?? "";
         $path = $value['path'] ?? $key;
-        $date = isset($value['time']) ? \strtr($value['time'], '-', '/') : null;
-        $out[1] .= '<div' . (isset($value['image']) && false === $value['image'] ? ' hidden' : "") . '>' . (!empty($value['image']) ? '<img alt="" class="image" height="72" src="' . \htmlspecialchars($value['image']) . '" width="72">' : '<span class="image" style="background: #' . \substr(\md5(\strtr($path, [
-            \PATH => "",
-            \D => '/'
-        ])), 0, 6) . ';"></span>') . '</div>';
+        $time = isset($value['time']) ? \strtr($value['time'], '-', '/') : null;
+        if (false === $icon && false === $image) {
+            $div['hidden'] = true;
+        // Prioritize `icon` over `image`
+        } else if (!empty($icon)) {
+            // TODO: Set color inversion automatically based on current background color
+            $div[1] = '<span class="image" role="img" style="color: #fff; background: ' . ($value['color'] ?? '#' . \substr(\md5($icon), 0, 6)) . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
+        } else if (!empty($image)) {
+            $div[1] = '<img alt="" class="image" height="72" loading="lazy" src="' . \htmlspecialchars($image) . '" width="72">';
+        } else {
+            $div[1] = '<span class="image" role="img" style="background: ' . ($value['color'] ?? '#' . \substr(\md5(\strtr($path, [
+                \PATH => "",
+                \D => '/'
+            ])), 0, 6)) . ';"></span>';
+        }
+        $out[1] .= $div;
         $out[1] .= '<div><h3 class="title">' . \x\panel\type\link([
             'link' => $value['link'] ?? null,
-            'title' => $value['title'] ?? $date,
+            'title' => $value['title'] ?? $time,
             'url' => $value['url'] ?? null
-        ], $key) . '</h3>' . \x\panel\to\description($value['description'] ?? $date) . '</div>';
+        ], $key) . '</h3>' . \x\panel\to\description($value['description'] ?? $time) . '</div>';
         $out[1] .= '<div>' . \x\panel\type\tasks\link([
             '0' => 'p',
             'lot' => $value['tasks'] ?? []

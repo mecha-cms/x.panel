@@ -49,11 +49,12 @@ Hook::set('_', function($_) use($state, $url, $user) {
                 ]);
                 $is_active = is_file($d . D . 'index.php');
                 $p = $v['page'];
-                $title = x\panel\to\w($p->title ?? "");
                 $description = To::description(x\panel\to\w($p->description ?? ""));
+                $icon = $p->icon ?? null;
                 $image = $p->image(72, 72) ?? null;
-                $type = $p->type ?? null;
                 $time = $p->time ?? null;
+                $title = x\panel\to\w($p->title ?? "");
+                $type = $p->type ?? null;
                 $x = $p->x ?? null;
                 $bound = $bounds[strtr(x\panel\from\path(dirname($k)), [
                     "\\" => '/'
@@ -63,6 +64,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                     'author' => $p['author'],
                     'current' => !empty($_SESSION['_']['folder'][$d]),
                     'description' => $description ? S . $description . S : null,
+                    'icon' => $icon,
                     'image' => $image,
                     'path' => $k,
                     'tags' => [

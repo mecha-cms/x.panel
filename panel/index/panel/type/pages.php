@@ -51,16 +51,18 @@ Hook::set('_', function($_) use($state, $user) {
                 $has_folder = is_dir($d = dirname($k) . D . pathinfo($k, PATHINFO_FILENAME));
                 $can_set = $has_folder && q(g($d, 'archive,draft,page')) > 0;
                 $p = $v['page'];
-                $title = x\panel\to\w($p->title ?? "");
                 $description = To::description(x\panel\to\w($p->description ?? ""));
+                $icon = $p->icon ?? null;
                 $image = $p->image(72, 72) ?? null;
-                $type = $p->type ?? null;
                 $time = $p->time ?? null;
+                $title = x\panel\to\w($p->title ?? "");
+                $type = $p->type ?? null;
                 $x = $p->x ?? null;
                 $pages[$k] = [
                     'author' => $p['author'],
                     'current' => !empty($_SESSION['_']['file'][$k]),
                     'description' => $description ? S . $description . S : null,
+                    'icon' => $icon,
                     'image' => $image,
                     'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),
                     'path' => $k,
