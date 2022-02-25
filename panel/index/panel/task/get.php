@@ -266,7 +266,7 @@ function page($_) {
                         \file_put_contents($f, \is_array($v) ? \json_encode($v) : \s($v));
                         \chmod($f, 0600);
                     } else {
-                        $_['alert']['error'][$f] = ['File %s is not writable.', ['<code>' . \x\panel\from\path($f) . '</code>']];
+                        $_['alert']['error'][$f] = ['File %s is not writable.', '<code>' . \x\panel\from\path($f) . '</code>'];
                     }
                 } else {
                     \is_file($f) && \unlink($f);

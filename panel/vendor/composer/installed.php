@@ -20,12 +20,12 @@
             'dev_requirement' => false,
         ),
         'maennchen/zipstream-php' => array(
-            'pretty_version' => '1.2.0',
-            'version' => '1.2.0.0',
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../maennchen/zipstream-php',
             'aliases' => array(),
-            'reference' => '6373eefe0b3274d7b702d81f2c99aa977ff97dc2',
+            'reference' => 'c4c5803cc1f93df3d2448478ef79394a5981cc58',
             'dev_requirement' => false,
         ),
         'myclabs/php-enum' => array(
@@ -46,19 +46,13 @@
             'reference' => 'f6561bf28d520154e4b0ec72be95418abe6d9363',
             'dev_requirement' => false,
         ),
-        'wapmorgan/cam' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '1.0.2',
-            ),
-        ),
-        'wapmorgan/unified-archive' => array(
-            'pretty_version' => '0.1.3',
-            'version' => '0.1.3.0',
+        'symfony/polyfill-mbstring' => array(
+            'pretty_version' => 'v1.24.0',
+            'version' => '1.24.0.0',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../wapmorgan/unified-archive',
+            'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
             'aliases' => array(),
-            'reference' => '748303c5387c3fe211112ccc61ae79109e8ccc0b',
+            'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
             'dev_requirement' => false,
         ),
     ),

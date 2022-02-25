@@ -82,7 +82,9 @@ Hook::set('_', function($_) use($state, $user) {
                                 'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                                 'query' => [
                                     'query' => null,
-                                    'tab' => null
+                                    'stack' => null,
+                                    'tab' => null,
+                                    'type' => null
                                 ],
                                 'task' => 'get'
                             ])
@@ -99,6 +101,7 @@ Hook::set('_', function($_) use($state, $user) {
                                 'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                                 'query' => [
                                     'query' => null,
+                                    'stack' => null,
                                     'tab' => null,
                                     'type' => 'page'
                                 ],
@@ -115,6 +118,7 @@ Hook::set('_', function($_) use($state, $user) {
                                 'path' => $path,
                                 'query' => [
                                     'query' => null,
+                                    'stack' => null,
                                     'tab' => null,
                                     'type' => null // Automatically detected by the file extension
                                 ],
@@ -131,6 +135,7 @@ Hook::set('_', function($_) use($state, $user) {
                                 'path' => $path,
                                 'query' => [
                                     'query' => null,
+                                    'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],
                                     'trash' => $trash,
@@ -178,6 +183,7 @@ Hook::set('_', function($_) use($state, $user) {
                                     'path' => $path,
                                     'query' => [
                                         'query' => null,
+                                        'stack' => null,
                                         'tab' => null,
                                         'type' => null // Automatically detected by the file extension
                                     ],
@@ -194,6 +200,7 @@ Hook::set('_', function($_) use($state, $user) {
                                     'path' => $path,
                                     'query' => [
                                         'query' => null,
+                                        'stack' => null,
                                         'tab' => null,
                                         'token' => $_['token'],
                                         'trash' => $trash,
@@ -210,6 +217,7 @@ Hook::set('_', function($_) use($state, $user) {
                             'path' => $path,
                             'query' => [
                                 'query' => null,
+                                'stack' => null,
                                 'tab' => null,
                                 'type' => null // Automatically detected by the file extension
                             ],
@@ -259,7 +267,9 @@ $desk = [
                                         'path' => dirname($_['path']),
                                         'query' => [
                                             'query' => null,
-                                            'tab' => null
+                                            'stack' => null,
+                                            'tab' => null,
+                                            'type' => null
                                         ],
                                         'task' => 'get'
                                     ])
@@ -275,6 +285,7 @@ $desk = [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
+                                            'stack' => null,
                                             'tab' => null,
                                             'type' => 'blob'
                                         ],
@@ -290,6 +301,7 @@ $desk = [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
+                                            'stack' => null,
                                             'tab' => null,
                                             'type' => 'page'
                                         ],
@@ -306,6 +318,7 @@ $desk = [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
+                                            'stack' => null,
                                             'tab' => null,
                                             'type' => 'data'
                                         ],

@@ -12,7 +12,8 @@ function blob($_) {
     $test_size = (array) (\State::get('x.panel.guard.file.size', true) ?? [0, 0]);
     $test_type = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.type', true) ?? [])))) . \P;
     $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
-    foreach ($_POST['blob'] ?? [] as $k => $v) {
+    $packages = 0;
+    foreach ($_POST['blobs'] ?? [] as $k => $v) {
         // Check for status code
         if (!empty($v['status'])) {
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
@@ -76,32 +77,31 @@ function blob($_) {
         $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
         // Extract package
         if (!empty($_POST['options']['extract']) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            // Create a task link to `http://127.0.0.1/panel/fire/zip/asdf.zip`
+            $_['kick'] = \x\panel\to\link([
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 0,
-                'path' => strtr($blob, [
+                'path' => \strtr($blob, [
                     \LOT . \D => "",
                     \D => '/'
                 ]),
                 'query' => \array_replace_recursive([
-                    'kick' => \x\panel\to\link([
-                        'base' => null,
-                        'part' => 0,
-                        'query' => [
-                            'kick' => null,
-                            'let' => !empty($_POST['options']['let']) ? 1 : null
-                        ],
-                        'task' => 'get'
-                    ]),
+                    'kick' => $_POST['kick'] ?? null,
                     'stack' => $_POST['stack'] ?? null,
                     'tab' => $_POST['tab'] ?? null,
                     'token' => $_['token'],
                     'trash' => null,
-                    'type' => null
+                    'type' => null,
+                    'zip' => ['let' => !empty($_POST['options']['let']) ? 1 : null]
                 ], $_POST['query'] ?? []),
-                'task' => 'fire/de686795'
+                'task' => 'fire/zip',
+                'type' => null
             ]);
+            ++$packages;
         }
+    }
+    if ($packages > 1 && !empty($_POST['options']['extract']) && \extension_loaded('zip')) {
+        $_['alert']['info'][] = 'Currently, it is not possible to extract multiple package(s) at once :(';
     }
     if (!empty($_['alert']['error'])) {
         unset($_POST['token']);
@@ -168,7 +168,7 @@ function file($_) {
             if (\is_writable($folder = \dirname($file))) {
                 \file_put_contents($file, $_POST['file']['content']);
             } else {
-                $_['alert']['error'][$folder] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($folder) . '</code>']];
+                $_['alert']['error'][$folder] = ['Folder %s is not writable.', '<code>' . \x\panel\from\path($folder) . '</code>'];
             }
         }
         $seal = \octdec($_POST['file']['seal'] ?? '0777');

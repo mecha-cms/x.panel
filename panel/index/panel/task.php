@@ -5,16 +5,13 @@ function get($_) {}
 function let($_) {}
 function set($_) {}
 
-\is_file($f = __DIR__ . \D . 'task' . \D . \trim(\strtr($task = $_['task'] ?? 'get', '/', \D), \D) . '.php') && (static function($f) {
-    \extract($GLOBALS, \EXTR_SKIP);
-    if ($_ = require $f) {
-        $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
-    }
-})($f);
-
-foreach (\array_values(\step($task . "\\" . \strtr($type = $_['type'] ?? \P, '/', "\\"), "\\")) as $v) {
-    // Function-based task
-    if (\is_callable($f = "\\x\\panel\\task\\" . $v)) {
-        \Hook::set(\strtr('do.' . $type . '.' . $task, "\\", '/'), $f, 10);
-    }
+// Require task(s) from file to run after panel type is set
+$tasks = \array_reverse(\step(\trim(\strtr($_['task'] ?? 'get', '/', \D), \D), \D));
+foreach ($tasks as $task) {
+    \is_file($f = __DIR__ . \D . 'task' . \D . $task . '.php') && (static function($f) {
+        \extract($GLOBALS, \EXTR_SKIP);
+        if ($_ = require $f) {
+            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
+        }
+    })($f);
 }

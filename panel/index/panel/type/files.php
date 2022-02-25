@@ -54,7 +54,9 @@ Hook::set('_', function($_) {
                             'path' => $path,
                             'query' => [
                                 'query' => null,
-                                'tab' => null
+                                'stack' => null,
+                                'tab' => null,
+                                'type' => null
                             ]
                         ])
                     ],
@@ -68,6 +70,7 @@ Hook::set('_', function($_) {
                             'path' => $path,
                             'query' => [
                                 'query' => null,
+                                'stack' => null,
                                 'tab' => null,
                                 'token' => $_['token'],
                                 'trash' => $trash
@@ -83,7 +86,9 @@ Hook::set('_', function($_) {
                     'path' => $path,
                     'query' => [
                         'query' => null,
-                        'tab' => null
+                        'stack' => null,
+                        'tab' => null,
+                        'type' => null
                     ],
                     'task' => 'get'
                 ]) : null
@@ -107,7 +112,9 @@ Hook::set('_', function($_) {
                             'path' => $path,
                             'query' => [
                                 'query' => null,
-                                'tab' => null
+                                'stack' => null,
+                                'tab' => null,
+                                'type' => null
                             ],
                             'task' => 'get'
                         ])
@@ -122,6 +129,7 @@ Hook::set('_', function($_) {
                             'path' => $path,
                             'query' => [
                                 'query' => null,
+                                'stack' => null,
                                 'tab' => null,
                                 'token' => $_['token'],
                                 'trash' => $trash
@@ -137,7 +145,9 @@ Hook::set('_', function($_) {
                     'path' => dirname($path),
                     'query' => [
                         'query' => null,
-                        'tab' => null
+                        'stack' => null,
+                        'tab' => null,
+                        'type' => null
                     ],
                     'task' => 'get'
                 ])
@@ -176,6 +186,7 @@ $desk = [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
+                                            'stack' => null,
                                             'tab' => null,
                                             'type' => 'blob'
                                         ],
@@ -191,6 +202,7 @@ $desk = [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
+                                            'stack' => null,
                                             'tab' => null,
                                             'type' => 'file'
                                         ],
@@ -206,6 +218,7 @@ $desk = [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
+                                            'stack' => null,
                                             'tab' => null,
                                             'type' => 'folder'
                                         ],

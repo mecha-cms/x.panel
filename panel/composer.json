@@ -1,6 +1,5 @@
 {
   "require": {
-    "wapmorgan/unified-archive": "^0.1.2",
-    "maennchen/zipstream-php": "^1.2"
+    "maennchen/zipstream-php": "^2.1"
   }
 }

@@ -12,8 +12,5 @@ function _de4fea16($_) {}
 // `error.let`
 function _510d4904($_) {}
 
-// `package`
-function _de686795($_) {}
-
 // `trash.let`
 function _e2c4d4a6($_) {}

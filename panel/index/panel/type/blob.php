@@ -66,8 +66,10 @@ $desk = [
                                         'fields' => [
                                             'lot' => [
                                                 'blob' => [
+                                                    // TODO: Use maximum file upload size value from `php.ini`
                                                     'description' => ['Maximum file size allowed to upload is %s.', size((float) ($state->x->panel->guard->file->size[1] ?? ini_get('upload_max_filesize')))],
                                                     'focus' => true,
+                                                    'name' => 'blobs',
                                                     'stack' => 10,
                                                     'title' => 'File',
                                                     'type' => 'blobs',

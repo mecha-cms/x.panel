@@ -1,6 +1,6 @@
 <?php
 
-if (!array_key_exists('type', $_GET)) {
+if (!array_key_exists('type', $_GET) && !isset($_['type'])) {
     if (!empty($_['part']) && $_['folder']) {
         $_['type'] = 'pages/page';
     } else if (empty($_['part']) && $_['file']) {

@@ -34,8 +34,8 @@ if (false === strpos($_['path'], '/')) {
             if (isset($page['images'])) {
                 // TODO
             } else if (isset($page['image'])) {
-                $image .= '<figure class="image">';
-                $image .= '<img alt="" loading="lazy" src="' . $page->image . '">';
+                $image .= '<figure>';
+                $image .= '<img alt="" class="image" loading="lazy" src="' . htmlspecialchars($page->image) . '">';
                 $image .= '</figure>';
             }
             if (isset($page['use'])) {
