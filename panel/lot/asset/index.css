@@ -1566,7 +1566,7 @@ select option:disabled {
 [role=listbox] optgroup,
 select [role=group],
 select optgroup {
-  font-weight: bold;
+  font-weight: bolder;
 }
 [role=combobox] [role=group] [role=option],
 [role=combobox] [role=group] option,
@@ -2519,7 +2519,10 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:files .description,
 .lot\:cards .description,
 .lot\:pages .description,
-.lot\:folders .description,
+.lot\:folders .description {
+  margin: 0;
+  padding: 0;
+}
 .lot\:files .title,
 .lot\:cards .title,
 .lot\:pages .title,
@@ -3256,7 +3259,7 @@ dt,
 legend,
 strong,
 th {
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .code,
@@ -3266,10 +3269,19 @@ code {
   font-size: 90%;
 }
 
-.height {
+.description {
+  font-weight: 300;
+}
+
+.has\:height {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.has\:width {
+  display: flex;
+  width: 100%;
 }
 
 .i,
@@ -3280,11 +3292,17 @@ var {
   font-style: italic;
 }
 
+.image,
 .img,
 [role=img],
 img {
   height: auto;
   max-width: 100%;
+}
+
+.not\:active {
+  color: var(--color--disabled, inherit);
+  cursor: not-allowed;
 }
 
 * + .p,
@@ -3328,26 +3346,6 @@ s {
   text-decoration: line-through;
 }
 
-.u,
-ins,
-u {
-  text-decoration: underline;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-.has\:width {
-  display: flex;
-  width: 100%;
-}
-
-.not\:active {
-  color: var(--color--disabled, inherit);
-  cursor: not-allowed;
-}
-
 .table,
 table {
   border-collapse: collapse;
@@ -3366,6 +3364,16 @@ table td {
   padding: calc(var(--y) / 6) calc(var(--x) / 2);
   text-align: inherit;
   vertical-align: top;
+}
+
+.u,
+ins,
+u {
+  text-decoration: underline;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

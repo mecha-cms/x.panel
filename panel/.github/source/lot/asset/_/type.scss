@@ -17,7 +17,7 @@
 }
 
 .b {
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .code {
@@ -26,19 +26,34 @@
   font-size: 90%; // Magic :(
 }
 
-.height {
+.description {
+  font-weight: 300;
+}
+
+.has\:height {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.has\:width {
+  display: flex;
+  width: 100%;
 }
 
 .i {
   font-style: italic;
 }
 
+.image,
 .img {
   height: auto;
   max-width: 100%;
+}
+
+.not\:active {
+  color: var(--color--disabled, inherit);
+  cursor: not-allowed;
 }
 
 .p {
@@ -55,24 +70,6 @@
   text-decoration: line-through;
 }
 
-.u {
-  text-decoration: underline;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-.has\:width {
-  display: flex;
-  width: 100%;
-}
-
-.not\:active {
-  color: var(--color--disabled, inherit);
-  cursor: not-allowed;
-}
-
 .table {
   border-collapse: collapse;
   width: 100%;
@@ -87,4 +84,14 @@
     text-align: inherit;
     vertical-align: top;
   }
+}
+
+.title {}
+
+.u {
+  text-decoration: underline;
+}
+
+[hidden] {
+  display: none !important;
 }

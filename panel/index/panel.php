@@ -104,7 +104,11 @@ function route($content, $path, $query, $hash, $r) {
         \x\panel\_asset_get();
         \x\panel\_asset_let();
         $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
-        $_ = $GLOBALS['_'] = \Hook::fire(\strtr('do.' . ($_['type'] ?? \P) . '.' . ($_['task'] ?? 'get'), "\\", '/'), [$_]) ?? $_;
+        $task = \strtr($_['task'] ?? 'get', "\\", '/');
+        $types = \step(\strtr($_['type'] ?? \P, "\\", '/'), '/');
+        foreach (\array_reverse($types) as $type) {
+            $_ = $GLOBALS['_'] = \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_;
+        }
         if (!empty($_['alert'])) {
             // Has alert data from queue
             $has_alert = true;

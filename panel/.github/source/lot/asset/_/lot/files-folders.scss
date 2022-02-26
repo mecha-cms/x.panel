@@ -3,7 +3,10 @@
   list-style: none;
   margin-left: 0;
   margin-right: 0;
-  .description,
+  .description {
+    margin: 0;
+    padding: 0;
+  }
   .title {
     font: inherit;
     margin: 0;

@@ -14,7 +14,7 @@ if (isset($state->x->tag) && (
             return $_;
         }
         // Abort by previous hook’s return value if any
-        if (isset($_['kick']) || !empty($_['alert']['error'])) {
+        if (!empty($_['alert']['error'])) {
             return $_;
         }
         // Abort if current page is not a file
@@ -22,7 +22,8 @@ if (isset($state->x->tag) && (
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty
-        if (empty($_POST['data']['kind']) && is_file($data = dirname($file) . D . pathinfo($file, PATHINFO_FILENAME) . D . 'kind.data')) {
+        $data = dirname($file) . D . pathinfo($file, PATHINFO_FILENAME) . D . 'kind.data';
+        if (empty($_POST['data']['kind']) && is_file($data)) {
             unlink($data);
             return $_;
         }
