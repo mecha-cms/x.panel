@@ -34,7 +34,7 @@ Hook::set('_', function($_) use($state, $user) {
                 }
                 $sort = $_['sort'][1] ?? 'time';
                 $pages[$k] = [
-                    $sort => (string) ($p->{$sort} ?? ""),
+                    $sort => strip_tags((string) ($p->{$sort} ?? "")),
                     'page' => $p
                 ];
                 ++$count;
