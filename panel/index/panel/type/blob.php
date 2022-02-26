@@ -45,6 +45,27 @@ $bar = [
     ]
 ];
 
+// <https://www.php.net/manual/en/function.ini-get.php>
+$bytes = static function(string $v) {
+    $i = intval($v = trim($v));
+    switch (strtolower(substr($v, -1))) {
+        case 'g':
+            $i *= 1024;
+        case 'm':
+            $i *= 1024;
+        case 'k':
+            $i *= 1024;
+    }
+    return $i;
+};
+
+if (is_string($upload_max_size = ini_get('upload_max_filesize'))) {
+    $upload_max_size = $bytes($upload_max_size);
+}
+
+// Compare with value from `.\lot\x\panel\state\file\size.php` and prefers the smaller one!
+$upload_max_size = min($upload_max_size, $state->x->panel->guard->file->size[1]);
+
 $desk = [
     // `desk`
     'lot' => [
@@ -66,8 +87,7 @@ $desk = [
                                         'fields' => [
                                             'lot' => [
                                                 'blob' => [
-                                                    // TODO: Use maximum file upload size value from `php.ini`
-                                                    'description' => ['Maximum file size allowed to upload is %s.', size((float) ($state->x->panel->guard->file->size[1] ?? ini_get('upload_max_filesize')))],
+                                                    'description' => ['Maximum file size allowed to upload is %s.', size((float) $upload_max_size)],
                                                     'focus' => true,
                                                     'name' => 'blobs',
                                                     'stack' => 10,

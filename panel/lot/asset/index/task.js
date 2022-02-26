@@ -29,9 +29,6 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
-    var setClass = function setClass(node, value) {
-        return node.classList.add(value), node;
-    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -44,7 +41,7 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = 'a[href]:not(.has\\:event-task):not(.not\\:active),button:not(:disabled):not(.has\\:event-task):not(.not\\:active),input:not(:disabled):not(.has\\:event-task):not(.not\\:active),select:not(:disabled):not(.has\\:event-task):not(.not\\:active)';
+    const targets = 'a[href]:not(.not\\:active),button:not(:disabled):not(.not\\:active),input:not(:disabled):not(.not\\:active),select:not(:disabled):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
@@ -55,12 +52,10 @@
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:tasks[tabindex]:not(.has\\:event-tasks)');
+        let sources = getElements('.lot\\:tasks[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
-            setClass(source, 'has:event-tasks');
             let tasks = getElements(targets, source);
             tasks && toCount(tasks) && tasks.forEach(task => {
-                setClass(task, 'has:event-task');
                 onEvent('keydown', task, onKeyDownTask);
             });
             onEvent('keydown', source, onKeyDownTasks);

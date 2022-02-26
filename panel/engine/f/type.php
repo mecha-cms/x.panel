@@ -871,15 +871,18 @@ function page($value, $key) {
             $div['hidden'] = true;
         // Prioritize `icon` over `image`
         } else if (!empty($icon)) {
-            // TODO: Set color inversion automatically based on current background color
-            $div[1] = '<span class="image" role="img" style="color: #fff; background: ' . ($value['color'] ?? '#' . \substr(\md5($icon), 0, 6)) . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
+            $color = $value['color'] ?? '#fff';
+            $fill = $value['fill'] ?? '#' . \substr(\md5($icon), 0, 6);
+            $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
         } else if (!empty($image)) {
             $div[1] = '<img alt="" class="image" height="72" loading="lazy" src="' . \htmlspecialchars($image) . '" width="72">';
         } else {
-            $div[1] = '<span class="image" role="img" style="background: ' . ($value['color'] ?? '#' . \substr(\md5(\strtr($path, [
+            $color = $value['color'] ?? '#fff';
+            $fill = $value['fill'] ?? '#' . \substr(\md5(\strtr($path, [
                 \PATH => "",
                 \D => '/'
-            ])), 0, 6)) . ';"></span>';
+            ])), 0, 6);
+            $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';"></span>';
         }
         $out[1] .= $div;
         $out[1] .= '<div><h3 class="title">' . \x\panel\type\link([

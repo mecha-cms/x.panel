@@ -23,19 +23,17 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>.lot\\:file[tabindex]:not(.has\\:event-file):not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.has\\:event-file):not(.not\\:active)';
+const targets = ':scope>.lot\\:file[tabindex]:not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange() {
-    let sources = getElements('.lot\\:files[tabindex]:not(.has\\:event-files),.lot\\:folders[tabindex]:not(.has\\:event-files)');
+    let sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        setClass(source, 'has:event-files');
         let files = getElements(targets, source);
         files.forEach(file => {
-            setClass(file, 'has:event-file');
             onEvent('keydown', file, onKeyDownFile);
         });
         onEvent('keydown', source, onKeyDownFiles);

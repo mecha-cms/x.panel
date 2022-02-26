@@ -23,19 +23,17 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>.lot\\:page[tabindex]:not(.has\\:event-page):not(.not\\:active)';
+const targets = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange() {
-    let sources = getElements('.lot\\:pages[tabindex]:not(.has\\:event-pages)');
+    let sources = getElements('.lot\\:pages[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        setClass(source, 'has:event-pages');
         let pages = getElements(targets, source);
         pages.forEach(page => {
-            setClass(page, 'has:event-page');
             onEvent('keydown', page, onKeyDownPage);
         });
         onEvent('keydown', source, onKeyDownPages);

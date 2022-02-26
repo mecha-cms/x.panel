@@ -60,8 +60,10 @@ Hook::set('_', function($_) use($state, $user) {
                 $x = $p->x ?? null;
                 $pages[$k] = [
                     'author' => $p['author'],
+                    'color' => $p->color ?? null,
                     'current' => !empty($_SESSION['_']['file'][$k]),
                     'description' => $description ? S . $description . S : null,
+                    'fill' => $p->fill ?? null,
                     'icon' => $icon,
                     'image' => $image,
                     'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),

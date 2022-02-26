@@ -12,7 +12,6 @@ function blob($_) {
     $test_size = (array) (\State::get('x.panel.guard.file.size', true) ?? [0, 0]);
     $test_type = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.type', true) ?? [])))) . \P;
     $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
-    $packages = 0;
     foreach ($_POST['blobs'] ?? [] as $k => $v) {
         // Check for status code
         if (!empty($v['status'])) {
@@ -62,47 +61,57 @@ function blob($_) {
             continue;
         }
         $_['alert']['success'][$blob] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($blob) . '</code>'];
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
-            'hash' => $_POST['hash'] ?? null,
-            'part' => 1,
-            'query' => \array_replace_recursive([
-                'stack' => $_POST['stack'] ?? null,
-                'tab' => $_POST['tab'] ?? null,
-                'trash' => null,
-                'type' => null
-            ], $_POST['query'] ?? []),
-            'task' => 'get'
-        ]);
         $_['file'] = $blob; // For hook(s)
         $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
-        // Extract package
+        // Perform package “extract”
         if (!empty($_POST['options']['extract']) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
-            // Create a task link to `http://127.0.0.1/panel/fire/zip/asdf.zip`
-            $_['kick'] = \x\panel\to\link([
-                'hash' => $_POST['hash'] ?? null,
-                'part' => 0,
-                'path' => \strtr($blob, [
-                    \LOT . \D => "",
-                    \D => '/'
-                ]),
-                'query' => \array_replace_recursive([
-                    'kick' => $_POST['kick'] ?? null,
-                    'stack' => $_POST['stack'] ?? null,
-                    'tab' => $_POST['tab'] ?? null,
-                    'token' => $_['token'],
-                    'trash' => null,
-                    'type' => null,
-                    'zip' => ['let' => !empty($_POST['options']['let']) ? 1 : null]
-                ], $_POST['query'] ?? []),
-                'task' => 'fire/zip',
-                'type' => null
-            ]);
-            ++$packages;
+            $zip = new \ZipArchive;
+            if (true === $zip->open($blob)) {
+                for ($i = 0; $i < $zip->numFiles; ++$i) {
+                    $x = \pathinfo($v = \strtr($zip->getNameIndex($i), '/', \D), \PATHINFO_EXTENSION);
+                    if (\D === \substr($v, -1)) {
+                        continue; // Skip folder!
+                    }
+                    $v = $folder . \D . $v;
+                    // This prevents user(s) from uploading forbidden file(s)
+                    if ($x && false === \strpos($test_x, \P . $x . \P)) {
+                        $_['alert']['error'][$v] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+                    // This prevents user(s) from accidentally overwrite the existing file(s)
+                    } else if (\is_file($v)) {
+                        $_['alert']['error'][$v] = ['File %s already exists.', '<code>' . \x\panel\from\path($v) . '</code>'];
+                    } else {
+                        $_SESSION['_']['file'][$v] = 1;
+                        $_SESSION['_']['folder'][\rtrim(\dirname($v), \D)] = 1;
+                    }
+                }
+                if (!empty($_['alert']['error'])) {
+                    $_['alert']['error'][$blob] = ['Package %s could not be extracted due to the previous errors.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+                } else {
+                    $zip->extractTo($folder);
+                    $_['alert']['success'][$blob] = ['Package %s successfully extracted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+                    // Delete package after “extract”
+                    if (!empty($_POST['options']['let'])) {
+                        if (\unlink($blob)) {
+                            $_['alert']['success'][$blob] = ['Package %s successfully extracted and deleted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+                        } else {
+                            $_['alert']['error'][$blob] = ['Package %s could not be deleted. Please delete it manually.', '<code>' . \x\panel\from\path($blob) . '</code>'];
+                        }
+                    }
+                }
+            }
         }
     }
-    if ($packages > 1 && !empty($_POST['options']['extract']) && \extension_loaded('zip')) {
-        $_['alert']['info'][] = 'Currently, it is not possible to extract multiple package(s) at once :(';
-    }
+    $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        'hash' => $_POST['hash'] ?? null,
+        'part' => 1,
+        'query' => \array_replace_recursive([
+            'stack' => $_POST['stack'] ?? null,
+            'tab' => $_POST['tab'] ?? null,
+            'trash' => null,
+            'type' => null
+        ], $_POST['query'] ?? []),
+        'task' => 'get'
+    ]);
     if (!empty($_['alert']['error'])) {
         unset($_POST['token']);
         $_SESSION['form'] = $_POST;

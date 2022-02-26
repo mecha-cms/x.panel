@@ -237,16 +237,15 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = 'a[target^="tab:"]:not(.has\\:event-tab):not(.not\\:active)';
+    const targets = 'a[target^="tab:"]:not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:tabs[tabindex]:not(.has\\:event-tabs)');
+        let sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
-            setClass(source, 'has:event-tabs');
             let panes = [].slice.call(getChildren(source)),
                 tabs = [].slice.call(getElements(targets, panes.shift())),
                 input = setElement('input'),
@@ -295,7 +294,6 @@
                 }
             }
             tabs.forEach((tab, index) => {
-                setClass(tab, 'has:event-tab');
                 tab._tabIndex = index;
                 onEvent('click', tab, onClick);
                 onEvent('keydown', tab, onKeyDownTab);

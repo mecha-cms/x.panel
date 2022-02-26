@@ -146,8 +146,7 @@
             menuParents.forEach(menuParent => {
                 let menu = getElement('.lot\\:menu[tabindex]', menuParent),
                     a = getPrev(menu);
-                if (menu && a && !hasClass(a, 'has:event-menu-item')) {
-                    setClass(a, 'has:event-menu-item');
+                if (menu && a) {
                     onEvent('click', a, onClickMenuShow);
                     onEvent('keydown', a, onKeyDownMenuToggle);
                 }
@@ -156,15 +155,11 @@
         }
         if (menuLinks && toCount(menuLinks)) {
             menuLinks.forEach(menuLink => {
-                if (!hasClass(menuLink, 'has:event-menu-item')) {
-                    setClass(menuLink, 'has:event-menu-item');
-                    onEvent('keydown', menuLink, onKeyDownMenu);
-                }
+                onEvent('keydown', menuLink, onKeyDownMenu);
             });
         }
-        let sources = getElements('.lot\\:menu[tabindex]:not(.has\\:event-menu)');
+        let sources = getElements('.lot\\:menu[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
-            setClass(source, 'has:event-menu');
             onEvent('keydown', source, onKeyDownMenus);
         });
     }

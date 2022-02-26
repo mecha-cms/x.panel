@@ -23,19 +23,17 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>[tabindex]:not(.has\\:event-bar-item):not(.not\\:active)';
+const targets = ':scope>[tabindex]:not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange() {
-    let sources = getElements('.lot\\:bar[tabindex]:not(.has\\:event-bar)');
+    let sources = getElements('.lot\\:bar[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        setClass(source, 'has:event-bar');
         let items = getElements(targets, source);
         items.forEach(item => {
-            setClass(item, 'has:event-bar-item');
             onEvent('keydown', item, onKeyDownBarItem);
         });
         onEvent('keydown', source, onKeyDownBar);

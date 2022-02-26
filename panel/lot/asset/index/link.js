@@ -32,9 +32,6 @@
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
-    var setClass = function setClass(node, value) {
-        return node.classList.add(value), node;
-    };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
     };
@@ -47,19 +44,17 @@
         }
         node.addEventListener(name, then, options);
     };
-    const targets = ':scope>ul>li>a[href]:not(.has\\:event-link):not(.not\\:active)';
+    const targets = ':scope>ul>li>a[href]:not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
     function onChange() {
-        let sources = getElements('.lot\\:links[tabindex]:not(.has\\:event-links)');
+        let sources = getElements('.lot\\:links[tabindex]');
         sources && toCount(sources) && sources.forEach(source => {
-            setClass(source, 'has:event-links');
             let links = getElements(targets, source);
             links && toCount(links) && links.forEach(link => {
-                setClass(link, 'has:event-link');
                 onEvent('keydown', link, onKeyDownLink);
             });
             onEvent('keydown', source, onKeyDownLinks);
