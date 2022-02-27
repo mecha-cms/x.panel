@@ -11,6 +11,26 @@ if ('set' === $_['task']) {
     ++$id;
 }
 
+if ('POST' === $_SERVER['REQUEST_METHOD'] && ($_['file'] || $_['folder'])) {
+    $current = $_POST['data']['id'] ?? $_POST['page']['id'] ?? 0;
+    foreach (g('set' === $_['task'] ? $_['folder'] : dirname($_['file']), 'archive,page') as $k => $v) {
+        $v = From::tag(pathinfo($k, PATHINFO_FILENAME)) ?? 0;
+        if ($v === $current && $k !== $_['file']) {
+            // Found duplicate tag ID!
+            $_['alert']['error'][$k] = ['%s %s is in use.', ['ID', '<a href="' . x\panel\to\link([
+                'part' => 0,
+                'path' => 'tag/' . basename($k),
+                'query' => [
+                    'tab' => ['data'],
+                    'type' => null
+                ],
+                'task' => 'get'
+            ]) . '"><code>' . $v . '</code></a>']];
+            break;
+        }
+    }
+}
+
 $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
     'bar' => [
         // `bar`
@@ -42,9 +62,6 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
         'lot' => [
             'form' => [
                 // `form/post`
-                'data' => [
-                    'data' => ['id' => 'set' === $_['task'] ? $id : $page->id]
-                ],
                 'lot' => [
                     1 => [
                         // `section`
@@ -68,34 +85,20 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                         'lot' => [
                                             'fields' => [
                                                 'lot' => [
+                                                    'id' => [
+                                                        'fix' => true,
+                                                        'name' => 'data[id]',
+                                                        'stack' => 10,
+                                                        'title' => 'ID',
+                                                        'type' => 'number',
+                                                        'value' => 'set' === $_['task'] ? $id : $page->id
+                                                    ],
                                                     'link' => ['skip' => true]
                                                 ]
                                             ]
                                         ]
                                     ]
                                 ]
-                            ]
-                        ]
-                    ],
-                    2 => [
-                        // `section`
-                        'lot' => [
-                            'fields' => [
-                                // `fields`
-                                'lot' => [
-                                    0 => [
-                                        // `field`
-                                        'lot' => [
-                                            'tasks' => [
-                                                // `tasks/button`
-                                                'lot' => [
-                                                    'let' => ['skip' => 'set' === $_['task'] || $page->name === $user->name]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ],
-                                'stack' => 10
                             ]
                         ]
                     ]

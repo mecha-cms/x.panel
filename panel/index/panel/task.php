@@ -15,3 +15,6 @@ foreach ($tasks as $task) {
         }
     })($f);
 }
+
+// Get
+$_ = $GLOBALS['_'];

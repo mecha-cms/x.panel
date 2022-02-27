@@ -62,10 +62,10 @@ function link($value) {
         'query' => $_['query'] ?? [],
         'task' => $_['task'] ?? 'get'
     ], $value);
-    $base = $v['base'];
-    $hash = $v['hash'];
-    $part = $v['part'];
-    $path = $v['path'];
+    $base = $v['base'] ?? "";
+    $hash = $v['hash'] ?? "";
+    $part = $v['part'] ?? "";
+    $path = $v['path'] ?? "";
     $query = $v['query'];
     $task = $v['task'];
     return $base . ("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : "") . (!\is_int($part) || 0 === $part ? "" : '/' . $part) . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
