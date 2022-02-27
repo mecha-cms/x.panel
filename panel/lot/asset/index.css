@@ -1943,7 +1943,8 @@ input[type=range]:disabled::-moz-range-thumb {
   color: var(--color-alert);
   padding: calc(var(--z) * 0.75) calc(var(--z) * 1.25);
 }
-[role=alert] .f\:r .icon {
+[role=alert] .lot\:tasks {
+  float: right;
   margin-right: calc(var(--x) / -4);
 }
 [role=alert] + [role=alert] {

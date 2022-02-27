@@ -6,7 +6,8 @@
   box-shadow: var(--shadow-alert);
   color: var(--color-alert);
   padding: calc(var(--z) * .75) calc(var(--z) * 1.25);
-  .f\:r .icon {
+  .lot\:tasks {
+    float: right;
     margin-right: calc(var(--x) / -4);
   }
   + [role='alert'] {
