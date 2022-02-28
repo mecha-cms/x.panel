@@ -473,9 +473,10 @@ function range($value, $key) {
 function set($value, $key) {
     $title = \x\panel\to\title($value['title'] ?? "", -2);
     $description = \x\panel\to\description($value['description'] ?? "");
+    $content = $value['content'] ?? "";
     $value = \array_replace([
         0 => 'fieldset',
-        1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description,
+        1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description . $content,
         2 => []
     ], $value);
     unset($value['description'], $value['title'], $value['type']);

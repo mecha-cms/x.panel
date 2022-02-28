@@ -26,7 +26,7 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = 'a[href]:not(.not\\:active),button:not(:disabled):not(.not\\:active),input:not(:disabled):not(.not\\:active),select:not(:disabled):not(.not\\:active)';
+const targets = 'a[href]:not([tabindex="-1"]):not(.not\\:active),button:not(:disabled):not([tabindex="-1"]):not(.not\\:active),input:not(:disabled):not([tabindex="-1"]):not(.not\\:active),select:not(:disabled):not([tabindex="-1"]):not(.not\\:active),[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();

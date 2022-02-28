@@ -1,27 +1,24 @@
 <?php namespace x\panel\route\__test;
 
 function pager($_) {
-    extract($GLOBALS, \EXTR_SKIP);
     $_['title'] = 'Pager';
     $lot = [];
     $lot['pager-0'] = [
-        'type' => 'pager',
-        'count' => 1000,
         'chunk' => 10,
-        'current' => $_['i'] ?? 1,
-        'stack' => 10
+        'count' => 1000,
+        'current' => ($_['part'] ?? 0) ?: 1,
+        'stack' => 10,
+        'type' => 'pager'
     ];
     $lot['pager-2'] = [
-        'type' => 'pager',
-        'count' => 1000,
         'chunk' => 10,
-        'current' => \Get::get('page') ?? 1,
-        'ref' => function($index) use($url) {
-            return $url . $url->path . $url->i . $url->query('&', [
-                'page' => 1 === $index ? false : $index
-            ]) . $url->hash;
+        'count' => 1000,
+        'current' => $_GET['page'] ?? 1,
+        'ref' => static function($index) use($_) {
+            return \x\panel\to\link(['query' => ['page' => 1 === $index ? null : $index]]);
         },
-        'stack' => 20
+        'stack' => 20,
+        'type' => 'pager'
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

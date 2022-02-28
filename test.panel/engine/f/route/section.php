@@ -4,18 +4,18 @@ function section($_) {
     $_['title'] = 'Section';
     $lot = [];
     $lot['section-0'] = [
-        'title' => 'Section 1',
-        'description' => 'Description goes here.',
-        'type' => 'section',
         'content' => '<p>Content goes here.</p>',
-        'stack' => 10
+        'description' => 'Description goes here.',
+        'stack' => 10,
+        'title' => 'Section 1',
+        'type' => 'section'
     ];
     $lot['section-1'] = [
-        'title' => 'Section 2',
-        'description' => 'Description goes here.',
-        'type' => 'section',
         'content' => '<p>Content goes here.</p>',
-        'stack' => 20
+        'description' => 'Description goes here.',
+        'stack' => 20,
+        'title' => 'Section 2',
+        'type' => 'section'
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

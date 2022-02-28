@@ -37,6 +37,7 @@ input[type='submit'] {
   box-shadow: var(--shadow-button);
   color: var(--color-button);
   text-align: center;
+  width: auto;
   @each $v in (hover, focus, active, disabled) {
     &:#{$v} {
       background: var(--fill-button--#{$v}, var(--fill-button));
@@ -81,7 +82,22 @@ input[type='submit'] {
 [role='searchbox'],
 [role='spinbutton'],
 [role='textbox'],
-input,
+input:not([type]),
+input[type='color'], // Need the border
+input[type='date'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='email'],
+input[type='month'],
+input[type='number'],
+input[type='password'],
+input[type='password'],
+input[type='search'],
+input[type='tel'],
+input[type='text'],
+input[type='time'],
+input[type='url'],
+input[type='week'],
 textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);

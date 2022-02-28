@@ -4,30 +4,25 @@ function fields($_) {
     $_['title'] = 'Fields';
     $lot = [];
     $lot['fields-0'] = [
-        'title' => 'Title Goes Here',
         'description' => 'Description goes here.',
-        'type' => 'fields',
         'lot' => [
             'blob' => [
+                'name' => 'default[blob]',
                 'title' => 'Blob',
-                'type' => 'blob',
-                'name' => 'default[blob]'
+                'type' => 'blob'
             ],
             'blobs' => [
+                'name' => 'default[blobs]',
                 'title' => 'Blobs',
-                'type' => 'blobs',
-                'name' => 'default[blobs]'
+                'type' => 'blobs'
             ],
             'button' => [
-                'title' => 'Button',
                 'hint' => 'A Button',
-                'type' => 'button',
-                'name' => 'default[button]'
+                'name' => 'default[button]',
+                'title' => 'Button',
+                'type' => 'button'
             ],
             'buttons' => [
-                'title' => 'Buttons',
-                'type' => 'buttons',
-                'name' => 'default[buttons]',
                 'lot' => [
                     1 => [
                         'title' => 'Button 1',
@@ -42,7 +37,10 @@ function fields($_) {
                         'title' => 'Button 3',
                         'value' => 3
                     ]
-                ]
+                ],
+                'name' => 'default[buttons]',
+                'title' => 'Buttons',
+                'type' => 'buttons'
             ],
             'color' => [
                 'title' => 'Color',
@@ -50,50 +48,49 @@ function fields($_) {
                 'value' => '#f00'
             ],
             'colors' => [
-                'title' => 'Colors',
-                'type' => 'colors',
                 'lot' => ['#f00', '#0f0', '#00f'],
-                'sort' => false
+                'sort' => false,
+                'title' => 'Colors',
+                'type' => 'colors'
             ],
             'content' => [
+                'name' => 'default[content]',
                 'title' => 'Content',
-                'type' => 'content',
-                'name' => 'default[content]'
+                'type' => 'content'
             ],
             'content-disabled' => [
                 'active' => false,
+                'name' => 'default[content-disabled]',
                 'title' => 'Content',
-                'type' => 'content',
-                'name' => 'default[content-disabled]'
+                'type' => 'content'
             ],
             'content-readonly' => [
-                'locked' => true,
+                'fix' => true,
+                'name' => 'default[content-readonly]',
                 'title' => 'Content',
-                'type' => 'content',
-                'name' => 'default[content-readonly]'
+                'type' => 'content'
             ],
             'date' => [
+                'name' => 'default[date]',
                 'title' => 'Date',
-                'type' => 'date',
-                'name' => 'default[date]'
+                'type' => 'date'
             ],
             'date-time' => [
+                'name' => 'default[date-time]',
                 'title' => 'Date/Time',
-                'type' => 'date-time',
-                'name' => 'default[date-time]'
+                'type' => 'date-time'
             ],
             'description' => [
+                'name' => 'default[description]',
                 'title' => 'Description',
-                'type' => 'description',
-                'name' => 'default[description]'
+                'type' => 'description'
             ],
             'email' => [
+                'name' => 'default[email]',
                 'title' => 'Email',
-                'type' => 'email',
-                'name' => 'default[email]'
+                'type' => 'email'
             ],
             'flex' => [
-                'type' => 'flex',
                 'lot' => [
                     'text-1' => [
                         'title' => 'Field 1',
@@ -110,17 +107,15 @@ function fields($_) {
                         'type' => 'text',
                         'width' => true
                     ]
-                ]
+                ],
+                'type' => 'flex'
             ],
             'hidden' => [
+                'name' => 'default[hidden]',
                 'title' => 'Hidden',
-                'type' => 'hidden',
-                'name' => 'default[hidden]'
+                'type' => 'hidden'
             ],
             'item' => [
-                'title' => 'Item',
-                'type' => 'item',
-                'name' => 'default[item]',
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
@@ -133,12 +128,12 @@ function fields($_) {
                         'title' => 'Item 4'
                     ]
                 ],
+                'name' => 'default[item]',
+                'title' => 'Item',
+                'type' => 'item',
                 'value' => 3
             ],
             'items' => [
-                'title' => 'Items',
-                'type' => 'items',
-                'name' => 'default[items]',
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
@@ -151,30 +146,30 @@ function fields($_) {
                         'title' => 'Item 4'
                     ]
                 ],
+                'name' => 'default[items]',
+                'title' => 'Items',
+                'type' => 'items',
                 'value' => [
                     2 => true,
                     3 => true
                 ]
             ],
             'link' => [
+                'name' => 'default[link]',
                 'title' => 'Link',
-                'type' => 'link',
-                'name' => 'default[link]'
+                'type' => 'link'
             ],
             'name' => [
+                'name' => 'default[name]',
                 'title' => 'Name',
-                'type' => 'name',
-                'name' => 'default[name]'
+                'type' => 'name'
             ],
             'number' => [
+                'name' => 'default[number]',
                 'title' => 'Number',
-                'type' => 'number',
-                'name' => 'default[number]'
+                'type' => 'number'
             ],
             'option' => [
-                'title' => 'Option',
-                'type' => 'option',
-                'name' => 'default[option]',
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
@@ -197,131 +192,136 @@ function fields($_) {
                         'active' => false,
                         'title' => 'Other'
                     ]
-                ]
+                ],
+                'name' => 'default[option]',
+                'title' => 'Option',
+                'type' => 'option'
             ],
             'option-disabled' => [
                 'active' => false,
-                'title' => 'Option',
-                'type' => 'option',
-                'name' => 'default[option-disabled]',
                 'lot' => [
                     1 => 'Item 1',
                     2 => 'Item 2',
                     3 => 'Item 3'
-                ]
+                ],
+                'name' => 'default[option-disabled]',
+                'title' => 'Option',
+                'type' => 'option'
             ],
             'path' => [
+                'name' => 'default[path]',
                 'title' => 'Path',
                 'type' => 'path',
-                'name' => 'default[path]'
             ],
             'pass' => [
+                'name' => 'default[pass]',
                 'title' => 'Pass',
-                'type' => 'pass',
-                'name' => 'default[pass]'
+                'type' => 'pass'
             ],
             'query' => [
+                'name' => 'default[query]',
                 'title' => 'Query',
                 'type' => 'query',
-                'name' => 'default[query]',
-                'value' => 'foo, bar'
+                'value' => 'foo, bar',
             ],
             'query-disabled' => [
                 'active' => false,
+                'name' => 'default[query-disabled]',
                 'title' => 'Query',
                 'type' => 'query',
-                'name' => 'default[query-disabled]',
                 'value' => 'foo, bar'
             ],
             'query-readonly' => [
-                'locked' => true,
+                'fix' => true,
+                'name' => 'default[query-readonly]',
                 'title' => 'Query',
                 'type' => 'query',
-                'name' => 'default[query-readonly]',
                 'value' => 'foo, bar'
             ],
             'range' => [
-                'title' => 'Range',
-                'type' => 'range',
                 'name' => 'default[range]',
-                'range' => [0, 100]
+                'range' => [0, 100],
+                'title' => 'Range',
+                'type' => 'range'
             ],
             'range-disabled' => [
                 'active' => false,
-                'title' => 'Range',
-                'type' => 'range',
                 'name' => 'default[range]',
-                'range' => [0, 100]
+                'range' => [0, 100],
+                'title' => 'Range',
+                'type' => 'range'
             ],
             'set' => [
-                'title' => 'Set',
+                'content' => '<p>Lorem ipsum dolor sit amet.</p>',
                 'description' => 'Example field set.',
-                'type' => 'set',
-                'content' => ""
+                'title' => 'Set',
+                'type' => 'set'
             ],
             'source' => [
+                'name' => 'default[source]',
                 'title' => 'Source',
-                'type' => 'source',
-                'name' => 'default[source]'
+                'type' => 'source'
             ],
             'text' => [
+                'name' => 'default[text]',
                 'title' => 'Text',
-                'type' => 'text',
-                'name' => 'default[text]'
+                'type' => 'text'
             ],
             'text-disabled' => [
                 'active' => false,
+                'name' => 'default[text-disabled]',
                 'title' => 'Text',
-                'type' => 'text',
-                'name' => 'default[text-disabled]'
+                'type' => 'text'
             ],
             'text-readonly' => [
-                'locked' => true,
+                'fix' => true,
+                'name' => 'default[text-readonly]',
                 'title' => 'Text',
-                'type' => 'text',
-                'name' => 'default[text-readonly]'
+                'type' => 'text'
             ],
             'text-with-before' => [
+                'name' => 'default[text-with-before]',
                 'title' => 'Text',
                 'type' => 'text',
-                'name' => 'default[text-with-before]',
                 'value-before' => 'http://'
             ],
             'text-with-after' => [
+                'name' => 'default[text-with-after]',
                 'title' => 'Text',
                 'type' => 'text',
-                'name' => 'default[text-with-after]',
                 'value-after' => '.html'
             ],
             'text-with-before-after' => [
+                'name' => 'default[text-with-before-after]',
                 'title' => 'Text',
                 'type' => 'text',
-                'name' => 'default[text-with-before-after]',
-                'value-before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'],
-                'value-after' => 'text'
+                'value-after' => 'text',
+                'value-before' => ['icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z']
             ],
             'time' => [
+                'name' => 'default[time]',
                 'title' => 'Time',
-                'type' => 'time',
-                'name' => 'default[time]'
+                'type' => 'time'
             ],
             'title' => [
+                'name' => 'default[title]',
                 'title' => 'Title',
-                'type' => 'title',
-                'name' => 'default[title]'
+                'type' => 'title'
             ],
             'toggle' => [
-                'title' => 'Toggle',
                 'hint' => 'Toggle hint.',
-                'type' => 'toggle',
-                'name' => 'default[toggle]'
+                'name' => 'default[toggle]',
+                'title' => 'Toggle',
+                'type' => 'toggle'
             ],
             'u-r-l' => [
+                'name' => 'default[u-r-l]',
                 'title' => 'URL',
-                'type' => 'u-r-l',
-                'name' => 'default[u-r-l]'
+                'type' => 'u-r-l'
             ]
-        ]
+        ],
+        'title' => 'Title Goes Here',
+        'type' => 'fields'
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

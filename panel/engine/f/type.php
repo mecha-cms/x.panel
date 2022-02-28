@@ -1058,7 +1058,7 @@ function select($value, $key) {
         // $the_placeholder = \i(...((array) ($out['hint'] ?? [])));
         $seq0 = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
         $sort = !isset($value['sort']) || $value['sort'];
-        foreach ($value['lot'] as $k => $v) {
+        foreach ($value['lot'] ?? [] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
             }
@@ -1314,8 +1314,8 @@ function tabs($value, $key) {
                     $v[3]['tabindex'] = -1;
                     $v[3]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
                     $v['tags']['can:toggle'] = !empty($v['toggle']);
-                    if (empty($v['url']) && empty($v['link'])) {
-                        $v['url'] = $GLOBALS['url']->query(['tab' => [$name => $kk]]);
+                    if (empty($v['url']) && empty($v['link']) && (!\array_key_exists('active', $v) || $v['active'])) {
+                        $v['url'] = '?' . \explode('?', \x\panel\to\link(['query' => ['tab' => [$name => $kk]]]), 2)[1];
                     } else {
                         $v['tags']['has:link'] = true;
                         if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {

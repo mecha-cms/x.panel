@@ -49,6 +49,7 @@
 .img {
   height: auto;
   max-width: 100%;
+  object-fit: cover;
 }
 
 .not\:active {
@@ -75,7 +76,7 @@
   width: 100%;
   caption {
     caption-side: bottom;
-    margin-top: calc(var(--y) / 4);
+    margin-top: calc(var(--y) / 2);
   }
   th,
   td {

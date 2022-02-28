@@ -19,305 +19,305 @@ CSS;
     ];
     $lot = [];
     $lot['rows-0'] = [
-        'type' => 'rows',
         'lot' => [
             'auto-0' => [
-                'type' => 'row',
                 'lot' => [
                     0 => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
                                 'content' => '<p>Row 1, Column 1</p>',
-                                'stack' => 10
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
                                 'content' => '<p>Row 1, Column 2</p>',
-                                'stack' => 20
+                                'stack' => 20,
+                                'type' => 'column'
                             ]
                         ],
-                        'stack' => 10
+                        'stack' => 10,
+                        'type' => 'columns'
                     ]
                 ],
-                'stack' => 10
+                'stack' => 10,
+                'type' => 'row'
             ],
             'auto-1' => [
-                'type' => 'row',
                 'lot' => [
                     0 => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
                                 'content' => '<p>Row 2, Column 1</p>',
-                                'stack' => 10
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
                                 'content' => '<p>Row 2, Column 2</p>',
-                                'stack' => 20
+                                'stack' => 20,
+                                'type' => 'column'
                             ],
                             2 => [
-                                'type' => 'column',
                                 'content' => '<p>Row 2, Column 3</p>',
-                                'stack' => 30
+                                'stack' => 30,
+                                'type' => 'column'
                             ]
                         ],
-                        'stack' => 10
+                        'stack' => 10,
+                        'type' => 'columns'
                     ]
                 ],
-                'stack' => 20
+                'stack' => 20,
+                'type' => 'row'
             ],
             1 => [
-                'type' => 'row',
                 'content' => '<p>Row 3</p>',
-                'stack' => 30
+                'stack' => 30,
+                'type' => 'row'
             ],
             2 => [
-                'type' => 'row',
                 'content' => '<p>Row 4</p>',
-                'stack' => 40
+                'stack' => 40,
+                'type' => 'row'
             ]
         ],
-        'stack' => 10
+        'stack' => 10,
+        'type' => 'rows'
     ];
     $lot['separator-0'] = [
-        'type' => 'separator',
-        'tags' => ['my:2' => true],
-        'stack' => 10.5
+        'stack' => 10.5,
+        'type' => 'separator'
     ];
     $lot['rows-1'] = [
-        'type' => 'rows',
         'lot' => [
             '6/6' => [
-                'type' => 'row',
                 'lot' => [
                     '6/6' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
                                 'content' => '<p>6/6</p>',
-                                'stack' => 10
+                                'stack' => 10,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '1/6' => [
-                'type' => 'row',
                 'lot' => [
                     '1/6' => [
                         'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 10
+                                'size' => '1/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
-                                'size' => '5/6',
                                 'content' => '<p>5/6</p>',
-                                'stack' => 20
+                                'size' => '5/6',
+                                'stack' => 20,
+                                'type' => 'column'
                             ]
                         ]
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '2/6' => [
-                'type' => 'row',
                 'lot' => [
                     '2/6' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '2/6',
                                 'content' => '<p>2/6</p>',
-                                'stack' => 10
+                                'size' => '2/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
-                                'size' => '4/6',
                                 'content' => '<p>4/6</p>',
-                                'stack' => 20
+                                'size' => '4/6',
+                                'stack' => 20,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '3/6' => [
-                'type' => 'row',
                 'lot' => [
                     '3/6' => [
                         'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '3/6',
                                 'content' => '<p>3/6</p>',
-                                'stack' => 10
+                                'size' => '3/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
-                                'size' => '3/6',
                                 'content' => '<p>3/6</p>',
-                                'stack' => 20
+                                'size' => '3/6',
+                                'stack' => 20,
+                                'type' => 'column'
                             ]
                         ]
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '2/?' => [
-                'type' => 'row',
                 'lot' => [
                     '2/?' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '2/6',
                                 'content' => '<p>2/6</p>',
-                                'stack' => 10
+                                'size' => '2/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
                                 'content' => '<p>auto</p>',
-                                'stack' => 20
+                                'stack' => 20,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
         ],
-        'stack' => 20
+        'stack' => 20,
+        'tags' => ['p' => true],
+        'type' => 'rows'
     ];
     $lot['separator-1'] = [
-        'type' => 'separator',
-        'tags' => ['my:2' => true],
-        'stack' => 20.5
+        'stack' => 20.5,
+        'type' => 'separator'
     ];
     $lot['rows-2'] = [
-        'type' => 'rows',
         'lot' => [
             '1+1+1+1+1+1' => [
-                'type' => 'row',
                 'lot' => [
                     '1+1+1+1+1+1' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 10
+                                'size' => '1/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 20
+                                'size' => '1/6',
+                                'stack' => 20,
+                                'type' => 'column'
                             ],
                             2 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 30
+                                'size' => '1/6',
+                                'stack' => 30,
+                                'type' => 'column'
                             ],
                             3 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 40
+                                'size' => '1/6',
+                                'stack' => 40,
+                                'type' => 'column'
                             ],
                             4 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 50
+                                'size' => '1/6',
+                                'stack' => 50,
+                                'type' => 'column'
                             ],
                             5 => [
-                                'type' => 'column',
-                                'size' => '1/6',
                                 'content' => '<p>1/6</p>',
-                                'stack' => 60
+                                'size' => '1/6',
+                                'stack' => 60,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '2+2+2' => [
-                'type' => 'row',
                 'lot' => [
                     '2+2+2' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '2/6',
                                 'content' => '<p>2/6</p>',
-                                'stack' => 10
+                                'size' => '2/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
-                                'size' => '2/6',
                                 'content' => '<p>2/6</p>',
-                                'stack' => 20
+                                'size' => '2/6',
+                                'stack' => 20,
+                                'type' => 'column'
                             ],
                             2 => [
-                                'type' => 'column',
-                                'size' => '2/6',
                                 'content' => '<p>2/6</p>',
-                                'stack' => 30
+                                'size' => '2/6',
+                                'stack' => 30,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '3+3' => [
-                'type' => 'row',
                 'lot' => [
                     '3+3' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '3/6',
                                 'content' => '<p>3/6</p>',
-                                'stack' => 10
+                                'size' => '3/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ],
                             1 => [
-                                'type' => 'column',
-                                'size' => '3/6',
                                 'content' => '<p>3/6</p>',
-                                'stack' => 20
+                                'size' => '3/6',
+                                'stack' => 20,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ],
             '6' => [
-                'type' => 'row',
                 'lot' => [
                     '6' => [
-                        'type' => 'columns',
                         'lot' => [
                             0 => [
-                                'type' => 'column',
-                                'size' => '6/6',
                                 'content' => '<p>6/6</p>',
-                                'stack' => 10
+                                'size' => '6/6',
+                                'stack' => 10,
+                                'type' => 'column'
                             ]
-                        ]
+                        ],
+                        'type' => 'columns'
                     ]
-                ]
+                ],
+                'type' => 'row'
             ]
         ],
-        'stack' => 30
+        'stack' => 30,
+        'tags' => ['p' => true],
+        'type' => 'rows'
     ];
     $_['lot']['desk']['width'] = true;
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;

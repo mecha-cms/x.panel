@@ -1,6 +1,6 @@
 <?php
 
-if (is_dir($file = $_['file'] ?? $_['folder']) && 'get' === $_['task']) {
+if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     $_['alert']['error'][$file] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file) . '</code>', 'file']];
     $_['kick'] = x\panel\to\link([
         'part' => 1,

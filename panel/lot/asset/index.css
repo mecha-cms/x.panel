@@ -809,8 +809,8 @@
 }
 
 :focus-visible,
-.tag-picker--focus,
-.option-picker--focus,
+.tag-picker--focus:not(.is\:fix),
+.option-picker--focus:not(.is\:fix),
 [role=button]:focus,
 [role=combobox]:focus,
 [role=listbox]:focus,
@@ -1077,7 +1077,7 @@ dl {
 }
 
 figure figcaption {
-  margin-top: calc(var(--y) / 4);
+  margin-top: calc(var(--y) / 2);
 }
 figure [role=img],
 figure img {
@@ -1157,6 +1157,7 @@ input[type=submit] {
   box-shadow: var(--shadow-button);
   color: var(--color-button);
   text-align: center;
+  width: auto;
 }
 [role=button]:hover,
 [role=button]:any-link:hover,
@@ -1283,7 +1284,22 @@ input[type=submit] .title > .icon.caret {
 [role=searchbox],
 [role=spinbutton],
 [role=textbox],
-input,
+input:not([type]),
+input[type=color],
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=email],
+input[type=month],
+input[type=number],
+input[type=password],
+input[type=password],
+input[type=search],
+input[type=tel],
+input[type=text],
+input[type=time],
+input[type=url],
+input[type=week],
 textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
@@ -1295,7 +1311,22 @@ textarea {
 [role=searchbox]:read-write,
 [role=spinbutton]:read-write,
 [role=textbox]:read-write,
-input:read-write,
+input:not([type]):read-write,
+input[type=color]:read-write,
+input[type=date]:read-write,
+input[type=datetime]:read-write,
+input[type=datetime-local]:read-write,
+input[type=email]:read-write,
+input[type=month]:read-write,
+input[type=number]:read-write,
+input[type=password]:read-write,
+input[type=password]:read-write,
+input[type=search]:read-write,
+input[type=tel]:read-write,
+input[type=text]:read-write,
+input[type=time]:read-write,
+input[type=url]:read-write,
+input[type=week]:read-write,
 textarea:read-write {
   background: var(--fill-input--read-write, var(--fill-input));
   border-color: var(--stroke-input--read-write, var(--stroke-input));
@@ -1305,7 +1336,22 @@ textarea:read-write {
 [role=searchbox]:hover,
 [role=spinbutton]:hover,
 [role=textbox]:hover,
-input:hover,
+input:not([type]):hover,
+input[type=color]:hover,
+input[type=date]:hover,
+input[type=datetime]:hover,
+input[type=datetime-local]:hover,
+input[type=email]:hover,
+input[type=month]:hover,
+input[type=number]:hover,
+input[type=password]:hover,
+input[type=password]:hover,
+input[type=search]:hover,
+input[type=tel]:hover,
+input[type=text]:hover,
+input[type=time]:hover,
+input[type=url]:hover,
+input[type=week]:hover,
 textarea:hover {
   background: var(--fill-input--hover, var(--fill-input));
   border-color: var(--stroke-input--hover, var(--stroke-input));
@@ -1315,7 +1361,22 @@ textarea:hover {
 [role=searchbox]:focus,
 [role=spinbutton]:focus,
 [role=textbox]:focus,
-input:focus,
+input:not([type]):focus,
+input[type=color]:focus,
+input[type=date]:focus,
+input[type=datetime]:focus,
+input[type=datetime-local]:focus,
+input[type=email]:focus,
+input[type=month]:focus,
+input[type=number]:focus,
+input[type=password]:focus,
+input[type=password]:focus,
+input[type=search]:focus,
+input[type=tel]:focus,
+input[type=text]:focus,
+input[type=time]:focus,
+input[type=url]:focus,
+input[type=week]:focus,
 textarea:focus {
   background: var(--fill-input--focus, var(--fill-input));
   border-color: var(--stroke-input--focus, var(--stroke-input));
@@ -1325,7 +1386,22 @@ textarea:focus {
 [role=searchbox]:active,
 [role=spinbutton]:active,
 [role=textbox]:active,
-input:active,
+input:not([type]):active,
+input[type=color]:active,
+input[type=date]:active,
+input[type=datetime]:active,
+input[type=datetime-local]:active,
+input[type=email]:active,
+input[type=month]:active,
+input[type=number]:active,
+input[type=password]:active,
+input[type=password]:active,
+input[type=search]:active,
+input[type=tel]:active,
+input[type=text]:active,
+input[type=time]:active,
+input[type=url]:active,
+input[type=week]:active,
 textarea:active {
   background: var(--fill-input--active, var(--fill-input));
   border-color: var(--stroke-input--active, var(--stroke-input));
@@ -1335,7 +1411,22 @@ textarea:active {
 [role=searchbox]:read-only,
 [role=spinbutton]:read-only,
 [role=textbox]:read-only,
-input:read-only,
+input:not([type]):read-only,
+input[type=color]:read-only,
+input[type=date]:read-only,
+input[type=datetime]:read-only,
+input[type=datetime-local]:read-only,
+input[type=email]:read-only,
+input[type=month]:read-only,
+input[type=number]:read-only,
+input[type=password]:read-only,
+input[type=password]:read-only,
+input[type=search]:read-only,
+input[type=tel]:read-only,
+input[type=text]:read-only,
+input[type=time]:read-only,
+input[type=url]:read-only,
+input[type=week]:read-only,
 textarea:read-only {
   background: var(--fill-input--read-only, var(--fill-input));
   border-color: var(--stroke-input--read-only, var(--stroke-input));
@@ -1345,7 +1436,22 @@ textarea:read-only {
 [role=searchbox]:disabled,
 [role=spinbutton]:disabled,
 [role=textbox]:disabled,
-input:disabled,
+input:not([type]):disabled,
+input[type=color]:disabled,
+input[type=date]:disabled,
+input[type=datetime]:disabled,
+input[type=datetime-local]:disabled,
+input[type=email]:disabled,
+input[type=month]:disabled,
+input[type=number]:disabled,
+input[type=password]:disabled,
+input[type=password]:disabled,
+input[type=search]:disabled,
+input[type=tel]:disabled,
+input[type=text]:disabled,
+input[type=time]:disabled,
+input[type=url]:disabled,
+input[type=week]:disabled,
 textarea:disabled {
   background: var(--fill-input--disabled, var(--fill-input));
   border-color: var(--stroke-input--disabled, var(--stroke-input));
@@ -1358,8 +1464,38 @@ textarea:disabled {
 [role=spinbutton][required]:focus:valid,
 [role=textbox][pattern]:focus:valid,
 [role=textbox][required]:focus:valid,
-input[pattern]:focus:valid,
-input[required]:focus:valid,
+input:not([type])[pattern]:focus:valid,
+input:not([type])[required]:focus:valid,
+input[type=color][pattern]:focus:valid,
+input[type=color][required]:focus:valid,
+input[type=date][pattern]:focus:valid,
+input[type=date][required]:focus:valid,
+input[type=datetime][pattern]:focus:valid,
+input[type=datetime][required]:focus:valid,
+input[type=datetime-local][pattern]:focus:valid,
+input[type=datetime-local][required]:focus:valid,
+input[type=email][pattern]:focus:valid,
+input[type=email][required]:focus:valid,
+input[type=month][pattern]:focus:valid,
+input[type=month][required]:focus:valid,
+input[type=number][pattern]:focus:valid,
+input[type=number][required]:focus:valid,
+input[type=password][pattern]:focus:valid,
+input[type=password][required]:focus:valid,
+input[type=password][pattern]:focus:valid,
+input[type=password][required]:focus:valid,
+input[type=search][pattern]:focus:valid,
+input[type=search][required]:focus:valid,
+input[type=tel][pattern]:focus:valid,
+input[type=tel][required]:focus:valid,
+input[type=text][pattern]:focus:valid,
+input[type=text][required]:focus:valid,
+input[type=time][pattern]:focus:valid,
+input[type=time][required]:focus:valid,
+input[type=url][pattern]:focus:valid,
+input[type=url][required]:focus:valid,
+input[type=week][pattern]:focus:valid,
+input[type=week][required]:focus:valid,
 textarea[pattern]:focus:valid,
 textarea[required]:focus:valid {
   background: var(--fill-input--valid, var(--fill-input));
@@ -1373,8 +1509,38 @@ textarea[required]:focus:valid {
 [role=spinbutton][required]:focus:invalid,
 [role=textbox][pattern]:focus:invalid,
 [role=textbox][required]:focus:invalid,
-input[pattern]:focus:invalid,
-input[required]:focus:invalid,
+input:not([type])[pattern]:focus:invalid,
+input:not([type])[required]:focus:invalid,
+input[type=color][pattern]:focus:invalid,
+input[type=color][required]:focus:invalid,
+input[type=date][pattern]:focus:invalid,
+input[type=date][required]:focus:invalid,
+input[type=datetime][pattern]:focus:invalid,
+input[type=datetime][required]:focus:invalid,
+input[type=datetime-local][pattern]:focus:invalid,
+input[type=datetime-local][required]:focus:invalid,
+input[type=email][pattern]:focus:invalid,
+input[type=email][required]:focus:invalid,
+input[type=month][pattern]:focus:invalid,
+input[type=month][required]:focus:invalid,
+input[type=number][pattern]:focus:invalid,
+input[type=number][required]:focus:invalid,
+input[type=password][pattern]:focus:invalid,
+input[type=password][required]:focus:invalid,
+input[type=password][pattern]:focus:invalid,
+input[type=password][required]:focus:invalid,
+input[type=search][pattern]:focus:invalid,
+input[type=search][required]:focus:invalid,
+input[type=tel][pattern]:focus:invalid,
+input[type=tel][required]:focus:invalid,
+input[type=text][pattern]:focus:invalid,
+input[type=text][required]:focus:invalid,
+input[type=time][pattern]:focus:invalid,
+input[type=time][required]:focus:invalid,
+input[type=url][pattern]:focus:invalid,
+input[type=url][required]:focus:invalid,
+input[type=week][pattern]:focus:invalid,
+input[type=week][required]:focus:invalid,
 textarea[pattern]:focus:invalid,
 textarea[required]:focus:invalid {
   background: var(--fill-input--invalid, var(--fill-input));
@@ -2119,6 +2285,7 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 
 .lot\:desk {
+  outline-offset: calc(var(--y) * -1);
   padding: var(--y) var(--x);
   position: relative;
 }
@@ -2291,7 +2458,7 @@ input[type=range]:disabled::-moz-range-thumb {
   line-height: var(--h);
 }
 .option-picker__source + .option-picker {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 .option-picker__source:not([multiple]) + .option-picker {
   padding-bottom: calc(var(--y) / 4);
@@ -2344,7 +2511,7 @@ input[type=range]:disabled::-moz-range-thumb {
   --stroke-input--read-only: var(--stroke-input);
 }
 .tag-picker__source + .tag-picker {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 .tag-picker__source + .tag-picker .tag-picker__tag {
   border: 1px solid transparent;
@@ -2839,14 +3006,17 @@ input[type=range]:disabled::-moz-range-thumb {
 
 .lot\:card {
   flex-direction: column;
-  width: calc(var(--x) * 11);
+  width: var(--width-card, calc(var(--x) * 8.5));
+}
+.lot\:card > div {
+  min-height: 0;
 }
 .lot\:card > div > .image {
-  height: calc(var(--x) * 11 - var(--x));
+  height: calc(var(--x) * 8.5 - var(--x));
   margin: 0 0 calc(var(--y) * 0.5);
-  min-height: calc(var(--x) * 11 - var(--x));
-  min-width: calc(var(--x) * 11 - var(--x));
-  width: calc(var(--x) * 11 - var(--x));
+  min-height: calc(var(--x) * 8.5 - var(--x));
+  min-width: 100%;
+  width: 100%;
 }
 .lot\:card > div > .description,
 .lot\:card > div > .title {
@@ -2858,7 +3028,7 @@ input[type=range]:disabled::-moz-range-thumb {
   word-wrap: break-word;
 }
 .lot\:card > div > .lot\:tasks {
-  margin: var(--y) 0 0;
+  margin: calc(var(--y) * 0.5) 0 0;
 }
 
 .lot\:cards {
@@ -3299,6 +3469,7 @@ var {
 img {
   height: auto;
   max-width: 100%;
+  object-fit: cover;
 }
 
 .not\:active {
@@ -3355,7 +3526,7 @@ table {
 .table caption,
 table caption {
   caption-side: bottom;
-  margin-top: calc(var(--y) / 4);
+  margin-top: calc(var(--y) / 2);
 }
 .table th,
 table th,

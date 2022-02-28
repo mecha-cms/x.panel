@@ -18,7 +18,6 @@ $_['lot']['bar']['lot'][0]['lot']['link']['url'] = x\panel\to\link([
 ]);
 
 Hook::set('_', function($_) use($state, $url) {
-    // extract($GLOBALS, EXTR_SKIP);
     $bounds = [];
     foreach (g(LOT . D . 'x', 'page', 1) as $k => $v) {
         if ('about.page' !== basename($k)) {

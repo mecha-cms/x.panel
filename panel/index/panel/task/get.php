@@ -136,6 +136,7 @@ function folder($_) {
             ]);
         } else {
             $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+                'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \dirname($_['path']),
                 'query' => \array_replace_recursive([
@@ -186,6 +187,7 @@ function folder($_) {
             ]);
         } else {
             $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+                'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \dirname($_['path']),
                 'query' => \array_replace_recursive([
@@ -298,12 +300,33 @@ function page($_) {
 }
 
 function state($_) {
+    // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    if (!empty($_['alert']['error'])) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    test($_POST);
-    exit;
+    if (\is_file($file = \LOT . \D . \trim(\strtr($_POST['path'] ?? $_['path'], '/', \D), \D) . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
+        $_POST['file']['content'] = '<?php return ' . \z(\drop($_POST['state'] ?? [])) . ';';
+        $_['file'] = \stream_resolve_include_path($file); // For hook(s)
+        $_ = file($_); // Move to `file`
+    }
+    $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        'hash' => $_POST['hash'] ?? null,
+        'part' => 1,
+        'query' => \array_replace_recursive([
+            'stack' => $_POST['stack'] ?? null,
+            'tab' => $_POST['tab'] ?? null,
+            'trash' => null,
+            'type' => null
+        ], $_POST['query'] ?? []),
+        'task' => 'get'
+    ]);
+    if (!empty($_['alert']['error'])) {
+        unset($_POST['token']);
+        $_SESSION['form'] = $_POST;
+    }
+    return $_;
 }

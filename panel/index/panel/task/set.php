@@ -354,12 +354,6 @@ function page($_) {
 }
 
 function state($_) {
-    if ('POST' !== $_SERVER['REQUEST_METHOD']) {
-        return $_;
-    }
-    if (!empty($_['alert']['error'])) {
-        return $_;
-    }
-    test($_POST);
-    exit;
+    // State must exists, so there is no such create event, only update!
+    return $_;
 }

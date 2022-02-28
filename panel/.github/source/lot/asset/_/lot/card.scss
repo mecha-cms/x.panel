@@ -1,14 +1,15 @@
 .lot\:card {
   @extend .lot\:page;
   flex-direction: column;
-  width: calc(var(--x) * 11);
+  width: var(--width-card, calc(var(--x) * 8.5));
   > div {
+    min-height: 0;
     > .image {
-      height: calc(var(--x) * 11 - var(--x));
+      height: calc(var(--x) * 8.5 - var(--x));
       margin: 0 0 calc(var(--y) * .5);
-      min-height: calc(var(--x) * 11 - var(--x));
-      min-width: calc(var(--x) * 11 - var(--x));
-      width: calc(var(--x) * 11 - var(--x));
+      min-height: calc(var(--x) * 8.5 - var(--x));
+      min-width: 100%;
+      width: 100%;
     }
     > .description,
     > .title {
@@ -24,7 +25,7 @@
       }
     }
     > .lot\:tasks {
-      margin: var(--y) 0 0;
+      margin: calc(var(--y) * .5) 0 0;
     }
   }
 }

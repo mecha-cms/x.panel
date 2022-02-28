@@ -4,7 +4,9 @@
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
   width: var(--width-input);
   &--focus {
-    @extend :focus-visible;
+    &:not(.is\:fix) {
+      @extend :focus-visible;
+    }
   }
   &.has\:width {
     display: flex;
@@ -41,7 +43,7 @@
       }
     }
     + .tag-picker {
-      margin-left: 0;
+      margin-left: 0 !important;
       .tag-picker__tag {
         border: 1px solid transparent;
         line-height: calc(var(--y) - 2px);

@@ -4,12 +4,12 @@ function typography($_) {
     $_['title'] = 'Typography';
     $lot = [];
     $lot['typography-0'] = [
-        'title' => 'Typography',
-        'level' => 1,
+        'content' => file_get_contents(__DIR__ . \D . 'typography.html'),
         'description' => 'Typography test.',
-        'type' => 'content',
-        'content' => file_get_contents(__DIR__ . \DS . 'typography.html'),
-        'stack' => 10
+        'level' => 1,
+        'stack' => 10,
+        'title' => 'Typography',
+        'type' => 'content'
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

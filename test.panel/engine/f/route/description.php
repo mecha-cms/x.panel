@@ -4,9 +4,9 @@ function description($_) {
     $_['title'] = 'Description';
     $lot = [];
     $lot['description-0'] = [
-        'type' => 'description',
         'content' => 'Lorem ipsum dolor sit amet.',
-        'stack' => 0
+        'stack' => 0,
+        'type' => 'description'
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

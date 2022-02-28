@@ -38,7 +38,7 @@ if ('.state' === $_['path'] && 'get' === $_['task']) {
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['panel']['lot']['fields']['lot']['variant'] = [
             'name' => 'cookie[variant]',
             'type' => 'item',
-            'value' => $variant,
+            'value' => $variant ?? 'dark',
             'lot' => [
                 'dark' => 'Dark',
                 'light' => 'Light'

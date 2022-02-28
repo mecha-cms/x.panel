@@ -4,77 +4,77 @@ function menu($_) {
     $_['title'] = 'Menus';
     $lot = [];
     $lot['menu-0'] = [
-        'title' => 'Menu Title',
         'description' => 'Menu description.',
-        'type' => 'menu',
         'lot' => [
             0 => [
+                'stack' => 10,
                 'title' => 'Menu 1',
-                'url' => '/',
-                'stack' => 10
+                'url' => '/'
             ],
             1 => [
-                'title' => 'Menu 2',
                 'description' => 'Description for Menu 2.',
-                'url' => '/',
                 'lot' => [
                     0 => [
+                        'stack' => 10,
                         'title' => 'Menu 2.1',
-                        'url' => '/',
-                        'stack' => 10
+                        'url' => '/'
                     ],
                     1 => [
-                        'title' => 'Menu 2.2',
-                        'url' => '/',
                         'info' => 24, // Test badge
-                        'stack' => 20
+                        'stack' => 20,
+                        'title' => 'Menu 2.2',
+                        'url' => '/'
                     ],
                     2 => [
+                        'stack' => 30,
                         'title' => 'Menu 2.3',
-                        'url' => '/',
-                        'stack' => 30
+                        'url' => '/'
                     ]
                 ],
-                'stack' => 20
+                'stack' => 20,
+                'title' => 'Menu 2',
+                'url' => '/'
             ],
             2 => [
+                'stack' => 30,
                 'title' => 'Menu 3',
-                'url' => '/',
-                'stack' => 30
+                'url' => '/'
             ],
-            2.5 => [
-                'type' => 'separator',
-                'stack' => 30.5
+            '2.5' => [
+                'stack' => 30.5,
+                'type' => 'separator'
             ],
             3 => [
-                'title' => 'Menu 4',
                 'description' => 'Default.',
-                'url' => '/',
-                'stack' => 40
+                'stack' => 40,
+                'title' => 'Menu 4',
+                'url' => '/'
             ],
             4 => [
                 'current' => true,
-                'title' => 'Menu 5',
                 'description' => 'Current.',
-                'url' => '/',
-                'stack' => 40.1
+                'stack' => 40.1,
+                'title' => 'Menu 5',
+                'url' => '/'
             ],
             5 => [
                 'active' => false,
-                'title' => 'Menu 6',
                 'description' => 'Disabled.',
-                'url' => '/',
-                'stack' => 40.2
+                'stack' => 40.2,
+                'title' => 'Menu 6',
+                'url' => '/'
             ],
             6 => [
                 'active' => false,
                 'current' => true,
-                'title' => 'Menu 7',
                 'description' => 'Current, disabled.',
-                'url' => '/',
-                'stack' => 40.3
+                'stack' => 40.3,
+                'title' => 'Menu 7',
+                'url' => '/'
             ],
-        ]
+        ],
+        'title' => 'Menu Title',
+        'type' => 'menu'
     ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;

@@ -4,11 +4,13 @@
   outline: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   width: var(--width-input);
-  &--focus {
-    @extend :focus-visible;
-  }
   &::after {
     right: calc(var(--x) / 2);
+  }
+  &--focus {
+    &:not(.is\:fix) {
+      @extend :focus-visible;
+    }
   }
   &.has\:width {
     display: flex;
@@ -19,7 +21,7 @@
   }
   &__source {
     + .option-picker {
-      margin-left: 0;
+      margin-left: 0 !important;
     }
     &:not([multiple]) {
       + .option-picker {

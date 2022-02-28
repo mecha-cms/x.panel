@@ -690,7 +690,8 @@
             setChildLast(selectBoxFakeInput, selectBoxFakeInputPlaceholder);
         }
         setChildLast(selectBoxFake, selectBoxFakeInput || selectBoxFakeLabel);
-        setNext(selectBox, selectBoxFake);
+        // setNext(selectBox, selectBoxFake);
+        getParent(selectBox).insertBefore(selectBoxFake, selectBox.nextSibling || null);
 
         function doBlur() {
             letClass(selectBoxFake, classNameM + 'focus');
@@ -1197,7 +1198,7 @@
             $.pop();
             delete OP.instances[key];
         }
-        let sources = getElements('.lot\\:field.type\\:option select');
+        let sources = getElements('select');
         sources && toCount(sources) && sources.forEach(source => {
             let c = getClasses(source);
             let $ = new OP(source, getDatum(source, 'state') ?? {});
