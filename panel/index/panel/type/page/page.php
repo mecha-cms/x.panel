@@ -18,7 +18,7 @@ if (isset($state->x->tag) && (
             return $_;
         }
         // Abort if current page is not a file
-        if (!is_file($file = $_['file'])) {
+        if (!is_file($file = $_['file'] ?? P)) {
             return $_;
         }
         // Delete `kind.data` file if `data[kind]` field is empty

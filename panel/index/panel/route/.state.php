@@ -28,7 +28,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
-    $route = $state_panel['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['panel']['guard']['route'] ?? $state_r['x']['user']['guard']['route'] ?? $state_user['route'] ?? "";
+    $route = $state_r['x']['user']['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['guard']['route'] ?? $state_user['route'] ?? "";
     $route = '/' . trim($route, '/');
     if (!empty($_POST['state']['x']['user']['guard']['route'])) {
         if ($secret = To::kebab(trim($_POST['state']['x']['user']['guard']['route'], '/'))) {
@@ -37,8 +37,9 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
             unset($_POST['state']['x']['user']['guard']['route']);
         }
     }
-    if ($_['base'] !== $url . $route) {
-        if ($state_panel['guard']['route'] === $route) {
+    // TODO: Fix this!
+    if (($state_r['x']['user']['guard']['route'] ?? P) !== $route) {
+        if ($state_user['guard']['route'] === $route) {
             $_['alert']['info'][$file] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
         } else {
             $_['alert']['info'][$file] = ['Your log-in URL has been changed to %s', '<code>' . $url . $route . '</code>'];
@@ -48,7 +49,6 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = x\panel\to\link([
-        'base' => $_['base'] = $url . $route,
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
@@ -211,12 +211,12 @@ if (false === strpos($_['path'], '/')) {
                                                     ],
                                                     'key' => [
                                                         'description' => 'Set custom log-in path.',
-                                                        'hint' => $state_panel['guard']['route'] ?? $state_user['guard']['route'] ?? $state_user['route'] ?? null,
-                                                        'name' => 'state[x][panel][guard][route]',
+                                                        'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
+                                                        'name' => 'state[x][user][guard][route]',
                                                         'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
                                                         'stack' => 20,
                                                         'type' => 'text',
-                                                        'value' => $state_r['x']['panel']['guard']['path'] ?? $state_panel['guard']['route'] ?? null
+                                                        'value' => $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? null
                                                     ]
                                                 ],
                                                 'stack' => 10,

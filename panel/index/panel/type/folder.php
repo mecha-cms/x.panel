@@ -151,7 +151,7 @@ $desk = [
     ]
 ];
 
-$GLOBALS['folder'] = is_dir($folder) ? new Folder($folder) : new Folder;
+$GLOBALS['folder'] = is_dir($folder ?? P) ? new Folder($folder) : new Folder;
 
 return ($_ = array_replace_recursive($_, [
     'lot' => [

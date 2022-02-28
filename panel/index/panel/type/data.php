@@ -16,7 +16,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     return $_;
 }
 
-$name = is_file($file) ? pathinfo($file, PATHINFO_FILENAME) : null;
+$name = is_file($file ?? P) ? pathinfo($file, PATHINFO_FILENAME) : null;
 $content = $name ? file_get_contents($file) : null;
 
 $path = 'get' === $_['task'] ? dirname($file) : $file;
@@ -163,7 +163,7 @@ $desk = [
     ]
 ];
 
-$GLOBALS['file'] = is_file($file) ? new File($file) : new File;
+$GLOBALS['file'] = is_file($file ?? P) ? new File($file) : new File;
 
 return ($_ = array_replace_recursive($_, [
     'lot' => [

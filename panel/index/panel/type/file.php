@@ -67,7 +67,7 @@ $check_mode = static function($path, $printable = false, $max = 256) {
 };
 
 if (!$editable) {
-    $test = $check_mode($file);
+    $test = $check_mode($file ?? P);
     $editable = 0 === $test || 1 === $test || 2 === $test;
 }
 
@@ -209,7 +209,7 @@ $desk = [
     ]
 ];
 
-$GLOBALS['file'] = is_file($file) ? new File($file) : new File;
+$GLOBALS['file'] = is_file($file ?? P) ? new File($file) : new File;
 
 return ($_ = array_replace_recursive($_, [
     'lot' => [

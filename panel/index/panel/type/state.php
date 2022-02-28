@@ -20,7 +20,7 @@ $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
 
 $fields = [];
 
-if (is_file($file)) {
+if (is_file($file ?? P)) {
     $i = 10;
     foreach ((array) require x\panel\_cache_let($file) as $k => $v) {
         // Pre-defined field type
