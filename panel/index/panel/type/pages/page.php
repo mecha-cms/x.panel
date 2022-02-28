@@ -12,7 +12,7 @@ Hook::set('_', function($_) use($state) {
             if (!empty($v['tasks']['set']['url'])) {
                 $v['tasks']['set']['url'] = x\panel\to\link([
                     'part' => 0,
-                    'path' => $path,
+                    'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                     'query' => [
                         'query' => null,
                         'stack' => null,
