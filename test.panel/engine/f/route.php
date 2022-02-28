@@ -3,9 +3,11 @@
 function __test($_) {
     $_['status'] = 200;
     $_['title'] = 'Tests';
-    if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot'])) {
+    // `http://127.0.0.1/panel/get/.test/*`
+    if ('.test' !== $_['path']) {
         return $_;
     }
+    // `http://127.0.0.1/panel/get/.test`
     \extract($GLOBALS, \EXTR_SKIP);
     $tests = \is(\get_defined_functions(true)['user'], static function($v) {
         return 0 === \strpos($v, "x\\panel\\route\\__test\\");
