@@ -105,44 +105,6 @@
 }
 
 @media (max-width: 720px) {
-  @each $type, $v in (b bottom, l left, r right, t top) {
-    .m#{$type}\:2 {
-      @if left == $v or right == $v {
-        margin-#{$v}: var(--x);
-      } @else {
-        margin-#{$v}: var(--y);
-      }
-    }
-    .p#{$type}\:2 {
-      @if left == $v or right == $v {
-        padding-#{$v}: var(--x);
-      } @else {
-        padding-#{$v}: var(--y);
-      }
-    }
-  }
-  .mx\:2 {
-    margin-left: var(--x);
-    margin-right: var(--x);
-  }
-  .my\:2 {
-    margin-bottom: var(--y);
-    margin-top: var(--y);
-  }
-  .m\:2 {
-    margin: var(--y) var(--x);
-  }
-  .px\:2 {
-    padding-left: var(--x);
-    padding-right: var(--x);
-  }
-  .py\:2 {
-    padding-bottom: var(--y);
-    padding-top: var(--y);
-  }
-  .p\:2 {
-    padding: var(--y) var(--x);
-  }
   .lot\:bar {
     .lot\:links {
       &.of\:lot {
@@ -205,6 +167,12 @@
     .lot\:links {
       ul {
         gap: 0 var(--x);
+        margin-bottom: var(--y);
+      }
+      li {
+        &.is\:current {
+          opacity: .5;
+        }
       }
       .title {
         svg {

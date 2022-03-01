@@ -300,7 +300,7 @@
             });
             let tabCurrent = tabs.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
             if (tabCurrent) {
-                input.value = getDatum(tabCurrent, 'name');
+                input.value = getDatum(tabCurrent, 'value');
             }
             onEvent('keydown', source, onKeyDownTabs);
         });

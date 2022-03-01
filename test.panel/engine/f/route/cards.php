@@ -34,7 +34,7 @@ function cards($_) {
             $item('Default Card Example', 'Card description goes here.', 'card', 10),
             $item('Default Card Example', 'Card description goes here.', 'card', 10),
             \array_replace($item('Card Example with Image', 'Image placeholder provided by <a href="https://placekitten.com" rel="nofollow" target="_blank">Placekitten</a> service.', 'card', 10.1), [
-                'image' => 'https://placekitten.com/100/100?image=3'
+                'image' => 'https://placekitten.com/216/216?image=3'
             ]),
             \array_replace($item('Disabled Card Example', 'Card description goes here.', 'card', 10.3), [
                 'active' => false
@@ -47,6 +47,7 @@ function cards($_) {
         'stack' => 10,
         'type' => 'cards'
     ];
+    $_['lot']['desk']['width'] = true;
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;
 }

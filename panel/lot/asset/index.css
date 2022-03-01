@@ -2109,12 +2109,15 @@ input[type=range]:disabled::-moz-range-thumb {
   color: var(--color-alert);
   padding: calc(var(--z) * 0.75) calc(var(--z) * 1.25);
 }
-[role=alert] .lot\:tasks {
-  float: right;
-  margin-right: calc(var(--x) / -4);
-}
 [role=alert] + [role=alert] {
   margin-top: calc(var(--y) / 2);
+}
+[role=alert] > [role=group] {
+  display: flex;
+}
+[role=alert] > [role=group] .lot\:tasks {
+  margin-left: auto;
+  margin-right: calc(var(--x) / -4);
 }
 
 .lot\:bar {
@@ -3006,15 +3009,17 @@ input[type=range]:disabled::-moz-range-thumb {
 
 .lot\:card {
   flex-direction: column;
-  width: var(--width-card, calc(var(--x) * 8.5));
+  width: var(--width-card, calc(var(--x) * 10));
 }
 .lot\:card > div {
   min-height: 0;
 }
+.lot\:card > div + div {
+  margin-top: calc(var(--y) / 2);
+}
 .lot\:card > div > .image {
-  height: calc(var(--x) * 8.5 - var(--x));
-  margin: 0 0 calc(var(--y) * 0.5);
-  min-height: calc(var(--x) * 8.5 - var(--x));
+  height: calc(var(--x) * 10 - var(--x));
+  min-height: calc(var(--x) * 10 - var(--x));
   min-width: 100%;
   width: 100%;
 }
@@ -3026,9 +3031,6 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:card > div > .title .title > span {
   white-space: normal;
   word-wrap: break-word;
-}
-.lot\:card > div > .lot\:tasks {
-  margin: calc(var(--y) * 0.5) 0 0;
 }
 
 .lot\:cards {
@@ -3651,66 +3653,6 @@ u {
   }
 }
 @media (max-width: 720px) {
-  .mb\:2 {
-    margin-bottom: var(--y);
-  }
-
-  .pb\:2 {
-    padding-bottom: var(--y);
-  }
-
-  .ml\:2 {
-    margin-left: var(--x);
-  }
-
-  .pl\:2 {
-    padding-left: var(--x);
-  }
-
-  .mr\:2 {
-    margin-right: var(--x);
-  }
-
-  .pr\:2 {
-    padding-right: var(--x);
-  }
-
-  .mt\:2 {
-    margin-top: var(--y);
-  }
-
-  .pt\:2 {
-    padding-top: var(--y);
-  }
-
-  .mx\:2 {
-    margin-left: var(--x);
-    margin-right: var(--x);
-  }
-
-  .my\:2 {
-    margin-bottom: var(--y);
-    margin-top: var(--y);
-  }
-
-  .m\:2 {
-    margin: var(--y) var(--x);
-  }
-
-  .px\:2 {
-    padding-left: var(--x);
-    padding-right: var(--x);
-  }
-
-  .py\:2 {
-    padding-bottom: var(--y);
-    padding-top: var(--y);
-  }
-
-  .p\:2 {
-    padding: var(--y) var(--x);
-  }
-
   .lot\:bar .lot\:links.of\:lot {
     flex: 1;
     min-width: 100%;
@@ -3772,6 +3714,10 @@ u {
 
   .lot\:tabs .lot\:links ul {
     gap: 0 var(--x);
+    margin-bottom: var(--y);
+  }
+  .lot\:tabs .lot\:links li.is\:current {
+    opacity: 0.5;
   }
   .lot\:tabs .lot\:links .title svg {
     display: none;

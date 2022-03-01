@@ -28,22 +28,23 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
-    $route = $state_r['x']['user']['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['guard']['route'] ?? $state_user['route'] ?? "";
+    $route = $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'] ?? "";
     $route = '/' . trim($route, '/');
     if (!empty($_POST['state']['x']['user']['guard']['route'])) {
-        if ($secret = To::kebab(trim($_POST['state']['x']['user']['guard']['route'], '/'))) {
-            $_POST['state']['x']['user']['guard']['route'] = $route = '/' . $secret;
+        if ($v = To::kebab(trim($_POST['state']['x']['user']['guard']['route'], '/'))) {
+            $_POST['state']['x']['user']['guard']['route'] = $route = '/' . $v;
         } else {
             unset($_POST['state']['x']['user']['guard']['route']);
         }
+    } else {
+        $reset = true;
     }
-    // TODO: Fix this!
-    if (($state_r['x']['user']['guard']['route'] ?? P) !== $route) {
-        if ($state_user['guard']['route'] === $route) {
+    if ($route === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
+        if (!empty($reset) && (!empty($state_r['x']['user']['guard']['route']) || !empty($state_r['x']['user']['route']))) {
             $_['alert']['info'][$file] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
-        } else {
-            $_['alert']['info'][$file] = ['Your log-in URL has been changed to %s', '<code>' . $url . $route . '</code>'];
         }
+    } else {
+        $_['alert']['info'][$file] = ['Your log-in URL has been changed to %s', '<code>' . $url . $route . '</code>'];
     }
     x\panel\_cache_let(PATH . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
@@ -62,7 +63,6 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     ]);
 }
 
-// `http://127.0.0.1/panel/get/.state`
 if (false === strpos($_['path'], '/')) {
     $languages = $panes = $routes = [];
     if (isset($state->x->language)) {
@@ -194,7 +194,7 @@ if (false === strpos($_['path'], '/')) {
                                                 ]
                                             ]
                                         ],
-                                        'name' => 'site'
+                                        'value' => 'site'
                                     ],
                                     'panel' => [
                                         'lot' => [
@@ -322,7 +322,7 @@ if (false === strpos($_['path'], '/')) {
             'desk' => $desk
         ]);
         return $_;
-    });
+    }, 0);
 }
 
 return $_;

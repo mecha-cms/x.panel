@@ -35,7 +35,6 @@ function pages($_) {
                 'image' => 'https://placekitten.com/100/100?image=3'
             ]),
             \array_replace($item('Hidden Icon/Image View', 'Disabling the thumbnail view.', 'page', 10.2), [
-                'icon' => false,
                 'image' => false
             ]),
             \array_replace($item('Icon Page Example', 'Icon provided by <a href="https://materialdesignicons.com" rel="nofollow" target="_blank">Material Design Icons</a> library.', 'page', 10.3), [

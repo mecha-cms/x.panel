@@ -863,7 +863,7 @@ function page($value, $key) {
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
         $div = new \HTML(['div', "", []]);
-        $icon = $value['icon'] ?? "";
+        $icon = $value['icon'] ?? false; // Prioritize `icon` but its default is `false`
         $image = $value['image'] ?? "";
         $path = $value['path'] ?? $key;
         $time = isset($value['time']) ? \strtr($value['time'], '-', '/') : null;
