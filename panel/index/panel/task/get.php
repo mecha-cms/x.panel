@@ -282,8 +282,17 @@ function page($_) {
         $path = '<code>' . \x\panel\from\path($file ?? $self) . '</code>';
         $alter = [
             'File %s already exists.' => ['%s %s already exists.', [$key, $path]],
+            'File %s successfully renamed.' => ['%s %s successfully renamed.', [$key, $path]],
             'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]
         ];
+        $x = \pathinfo($self, \PATHINFO_EXTENSION);
+        if ('archive' === $x) {
+            $alter['File %s successfully renamed.'] = ['%s %s successfully converted to archive.', [$key, $path]];
+        } else if ('draft' === $x) {
+            $alter['File %s successfully renamed.'] = ['%s %s successfully reverted to draft.', [$key, $path]];
+        } else if ('page' === $x) {
+            $alter['File %s successfully renamed.'] = ['%s %s successfully published.', [$key, $path]];
+        }
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
                 if (\is_array($vv)) {
