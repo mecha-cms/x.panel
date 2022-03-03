@@ -44,7 +44,6 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'asset' => [],
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
-    'can' => ['fetch' => !empty($state->x->panel->fetch)],
     'chunk' => null, // Default is `20`
     'content' => null,
     'count' => 0,

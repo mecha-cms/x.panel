@@ -11,12 +11,12 @@ import {
     isFunction
 } from '@taufik-nurrohman/is';
 
-function setDialog(id, {title, content, tasks}) {
+function setProxy(id, {title, content, tasks}) {
     // TODO
     return {};
 }
 
-W._.dialog = setDialog;
+W._.proxy = setProxy;
 
 function promisify(type, lot) {
     return new Promise((resolve, reject) => {
@@ -27,5 +27,5 @@ function promisify(type, lot) {
 
 // Prepare for <https://developers.google.com/web/updates/2017/03/dialogs-policy>
 ['alert', 'confirm', 'prompt'].forEach(type => {
-    W._.dialog[type] = (...lot) => promisify(type, lot);
+    W._.proxy[type] = (...lot) => promisify(type, lot);
 });

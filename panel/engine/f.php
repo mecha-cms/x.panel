@@ -40,11 +40,7 @@ function _asset_get() {
         'stack' => 20
     ];
     $data[$f . \D . 'index' . $z . 'js'] = ['stack' => 20];
-    $data[$f . \D . 'index' . \D . 'fetch' . $z . 'js'] = [
-        'skip' => empty($GLOBALS['_']['can']['fetch']),
-        'stack' => 30
-    ];
-    foreach (['bar', 'column', 'dialog', 'file', 'link', 'menu', 'page', 'row', 'stack', 'tab', 'task'] as $v) {
+    foreach (['bar', 'column', 'file', 'link', 'menu', 'page', 'proxy', 'row', 'stack', 'tab', 'task'] as $v) {
         $data[$f . 'index' . \D . $v . $z . 'js'] = ['stack' => 30];
     }
     foreach (['option', 'query', 'source'] as $v) {

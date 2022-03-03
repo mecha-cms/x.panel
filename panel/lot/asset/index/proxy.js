@@ -2,7 +2,7 @@
     'use strict';
     var W = window;
 
-    function setDialog(id, {
+    function setProxy(id, {
         title,
         content,
         tasks
@@ -10,7 +10,7 @@
         // TODO
         return {};
     }
-    W._.dialog = setDialog;
+    W._.proxy = setProxy;
 
     function promisify(type, lot) {
         return new Promise((resolve, reject) => {
@@ -19,6 +19,6 @@
         });
     } // Prepare for <https://developers.google.com/web/updates/2017/03/dialogs-policy>
     ['alert', 'confirm', 'prompt'].forEach(type => {
-        W._.dialog[type] = (...lot) => promisify(type, lot);
+        W._.proxy[type] = (...lot) => promisify(type, lot);
     });
 })();

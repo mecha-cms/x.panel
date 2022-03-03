@@ -1710,7 +1710,7 @@
     Object.assign(TE.prototype, that$2, that$1);
     TE.state = fromStates({}, TE.state, state$2, state$1, state);
     ['alert', 'confirm', 'prompt'].forEach(type => {
-        W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
+        W._.proxy[type] && (TE.state.source[type] = W._.proxy[type]);
     }); // Be sure to remove the default source type
     delete TE.state.source.type;
 

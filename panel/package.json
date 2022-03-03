@@ -2,7 +2,6 @@
   "dependencies": {
     "@taufik-nurrohman/document": "^0.2.0",
     "@taufik-nurrohman/event": "^0.3.1",
-    "@taufik-nurrohman/f3h": "^1.2.6",
     "@taufik-nurrohman/from": "^0.0.9",
     "@taufik-nurrohman/hook": "^0.1.2",
     "@taufik-nurrohman/is": "^0.1.2",
