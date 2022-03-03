@@ -6,6 +6,16 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && false === \strpos(\strtr($source = 
 }
 
 function data($_) {
+    // Allow to use `GET` request
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        // Fake `POST` request
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        foreach (['hash', 'kick', 'path', 'query', 'stack', 'tab', 'token', 'trash'] as $k) {
+            if (isset($_GET[$k])) {
+                $_POST[$k] = $_GET[$k];
+            }
+        }
+    }
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
@@ -33,6 +43,16 @@ function data($_) {
 }
 
 function file($_) {
+    // Allow to use `GET` request
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        // Fake `POST` request
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        foreach (['hash', 'kick', 'path', 'query', 'stack', 'tab', 'token', 'trash'] as $k) {
+            if (isset($_GET[$k])) {
+                $_POST[$k] = $_GET[$k];
+            }
+        }
+    }
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
@@ -71,6 +91,16 @@ function file($_) {
 }
 
 function folder($_) {
+    // Allow to use `GET` request
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        // Fake `POST` request
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        foreach (['hash', 'kick', 'path', 'query', 'stack', 'tab', 'token', 'trash'] as $k) {
+            if (isset($_GET[$k])) {
+                $_POST[$k] = $_GET[$k];
+            }
+        }
+    }
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
@@ -125,6 +155,16 @@ function folder($_) {
 }
 
 function page($_) {
+    // Allow to use `GET` request
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        // Fake `POST` request
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        foreach (['hash', 'kick', 'path', 'query', 'stack', 'tab', 'token', 'trash'] as $k) {
+            if (isset($_GET[$k])) {
+                $_POST[$k] = $_GET[$k];
+            }
+        }
+    }
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
