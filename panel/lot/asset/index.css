@@ -3009,7 +3009,7 @@ input[type=range]:disabled::-moz-range-thumb {
 
 .lot\:card {
   flex-direction: column;
-  width: var(--width-card, calc(var(--x) * 10));
+  width: var(--width-card, calc(var(--x) * 12));
 }
 .lot\:card > div {
   min-height: 0;
@@ -3018,8 +3018,8 @@ input[type=range]:disabled::-moz-range-thumb {
   margin-top: calc(var(--y) / 2);
 }
 .lot\:card > div > .image {
-  height: calc(var(--x) * 10 - var(--x));
-  min-height: calc(var(--x) * 10 - var(--x));
+  height: calc(var(--x) * 12 - var(--x));
+  min-height: calc(var(--x) * 12 - var(--x));
   min-width: 100%;
   width: 100%;
 }
@@ -3031,6 +3031,9 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:card > div > .title .title > span {
   white-space: normal;
   word-wrap: break-word;
+}
+.lot\:card > div .with\:title {
+  margin-right: auto;
 }
 
 .lot\:cards {

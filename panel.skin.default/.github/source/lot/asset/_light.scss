@@ -121,10 +121,14 @@
   --color-option-picker__option--disabled: var(--color--disabled);
   --color-option-picker__option--selected: var(--color);
   --color-option-picker__option: var(--color);
+  --color-tag-picker__tag--disabled: #{shade(40%)};
+  --color-tag-picker__tag--read-only: #{shade(40%)};
   --color-tag-picker__tag-x: #{shade(30%)};
   --color-tag-picker__tag: #{shade(25%)};
   --fill-option-picker__option--selected: rgba(0, 0, 0, .025);
+  --fill-tag-picker__tag--disabled: #{shade(80%)};
   --fill-tag-picker__tag--focus: #{shade(70%)};
+  --fill-tag-picker__tag--read-only: #{shade(80%)};
   --fill-tag-picker__tag--selected: #{shade(70%)};
   --fill-tag-picker__tag: #{shade(75%)};
   @each $v in (hover, focus, active) {

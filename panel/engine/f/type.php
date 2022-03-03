@@ -41,6 +41,19 @@ function button($value, $key) {
 function card($value, $key) {
     $value['tags']['lot:card'] = true;
     $value['tags']['lot:page'] = false;
+    $value['tasks']['title'] = [
+        'description' => $value['description'] ?? null,
+        'link' => $value['link'] ?? null,
+        'stack' => -1,
+        'tags' => [
+            'with:title' => true
+        ],
+        'title' => $value['title'] ?? null,
+        'url' => $value['url'] ?? null
+    ];
+    $value['description'] = false;
+    $value['title'] = false;
+    unset($value['link'], $value['url']);
     return \x\panel\type\page($value, $key);
 }
 
@@ -885,11 +898,15 @@ function page($value, $key) {
             $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';"></span>';
         }
         $out[1] .= $div;
-        $out[1] .= '<div><h3 class="title">' . \x\panel\type\link([
-            'link' => $value['link'] ?? null,
-            'title' => $value['title'] ?? $time,
-            'url' => $value['url'] ?? null
-        ], $key) . '</h3>' . \x\panel\to\description($value['description'] ?? $time) . '</div>';
+        $description = $value['description'] ?? $time;
+        $title = $value['title'] ?? $time;
+        if (false !== $description || false !== $title) {
+            $out[1] .= '<div><h3 class="title">' . \x\panel\type\link([
+                'link' => $value['link'] ?? null,
+                'title' => $title,
+                'url' => $value['url'] ?? null
+            ], $key) . '</h3>' . \x\panel\to\description($description) . '</div>';
+        }
         $out[1] .= '<div>' . \x\panel\type\tasks\link([
             '0' => 'p',
             'lot' => $value['tasks'] ?? []

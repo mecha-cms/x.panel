@@ -12,10 +12,10 @@
 .lot\:pages .lot\:tasks {
   gap: 0;
 }
-.lot\:cards .lot\:tasks > * .title span,
-.lot\:files .lot\:tasks > * .title span,
-.lot\:folders .lot\:tasks > * .title span,
-.lot\:pages .lot\:tasks > * .title span {
+.lot\:cards .lot\:tasks > * .title svg + span,
+.lot\:files .lot\:tasks > * .title svg + span,
+.lot\:folders .lot\:tasks > * .title svg + span,
+.lot\:pages .lot\:tasks > * .title svg + span {
   display: none;
 }
 
@@ -164,10 +164,14 @@
   --color-option-picker__option--disabled: var(--color--disabled);
   --color-option-picker__option--selected: var(--color);
   --color-option-picker__option: var(--color);
+  --color-tag-picker__tag--disabled: #a7a7a7;
+  --color-tag-picker__tag--read-only: #a7a7a7;
   --color-tag-picker__tag-x: #f4f4f4;
   --color-tag-picker__tag: #c8c8c8;
   --fill-option-picker__option--selected: rgba(255, 255, 255, .025);
+  --fill-tag-picker__tag--disabled: #383838;
   --fill-tag-picker__tag--focus: #4e4e4e;
+  --fill-tag-picker__tag--read-only: #383838;
   --fill-tag-picker__tag--selected: #4e4e4e;
   --fill-tag-picker__tag: #434343;
   --color-option-picker__option--hover: var(--color);
@@ -345,10 +349,14 @@
   --color-option-picker__option--disabled: var(--color--disabled);
   --color-option-picker__option--selected: var(--color);
   --color-option-picker__option: var(--color);
+  --color-tag-picker__tag--disabled: #7a7a7a;
+  --color-tag-picker__tag--read-only: #7a7a7a;
   --color-tag-picker__tag-x: #646464;
   --color-tag-picker__tag: #595959;
   --fill-option-picker__option--selected: rgba(0, 0, 0, .025);
+  --fill-tag-picker__tag--disabled: lightgray;
   --fill-tag-picker__tag--focus: #bdbdbd;
+  --fill-tag-picker__tag--read-only: lightgray;
   --fill-tag-picker__tag--selected: #bdbdbd;
   --fill-tag-picker__tag: #c8c8c8;
   --color-option-picker__option--hover: var(--color);

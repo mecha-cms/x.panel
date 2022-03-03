@@ -1,15 +1,15 @@
 .lot\:card {
   @extend .lot\:page;
   flex-direction: column;
-  width: var(--width-card, calc(var(--x) * 10));
+  width: var(--width-card, calc(var(--x) * 12));
   > div {
     min-height: 0;
     + div {
       margin-top: calc(var(--y) / 2);
     }
     > .image {
-      height: calc(var(--x) * 10 - var(--x));
-      min-height: calc(var(--x) * 10 - var(--x));
+      height: calc(var(--x) * 12 - var(--x));
+      min-height: calc(var(--x) * 12 - var(--x));
       min-width: 100%;
       width: 100%;
     }
@@ -25,6 +25,9 @@
           word-wrap: break-word;
         }
       }
+    }
+    .with\:title {
+      margin-right: auto;
     }
   }
 }

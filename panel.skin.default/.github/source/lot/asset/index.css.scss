@@ -21,8 +21,10 @@ $mix: #fff;
     gap: 0;
     > * {
       .title {
-        span {
-          display: none; // Remove title
+        svg {
+          + span {
+            display: none; // Remove title
+          }
         }
       }
     }
