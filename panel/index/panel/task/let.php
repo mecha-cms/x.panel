@@ -20,6 +20,10 @@ function data($_) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
+    // Invalid token?
+    if (!\check($_POST['token'] ?? \P, 'user')) {
+        $_['alert']['error'][] = 'Invalid token.';
+    }
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
@@ -56,6 +60,10 @@ function file($_) {
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
+    }
+    // Invalid token?
+    if (!\check($_POST['token'] ?? \P, 'user')) {
+        $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -104,6 +112,10 @@ function folder($_) {
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
+    }
+    // Invalid token?
+    if (!\check($_POST['token'] ?? \P, 'user')) {
+        $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
@@ -168,6 +180,10 @@ function page($_) {
     // Method not allowed!
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
+    }
+    // Invalid token?
+    if (!\check($_POST['token'] ?? \P, 'user')) {
+        $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
