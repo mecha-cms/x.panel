@@ -420,7 +420,7 @@ function files($value, $key) {
         $lot = [];
         if (isset($value['lot'])) {
             foreach ($value['lot'] as $k => $v) {
-                if (null === $v || false === $v || !empty($v['skip'])) {
+                if (false === $v || null === $v || !empty($v['skip'])) {
                     continue;
                 }
                 $lot[$k] = $v;
@@ -638,6 +638,25 @@ function input($value, $key) {
     ], $value['tags'] ?? []);
     if ($has_pattern) {
         $out[2]['pattern'] = $value['pattern'];
+    }
+    // TODO: Put the `<datalist>` somewhere before the `</body>`
+    if (isset($value['lot'])) {
+        $list = [
+            0 => 'datalist',
+            1 => "",
+            2 => ['id' => $id = 'l:' . \substr(\uniqid(), 0, 6)]
+        ];
+        $values = [];
+        foreach ((array) $value['lot'] as $k => $v) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
+                continue;
+            }
+            $values[] = '<option>' . (\is_array($v) ? ($v['value'] ?? $v['title'] ?? $k) : \s($v)) . '</option>';
+        }
+        $sort = !isset($value['sort']) || $value['sort'];
+        $sort && \sort($values);
+        $out[2]['list'] = $id;
+        $list[1] = \implode("", $values);
     }
     $out[2]['autofocus'] = !empty($value['focus']);
     $out[2]['disabled'] = !$is_active;
@@ -949,7 +968,7 @@ function pages($value, $key) {
         $lot = [];
         if (isset($value['lot'])) {
             foreach ($value['lot'] as $k => $v) {
-                if (null === $v || false === $v || !empty($v['skip'])) {
+                if (false === $v || null === $v || !empty($v['skip'])) {
                     continue;
                 }
                 $lot[$k] = $v;
@@ -1076,7 +1095,7 @@ function select($value, $key) {
         $seq0 = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
         $sort = !isset($value['sort']) || $value['sort'];
         foreach ($value['lot'] ?? [] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
             // Group
