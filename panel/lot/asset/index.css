@@ -3538,7 +3538,7 @@ table th,
 .table td,
 table td {
   border: 1px solid var(--stroke);
-  padding: calc(var(--y) / 6) calc(var(--x) / 2);
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
   text-align: inherit;
   vertical-align: top;
 }

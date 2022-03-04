@@ -26,7 +26,7 @@ function onChange() {
         $.pop();
         delete OP.instances[key];
     }
-    let sources = getElements('select');
+    let sources = getElements('input[list],select');
     sources && toCount(sources) && sources.forEach(source => {
         let c = getClasses(source);
         let $ = new OP(source, getDatum(source, 'state') ?? {});

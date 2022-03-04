@@ -179,7 +179,9 @@
             toArray = true;
         }
         var value = (getState(node, 'className') || "").trim();
-        return toArray ? value.split(/\s+/) : value;
+        return toArray ? value.split(/\s+/).filter(function(v) {
+            return "" !== v;
+        }) : value;
     };
     var getDatum = function getDatum(node, datum, parseValue) {
         if (parseValue === void 0) {
@@ -1181,7 +1183,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.3.1';
+    OP.version = '1.3.2';
 
     function onChange() {
         // Destroy!
@@ -1191,7 +1193,7 @@
             $.pop();
             delete OP.instances[key];
         }
-        let sources = getElements('select');
+        let sources = getElements('input[list],select');
         sources && toCount(sources) && sources.forEach(source => {
             let c = getClasses(source);
             let $ = new OP(source, getDatum(source, 'state') ?? {});

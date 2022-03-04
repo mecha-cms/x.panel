@@ -170,7 +170,9 @@
             toArray = true;
         }
         var value = (getState(node, 'className') || "").trim();
-        return toArray ? value.split(/\s+/) : value;
+        return toArray ? value.split(/\s+/).filter(function(v) {
+            return "" !== v;
+        }) : value;
     };
     var getDatum = function getDatum(node, datum, parseValue) {
         if (parseValue === void 0) {
@@ -1179,7 +1181,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.9';
+    TP.version = '3.4.10';
 
     function onChange() {
         // Destroy!
