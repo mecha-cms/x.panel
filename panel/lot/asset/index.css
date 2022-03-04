@@ -3477,6 +3477,10 @@ img {
   object-fit: cover;
 }
 
+.is\:fix {
+  cursor: default;
+}
+
 .not\:active {
   color: var(--color--disabled, inherit);
   cursor: not-allowed;
