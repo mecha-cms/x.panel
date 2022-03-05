@@ -177,7 +177,7 @@ function type($value, $key) {
     if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')))) {
         if (\function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
             if ($v = \call_user_func($fn, $value, $key)) {
-                $out .= $v;
+                $out .= \is_array($v) ? \implode("\n", $v) : $v;
             }
         } else {
             $out .= \x\panel\_abort($value, $key, $fn);

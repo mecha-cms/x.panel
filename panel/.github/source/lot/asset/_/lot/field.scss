@@ -27,6 +27,7 @@
       .with\:fields {
         display: inline-flex;
         position: relative;
+        vertical-align: middle;
         &.has\:width {
           display: flex;
         }

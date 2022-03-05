@@ -587,31 +587,39 @@ function icon($value, $key) {
     $icons = $GLOBALS['_']['icon'] ?? [];
     $v = [
         'class' => 'icon',
-        'height' => 12,
-        'width' => 12
+        'height' => 24,
+        'width' => 24
     ];
-    if ($icon[0] && false === \strpos($icon[0], '<')) {
-        // Named icon(s)
-        if (isset($icons[$icon[0]])) {
-            $icon[0] = new \HTML(['svg', '<use href="#i:' . $icon[0] . '"></use>', $v]);
-        // Inline icon(s)
-        } else {
-            if (!isset($icons[$id = \dechex(\crc32($icon[0]))])) {
-                $GLOBALS['_']['icon'][$id] = $icon[0];
+    if ($icon[0]) {
+        if (false === \strpos($icon[0], '<')) {
+            // Named icon(s)
+            if (isset($icons[$icon[0]])) {
+                $icon[0] = new \HTML(['svg', '<use href="#i:' . $icon[0] . '"></use>', $v]);
+            // Inline icon(s)
+            } else {
+                if (!isset($icons[$id = \dechex(\crc32($icon[0]))])) {
+                    $GLOBALS['_']['icon'][$id] = $icon[0];
+                }
+                $icon[0] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
             }
-            $icon[0] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
+        } else {
+            $icon[0] = new \HTML(['svg', $icon[0], $v]);
         }
     }
-    if ($icon[1] && false === \strpos($icon[1], '<')) {
-        // Named icon(s)
-        if (isset($icons[$icon[1]])) {
-            $icon[1] = new \HTML(['svg', '<use href="#i:' . $icon[1] . '"></use>', $v]);
-        // Inline icon(s)
-        } else {
-            if (!isset($icons[$id = \dechex(\crc32($icon[1]))])) {
-                $GLOBALS['_']['icon'][$id] = $icon[1];
+    if ($icon[1]) {
+        if (false === \strpos($icon[1], '<')) {
+            // Named icon(s)
+            if (isset($icons[$icon[1]])) {
+                $icon[1] = new \HTML(['svg', '<use href="#i:' . $icon[1] . '"></use>', $v]);
+            // Inline icon(s)
+            } else {
+                if (!isset($icons[$id = \dechex(\crc32($icon[1]))])) {
+                    $GLOBALS['_']['icon'][$id] = $icon[1];
+                }
+                $icon[1] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
             }
-            $icon[1] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
+        } else {
+            $icon[1] = new \HTML(['svg', $icon[1], $v]);
         }
     }
     return $icon;
@@ -639,24 +647,13 @@ function input($value, $key) {
     if ($has_pattern) {
         $out[2]['pattern'] = $value['pattern'];
     }
-    // TODO: Put the `<datalist>` somewhere before the `</body>`
-    if (isset($value['lot'])) {
-        $list = [
-            0 => 'datalist',
-            1 => "",
-            2 => ['id' => $id = 'l:' . \substr(\uniqid(), 0, 6)]
-        ];
-        $values = [];
-        foreach ((array) $value['lot'] as $k => $v) {
-            if (false === $v || null === $v || !empty($v['skip'])) {
-                continue;
-            }
-            $values[] = '<option>' . (\is_array($v) ? ($v['value'] ?? $v['title'] ?? $k) : \s($v)) . '</option>';
+    if (!empty($value['lot']) && \is_array($value['lot'])) {
+        $id = $value['id'] ?? \substr(\uniqid(), 0, 6);
+        if (0 === \strpos($id, 'f:')) {
+            $id = \substr($id, 2);
         }
-        $sort = !isset($value['sort']) || $value['sort'];
-        $sort && \sort($values);
-        $out[2]['list'] = $id;
-        $list[1] = \implode("", $values);
+        $GLOBALS['_']['data-list'][$id] = $value['lot'];
+        $out[2]['list'] = 'l:' . $id;
     }
     $out[2]['autofocus'] = !empty($value['focus']);
     $out[2]['disabled'] = !$is_active;
@@ -995,6 +992,71 @@ function pages($value, $key) {
             'lot' => true,
             'lot:pages' => true
         ], $value['tags'] ?? []));
+    }
+    return "" !== $out[1] ? new \HTML($out) : null;
+}
+
+function proxy($value, $key) {
+    $out = [
+        0 => $value[0] ?? 'div',
+        1 => $value[1] ?? "",
+        2 => \array_replace([
+            'role' => 'dialog',
+            'tabindex' => -1
+        ], $value[2] ?? [])
+    ];
+    $count = 0;
+    if (!isset($value[1])) {
+        $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4);
+        // TODO: Allow to customize this
+        $tasks = \x\panel\type\tasks\link([
+            'lot' => [
+                'exit' => [
+                    'description' => 'Close',
+                    'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
+                    // Ideally, a dialog should only contains at most of three button after the dialog title
+                    'stack' => 30,
+                    'title' => false,
+                    'url' => '#exit'
+                ]
+            ]
+        ], 0);
+        if ($title || $tasks) {
+            $out[1] .= '<header role="group">';
+            $out[1] .= $title;
+            $out[1] .= $tasks;
+            $out[1] .= '</header>';
+            ++$count;
+        }
+        if (isset($value['content'])) {
+            $out[1] .= '<div class="content">';
+            $out[1] .= \x\panel\to\content($value['content']);
+            $out[1] .= '</div>';
+            ++$count;
+        } else if (isset($value['lot'])) {
+            $out[1] .= '<div class="lot">';
+            $out[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
+            $out[1] .= '</div>';
+            ++$count;
+        }
+        if (!empty($value['tasks'])) {
+            $out[1] .= '<footer role="group">';
+            $out[1] .= \x\panel\type\tasks\button([
+                '0' => 'p',
+                'lot' => $value['tasks']
+            ], $key);
+            $out[1] .= '</footer>';
+            ++$count;
+        }
+        \x\panel\_class_set($out[2], [
+            'count:' . $count => true,
+            'has:gap' => !\array_key_exists('gap', $value) || $value['gap'],
+            'has:height' => !empty($value['height']),
+            'has:modal' => !\array_key_exists('modal', $value) || $value['modal'],
+            'has:width' => !empty($value['width']),
+            'lot' => true,
+            'lot:proxy' => true
+        ]);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }

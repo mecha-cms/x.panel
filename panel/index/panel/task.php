@@ -1,6 +1,16 @@
 <?php namespace x\panel\task;
 
-function fire($_) {}
+function fire($_) {
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        // Invalid token?
+        if (!\check($_GET['token'] ?? \P, 'user')) {
+            $_['alert']['error'][] = 'Invalid token.';
+        }
+        $_['kick'] = $_GET['kick'] ?? null;
+    }
+    return $_;
+}
+
 function get($_) {}
 function let($_) {}
 function set($_) {}

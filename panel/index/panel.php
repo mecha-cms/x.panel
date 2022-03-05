@@ -23,14 +23,60 @@ function route($content, $path, $query, $hash, $r) {
             'tags' => ['p' => false]
         ], 0);
     }
-    // Build the icon(s)
-    $icon = "";
-    $_['icon'] = (array) ($GLOBALS['_']['icon'] ?? []); // Update!
+    // Build the icon, list, and proxy
+    $icon = $list = $proxy = "";
+    // TODO
+    /*
+    $proxy .= \x\panel\type\proxy([
+        'content' => '<p class="busy">Loading&hellip;</p>',
+        'tasks' => [
+            'set' => [
+                'stack' => 10,
+                'title' => 'Submit',
+                'type' => 'submit'
+            ],
+            'exit' => [
+                'description' => 'Close',
+                'stack' => 20,
+                'title' => 'Cancel',
+                'type' => 'button'
+            ]
+        ],
+        'title' => 'Files'
+    ], 0);
+    $proxy .= '<div class="with:modal"></div>';
+    */
+    // Update!
+    $_['data-list'] = (array) ($GLOBALS['_']['data-list'] ?? []);
+    $_['icon'] = (array) ($GLOBALS['_']['icon'] ?? []);
+    if (!empty($_['data-list'])) {
+        foreach ($_['data-list'] as $k => $v) {
+            $list .= '<datalist id="l:' . $k . '">';
+            foreach ($v as $kk => $vv) {
+                if (false === $vv || null === $vv || !empty($vv['skip'])) {
+                    continue;
+                }
+                $list .= new \HTML(['option', \s(\is_array($vv) ? ($vv['value'] ?? $vv['title'] ?? $kk) : $vv), [
+                    'disabled' => \is_array($vv) && \array_key_exists('active', $vv) && !$vv['active']
+                ]]);
+            }
+            $list .= '</datalist>';
+        }
+    }
     if (!empty($_['icon'])) {
         $icon .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
         foreach ($_['icon'] as $k => $v) {
             $icon .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
-            $icon .= 0 === \strpos($v, '<') ? $v : '<path d="' . $v . '"></path>';
+            if (false === $v || null === $v) {
+                continue;
+            }
+            // Raw XML input
+            if (0 === \strpos($v, '<')) {
+                $icon .= $v;
+            // Path direction input
+            } else {
+                $icon .= '<path d="' . $v . '"></path>';
+            }
             $icon .= '</symbol>';
         }
         $icon .= '</svg>';
@@ -69,8 +115,7 @@ function route($content, $path, $query, $hash, $r) {
         'id' => false,
         'stack' => 0
     ];
-    // Put icon(s) before content
-    $GLOBALS['content'] = $icon . $content;
+    $GLOBALS['content'] = $icon . $content . $proxy . $list;
     $GLOBALS['description'] = (string) ($_['description'] ?? "");
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();

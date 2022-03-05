@@ -6,6 +6,11 @@
   --shadow-option-picker__options: 0 1px 4px rgba(0, 0, 0, .25);
 }
 
+[pattern]:focus:invalid,
+[required]:focus:invalid {
+  --stroke--focus-visible: rgba(255, 0, 0, .125);
+}
+
 .lot\:cards .lot\:tasks,
 .lot\:files .lot\:tasks,
 .lot\:folders .lot\:tasks,

@@ -27,12 +27,10 @@
       + .option-picker {
         padding-bottom: calc(var(--y) / 4);
         padding-top: calc(var(--y) / 4);
-        &--open {
-          z-index: 9999; // Buggy! :(
-        }
       }
     }
   }
+  &__input,
   &__values {
     padding-left: 0;
     padding-right: 0;

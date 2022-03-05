@@ -2344,6 +2344,7 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:field > label + div .with\:fields {
   display: inline-flex;
   position: relative;
+  vertical-align: middle;
 }
 .lot\:field > label + div .with\:fields.has\:width {
   display: flex;
@@ -2467,9 +2468,7 @@ input[type=range]:disabled::-moz-range-thumb {
   padding-bottom: calc(var(--y) / 4);
   padding-top: calc(var(--y) / 4);
 }
-.option-picker__source:not([multiple]) + .option-picker--open {
-  z-index: 9999;
-}
+.option-picker__input,
 .option-picker__values {
   padding-left: 0;
   padding-right: 0;
@@ -3007,6 +3006,75 @@ input[type=range]:disabled::-moz-range-thumb {
   color: inherit;
 }
 
+.lot\:proxy {
+  background: var(--fill-proxy, var(--fill));
+  border: 0 solid;
+  border-color: var(--stroke-proxy, var(--stroke));
+  bottom: 0;
+  box-shadow: var(--shadow-proxy, 0 2px 10px black);
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 9999;
+}
+.lot\:proxy > footer {
+  background: var(--fill-stack);
+  display: flex;
+  padding: calc(var(--y) / 1.5) calc(var(--x) / 1.5);
+}
+.lot\:proxy > footer > .lot\:tasks {
+  margin-left: auto;
+}
+.lot\:proxy > header {
+  border: 0 solid;
+  border-color: var(--stroke-proxy, var(--stroke));
+  display: flex;
+  height: calc(var(--y) * 2);
+  line-height: calc(var(--y) * 2);
+  padding: 0 calc(var(--x) / 2);
+}
+.lot\:proxy > header > .title {
+  flex: 1;
+  padding: 0 calc(var(--x) / 6);
+}
+.lot\:proxy > header + div,
+.lot\:proxy > div:first-child {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.lot\:proxy.has\:gap {
+  margin: var(--y) var(--x);
+}
+.lot\:proxy.has\:modal + .with\:modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9998;
+  background: var(--fill-overlay, rgba(0, 0, 0, 0.5));
+}
+.lot\:proxy:not(.has\:width) {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: calc(var(--x) * 36);
+}
+.lot\:proxy .busy {
+  animation: busy 1s linear infinite alternate;
+  margin: auto;
+  opacity: 1;
+  padding: 0;
+}
+
+@keyframes busy {
+  to {
+    opacity: 0;
+  }
+}
 .lot\:card {
   flex-direction: column;
   width: var(--width-card, calc(var(--x) * 12));
@@ -3359,6 +3427,9 @@ input[type=range]:disabled::-moz-range-thumb {
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--y) / 4) calc(var(--x) / 4);
+}
+.lot\:tasks.are\:links {
+  gap: calc(var(--y) / 2) calc(var(--x) / 2);
 }
 .lot\:tasks.are\:links .title {
   gap: calc(var(--y) / 8) calc(var(--x) / 8);
