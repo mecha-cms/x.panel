@@ -7,11 +7,21 @@ $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
 
 function route($content, $path, $query, $hash, $r) {
     $_ = $r['_'];
+    if ($_['status'] >= 400) {
+        $_['lot']['bar']['skip'] = true;
+        $_['lot']['desk']['lot']['form']['skip'] = true;
+        $_['lot']['desk']['lot']['alert'] = [
+            'content' => 'This page is not real, and has never existed before.',
+            'icon' => 'M12,2A9,9 0 0,0 3,11V22L6,19L9,22L12,19L15,22L18,19L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z',
+            'level' => 0,
+            'stack' => 10,
+            'type' => 'title'
+        ];
+        $_['title'] = 'Error';
+    }
     $id = \strtok($_['path'], '/');
-    $GLOBALS['t'][] = \i('Panel');
-    $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : \To::title($id)));
-    $content = "";
-    // Load the content first to queue the asset and icon data
+    $content = $icon = $list = $proxy = "";
+    // Load the content first to queue the asset, icon, list and proxy data
     if (isset($_['content'])) {
         $content = \x\panel\type\content([
             'content' => (string) $_['content'],
@@ -23,8 +33,6 @@ function route($content, $path, $query, $hash, $r) {
             'tags' => ['p' => false]
         ], 0);
     }
-    // Build the icon, list, and proxy
-    $icon = $list = $proxy = "";
     // TODO
     /*
     $proxy .= \x\panel\type\proxy([
@@ -117,9 +125,12 @@ function route($content, $path, $query, $hash, $r) {
     ];
     $GLOBALS['content'] = $icon . $content . $proxy . $list;
     $GLOBALS['description'] = (string) ($_['description'] ?? "");
+    $GLOBALS['t'][] = \i('Panel');
+    $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : \To::title($id)));
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();
     \x\panel\_state_set();
+    $_ = $GLOBALS['_']; // Update!
     return \Layout::panel([], (int) ($_['status'] ?? 404));
 }
 

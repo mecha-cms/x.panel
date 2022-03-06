@@ -132,6 +132,7 @@ function _state_set() {
             \State::set($v, $_[$v]);
         }
     }
+    $GLOBALS['_'] = $_;
 }
 
 function _style_set(&$value, array $styles = []) {
