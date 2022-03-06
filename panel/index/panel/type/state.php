@@ -62,6 +62,8 @@ if (is_file($file ?? P)) {
     }
 }
 
+$back = trim(dirname($_['path']), '.');
+
 $bar = [
     // `bar`
     'lot' => [
@@ -71,8 +73,8 @@ $bar = [
                 'link' => [
                     'skip' => false,
                     'url' => x\panel\to\link([
-                        'part' => 1,
-                        'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
+                        'part' => "" !== $back ? 1 : 0,
+                        'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : ($state->x->panel->route ?? 'page/1'), '/') : $_['path'],
                         'query' => [
                             'query' => null,
                             'stack' => null,

@@ -1,8 +1,12 @@
 <?php namespace x\panel\task\fire;
 
 function zip($_) {
+    $file = $_['file'];
+    $folder = $_['folder'];
+    $file_zip = $file && \is_file($file) && 'zip' === \pathinfo($file, \PATHINFO_EXTENSION);
     $kick = \x\panel\to\link([
-        'part' => 1,
+        'part' => $file_zip ? 1 : 0,
+        'path' => $file_zip ? \dirname($_['path']) : $_['path'],
         'query' => null,
         'task' => 'get'
     ]);
@@ -12,8 +16,6 @@ function zip($_) {
         return $_;
     }
     $_['kick'] = $kick;
-    $file = $_['file'];
-    $folder = $_['folder'];
     if (!$file && !$folder) {
         $_['alert']['error'][] = ['Failed to run task %s.', '<code>' . __FUNCTION__ . '()</code>'];
         $_['alert']['error'][] = ['File %s does not exist.', '<code>' . ($f = \x\panel\from\path(\LOT . \D . $_['path'])) . '</code>'];
@@ -34,7 +36,7 @@ function zip($_) {
         $fold = \trim(\strtr($fold, "\\", \D), \D) . \D;
     }
     // Calling this task on a file with extension `.zip` will automatically perform “extract”
-    if ($file && \is_file($file) && 'zip' === \pathinfo($file, \PATHINFO_EXTENSION)) {
+    if ($file_zip) {
         \http_response_code(200); // Set correct response status!
         $zip = new \ZipArchive;
         $parent = \dirname($file);

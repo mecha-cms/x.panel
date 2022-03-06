@@ -125,21 +125,6 @@ if (false === strpos($_['path'], '/')) {
         'lot' => [
             0 => [
                 'lot' => [
-                    'folder' => ['skip' => true],
-                    'link' => [
-                        'skip' => false,
-                        'url' => x\panel\to\link([
-                            'part' => 0,
-                            'path' => trim($state->x->panel->route ?? 'page/1', '/'),
-                            'query' => [
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
-                                'type' => null
-                            ],
-                            'task' => 'get'
-                        ])
-                    ],
                     'search' => ['skip' => true], // Hide search form
                     'set' => ['skip' => true]
                 ]

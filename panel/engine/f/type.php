@@ -602,6 +602,8 @@ function icon($value, $key) {
                 }
                 $icon[0] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
             }
+        } else if ('</svg>' !== \substr($icon[0], -6)) {
+            $icon[0] = new \HTML(['svg', $icon[0], $v]);
         }
     }
     if ($icon[1]) {
@@ -616,6 +618,8 @@ function icon($value, $key) {
                 }
                 $icon[1] = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $v]);
             }
+        } else if ('</svg>' !== \substr($icon[1], -6)) {
+            $icon[1] = new \HTML(['svg', $icon[1], $v]);
         }
     }
     return $icon;
