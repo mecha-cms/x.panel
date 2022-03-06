@@ -34,7 +34,11 @@
 }
 
 .option-picker,
-.option-picker * {
+.option-picker::before,
+.option-picker::after,
+.option-picker *,
+.option-picker *::before,
+.option-picker *::after {
   box-sizing: border-box;
   font: inherit;
 }

@@ -137,8 +137,8 @@
     var getElements = function getElements(query, scope) {
         return (scope || D).querySelectorAll(query);
     };
-    var getNext = function getNext(node) {
-        return node.nextElementSibling || null;
+    var getNext = function getNext(node, anyNode) {
+        return node['next' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
     };
     var getParent = function getParent(node, query) {
         if (query) {
@@ -146,8 +146,8 @@
         }
         return node.parentNode || null;
     };
-    var getPrev = function getPrev(node) {
-        return node.previousElementSibling || null;
+    var getPrev = function getPrev(node, anyNode) {
+        return node['previous' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
     };
     var hasAttribute = function hasAttribute(node, attribute) {
         return node.hasAttribute(attribute);

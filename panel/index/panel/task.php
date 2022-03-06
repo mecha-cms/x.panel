@@ -3,7 +3,7 @@
 function fire($_) {
     if ('GET' === $_SERVER['REQUEST_METHOD']) {
         // Invalid token?
-        if (!\check($_GET['token'] ?? \P, 'user')) {
+        if ($_['token'] !== ($_GET['token'] ?? \P)) {
             $_['alert']['error'][] = 'Invalid token.';
         }
         $_['kick'] = $_GET['kick'] ?? null;

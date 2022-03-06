@@ -191,8 +191,8 @@
     var getName = function getName(node) {
         return toCaseLower(node && node.nodeName || "") || null;
     };
-    var getNext = function getNext(node) {
-        return node.nextElementSibling || null;
+    var getNext = function getNext(node, anyNode) {
+        return node['next' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
     };
     var getParent = function getParent(node, query) {
         if (query) {
@@ -207,8 +207,8 @@
         }
         return getParent(node, state);
     };
-    var getPrev = function getPrev(node) {
-        return node.previousElementSibling || null;
+    var getPrev = function getPrev(node, anyNode) {
+        return node['previous' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
     };
     var getState = function getState(node, state) {
         return hasState(node, state) && node[state] || null;
@@ -326,6 +326,9 @@
         }
         var state = 'innerHTML';
         return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
+    };
+    var setNext = function setNext(current, node) {
+        return getParent(current).insertBefore(node, getNext(current, true)), node;
     };
     var setPrev = function setPrev(current, node) {
         return getParent(current).insertBefore(node, current), node;
@@ -1059,7 +1062,7 @@
         setChildLast(text, textInputHint);
         setChildLast(textOutput, text);
         setClass(source, classNameE + 'source');
-        getParent(source).insertBefore(self, source.nextSibling);
+        setNext(source, self);
         setElement(source, {
             'tabindex': -1
         });
@@ -1181,7 +1184,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.10';
+    TP.version = '3.4.11';
 
     function onChange() {
         // Destroy!

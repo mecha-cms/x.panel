@@ -6,7 +6,7 @@ function blob($_) {
         return $_;
     }
     // Invalid token?
-    if (!\check($_POST['token'] ?? \P, 'user')) {
+    if ($_['token'] !== ($_POST['token'] ?? \P)) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
@@ -130,7 +130,7 @@ function data($_) {
         return $_;
     }
     // Invalid token?
-    if (!\check($_POST['token'] ?? \P, 'user')) {
+    if ($_['token'] !== ($_POST['token'] ?? \P)) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
@@ -163,7 +163,7 @@ function file($_) {
         return $_;
     }
     // Invalid token?
-    if (!\check($_POST['token'] ?? \P, 'user')) {
+    if ($_['token'] !== ($_POST['token'] ?? \P)) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
@@ -226,7 +226,7 @@ function folder($_) {
         return $_;
     }
     // Invalid token?
-    if (!\check($_POST['token'] ?? \P, 'user')) {
+    if ($_['token'] !== ($_POST['token'] ?? \P)) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
@@ -293,7 +293,7 @@ function page($_) {
         return $_;
     }
     // Invalid token?
-    if (!\check($_POST['token'] ?? \P, 'user')) {
+    if ($_['token'] !== ($_POST['token'] ?? \P)) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any

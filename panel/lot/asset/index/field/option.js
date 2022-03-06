@@ -156,10 +156,8 @@
         }
         return "" + x;
     };
-    var D = document;
-    var W = window;
-    var B = D.body;
-    var R = D.documentElement;
+    var D$1 = document;
+    var W$1 = window;
     var getAttribute = function getAttribute(node, attribute, parseValue) {
         if (parseValue === void 0) {
             parseValue = true;
@@ -195,10 +193,13 @@
         return value;
     };
     var getElements = function getElements(query, scope) {
-        return (scope || D).querySelectorAll(query);
+        return (scope || D$1).querySelectorAll(query);
     };
     var getName = function getName(node) {
         return toCaseLower(node && node.nodeName || "") || null;
+    };
+    var getNext = function getNext(node, anyNode) {
+        return node['next' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
     };
     var getParent = function getParent(node, query) {
         if (query) {
@@ -210,7 +211,7 @@
         if (parseValue === void 0) {
             parseValue = true;
         }
-        var value = W.getComputedStyle(node).getPropertyValue(style);
+        var value = W$1.getComputedStyle(node).getPropertyValue(style);
         if (parseValue) {
             value = toValue(value);
         }
@@ -239,9 +240,6 @@
     };
     var hasState = function hasState(node, state) {
         return state in node;
-    };
-    var isWindow = function isWindow(node) {
-        return node === W;
     };
     var letAttribute = function letAttribute(node, attribute) {
         return node.removeAttribute(attribute), node;
@@ -324,7 +322,7 @@
         return setAttribute(node, 'data-' + datum, value);
     };
     var setElement = function setElement(node, content, attributes) {
-        node = isString(node) ? D.createElement(node) : node;
+        node = isString(node) ? D$1.createElement(node) : node;
         if (isObject(content)) {
             attributes = content;
             content = false;
@@ -346,6 +344,9 @@
         }
         var state = 'innerHTML';
         return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
+    };
+    var setNext = function setNext(current, node) {
+        return getParent(current).insertBefore(node, getNext(current, true)), node;
     };
     var setStyle = function setStyle(node, style, value) {
         if (isNumber(value)) {
@@ -422,6 +423,13 @@
                 return then.apply(_this2, _arguments2);
             }, time);
         };
+    };
+    var D = document;
+    var W = window;
+    var B = D.body;
+    var R = D.documentElement;
+    var isWindow = function isWindow(node) {
+        return node === W;
     };
     var getOffset = function getOffset(node) {
         return [node.offsetLeft, node.offsetTop];
@@ -521,9 +529,9 @@
     var ZERO_WIDTH_SPACE = "\u200C";
 
     function selectElementContents(node) {
-        var range = D.createRange();
+        var range = D$1.createRange();
         range.selectNodeContents(node);
-        var selection = W.getSelection();
+        var selection = W$1.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
     }
@@ -651,7 +659,7 @@
             selectBoxMultiple = selectBox.multiple,
             selectBoxOptionIndex = 0,
             selectBoxOptions = selectBox.options,
-            selectBoxParent = state.parent || D,
+            selectBoxParent = state.parent || D$1,
             selectBoxSize = selectBox.size,
             selectBoxTitle = selectBox.title,
             selectBoxValue = getValue(),
@@ -686,7 +694,7 @@
             setChildLast(selectBoxFakeInput, selectBoxFakeInputPlaceholder);
         }
         setChildLast(selectBoxFake, selectBoxFakeInput || selectBoxFakeLabel);
-        getParent(selectBox).insertBefore(selectBoxFake, selectBox.nextSibling);
+        setNext(selectBox, selectBoxFake);
 
         function doBlur() {
             letClass(selectBoxFake, classNameM + 'focus');
@@ -900,10 +908,12 @@
         }
 
         function onSelectBoxFakeInputValueFocus() {
-            var value = getText(this),
+            var t = this,
+                value = getText(t),
                 selectBoxOption,
                 selectBoxFakeOption;
             selectBoxOptionIndex = -1; // `<input>` does not have `selectedIndex` property!
+            selectElementContents(t);
             for (var i = 0, _j4 = toCount(selectBoxOptions); i < _j4; ++i) {
                 selectBoxOption = selectBoxOptions[i];
                 selectBoxFakeOption = selectBoxFakeOptions[i];
@@ -1054,7 +1064,7 @@
                     top = _getRect[1],
                     width = _getRect[2],
                     height = _getRect[3],
-                    heightWindow = getSize(W)[1],
+                    heightWindow = getSize(W$1)[1],
                     heightMax = heightWindow - top - height;
                 setStyles(selectBoxFakeDropDown, {
                     'bottom': "",
@@ -1097,7 +1107,7 @@
             }
             fire('fit', getLot());
         }
-        onEvents(['resize', 'scroll'], W, onSelectBoxWindow);
+        onEvents(['resize', 'scroll'], W$1, onSelectBoxWindow);
         onEvent('click', selectBoxParent, onSelectBoxParentClick);
         onEvent('focus', selectBox, onSelectBoxFocus);
         onEvent('click', selectBoxFake, onSelectBoxFakeClick);
@@ -1143,7 +1153,7 @@
                 return $; // Already ejected
             }
             delete source[name];
-            offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
+            offEvents(['resize', 'scroll'], W$1, onSelectBoxWindow);
             offEvent('click', selectBoxParent, onSelectBoxParentClick);
             offEvent('focus', selectBox, onSelectBoxFocus);
             letClass(selectBox, classNameE + 'source');
@@ -1183,7 +1193,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.3.2';
+    OP.version = '1.3.3';
 
     function onChange() {
         // Destroy!
@@ -1201,6 +1211,6 @@
         });
     }
     onChange();
-    W._.on('change', onChange);
-    W.OP = OP;
+    W$1._.on('change', onChange);
+    W$1.OP = OP;
 })();
