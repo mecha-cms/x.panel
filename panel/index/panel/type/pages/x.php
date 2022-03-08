@@ -10,7 +10,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
         $bounds = [];
         $count = 0;
         $search = static function($folder, $x, $r) {
-            $q = strtolower($_GET['q'] ?? "");
+            $q = strtolower($_GET['query'] ?? "");
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };
         $pages = [];
