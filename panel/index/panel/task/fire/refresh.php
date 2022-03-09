@@ -1,0 +1,15 @@
+<?php namespace x\panel\task\fire;
+
+function refresh($_) {
+    foreach (\g($folder = \LOT . \D . 'cache', null, true) as $k => $v) {
+        0 === $v ? \rmdir($k) : \unlink($k);
+    }
+    $_['alert']['success'][$folder] = 'Cache successfully refreshed.';
+    $_['kick'] = $_REQUEST['kick'] ?? \x\panel\to\link([
+        'part' => 1,
+        'path' => 'cache',
+        'query' => null,
+        'task' => 'get'
+    ]);
+    return $_;
+}

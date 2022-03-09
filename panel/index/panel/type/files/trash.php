@@ -58,26 +58,21 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['file']['skip'
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['folder']['skip'] = true;
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['let'] = [
     'description' => 'Empty the trash folder',
-    'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
+    'icon' => 'M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z',
     'skip' => 0 === q(g($_['folder'] ?? P)),
     'stack' => 10,
-    'title' => 'Empty',
+    'title' => 'Flush',
     'type' => 'link',
     'url' => x\panel\to\link([
         'path' => null,
         'query' => [
-            'kick' => x\panel\to\link([
-                'path' => strtok($_['path'], '/'),
-                'query' => null,
-                'task' => 'get'
-            ]),
             'query' => null,
             'stack' => null,
             'tab' => null,
             'token' => $_['token'],
             'type' => null
         ],
-        'task' => 'fire/void'
+        'task' => 'fire/flush'
     ])
 ];
 

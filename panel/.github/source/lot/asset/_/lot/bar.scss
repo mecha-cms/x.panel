@@ -98,9 +98,12 @@
     > label {
       + div {
         margin-top: 0;
+        > div {
+          display: block;
+        }
       }
     }
-   input {
+    input {
       border: 0;
       box-shadow: none;
       display: block;
