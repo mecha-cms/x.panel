@@ -25,7 +25,7 @@ Hook::set('do.blob.set', function($_) {
 $_ = require __DIR__ . D . 'x.php';
 
 $description = '<p>' . i('Make sure that the package you want to upload is structured like this:') . '</p>';
-$description .= '<pre><code class="txt">' . To::kebab(i('layout')) . '.zip&#xA;&#x251C;&#x2500;&#x2500;&#x20;about.php&#xA;&#x251C;&#x2500;&#x2500;&#x20;error.php&#xA;&#x251C;&#x2500;&#x2500;&#x20;page.php&#xA;&#x251C;&#x2500;&#x2500;&#x20;pages.php&#xA;&#x2514;&#x2500;&#x2500;&#x20;&#x2026;</code></pre>';
+$description .= '<pre><code class="txt">' . To::kebab(i('layout')) . '.zip&#xA;&#x251C;&#x2500;&#x2500;&#x20;about.page&#xA;&#x251C;&#x2500;&#x2500;&#x20;error.php&#xA;&#x251C;&#x2500;&#x2500;&#x20;page.php&#xA;&#x251C;&#x2500;&#x2500;&#x20;pages.php&#xA;&#x2514;&#x2500;&#x2500;&#x20;&#x2026;</code></pre>';
 $description .= '<p>' . i('Please note that this action will first delete all of your current layout files before replacing it with the new ones.') . ' ' . i('You may want to <a href="%s" target="_blank" title="%s">save a copy</a> of your current layout files before doing this.', [x\panel\to\link([
     'path' => strtok($_['path'], '/'),
     'query' => [

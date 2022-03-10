@@ -106,7 +106,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                                     'token' => $_['token'],
                                     'trash' => null
                                 ],
-                                'task' => 'fire/113d1ba5'
+                                'task' => 'fire/toggle'
                             ])
                         ],
                         'let' => [
