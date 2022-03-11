@@ -96,17 +96,15 @@ Hook::set('_', function($_) use($state, $url, $user) {
                             'stack' => 20.1,
                             'title' => $is_active ? 'Disable' : 'Enable',
                             'url' => !empty($bound) ? null : x\panel\to\link([
-                                'part' => 0,
-                                'path' => $path,
+                                'path' => basename($d),
                                 'query' => [
-                                    'kick' => short($url->current(false, false)),
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],
                                     'trash' => null
                                 ],
-                                'task' => 'fire/toggle'
+                                'task' => 'fire/' . (is_file($d . D . 'index.x') ? 'plug' : 'eject')
                             ])
                         ],
                         'let' => [

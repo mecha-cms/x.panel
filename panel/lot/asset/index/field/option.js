@@ -156,8 +156,10 @@
         }
         return "" + x;
     };
-    var D$1 = document;
-    var W$1 = window;
+    var D = document;
+    var W = window;
+    var B = D.body;
+    var R = D.documentElement;
     var getAttribute = function getAttribute(node, attribute, parseValue) {
         if (parseValue === void 0) {
             parseValue = true;
@@ -193,7 +195,7 @@
         return value;
     };
     var getElements = function getElements(query, scope) {
-        return (scope || D$1).querySelectorAll(query);
+        return (scope || D).querySelectorAll(query);
     };
     var getName = function getName(node) {
         return toCaseLower(node && node.nodeName || "") || null;
@@ -211,7 +213,7 @@
         if (parseValue === void 0) {
             parseValue = true;
         }
-        var value = W$1.getComputedStyle(node).getPropertyValue(style);
+        var value = W.getComputedStyle(node).getPropertyValue(style);
         if (parseValue) {
             value = toValue(value);
         }
@@ -240,6 +242,9 @@
     };
     var hasState = function hasState(node, state) {
         return state in node;
+    };
+    var isWindow = function isWindow(node) {
+        return node === W;
     };
     var letAttribute = function letAttribute(node, attribute) {
         return node.removeAttribute(attribute), node;
@@ -322,7 +327,7 @@
         return setAttribute(node, 'data-' + datum, value);
     };
     var setElement = function setElement(node, content, attributes) {
-        node = isString(node) ? D$1.createElement(node) : node;
+        node = isString(node) ? D.createElement(node) : node;
         if (isObject(content)) {
             attributes = content;
             content = false;
@@ -424,13 +429,6 @@
             }, time);
         };
     };
-    var D = document;
-    var W = window;
-    var B = D.body;
-    var R = D.documentElement;
-    var isWindow = function isWindow(node) {
-        return node === W;
-    };
     var getOffset = function getOffset(node) {
         return [node.offsetLeft, node.offsetTop];
     };
@@ -529,9 +527,9 @@
     var ZERO_WIDTH_SPACE = "\u200C";
 
     function selectElementContents(node) {
-        var range = D$1.createRange();
+        var range = D.createRange();
         range.selectNodeContents(node);
-        var selection = W$1.getSelection();
+        var selection = W.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
     }
@@ -659,8 +657,8 @@
             selectBoxMultiple = selectBox.multiple,
             selectBoxOptionIndex = 0,
             selectBoxOptions = selectBox.options,
-            selectBoxParent = state.parent || D$1,
-            selectBoxSize = selectBox.size,
+            selectBoxParent = state.parent || D,
+            selectBoxSize = 'input' === getName(selectBox) ? 0 : selectBox.size,
             selectBoxTitle = selectBox.title,
             selectBoxValue = getValue(),
             selectBoxFake = setElement('div', {
@@ -681,13 +679,17 @@
             selectBoxFakeOptions = [],
             _keyIsCtrl = false,
             _keyIsShift = false;
+        if (selectBoxMultiple && !selectBoxSize) {
+            selectBox.size = selectBoxSize = state.size;
+        }
         if (selectBoxFakeInput && selectBoxList) {
             selectBoxItems = getChildren(selectBoxList);
             selectBoxOptions = selectBoxList.options;
             selectBoxSize = null;
-        }
-        if (selectBoxMultiple && !selectBoxSize) {
-            selectBox.size = selectBoxSize = state.size;
+            if (selectBoxValue) {
+                setHTML(selectBoxFakeInputPlaceholder, ZERO_WIDTH_SPACE);
+                setText(selectBoxFakeInputValue, selectBoxValue);
+            }
         }
         if (selectBoxFakeInput) {
             setChildLast(selectBoxFakeInput, selectBoxFakeInputValue);
@@ -749,7 +751,7 @@
         }
 
         function onSelectBoxFakeOptionClick(e) {
-            if (selectBoxIsDisabled()) {
+            if (!selectBoxOptions || selectBoxIsDisabled()) {
                 return;
             }
             var selectBoxFakeLabelContent = [],
@@ -833,6 +835,9 @@
         }
 
         function onSelectBoxFakeKeyDown(e) {
+            if (!selectBoxOptions) {
+                return;
+            }
             _keyIsCtrl = e.ctrlKey;
             _keyIsShift = e.shiftKey;
             var key = e.key,
@@ -908,6 +913,9 @@
         }
 
         function onSelectBoxFakeInputValueFocus() {
+            if (!selectBoxOptions) {
+                return;
+            }
             var t = this,
                 value = getText(t),
                 selectBoxOption,
@@ -1064,7 +1072,7 @@
                     top = _getRect[1],
                     width = _getRect[2],
                     height = _getRect[3],
-                    heightWindow = getSize(W$1)[1],
+                    heightWindow = getSize(W)[1],
                     heightMax = heightWindow - top - height;
                 setStyles(selectBoxFakeDropDown, {
                     'bottom': "",
@@ -1107,7 +1115,7 @@
             }
             fire('fit', getLot());
         }
-        onEvents(['resize', 'scroll'], W$1, onSelectBoxWindow);
+        onEvents(['resize', 'scroll'], W, onSelectBoxWindow);
         onEvent('click', selectBoxParent, onSelectBoxParentClick);
         onEvent('focus', selectBox, onSelectBoxFocus);
         onEvent('click', selectBoxFake, onSelectBoxFakeClick);
@@ -1153,7 +1161,7 @@
                 return $; // Already ejected
             }
             delete source[name];
-            offEvents(['resize', 'scroll'], W$1, onSelectBoxWindow);
+            offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
             offEvent('click', selectBoxParent, onSelectBoxParentClick);
             offEvent('focus', selectBox, onSelectBoxFocus);
             letClass(selectBox, classNameE + 'source');
@@ -1175,6 +1183,9 @@
             return fire('pop', getLot());
         };
         $.set = function(value) {
+            if (!selectBoxOptions) {
+                return $;
+            }
             setValue(fromValue(value));
             selectBoxFakeOptions.forEach(function(selectBoxFakeOption, index) {
                 var selectBoxOption = selectBoxOptions[index];
@@ -1193,7 +1204,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.3.3';
+    OP.version = '1.3.4';
 
     function onChange() {
         // Destroy!
@@ -1211,6 +1222,6 @@
         });
     }
     onChange();
-    W$1._.on('change', onChange);
-    W$1.OP = OP;
+    W._.on('change', onChange);
+    W.OP = OP;
 })();
