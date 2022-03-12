@@ -72,6 +72,9 @@ function _asset_set() {
                     if (isset($vv['id'])) {
                         $vv['data']['id'] = $vv['id'];
                     }
+                    if (!\array_key_exists('content', $vv) && !empty($vv['type'])) {
+                        $vv['content'] = \x\panel\type($vv, $kk);
+                    }
                     $content = (string) ($vv['content'] ?? "");
                     $data = (array) ($vv['data'] ?? []);
                     $stack = (float) ($vv['stack'] ?? 10);
