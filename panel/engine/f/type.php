@@ -1,12 +1,13 @@
 <?php namespace x\panel\type;
 
 function bar($value, $key) {
-    $tags = $value['tags'] ?? [];
+    $value = \x\panel\_value_set($value, $key);
+    $tags = $value['tags'];
     if (!\array_key_exists('p', $tags)) {
         $tags['p'] = false;
     }
     $value['tags'] = $tags;
-    if (\array_key_exists('title', $value) && !\array_key_exists('level', $value)) {
+    if (!\array_key_exists('level', $value)) {
         $value['level'] = 1;
     }
     if (isset($value['content'])) {
@@ -15,20 +16,20 @@ function bar($value, $key) {
         foreach ($value['lot'] as &$v) {
             $v['tags']['p'] = false;
             // If `type` is not defined, the default value will be `links`
-            if (!\array_key_exists('type', $v)) {
-                $v['type'] = 'links';
-            }
+            $v['type'] = $v['type'] ?? 'links';
         }
         unset($v);
         $out = \x\panel\type\lot($value, $key);
     }
     $out['tabindex'] = -1;
-    $out[0] = 'nav';
+    $out[0] = $out[0] ?? 'nav';
     return $out;
 }
 
 function button($value, $key) {
-    $value['tags']['not:active'] = $not_active = isset($value['active']) && !$value['active'];
+    $value = \x\panel\_value_set($value, $key);
+    $value['not']['active'] = $not_active = isset($value['active']) && !$value['active'];
+    $value['tags']['not:active'] = $not_active; // TODO
     $out = \x\panel\type\link($value, $key);
     $out[0] = 'button';
     $out['disabled'] = $not_active;
@@ -153,8 +154,9 @@ function content($value, $key) {
                 $tags['content:' . $v] = true;
             }
         }
+        $value['tags'] = \array_replace($tags, $value['tags'] ?? []);
         $out[2]['id'] = $value['id'] ?? null;
-        \x\panel\_class_set($out[2], \array_replace($tags, $value['tags'] ?? []));
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -170,9 +172,10 @@ function description($value, $key) {
         1 => $description,
         2 => $value[2] ?? []
     ];
-    \x\panel\_class_set($out[2], \array_replace([
+    $value['tags'] = \array_replace([
         'description' => true
-    ], $value['tags'] ?? []));
+    ], $value['tags'] ?? []);
+    $out[2] = \x\panel\_class_set($out[2], $value);
     return new \HTML($out);
 }
 
@@ -197,8 +200,10 @@ function desk($value, $key) {
         if (!isset($value[2])) {
             $value[2] = [];
         }
-        \x\panel\_class_set($value[2], $tags);
-        \x\panel\_style_set($value[2], $styles);
+        $value['styles'] = $styles;
+        $value['tags'] = $tags;
+        $value[2] = \x\panel\_class_set($value[2], $value);
+        $value[2] = \x\panel\_style_set($value[2], $value);
         $value['tags'] = $tags;
         if (isset($value['content'])) {
             if ($v = \x\panel\type\content($value, $key)) {
@@ -269,7 +274,7 @@ function field($value, $key) {
                     ${$v} = '<span class="fix"><span>' . $vv . '</span></span>';
                 } else if (\is_array($vv)) {
                     $icon = \x\panel\to\icon($vv['icon'] ?? []);
-                    \x\panel\_class_set($icon[0], ['fix' => true]);
+                    $icon[0][2] = \x\panel\_class_set($icon[0][2], ['tags' => ['fix' => true]]);
                     ${$v} = $icon[0];
                 }
             }
@@ -291,8 +296,8 @@ function field($value, $key) {
         // Special value returned by `x\panel\to\field()`
         if (isset($value['field'])) {
             if (\is_array($value['field'])) {
-                \x\panel\_class_set($value['field'][2], \array_replace($tags_status, $tags_status_extra));
-                \x\panel\_style_set($value['field'][2], $styles);
+                $value['field'][2] = \x\panel\_class_set($value['field'][2], ['tags' => \array_replace($tags_status, $tags_status_extra)]);
+                $value['field'][2] = \x\panel\_style_set($value['field'][2], ['styles' => $styles]);
             }
             $r = \x\panel\to\content($value['field']);
             $out[1] .= '<div class="count:' . ($r ? '1' : '0') . (!empty($value['width']) ? ' has:width' : "") . ' with:fields" role="group">';
@@ -300,8 +305,8 @@ function field($value, $key) {
             $out[1] .= '</div>';
         } else if (isset($value['content'])) {
             if (\is_array($value['content'])) {
-                \x\panel\_class_set($value['content'][2], \array_replace($tags_status, $tags_status_extra));
-                \x\panel\_style_set($value['content'][2], $styles);
+                $value['content'][2] = \x\panel\_class_set($value['content'][2], ['tags' => \array_replace($tags_status, $tags_status_extra)]);
+                $value['content'][2] = \x\panel\_style_set($value['content'][2], ['styles' => $styles]);
             }
             $r = \x\panel\to\content($value['content']);
             $out[1] .= '<div class="content count:' . ($r ? '1' : '0') . '">';
@@ -314,7 +319,8 @@ function field($value, $key) {
         }
         $out[1] .= \x\panel\to\description($value['description'] ?? "");
         $out[1] .= '</div>';
-        \x\panel\_class_set($out[2], \array_replace($tags, $tags_status, $value['tags'] ?? []));
+        $value['tags'] = \array_replace($tags, $tags_status, $value['tags'] ?? []);
+        $out[2] = \x\panel\_class_set($out[2], $value);
         if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
             foreach (\explode('&', \substr($data, 1)) as $v) {
                 $vv = \explode('=', $v, 2);
@@ -367,8 +373,9 @@ function fields($value, $key) {
             }
             $out[1] .= $append;
         }
+        $value['tags'] = $tags;
         $out[1] = $title . $description . $out[1];
-        \x\panel\_class_set($out[2], $tags);
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -402,7 +409,8 @@ function file($value, $key) {
             '0' => 'p',
             'lot' => $value['tasks'] ?? []
         ], $key);
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
         if (!$is_active) {
             unset($out[2]['tabindex']);
         }
@@ -449,12 +457,13 @@ function files($value, $key) {
             ++$count;
         }
         unset($lot);
-        \x\panel\_class_set($out[2], \array_replace([
+        $value['tags'] = \array_replace([
             'count:' . $count => true,
             'lot' => true,
             'lot:files' => !!$count_files,
             'lot:folders' => !!$count_folders
-        ], $value['tags'] ?? []));
+        ], $value['tags'] ?? []);
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -515,7 +524,8 @@ function folder($value, $key) {
             '0' => 'p',
             'lot' => $value['tasks'] ?? []
         ], $key);
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
         if (!$is_active) {
             unset($out[2]['tabindex']);
         }
@@ -577,7 +587,7 @@ function form($value, $key) {
         if (!isset($out[2]['name'])) {
             $out[2]['name'] = $value['name'] ?? $key;
         }
-        \x\panel\_class_set($out[2], $value['tags'] ?? []);
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -665,7 +675,8 @@ function input($value, $key) {
     $out[2]['readonly'] = $is_fix;
     $out[2]['required'] = $is_vital;
     $out[2]['value'] = $value['value'] ?? null;
-    \x\panel\_class_set($out[2], $tags);
+    $value['tags'] = $tags;
+    $out[2] = \x\panel\_class_set($out[2], $value);
     return new \HTML($out);
 }
 
@@ -702,7 +713,8 @@ function link($value, $key) {
         if (isset($value['id'])) {
             $out[2]['id'] = $value['id'];
         }
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -746,8 +758,9 @@ function lot($value, $key) {
             $tags['lot:' . $v] = true;
         }
     }
+    $value['tags'] = \array_replace($tags, $value['tags'] ?? []);
     $out[2]['id'] = $value['id'] ?? null;
-    \x\panel\_class_set($out[2], \array_replace($tags, $value['tags'] ?? []));
+    $out[2] = \x\panel\_class_set($out[2], $value);
     return "" !== $out[1] ? new \HTML($out) : null;
 }
 
@@ -795,9 +808,10 @@ function menu($value, $key, int $i = 0) {
                         } else if ('separator' === $v['type']) {
                             $li[2]['aria-orientation'] = $i < 0 ? 'horizontal' : 'vertical';
                             $li[2]['role'] = 'separator';
-                            \x\panel\_class_set($li[2], \array_replace([
+                            $v['tags'] = \array_replace([
                                 'as:separator' => true
-                            ], $v['tags'] ?? []));
+                            ], $v['tags'] ?? []);
+                            $li[2] = \x\panel\_class_set($li[2], $v);
                             $out[1] .= new \HTML($li);
                             ++$count;
                             continue;
@@ -812,7 +826,7 @@ function menu($value, $key, int $i = 0) {
                         }
                         $v['icon'] = \x\panel\to\icon($v['icon'] ?? []);
                         if ($has_caret) {
-                            \x\panel\_class_set($v['icon'][1], ['caret' => true]);
+                            $v['icon'][1][2] = \x\panel\_class_set($v['icon'][1][2], ['tags' => ['caret' => true]]);
                         }
                         $is_active = !isset($v['active']) || $v['active'];
                         $is_current = !empty($v['current']);
@@ -848,7 +862,7 @@ function menu($value, $key, int $i = 0) {
                                 $li[1] = \x\panel\type($v, $k);
                             }
                         }
-                        \x\panel\_class_set($li[2], $tags_li);
+                        $li[2] = \x\panel\_class_set($li[2], ['tags' => $tags_li]);
                     } else {
                         $li[1] = \x\panel\type\link([
                             '2' => [
@@ -865,7 +879,8 @@ function menu($value, $key, int $i = 0) {
             }
             $tags['count:' . ($count_parent + ($count ? 1 : 0))] = true;
         }
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
         if ("" !== $out[1]) {
             $out[1] = '<ul class="count:' . $count . '" role="' . ($value[3]['role'] ?? 'menu' . ($i < 0 ? 'bar' : "")) . '">' . $out[1] . '</ul>';
         }
@@ -927,7 +942,8 @@ function page($value, $key) {
             '0' => 'p',
             'lot' => $value['tasks'] ?? []
         ], $key) . '</div>';
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
         if (!$is_active) {
             unset($out[2]['tabindex']);
         }
@@ -987,11 +1003,12 @@ function pages($value, $key) {
             ++$count;
         }
         unset($lot);
-        \x\panel\_class_set($out[2], \array_replace([
+        $value['tags'] = \array_replace([
             'count:' . $count => true,
             'lot' => true,
             'lot:pages' => true
-        ], $value['tags'] ?? []));
+        ], $value['tags'] ?? []);
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -1048,7 +1065,7 @@ function proxy($value, $key) {
             $out[1] .= '</footer>';
             ++$count;
         }
-        \x\panel\_class_set($out[2], [
+        $value['tags'] = [
             'count:' . $count => true,
             'has:gap' => !\array_key_exists('gap', $value) || $value['gap'],
             'has:height' => !empty($value['height']),
@@ -1056,7 +1073,8 @@ function proxy($value, $key) {
             'has:width' => !empty($value['width']),
             'lot' => true,
             'lot:proxy' => true
-        ]);
+        ];
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -1224,7 +1242,8 @@ function select($value, $key) {
         $out[2]['id'] = $value['id'] ?? null;
         $out[2]['name'] = $value['name'] ?? $key;
         $out[2]['required'] = $is_vital;
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -1235,7 +1254,7 @@ function separator($value, $key) {
         1 => $value[1] ?? false,
         2 => $value[2] ?? []
     ];
-    \x\panel\_class_set($out[2], $value['tags'] ?? []);
+    $out[2] = \x\panel\_class_set($out[2], $value);
     return new \HTML($out);
 }
 
@@ -1290,7 +1309,8 @@ function stack($value, $key) {
             '0' => 'p',
             'lot' => $value['tasks'] ?? []
         ], $key);
-        \x\panel\_class_set($out[2], $tags);
+        $value['tags'] = $tags;
+        $out[2] = \x\panel\_class_set($out[2], $value);
         if (!$is_active) {
             unset($out[2]['tabindex']);
         }
@@ -1354,13 +1374,14 @@ function stacks($value, $key) {
             ++$count;
         }
         unset($lot);
-        \x\panel\_class_set($out[2], \array_replace([
+        $value['tags'] = \array_replace([
             'count:' . $count => true,
             'has:current' => $has_current,
             'lot' => true,
             'lot:stacks' => true,
             'p' => true
-        ], $value['tags'] ?? []));
+        ], $value['tags'] ?? []);
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -1478,14 +1499,15 @@ function tabs($value, $key) {
         if ($count < 2) {
             unset($out[2]['tabindex']);
         }
-        \x\panel\_class_set($out[2], \array_replace([
+        $value['tags'] = \array_replace([
             'count:' . $count => true,
             'has:current' => $has_current,
             'has:gap' => $has_gap,
             'lot' => true,
             'lot:tabs' => true,
             'p' => true
-        ], $value['tags'] ?? []));
+        ], $value['tags'] ?? []);
+        $out[2] = \x\panel\_class_set($out[2], $value);
     }
     return "" !== $out[1] ? new \HTML($out) : null;
 }
@@ -1509,8 +1531,9 @@ function tasks($value, $key) {
             $out[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
             $tags['count:' . $count] = true;
         }
+        $value['tags'] = $tags;
         if ($count > 0) {
-            \x\panel\_class_set($out[2], $tags);
+            $out[2] = \x\panel\_class_set($out[2], $value);
             return new \HTML($out);
         }
     }
@@ -1548,7 +1571,8 @@ function textarea($value, $key) {
     $out[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
     $out[2]['readonly'] = $is_fix;
     $out[2]['required'] = $is_vital;
-    \x\panel\_class_set($out[2], $tags);
+    $value['tags'] = $tags;
+    $out[2] = \x\panel\_class_set($out[2], $value);
     return new \HTML($out);
 }
 
@@ -1582,12 +1606,13 @@ function title($value, $key) {
     if (false !== $out[0] && isset($value['description'])) {
         $out[2]['title'] = \i(...((array) $value['description']));
     }
-    \x\panel\_class_set($out[2], \array_replace([
+    $value['tags'] = \array_replace([
         'has:icon' => !!($icon[0] || $icon[1]),
         'has:title' => !!$title,
         'level:' . $level => $level >= 0,
         'title' => true
-    ], $value['tags'] ?? []));
+    ], $value['tags'] ?? []);
+    $out[2] = \x\panel\_class_set($out[2], $value);
     return new \HTML($out);
 }
 
