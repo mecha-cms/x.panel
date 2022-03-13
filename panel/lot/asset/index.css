@@ -34,11 +34,7 @@
 }
 
 .option-picker,
-.option-picker::before,
-.option-picker::after,
-.option-picker *,
-.option-picker *::before,
-.option-picker *::after {
+.option-picker * {
   box-sizing: border-box;
   font: inherit;
 }
@@ -2353,8 +2349,10 @@ input[type=range]:disabled::-moz-range-thumb {
   position: relative;
   vertical-align: middle;
 }
+.lot\:field > label + div .with\:fields.has\:height,
 .lot\:field > label + div .with\:fields.has\:width {
   display: flex;
+  flex-direction: row;
 }
 .lot\:field > label + div .with\:fields > * + * {
   margin-left: -1px;

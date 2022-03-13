@@ -9,7 +9,7 @@ function _($value, $key) {
 function blob($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'file';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -18,7 +18,7 @@ function blobs($value, $key) {
     $out['field'][2]['multiple'] = true;
     $out['field'][2]['name'] = ($value['name'] ?? $key) . '[]';
     $out['field'][2]['type'] = 'file';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -26,7 +26,7 @@ function button($value, $key) {
     $out = \x\panel\to\field($value, $key, 'button');
     $out['field'][1] = \i(...((array) ($value['hint'] ?? $value['title'] ?? $value['value'] ?? $key)));
     $out['field'][2]['type'] = 'button';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -57,7 +57,7 @@ function buttons($value, $key) {
                 'is:active' => $is_active,
                 'not:active' => !$is_active
             ], $v['tags'] ?? []);
-            $button[2] = \x\panel\_class_set($button[2], $v);
+            $button[2] = \x\panel\_tag_set($button[2], $v);
             $out['field'][1] .= new \HTML($button);
         }
         unset($value['lot']);
@@ -67,7 +67,7 @@ function buttons($value, $key) {
         'count:' . $count => true,
         'with:options' => true
     ], $value['tags'] ?? []);
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['name']);
     return \x\panel\type\field($out, $key);
 }
@@ -75,7 +75,7 @@ function buttons($value, $key) {
 function color($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'color';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     if ($the_value = \x\panel\to\color((string) ($value['value'] ?? ""))) {
         $out['field'][2]['title'] = $the_value;
         $out['field'][2]['value'] = $the_value;
@@ -102,7 +102,7 @@ function colors($value, $key) {
             }
             $n = $name . '[' . $k . ']';
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            $input[2] = \x\panel\_class_set($input[2], $v);
+            $input[2] = \x\panel\_tag_set($input[2], $v);
             $input[2]['name'] = $n;
             $input[2]['type'] = 'color';
             if ($the_value = \x\panel\to\color((string) ($v['value'] ?? ""))) {
@@ -118,7 +118,7 @@ function colors($value, $key) {
         'count:' . $count => true,
         'with:options' => true
     ], $value['tags'] ?? []);
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['name']);
     return \x\panel\type\field($out, $key);
 }
@@ -128,7 +128,7 @@ function content($value, $key) {
         $value['hint'] = 'Content goes here...';
     }
     $out = \x\panel\to\field($value, $key);
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -225,7 +225,7 @@ function item($value, $key) {
                 'not:active' => !$is_active,
                 'not:fix' => !$is_fix
             ];
-            $input[2] = \x\panel\_class_set($input[2], $v);
+            $input[2] = \x\panel\_tag_set($input[2], $v);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
             $title = \x\panel\type\title([
                 'content' => $v['title'] ?? "",
@@ -244,7 +244,7 @@ function item($value, $key) {
             $label = [
                 0 => 'label',
                 1 => (new \HTML($input)) . ' ' . $title,
-                2 => \x\panel\_class_set([], $v)
+                2 => \x\panel\_tag_set([], $v)
             ];
             $a[$title . $k] = new \HTML($label);
         }
@@ -263,7 +263,7 @@ function item($value, $key) {
             'is:block' => !!$block,
             'with:options' => true
         ];
-        $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+        $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['name']);
         return \x\panel\type\field($out, $key);
     }
@@ -309,7 +309,7 @@ function items($value, $key) {
                 'not:active' => !$is_active,
                 'not:fix' => !$is_fix
             ];
-            $input[2] = \x\panel\_class_set($input[2], $v);
+            $input[2] = \x\panel\_tag_set($input[2], $v);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
             $title = \x\panel\type\title([
                 'content' => $v['title'] ?? "",
@@ -346,7 +346,7 @@ function items($value, $key) {
             'is:block' => !!$block,
             'with:options' => true
         ];
-        $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+        $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['name']);
         return \x\panel\type\field($out, $key);
     }
@@ -395,7 +395,7 @@ function number($value, $key) {
     $out['field'][2]['min'] = $value['min'] ?? null;
     $out['field'][2]['max'] = $value['max'] ?? null;
     $out['field'][2]['step'] = $value['step'] ?? null;
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -416,7 +416,7 @@ function pass($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'password';
     unset($out['field'][2]['value']); // Never show `value` on this field
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -450,7 +450,7 @@ function query($value, $key) {
     }
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -474,7 +474,7 @@ function range($value, $key) {
     $out['field'][2]['value'] = $value['value'] ?? null;
     $out['field'][2]['step'] = $value['step'] ?? null;
     unset($out['field'][2]['maxlength'], $out['field'][2]['minlength']);
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -500,14 +500,14 @@ function source($value, $key) {
     $value['tags'] = \array_replace([
         'code' => true
     ], $value['tags'] ?? []);
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
 function text($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     return \x\panel\type\field($out, $key);
 }
 
@@ -558,13 +558,13 @@ function toggle($value, $key) {
     $label = [
         0 => 'label',
         1 => (new \HTML($input)) . ' ' . $title,
-        2 => \x\panel\_class_set([], $value)
+        2 => \x\panel\_tag_set([], $value)
     ];
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
     $out['field'][1] = new \HTML($label);
     $out['field'][2]['role'] = 'group';
-    $out['field'][2] = \x\panel\_class_set($out['field'][2], ['tags' => [
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], ['tags' => [
         'count:1' => true,
         'with:options' => true
     ]]);

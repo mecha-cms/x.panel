@@ -32,7 +32,7 @@ function content($value) {
 }
 
 function description($value) {
-    $out = (string) \x\panel\type\description(['content' => $value], 0);
+    $out = (string) \x\panel\type\description(\x\panel\_value_set(['content' => $value], 0), 0);
     return "" !== $out ? $out : null;
 }
 
@@ -160,10 +160,10 @@ function path($value) {
 }
 
 function title($value, $level = -1) {
-    $out = (string) \x\panel\type\title([
+    $out = (string) \x\panel\type\title(\x\panel\_value_set([
         'content' => $value,
         'level' => $level
-    ], 0);
+    ], 0), 0);
     return "" !== $out ? $out : null;
 }
 

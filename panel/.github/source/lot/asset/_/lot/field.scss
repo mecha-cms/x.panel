@@ -28,8 +28,10 @@
         display: inline-flex;
         position: relative;
         vertical-align: middle;
+        &.has\:height,
         &.has\:width {
           display: flex;
+          flex-direction: row;
         }
         > * {
           + * {

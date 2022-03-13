@@ -108,27 +108,11 @@ function _cache_let(string $path) {
     return $path;
 }
 
-function _class_set(array $attr, array $value = []) {
-    $a = [];
-    $tags = (array) ($value['tags'] ?? []);
-    foreach (\explode(' ', $attr['class'] ?? "") as $v) {
-        if (\array_key_exists($v, $tags) && !$tags[$v]) {
-            continue;
-        }
-        $a[] = $v;
-    }
-    $b = \x\panel\from\tags($tags);
-    $c = \array_unique(\array_filter(\array_merge($a, $b)));
-    \sort($c);
-    $attr['class'] = $c ? \implode(' ', $c) : null;
-    return $attr;
-}
-
 function _key_set($key) {
     if (\is_object($key)) {
         return \spl_object_id($key);
     }
-    return \is_scalar($key) ? $key : \md5(\json_encode($key));
+    return null === $key || \is_scalar($key) ? $key : \md5(\json_encode($key));
 }
 
 function _state_set() {
@@ -169,6 +153,29 @@ function _style_set(array $attr, array $value = []) {
     return $attr;
 }
 
+function _tag_set(array $attr, array $value = []) {
+    $a = [];
+    $tags = (array) ($value['tags'] ?? []);
+    foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with'] as $v) {
+        if (!empty($value[$v])) {
+            foreach ($value[$v] as $kk => $vv) {
+                $tags[$v . ':' . $kk] = $vv;
+            }
+        }
+    }
+    foreach (\explode(' ', $attr['class'] ?? "") as $v) {
+        if (\array_key_exists($v, $tags) && !$tags[$v]) {
+            continue;
+        }
+        $a[] = $v;
+    }
+    $b = \x\panel\from\tags($tags);
+    $c = \array_unique(\array_filter(\array_merge($a, $b)));
+    \sort($c);
+    $attr['class'] = $c ? \implode(' ', $c) : null;
+    return $attr;
+}
+
 function _type_parent_set(&$value, $parent) {
     foreach ($value as &$v) {
         $type = $v['type'] ?? "";
@@ -200,10 +207,13 @@ function _value_set(array $value, $key = null) {
         'image' => null,
         'is' => [],
         'key' => \x\panel\_key_set($key),
+        'keys' => [],
         'link' => null,
         'lot' => [],
+        'name' => null,
         'not' => [],
         'of' => [],
+        'size' => null,
         'skip' => null,
         'stack' => 10,
         'styles' => [],
@@ -212,6 +222,7 @@ function _value_set(array $value, $key = null) {
         'type' => null,
         'url' => null,
         'value' => null,
+        'values' => [],
         'with' => []
     ], $value);
 }
@@ -223,8 +234,11 @@ function type($value, $key) {
     if (false === $value || null === $value || !empty($value['skip'])) {
         return "";
     }
-    $out = "";
     $value = \x\panel\_value_set($value, $key);
+    if (isset($value[1]) && "" !== $value[1]) {
+        return new \HTML($value);
+    }
+    $out = "";
     if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')))) {
         if (\function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
             if ($v = \call_user_func($fn, $value, $key)) {
