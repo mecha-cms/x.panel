@@ -34,7 +34,11 @@
 }
 
 .option-picker,
-.option-picker * {
+.option-picker::before,
+.option-picker::after,
+.option-picker *,
+.option-picker *::before,
+.option-picker *::after {
   box-sizing: border-box;
   font: inherit;
 }
@@ -3332,6 +3336,13 @@ input[type=range]:disabled::-moz-range-thumb {
   border-radius: 0;
 }
 
+.has\:gap .lot\:stack + .lot\:stack,
+.has\:gap .content\:stack + .lot\:stack,
+.has\:gap .lot\:stack + .content\:stack,
+.has\:gap .content\:stack + .content\:stack {
+  margin-top: calc(var(--y) / 2);
+}
+
 .lot\:stacks {
   display: block;
 }
@@ -3637,18 +3648,20 @@ u {
   }
 }
 @media (min-width: 720px) {
-  .flex {
+  .can\:flex {
     display: flex;
+  }
+  .can\:flex.has\:gap {
     gap: calc(var(--y) + var(--h) - var(--z)) calc(var(--x) + var(--h) - var(--z));
   }
-  .flex > * {
-    margin: 0;
-  }
-
-  .lot\:fields.flex > .lot\:field {
-    gap: 0 var(--x);
+  .can\:flex > * {
+    flex: 1;
     margin: 0;
     min-width: 0;
+  }
+
+  .lot\:fields.can\:flex.has\:gap {
+    gap: var(--y) var(--x);
   }
 
   .lot\:tabs .lot\:links {

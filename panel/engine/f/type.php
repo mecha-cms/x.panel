@@ -34,7 +34,7 @@ function button($value, $key) {
 function card($value, $key) {
     $value['tags']['lot:card'] = $value['tags']['lot:card'] ?? true;
     $value['tags']['lot:page'] = $value['tags']['lot:page'] ?? false;
-    $value['tasks']['title'] = \extend($value['tasks']['title'] ?? [], [
+    $value['tasks']['title'] = \array_replace($value['tasks']['title'] ?? [], [
         'description' => $value['description'] ?? null,
         'link' => $value['link'] ?? null,
         'stack' => -1,
@@ -71,10 +71,10 @@ function column($value, $key) {
 }
 
 function columns($value, $key) {
-    $value[0] = $value[0] ?? 'div';
-    $value[1] = $value[1] ?? "";
     $value['has']['gap'] = $value['has']['gap'] ?? (!\array_key_exists('gap', $value) || $value['gap']);
     $value['tags']['p'] = $value['tags']['p'] ?? false;
+    $value[0] = $value[0] ?? 'div';
+    $value[1] = $value[1] ?? "";
     if (isset($value['content'])) {
         return \x\panel\type\content($value, $key);
     }
@@ -88,6 +88,7 @@ function columns($value, $key) {
 }
 
 function content($value, $key) {
+    $value = \x\panel\_value_set($value);
     $count = 0;
     if ($description = \x\panel\to\description($value['description'] ?? "")) {
         ++$count;
@@ -112,6 +113,7 @@ function content($value, $key) {
         }
     }
     $value['tags'] = \array_replace($tags, $value['tags'] ?? []);
+    $value[2] = \x\panel\_style_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     return new \HTML($value);
 }
@@ -125,6 +127,7 @@ function description($value, $key) {
     $value['tags']['description'] = $value['tags']['description'] ?? true;
     $value[0] = $value[0] ?? 'p';
     $value[1] = $description;
+    $value[2] = \x\panel\_style_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     return new \HTML($value);
 }
@@ -277,6 +280,7 @@ function field($value, $key) {
     $value['tags'] = $tags;
     $value[1] .= \x\panel\to\description($value['description'] ?? "");
     $value[1] .= '</div>';
+    $value[2] = \x\panel\_style_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
         foreach (\explode('&', \substr($data, 1)) as $v) {
@@ -294,7 +298,7 @@ function field($value, $key) {
 function fields($value, $key) {
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
-    $append = "";
+    $bottom = "";
     $description = \x\panel\to\description($value['description'] ?? "");
     $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 3);
     if (isset($value['content'])) {
@@ -311,15 +315,15 @@ function fields($value, $key) {
                 if ('field/hidden' !== $type) {
                     $value[1] .= \call_user_func($fn, $v, $k);
                 } else {
-                    $append .= \x\panel\type\field\hidden($v, $k);
+                    $bottom .= \x\panel\type\field\hidden($v, $k);
                 }
             } else {
-                $append .= \x\panel\_abort($value, $key, $fn);
+                $bottom .= \x\panel\_abort($value, $key, $fn);
             }
             unset($v);
         }
         // Put all hidden field(s) at the bottom
-        $value[1] .= $append;
+        $value[1] .= $bottom;
     }
     $value['tags'] = \array_replace([
         'lot' => true,
@@ -327,76 +331,78 @@ function fields($value, $key) {
         'p' => true
     ], $value['tags'] ?? []);
     $value[1] = $title . $description . $value[1];
+    $value[2] = \x\panel\_style_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     return new \HTML($value);
 }
 
 function file($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'li',
-        1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
-    ];
-    if (!isset($value[1])) {
-        $is_active = !isset($value['active']) || $value['active'];
-        $is_current = !empty($value['current']);
-        $tags = \array_replace([
-            'is:active' => $is_active,
-            'is:current' => $is_current,
-            'is:file' => true,
-            'lot' => true,
-            'lot:file' => true,
-            'not:active' => !$is_active
-        ], $value['tags'] ?? []);
-        $out[1] .= '<h3 class="title">' . \x\panel\type\link([
-            'description' => $value['description'] ?? null,
-            'icon' => $value['icon'] ?? [],
-            'info' => $value['info'] ?? null,
-            'link' => $value['link'] ?? null,
-            'title' => $value['title'] ?? null,
-            'url' => $value['url'] ?? null
-        ], $key) . '</h3>';
-        $out[1] .= \x\panel\type\tasks\link([
-            '0' => 'p',
-            'lot' => $value['tasks'] ?? []
-        ], $key);
-        $value['tags'] = $tags;
-        $out[2] = \x\panel\_tag_set($out[2], $value);
-        if (!$is_active) {
-            unset($out[2]['tabindex']);
-        }
+    $has_description = !empty($value['description']);
+    $has_icon = !empty($value['icon']);
+    $has_title = !empty($value['title']);
+    $is_active = !isset($value['active']) || $value['active'];
+    $is_current = !empty($value['current']);
+    $value['has']['description'] = $has_description;
+    $value['has']['icon'] = $has_icon;
+    $value['has']['title'] = $has_title;
+    $value['is']['active'] = $is_active;
+    $value['is']['current'] = $is_current;
+    $value['is']['file'] = true;
+    $value['not']['active'] = !$is_active;
+    $value['tags'] = \array_replace([
+        'lot' => true,
+        'lot:file' => true
+    ], $value['tags'] ?? []);
+    $value[0] = $value[0] ?? 'li';
+    $value[1] = $value[1] ?? "";
+    $value[2]['tabindex'] ?? $value[2]['tabindex'] ?? 0;
+    $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
+        'description' => $value['description'] ?? null,
+        'icon' => $value['icon'] ?? [],
+        'info' => $value['info'] ?? null,
+        'link' => $value['link'] ?? null,
+        'title' => $value['title'] ?? null,
+        'url' => $value['url'] ?? null
+    ], $key), $key) . '</h3>';
+    $value[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
+        '0' => 'p',
+        'lot' => $value['tasks'] ?? []
+    ], $key), $key);
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    if (!$is_active) {
+        unset($value[2]['tabindex']);
     }
-    return "" !== $out[1] ? new \HTML($out) : null;
+    return new \HTML($value);
 }
 
 function files($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'ul',
-        1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
-    ];
-    if (!isset($value[1])) {
+    $value[0] = $value[0] ?? 'ul';
+    $value[1] = $value[1] ?? "";
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
+    if (isset($value['content'])) {
+        $count = 1;
+        $value[1] .= \x\panel\to\content($value['content']);
+    } else if (isset($value['lot'])) {
         $lot = [];
-        if (isset($value['lot'])) {
-            foreach ($value['lot'] as $k => $v) {
-                if (false === $v || null === $v || !empty($v['skip'])) {
-                    continue;
-                }
-                $lot[$k] = $v;
+        foreach ($value['lot'] as $k => $v) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
+                continue;
             }
-            if (!empty($value['sort'])) {
-                $sort = $value['sort'];
-                if (true === $sort) {
-                    $sort = [1, 'stack', 10];
-                }
-                $lot = (new \Anemone($lot))->sort($sort)->get();
+            $lot[$k] = $v;
+        }
+        if (!empty($value['sort'])) {
+            $sort = $value['sort'];
+            if (true === $sort) {
+                $sort = [1, 'stack', 10];
             }
+            $lot = (new \Anemone($lot))->sort($sort)->get();
         }
         $count = 0;
         $count_files = 0;
         $count_folders = 0;
         foreach ($lot as $k => $v) {
-            if (\is_array($v) && !\array_key_exists('type', $v)) {
+            if (!isset($v['type'])) {
                 $v['type'] = 'file';
                 ++$count_files;
             } else if ('file' === $v['type']) {
@@ -408,41 +414,47 @@ function files($value, $key) {
             ++$count;
         }
         unset($lot);
-        $value['tags'] = \array_replace([
-            'count:' . $count => true,
-            'lot' => true,
-            'lot:files' => !!$count_files,
-            'lot:folders' => !!$count_folders
-        ], $value['tags'] ?? []);
-        $out[2] = \x\panel\_tag_set($out[2], $value);
     }
-    return "" !== $out[1] ? new \HTML($out) : null;
+    $value['tags'] = \array_replace([
+        'count:' . $count => true,
+        'lot' => true,
+        'lot:files' => !!$count_files,
+        'lot:folders' => !!$count_folders
+    ], $value['tags'] ?? []);
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 function flex($value, $key) {
     $lot = (array) ($value['lot'] ?? []);
+    foreach ($lot as &$v) {
+        if (isset($v['title'])) {
+            $v['level'] = $v['level'] ?? 3;
+        }
+    }
+    unset($v);
     $value['lot'] = [
         'title' => [
-            'type' => 'title',
             'content' => $value['title'] ?? null,
-            'level' => $value['level'] ?? 2, // Same with the default level of `x\panel\type\content`
-            'stack' => 10
+            'level' => $value['level'] ?? 2, // Same with the default level of `x\panel\type\content()`
+            'stack' => 10,
+            'type' => 'title'
         ],
         'description' => [
-            'type' => 'description',
             'content' => $value['description'] ?? null,
-            'stack' => 20
+            'stack' => 20,
+            'type' => 'description'
         ],
         'lot' => [
-            'type' => 'lot',
             'lot' => $lot,
-            'tags' => [
-                'flex' => true
-            ],
-            'stack' => 30
+            'stack' => 30,
+            'type' => 'lot'
         ]
     ];
     unset($value['description'], $value['title']);
+    $value['lot']['lot']['can']['flex'] = $value['lot']['lot']['can']['flex'] ?? true;
+    $value['lot']['lot']['has']['gap'] = $value['lot']['lot']['has']['gap'] ?? true;
     return \x\panel\type\lot($value, $key);
 }
 
@@ -683,36 +695,33 @@ function links($value, $key) {
 }
 
 function lot($value, $key) {
+    $value = \x\panel\_value_set($value);
     $count = 0;
-    $type = $value['type'] ?? null;
-    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2)) {
-        ++$count;
-    }
     if ($description = \x\panel\to\description($value['description'] ?? "")) {
         ++$count;
     }
-    $out = [
-        0 => $value[0] ?? 'div',
-        1 => $value[1] ?? $title . $description,
-        2 => $value[2] ?? []
-    ];
+    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2)) {
+        ++$count;
+    }
+    $value[0] = $value[0] ?? 'div';
+    $value[1] = $value[1] ?? $title . $description;
     if (isset($value['lot'])) {
-        $out[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
+        $value[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
     $tags = [
         'count:' . $count => true,
         'lot' => true,
         'p' => true
     ];
-    if (isset($type)) {
-        foreach (\step(\strtr($type, '/', '.')) as $v) {
+    if ($type = $value['type'] ?? null) {
+        foreach (\step($type, '/') as $v) {
             $tags['lot:' . $v] = true;
         }
     }
     $value['tags'] = \array_replace($tags, $value['tags'] ?? []);
-    $out[2]['id'] = $value['id'] ?? null;
-    $out[2] = \x\panel\_tag_set($out[2], $value);
-    return "" !== $out[1] ? new \HTML($out) : null;
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 function menu($value, $key, int $i = 0) {

@@ -113,3 +113,11 @@
     }
   }
 }
+
+.has\:gap {
+  .lot\:stack {
+    + .lot\:stack {
+      margin-top: calc(var(--y) / 2);
+    }
+  }
+}

@@ -9,6 +9,7 @@ require __DIR__ . D . 'f' . D . 'route' . D . 'content.php';
 require __DIR__ . D . 'f' . D . 'route' . D . 'description.php';
 require __DIR__ . D . 'f' . D . 'route' . D . 'fields.php';
 require __DIR__ . D . 'f' . D . 'route' . D . 'files.php';
+require __DIR__ . D . 'f' . D . 'route' . D . 'flex.php';
 require __DIR__ . D . 'f' . D . 'route' . D . 'grids.php';
 require __DIR__ . D . 'f' . D . 'route' . D . 'icon.php';
 require __DIR__ . D . 'f' . D . 'route' . D . 'menu.php';

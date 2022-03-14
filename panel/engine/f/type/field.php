@@ -183,7 +183,8 @@ function email($value, $key) {
 }
 
 function flex($value, $key) {
-    $value['tags']['flex'] = true;
+    $value['can']['flex'] = $value['can']['flex'] = true;
+    $value['has']['gap'] = $value['has']['gap'] = true;
     return \x\panel\type\fields($value, $key);
 }
 

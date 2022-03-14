@@ -6,19 +6,21 @@
 }
 
 @media (min-width: 720px) {
-  .flex {
+  .can\:flex {
     display: flex;
-    gap: calc(var(--y) + (var(--h) - var(--z))) calc(var(--x) + (var(--h) - var(--z)));
+    &.has\:gap {
+      gap: calc(var(--y) + (var(--h) - var(--z))) calc(var(--x) + (var(--h) - var(--z)));
+    }
     > * {
+      flex: 1;
       margin: 0;
+      min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
     }
   }
   .lot\:fields {
-    &.flex {
-      > .lot\:field {
-        gap: 0 var(--x);
-        margin: 0;
-        min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
+    &.can\:flex {
+      &.has\:gap {
+        gap: var(--y) var(--x);
       }
     }
   }
