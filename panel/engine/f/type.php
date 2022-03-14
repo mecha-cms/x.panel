@@ -410,7 +410,7 @@ function files($value, $key) {
             } else if ('folder' === $v['type']) {
                 ++$count_folders;
             }
-            $out[1] .= \x\panel\type($v, $k);
+            $value[1] .= \x\panel\type($v, $k);
             ++$count;
         }
         unset($lot);
