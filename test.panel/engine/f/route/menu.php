@@ -76,6 +76,10 @@ function menu($_) {
         'title' => 'Menu Title',
         'type' => 'menu'
     ];
+    $lot['menu-1'] = [
+        'lot' => ['Foo', 'Bar', 'Baz'],
+        'type'=> 'menu'
+    ];
     $_['lot']['desk']['lot']['form']['lot'][1]['lot'] = $lot;
     return $_;
 }
