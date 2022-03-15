@@ -476,16 +476,16 @@ function folder($value, $key) {
         'lot:folder' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'li';
-    $value[1] = $value[2] ?? "";
+    $value[1] = $value[1] ?? "";
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
-    $value[1] .= '<h3 class="title">' . \x\panel\type\link([
+    $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
         'description' => $value['description'] ?? \i('Open %s', ['folder']),
         'icon' => $value['icon'] ?? [],
         'info' => $value['info'] ?? null,
         'link' => $value['link'] ?? null,
         'title' => $value['title'] ?? null,
         'url' => $value['url'] ?? null
-    ], $key) . '</h3>';
+    ], $key), $key) . '</h3>';
     $value[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
         '0' => 'p',
         'lot' => $value['tasks'] ?? []
@@ -715,14 +715,14 @@ function menu($value, $key, int $i = 0) {
                 2 => ['role' => 'none']
             ];
             if (!\is_array($v)) {
-                $vv[1] = \x\panel\type\link([
+                $vv[1] = \x\panel\type\link(\x\panel\_value_set([
                     '2' => [
                         'aria-disabled' => 'true',
                         'role' => 'menuitem',
                         'tabindex' => $i < 0 ? null : -1
                     ],
                     'title' => $v
-                ], $k);
+                ], $k), $k);
                 $vv['not']['active'] = true;
                 $vv[2] = \x\panel\_tag_set($vv[2], $vv);
                 $value[1] .= new \HTML($vv);
@@ -851,11 +851,11 @@ function page($value, $key) {
         $description = $value['description'] ?? $time;
         $title = $value['title'] ?? $time;
         if (false !== $description || false !== $title) {
-            $out[1] .= '<div><h3 class="title">' . \x\panel\type\link([
+            $out[1] .= '<div><h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
                 'link' => $value['link'] ?? null,
                 'title' => $title,
                 'url' => $value['url'] ?? null
-            ], $key) . '</h3>' . \x\panel\to\description($description) . '</div>';
+            ], $key), $key) . '</h3>' . \x\panel\to\description($description) . '</div>';
         }
         $out[1] .= '<div>' . \x\panel\type\tasks\link([
             '0' => 'p',
@@ -1197,7 +1197,7 @@ function stack($value, $key) {
             'lot:stack' => true,
             'not:active' => !$is_active
         ], $value['tags'] ?? []);
-        $out[1] .= '<h3 class="title">' . \x\panel\type\link([
+        $out[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
             '2' => ['tabindex' => -1],
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
@@ -1211,7 +1211,7 @@ function stack($value, $key) {
             'target' => 'stack:' . ($value['value'] ?? $key),
             'title' => $value['title'] ?? null,
             'url' => $value['url'] ?? null
-        ], $key) . '</h3>';
+        ], $key), $key) . '</h3>';
         $count = 1;
         if (isset($value['content'])) {
             $out[1] .= '<div class="content">';
@@ -1402,12 +1402,12 @@ function tabs($value, $key) {
                 $sections[$k] = $vv;
             }
             if ($links) {
-                $out[1] .= \x\panel\type\links([
+                $out[1] .= \x\panel\type\links(\x\panel\_value_set([
                     '0' => 'nav',
                     '2' => ['tabindex' => null],
                     '3' => ['role' => 'tablist'],
                     'lot' => $links
-                ], $name);
+                ], $name), $name);
             }
             if ($sections) {
                 $out[1] .= \implode("", $sections);
