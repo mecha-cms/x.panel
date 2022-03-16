@@ -174,11 +174,11 @@
   --color-tag-picker__tag-x: #f4f4f4;
   --color-tag-picker__tag: #c8c8c8;
   --fill-option-picker__option--selected: rgba(255, 255, 255, .025);
-  --fill-tag-picker__tag--disabled: #383838;
-  --fill-tag-picker__tag--focus: #4e4e4e;
-  --fill-tag-picker__tag--read-only: #383838;
-  --fill-tag-picker__tag--selected: #4e4e4e;
-  --fill-tag-picker__tag: #434343;
+  --fill-tag-picker__tag--disabled: #2d2d2d;
+  --fill-tag-picker__tag--focus: #434343;
+  --fill-tag-picker__tag--read-only: #343434;
+  --fill-tag-picker__tag--selected: #434343;
+  --fill-tag-picker__tag: #383838;
   --color-option-picker__option--hover: var(--color);
   --fill-option-picker__option--hover: rgba(255, 255, 255, .05);
   --color-option-picker__option--focus: var(--color);
@@ -359,7 +359,7 @@
   --color-tag-picker__tag-x: #646464;
   --color-tag-picker__tag: #595959;
   --fill-option-picker__option--selected: rgba(0, 0, 0, .025);
-  --fill-tag-picker__tag--disabled: lightgray;
+  --fill-tag-picker__tag--disabled: #dedede;
   --fill-tag-picker__tag--focus: #bdbdbd;
   --fill-tag-picker__tag--read-only: lightgray;
   --fill-tag-picker__tag--selected: #bdbdbd;

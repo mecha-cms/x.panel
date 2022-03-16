@@ -3295,7 +3295,7 @@ input[type=range]:disabled::-moz-range-thumb {
 .is\:current.content\:stack > .content,
 .lot\:stack.is\:current > .lot,
 .is\:current.content\:stack > .lot {
-  border-top: 1px solid;
+  border-top: 1px dashed;
   border-top-color: inherit;
   display: block;
 }

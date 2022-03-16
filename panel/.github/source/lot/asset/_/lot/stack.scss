@@ -74,7 +74,7 @@
     border-color: var(--stroke-stack--current, var(--stroke-stack));
     > .content,
     > .lot {
-      border-top: 1px solid;
+      border-top: 1px dashed;
       border-top-color: inherit;
       display: block;
     }

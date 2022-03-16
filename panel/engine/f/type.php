@@ -7,9 +7,11 @@ function bar($value, $key) {
         $out = \x\panel\type\content($value, $key);
     } else if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
-            $v['tags']['p'] = $v['tags']['p'] ?? false;
-            // If `type` is not defined, the default value will be `links`
-            $v['type'] = $v['type'] ?? 'links';
+            if (\is_array($v)) {
+                $v['tags']['p'] = $v['tags']['p'] ?? false;
+                // If `type` is not defined, the default value will be `links`
+                $v['type'] = $v['type'] ?? 'links';
+            }
         }
         unset($v);
         $out = \x\panel\type\lot($value, $key);
@@ -63,7 +65,9 @@ function column($value, $key) {
     }
     if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
-            $v['type'] = $v['type'] ?? 'content';
+            if (\is_array($v)) {
+                $v['type'] = $v['type'] ?? 'content';
+            }
         }
         unset($v);
         return \x\panel\type\lot($value, $key);
@@ -80,7 +84,9 @@ function columns($value, $key) {
     }
     if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
-            $v['type'] = $v['type'] ?? 'column';
+            if (\is_array($v)) {
+                $v['type'] = $v['type'] ?? 'column';
+            }
         }
         unset($v);
         return \x\panel\type\lot($value, $key);
@@ -157,7 +163,9 @@ function desk($value, $key) {
     }
     if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
-            $v['type'] = $v['type'] ?? 'section';
+            if (\is_array($v)) {
+                $v['type'] = $v['type'] ?? 'section';
+            }
         }
         unset($v);
         if ($out = \x\panel\type\lot($value, $key)) {
@@ -361,6 +369,7 @@ function file($value, $key) {
         'icon' => $value['icon'] ?? [],
         'info' => $value['info'] ?? null,
         'link' => $value['link'] ?? null,
+        'target' => $value['target'] ?? null,
         'title' => $value['title'] ?? null,
         'url' => $value['url'] ?? null
     ], $key), $key) . '</h3>';
@@ -402,13 +411,15 @@ function files($value, $key) {
         $count_files = 0;
         $count_folders = 0;
         foreach ($lot as $k => $v) {
-            if (!isset($v['type'])) {
-                $v['type'] = 'file';
-                ++$count_files;
-            } else if ('file' === $v['type']) {
-                ++$count_files;
-            } else if ('folder' === $v['type']) {
-                ++$count_folders;
+            if (\is_array($v)) {
+                if (!isset($v['type'])) {
+                    $v['type'] = 'file';
+                    ++$count_files;
+                } else if ('file' === $v['type']) {
+                    ++$count_files;
+                } else if ('folder' === $v['type']) {
+                    ++$count_folders;
+                }
             }
             $value[1] .= \x\panel\type($v, $k);
             ++$count;
@@ -479,10 +490,11 @@ function folder($value, $key) {
     $value[1] = $value[1] ?? "";
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
-        'description' => $value['description'] ?? \i('Open %s', ['folder']),
+        'description' => $value['description'] ?? \i('Open %s', 'Folder'),
         'icon' => $value['icon'] ?? [],
         'info' => $value['info'] ?? null,
         'link' => $value['link'] ?? null,
+        'target' => $value['target'] ?? null,
         'title' => $value['title'] ?? null,
         'url' => $value['url'] ?? null
     ], $key), $key) . '</h3>';
@@ -506,7 +518,9 @@ function folder($value, $key) {
 function folders($value, $key) {
     if (isset($value['lot'])) {
         foreach ($value['lot'] as &$v) {
-            $v['type'] = $v['type'] ?? 'folder';
+            if (\is_array($v)) {
+                $v['type'] = $v['type'] ?? 'folder';
+            }
         }
         unset($v);
     }
@@ -809,65 +823,70 @@ function menu($value, $key, int $i = 0) {
 }
 
 function page($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'li',
-        1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => 0], $value[2] ?? [])
-    ];
-    if (!isset($value[1])) {
-        $is_active = !isset($value['active']) || $value['active'];
-        $is_current = !empty($value['current']);
-        $tags = \array_replace([
-            'is:active' => $is_active,
-            'is:current' => $is_current,
-            'is:file' => true,
-            'lot' => true,
-            'lot:page' => true,
-            'not:active' => !$is_active
-        ], $value['tags'] ?? []);
-        $div = new \HTML(['div', "", []]);
-        $icon = $value['icon'] ?? false; // Prioritize `icon` but its default is `false`
-        $image = $value['image'] ?? "";
-        $path = $value['path'] ?? $key;
-        $time = isset($value['time']) ? \strtr($value['time'], '-', '/') : null;
-        if (false === $icon && false === $image) {
-            $div['hidden'] = true;
-        // Prioritize `icon` over `image`
-        } else if (!empty($icon)) {
-            $color = $value['color'] ?? '#fff';
-            $fill = $value['fill'] ?? '#' . \substr(\md5($icon), 0, 6);
-            $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
-        } else if (!empty($image)) {
-            $div[1] = '<img alt="" class="image" height="72" loading="lazy" src="' . \htmlspecialchars($image) . '" width="72">';
-        } else {
-            $color = $value['color'] ?? '#fff';
-            $fill = $value['fill'] ?? '#' . \substr(\md5(\strtr($path, [
-                \PATH => "",
-                \D => '/'
-            ])), 0, 6);
-            $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';"></span>';
-        }
-        $out[1] .= $div;
-        $description = $value['description'] ?? $time;
-        $title = $value['title'] ?? $time;
-        if (false !== $description || false !== $title) {
-            $out[1] .= '<div><h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
-                'link' => $value['link'] ?? null,
-                'title' => $title,
-                'url' => $value['url'] ?? null
-            ], $key), $key) . '</h3>' . \x\panel\to\description($description) . '</div>';
-        }
-        $out[1] .= '<div>' . \x\panel\type\tasks\link([
-            '0' => 'p',
-            'lot' => $value['tasks'] ?? []
-        ], $key) . '</div>';
-        $value['tags'] = $tags;
-        $out[2] = \x\panel\_tag_set($out[2], $value);
-        if (!$is_active) {
-            unset($out[2]['tabindex']);
-        }
+    $has_description = !empty($value['description']);
+    $has_icon = !empty($value['icon']);
+    $has_image = !empty($value['image']);
+    $has_title = !empty($value['title']);
+    $is_active = !isset($value['active']) || $value['active'];
+    $is_current = !empty($value['current']);
+    $value['has']['description'] = $value['has']['description'] ?? $has_description;
+    $value['has']['icon'] = $value['has']['icon'] ?? $has_icon;
+    $value['has']['image'] = $value['has']['image'] ?? $has_image;
+    $value['has']['title'] = $value['has']['title'] ?? $has_title;
+    $value['is']['active'] = $value['is']['active'] ?? $is_active;
+    $value['is']['current'] = $value['is']['current'] ?? $is_current;
+    $value['is']['file'] = true;
+    $value['not']['active'] = !$is_active;
+    $value[0] = $value[0] ?? 'li';
+    $value[1] = $value[1] ?? "";
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
+    $tags = \array_replace([
+        'lot' => true,
+        'lot:page' => true
+    ], $value['tags'] ?? []);
+    $div = new \HTML(['div', "", []]);
+    $icon = $value['icon'] ?? false; // Prioritize `icon`, but remember that its default value is `false`
+    $image = $value['image'] ?? "";
+    $time = isset($value['time']) ? \strtr($value['time'], '-', '/') : null;
+    if (false === $icon && false === $image) {
+        $div['hidden'] = true;
+    // Prioritize `icon` over `image`
+    } else if (!empty($icon)) {
+        $color = $value['color'] ?? '#fff';
+        $fill = $value['fill'] ?? '#' . \substr(\md5($icon), 0, 6);
+        $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
+    } else if (!empty($image)) {
+        $div[1] = '<img alt="" class="image" height="72" loading="lazy" src="' . \htmlspecialchars($image) . '" width="72">';
+    } else {
+        $color = $value['color'] ?? '#fff';
+        $fill = $value['fill'] ?? '#' . \substr(\md5(\strtr($key, [
+            \PATH => "",
+            \D => '/'
+        ])), 0, 6);
+        $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';"></span>';
     }
-    return "" !== $out[1] ? new \HTML($out) : null;
+    $value[1] .= $div;
+    $description = $value['description'] ?? $time;
+    $title = $value['title'] ?? $time;
+    if (false !== $description || false !== $title) {
+        $value[1] .= '<div><h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
+            'link' => $value['link'] ?? null,
+            'target' => $value['target'] ?? null,
+            'title' => $title,
+            'url' => $value['url'] ?? null
+        ], $key), $key) . '</h3>' . \x\panel\to\description($description) . '</div>';
+    }
+    $value[1] .= '<div>' . \x\panel\type\tasks\link(\x\panel\_value_set([
+        '0' => 'p',
+        'lot' => $value['tasks'] ?? []
+    ], $key), $key) . '</div>';
+    $value['tags'] = $tags;
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    if (!$is_active) {
+        unset($value[2]['tabindex']);
+    }
+    return new \HTML($value);
 }
 
 function pager($value, $key) {
@@ -891,45 +910,42 @@ function pager($value, $key) {
 }
 
 function pages($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'ul',
-        1 => $value[1] ?? "",
-        2 => \array_replace(['tabindex' => -1], $value[2] ?? [])
-    ];
-    if (!isset($value[1])) {
-        $lot = [];
-        if (isset($value['lot'])) {
-            foreach ($value['lot'] as $k => $v) {
-                if (false === $v || null === $v || !empty($v['skip'])) {
-                    continue;
-                }
-                $lot[$k] = $v;
+    $value[0] = $value[0] ?? 'ul';
+    $value[1] = $value[1] ?? "";
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
+    $lot = [];
+    if (isset($value['lot'])) {
+        foreach ($value['lot'] as $k => $v) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
+                continue;
             }
-            if (!empty($value['sort'])) {
-                $sort = $value['sort'];
-                if (true === $sort) {
-                    $sort = [1, 'stack', 10];
-                }
-                $lot = (new \Anemone($lot))->sort($sort)->get();
-            }
+            $lot[$k] = $v;
         }
-        $count = 0;
-        foreach ($lot as $k => $v) {
-            if (\is_array($v) && !\array_key_exists('type', $v)) {
-                $v['type'] = 'page';
+        if (!empty($value['sort'])) {
+            $sort = $value['sort'];
+            if (true === $sort) {
+                $sort = [1, 'stack', 10];
             }
-            $out[1] .= \x\panel\type($v, $k);
-            ++$count;
+            $lot = (new \Anemone($lot))->sort($sort)->get();
         }
-        unset($lot);
-        $value['tags'] = \array_replace([
-            'count:' . $count => true,
-            'lot' => true,
-            'lot:pages' => true
-        ], $value['tags'] ?? []);
-        $out[2] = \x\panel\_tag_set($out[2], $value);
     }
-    return "" !== $out[1] ? new \HTML($out) : null;
+    $count = 0;
+    foreach ($lot as $k => $v) {
+        if (\is_array($v)) {
+            $v['type'] = $v['type'] ?? 'page';
+        }
+        $value[1] .= \x\panel\type($v, $k);
+        ++$count;
+    }
+    unset($lot);
+    $value['tags'] = \array_replace([
+        'count:' . $count => true,
+        'lot' => true,
+        'lot:pages' => true
+    ], $value['tags'] ?? []);
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 function proxy($value, $key) {
@@ -945,7 +961,7 @@ function proxy($value, $key) {
     if (!isset($value[1])) {
         $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4);
         // TODO: Allow to customize this
-        $tasks = \x\panel\type\tasks\link([
+        $tasks = \x\panel\type\tasks\link(\x\panel\_value_set([
             'lot' => [
                 'exit' => [
                     'description' => 'Close',
@@ -956,7 +972,7 @@ function proxy($value, $key) {
                     'url' => '#exit'
                 ]
             ]
-        ], 0);
+        ], 0), 0);
         if ($title || $tasks) {
             $out[1] .= '<header role="group">';
             $out[1] .= $title;
@@ -977,10 +993,10 @@ function proxy($value, $key) {
         }
         if (!empty($value['tasks'])) {
             $out[1] .= '<footer role="group">';
-            $out[1] .= \x\panel\type\tasks\button([
+            $out[1] .= \x\panel\type\tasks\button(\x\panel\_value_set([
                 '0' => 'p',
                 'lot' => $value['tasks']
-            ], $key);
+            ], $key), $key);
             $out[1] .= '</footer>';
             ++$count;
         }
@@ -1019,8 +1035,8 @@ function row($value, $key) {
         }
         if (isset($value['lot'])) {
             foreach ($value['lot'] as &$v) {
-                if (!\array_key_exists('type', $v)) {
-                    $v['type'] = 'content';
+                if (\is_array($v)) {
+                    $v['type'] = $v['type'] ?? 'content';
                 }
             }
             unset($v);
@@ -1048,8 +1064,8 @@ function rows($value, $key) {
         }
         if (isset($value['lot'])) {
             foreach ($value['lot'] as &$v) {
-                if (!\array_key_exists('type', $v)) {
-                    $v['type'] = 'row';
+                if (\is_array($v)) {
+                    $v['type'] = $v['type'] ?? 'row';
                 }
             }
             unset($v);
@@ -1208,7 +1224,7 @@ function stack($value, $key) {
                 'is:current' => $is_current,
                 'not:active' => !$is_active
             ],
-            'target' => 'stack:' . ($value['value'] ?? $key),
+            'target' => $value['target'] ?? 'stack:' . ($value['value'] ?? $key),
             'title' => $value['title'] ?? null,
             'url' => $value['url'] ?? null
         ], $key), $key) . '</h3>';
@@ -1224,10 +1240,10 @@ function stack($value, $key) {
             $out[1] .= '</div>';
             $tags['count:' . $count] = true;
         }
-        $out[1] .= \x\panel\type\tasks\link([
+        $out[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
             '0' => 'p',
             'lot' => $value['tasks'] ?? []
-        ], $key);
+        ], $key), $key);
         $value['tags'] = $tags;
         $out[2] = \x\panel\_tag_set($out[2], $value);
         if (!$is_active) {
@@ -1286,8 +1302,8 @@ function stacks($value, $key) {
         }
         $count = 0;
         foreach ($lot as $k => $v) {
-            if (\is_array($v) && !\array_key_exists('type', $v)) {
-                $v['type'] = 'stack';
+            if (\is_array($v)) {
+                $v['type'] = $v['type'] ?? 'stack';
             }
             $out[1] .= \x\panel\type($v, $k);
             ++$count;
@@ -1350,7 +1366,7 @@ function tabs($value, $key) {
                     $v[3]['id'] = 't:' . $id;
                     $v[3]['role'] = 'tab';
                     $v[3]['tabindex'] = -1;
-                    $v[3]['target'] = $v[2]['target'] ?? 'tab:' . $kk;
+                    $v[3]['target'] = $v[2]['target'] ?? $v['target'] ?? 'tab:' . $kk;
                     $v['tags']['can:toggle'] = !empty($v['toggle']);
                     if (empty($v['url']) && empty($v['link']) && (!\array_key_exists('active', $v) || $v['active'])) {
                         $v['url'] = '?' . \explode('?', \x\panel\to\link(['query' => ['tab' => [$name => $kk]]]), 2)[1];
@@ -1392,7 +1408,9 @@ function tabs($value, $key) {
             }
             foreach ($sections as $k => $v) {
                 // If `type` is not defined, the default value will be `tab`
-                $v['type'] = $v['type'] ?? 'tab';
+                if (\is_array($v)) {
+                    $v['type'] = $v['type'] ?? 'tab';
+                }
                 $vv = (string) \x\panel\type($v, $k);
                 if ("" === $vv) {
                     unset($links[$k]);

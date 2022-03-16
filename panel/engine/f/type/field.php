@@ -480,14 +480,11 @@ function range($value, $key) {
 }
 
 function set($value, $key) {
-    $title = \x\panel\to\title($value['title'] ?? "", -2);
-    $description = \x\panel\to\description($value['description'] ?? "");
-    $content = $value['content'] ?? "";
-    $value = \array_replace([
-        0 => 'fieldset',
-        1 => ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description . $content,
-        2 => []
-    ], $value);
+    $content = (string) ($value['content'] ?? "");
+    $description = (string) \x\panel\to\description($value['description'] ?? "");
+    $title = (string) \x\panel\to\title($value['title'] ?? "", -2);
+    $value[0] = $value[0] ?? 'fieldset';
+    $value[1] = $value[1] ?? ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description . $content;
     unset($value['description'], $value['title'], $value['type']);
     return \x\panel\type($value, $key);
 }
