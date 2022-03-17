@@ -881,7 +881,7 @@ function page($value, $key) {
         'lot' => $value['tasks'] ?? []
     ], $key), $key) . '</div>';
     $value['tags'] = $tags;
-    $value[2] = \x\panel\_tag_set($value[2], $value);
+    $value[2] = \x\panel\_style_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     if (!$is_active) {
         unset($value[2]['tabindex']);
@@ -890,7 +890,7 @@ function page($value, $key) {
 }
 
 function pager($value, $key) {
-    $content = \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function($i) {
+    $content = (string) \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function($i) {
         return \x\panel\to\link([
             'part' => $i,
             'path' => $GLOBALS['_']['path']
@@ -904,7 +904,7 @@ function pager($value, $key) {
             'stack' => 10
         ]
     ];
-    $out = \x\panel\type\lot($value, $key);
+    $out = \x\panel\type\lot(\x\panel\_value_set($value, $key), $key);
     $out[0] = 'p';
     return "" !== $content ? $out : null;
 }
@@ -1422,7 +1422,7 @@ function tabs($value, $key) {
             if ($links) {
                 $out[1] .= \x\panel\type\links(\x\panel\_value_set([
                     '0' => 'nav',
-                    '2' => ['tabindex' => null],
+                    '2' => ['tabindex' => false],
                     '3' => ['role' => 'tablist'],
                     'lot' => $links
                 ], $name), $name);

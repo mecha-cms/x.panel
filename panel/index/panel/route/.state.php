@@ -152,6 +152,7 @@ if (false === strpos($_['path'], '/')) {
                                                     'content' => ['skip' => true],
                                                     'name' => ['skip' => true],
                                                     'title' => [
+                                                        'focus' => true,
                                                         'hint' => ($v = $state_r['title'] ?? null) ?? 'Title Goes Here',
                                                         'name' => 'state[title]',
                                                         'stack' => 10,
