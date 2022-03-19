@@ -176,7 +176,7 @@ function _tag_set(array $attr, array $value = []) {
     return $attr;
 }
 
-function _type_parent_set(&$value, $parent) {
+function _type_parent_set($value, $parent) {
     foreach ($value as &$v) {
         $type = $v['type'] ?? "";
         if ($type !== $parent && 0 !== \strpos($type, $parent . '/')) {
@@ -186,6 +186,7 @@ function _type_parent_set(&$value, $parent) {
         $v['type'] = \trim($type, '/');
     }
     unset($v);
+    return $value;
 }
 
 function _value_set(array $value, $key = null) {
@@ -202,6 +203,7 @@ function _value_set(array $value, $key = null) {
         'current' => null,
         'description' => null,
         'has' => [],
+        'hint' => null,
         'icon' => null,
         'id' => null,
         'image' => null,

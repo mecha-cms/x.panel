@@ -9,10 +9,10 @@ Hook::set('_', function($_) use($state) {
         $is_root = 0 === substr_count($_['path'], '/');
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] as $k => &$v) {
             unset($v['tasks']['get']);
-            if (isset($v['tasks']['let']['url']) && false !== strpos($v['tasks']['let']['url'], '&trash=')) {
+            if (!empty($v['tasks']['let']['url']['query']['trash'])) {
                 $v['tasks']['let']['description'] = 'Delete permanently';
                 $v['tasks']['let']['icon'] = 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z';
-                $v['tasks']['let']['url'] = explode('&trash=', $v['tasks']['let']['url'], 2)[0];
+                unset($v['tasks']['let']['url']['query']['trash']);
                 if ($is_root) {
                     if (is_dir($k)) {
                         $stats = [0, 0];

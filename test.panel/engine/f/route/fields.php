@@ -149,7 +149,7 @@ function fields($_) {
                 'name' => 'default[items]',
                 'title' => 'Items',
                 'type' => 'items',
-                'value' => [
+                'values' => [
                     2 => true,
                     3 => true
                 ]
@@ -222,21 +222,24 @@ function fields($_) {
                 'name' => 'default[query]',
                 'title' => 'Query',
                 'type' => 'query',
-                'value' => 'foo, bar',
+                // 'value' => 'foo, bar',
+                'values' => ['foo', 'bar']
             ],
             'query-disabled' => [
                 'active' => false,
                 'name' => 'default[query-disabled]',
                 'title' => 'Query',
                 'type' => 'query',
-                'value' => 'foo, bar'
+                // 'value' => 'foo, bar',
+                'values' => ['foo', 'bar']
             ],
             'query-readonly' => [
                 'fix' => true,
                 'name' => 'default[query-readonly]',
                 'title' => 'Query',
                 'type' => 'query',
-                'value' => 'foo, bar'
+                // 'value' => 'foo, bar',
+                'values' => ['foo', 'bar']
             ],
             'range' => [
                 'name' => 'default[range]',

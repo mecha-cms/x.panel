@@ -19,9 +19,7 @@ function get($value, $key) {
 
 function post($value, $key) {
     if ($out = \x\panel\type\form($value, $key)) {
-        if (!isset($out['enctype'])) {
-            $out['enctype'] = 'multipart/form-data';
-        }
+        $out['enctype'] = $out['enctype'] ?? 'multipart/form-data';
         $out['method'] = 'post';
         return $out;
     }

@@ -317,7 +317,7 @@ function fields($value, $key) {
     if (isset($value['content'])) {
         $value[1] .= \x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
-        \x\panel\_type_parent_set($value['lot'], 'field');
+        $value['lot'] = \x\panel\_type_parent_set($value['lot'], 'field');
         foreach ((new \Anemone($value['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;

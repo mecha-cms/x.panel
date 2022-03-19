@@ -13,6 +13,7 @@ function blob($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
+    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? D . \To::folder($_POST['path']) : "");
     $test_size = (array) (\State::get('x.panel.guard.file.size', true) ?? [0, 0]);
     $test_type = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.type', true) ?? [])))) . \P;
     $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
@@ -21,7 +22,6 @@ function blob($_) {
         if (!empty($v['status'])) {
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
         } else {
-            $folder = \LOT . \D . \strtr(\trim($v['parent'] ?? $_['path'], '/'), '/', \D);
             $name = (string) (\To::file(\lcfirst($v['name'])) ?? \uniqid());
             $blob = $folder . \D . $name;
             $size = $v['size'] ?? 0;
@@ -170,7 +170,7 @@ function file($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = $_['folder'];
+    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? D . \To::folder($_POST['path']) : "");
     $name = \basename(\To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     // Special case for PHP file(s)
@@ -187,7 +187,13 @@ function file($_) {
         $_[\is_dir($file) ? 'folder' : 'file'] = $file; // For hook(s)
     } else {
         if (\array_key_exists('content', $_POST['file'] ?? [])) {
-            if (\is_writable($folder = \dirname($file))) {
+            if (!\is_dir($folder = \dirname($file))) {
+                \mkdir($folder, 0775, true);
+                foreach (\step(\rtrim($folder, \D), \D) as $v) {
+                    $_SESSION['_']['folder'][$v] = 1;
+                }
+            }
+            if (\is_writable($folder)) {
                 \file_put_contents($file, $_POST['file']['content']);
             } else {
                 $_['alert']['error'][$folder] = ['Folder %s is not writable.', '<code>' . \x\panel\from\path($folder) . '</code>'];
@@ -233,7 +239,7 @@ function folder($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = $_['folder'];
+    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? D . \To::folder($_POST['path']) : "");
     $name = (string) \To::folder($_POST['folder']['name'] ?? "");
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
