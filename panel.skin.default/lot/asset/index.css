@@ -24,32 +24,21 @@
   display: none;
 }
 
-.has\:menu .lot\:menu > .description,
-.has\:menu .lot\:menu > .title {
-  display: none;
-}
-
-.lot\:menu .lot\:menu > .description,
-.lot\:menu .lot\:menu > .title {
-  display: none;
-}
-
 .is\:dark {
   --color--disabled: #4e4e4e;
-  --color-bar-info: #b2b2b2;
   --color-bar-link--active: #919191;
   --color-bar-link--current: #a7a7a7;
   --color-bar-link--disabled: #4e4e4e;
   --color-bar-link--focus: #919191;
   --color-bar-link--hover: #7a7a7a;
   --color-bar-link: #7a7a7a;
+  --color-bar-status: #b2b2b2;
   --color-button--active: #f4f4f4;
   --color-button--disabled: #4e4e4e;
   --color-button--focus: #f4f4f4;
   --color-button--hover: #f4f4f4;
   --color-button: #f4f4f4;
   --color-description: #919191;
-  --color-info: #919191;
   --color-input--disabled: #4e4e4e;
   --color-input--hover: #bdbdbd;
   --color-input--invalid: #de5f5f;
@@ -59,13 +48,13 @@
   --color-link--focus: #919191;
   --color-link--hover: #7a7a7a;
   --color-link: #7a7a7a;
-  --color-menu-info: #b2b2b2;
   --color-menu-link--active: #919191;
   --color-menu-link--current: #a7a7a7;
   --color-menu-link--disabled: #4e4e4e;
   --color-menu-link--focus: #919191;
   --color-menu-link--hover: #7a7a7a;
   --color-menu-link: #7a7a7a;
+  --color-menu-status: #b2b2b2;
   --color-stack--active: #bdbdbd;
   --color-stack--current: #a7a7a7;
   --color-stack--disabled: #4e4e4e;
@@ -77,6 +66,7 @@
   --color-stack-link--hover: #7a7a7a;
   --color-stack-link: #7a7a7a;
   --color-stack: #a7a7a7;
+  --color-status: #919191;
   --color-tab--active: #bdbdbd;
   --color-tab--current: #a7a7a7;
   --color-tab--disabled: #4e4e4e;
@@ -90,10 +80,10 @@
   --color-tab: #a7a7a7;
   --color: #a7a7a7;
   --fill-alert: #242424;
-  --fill-bar-info: #2d2d2d;
   --fill-bar-link--active: #242424;
   --fill-bar-link--focus: #242424;
   --fill-bar-link--hover: #242424;
+  --fill-bar-status: #2d2d2d;
   --fill-button--active: #575757;
   --fill-button--disabled: #2d2d2d;
   --fill-button--focus: #717171;
@@ -109,11 +99,11 @@
   --fill-input--hover: #2d2d2d;
   --fill-input: #2d2d2d;
   --fill-mark: #383838;
-  --fill-menu-info: #2d2d2d;
   --fill-menu-link--active: #242424;
   --fill-menu-link--current: #262626;
   --fill-menu-link--focus: #242424;
   --fill-menu-link--hover: #242424;
+  --fill-menu-status: #2d2d2d;
   --fill-stack--current: none;
   --fill-stack--hover: #242424;
   --fill-stack: #242424;
@@ -218,20 +208,19 @@
 
 .is\:light {
   --color--disabled: #b2b2b2;
-  --color-bar-info: #646464;
   --color-bar-link--active: #646464;
   --color-bar-link--current: #646464;
   --color-bar-link--disabled: #c8c8c8;
   --color-bar-link--focus: #646464;
   --color-bar-link--hover: #7a7a7a;
   --color-bar-link: #7a7a7a;
+  --color-bar-status: #646464;
   --color-button--active: white;
   --color-button--disabled: #e9e9e9;
   --color-button--focus: white;
   --color-button--hover: white;
   --color-button: white;
   --color-description: #6f6f6f;
-  --color-info: #919191;
   --color-input--disabled: #919191;
   --color-input--hover: #4e4e4e;
   --color-input--invalid: #a72727;
@@ -241,13 +230,13 @@
   --color-link--focus: #646464;
   --color-link--hover: #7a7a7a;
   --color-link: #7a7a7a;
-  --color-menu-info: #646464;
   --color-menu-link--active: #646464;
   --color-menu-link--current: #646464;
   --color-menu-link--disabled: #c8c8c8;
   --color-menu-link--focus: #646464;
   --color-menu-link--hover: #7a7a7a;
   --color-menu-link: #7a7a7a;
+  --color-menu-status: #646464;
   --color-stack--active: #646464;
   --color-stack--current: #646464;
   --color-stack--disabled: #b2b2b2;
@@ -259,6 +248,7 @@
   --color-stack-link--hover: #7a7a7a;
   --color-stack-link: #7a7a7a;
   --color-stack: #646464;
+  --color-status: #919191;
   --color-tab--active: #646464;
   --color-tab--current: #646464;
   --color-tab--disabled: #b2b2b2;
@@ -272,10 +262,10 @@
   --color-tab: #646464;
   --color: #646464;
   --fill-alert: #fbfbfb;
-  --fill-bar-info: #f4f4f4;
   --fill-bar-link--active: #fbfbfb;
   --fill-bar-link--focus: #fbfbfb;
   --fill-bar-link--hover: #fbfbfb;
+  --fill-bar-status: #f4f4f4;
   --fill-button--active: #6d6d6d;
   --fill-button--disabled: #a7a7a7;
   --fill-button--focus: #878787;
@@ -291,11 +281,11 @@
   --fill-input--hover: #e9e9e9;
   --fill-input: #e9e9e9;
   --fill-mark: #e9e9e9;
-  --fill-menu-info: #f4f4f4;
   --fill-menu-link--active: #fbfbfb;
   --fill-menu-link--current: #f8f8f8;
   --fill-menu-link--focus: #fbfbfb;
   --fill-menu-link--hover: #fbfbfb;
+  --fill-menu-status: #f4f4f4;
   --fill-stack--current: none;
   --fill-stack--hover: #fbfbfb;
   --fill-stack: #fbfbfb;

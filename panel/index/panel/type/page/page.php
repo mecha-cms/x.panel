@@ -76,7 +76,7 @@ if (isset($state->x->tag) && (
     ];
 }
 
-$_['lot']['bar']['lot'][0]['lot']['set']['url'] = x\panel\to\link([
+$_['lot']['bar']['lot'][0]['lot']['set']['url'] = [
     'part' => 0,
     'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
     'query' => [
@@ -86,7 +86,7 @@ $_['lot']['bar']['lot'][0]['lot']['set']['url'] = x\panel\to\link([
         'type' => 'page/page'
     ],
     'task' => 'set'
-]);
+];
 
 $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['set']['title'] = 'set' === $_['task'] ? 'Publish' : 'Update';
 

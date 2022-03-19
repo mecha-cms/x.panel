@@ -2,7 +2,7 @@
 
 if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     $_['alert']['error'][$file] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file) . '</code>', 'file']];
-    $_['kick'] = x\panel\to\link([
+    $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
         'query' => [
@@ -12,7 +12,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
             'type' => null
         ],
         'task' => 'get'
-    ]);
+    ];
     return $_;
 }
 
@@ -72,7 +72,7 @@ $bar = [
             'lot' => [
                 'link' => [
                     'skip' => false,
-                    'url' => x\panel\to\link([
+                    'url' => [
                         'part' => "" !== $back ? 1 : 0,
                         'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : ($state->x->panel->route ?? 'page/1'), '/') : $_['path'],
                         'query' => [
@@ -81,7 +81,7 @@ $bar = [
                             'tab' => null,
                             'type' => null
                         ]
-                    ])
+                    ]
                 ],
                 'folder' => ['skip' => true]
             ]
@@ -94,12 +94,6 @@ $desk = [
     'lot' => [
         'form' => [
             // `form/post`
-            'data' => [
-                'file' => ['seal' => '0600'],
-                'token' => $_['token'],
-                'trash' => $trash,
-                'type' => $_['type']
-            ],
             'lot' => [
                 1 => [
                     // `section`
@@ -151,6 +145,12 @@ $desk = [
                         ]
                     ]
                 ]
+            ],
+            'values' => [
+                'file' => ['seal' => '0600'],
+                'token' => $_['token'],
+                'trash' => $trash,
+                'type' => $_['type']
             ]
         ]
     ]

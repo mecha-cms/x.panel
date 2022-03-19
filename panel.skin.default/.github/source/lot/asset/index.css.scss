@@ -38,23 +38,5 @@ $mix: #fff;
   }
 }
 
-.has\:menu {
-  .lot\:menu {
-    > .description,
-    > .title {
-      display: none; // Remove description and title
-    }
-  }
-}
-
-.lot\:menu {
-  .lot\:menu {
-    > .description,
-    > .title {
-      display: none; // Remove description and title
-    }
-  }
-}
-
 @import '_dark';
 @import '_light';

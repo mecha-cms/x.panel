@@ -38,7 +38,7 @@ Hook::set('_', function($_) use($path, $super) {
 
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'User';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
-$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = x\panel\to\link([
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = [
     'part' => 0,
     'query' => [
         'query' => null,
@@ -47,7 +47,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url']
         'type' => 'page/user'
     ],
     'task' => 'set'
-]);
+];
 
 // Prevent user with status other than `1` from creating user file(s)
 if (!$super) {

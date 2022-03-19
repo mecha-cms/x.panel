@@ -11,11 +11,11 @@ function eject($_) {
     } else {
         $_['alert']['error'][$file] = ['Extension %s could not be ejected.', ['<code>' . $name . '</code>']];
     }
-    $_['kick'] = $_REQUEST['kick'] ?? \x\panel\to\link([
+    $_['kick'] = $_REQUEST['kick'] ?? [
         'path' => 'x',
         'query' => null,
         'task' => 'get'
-    ]);
+    ];
     $_SESSION['_']['folder'][$folder] = 1;
     return $_;
 }

@@ -4,12 +4,12 @@ function zip($_) {
     $file = $_['file'];
     $folder = $_['folder'];
     $file_zip = $file && \is_file($file) && 'zip' === \pathinfo($file, \PATHINFO_EXTENSION);
-    $kick = \x\panel\to\link([
+    $kick = [
         'part' => $file_zip ? 1 : 0,
         'path' => $file_zip ? \dirname($_['path']) : $_['path'],
         'query' => null,
         'task' => 'get'
-    ]);
+    ];
     // Abort by previous hook’s return value if any
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         $_['kick'] = $kick;

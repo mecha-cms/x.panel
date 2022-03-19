@@ -19,8 +19,8 @@ function tabs($_) {
             'tab-2' => [
                 'content' => '<p>Content of the third tab.</p>',
                 'description' => 'Description goes here.',
-                'info' => 'Toggle',
                 'stack' => 30,
+                'status' => 'Toggle',
                 'title' => 'Tab 3',
                 'toggle' => true
             ]

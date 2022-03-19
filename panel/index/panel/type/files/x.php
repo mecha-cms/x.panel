@@ -5,7 +5,7 @@ $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
 $_['lot']['bar']['lot'][0]['lot']['folder']['skip'] = true;
 $_['lot']['bar']['lot'][0]['lot']['link']['icon'] = 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z';
 $_['lot']['bar']['lot'][0]['lot']['link']['skip'] = false;
-$_['lot']['bar']['lot'][0]['lot']['link']['url'] = x\panel\to\link([
+$_['lot']['bar']['lot'][0]['lot']['link']['url'] = [
     'part' => 1,
     'path' => dirname($_['path']),
     'query' => [
@@ -15,7 +15,7 @@ $_['lot']['bar']['lot'][0]['lot']['link']['url'] = x\panel\to\link([
         'type' => null
     ],
     'task' => 'get'
-]);
+];
 
 Hook::set('_', function($_) use($state, $url) {
     $bounds = [];

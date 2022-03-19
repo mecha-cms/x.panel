@@ -43,11 +43,11 @@
                 margin-right: calc(var(--x) / -4);
               }
             }
-            .info {
-              background: var(--fill-bar-info);
-              border-radius: var(--arc-bar-info);
-              box-shadow: var(--shadow-bar-info);
-              color: var(--color-bar-info);
+            .status {
+              background: var(--fill-bar-status);
+              border-radius: var(--arc-bar-status);
+              box-shadow: var(--shadow-bar-status);
+              color: var(--color-bar-status);
               float: right;
               line-height: var(--h);
               margin: calc(var(--y) / 2) 0 0 calc(var(--x) / 4);

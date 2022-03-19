@@ -10,7 +10,7 @@ if (false === strpos($_['path'], '/')) {
         'stack' => 10.1,
         'title' => 'Replace',
         'type' => 'link',
-        'url' => $zip ? x\panel\to\link([
+        'url' => $zip ? [
             'part' => 0,
             'query' => [
                 'query' => null,
@@ -19,7 +19,7 @@ if (false === strpos($_['path'], '/')) {
                 'type' => 'blob/layout'
             ],
             'task' => 'set'
-        ]) : null
+        ] : null
     ];
     Hook::set('_', function($_) use($state, $url) {
         if (is_file($file = ($folder = $_['folder']) . D . 'about.page')) {

@@ -50,19 +50,18 @@
   }
   // Pallete
   --color--disabled: #666;
-  --color-bar-info: #f00;
   --color-bar-link--active: #009;
   --color-bar-link--disabled: #66f;
   --color-bar-link--focus: #00c;
   --color-bar-link--hover: #00f;
   --color-bar-link: #00f;
+  --color-bar-status: #f00;
   --color-button--active: #fff;
   --color-button--disabled: #fff;
   --color-button--focus: #fff;
   --color-button--hover: #fff;
   --color-button: #fff;
   --color-code-block: #fff;
-  --color-info: #f00;
   --color-input--disabled: #666;
   --color-input--hover: #000;
   --color-input--invalid: #f00;
@@ -73,12 +72,12 @@
   --color-link--hover: #00f;
   --color-link: #00f;
   --color-mark: #000;
-  --color-menu-info: #fff;
   --color-menu-link--active: #009;
   --color-menu-link--disabled: #66f;
   --color-menu-link--focus: #00c;
   --color-menu-link--hover: #00f;
   --color-menu-link: #00f;
+  --color-menu-status: #fff;
   --color-output: #000;
   --color-stack--disabled: #666;
   --color-stack-link--active: #009;
@@ -87,6 +86,7 @@
   --color-stack-link--hover: #00f;
   --color-stack-link: #00f;
   --color-stack: #000;
+  --color-status: #f00;
   --color-tab--disabled: #666;
   --color-tab-link--active: #009;
   --color-tab-link--disabled: #66f;
@@ -106,7 +106,7 @@
   --fill-input--hover: #fff;
   --fill-input: #fff;
   --fill-mark: #ff0;
-  --fill-menu-info: #f00;
+  --fill-menu-status: #f00;
   --fill-output: none;
   --fill: #fff;
   --shadow-button--disabled: none;

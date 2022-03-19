@@ -581,19 +581,18 @@
   --width-option-picker: var(--width-input);
   --width-tag-picker: var(--width-input);
   --color--disabled: #666;
-  --color-bar-info: #f00;
   --color-bar-link--active: #009;
   --color-bar-link--disabled: #66f;
   --color-bar-link--focus: #00c;
   --color-bar-link--hover: #00f;
   --color-bar-link: #00f;
+  --color-bar-status: #f00;
   --color-button--active: #fff;
   --color-button--disabled: #fff;
   --color-button--focus: #fff;
   --color-button--hover: #fff;
   --color-button: #fff;
   --color-code-block: #fff;
-  --color-info: #f00;
   --color-input--disabled: #666;
   --color-input--hover: #000;
   --color-input--invalid: #f00;
@@ -604,12 +603,12 @@
   --color-link--hover: #00f;
   --color-link: #00f;
   --color-mark: #000;
-  --color-menu-info: #fff;
   --color-menu-link--active: #009;
   --color-menu-link--disabled: #66f;
   --color-menu-link--focus: #00c;
   --color-menu-link--hover: #00f;
   --color-menu-link: #00f;
+  --color-menu-status: #fff;
   --color-output: #000;
   --color-stack--disabled: #666;
   --color-stack-link--active: #009;
@@ -618,6 +617,7 @@
   --color-stack-link--hover: #00f;
   --color-stack-link: #00f;
   --color-stack: #000;
+  --color-status: #f00;
   --color-tab--disabled: #666;
   --color-tab-link--active: #009;
   --color-tab-link--disabled: #66f;
@@ -637,7 +637,7 @@
   --fill-input--hover: #fff;
   --fill-input: #fff;
   --fill-mark: #ff0;
-  --fill-menu-info: #f00;
+  --fill-menu-status: #f00;
   --fill-output: none;
   --fill: #fff;
   --shadow-button--disabled: none;
@@ -2097,8 +2097,8 @@ input[type=range]:disabled::-moz-range-thumb {
   align-items: center;
   gap: 0 calc(var(--x) / 4);
 }
-.title .info {
-  color: var(--color-info);
+.title .status {
+  color: var(--color-status);
 }
 .title > span {
   flex: 1;
@@ -2167,11 +2167,11 @@ input[type=range]:disabled::-moz-range-thumb {
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
-.lot\:bar .lot\:links > ul > li > a .title .info {
-  background: var(--fill-bar-info);
-  border-radius: var(--arc-bar-info);
-  box-shadow: var(--shadow-bar-info);
-  color: var(--color-bar-info);
+.lot\:bar .lot\:links > ul > li > a .title .status {
+  background: var(--fill-bar-status);
+  border-radius: var(--arc-bar-status);
+  box-shadow: var(--shadow-bar-status);
+  color: var(--color-bar-status);
   float: right;
   line-height: var(--h);
   margin: calc(var(--y) / 2) 0 0 calc(var(--x) / 4);
@@ -2527,11 +2527,6 @@ input[type=range]:disabled::-moz-range-thumb {
   line-height: calc(var(--y) - 2px);
 }
 
-.lot\:fields > .description {
-  border-bottom: 1px dashed var(--stroke);
-  padding-bottom: calc(var(--y) - (var(--h) - var(--z)));
-}
-
 .lot\:file,
 .lot\:page,
 .lot\:card,
@@ -2750,7 +2745,11 @@ input[type=range]:disabled::-moz-range-thumb {
   line-height: var(--y);
   width: var(--width-menu);
 }
-.lot\:menu .lot\:menu {
+.lot\:menu .has\:menu {
+  display: flex;
+  position: relative;
+}
+.lot\:menu .has\:menu .lot\:menu {
   box-shadow: var(--shadow-menu);
   display: none;
   left: 100%;
@@ -2797,11 +2796,11 @@ input[type=range]:disabled::-moz-range-thumb {
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
-.lot\:menu > ul > li > a .title .info {
-  background: var(--fill-menu-info);
-  border-radius: var(--arc-menu-info);
-  box-shadow: var(--shadow-menu-info);
-  color: var(--color-menu-info);
+.lot\:menu > ul > li > a .title .status {
+  background: var(--fill-menu-status);
+  border-radius: var(--arc-menu-status);
+  box-shadow: var(--shadow-menu-status);
+  color: var(--color-menu-status);
   float: right;
   margin: 0 calc(var(--x) / -4) 0 0;
   padding: 0 calc(var(--x) / 4);

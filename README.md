@@ -21,6 +21,7 @@ Release Notes
  - [ ] Added ability to update core, extension and layout directly from the panel.
  - [ ] Updated for Mecha 3.0.0.
  - [x] Changed URL pattern from `http://127.0.0.1/panel/::g::/foo/bar/baz/1` to `http://127.0.0.1/panel/get/foo/bar/baz/1` (#23)
+ - [x] Changed `info` key to `status`.
  - [x] Changed `locked` property to `fix` property.
  - [x] Moved AJAX feature to a [separate extension](https://github.com/mecha-cms/x.panel.f3h).
  - [x] Renamed `height` and `width` class to `has:height` and `has:width`.

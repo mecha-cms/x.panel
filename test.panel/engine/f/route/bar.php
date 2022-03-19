@@ -23,11 +23,10 @@ function bar($_) {
                         'type' => 'separator'
                     ],
                     'menu-2' => [
-                        'info' => 24,
                         'lot' => [
                             'menu-2-0' => [
-                                'info' => 24,
                                 'stack' => 10,
+                                'status' => 24,
                                 'title' => 'Menu 3.1',
                                 'url' => '/'
                             ],
@@ -73,6 +72,7 @@ function bar($_) {
                             ],
                         ],
                         'stack' => 30,
+                        'status' => 24,
                         'title' => 'Menu 3',
                         'url' => '/'
                     ]

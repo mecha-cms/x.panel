@@ -109,7 +109,7 @@ function blob($_) {
         unset($_POST['token']);
         $_SESSION['form'] = $_POST;
     } else {
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'query' => \array_replace_recursive([
@@ -119,7 +119,7 @@ function blob($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
     }
     return $_;
 }
@@ -141,7 +141,7 @@ function data($_) {
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
@@ -152,7 +152,7 @@ function data($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
     }
     return $_;
 }
@@ -199,7 +199,7 @@ function file($_) {
         }
         \chmod($file, $seal);
         $_['alert']['success'][$file] = ['File %s successfully created.', '<code>' . \x\panel\from\path($file) . '</code>'];
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'query' => \array_replace_recursive([
@@ -209,7 +209,7 @@ function file($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
         $_['file'] = $file; // For hook(s)
         $_SESSION['_']['file'][\rtrim($file, \D)] = 1;
     }
@@ -248,7 +248,7 @@ function folder($_) {
         \mkdir($self, $seal, true);
         $_['alert']['success'][$self] = ['Folder %s successfully created.', '<code>' . \x\panel\from\path($self) . '</code>'];
         if (!empty($_POST['options']['kick'])) {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            $_['kick'] = $_POST['kick'] ?? [
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \strtr($self, [
@@ -262,9 +262,9 @@ function folder($_) {
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
-            ]);
+            ];
         } else {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            $_['kick'] = $_POST['kick'] ?? [
                 'part' => 1,
                 'query' => \array_replace_recursive([
                     'stack' => $_POST['stack'] ?? null,
@@ -273,7 +273,7 @@ function folder($_) {
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
-            ]);
+            ];
         }
         $_['folder'] = $self; // For hook(s)
         foreach (\step(\rtrim($self, \D), \D) as $v) {

@@ -29,6 +29,11 @@ function button($value, $key) {
     $out['name'] = $value['name'] ?? $key;
     $out['value'] = $value['value'] ?? null;
     $out[0] = 'button';
+    $id = $value['id'] ?? \substr(\uniqid(), 6);
+    if (0 === \strpos($id, 'f:')) {
+        $id = \substr($id, 2);
+    }
+    $out['id'] = 'f:' . $id;
     unset($out['href'], $out['target']);
     return $out;
 }
@@ -205,7 +210,7 @@ function field($value, $key) {
             $tags['type:' . \substr($type, 6)] = true;
         }
     }
-    $id = $value['id'] ?? 'f:' . \dechex(\time());
+    $id = $value['id'] ?? \dechex(\time());
     if (!isset($value['title']) || false !== $value['title']) {
         $title = \x\panel\to\title($value['title'] ?? \To::title($key), -2);
         $value[1] .= new \HTML([
@@ -213,7 +218,7 @@ function field($value, $key) {
             1 => $title,
             2 => [
                 'class' => 'count:' . ("" === \trim(\strip_tags($title ?? "")) ? '0' : '1'),
-                'for' => $id
+                'for' => 'f:' . $id
             ]
         ]);
         $value['has']['title'] = true;
@@ -290,7 +295,7 @@ function field($value, $key) {
     $value[1] .= '</div>';
     $value[2] = \x\panel\_style_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
-    if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
+    if (isset($value['values']) && \is_array($value['values']) && $data = \To::query($value['values'])) {
         foreach (\explode('&', \substr($data, 1)) as $v) {
             $vv = \explode('=', $v, 2);
             $value[1] .= new \HTML(['input', false, [
@@ -308,7 +313,7 @@ function fields($value, $key) {
     $value[1] = $value[1] ?? "";
     $bottom = "";
     $description = \x\panel\to\description($value['description'] ?? "");
-    $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 3);
+    $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4);
     if (isset($value['content'])) {
         $value[1] .= \x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
@@ -363,12 +368,12 @@ function file($value, $key) {
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'li';
     $value[1] = $value[1] ?? "";
-    $value[2]['tabindex'] ?? $value[2]['tabindex'] ?? 0;
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
         'description' => $value['description'] ?? null,
         'icon' => $value['icon'] ?? [],
-        'info' => $value['info'] ?? null,
         'link' => $value['link'] ?? null,
+        'status' => $value['status'] ?? null,
         'target' => $value['target'] ?? null,
         'title' => $value['title'] ?? null,
         'url' => $value['url'] ?? null
@@ -492,8 +497,8 @@ function folder($value, $key) {
     $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
         'description' => $value['description'] ?? \i('Open %s', 'Folder'),
         'icon' => $value['icon'] ?? [],
-        'info' => $value['info'] ?? null,
         'link' => $value['link'] ?? null,
+        'status' => $value['status'] ?? null,
         'target' => $value['target'] ?? null,
         'title' => $value['title'] ?? null,
         'url' => $value['url'] ?? null
@@ -540,7 +545,7 @@ function form($value, $key) {
         $count = 0;
         $value[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
-    if (isset($value['data']) && \is_array($value['data']) && $data = \To::query($value['data'])) {
+    if (isset($value['values']) && \is_array($value['values']) && $data = \To::query($value['values'])) {
         foreach (\explode('&', \substr($data, 1)) as $v) {
             $vv = \explode('=', $v, 2);
             $value[1] .= new \HTML(['input', false, [
@@ -641,15 +646,15 @@ function link($value, $key) {
     if (\is_array($href)) {
         $href = \x\panel\to\link($href);
     }
-    $info = $value['info'] ?? "";
+    $status = $value['status'] ?? "";
     $value['not']['active'] = $not_active = $value['not']['active'] ?? (\P === $href || (isset($value['active']) && !$value['active']));
     $value[0] = $value[0] ?? 'a';
     $value[1] = $value[1] ?? (string) \x\panel\type\title(\x\panel\_value_set([
         'content' => $value['title'] ?? \To::title($key),
         'description' => $value['description'] ?? null,
         'icon' => $value['icon'] ?? [],
-        'info' => $info,
-        'level' => -1
+        'level' => -1,
+        'status' => $status
     ], $key), $key);
     $value[2]['id'] = $value[2]['id'] ?? $value['id'] ?? null;
     if (!$not_active && \P !== $href) {
@@ -708,10 +713,24 @@ function menu($value, $key, int $i = 0) {
     $value[1] = $value[1] ?? "";
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     $count_parent = 0;
-    if ($description = \x\panel\to\description($value['description'] ?? "")) {
+    if (0 === $i || isset($value['with']['description']) && true === $value['with']['description']) {
+        $description = $value['description'] ?? "";
+    } else {
+        $description = $value['with']['description'] ?? "";
+    }
+    if (0 === $i || isset($value['with']['title']) && true === $value['with']['title']) {
+        $title = $value['title'] ?? "";
+    } else {
+        $title = $value['with']['title'] ?? "";
+    }
+    if ($description = \x\panel\to\description($description)) {
+        $value['has']['description'] = true;
+        unset($value['with']['description']);
         ++$count_parent;
     }
-    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4)) {
+    if ($title = \x\panel\to\title($title, $value['level'] ?? 4)) {
+        $value['has']['title'] = true;
+        unset($value['with']['title']);
         ++$count_parent;
     }
     if (isset($value['content'])) {
@@ -751,9 +770,6 @@ function menu($value, $key, int $i = 0) {
                 if (\array_key_exists('icon', $v)) {
                     $v['icon'] = (array) $v['icon'];
                 }
-                if (\array_key_exists('menu', $v)) {
-                    // TODO
-                }
                 // If `type` is not defined, the default value will be `menu`
                 $v['type'] = $v['type'] ?? 'menu';
                 if ('separator' === $v['type']) {
@@ -785,7 +801,12 @@ function menu($value, $key, int $i = 0) {
                         'role' => 'menuitem',
                         'tabindex' => $i < 0 ? null : -1
                     ], $v[3] ?? []);
-                    $vv[1] = \x\panel\type\link($v, $k);
+                    $vv[1] = \x\panel\type\link(\array_replace($v, [
+                        'with' => [
+                            'description' => false,
+                            'title' => false
+                        ]
+                    ]), $k);
                     if (!empty($v['lot'])) {
                         $vv[1]['aria-expanded'] = 'false';
                         $vv[1]['aria-haspopup'] = 'true';
@@ -795,9 +816,9 @@ function menu($value, $key, int $i = 0) {
                                 'tabindex' => -1
                             ]
                         ]), $k, $i + 1); // Recurse!
-                        if ($i < 0) {
-                            $v['has']['menu'] = $v['has']['menu'] ?? true;
-                        }
+                        $v['has']['menu'] = $v['has']['menu'] ?? true;
+                        $v['with']['description'] = false;
+                        $v['with']['title'] = false;
                     }
                 } else {
                     if (0 === \strpos($v['type'] . '/', 'form/')) {
@@ -1084,110 +1105,101 @@ function section($value, $key) {
 }
 
 function select($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'select',
-        1 => $value[1] ?? "",
-        2 => $value[2] ?? []
-    ];
-    if (!isset($value[1])) {
-        $the_options = [];
-        $the_value = $value['value'] ?? null;
-        // $the_placeholder = \i(...((array) ($out['hint'] ?? [])));
-        $seq0 = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
-        $sort = !isset($value['sort']) || $value['sort'];
-        foreach ($value['lot'] ?? [] as $k => $v) {
-            if (false === $v || null === $v || !empty($v['skip'])) {
-                continue;
-            }
-            // Group
-            if (isset($v['lot'])) {
-                $the_options_group = [];
-                $optgroup = new \HTML(['optgroup', "", [
-                    'disabled' => isset($v['active']) && !$v['active'],
-                    'label' => $t = \trim(\strip_tags(\i(...((array) ($v['title'] ?? $k)))))
+    $is_active = !isset($value['active']) || $value['active'];
+    $is_vital = !empty($value['vital']);
+    $value['is']['active'] = $value['is']['active'] ?? $is_active;
+    $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
+    $value['not']['active'] = $value['not']['active'] ?? !$is_active;
+    $value['not']['vital'] = $value['not']['vital'] ?? !$is_vital;
+    $value[0] = $value[0] ?? 'select';
+    $value[1] = $value[1] ?? "";
+    $the_options = [];
+    $the_value = $value['value'] ?? null;
+    // $the_placeholder = \i(...((array) ($value['hint'] ?? [])));
+    $seq0 = \array_keys($value['lot']) === \range(0, \count($value['lot']) - 1);
+    $sort = !isset($value['sort']) || $value['sort'];
+    foreach ($value['lot'] ?? [] as $k => $v) {
+        if (false === $v || null === $v || !empty($v['skip'])) {
+            continue;
+        }
+        // Group
+        if (isset($v['lot'])) {
+            $the_options_group = [];
+            $optgroup = new \HTML(['optgroup', "", [
+                'disabled' => isset($v['active']) && !$v['active'],
+                'label' => $t = \trim(\strip_tags(\i(...((array) ($v['title'] ?? $k)))))
+            ]]);
+            $seq1 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
+            foreach ($v['lot'] as $kk => $vv) {
+                $option = new \HTML(['option', "", [
+                    'selected' => null !== $the_value && (string) $the_value === (string) $kk,
+                    'value' => $seq1 ? null : $kk
                 ]]);
-                $seq1 = \array_keys($v['lot']) === \range(0, \count($v['lot']) - 1);
-                foreach ($v['lot'] as $kk => $vv) {
-                    $option = new \HTML(['option', "", [
-                        'selected' => null !== $the_value && (string) $the_value === (string) $kk,
-                        'value' => $seq1 ? null : $kk
-                    ]]);
-                    if (\is_array($vv) && \array_key_exists('title', $vv)) {
-                        $tt = $vv['title'] ?? $kk;
-                        $option['disabled'] = isset($vv['active']) && !$vv['active'];
-                        $option['title'] = $vv['description'] ?? null;
-                    } else {
-                        $tt = $vv;
-                    }
-                    $option[1] = $tt = \trim(\strip_tags(\i(...((array) $tt))));
-                    $the_options_group[$tt . $kk] = $option;
-                }
-                $sort && \ksort($the_options_group);
-                foreach ($the_options_group as $vv) {
-                    $optgroup[1] .= $vv;
-                }
-                // Add `0` to the end of the key so that option(s) group will come first
-                $the_options[$t . $k . '0'] = $optgroup;
-            // Flat
-            } else {
-                $option = new \HTML(['option', $k, [
-                    'selected' => null !== $the_value && (string) $the_value === (string) $k,
-                    'value' => $seq0 ? null : $k
-                ]]);
-                if (\is_array($v) && \array_key_exists('title', $v)) {
-                    $t = $v['title'] ?? $k;
-                    $option['disabled'] = isset($v['active']) && !$v['active'];
-                    $option['title'] = $v['description'] ?? null;
+                if (\is_array($vv) && \array_key_exists('title', $vv)) {
+                    $tt = $vv['title'] ?? $kk;
+                    $option['disabled'] = isset($vv['active']) && !$vv['active'];
+                    $option['title'] = $vv['description'] ?? null;
                 } else {
-                    $t = $v;
+                    $tt = $vv;
                 }
-                $option[1] = \trim(\strip_tags(\i(...((array) $t))));
-                // Add `1` to the end of the key so that bare option(s) will come last
-                $the_options[$t . $k . '1'] = $option;
+                $option[1] = $tt = \trim(\strip_tags(\i(...((array) $tt))));
+                $the_options_group[$tt . $kk] = $option;
             }
+            $sort && \ksort($the_options_group);
+            foreach ($the_options_group as $vv) {
+                $optgroup[1] .= $vv;
+            }
+            // Add `0` to the end of the key so that option(s) group will come first
+            $the_options[$t . $k . '0'] = $optgroup;
+        // Flat
+        } else {
+            $option = new \HTML(['option', $k, [
+                'selected' => null !== $the_value && (string) $the_value === (string) $k,
+                'value' => $seq0 ? null : $k
+            ]]);
+            if (\is_array($v) && \array_key_exists('title', $v)) {
+                $t = $v['title'] ?? $k;
+                $option['disabled'] = isset($v['active']) && !$v['active'];
+                $option['title'] = $v['description'] ?? null;
+            } else {
+                $t = $v;
+            }
+            $option[1] = \trim(\strip_tags(\i(...((array) $t))));
+            // Add `1` to the end of the key so that bare option(s) will come last
+            $the_options[$t . $k . '1'] = $option;
         }
-        $sort && \ksort($the_options);
-        foreach ($the_options as $v) {
-            $out[1] .= $v;
-        }
-        $is_active = !isset($value['active']) || $value['active'];
-        $is_vital = !empty($value['vital']);
-        $tags = \array_replace([
-            'is:active' => $is_active,
-            'is:vital' => $is_vital,
-            'not:active' => !$is_active,
-            'not:vital' => !$is_vital
-        ], $value['tags'] ?? []);
-        $out[2]['autofocus'] = !empty($value['focus']);
-        $out[2]['disabled'] = !$is_active;
-        $out[2]['id'] = $value['id'] ?? null;
-        $out[2]['name'] = $value['name'] ?? $key;
-        $out[2]['required'] = $is_vital;
-        $value['tags'] = $tags;
-        $out[2] = \x\panel\_tag_set($out[2], $value);
     }
-    return "" !== $out[1] ? new \HTML($out) : null;
+    $sort && \ksort($the_options);
+    foreach ($the_options as $v) {
+        $value[1] .= $v;
+    }
+    $id = $value['id'] ?? \substr(\uniqid(), 6);
+    if (0 === \strpos($id, 'f:')) {
+        $id = \substr($id, 2);
+    }
+    $value[2]['autofocus'] = !empty($value['focus']);
+    $value[2]['disabled'] = !$is_active;
+    $value[2]['id'] = 'f:' . $id;
+    $value[2]['name'] = $value['name'] ?? $key;
+    $value[2]['required'] = $is_vital;
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 function separator($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'hr',
-        1 => $value[1] ?? false,
-        2 => $value[2] ?? []
-    ];
-    $out[2] = \x\panel\_tag_set($out[2], $value);
-    return new \HTML($out);
+    $value[0] = $value[0] ?? 'hr';
+    $value[1] = $value[1] ?? false;
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 function stack($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'div',
-        1 => $value[1] ?? "",
-        2 => \array_replace([
-            'data-value' => $value['value'] ?? $key,
-            'tabindex' => -1
-        ], $value[2] ?? [])
-    ];
+    $value[0] = $value[0] ?? 'div';
+    $value[1] = $value[1] ?? "";
+    $value[2]['data-value'] = $value[2]['data-value'] ?? $value['value'] ?? $key;
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     if (!isset($value[1])) {
         $is_active = !isset($value['active']) || $value['active'];
         $is_current = !empty($value['current']);
@@ -1203,8 +1215,8 @@ function stack($value, $key) {
             '2' => ['tabindex' => -1],
             'description' => $value['description'] ?? null,
             'icon' => $value['icon'] ?? [],
-            'info' => $value['info'] ?? null,
             'link' => $value['link'] ?? null,
+            'status' => $value['status'] ?? null,
             'tags' => [
                 'is:active' => $is_active,
                 'is:current' => $is_current,
@@ -1462,79 +1474,74 @@ function tasks($value, $key) {
 }
 
 function textarea($value, $key) {
-    $out = [
-        0 => $value[0] ?? 'textarea',
-        1 => \htmlspecialchars($value[1] ?? $value['value'] ?? ""),
-        2 => $value[2] ?? []
-    ];
     $has_pattern = \array_key_exists('pattern', $value);
     $is_active = !isset($value['active']) || $value['active'];
     $is_fix = !empty($value['fix']);
     $is_vital = !empty($value['vital']);
-    $tags = \array_replace([
-        'has:pattern' => $has_pattern,
-        'is:active' => $is_active,
-        'is:fix' => $is_fix,
-        'is:vital' => $is_vital,
-        'not:active' => !$is_active,
-        'not:fix' => !$is_fix,
-        'not:vital' => !$is_vital
-    ], $value['tags'] ?? []);
+    $value['has']['pattern'] = $value['has']['pattern'] ?? $has_pattern;
+    $value['is']['active'] = $value['is']['active'] ?? $is_active;
+    $value['is']['fix'] = $value['is']['fix'] ?? $is_fix;
+    $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
+    $value['not']['active'] = $value['not']['active'] ?? !$is_active;
+    $value['not']['fix'] = $value['not']['fix'] ?? !$is_fix;
+    $value['not']['vital'] = $value['not']['vital'] ?? !$is_vital;
+    $value[0] = $value[0] ?? 'textarea';
+    $value[1] = \htmlspecialchars($value[1] ?? $value['value'] ?? "");
     if ($has_pattern) {
-        $out[2]['pattern'] = $value['pattern'];
+        $value[2]['pattern'] = $value['pattern'];
     }
-    $out[2]['autofocus'] = !empty($value['focus']);
-    $out[2]['disabled'] = !$is_active;
-    $out[2]['id'] = $value['id'] ?? null;
-    $out[2]['maxlength'] = $value['max'] ?? null;
-    $out[2]['minlength'] = $value['min'] ?? null;
-    $out[2]['name'] = $value['name'] ?? $key;
-    $out[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
-    $out[2]['readonly'] = $is_fix;
-    $out[2]['required'] = $is_vital;
-    $value['tags'] = $tags;
-    $out[2] = \x\panel\_tag_set($out[2], $value);
-    return new \HTML($out);
+    $id = $value['id'] ?? \substr(\uniqid(), 6);
+    if (0 === \strpos($id, 'f:')) {
+        $id = \substr($id, 2);
+    }
+    $value[2]['autofocus'] = !empty($value['focus']);
+    $value[2]['disabled'] = !$is_active;
+    $value[2]['id'] = 'f:' . $id;
+    $value[2]['maxlength'] = $value['max'] ?? null;
+    $value[2]['minlength'] = $value['min'] ?? null;
+    $value[2]['name'] = $value['name'] ?? $key;
+    $value[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
+    $value[2]['readonly'] = $is_fix;
+    $value[2]['required'] = $is_vital;
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 function title($value, $key) {
+    $value[0] = $value[0] ?? [
+       -1 => 'span',
+        0 => 'p',
+        1 => 'h1',
+        2 => 'h2',
+        3 => 'h3',
+        4 => 'h4',
+        5 => 'h5',
+        6 => 'h6'
+    ][$level = $value['level'] ?? 1] ?? false;
+    $value[1] = $value[1] ?? $value['content'] ?? "";
     $icon = $value['icon'] ?? [];
-    $info = $value['info'] ?? "";
-    $title = $value[1] ?? $value['content'] ?? "";
-    $title = \w('<!--0-->' . \i(...((array) $title)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'small', 'strong', 'sub', 'sup']);
+    $status = $value['status'] ?? "";
+    $title = \w('<!--0-->' . \i(...((array) $value[1])), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'small', 'strong', 'sub', 'sup']);
     if ('0' !== $title && !$title && !$icon) {
         return;
     }
-    $out = [
-        0 => $value[0] ?? [
-           -1 => 'span',
-            0 => 'p',
-            1 => 'h1',
-            2 => 'h2',
-            3 => 'h3',
-            4 => 'h4',
-            5 => 'h5',
-            6 => 'h6'
-        ][$level = $value['level'] ?? 1] ?? false,
-        1 => "",
-        2 => $value[2] ?? []
-    ];
-    $icon = \x\panel\to\icon($value['icon'] ?? []);
-    if ("" !== $info) {
-        $title = \trim($title . ' <small class="info">' . \i(...((array) $info)) . '</small>');
+    $icon = \x\panel\to\icon($icon);
+    if ("" !== $status) {
+        $title = \trim($title . ' <small class="status" role="status">' . \i(...((array) $status)) . '</small>');
     }
-    $out[1] = $icon[0] . ("" !== $title ? '<span>' . $title . '</span>' : "") . $icon[1];
-    if (false !== $out[0] && isset($value['description'])) {
-        $out[2]['title'] = \i(...((array) $value['description']));
+    $value[1] = $icon[0] . ("" !== $title ? '<span>' . $title . '</span>' : "") . $icon[1];
+    if (false !== $value[0] && isset($value['description'])) {
+        $value[2]['title'] = \i(...((array) $value['description']));
     }
-    $value['tags'] = \array_replace([
-        'has:icon' => !!($icon[0] || $icon[1]),
-        'has:title' => !!$title,
-        'level:' . $level => $level >= 0,
-        'title' => true
-    ], $value['tags'] ?? []);
-    $out[2] = \x\panel\_tag_set($out[2], $value);
-    return new \HTML($out);
+    $value['has']['icon'] = $value['has']['icon'] ?? !!($icon[0] || $icon[1]);
+    $value['has']['status'] = $value['has']['status'] ?? !!$status;
+    $value['has']['title'] = $value['has']['title'] ?? !!$title;
+    $value['tags']['level:' . $level] = $value['tags']['level:' . $level] ?? $level >= 0;
+    $value['tags']['title'] = $value['tags']['title'] ?? true;
+    $value[2] = \x\panel\_style_set($value[2], $value);
+    $value[2] = \x\panel\_tag_set($value[2], $value);
+    return new \HTML($value);
 }
 
 require __DIR__ . \D . 'type' . \D . 'button.php';

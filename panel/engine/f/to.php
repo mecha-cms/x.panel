@@ -37,9 +37,7 @@ function description($value) {
 }
 
 function field($value, $key, $type = 'textarea') {
-    if (!\array_key_exists('id', $value)) {
-        $value['id'] = 'f:' . \substr(\uniqid(), 6);
-    }
+    $value['id'] = $value['id'] ?? \substr(\uniqid(), 6);
     $state = $value['state'] ?? [];
     unset($value['tags']);
     $content = \fire("\\x\\panel\\type\\" . $type, [$value, $key]);

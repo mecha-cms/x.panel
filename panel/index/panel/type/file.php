@@ -2,7 +2,7 @@
 
 if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     $_['alert']['error'][$file] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file) . '</code>', 'file']];
-    $_['kick'] = x\panel\to\link([
+    $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
         'query' => [
@@ -12,7 +12,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
             'type' => null
         ],
         'task' => 'get'
-    ]);
+    ];
     return $_;
 }
 
@@ -87,7 +87,7 @@ $bar = [
                 'folder' => ['skip' => true],
                 'link' => [
                     'skip' => false,
-                    'url' => x\panel\to\link([
+                    'url' => [
                         'part' => 1,
                         'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
                         'query' => [
@@ -95,7 +95,7 @@ $bar = [
                             'type' => false
                         ],
                         'task' => 'get'
-                    ])
+                    ]
                 ],
                 'set' => [
                     'description' => ['New %s', 'File'],
@@ -103,7 +103,7 @@ $bar = [
                     'skip' => 'set' === $_['task'],
                     'stack' => 10.5,
                     'title' => false,
-                    'url' => x\panel\to\link([
+                    'url' => [
                         'part' => 0,
                         'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
                         'query' => [
@@ -111,7 +111,7 @@ $bar = [
                             'type' => 'file'
                         ],
                         'task' => 'set'
-                    ])
+                    ]
                 ]
             ]
         ]
@@ -123,11 +123,6 @@ $desk = [
     'lot' => [
         'form' => [
             // `form/post`
-            'data' => [
-                'token' => $_['token'],
-                'trash' => $trash,
-                'type' => $_['type']
-            ],
             'lot' => [
                 1 => [
                     // `section`
@@ -204,6 +199,11 @@ $desk = [
                         ]
                     ]
                 ]
+            ],
+            'values' => [
+                'token' => $_['token'],
+                'trash' => $trash,
+                'type' => $_['type']
             ]
         ]
     ]

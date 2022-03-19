@@ -27,7 +27,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                     'set' => [
                         'description' => ['New %s', 'User'],
                         'icon' => 'M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z',
-                        'url' => x\panel\to\link([
+                        'url' => [
                             'part' => 0,
                             'path' => dirname($_['path']),
                             'query' => [
@@ -37,7 +37,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                 'type' => 'page/user'
                             ],
                             'task' => 'set'
-                        ])
+                        ]
                     ]
                 ]
             ]
@@ -48,14 +48,6 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
         'lot' => [
             'form' => [
                 // `form/post`
-                'data' => [
-                    // These were added only to hide the `pass.data` and `token.data` file item(s) in the Data tab
-                    'data' => [
-                        'pass' => false,
-                        'token' => false
-                    ],
-                    'page' => 'set' !== $_['task'] ? ['name' => $page->name] : []
-                ],
                 'lot' => [
                     1 => [
                         // `section`
@@ -184,6 +176,14 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                             ]
                         ]
                     ]
+                ],
+                'values' => [
+                    // These were added only to hide the `pass.data` and `token.data` file item(s) in the Data tab
+                    'data' => [
+                        'pass' => false,
+                        'token' => false
+                    ],
+                    'page' => 'set' !== $_['task'] ? ['name' => $page->name] : []
                 ]
             ]
         ]

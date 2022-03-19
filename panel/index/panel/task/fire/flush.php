@@ -5,11 +5,11 @@ function flush($_) {
         0 === $v ? \rmdir($k) : \unlink($k);
     }
     $_['alert']['success'][$folder] = 'Trash is now empty.';
-    $_['kick'] = $_REQUEST['kick'] ?? \x\panel\to\link([
+    $_['kick'] = $_REQUEST['kick'] ?? [
         'part' => 1,
         'path' => 'trash',
         'query' => null,
         'task' => 'get'
-    ]);
+    ];
     return $_;
 }

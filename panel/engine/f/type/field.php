@@ -228,14 +228,14 @@ function item($value, $key) {
             ];
             $input[2] = \x\panel\_tag_set($input[2], $v);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
-            $title = \x\panel\type\title([
+            $title = \x\panel\type\title(\x\panel\_value_set([
                 'content' => $v['title'] ?? "",
                 'icon' => $v['icon'] ?? [],
                 'level' => -1,
                 '2' => [
                     'title' => "" !== $description ? $description : null
                 ]
-            ], 0);
+            ]), 0);
             $v['tags'] = [
                 'is:active' => $is_active,
                 'is:fix' => $is_fix,
@@ -312,23 +312,18 @@ function items($value, $key) {
             ];
             $input[2] = \x\panel\_tag_set($input[2], $v);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
-            $title = \x\panel\type\title([
+            $title = \x\panel\type\title(\x\panel\_value_set([
                 'content' => $v['title'] ?? "",
                 'icon' => $v['icon'] ?? [],
                 'level' => -1,
                 '2' => [
                     'title' => "" !== $description ? $description : null
                 ]
-            ], 0);
+            ]), 0);
             $label = [
                 0 => 'label',
                 1 => (new \HTML($input)) . ' ' . $title,
-                2 => [
-                    'is:active' => $is_active,
-                    'is:fix' => $is_fix,
-                    'not:active' => !$is_active,
-                    'not:fix' => !$is_fix
-                ]
+                2 => \x\panel\_tag_set([], $v)
             ];
             $a[$title . $k] = new \HTML($label);
         }
@@ -542,11 +537,11 @@ function toggle($value, $key) {
     $input[2]['type'] = 'checkbox';
     $input[2]['value'] = 'true'; // Force value to be `true`
     unset($input[2]['placeholder']);
-    $title = \x\panel\type\title([
+    $title = \x\panel\type\title(\x\panel\_value_set([
         'content' => $value['hint'] ?? $value['title'] ?? "",
         'icon' => $value['icon'] ?? [],
         'level' => -1
-    ], 0);
+    ]), 0);
     $value['tags'] = [
         'is:active' => $is_active,
         'is:fix' => $is_fix,

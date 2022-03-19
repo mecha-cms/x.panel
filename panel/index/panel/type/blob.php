@@ -15,7 +15,7 @@ $bar = [
                 'folder' => ['skip' => true],
                 'link' => [
                     'skip' => false,
-                    'url' => x\panel\to\link([
+                    'url' => [
                         'part' => 1,
                         'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
                         'query' => [
@@ -23,7 +23,7 @@ $bar = [
                             'type' => false
                         ],
                         'task' => 'get'
-                    ])
+                    ]
                 ],
                 'set' => [
                     'description' => ['New %s', 'File'],
@@ -31,14 +31,14 @@ $bar = [
                     'skip' => 'set' === $_['task'],
                     'stack' => 10.5,
                     'title' => false,
-                    'url' => x\panel\to\link([
+                    'url' => [
                         'part' => 0,
                         'query' => [
                             'tab' => false,
                             'type' => 'blob'
                         ],
                         'task' => 'set'
-                    ])
+                    ]
                 ]
             ]
         ]
@@ -71,10 +71,6 @@ $desk = [
     'lot' => [
         'form' => [
             // `form/post`
-            'data' => [
-                'token' => $_['token'],
-                'type' => $_['type']
-            ],
             'lot' => [
                 1 => [
                     // `section`
@@ -144,6 +140,10 @@ $desk = [
                         ]
                     ]
                 ]
+            ],
+            'values' => [
+                'token' => $_['token'],
+                'type' => $_['type']
             ]
         ]
     ]

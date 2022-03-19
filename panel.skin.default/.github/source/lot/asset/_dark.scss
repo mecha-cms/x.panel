@@ -1,19 +1,18 @@
 .is\:dark {
   --color--disabled: #{shade(20%)};
-  --color-bar-info: #{shade(65%)};
   --color-bar-link--active: #{shade(50%)};
   --color-bar-link--current: #{shade(60%)};
   --color-bar-link--disabled: #{shade(20%)};
   --color-bar-link--focus: #{shade(50%)};
   --color-bar-link--hover: #{shade(40%)};
   --color-bar-link: #{shade(40%)};
+  --color-bar-status: #{shade(65%)};
   --color-button--active: #{shade(95%)};
   --color-button--disabled: #{shade(20%)};
   --color-button--focus: #{shade(95%)};
   --color-button--hover: #{shade(95%)};
   --color-button: #{shade(95%)};
   --color-description: #{shade(50%)};
-  --color-info: #{shade(50%)};
   --color-input--disabled: #{shade(20%)};
   --color-input--hover: #{shade(70%)};
   --color-input--invalid: #{mix(red, shade(70%), 50%)};
@@ -23,13 +22,13 @@
   --color-link--focus: #{shade(50%)};
   --color-link--hover: #{shade(40%)};
   --color-link: #{shade(40%)};
-  --color-menu-info: #{shade(65%)};
   --color-menu-link--active: #{shade(50%)};
   --color-menu-link--current: #{shade(60%)};
   --color-menu-link--disabled: #{shade(20%)};
   --color-menu-link--focus: #{shade(50%)};
   --color-menu-link--hover: #{shade(40%)};
   --color-menu-link: #{shade(40%)};
+  --color-menu-status: #{shade(65%)};
   --color-stack--active: #{shade(70%)};
   --color-stack--current: #{shade(60%)};
   --color-stack--disabled: #{shade(20%)};
@@ -41,6 +40,7 @@
   --color-stack-link--hover: #{shade(40%)};
   --color-stack-link: #{shade(40%)};
   --color-stack: #{shade(60%)};
+  --color-status: #{shade(50%)};
   --color-tab--active: #{shade(70%)};
   --color-tab--current: #{shade(60%)};
   --color-tab--disabled: #{shade(20%)};
@@ -54,10 +54,10 @@
   --color-tab: #{shade(60%)};
   --color: #{shade(60%)};
   --fill-alert: #{shade(1%)};
-  --fill-bar-info: #{shade(5%)};
   --fill-bar-link--active: #{shade(1%)};
   --fill-bar-link--focus: #{shade(1%)};
   --fill-bar-link--hover: #{shade(1%)};
+  --fill-bar-status: #{shade(5%)};
   --fill-button--active: #{darken(shade(30%), 5%)};
   --fill-button--disabled: #{shade(5%)};
   --fill-button--focus: #{lighten(shade(30%), 5%)};
@@ -73,11 +73,11 @@
   --fill-input--hover: #{shade(5%)};
   --fill-input: #{shade(5%)};
   --fill-mark: #{shade(10%)};
-  --fill-menu-info: #{shade(5%)};
   --fill-menu-link--active: #{shade(1%)};
   --fill-menu-link--current: #{shade(2%)};
   --fill-menu-link--focus: #{shade(1%)};
   --fill-menu-link--hover: #{shade(1%)};
+  --fill-menu-status: #{shade(5%)};
   --fill-stack--current: none;
   --fill-stack--hover: #{shade(1%)};
   --fill-stack: #{shade(1%)};

@@ -22,7 +22,7 @@ function data($_) {
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && isset($_['folder']) && $parent = \glob(\dirname($_['folder']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $_POST['kick'] ?? x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
@@ -33,7 +33,7 @@ function data($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
     }
     return $_;
 }
@@ -85,7 +85,7 @@ function file($_) {
         }
         \chmod($self, $seal);
         $_['alert']['success'][$file] = ['File %s successfully ' . ($name !== $base ? 'rename' : 'update') . 'd.', '<code>' . \x\panel\from\path($file) . '</code>'];
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => \dirname($_['path']) . '/' . $name,
@@ -96,7 +96,7 @@ function file($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
         $_['file'] = $self; // For hook(s)
         $_SESSION['_']['file'][\rtrim($self, \D)] = 1;
     }
@@ -131,7 +131,7 @@ function folder($_) {
         // Do nothing
         $_['alert']['success'][$folder] = ['Folder %s successfully updated.', '<code>' . \x\panel\from\path($folder) . '</code>'];
         if (!empty($_POST['options']['kick'])) {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            $_['kick'] = $_POST['kick'] ?? [
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \strtr($folder, [
@@ -145,9 +145,9 @@ function folder($_) {
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
-            ]);
+            ];
         } else {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            $_['kick'] = $_POST['kick'] ?? [
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \dirname($_['path']),
@@ -158,7 +158,7 @@ function folder($_) {
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
-            ]);
+            ];
         }
         $_SESSION['_']['folder'][\rtrim($folder, \D)] = 1;
     } else {
@@ -182,7 +182,7 @@ function folder($_) {
         \rmdir($folder);
         $_['alert']['success'][$folder] = ['Folder %s successfully updated.', '<code>' . \x\panel\from\path($folder) . '</code>'];
         if (!empty($_POST['options']['kick'])) {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            $_['kick'] = $_POST['kick'] ?? [
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \strtr($self, [
@@ -196,9 +196,9 @@ function folder($_) {
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
-            ]);
+            ];
         } else {
-            $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+            $_['kick'] = $_POST['kick'] ?? [
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
                 'path' => \dirname($_['path']),
@@ -209,7 +209,7 @@ function folder($_) {
                     'type' => null
                 ], $_POST['query'] ?? []),
                 'task' => 'get'
-            ]);
+            ];
         }
         $_['folder'] = $self; // For hook(s)
         foreach (\step(\rtrim($self, \D), \D) as $v) {
@@ -342,7 +342,7 @@ function state($_) {
         $_['file'] = \stream_resolve_include_path($file); // For hook(s)
         $_ = file($_); // Move to `file`
     }
-    $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+    $_['kick'] = $_POST['kick'] ?? [
         'hash' => $_POST['hash'] ?? null,
         'part' => 1,
         'query' => \array_replace_recursive([
@@ -352,7 +352,7 @@ function state($_) {
             'type' => null
         ], $_POST['query'] ?? []),
         'task' => 'get'
-    ]);
+    ];
     if (!empty($_['alert']['error'])) {
         unset($_POST['token']);
         $_SESSION['form'] = $_POST;

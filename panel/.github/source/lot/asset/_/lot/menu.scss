@@ -5,14 +5,18 @@
   height: auto;
   line-height: var(--y);
   width: var(--width-menu);
-  .lot\:menu {
-    box-shadow: var(--shadow-menu);
-    display: none;
-    left: 100%;
-    margin: 0;
-    position: absolute;
-    top: 0;
-    z-index: 9998;
+  .has\:menu {
+    display: flex;
+    position: relative;
+    .lot\:menu {
+      box-shadow: var(--shadow-menu);
+      display: none;
+      left: 100%;
+      margin: 0;
+      position: absolute;
+      top: 0;
+      z-index: 9998;
+    }
   }
   > ul,
   > li {
@@ -54,11 +58,11 @@
               margin-right: calc(var(--x) / -4);
             }
           }
-          .info {
-            background: var(--fill-menu-info);
-            border-radius: var(--arc-menu-info);
-            box-shadow: var(--shadow-menu-info);
-            color: var(--color-menu-info);
+          .status {
+            background: var(--fill-menu-status);
+            border-radius: var(--arc-menu-status);
+            box-shadow: var(--shadow-menu-status);
+            color: var(--color-menu-status);
             float: right;
             margin: 0 calc(var(--x) / -4) 0 0;
             padding: 0 calc(var(--x) / 4);

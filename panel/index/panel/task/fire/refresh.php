@@ -5,11 +5,11 @@ function refresh($_) {
         0 === $v ? \rmdir($k) : \unlink($k);
     }
     $_['alert']['success'][$folder] = 'Cache successfully refreshed.';
-    $_['kick'] = $_REQUEST['kick'] ?? \x\panel\to\link([
+    $_['kick'] = $_REQUEST['kick'] ?? [
         'part' => 1,
         'path' => 'cache',
         'query' => null,
         'task' => 'get'
-    ]);
+    ];
     return $_;
 }

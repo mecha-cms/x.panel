@@ -18,7 +18,7 @@ Hook::set('_', function($_) {
 
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['description'][1] = 'Tag';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'Tag';
-$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = x\panel\to\link([
+$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = [
     'part' => 0,
     'query' => [
         'query' => null,
@@ -27,6 +27,6 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url']
         'type' => 'page/tag'
     ],
     'task' => 'set'
-]);
+];
 
 return $_;

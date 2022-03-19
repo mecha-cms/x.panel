@@ -30,7 +30,7 @@ function data($_) {
     }
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
@@ -41,7 +41,7 @@ function data($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
     }
     return $_;
 }
@@ -82,7 +82,7 @@ function file($_) {
             \unlink($file);
         }
         $_['alert']['success'][$file] = [$trash ? 'File %s successfully moved to trash.' : 'File %s successfully deleted.', '<code>' . \x\panel\from\path($file) . '</code>'];
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'path' => \dirname($_['path']),
@@ -93,7 +93,7 @@ function file($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
     }
     return $_;
 }
@@ -150,7 +150,7 @@ function folder($_) {
         }
         \rmdir($folder);
         $_['alert']['success'][$folder] = [$trash ? 'Folder %s successfully moved to trash.' : 'Folder %s successfully deleted.', '<code>' . \x\panel\from\path($folder) . '</code>'];
-        $_['kick'] = $_POST['kick'] ?? \x\panel\to\link([
+        $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'path' => \dirname($_['path']),
@@ -161,7 +161,7 @@ function folder($_) {
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
-        ]);
+        ];
     }
     return $_;
 }

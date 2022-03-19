@@ -26,8 +26,8 @@
   align-items: center;
   gap: 0 calc(var(--x) / 4);
   .icon {}
-  .info {
-    color: var(--color-info);
+  .status {
+    color: var(--color-status);
   }
   > span {
     flex: 1;

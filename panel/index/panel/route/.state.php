@@ -2,11 +2,11 @@
 
 // Disable page offset feature
 if (!empty($_['part']) || 'get' !== $_['task']) {
-    $_['kick'] = x\panel\to\link([
+    $_['kick'] = [
         'part' => 0,
         'path' => '.state',
         'task' => 'get'
-    ]);
+    ];
     return $_;
 }
 
@@ -49,7 +49,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     x\panel\_cache_let(PATH . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
-    $_POST['kick'] = x\panel\to\link([
+    $_POST['kick'] = [
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
@@ -60,7 +60,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
             'type' => null,
         ], $_POST['query'] ?? []),
         'task' => 'get'
-    ]);
+    ];
 }
 
 if (false === strpos($_['path'], '/')) {
@@ -134,11 +134,6 @@ if (false === strpos($_['path'], '/')) {
     $desk = [
         'lot' => [
             'form' => [
-                'data' => [
-                    // Store the file to `.\state.php`
-                    'file' => ['name' => 'state.php'],
-                    'path' => '..' // Parent folder
-                ],
                 'lot' => [
                     1 => [
                         'lot' => [
@@ -298,6 +293,11 @@ if (false === strpos($_['path'], '/')) {
                             ]
                         ]
                     ]
+                ],
+                'values' => [
+                    // Store the file to `.\state.php`
+                    'file' => ['name' => 'state.php'],
+                    'path' => '..' // Parent folder
                 ]
             ]
         ]

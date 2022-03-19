@@ -79,7 +79,7 @@ Hook::set('_', function($_) use($state, $user) {
                             'skip' => 'draft' === $x || !$can_set,
                             'stack' => 10,
                             'title' => 'Enter',
-                            'url' => x\panel\to\link([
+                            'url' => [
                                 'part' => 1,
                                 'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                                 'query' => [
@@ -89,7 +89,7 @@ Hook::set('_', function($_) use($state, $user) {
                                     'type' => null
                                 ],
                                 'task' => 'get'
-                            ])
+                            ]
                         ],
                         'set' => [
                             'active' => $has_folder,
@@ -98,7 +98,7 @@ Hook::set('_', function($_) use($state, $user) {
                             'skip' => 'draft' === $x || $can_set,
                             'stack' => 10,
                             'title' => 'Add',
-                            'url' => $has_folder ? x\panel\to\link([
+                            'url' => $has_folder ? [
                                 'part' => 0,
                                 'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                                 'query' => [
@@ -108,14 +108,14 @@ Hook::set('_', function($_) use($state, $user) {
                                     'type' => 'page'
                                 ],
                                 'task' => 'set'
-                            ]) : null
+                            ] : null
                         ],
                         'get' => [
                             'description' => 'Edit',
                             'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
                             'stack' => 20,
                             'title' => 'Edit',
-                            'url' => x\panel\to\link([
+                            'url' => [
                                 'part' => 0,
                                 'path' => $path,
                                 'query' => [
@@ -125,14 +125,14 @@ Hook::set('_', function($_) use($state, $user) {
                                     'type' => null // Automatically detected by the file extension
                                 ],
                                 'task' => 'get'
-                            ])
+                            ]
                         ],
                         'let' => [
                             'description' => 'Delete',
                             'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
                             'stack' => 30,
                             'title' => 'Delete',
-                            'url' => x\panel\to\link([
+                            'url' => [
                                 'part' => 0,
                                 'path' => $path,
                                 'query' => [
@@ -144,7 +144,7 @@ Hook::set('_', function($_) use($state, $user) {
                                     'type' => null // Automatically detected by the file extension
                                 ],
                                 'task' => 'let'
-                            ])
+                            ]
                         ]
                     ],
                     'time' => $time,
@@ -180,7 +180,7 @@ Hook::set('_', function($_) use($state, $user) {
                                 'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
                                 'stack' => 10,
                                 'title' => 'Edit',
-                                'url' => x\panel\to\link([
+                                'url' => [
                                     'part' => 0,
                                     'path' => $path,
                                     'query' => [
@@ -190,14 +190,14 @@ Hook::set('_', function($_) use($state, $user) {
                                         'type' => null // Automatically detected by the file extension
                                     ],
                                     'task' => 'get'
-                                ])
+                                ]
                             ],
                             'let' => [
                                 'description' => 'Delete',
                                 'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
                                 'stack' => 20,
                                 'title' => 'Delete',
-                                'url' => x\panel\to\link([
+                                'url' => [
                                     'part' => 0,
                                     'path' => $path,
                                     'query' => [
@@ -209,12 +209,12 @@ Hook::set('_', function($_) use($state, $user) {
                                         'type' => null // Automatically detected by the file extension
                                     ],
                                     'task' => 'let'
-                                ])
+                                ]
                             ]
                         ],
                         'title' => S . basename($k) . S,
                         'type' => 'file',
-                        'url' => x\panel\to\link([
+                        'url' => [
                             'part' => 0,
                             'path' => $path,
                             'query' => [
@@ -224,7 +224,7 @@ Hook::set('_', function($_) use($state, $user) {
                                 'type' => null // Automatically detected by the file extension
                             ],
                             'task' => 'get'
-                        ])
+                        ]
                     ];
                     if (isset($_SESSION['_']['file'][$k])) {
                         unset($_SESSION['_']['file'][$k]);
@@ -264,7 +264,7 @@ $desk = [
                                     'stack' => 10,
                                     'title' => false,
                                     'type' => 'link',
-                                    'url' => x\panel\to\link([
+                                    'url' => [
                                         'part' => 1,
                                         'path' => dirname($_['path']),
                                         'query' => [
@@ -274,7 +274,7 @@ $desk = [
                                             'type' => null
                                         ],
                                         'task' => 'get'
-                                    ])
+                                    ]
                                 ],
                                 'blob' => [
                                     'description' => 'Upload',
@@ -283,7 +283,7 @@ $desk = [
                                     'stack' => 20,
                                     'title' => false,
                                     'type' => 'link',
-                                    'url' => x\panel\to\link([
+                                    'url' => [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
@@ -292,14 +292,14 @@ $desk = [
                                             'type' => 'blob'
                                         ],
                                         'task' => 'set'
-                                    ])
+                                    ]
                                 ],
                                 'page' => [
                                     'description' => ['New %s', 'Page'],
                                     'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                     'stack' => 30,
                                     'type' => 'link',
-                                    'url' => x\panel\to\link([
+                                    'url' => [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
@@ -308,7 +308,7 @@ $desk = [
                                             'type' => 'page'
                                         ],
                                         'task' => 'set'
-                                    ])
+                                    ]
                                 ],
                                 'data' => [
                                     'description' => ['New %s', 'Data'],
@@ -316,7 +316,7 @@ $desk = [
                                     'skip' => false === strpos($_['path'], '/'),
                                     'stack' => 40,
                                     'type' => 'link',
-                                    'url' => x\panel\to\link([
+                                    'url' => [
                                         'part' => 0,
                                         'query' => [
                                             'query' => null,
@@ -325,7 +325,7 @@ $desk = [
                                             'type' => 'data'
                                         ],
                                         'task' => 'set'
-                                    ])
+                                    ]
                                 ]
                             ],
                             'stack' => 10

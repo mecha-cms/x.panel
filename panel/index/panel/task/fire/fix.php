@@ -8,7 +8,7 @@ function fix($_) {
     if (\is_file($log = \ENGINE . \D . 'log' . \D . 'error')) {
         \unlink($log);
     }
-    $_['kick'] = $_REQUEST['kick'] ?? x\panel\to\link(['query' => null]);
+    $_['kick'] = $_REQUEST['kick'] ?? ['query' => null];
     return $_;
 }
 
