@@ -56,7 +56,6 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                 // `tabs`
                                 'lot' => [
                                     'page' => [
-                                        'name' => 'user',
                                         'lot' => [
                                             'fields' => [
                                                 // `fields`
@@ -102,7 +101,8 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                                     'title' => ['skip' => true]
                                                 ]
                                             ]
-                                        ]
+                                        ],
+                                        'value' => 'user'
                                     ],
                                     'data' => [
                                         'lot' => [

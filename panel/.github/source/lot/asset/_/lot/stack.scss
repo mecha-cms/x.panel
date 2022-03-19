@@ -72,15 +72,15 @@
   }
   &.is\:current {
     border-color: var(--stroke-stack--current, var(--stroke-stack));
-    > .content,
-    > .lot {
-      border-top: 1px dashed;
-      border-top-color: inherit;
-      display: block;
-    }
     > .title {
       background: var(--fill-stack--current, var(--fill-stack));
       box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+      + .content,
+      + .lot {
+        border-top: 1px dashed;
+        border-top-color: inherit;
+        display: block;
+      }
     }
     &:not(.can\:toggle) {
       > .title {

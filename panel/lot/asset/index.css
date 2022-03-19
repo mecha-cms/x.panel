@@ -3290,18 +3290,18 @@ input[type=range]:disabled::-moz-range-thumb {
 .is\:current.content\:stack {
   border-color: var(--stroke-stack--current, var(--stroke-stack));
 }
-.lot\:stack.is\:current > .content,
-.is\:current.content\:stack > .content,
-.lot\:stack.is\:current > .lot,
-.is\:current.content\:stack > .lot {
-  border-top: 1px dashed;
-  border-top-color: inherit;
-  display: block;
-}
 .lot\:stack.is\:current > .title,
 .is\:current.content\:stack > .title {
   background: var(--fill-stack--current, var(--fill-stack));
   box-shadow: var(--shadow-stack--current, var(--shadow-stack));
+}
+.lot\:stack.is\:current > .title + .content,
+.is\:current.content\:stack > .title + .content,
+.lot\:stack.is\:current > .title + .lot,
+.is\:current.content\:stack > .title + .lot {
+  border-top: 1px dashed;
+  border-top-color: inherit;
+  display: block;
 }
 .lot\:stack.is\:current:not(.can\:toggle) > .title > a,
 .is\:current.content\:stack:not(.can\:toggle) > .title > a {
