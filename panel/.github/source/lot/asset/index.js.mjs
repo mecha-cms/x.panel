@@ -6,7 +6,10 @@ import {
     getElement,
     getFormElement,
     getParent,
-    hasClass
+    hasClass,
+    setChildLast,
+    setElement,
+    setHTML
 } from '@taufik-nurrohman/document';
 
 import {
@@ -44,9 +47,24 @@ onEvent('keydown', W, e => {
 
 onEvent('keyup', W, e => map.pull(e.key));
 
+let _alert = setElement('dialog'),
+    _confirm = setElement('dialog'),
+    _prompt = setElement('dialog');
+
+setHTML(_alert, '<form method="dialog"><p>Test alert dialog.</p><p><button type="submit">OK</button></p></form>');
+setHTML(_confirm, '<form method="dialog"><p>Test confirm dialog.</p><p><button type="submit">OK</button> <button type="submit">Cancel</button></p></form>');
+setHTML(_prompt, '<form method="dialog"><p>Test prompt dialog.</p><p><input type="text" class="has:width"></p><p><button type="submit">OK</button> <button type="submit">Cancel</button></p></form>');
+
+setChildLast(B, _alert);
+setChildLast(B, _confirm);
+setChildLast(B, _prompt);
+
 const _ = {
+    alert: _alert,
     commands: map.commands,
-    keys: map.keys
+    confirm: _confirm,
+    keys: map.keys,
+    prompt: _prompt
 };
 
 const {fire, hooks, off, on} = hook(_);

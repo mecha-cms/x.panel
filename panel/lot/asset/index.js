@@ -9,8 +9,20 @@
     var isFunction = function isFunction(x) {
         return 'function' === typeof x;
     };
+    var isInstance = function isInstance(x, of ) {
+        return x && isSet( of ) && x instanceof of ;
+    };
     var isNull = function isNull(x) {
         return null === x;
+    };
+    var isObject = function isObject(x, isPlain) {
+        if (isPlain === void 0) {
+            isPlain = true;
+        }
+        if ('object' !== typeof x) {
+            return false;
+        }
+        return isPlain ? isInstance(x, Object) : true;
     };
     var isSet = function isSet(x) {
         return isDefined(x) && !isNull(x);
@@ -20,6 +32,29 @@
     };
     var toObjectKeys = function toObjectKeys(x) {
         return Object.keys(x);
+    };
+    var fromValue = function fromValue(x) {
+        if (isArray(x)) {
+            return x.map(function(v) {
+                return fromValue(x);
+            });
+        }
+        if (isObject(x)) {
+            for (var k in x) {
+                x[k] = fromValue(x[k]);
+            }
+            return x;
+        }
+        if (false === x) {
+            return 'false';
+        }
+        if (null === x) {
+            return 'null';
+        }
+        if (true === x) {
+            return 'true';
+        }
+        return "" + x;
     };
     var D = document;
     var W = window;
@@ -39,6 +74,57 @@
     };
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
+    };
+    var hasState = function hasState(node, state) {
+        return state in node;
+    };
+    var letAttribute = function letAttribute(node, attribute) {
+        return node.removeAttribute(attribute), node;
+    };
+    var setAttribute = function setAttribute(node, attribute, value) {
+        if (true === value) {
+            value = attribute;
+        }
+        return node.setAttribute(attribute, fromValue(value)), node;
+    };
+    var setAttributes = function setAttributes(node, attributes) {
+        var value;
+        for (var attribute in attributes) {
+            value = attributes[attribute];
+            if (value || "" === value || 0 === value) {
+                setAttribute(node, attribute, value);
+            } else {
+                letAttribute(node, attribute);
+            }
+        }
+        return node;
+    };
+    var setChildLast = function setChildLast(parent, node) {
+        return parent.append(node), node;
+    };
+    var setElement = function setElement(node, content, attributes) {
+        node = isString(node) ? D.createElement(node) : node;
+        if (isObject(content)) {
+            attributes = content;
+            content = false;
+        }
+        if (isString(content)) {
+            setHTML(node, content);
+        }
+        if (isObject(attributes)) {
+            setAttributes(node, attributes);
+        }
+        return node;
+    };
+    var setHTML = function setHTML(node, content, trim) {
+        if (trim === void 0) {
+            trim = true;
+        }
+        if (null === content) {
+            return node;
+        }
+        var state = 'innerHTML';
+        return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
     };
     var offEventDefault = function offEventDefault(e) {
         return e && e.preventDefault();
@@ -164,9 +250,21 @@
         }
     });
     onEvent('keyup', W, e => map.pull(e.key));
+    let _alert = setElement('dialog'),
+        _confirm = setElement('dialog'),
+        _prompt = setElement('dialog');
+    setHTML(_alert, '<form method="dialog"><p>Test alert dialog.</p><p><button type="submit">OK</button></p></form>');
+    setHTML(_confirm, '<form method="dialog"><p>Test confirm dialog.</p><p><button type="submit">OK</button> <button type="submit">Cancel</button></p></form>');
+    setHTML(_prompt, '<form method="dialog"><p>Test prompt dialog.</p><p><input type="text" class="has:width"></p><p><button type="submit">OK</button> <button type="submit">Cancel</button></p></form>');
+    setChildLast(B, _alert);
+    setChildLast(B, _confirm);
+    setChildLast(B, _prompt);
     const _ = {
+        alert: _alert,
         commands: map.commands,
-        keys: map.keys
+        confirm: _confirm,
+        keys: map.keys,
+        prompt: _prompt
     };
     const {
         fire,

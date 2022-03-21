@@ -20,8 +20,8 @@ function route($content, $path, $query, $hash, $r) {
         $_['title'] = 'Error';
     }
     $id = \strtok($_['path'], '/');
-    $content = $icon = $list = $proxy = "";
-    // Load the content first to queue the asset, icon, list and proxy data
+    $content = $icon = $list = "";
+    // Load the content first to queue the asset, icon, and (data)list
     if (isset($_['content'])) {
         $content = \x\panel\type\content([
             'content' => (string) $_['content'],
@@ -33,27 +33,6 @@ function route($content, $path, $query, $hash, $r) {
             'tags' => ['p' => false]
         ], 0);
     }
-    // TODO
-    /*
-    $proxy .= \x\panel\type\proxy([
-        'content' => '<p class="busy">Loading&hellip;</p>',
-        'tasks' => [
-            'set' => [
-                'stack' => 10,
-                'title' => 'Submit',
-                'type' => 'submit'
-            ],
-            'exit' => [
-                'description' => 'Close',
-                'stack' => 20,
-                'title' => 'Cancel',
-                'type' => 'button'
-            ]
-        ],
-        'title' => 'Files'
-    ], 0);
-    $proxy .= '<div class="with:modal"></div>';
-    */
     // Update!
     $_['data-list'] = (array) ($GLOBALS['_']['data-list'] ?? []);
     $_['icon'] = (array) ($GLOBALS['_']['icon'] ?? []);
@@ -123,7 +102,7 @@ function route($content, $path, $query, $hash, $r) {
         'id' => false,
         'stack' => 0
     ];
-    $GLOBALS['content'] = $icon . $content . $proxy . $list;
+    $GLOBALS['content'] = $icon . $content . $list;
     $GLOBALS['description'] = (string) ($_['description'] ?? "");
     $GLOBALS['t'][] = \i('Panel');
     $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : \To::title($id)));

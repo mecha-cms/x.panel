@@ -808,21 +808,21 @@ function menu($value, $key, int $i = 0) {
                         'role' => 'menuitem',
                         'tabindex' => $i < 0 ? null : -1
                     ], $v[3] ?? []);
-                    $vv[1] = \x\panel\type\link(\array_replace($v, [
+                    $vv[1] = \x\panel\type\link(\x\panel\_value_set(\array_replace($v, [
                         'with' => [
                             'description' => false,
                             'title' => false
                         ]
-                    ]), $k);
+                    ]), $k), $k);
                     if (!empty($v['lot'])) {
                         $vv[1]['aria-expanded'] = 'false';
                         $vv[1]['aria-haspopup'] = 'true';
-                        $vv[1] .= \x\panel\type\menu(\array_replace($v, [
+                        $vv[1] .= \x\panel\type\menu(\x\panel\_value_set(\array_replace($v, [
                             '2' => [
                                 'role' => null,
                                 'tabindex' => -1
                             ]
-                        ]), $k, $i + 1); // Recurse!
+                        ]), $k), $k, $i + 1); // Recurse!
                         $v['has']['menu'] = $v['has']['menu'] ?? true;
                         $v['with']['description'] = false;
                         $v['with']['title'] = false;
@@ -970,73 +970,6 @@ function pages($value, $key) {
         ++$count;
     }
     unset($lot);
-    $tags['count:' . $count] = $tags['count:' . $count] ?? true;
-    $value['tags'] = $tags;
-    $value[2] = \x\panel\_decor_set($value[2], $value);
-    $value[2] = \x\panel\_tag_set($value[2], $value);
-    return new \HTML($value);
-}
-
-function proxy($value, $key) {
-    $tags = \array_replace([
-        'lot' => true,
-        'lot:proxy' => true
-    ], $value['tags'] ?? []);
-    $has_description = !empty($value['description']);
-    $has_gap = !\array_key_exists('gap', $value) || $value['gap'];
-    $has_height = !empty($value['height']);
-    $has_modal = !\array_key_exists('modal', $value) || $value['modal'];
-    $has_title = !empty($value['title']);
-    $has_width = !empty($value['width']);
-    $value['has']['gap'] = $value['has']['gap'] ?? $has_gap;
-    $value['has']['height'] = $value['has']['height'] ?? $has_height;
-    $value['has']['modal'] = $value['has']['modal'] ?? $has_modal;
-    $value['has']['width'] = $value['has']['width'] ?? $has_width;
-    $value[0] = $value[0] ?? 'div';
-    $value[1] = $value[1] ?? "";
-    $value[2]['role'] = $value[2]['role'] ?? 'dialog';
-    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
-    $count = 0;
-    $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4);
-    // TODO: Allow to customize this
-    $tasks = \x\panel\type\tasks\link(\x\panel\_value_set([
-        'lot' => [
-            'exit' => [
-                'description' => 'Close',
-                'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
-                // Ideally, a dialog should only contains at most of three button after the dialog title
-                'stack' => 30,
-                'title' => false,
-                'url' => '#exit'
-            ]
-        ]
-    ], 0), 0);
-    if ($title || $tasks) {
-        $value[1] .= '<header role="group">';
-        $value[1] .= $title;
-        $value[1] .= $tasks;
-        $value[1] .= '</header>';
-        ++$count;
-    }
-    if (isset($value['content'])) {
-        $value[1] .= '<div class="content">';
-        $value[1] .= \x\panel\to\content($value['content']);
-        $value[1] .= '</div>';
-        ++$count;
-    } else if (isset($value['lot'])) {
-        $value[1] .= '<div class="lot">';
-        $value[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
-        $value[1] .= '</div>';
-    }
-    if (!empty($value['tasks'])) {
-        $value[1] .= '<footer role="group">';
-        $value[1] .= \x\panel\type\tasks\button(\x\panel\_value_set([
-            '0' => 'p',
-            'lot' => $value['tasks']
-        ], $key), $key);
-        $value[1] .= '</footer>';
-        ++$count;
-    }
     $tags['count:' . $count] = $tags['count:' . $count] ?? true;
     $value['tags'] = $tags;
     $value[2] = \x\panel\_decor_set($value[2], $value);

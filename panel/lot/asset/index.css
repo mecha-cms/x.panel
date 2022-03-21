@@ -34,11 +34,7 @@
 }
 
 .option-picker,
-.option-picker::before,
-.option-picker::after,
-.option-picker *,
-.option-picker *::before,
-.option-picker *::after {
+.option-picker * {
   box-sizing: border-box;
   font: inherit;
 }
@@ -869,6 +865,29 @@ section {
 caption,
 figure {
   text-align: center;
+}
+
+dialog {
+  background: var(--fill);
+  border: 0;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  color: var(--color);
+  display: block;
+  height: fit-content;
+  left: 0;
+  margin: auto;
+  padding: var(--y) var(--x);
+  position: fixed;
+  right: 0;
+  width: fit-content;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+dialog:not([open]) {
+  display: none;
 }
 
 sub,

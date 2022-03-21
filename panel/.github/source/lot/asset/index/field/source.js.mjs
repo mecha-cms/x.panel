@@ -55,7 +55,7 @@ Object.assign(TE.prototype, thatHistory, thatSource);
 TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
 
 ['alert', 'confirm', 'prompt'].forEach(type => {
-    W._.proxy[type] && (TE.state.source[type] = W._.proxy[type]);
+    W._[type] && (TE.state.source[type] = W._[type]);
 });
 
 // Be sure to remove the default source type
