@@ -412,6 +412,7 @@ function set($value, $key) {
     $title = (string) \x\panel\to\title($value['title'] ?? "", -2);
     $value[0] = $value[0] ?? 'fieldset';
     $value[1] = $value[1] ?? ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description . $content;
+    $value[2] = $value[2] ?? [];
     unset($value['description'], $value['title'], $value['type']);
     return \x\panel\type($value, $key);
 }

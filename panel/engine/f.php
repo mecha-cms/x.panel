@@ -108,6 +108,33 @@ function _cache_let(string $path) {
     return $path;
 }
 
+function _decor_set(array $attr, array $value = []) {
+    $decors = (array) ($value['decors'] ?? []);
+    if (!empty($attr['style']) && \is_string($attr['style'])) {
+        $key = $value = "";
+        foreach (\preg_split('/(\/\*[\s\S]*?\*\/|"(?:[^"\\\]|\\\.)*"|\'(?:[^\'\\\]|\\\.)*\'|;)/', $attr['style'], -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY) as $v) {
+            if (';' === $v || '/*' === \substr($v, 0, 2) && '*/' === \substr($v, -2)) {
+                continue;
+            }
+            $v = \trim($v);
+            if (\strpos($v, ':') > 0) {
+                [$key, $value] = \preg_split('/\s*:\s*/', $v);
+                if (!\array_key_exists($key, $decors)) {
+                    $decors[$key] = $value;
+                }
+            } else if ($key && isset($decors[$key])) {
+                $decors[$key] .= $v;
+            }
+        }
+    }
+    $out = "";
+    foreach ($decors as $k => $v) {
+        $out .= $k . ': ' . (\is_int($v) ? $v . 'px' : $v) . ';';
+    }
+    $attr['style'] = "" !== $out ? $out : null;
+    return $attr;
+}
+
 function _key_set($key) {
     if (\is_object($key)) {
         return \spl_object_id($key);
@@ -131,31 +158,12 @@ function _state_set() {
     $GLOBALS['_'] = $_;
 }
 
-function _style_set(array $attr, array $value = []) {
-    $a = $attr['style'] ?? "";
-    $styles = (array) ($value['styles'] ?? []);
-    $b = \preg_split('/;\s*/', false !== \strpbrk($a, '\'"') ? \preg_replace_callback('/"(?:[^"\\\]|\\\.)*"|\'(?:[^\'\\\]|\\\.)*\'/', static function($m) {
-        return \strtr($m[0], [';' => \P]);
-    }, $a) : $a);
-    $c = [];
-    foreach ($b as $bb) {
-        $bbb = \explode(':', $bb, 2);
-        $c[\trim($bbb[0])] = isset($bbb[1]) ? \strtr(\trim($bbb[1]), [\P => ';']) : null;
-    }
-    $d = "";
-    foreach (\array_replace($c, $styles) as $k => $v) {
-        if (false === $v || null === $v) {
-            continue;
-        }
-        $d .= $k . ': ' . (\is_numeric($v) ? $v . 'px' : $v) . ';';
-    }
-    $attr['style'] = "" !== $d ? $d : null;
-    return $attr;
-}
-
 function _tag_set(array $attr, array $value = []) {
-    $a = [];
     $tags = (array) ($value['tags'] ?? []);
+    if (\array_keys($tags) === \range(0, \count($tags) - 1)) {
+        // Convert `[0, 1, 2]` to `{0: true, 1: true, 2: true}`
+        $tags = \array_fill_keys($tags, true);
+    }
     foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with'] as $v) {
         if (!empty($value[$v])) {
             foreach ($value[$v] as $kk => $vv) {
@@ -163,16 +171,16 @@ function _tag_set(array $attr, array $value = []) {
             }
         }
     }
-    foreach (\explode(' ', $attr['class'] ?? "") as $v) {
-        if (\array_key_exists($v, $tags) && !$tags[$v]) {
-            continue;
+    if (!empty($attr['class']) && \is_string($attr['class'])) {
+        foreach (\preg_split('/\s+/', $attr['class']) as $v) {
+            if (!\array_key_exists($v, $tags)) {
+                $tags[$v] = true;
+            }
         }
-        $a[] = $v;
     }
-    $b = \x\panel\from\tags($tags);
-    $c = \array_unique(\array_filter(\array_merge($a, $b)));
-    \sort($c);
-    $attr['class'] = $c ? \implode(' ', $c) : null;
+    $tags = \array_keys(\array_filter($tags));
+    \sort($tags);
+    $attr['class'] = $tags ? \implode(' ', $tags) : null;
     return $attr;
 }
 
@@ -201,6 +209,7 @@ function _value_set(array $value, $key = null) {
         'content' => null,
         'count' => null,
         'current' => null,
+        'decors' => [],
         'description' => null,
         'has' => [],
         'hint' => null,
@@ -218,7 +227,6 @@ function _value_set(array $value, $key = null) {
         'size' => null,
         'skip' => null,
         'stack' => 10,
-        'styles' => [],
         'tags' => [],
         'title' => null,
         'type' => null,
