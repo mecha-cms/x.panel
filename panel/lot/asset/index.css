@@ -34,7 +34,11 @@
 }
 
 .option-picker,
-.option-picker * {
+.option-picker::before,
+.option-picker::after,
+.option-picker *,
+.option-picker *::before,
+.option-picker *::after {
   box-sizing: border-box;
   font: inherit;
 }
@@ -876,6 +880,7 @@ dialog {
   height: fit-content;
   left: 0;
   margin: auto;
+  min-width: calc(var(--x) * 12);
   padding: var(--y) var(--x);
   position: fixed;
   right: 0;
@@ -888,6 +893,21 @@ dialog::backdrop {
 
 dialog:not([open]) {
   display: none;
+}
+
+dialog > form > p > input,
+dialog > form > p > select,
+dialog > form > p > textarea {
+  display: block;
+  min-width: 100%;
+  width: 100%;
+}
+
+dialog [role=group] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--x) / 4);
+  justify-content: end;
 }
 
 sub,

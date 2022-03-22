@@ -89,9 +89,6 @@
         }
         return x;
     };
-    var fromHTML = function fromHTML(x) {
-        return x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
-    };
     var fromJSON = function fromJSON(x) {
         var value = null;
         try {
@@ -99,7 +96,7 @@
         } catch (e) {}
         return value;
     };
-    var fromStates = function fromStates() {
+    var fromStates$2 = function fromStates() {
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
             lot[_key] = arguments[_key];
         }
@@ -131,33 +128,8 @@
         }
         return out;
     };
-    var fromValue = function fromValue(x) {
-        if (isArray(x)) {
-            return x.map(function(v) {
-                return fromValue(x);
-            });
-        }
-        if (isObject(x)) {
-            for (var k in x) {
-                x[k] = fromValue(x[k]);
-            }
-            return x;
-        }
-        if (false === x) {
-            return 'false';
-        }
-        if (null === x) {
-            return 'null';
-        }
-        if (true === x) {
-            return 'true';
-        }
-        return "" + x;
-    };
-    var D = document;
-    var W = window;
-    var B = D.body;
-    var R = D.documentElement;
+    var D$1 = document;
+    var W$1 = window;
     var getAttribute = function getAttribute(node, attribute, parseValue) {
         if (parseValue === void 0) {
             parseValue = true;
@@ -180,7 +152,7 @@
         return value;
     };
     var getElements = function getElements(query, scope) {
-        return (scope || D).querySelectorAll(query);
+        return (scope || D$1).querySelectorAll(query);
     };
     var getParent = function getParent(node, query) {
         if (query) {
@@ -191,7 +163,7 @@
     var hasAttribute = function hasAttribute(node, attribute) {
         return node.hasAttribute(attribute);
     };
-    var theLocation = W.location;
+    var theLocation = W$1.location;
     var offEvent = function offEvent(name, node, then) {
         node.removeEventListener(name, then);
     };
@@ -207,6 +179,42 @@
         }
         node.addEventListener(name, then, options);
     };
+    var fromStates$1 = function fromStates() {
+        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+            lot[_key] = arguments[_key];
+        }
+        var out = lot.shift();
+        for (var i = 0, j = toCount(lot); i < j; ++i) {
+            for (var k in lot[i]) {
+                // Assign value
+                if (!isSet$1(out[k])) {
+                    out[k] = lot[i][k];
+                    continue;
+                } // Merge array
+                if (isArray(out[k]) && isArray(lot[i][k])) {
+                    out[k] = [
+                        /* Clone! */
+                    ].concat(out[k]);
+                    for (var ii = 0, jj = toCount(lot[i][k]); ii < jj; ++ii) {
+                        if (!hasValue(lot[i][k][ii], out[k])) {
+                            out[k].push(lot[i][k][ii]);
+                        }
+                    } // Merge object recursive
+                } else if (isObject(out[k]) && isObject(lot[i][k])) {
+                    out[k] = fromStates({
+                        /* Clone! */
+                    }, out[k], lot[i][k]); // Replace value
+                } else {
+                    out[k] = lot[i][k];
+                }
+            }
+        }
+        return out;
+    };
+    var D = document;
+    var W = window;
+    var B = D.body;
+    var R = D.documentElement;
     var esc = function esc(pattern, extra) {
         if (extra === void 0) {
             extra = "";
@@ -244,7 +252,7 @@
         if (!isInstance($, TE)) {
             return new TE(source, state);
         }
-        $.state = state = fromStates({}, TE.state, isString(state) ? {
+        $.state = state = fromStates$1({}, TE.state, isString(state) ? {
             tab: state
         } : state || {}); // The `<textarea>` element
         $.self = $.source = source; // Store current instance to `TE.instances`
@@ -566,7 +574,7 @@
 
     function promisify(type, lot) {
         return new Promise(function(resolve, reject) {
-            var r = W[type].apply(W, lot);
+            var r = W$1[type].apply(W$1, lot);
             return r ? resolve(r) : reject(r);
         });
     }
@@ -881,6 +889,64 @@
         return bounce(that), true;
     }
     var state$2 = defaults$2;
+    var fromStates = function fromStates() {
+        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+            lot[_key] = arguments[_key];
+        }
+        var out = lot.shift();
+        for (var i = 0, j = toCount(lot); i < j; ++i) {
+            for (var k in lot[i]) {
+                // Assign value
+                if (!isSet$1(out[k])) {
+                    out[k] = lot[i][k];
+                    continue;
+                } // Merge array
+                if (isArray(out[k]) && isArray(lot[i][k])) {
+                    out[k] = [
+                        /* Clone! */
+                    ].concat(out[k]);
+                    for (var ii = 0, jj = toCount(lot[i][k]); ii < jj; ++ii) {
+                        if (!hasValue(lot[i][k][ii], out[k])) {
+                            out[k].push(lot[i][k][ii]);
+                        }
+                    } // Merge object recursive
+                } else if (isObject(out[k]) && isObject(lot[i][k])) {
+                    out[k] = fromStates({
+                        /* Clone! */
+                    }, out[k], lot[i][k]); // Replace value
+                } else {
+                    out[k] = lot[i][k];
+                }
+            }
+        }
+        return out;
+    };
+    var fromHTML = function fromHTML(x) {
+        return x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+    };
+    var fromValue = function fromValue(x) {
+        if (isArray(x)) {
+            return x.map(function(v) {
+                return fromValue(x);
+            });
+        }
+        if (isObject(x)) {
+            for (var k in x) {
+                x[k] = fromValue(x[k]);
+            }
+            return x;
+        }
+        if (false === x) {
+            return 'false';
+        }
+        if (null === x) {
+            return 'null';
+        }
+        if (true === x) {
+            return 'true';
+        }
+        return "" + x;
+    };
     var tagComment = '<!--([\\s\\S](?!-->)*)-->',
         tagData = '<!((?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^>\'"])*)>',
         tagName$1 = '[\\w:.-]+',
@@ -1221,7 +1287,7 @@
         map.key;
         var queue = map.queue;
         if (!queue.Control) {
-            W.setTimeout(function() {
+            W$1.setTimeout(function() {
                 var _that$$7 = that.$(),
                     after = _that$$7.after,
                     before = _that$$7.before,
@@ -1708,9 +1774,9 @@
     }
     var state = defaults;
     Object.assign(TE.prototype, that$2, that$1);
-    TE.state = fromStates({}, TE.state, state$2, state$1, state);
+    TE.state = fromStates$2({}, TE.state, state$2, state$1, state);
     ['alert', 'confirm', 'prompt'].forEach(type => {
-        W._[type] && (TE.state.source[type] = W._[type]);
+        W$1._.dialog[type] && (TE.state.source[type] = W$1._.dialog[type]);
     }); // Be sure to remove the default source type
     delete TE.state.source.type;
 
@@ -1812,7 +1878,7 @@
             editor = new TE(source, getDatum(source, 'state') ?? {});
             state = editor.state;
             type = state.source.type;
-            map = new W.K(editor);
+            map = new W$1.K(editor);
             map.keys['Escape'] = function() {
                 let parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
                 if (parent) {
@@ -1838,6 +1904,6 @@
         });
     }
     onChange();
-    W._.on('change', onChange);
-    W.TE = TE;
+    W$1._.on('change', onChange);
+    W$1.TE = TE;
 })();
