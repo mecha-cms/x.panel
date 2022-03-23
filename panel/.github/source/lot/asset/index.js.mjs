@@ -6,10 +6,7 @@ import {
     getElement,
     getFormElement,
     getParent,
-    hasClass,
-    setChildLast,
-    setElement,
-    setHTML
+    hasClass
 } from '@taufik-nurrohman/document';
 
 import {
@@ -51,40 +48,8 @@ onEvent('keydown', W, e => {
 
 onEvent('keyup', W, e => map.pull(e.key));
 
-let _dialog = setElement('dialog');
-
-onEvent('submit', _dialog, e => {
-    console.log(_dialog.returnValue);
-});
-
-setChildLast(B, _dialog);
-
-function dialog(content) {
-    setHTML(_dialog, '<form method="dialog">' + content + '</form>');
-    _dialog.showModal();
-    let target = getElement('[autofocus]', _dialog);
-    if (target) {
-        isFunction(target.focus) && target.focus();
-        isFunction(target.select) && target.select(); // `<input>`
-    }
-}
-
-dialog.alert = function(description) {
-    return dialog('<p>' + description + '</p><p role="group"><button autofocus name="v" type="submit" value="1">OK</button></p>');
-};
-
-dialog.confirm = function(description) {
-    return dialog('<p>' + description + '</p><p role="group"><button name="v" type="submit" value="1">OK</button> <button autofocus name="v" type="submit" value="0">Cancel</button></p>');
-};
-
-dialog.prompt = function(key, value) {
-    value = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return dialog('<p>' + key + '</p><p><input autofocus type="text" value="' + value + '"></p><p role="group"><button name="v" type="submit" value="1">OK</button> <button name="v" type="submit" value="0">Cancel</button></p>');
-};
-
 const _ = {
     commands: map.commands,
-    dialog,
     keys: map.keys
 };
 
