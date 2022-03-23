@@ -337,7 +337,8 @@ function state($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    if (\is_file($file = \LOT . \D . \trim(\strtr($_POST['path'] ?? $_['path'], '/', \D), \D) . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
+    $folder = \trim(\strtr(\strip_tags($_POST['path'] ?? $_['path'] ?? ""), '/', \D), \D);
+    if (\is_file($file = \LOT . ("" !== $folder ? \D . $folder : "") . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
         $_POST['file']['content'] = '<?php return ' . \z(\drop($_POST['state'] ?? [])) . ';';
         $_['file'] = \stream_resolve_include_path($file); // For hook(s)
         $_ = file($_); // Move to `file`

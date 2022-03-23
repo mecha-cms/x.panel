@@ -13,7 +13,7 @@ function blob($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? D . \To::folder($_POST['path']) : "");
+    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? \D . \trim(\strtr(\strip_tags($_POST['path']), '/', \D), \D) : "");
     $test_size = (array) (\State::get('x.panel.guard.file.size', true) ?? [0, 0]);
     $test_type = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.type', true) ?? [])))) . \P;
     $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
@@ -170,7 +170,7 @@ function file($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? D . \To::folder($_POST['path']) : "");
+    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? \D . \trim(\strtr(\strip_tags($_POST['path']), '/', \D), \D) : "");
     $name = \basename(\To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     // Special case for PHP file(s)
@@ -239,7 +239,7 @@ function folder($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? D . \To::folder($_POST['path']) : "");
+    $folder = $_['folder'] . (!empty($_POST['path']) && \is_string($_POST['path']) ? \D . \trim(\strtr(\strip_tags($_POST['path']), '/', \D), \D) : "");
     $name = (string) \To::folder($_POST['folder']['name'] ?? "");
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
