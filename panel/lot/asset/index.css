@@ -883,6 +883,7 @@ dialog {
   height: fit-content;
   left: 0;
   margin: auto;
+  max-width: 100%;
   min-width: calc(var(--x) * 12);
   padding: var(--y) var(--x);
   position: fixed;
