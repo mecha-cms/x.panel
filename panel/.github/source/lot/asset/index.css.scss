@@ -110,8 +110,10 @@
   --fill-output: none;
   --fill: #fff;
   --shadow-button--disabled: none;
+  --shadow-dialog: 0 calc(var(--y) / 8) calc(var(--y) / 2) rgba(0, 0, 0, .5);
   --shadow-input--disabled: none;
-  --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
+  --shadow-menu: 0 calc(var(--y) / 8) calc(var(--y) / 4) rgba(0, 0, 0, .25);
+  --shadow-option-picker__options: 0 calc(var(--y) / 8) calc(var(--y) / 4) rgba(0, 0, 0, .25);
   --shadow-output: none;
   --stroke--focus-visible: rgba(0, 0, 255, .25);
   --stroke-button--active: #009;

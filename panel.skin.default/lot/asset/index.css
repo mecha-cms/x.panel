@@ -3,7 +3,6 @@
   --color-fix: inherit;
   --color-mark: inherit;
   --color-output: inherit;
-  --shadow-option-picker__options: 0 1px 4px rgba(0, 0, 0, .25);
 }
 
 [pattern]:focus:invalid,
@@ -111,7 +110,6 @@
   --fill-tab--hover: #242424;
   --fill-tab: #242424;
   --fill: #222222;
-  --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
   --stroke--active: #434343;
   --stroke--focus-visible: rgba(255, 255, 255, .025);
   --stroke--focus: #383838;
@@ -296,7 +294,6 @@
   --shadow-button--focus: 0 0 0 3px rgba(0, 0, 0, .05);
   --shadow-input--focus: 0 0 0 3px rgba(0, 0, 0, .05);
   --shadow-input--invalid: 0 0 0 3px rgba(255, 0, 0, .15);
-  --shadow-menu: 0 1px 5px rgba(0, 0, 0, .25);
   --stroke--active: #858585;
   --stroke--focus-visible: rgba(0, 0, 0, .125);
   --stroke--focus: #9c9c9c;

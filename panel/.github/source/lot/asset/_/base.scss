@@ -98,7 +98,8 @@ s {
 dialog {
   background: var(--fill);
   border: 0;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, .5);
+  bottom: 0;
+  box-shadow: var(--shadow-dialog);
   color: var(--color);
   display: block;
   height: fit-content;
@@ -108,10 +109,12 @@ dialog {
   padding: var(--y) var(--x);
   position: fixed;
   right: 0;
+  top: 0;
   width: fit-content;
 }
 
 dialog::backdrop {
+  @include user-select(none);
   background: rgba(0, 0, 0, .5);
 }
 
