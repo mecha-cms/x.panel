@@ -18,10 +18,11 @@ function data($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
+    $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
     $name = \basename(\To::file(\lcfirst($_POST['data']['name'] ?? "")));
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
-    if (empty($_['alert']['error']) && isset($_['folder']) && $parent = \glob(\dirname($_['folder']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
+    if (empty($_['alert']['error']) && isset($folder) && $parent = \glob(\dirname($folder) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
@@ -120,7 +121,8 @@ function folder($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $base = \basename((string) ($folder = $_['folder'])); // Old folder name
+    $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
+    $base = \basename((string) $folder); // Old folder name
     $name = \basename((string) \To::folder($_POST['folder']['name'] ?? "")); // New folder name
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
@@ -337,8 +339,8 @@ function state($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = \trim(\strtr(\strip_tags($_POST['path'] ?? $_['path'] ?? ""), '/', \D), \D);
-    if (\is_file($file = \LOT . ("" !== $folder ? \D . $folder : "") . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
+    $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
+    if (\is_file($file = $folder . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
         $_POST['file']['content'] = '<?php return ' . \z(\drop($_POST['state'] ?? [])) . ';';
         $_['file'] = \stream_resolve_include_path($file); // For hook(s)
         $_ = file($_); // Move to `file`

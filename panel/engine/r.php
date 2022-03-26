@@ -97,8 +97,8 @@ return (static function($icons) {
                             'url' => ['query' => ['query' => null]]
                         ]
                     ],
+                    'of' => ['lot' => true],
                     'stack' => 10,
-                    'tags' => ['of:lot' => true],
                     'type' => 'links'
                 ],
                 1 => [
@@ -152,8 +152,8 @@ return (static function($icons) {
                             'url' => (string) $url
                         ]
                     ],
+                    'of' => ['links' => true],
                     'stack' => 20,
-                    'tags' => ['of:links' => true],
                     'type' => 'links'
                 ],
                 2 => [
@@ -168,8 +168,8 @@ return (static function($icons) {
                             'url' => $url . '/' . trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/') . '/' . $user->name . '?exit=' . $_['token']
                         ]
                     ],
+                    'of' => ['user' => true],
                     'stack' => 30,
-                    'tags' => ['of:user' => true],
                     'type' => 'links'
                 ]
             ],

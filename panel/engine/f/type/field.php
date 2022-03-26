@@ -177,6 +177,7 @@ function item($value, $key) {
         $a = [];
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
+        $is_active_all = !isset($value['active']) || $value['active'];
         foreach ($value['lot'] as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
@@ -185,7 +186,7 @@ function item($value, $key) {
             if (!\is_array($v)) {
                 $v = ['title' => $v];
             }
-            $is_active = !isset($v['active']) || $v['active'];
+            $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
             $v['is']['fix'] = $v['is']['fix'] ?? $is_fix;
@@ -244,6 +245,7 @@ function items($value, $key) {
         $a = [];
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
+        $is_active_all = !isset($value['active']) || $value['active'];
         foreach ($value['lot'] as $k => $v) {
             if (null === $v || false === $v || !empty($v['skip'])) {
                 continue;
@@ -252,7 +254,7 @@ function items($value, $key) {
             if (!\is_array($v)) {
                 $v = ['title' => $v];
             }
-            $is_active = !isset($v['active']) || $v['active'];
+            $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
             $v['is']['fix'] = $v['is']['fix'] ?? $is_fix;
