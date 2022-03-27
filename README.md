@@ -20,6 +20,7 @@ Release Notes
 
  - [ ] Added ability to update core, extension and layout directly from the panel.
  - [ ] Updated for Mecha 3.0.0.
+ - [x] Added `chunk`, `deep` and `x` filter for query string in URL.
  - [x] Added ability to store file in different folder from the current folder by adding an `<input name="path" value="foo/bar/baz">` element in the HTML form. This applies only to the `set` task.
  - [x] Changed URL pattern from `http://127.0.0.1/panel/::g::/foo/bar/baz/1` to `http://127.0.0.1/panel/get/foo/bar/baz/1` (#23)
  - [x] Changed `info` key to `status`.
