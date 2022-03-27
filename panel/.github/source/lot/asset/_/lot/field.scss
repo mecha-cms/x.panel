@@ -11,6 +11,11 @@
       font-size: calc(var(--z) * .65);
     }
   }
+  &.not\:active {
+    .description {
+      color: inherit;
+    }
+  }
   > label {
     display: block;
     overflow: hidden;

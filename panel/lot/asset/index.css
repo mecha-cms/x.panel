@@ -2374,6 +2374,9 @@ input[type=range]:disabled::-moz-range-thumb {
 .lot\:field .description code {
   font-size: calc(var(--z) * 0.65);
 }
+.lot\:field.not\:active .description {
+  color: inherit;
+}
 .lot\:field > label,
 .lot\:field.type\:items > label,
 .lot\:field.type\:colors > label,

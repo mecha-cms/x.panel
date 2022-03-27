@@ -33,17 +33,18 @@ $_ = $GLOBALS['_'];
 
 // Run the task(s) to `do.*.*` hook after panel type is set
 $tasks = array_reverse(step(trim(strtr($_['task'] ?? 'get', '/', D), D), D));
+$type = strtr(strtr($_['type'] ?? P, "\\", '/'), '/', D);
 foreach ($tasks as $task) {
-    $type = strtr($_['type'] ?? P, '/', D);
-    foreach (array_reverse(step(strtr($task, D, "\\") . "\\" . strtr($type, D, "\\"), "\\")) as $v) {
+    $task = strtr($task, "\\", '/');
+    foreach (array_reverse(step(strtr($task, '/', D) . D . $type, D)) as $v) {
         // Function-based task
         if (
-            is_callable($f = "\\x\\panel\\task\\" . $v) ||
+            is_callable($f = "\\x\\panel\\task\\" . strtr($v, D, "\\")) ||
             // If you have to use route(s) with number prefix, you can prefix the function name with a `_`.
             // For route `/panel/fire/123/foo/bar/1`, you can have function named `_123()` instead of `123()`.
             is_callable($f = strtr($f, ["\\task\\fire\\" => "\\task\\fire\\_"]))
         ) {
-            Hook::set(strtr('do.' . $type . '.' . $task, "\\", '/'), $f, 10);
+            Hook::set(strtr('do.' . $type . '.' . $task, D, '/'), $f, 10);
         }
     }
 }
