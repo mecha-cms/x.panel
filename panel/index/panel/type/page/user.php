@@ -31,10 +31,13 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                             'part' => 0,
                             'path' => dirname($_['path']),
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                'type' => 'page/user'
+                                'type' => 'page/user',
+                                'x' => null
                             ],
                             'task' => 'set'
                         ]

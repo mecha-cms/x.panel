@@ -41,7 +41,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
             }
             $pages = new Anemone($pages);
             $pages->sort([1, 'title'], true);
-            $pages = $pages->chunk($_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
+            $pages = $pages->chunk($_GET['chunk'] ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($d = dirname($k), [
                     LOT . D => "",
@@ -81,10 +81,13 @@ Hook::set('_', function($_) use($state, $url, $user) {
                                 'part' => 1,
                                 'path' => $path,
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => ['files'],
-                                    'type' => null
+                                    'type' => null,
+                                    'x' => null
                                 ],
                                 'task' => 'get'
                             ]
@@ -98,11 +101,14 @@ Hook::set('_', function($_) use($state, $url, $user) {
                             'url' => !empty($bound) ? null : [
                                 'path' => basename($d),
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],
-                                    'trash' => null
+                                    'trash' => null,
+                                    'x' => null
                                 ],
                                 'task' => 'fire/' . (is_file($d . D . 'index.x') ? 'plug' : 'eject')
                             ]
@@ -116,11 +122,14 @@ Hook::set('_', function($_) use($state, $url, $user) {
                                 'part' => 0,
                                 'path' => $path,
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],
-                                    'trash' => $trash
+                                    'trash' => $trash,
+                                    'x' => null
                                 ],
                                 'task' => 'let'
                             ]
@@ -132,10 +141,13 @@ Hook::set('_', function($_) use($state, $url, $user) {
                         'part' => 1,
                         'path' => $path,
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => ['info'],
-                            'type' => null
+                            'type' => null,
+                            'x' => null
                         ],
                         'task' => 'get'
                     ]
@@ -148,7 +160,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
-            'chunk' => $_['chunk'] ?? 20,
+            'chunk' => $_GET['chunk'] ?? $_['chunk'] ?? 20,
             'count' => $count,
             'current' => $_['part'] ?? 1,
             'stack' => 20,
@@ -166,10 +178,13 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = [
     'part' => 0,
     'query' => [
+        'chunk' => null,
+        'deep' => null,
         'query' => null,
         'stack' => null,
         'tab' => null,
-        'type' => 'blob/x'
+        'type' => 'blob/x',
+        'x' => null
     ],
     'task' => 'set'
 ];

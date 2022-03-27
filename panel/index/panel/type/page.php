@@ -6,10 +6,13 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
         'part' => 1,
         'path' => dirname($_['path']),
         'query' => [
+            'chunk' => null,
+            'deep' => null,
             'query' => null,
             'stack' => null,
             'tab' => null,
-            'type' => null
+            'type' => null,
+            'x' => null
         ],
         'task' => 'get'
     ];
@@ -86,10 +89,13 @@ $bar = [
                         'part' => 1,
                         'path' => 'get' === $_['task'] ? (0 === q(g($folder, 'archive,draft,page')) ? dirname($_['path']) : dirname($_['path']) . '/' . pathinfo($_['path'], PATHINFO_FILENAME)) : $_['path'],
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => null,
-                            'type' => null
+                            'type' => null,
+                            'x' => null
                         ],
                         'task' => 'get'
                     ]
@@ -103,10 +109,13 @@ $bar = [
                     'url' => [
                         'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => null,
-                            'type' => 'page'
+                            'type' => 'page',
+                            'x' => null
                         ],
                         'task' => 'set'
                     ]
@@ -397,10 +406,13 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                                 'part' => 0,
                                 'path' => $pp,
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
-                                    'type' => null
+                                    'type' => null,
+                                    'x' => null
                                 ],
                                 'task' => 'get'
                             ]
@@ -414,12 +426,15 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                                 'part' => 0,
                                 'path' => $pp,
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],
                                     'trash' => $trash,
-                                    'type' => null
+                                    'type' => null,
+                                    'x' => null
                                 ],
                                 'task' => 'let'
                             ]
@@ -431,10 +446,13 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                         'part' => 0,
                         'path' => $pp,
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => null,
-                            'type' => null
+                            'type' => null,
+                            'x' => null
                         ],
                         'task' => 'get'
                     ]

@@ -21,10 +21,13 @@ $_['lot']['bar']['lot'][0]['lot']['set']['url'] = [
     'part' => 0,
     'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
     'query' => [
+        'chunk' => null,
+        'deep' => null,
         'query' => null,
         'stack' => null,
         'tab' => null,
-        'type' => 'page/page'
+        'type' => 'page/page',
+        'x' => null
     ],
     'task' => 'set'
 ];

@@ -22,10 +22,13 @@ return (static function($icons) {
                 'part' => 1,
                 'path' => $n,
                 'query' => [
+                    'chunk' => null,
+                    'deep' => null,
                     'kick' => null,
                     'query' => null,
                     'tab' => null,
-                    'type' => null
+                    'type' => null,
+                    'x' => null
                 ],
                 'task' => 'get'
             ]
@@ -113,10 +116,13 @@ return (static function($icons) {
                                 'part' => 0,
                                 'path' => '.license',
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'kick' => null,
                                     'query' => null,
                                     'tab' => null,
-                                    'type' => null
+                                    'type' => null,
+                                    'x' => null
                                 ],
                                 'task' => 'get'
                             ]
@@ -132,10 +138,13 @@ return (static function($icons) {
                                         'part' => 0,
                                         'path' => '.state',
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'kick' => null,
                                             'query' => null,
                                             'tab' => null,
-                                            'type' => null
+                                            'type' => null,
+                                            'x' => null
                                         ],
                                         'task' => 'get'
                                     ]

@@ -41,10 +41,13 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = [
     'part' => 0,
     'query' => [
+        'chunk' => null,
+        'deep' => null,
         'query' => null,
         'stack' => null,
         'tab' => null,
-        'type' => 'page/user'
+        'type' => 'page/user',
+        'x' => null
     ],
     'task' => 'set'
 ];

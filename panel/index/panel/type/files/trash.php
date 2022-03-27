@@ -32,12 +32,15 @@ Hook::set('_', function($_) use($state) {
                         'url' => [
                             'path' => basename($k),
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                //'token' => $_['token'],
+                                // 'token' => $_['token'],
                                 'trash' => null,
-                                'type' => null
+                                'type' => null,
+                                'x' => null
                             ],
                             'task' => 'fire/restore'
                         ]
@@ -66,11 +69,14 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['let'] = [
     'url' => [
         'path' => null,
         'query' => [
+            'chunk' => null,
+            'deep' => null,
             'query' => null,
             'stack' => null,
             'tab' => null,
             'token' => $_['token'],
-            'type' => null
+            'type' => null,
+            'x' => null
         ],
         'task' => 'fire/flush'
     ]

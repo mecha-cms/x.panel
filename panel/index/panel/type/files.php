@@ -17,7 +17,7 @@ Hook::set('_', function($_) {
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $super = 1 === $user->status;
         if (is_dir($folder = LOT . D . strtr($_['path'], '/', D))) {
-            foreach ($search($folder, null, 0) as $k => $v) {
+            foreach ($search($folder, $_GET['x'] ?? null, $_GET['deep'] ?? 0) as $k => $v) {
                 $n = basename($k);
                 if (false !== strpos('_.', $n[0]) && !$super) {
                     continue; // User(s) with status other than `1` cannot see hidden file(s)
@@ -30,7 +30,7 @@ Hook::set('_', function($_) {
             $files = array_merge($files[0], $files[1]);
             $_['count'] = $count;
         }
-        $files = array_chunk($files, $_['chunk'] ?? 20, true)[($_['part'] ?? 1) - 1] ?? [];
+        $files = array_chunk($files, $_GET['chunk'] ?? $_['chunk'] ?? 20, true)[($_['part'] ?? 1) - 1] ?? [];
         foreach ($files as $k => $v) {
             $path = strtr($k, [
                 LOT . D => "",
@@ -53,10 +53,13 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                'type' => null
+                                'type' => null,
+                                'x' => null
                             ]
                         ]
                     ],
@@ -69,11 +72,14 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
                                 'token' => $_['token'],
-                                'trash' => $trash
+                                'trash' => $trash,
+                                'x' => null
                             ],
                             'task' => 'let'
                         ]
@@ -85,10 +91,13 @@ Hook::set('_', function($_) {
                     'part' => 1,
                     'path' => $path,
                     'query' => [
+                        'chunk' => null,
+                        'deep' => null,
                         'query' => null,
                         'stack' => null,
                         'tab' => null,
-                        'type' => null
+                        'type' => null,
+                        'x' => null
                     ],
                     'task' => 'get'
                 ] : null
@@ -111,10 +120,13 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                'type' => null
+                                'type' => null,
+                                'x' => null
                             ],
                             'task' => 'get'
                         ]
@@ -128,11 +140,14 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
                                 'token' => $_['token'],
-                                'trash' => $trash
+                                'trash' => $trash,
+                                'x' => null
                             ],
                             'task' => 'let'
                         ]
@@ -144,10 +159,13 @@ Hook::set('_', function($_) {
                     'part' => 1,
                     'path' => dirname($path),
                     'query' => [
+                        'chunk' => null,
+                        'deep' => null,
                         'query' => null,
                         'stack' => null,
                         'tab' => null,
-                        'type' => null
+                        'type' => null,
+                        'x' => null
                     ],
                     'task' => 'get'
                 ]
@@ -155,7 +173,7 @@ Hook::set('_', function($_) {
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] = $files;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['pager'] = [
-            'chunk' => $_['chunk'] ?? 20,
+            'chunk' => $_GET['chunk'] ?? $_['chunk'] ?? 20,
             'count' => $_['count'] ?? 0,
             'current' => $_['part'] ?? 1,
             'stack' => 20,
@@ -185,10 +203,13 @@ $desk = [
                                     'url' => [
                                         'part' => 0,
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'query' => null,
                                             'stack' => null,
                                             'tab' => null,
-                                            'type' => 'blob'
+                                            'type' => 'blob',
+                                            'x' => null
                                         ],
                                         'task' => 'set'
                                     ]
@@ -201,10 +222,13 @@ $desk = [
                                     'url' => [
                                         'part' => 0,
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'query' => null,
                                             'stack' => null,
                                             'tab' => null,
-                                            'type' => 'file'
+                                            'type' => 'file',
+                                            'x' => null
                                         ],
                                         'task' => 'set'
                                     ]
@@ -217,10 +241,13 @@ $desk = [
                                     'url' => [
                                         'part' => 0,
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'query' => null,
                                             'stack' => null,
                                             'tab' => null,
-                                            'type' => 'folder'
+                                            'type' => 'folder',
+                                            'x' => null
                                         ],
                                         'task' => 'set'
                                     ]

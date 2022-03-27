@@ -24,7 +24,7 @@ Hook::set('_', function($_) use($state, $user) {
         $super = 1 === $user->status;
         $_['sort'] = array_replace([1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
         if (is_dir($folder = LOT . D . strtr($_['path'], '/', D))) {
-            foreach ($search($folder, 'archive,draft,page', 0) as $k => $v) {
+            foreach ($search($folder, $_GET['x'] ?? 'archive,draft,page', $_GET['deep'] ?? 0) as $k => $v) {
                 if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
                     continue; // Skip placeholder page(s)
                 }
@@ -42,7 +42,7 @@ Hook::set('_', function($_) use($state, $user) {
             $_['count'] = $count;
             $pages = new Anemone($pages);
             $pages->sort($_['sort'], true);
-            $pages = $pages->chunk($page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
+            $pages = $pages->chunk($_GET['chunk'] ?? $page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($k, [
                     LOT . D => "",
@@ -83,6 +83,7 @@ Hook::set('_', function($_) use($state, $user) {
                                 'part' => 1,
                                 'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                                 'query' => [
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
@@ -102,10 +103,13 @@ Hook::set('_', function($_) use($state, $user) {
                                 'part' => 0,
                                 'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
-                                    'type' => 'page'
+                                    'type' => 'page',
+                                    'x' => null
                                 ],
                                 'task' => 'set'
                             ] : null
@@ -119,10 +123,13 @@ Hook::set('_', function($_) use($state, $user) {
                                 'part' => 0,
                                 'path' => $path,
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
-                                    'type' => null // Automatically detected by the file extension
+                                    'type' => null, // Automatically detected by the file extension
+                                    'x' => null
                                 ],
                                 'task' => 'get'
                             ]
@@ -136,12 +143,15 @@ Hook::set('_', function($_) use($state, $user) {
                                 'part' => 0,
                                 'path' => $path,
                                 'query' => [
+                                    'chunk' => null,
+                                    'deep' => null,
                                     'query' => null,
                                     'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],
                                     'trash' => $trash,
-                                    'type' => null // Automatically detected by the file extension
+                                    'type' => null, // Automatically detected by the file extension
+                                    'x' => null
                                 ],
                                 'task' => 'let'
                             ]
@@ -184,10 +194,13 @@ Hook::set('_', function($_) use($state, $user) {
                                     'part' => 0,
                                     'path' => $path,
                                     'query' => [
+                                        'chunk' => null,
+                                        'deep' => null,
                                         'query' => null,
                                         'stack' => null,
                                         'tab' => null,
-                                        'type' => null // Automatically detected by the file extension
+                                        'type' => null, // Automatically detected by the file extension
+                                        'x' => null
                                     ],
                                     'task' => 'get'
                                 ]
@@ -201,12 +214,15 @@ Hook::set('_', function($_) use($state, $user) {
                                     'part' => 0,
                                     'path' => $path,
                                     'query' => [
+                                        'chunk' => null,
+                                        'deep' => null,
                                         'query' => null,
                                         'stack' => null,
                                         'tab' => null,
                                         'token' => $_['token'],
                                         'trash' => $trash,
-                                        'type' => null // Automatically detected by the file extension
+                                        'type' => null, // Automatically detected by the file extension
+                                        'x' => null
                                     ],
                                     'task' => 'let'
                                 ]
@@ -218,10 +234,13 @@ Hook::set('_', function($_) use($state, $user) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                'type' => null // Automatically detected by the file extension
+                                'type' => null, // Automatically detected by the file extension
+                                'x' => null
                             ],
                             'task' => 'get'
                         ]
@@ -235,7 +254,7 @@ Hook::set('_', function($_) use($state, $user) {
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
-            'chunk' => $page->chunk ?? $_['chunk'] ?? 20,
+            'chunk' => $_GET['chunk'] ?? $page->chunk ?? $_['chunk'] ?? 20,
             'count' => $_['count'] ?? 0,
             'current' => $_['part'] ?? 1,
             'stack' => 20,
@@ -286,10 +305,13 @@ $desk = [
                                     'url' => [
                                         'part' => 0,
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'query' => null,
                                             'stack' => null,
                                             'tab' => null,
-                                            'type' => 'blob'
+                                            'type' => 'blob',
+                                            'x' => null
                                         ],
                                         'task' => 'set'
                                     ]
@@ -302,10 +324,13 @@ $desk = [
                                     'url' => [
                                         'part' => 0,
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'query' => null,
                                             'stack' => null,
                                             'tab' => null,
-                                            'type' => 'page'
+                                            'type' => 'page',
+                                            'x' => null
                                         ],
                                         'task' => 'set'
                                     ]
@@ -319,10 +344,13 @@ $desk = [
                                     'url' => [
                                         'part' => 0,
                                         'query' => [
+                                            'chunk' => null,
+                                            'deep' => null,
                                             'query' => null,
                                             'stack' => null,
                                             'tab' => null,
-                                            'type' => 'data'
+                                            'type' => 'data',
+                                            'x' => null
                                         ],
                                         'task' => 'set'
                                     ]

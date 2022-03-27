@@ -9,10 +9,13 @@ $_['lot']['bar']['lot'][0]['lot']['link']['url'] = [
     'part' => 1,
     'path' => dirname($_['path']),
     'query' => [
+        'chunk' => null,
+        'deep' => null,
         'query' => null,
         'stack' => null,
         'tab' => null,
-        'type' => null
+        'type' => null,
+        'x' => null
     ],
     'task' => 'get'
 ];
@@ -75,10 +78,13 @@ Hook::set('_', function($_) use($state, $url) {
                             "\\" => '/'
                         ]),
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => ['info'],
-                            'type' => null
+                            'type' => null,
+                            'x' => null
                         ],
                         'task' => 'get'
                     ]) . '">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';

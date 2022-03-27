@@ -13,10 +13,13 @@ if (false === strpos($_['path'], '/')) {
         'url' => $zip ? [
             'part' => 0,
             'query' => [
+                'chunk' => null,
+                'deep' => null,
                 'query' => null,
                 'stack' => null,
                 'tab' => null,
-                'type' => 'blob/layout'
+                'type' => 'blob/layout',
+                'x' => null
             ],
             'task' => 'set'
         ] : null
@@ -54,10 +57,13 @@ if (false === strpos($_['path'], '/')) {
                                 "\\" => '/'
                             ]),
                             'query' => [
+                                'chunk' => null,
+                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => ['info'],
-                                'type' => null
+                                'type' => null,
+                                'x' => null
                             ],
                             'task' => 'get'
                         ]) . '">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';

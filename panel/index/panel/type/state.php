@@ -6,10 +6,13 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
         'part' => 1,
         'path' => dirname($_['path']),
         'query' => [
+            'chunk' => null,
+            'deep' => null,
             'query' => null,
             'stack' => null,
             'tab' => null,
-            'type' => null
+            'type' => null,
+            'x' => null
         ],
         'task' => 'get'
     ];
@@ -76,10 +79,13 @@ $bar = [
                         'part' => "" !== $back ? 1 : 0,
                         'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : ($state->x->panel->route ?? 'page/1'), '/') : $_['path'],
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => null,
-                            'type' => null
+                            'type' => null,
+                            'x' => null
                         ]
                     ]
                 ],

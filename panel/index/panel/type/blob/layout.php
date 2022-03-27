@@ -29,12 +29,15 @@ $description .= '<pre><code class="txt">' . To::kebab(i('layout')) . '.zip&#xA;&
 $description .= '<p>' . i('Please note that this action will first delete all of your current layout files before replacing it with the new ones.') . ' ' . i('You may want to <a href="%s" target="_blank" title="%s">save a copy</a> of your current layout files before doing this.', [x\panel\to\link([
     'path' => strtok($_['path'], '/'),
     'query' => [
+        'chunk' => null,
+        'deep' => null,
         'folder' => 'false',
         'stack' => null,
         'tab' => null,
         'token' => $_['token'],
         'trash' => null,
-        'type' => null
+        'type' => null,
+        'x' => null
     ],
     'task' => 'fire/zip'
 ]), 'Download current layout as a ZIP file.']) . '</p>';

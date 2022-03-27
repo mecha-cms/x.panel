@@ -6,10 +6,13 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
         'part' => 1,
         'path' => dirname($_['path']),
         'query' => [
+            'chunk' => null,
+            'deep' => null,
             'query' => null,
             'stack' => null,
             'tab' => null,
-            'type' => null
+            'type' => null,
+            'x' => null
         ],
         'task' => 'get'
     ];
@@ -38,10 +41,13 @@ $bar = [
                         'part' => $x ? 0 : 1,
                         'path' => ('get' === $_['task'] ? dirname($_['path']) : $_['path']) . $x,
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => ['data'],
-                            'type' => null
+                            'type' => null,
+                            'x' => null
                         ],
                         'task' => 'get'
                     ]
@@ -56,10 +62,13 @@ $bar = [
                         'part' => 0,
                         'path' => dirname($_['path']),
                         'query' => [
+                            'chunk' => null,
+                            'deep' => null,
                             'query' => null,
                             'stack' => null,
                             'tab' => null,
-                            'type' => 'data'
+                            'type' => 'data',
+                            'x' => null
                         ],
                         'task' => 'set'
                     ]
