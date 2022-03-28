@@ -12,7 +12,7 @@ if ('default' === $skin) {
     }
     $_['asset']['panel.skin.' . $skin] = [
         'id' => false,
-        'path' => stream_resolve_include_path(__DIR__ . D . '..' . D . 'lot' . D . 'asset' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'css'),
+        'path' => stream_resolve_include_path(__DIR__ . D . '..' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'css'),
         'stack' => 30
     ];
     $_['is'][$variant ?? 'dark'] = true;
@@ -20,7 +20,7 @@ if ('default' === $skin) {
 
 // Add `default` skin option
 if ('.state' === $_['path'] && 'get' === $_['task']) {
-    $_['asset'][stream_resolve_include_path(__DIR__ . D . '..' . D . 'lot' . D . 'asset' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'js')] = [
+    $_['asset'][stream_resolve_include_path(__DIR__ . D . '..' . D . 'index' . (defined('TEST') && TEST ? '.' : '.min.') . 'js')] = [
         'id' => false,
         'stack' => 50
     ];

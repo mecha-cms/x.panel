@@ -31,20 +31,15 @@ function _asset_get() {
             ];
         }
     }
-    $f = __DIR__ . \D . '..' . \D . 'lot' . \D . 'asset';
-    $f = \stream_resolve_include_path($f) . \D;
+    $folder = \stream_resolve_include_path(\dirname(__DIR__));
     $z = \defined("\\TEST") && \TEST ? '.' : '.min.';
-    $data['panel.skin'] = [
-        'id' => false,
-        'path' => $f . 'index' . $z . 'css',
-        'stack' => 20
-    ];
-    $data[$f . \D . 'index' . $z . 'js'] = ['stack' => 20];
+    $data[$folder . \D . 'index' . $z . 'css'] = ['stack' => 20];
+    $data[$folder . \D . 'index' . $z . 'js'] = ['stack' => 20];
     foreach (['bar', 'column', 'dialog', 'file', 'link', 'menu', 'page', 'row', 'stack', 'tab', 'task'] as $v) {
-        $data[$f . 'index' . \D . $v . $z . 'js'] = ['stack' => 30];
+        $data[$folder . \D . $v . $z . 'js'] = ['stack' => 30];
     }
     foreach (['option', 'query', 'source'] as $v) {
-        $data[$f . 'index' . \D . 'field' . \D . $v . $z . 'js'] = ['stack' => 40];
+        $data[$folder . \D . 'field' . \D . $v . $z . 'js'] = ['stack' => 40];
     }
     $GLOBALS['_']['asset'] = \array_replace_recursive($GLOBALS['_']['asset'], $data);
     unset($data);
