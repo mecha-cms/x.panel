@@ -17,7 +17,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $author = $user->user;
         $super = 1 === $user->status;
-        if (is_dir($folder = LOT . D . strtr($_['path'], '/', D))) {
+        if (is_dir($folder = $_['folder'] ?? P)) {
             foreach ($search($folder, 'page', 1) as $k => $v) {
                 if ('about.page' !== basename($k)) {
                     continue;

@@ -1,12 +1,7 @@
 <?php
 
-if (!is_file(LOT . D . 'layout' . D . 'alert' . D . 'panel.php')) {
-    Layout::set('alert/panel', __DIR__ . D . '..' . D . 'lot' . D . 'layout' . D . 'alert' . D . 'panel.php');
-}
-
-if (!is_file(LOT . D . 'layout' . D . 'panel.php')) {
-    Layout::set('panel', __DIR__ . D . '..' . D . 'lot' . D . 'layout' . D . 'panel.php');
-}
+!Y::path('alert/panel') && Y::set('alert/panel', __DIR__ . D . '..' . D . 'lot' . D . 'y' . D . 'alert' . D . 'panel.php');
+!Y::path('panel') && Y::set('panel', __DIR__ . D . '..' . D . 'lot' . D . 'y' . D . 'panel.php');
 
 foreach ([
     '%s goes here...' => "%s goes here\u{2026}",

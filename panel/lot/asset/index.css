@@ -2518,6 +2518,9 @@ input[type=range]:disabled::-moz-range-thumb {
 .option-picker__options {
   line-height: var(--h);
 }
+.option-picker__options .option-picker__option {
+  padding: 0 calc(var(--x) / 2);
+}
 .option-picker__source + .option-picker {
   margin-left: 0 !important;
 }

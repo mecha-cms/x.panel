@@ -105,12 +105,12 @@ function route($content, $path, $query, $hash, $r) {
     $GLOBALS['content'] = $icon . $content . $list;
     $GLOBALS['description'] = (string) ($_['description'] ?? "");
     $GLOBALS['t'][] = \i('Panel');
-    $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : \To::title($id)));
+    $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : ('y' === $id ? 'Layout' : \To::title($id))));
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();
     \x\panel\_state_set();
     $_ = $GLOBALS['_']; // Update!
-    return \Layout::panel([], (int) ($_['status'] ?? 404));
+    return \Y::panel([], (int) ($_['status'] ?? 404));
 }
 
 // Remove all front-end route(s)
@@ -170,7 +170,7 @@ function route($content, $path, $query, $hash, $r) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
         }
         if (!empty($has_alert)) {
-            $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
+            $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Y::alert('panel');
         }
         $r['_'] = $_;
         return \Hook::fire('route.panel', [$content, $path, $query, $hash, $r]);

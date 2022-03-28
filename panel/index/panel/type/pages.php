@@ -12,18 +12,16 @@ Hook::set('_', function($_) use($state, $user) {
             $q = strtolower($_GET['query'] ?? "");
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };
-        $d = $_['folder'];
-        $page = is_file($f = exist([
-            $d . '.archive',
-            $d . '.draft',
-            $d . '.page'
-        ], 1)) ? new Page($f) : new Page;
         $pages = [];
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $author = $user->user;
         $super = 1 === $user->status;
-        $_['sort'] = array_replace([1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
-        if (is_dir($folder = LOT . D . strtr($_['path'], '/', D))) {
+        if (is_dir($folder = $_['folder'] ?? P)) {
+            $page = is_file($f = exist([
+                $folder . '.archive',
+                $folder . '.draft',
+                $folder . '.page'
+            ], 1)) ? new Page($f) : new Page;
             foreach ($search($folder, $_GET['x'] ?? 'archive,draft,page', $_GET['deep'] ?? 0) as $k => $v) {
                 if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
                     continue; // Skip placeholder page(s)
@@ -40,6 +38,7 @@ Hook::set('_', function($_) use($state, $user) {
                 ++$count;
             }
             $_['count'] = $count;
+            $_['sort'] = array_replace([1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
             $pages = new Anemone($pages);
             $pages->sort($_['sort'], true);
             $pages = $pages->chunk($_GET['chunk'] ?? $page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();

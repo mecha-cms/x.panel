@@ -16,7 +16,7 @@ Hook::set('_', function($_) {
         };
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $super = 1 === $user->status;
-        if (is_dir($folder = LOT . D . strtr($_['path'], '/', D))) {
+        if (is_dir($folder = $_['folder'] ?? P)) {
             foreach ($search($folder, $_GET['x'] ?? null, $_GET['deep'] ?? 0) as $k => $v) {
                 $n = basename($k);
                 if (false !== strpos('_.', $n[0]) && !$super) {

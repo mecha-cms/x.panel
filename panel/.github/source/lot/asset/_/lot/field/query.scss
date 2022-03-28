@@ -1,4 +1,6 @@
-.tag-picker {
+$name: tag-picker;
+
+.#{$name} {
   height: auto;
   min-height: calc(var(--y) * 1.5);
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
@@ -35,16 +37,16 @@
     &:not(:read-only) {
       // This is a fake `<input>` element with `tabindex`, so this will always match with the `:read-only` pseudo class
       // But this element does not mean to be styled as a read-only `<input>` element, so we need to normalize it!
-      + .tag-picker {
+      + .#{$name} {
         --color-input--read-only: var(--color-input);
         --fill-input--read-only: var(--fill-input);
         --shadow-input--read-only: var(--shadow-input);
         --stroke-input--read-only: var(--stroke-input);
       }
     }
-    + .tag-picker {
+    + .#{$name} {
       margin-left: 0 !important;
-      .tag-picker__tag {
+      .#{$name}__tag {
         border: 1px solid transparent;
         line-height: calc(var(--y) - 2px);
       }

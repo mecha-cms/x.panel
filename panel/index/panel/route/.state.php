@@ -84,7 +84,7 @@ if (false === strpos($_['path'], '/')) {
         if (false !== strpos('_.-', $n[0])) {
             continue;
         }
-        $panes['/' . $n . '/1'] = 'x' === $n ? 'Extension' : To::title($n);
+        $panes['/' . $n . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
     }
     foreach (glob(LOT . D . 'page' . D . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
         $routes['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
