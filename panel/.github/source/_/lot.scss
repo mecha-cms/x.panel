@@ -1,22 +1,23 @@
-@import 'lot/bar';
-@import 'lot/column';
-@import 'lot/columns';
-@import 'lot/desk';
-@import 'lot/field';
-@import 'lot/fields';
-@import 'lot/file-folder';
-@import 'lot/files-folders';
-@import 'lot/menu';
-@import 'lot/page';
-@import 'lot/pager';
-@import 'lot/pages';
-@import 'lot/card'; // Must come after `page`
-@import 'lot/cards'; // Must come after `pages`
-@import 'lot/row';
-@import 'lot/rows';
-@import 'lot/section';
-@import 'lot/stack';
-@import 'lot/stacks';
-@import 'lot/tab';
-@import 'lot/tabs';
-@import 'lot/tasks';
+@import './lot/bar.scss';
+@import './lot/column.scss';
+@import './lot/columns.scss';
+@import './lot/desk.scss';
+@import './lot/field.scss';
+@import './lot/fields.scss';
+@import './lot/file-folder.scss';
+@import './lot/files-folders.scss';
+@import './lot/menu.scss';
+@import './lot/page.scss';
+@import './lot/pager.scss';
+@import './lot/pages.scss';
+@import './lot/row.scss';
+@import './lot/rows.scss';
+@import './lot/section.scss';
+@import './lot/stack.scss';
+@import './lot/stacks.scss';
+@import './lot/tab.scss';
+@import './lot/tabs.scss';
+@import './lot/tasks.scss';
+
+@import './lot/card.scss'; // Must come after `page`
+@import './lot/cards.scss'; // Must come after `pages`

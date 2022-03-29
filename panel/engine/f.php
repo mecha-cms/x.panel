@@ -35,12 +35,6 @@ function _asset_get() {
     $z = \defined("\\TEST") && \TEST ? '.' : '.min.';
     $data[$folder . \D . 'index' . $z . 'css'] = ['stack' => 20];
     $data[$folder . \D . 'index' . $z . 'js'] = ['stack' => 20];
-    foreach (['bar', 'column', 'dialog', 'file', 'link', 'menu', 'page', 'row', 'stack', 'tab', 'task'] as $v) {
-        $data[$folder . \D . $v . $z . 'js'] = ['stack' => 30];
-    }
-    foreach (['option', 'query', 'source'] as $v) {
-        $data[$folder . \D . 'field' . \D . $v . $z . 'js'] = ['stack' => 40];
-    }
     $GLOBALS['_']['asset'] = \array_replace_recursive($GLOBALS['_']['asset'], $data);
     unset($data);
 }

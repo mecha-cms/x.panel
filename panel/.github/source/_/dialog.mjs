@@ -177,4 +177,8 @@ setDialog.prompt = function(key, value) {
     return setDialog([dialogPromptKey, dialogPromptValueP, dialogPromptTasks]);
 };
 
-W._.dialog = setDialog;
+function onChange(init) {
+    1 === init && (W._.dialog = setDialog);
+}
+
+export default onChange;

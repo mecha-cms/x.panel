@@ -37,7 +37,7 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
-function onChange() {
+function onChange(init) {
     let sources = getElements('.lot\\:stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let stacks = [].slice.call(getChildren(source)),
@@ -81,7 +81,8 @@ function onChange() {
         }
         onEvent('keydown', source, onKeyDownStacks);
     });
-} onChange();
+    1 === init && W._.on('change', onChange);
+}
 
 function onKeyDownStack(e) {
     if (e.defaultPrevented) {
@@ -198,4 +199,4 @@ function onKeyDownStacks(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-W._.on('change', onChange);
+export default onChange;

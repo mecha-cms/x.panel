@@ -12,7 +12,7 @@ import {
 
 import TP from '@taufik-nurrohman/tag-picker';
 
-function onChange() {
+function onChange(init) {
     // Destroy!
     let $;
     for (let key in TP.instances) {
@@ -26,8 +26,10 @@ function onChange() {
         let $ = new TP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);
     });
-} onChange();
+    if (1 === init) {
+        W._.on('change', onChange);
+        W.TP = TP;
+    }
+}
 
-W._.on('change', onChange);
-
-W.TP = TP;
+export default onChange;

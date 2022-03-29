@@ -1,3 +1,16 @@
+import bar from '_/bar';
+import column from '_/column';
+import dialog from '_/dialog';
+import field from '_/field';
+import file from '_/file';
+import link from '_/link';
+import menu from '_/menu';
+import page from '_/page';
+import row from '_/row';
+import stack from '_/stack';
+import tab from '_/tab';
+import task from '_/task';
+
 import {
     B,
     D,
@@ -95,3 +108,16 @@ onEvent('keydown', W, function(e) {
     }
     stop && offEventDefault(e);
 });
+
+bar(1);
+column(1);
+dialog(1);
+field(1);
+file(1);
+link(1);
+menu(1);
+page(1);
+row(1);
+stack(1);
+tab(1);
+task(1);

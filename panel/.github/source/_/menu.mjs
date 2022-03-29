@@ -49,7 +49,7 @@ function doHideMenus(but, trigger) {
     });
 }
 
-function onChange() {
+function onChange(init) {
     offEvent('click', D, onClickDocument);
     let menuParents = getElements('.has\\:menu'),
         menuLinks = getElements('.lot\\:menu[tabindex] ' + targets);
@@ -73,7 +73,8 @@ function onChange() {
     sources && toCount(sources) && sources.forEach(source => {
         onEvent('keydown', source, onKeyDownMenus);
     });
-} onChange();
+    1 === init && W._.on('change', onChange);
+}
 
 function onClickDocument() {
     doHideMenus(0);
@@ -227,4 +228,4 @@ function onKeyDownMenuToggle(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-W._.on('change', onChange);
+export default onChange;

@@ -18,7 +18,7 @@ import {
 
 import OP from '@taufik-nurrohman/option-picker';
 
-function onChange() {
+function onChange(init) {
     // Destroy!
     let $;
     for (let key in OP.instances) {
@@ -32,8 +32,9 @@ function onChange() {
         let $ = new OP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);
     });
-} onChange();
-
-W._.on('change', onChange);
+    1 === init && W._.on('change', onChange);
+}
 
 W.OP = OP;
+
+export default onChange;

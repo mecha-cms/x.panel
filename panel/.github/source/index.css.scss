@@ -219,12 +219,13 @@
   }
 }
 
-@import '_/base';
-@import '_/form';
-@import '_/icon';
-@import '_/alert';
-@import '_/lot';
-@import '_/content';
-@import '_/type';
+@import './_/alert.scss';
+@import './_/base.scss';
+@import './_/content.scss';
+@import './_/field.scss';
+@import './_/form.scss';
+@import './_/icon.scss';
+@import './_/lot.scss';
+@import './_/type.scss';
 
-@import '_/media';
+@import './_/media.scss';

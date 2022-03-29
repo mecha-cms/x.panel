@@ -54,10 +54,6 @@ Object.assign(TE.prototype, thatHistory, thatSource);
 
 TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
 
-['alert', 'confirm', 'prompt'].forEach(type => {
-    W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
-});
-
 // Be sure to remove the default source type
 delete TE.state.source.type;
 
@@ -186,7 +182,7 @@ function _setEditorSource(self) {
     self.TE.record();
 }
 
-function onChange() {
+function onChange(init) {
     // Destroy!
     let $;
     for (let key in TE.instances) {
@@ -227,8 +223,13 @@ function onChange() {
         source.K = map;
         _setEditorSource(source);
     });
-} onChange();
+    if (1 === init) {
+        W._.on('change', onChange);
+        W.TE = TE;
+        ['alert', 'confirm', 'prompt'].forEach(type => {
+            W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
+        });
+    }
+}
 
-W._.on('change', onChange);
-
-W.TE = TE;
+export default onChange;
