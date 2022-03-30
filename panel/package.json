@@ -6,8 +6,8 @@
     "@taufik-nurrohman/hook": "^0.1.2",
     "@taufik-nurrohman/is": "^0.1.2",
     "@taufik-nurrohman/key": "^2.0.4",
-    "@taufik-nurrohman/option-picker": "^1.3.4",
-    "@taufik-nurrohman/tag-picker": "^3.4.11",
+    "@taufik-nurrohman/option-picker": "^1.3.5",
+    "@taufik-nurrohman/tag-picker": "^3.4.12",
     "@taufik-nurrohman/text-editor": "^3.3.10",
     "@taufik-nurrohman/text-editor.history": "^2.1.13",
     "@taufik-nurrohman/text-editor.source": "^2.2.2",
@@ -16,7 +16,7 @@
     "@taufik-nurrohman/to": "^0.0.18"
   },
   "devDependencies": {
-    "@taufik-nurrohman/factory": "^1.0.7"
+    "@taufik-nurrohman/factory": "^1.0.8"
   },
   "private": true,
   "scripts": {

@@ -23,7 +23,6 @@ $state_panel = require x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'sta
 
 // Sanitize the form data
 if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
-    $_POST['state']['charset'] = strip_tags($_POST['state']['charset'] ?? 'utf-8');
     $_POST['state']['description'] = x\panel\to\w($_POST['state']['description'] ?? "");
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
@@ -218,30 +217,13 @@ if (false === strpos($_['path'], '/')) {
                                                         'value' => $state_r['zone'] ?? null,
                                                         'width' => true
                                                     ],
-                                                    'direction' => [
-                                                        'lot' => [
-                                                            'ltr' => '<abbr title="Left to Right">LTR</abbr>',
-                                                            'rtl' => '<abbr title="Right to Left">RTL</abbr>'
-                                                        ],
-                                                        'name' => 'state[direction]',
-                                                        'stack' => 20,
-                                                        'type' => 'item',
-                                                        'value' => $state_r['direction'] ?? null
-                                                    ],
-                                                    'charset' => [
-                                                        'hint' => ($v = $state_r['charset'] ?? null) ?? 'utf-8',
-                                                        'name' => 'state[charset]',
-                                                        'stack' => 30,
-                                                        'type' => 'text',
-                                                        'value' => $v
-                                                    ],
                                                     'language' => [
                                                         'description' => 'This value does not determine the I18N system on your site unless you want to make an I18N extension that depends on this value.',
                                                         'hint' => ($v = $state_r['language'] ?? null) ?? 'en',
                                                         'lot' => $languages,
                                                         'name' => 'state[language]',
                                                         'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                        'stack' => 40,
+                                                        'stack' => 20,
                                                         'type' => $languages ? 'option' : 'text',
                                                         'value' => $v
                                                     ]
