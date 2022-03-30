@@ -487,7 +487,7 @@
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$c(init) {
+    function onChange$a() {
         var sources = getElements('.lot\\:bar[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var items = getElements(targets$7, source);
@@ -496,7 +496,6 @@
             });
             onEvent('keydown', source, onKeyDownBar);
         });
-        1 === init && W$1._.on('change', onChange$c);
     }
 
     function onKeyDownBar(e) {
@@ -564,11 +563,15 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function Bar() {
+        W$1._.on('change', onChange$a), onChange$a();
+    }
     var dialog = setElement('dialog'),
         dialogForm = setElement('form', "", {
             method: 'dialog'
         }),
-        dialogTemplate = setElement('template');
+        dialogTemplate = setElement('div');
     setChildLast(B$1, dialog);
     setChildLast(dialog, dialogForm);
 
@@ -588,9 +591,9 @@
         setHTML(dialogForm, "");
         if (isString(content)) {
             setHTML(dialogTemplate, content.trim());
-            content = [].concat(dialogTemplate.content.childNodes);
+            content = Array.from(getChildren(dialogTemplate));
         } else {
-            content = [].concat(content);
+            content = Array.from(content);
         }
         var node;
         while (node = content.shift()) {
@@ -705,8 +708,8 @@
         return setDialog([dialogPromptKey, dialogPromptValueP, dialogPromptTasks]);
     };
 
-    function onChange$b(init) {
-        1 === init && (W$1._.dialog = setDialog);
+    function Dialog() {
+        W$1._.dialog = setDialog;
     }
     var debounce = function debounce(then, time) {
         var timer;
@@ -1505,7 +1508,7 @@
     };
     OP.version = '1.3.4';
 
-    function onChange$a(init) {
+    function onChange$9(init) {
         // Destroy!
         var $;
         for (var key in OP.instances) {
@@ -1520,7 +1523,7 @@
             var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
         });
-        1 === init && W$1._.on('change', onChange$a);
+        1 === init && W$1._.on('change', onChange$9);
     }
     W$1.OP = OP;
     var esc = function esc(pattern, extra) {
@@ -2285,7 +2288,7 @@
     };
     TP.version = '3.4.11';
 
-    function onChange$9(init) {
+    function onChange$8(init) {
         // Destroy!
         var $;
         for (var key in TP.instances) {
@@ -2301,7 +2304,7 @@
             setClasses($.self, c);
         });
         if (1 === init) {
-            W$1._.on('change', onChange$9);
+            W$1._.on('change', onChange$8);
             W$1.TP = TP;
         }
     }
@@ -3954,7 +3957,7 @@
         self.TE.record();
     }
 
-    function onChange$8(init) {
+    function onChange$7(init) {
         // Destroy!
         var $;
         for (var key in TE.instances) {
@@ -3999,7 +4002,7 @@
             _setEditorSource(source);
         });
         if (1 === init) {
-            W$1._.on('change', onChange$8);
+            W$1._.on('change', onChange$7);
             W$1.TE = TE;
             ['alert', 'confirm', 'prompt'].forEach(function(type) {
                 W$1._.dialog[type] && (TE.state.source[type] = W$1._.dialog[type]);
@@ -4007,10 +4010,10 @@
         }
     }
 
-    function onChange$7(init) {
-        onChange$a(init);
-        onChange$9(init);
-        onChange$8(init);
+    function Field() {
+        onChange$9();
+        onChange$8();
+        onChange$7();
     }
     var targets$6 = ':scope>.lot\\:file[tabindex]:not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.not\\:active)';
 
@@ -4018,7 +4021,7 @@
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$6(init) {
+    function onChange$6() {
         var sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var files = getElements(targets$6, source);
@@ -4027,7 +4030,6 @@
             });
             onEvent('keydown', source, onKeyDownFiles);
         });
-        1 === init && W$1._.on('change', onChange$6);
     }
 
     function onKeyDownFile(e) {
@@ -4094,13 +4096,17 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function File() {
+        W$1._.on('change', onChange$6), onChange$6();
+    }
     var targets$5 = ':scope>ul>li>a[href]:not(.not\\:active)';
 
     function fireFocus$5(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$5(init) {
+    function onChange$5() {
         var sources = getElements('.lot\\:links[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var links = getElements(targets$5, source);
@@ -4109,7 +4115,6 @@
             });
             onEvent('keydown', source, onKeyDownLinks);
         });
-        1 === init && W$1._.on('change', onChange$5);
     }
 
     function onKeyDownLink(e) {
@@ -4185,6 +4190,10 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function Link() {
+        W$1._.on('change', onChange$5), onChange$5();
+    }
     var targets$4 = 'a[href]:not(.not\\:active)';
 
     function fireFocus$4(node) {
@@ -4204,7 +4213,7 @@
         });
     }
 
-    function onChange$4(init) {
+    function onChange$4() {
         offEvent('click', D$1, onClickDocument);
         var menuParents = getElements('.has\\:menu'),
             menuLinks = getElements('.lot\\:menu[tabindex] ' + targets$4);
@@ -4228,7 +4237,6 @@
         sources && toCount(sources) && sources.forEach(function(source) {
             onEvent('keydown', source, onKeyDownMenus);
         });
-        1 === init && W$1._.on('change', onChange$4);
     }
 
     function onClickDocument() {
@@ -4387,13 +4395,17 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function Menu() {
+        W$1._.on('change', onChange$4), onChange$4();
+    }
     var targets$3 = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
 
     function fireFocus$3(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$3(init) {
+    function onChange$3() {
         var sources = getElements('.lot\\:pages[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var pages = getElements(targets$3, source);
@@ -4402,7 +4414,6 @@
             });
             onEvent('keydown', source, onKeyDownPages);
         });
-        1 === init && W$1._.on('change', onChange$3);
     }
 
     function onKeyDownPage(e) {
@@ -4469,13 +4480,17 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function Page() {
+        W$1._.on('change', onChange$3), onChange$3();
+    }
     var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
 
     function fireFocus$2(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$2(init) {
+    function onChange$2() {
         var sources = getElements('.lot\\:stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var stacks = [].slice.call(getChildren(source)),
@@ -4525,7 +4540,6 @@
             }
             onEvent('keydown', source, onKeyDownStacks);
         });
-        1 === init && W$1._.on('change', onChange$2);
     }
 
     function onKeyDownStack(e) {
@@ -4645,13 +4659,17 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function Stack() {
+        W$1._.on('change', onChange$2), onChange$2();
+    }
     var targets$1 = 'a[target^="tab:"]:not(.not\\:active)';
 
     function fireFocus$1(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$1(init) {
+    function onChange$1() {
         var sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var panes = [].slice.call(getChildren(source)),
@@ -4714,7 +4732,6 @@
             }
             onEvent('keydown', source, onKeyDownTabs);
         });
-        1 === init && W$1._.on('change', onChange$1);
     }
 
     function onKeyDownTab(e) {
@@ -4860,6 +4877,10 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
+
+    function Tab() {
+        W$1._.on('change', onChange$1), onChange$1();
+    }
     var targets = 'a[href]:not([tabindex="-1"]):not(.not\\:active),button:not(:disabled):not([tabindex="-1"]):not(.not\\:active),input:not(:disabled):not([tabindex="-1"]):not(.not\\:active),select:not(:disabled):not([tabindex="-1"]):not(.not\\:active),[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
 
     function fireFocus(node) {
@@ -4870,7 +4891,7 @@
         node && isFunction(node.select) && node.select();
     }
 
-    function onChange(init) {
+    function onChange() {
         var sources = getElements('.lot\\:tasks[tabindex]');
         sources && toCount(sources) && sources.forEach(function(source) {
             var tasks = getElements(targets, source);
@@ -4879,7 +4900,6 @@
             });
             onEvent('keydown', source, onKeyDownTasks);
         });
-        1 === init && W$1._.on('change', onChange);
     }
 
     function onKeyDownTask(e) {
@@ -4964,6 +4984,10 @@
             }
         }
         stop && (offEventDefault(e), offEventPropagation(e));
+    }
+
+    function Task() {
+        W$1._.on('change', onChange), onChange();
     }
 
     function K(source) {
@@ -5077,14 +5101,14 @@
         }
         stop && offEventDefault(e);
     });
-    onChange$c(1);
-    onChange$b(1);
-    onChange$7(1);
-    onChange$6(1);
-    onChange$5(1);
-    onChange$4(1);
-    onChange$3(1);
-    onChange$2(1);
-    onChange$1(1);
-    onChange(1);
+    Bar();
+    Dialog();
+    Field();
+    File();
+    Link();
+    Menu();
+    Page();
+    Stack();
+    Tab();
+    Task();
 })();

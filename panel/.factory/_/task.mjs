@@ -36,7 +36,7 @@ function fireSelect(node) {
     node && isFunction(node.select) && node.select();
 }
 
-function onChange(init) {
+function onChange() {
     let sources = getElements('.lot\\:tasks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let tasks = getElements(targets, source);
@@ -45,7 +45,6 @@ function onChange(init) {
         });
         onEvent('keydown', source, onKeyDownTasks);
     });
-    1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownTask(e) {
@@ -125,4 +124,6 @@ function onKeyDownTasks(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-export default onChange;
+export default function() {
+    W._.on('change', onChange), onChange();
+};

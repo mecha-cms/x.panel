@@ -29,7 +29,7 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
-function onChange(init) {
+function onChange() {
     let sources = getElements('.lot\\:bar[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let items = getElements(targets, source);
@@ -38,7 +38,6 @@ function onChange(init) {
         });
         onEvent('keydown', source, onKeyDownBar);
     });
-    1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownBar(e) {
@@ -103,4 +102,6 @@ function onKeyDownBarItem(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-export default onChange;
+export default function() {
+    W._.on('change', onChange), onChange();
+};

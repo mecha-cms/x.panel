@@ -2,6 +2,7 @@ import {
     B,
     W,
     getChildFirst,
+    getChildren,
     getElement,
     getNext,
     getParent,
@@ -31,7 +32,7 @@ let dialog = setElement('dialog'),
     dialogForm = setElement('form', "", {
         method: 'dialog'
     }),
-    dialogTemplate = setElement('template');
+    dialogTemplate = setElement('div');
 
 setChildLast(B, dialog);
 setChildLast(dialog, dialogForm);
@@ -51,9 +52,9 @@ function setDialog(content) {
     setHTML(dialogForm, "");
     if (isString(content)) {
         setHTML(dialogTemplate, content.trim());
-        content = [...dialogTemplate.content.childNodes];
+        content = Array.from(getChildren(dialogTemplate));
     } else {
-        content = [...content];
+        content = Array.from(content);
     }
     let node;
     while (node = content.shift()) {
@@ -177,8 +178,6 @@ setDialog.prompt = function(key, value) {
     return setDialog([dialogPromptKey, dialogPromptValueP, dialogPromptTasks]);
 };
 
-function onChange(init) {
-    1 === init && (W._.dialog = setDialog);
-}
-
-export default onChange;
+export default function() {
+    W._.dialog = setDialog;
+};
