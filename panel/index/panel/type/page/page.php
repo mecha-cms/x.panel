@@ -70,14 +70,8 @@ $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
                     'active' => $count > 0,
                     'block' => true,
                     'lot' => [
-                        '[-1,"name"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'slug']]],
-                        '[-1,"path"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'path']]],
                         '[-1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'time']]],
-                        '[-1,"title"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'title']]],
-                        '[1,"name"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'slug']]],
-                        '[1,"path"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'path']]],
-                        '[1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'time']]],
-                        '[1,"title"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'title']]],
+                        '[1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'time']]]
                     ],
                     'name' => 'data[sort]',
                     'stack' => 30,

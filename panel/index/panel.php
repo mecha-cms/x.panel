@@ -110,7 +110,7 @@ function route($content, $path, $query, $hash, $r) {
     \x\panel\_asset_set();
     \x\panel\_state_set();
     $_ = $GLOBALS['_']; // Update!
-    return \Y::panel([], (int) ($_['status'] ?? 404));
+    return ['panel', [], (int) ($_['status'] ?? 404)];
 }
 
 // Remove all front-end route(s)
@@ -170,7 +170,7 @@ function route($content, $path, $query, $hash, $r) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
         }
         if (!empty($has_alert)) {
-            $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Y::alert('panel');
+            $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
         $r['_'] = $_;
         return \Hook::fire('route.panel', [$content, $path, $query, $hash, $r]);
