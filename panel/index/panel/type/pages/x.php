@@ -66,7 +66,6 @@ Hook::set('_', function($_) use($state, $url, $user) {
                     'description' => $description ? S . $description . S : null,
                     'icon' => $icon,
                     'image' => $image,
-                    'path' => $k,
                     'tags' => [
                         'type:' . c2f($type) => !empty($type),
                         'x:' . $x => true

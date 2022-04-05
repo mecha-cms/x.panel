@@ -25,7 +25,6 @@ $state_panel = require x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'sta
 if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['description'] = x\panel\to\w($_POST['state']['description'] ?? "");
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
-    $_POST['state']['language'] = strip_tags($_POST['state']['language'] ?? 'en');
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
     $route = $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'] ?? "";
     $route = '/' . trim($route, '/');
@@ -63,21 +62,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
 }
 
 if (false === strpos($_['path'], '/')) {
-    $languages = $panes = $routes = [];
-    if (isset($state->x->language)) {
-        $labels = require LOT . D . 'x' . D . 'panel' . D . 'state' . D . 'language.php';
-        foreach (glob(LOT . D . 'x' . D . 'language' . D . 'state' . D . '*.php', GLOB_NOSORT) as $language) {
-            $label = $labels[$n = basename($language, '.php')] ?? S . $n . S;
-            if (false !== strpos($label, '(') && preg_match('/^\s*([^\(]+)\s*\(\s*([^)]+)\s*\)\s*$/', $label, $m)) {
-                $label = [
-                    'description' => S . $m[2] . S,
-                    'title' => S . $m[1] . S
-                ];
-            }
-            $languages[$n] = $label;
-        }
-    }
-    asort($languages);
+    $panes = $routes = [];
     foreach (glob(LOT . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
         $n = basename($panel);
         if (false !== strpos('_.-', $n[0])) {
@@ -116,7 +101,7 @@ if (false === strpos($_['path'], '/')) {
         foreach ($timezone_offsets as $zone => $offset) {
             $offset_prefix = $offset < 0 ? '-' : '+';
             $offset_formatted = gmdate('H:i', \abs($offset));
-            $zones[$zone] = 'GMT' . $offset_prefix . $offset_formatted . ' (' . strtr($zone, '_', ' ') . ')';
+            $zones[$zone] = strtr($zone, '_', ' ') . ' ' . $offset_prefix . $offset_formatted;
         }
         return $zones;
     })();
@@ -145,11 +130,19 @@ if (false === strpos($_['path'], '/')) {
                                                 'lot' => [
                                                     'content' => ['skip' => true],
                                                     'name' => ['skip' => true],
+                                                    'zone' => [
+                                                        'lot' => $zones,
+                                                        'name' => 'state[zone]',
+                                                        'stack' => 10,
+                                                        'type' => 'option',
+                                                        'value' => $state_r['zone'] ?? null,
+                                                        'width' => true
+                                                    ],
                                                     'title' => [
                                                         'focus' => true,
                                                         'hint' => ($v = $state_r['title'] ?? null) ?? 'Title Goes Here',
                                                         'name' => 'state[title]',
-                                                        'stack' => 10,
+                                                        'stack' => 20,
                                                         'type' => 'title',
                                                         'value' => $v,
                                                         'width' => true
@@ -157,7 +150,7 @@ if (false === strpos($_['path'], '/')) {
                                                     'description' => [
                                                         'hint' => 'Description goes here...',
                                                         'name' => 'state[description]',
-                                                        'stack' => 20,
+                                                        'stack' => 30,
                                                         'type' => 'description',
                                                         'value' => $state_r['description'] ?? null,
                                                         'width' => true
@@ -166,7 +159,7 @@ if (false === strpos($_['path'], '/')) {
                                                         'description' => 'Choose default page that will open in the home page.',
                                                         'lot' => $routes,
                                                         'name' => 'state[route]',
-                                                        'stack' => 30,
+                                                        'stack' => 40,
                                                         'title' => 'Home',
                                                         'type' => 'option',
                                                         'value' => $state_r['route'] ?? null,
@@ -204,35 +197,6 @@ if (false === strpos($_['path'], '/')) {
                                             ]
                                         ],
                                         'stack' => 20
-                                    ],
-                                    'locale' => [
-                                        'lot' => [
-                                            'fields' => [
-                                                'lot' => [
-                                                    'zone' => [
-                                                        'lot' => $zones,
-                                                        'name' => 'state[zone]',
-                                                        'stack' => 10,
-                                                        'type' => 'option',
-                                                        'value' => $state_r['zone'] ?? null,
-                                                        'width' => true
-                                                    ],
-                                                    'language' => [
-                                                        'description' => 'This value does not determine the I18N system on your site unless you want to make an I18N extension that depends on this value.',
-                                                        'hint' => ($v = $state_r['language'] ?? null) ?? 'en',
-                                                        'lot' => $languages,
-                                                        'name' => 'state[language]',
-                                                        'pattern' => "^([a-z\\d]+)(-[a-z\\d]+)*$",
-                                                        'stack' => 20,
-                                                        'type' => $languages ? 'option' : 'text',
-                                                        'value' => $v
-                                                    ]
-                                                ],
-                                                'stack' => 10,
-                                                'type' => 'fields'
-                                            ]
-                                        ],
-                                        'stack' => 30
                                     ],
                                     'alert' => [
                                         'lot' => [

@@ -57,6 +57,12 @@ function card($value, $key) {
 function cards($value, $key) {
     $value['tags']['lot:cards'] = true;
     $value['tags']['lot:pages'] = false;
+    foreach ($value['lot'] ?? [] as &$v) {
+        if (\is_array($v)) {
+            $v['type'] = $v['type'] ?? 'card';
+        }
+    }
+    unset($v);
     return \x\panel\type\pages($value, $key);
 }
 

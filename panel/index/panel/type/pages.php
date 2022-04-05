@@ -66,7 +66,6 @@ Hook::set('_', function($_) use($state, $user) {
                     'icon' => $icon,
                     'image' => $image,
                     'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),
-                    'path' => $k,
                     'tags' => [
                         'type:' . c2f($type) => !empty($type),
                         'x:' . $x => true
@@ -179,10 +178,7 @@ Hook::set('_', function($_) use($state, $user) {
                     $files[$k] = [
                         'current' => !empty($_SESSION['_']['file'][$k]),
                         'description' => size(filesize($k)),
-                        'path' => $k,
-                        'tags' => [
-                            'x:data' => true
-                        ],
+                        'tags' => ['x:data' => true],
                         'tasks' => [
                             'get' => [
                                 'description' => 'Edit',

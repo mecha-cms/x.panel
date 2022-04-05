@@ -41,7 +41,6 @@ Hook::set('_', function($_) {
                 'current' => !empty($_SESSION['_'][0 === $v ? 'folder' : 'file'][$k]),
                 'description' => 0 === $v ? ['Open %s', 'Folder'] : S . size(filesize($k)) . S,
                 'link' => 1 === $v ? To::URL($k) : null,
-                'path' => $k,
                 'tags' => ['x:' . pathinfo($n, PATHINFO_EXTENSION) => 1 === $v],
                 'tasks' => [
                     'get' => [

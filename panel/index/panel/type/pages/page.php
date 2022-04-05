@@ -8,7 +8,10 @@ Hook::set('_', function($_) use($state) {
     ) {
         $can_comment = isset($state->x->comment);
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
-            $path = strtr($k, [LOT . D => "", D => '/']);
+            $path = strtr($k, [
+                LOT . D => "",
+                D => '/'
+            ]);
             if (!empty($v['tasks']['set']['url'])) {
                 $v['tasks']['set']['url'] = [
                     'part' => 0,
