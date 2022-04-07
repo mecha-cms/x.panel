@@ -103,6 +103,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                                     'chunk' => null,
                                     'deep' => null,
                                     'query' => null,
+                                    'radio' => $is_active ? null : 1,
                                     'stack' => null,
                                     'tab' => null,
                                     'token' => $_['token'],

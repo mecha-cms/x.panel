@@ -9,6 +9,18 @@ function detach($_) {
     } else if (\is_file($file = $folder . \D . 'index.php')) {
         if (\rename($file, $folder . \D . 'index.x')) {
             $_['alert']['success'][$file] = ['%s %s successfully detached.', [$title, '<code>' . $name . '</code>']];
+            if (!empty($_GET['radio'])) {
+                // Attach other(s)
+                foreach (\g(\dirname($folder), 'x', 1) as $k => $v) {
+                    if ('index.x' !== \basename($k)) {
+                        continue;
+                    }
+                    if ($folder . \D . 'index.x' === $k) {
+                        continue;
+                    }
+                    \rename($k, \dirname($k) . \D . \basename($k, '.x') . '.php');
+                }
+            }
         }
     } else {
         $_['alert']['error'][$file] = ['%s %s could not be detached.', [$title, '<code>' . $name . '</code>']];

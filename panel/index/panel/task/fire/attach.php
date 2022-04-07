@@ -9,6 +9,18 @@ function attach($_) {
     } else if (\is_file($file = $folder . \D . 'index.x')) {
         if (\rename($file, $folder . \D . 'index.php')) {
             $_['alert']['success'][$file] = ['%s %s successfully attached.', [$title, '<code>' . $name . '</code>']];
+            if (!empty($_GET['radio'])) {
+                // Detach other(s)
+                foreach (\g(\dirname($folder), 'php', 1) as $k => $v) {
+                    if ('index.php' !== \basename($k)) {
+                        continue;
+                    }
+                    if ($folder . \D . 'index.php' === $k) {
+                        continue;
+                    }
+                    \rename($k, \dirname($k) . \D . \basename($k, '.php') . '.x');
+                }
+            }
         }
     } else {
         $_['alert']['error'][$file] = ['%s %s could not be attached.', [$title, '<code>' . $name . '</code>']];
