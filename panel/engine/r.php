@@ -229,7 +229,10 @@ return (static function($icons) {
         ]
     ];
     return array_replace_recursive([
-        'has' => ['parent' => false !== strpos($_['path'], '/')],
+        'has' => [
+            'parent' => false !== strpos($_['path'], '/'),
+            'part' => !empty($_['part'])
+        ],
         'is' => [
             'error' => false,
             'page' => empty($_['part']),
