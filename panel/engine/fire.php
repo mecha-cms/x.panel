@@ -1,7 +1,9 @@
 <?php
 
-!Layout::path('alert/panel') && Layout::set('alert/panel', __DIR__ . D . 'y' . D . 'alert' . D . 'panel.php');
-!Layout::path('panel') && Layout::set('panel', __DIR__ . D . 'y' . D . 'panel.php');
+if (class_exists('Layout')) {
+    !Layout::path('alert/panel') && Layout::set('alert/panel', __DIR__ . D . 'y' . D . 'alert' . D . 'panel.php');
+    !Layout::path('panel') && Layout::set('panel', __DIR__ . D . 'y' . D . 'panel.php');
+}
 
 foreach ([
     '%s goes here...' => "%s goes here\u{2026}",

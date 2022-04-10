@@ -169,7 +169,7 @@ function route($content, $path, $query, $hash, $r) {
             // Make alert section visible
             $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
         }
-        if (!empty($has_alert)) {
+        if (!empty($has_alert) && \class_exists("\\Layout")) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
         $r['_'] = $_;
