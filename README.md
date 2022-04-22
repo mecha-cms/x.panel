@@ -22,6 +22,7 @@ Release Notes
  - [x] Changed `info` key to `status`.
  - [x] Changed `locked` property to `fix` property.
  - [x] Moved AJAX feature to a [separate extension](https://github.com/mecha-cms/x.panel.f3h).
+ - [x] Moved [default panel skin](https://github.com/mecha-cms/x.panel.skin.default) and [test files](https://github.com/mecha-cms/x.test.panel) to separate extensions.
  - [x] Renamed `height` and `width` class to `has:height` and `has:width`.
  - [x] Renamed `is:locked` and `not:locked` class to `is:fix` and `not:fix`.
 
