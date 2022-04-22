@@ -57,8 +57,11 @@ function file($_) {
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     // Special case for PHP file(s)
     if ('php' === $x && isset($_POST['file']['content'])) {
-        // This should be enough to detect PHP syntax error before saving
-        \token_get_all($_POST['file']['content'], \TOKEN_PARSE);
+        try {
+            \token_get_all($content = $_POST['file']['content'], \TOKEN_PARSE);
+        } catch (\ParseError $e) {
+            $_['alert']['error'][$file] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+        }
     }
     if ("" === $name) {
         $_['alert']['error'][$file] = ['Please fill out the %s field.', 'Name'];

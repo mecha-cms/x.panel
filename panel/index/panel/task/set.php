@@ -42,8 +42,11 @@ function blob($_) {
             }
             // Check for syntax error in PHP file
             if ('php' === $x) {
-                // This should be enough to detect PHP syntax error before saving
-                \token_get_all(\file_get_contents($v['blob']), \TOKEN_PARSE);
+                try {
+                    \token_get_all($content = \file_get_contents($v['blob']), \TOKEN_PARSE);
+                } catch (\ParseError $e) {
+                    $_['alert']['error'][$blob] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                }
             }
             $v['name'] = $name; // Safe file name!
         }
@@ -83,6 +86,13 @@ function blob($_) {
                     // This prevents user(s) from accidentally overwrite the existing file(s)
                     } else if (\is_file($v)) {
                         $_['alert']['error'][$v] = ['File %s already exists.', '<code>' . \x\panel\from\path($v) . '</code>'];
+                    // This prevents user(s) from uploading PHP file(s) with syntax error in it (if file with `.php` extension is allowed to upload)
+                    } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
+                        try {
+                            \token_get_all($content, \TOKEN_PARSE);
+                        } catch (\ParseError $e) {
+                            $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                        }
                     } else {
                         $_SESSION['_']['file'][$v] = 1;
                         $_SESSION['_']['folder'][\rtrim(\dirname($v), \D)] = 1;
@@ -175,8 +185,11 @@ function file($_) {
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     // Special case for PHP file(s)
     if ('php' === $x && isset($_POST['file']['content'])) {
-        // This should be enough to detect PHP syntax error before saving
-        \token_get_all($_POST['file']['content'], \TOKEN_PARSE);
+        try {
+            \token_get_all($content = $_POST['file']['content'], \TOKEN_PARSE);
+        } catch (\ParseError $e) {
+            $_['alert']['error'][$folder] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+        }
     }
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
