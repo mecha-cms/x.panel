@@ -161,6 +161,9 @@
   position: fixed;
   z-index: 9999;
 }
+.option-picker__options[hidden] {
+  display: none;
+}
 .option-picker__options .option-picker__option {
   background: var(--fill-option-picker__option);
   color: var(--color-option-picker__option);
@@ -278,8 +281,7 @@
   z-index: 1;
 }
 .option-picker__input span * {
-  display: inline;
-  font: inherit;
+  display: none;
 }
 .option-picker__input span + span {
   bottom: 0;

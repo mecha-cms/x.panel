@@ -120,7 +120,7 @@
         } catch (e) {}
         return value;
     };
-    var fromStates$2 = function fromStates() {
+    var fromStates$1 = function fromStates() {
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
             lot[_key] = arguments[_key];
         }
@@ -175,10 +175,10 @@
         }
         return "" + x;
     };
-    var D$1 = document;
-    var W$1 = window;
-    var B$1 = D$1.body;
-    var R$1 = D$1.documentElement;
+    var D = document;
+    var W = window;
+    var B = D.body;
+    var R = D.documentElement;
     var getAttribute = function getAttribute(node, attribute, parseValue) {
         if (parseValue === void 0) {
             parseValue = true;
@@ -217,13 +217,25 @@
         return value;
     };
     var getElement = function getElement(query, scope) {
-        return (scope || D$1).querySelector(query);
+        return (scope || D).querySelector(query);
     };
     var getElements = function getElements(query, scope) {
-        return (scope || D$1).querySelectorAll(query);
+        return (scope || D).querySelectorAll(query);
     };
     var getFormElement = function getFormElement(nameOrIndex) {
-        return D$1.forms[nameOrIndex] || null;
+        return D.forms[nameOrIndex] || null;
+    };
+    var getHTML = function getHTML(node, trim) {
+        if (trim === void 0) {
+            trim = true;
+        }
+        var state = 'innerHTML';
+        if (!hasState(node, state)) {
+            return false;
+        }
+        var content = node[state];
+        content = trim ? content.trim() : content;
+        return "" !== content ? content : null;
     };
     var getName = function getName(node) {
         return toCaseLower(node && node.nodeName || "") || null;
@@ -251,7 +263,7 @@
         if (parseValue === void 0) {
             parseValue = true;
         }
-        var value = W$1.getComputedStyle(node).getPropertyValue(style);
+        var value = W.getComputedStyle(node).getPropertyValue(style);
         if (parseValue) {
             value = toValue(value);
         }
@@ -285,7 +297,7 @@
         return state in node;
     };
     var isWindow = function isWindow(node) {
-        return node === W$1;
+        return node === W;
     };
     var letAttribute = function letAttribute(node, attribute) {
         return node.removeAttribute(attribute), node;
@@ -382,7 +394,7 @@
         return setAttribute(node, 'data-' + datum, value);
     };
     var setElement = function setElement(node, content, attributes) {
-        node = isString(node) ? D$1.createElement(node) : node;
+        node = isString(node) ? D.createElement(node) : node;
         if (isObject(content)) {
             attributes = content;
             content = false;
@@ -442,7 +454,7 @@
     var toggleClass = function toggleClass(node, name, force) {
         return node.classList.toggle(name, force), node;
     };
-    var theLocation = W$1.location;
+    var theLocation = W.location;
     var event = function event(name, options, cache) {
         if (cache && isSet$1(events[name])) {
             return events[name];
@@ -565,14 +577,14 @@
     }
 
     function Bar() {
-        W$1._.on('change', onChange$a), onChange$a();
+        W._.on('change', onChange$a), onChange$a();
     }
     var dialog = setElement('dialog'),
         dialogForm = setElement('form', "", {
             method: 'dialog'
         }),
         dialogTemplate = setElement('div');
-    setChildLast(B$1, dialog);
+    setChildLast(B, dialog);
     setChildLast(dialog, dialogForm);
 
     function onDialogCancel(e) {
@@ -709,7 +721,7 @@
     };
 
     function Dialog() {
-        W$1._.dialog = setDialog;
+        W._.dialog = setDialog;
     }
     var debounce = function debounce(then, time) {
         var timer;
@@ -737,8 +749,8 @@
     var getRect = function getRect(node) {
         var h, rect, w, x, y, X, Y;
         if (isWindow(node)) {
-            x = node.pageXOffset || R$1.scrollLeft || B$1.scrollLeft;
-            y = node.pageYOffset || R$1.scrollTop || B$1.scrollTop;
+            x = node.pageXOffset || R.scrollLeft || B.scrollLeft;
+            y = node.pageYOffset || R.scrollTop || B.scrollTop;
             w = node.innerWidth;
             h = node.innerHeight;
         } else {
@@ -819,8 +831,9 @@
         PROP_SOURCE = '$',
         PROP_VALUE = 'v';
     var KEY_ARROW_DOWN = 'ArrowDown';
+    var KEY_ARROW_LEFT$1 = 'ArrowLeft';
+    var KEY_ARROW_RIGHT$1 = 'ArrowRight';
     var KEY_ARROW_UP = 'ArrowUp';
-    var KEY_DELETE_LEFT$1 = 'Backspace';
     var KEY_END$1 = 'End';
     var KEY_ENTER$1 = 'Enter';
     var KEY_ESCAPE = 'Escape';
@@ -829,9 +842,9 @@
     var ZERO_WIDTH_SPACE = "\u200C";
 
     function selectElementContents(node) {
-        var range = D$1.createRange();
+        var range = D.createRange();
         range.selectNodeContents(node);
-        var selection = W$1.getSelection();
+        var selection = W.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
     }
@@ -853,7 +866,7 @@
         var _hook = hook($),
             fire = _hook.fire;
         _hook.hooks;
-        $.state = state = fromStates$2({}, OP.state, state);
+        $.state = state = fromStates$1({}, OP.state, state);
         $.options = {};
         $.source = source; // Store current instance to `OP.instances`
         OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $; // Mark current DOM as active option picker to prevent duplicate instance
@@ -959,7 +972,7 @@
             selectBoxMultiple = selectBox.multiple,
             selectBoxOptionIndex = 0,
             selectBoxOptions = selectBox.options,
-            selectBoxParent = state.parent || D$1,
+            selectBoxParent = state.parent || D,
             selectBoxSize = 'input' === getName(selectBox) ? 0 : selectBox.size,
             selectBoxTitle = selectBox.title,
             selectBoxValue = getValue(),
@@ -1200,7 +1213,7 @@
                 selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
                 offEventDefault(e);
             } else if (KEY_TAB$1 === key) {
-                selectBoxFakeOption && doClick(selectBoxFakeOption);
+                !selectBoxFakeInput && selectBoxFakeOption && doClick(selectBoxFakeOption);
                 !selectBoxSize && doExit(); // offEventDefault(e);
             }
             isEnter() && !_keyIsCtrl && !_keyIsShift && doFit();
@@ -1211,6 +1224,10 @@
         }
 
         function onSelectBoxFakeInputValueBlur() {
+            var value = getText(selectBoxFakeInputValue);
+            if (null !== value) {
+                setValue(fromValue$1(value));
+            }
             doBlur();
         }
 
@@ -1238,21 +1255,20 @@
             }
             doFocus(), doToggle() && doFit();
         }
-        var bounce = debounce(function(self, key) {
+        var bounce = debounce(function(self, key, valuePrev) {
             var value = getText(self),
-                keyIsPrintable = key && 1 === toCount(key),
+                first,
                 selectBoxFakeOption;
             if (null === value) {
                 setHTML(selectBoxFakeInputPlaceholder, selectBoxPlaceholder);
+                selectBoxFakeDropDown.hidden = false;
                 for (var i = 0, _j5 = toCount(selectBoxFakeOptions); i < _j5; ++i) {
                     setHTML(selectBoxFakeOption = selectBoxFakeOptions[i], getText(selectBoxFakeOption));
                     selectBoxFakeOption.hidden = false;
                 }
             } else {
                 setHTML(selectBoxFakeInputPlaceholder, ZERO_WIDTH_SPACE);
-                if (keyIsPrintable || KEY_DELETE_LEFT$1 === key) {
-                    value = toCaseLower(value);
-                    var first;
+                if (valuePrev !== (value = toCaseLower(value)) && KEY_ARROW_DOWN !== key && KEY_ARROW_LEFT$1 !== key && KEY_ARROW_RIGHT$1 !== key && KEY_ARROW_UP !== key && KEY_ENTER$1 !== key) {
                     for (var _i = 0, _j6 = toCount(selectBoxFakeOptions), v; _i < _j6; ++_i) {
                         letOptionSelected((selectBoxFakeOption = selectBoxFakeOptions[_i])[PROP_SOURCE]);
                         letOptionFakeSelected(selectBoxFakeOption);
@@ -1272,18 +1288,39 @@
                         selectBoxOptionIndex = first[PROP_INDEX];
                         setOptionSelected(first[PROP_SOURCE]);
                         setOptionFakeSelected(first);
+                        selectBoxFakeDropDown.hidden = false; // No match!
+                    } else {
+                        selectBoxFakeDropDown.hidden = true;
+                    }
+                    valuePrev = value;
+                } else {
+                    var marked = 0;
+                    for (var _i2 = 0, _j7 = toCount(selectBoxFakeOptions), _v; _i2 < _j7; ++_i2) {
+                        selectBoxFakeOption = selectBoxFakeOptions[_i2];
+                        _v = getHTML(selectBoxFakeOption);
+                        if (hasValue('</mark>', _v)) {
+                            ++marked;
+                        }
+                    } // Reset all filter(s) if there is only one or none option marked
+                    if (marked <= 1) {
+                        for (var _i3 = 0, _j8 = toCount(selectBoxFakeOptions), _v2; _i3 < _j8; ++_i3) {
+                            selectBoxFakeOption = selectBoxFakeOptions[_i3];
+                            _v2 = getText(selectBoxFakeOption);
+                            setHTML(selectBoxFakeOption, _v2);
+                            selectBoxFakeOption.hidden = false;
+                        }
                     }
                 }
             }
             if (KEY_ENTER$1 !== key && KEY_ESCAPE !== key && KEY_TAB$1 !== key) {
                 doEnter(), doFit();
             }
-        }, 0);
+        }, 1);
 
         function onSelectBoxFakeInputValueKeyDown(e) {
             var t = this,
                 key = e.key;
-            onSelectBoxFakeKeyDown.call(t, e), bounce(t, key);
+            onSelectBoxFakeKeyDown.call(t, e), bounce(t, key, getText(t));
         }
 
         function onSelectBoxFakeInputValueKeyUp() {
@@ -1294,7 +1331,7 @@
             setHTML(placeholder, null !== value ? ZERO_WIDTH_SPACE : selectBoxPlaceholder);
             setText(input, value);
             selectElementContents(input);
-        }, 0);
+        }, 1);
 
         function onSelectBoxFakeInputValuePaste() {
             waitForPaste(selectBoxFakeInputValue, selectBoxFakeInputPlaceholder);
@@ -1323,7 +1360,7 @@
                     }),
                     _selectBoxItems = getChildren(selectBoxItem);
                 selectBoxFakeOptionGroup.title = selectBoxItem.label;
-                for (var i = 0, _j7 = toCount(_selectBoxItems); i < _j7; ++i) {
+                for (var i = 0, _j9 = toCount(_selectBoxItems); i < _j9; ++i) {
                     setSelectBoxFakeOptions(_selectBoxItems[i], selectBoxFakeOptionGroup);
                 }
                 setChildLast(parent, selectBoxFakeOptionGroup);
@@ -1374,7 +1411,7 @@
                     top = _getRect[1],
                     width = _getRect[2],
                     height = _getRect[3],
-                    heightWindow = getSize(W$1)[1],
+                    heightWindow = getSize(W)[1],
                     heightMax = heightWindow - top - height;
                 setStyles(selectBoxFakeDropDown, {
                     'bottom': "",
@@ -1417,7 +1454,7 @@
             }
             fire('fit', getLot());
         }
-        onEvents(['resize', 'scroll'], W$1, onSelectBoxWindow);
+        onEvents(['resize', 'scroll'], W, onSelectBoxWindow);
         onEvent('click', selectBoxParent, onSelectBoxParentClick);
         onEvent('focus', selectBox, onSelectBoxFocus);
         onEvent('click', selectBoxFake, onSelectBoxFakeClick);
@@ -1463,7 +1500,7 @@
                 return $; // Already ejected
             }
             delete source[name$2];
-            offEvents(['resize', 'scroll'], W$1, onSelectBoxWindow);
+            offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
             offEvent('click', selectBoxParent, onSelectBoxParentClick);
             offEvent('focus', selectBox, onSelectBoxFocus);
             letClass(selectBox, classNameE + 'source');
@@ -1506,7 +1543,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.3.5';
+    OP.version = '1.3.7';
 
     function onChange$9(init) {
         // Destroy!
@@ -1523,9 +1560,9 @@
             var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
         });
-        1 === init && W$1._.on('change', onChange$9);
+        1 === init && W._.on('change', onChange$9);
     }
-    W$1.OP = OP;
+    W.OP = OP;
     var esc = function esc(pattern, extra) {
         if (extra === void 0) {
             extra = "";
@@ -1579,7 +1616,7 @@
         var _hook = hook($);
         _hook.hooks;
         var fire = _hook.fire;
-        $.state = state = fromStates$2({}, TP.state, isString(state) ? {
+        $.state = state = fromStates$1({}, TP.state, isString(state) ? {
             join: state
         } : state || {});
         $.source = source; // Store current instance to `TP.instances`
@@ -1617,7 +1654,7 @@
 
         function getCharBeforeCaret(container) {
             var range,
-                selection = W$1.getSelection();
+                selection = W.getSelection();
             if (selection.rangeCount > 0) {
                 range = selection.getRangeAt(0).cloneRange();
                 range.collapse(true);
@@ -1754,8 +1791,8 @@
             setText(textInputHint, value ? "" : thePlaceholder);
             if (fireFocus) {
                 textInput.focus(); // Move caret to the end!
-                var range = D$1.createRange(),
-                    selection = W$1.getSelection();
+                var range = D.createRange(),
+                    selection = W.getSelection();
                 range.selectNodeContents(textInput);
                 range.collapse(false);
                 selection.removeAllRanges();
@@ -2304,46 +2341,10 @@
             setClasses($.self, c);
         });
         if (1 === init) {
-            W$1._.on('change', onChange$8);
-            W$1.TP = TP;
+            W._.on('change', onChange$8);
+            W.TP = TP;
         }
     }
-    var fromStates$1 = function fromStates() {
-        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-            lot[_key] = arguments[_key];
-        }
-        var out = lot.shift();
-        for (var i = 0, j = toCount(lot); i < j; ++i) {
-            for (var k in lot[i]) {
-                // Assign value
-                if (!isSet$1(out[k])) {
-                    out[k] = lot[i][k];
-                    continue;
-                } // Merge array
-                if (isArray(out[k]) && isArray(lot[i][k])) {
-                    out[k] = [
-                        /* Clone! */
-                    ].concat(out[k]);
-                    for (var ii = 0, jj = toCount(lot[i][k]); ii < jj; ++ii) {
-                        if (!hasValue(lot[i][k][ii], out[k])) {
-                            out[k].push(lot[i][k][ii]);
-                        }
-                    } // Merge object recursive
-                } else if (isObject(out[k]) && isObject(lot[i][k])) {
-                    out[k] = fromStates({
-                        /* Clone! */
-                    }, out[k], lot[i][k]); // Replace value
-                } else {
-                    out[k] = lot[i][k];
-                }
-            }
-        }
-        return out;
-    };
-    var D = document;
-    var W = window;
-    var B = D.body;
-    var R = D.documentElement;
     var name = 'TE';
 
     function trim(str, dir) {
@@ -2612,7 +2613,7 @@
             return d;
         };
     };
-    TE.version = '3.3.10';
+    TE.version = '3.3.11';
     TE.x = x;
     var that$2 = {};
     that$2._history = [];
@@ -2675,7 +2676,7 @@
 
     function promisify(type, lot) {
         return new Promise(function(resolve, reject) {
-            var r = W$1[type].apply(W$1, lot);
+            var r = W[type].apply(W, lot);
             return r ? resolve(r) : reject(r);
         });
     }
@@ -3388,7 +3389,7 @@
         map.key;
         var queue = map.queue;
         if (!queue.Control) {
-            W$1.setTimeout(function() {
+            W.setTimeout(function() {
                 var _that$$7 = that.$(),
                     after = _that$$7.after,
                     before = _that$$7.before,
@@ -3875,7 +3876,7 @@
     }
     var state = defaults;
     Object.assign(TE.prototype, that$2, that$1);
-    TE.state = fromStates$2({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
+    TE.state = fromStates$1({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
     delete TE.state.source.type;
 
     function _onBlurSource(e) {
@@ -3977,7 +3978,7 @@
             editor = new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             state = editor.state;
             type = state.source.type;
-            map = new W$1.K(editor);
+            map = new W.K(editor);
             map.keys['Escape'] = function() {
                 var parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
                 if (parent) {
@@ -4002,10 +4003,10 @@
             _setEditorSource(source);
         });
         if (1 === init) {
-            W$1._.on('change', onChange$7);
-            W$1.TE = TE;
+            W._.on('change', onChange$7);
+            W.TE = TE;
             ['alert', 'confirm', 'prompt'].forEach(function(type) {
-                W$1._.dialog[type] && (TE.state.source[type] = W$1._.dialog[type]);
+                W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
             });
         }
     }
@@ -4098,7 +4099,7 @@
     }
 
     function File() {
-        W$1._.on('change', onChange$6), onChange$6();
+        W._.on('change', onChange$6), onChange$6();
     }
     var targets$5 = ':scope>ul>li>a[href]:not(.not\\:active)';
 
@@ -4192,7 +4193,7 @@
     }
 
     function Link() {
-        W$1._.on('change', onChange$5), onChange$5();
+        W._.on('change', onChange$5), onChange$5();
     }
     var targets$4 = 'a[href]:not(.not\\:active)';
 
@@ -4214,7 +4215,7 @@
     }
 
     function onChange$4() {
-        offEvent('click', D$1, onClickDocument);
+        offEvent('click', D, onClickDocument);
         var menuParents = getElements('.has\\:menu'),
             menuLinks = getElements('.lot\\:menu[tabindex] ' + targets$4);
         if (menuParents && toCount(menuParents)) {
@@ -4226,7 +4227,7 @@
                     onEvent('keydown', a, onKeyDownMenuToggle);
                 }
             });
-            onEvent('click', D$1, onClickDocument);
+            onEvent('click', D, onClickDocument);
         }
         if (menuLinks && toCount(menuLinks)) {
             menuLinks.forEach(function(menuLink) {
@@ -4250,7 +4251,7 @@
         var t = this,
             current = getNext(t);
         doHideMenus(current, t);
-        W$1.setTimeout(function() {
+        W.setTimeout(function() {
             toggleClass(current, 'is:enter');
             toggleClass(getParent(t), 'is:active');
             toggleClass(t, 'is:active');
@@ -4304,7 +4305,7 @@
                 setClass(getParent(t), 'is:active');
                 setClass(next, 'is:enter');
                 setClass(t, 'is:active');
-                W$1.setTimeout(function() {
+                W.setTimeout(function() {
                     // Focus to the first link of child menu
                     fireFocus$4(getElement(targets$4, next));
                 }, 1);
@@ -4386,7 +4387,7 @@
                 if (!hasClass(next, 'is:enter')) {
                     fireEvent('click', t);
                 }
-                W$1.setTimeout(function() {
+                W.setTimeout(function() {
                     // Focus to the first link of child menu
                     fireFocus$4(getElement(targets$4, next));
                 }, 1);
@@ -4397,7 +4398,7 @@
     }
 
     function Menu() {
-        W$1._.on('change', onChange$4), onChange$4();
+        W._.on('change', onChange$4), onChange$4();
     }
     var targets$3 = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
 
@@ -4482,7 +4483,7 @@
     }
 
     function Page() {
-        W$1._.on('change', onChange$3), onChange$3();
+        W._.on('change', onChange$3), onChange$3();
     }
     var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
 
@@ -4523,7 +4524,7 @@
                     current = hasClass(t, 'is:current');
                     input.value = value = current ? getDatum(parent, 'value') : null;
                     toggleClass(self, 'has:current', current);
-                    W$1._.fire.apply(parent, ['change.stack', [value, name]]);
+                    W._.fire.apply(parent, ['change.stack', [value, name]]);
                     offEventDefault(e);
                 }
             }
@@ -4661,7 +4662,7 @@
     }
 
     function Stack() {
-        W$1._.on('change', onChange$2), onChange$2();
+        W._.on('change', onChange$2), onChange$2();
     }
     var targets$1 = 'a[target^="tab:"]:not(.not\\:active)';
 
@@ -4714,7 +4715,7 @@
                         input.value = value = current ? getDatum(t, 'value') : null;
                         toggleClass(pane, 'is:current', current);
                         toggleClass(self, 'has:current', current);
-                        W$1._.fire.apply(pane, ['change.tab', [value, name]]);
+                        W._.fire.apply(pane, ['change.tab', [value, name]]);
                     }
                     offEventDefault(e);
                 }
@@ -4879,7 +4880,7 @@
     }
 
     function Tab() {
-        W$1._.on('change', onChange$1), onChange$1();
+        W._.on('change', onChange$1), onChange$1();
     }
     var targets = 'a[href]:not([tabindex="-1"]):not(.not\\:active),button:not(:disabled):not([tabindex="-1"]):not(.not\\:active),input:not(:disabled):not([tabindex="-1"]):not(.not\\:active),select:not(:disabled):not([tabindex="-1"]):not(.not\\:active),[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
 
@@ -4987,7 +4988,7 @@
     }
 
     function Task() {
-        W$1._.on('change', onChange), onChange();
+        W._.on('change', onChange), onChange();
     }
 
     function K(source) {
@@ -5038,9 +5039,9 @@
         };
         return $;
     }
-    let map = new K(W$1);
-    onEvent('blur', W$1, e => map.pull());
-    onEvent('keydown', W$1, e => {
+    let map = new K(W);
+    onEvent('blur', W, e => map.pull());
+    onEvent('keydown', W, e => {
         map.push(e.key);
         let command = map.test();
         if (command) {
@@ -5052,7 +5053,7 @@
             }
         }
     });
-    onEvent('keyup', W$1, e => map.pull(e.key));
+    onEvent('keyup', W, e => map.pull(e.key));
     const _ = {
         commands: map.commands,
         keys: map.keys
@@ -5063,12 +5064,12 @@
         off,
         on
     } = hook(_);
-    W$1.K = K;
-    W$1._ = _;
-    onEvent('beforeload', D$1, () => fire('let'));
-    onEvent('load', D$1, () => fire('get'));
-    onEvent('DOMContentLoaded', D$1, () => fire('set'));
-    onEvent('keydown', W$1, function(e) {
+    W.K = K;
+    W._ = _;
+    onEvent('beforeload', D, () => fire('let'));
+    onEvent('load', D, () => fire('get'));
+    onEvent('DOMContentLoaded', D, () => fire('set'));
+    onEvent('keydown', W, function(e) {
         if (e.defaultPrevented) {
             return;
         }
@@ -5093,7 +5094,7 @@
                 }
             }
             stop = true;
-        } else if (B$1 !== target && R$1 !== target && W$1 !== target) {
+        } else if (B !== target && R !== target && W !== target) {
             if ('Escape' === key && (parent = getParent(getParent(target), '[tabindex]:not(.not\\:active)'))) {
                 parent.focus();
                 stop = true;
