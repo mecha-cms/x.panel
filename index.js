@@ -603,10 +603,9 @@
         setHTML(dialogForm, "");
         if (isString(content)) {
             setHTML(dialogTemplate, content.trim());
-            content = Array.from(getChildren(dialogTemplate));
-        } else {
-            content = Array.from(content);
+            content = dialogTemplate.childNodes;
         }
+        content = Array.from(content);
         var node;
         while (node = content.shift()) {
             setChildLast(dialogForm, node);

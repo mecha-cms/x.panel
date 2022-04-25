@@ -42,6 +42,7 @@ function onDialogCancel(e) {
     offEvent(e.type, t, onDialogCancel);
     return t.x(toValue(t.returnValue));
 }
+
 function onDialogSubmit(e) {
     let t = this;
     offEvent(e.type, t, onDialogSubmit);
@@ -52,10 +53,9 @@ function setDialog(content) {
     setHTML(dialogForm, "");
     if (isString(content)) {
         setHTML(dialogTemplate, content.trim());
-        content = Array.from(getChildren(dialogTemplate));
-    } else {
-        content = Array.from(content);
+        content = dialogTemplate.childNodes;
     }
+    content = Array.from(content);
     let node;
     while (node = content.shift()) {
         setChildLast(dialogForm, node);
