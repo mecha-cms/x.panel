@@ -45,7 +45,7 @@ function blob($_) {
                 try {
                     \token_get_all($content = \file_get_contents($v['blob']), \TOKEN_PARSE);
                 } catch (\ParseError $e) {
-                    $_['alert']['error'][$blob] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                    $_['alert']['error'][$blob] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                 }
             }
             $v['name'] = $name; // Safe file name!
@@ -91,7 +91,7 @@ function blob($_) {
                         try {
                             \token_get_all($content, \TOKEN_PARSE);
                         } catch (\ParseError $e) {
-                            $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                            $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                         }
                     } else {
                         $_SESSION['_']['file'][$v] = 1;
@@ -183,14 +183,6 @@ function file($_) {
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
     $name = \basename(\To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
-    // Special case for PHP file(s)
-    if ('php' === $x && isset($_POST['file']['content'])) {
-        try {
-            \token_get_all($content = $_POST['file']['content'], \TOKEN_PARSE);
-        } catch (\ParseError $e) {
-            $_['alert']['error'][$folder] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
-        }
-    }
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
     } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter((array) \State::get('x.panel.guard.file.x', true)))) . ',', ',' . $x . ',')) {
@@ -200,6 +192,17 @@ function file($_) {
         $_[\is_dir($file) ? 'folder' : 'file'] = $file; // For hook(s)
     } else {
         if (\array_key_exists('content', $_POST['file'] ?? [])) {
+            // Special case for PHP file(s)
+            if ('php' === $x) {
+                try {
+                    \token_get_all($content = $_POST['file']['content'] ?? "", \TOKEN_PARSE);
+                } catch (\ParseError $e) {
+                    $_['alert']['error'][$file] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                    unset($_POST['token']);
+                    $_SESSION['form'] = $_POST;
+                    return $_; // Skip!
+                }
+            }
             if (!\is_dir($folder = \dirname($file))) {
                 \mkdir($folder, 0775, true);
                 foreach (\step(\rtrim($folder, \D), \D) as $v) {

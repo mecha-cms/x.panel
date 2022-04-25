@@ -55,14 +55,6 @@ function file($_) {
     $base = \basename((string) ($file = $_['file'])); // Old file name
     $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
-    // Special case for PHP file(s)
-    if ('php' === $x && isset($_POST['file']['content'])) {
-        try {
-            \token_get_all($content = $_POST['file']['content'], \TOKEN_PARSE);
-        } catch (\ParseError $e) {
-            $_['alert']['error'][$file] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
-        }
-    }
     if ("" === $name) {
         $_['alert']['error'][$file] = ['Please fill out the %s field.', 'Name'];
     } else if (false === \strpos(',' . \implode(',', \array_keys(\array_filter((array) \State::get('x.panel.guard.file.x', true)))) . ',', ',' . $x . ',')) {
@@ -72,6 +64,17 @@ function file($_) {
         $_['file'] = $self; // For hook(s)
     } else {
         if (\array_key_exists('content', $_POST['file'] ?? [])) {
+            // Special case for PHP file(s)
+            if ('php' === $x) {
+                try {
+                    \token_get_all($content = $_POST['file']['content'] ?? "", \TOKEN_PARSE);
+                } catch (\ParseError $e) {
+                    $_['alert']['error'][$self] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                    unset($_POST['token']);
+                    $_SESSION['form'] = $_POST;
+                    return $_; // Skip!
+                }
+            }
             if (!\stream_resolve_include_path($self) || \is_writable($self)) {
                 \file_put_contents($self, $_POST['file']['content']);
                 if ($name !== $base) {
