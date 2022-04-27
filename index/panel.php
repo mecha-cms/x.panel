@@ -113,6 +113,24 @@ function route($content, $path, $query, $hash, $r) {
     return ['panel', [], (int) ($_['status'] ?? 404)];
 }
 
+// Check for update(s)
+function sync($content, $path, $query, $hash) {
+    if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions')) {
+        \mkdir($folder, 0775, true);
+    }
+    // Sync version(s) data every 1 minute
+    if (!\is_file($file = $folder . \D . 'mecha-cms.php') || false === \choke(60 /* 1 minute */, 'git/versions/mecha-cms')) {
+        $versions = [];
+        foreach (\explode("\n", \fetch('https://mecha-cms.com/git-dev/versions/mecha-cms') ?? "") as $v) {
+            $v = \explode(' ', $v);
+            $versions[$v[1] ?? ""] = $v[0];
+        }
+        \file_put_contents($file, '<?' . 'php return ' . \z($versions) . ';');
+    } else {
+        $versions = (array) require $file;
+    }
+}
+
 // Remove all front-end route(s)
 \Hook::let('route');
 
@@ -178,6 +196,7 @@ function route($content, $path, $query, $hash, $r) {
 }, 0);
 
 \Hook::set('route.panel', __NAMESPACE__ . "\\route", 100);
+\Hook::set('route.panel', __NAMESPACE__ . "\\sync", 100.1);
 
 foreach (\glob(\LOT . \D . 'x' . \D . '*' . \D . 'index' . \D . 'panel.php') as $file) {
     // Ignore this very file!
