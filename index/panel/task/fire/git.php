@@ -12,7 +12,7 @@ function git($_) {
         'task' => 'get'
     ];
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (!empty($_['alert']['error'])) {
         return $_;
     }
     if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . $path . \To::query($query)))) {
