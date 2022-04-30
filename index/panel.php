@@ -113,24 +113,6 @@ function route($content, $path, $query, $hash, $r) {
     return ['panel', [], (int) ($_['status'] ?? 404)];
 }
 
-// Check for update(s)
-function sync($content, $path, $query, $hash) {
-    if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions')) {
-        \mkdir($folder, 0775, true);
-    }
-    // Sync version(s) data every 1 minute
-    if (!\is_file($file = $folder . \D . 'mecha-cms.php') || false === \choke(60 /* 1 minute */, 'git/versions/mecha-cms')) {
-        $versions = [];
-        foreach (\explode("\n", \fetch('https://mecha-cms.com/git-dev/versions/mecha-cms') ?? "") as $v) {
-            $v = \explode(' ', $v);
-            $versions[$v[1] ?? ""] = $v[0];
-        }
-        \file_put_contents($file, '<?' . 'php return ' . \z($versions) . ';');
-    } else {
-        $versions = (array) require $file;
-    }
-}
-
 // Remove all front-end route(s)
 \Hook::let('route');
 
@@ -138,11 +120,12 @@ function sync($content, $path, $query, $hash) {
 \Hook::set('route', "x\\layout\\route", 1000);
 
 // Load `route.panel` hook only if user is active!
-\Hook::set('route', function($content, $path, $query, $hash) use($_) {
+\Hook::set('route', function($content, $path, $query, $hash) {
     if (null !== $content) {
         return $content;
     }
     if (\Is::user()) {
+        \x\panel\_git_get();
         // Load pre-defined route(s) and type(s)
         (static function($_) {
             \extract($GLOBALS, \EXTR_SKIP);
@@ -153,7 +136,7 @@ function sync($content, $path, $query, $hash) {
                 // Update panel data from the route file!
                 $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
             }
-        })($_);
+        })($_ = $GLOBALS['_']);
         \x\panel\_asset_get();
         \x\panel\_asset_let();
         $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
@@ -196,7 +179,6 @@ function sync($content, $path, $query, $hash) {
 }, 0);
 
 \Hook::set('route.panel', __NAMESPACE__ . "\\route", 100);
-\Hook::set('route.panel', __NAMESPACE__ . "\\sync", 100.1);
 
 foreach (\glob(\LOT . \D . 'x' . \D . '*' . \D . 'index' . \D . 'panel.php') as $file) {
     // Ignore this very file!

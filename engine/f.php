@@ -124,6 +124,100 @@ function _decor_set(array $attr, array $value = []) {
     return $attr;
 }
 
+// Check for update(s)
+function _git_get() {
+    $_ = $GLOBALS['_'];
+    if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions')) {
+        \mkdir($folder, 0775, true);
+    }
+    if (!\is_file($file = $folder . \D . 'mecha-cms.php')) {
+        $versions = [];
+        // Sync version(s) data every day
+        if (false === \choke(60 * 60 * 24 /* 1 day */, 'git/versions/mecha-cms')) {
+            foreach (\explode("\n", \fetch('https://mecha-cms.com/git-dev/versions/mecha-cms') ?? "") as $v) {
+                $v = \explode(' ', $v);
+                $versions[$v[1] ?? ""] = $v[0];
+            }
+            \file_put_contents($file, '<?' . 'php return ' . \z($versions) . ';');
+        }
+    } else {
+        $versions = (array) require $file;
+    }
+    foreach ($versions as $k => $v) {
+        if ('^' === $v) {
+            continue;
+        }
+        if ('mecha' === $k) {
+            $page = new \Page(null, [
+                'title' => 'Mecha',
+                'version' => \VERSION
+            ]);
+        } else if (0 === \strpos($k, 'x.') && \is_file($file = \LOT . \D . 'x' . \D . \substr($k, 2) . \D . 'about.page')) {
+            $page = new \Page($file);
+        } else if (0 === \strpos($k, 'y.') && \is_file($file = \LOT . \D . 'y' . \D . \substr($k, 2) . \D . 'about.page')) {
+            $page = new \Page($file);
+        } else {
+            $page = new \Page;
+        }
+        $version_current = \array_replace([0, 0, 0], \explode('.', $page->version ?? '0.0.0'));
+        $version_next = \array_replace([0, 0, 0], \explode('.', $v));
+        $ready = \is_file(\ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms' . \D . $k . '@v' . $v . '.zip');
+        $t = $page->title;
+        if (0 === \strpos($k, 'x.')) {
+            $t = '<a href="' . \x\panel\to\link([
+                'hash' => null,
+                'part' => 1,
+                'path' => 'x/' . \substr($k, 2),
+                'query' => null
+            ]) . '">' . $t . '</a>';
+        } else if (0 === \strpos($k, 'y.')) {
+            $t = '<a href="' . \x\panel\to\link([
+                'hash' => null,
+                'part' => 1,
+                'path' => 'y/' . \substr($k, 2),
+                'query' => null
+            ]) . '">' . $t . '</a>';
+        }
+        // Major update
+        if ((int) $version_next[0] > (int) $version_current[0]) {
+            $alert = $ready ? '%s is ready to install.' : '%s has a risky major update to download.';
+        // Minor update
+        } else if ((int) $version_next[1] > (int) $version_current[1]) {
+            $alert = $ready ? '%s is ready to install.' : '%s has a minor update to download.';
+        // Patch update
+        } else if ((int) $version_next[2] > (int) $version_current[2]) {
+            $alert = $ready ? '%s is ready to install.' : '%s has a non-risky patch update to download.';
+        }
+        $title = \x\panel\type\title([
+            'content' => [$alert, [$t]],
+            'level' => -1
+        ], 0);
+        $tasks = \x\panel\type\tasks\link([
+            '0' => 'span',
+            'lot' => [
+                'pull' => [
+                    'description' => $ready ? 'Install' : 'Download',
+                    'icon' => $ready ? 'M13,2.03V2.05L13,4.05C17.39,4.59 20.5,8.58 19.96,12.97C19.5,16.61 16.64,19.5 13,19.93V21.93C18.5,21.38 22.5,16.5 21.95,11C21.5,6.25 17.73,2.5 13,2.03M11,2.06C9.05,2.25 7.19,3 5.67,4.26L7.1,5.74C8.22,4.84 9.57,4.26 11,4.06V2.06M4.26,5.67C3,7.19 2.25,9.04 2.05,11H4.05C4.24,9.58 4.8,8.23 5.69,7.1L4.26,5.67M15.5,8.5L10.62,13.38L8.5,11.26L7.44,12.32L10.62,15.5L16.56,9.56L15.5,8.5M2.06,13C2.26,14.96 3.03,16.81 4.27,18.33L5.69,16.9C4.81,15.77 4.24,14.42 4.06,13H2.06M7.1,18.37L5.67,19.74C7.18,21 9.04,21.79 11,22V20C9.58,19.82 8.23,19.25 7.1,18.37Z' : 'M13,2.03C17.73,2.5 21.5,6.25 21.95,11C22.5,16.5 18.5,21.38 13,21.93V19.93C16.64,19.5 19.5,16.61 19.96,12.97C20.5,8.58 17.39,4.59 13,4.05V2.05L13,2.03M11,2.06V4.06C9.57,4.26 8.22,4.84 7.1,5.74L5.67,4.26C7.19,3 9.05,2.25 11,2.06M4.26,5.67L5.69,7.1C4.8,8.23 4.24,9.58 4.05,11H2.05C2.25,9.04 3,7.19 4.26,5.67M2.06,13H4.06C4.24,14.42 4.81,15.77 5.69,16.9L4.27,18.33C3.03,16.81 2.26,14.96 2.06,13M7.1,18.37C8.23,19.25 9.58,19.82 11,20V22C9.04,21.79 7.18,21 5.67,19.74L7.1,18.37M12,16.5L7.5,12H11V8H13V12H16.5L12,16.5Z',
+                    'stack' => 10,
+                    'title' => $v,
+                    'url' => [
+                        'hash' => null,
+                        'part' => null,
+                        'path' => 'mecha-cms/' . $k,
+                        'query' => [
+                            'minify' => 1,
+                            'version' => $v
+                        ],
+                        'task' => 'fire/git'
+                    ]
+                ]
+            ]
+        ], 0);
+        $_['alert']['info'][] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
+    }
+    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+}
+
 function _key_set($key) {
     if (\is_object($key)) {
         return \spl_object_id($key);
