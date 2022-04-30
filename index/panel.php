@@ -120,15 +120,18 @@ function route($content, $path, $query, $hash, $r) {
 \Hook::set('route', "x\\layout\\route", 1000);
 
 // Load `route.panel` hook only if user is active!
-\Hook::set('route', function($content, $path, $query, $hash) {
+\Hook::set('route', function($content, $path, $query, $hash) use($_) {
     if (null !== $content) {
         return $content;
     }
     if (\Is::user()) {
-        \x\panel\_git_get();
+        // Check for update(s)
+        if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task']) {
+            \x\panel\_git_sync();
+        }
         // Load pre-defined route(s) and type(s)
-        (static function($_) {
-            \extract($GLOBALS, \EXTR_SKIP);
+        (static function() {
+            \extract($GLOBALS);
             require __DIR__ . \D . 'panel' . \D . 'route.php';
             require __DIR__ . \D . 'panel' . \D . 'task.php';
             require __DIR__ . \D . 'panel' . \D . 'type.php';
@@ -136,7 +139,7 @@ function route($content, $path, $query, $hash, $r) {
                 // Update panel data from the route file!
                 $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
             }
-        })($_ = $GLOBALS['_']);
+        })();
         \x\panel\_asset_get();
         \x\panel\_asset_let();
         $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
@@ -145,7 +148,7 @@ function route($content, $path, $query, $hash, $r) {
         foreach (\array_reverse($types) as $type) {
             $_ = $GLOBALS['_'] = \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_;
         }
-        if (!empty($_['alert'])) {
+        if (!empty($_['alert']) && \class_exists("\\Alert")) {
             // Has alert data from queue
             $has_alert = true;
             // Make alert section visible

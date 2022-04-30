@@ -125,7 +125,7 @@ function _decor_set(array $attr, array $value = []) {
 }
 
 // Check for update(s)
-function _git_get() {
+function _git_sync() {
     $_ = $GLOBALS['_'];
     if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions')) {
         \mkdir($folder, 0775, true);
@@ -147,46 +147,48 @@ function _git_get() {
         if ('^' === $v) {
             continue;
         }
+        // Core
         if ('mecha' === $k) {
             $page = new \Page(null, [
                 'title' => 'Mecha',
                 'version' => \VERSION
             ]);
+            $t = $page->title;
+        // Extension
         } else if (0 === \strpos($k, 'x.') && \is_file($file = \LOT . \D . 'x' . \D . \substr($k, 2) . \D . 'about.page')) {
             $page = new \Page($file);
-        } else if (0 === \strpos($k, 'y.') && \is_file($file = \LOT . \D . 'y' . \D . \substr($k, 2) . \D . 'about.page')) {
-            $page = new \Page($file);
-        } else {
-            $page = new \Page;
-        }
-        $version_current = \array_replace([0, 0, 0], \explode('.', $page->version ?? '0.0.0'));
-        $version_next = \array_replace([0, 0, 0], \explode('.', $v));
-        $ready = \is_file(\ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms' . \D . $k . '@v' . $v . '.zip');
-        $t = $page->title;
-        if (0 === \strpos($k, 'x.')) {
             $t = '<a href="' . \x\panel\to\link([
                 'hash' => null,
                 'part' => 1,
                 'path' => 'x/' . \substr($k, 2),
                 'query' => null
-            ]) . '">' . $t . '</a>';
-        } else if (0 === \strpos($k, 'y.')) {
+            ]) . '">' . $page->title . '</a>';
+        // Layout
+        } else if (0 === \strpos($k, 'y.') && \is_file($file = \LOT . \D . 'y' . \D . \substr($k, 2) . \D . 'about.page')) {
+            $page = new \Page($file);
             $t = '<a href="' . \x\panel\to\link([
                 'hash' => null,
                 'part' => 1,
                 'path' => 'y/' . \substr($k, 2),
                 'query' => null
-            ]) . '">' . $t . '</a>';
+            ]) . '">' . $page->title . '</a>';
+        } else {
+            continue; // Skip!
         }
+        $version_current = \e(\array_replace([0, 0, 0], \explode('.', $page->version ?? '0.0.0')));
+        $version_next = \e(\array_replace([0, 0, 0], \explode('.', $v)));
+        $ready = \is_file($zip = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms' . \D . $k . '@v' . $v . '.zip');
         // Major update
-        if ((int) $version_next[0] > (int) $version_current[0]) {
-            $alert = $ready ? '%s is ready to install.' : '%s has a risky major update to download.';
+        if ($version_next[0] > $version_current[0]) {
+            $alert = \i($ready ? '%s is ready to install.' : '%s has risky major updates to download.', [$t]);
         // Minor update
-        } else if ((int) $version_next[1] > (int) $version_current[1]) {
-            $alert = $ready ? '%s is ready to install.' : '%s has a minor update to download.';
+        } else if ($version_next[0] === $version_current[0] && $version_next[1] > $version_current[1]) {
+            $alert = \i($ready ? '%s is ready to install.' : '%s has minor updates to download.');
         // Patch update
-        } else if ((int) $version_next[2] > (int) $version_current[2]) {
-            $alert = $ready ? '%s is ready to install.' : '%s has a non-risky patch update to download.';
+        } else if ($version_next[0] === $version_current[0] && $version_next[1] === $version_current[1] && $version_next[2] > $version_current[2]) {
+            $alert = \i($ready ? '%s is ready to install.' : '%s has non-risky patch updates to download.');
+        } else {
+            continue; // Skip!
         }
         $title = \x\panel\type\title([
             'content' => [$alert, [$t]],
@@ -206,6 +208,7 @@ function _git_get() {
                         'path' => 'mecha-cms/' . $k,
                         'query' => [
                             'minify' => 1,
+                            'token' => $_['token'],
                             'version' => $v
                         ],
                         'task' => 'fire/git'
@@ -213,8 +216,9 @@ function _git_get() {
                 ]
             ]
         ], 0);
-        $_['alert']['info'][] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
+        $_['alert']['info'][$zip] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
     }
+    // Recursive-replace instead of re-assign the value because icon(s) data is also updated!
     $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
 }
 
