@@ -3,11 +3,12 @@
 function pull($_) {
     \extract($GLOBALS, \EXTR_SKIP);
     $n = \basename($path = (string) $_['path']);
-    $query = (array) ($_['query'] ?? []);
+    $key = 0 === \strpos($n, 'x.') ? 'x' : (0 === \strpos($n, 'y.') ? 'y' : "");
+    $value = "" !== $key ? \substr($n, 2) : $n;
     $_['kick'] = $_REQUEST['kick'] ?? [
         'hash' => null,
         'part' => 0,
-        'path' => 0 === \strpos($n, 'x.') ? 'x/1' : (0 === \strpos($n, 'y.') ? 'y/1' : ($state->x->panel->route ?? 'asset/1')),
+        'path' => "" !== $key ? $key . '/1' : ($state->x->panel->route ?? 'asset/1'),
         'query' => null,
         'task' => 'get'
     ];
@@ -19,7 +20,7 @@ function pull($_) {
         if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms')) {
             \mkdir($folder, 0775, true);
         }
-        $version = $query['version'] ?? "";
+        $version = $_['query']['version'] ?? "";
         \file_put_contents($folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob);
     }
     return $_;
