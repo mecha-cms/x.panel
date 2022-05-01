@@ -44,7 +44,7 @@ function blob($_) {
             if ('php' === $x) {
                 try {
                     \token_get_all($content = \file_get_contents($v['blob']), \TOKEN_PARSE);
-                } catch (\ParseError $e) {
+                } catch (\Throwable $e) {
                     $_['alert']['error'][$blob] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                 }
             }
@@ -90,7 +90,7 @@ function blob($_) {
                     } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
                         try {
                             \token_get_all($content, \TOKEN_PARSE);
-                        } catch (\ParseError $e) {
+                        } catch (\Throwable $e) {
                             $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                         }
                     } else {
@@ -196,7 +196,7 @@ function file($_) {
             if ('php' === $x) {
                 try {
                     \token_get_all($content = $_POST['file']['content'] ?? "", \TOKEN_PARSE);
-                } catch (\ParseError $e) {
+                } catch (\Throwable $e) {
                     $_['alert']['error'][$file] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                     unset($_POST['token']);
                     $_SESSION['form'] = $_POST;

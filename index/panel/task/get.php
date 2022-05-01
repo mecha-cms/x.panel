@@ -68,7 +68,7 @@ function file($_) {
             if ('php' === $x) {
                 try {
                     \token_get_all($content = $_POST['file']['content'] ?? "", \TOKEN_PARSE);
-                } catch (\ParseError $e) {
+                } catch (\Throwable $e) {
                     $_['alert']['error'][$self] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                     unset($_POST['token']);
                     $_SESSION['form'] = $_POST;

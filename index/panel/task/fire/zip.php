@@ -61,7 +61,7 @@ function zip($_) {
                 } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
                     try {
                         \token_get_all($content, \TOKEN_PARSE);
-                    } catch (\ParseError $e) {
+                    } catch (\Throwable $e) {
                         $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
                     }
                 } else {
