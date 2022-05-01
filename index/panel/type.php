@@ -39,7 +39,10 @@ foreach ($tasks as $task) {
     foreach (array_reverse(step(strtr($task, '/', D) . D . $type, D)) as $v) {
         // Function-based task
         if (
-            is_callable($f = "\\x\\panel\\task\\" . strtr($v, D, "\\")) ||
+            is_callable($f = "\\x\\panel\\task\\" . strtr($v, [
+                '-' => '_',
+                D => "\\"
+            ])) ||
             // If you have to use route(s) with number prefix, you can prefix the function name with a `_`.
             // For route `/panel/fire/123/foo/bar/1`, you can have function named `_123()` instead of `123()`.
             is_callable($f = strtr($f, ["\\task\\fire\\" => "\\task\\fire\\_"]))

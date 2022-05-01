@@ -126,7 +126,7 @@ function route($content, $path, $query, $hash, $r) {
     }
     if (\Is::user()) {
         // Check for update(s)
-        if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task']) {
+        if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task'] && empty($_['query']['token'])) {
             \x\panel\_git_sync();
         }
         // Load pre-defined route(s) and type(s)

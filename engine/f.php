@@ -211,7 +211,7 @@ function _git_sync() {
                             'token' => $_['token'],
                             'version' => $v
                         ],
-                        'task' => 'fire/git'
+                        'task' => 'fire/' . ($ready ? 'fuse' : 'pull')
                     ]
                 ]
             ]
