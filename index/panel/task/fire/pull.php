@@ -16,7 +16,7 @@ function pull($_) {
     if (!empty($_['alert']['error'])) {
         return $_;
     }
-    if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . $path . \To::query($query)))) {
+    if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . $path . \To::query($_['query'] ?? [])))) {
         if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms')) {
             \mkdir($folder, 0775, true);
         }
