@@ -1,12 +1,14 @@
 <?php namespace x\panel\task\fire;
 
 function fix($_) {
-    // // Abort by previous hook’s return value if any
-    // if (isset($_['kick']) || !empty($_['alert']['error'])) {
-    //     return $_;
-    // }
-    if (\is_file($log = \ENGINE . \D . 'log' . \D . 'error')) {
-        \unlink($log);
+    if ('GET' === $_SERVER['REQUEST_METHOD']) {
+        $file = \ENGINE . \D . 'log' . \D . $_['path'];
+        // Invalid token?
+        if ($_['token'] !== ($_GET['token'] ?? \P)) {
+            $_['alert']['error'][$file] = 'Invalid token.';
+        } else if (\is_file($file)) {
+            \unlink($file);
+        }
     }
     $_['kick'] = $_REQUEST['kick'] ?? [
         'query' => null,

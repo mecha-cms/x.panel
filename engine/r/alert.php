@@ -22,21 +22,26 @@ if (null !== $query && !empty($_['part'])) {
     $GLOBALS['_']['alert']['info'][__FILE__] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
 }
 
-if (defined('TEST') && TEST && is_file($log = ENGINE . D . 'log' . D . 'error')) {
-    $errors = x\panel\from\path(trim(n(file_get_contents($log))));
-    $one = 0 === substr_count($errors, "\n");
-    $out = i('Please fix ' . ($one ? 'this error' : 'these errors') . ':');
-    $out .= '<br><br>';
-    $out .= '<code style="display:inline-block;font-size:70%;line-height:1.25em;">' . strtr(htmlspecialchars($errors), ["\n" => '<br>']) . '</code>';
-    $out .= '<br><br>';
-    $out .= i('If you think you have fixed the error' . ($one ? "" : 's') . ', you can then %s.', ['<a href="' . x\panel\to\link([
-        'part' => 1,
-        'path' => null,
-        'query' => [
-            'kick' => short($url->current),
-            'token' => $_['token']
-        ],
-        'task' => 'fire/fix'
-    ]) . '">' . i('remove the log file') . '</a>']);
-    $GLOBALS['_']['alert']['error'][$log] = $out;
+if (defined('TEST') && TEST) {
+    foreach (['error', 'error-x', 'error-y'] as $v) {
+        if (!is_file($log = ENGINE . D . 'log' . D . $v)) {
+            continue;
+        }
+        $errors = x\panel\from\path(trim(n(file_get_contents($log))));
+        $one = 0 === substr_count($errors, "\n");
+        $out = i('Please fix ' . ($one ? 'this error' : 'these errors') . ':');
+        $out .= '<br><br>';
+        $out .= '<code style="display:inline-block;font-size:70%;line-height:1.25em;">' . strtr(htmlspecialchars($errors), ["\n" => '<br>']) . '</code>';
+        $out .= '<br><br>';
+        $out .= i('If you think you have fixed the error' . ($one ? "" : 's') . ', you can then %s.', ['<a href="' . x\panel\to\link([
+            'part' => 0,
+            'path' => $v,
+            'query' => [
+                'kick' => short($url->current),
+                'token' => $_['token']
+            ],
+            'task' => 'fire/fix'
+        ]) . '">' . i('remove the log file') . '</a>']);
+        $GLOBALS['_']['alert']['error'][$log] = $out;
+    }
 }
