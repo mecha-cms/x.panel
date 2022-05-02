@@ -17,7 +17,7 @@ Hook::set('_', function($_) {
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {
-            foreach ($search($folder, $_GET['x'] ?? null, $_GET['deep'] ?? 0) as $k => $v) {
+            foreach ($search($folder, $_GET['x'] ?? null, array_key_exists('deep', $_GET) ? true : ($_GET['deep'] ?? 0)) as $k => $v) {
                 $n = basename($k);
                 if (false !== strpos('_.', $n[0]) && !$super) {
                     continue; // User(s) with status other than `1` cannot see hidden file(s)
@@ -52,13 +52,10 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'chunk' => null,
-                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                'type' => null,
-                                'x' => null
+                                'type' => null
                             ]
                         ]
                     ],
@@ -71,32 +68,26 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'chunk' => null,
-                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
                                 'token' => $_['token'],
-                                'trash' => $trash,
-                                'x' => null
+                                'trash' => $trash
                             ],
                             'task' => 'let'
                         ]
                     ]
                 ],
-                'title' => S . $n . S,
+                'title' => S . substr($path, strlen($_['path']) + 1) . S,
                 'type' => 0 === $v ? 'folder' : 'file',
                 'url' => 0 === $v ? [
                     'part' => 1,
                     'path' => $path,
                     'query' => [
-                        'chunk' => null,
-                        'deep' => null,
                         'query' => null,
                         'stack' => null,
                         'tab' => null,
-                        'type' => null,
-                        'x' => null
+                        'type' => null
                     ],
                     'task' => 'get'
                 ] : null
@@ -119,13 +110,10 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'chunk' => null,
-                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
-                                'type' => null,
-                                'x' => null
+                                'type' => null
                             ],
                             'task' => 'get'
                         ]
@@ -139,14 +127,11 @@ Hook::set('_', function($_) {
                             'part' => 0,
                             'path' => $path,
                             'query' => [
-                                'chunk' => null,
-                                'deep' => null,
                                 'query' => null,
                                 'stack' => null,
                                 'tab' => null,
                                 'token' => $_['token'],
-                                'trash' => $trash,
-                                'x' => null
+                                'trash' => $trash
                             ],
                             'task' => 'let'
                         ]
@@ -156,16 +141,13 @@ Hook::set('_', function($_) {
                 'type' => 'folder',
                 'url' => [
                     'part' => 1,
-                    'path' => dirname($path),
-                    'query' => [
-                        'chunk' => null,
-                        'deep' => null,
+                    'path' => $parent = dirname($path),
+                    'query' => false !== strpos($parent, '/') ? [
                         'query' => null,
                         'stack' => null,
                         'tab' => null,
-                        'type' => null,
-                        'x' => null
-                    ],
+                        'type' => null
+                    ] : null,
                     'task' => 'get'
                 ]
             ]] + $files;

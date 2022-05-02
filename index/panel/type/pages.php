@@ -22,7 +22,7 @@ Hook::set('_', function($_) use($state, $user) {
                 $folder . '.draft',
                 $folder . '.page'
             ], 1)) ? new Page($f) : new Page;
-            foreach ($search($folder, $_GET['x'] ?? 'archive,draft,page', $_GET['deep'] ?? 0) as $k => $v) {
+            foreach ($search($folder, $_GET['x'] ?? 'archive,draft,page', array_key_exists('deep', $_GET) ? true : ($_GET['deep'] ?? 0)) as $k => $v) {
                 if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
                     continue; // Skip placeholder page(s)
                 }

@@ -36,6 +36,36 @@ function description($value) {
     return "" !== $out ? $out : null;
 }
 
+function elapse($date, $all = false) {
+    $current = new \DateTime;
+    $diff = $current->diff(new \DateTime($date));
+    $diff->w = \floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+    $alter = [
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        'm' => 'month',
+        's' => 'second',
+        'w' => 'week',
+        'y' => 'year'
+    ];
+    foreach ($alter as $k => &$v) {
+        if ($i = $diff->{$k} ?? 0) {
+            $v = \i('%d ' . $alter[$k] . ($i > 1 ? 's' : ""), $i);
+        } else {
+            unset($alter[$k]);
+        }
+        unset($v);
+    }
+    if (false === $all) {
+        $alter = \array_slice($alter, 0, 1);
+    } else if (\is_int($all)) {
+        $alter = \array_slice($alter, 0, $all);
+    }
+    return $alter ? \i('%s ago', \implode(', ', $alter)) : \i('just now');
+}
+
 function field($value, $key, $type = 'textarea') {
     $value['id'] = $value['id'] ?? \substr(\uniqid(), 6);
     $state = $value['state'] ?? [];

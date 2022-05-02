@@ -133,7 +133,7 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'not' => [],
     'part' => (int) $part,
     'path' => $test ? $m[2] : null,
-    'query' => $_GET ?? [],
+    'query' => From::query($url->query ?? ""),
     'sort' => null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
     'task' => $GLOBALS['_' . $req]['task'] ?? ($test ? $m[1] : null),
