@@ -5079,7 +5079,7 @@
             keyIsShift = e.shiftKey,
             firstBarFocusable = getElement('.lot\\:bar a:any-link'),
             mainSearchForm = getFormElement('get'),
-            mainSearchFormInput = mainSearchForm && mainSearchForm.q,
+            mainSearchFormInput = mainSearchForm && mainSearchForm.query,
             parent,
             stop;
         if (mainSearchFormInput && 'F3' === key && !keyIsAlt && !keyIsCtrl && !keyIsShift) {
