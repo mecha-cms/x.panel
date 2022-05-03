@@ -400,3 +400,5 @@ function state($_) {
     // State must exists, so there is no such create event, only update!
     return $_;
 }
+
+return [];

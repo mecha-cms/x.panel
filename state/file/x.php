@@ -58,6 +58,7 @@ return [
     'page' => 1,
     'pdf' => 1,
     'php' => 1,
+    // 'phps' => 1,
     'png' => 1,
     'qt' => 1,
     'ra' => 1,
@@ -82,5 +83,4 @@ return [
     'woff2' => 1,
     'xml' => 1,
     'zip' => 1
-    // 'phps' => 1,
 ];

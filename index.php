@@ -113,14 +113,22 @@ if ($test) {
     }
 }
 
+$query = From::query($_SERVER['QUERY_STRING']);
 $GLOBALS['_'] = $_ = array_replace_recursive([
+    '0' => null,
+    '1' => null,
+    '2' => [],
     'alert' => [],
+    'are' => [],
+    'as' => [],
     'asset' => [],
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
+    'can' => [],
     'chunk' => null, // Default is `20`
     'content' => null,
     'count' => 0,
+    'deep' => null, // Default is `0`
     'description' => null,
     'file' => $f && is_file($f) ? $f : null,
     'folder' => $f && is_dir($f) ? $f : null,
@@ -131,15 +139,18 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'kick' => null,
     'lot' => [],
     'not' => [],
+    'of' => [],
     'part' => (int) $part,
     'path' => $test ? $m[2] : null,
-    'query' => From::query($url->query ?? ""),
+    'query' => $query,
     'sort' => null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
     'task' => $GLOBALS['_' . $req]['task'] ?? ($test ? $m[1] : null),
     'title' => null,
     'token' => $user->token ?? null,
-    'type' => $GLOBALS['_' . $req]['type'] ?? null
+    'type' => $GLOBALS['_' . $req]['type'] ?? null,
+    'with' => [],
+    'x' => null
 ], $GLOBALS['_'] ?? []);
 
 // Modify default log-in redirection to the panel page if it is not set

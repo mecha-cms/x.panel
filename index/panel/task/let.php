@@ -242,3 +242,5 @@ function state($_) {
     // There is no such delete event for state(s)
     return $_;
 }
+
+return [];

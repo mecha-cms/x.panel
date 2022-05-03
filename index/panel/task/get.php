@@ -368,3 +368,5 @@ function state($_) {
     }
     return $_;
 }
+
+return [];

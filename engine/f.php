@@ -237,7 +237,7 @@ function _state_set() {
     if (null !== $_['type']) {
         $_['[y]']['type:' . $_['type']] = true;
     }
-    foreach (['are', 'can', 'has', 'is', 'not', '[y]'] as $v) {
+    foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with', '[y]'] as $v) {
         if (isset($_[$v]) && \is_array($_[$v])) {
             \State::set($v, $_[$v]);
         }

@@ -20,8 +20,8 @@ $tasks = \array_reverse(\step(\trim(\strtr($_['task'] ?? 'get', '/', \D), \D), \
 foreach ($tasks as $task) {
     \is_file($f = __DIR__ . \D . 'task' . \D . $task . '.php') && (static function($f) {
         \extract($GLOBALS, \EXTR_SKIP);
-        if ($_ = require $f) {
-            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
+        if (($_ = require $f) && \is_array($_)) {
+            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], $_);
         }
     })($f);
 }

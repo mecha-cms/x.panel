@@ -682,7 +682,7 @@ function links($value, $key) {
     $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? true;
     $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
-    return \x\panel\type\menu(\x\panel\_value_set($value), $key, -1);
+    return \x\panel\type\menu(\x\panel\_value_set($value), $key, -2);
 }
 
 function lot($value, $key) {

@@ -77,21 +77,30 @@ function route($content, $path, $query, $hash, $r) {
     }
     foreach ([
         'are',
+        'as',
         'author',
         'base',
         'can',
+        'chunk',
+        'count',
+        'deep',
         'has',
         'hash',
         'is',
         'not',
+        'of',
         'part',
         'path',
         'query',
+        'sort',
+        'sort',
         'status',
         'task',
         'title',
         'token',
-        'type'
+        'type',
+        'with',
+        'x'
     ] as $v) {
         if (isset($_[$v])) {
             $js[$v] = $_[$v];
@@ -103,9 +112,9 @@ function route($content, $path, $query, $hash, $r) {
         'stack' => 0
     ];
     $GLOBALS['content'] = $icon . $content . $list;
-    $GLOBALS['description'] = (string) ($_['description'] ?? "");
+    $GLOBALS['description'] = \i(...((array) ($_['description'] ?? "")));
     $GLOBALS['t'][] = \i('Panel');
-    $GLOBALS['t'][] = \i($_['title'] ?? ('x' === $id ? 'Extension' : ('y' === $id ? 'Layout' : \To::title($id))));
+    $GLOBALS['t'][] = \i(...((array) ($_['title'] ?? ('x' === $id ? 'Extension' : ('y' === $id ? 'Layout' : \To::title($id))))));
     $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
     \x\panel\_asset_set();
     \x\panel\_state_set();

@@ -10,6 +10,7 @@ return [
     'application/vnd.ms-fontobject' => 1,
     'application/x-7z-compressed' => 1,
     'application/x-httpd-php' => 1,
+    // 'application/x-httpd-php-source' => 1,
     'application/x-javascript' => 1, // :(
     'application/x-tar' => 1,
     'application/xml' => 1,
@@ -63,5 +64,4 @@ return [
     'video/x-ms-wm' => 1,
     'video/x-ms-wmv' => 1,
     'video/x-ms-wmx' => 1
-    // 'application/x-httpd-php-source' => 1,
 ];
