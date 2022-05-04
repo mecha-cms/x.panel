@@ -45,27 +45,32 @@ function fuse($_) {
                 $files_next[\trim($v = \strtr($zip->statIndex($i)['name'], \D, '/'), '/')] = '/' === \substr($v, -1) ? 0 : 1;
             }
         }
-        \ksort($files_current);
+        \krsort($files_current); // Reverse sort to make sure file(s) deleted before folder(s)
         \ksort($files_next);
         $counter = [0, 0, 0]; // `[added, deleted, updated]`
         // ++diff
         foreach ($files_next as $k => $v) {
             ++$counter[isset($files_current[$k]) ? 2 : 1];
+            $f = $folder . \D . $k;
             if (0 === $v && !isset($files_current[$k])) {
-                \mkdir($folder . \D . $k, 0775, true);
+                \mkdir($f, 0775, true);
                 continue;
             }
             // Prepare to merge current `state.php` to the new `state.php` file!
             if ('state.php' === $k && isset($files_current[$k])) {
-                \rename($folder . \D . $files_current[$k], \dirname($folder . \D . $files_current[$k]) . \D . 'state.bak.php');
+                \rename($f, \dirname($f) . \D . 'state.bak.php');
                 $files_current['state.bak.php'] = 1;
             }
-            \file_put_contents($folder . \D . $k, $zip->getFromName($k));
+            if (!\is_dir($f)) {
+                // Add file only if `$f` is a file or `$f` does not exist
+                \file_put_contents($f, $zip->getFromName($k));
+            }
         }
         // --diff
-        foreach (\array_reverse($files_current) as $k => $v) {
+        foreach ($files_current as $k => $v) {
+            $f = $folder . \D . $k;
             if (!isset($files_next[$k])) {
-                0 === $v ? \rmdir($folder . \D . $k) : \unlink($folder . \D . $k);
+                0 === $v ? \rmdir($f) : \unlink($f);
                 ++$counter[0];
             }
         }
