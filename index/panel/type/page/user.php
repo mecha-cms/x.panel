@@ -65,6 +65,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                                                 'lot' => [
                                                     'author' => [
                                                         'description' => 'set' === $_['task'] ? 'Display name.' : null,
+                                                        'focus' => 'get' === $_['task'],
                                                         'hint' => 'get' === $_['task'] ? ($page['author'] ?? To::title($page->name ?? i('John Doe'))) : To::title($page->name ?? i('John Doe')),
                                                         'name' => 'page[author]',
                                                         'stack' => 10,
