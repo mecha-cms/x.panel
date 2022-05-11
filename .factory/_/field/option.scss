@@ -22,6 +22,12 @@ $name: option-picker;
     line-height: var(--h);
     .#{$name}__option {
       padding: 0 calc(var(--x) / 2);
+      &-group {
+        padding: 0 calc(var(--x) / 2);
+        .#{$name}__option {
+          margin: 0 calc(var(--x) / -2);
+        }
+      }
     }
   }
   &__source {

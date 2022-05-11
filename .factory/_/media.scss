@@ -172,8 +172,13 @@
         margin-bottom: var(--y);
       }
       li {
+        color: var(--color--disabled);
         &.is\:current {
-          opacity: .5;
+          color: var(--color);
+        }
+        [role='link'],
+        a:any-link {
+          color: inherit;
         }
       }
       .title {

@@ -1294,6 +1294,12 @@ pre.is\:text code {
 .option-picker__options .option-picker__option {
   padding: 0 calc(var(--x) / 2);
 }
+.option-picker__options .option-picker__option-group {
+  padding: 0 calc(var(--x) / 2);
+}
+.option-picker__options .option-picker__option-group .option-picker__option {
+  margin: 0 calc(var(--x) / -2);
+}
 .option-picker__source + .option-picker {
   margin-left: 0 !important;
 }
@@ -2609,7 +2615,6 @@ input[type=range]:disabled::-moz-range-thumb {
 
 .lot\:file,
 .lot\:page,
-.lot\:card,
 .lot\:folder {
   background: var(--fill-file, none);
   border: 0 solid;
@@ -2626,13 +2631,11 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 .lot\:file:focus,
 .lot\:page:focus,
-.lot\:card:focus,
 .lot\:folder:focus {
   z-index: 1;
 }
 .lot\:file:focus,
 .lot\:page:focus,
-.lot\:card:focus,
 .lot\:folder:focus {
   background: var(--fill-file--focus, var(--fill-file, none));
   border-color: var(--stroke-file--focus, var(--stroke-file, var(--fill-file, none)));
@@ -2640,7 +2643,6 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 .lot\:file:hover,
 .lot\:page:hover,
-.lot\:card:hover,
 .lot\:folder:hover {
   background: var(--fill-file--hover, var(--fill-file, none));
   border-color: var(--stroke-file--hover, var(--stroke-file, var(--fill-file, none)));
@@ -2648,7 +2650,6 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 .lot\:file:active,
 .lot\:page:active,
-.lot\:card:active,
 .lot\:folder:active {
   background: var(--fill-file--active, var(--fill-file, none));
   border-color: var(--stroke-file--active, var(--stroke-file, var(--fill-file, none)));
@@ -2656,7 +2657,6 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 .lot\:file.is\:current,
 .is\:current.lot\:page,
-.is\:current.lot\:card,
 .is\:current.lot\:folder {
   background: var(--fill-file--current, var(--fill-file, none));
   border-color: var(--stroke-file--current, var(--stroke-file, var(--fill-file, none)));
@@ -2664,11 +2664,9 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 .lot\:file::before,
 .lot\:page::before,
-.lot\:card::before,
 .lot\:folder::before,
 .lot\:file::after,
 .lot\:page::after,
-.lot\:card::after,
 .lot\:folder::after {
   content: "";
   display: block;
@@ -2680,19 +2678,16 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 .lot\:file > *,
 .lot\:page > *,
-.lot\:card > *,
 .lot\:folder > * {
   margin: 0 calc(var(--x) / 8);
 }
 .lot\:file > .lot\:tasks,
 .lot\:page > .lot\:tasks,
-.lot\:card > .lot\:tasks,
 .lot\:folder > .lot\:tasks {
   margin-right: calc(var(--x) / -4);
 }
 .lot\:file.not\:active,
 .not\:active.lot\:page,
-.not\:active.lot\:card,
 .not\:active.lot\:folder {
   opacity: 0.5;
 }
@@ -2760,7 +2755,6 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 
 .lot\:files,
-.lot\:cards,
 .lot\:pages,
 .lot\:folders {
   display: block;
@@ -2769,14 +2763,12 @@ input[type=range]:disabled::-moz-range-thumb {
   margin-right: 0;
 }
 .lot\:files .description,
-.lot\:cards .description,
 .lot\:pages .description,
 .lot\:folders .description {
   margin: 0;
   padding: 0;
 }
 .lot\:files .title,
-.lot\:cards .title,
 .lot\:pages .title,
 .lot\:folders .title {
   font: inherit;
@@ -2784,26 +2776,22 @@ input[type=range]:disabled::-moz-range-thumb {
   padding: 0;
 }
 .lot\:files .title,
-.lot\:cards .title,
 .lot\:pages .title,
 .lot\:folders .title {
   flex: 1;
 }
 .lot\:files .title a.not\:active,
-.lot\:cards .title a.not\:active,
 .lot\:pages .title a.not\:active,
 .lot\:folders .title a.not\:active {
   opacity: 1;
 }
 .lot\:files .title .title,
-.lot\:cards .title .title,
 .lot\:pages .title .title,
 .lot\:folders .title .title {
   display: inline-flex;
   vertical-align: middle;
 }
 .lot\:files .title .title > span,
-.lot\:cards .title .title > span,
 .lot\:pages .title .title > span,
 .lot\:folders .title .title > span {
   overflow: hidden;
@@ -2811,7 +2799,6 @@ input[type=range]:disabled::-moz-range-thumb {
   white-space: nowrap;
 }
 .lot\:files.count\:0,
-.count\:0.lot\:cards,
 .count\:0.lot\:pages,
 .count\:0.lot\:folders {
   display: none;
@@ -2953,61 +2940,50 @@ input[type=range]:disabled::-moz-range-thumb {
   top: 0;
 }
 
-.lot\:page,
-.lot\:card {
+.lot\:page {
   background: var(--fill-page, var(--fill-file, none));
   border-color: var(--stroke-page, var(--stroke-file, transparent));
   border-radius: var(--arc-page, var(--arc-file));
   box-shadow: var(--shadow-page, var(--shadow-file));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
 }
-.lot\:page:focus,
-.lot\:card:focus {
+.lot\:page:focus {
   background: var(--fill-page--focus, var(--fill-page));
   border-color: var(--stroke-page--focus, var(--stroke-page));
   box-shadow: var(--shadow-page--focus, var(--shadow-page));
 }
-.lot\:page:hover,
-.lot\:card:hover {
+.lot\:page:hover {
   background: var(--fill-page--hover, var(--fill-page));
   border-color: var(--stroke-page--hover, var(--stroke-page));
   box-shadow: var(--shadow-page--hover, var(--shadow-page));
 }
-.lot\:page:active,
-.lot\:card:active {
+.lot\:page:active {
   background: var(--fill-page--active, var(--fill-page));
   border-color: var(--stroke-page--active, var(--stroke-page));
   box-shadow: var(--shadow-page--active, var(--shadow-page));
 }
-.lot\:page.is\:current,
-.is\:current.lot\:card {
+.lot\:page.is\:current {
   background: var(--fill-page--current, var(--fill-page));
   border-color: var(--stroke-page--current, var(--stroke-page));
   box-shadow: var(--shadow-page--current, var(--shadow-page));
 }
-.lot\:page > *,
-.lot\:card > * {
+.lot\:page > * {
   margin: 0 calc(var(--x) / 4);
 }
-.lot\:page > div,
-.lot\:card > div {
+.lot\:page > div {
   min-height: calc(var(--y) * 2.25);
 }
-.lot\:page > div:first-child + div,
-.lot\:card > div:first-child + div {
+.lot\:page > div:first-child + div {
   flex: 1;
 }
-.lot\:page > div > .title,
-.lot\:card > div > .title {
+.lot\:page > div > .title {
   display: block;
   font-size: calc(var(--z) * 1.25);
 }
-.lot\:page .description,
-.lot\:card .description {
-  margin: calc(var(--y) / 4) 0 0;
+.lot\:page .description {
+  margin: calc(var(--y) / 5) 0 0;
 }
-.lot\:page .image,
-.lot\:card .image {
+.lot\:page .image {
   display: block;
   height: calc(var(--y) * 2.25);
   max-height: calc(var(--y) * 2.25);
@@ -3018,27 +2994,20 @@ input[type=range]:disabled::-moz-range-thumb {
   position: relative;
   width: calc(var(--y) * 2.25);
 }
-.lot\:page .image .icon,
-.lot\:card .image .icon {
+.lot\:page .image .icon {
   left: 50%;
   margin: calc(var(--y) * -0.5) auto auto calc(var(--x) * -0.5);
   position: absolute;
   top: 50%;
 }
 .lot\:page.is\:file,
-.is\:file.lot\:card,
-.lot\:page.is\:folder,
-.is\:folder.lot\:card {
+.lot\:page.is\:folder {
   padding-left: calc(var(--x) / 4);
 }
 .lot\:page.is\:file::before,
-.is\:file.lot\:card::before,
 .lot\:page.is\:file::after,
-.is\:file.lot\:card::after,
 .lot\:page.is\:folder::before,
-.is\:folder.lot\:card::before,
-.lot\:page.is\:folder::after,
-.is\:folder.lot\:card::after {
+.lot\:page.is\:folder::after {
   display: none;
 }
 
@@ -3428,41 +3397,6 @@ input[type=range]:disabled::-moz-range-thumb {
   margin-right: 0;
 }
 
-.lot\:card {
-  flex-direction: column;
-  width: var(--width-card, calc(var(--x) * 12));
-}
-.lot\:card > div {
-  min-height: 0;
-}
-.lot\:card > div + div {
-  margin-top: calc(var(--y) / 2);
-}
-.lot\:card > div > .image {
-  height: calc(var(--x) * 12 - var(--x));
-  min-height: calc(var(--x) * 12 - var(--x));
-  min-width: 100%;
-  width: 100%;
-}
-.lot\:card > div > .description,
-.lot\:card > div > .title {
-  white-space: normal;
-  word-wrap: break-word;
-}
-.lot\:card > div > .title .title > span {
-  white-space: normal;
-  word-wrap: break-word;
-}
-.lot\:card > div .with\:title {
-  margin-right: auto;
-}
-
-.lot\:cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 .a,
 [role=link],
 a {
@@ -3795,8 +3729,15 @@ u {
     gap: 0 var(--x);
     margin-bottom: var(--y);
   }
+  .lot\:tabs .lot\:links li {
+    color: var(--color--disabled);
+  }
   .lot\:tabs .lot\:links li.is\:current {
-    opacity: 0.5;
+    color: var(--color);
+  }
+  .lot\:tabs .lot\:links li [role=link],
+  .lot\:tabs .lot\:links li a:any-link {
+    color: inherit;
   }
   .lot\:tabs .lot\:links .title svg {
     display: none;
