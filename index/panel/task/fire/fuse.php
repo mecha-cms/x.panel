@@ -52,7 +52,11 @@ function fuse($_) {
         foreach ($files_next as $k => $v) {
             ++$counter[isset($files_current[$k]) ? 2 : 1];
             $f = $folder . \D . $k;
-            if (0 === $v && !isset($files_current[$k])) {
+            // Prioritize folder over file
+            if (0 === $v) {
+                if (isset($files_current[$k]) && 1 === $files_current[$k]) {
+                    \is_file($f) && \unlink($f); // Delete the file so that we can make folder
+                }
                 \mkdir($f, 0775, true);
                 continue;
             }
