@@ -789,7 +789,7 @@ function menu($value, $key, int $i = 0) {
                     $v['as']['separator'] = true;
                     $vv[2] = \x\panel\_decor_set($vv[2], $v);
                     $vv[2] = \x\panel\_tag_set($vv[2], $v);
-                    $vv[2]['aria-orientation'] = $i < 0 ? 'horizontal' : 'vertical';
+                    $vv[2]['aria-orientation'] = $i < -1 ? 'horizontal' : 'vertical';
                     $vv[2]['role'] = 'separator';
                     $value[1] .= new \HTML($vv);
                     ++$count;
@@ -797,7 +797,7 @@ function menu($value, $key, int $i = 0) {
                 }
                 $has_caret = false;
                 if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
-                    $v['icon'][1] = $v['caret'] ?? ($i < 0 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z');
+                    $v['icon'][1] = $v['caret'] ?? ($i < -1 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z');
                     $has_caret = true;
                 }
                 $v['icon'] = \x\panel\to\icon($v['icon'] ?? []);
