@@ -5,6 +5,7 @@
   border-radius: var(--arc-file);
   box-shadow: var(--shadow-file);
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0;
   overflow: hidden;

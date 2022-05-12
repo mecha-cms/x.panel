@@ -157,6 +157,13 @@
       }
     }
   }
+  .lot\:page {
+    > div:last-child {
+      flex-basis: 100%;
+      margin: calc(var(--y) / 3) 0 0 calc(var(--x) * 3);
+      min-height: 0;
+    }
+  }
   .lot\:pager {
     > span {
       &:first-child,

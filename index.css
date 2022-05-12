@@ -2622,6 +2622,7 @@ input[type=range]:disabled::-moz-range-thumb {
   border-radius: var(--arc-file);
   box-shadow: var(--shadow-file);
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0;
   overflow: hidden;
@@ -3718,6 +3719,12 @@ u {
     padding: 0;
     text-align: inherit;
     width: auto;
+  }
+
+  .lot\:page > div:last-child {
+    flex-basis: 100%;
+    margin: calc(var(--y) / 3) 0 0 calc(var(--x) * 3);
+    min-height: 0;
   }
 
   .lot\:pager > span:first-child,
