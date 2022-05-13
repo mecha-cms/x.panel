@@ -4,7 +4,7 @@ function fix($_) {
     if ('GET' === $_SERVER['REQUEST_METHOD']) {
         $file = \ENGINE . \D . 'log' . \D . $_['path'];
         // Invalid token?
-        if ($_['token'] !== ($_GET['token'] ?? \P)) {
+        if ($_['token'] !== ($_['query']['token'] ?? \P)) {
             $_['alert']['error'][$file] = 'Invalid token.';
         } else if (\is_file($file)) {
             \unlink($file);

@@ -6,10 +6,10 @@ function attach($_) {
     $title = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : 'Folder');
     if (\is_file($file = $folder . \D . 'index.php')) {
         $_['alert']['info'][$file] = ['%s %s already attached.', [$title, '<code>' . $name . '</code>']];
-    } else if (\is_file($file = $folder . \D . 'index.x')) {
+    } else if (\is_file($file = $folder . \D . '.index.php')) {
         if (\rename($file, $folder . \D . 'index.php')) {
             $_['alert']['success'][$file] = ['%s %s successfully attached.', [$title, '<code>' . $name . '</code>']];
-            if (!empty($_GET['radio'])) {
+            if (!empty($_['query']['radio'])) {
                 // Detach other(s)
                 foreach (\g(\dirname($folder), 'php', 1) as $k => $v) {
                     if ('index.php' !== \basename($k)) {
@@ -18,7 +18,7 @@ function attach($_) {
                     if ($folder . \D . 'index.php' === $k) {
                         continue;
                     }
-                    \rename($k, \dirname($k) . \D . \basename($k, '.php') . '.x');
+                    \rename($k, \dirname($k) . \D . '.' . \basename($k));
                 }
             }
         }

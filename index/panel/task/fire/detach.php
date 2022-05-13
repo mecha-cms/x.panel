@@ -7,18 +7,18 @@ function detach($_) {
     if (\is_file($file = $folder . \D . 'index.x')) {
         $_['alert']['info'][$file] = ['%s %s already detached.', [$title, '<code>' . $name . '</code>']];
     } else if (\is_file($file = $folder . \D . 'index.php')) {
-        if (\rename($file, $folder . \D . 'index.x')) {
+        if (\rename($file, $folder . \D . '.index.php')) {
             $_['alert']['success'][$file] = ['%s %s successfully detached.', [$title, '<code>' . $name . '</code>']];
-            if (!empty($_GET['radio'])) {
+            if (!empty($_['query']['radio'])) {
                 // Attach other(s)
-                foreach (\g(\dirname($folder), 'x', 1) as $k => $v) {
-                    if ('index.x' !== \basename($k)) {
+                foreach (\g(\dirname($folder), 'php', 1) as $k => $v) {
+                    if ('.index.php' !== \basename($k)) {
                         continue;
                     }
-                    if ($folder . \D . 'index.x' === $k) {
+                    if ($folder . \D . '.index.php' === $k) {
                         continue;
                     }
-                    \rename($k, \dirname($k) . \D . \basename($k, '.x') . '.php');
+                    \rename($k, \dirname($k) . \D . '.' . \basename($k));
                 }
             }
         }
