@@ -192,7 +192,7 @@ function route($content, $path, $query, $hash, $r) {
 
 \Hook::set('route.panel', __NAMESPACE__ . "\\route", 100);
 
-foreach (\glob(\LOT . \D . 'x' . \D . '*' . \D . 'index' . \D . 'panel.php') as $file) {
+foreach (\glob(\LOT . \D . '{x,y}' . \D . '*' . \D . 'index' . \D . 'panel.php', \GLOB_BRACE | \GLOB_NOSORT) as $file) {
     // Ignore this very file!
     if (__FILE__ === $file) {
         continue;
