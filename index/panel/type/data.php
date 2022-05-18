@@ -163,7 +163,7 @@ $desk = [
             ],
             'values' => [
                 'file' => ['seal' => '0600'],
-                'tab' => 'get' === $_['task'] || 'set' === $_['task'] ? ['data'] : null,
+                'query' => ['tab' => 'get' === $_['task'] || 'set' === $_['task'] ? ['data'] : null],
                 'token' => $_['token'],
                 'trash' => $trash,
                 'type' => $_['type']

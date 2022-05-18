@@ -430,7 +430,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                                     'deep' => null,
                                     'query' => null,
                                     'stack' => null,
-                                    'tab' => null,
+                                    'tab' => ['data'],
                                     'token' => $_['token'],
                                     'trash' => $trash,
                                     'type' => null,

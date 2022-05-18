@@ -2348,6 +2348,9 @@ input[type=range]:disabled::-moz-range-thumb {
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
 }
+.lot\:bar .lot\:links {
+  margin: 0;
+}
 .lot\:bar .lot\:links > ul,
 .lot\:bar .lot\:links > ul > li {
   height: inherit;

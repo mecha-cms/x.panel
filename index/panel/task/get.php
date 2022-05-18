@@ -28,9 +28,7 @@ function data($_) {
             'part' => 0,
             'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
             'query' => \array_replace_recursive([
-                'query' => null,
-                'stack' => $_POST['stack'] ?? null,
-                'tab' => $_POST['tab'] ?? null,
+                'trash' => null,
                 'type' => null
             ], $_POST['query'] ?? []),
             'task' => 'get'
@@ -97,8 +95,6 @@ function file($_) {
             'part' => 0,
             'path' => \dirname($_['path']) . '/' . $name,
             'query' => \array_replace_recursive([
-                'stack' => $_POST['stack'] ?? null,
-                'tab' => $_POST['tab'] ?? null,
                 'trash' => null,
                 'type' => null
             ], $_POST['query'] ?? []),
@@ -108,7 +104,7 @@ function file($_) {
         $_SESSION['_']['file'][\rtrim($self, \D)] = 1;
     }
     if (!empty($_['alert']['error'])) {
-        unset($_POST['token']);
+        unset($_POST['query'], $_POST['token']);
         $_SESSION['form'] = $_POST;
     }
     return $_;
@@ -147,8 +143,6 @@ function folder($_) {
                     \D => '/'
                 ]),
                 'query' => \array_replace_recursive([
-                    'stack' => $_POST['stack'] ?? null,
-                    'tab' => $_POST['tab'] ?? null,
                     'trash' => null,
                     'type' => null
                 ], $_POST['query'] ?? []),
@@ -160,8 +154,6 @@ function folder($_) {
                 'part' => 1,
                 'path' => \dirname($_['path']),
                 'query' => \array_replace_recursive([
-                    'stack' => $_POST['stack'] ?? null,
-                    'tab' => $_POST['tab'] ?? null,
                     'trash' => null,
                     'type' => null
                 ], $_POST['query'] ?? []),
@@ -198,8 +190,6 @@ function folder($_) {
                     \D => '/'
                 ]),
                 'query' => \array_replace_recursive([
-                    'stack' => $_POST['stack'] ?? null,
-                    'tab' => $_POST['tab'] ?? null,
                     'trash' => null,
                     'type' => null
                 ], $_POST['query'] ?? []),
@@ -211,8 +201,6 @@ function folder($_) {
                 'part' => 1,
                 'path' => \dirname($_['path']),
                 'query' => \array_replace_recursive([
-                    'stack' => $_POST['stack'] ?? null,
-                    'tab' => $_POST['tab'] ?? null,
                     'trash' => null,
                     'type' => null
                 ], $_POST['query'] ?? []),
@@ -225,7 +213,7 @@ function folder($_) {
         }
     }
     if (!empty($_['alert']['error'])) {
-        unset($_POST['token']);
+        unset($_POST['query'], $_POST['token']);
         $_SESSION['form'] = $_POST;
     }
     return $_;
@@ -355,15 +343,13 @@ function state($_) {
         'hash' => $_POST['hash'] ?? null,
         'part' => 1,
         'query' => \array_replace_recursive([
-            'stack' => $_POST['stack'] ?? null,
-            'tab' => $_POST['tab'] ?? null,
             'trash' => null,
             'type' => null
         ], $_POST['query'] ?? []),
         'task' => 'get'
     ];
     if (!empty($_['alert']['error'])) {
-        unset($_POST['token']);
+        unset($_POST['query'], $_POST['token']);
         $_SESSION['form'] = $_POST;
     }
     return $_;

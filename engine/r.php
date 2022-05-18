@@ -53,6 +53,7 @@ return (static function($icons) {
     }
     $lot = [
         'bar' => [
+            '0' => 'header',
             'lot' => [
                 0 => [
                     'lot' => [

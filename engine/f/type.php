@@ -9,6 +9,7 @@ function bar($value, $key) {
         foreach ($value['lot'] as &$v) {
             if (\is_array($v)) {
                 $v['tags']['p'] = $v['tags']['p'] ?? false;
+                $v[0] = $v[0] ?? 'nav';
                 // If `type` is not defined, the default value will be `links`
                 $v['type'] = $v['type'] ?? 'links';
             }
@@ -17,7 +18,6 @@ function bar($value, $key) {
         $out = \x\panel\type\lot($value, $key);
     }
     $out['tabindex'] = -1;
-    $out[0] = $out[0] ?? 'nav';
     return $out;
 }
 
@@ -403,6 +403,7 @@ function file($value, $key) {
 function files($value, $key) {
     $value[0] = $value[0] ?? 'ul';
     $value[1] = $value[1] ?? "";
+    $value[2]['role'] = $value[2]['role'] ?? 'directory';
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     if (isset($value['content'])) {
         $count = 1;
@@ -585,6 +586,7 @@ function icon($value, $key) {
     $icons = \array_replace([null, null], (array) ($value['content'] ?? $value['lot'] ?? []));
     $ref = $GLOBALS['_']['icon'] ?? [];
     $attr = [
+        'aria-hidden' => 'true',
         'class' => 'icon',
         'height' => 24,
         'width' => 24
@@ -850,7 +852,7 @@ function menu($value, $key, int $i = 0) {
     $value[2] = \x\panel\_decor_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     if ("" !== $value[1]) {
-        $value[1] = '<ul class="count:' . $count . '" role="' . ($value[3]['role'] ?? 'menu' . ($i < 0 ? 'bar' : "")) . '">' . $value[1] . '</ul>';
+        $value[1] = '<ul class="count:' . $count . '" role="' . ($value[3]['role'] ?? 'menu' . ($i < -1 ? 'bar' : "")) . '">' . $value[1] . '</ul>';
     }
     $value[1] = $title . $description . $value[1];
     return new \HTML($value);
@@ -1215,7 +1217,7 @@ function stacks($value, $key) {
     $name = $value['name'] ?? $key;
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
-    $value[2]['data-name'] = $value[2]['data-name'] ?? 'stack[' . $name . ']';
+    $value[2]['data-name'] = $value[2]['data-name'] ?? 'query[stack][' . $name . ']';
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     $lot = [];
     if (isset($value['lot'])) {
@@ -1291,7 +1293,7 @@ function tabs($value, $key) {
     $name = $value['name'] ?? $key;
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
-    $value[2]['data-name'] = $value[2]['data-name'] ?? 'tab[' . $name . ']';
+    $value[2]['data-name'] = $value[2]['data-name'] ?? 'query[tab][' . $name . ']';
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     if (isset($value['content'])) {
         $value[1] .= \x\panel\to\content($value['content']);

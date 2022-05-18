@@ -35,8 +35,6 @@ function data($_) {
             'part' => 0,
             'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
             'query' => \array_replace_recursive([
-                'stack' => $_POST['stack'] ?? null,
-                'tab' => $_POST['tab'] ?? null,
                 'trash' => null,
                 'type' => null
             ], $_POST['query'] ?? []),
@@ -87,8 +85,6 @@ function file($_) {
             'part' => 1,
             'path' => \dirname($_['path']),
             'query' => \array_replace_recursive([
-                'stack' => $_POST['stack'] ?? null,
-                'tab' => $_POST['tab'] ?? null,
                 'trash' => null,
                 'type' => null
             ], $_POST['query'] ?? []),
@@ -155,8 +151,6 @@ function folder($_) {
             'part' => 1,
             'path' => \dirname($_['path']),
             'query' => \array_replace_recursive([
-                'stack' => $_POST['stack'] ?? null,
-                'tab' => $_POST['tab'] ?? null,
                 'trash' => null,
                 'type' => null
             ], $_POST['query'] ?? []),
