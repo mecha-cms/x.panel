@@ -38,18 +38,22 @@ setChildLast(B, dialog);
 setChildLast(dialog, dialogForm);
 
 function onDialogCancel(e) {
-    let t = this;
+    let t = this, value;
     offEvent(e.type, t, onDialogCancel);
-    return t.x(toValue(t.returnValue));
+    value = t.x(toValue(t.returnValue));
+    isFunction(t.c) && t.c.apply(t, [t.open]);
+    return value;
 }
 
 function onDialogSubmit(e) {
-    let t = this;
+    let t = this, value;
     offEvent(e.type, t, onDialogSubmit);
-    return t.v(toValue(t.returnValue));
+    value = t.v(toValue(t.returnValue));
+    isFunction(t.c) && t.c.apply(t, [t.open]);
+    return value;
 }
 
-function setDialog(content) {
+function setDialog(content, then) {
     setHTML(dialogForm, "");
     if (isString(content)) {
         setHTML(dialogTemplate, content.trim());
@@ -62,12 +66,14 @@ function setDialog(content) {
     }
     dialog.showModal();
     dialog.returnValue = null;
+    isFunction(then) && then.apply(dialog, [dialog.open]);
     let target = getElement('[autofocus]', dialogForm);
     if (target) {
         isFunction(target.focus) && target.focus();
         isFunction(target.select) && target.select(); // `<input>`
     }
     return new Promise((yes, no) => {
+        dialog.c = then;
         dialog.v = yes;
         dialog.x = no;
         onEvent('cancel', dialog, onDialogCancel);

@@ -9,6 +9,7 @@
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
   .lot\:links {
+    margin: 0;
     > ul,
     > ul > li {
       height: inherit;

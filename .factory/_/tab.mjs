@@ -47,7 +47,7 @@ function onChange() {
             input = setElement('input'), name, value;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
-        setChildLast(source, input);
+        name && setChildLast(source, input);
         function onClick(e) {
             let t = this,
                 pane = panes[t._tabIndex],
