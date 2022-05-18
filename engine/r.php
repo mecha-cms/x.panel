@@ -21,15 +21,7 @@ return (static function($icons) {
             'url' => [
                 'part' => 1,
                 'path' => $n,
-                'query' => [
-                    'chunk' => null,
-                    'deep' => null,
-                    'kick' => null,
-                    'query' => null,
-                    'tab' => null,
-                    'type' => null,
-                    'x' => null
-                ],
+                'query' => x\panel\_query_set(),
                 'task' => 'get'
             ]
         ];
@@ -66,7 +58,7 @@ return (static function($icons) {
                             'url' => [
                                 'part' => 0,
                                 'path' => trim($state->x->panel->route ?? 'page', '/'),
-                                'query' => null,
+                                'query' => x\panel\_query_set(),
                                 'task' => 'get'
                             ]
                         ],
@@ -116,15 +108,7 @@ return (static function($icons) {
                             'url' => [
                                 'part' => 0,
                                 'path' => '.license',
-                                'query' => [
-                                    'chunk' => null,
-                                    'deep' => null,
-                                    'kick' => null,
-                                    'query' => null,
-                                    'tab' => null,
-                                    'type' => null,
-                                    'x' => null
-                                ],
+                                'query' => x\panel\_query_set(),
                                 'task' => 'get'
                             ]
                         ],
@@ -138,15 +122,7 @@ return (static function($icons) {
                                     'url' => [
                                         'part' => 0,
                                         'path' => '.state',
-                                        'query' => [
-                                            'chunk' => null,
-                                            'deep' => null,
-                                            'kick' => null,
-                                            'query' => null,
-                                            'tab' => null,
-                                            'type' => null,
-                                            'x' => null
-                                        ],
+                                        'query' => x\panel\_query_set(),
                                         'task' => 'get'
                                     ]
                                 ],

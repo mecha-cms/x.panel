@@ -7,7 +7,7 @@ function recover($_) {
     }
     $_['kick'] = $_REQUEST['kick'] ?? [
         'path' => 'trash',
-        'query' => null,
+        'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;

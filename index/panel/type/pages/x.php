@@ -80,15 +80,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                             'url' => [
                                 'part' => 1,
                                 'path' => $path,
-                                'query' => [
-                                    'chunk' => null,
-                                    'deep' => null,
-                                    'query' => null,
-                                    'stack' => null,
-                                    'tab' => ['files'],
-                                    'type' => null,
-                                    'x' => null
-                                ],
+                                'query' => x\panel\_query_set(['tab' => ['files']]),
                                 'task' => 'get'
                             ]
                         ],
@@ -100,16 +92,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                             'title' => $is_active ? 'Detach' : 'Attach',
                             'url' => !empty($bound) ? null : [
                                 'path' => $path,
-                                'query' => [
-                                    'chunk' => null,
-                                    'deep' => null,
-                                    'query' => null,
-                                    'stack' => null,
-                                    'tab' => null,
-                                    'token' => $_['token'],
-                                    'trash' => null,
-                                    'x' => null
-                                ],
+                                'query' => x\panel\_query_set(['token' => $_['token']]),
                                 'task' => 'fire/' . (is_file($d . D . '.index.php') ? 'attach' : 'detach')
                             ]
                         ],
@@ -121,16 +104,10 @@ Hook::set('_', function($_) use($state, $url, $user) {
                             'url' => !empty($bound) ? null : [
                                 'part' => 0,
                                 'path' => $path,
-                                'query' => [
-                                    'chunk' => null,
-                                    'deep' => null,
-                                    'query' => null,
-                                    'stack' => null,
-                                    'tab' => null,
+                                'query' => x\panel\_query_set([
                                     'token' => $_['token'],
                                     'trash' => $trash,
-                                    'x' => null
-                                ],
+                                ]),
                                 'task' => 'let'
                             ]
                         ]
@@ -140,15 +117,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                     'url' => [
                         'part' => 1,
                         'path' => $path,
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => ['info'],
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['tab' => ['info']]),
                         'task' => 'get'
                     ]
                 ];
@@ -177,15 +146,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['title
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['skip'] = true;
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']['url'] = [
     'part' => 0,
-    'query' => [
-        'chunk' => null,
-        'deep' => null,
-        'query' => null,
-        'stack' => null,
-        'tab' => null,
-        'type' => 'blob/x',
-        'x' => null
-    ],
+    'query' => x\panel\_query_set(['type' => 'blob/x']),
     'task' => 'set'
 ];
 

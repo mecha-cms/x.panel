@@ -27,7 +27,7 @@ function attach($_) {
     }
     $_['kick'] = $_REQUEST['kick'] ?? [
         'path' => $n,
-        'query' => null,
+        'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
     $_SESSION['_']['folder'][$folder] = 1;

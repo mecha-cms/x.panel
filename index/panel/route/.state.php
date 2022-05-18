@@ -51,12 +51,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
-        'query' => array_replace_recursive([
-            'query' => null,
-            'stack' => $_POST['stack'] ?? null,
-            'tab' => $_POST['tab'] ?? null,
-            'type' => null,
-        ], $_POST['query'] ?? []),
+        'query' => x\panel\_query_set($_POST['query'] ?? []),
         'task' => 'get'
     ];
 }

@@ -122,10 +122,7 @@ function blob($_) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
-            'query' => \array_replace_recursive([
-                'trash' => null,
-                'type' => null
-            ], $_POST['query'] ?? []),
+            'query' => \x\panel\_query_set($_POST['query'] ?? []),
             'task' => 'get'
         ];
     }
@@ -153,10 +150,7 @@ function data($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
-            'query' => \array_replace_recursive([
-                'trash' => null,
-                'type' => null
-            ], $_POST['query'] ?? []),
+            'query' => \x\panel\_query_set($_POST['query'] ?? []),
             'task' => 'get'
         ];
     }
@@ -220,10 +214,7 @@ function file($_) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
-            'query' => \array_replace_recursive([
-                'trash' => null,
-                'type' => null
-            ], $_POST['query'] ?? []),
+            'query' => \x\panel\_query_set($_POST['query'] ?? []),
             'task' => 'get'
         ];
         $_['file'] = $file; // For hook(s)
@@ -271,19 +262,13 @@ function folder($_) {
                     \LOT . \D => "",
                     \D => '/'
                 ]),
-                'query' => \array_replace_recursive([
-                    'trash' => null,
-                    'type' => null
-                ], $_POST['query'] ?? []),
+                'query' => \x\panel\_query_set($_POST['query'] ?? []),
                 'task' => 'get'
             ];
         } else {
             $_['kick'] = $_POST['kick'] ?? [
                 'part' => 1,
-                'query' => \array_replace_recursive([
-                    'trash' => null,
-                    'type' => null
-                ], $_POST['query'] ?? []),
+                'query' => \x\panel\_query_set($_POST['query'] ?? []),
                 'task' => 'get'
             ];
         }

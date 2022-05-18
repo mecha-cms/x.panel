@@ -7,7 +7,7 @@ function zip($_) {
     $kick = [
         'part' => $file_zip ? 1 : 0,
         'path' => $file_zip ? \dirname($_['path']) : $_['path'],
-        'query' => null,
+        'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
     // Abort by previous hook’s return value if any

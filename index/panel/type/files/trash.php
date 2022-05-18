@@ -34,17 +34,7 @@ Hook::set('_', function($_) use($state) {
                         'title' => 'Recover',
                         'url' => [
                             'path' => basename($k),
-                            'query' => [
-                                'chunk' => null,
-                                'deep' => null,
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
-                                'token' => $_['token'],
-                                'trash' => null,
-                                'type' => null,
-                                'x' => null
-                            ],
+                            'query' => x\panel\_query_set(['token' => $_['token']]),
                             'task' => 'fire/recover'
                         ]
                     ];
@@ -72,16 +62,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['let'] = [
     'title' => 'Flush',
     'type' => 'link',
     'url' => [
-        'query' => [
-            'chunk' => null,
-            'deep' => null,
-            'query' => null,
-            'stack' => null,
-            'tab' => null,
-            'token' => $_['token'],
-            'type' => null,
-            'x' => null
-        ],
+        'query' => x\panel\_query_set(['token' => $_['token']]),
         'task' => 'fire/flush'
     ]
 ];

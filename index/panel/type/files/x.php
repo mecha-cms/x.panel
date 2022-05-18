@@ -8,15 +8,7 @@ $_['lot']['bar']['lot'][0]['lot']['link']['skip'] = false;
 $_['lot']['bar']['lot'][0]['lot']['link']['url'] = [
     'part' => 1,
     'path' => dirname($_['path']),
-    'query' => [
-        'chunk' => null,
-        'deep' => null,
-        'query' => null,
-        'stack' => null,
-        'tab' => null,
-        'type' => null,
-        'x' => null
-    ],
+    'query' => x\panel\_query_set(),
     'task' => 'get'
 ];
 
@@ -77,15 +69,7 @@ Hook::set('_', function($_) use($state, $url) {
                             ".\\lot\\" => "",
                             "\\" => '/'
                         ]),
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => ['info'],
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['tab' => ['info']]),
                         'task' => 'get'
                     ]) . '">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';
                 } else {

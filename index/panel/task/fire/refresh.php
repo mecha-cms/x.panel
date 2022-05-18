@@ -8,7 +8,7 @@ function refresh($_) {
     $_['kick'] = $_REQUEST['kick'] ?? [
         'part' => 1,
         'path' => 'cache',
-        'query' => null,
+        'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;

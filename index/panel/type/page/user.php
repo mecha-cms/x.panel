@@ -30,15 +30,7 @@ $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
                         'url' => [
                             'part' => 0,
                             'path' => dirname($_['path']),
-                            'query' => [
-                                'chunk' => null,
-                                'deep' => null,
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
-                                'type' => 'page/user',
-                                'x' => null
-                            ],
+                            'query' => x\panel\_query_set(['type' => 'page/user']),
                             'task' => 'set'
                         ]
                     ]

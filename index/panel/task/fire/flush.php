@@ -7,7 +7,7 @@ function flush($_) {
     $_['alert']['success'][$folder] = ['Folder %s is now empty.', ['<code>' . \x\panel\from\path($folder) . '</code>']];
     $_['kick'] = $_REQUEST['kick'] ?? [
         'part' => 1,
-        'query' => null,
+        'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;

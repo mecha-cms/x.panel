@@ -51,12 +51,7 @@ Hook::set('_', function($_) {
                         'url' => [
                             'part' => 0,
                             'path' => $path,
-                            'query' => [
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
-                                'type' => null
-                            ]
+                            'query' => x\panel\_query_set()
                         ]
                     ],
                     'let' => [
@@ -67,13 +62,10 @@ Hook::set('_', function($_) {
                         'url' => [
                             'part' => 0,
                             'path' => $path,
-                            'query' => [
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
+                            'query' => x\panel\_query_set([
                                 'token' => $_['token'],
                                 'trash' => $trash
-                            ],
+                            ]),
                             'task' => 'let'
                         ]
                     ]
@@ -83,12 +75,7 @@ Hook::set('_', function($_) {
                 'url' => 0 === $v ? [
                     'part' => 1,
                     'path' => $path,
-                    'query' => [
-                        'query' => null,
-                        'stack' => null,
-                        'tab' => null,
-                        'type' => null
-                    ],
+                    'query' => x\panel\_query_set(),
                     'task' => 'get'
                 ] : null
             ];
@@ -109,12 +96,7 @@ Hook::set('_', function($_) {
                         'url' => [
                             'part' => 0,
                             'path' => $path,
-                            'query' => [
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
-                                'type' => null
-                            ],
+                            'query' => x\panel\_query_set(),
                             'task' => 'get'
                         ]
                     ],
@@ -126,13 +108,10 @@ Hook::set('_', function($_) {
                         'url' => [
                             'part' => 0,
                             'path' => $path,
-                            'query' => [
-                                'query' => null,
-                                'stack' => null,
-                                'tab' => null,
+                            'query' => x\panel\_query_set([
                                 'token' => $_['token'],
                                 'trash' => $trash
-                            ],
+                            ]),
                             'task' => 'let'
                         ]
                     ]
@@ -142,12 +121,7 @@ Hook::set('_', function($_) {
                 'url' => [
                     'part' => 1,
                     'path' => $parent = dirname($path),
-                    'query' => false !== strpos($parent, '/') ? [
-                        'query' => null,
-                        'stack' => null,
-                        'tab' => null,
-                        'type' => null
-                    ] : null,
+                    'query' => x\panel\_query_set(),
                     'task' => 'get'
                 ]
             ]] + $files;
@@ -183,15 +157,7 @@ $desk = [
                                     'type' => 'link',
                                     'url' => [
                                         'part' => 0,
-                                        'query' => [
-                                            'chunk' => null,
-                                            'deep' => null,
-                                            'query' => null,
-                                            'stack' => null,
-                                            'tab' => null,
-                                            'type' => 'blob',
-                                            'x' => null
-                                        ],
+                                        'query' => x\panel\_query_set(['type' => 'blob']),
                                         'task' => 'set'
                                     ]
                                 ],
@@ -202,15 +168,7 @@ $desk = [
                                     'type' => 'link',
                                     'url' => [
                                         'part' => 0,
-                                        'query' => [
-                                            'chunk' => null,
-                                            'deep' => null,
-                                            'query' => null,
-                                            'stack' => null,
-                                            'tab' => null,
-                                            'type' => 'file',
-                                            'x' => null
-                                        ],
+                                        'query' => x\panel\_query_set(['type' => 'file']),
                                         'task' => 'set'
                                     ]
                                 ],
@@ -221,15 +179,7 @@ $desk = [
                                     'type' => 'link',
                                     'url' => [
                                         'part' => 0,
-                                        'query' => [
-                                            'chunk' => null,
-                                            'deep' => null,
-                                            'query' => null,
-                                            'stack' => null,
-                                            'tab' => null,
-                                            'type' => 'folder',
-                                            'x' => null
-                                        ],
+                                        'query' => x\panel\_query_set(['type' => 'folder']),
                                         'task' => 'set'
                                     ]
                                 ]

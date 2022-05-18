@@ -8,21 +8,13 @@ $_['lot']['bar']['lot'][0]['lot']['link']['skip'] = false;
 $_['lot']['bar']['lot'][0]['lot']['link']['url'] = [
     'part' => 1,
     'path' => dirname($_['path']),
-    'query' => [
-        'chunk' => null,
-        'deep' => null,
-        'query' => null,
-        'stack' => null,
-        'tab' => null,
-        'type' => null,
-        'x' => null
-    ],
+    'query' => x\panel\_query_set(),
     'task' => 'get'
 ];
 
 Hook::set('_', function($_) use($state, $url) {
     $bounds = [];
-    foreach (g(LOT . D . 'x', 'page', 1) as $k => $v) {
+    foreach (g(LOT . D . 'y', 'page', 1) as $k => $v) {
         if ('about.page' !== basename($k)) {
             continue;
         }
@@ -37,7 +29,7 @@ Hook::set('_', function($_) use($state, $url) {
             ])][$key] = $title;
         }
     }
-    $bound = $bounds[x\panel\from\path(LOT . D . 'x' . D . strtok($_['path'], '/'))] ?? [];
+    $bound = $bounds[x\panel\from\path(LOT . D . 'y' . D . strtok($_['path'], '/'))] ?? [];
     if (!empty($bound)) {
         asort($bound);
         // Disable delete button where possible
@@ -77,15 +69,7 @@ Hook::set('_', function($_) use($state, $url) {
                             ".\\lot\\" => "",
                             "\\" => '/'
                         ]),
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => ['info'],
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['tab' => ['info']]),
                         'task' => 'get'
                     ]) . '">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';
                 } else {

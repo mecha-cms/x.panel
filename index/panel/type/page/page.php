@@ -20,15 +20,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
 $_['lot']['bar']['lot'][0]['lot']['set']['url'] = [
     'part' => 0,
     'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
-    'query' => [
-        'chunk' => null,
-        'deep' => null,
-        'query' => null,
-        'stack' => null,
-        'tab' => null,
-        'type' => 'page/page',
-        'x' => null
-    ],
+    'query' => x\panel\_query_set(['type' => 'page/page']),
     'task' => 'set'
 ];
 

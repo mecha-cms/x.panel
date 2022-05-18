@@ -5,15 +5,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
-        'query' => [
-            'chunk' => null,
-            'deep' => null,
-            'query' => null,
-            'stack' => null,
-            'tab' => null,
-            'type' => null,
-            'x' => null
-        ],
+        'query' => x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;
@@ -40,15 +32,7 @@ $bar = [
                     'url' => [
                         'part' => $x ? 0 : 1,
                         'path' => ('get' === $_['task'] ? dirname($_['path']) : $_['path']) . $x,
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => ['data'],
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['tab' => ['data']]),
                         'task' => 'get'
                     ]
                 ],
@@ -61,15 +45,7 @@ $bar = [
                     'url' => [
                         'part' => 0,
                         'path' => dirname($_['path']),
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => 'data',
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['type' => 'data']),
                         'task' => 'set'
                     ]
                 ]

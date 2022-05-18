@@ -161,7 +161,7 @@ function _git_sync() {
                 'hash' => null,
                 'part' => 1,
                 'path' => 'x/' . \substr($k, 2),
-                'query' => null
+                'query' => \x\panel\_query_set()
             ]) . '">' . $page->title . '</a>';
         // Layout
         } else if (0 === \strpos($k, 'y.') && \is_file($file = \LOT . \D . 'y' . \D . \substr($k, 2) . \D . 'about.page')) {
@@ -170,7 +170,7 @@ function _git_sync() {
                 'hash' => null,
                 'part' => 1,
                 'path' => 'y/' . \substr($k, 2),
-                'query' => null
+                'query' => \x\panel\_query_set()
             ]) . '">' . $page->title . '</a>';
         } else {
             continue; // Skip!
@@ -206,11 +206,11 @@ function _git_sync() {
                         'hash' => null,
                         'part' => null,
                         'path' => 'mecha-cms/' . $k,
-                        'query' => [
+                        'query' => \x\panel\_query_set([
                             'minify' => 1,
                             'token' => $_['token'],
                             'version' => $v
-                        ],
+                        ]),
                         'task' => 'fire/' . ($ready ? 'fuse' : 'pull')
                     ]
                 ]
@@ -218,7 +218,7 @@ function _git_sync() {
         ], 0);
         $_['alert']['info'][$zip] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
     }
-    // Recursive-replace instead of re-assign the value because icon(s) data is also updated!
+    // Recursive-replace instead of re-assign the value because icon(s) data also updated!
     $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
 }
 
@@ -227,6 +227,20 @@ function _key_set($key) {
         return \spl_object_id($key);
     }
     return null === $key || \is_scalar($key) ? $key : \md5(\json_encode($key));
+}
+
+function _query_set(array $query = [], $reset = true) {
+    // Initially set panel’s query to `null`
+    return \array_replace_recursive($reset ? [
+        'chunk' => null,
+        'deep' => null,
+        'query' => null,
+        'sort' => null,
+        'stack' => null,
+        'tab' => null,
+        'type' => null,
+        'x' => null
+    ] : (array) ($GLOBALS['_']['query'] ?? []), $query);
 }
 
 function _state_set() {

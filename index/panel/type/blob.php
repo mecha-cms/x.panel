@@ -18,15 +18,7 @@ $bar = [
                     'url' => [
                         'part' => 1,
                         'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(),
                         'task' => 'get'
                     ]
                 ],
@@ -38,15 +30,7 @@ $bar = [
                     'title' => false,
                     'url' => [
                         'part' => 0,
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => 'blob',
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['type' => 'blob']),
                         'task' => 'set'
                     ]
                 ]

@@ -16,15 +16,7 @@ Hook::set('_', function($_) use($state) {
                 $v['tasks']['set']['url'] = [
                     'part' => 0,
                     'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
-                    'query' => [
-                        'chunk' => null,
-                        'deep' => null,
-                        'query' => null,
-                        'stack' => null,
-                        'tab' => null,
-                        'type' => 'page/page',
-                        'x' => null
-                    ],
+                    'query' => x\panel\_query_set(['type' => 'page/page']),
                     'task' => 'set'
                 ];
             }
@@ -39,7 +31,7 @@ Hook::set('_', function($_) use($state) {
                     'url' => [
                         'part' => 1,
                         'path' => strtr($c, [LOT . D => "", D => '/']),
-                        'query' => null,
+                        'query' => x\panel\_query_set(),
                         'task' => 'get'
                     ]
                 ];
@@ -51,15 +43,7 @@ Hook::set('_', function($_) use($state) {
 
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = [
     'part' => 0,
-    'query' => [
-        'chunk' => null,
-        'deep' => null,
-        'query' => null,
-        'stack' => null,
-        'tab' => null,
-        'type' => 'page/page',
-        'x' => null
-    ],
+    'query' => x\panel\_query_set(['type' => 'page/page']),
     'task' => 'set'
 ];
 

@@ -40,15 +40,7 @@ $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['descr
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['title'] = 'User';
 $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = [
     'part' => 0,
-    'query' => [
-        'chunk' => null,
-        'deep' => null,
-        'query' => null,
-        'stack' => null,
-        'tab' => null,
-        'type' => 'page/user',
-        'x' => null
-    ],
+    'query' => x\panel\_query_set(['type' => 'page/user']),
     'task' => 'set'
 ];
 

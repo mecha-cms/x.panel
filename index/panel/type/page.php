@@ -5,15 +5,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
-        'query' => [
-            'chunk' => null,
-            'deep' => null,
-            'query' => null,
-            'stack' => null,
-            'tab' => null,
-            'type' => null,
-            'x' => null
-        ],
+        'query' => x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;
@@ -88,15 +80,7 @@ $bar = [
                     'url' => [
                         'part' => 1,
                         'path' => 'get' === $_['task'] ? (0 === q(g($folder, 'archive,draft,page')) ? dirname($_['path']) : dirname($_['path']) . '/' . pathinfo($_['path'], PATHINFO_FILENAME)) : $_['path'],
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(),
                         'task' => 'get'
                     ]
                 ],
@@ -108,15 +92,7 @@ $bar = [
                     'title' => false,
                     'url' => [
                         'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => 'page',
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(['type' => 'page']),
                         'task' => 'set'
                     ]
                 ]
@@ -242,12 +218,7 @@ $desk = [
                                                                     'url' => $has_folder ? [
                                                                         'part' => 0,
                                                                         'path' => dirname($_['path']) . '/' . pathinfo($_['path'], PATHINFO_FILENAME),
-                                                                        'query' => [
-                                                                            'query' => null,
-                                                                            'stack' => null,
-                                                                            'tab' => null,
-                                                                            'type' => 'data'
-                                                                        ],
+                                                                        'query' => x\panel\_query_set(['type' => 'data']),
                                                                         'task' => 'set'
                                                                     ] : null
                                                                 ]
@@ -405,15 +376,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                             'url' => [
                                 'part' => 0,
                                 'path' => $pp,
-                                'query' => [
-                                    'chunk' => null,
-                                    'deep' => null,
-                                    'query' => null,
-                                    'stack' => null,
-                                    'tab' => null,
-                                    'type' => null,
-                                    'x' => null
-                                ],
+                                'query' => x\panel\_query_set(),
                                 'task' => 'get'
                             ]
                         ],
@@ -425,17 +388,11 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                             'url' => [
                                 'part' => 0,
                                 'path' => $pp,
-                                'query' => [
-                                    'chunk' => null,
-                                    'deep' => null,
-                                    'query' => null,
-                                    'stack' => null,
+                                'query' => x\panel\_query_set([
                                     'tab' => ['data'],
                                     'token' => $_['token'],
-                                    'trash' => $trash,
-                                    'type' => null,
-                                    'x' => null
-                                ],
+                                    'trash' => $trash
+                                ]),
                                 'task' => 'let'
                             ]
                         ]
@@ -445,15 +402,7 @@ Hook::set('_', function($_) use($page, $session, $trash, $url) {
                     'url' => [
                         'part' => 0,
                         'path' => $pp,
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => null,
-                            'x' => null
-                        ],
+                        'query' => x\panel\_query_set(),
                         'task' => 'get'
                     ]
                 ];

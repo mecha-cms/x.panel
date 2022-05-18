@@ -11,7 +11,7 @@ function fix($_) {
         }
     }
     $_['kick'] = $_REQUEST['kick'] ?? [
-        'query' => null,
+        'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;

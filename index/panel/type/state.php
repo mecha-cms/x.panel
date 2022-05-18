@@ -5,15 +5,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
-        'query' => [
-            'chunk' => null,
-            'deep' => null,
-            'query' => null,
-            'stack' => null,
-            'tab' => null,
-            'type' => null,
-            'x' => null
-        ],
+        'query' => x\panel\_query_set(),
         'task' => 'get'
     ];
     return $_;
@@ -78,15 +70,7 @@ $bar = [
                     'url' => [
                         'part' => "" !== $back ? 1 : 0,
                         'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : ($state->x->panel->route ?? 'page/1'), '/') : $_['path'],
-                        'query' => [
-                            'chunk' => null,
-                            'deep' => null,
-                            'query' => null,
-                            'stack' => null,
-                            'tab' => null,
-                            'type' => null,
-                            'x' => null
-                        ]
+                        'query' => x\panel\_query_set()
                     ]
                 ],
                 'folder' => ['skip' => true]
