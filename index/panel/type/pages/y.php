@@ -10,7 +10,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
         $bounds = [];
         $count = 0;
         $search = static function($folder, $x, $r) {
-            $q = strtolower($_GET['query'] ?? "");
+            $q = strtolower(s($_['query']['query'] ?? ""));
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };
         $pages = [];
@@ -23,14 +23,14 @@ Hook::set('_', function($_) use($state, $url, $user) {
                     continue;
                 }
                 $p = new Page($k);
-                $sort = $_['sort'][1] ?? 'time';
+                $sort = $_['sort'][1] ?? 'title';
                 $title = strip_tags((string) ($p->title ?? ""));
                 $key = strtr(x\panel\from\path(dirname($k)), [
                     "\\" => '/'
                 ]);
                 $pages[$k] = [
-                    'page' => $p,
-                    'title' => $title
+                    $sort => strip_tags((string) ($p->{$sort} ?? "")),
+                    'page' => $p
                 ];
                 foreach ((array) $p['use'] as $kk => $vv) {
                     $bounds[strtr($kk, [
@@ -39,9 +39,10 @@ Hook::set('_', function($_) use($state, $url, $user) {
                 }
                 ++$count;
             }
+            $_['sort'] = array_replace([1, 'path'], (array) ($_['sort'] ?? []));
             $pages = new Anemone($pages);
-            $pages->sort([1, 'title'], true);
-            $pages = $pages->chunk($_GET['chunk'] ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
+            $pages->sort($_['sort'], true);
+            $pages = $pages->chunk($_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($d = dirname($k), [
                     LOT . D => "",

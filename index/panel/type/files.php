@@ -11,13 +11,13 @@ Hook::set('_', function($_) {
         $files = [[], []];
         $count = 0;
         $search = static function($folder, $x, $deep) {
-            $query = strtolower($_GET['query'] ?? "");
+            $query = strtolower(s($_['query']['query'] ?? ""));
             return $query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep);
         };
         $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
         $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {
-            foreach ($search($folder, $_GET['x'] ?? null, array_key_exists('deep', $_GET) ? true : ($_GET['deep'] ?? 0)) as $k => $v) {
+            foreach ($search($folder, $_['x'] ?? null, $_['deep'] ?? 0) as $k => $v) {
                 $n = basename($k);
                 if (false !== strpos('_.', $n[0]) && !$super) {
                     continue; // User(s) with status other than `1` cannot see hidden file(s)
@@ -30,7 +30,7 @@ Hook::set('_', function($_) {
             $files = array_merge($files[0], $files[1]);
             $_['count'] = $count;
         }
-        $files = array_chunk($files, $_GET['chunk'] ?? $_['chunk'] ?? 20, true)[($_['part'] ?? 1) - 1] ?? [];
+        $files = array_chunk($files, $_['chunk'] ?? 20, true)[($_['part'] ?? 1) - 1] ?? [];
         foreach ($files as $k => $v) {
             $path = strtr($k, [
                 LOT . D => "",

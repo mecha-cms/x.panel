@@ -125,10 +125,10 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
     'can' => [],
-    'chunk' => null, // Default is `20`
+    'chunk' => $query['chunk'] ?? null, // Default is `20`
     'content' => null,
     'count' => 0,
-    'deep' => null, // Default is `0`
+    'deep' => $query['deep'] ?? null, // Default is `0`
     'description' => null,
     'file' => $f && is_file($f) ? $f : null,
     'folder' => $f && is_dir($f) ? $f : null,
@@ -143,14 +143,14 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'part' => (int) $part,
     'path' => $test ? $m[2] : null,
     'query' => $query,
-    'sort' => null, // Default is `[1, 'path']`
+    'sort' => $query['sort'] ?? null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
     'task' => $GLOBALS['_' . $req]['task'] ?? ($test ? $m[1] : null),
     'title' => null,
     'token' => $user->token ?? null,
     'type' => $GLOBALS['_' . $req]['type'] ?? null,
     'with' => [],
-    'x' => null
+    'x' => $query['x'] ?? null
 ], $GLOBALS['_'] ?? []);
 
 // Modify default log-in redirection to the panel page if it is not set

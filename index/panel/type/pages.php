@@ -9,7 +9,7 @@ Hook::set('_', function($_) use($state, $user) {
     ) {
         $count = 0;
         $search = static function($folder, $x, $r) {
-            $q = strtolower($_GET['query'] ?? "");
+            $q = strtolower(s($_['query']['query'] ?? ""));
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };
         $pages = [];
@@ -22,7 +22,7 @@ Hook::set('_', function($_) use($state, $user) {
                 $folder . '.draft',
                 $folder . '.page'
             ], 1)) ? new Page($f) : new Page;
-            foreach ($search($folder, $_GET['x'] ?? 'archive,draft,page', array_key_exists('deep', $_GET) ? true : ($_GET['deep'] ?? 0)) as $k => $v) {
+            foreach ($search($folder, $_['x'] ?? 'archive,draft,page', $_['deep'] ?? 0) as $k => $v) {
                 if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
                     continue; // Skip placeholder page(s)
                 }
@@ -41,7 +41,7 @@ Hook::set('_', function($_) use($state, $user) {
             $_['sort'] = array_replace([1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
             $pages = new Anemone($pages);
             $pages->sort($_['sort'], true);
-            $pages = $pages->chunk($_GET['chunk'] ?? $page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
+            $pages = $pages->chunk($page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($k, [
                     LOT . D => "",
