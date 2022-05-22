@@ -238,6 +238,7 @@ function _query_set(array $query = [], $reset = true) {
         'sort' => null,
         'stack' => null,
         'tab' => null,
+        'token' => null,
         'type' => null,
         'x' => null
     ] : (array) ($GLOBALS['_']['query'] ?? []), $query);
