@@ -9,7 +9,10 @@ function fuse($_) {
         'hash' => null,
         'part' => 0,
         'path' => "" !== $key ? $key . '/1' : ($state->x->panel->route ?? 'asset/1'),
-        'query' => \x\panel\_query_set(),
+        'query' => \x\panel\_query_set([
+            'minify' => null,
+            'version' => null
+        ]),
         'task' => 'get'
     ];
     // Abort by previous hook’s return value if any
@@ -57,7 +60,7 @@ function fuse($_) {
                 if (isset($files_current[$k]) && 1 === $files_current[$k]) {
                     \is_file($f) && \unlink($f); // Delete the file so that we can make folder
                 }
-                \mkdir($f, 0775, true);
+                !\is_dir($f) && \mkdir($f, 0775, true);
                 continue;
             }
             // Prepare to merge current `state.php` to the new `state.php` file!
@@ -73,16 +76,21 @@ function fuse($_) {
         // --diff
         foreach ($files_current as $k => $v) {
             $f = $folder . \D . $k;
-            if (!isset($files_next[$k])) {
+            if (!isset($files_next[$k]) && 'state.bak.php' !== $k) {
                 0 === $v ? \rmdir($f) : \unlink($f);
                 ++$counter[0];
             }
         }
         if (isset($files_current['state.php']) && isset($files_current['state.bak.php'])) {
-            $current = (array) require $folder . \D . 'state.bak.php';
-            $next = (array) require $folder . \D . 'state.php';
+            $current = $next = [];
+            if (\is_file($f = $folder . \D . 'state.bak.php')) {
+                $current = (array) require $f;
+            }
+            if (\is_file($f = $folder . \D . 'state.php')) {
+                $next = (array) require $f;
+            }
             \file_put_contents($folder . \D . 'state.php', '<?' . 'php return ' . \z(\array_replace_recursive($next, $current)) . ';');
-            \unlink($folder . \D . 'state.bak.php');
+            \is_file($f = $folder . \D . 'state.bak.php') && \unlink($f);
         }
         $page = new \Page(\exist($folder . \D . 'about.page', 1) ?: null);
         $_['alert']['success'][$folder] = ['%s successfully updated to version %s.', [$page->title ?? '<code>' . $value . '</code>', '<code>' . ($page->version ?? $version) . '</code>']];
