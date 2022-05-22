@@ -3,6 +3,21 @@
 $count = ($f = $_['file']) ? q(g(dirname($f) . D . pathinfo($f, PATHINFO_FILENAME), 'page')) : 0;
 $folder = $f ? dirname($f) . D . pathinfo($f, PATHINFO_FILENAME) : P;
 
+$layouts = [];
+foreach (glob(LOT . D . 'y' . D . '*' . D . '{page,pages}' . D . '*.php', GLOB_BRACE | GLOB_NOSORT) as $v) {
+    if (!is_file(($d = dirname($v, 2)) . D . 'index.php')) {
+        continue;
+    }
+    $n = substr($v, strlen($d) + 1, -4);
+    $layouts[$n] = $n;
+}
+
+if ($layouts) {
+    $layouts[""] = 'Default';
+    $layouts['page'] = 'Page';
+    $layouts['pages'] = 'Pages';
+}
+
 if ('POST' === $_SERVER['REQUEST_METHOD']) {
     $chunk = $_POST['data']['chunk'] ?? $_POST['page']['chunk'] ?? null;
     $x = $_POST['page']['x'] ?? 'page';
@@ -31,6 +46,15 @@ $sort = $state->x->page->page->sort ?? [1, 'path'];
 $page_chunk = $page['chunk'] ?? null;
 $page_deep = $page['deep'] ?? null;
 $page_sort = $page['sort'] ?? null;
+
+$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['layout'] = [
+    'lot' => $layouts,
+    'name' => 'page[layout]',
+    'skip' => !$layouts,
+    'stack' => 51,
+    'type' => 'option',
+    'value' => $page['layout'] ?? ""
+];
 
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
     'lot' => [

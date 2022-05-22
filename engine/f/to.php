@@ -160,7 +160,7 @@ function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = '
             if ($current === $i) {
                 $out .= ' <b title="' . $i . '">' . $i . '</b>';
             } else {
-                $out .= ' <a href="' .\call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+                $out .= ' <a href="' . \call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
             }
         }
         if ($max < $end) {
