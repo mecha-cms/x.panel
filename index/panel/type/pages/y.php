@@ -9,7 +9,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
     ) {
         $bounds = [];
         $count = 0;
-        $search = static function($folder, $x, $r) {
+        $search = static function($folder, $x, $r) use($_) {
             $q = strtolower(s($_['query']['query'] ?? ""));
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };

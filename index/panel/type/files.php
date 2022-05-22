@@ -10,7 +10,7 @@ Hook::set('_', function($_) {
         extract($GLOBALS, EXTR_SKIP);
         $files = [[], []];
         $count = 0;
-        $search = static function($folder, $x, $deep) {
+        $search = static function($folder, $x, $deep) use($_) {
             $query = strtolower(s($_['query']['query'] ?? ""));
             return $query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep);
         };
