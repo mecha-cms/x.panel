@@ -29,6 +29,6 @@
     "ext-zip": "Make sure this extension is available to work with ZIP files.",
     "mecha-cms/x.avatar": "Install this extension to enable user profile photo.",
     "mecha-cms/x.form": "Install this extension to retain form values when error occurs during submission.",
-    "mecha-cms/x.gravatar": "Install this extension to enable user profile photo automatically based on specified email address."
+    "mecha-cms/x.gravatar": "Install this extension to enable user profile photo automatically based on the specified email address."
   }
 }
