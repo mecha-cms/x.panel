@@ -1,5 +1,34 @@
 {
+  "config": {
+    "lock": false,
+    "sort-packages": true,
+    "vendor-dir": "engine/vendor"
+  },
+  "funding": [
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/mecha-cms"
+    },
+    {
+      "type": "other",
+      "url": "https://paypal.me/tatautaufik"
+    }
+  ],
+  "description": "GUI extension for Mecha.",
+  "license": "GPL-3.0-or-later",
+  "name": "mecha-cms/x.asset",
   "require": {
-    "maennchen/zipstream-php": "^2.1"
+    "mecha-cms/x.alert": "*",
+    "mecha-cms/x.asset": "*",
+    "mecha-cms/x.layout": "*",
+    "mecha-cms/x.page": "*",
+    "mecha-cms/x.user": "*",
+    "mecha-cms/x.y-a-m-l": "*"
+  },
+  "suggest": {
+    "ext-zip": "Make sure this extension is available to work with ZIP files.",
+    "mecha-cms/x.avatar": "Install this extension to enable user profile photo.",
+    "mecha-cms/x.form": "Install this extension to retain form values when error occurs during submission.",
+    "mecha-cms/x.gravatar": "Install this extension to enable user profile photo automatically based on specified email address."
   }
 }
