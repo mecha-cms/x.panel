@@ -16,7 +16,7 @@
   ],
   "description": "GUI extension for Mecha.",
   "license": "GPL-3.0-or-later",
-  "name": "mecha-cms/x.asset",
+  "name": "mecha-cms/x.panel",
   "require": {
     "mecha-cms/x.alert": "*",
     "mecha-cms/x.asset": "*",
