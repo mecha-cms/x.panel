@@ -1,10 +1,10 @@
-@import 'content/column';
-@import 'content/columns';
-@import 'content/row';
-@import 'content/rows';
-@import 'content/section';
-@import 'content/stack';
-@import 'content/tab';
+@import './content/column.scss';
+@import './content/columns.scss';
+@import './content/row.scss';
+@import './content/rows.scss';
+@import './content/section.scss';
+@import './content/stack.scss';
+@import './content/tab.scss';
 
 pre {
   &.is\:text {

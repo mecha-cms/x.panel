@@ -96,11 +96,12 @@ s {
 }
 
 dialog {
-  background: var(--fill);
-  border: 0;
+  background: var(--fill-dialog, var(--fill));
+  border: 0 solid transparent;
+  border-color: var(--stroke-dialog, var(--stroke));
   bottom: 0;
-  box-shadow: var(--shadow-dialog);
-  color: var(--color);
+  box-shadow: var(--shadow-dialog, var(--shadow));
+  color: var(--color-dialog, var(--color));
   display: block;
   height: fit-content;
   left: 0;
@@ -116,7 +117,7 @@ dialog {
 
 dialog::backdrop {
   @include user-select(none);
-  background: rgba(0, 0, 0, .5);
+  background: var(--fill-dialog--backdrop, rgba(0, 0, 0, .5));
 }
 
 dialog:not([open]) {

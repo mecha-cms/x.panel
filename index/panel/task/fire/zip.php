@@ -93,7 +93,7 @@ function zip($_) {
         return $_;
     }
     // Else, perform “pack”
-    require \LOT . \D . 'x' . \D . 'panel' . \D . 'vendor' . \D . 'autoload.php';
+    require \LOT . \D . 'x' . \D . 'panel' . \D . 'engine' . \D . 'vendor' . \D . 'autoload.php';
     \http_response_code(200); // Set correct response status to make it work!
     $name = $_REQUEST['zip']['name'] ?? (($file || $folder ? \basename($file ?: $folder) : \uniqid()) . '@' . \date('Y-m-d') . '.zip');
     $parent = \dirname($file ?: $folder);
