@@ -38,34 +38,6 @@ function button($value, $key) {
     return $out;
 }
 
-function card($value, $key) {
-    $value['tags']['lot:card'] = $value['tags']['lot:card'] ?? true;
-    $value['tags']['lot:page'] = $value['tags']['lot:page'] ?? false;
-    $value['tasks']['title'] = \array_replace($value['tasks']['title'] ?? [], [
-        'description' => $value['description'] ?? null,
-        'link' => $value['link'] ?? null,
-        'stack' => -1,
-        'title' => $value['title'] ?? null,
-        'url' => $value['url'] ?? null,
-        'with' => ['title' => true]
-    ]);
-    $value['description'] = $value['title'] = false;
-    unset($value['link'], $value['url']);
-    return \x\panel\type\page($value, $key);
-}
-
-function cards($value, $key) {
-    $value['tags']['lot:cards'] = true;
-    $value['tags']['lot:pages'] = false;
-    foreach ($value['lot'] ?? [] as &$v) {
-        if (\is_array($v)) {
-            $v['type'] = $v['type'] ?? 'card';
-        }
-    }
-    unset($v);
-    return \x\panel\type\pages($value, $key);
-}
-
 function column($value, $key) {
     $value['tags']['p'] = $value['tags']['p'] ?? false;
     if (!empty($value['size']) && !isset($value['tags']['size:' . $value['size']])) {
