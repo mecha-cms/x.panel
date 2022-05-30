@@ -31,15 +31,15 @@ if (defined('TEST') && TEST) {
         $one = 0 === substr_count($errors, "\n");
         $out = i('Please fix ' . ($one ? 'this error' : 'these errors') . ':');
         $out .= '<br><br>';
-        $out .= '<code style="display:inline-block;font-size:70%;line-height:1.25em;">' . strtr(htmlspecialchars($errors), ["\n" => '<br>']) . '</code>';
+        $out .= '<code>' . strtr(htmlspecialchars($errors), ["\n" => '<br>']) . '</code>';
         $out .= '<br><br>';
         $out .= i('If you think you have fixed the error' . ($one ? "" : 's') . ', you can then %s.', ['<a href="' . x\panel\to\link([
             'part' => 0,
             'path' => $v,
-            'query' => [
+            'query' => x\panel\_query_set([
                 'kick' => short($url->current),
                 'token' => $_['token']
-            ],
+            ]),
             'task' => 'fire/fix'
         ]) . '">' . i('remove the log file') . '</a>']);
         $GLOBALS['_']['alert']['error'][$log] = $out;
