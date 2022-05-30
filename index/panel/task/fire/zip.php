@@ -26,22 +26,22 @@ function zip($_) {
         $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/manual/en/class.ziparchive.php" rel="nofollow" target="_blank"><code>zip</code></a>'];
         return $_;
     }
-    if (\is_array($fold = \s($_REQUEST['zip']['folder'] ?? "")) || 'false' === $fold || 'null' === $fold) {
-        $fold = "";
-    } else if ('true' === $fold) {
-        // Add default root folder with `?zip[folder]=true`
-        $fold = \basename($folder) . \D;
-    } else if ($fold || '0' === $fold) {
-        // Add custom root folder with `?zip[folder]=asdf`
-        $fold = \trim(\strtr($fold, "\\", \D), \D) . \D;
+    if (\is_array($wrap = \s($_REQUEST['folder'] ?? "")) || 'false' === $wrap || 'null' === $wrap) {
+        $wrap = "";
+    } else if ('true' === $wrap) {
+        // Add default root folder with `?folder=true`
+        $wrap = \D . \pathinfo($file, \PATHINFO_FILENAME);
+    } else if ($wrap || '0' === $wrap) {
+        // Add custom root folder with `?folder=asdf`
+        $wrap = \D . \trim(\strtr($wrap, "\\", \D), \D);
     }
     // Calling this task on a file with extension `.zip` will automatically perform “extract”
     if ($file_zip) {
         \http_response_code(200); // Set correct response status!
         $zip = new \ZipArchive;
         $parent = \dirname($file);
-        if ("" !== $fold) {
-            $parent = \rtrim($parent . \D . $fold, \D);
+        if ("" !== $wrap) {
+            $parent = \rtrim($parent . $wrap, \D);
         }
         if (true === $zip->open($file)) {
             $test_x = \P . \implode(\P, \array_keys(\array_filter((array) (\State::get('x.panel.guard.file.x', true) ?? [])))) . \P;
@@ -61,8 +61,9 @@ function zip($_) {
                 } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
                     try {
                         \token_get_all($content, \TOKEN_PARSE);
+                        $_SESSION['_']['file'][$v] = 1;
                     } catch (\Throwable $e) {
-                        $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                        $_['alert']['error'][$v] = (string) $e;
                     }
                 } else {
                     $_SESSION['_']['file'][$v] = 1;
@@ -78,7 +79,7 @@ function zip($_) {
                 $zip->extractTo($parent);
                 $_['alert']['success'][$file] = ['Package %s successfully extracted.', '<code>' . \x\panel\from\path($file) . '</code>'];
                 // Delete package after “extract” with `?zip[let]=true`
-                if (!empty($_REQUEST['zip']['let'])) {
+                if (empty($_REQUEST['zip']['keep'])) {
                     if (\unlink($file)) {
                         $_['alert']['success'][$file] = ['Package %s successfully extracted and deleted.', '<code>' . \x\panel\from\path($file) . '</code>'];
                     } else {
@@ -93,7 +94,7 @@ function zip($_) {
         return $_;
     }
     // Else, perform “pack”
-    require \LOT . \D . 'x' . \D . 'panel' . \D . 'engine' . \D . 'vendor' . \D . 'autoload.php';
+    require \LOT . \D . 'x' . \D . 'panel' . \D . 'engine' . \D . 'r' . \D . 'vendor' . \D . 'autoload.php';
     \http_response_code(200); // Set correct response status to make it work!
     $name = $_REQUEST['zip']['name'] ?? (($file || $folder ? \basename($file ?: $folder) : \uniqid()) . '@' . \date('Y-m-d') . '.zip');
     $parent = \dirname($file ?: $folder);
@@ -106,10 +107,10 @@ function zip($_) {
     if ($folder && \is_dir($folder)) {
         $parent .= \D . \basename($folder);
         foreach (\g($folder, 1, true) as $k => $v) {
-            $zip->addFileFromPath(\strtr($k, [$parent . \D => $fold]), $k);
+            $zip->addFileFromPath(\strtr($k, [$parent . \D => $wrap]), $k);
         }
     } else if ($file && \is_file($file)) {
-        $zip->addFileFromPath(\strtr($file, [$parent . \D => $fold]), $file);
+        $zip->addFileFromPath(\strtr($file, [$parent . \D => $wrap]), $file);
     }
     $zip->finish();
     exit;

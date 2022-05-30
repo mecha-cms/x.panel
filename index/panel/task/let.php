@@ -81,7 +81,7 @@ function file($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'path' => \dirname($_['path']),
-            'query' => \x\panel\_query_set($_POST['query'] ?? []),
+            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], ['trash' => null])),
             'task' => 'get'
         ];
     }
@@ -144,7 +144,7 @@ function folder($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'path' => \dirname($_['path']),
-            'query' => \x\panel\_query_set($_POST['query'] ?? []),
+            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], ['trash' => null])),
             'task' => 'get'
         ];
     }

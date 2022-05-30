@@ -197,7 +197,7 @@ Hook::set('_', function($_) use($state, $user) {
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
-            'chunk' => $_GET['chunk'] ?? $page->chunk ?? $_['chunk'] ?? 20,
+            'chunk' => $page->chunk ?? $_['chunk'] ?? 20,
             'count' => $_['count'] ?? 0,
             'current' => $_['part'] ?? 1,
             'stack' => 20,

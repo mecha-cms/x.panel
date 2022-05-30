@@ -46,7 +46,7 @@ Hook::set('_', function($_) use($state) {
         }
         if ($is_root) {
             // Sort folder(s) by its `path` property, descending
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['sort'] = [-1, 'path'];
+            \krsort($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot']);
         }
     }
     return $_;

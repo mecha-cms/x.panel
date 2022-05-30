@@ -19,7 +19,7 @@ function data($_) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
-    $name = \basename(\To::file(\lcfirst($_POST['data']['name'] ?? "")));
+    $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? ""), '.@_~'));
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && isset($folder) && $parent = \glob(\dirname($folder) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
@@ -48,7 +48,7 @@ function file($_) {
         return $_;
     }
     $base = \basename((string) ($file = $_['file'])); // Old file name
-    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
+    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? ""), '.@_~'));
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     if ("" === $name) {
         $_['alert']['error'][$file] = ['Please fill out the %s field.', 'Name'];
@@ -64,7 +64,7 @@ function file($_) {
                 try {
                     \token_get_all($content = $_POST['file']['content'] ?? "", \TOKEN_PARSE);
                 } catch (\Throwable $e) {
-                    $_['alert']['error'][$self] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                    $_['alert']['error'][$self] = (string) $e;
                     unset($_POST['token']);
                     $_SESSION['form'] = $_POST;
                     return $_; // Skip!
@@ -119,7 +119,7 @@ function folder($_) {
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
     $base = \basename((string) $folder); // Old folder name
-    $name = \basename((string) \To::folder($_POST['folder']['name'] ?? "")); // New folder name
+    $name = \basename((string) \To::folder($_POST['folder']['name'] ?? "", '.@_~')); // New folder name
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
     } else if (\stream_resolve_include_path($self = \dirname($folder) . \D . $name) && $name !== $base) {

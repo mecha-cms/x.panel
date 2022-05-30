@@ -22,8 +22,25 @@ function blob($_) {
         if (!empty($v['status'])) {
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
         } else {
-            $name = (string) (\To::file(\lcfirst($v['name'])) ?? \uniqid());
-            $blob = $folder . \D . $name;
+            $name = (string) (\To::file(\lcfirst($v['name']), '.@_~') ?? \uniqid());
+            if (\is_array($wrap = \s($_POST['options'][$k]['folder'] ?? $_POST['options'][0]['folder'] ?? "")) || 'false' === $wrap || 'null' === $wrap) {
+                $wrap = "";
+            } else if ('true' === $wrap) {
+                // Add default root folder with `<input name="options[0][zip][folder]" value="true">`
+                $wrap = \D . \pathinfo($name, \PATHINFO_FILENAME);
+            } else if ($wrap || '0' === $wrap) {
+                // Add custom root folder with `<input name="options[0][zip][folder]" value="asdf">`
+                $wrap = \D . \trim(\strtr($wrap, "\\", \D), \D);
+            }
+            if ($parent = $folder) {
+                if ("" !== $wrap) {
+                    $parent = \rtrim($parent . $wrap, \D);
+                }
+                if (!\is_dir($parent)) {
+                    \mkdir($parent, 0775, true);
+                }
+            }
+            $blob = $parent . \D . $name;
             $size = $v['size'] ?? 0;
             $type = $v['type'] ?? 'application/octet-stream';
             $x = \pathinfo($name, \PATHINFO_EXTENSION);
@@ -45,7 +62,7 @@ function blob($_) {
                 try {
                     \token_get_all($content = \file_get_contents($v['blob']), \TOKEN_PARSE);
                 } catch (\Throwable $e) {
-                    $_['alert']['error'][$blob] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                    $_['alert']['error'][$blob] = (string) $e;
                 }
             }
             $v['name'] = $name; // Safe file name!
@@ -57,12 +74,9 @@ function blob($_) {
             $_['alert']['error'][$blob] = ['File %s already exists.', '<code>' . \x\panel\from\path($blob) . '</code>'];
             continue;
         }
-        if (isset($folder) && !\is_dir($folder)) {
-            \mkdir($folder, 0775, true);
-        }
-        if (\is_int($file = \store($folder, $v))) {
-            if (0 === \q(\g($folder))) {
-                \rmdir($folder);
+        if (\is_int($file = \store($parent, $v))) {
+            if (0 === \q(\g($parent))) {
+                \rmdir($parent);
             }
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $file;
             continue;
@@ -71,7 +85,7 @@ function blob($_) {
         $_['file'] = $blob; // For hook(s)
         $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
         // Perform package “extract”
-        if (!empty($_POST['options']['extract']) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
+        if ((!empty($_POST['options'][$k]['zip']['extract']) || !empty($_POST['options'][0]['zip']['extract'])) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
             $zip = new \ZipArchive;
             if (true === $zip->open($blob)) {
                 for ($i = 0; $i < $zip->numFiles; ++$i) {
@@ -79,7 +93,7 @@ function blob($_) {
                     if (\D === \substr($v, -1)) {
                         continue; // Skip folder!
                     }
-                    $v = $folder . \D . $v;
+                    $v = $parent . \D . $v;
                     // This prevents user(s) from uploading forbidden file(s)
                     if ($x && false === \strpos($test_x, \P . $x . \P)) {
                         $_['alert']['error'][$v] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
@@ -90,8 +104,9 @@ function blob($_) {
                     } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
                         try {
                             \token_get_all($content, \TOKEN_PARSE);
+                            $_SESSION['_']['file'][$v] = 1;
                         } catch (\Throwable $e) {
-                            $_['alert']['error'][$v] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>' . \x\panel\from\path($v) . '#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                            $_['alert']['error'][$v] = (string) $e;
                         }
                     } else {
                         $_SESSION['_']['file'][$v] = 1;
@@ -101,10 +116,10 @@ function blob($_) {
                 if (!empty($_['alert']['error'])) {
                     $_['alert']['error'][$blob] = ['Package %s could not be extracted due to the previous errors.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                 } else {
-                    $zip->extractTo($folder);
+                    $zip->extractTo($parent);
                     $_['alert']['success'][$blob] = ['Package %s successfully extracted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                     // Delete package after “extract”
-                    if (!empty($_POST['options']['let'])) {
+                    if (empty($_POST['options'][$k]['zip']['keep']) && empty($_POST['options'][0]['zip']['keep'])) {
                         if (\unlink($blob)) {
                             $_['alert']['success'][$blob] = ['Package %s successfully extracted and deleted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                         } else {
@@ -142,7 +157,7 @@ function data($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $name = \basename(\To::file(\lcfirst($_POST['data']['name'] ?? "")) ?? "");
+    $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? "")));
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
@@ -171,7 +186,7 @@ function file($_) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
-    $name = \basename(\To::file(\lcfirst($_POST['file']['name'] ?? "")) ?? "");
+    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? ""), '.@_~'));
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
@@ -187,7 +202,7 @@ function file($_) {
                 try {
                     \token_get_all($content = $_POST['file']['content'] ?? "", \TOKEN_PARSE);
                 } catch (\Throwable $e) {
-                    $_['alert']['error'][$file] = '<b>' . \get_class($e) . ':</b> ' . $e->getMessage() . ' at <code>#' . ($l = $e->getLine()) . '</code><br><code>' . \htmlspecialchars(\explode("\n", $content)[$l - 1] ?? "") . '</code>';
+                    $_['alert']['error'][$file] = (string) $e;
                     unset($_POST['token']);
                     $_SESSION['form'] = $_POST;
                     return $_; // Skip!
@@ -241,7 +256,7 @@ function folder($_) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
-    $name = (string) \To::folder($_POST['folder']['name'] ?? "");
+    $name = (string) \To::folder($_POST['folder']['name'] ?? "", '.@_~');
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
     } else if (\stream_resolve_include_path($self = $folder . \D . $name)) {

@@ -2,8 +2,14 @@
 
 $options = [];
 if (extension_loaded('zip')) {
-    $options['extract'] = 'Extract package immediately after uploaded.';
-    $options['let'] = 'Delete package immediately after extracted.';
+    $options['extract'] = [
+        'name' => 'options[0][zip][extract]',
+        'title' => 'Extract package automatically after upload.'
+    ];
+    $options['keep'] = [
+        'name' => 'options[0][zip][keep]',
+        'title' => 'Keep package after extract.'
+    ];
 }
 
 $bar = [
