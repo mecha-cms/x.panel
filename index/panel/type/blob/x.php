@@ -22,7 +22,7 @@ Hook::set('do.blob.set', function($_) use($description, $zip) {
             if (preg_match('/^' . x($r)  . '\.([^@]+)(?:[@](?:main|v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?))?$/', $name, $m)) {
                 $wrap = $m[1];
             } else {
-                $wrap = $name;
+                $wrap = strtok($name, '@');
             }
             $_POST['options'][$k]['folder'] = $wrap; // Wrap package in a folder
             $_POST['options'][$k]['zip']['extract'] = true; // Extract package
