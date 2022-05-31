@@ -8,6 +8,10 @@ Hook::set('_', function($_) use($state) {
     ) {
         $is_root = 0 === substr_count($_['path'], '/');
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'] as $k => &$v) {
+            $path = strtr($k, [
+                LOT . D => "",
+                D => '/'
+            ]);
             unset($v['tasks']['get']);
             if (!empty($v['tasks']['let']['url']['query']['trash'])) {
                 $v['tasks']['let']['description'] = 'Delete permanently';
@@ -33,7 +37,7 @@ Hook::set('_', function($_) use($state) {
                         'stack' => 10,
                         'title' => 'Recover',
                         'url' => [
-                            'path' => basename($k),
+                            'path' => $path,
                             'query' => x\panel\_query_set(['token' => $_['token']]),
                             'task' => 'fire/recover'
                         ]
