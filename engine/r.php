@@ -26,13 +26,6 @@ return (static function($icons) {
             ]
         ];
     }
-    // `dechex(crc32('comments.info'))`
-    if (isset($folders['comment']) && isset($state->x->comment) && is_file($cache = LOT . D . 'cache' . D . '8bead58f.php')) {
-        $info = (array) require $cache;
-        if (!empty($info[0])) {
-            $folders['comment']['status'] = $info[0];
-        }
-    }
     if (isset($folders['trash']) && ($count = q(g(LOT . D . 'trash')))) {
         $folders['trash']['status'] = q(g(LOT . D . 'trash', null, true)) - $count;
     }

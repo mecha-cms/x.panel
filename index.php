@@ -1,7 +1,7 @@
 <?php
 
-if (!is_dir(LOT . D . 'user') || !isset($state->x->user)) {
-    return;
+if (!isset($state->x->user)) {
+    abort('Missing <a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a> extension.');
 }
 
 // Clear the rest of file and folder marker(s)
@@ -9,79 +9,10 @@ Hook::set('on.user.exit', function() {
     unset($_SESSION['_']);
 });
 
-/*
-
-$email = State::get('email');
-
-if (null !== State::get('x.comment')) {
-    // Send notification
-    if ($email && Is::email($email)) {
-        Hook::set('on.comment.set', function($path) use($email) {
-            extract($GLOBALS, EXTR_SKIP);
-            $link = $_['/'] . '/::g::' . strtr($path, [
-                LOT => "",
-                DS => '/'
-            ]);
-            $comment = new Comment($path);
-            $title = i('New Comment');
-            $content  = '<p style="font-size: 120%; font-weight: bold;">' . $comment->author . '</p>';
-            $content .= $comment->content;
-            $content .= '<p style="font-size: 80%; font-style: italic;">' . $comment->time->{r('-', '_', $state->language)} . '</p>';
-            $content .= '<p><a href="' . $link . '" target="_blank">' . i('Manage') . '</a></p>';
-            send($email, $email, $title, $content, [
-                'reply-to' => $comment->email ?? $email
-            ]);
-        });
-    }
-    // Generate recent comment cache
-    Hook::set('on.comment.set', function($path) {
-        extract($GLOBALS, EXTR_SKIP);
-        // `dechex(crc32('comments.info'))`
-        if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '8bead58f.php')) {
-            if (!is_dir($d)) {
-                mkdir($d, 0775, true);
-            }
-            file_put_contents($f, '<?' . 'php return [0];');
-        }
-        $info = (array) require $f;
-        $info[0] = $info[0] + 1;
-        file_put_contents($f, '<?' . 'php return ' . z($info) . ';');
-        // `dechex(crc32('comments'))`
-        if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '5f9e962a.php')) {
-            if (!is_dir($d)) {
-                mkdir($d, 0775, true);
-            }
-            file_put_contents($f, '<?' . 'php return [];');
-        }
-        $recent = (array) require $f;
-        foreach ($recent as $k => $v) {
-            if (!is_file(LOT . DS . $v)) {
-                unset($recent[$k]);
-            }
-        }
-        array_unshift($recent, strtr($path, [LOT . DS => ""]));
-        file_put_contents($f, '<?' . 'php return ' . z(array_slice($recent, 0, $_['chunk'])) . ';');
-    });
-    // Generate recent comment cache for the first time
-    if (!is_file($f = ($d = LOT . DS . 'cache') . DS . '5f9e962a.php')) {
-        if (!is_dir($d)) {
-            mkdir($d, 0775, true);
-        }
-        $recent = [];
-        foreach (g(LOT . DS . 'comment', 'archive,draft,page', true) as $k => $v) {
-            $recent[basename($k)] = strtr($k, [LOT . DS => ""]);
-        }
-        krsort($recent);
-        file_put_contents($f, '<?' . 'php return ' . z(array_values(array_slice($recent, 0, $_['chunk']))) . ';');
-    }
-}
-
-*/
-
 $path = trim($url->path ?? "", '/');
 $route = trim($state->x->panel->guard->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 
-$req = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
 
 // Create `$user` variable just in case `user` extension is too late to be loaded due to the default extension order.
@@ -145,17 +76,17 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
     'query' => $query,
     'sort' => $query['sort'] ?? null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
-    'task' => $GLOBALS['_' . $req]['task'] ?? ($test ? $m[1] : null),
+    'task' => $GLOBALS['_' . $r]['task'] ?? ($test ? $m[1] : null),
     'title' => null,
     'token' => $user->token ?? null,
-    'type' => $GLOBALS['_' . $req]['type'] ?? null,
+    'type' => $GLOBALS['_' . $r]['type'] ?? null,
     'with' => [],
     'x' => $query['x'] ?? null
 ], $GLOBALS['_'] ?? []);
 
 // Modify default log-in redirection to the panel page if it is not set
-if ('GET' === $req && !array_key_exists('kick', $_GET)) {
-    if ($path === trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/')) {
+if ('GET' === $r && !array_key_exists('kick', $_GET)) {
+    if (!is_dir(LOT . D . 'user') || $path === trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/')) {
         $_GET['kick'] = '/' . $route . '/get/' . trim($state->x->panel->route ?? 'asset', '/');
     }
 }
