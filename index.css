@@ -808,6 +808,7 @@
   display: flex;
 }
 [role=alert] > [role=group] .lot\:tasks {
+  gap: calc(var(--y) / 6) calc(var(--x) / 6);
   margin-left: auto;
   margin-right: calc(var(--x) / -4);
 }

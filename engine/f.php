@@ -11,21 +11,13 @@ function _asset_get() {
     // the asset(s) data but won’t make it load into the panel interface unless you explicitly change the `skip` property value to `false`.
     $data = [];
     foreach (\Asset::get() as $k => $v) {
-        if ('script' === $k || 'style' === $k || 'template' === $k) {
-            foreach ($v as $kk => $vv) {
-                $data[$k][$kk] = [
-                    'content' => $vv[1],
-                    'data' => (array) ($vv[2] ?? []),
-                    'skip' => true,
-                    'stack' => $vv['stack']
-                ];
-            }
-            continue;
-        }
         foreach ($v as $kk => $vv) {
             $data[$kk] = [
-                'data' => (array) ($vv[2] ?? []),
-                'path' => $vv['path'],
+                '0' => null,
+                '1' => null,
+                '2' => (array) ($vv[2] ?? []),
+                'link' => $vv['link'] ?? null,
+                'path' => $vv['path'] ?? null,
                 'skip' => true,
                 'stack' => $vv['stack']
             ];
@@ -50,36 +42,15 @@ function _asset_set() {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
-            if ('script' === $k || 'style' === $k || 'template' === $k) {
-                foreach ((array) $_['asset'][$k] as $kk => $vv) {
-                    if (false === $vv || null === $vv || !empty($vv['skip'])) {
-                        continue;
-                    }
-                    if (!\is_numeric($kk)) {
-                        $vv['data']['id'] = $kk;
-                    }
-                    if (isset($vv['id'])) {
-                        $vv['data']['id'] = $vv['id'];
-                    }
-                    if (!\array_key_exists('content', $vv) && !empty($vv['type'])) {
-                        $vv['content'] = \x\panel\type($vv, $kk);
-                    }
-                    $content = (string) ($vv['content'] ?? "");
-                    $data = (array) ($vv['data'] ?? []);
-                    $stack = (float) ($vv['stack'] ?? 10);
-                    \call_user_func("\\Asset::" . $k, $content, $stack, $data);
-                }
-                continue;
-            }
             $path = (string) ($v['path'] ?? $v['link'] ?? $v['url'] ?? $k);
             $stack = (float) ($v['stack'] ?? 10);
             if (!\is_numeric($k) && (!empty($v['link']) || !empty($v['path']) || !empty($v['url']))) {
-                $v['data']['id'] = $k;
+                $v[2]['id'] = $k;
             }
             if (isset($v['id'])) {
-                $v['data']['id'] = $v['id'];
+                $v[2]['id'] = $v['id'];
             }
-            \Asset::set($path, $stack, (array) ($v['data'] ?? []));
+            \Asset::set($path, $stack, (array) ($v[2] ?? []));
         }
     }
 }

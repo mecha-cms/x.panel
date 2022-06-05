@@ -42,13 +42,14 @@ function elapse($date, $all = false) {
     $diff->w = \floor($diff->d / 7);
     $diff->d -= $diff->w * 7;
     $alter = [
+        // It has to be in this order, please do not sort the array!
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
         'd' => 'day',
         'h' => 'hour',
         'i' => 'minute',
-        'm' => 'month',
-        's' => 'second',
-        'w' => 'week',
-        'y' => 'year'
+        's' => 'second'
     ];
     foreach ($alter as $k => &$v) {
         if ($i = $diff->{$k} ?? 0) {
@@ -140,18 +141,18 @@ function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = '
         $max = $current + $peek;
     }
     if ($prev = \i($prev)) {
-        $out = '<span>';
+        $out .= '<span>';
         if ($current === $begin) {
             $out .= '<b title="' . $prev . '">' . $prev . '</b>';
         } else {
-            $out .= '<a href="' . \call_user_func($fn, $current - 1) . '" title="' . $prev . '" rel="prev">' . $prev . '</a>';
+            $out .= '<a href="' . \call_user_func($fn, $current - 1) . '" rel="prev" title="' . $prev . '">' . $prev . '</a>';
         }
         $out .= '</span> ';
     }
     if (($first = \i($first)) && ($last = \i($last))) {
         $out .= '<span>';
         if ($min > $begin) {
-            $out .= '<a href="' . \call_user_func($fn, $begin) . '" title="' . $first . '" rel="prev">' . $begin . '</a>';
+            $out .= '<a href="' . \call_user_func($fn, $begin) . '" rel="prev" title="' . $first . '">' . $begin . '</a>';
             if ($min > $begin + 1) {
                 $out .= ' <span>&#x2026;</span>';
             }
@@ -160,14 +161,14 @@ function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = '
             if ($current === $i) {
                 $out .= ' <b title="' . $i . '">' . $i . '</b>';
             } else {
-                $out .= ' <a href="' . \call_user_func($fn, $i) . '" title="' . $i . '" rel="' . ($current >= $i ? 'prev' : 'next') . '">' . $i . '</a>';
+                $out .= ' <a href="' . \call_user_func($fn, $i) . '" rel="' . ($current >= $i ? 'prev' : 'next') . '" title="' . $i . '">' . $i . '</a>';
             }
         }
         if ($max < $end) {
             if ($max < $end - 1) {
                 $out .= ' <span>&#x2026;</span>';
             }
-            $out .= ' <a href="' . \call_user_func($fn, $end) . '" title="' . $last . '" rel="next">' . $end . '</a>';
+            $out .= ' <a href="' . \call_user_func($fn, $end) . '" rel="next" title="' . $last . '">' . $end . '</a>';
         }
         $out .= '</span>';
     }
@@ -176,7 +177,7 @@ function pager($current, $count, $chunk, $peek, $fn, $first = 'First', $prev = '
         if ($current === $end) {
             $out .= '<b title="' . $next . '">' . $next . '</b>';
         } else {
-            $out .= '<a href="' . \call_user_func($fn, $current + 1) . '" title="' . $next . '" rel="next">' . $next . '</a>';
+            $out .= '<a href="' . \call_user_func($fn, $current + 1) . '" rel="next" title="' . $next . '">' . $next . '</a>';
         }
         $out .= '</span>';
     }
