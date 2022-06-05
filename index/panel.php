@@ -10,14 +10,14 @@ function route($content, $path, $query, $hash, $r) {
     if ($_['status'] >= 400) {
         $_['lot']['bar']['skip'] = true;
         $_['lot']['desk']['lot']['form']['skip'] = true;
-        $_['lot']['desk']['lot']['alert'] = [
+        $_['lot']['desk']['lot']['alert'] = \array_replace_recursive([
             'content' => 'This page is not real, and has never existed before.',
             'icon' => 'M12,2A9,9 0 0,0 3,11V22L6,19L9,22L12,19L15,22L18,19L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z',
             'level' => 0,
             'stack' => 10,
             'type' => 'title'
-        ];
-        $_['title'] = 'Error';
+        ], $_['lot']['desk']['lot']['alert'] ?? []);
+        $_['title'] = $_['title'] ?? 'Error';
     }
     $id = \strtok($_['path'], '/');
     $content = $icon = $list = "";
@@ -142,6 +142,7 @@ function route($content, $path, $query, $hash, $r) {
         (static function() {
             \extract($GLOBALS);
             require __DIR__ . \D . 'panel' . \D . 'route.php';
+            require __DIR__ . \D . 'panel' . \D . 'status.php';
             require __DIR__ . \D . 'panel' . \D . 'task.php';
             require __DIR__ . \D . 'panel' . \D . 'type.php';
             if (isset($_)) {
