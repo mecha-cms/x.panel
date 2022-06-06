@@ -9,7 +9,6 @@
   }
   > span {
     > a,
-    > b,
     > span {
       background: var(--fill-button);
       border: 0 solid;
@@ -31,13 +30,19 @@
         }
       }
     }
-    > b,
+    > a[aria-current='page'],
+    > a[aria-disabled='true'],
     > span {
       background: none;
       border-color: transparent;
       border-radius: 0;
       box-shadow: none;
       color: inherit;
+    }
+    > a[aria-current='page'],
+    > a[aria-disabled='true'] {
+      background: var(--fill-button--disabled, none);
+      color: var(--color-button--disabled, inherit);
     }
   }
 }

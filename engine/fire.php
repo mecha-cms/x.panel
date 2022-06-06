@@ -9,6 +9,7 @@ foreach ([
     '%s goes here...' => "%s goes here\u{2026}",
     'Content goes here...' => "Content goes here\u{2026}",
     'Description goes here...' => "Description goes here\u{2026}",
+    'You don\'t have permission to access this page.' => "You don\u{2019}t have permission to access this page.",
     'You don\'t have permission to change the %s value.' => "You don\u{2019}t have permission to change the %s value."
 ] as $k => $v) {
     if (isset($GLOBALS['I'][$k])) {
