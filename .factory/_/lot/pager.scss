@@ -39,10 +39,5 @@
       box-shadow: none;
       color: inherit;
     }
-    > a[aria-current='page'],
-    > a[aria-disabled='true'] {
-      background: var(--fill-button--disabled, none);
-      color: var(--color-button--disabled, inherit);
-    }
   }
 }

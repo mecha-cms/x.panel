@@ -159,7 +159,7 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
         }
         for ($i = $min; $i <= $max; ++$i) {
             if ($current === $i) {
-                $out .= ' <a aria-current="page" title="' . \i('You are here (page %d)', [$i]) . '">' . $i . '</a>';
+                $out .= ' <a aria-current="page" title="' . \i('Go to page %d (you are here)', [$i]) . '">' . $i . '</a>';
             } else {
                 $out .= ' <a href="' . \call_user_func($fn, $i) . '" rel="' . ($current >= $i ? 'prev' : 'next') . '" title="' . \i('Go to page %d', [$i]) . '">' . $i . '</a>';
             }

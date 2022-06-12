@@ -3066,11 +3066,6 @@ input[type=range]:disabled::-moz-range-thumb {
   box-shadow: none;
   color: inherit;
 }
-.lot\:pager > span > a[aria-current=page],
-.lot\:pager > span > a[aria-disabled=true] {
-  background: var(--fill-button--disabled, none);
-  color: var(--color-button--disabled, inherit);
-}
 
 .lot\:row,
 .content\:row {
