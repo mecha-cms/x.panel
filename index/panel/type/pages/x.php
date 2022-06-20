@@ -48,6 +48,11 @@ Hook::set('_', function($_) use($state, $url, $user) {
                     LOT . D => "",
                     D => '/'
                 ]);
+                if ($can_recover = glob($d . '.*.zip', GLOB_NOSORT)) {
+                    rsort($can_recover);
+                }
+                $can_recover = reset($can_recover);
+                $has_error = is_file($e = ENGINE . D . 'log' . D . 'error-x') && false !== strpos(file_get_contents($e), $d);
                 $is_active = is_file($d . D . 'index.php');
                 $p = $v['page'];
                 $description = To::description(x\panel\to\w($p->description ?? ""));
@@ -84,13 +89,21 @@ Hook::set('_', function($_) use($state, $url, $user) {
                                 'task' => 'get'
                             ]
                         ],
+                        'recover' => [
+                            'description' => ['Recover to the previous version: %s', (new Time(explode('.', basename($can_recover, '.zip'))[1] ?? null))->format('Y/m/d H:i:s')],
+                            'icon' => 'M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3',
+                            'skip' => !($has_error && $can_recover),
+                            'stack' => 20.1,
+                            'title' => 'Recover',
+                            'url' => '#' // TODO
+                        ],
                         'toggle' => [
                             'description' => !empty($bound) ? ['Required by %s', implode(', ', $bound)] : ($is_active ? 'Detach' : 'Attach'),
                             'icon' => $is_active ? 'M13,9.86V11.18L15,13.18V9.86C17.14,9.31 18.43,7.13 17.87,5C17.32,2.85 15.14,1.56 13,2.11C10.86,2.67 9.57,4.85 10.13,7C10.5,8.4 11.59,9.5 13,9.86M14,4A2,2 0 0,1 16,6A2,2 0 0,1 14,8A2,2 0 0,1 12,6A2,2 0 0,1 14,4M18.73,22L14.86,18.13C14.21,20.81 11.5,22.46 8.83,21.82C6.6,21.28 5,19.29 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V16.27L2,5.27L3.28,4L13,13.72L15,15.72L20,20.72L18.73,22Z' : 'M18,6C18,7.82 16.76,9.41 15,9.86V17A5,5 0 0,1 10,22A5,5 0 0,1 5,17V12L10,17H7A3,3 0 0,0 10,20A3,3 0 0,0 13,17V9.86C11.23,9.4 10,7.8 10,5.97C10,3.76 11.8,2 14,2C16.22,2 18,3.79 18,6M14,8A2,2 0 0,0 16,6A2,2 0 0,0 14,4A2,2 0 0,0 12,6A2,2 0 0,0 14,8Z',
-                            'skip' => !$is_active && !is_file($d . D . '.index.php'),
+                            'skip' => $has_error && $can_recover || !$is_active && !is_file($d . D . '.index.php'),
                             'stack' => 20.1,
                             'title' => $is_active ? 'Detach' : 'Attach',
-                            'url' => !empty($bound) ? null : [
+                            'url' => !empty($bound) && !is_file($d . D . '.index.php') ? null : [
                                 'path' => $path,
                                 'query' => x\panel\_query_set(['token' => $_['token']]),
                                 'task' => 'fire/' . (is_file($d . D . '.index.php') ? 'attach' : 'detach')

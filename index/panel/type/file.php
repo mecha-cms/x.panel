@@ -13,7 +13,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
 
 $type = $file ? mime_content_type($file) : null;
 $editable = 'set' === $_['task'];
-$name = 'get' === $_['task'] ? basename($file) : "";
+$name = 'get' === $_['task'] ? basename($file ?? "") : "";
 
 if (0 === strpos($type, 'text/') || 'inode/x-empty' === $type || 'image/svg+xml' === $type) {
     $editable = true;

@@ -178,6 +178,7 @@ function _git_sync() {
                         'part' => null,
                         'path' => 'mecha-cms/' . $k,
                         'query' => \x\panel\_query_set([
+                            'keep' => ['composer.json' => is_file(\PATH . \D . 'composer.json') ? 1 : null], // Preserve `composer.json` file?
                             'minify' => 1,
                             'token' => $_['token'],
                             'version' => $v

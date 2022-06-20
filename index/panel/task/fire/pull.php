@@ -10,6 +10,7 @@ function pull($_) {
         'part' => 0,
         'path' => "" !== $key ? $key . '/1' : ($state->x->panel->route ?? 'asset/1'),
         'query' => \x\panel\_query_set([
+            'keep' => null,
             'minify' => null,
             'version' => null
         ]),

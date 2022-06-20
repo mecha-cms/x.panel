@@ -1,6 +1,10 @@
 <?php namespace x\panel\task\fire;
 
 function fuse($_) {
+    // Abort by previous hook’s return value if any
+    if (!empty($_['alert']['error'])) {
+        return $_;
+    }
     \extract($GLOBALS, \EXTR_SKIP);
     $n = \basename($path = (string) $_['path']);
     $key = 0 === \strpos($n, 'x.') ? 'x' : (0 === \strpos($n, 'y.') ? 'y' : "");
@@ -10,21 +14,23 @@ function fuse($_) {
         'part' => 0,
         'path' => "" !== $key ? $key . '/1' : ($state->x->panel->route ?? 'asset/1'),
         'query' => \x\panel\_query_set([
+            'keep' => null,
             'minify' => null,
             'version' => null
         ]),
         'task' => 'get'
     ];
-    // Abort by previous hook’s return value if any
-    if (!empty($_['alert']['error'])) {
-        return $_;
+    if ("" !== $key && 'mecha' === $value) {
+        // Specific task for core update(s)
+        echo 'Do special task(s) for core update(s)...';
+        exit;
     }
     $folder = \LOT . \D . $key . \D . $value;
     $version = $_['query']['version'] ?? "";
     // Create a restore point from the currently installed version!
     if (\extension_loaded('zip') && "" !== $key) {
         $zip = new \ZipArchive;
-        if (true === $zip->open($folder . '.zip', \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
+        if (true === $zip->open($folder . '.' . \date('Y-m-d-H-i-s') . '.zip', \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
             $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($folder), \RecursiveIteratorIterator::LEAVES_ONLY);
             foreach ($files as $k => $v) {
                 $from = $v->getRealPath();

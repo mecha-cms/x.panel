@@ -299,7 +299,7 @@ $desk = [
                                             'type' => 'files'
                                         ]
                                     ],
-                                    'skip' => false === strpos($_['path'], '/') || 0 === q(g($_['folder'], 'data')),
+                                    'skip' => !($folder = $_['folder']) || false === strpos($_['path'], '/') || 0 === q(g($folder, 'data')),
                                     'stack' => 20
                                 ]
                             ]
