@@ -197,10 +197,24 @@ if (false === strpos($_['path'], '/')) {
                                         'lot' => [
                                             'fields' => [
                                                 'lot' => [
+                                                    'sync' => [
+                                                        'block' => true,
+                                                        'lot' => [
+                                                            0 => 'Never',
+                                                            2592000 => 'Every month', // `strtotime('+1 month') - time()`
+                                                            3600 => 'Every hour', // `strtotime('+1 hour') - time()`
+                                                            604800 => 'Every week', // `strtotime('+1 week') - time()`
+                                                            86400 => 'Every day' // `strtotime('+1 day') - time()`
+                                                        ],
+                                                        'name' => 'state[x][panel][sync]',
+                                                        'stack' => 10,
+                                                        'type' => 'item',
+                                                        'value' => $state_r['x']['panel']['sync'] ?? $state_panel['sync'] ?? null
+                                                    ],
                                                     'email' => [
                                                         'description' => 'This email address will be used to receive certain messages to your inbox as the fastest solution for notifications. At this time you may not use it to receive any messages, but some extensions that require an email address may depend on this value.',
                                                         'name' => 'state[email]',
-                                                        'stack' => 10,
+                                                        'stack' => 20,
                                                         'type' => 'email',
                                                         'value' => $state_r['email'] ?? null
                                                     ]
