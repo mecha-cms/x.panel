@@ -20,7 +20,7 @@ function fuse($_) {
         ]),
         'task' => 'get'
     ];
-    if ("" !== $key && 'mecha' === $value) {
+    if ("" === $key && 'mecha' === $value) {
         // Specific task for core update(s)
         echo 'Do special task(s) for core update(s)...';
         exit;

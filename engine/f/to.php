@@ -91,13 +91,13 @@ function link($value) {
         'query' => $_['query'] ?? [],
         'task' => $_['task'] ?? 'get'
     ], $value);
-    $base = $v['base'] ?? "";
-    $hash = $v['hash'] ?? "";
+    $base = \rtrim($v['base'] ?? "", '/');
+    $hash = \ltrim($v['hash'] ?? "", '#');
     $part = $v['part'] ?? "";
-    $path = $v['path'] ?? "";
+    $path = \trim($v['path'] ?? "", '/');
     $query = $v['query'];
-    $task = $v['task'];
-    return $base . ("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : "") . (!\is_int($part) || 0 === $part ? "" : '/' . $part) . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
+    $task = \trim($v['task'], '/');
+    return $base . \strtr(("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : ""), "\\", '/') . (!\is_int($part) || 0 === $part ? "" : '/' . $part) . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
 }
 
 function lot($lot, &$count = 0, $sort = true) {
