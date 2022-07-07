@@ -60,7 +60,7 @@ function blob($_) {
             // Check for syntax error in PHP file
             if ('php' === $x) {
                 try {
-                    \token_get_all($content = \file_get_contents($v['blob']), \TOKEN_PARSE);
+                    \token_get_all($content = \file_get_contents($v['path']), \TOKEN_PARSE);
                 } catch (\Throwable $e) {
                     $_['alert']['error'][$blob] = (string) $e;
                 }
