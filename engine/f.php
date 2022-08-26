@@ -2,7 +2,7 @@
 
 function _abort($value, $key, $fn) {
     if (\defined("\\TEST") && \TEST) {
-        \abort('Unable to convert data <code>' . \strtr(\htmlspecialchars(\json_encode($value, \JSON_PRETTY_PRINT)), [' ' => '&nbsp;', "\n" => '<br>']) . '</code> because function <code>' . $fn . '(array $value, int|string $key)</code> does not exist.');
+        \abort('Unable to convert data:<br><br><code style="word-wrap:break-word;">' . \strtr(\htmlspecialchars(\json_encode($value, \JSON_PRETTY_PRINT)), [' ' => '&nbsp;', "\n" => '<br>']) . '</code><br><br>Function <code>' . $fn . '(array $value, int|string $key)</code> does not exist.');
     }
 }
 
@@ -343,7 +343,7 @@ function type($value, $key) {
                             $out .= \implode("\n", $v);
                         } else {
                             if (\defined("\\TEST") && \TEST) {
-                                $out .= '<code>' . $fn . '(' . \htmlspecialchars(\z($v)) . ',' . \z($key) . ')</code>';
+                                $out .= \x\panel\_abort($value, $key, $fn);
                             }
                         }
                     } else {
@@ -368,7 +368,7 @@ function type($value, $key) {
             }
         } else {
             if (\defined("\\TEST") && \TEST) {
-                $out .= \htmlspecialchars(\z($value));
+                $out .= \htmlspecialchars(\json_encode($value, \JSON_PRETTY_PRINT));
             }
             // Skip!
         }

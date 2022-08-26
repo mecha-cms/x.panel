@@ -217,7 +217,6 @@ $desk = [
                     // `section`
                     'lot' => [
                         'tasks' => [
-                            'type' => 'tasks/button',
                             'lot' => [
                                 'parent' => [
                                     'description' => ['Go to %s', 'Parent'],
@@ -270,7 +269,8 @@ $desk = [
                                     ]
                                 ]
                             ],
-                            'stack' => 10
+                            'stack' => 10,
+                            'type' => 'tasks/button'
                         ]
                     ]
                 ],
