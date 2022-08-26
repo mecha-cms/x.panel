@@ -294,10 +294,16 @@ function fields($value, $key) {
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
     $bottom = "";
-    $description = \x\panel\to\description($value['description'] ?? "");
-    $title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4);
+    $count = 0;
+    if ($description = \x\panel\to\description($value['description'] ?? "")) {
+        ++$count;
+    }
+    if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 4)) {
+        ++$count;
+    }
     if (isset($value['content'])) {
         $value[1] .= \x\panel\to\content($value['content']);
+        ++$count;
     } else if (isset($value['lot'])) {
         $value['lot'] = \x\panel\_type_parent_set($value['lot'], 'field');
         foreach ((new \Anemone($value['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
@@ -309,6 +315,7 @@ function fields($value, $key) {
             if ("" !== $type && \function_exists($fn = __NAMESPACE__ . "\\" . $type)) {
                 if ('field/hidden' !== $type) {
                     $value[1] .= \call_user_func($fn, $v, $k);
+                    ++$count;
                 } else {
                     $bottom .= \x\panel\type\field\hidden($v, $k);
                 }
@@ -321,6 +328,7 @@ function fields($value, $key) {
         $value[1] .= $bottom;
     }
     $value['tags'] = \array_replace([
+        'count:' . $count => true,
         'lot' => true,
         'lot:fields' => true,
         'p' => true

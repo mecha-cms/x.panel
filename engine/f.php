@@ -332,7 +332,23 @@ function type($value, $key) {
             if ("" !== $v && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $v)) {
                 $type_exist = true;
                 if ($v = \call_user_func($fn, $value, $key)) {
-                    $out .= \is_array($v) ? \implode("\n", $v) : $v;
+                    // Some type(s) will return data as array. These type(s) are generally used internally and not
+                    // to be exposed for use by panel developer(s). The easiest way to handle this data is to join it
+                    // so that it becomes string. But here, I want to make sure that the array data passed to the
+                    // variable `$v` is derived from the result of a certain type, not from data that has been
+                    // incorrectly generated. This way I can easily detect when a certain array doesn’t manage to
+                    // generate the appropriate interface in the future.
+                    if (\is_array($v)) {
+                        if ("x\\panel\\type\\icon" === $fn) {
+                            $out .= \implode("\n", $v);
+                        } else {
+                            if (\defined("\\TEST") && \TEST) {
+                                $out .= '<code>' . $fn . '(' . \htmlspecialchars(\z($v)) . ',' . \z($key) . ')</code>';
+                            }
+                        }
+                    } else {
+                        $out .= $v;
+                    }
                 }
                 break;
             }
@@ -352,7 +368,7 @@ function type($value, $key) {
             }
         } else {
             if (\defined("\\TEST") && \TEST) {
-                $out .= \htmlspecialchars(\json_encode($value));
+                $out .= \htmlspecialchars(\z($value));
             }
             // Skip!
         }
