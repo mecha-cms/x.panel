@@ -149,8 +149,57 @@ Hook::set('_', function($_) use($state, $url, $user) {
             'count' => $count,
             'current' => $_['part'] ?? 1,
             'stack' => 20,
-            'type' => 'pager',
+            'type' => 'pager'
         ];
+        $files = [];
+        foreach (g($folder, 'zip') as $k => $v) {
+            $n = basename($k, '.zip');
+            $path = 'y/' . basename($k);
+            $files[$k] = [
+                'current' => !empty($_SESSION['_']['file'][$k]),
+                'description' => S . x\panel\to\elapse($time = new Time(substr($n, strrpos($n, '.') + 1))) . S,
+                'tasks' => [
+                    'let' => [
+                        'description' => 'Delete',
+                        'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
+                        'stack' => 10,
+                        'title' => 'Delete',
+                        'url' => [
+                            'part' => 0,
+                            'path' => $path,
+                            'query' => x\panel\_query_set([
+                                'token' => $_['token'],
+                                'trash' => $trash
+                            ]),
+                            'task' => 'let'
+                        ]
+                    ]
+                ],
+                'time' => (string) $time,
+                'title' => S . substr($n, 0, strrpos($n, '.')) . S,
+                'type' => 'file',
+                'url' => [
+                    'part' => 0,
+                    'path' => $path
+                ]
+            ];
+            if (isset($_SESSION['_']['file'][$k])) {
+                unset($_SESSION['_']['file'][$k]);
+            }
+        }
+        if ($files) {
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['history'] = [
+                'lot' => [
+                    'files' => [
+                        'lot' => $files,
+                        'sort' => [-1, 'time'],
+                        'stack' => 10,
+                        'type' => 'files'
+                    ]
+                ],
+                'stack' => 20
+            ];
+        }
     }
     return $_;
 }, 10.1);
