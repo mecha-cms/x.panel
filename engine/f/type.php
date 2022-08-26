@@ -40,6 +40,10 @@ function button($value, $key) {
 
 function column($value, $key) {
     $value['tags']['p'] = $value['tags']['p'] ?? false;
+    // Allow user to set column size using real fraction syntax in PHP
+    if (isset($value['size']) && (\is_float($value['size']) || \is_int($value['size']))) {
+        $value['size'] = \round($value['size'] * 6) . '/6';
+    }
     if (!empty($value['size']) && !isset($value['tags']['size:' . $value['size']])) {
         $value['tags']['size:' . $value['size']] = true;
     }
