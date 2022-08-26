@@ -332,20 +332,8 @@ function type($value, $key) {
             if ("" !== $v && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $v)) {
                 $type_exist = true;
                 if ($v = \call_user_func($fn, $value, $key)) {
-                    // Some type(s) will return data as array. These type(s) are generally used internally and not
-                    // to be exposed for use by panel developer(s). The easiest way to handle this data is to join it
-                    // so that it becomes string. But here, I want to make sure that the array data passed to the
-                    // variable `$v` is derived from the result of a certain type, not from data that has been
-                    // incorrectly generated. This way I can easily detect when a certain array doesn’t manage to
-                    // generate the appropriate interface in the future.
                     if (\is_array($v)) {
-                        if ("x\\panel\\type\\icon" === $fn) {
-                            $out .= \implode("\n", $v);
-                        } else {
-                            if (\defined("\\TEST") && \TEST) {
-                                $out .= \x\panel\_abort($value, $key, $fn);
-                            }
-                        }
+                        \x\panel\_abort($value, $key, $fn);
                     } else {
                         $out .= $v;
                     }
@@ -354,7 +342,7 @@ function type($value, $key) {
             }
         }
         if (!$type_exist) {
-            $out .= \x\panel\_abort($value, $key, $fn);
+            \x\panel\_abort($value, $key, $fn);
         }
     } else {
         // Automatically forms an interface based on the presence of `content` or `lot` property

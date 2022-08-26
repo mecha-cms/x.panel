@@ -567,7 +567,20 @@ function form($value, $key) {
 }
 
 function icon($value, $key) {
-    $icons = \array_replace([null, null], (array) ($value['content'] ?? $value['lot'] ?? []));
+    $icons = [null, null];
+    // Maybe a `HTML`
+    if (isset($value['content'])) {
+        $icons[0] = \x\panel\to\content($value['content']);
+    // Maybe an `Anemone`
+    } else if (isset($value['lot'])) {
+        $v = \x\panel\to\lot($value['lot']);
+        $icons[0] = $v[0] ?? null;
+        $icons[1] = $v[1] ?? null;
+    } else {
+        // Must be an array or string, force it to array!
+        $value = (array) $value;
+        $icons = \array_replace($icons, $value);
+    }
     $ref = $GLOBALS['_']['icon'] ?? [];
     $attr = [
         'aria-hidden' => 'true',
@@ -575,7 +588,7 @@ function icon($value, $key) {
         'height' => 24,
         'width' => 24
     ];
-    foreach ($icons as $k => &$v) {
+    foreach ($icons as $k => $v) {
         if (!$v) {
             continue;
         }
@@ -593,9 +606,9 @@ function icon($value, $key) {
         } else if ('</svg>' !== \substr($v, -6)) {
             $v = new \HTML(['svg', $v, $attr]);
         }
+        $icons[$k] = $v;
     }
-    unset($v);
-    return $icons;
+    return new \Anemone($icons, "");
 }
 
 function input($value, $key) {

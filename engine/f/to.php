@@ -78,6 +78,12 @@ function field($value, $key, $type = 'textarea') {
 }
 
 function icon($value) {
+    // Maybe an `Anemone`
+    if ($value instanceof \Traversable) {
+        $value = \iterator_to_array($value);
+    }
+    // Maybe an icon string
+    $value = (array) $value;
     return \x\panel\type\icon(['lot' => $value], 0);
 }
 
@@ -110,17 +116,17 @@ function lot($lot, &$count = 0, $sort = true) {
         }
         $lot = (new \Anemone($lot))->sort($sort, true);
     }
-    $out = "";
+    $out = [];
     foreach ($lot as $k => $v) {
         if (false === $v || null === $v || !empty($v['skip'])) {
             continue;
         }
         if ($v = \x\panel\type($v, $k)) {
-            $out .= $v;
+            $out[$k] = $v;
             ++$count;
         }
     }
-    return $out;
+    return new \Anemone($out, "");
 }
 
 function pager(int $current, int $count, int $chunk, int $peek, callable $fn, string $first = 'First', string $prev = 'Previous', string $next = 'Next', string $last = 'Last') {
