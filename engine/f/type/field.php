@@ -166,6 +166,7 @@ function flex($value, $key) {
 }
 
 function hidden($value, $key) {
+    unset($value['decors'], $value['hint'], $value['tags']);
     return \x\panel\type\input\hidden($value, $key);
 }
 
