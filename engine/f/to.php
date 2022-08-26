@@ -160,7 +160,7 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
         if ($min > $begin) {
             $out .= '<a href="' . \call_user_func($fn, $begin) . '" rel="prev" title="' . \i('Go to the %s page', [\l($first)]) . '">' . $begin . '</a>';
             if ($min > $begin + 1) {
-                $out .= ' <span role="presentation">&#x2026;</span>';
+                $out .= ' <span aria-hidden="true">&#x2026;</span>';
             }
         }
         for ($i = $min; $i <= $max; ++$i) {
@@ -172,7 +172,7 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
         }
         if ($max < $end) {
             if ($max < $end - 1) {
-                $out .= ' <span role="presentation">&#x2026;</span>';
+                $out .= ' <span aria-hidden="true">&#x2026;</span>';
             }
             $out .= ' <a href="' . \call_user_func($fn, $end) . '" rel="next" title="' . \i('Go to the %s page', [\l($last)]) . '">' . $end . '</a>';
         }
