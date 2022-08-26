@@ -193,7 +193,7 @@ function field($value, $key) {
     }
     $id = $value['id'] ?? \dechex(\time());
     if (!isset($value['title']) || false !== $value['title']) {
-        $title = \x\panel\to\title($value['title'] ?? \To::title($key), -2);
+        $title = (string) \x\panel\to\title($value['title'] ?? \To::title($key), -2);
         $value[1] .= new \HTML([
             0 => 'label',
             1 => $title,
