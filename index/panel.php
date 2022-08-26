@@ -107,9 +107,9 @@ function route($content, $path, $query, $hash, $r) {
             $js[$v] = $_[$v];
         }
     }
-    $GLOBALS['_']['asset']['script'][] = [
-        'content' => 'window._=Object.assign(window._||{},' . \json_encode($js) . ');',
+    $GLOBALS['_']['asset']['script'] = [
         'id' => false,
+        'link' => 'data:text/js;base64,' . \base64_encode('window._=Object.assign(window._||{},' . \json_encode($js) . ');'),
         'stack' => 0
     ];
     $GLOBALS['content'] = $icon . $content . $list;

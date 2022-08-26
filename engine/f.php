@@ -315,7 +315,7 @@ function _value_set(array $value, $key = null) {
 }
 
 function type($value, $key) {
-    if (\is_string($value)) {
+    if (\is_string($value) || (\is_object($value) && $value instanceof \HTML)) {
         return $value;
     }
     if (false === $value || null === $value || !empty($value['skip'])) {
@@ -327,11 +327,17 @@ function type($value, $key) {
     }
     $out = "";
     if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')))) {
-        if (\function_exists($fn = __NAMESPACE__ . "\\type\\" . $type)) {
-            if ($v = \call_user_func($fn, $value, $key)) {
-                $out .= \is_array($v) ? \implode("\n", $v) : $v;
+        $type_exist = false;
+        foreach (\array_values(\step($type, "\\")) as $v) {
+            if ("" !== $v && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $v)) {
+                $type_exist = true;
+                if ($v = \call_user_func($fn, $value, $key)) {
+                    $out .= \is_array($v) ? \implode("\n", $v) : $v;
+                }
+                break;
             }
-        } else {
+        }
+        if (!$type_exist) {
             $out .= \x\panel\_abort($value, $key, $fn);
         }
     } else {
