@@ -904,6 +904,7 @@ function page($value, $key) {
     if (false !== $description || false !== $title) {
         $value[1] .= '<div><h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
             'link' => $value['link'] ?? null,
+            'status' => $value['status'] ?? null,
             'target' => $value['target'] ?? null,
             'title' => $title,
             'url' => $value['url'] ?? null
