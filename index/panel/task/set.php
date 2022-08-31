@@ -117,6 +117,7 @@ function blob($_) {
                     $_['alert']['error'][$blob] = ['Package %s could not be extracted due to the previous errors.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                 } else {
                     $zip->extractTo($parent);
+                    $zip->close();
                     $_['alert']['success'][$blob] = ['Package %s successfully extracted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                     // Delete package after “extract”
                     if (empty($_POST['options'][$k]['zip']['keep']) && empty($_POST['options'][0]['zip']['keep'])) {

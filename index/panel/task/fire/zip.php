@@ -77,8 +77,8 @@ function zip($_) {
                     \mkdir($parent, 0755, true);
                 }
                 $zip->extractTo($parent);
+                $zip->close();
                 $_['alert']['success'][$file] = ['Package %s successfully extracted.', '<code>' . \x\panel\from\path($file) . '</code>'];
-                // Delete package after “extract” with `?zip[let]=true`
                 if (empty($_REQUEST['zip']['keep'])) {
                     if (\unlink($file)) {
                         $_['alert']['success'][$file] = ['Package %s successfully extracted and deleted.', '<code>' . \x\panel\from\path($file) . '</code>'];
@@ -89,8 +89,8 @@ function zip($_) {
             }
         } else {
             $_['alert']['error'][$file] = $zip->getStatusString();
+            $zip->close();
         }
-        $zip->close();
         return $_;
     }
     // Else, perform “pack”

@@ -13,6 +13,7 @@ return [
     // 'application/x-httpd-php-source' => 1,
     'application/x-javascript' => 1, // :(
     'application/x-tar' => 1,
+    'application/x-zip-compressed' => 1,
     'application/xml' => 1,
     'application/zip' => 1,
     'audio/midi' => 1,
