@@ -725,15 +725,27 @@ function menu($value, $key, int $i = 0) {
     $value[1] = $value[1] ?? "";
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     $count_parent = 0;
-    if (0 === $i || isset($value['with']['description']) && true === $value['with']['description']) {
+    if (isset($value['with']['description'])) {
+        if (false === $value['with']['description']) {
+            $description = "";
+        } else if (\is_string($value['with']['description'])) {
+            $description = $value['with']['description'];
+        } else /* if (true === $value['with']['description']) */ {
+            $description = $value['description'] ?? "";
+        }
+    } else {
         $description = $value['description'] ?? "";
-    } else {
-        $description = $value['with']['description'] ?? "";
     }
-    if (0 === $i || isset($value['with']['title']) && true === $value['with']['title']) {
-        $title = $value['title'] ?? "";
+    if (isset($value['with']['title'])) {
+        if (false === $value['with']['title']) {
+            $title = "";
+        } else if (\is_string($value['with']['title'])) {
+            $title = $value['with']['title'];
+        } else /* if (true === $value['with']['title']) */ {
+            $title = $value['title'] ?? "";
+        }
     } else {
-        $title = $value['with']['title'] ?? "";
+        $title = $value['title'] ?? "";
     }
     if ($description = \x\panel\to\description($description)) {
         $value['has']['description'] = true;
@@ -813,24 +825,22 @@ function menu($value, $key, int $i = 0) {
                         'role' => 'menuitem',
                         'tabindex' => $i < 0 ? null : -1
                     ], $v[3] ?? []);
-                    $vv[1] = \x\panel\type\link(\x\panel\_value_set(\array_replace($v, [
-                        'with' => [
-                            'description' => false,
-                            'title' => false
-                        ]
-                    ]), $k), $k);
+                    $vv[1] = \x\panel\type\link(\x\panel\_value_set($v, $k), $k);
                     if (!empty($v['lot'])) {
                         $vv[1]['aria-expanded'] = 'false';
                         $vv[1]['aria-haspopup'] = 'true';
-                        $vv[1] .= \x\panel\type\menu(\x\panel\_value_set(\array_replace($v, [
+                        $vv[1] .= \x\panel\type\menu(\x\panel\_value_set(\array_replace_recursive([
+                            'with' => [
+                                'description' => false,
+                                'title' => false
+                            ]
+                        ], $v, [
                             '2' => [
                                 'role' => null,
                                 'tabindex' => -1
                             ]
                         ]), $k), $k, $i + 1); // Recurse!
                         $v['has']['menu'] = $v['has']['menu'] ?? true;
-                        $v['with']['description'] = false;
-                        $v['with']['title'] = false;
                     }
                 } else {
                     if (0 === \strpos($v['type'] . '/', 'form/')) {
