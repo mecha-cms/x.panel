@@ -83,7 +83,10 @@ return (static function($icons) {
                             'name' => 'get',
                             'stack' => 20,
                             'type' => 'form/get',
-                            'url' => ['query' => ['query' => null]]
+                            'url' => [
+                                'part' => is_int($_['part']) ? 1 : null,
+                                'query' => ['query' => null]
+                            ]
                         ]
                     ],
                     'of' => ['lot' => true],
