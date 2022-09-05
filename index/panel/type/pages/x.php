@@ -201,6 +201,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
                         'type' => 'files'
                     ]
                 ],
+                'skip' => isset($_['query']['query']),
                 'stack' => 20
             ];
         }
