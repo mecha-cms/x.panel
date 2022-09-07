@@ -26,28 +26,53 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['description'] = x\panel\to\w($_POST['state']['description'] ?? "");
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
-    $route = $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'] ?? "";
-    $route = '/' . trim($route, '/');
+	$route_panel = $state_r['x']['panel']['route'] ?? $state_panel['route'] ?? 'panel';
+    $route_user = $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'] ?? 'user';
+	$route_panel = '/' . trim($route_panel, '/');
+	$route_user = '/' . trim($route_user, '/');
+    if (!empty($_POST['state']['x']['panel']['route'])) {
+        if ($v = To::kebab(trim($_POST['state']['x']['panel']['route'], '/'))) {
+            $_POST['state']['x']['panel']['route'] = $route_panel = '/' . $v;
+        } else {
+            unset($_POST['state']['x']['panel']['route']);
+        }
+    } else {
+		$route_panel = $state_panel['route'] ?? '/panel';
+        $route_panel_reset = true;
+    }
+	if ($route_panel === ($state_r['x']['panel']['route'] ?? $state_panel['route'])) {
+		if (!empty($route_panel_reset) && !empty($state_r['x']['panel']['route'])) {
+			$_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
+		}
+	} else if (empty($route_panel_reset)) {
+        $_['alert']['info'][] = ['Your panel base URL has been changed to %s', '<code>' . $url . $route_panel . '</code>'];
+    } else {
+        $_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
+    }
     if (!empty($_POST['state']['x']['user']['guard']['route'])) {
         if ($v = To::kebab(trim($_POST['state']['x']['user']['guard']['route'], '/'))) {
-            $_POST['state']['x']['user']['guard']['route'] = $route = '/' . $v;
+            $_POST['state']['x']['user']['guard']['route'] = $route_user = '/' . $v;
         } else {
             unset($_POST['state']['x']['user']['guard']['route']);
         }
     } else {
-        $reset = true;
+		$route_user = $state_user['guard']['route'] ?? $state_user['route'] ?? '/user';
+        $route_user_reset = true;
     }
-    if ($route === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
-        if (!empty($reset) && (!empty($state_r['x']['user']['guard']['route']) || !empty($state_r['x']['user']['route']))) {
-            $_['alert']['info'][$file] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
-        }
+	if ($route_user === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
+		if (!empty($route_user_reset) && !empty($state_r['x']['user']['guard']['route'])) {
+			$_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
+		}
+	} else if (empty($route_user_reset)) {
+        $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $route_user . '</code>'];
     } else {
-        $_['alert']['info'][$file] = ['Your log-in URL has been changed to %s', '<code>' . $url . $route . '</code>'];
+        $_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
     }
     x\panel\_cache_let(PATH . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = [
+		'base' => $url . $route_panel,
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
@@ -63,7 +88,7 @@ if (false === strpos($_['path'], '/')) {
         if (false !== strpos('_.-', $n[0])) {
             continue;
         }
-        $panes['/' . $n . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
+        $panes['get/' . $n . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
     }
     foreach (glob(LOT . D . 'page' . D . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
         $routes['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
@@ -169,15 +194,15 @@ if (false === strpos($_['path'], '/')) {
                                             'fields' => [
                                                 'lot' => [
                                                     'route' => [
-                                                        'description' => 'Choose default page that will open after logged-in.',
-                                                        'lot' => $panes,
+                                                        'description' => 'Set custom panel base path.',
+                                                        'hint' => $state_panel['route'] ?? null,
                                                         'name' => 'state[x][panel][route]',
+                                                        'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
                                                         'stack' => 10,
-                                                        'title' => 'Home',
-                                                        'type' => 'option',
-                                                        'value' => $state_r['x']['panel']['route'] ?? $state_panel['route'] ?? null
+                                                        'type' => 'text',
+                                                        'value' => $state_r['x']['panel']['route'] ?? null
                                                     ],
-                                                    'key' => [
+                                                    'user' => [
                                                         'description' => 'Set custom log-in path.',
                                                         'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
                                                         'name' => 'state[x][user][guard][route]',
@@ -185,6 +210,15 @@ if (false === strpos($_['path'], '/')) {
                                                         'stack' => 20,
                                                         'type' => 'text',
                                                         'value' => $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? null
+                                                    ],
+                                                    'kick' => [
+                                                        'description' => 'Choose default page that will open after logged-in.',
+                                                        'lot' => $panes,
+                                                        'name' => 'state[x][panel][kick]',
+                                                        'stack' => 30,
+                                                        'title' => 'Home',
+                                                        'type' => 'option',
+                                                        'value' => $state_r['x']['panel']['kick'] ?? $state_panel['kick'] ?? null
                                                     ]
                                                 ],
                                                 'stack' => 10,

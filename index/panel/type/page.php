@@ -66,7 +66,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
     }
 }
 
-$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
 $bar = [
     // `bar`

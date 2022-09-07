@@ -71,7 +71,7 @@ $content = 'get' === $_['task'] && $file && $editable ? file_get_contents($file)
 if ("" === $content) $content = null;
 if ("" === $name) $name = null;
 
-$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
 $bar = [
     // `bar`

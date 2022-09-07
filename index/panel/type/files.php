@@ -14,7 +14,7 @@ Hook::set('_', function($_) {
             $query = strtolower(s($_['query']['query'] ?? ""));
             return $query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep);
         };
-        $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
+        $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
         $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {
             foreach ($search($folder, $_['x'] ?? null, $_['deep'] ?? 0) as $k => $v) {

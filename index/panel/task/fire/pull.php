@@ -47,6 +47,7 @@ function pull($_) {
                         if ($value === $k || isset($cores[$k])) {
                             continue; // Already exists in the core ZIP file!
                         }
+                        // TODO: Skip extension and layout that has no version change
                         $query = \array_replace_recursive($_['query'] ?? [], ['version' => $version = '^' === $v ? null : $v]);
                         if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . \dirname($path) . '/' . $k . \To::query($query)))) {
                             if (\file_put_contents($file = $folder . \D . $k . ($version ? '@v' . $version : "") . '.zip', $blob)) {

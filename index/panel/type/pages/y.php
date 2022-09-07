@@ -14,7 +14,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };
         $pages = [];
-        $trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : false;
+        $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
         $author = $user->user;
         $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {

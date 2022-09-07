@@ -11,7 +11,7 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     return $_;
 }
 
-$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
 $fields = [];
 

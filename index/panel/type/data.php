@@ -18,7 +18,7 @@ $path = 'get' === $_['task'] ? dirname($file) : $file;
 $x = glob($path . '.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
 $x = $x ? '.' . pathinfo($x[0], PATHINFO_EXTENSION) : null;
 
-$trash = !empty($state->x->panel->guard->trash) ? date('Y-m-d-H-i-s') : null;
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
 $bar = [
     // `bar`

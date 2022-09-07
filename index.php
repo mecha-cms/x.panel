@@ -10,7 +10,7 @@ Hook::set('on.user.exit', function() {
 });
 
 $path = trim($url->path ?? "", '/');
-$route = trim($state->x->panel->guard->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
+$route = trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
@@ -87,7 +87,12 @@ $GLOBALS['_'] = $_ = array_replace_recursive([
 // Modify default log-in redirection to the panel page if it is not set
 if ('GET' === $r && !array_key_exists('kick', $_GET)) {
     if (!is_dir(LOT . D . 'user') || $path === trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/')) {
-        $_GET['kick'] = '/' . $route . '/get/' . trim($state->x->panel->route ?? 'asset', '/');
+        $kick = trim($state->x->panel->kick ?? 'get/asset/1', '/');
+        // Redirect target without `/` prefix will be resolved relative to the panel base URL
+        if (0 !== strpos($kick, '/') && false === strpos($kick, '://')) {
+            $kick = '/' . $route . '/' . $kick;
+        }
+        $_GET['kick'] = $kick;
     }
 }
 
