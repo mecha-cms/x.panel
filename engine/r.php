@@ -49,8 +49,8 @@ return (static function($icons) {
                             'stack' => 10,
                             'title' => false,
                             'url' => [
-                                'part' => 0,
-                                'path' => trim($state->x->panel->route ?? 'page', '/'),
+                                'part' => 1,
+                                'path' => 'asset',
                                 'query' => x\panel\_query_set(),
                                 'task' => 'get'
                             ]

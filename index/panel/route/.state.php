@@ -61,12 +61,12 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     }
 	if ($route_user === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
 		if (!empty($route_user_reset) && !empty($state_r['x']['user']['guard']['route'])) {
-			$_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
+			$_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
 		}
 	} else if (empty($route_user_reset)) {
-        $_['alert']['info'][] = ['Your log-in URL has been changed to %s', '<code>' . $url . $route_user . '</code>'];
+        $_['alert']['info'][] = ['Your user log-in URL has been changed to %s', '<code>' . $url . $route_user . '</code>'];
     } else {
-        $_['alert']['info'][] = ['Your log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
+        $_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
     }
     x\panel\_cache_let(PATH . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
@@ -203,7 +203,7 @@ if (false === strpos($_['path'], '/')) {
                                                         'value' => $state_r['x']['panel']['route'] ?? null
                                                     ],
                                                     'user' => [
-                                                        'description' => 'Set custom log-in path.',
+                                                        'description' => 'Set custom user log-in path.',
                                                         'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
                                                         'name' => 'state[x][user][guard][route]',
                                                         'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",

@@ -58,6 +58,20 @@ if (is_file($file ?? P)) {
 }
 
 $back = trim(dirname($_['path']), '.');
+$kick = $state->x->panel->kick ?? 'get/asset/1';
+
+// Check if redirect target is relative to the panel base URL
+if (0 !== strpos($kick, '/')) {
+    // Remove task part from redirect target path
+    $kick = preg_replace('/^(?:[gls]et|fire\/[^\/]+)\//', '/', $kick);
+// Redirect target is a full URL
+} else if (false !== strpos($kick, '://')) {
+    // Set to default back link
+    $kick = 'asset/1';
+}
+
+$end = array_slice(explode('/', "" !== $back ? $back : $kick), -1)[0];
+$has_part = is_numeric($end) && '0' !== $end && '-' !== $end[0];
 
 $bar = [
     // `bar`
@@ -68,8 +82,8 @@ $bar = [
                 'link' => [
                     'skip' => false,
                     'url' => [
-                        'part' => "" !== $back ? 1 : 0,
-                        'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : ($state->x->panel->route ?? 'page/1'), '/') : $_['path'],
+                        'part' => $has_part ? 0 : 1,
+                        'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : $kick, '/') : $_['path'],
                         'query' => x\panel\_query_set()
                     ]
                 ],

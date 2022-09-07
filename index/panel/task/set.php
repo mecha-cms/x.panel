@@ -23,13 +23,13 @@ function blob($_) {
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
         } else {
             $name = (string) (\To::file(\lcfirst($v['name']), '.@_~') ?? \uniqid());
-            if (\is_array($wrap = \s($_POST['options'][$k]['folder'] ?? $_POST['options'][0]['folder'] ?? "")) || 'false' === $wrap || 'null' === $wrap) {
+            if (\is_array($wrap = \s($_POST['options'][$k]['folder'] ?? $_POST['options']['folder'] ?? "")) || 'false' === $wrap || 'null' === $wrap) {
                 $wrap = "";
             } else if ('true' === $wrap) {
-                // Add default root folder with `<input name="options[0][zip][folder]" value="true">`
+                // Add default root folder with `<input name="options[zip][folder]" value="true">`
                 $wrap = \D . \pathinfo($name, \PATHINFO_FILENAME);
             } else if ($wrap || '0' === $wrap) {
-                // Add custom root folder with `<input name="options[0][zip][folder]" value="asdf">`
+                // Add custom root folder with `<input name="options[zip][folder]" value="asdf">`
                 $wrap = \D . \trim(\strtr($wrap, "\\", \D), \D);
             }
             if ($parent = $folder) {
@@ -85,7 +85,7 @@ function blob($_) {
         $_['file'] = $blob; // For hook(s)
         $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
         // Perform package “extract”
-        if ((!empty($_POST['options'][$k]['zip']['extract']) || !empty($_POST['options'][0]['zip']['extract'])) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
+        if ((!empty($_POST['options'][$k]['zip']['extract']) || !empty($_POST['options']['zip']['extract'])) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
             $zip = new \ZipArchive;
             if (true === $zip->open($blob)) {
                 for ($i = 0; $i < $zip->numFiles; ++$i) {
@@ -120,7 +120,7 @@ function blob($_) {
                     $zip->close();
                     $_['alert']['success'][$blob] = ['Package %s successfully extracted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                     // Delete package after “extract”
-                    if (empty($_POST['options'][$k]['zip']['keep']) && empty($_POST['options'][0]['zip']['keep'])) {
+                    if (empty($_POST['options'][$k]['zip']['keep']) && empty($_POST['options']['zip']['keep'])) {
                         if (\unlink($blob)) {
                             $_['alert']['success'][$blob] = ['Package %s successfully extracted and deleted.', '<code>' . \x\panel\from\path($blob) . '</code>'];
                         } else {

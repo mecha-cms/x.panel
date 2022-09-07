@@ -3,11 +3,11 @@
 $options = [];
 if (extension_loaded('zip')) {
     $options['extract'] = [
-        'name' => 'options[0][zip][extract]',
+        'name' => 'options[zip][extract]',
         'title' => 'Extract package automatically after upload.'
     ];
     $options['keep'] = [
-        'name' => 'options[0][zip][keep]',
+        'name' => 'options[zip][keep]',
         'title' => 'Keep package after extract.'
     ];
 }
