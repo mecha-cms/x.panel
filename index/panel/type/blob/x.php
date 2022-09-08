@@ -3,7 +3,7 @@
 $description = ['It is not possible to upload the package due to the missing %s extension.', 'PHP <a href="https://www.php.net/manual/en/class.ziparchive.php" rel="nofollow" target="_blank"><code>zip</code></a>'];
 $zip = extension_loaded('zip');
 
-Hook::set('do.blob.set', function($_) use($description, $zip) {
+Hook::set('do.blob.set', function ($_) use ($description, $zip) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }

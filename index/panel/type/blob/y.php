@@ -3,7 +3,7 @@
 // Inherit to `.\x.php`
 $_ = require __DIR__ . D . 'x.php';
 
-Hook::set('do.blob.set', function($_) use($description, $zip) {
+Hook::set('do.blob.set', function ($_) use ($description, $zip) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }

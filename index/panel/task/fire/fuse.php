@@ -1,6 +1,6 @@
 <?php namespace x\panel\task\fire;
 
-function fuse($_) {
+function fuse ($_) {
     if (!\extension_loaded('zip')) {
         $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/manual/en/class.ziparchive.php" rel="nofollow" target="_blank"><code>zip</code></a>'];
     }

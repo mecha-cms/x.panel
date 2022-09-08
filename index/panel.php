@@ -130,7 +130,7 @@ function route($content, $path, $query, $hash, $r) {
 \Hook::set('route', "x\\layout\\route", 1000);
 
 // Load `route.panel` hook only if user is active!
-\Hook::set('route', function($content, $path, $query, $hash) use($_) {
+\Hook::set('route', function ($content, $path, $query, $hash) use ($_) {
     if (null !== $content) {
         return $content;
     }
@@ -140,7 +140,7 @@ function route($content, $path, $query, $hash, $r) {
             \x\panel\_git_sync();
         }
         // Load pre-defined route(s) and type(s)
-        (static function() {
+        (static function () {
             \extract($GLOBALS);
             require __DIR__ . \D . 'panel' . \D . 'route.php';
             require __DIR__ . \D . 'panel' . \D . 'status.php';
@@ -203,7 +203,7 @@ foreach (\glob(\LOT . \D . '{x,y}' . \D . '*' . \D . 'index' . \D . 'panel.php',
     if (!\is_file(\dirname($file) . '.php')) {
         continue;
     }
-    (static function($f) {
+    (static function ($f) {
         \extract($GLOBALS, \EXTR_SKIP);
         require $f;
         if (isset($_)) {

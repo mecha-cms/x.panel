@@ -1,7 +1,7 @@
 <?php
 
 // Default panel data
-return (static function($icons) {
+return (static function ($icons) {
     extract($GLOBALS, EXTR_SKIP);
     if (isset($_[0]) || isset($_[1]) || isset($_['content'])) {
         return $_; // Skip!

@@ -12,7 +12,7 @@ $_['lot']['bar']['lot'][0]['lot']['link']['url'] = [
     'task' => 'get'
 ];
 
-Hook::set('_', function($_) use($state, $url) {
+Hook::set('_', function ($_) use ($state, $url) {
     $bounds = [];
     foreach (g(LOT . D . 'y', 'page', 1) as $k => $v) {
         if ('about.page' !== basename($k)) {

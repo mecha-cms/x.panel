@@ -934,7 +934,7 @@ function page($value, $key) {
 }
 
 function pager($value, $key) {
-    $content = (string) \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function($i) {
+    $content = (string) \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function ($i) {
         return \x\panel\to\link([
             'part' => $i,
             'path' => $GLOBALS['_']['path']

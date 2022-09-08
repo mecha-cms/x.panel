@@ -1,6 +1,6 @@
 <?php
 
-Hook::set('_', function($_) use($state) {
+Hook::set('_', function ($_) use ($state) {
     if (
         !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot']) &&
         !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['type']) &&

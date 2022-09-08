@@ -95,7 +95,7 @@ if (false === strpos($_['path'], '/')) {
     }
     asort($panes);
     asort($routes);
-    $zones = (static function() {
+    $zones = (static function () {
         $zones = [];
         $regions = [
             \DateTimeZone::AFRICA,
@@ -291,7 +291,7 @@ if (false === strpos($_['path'], '/')) {
             ]
         ]
     ];
-    Hook::set('_', function($_) use($bar, $desk) {
+    Hook::set('_', function ($_) use ($bar, $desk) {
         $_['lot'] = array_replace_recursive($_['lot'] ?? [], [
             'bar' => $bar,
             'desk' => $desk

@@ -1,6 +1,6 @@
 <?php
 
-Hook::set('_', function($_) use($state, $url, $user) {
+Hook::set('_', function ($_) use ($state, $url, $user) {
     if (
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['skip']) &&
         empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
@@ -9,7 +9,7 @@ Hook::set('_', function($_) use($state, $url, $user) {
     ) {
         $bounds = [];
         $count = 0;
-        $search = static function($folder, $x, $r) use($_) {
+        $search = static function ($folder, $x, $r) use ($_) {
             $q = strtolower(s($_['query']['query'] ?? ""));
             return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
         };

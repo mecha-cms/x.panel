@@ -5,7 +5,7 @@ if (!isset($state->x->user)) {
 }
 
 // Clear the rest of file and folder marker(s)
-Hook::set('on.user.exit', function() {
+Hook::set('on.user.exit', function () {
     unset($_SESSION['_']);
 });
 

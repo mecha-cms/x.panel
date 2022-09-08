@@ -3,7 +3,7 @@
 $path = $user->path;
 $super = 1 === $user->status;
 
-Hook::set('_', function($_) use($path, $super) {
+Hook::set('_', function ($_) use ($path, $super) {
     if (
         !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
         !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']) &&

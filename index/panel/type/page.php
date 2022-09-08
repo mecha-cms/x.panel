@@ -320,7 +320,7 @@ $desk = [
 
 $session = $_SESSION['_']['file'] ?? [];
 
-Hook::set('_', function($_) use($page, $session, $trash, $url) {
+Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
     $apart = [];
     if (!empty($_['lot']['desk']['lot']['form']['values'])) {
         foreach ($_['lot']['desk']['lot']['form']['values'] as $k => $v) {

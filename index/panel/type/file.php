@@ -30,7 +30,7 @@ if (0 === strpos($type, 'application/')) {
 // +1: Printable
 // +2: ASCII
 // +3: Binary
-$check_mode = static function($path, $printable = false, $max = 256) {
+$check_mode = static function ($path, $printable = false, $max = 256) {
     $max = floor($max);
     if (is_file($path)) {
         if (is_readable($path)) {

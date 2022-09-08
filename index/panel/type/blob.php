@@ -46,7 +46,7 @@ $bar = [
 ];
 
 // <https://www.php.net/manual/en/function.ini-get.php>
-$bytes = static function(string $v) {
+$bytes = static function (string $v) {
     $i = intval($v = trim($v));
     switch (strtolower(substr($v, -1))) {
         case 'g':

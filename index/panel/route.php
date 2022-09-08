@@ -8,7 +8,7 @@ foreach (array_reverse(step($_['path'], '/')) as $v) {
         }
     // File-based route
     } else if (is_file($f = __DIR__ . D . 'route' . D . strtr($v, '/', D) . '.php')) {
-        (static function($f) {
+        (static function ($f) {
             extract($GLOBALS, EXTR_SKIP);
             if ($_ = require $f) {
                 $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
