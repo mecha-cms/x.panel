@@ -44,4 +44,9 @@ if (defined('TEST') && TEST) {
         ]) . '">' . i('remove the log file') . '</a>']);
         $GLOBALS['_']['alert']['error'][$log] = $out;
     }
+    $free = disk_free_space(PATH);
+    // Monitor remaining memory on disk
+    if ($free <= 1024 * 1024) { // Less than or equal to 1 mega-byte(s)
+        // TODO
+    }
 }
