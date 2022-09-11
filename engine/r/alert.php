@@ -22,6 +22,13 @@ if (null !== $query && !empty($_['part'])) {
     $GLOBALS['_']['alert']['info'][__FILE__] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
 }
 
+// Always monitor the remaining disk space!
+// TODO: Make this alert can be set by the user
+$limit = 1000000; // 1 MB
+if (disk_free_space(PATH) <= $limit) {
+    $GLOBALS['_']['alert']['info'][] = ['There is no more than %s of disk space left.', size($limit)];
+}
+
 if (defined('TEST') && TEST) {
     foreach (['error', 'error-x', 'error-y'] as $v) {
         if (!is_file($log = ENGINE . D . 'log' . D . $v)) {
@@ -43,10 +50,5 @@ if (defined('TEST') && TEST) {
             'task' => 'fire/fix'
         ]) . '">' . i('remove the log file') . '</a>']);
         $GLOBALS['_']['alert']['error'][$log] = $out;
-    }
-    $free = disk_free_space(PATH);
-    // Monitor remaining memory on disk
-    if ($free <= 1024 * 1024) { // Less than or equal to 1 mega-byte(s)
-        // TODO
     }
 }
