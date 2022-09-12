@@ -3557,6 +3557,12 @@ table td {
   vertical-align: top;
 }
 
+.title .status {
+  display: inline-block;
+  margin-left: calc(var(--x) / 4);
+  vertical-align: middle;
+}
+
 .u,
 ins,
 u {
@@ -3584,11 +3590,9 @@ u {
     margin: 0;
     min-width: 0;
   }
-
   .lot\:fields.can\:flex.has\:gap {
     gap: var(--y) var(--x);
   }
-
   .lot\:tabs .lot\:links {
     border-bottom: 1px solid;
     border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
@@ -3689,13 +3693,11 @@ u {
   .lot\:bar .has\:menu ul ul {
     left: 25%;
   }
-
   .lot\:desk,
   .lot\:section,
   .content\:section {
     padding: calc(var(--y) / 2) calc(var(--x) / 2);
   }
-
   .lot\:field,
   .lot\:field.type\:blobs,
   .lot\:field.type\:colors,
@@ -3725,18 +3727,15 @@ u {
     text-align: inherit;
     width: auto;
   }
-
   .lot\:page > div:last-child {
     flex-basis: 100%;
     margin: calc(var(--y) / 3) 0 0 calc(var(--x) * 3);
     min-height: 0;
   }
-
   .lot\:pager > span:first-child,
   .lot\:pager > span:last-child {
     display: none;
   }
-
   .lot\:tabs .lot\:links ul {
     gap: 0 var(--x);
     margin-bottom: var(--y);

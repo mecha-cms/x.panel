@@ -91,7 +91,13 @@
   }
 }
 
-.title {}
+.title {
+  .status {
+    display: inline-block;
+    margin-left: calc(var(--x) / 4);
+    vertical-align: middle;
+  }
+}
 
 .u {
   text-decoration: underline;

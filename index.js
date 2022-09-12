@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     var hasValue = function hasValue(x, data) {
         return -1 !== data.indexOf(x);
@@ -12,8 +12,8 @@
     var isFunction = function isFunction(x) {
         return 'function' === typeof x;
     };
-    var isInstance = function isInstance(x, of ) {
-        return x && isSet$1( of ) && x instanceof of ;
+    var isInstance = function isInstance(x, of) {
+        return x && isSet$1(of) && x instanceof of ;
     };
     var isNull = function isNull(x) {
         return null === x;
@@ -47,7 +47,7 @@
         return -1 !== i ? i : null;
     };
     var toCaseCamel = function toCaseCamel(x) {
-        return x.replace(/[-_.](\w)/g, function(m0, m1) {
+        return x.replace(/[-_.](\w)/g, function (m0, m1) {
             return toCaseUpper(m1);
         });
     };
@@ -89,7 +89,7 @@
     };
     var toValue = function toValue(x) {
         if (isArray(x)) {
-            return x.map(function(v) {
+            return x.map(function (v) {
                 return toValue(v);
             });
         }
@@ -113,6 +113,9 @@
         }
         return x;
     };
+    var fromHTML = function fromHTML(x) {
+        return x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+    };
     var fromJSON = function fromJSON(x) {
         var value = null;
         try {
@@ -120,7 +123,7 @@
         } catch (e) {}
         return value;
     };
-    var fromStates$1 = function fromStates() {
+    var fromStates = function fromStates() {
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
             lot[_key] = arguments[_key];
         }
@@ -152,9 +155,9 @@
         }
         return out;
     };
-    var fromValue$1 = function fromValue(x) {
+    var fromValue = function fromValue(x) {
         if (isArray(x)) {
-            return x.map(function(v) {
+            return x.map(function (v) {
                 return fromValue(x);
             });
         }
@@ -201,7 +204,7 @@
             toArray = true;
         }
         var value = (getState(node, 'className') || "").trim();
-        return toArray ? value.split(/\s+/).filter(function(v) {
+        return toArray ? value.split(/\s+/).filter(function (v) {
             return "" !== v;
         }) : value;
     };
@@ -307,7 +310,7 @@
     };
     var letClasses = function letClasses(node, classes) {
         if (isArray(classes)) {
-            return classes.forEach(function(name) {
+            return classes.forEach(function (name) {
                 return node.classList.remove(name);
             }), node;
         }
@@ -337,7 +340,7 @@
         if (true === value) {
             value = attribute;
         }
-        return node.setAttribute(attribute, fromValue$1(value)), node;
+        return node.setAttribute(attribute, fromValue(value)), node;
     };
     var setAttributes = function setAttributes(node, attributes) {
         var value;
@@ -359,7 +362,7 @@
     };
     var setClasses = function setClasses(node, classes) {
         if (isArray(classes)) {
-            return classes.forEach(function(name) {
+            return classes.forEach(function (name) {
                 return node.classList.add(name);
             }), node;
         }
@@ -427,7 +430,7 @@
         if (isNumber(value)) {
             value += 'px';
         }
-        return node.style[toCaseCamel(style)] = fromValue$1(value), node;
+        return node.style[toCaseCamel(style)] = fromValue(value), node;
     };
     var setStyles = function setStyles(node, styles) {
         var value;
@@ -475,7 +478,7 @@
         return e && e.stopPropagation();
     };
     var offEvents = function offEvents(names, node, then) {
-        names.forEach(function(name) {
+        names.forEach(function (name) {
             return offEvent(name, node, then);
         });
     };
@@ -489,7 +492,7 @@
         if (options === void 0) {
             options = false;
         }
-        names.forEach(function(name) {
+        names.forEach(function (name) {
             return onEvent(name, node, then, options);
         });
     };
@@ -501,9 +504,9 @@
 
     function onChange$a() {
         var sources = getElements('.lot\\:bar[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var items = getElements(targets$7, source);
-            items.forEach(function(item) {
+            items.forEach(function (item) {
                 onEvent('keydown', item, onKeyDownBarItem);
             });
             onEvent('keydown', source, onKeyDownBar);
@@ -624,7 +627,7 @@
             isFunction(target.focus) && target.focus();
             isFunction(target.select) && target.select(); // `<input>`
         }
-        return new Promise(function(yes, no) {
+        return new Promise(function (yes, no) {
             dialog.c = then;
             dialog.v = yes;
             dialog.x = no;
@@ -665,7 +668,7 @@
     onEvent('keydown', dialogAlertTaskOkay, onDialogTaskKeyDown);
     onEvent('click', dialogAlertTaskOkay, onDialogTaskClick);
     setChildLast(dialogAlertTasks, dialogAlertTaskOkay);
-    setDialog.alert = function(description) {
+    setDialog.alert = function (description) {
         setHTML(dialogAlertDescription, description);
         return setDialog([dialogAlertDescription, dialogAlertTasks]);
     };
@@ -687,7 +690,7 @@
     onEvent('keydown', dialogConfirmTaskOkay, onDialogTaskKeyDown);
     setChildLast(dialogConfirmTasks, dialogConfirmTaskOkay);
     setChildLast(dialogConfirmTasks, dialogConfirmTaskCancel);
-    setDialog.confirm = function(description) {
+    setDialog.confirm = function (description) {
         setHTML(dialogConfirmDescription, description);
         return setDialog([dialogConfirmDescription, dialogConfirmTasks]);
     };
@@ -721,7 +724,7 @@
     setChildLast(dialogPromptTasks, dialogPromptTaskOkay);
     setChildLast(dialogPromptTasks, dialogPromptTaskCancel);
     setChildLast(dialogPromptValueP, dialogPromptValue);
-    setDialog.prompt = function(key, value) {
+    setDialog.prompt = function (key, value) {
         setHTML(dialogPromptKey, key);
         dialogPromptValue.value = dialogPromptTaskOkay.value = value;
         return setDialog([dialogPromptKey, dialogPromptValueP, dialogPromptTasks]);
@@ -732,20 +735,20 @@
     }
     var debounce = function debounce(then, time) {
         var timer;
-        return function() {
+        return function () {
             var _arguments = arguments,
                 _this = this;
             timer && clearTimeout(timer);
-            timer = setTimeout(function() {
+            timer = setTimeout(function () {
                 return then.apply(_this, _arguments);
             }, time);
         };
     };
     var delay = function delay(then, time) {
-        return function() {
+        return function () {
             var _arguments2 = arguments,
                 _this2 = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 return then.apply(_this2, _arguments2);
             }, time);
         };
@@ -790,7 +793,7 @@
             if (!isSet$1(hooks[name])) {
                 return $;
             }
-            hooks[name].forEach(function(then) {
+            hooks[name].forEach(function (then) {
                 return then.apply($, data);
             });
             return $;
@@ -873,7 +876,7 @@
         var _hook = hook($),
             fire = _hook.fire;
         _hook.hooks;
-        $.state = state = fromStates$1({}, OP.state, state);
+        $.state = state = fromStates({}, OP.state, state);
         $.options = {};
         $.source = source; // Store current instance to `OP.instances`
         OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $; // Mark current DOM as active option picker to prevent duplicate instance
@@ -1118,7 +1121,7 @@
             if (selectBoxFakeInput) {
                 selectElementContents(selectBoxFakeInputValue), setValue(content);
             }
-            selectBoxFakeOptions.forEach(function(selectBoxFakeOption) {
+            selectBoxFakeOptions.forEach(function (selectBoxFakeOption) {
                 if (selectBoxValue === selectBoxFakeOption[PROP_VALUE]) {
                     setOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
                     setOptionFakeSelected(selectBoxFakeOption);
@@ -1233,7 +1236,7 @@
         function onSelectBoxFakeInputValueBlur() {
             var value = getText(selectBoxFakeInputValue);
             if (null !== value) {
-                setValue(fromValue$1(value));
+                setValue(fromValue(value));
             }
             doBlur();
         }
@@ -1262,7 +1265,7 @@
             }
             doFocus(), doToggle() && doFit();
         }
-        var bounce = debounce(function(self, key, valuePrev) {
+        var bounce = debounce(function (self, key, valuePrev) {
             var value = getText(self),
                 first,
                 selectBoxFakeOption;
@@ -1282,7 +1285,7 @@
                         v = getText(selectBoxFakeOption);
                         if (v && toCaseLower(v).includes(value)) {
                             !first && (first = selectBoxFakeOption);
-                            setHTML(selectBoxFakeOption, v.replace(new RegExp(value.replace(/[!$^*()+=[]{}|:<>,.?\/-]/g, '\\$&'), 'gi'), function($0) {
+                            setHTML(selectBoxFakeOption, v.replace(new RegExp(value.replace(/[!$^*()+=[]{}|:<>,.?\/-]/g, '\\$&'), 'gi'), function ($0) {
                                 return '<mark>' + $0 + '</mark>';
                             }));
                             selectBoxFakeOption.hidden = false;
@@ -1333,7 +1336,7 @@
         function onSelectBoxFakeInputValueKeyUp() {
             onSelectBoxFakeKeyUp();
         }
-        var waitForPaste = delay(function(input, placeholder) {
+        var waitForPaste = delay(function (input, placeholder) {
             var value = getText(input);
             setHTML(placeholder, null !== value ? ZERO_WIDTH_SPACE : selectBoxPlaceholder);
             setText(input, value);
@@ -1442,7 +1445,7 @@
                 }
             }
             if (!useEvent) {
-                var selectBoxFakeOption = selectBoxFakeOptions.find(function(selectBoxFakeOption) {
+                var selectBoxFakeOption = selectBoxFakeOptions.find(function (selectBoxFakeOption) {
                     return hasClass(selectBoxFakeOption, classNameOptionM + 'selected');
                 });
                 if (selectBoxFakeOption) {
@@ -1495,14 +1498,14 @@
             setClass(selectBoxFake, classNameM + 'down');
             setClass(selectBoxFake, classNameM + 'open');
         }
-        $.get = function(parseValue) {
+        $.get = function (parseValue) {
             if (parseValue === void 0) {
                 parseValue = true;
             }
             var value = getValue();
             return parseValue ? toValue(value) : value;
         };
-        $.pop = function() {
+        $.pop = function () {
             if (!source[name$2]) {
                 return $; // Already ejected
             }
@@ -1528,12 +1531,12 @@
             letElement(selectBoxFake);
             return fire('pop', getLot());
         };
-        $.set = function(value) {
+        $.set = function (value) {
             if (!selectBoxOptions) {
                 return $;
             }
-            setValue(fromValue$1(value));
-            selectBoxFakeOptions.forEach(function(selectBoxFakeOption, index) {
+            setValue(fromValue(value));
+            selectBoxFakeOptions.forEach(function (selectBoxFakeOption, index) {
                 var selectBoxOption = selectBoxOptions[index];
                 toggleClass(selectBoxFakeOption, classNameOptionM + 'selected', selectBoxOption && getOptionSelected(selectBoxOption));
             });
@@ -1550,7 +1553,7 @@
         'parent': null,
         'size': 5
     };
-    OP.version = '1.3.7';
+    OP.version = '1.3.10';
 
     function onChange$9(init) {
         // Destroy!
@@ -1561,7 +1564,7 @@
             delete OP.instances[key];
         }
         var sources = getElements('input[list],select');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             var c = getClasses(source);
             var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
@@ -1623,7 +1626,7 @@
         var _hook = hook($);
         _hook.hooks;
         var fire = _hook.fire;
-        $.state = state = fromStates$1({}, TP.state, isString(state) ? {
+        $.state = state = fromStates({}, TP.state, isString(state) ? {
             join: state
         } : state || {});
         $.source = source; // Store current instance to `TP.instances`
@@ -1809,13 +1812,13 @@
         setValue("");
 
         function doBlurTags(exceptThisTag) {
-            doToTags(exceptThisTag, function() {
+            doToTags(exceptThisTag, function () {
                 letClass(this, classNameE + 'tag--selected');
             });
         }
 
         function doFocusTags(exceptThisTag) {
-            doToTags(exceptThisTag, function() {
+            doToTags(exceptThisTag, function () {
                 setClass(this, classNameE + 'tag--selected');
             });
         }
@@ -1870,7 +1873,7 @@
 
         function doValidTagChar(v) {
             v = v || "";
-            state.escape.forEach(function(char) {
+            state.escape.forEach(function (char) {
                 v = v.split(char).join("");
             });
             return v;
@@ -1970,21 +1973,21 @@
         function onCopyCutPasteTextCopy(e) {
             var type = e.type;
             if ('copy' === type) {
-                delay(function() {
+                delay(function () {
                     return letTextCopy(1);
                 })();
             } else if ('cut' === type) {
                 !sourceIsReadOnly() && setTags("");
-                delay(function() {
+                delay(function () {
                     return letTextCopy(1);
                 })();
             } else if ('paste' === type) {
-                delay(function() {
+                delay(function () {
                     !sourceIsReadOnly() && setTags(textCopy.value);
                     letTextCopy(1);
                 })();
             }
-            delay(function() {
+            delay(function () {
                 var tags = $.tags;
                 fire(type, [tags, toCount(tags)]);
             }, 1)();
@@ -2107,7 +2110,7 @@
             if (keyIsTab) {
                 key = '\t';
             }
-            delay(function() {
+            delay(function () {
                 var theValueAfter = doValidTag(getText(textInput));
                 setText(textInputHint, theValueAfter ? "" : thePlaceholder); // Try to add support for browser(s) without `KeyboardEvent.prototype.key` feature
                 if (hasValue(getCharBeforeCaret(textInput), escapes)) {
@@ -2177,9 +2180,9 @@
         }
 
         function onPasteText() {
-            delay(function() {
+            delay(function () {
                 if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                    getText(textInput).split(state.join).forEach(function(v) {
+                    getText(textInput).split(state.join).forEach(function (v) {
                         if (!hasValue(v, $.tags)) {
                             setTagElement(v), setTag(v);
                         }
@@ -2224,32 +2227,32 @@
         onEvents(['blur', 'focus'], textInput, onBlurFocusText);
         onEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
         form && onEvent('submit', form, onSubmitForm);
-        $.blur = function() {
+        $.blur = function () {
             return !sourceIsDisabled() && textInput.blur(), $;
         };
-        $.click = function() {
+        $.click = function () {
             return self.click(), onClickSelf(), $;
         }; // Default filter for the tag name
-        $.f = function(v) {
+        $.f = function (v) {
             return toCaseLower(v || "").replace(/[^ a-z\d-]/g, "").trim();
         };
-        $.focus = function() {
+        $.focus = function () {
             if (!sourceIsDisabled()) {
                 setValue(getText(textInput), 1);
             }
             return $;
         };
-        $.get = function(tag) {
+        $.get = function (tag) {
             return sourceIsDisabled() ? null : getTag(tag, 1);
         };
         $.input = textInput;
-        $.let = function(tag) {
+        $.let = function (tag) {
             if (!sourceIsDisabled() && !sourceIsReadOnly()) {
                 var theTagsMin = state.min;
                 if (!tag) {
                     setTags("");
                 } else if (isArray(tag)) {
-                    tag.forEach(function(v) {
+                    tag.forEach(function (v) {
                         if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
                             fire('min.tags', [theTagsMin]);
                             return $;
@@ -2266,7 +2269,7 @@
             }
             return $;
         };
-        $.pop = function() {
+        $.pop = function () {
             if (!source[name$1]) {
                 return $; // Already ejected!
             }
@@ -2292,7 +2295,7 @@
             return letElement(self), fire('pop', [tags]);
         };
         $.self = self;
-        $.set = function(tag, index) {
+        $.set = function (tag, index) {
             if (!tag) {
                 return $;
             }
@@ -2330,7 +2333,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.12';
+    TP.version = '3.4.14';
 
     function onChange$8(init) {
         // Destroy!
@@ -2341,7 +2344,7 @@
             delete TP.instances[key];
         }
         var sources = getElements('.lot\\:field.type\\:query input');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             var c = getClasses(source);
             var $ = new TP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
@@ -2372,7 +2375,7 @@
         if (!isInstance($, TE)) {
             return new TE(source, state);
         }
-        $.state = state = fromStates$1({}, TE.state, isString(state) ? {
+        $.state = state = fromStates({}, TE.state, isString(state) ? {
             tab: state
         } : state || {}); // The `<textarea>` element
         $.self = $.source = source; // Store current instance to `TE.instances`
@@ -2390,22 +2393,22 @@
                 return source.value.replace(/\r/g, "");
             }; // The initial value
         $.value = sourceValue(); // Get value
-        $.get = function() {
+        $.get = function () {
             return !sourceIsDisabled() && trim(sourceValue()) || null;
         }; // Reset to the initial value
-        $.let = function() {
+        $.let = function () {
             return source.value = $.value, $;
         }; // Set value
-        $.set = function(value) {
+        $.set = function (value) {
             if (sourceIsDisabled() || sourceIsReadOnly()) {
                 return $;
             }
             return source.value = value, $;
         }; // Get selection
-        $.$ = function() {
+        $.$ = function () {
             return new TE.S(source.selectionStart, source.selectionEnd, sourceValue());
         };
-        $.focus = function(mode) {
+        $.focus = function (mode) {
             var x, y;
             if (-1 === mode) {
                 x = y = 0; // Put caret at the start of the editor, scroll to the start of the editor
@@ -2419,10 +2422,10 @@
             }
             return source.focus(), $;
         }; // Blur from the editor
-        $.blur = function() {
+        $.blur = function () {
             return source.blur(), $;
         }; // Select value
-        $.select = function() {
+        $.select = function () {
             if (sourceIsDisabled() || sourceIsReadOnly()) {
                 return source.focus(), $;
             }
@@ -2460,7 +2463,7 @@
             source.scrollTop = Y;
             return W.scroll(x, y), $;
         }; // Match at selection
-        $.match = function(pattern, then) {
+        $.match = function (pattern, then) {
             var _$$$2 = $.$(),
                 after = _$$$2.after,
                 before = _$$$2.before,
@@ -2472,7 +2475,7 @@
             var m = value.match(pattern);
             return isFunction(then) ? then.call($, m || []) : !!m;
         }; // Replace at selection
-        $.replace = function(from, to, mode) {
+        $.replace = function (from, to, mode) {
             var _$$$3 = $.$(),
                 after = _$$$3.after,
                 before = _$$$3.before,
@@ -2489,7 +2492,7 @@
             }
             return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
         }; // Insert/replace at caret
-        $.insert = function(value, mode, clear) {
+        $.insert = function (value, mode, clear) {
             var from = any;
             if (clear) {
                 $.replace(from, ""); // Force to delete selection on insert before/after?
@@ -2503,7 +2506,7 @@
             }
             return $.replace(from, value, mode);
         }; // Wrap current selection
-        $.wrap = function(open, close, wrap) {
+        $.wrap = function (open, close, wrap) {
             var _$$$4 = $.$(),
                 after = _$$$4.after,
                 before = _$$$4.before,
@@ -2513,7 +2516,7 @@
             }
             return $.set(before + open + value + close + after).select(before = toCount(before + open), before + toCount(value));
         }; // Unwrap current selection
-        $.peel = function(open, close, wrap) {
+        $.peel = function (open, close, wrap) {
             var _$$$5 = $.$(),
                 after = _$$$5.after,
                 before = _$$$5.before,
@@ -2532,7 +2535,7 @@
             }
             return $.select();
         };
-        $.pull = function(by, includeEmptyLines) {
+        $.pull = function (by, includeEmptyLines) {
             if (includeEmptyLines === void 0) {
                 includeEmptyLines = true;
             }
@@ -2544,7 +2547,7 @@
                 if (includeEmptyLines) {
                     return $.replace(toPattern('^' + by, 'gm'), "");
                 }
-                return $.insert(value.split('\n').map(function(v) {
+                return $.insert(value.split('\n').map(function (v) {
                     if (toPattern('^(' + by + ')*$', "").test(v)) {
                         return v;
                     }
@@ -2553,7 +2556,7 @@
             }
             return $.replace(toPattern(by + '$', ""), "", -1);
         };
-        $.push = function(by, includeEmptyLines) {
+        $.push = function (by, includeEmptyLines) {
             if (includeEmptyLines === void 0) {
                 includeEmptyLines = false;
             }
@@ -2565,7 +2568,7 @@
             }
             return $.insert(by, -1);
         };
-        $.trim = function(open, close, start, end, tidy) {
+        $.trim = function (open, close, start, end, tidy) {
             if (tidy === void 0) {
                 tidy = true;
             }
@@ -2593,7 +2596,7 @@
             if (false !== end) value = trim(value, 1);
             return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
         }; // Destructor
-        $.pop = function() {
+        $.pop = function () {
             if (!source[name]) {
                 return $; // Already ejected!
             }
@@ -2607,7 +2610,7 @@
     TE.state = {
         'tab': '\t'
     };
-    TE.S = function(a, b, c) {
+    TE.S = function (a, b, c) {
         var t = this,
             d = c.slice(a, b);
         t.after = c.slice(b);
@@ -2616,23 +2619,23 @@
         t.length = toCount(d);
         t.start = a;
         t.value = d;
-        t.toString = function() {
+        t.toString = function () {
             return d;
         };
     };
-    TE.version = '3.3.11';
+    TE.version = '3.3.13';
     TE.x = x;
     var that$2 = {};
     that$2._history = [];
     that$2._historyState = -1; // Get history data
-    that$2.history = function(index) {
+    that$2.history = function (index) {
         var t = this;
         if (!isSet$1(index)) {
             return t._history;
         }
         return isSet$1(t._history[index]) ? t._history[index] : null;
     }; // Remove state from history
-    that$2.loss = function(index) {
+    that$2.loss = function (index) {
         var t = this,
             current;
         if (true === index) {
@@ -2644,7 +2647,7 @@
         t._historyState = toEdge(t._historyState - 1, [-1]);
         return current;
     }; // Save current state to history
-    that$2.record = function(index) {
+    that$2.record = function (index) {
         var t = this,
             _t$$ = t.$(),
             end = _t$$.end,
@@ -2657,14 +2660,14 @@
         ++t._historyState;
         return t._history[isSet$1(index) ? index : t._historyState] = next, t;
     }; // Redo previous state
-    that$2.redo = function() {
+    that$2.redo = function () {
         var t = this,
             state;
         t._historyState = toEdge(t._historyState + 1, [0, toCount(t._history) - 1]);
         state = t._history[t._historyState];
         return t.set(state[0]).select(state[1], state[2]);
     }; // Undo current state
-    that$2.undo = function() {
+    that$2.undo = function () {
         var t = this,
             state;
         t._historyState = toEdge(t._historyState - 1, [0, toCount(t._history) - 1]);
@@ -2682,7 +2685,7 @@
     };
 
     function promisify(type, lot) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             var r = W[type].apply(W, lot);
             return r ? resolve(r) : reject(r);
         });
@@ -2693,8 +2696,8 @@
             type: null
         }
     };
-    ['alert', 'confirm', 'prompt'].forEach(function(type) {
-        defaults$2.source[type] = function() {
+    ['alert', 'confirm', 'prompt'].forEach(function (type) {
+        defaults$2.source[type] = function () {
             for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
                 lot[_key] = arguments[_key];
             }
@@ -2702,7 +2705,7 @@
         };
     });
     var that$1 = {};
-    that$1.toggle = function(open, close, wrap, tidy) {
+    that$1.toggle = function (open, close, wrap, tidy) {
         if (tidy === void 0) {
             tidy = false;
         }
@@ -2990,7 +2993,7 @@
         }
         return true;
     }
-    var bounce = debounce(function(that) {
+    var bounce = debounce(function (that) {
         return that.record();
     }, 100);
 
@@ -2998,64 +3001,6 @@
         return bounce(that), true;
     }
     var state$2 = defaults$2;
-    var fromStates = function fromStates() {
-        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-            lot[_key] = arguments[_key];
-        }
-        var out = lot.shift();
-        for (var i = 0, j = toCount(lot); i < j; ++i) {
-            for (var k in lot[i]) {
-                // Assign value
-                if (!isSet$1(out[k])) {
-                    out[k] = lot[i][k];
-                    continue;
-                } // Merge array
-                if (isArray(out[k]) && isArray(lot[i][k])) {
-                    out[k] = [
-                        /* Clone! */
-                    ].concat(out[k]);
-                    for (var ii = 0, jj = toCount(lot[i][k]); ii < jj; ++ii) {
-                        if (!hasValue(lot[i][k][ii], out[k])) {
-                            out[k].push(lot[i][k][ii]);
-                        }
-                    } // Merge object recursive
-                } else if (isObject(out[k]) && isObject(lot[i][k])) {
-                    out[k] = fromStates({
-                        /* Clone! */
-                    }, out[k], lot[i][k]); // Replace value
-                } else {
-                    out[k] = lot[i][k];
-                }
-            }
-        }
-        return out;
-    };
-    var fromHTML = function fromHTML(x) {
-        return x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
-    };
-    var fromValue = function fromValue(x) {
-        if (isArray(x)) {
-            return x.map(function(v) {
-                return fromValue(x);
-            });
-        }
-        if (isObject(x)) {
-            for (var k in x) {
-                x[k] = fromValue(x[k]);
-            }
-            return x;
-        }
-        if (false === x) {
-            return 'false';
-        }
-        if (null === x) {
-            return 'null';
-        }
-        if (true === x) {
-            return 'true';
-        }
-        return "" + x;
-    };
     var tagComment = '<!--([\\s\\S](?!-->)*)-->',
         tagData = '<!((?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^>\'"])*)>',
         tagName$1 = '[\\w:.-]+',
@@ -3082,7 +3027,7 @@
         if (!attributes) {
             return "";
         } // Sort object by key(s)
-        attributes = toObjectKeys(attributes).sort().reduce(function(r, k) {
+        attributes = toObjectKeys(attributes).sort().reduce(function (r, k) {
             return r[k] = attributes[k], r;
         }, {});
         var attribute,
@@ -3114,7 +3059,7 @@
         }
         return tidy; // Return `[…]` or `false`
     }
-    that.insert = function(name, content, attributes, tidy) {
+    that.insert = function (name, content, attributes, tidy) {
         if (content === void 0) {
             content = "";
         }
@@ -3130,7 +3075,7 @@
         }
         return t.insert('<' + name + toAttributes(attributes) + (false !== content ? '>' + content + '</' + name + '>' : ' />') + (false !== tidy ? tidy[1] : ""), -1, true);
     };
-    that.toggle = function(name, content, attributes, tidy) {
+    that.toggle = function (name, content, attributes, tidy) {
         if (content === void 0) {
             content = "";
         }
@@ -3169,7 +3114,7 @@
         }
         return t.wrap('<' + name + toAttributes(attributes) + '>', '</' + name + '>');
     };
-    that.wrap = function(name, content, attributes, tidy) {
+    that.wrap = function (name, content, attributes, tidy) {
         if (content === void 0) {
             content = "";
         }
@@ -3396,7 +3341,7 @@
         map.key;
         var queue = map.queue;
         if (!queue.Control) {
-            W.setTimeout(function() {
+            W.setTimeout(function () {
                 var _that$$7 = that.$(),
                     after = _that$$7.after,
                     before = _that$$7.before,
@@ -3527,7 +3472,7 @@
     function toggleBlocks(that) {
         var patternBefore = /<(?:h([1-6])|p)(\s[^>]*)?>$/,
             patternAfter = /^<\/(?:h[1-6]|p)>/;
-        that.match([patternBefore, /.*/, patternAfter], function(before, value, after) {
+        that.match([patternBefore, /.*/, patternAfter], function (before, value, after) {
             var t = this,
                 h = +(before[1] || 0),
                 attr = before[2] || "",
@@ -3571,7 +3516,7 @@
     function toggleCodes(that) {
         var patternBefore = /<(?:pre|code)(?:\s[^>]*)?>(?:\s*<code(?:\s[^>]*)?>)?$/,
             patternAfter = /^(?:<\/code>\s*)?<\/(?:pre|code)>/;
-        that.match([patternBefore, /.*/, patternAfter], function(before, value, after) {
+        that.match([patternBefore, /.*/, patternAfter], function (before, value, after) {
             var t = this,
                 tidy,
                 elements = that.state.sourceHTML.elements; // ``
@@ -3605,7 +3550,7 @@
     function toggleQuotes(that) {
         var patternBefore = /<(blockquote|q)(?:\s[^>]*)?>\s*$/,
             patternAfter = /^\s*<\/(blockquote|q)>/;
-        that.match([patternBefore, /.*/, patternAfter], function(before, value, after) {
+        that.match([patternBefore, /.*/, patternAfter], function (before, value, after) {
             var t = this,
                 tidy,
                 state = that.state,
@@ -3644,21 +3589,21 @@
         return x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     }
     var commands = {};
-    commands.blocks = function() {
+    commands.blocks = function () {
         var that = this;
         return that.record(), toggleBlocks(that), that.record(), false;
     };
-    commands.bold = function() {
+    commands.bold = function () {
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
         return that.record(), toggle.apply(this, elements.b), false;
     };
-    commands.code = function() {
+    commands.code = function () {
         var that = this;
         return that.record(), toggleCodes(that), that.record(), false;
     };
-    commands.image = function(label, placeholder) {
+    commands.image = function (label, placeholder) {
         if (label === void 0) {
             label = 'URL:';
         }
@@ -3675,7 +3620,7 @@
             lineMatchIndent = lineMatch && lineMatch[1] || "",
             prompt = state.source.prompt;
         if (isFunction(prompt)) {
-            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function(src) {
+            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function (src) {
                 if (!src) {
                     that.focus();
                     return;
@@ -3706,13 +3651,13 @@
         }
         return that.record(), false;
     };
-    commands.italic = function() {
+    commands.italic = function () {
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
         return that.record(), toggle.apply(this, elements.i), false;
     };
-    commands.link = function(label, placeholder) {
+    commands.link = function (label, placeholder) {
         if (label === void 0) {
             label = 'URL:';
         }
@@ -3723,7 +3668,7 @@
             elements = state.sourceHTML.elements || {},
             prompt = state.source.prompt;
         if (isFunction(prompt)) {
-            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function(href) {
+            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function (href) {
                 if (!href) {
                     that.focus();
                     return;
@@ -3749,11 +3694,11 @@
         }
         return that.record(), false;
     };
-    commands.quote = function() {
+    commands.quote = function () {
         var that = this;
         return that.record(), toggleQuotes(that), that.record(), false;
     };
-    commands.underline = function() {
+    commands.underline = function () {
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
@@ -3883,7 +3828,7 @@
     }
     var state = defaults;
     Object.assign(TE.prototype, that$2, that$1);
-    TE.state = fromStates$1({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
+    TE.state = fromStates({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
     delete TE.state.source.type;
 
     function _onBlurSource(e) {
@@ -3980,13 +3925,13 @@
             map,
             state,
             type;
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             editor = new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             state = editor.state;
             type = state.source.type;
             map = new W.K(editor);
-            map.keys['Escape'] = function() {
+            map.keys['Escape'] = function () {
                 var parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
                 if (parent) {
                     return parent.focus(), false;
@@ -4012,7 +3957,7 @@
         if (1 === init) {
             W._.on('change', onChange$7);
             W.TE = TE;
-            ['alert', 'confirm', 'prompt'].forEach(function(type) {
+            ['alert', 'confirm', 'prompt'].forEach(function (type) {
                 W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
             });
         }
@@ -4031,9 +3976,9 @@
 
     function onChange$6() {
         var sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var files = getElements(targets$6, source);
-            files.forEach(function(file) {
+            files.forEach(function (file) {
                 onEvent('keydown', file, onKeyDownFile);
             });
             onEvent('keydown', source, onKeyDownFiles);
@@ -4116,9 +4061,9 @@
 
     function onChange$5() {
         var sources = getElements('.lot\\:links[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var links = getElements(targets$5, source);
-            links && toCount(links) && links.forEach(function(link) {
+            links && toCount(links) && links.forEach(function (link) {
                 onEvent('keydown', link, onKeyDownLink);
             });
             onEvent('keydown', source, onKeyDownLinks);
@@ -4209,7 +4154,7 @@
     }
 
     function doHideMenus(but, trigger) {
-        getElements('.lot\\:menu[tabindex].is\\:enter').forEach(function(node) {
+        getElements('.lot\\:menu[tabindex].is\\:enter').forEach(function (node) {
             if (but !== node) {
                 letClass(getParent(node), 'is:active');
                 letClass(getPrev(node), 'is:active');
@@ -4226,7 +4171,7 @@
         var menuParents = getElements('.has\\:menu'),
             menuLinks = getElements('.lot\\:menu[tabindex] ' + targets$4);
         if (menuParents && toCount(menuParents)) {
-            menuParents.forEach(function(menuParent) {
+            menuParents.forEach(function (menuParent) {
                 var menu = getElement('.lot\\:menu[tabindex]', menuParent),
                     a = getPrev(menu);
                 if (menu && a) {
@@ -4237,12 +4182,12 @@
             onEvent('click', D, onClickDocument);
         }
         if (menuLinks && toCount(menuLinks)) {
-            menuLinks.forEach(function(menuLink) {
+            menuLinks.forEach(function (menuLink) {
                 onEvent('keydown', menuLink, onKeyDownMenu);
             });
         }
         var sources = getElements('.lot\\:menu[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             onEvent('keydown', source, onKeyDownMenus);
         });
     }
@@ -4258,7 +4203,7 @@
         var t = this,
             current = getNext(t);
         doHideMenus(current, t);
-        W.setTimeout(function() {
+        W.setTimeout(function () {
             toggleClass(current, 'is:enter');
             toggleClass(getParent(t), 'is:active');
             toggleClass(t, 'is:active');
@@ -4312,7 +4257,7 @@
                 setClass(getParent(t), 'is:active');
                 setClass(next, 'is:enter');
                 setClass(t, 'is:active');
-                W.setTimeout(function() {
+                W.setTimeout(function () {
                     // Focus to the first link of child menu
                     fireFocus$4(getElement(targets$4, next));
                 }, 1);
@@ -4394,7 +4339,7 @@
                 if (!hasClass(next, 'is:enter')) {
                     fireEvent('click', t);
                 }
-                W.setTimeout(function() {
+                W.setTimeout(function () {
                     // Focus to the first link of child menu
                     fireFocus$4(getElement(targets$4, next));
                 }, 1);
@@ -4415,9 +4360,9 @@
 
     function onChange$3() {
         var sources = getElements('.lot\\:pages[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var pages = getElements(targets$3, source);
-            pages.forEach(function(page) {
+            pages.forEach(function (page) {
                 onEvent('keydown', page, onKeyDownPage);
             });
             onEvent('keydown', source, onKeyDownPages);
@@ -4500,7 +4445,7 @@
 
     function onChange$2() {
         var sources = getElements('.lot\\:stacks[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var stacks = [].slice.call(getChildren(source)),
                 input = setElement('input'),
                 name,
@@ -4515,7 +4460,7 @@
                     self = getParent(parent, '.lot\\:stacks'),
                     current;
                 if (!hasClass(parent, 'has:link')) {
-                    stacks.forEach(function(stack) {
+                    stacks.forEach(function (stack) {
                         if (stack !== parent) {
                             letClass(stack, 'is:current');
                             letClass(getElement('a[target^="stack:"]', stack), 'is:current');
@@ -4535,12 +4480,12 @@
                     offEventDefault(e);
                 }
             }
-            stacks.forEach(function(stack) {
+            stacks.forEach(function (stack) {
                 var target = getElement(targets$2, stack);
                 onEvent('click', target, onClick);
                 onEvent('keydown', target, onKeyDownStack);
             });
-            var stackCurrent = stacks.find(function(value, key) {
+            var stackCurrent = stacks.find(function (value, key) {
                 return 0 !== key && hasClass(value, 'is:current');
             });
             if (stackCurrent) {
@@ -4679,7 +4624,7 @@
 
     function onChange$1() {
         var sources = getElements('.lot\\:tabs[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var panes = [].slice.call(getChildren(source)),
                 tabs = [].slice.call(getElements(targets$1, panes.shift())),
                 input = setElement('input'),
@@ -4696,7 +4641,7 @@
                     self = getParent(parent, '.lot\\:tabs'),
                     current;
                 if (!hasClass(parent, 'has:link')) {
-                    tabs.forEach(function(tab) {
+                    tabs.forEach(function (tab) {
                         if (tab !== t) {
                             letClass(getParent(tab), 'is:current');
                             letClass(tab, 'is:current');
@@ -4727,12 +4672,12 @@
                     offEventDefault(e);
                 }
             }
-            tabs.forEach(function(tab, index) {
+            tabs.forEach(function (tab, index) {
                 tab._tabIndex = index;
                 onEvent('click', tab, onClick);
                 onEvent('keydown', tab, onKeyDownTab);
             });
-            var tabCurrent = tabs.find(function(value, key) {
+            var tabCurrent = tabs.find(function (value, key) {
                 return 0 !== key && hasClass(getParent(value), 'is:current');
             });
             if (tabCurrent) {
@@ -4901,9 +4846,9 @@
 
     function onChange() {
         var sources = getElements('.lot\\:tasks[tabindex]');
-        sources && toCount(sources) && sources.forEach(function(source) {
+        sources && toCount(sources) && sources.forEach(function (source) {
             var tasks = getElements(targets, source);
-            tasks && toCount(tasks) && tasks.forEach(function(task) {
+            tasks && toCount(tasks) && tasks.forEach(function (task) {
                 onEvent('keydown', task, onKeyDownTask);
             });
             onEvent('keydown', source, onKeyDownTasks);
@@ -5003,8 +4948,15 @@
             source = {};
         }
         var $ = this;
+        $.command = function (v) {
+            if (isString(v)) {
+                return v === $.toString();
+            }
+            var command = $.keys[$.toString()];
+            return isSet$1(command) ? command : false;
+        };
         $.commands = {};
-        $.fire = function(command) {
+        $.fire = function (command) {
             var context = $.source,
                 value,
                 exist;
@@ -5025,34 +4977,32 @@
         };
         $.key = null;
         $.keys = {};
-        $.pull = function(key) {
+        $.pull = function (key) {
             $.key = null;
             if (!isSet$1(key)) {
                 return $.queue = {}, $;
             }
             return delete $.queue[key], $;
         };
-        $.push = function(key) {
+        $.push = function (key) {
             return $.queue[$.key = key] = 1, $;
         };
         $.queue = {};
         $.source = source;
-        $.test = function() {
-            var command = $.keys[$.toString()];
-            return isSet$1(command) ? command : false;
-        };
-        $.toString = function() {
+        $.toString = function () {
             return toObjectKeys($.queue).join('-');
         };
         return $;
     }
-    let map = new K(W);
-    onEvent('blur', W, e => map.pull());
-    onEvent('keydown', W, e => {
+    var map = new K(W);
+    onEvent('blur', W, function (e) {
+        return map.pull();
+    });
+    onEvent('keydown', W, function (e) {
         map.push(e.key);
-        let command = map.test();
+        var command = map.test();
         if (command) {
-            let value = map.fire(command);
+            var value = map.fire(command);
             if (false === value) {
                 offEventDefault(e);
             } else if (null === value) {
@@ -5060,27 +5010,34 @@
             }
         }
     });
-    onEvent('keyup', W, e => map.pull(e.key));
-    const _ = {
+    onEvent('keyup', W, function (e) {
+        return map.pull(e.key);
+    });
+    var _ = {
         commands: map.commands,
         keys: map.keys
     };
-    const {
-        fire,
-        hooks,
-        off,
-        on
-    } = hook(_);
+    var _hook = hook(_),
+        fire = _hook.fire;
+    _hook.hooks;
+    _hook.off;
+    _hook.on;
     W.K = K;
     W._ = _;
-    onEvent('beforeload', D, () => fire('let'));
-    onEvent('load', D, () => fire('get'));
-    onEvent('DOMContentLoaded', D, () => fire('set'));
-    onEvent('keydown', W, function(e) {
+    onEvent('beforeload', D, function () {
+        return fire('let');
+    });
+    onEvent('load', D, function () {
+        return fire('get');
+    });
+    onEvent('DOMContentLoaded', D, function () {
+        return fire('set');
+    });
+    onEvent('keydown', W, function (e) {
         if (e.defaultPrevented) {
             return;
         }
-        let target = e.target,
+        var target = e.target,
             key = e.key,
             keyIsAlt = e.altKey,
             keyIsCtrl = e.ctrlKey,
