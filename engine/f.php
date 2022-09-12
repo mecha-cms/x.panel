@@ -98,22 +98,26 @@ function _decor_set(array $attr, array $value = []) {
 // Check for update(s)
 function _git_sync() {
     \extract($GLOBALS);
-    if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions')) {
-        \mkdir($folder, 0775, true);
+    if (!\is_file($file = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions' . \D . 'mecha-cms.php')) {
+        if (!\is_dir($folder = \dirname($file))) {
+            \mkdir($folder, 0775, true);
+        }
+        \file_put_contents($file, '<?' . 'php return[];');
+        \touch($file, 0);
     }
     $sync = $state->x->panel->sync ?? 0;
     if (!empty($sync)) {
         $versions = [];
-        if (!\is_file($file = $folder . \D . 'mecha-cms.php')) {
-            // Sync version(s) data
-            if (false === \choke($sync, 'git/versions/mecha-cms')) {
-                foreach (\explode("\n", \fetch('https://mecha-cms.com/git-dev/versions/mecha-cms') ?? "") as $v) {
-                    $v = \explode(' ', $v);
-                    $versions[$v[1] ?? ""] = $v[0];
-                }
-                \file_put_contents($file, '<?' . 'php return' . \z($versions) . ';');
+        // Sync version(s) data
+        if (false === \choke($sync, 'git/versions/mecha-cms.php')) {
+            foreach (\explode("\n", \fetch('https://mecha-cms.com/git-dev/versions/mecha-cms') ?? "") as $v) {
+                $v = \explode(' ', $v);
+                $versions[$v[1] ?? ""] = $v[0];
             }
+            // Save to cache
+            \file_put_contents($file, '<?' . 'php return' . \z($versions) . ';');
         } else {
+            // Read from cache
             $versions = (array) require $file;
         }
         foreach ($versions as $k => $v) {
