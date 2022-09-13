@@ -73,7 +73,7 @@ function _onKeyDownSource(e) {
         command, value;
     offEventPropagation(e);
     map.push(key);
-    if (command = map.test()) {
+    if (command = map.command()) {
         value = map.fire(command);
         if (false === value) {
             offEventDefault(e);

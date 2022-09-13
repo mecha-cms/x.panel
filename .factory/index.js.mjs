@@ -48,7 +48,7 @@ onEvent('blur', W, e => map.pull());
 
 onEvent('keydown', W, e => {
     map.push(e.key);
-    let command = map.test();
+    let command = map.command();
     if (command) {
         let value = map.fire(command);
         if (false === value) {

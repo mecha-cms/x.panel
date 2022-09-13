@@ -3848,7 +3848,7 @@
             value;
         offEventPropagation(e);
         map.push(key);
-        if (command = map.test()) {
+        if (command = map.command()) {
             value = map.fire(command);
             if (false === value) {
                 offEventDefault(e);
@@ -5000,7 +5000,7 @@
     });
     onEvent('keydown', W, function (e) {
         map.push(e.key);
-        var command = map.test();
+        var command = map.command();
         if (command) {
             var value = map.fire(command);
             if (false === value) {

@@ -16,7 +16,7 @@ function color($color) {
     }
     // Validate HEX color string
     $count = \strlen($color);
-    if ((4 === $count || 7 === $count) && '#' === $color[0] && \ctype_xdigit(\substr($color, 1))) {
+    if ((4 === $count || 7 === $count) && '#' === $color[0] && (\function_exists("\\ctype_xdigit") && \ctype_xdigit(\substr($color, 1)) || \preg_match('/^#([a-f\d]{3}){1,2}$/i', $color))) {
         // Convert short HEX color string into long HEX color string
         if (4 === $count) {
             $m = \str_split(\substr($color, 1));
@@ -28,7 +28,7 @@ function color($color) {
 }
 
 function content($value) {
-    return \is_array($value) ? new \HTML($value) : (string) $value;
+    return \is_array($value) ? new \HTML($value, true) : (string) $value;
 }
 
 function description($value) {

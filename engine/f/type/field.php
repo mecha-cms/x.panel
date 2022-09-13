@@ -451,9 +451,9 @@ function title($value, $key) {
 }
 
 function toggle($value, $key) {
+    $is_active = !isset($value['active']) || $value['active'];
+    $is_fix = !empty($value['fix']);
     $the_value = $value['value'] ?? null;
-    $is_active = !isset($v['active']) || $v['active'];
-    $is_fix = !empty($v['fix']);
     $value['is']['active'] = $value['is']['active'] ?? $is_active;
     $value['is']['fix'] = $value['is']['fix'] ?? $is_fix;
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
@@ -469,14 +469,19 @@ function toggle($value, $key) {
         'icon' => $value['icon'] ?? [],
         'level' => -1
     ], 0), 0);
-    $label = [
-        0 => 'label',
-        1 => (new \HTML($input)) . ' ' . $title,
-        2 => \x\panel\_tag_set([], $value)
-    ];
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
-    $out['field'][1] = new \HTML($label);
+    $out['field'][1] = [
+        'toggle' => [
+            0 => 'label',
+            1 => [
+                'input' => $input,
+                'space' => ' ',
+                'title' => $title
+            ],
+            2 => \x\panel\_tag_set([], $value)
+        ]
+    ];
     $out['field'][2]['role'] = 'group';
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], [
         'tags' => ['count:1' => true],

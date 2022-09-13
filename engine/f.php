@@ -19,7 +19,8 @@ function _asset_get() {
                 'link' => $vv['link'] ?? null,
                 'path' => $vv['path'] ?? null,
                 'skip' => true,
-                'stack' => $vv['stack']
+                'stack' => $vv['stack'],
+                'url' => $vv['url'] ?? null
             ];
         }
     }
@@ -117,7 +118,7 @@ function _git_sync() {
             // Save to cache
             \file_put_contents($file, '<?' . 'php return' . \z($versions) . ';');
         } else {
-            // Read from cache
+            // Restore from cache
             $versions = (array) require $file;
         }
         foreach ($versions as $k => $v) {
@@ -202,6 +203,7 @@ function _git_sync() {
 }
 
 function _key_set($key) {
+    // Convert to scalar so it can be used as a valid array key
     if (\is_object($key)) {
         return \spl_object_id($key);
     }
@@ -241,7 +243,7 @@ function _state_set() {
 
 function _tag_set(array $attr, array $value = []) {
     $tags = (array) ($value['tags'] ?? []);
-    if (\array_keys($tags) === \range(0, \count($tags) - 1)) {
+    if (\array_is_list($tags)) {
         // Convert `[0, 1, 2]` to `{0: true, 1: true, 2: true}`
         $tags = \array_fill_keys($tags, true);
     }
@@ -349,7 +351,7 @@ function type($value, $key) {
             \x\panel\_abort($value, $key, $fn);
         }
     } else {
-        // Automatically forms an interface based on the presence of `content` or `lot` property
+        // Automatically forms an interface without `type` property based on the presence of `content` or `lot` property
         if (isset($value['content'])) {
             if ($v = \x\panel\type\content($value, $key)) {
                 $out .= $v;
