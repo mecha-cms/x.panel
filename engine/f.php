@@ -39,7 +39,7 @@ function _asset_let() {
 function _asset_set() {
     $_ = $GLOBALS['_'];
     if (!empty($_['asset'])) {
-        foreach ((array) $_['asset'] as $k => $v) {
+        foreach ((new \Anemone((array) $_['asset']))->sort([1, 'stack', 10], true)->get() as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
