@@ -13,6 +13,7 @@
     "@taufik-nurrohman/text-editor.source": "*",
     "@taufik-nurrohman/text-editor.source-h-t-m-l": "*",
     "@taufik-nurrohman/text-editor.source-x-m-l": "*",
+    "@taufik-nurrohman/tick": "*",
     "@taufik-nurrohman/to": "*"
   },
   "devDependencies": {

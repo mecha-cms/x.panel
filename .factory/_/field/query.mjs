@@ -26,10 +26,9 @@ function onChange(init) {
         let $ = new TP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);
     });
-    if (1 === init) {
-        W._.on('change', onChange);
-        W.TP = TP;
-    }
+    1 === init && W._.on('change', onChange);
 }
+
+W.TP = TP;
 
 export default onChange;

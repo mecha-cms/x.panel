@@ -114,7 +114,7 @@ onEvent('click', dialogAlertTaskOkay, onDialogTaskClick);
 
 setChildLast(dialogAlertTasks, dialogAlertTaskOkay);
 
-setDialog.alert = function(description) {
+setDialog.alert = function (description) {
     setHTML(dialogAlertDescription, description);
     return setDialog([dialogAlertDescription, dialogAlertTasks]);
 };
@@ -140,7 +140,7 @@ onEvent('keydown', dialogConfirmTaskOkay, onDialogTaskKeyDown);
 setChildLast(dialogConfirmTasks, dialogConfirmTaskOkay);
 setChildLast(dialogConfirmTasks, dialogConfirmTaskCancel);
 
-setDialog.confirm = function(description) {
+setDialog.confirm = function (description) {
     setHTML(dialogConfirmDescription, description);
     return setDialog([dialogConfirmDescription, dialogConfirmTasks]);
 };
@@ -178,12 +178,12 @@ setChildLast(dialogPromptTasks, dialogPromptTaskOkay);
 setChildLast(dialogPromptTasks, dialogPromptTaskCancel);
 setChildLast(dialogPromptValueP, dialogPromptValue);
 
-setDialog.prompt = function(key, value) {
+setDialog.prompt = function (key, value) {
     setHTML(dialogPromptKey, key);
     dialogPromptValue.value = dialogPromptTaskOkay.value = value;
     return setDialog([dialogPromptKey, dialogPromptValueP, dialogPromptTasks]);
 };
 
-export default function() {
-    W._.dialog = setDialog;
+export default function (init) {
+    1 === init && (W._.dialog = setDialog);
 };

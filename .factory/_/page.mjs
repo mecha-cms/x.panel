@@ -29,7 +29,7 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
-function onChange() {
+function onChange(init) {
     let sources = getElements('.lot\\:pages[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let pages = getElements(targets, source);
@@ -38,6 +38,7 @@ function onChange() {
         });
         onEvent('keydown', source, onKeyDownPages);
     });
+    1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownPage(e) {
@@ -101,6 +102,4 @@ function onKeyDownPages(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-export default function() {
-    W._.on('change', onChange), onChange();
-};
+export default onChange;

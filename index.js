@@ -502,7 +502,7 @@
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$a() {
+    function onChange$a(init) {
         var sources = getElements('.lot\\:bar[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var items = getElements(targets$7, source);
@@ -511,6 +511,7 @@
             });
             onEvent('keydown', source, onKeyDownBar);
         });
+        1 === init && W._.on('change', onChange$a);
     }
 
     function onKeyDownBar(e) {
@@ -577,10 +578,6 @@
             stop = true;
         }
         stop && (offEventDefault(e), offEventPropagation(e));
-    }
-
-    function Bar() {
-        W._.on('change', onChange$a), onChange$a();
     }
     var dialog = setElement('dialog'),
         dialogForm = setElement('form', "", {
@@ -730,8 +727,8 @@
         return setDialog([dialogPromptKey, dialogPromptValueP, dialogPromptTasks]);
     };
 
-    function Dialog() {
-        W._.dialog = setDialog;
+    function Dialog(init) {
+        1 === init && (W._.dialog = setDialog);
     }
     var debounce = function debounce(then, time) {
         var timer;
@@ -2333,7 +2330,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.14';
+    TP.version = '3.4.15';
 
     function onChange$8(init) {
         // Destroy!
@@ -2350,11 +2347,9 @@
             var $ = new TP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
         });
-        if (1 === init) {
-            W._.on('change', onChange$8);
-            W.TP = TP;
-        }
+        1 === init && W._.on('change', onChange$8);
     }
+    W.TP = TP;
     var name = 'TE';
 
     function trim(str, dir) {
@@ -2993,12 +2988,12 @@
         }
         return true;
     }
-    var bounce = debounce(function (that) {
+    var bounce$2 = debounce(function (that) {
         return that.record();
     }, 100);
 
     function canKeyUp(map, that) {
-        return bounce(that), true;
+        return bounce$2(that), true;
     }
     var state$2 = defaults$2;
     var tagComment = '<!--([\\s\\S](?!-->)*)-->',
@@ -3830,6 +3825,9 @@
     Object.assign(TE.prototype, that$2, that$1);
     TE.state = fromStates({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
     delete TE.state.source.type;
+    var bounce$1 = debounce(function (map) {
+        return map.pull();
+    }, 1000);
 
     function _onBlurSource(e) {
         this.K.pull();
@@ -3875,6 +3873,7 @@
                 offEventDefault(e);
             }
         }
+        bounce$1(map);
     }
 
     function _onKeyUpSource(e) {
@@ -3929,7 +3928,7 @@
             var _getDatum;
             editor = new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             state = editor.state;
-            type = state.source.type;
+            type = state.source.type; // Get it from `window` context as this `K` object already defined in `./.github/factory/index.js.mjs` globally
             map = new W.K(editor);
             map.keys['Escape'] = function () {
                 var parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
@@ -3956,17 +3955,17 @@
         });
         if (1 === init) {
             W._.on('change', onChange$7);
-            W.TE = TE;
             ['alert', 'confirm', 'prompt'].forEach(function (type) {
                 W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
             });
         }
     }
+    W.TE = TE;
 
     function Field() {
-        onChange$9();
-        onChange$8();
-        onChange$7();
+        onChange$9(1);
+        onChange$8(1);
+        onChange$7(1);
     }
     var targets$6 = ':scope>.lot\\:file[tabindex]:not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.not\\:active)';
 
@@ -3974,7 +3973,7 @@
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$6() {
+    function onChange$6(init) {
         var sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var files = getElements(targets$6, source);
@@ -3983,6 +3982,7 @@
             });
             onEvent('keydown', source, onKeyDownFiles);
         });
+        1 === init && W._.on('change', onChange$6);
     }
 
     function onKeyDownFile(e) {
@@ -4049,17 +4049,13 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function File() {
-        W._.on('change', onChange$6), onChange$6();
-    }
     var targets$5 = ':scope>ul>li>a[href]:not(.not\\:active)';
 
     function fireFocus$5(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$5() {
+    function onChange$5(init) {
         var sources = getElements('.lot\\:links[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var links = getElements(targets$5, source);
@@ -4068,6 +4064,7 @@
             });
             onEvent('keydown', source, onKeyDownLinks);
         });
+        1 === init && W._.on('change', onChange$5);
     }
 
     function onKeyDownLink(e) {
@@ -4143,10 +4140,6 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function Link() {
-        W._.on('change', onChange$5), onChange$5();
-    }
     var targets$4 = 'a[href]:not(.not\\:active)';
 
     function fireFocus$4(node) {
@@ -4166,7 +4159,7 @@
         });
     }
 
-    function onChange$4() {
+    function onChange$4(init) {
         offEvent('click', D, onClickDocument);
         var menuParents = getElements('.has\\:menu'),
             menuLinks = getElements('.lot\\:menu[tabindex] ' + targets$4);
@@ -4190,6 +4183,7 @@
         sources && toCount(sources) && sources.forEach(function (source) {
             onEvent('keydown', source, onKeyDownMenus);
         });
+        1 === init && W._.on('change', onChange$4);
     }
 
     function onClickDocument() {
@@ -4348,17 +4342,13 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function Menu() {
-        W._.on('change', onChange$4), onChange$4();
-    }
     var targets$3 = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
 
     function fireFocus$3(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$3() {
+    function onChange$3(init) {
         var sources = getElements('.lot\\:pages[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var pages = getElements(targets$3, source);
@@ -4367,6 +4357,7 @@
             });
             onEvent('keydown', source, onKeyDownPages);
         });
+        1 === init && W._.on('change', onChange$3);
     }
 
     function onKeyDownPage(e) {
@@ -4433,17 +4424,13 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function Page() {
-        W._.on('change', onChange$3), onChange$3();
-    }
     var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
 
     function fireFocus$2(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$2() {
+    function onChange$2(init) {
         var sources = getElements('.lot\\:stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var stacks = [].slice.call(getChildren(source)),
@@ -4493,6 +4480,7 @@
             }
             onEvent('keydown', source, onKeyDownStacks);
         });
+        1 === init && W._.on('change', onChange$2);
     }
 
     function onKeyDownStack(e) {
@@ -4612,17 +4600,13 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function Stack() {
-        W._.on('change', onChange$2), onChange$2();
-    }
     var targets$1 = 'a[target^="tab:"]:not(.not\\:active)';
 
     function fireFocus$1(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$1() {
+    function onChange$1(init) {
         var sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var panes = [].slice.call(getChildren(source)),
@@ -4685,6 +4669,7 @@
             }
             onEvent('keydown', source, onKeyDownTabs);
         });
+        1 === init && W._.on('change', onChange$1);
     }
 
     function onKeyDownTab(e) {
@@ -4830,10 +4815,6 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function Tab() {
-        W._.on('change', onChange$1), onChange$1();
-    }
     var targets = 'a[href]:not([tabindex="-1"]):not(.not\\:active),button:not(:disabled):not([tabindex="-1"]):not(.not\\:active),input:not(:disabled):not([tabindex="-1"]):not(.not\\:active),select:not(:disabled):not([tabindex="-1"]):not(.not\\:active),[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
 
     function fireFocus(node) {
@@ -4844,7 +4825,7 @@
         node && isFunction(node.select) && node.select();
     }
 
-    function onChange() {
+    function onChange(init) {
         var sources = getElements('.lot\\:tasks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var tasks = getElements(targets, source);
@@ -4853,6 +4834,7 @@
             });
             onEvent('keydown', source, onKeyDownTasks);
         });
+        1 === init && W._.on('change', onChange);
     }
 
     function onKeyDownTask(e) {
@@ -4939,10 +4921,6 @@
         stop && (offEventDefault(e), offEventPropagation(e));
     }
 
-    function Task() {
-        W._.on('change', onChange), onChange();
-    }
-
     function K(source) {
         if (source === void 0) {
             source = {};
@@ -4994,6 +4972,9 @@
         };
         return $;
     }
+    var bounce = debounce(function (map) {
+        return map.pull();
+    }, 1000);
     var map = new K(W);
     onEvent('blur', W, function (e) {
         return map.pull();
@@ -5009,6 +4990,7 @@
                 console.error('Unknown command:', command);
             }
         }
+        bounce(map);
     });
     onEvent('keyup', W, function (e) {
         return map.pull(e.key);
@@ -5066,14 +5048,14 @@
         }
         stop && offEventDefault(e);
     });
-    Bar();
-    Dialog();
+    onChange$a(1);
+    Dialog(1);
     Field();
-    File();
-    Link();
-    Menu();
-    Page();
-    Stack();
-    Tab();
-    Task();
+    onChange$6(1);
+    onChange$5(1);
+    onChange$4(1);
+    onChange$3(1);
+    onChange$2(1);
+    onChange$1(1);
+    onChange(1);
 })();

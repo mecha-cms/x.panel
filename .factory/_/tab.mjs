@@ -39,7 +39,7 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
-function onChange() {
+function onChange(init) {
     let sources = getElements('.lot\\:tabs[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let panes = [].slice.call(getChildren(source)),
@@ -96,6 +96,7 @@ function onChange() {
         }
         onEvent('keydown', source, onKeyDownTabs);
     });
+    1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownTab(e) {
@@ -233,6 +234,4 @@ function onKeyDownTabs(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-export default function() {
-    W._.on('change', onChange), onChange();
-};
+export default onChange;

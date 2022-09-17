@@ -17,6 +17,10 @@ import {
 } from '@taufik-nurrohman/from';
 
 import {
+    debounce
+} from '@taufik-nurrohman/tick';
+
+import {
     toCount
 } from '@taufik-nurrohman/to';
 
@@ -56,6 +60,8 @@ TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML
 
 // Be sure to remove the default source type
 delete TE.state.source.type;
+
+const bounce = debounce(map => map.pull(), 1000);
 
 function _onBlurSource(e) {
     this.K.pull();
@@ -147,6 +153,7 @@ function _onKeyDownSource(e) {
             offEventDefault(e);
         }
     }
+    bounce(map);
 }
 
 function _onKeyUpSource(e) {
@@ -197,8 +204,9 @@ function onChange(init) {
         editor = new TE(source, getDatum(source, 'state') ?? {});
         state = editor.state;
         type = state.source.type;
+        // Get it from `window` context as this `K` object already defined in `./.github/factory/index.js.mjs` globally
         map = new W.K(editor);
-        map.keys['Escape'] = function() {
+        map.keys['Escape'] = function () {
             let parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
             if (parent) {
                 return parent.focus(), false;
@@ -225,11 +233,12 @@ function onChange(init) {
     });
     if (1 === init) {
         W._.on('change', onChange);
-        W.TE = TE;
         ['alert', 'confirm', 'prompt'].forEach(type => {
             W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
         });
     }
 }
+
+W.TE = TE;
 
 export default onChange;

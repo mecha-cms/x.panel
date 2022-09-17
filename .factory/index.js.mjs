@@ -39,10 +39,15 @@ import {
 import K from '@taufik-nurrohman/key';
 
 import {
+    debounce
+} from '@taufik-nurrohman/tick';
+
+import {
     toValue
 } from '@taufik-nurrohman/to';
 
-let map = new K(W);
+const bounce = debounce(map => map.pull(), 1000);
+const map = new K(W);
 
 onEvent('blur', W, e => map.pull());
 
@@ -57,6 +62,7 @@ onEvent('keydown', W, e => {
             console.error('Unknown command:', command);
         }
     }
+    bounce(map);
 });
 
 onEvent('keyup', W, e => map.pull(e.key));
@@ -75,7 +81,7 @@ onEvent('beforeload', D, () => fire('let'));
 onEvent('load', D, () => fire('get'));
 onEvent('DOMContentLoaded', D, () => fire('set'));
 
-onEvent('keydown', W, function(e) {
+onEvent('keydown', W, function (e) {
     if (e.defaultPrevented) {
         return;
     }
@@ -109,15 +115,15 @@ onEvent('keydown', W, function(e) {
     stop && offEventDefault(e);
 });
 
-Bar();
-Column();
-Dialog();
-Field();
-File();
-Link();
-Menu();
-Page();
-Row();
-Stack();
-Tab();
-Task();
+Bar(1);
+Column(1);
+Dialog(1);
+Field(1);
+File(1);
+Link(1);
+Menu(1);
+Page(1);
+Row(1);
+Stack(1);
+Tab(1);
+Task(1);

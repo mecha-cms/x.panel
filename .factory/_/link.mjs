@@ -31,7 +31,7 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
-function onChange() {
+function onChange(init) {
     let sources = getElements('.lot\\:links[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let links = getElements(targets, source);
@@ -40,6 +40,7 @@ function onChange() {
         });
         onEvent('keydown', source, onKeyDownLinks);
     });
+    1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownLink(e) {
@@ -111,6 +112,4 @@ function onKeyDownLinks(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-export default function() {
-    W._.on('change', onChange), onChange();
-};
+export default onChange;
