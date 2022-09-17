@@ -32,14 +32,24 @@ function button($value, $key) {
 }
 
 function buttons($value, $key) {
+    $count = 0;
+    $name = $value['name'] ?? $key;
+    if (isset($value['values'])) {
+        if (isset($value['lot']) && \is_array($value['lot'])) {
+            foreach ($value['values'] as $k => $v) {
+                if (!isset($value['lot'][$k]) || (\is_array($value['lot'][$k]) && !\array_key_exists('value', $value['lot'][$k]))) {
+                    $value['lot'][$k]['value'] = $v;
+                }
+            }
+        } else {
+            $value['lot'] = $value['values'];
+        }
+        unset($value['values']);
+    }
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
-    $name = $value['name'] ?? $key;
     if (isset($value['lot'])) {
-        if (!isset($value['sort']) || $value['sort']) {
-            \sort($value['lot']);
-        }
-        $count = 0;
+        // TODO: Sort by `stack`
         foreach ($value['lot'] as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
@@ -63,6 +73,9 @@ function buttons($value, $key) {
     }
     $out['field'][2]['role'] = 'group';
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    foreach (['is', 'not'] as $v) {
+        $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
+    }
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['id'], $out['field'][2]['name']);
@@ -81,14 +94,24 @@ function color($value, $key) {
 }
 
 function colors($value, $key) {
+    $count = 0;
+    $name = $value['name'] ?? $key;
+    if (isset($value['values'])) {
+        if (isset($value['lot']) && \is_array($value['lot'])) {
+            foreach ($value['values'] as $k => $v) {
+                if (!isset($value['lot'][$k]) || (\is_array($value['lot'][$k]) && !\array_key_exists('value', $value['lot'][$k]))) {
+                    $value['lot'][$k]['value'] = $v;
+                }
+            }
+        } else {
+            $value['lot'] = $value['values'];
+        }
+        unset($value['values']);
+    }
     $out = \x\panel\to\field($value, $key);
     $out['field'][0] = 'div';
-    $name = $value['name'] ?? $key;
     if (isset($value['lot'])) {
-        if (!isset($value['sort']) || $value['sort']) {
-            \sort($value['lot']);
-        }
-        $count = 0;
+        // TODO: Sort by `stack`
         foreach ($value['lot'] as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
@@ -102,7 +125,7 @@ function colors($value, $key) {
             $input[2]['name'] = $n;
             $input[2]['type'] = 'color';
             if ($the_value = \x\panel\to\color((string) ($v['value'] ?? ""))) {
-                $input[2]['title'] = $the_value;
+                $input[2]['title'] = $v['title'] ?? $the_value;
                 $input[2]['value'] = $the_value;
             }
             $input[2] = \x\panel\_tag_set($input[2], $v);
@@ -112,6 +135,9 @@ function colors($value, $key) {
     }
     $out['field'][2]['role'] = 'group';
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    foreach (['is', 'not'] as $v) {
+        $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
+    }
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['id'], $out['field'][2]['name']);
@@ -227,6 +253,9 @@ function item($value, $key) {
         $out['field'][2]['role'] = 'group';
         $value['is']['block'] = $value['is']['block'] ?? !!$block;
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+        foreach (['is', 'not'] as $v) {
+            $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
+        }
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['id'], $out['field'][2]['name']);
@@ -237,9 +266,9 @@ function item($value, $key) {
 
 function items($value, $key) {
     if (isset($value['lot'])) {
-        $the_value = (array) (!empty($value['values']) ? $value['values'] : ($value['value'] ?? []));
+        $the_values = (array) (!empty($value['values']) ? $value['values'] : ($value['value'] ?? []));
         if ($key_as_value = !empty($value['flat'])) {
-            $the_value = \P . \implode(\P, $the_value) . \P;
+            $the_values = \P . \implode(\P, $the_values) . \P;
         }
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value'], $value['values']);
@@ -262,10 +291,10 @@ function items($value, $key) {
             $v['not']['active'] = $v['not']['active'] ?? !$is_active;
             $v['not']['fix'] = $v['not']['fix'] ?? !$is_fix;
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            $input[2]['checked'] = $key_as_value ? false !== \strpos($the_value, \P . $k . \P) : isset($the_value[$k]);
+            $input[2]['checked'] = $key_as_value ? false !== \strpos($the_values, \P . $k . \P) : isset($the_values[$k]);
             $input[2]['type'] = 'checkbox';
             $input[2]['name'] = $v['name'] ?? $n . '[' . ($key_as_value ? "" : $k) . ']';
-            $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_value[$k] ?? true));
+            $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_values[$k] ?? true));
             if (!$is_active) {
                 $input[2]['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
@@ -300,6 +329,9 @@ function items($value, $key) {
         $out['field'][2]['role'] = 'group';
         $value['is']['block'] = $value['is']['block'] ?? !!$block;
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+        foreach (['is', 'not'] as $v) {
+            $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
+        }
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['id'], $out['field'][2]['name']);
