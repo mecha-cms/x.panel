@@ -232,7 +232,7 @@ if (false === strpos($_['path'], '/')) {
                                             'fields' => [
                                                 'lot' => [
                                                     'sync' => [
-                                                        'block' => true,
+                                                        'flex' => false,
                                                         'lot' => [
                                                             0 => 'Never',
                                                             2592000 => 'Every month', // `strtotime('+1 month') - time()`

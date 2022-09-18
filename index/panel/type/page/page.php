@@ -84,7 +84,7 @@ $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
                 ],
                 'sort' => [
                     'active' => $count > 0,
-                    'block' => true,
+                    'flex' => false,
                     'lot' => [
                         '[-1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'time']]],
                         '[1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'time']]]

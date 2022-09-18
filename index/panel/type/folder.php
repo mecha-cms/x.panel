@@ -75,7 +75,7 @@ $desk = [
                                                     'width' => true
                                                 ],
                                                 'options' => [
-                                                    'block' => true,
+                                                    'flex' => false,
                                                     'lot' => ['kick' => 'Redirect to folder'],
                                                     'stack' => 20,
                                                     'title' => "",

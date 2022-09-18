@@ -72,10 +72,11 @@ function buttons($value, $key) {
         unset($value['lot']);
     }
     $out['field'][2]['role'] = 'group';
+    $value['has']['gap'] = $value['has']['gap'] ?? false;
+    $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
+    $value['is']['flex'] = $value['is']['flex'] ?? true;
+    $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
-    foreach (['is', 'not'] as $v) {
-        $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
-    }
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['id'], $out['field'][2]['name']);
@@ -134,10 +135,11 @@ function colors($value, $key) {
         unset($value['lot']);
     }
     $out['field'][2]['role'] = 'group';
+    $value['has']['gap'] = $value['has']['gap'] ?? ($is_flex = $value['is']['flex'] ?? true);
+    $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
+    $value['is']['flex'] = $is_flex;
+    $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
-    foreach (['is', 'not'] as $v) {
-        $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
-    }
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['id'], $out['field'][2]['name']);
@@ -242,20 +244,20 @@ function item($value, $key) {
             $a[$title . $k] = new \HTML($label);
         }
         $sort && \ksort($a);
-        if (!isset($value['block'])) {
-            $block = $count > 6 ? '<br>' : ""; // Auto
+        if (!isset($value['flex'])) {
+            $flex = $count < 7 ? "" : '<br>'; // Auto
         } else {
-            $block = $value['block'] ? '<br>' : "";
+            $flex = $value['flex'] ? "" : '<br>';
         }
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
-        $out['field'][1] = \implode($block, $a);
+        $out['field'][1] = \implode($flex, $a);
         $out['field'][2]['role'] = 'group';
-        $value['is']['block'] = $value['is']['block'] ?? !!$block;
+        $value['has']['gap'] = $value['has']['gap'] ?? "" === $flex;
+        $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
+        $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
+        $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
-        foreach (['is', 'not'] as $v) {
-            $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
-        }
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['id'], $out['field'][2]['name']);
@@ -318,20 +320,20 @@ function items($value, $key) {
             $a[$title . $k] = new \HTML($label);
         }
         $sort && \ksort($a);
-        if (!isset($value['block'])) {
-            $block = $count > 6 ? '<br>' : ""; // Auto
+        if (!isset($value['flex'])) {
+            $flex = $count < 7 ? "" : '<br>'; // Auto
         } else {
-            $block = $value['block'] ? '<br>' : "";
+            $flex = $value['flex'] ? "" : '<br>';
         }
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
-        $out['field'][1] = \implode($block, $a);
+        $out['field'][1] = \implode($flex, $a);
         $out['field'][2]['role'] = 'group';
-        $value['is']['block'] = $value['is']['block'] ?? !!$block;
+        $value['has']['gap'] = $value['has']['gap'] ?? "" === $flex;
+        $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
+        $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
+        $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
-        foreach (['is', 'not'] as $v) {
-            $value[$v]['active'] = $value[$v]['fix'] = $value[$v]['vital'] = false; // Remove class(es)
-        }
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['id'], $out['field'][2]['name']);

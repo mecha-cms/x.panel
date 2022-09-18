@@ -1,12 +1,13 @@
 .lot\:field.type\:item {
   .with\:options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--x);
     height: auto;
     max-height: 100%;
-    &.is\:block {
-      display: block;
+    &.has\:gap {
+      gap: 0 var(--x);
+    }
+    &.is\:flex {
+      display: flex;
+      flex-wrap: wrap;
     }
     > label {
       align-items: center;

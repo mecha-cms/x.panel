@@ -92,7 +92,7 @@ $desk = [
                                                     'width' => true
                                                 ],
                                                 'options' => [
-                                                    'block' => true,
+                                                    'flex' => false,
                                                     'lot' => $options,
                                                     'stack' => 20,
                                                     'title' => "",
