@@ -299,6 +299,9 @@
     var hasState = function hasState(node, state) {
         return state in node;
     };
+    var isNode = function isNode(node) {
+        return isInstance(node, Node);
+    };
     var isWindow = function isWindow(node) {
         return node === W;
     };
@@ -588,21 +591,25 @@
     setChildLast(dialog, dialogForm);
 
     function onDialogCancel(e) {
-        var t = this,
-            value;
-        offEvent(e.type, t, onDialogCancel);
-        value = t.x(toValue(t.returnValue));
+        var t = this;
+        offEvent('cancel', t, onDialogCancel);
+        offEvent('close', t, onDialogClose);
+        offEvent('submit', t, onDialogSubmit);
+        t.x(toValue(t.returnValue));
         isFunction(t.c) && t.c.apply(t, [t.open]);
-        return value;
+    }
+
+    function onDialogClose(e) {
+        var t = this;
+        offEvent('cancel', t, onDialogCancel);
+        offEvent('close', t, onDialogClose);
+        offEvent('submit', t, onDialogSubmit);
+        t.v(toValue(t.returnValue));
+        isFunction(t.c) && t.c.apply(t, [t.open]);
     }
 
     function onDialogSubmit(e) {
-        var t = this,
-            value;
-        offEvent(e.type, t, onDialogSubmit);
-        value = t.v(toValue(t.returnValue));
-        isFunction(t.c) && t.c.apply(t, [t.open]);
-        return value;
+        onDialogClose.apply(this, [e]);
     }
 
     function setDialog(content, then) {
@@ -610,6 +617,8 @@
         if (isString(content)) {
             setHTML(dialogTemplate, content.trim());
             content = dialogTemplate.childNodes;
+        } else if (isNode(content)) {
+            content = [content];
         }
         content = Array.from(content);
         var node;
@@ -624,11 +633,12 @@
             isFunction(target.focus) && target.focus();
             isFunction(target.select) && target.select(); // `<input>`
         }
-        return new Promise(function (yes, no) {
-            dialog.c = then;
-            dialog.v = yes;
-            dialog.x = no;
+        return new Promise(function (yay, nay) {
+            dialog.c = then; // `c` for call-back
+            dialog.v = yay; // `v` for check-mark
+            dialog.x = nay; // `x` for cross-mark
             onEvent('cancel', dialog, onDialogCancel);
+            onEvent('close', dialog, onDialogClose);
             onEvent('submit', dialog, onDialogSubmit);
         });
     }

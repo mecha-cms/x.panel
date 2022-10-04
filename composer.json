@@ -31,6 +31,7 @@
     "mecha-cms/x.avatar": "Install this extension to enable user profile photo.",
     "mecha-cms/x.form": "Install this extension to retain form values when error occurs during submission.",
     "mecha-cms/x.gravatar": "Install this extension to enable user profile photo automatically based on the specified email address.",
-    "mecha-cms/x.panel.skin": "Install this extension to enable panel skin feature."
+    "mecha-cms/x.panel.skin": "Install this extension to enable panel skin feature.",
+    "mecha-cms/x.panel.skin.default": "At least install a default skin just to know the difference."
   }
 }
