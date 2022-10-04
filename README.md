@@ -5,4 +5,4 @@ GUI Extension for [Mecha](https://github.com/mecha-cms/mecha)
 
 ![Panel](index.png)
 
-To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system.
+You need to install [User](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system to activate the control panel feature.

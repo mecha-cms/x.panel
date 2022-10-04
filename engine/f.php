@@ -161,10 +161,10 @@ function _git_sync() {
                 $alert = \i($ready ? '%s is ready to fuse with the current body.' : '%s has risky major updates to pull.', [$t]);
             // Minor update
             } else if ($version_next[0] === $version_current[0] && $version_next[1] > $version_current[1]) {
-                $alert = \i($ready ? '%s is ready to fuse with the current body.' : '%s has minor updates to pull.');
+                $alert = \i($ready ? '%s is ready to fuse with the current body.' : '%s has minor updates to pull.', [$t]);
             // Patch update
             } else if ($version_next[0] === $version_current[0] && $version_next[1] === $version_current[1] && $version_next[2] > $version_current[2]) {
-                $alert = \i($ready ? '%s is ready to fuse with the current body.' : '%s has non-risky patch updates to pull.');
+                $alert = \i($ready ? '%s is ready to fuse with the current body.' : '%s has non-risky patch updates to pull.', [$t]);
             } else {
                 continue; // Skip!
             }

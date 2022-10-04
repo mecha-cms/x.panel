@@ -18,10 +18,10 @@ use:
   '.\lot\x\y-a-m-l': 1
 ...
 
-To activate the control panel feature, you will need to install the [user](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system.
+You need to install [User](https://github.com/mecha-cms/x.user "User") extension as the generic log-in/out system to activate the control panel feature.
 
 ### Usage
 
  - Make sure you have uploaded the required extensions.
  - Upload the `panel` folder to `.\lot\x` folder.
- - Now visit your site! You should be redirected to create a new user.
+ - Now visit your site! You should be redirected to a page asking you to create a new user.
