@@ -25,17 +25,15 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 $p = new Page($k);
                 $sort = $_['sort'][1] ?? 'title';
                 $title = strip_tags((string) ($p->title ?? ""));
-                $key = strtr(x\panel\from\path(dirname($k)), [
-                    "\\" => '/'
-                ]);
                 $pages[$k] = [
                     $sort => strip_tags((string) ($p->{$sort} ?? "")),
                     'page' => $p
                 ];
                 foreach ((array) $p['use'] as $kk => $vv) {
-                    $bounds[strtr($kk, [
-                        "\\" => '/'
-                    ])][$key] = $title;
+                    if (!is_file(dirname($k) . D . 'index.php')) {
+                        continue;
+                    }
+                    $bounds[x\panel\to\path($kk)][dirname($k)] = $title;
                 }
                 ++$count;
             }
@@ -62,9 +60,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 $title = x\panel\to\w($p->title ?? "");
                 $type = $p->type ?? null;
                 $x = $p->x ?? null;
-                $bound = $bounds[strtr(x\panel\from\path(dirname($k)), [
-                    "\\" => '/'
-                ])] ?? [];
+                $bound = $bounds[dirname($k)] ?? [];
                 asort($bound);
                 $pages[$k] = [
                     'author' => $p['author'],
