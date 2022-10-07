@@ -47,10 +47,16 @@ Hook::set('_', function ($_) use ($state, $url) {
             '://127.0.0.1' => ':' . explode(':', $url . "", 2)[1]
         ]);
         $image = $use = "";
-        if (isset($page['images'])) {
-            // TODO
-        } else if (isset($page['image'])) {
-            $image .= '<figure>';
+        if (isset($page->images)) {
+            $image .= '<figure class="siema" style="border: 1px solid var(--stroke);">';
+            foreach ($page->images as $v) {
+                $image .= '<div>';
+                $image .= '<img alt="" class="image" loading="lazy" src="' . $v . '">';
+                $image .= '</div>';
+            }
+            $image .= '</figure>';
+        } else if (isset($page->image)) {
+            $image .= '<figure class="siema" style="border: 1px solid var(--stroke);">';
             $image .= '<img alt="" class="image" loading="lazy" src="' . $page->image . '">';
             $image .= '</figure>';
         }
