@@ -131,7 +131,7 @@ function desk($value, $key) {
     $value['tags']['p'] = $value['tags']['p'] ?? false;
     $value[0] = $value[0] ?? 'main';
     $value[1] = $value[1] ?? "";
-    $value[2]['tabindex'] ?? $value[2]['tabindex'] ?? -1;
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     if (isset($value['width']) && false !== $value['width']) {
         $value['has']['width'] = $value['has']['width'] ?? true;
         if (true !== $value['width']) {

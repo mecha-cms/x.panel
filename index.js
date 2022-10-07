@@ -4986,6 +4986,32 @@
         return map.pull();
     }, 1000);
     var map = new K(W);
+    map.keys['Escape'] = function () {
+        var current = D.activeElement,
+            parent = current && getParent(getParent(current), '[tabindex]:not(.not\\:active)');
+        console.log([current, parent]);
+        parent && parent.focus();
+        return false;
+    };
+    map.keys['F3'] = function () {
+        var mainSearchForm = getFormElement('get'),
+            mainSearchFormInput = mainSearchForm && mainSearchForm.query;
+        mainSearchFormInput && mainSearchFormInput.focus();
+        return false;
+    };
+    map.keys['F10'] = function () {
+        var firstBarFocusable = getElement('.lot\\:bar a:any-link'),
+            parent;
+        if (firstBarFocusable) {
+            firstBarFocusable.focus();
+            if (parent = getParent(firstBarFocusable)) {
+                if (hasClass(parent, 'has:menu')) {
+                    firstBarFocusable.click(); // Open main menu!
+                }
+            }
+        }
+        return false;
+    };
     onEvent('blur', W, function (e) {
         return map.pull();
     });
@@ -5024,39 +5050,6 @@
     });
     onEvent('DOMContentLoaded', D, function () {
         return fire('set');
-    });
-    onEvent('keydown', W, function (e) {
-        if (e.defaultPrevented) {
-            return;
-        }
-        var target = e.target,
-            key = e.key,
-            keyIsAlt = e.altKey,
-            keyIsCtrl = e.ctrlKey,
-            keyIsShift = e.shiftKey,
-            firstBarFocusable = getElement('.lot\\:bar a:any-link'),
-            mainSearchForm = getFormElement('get'),
-            mainSearchFormInput = mainSearchForm && mainSearchForm.query,
-            parent,
-            stop;
-        if (mainSearchFormInput && 'F3' === key && !keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            mainSearchFormInput.focus();
-            stop = true;
-        } else if (firstBarFocusable && 'F10' === key && !keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            firstBarFocusable.focus();
-            if (parent = getParent(firstBarFocusable)) {
-                if (hasClass(parent, 'has:menu')) {
-                    firstBarFocusable.click();
-                }
-            }
-            stop = true;
-        } else if (B !== target && R !== target && W !== target) {
-            if ('Escape' === key && (parent = getParent(getParent(target), '[tabindex]:not(.not\\:active)'))) {
-                parent.focus();
-                stop = true;
-            }
-        }
-        stop && offEventDefault(e);
     });
     onChange$a(1);
     Dialog(1);

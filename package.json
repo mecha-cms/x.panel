@@ -14,7 +14,8 @@
     "@taufik-nurrohman/text-editor.source-h-t-m-l": "*",
     "@taufik-nurrohman/text-editor.source-x-m-l": "*",
     "@taufik-nurrohman/tick": "*",
-    "@taufik-nurrohman/to": "*"
+    "@taufik-nurrohman/to": "*",
+    "siema": "^1.5.1"
   },
   "devDependencies": {
     "@taufik-nurrohman/factory": "*"
