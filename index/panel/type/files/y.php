@@ -87,6 +87,17 @@ Hook::set('_', function ($_) use ($state, $url) {
             $use .= implode("", $links);
             $use .= '</ul></details>';
         }
+        // Add alert(s) from `about.page` file if any
+        if (isset($page->alert) && is_array($page->alert)) {
+            foreach ($page->alert as $k => $v) {
+                foreach ($v as $kk => $vv) {
+                    if (!is_string($vv)) {
+                        continue; // TODO
+                    }
+                    $_['alert'][$k][$kk] = Hook::fire('page.description', [$vv], $page);
+                }
+            }
+        }
         // Hide some file(s) from the list
         foreach ([
             // Parent folder
