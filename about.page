@@ -6,7 +6,7 @@ image: /lot/x/panel/index.png
 author: Taufik Nurrohman
 type: Markdown
 version: 3.0.0
-price: [20, USD]
+price: [25, USD]
 
 use:
   '.\lot\x\alert': 1

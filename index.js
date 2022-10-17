@@ -4796,14 +4796,17 @@
         var siemas = getElements('.siema');
         siemas && toCount(siemas) && siemas.forEach(function (siema) {
             var slider = new Siema({
-                duration: 500,
+                duration: 600,
                 loop: true,
                 selector: siema
             });
             var interval = W.setInterval(function () {
                 return slider.next();
             }, 5000);
-            onEvent('click', siema, function () {
+            onEvent('mousedown', siema, function () {
+                return W.clearInterval(interval);
+            });
+            onEvent('touchstart', siema, function () {
                 return W.clearInterval(interval);
             });
         }); // Re-calculate the Siema dimension!

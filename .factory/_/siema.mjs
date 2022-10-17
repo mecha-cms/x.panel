@@ -18,12 +18,13 @@ function onChange(init) {
     let siemas = getElements('.siema');
     siemas && toCount(siemas) && siemas.forEach(siema => {
         let slider = new Siema({
-                duration: 500,
+                duration: 600,
                 loop: true,
                 selector: siema
             });
         let interval = W.setInterval(() => slider.next(), 5000);
-        onEvent('click', siema, () => W.clearInterval(interval));
+        onEvent('mousedown', siema, () => W.clearInterval(interval));
+        onEvent('touchstart', siema, () => W.clearInterval(interval));
     });
     // Re-calculate the Siema dimension!
     if (1 === init) {

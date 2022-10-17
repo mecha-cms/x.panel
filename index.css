@@ -1209,6 +1209,25 @@ hr {
   border-width: 1px 0 0;
 }
 
+.siema {
+  background: repeating-conic-gradient(rgba(128, 128, 128, 0.125) 0% 25%, rgba(0, 0, 0, 0) 0% 50%) 50% 50%/calc(var(--x) / 2) calc(var(--y) / 2);
+}
+.siema img {
+  box-shadow: var(--shadow-dialog);
+}
+.siema > div {
+  align-items: center;
+  display: flex;
+}
+.siema > div > div {
+  padding: var(--x) var(--y);
+}
+.siema > div::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
 pre.is\:text code {
   background: none;
   border-style: dotted;

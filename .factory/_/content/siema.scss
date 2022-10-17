@@ -1,0 +1,18 @@
+.siema {
+  background: repeating-conic-gradient(rgba(128, 128, 128, .125) 0% 25%, rgba(0, 0, 0, 0) 0% 50%) 50% 50% / calc(var(--x) / 2) calc(var(--y) / 2);
+  img {
+    box-shadow: var(--shadow-dialog);
+  }
+  > div {
+    align-items: center;
+    display: flex;
+    > div {
+      padding: var(--x) var(--y);
+    }
+    &::after {
+      clear: both;
+      content: "";
+      display: table;
+    }
+  }
+}

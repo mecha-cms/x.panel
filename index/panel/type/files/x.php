@@ -47,19 +47,19 @@ Hook::set('_', function ($_) use ($state, $url) {
             '://127.0.0.1' => ':' . explode(':', $url . "", 2)[1]
         ]);
         $image = $use = "";
+        $image .= '<figure class="siema">';
         if (isset($page->images)) {
-            $image .= '<figure class="siema" style="border: 1px solid var(--stroke);">';
             foreach ($page->images as $v) {
                 $image .= '<div>';
-                $image .= '<img alt="" class="image" loading="lazy" src="' . $v . '">';
+                $image .= '<img alt="" class="image" src="' . $v . '">';
                 $image .= '</div>';
             }
-            $image .= '</figure>';
         } else if (isset($page->image)) {
-            $image .= '<figure class="siema" style="border: 1px solid var(--stroke);">';
-            $image .= '<img alt="" class="image" loading="lazy" src="' . $page->image . '">';
-            $image .= '</figure>';
+            $image .= '<div>';
+            $image .= '<img alt="" class="image" src="' . $page->image . '">';
+            $image .= '</div>';
         }
+        $image .= '</figure>';
         if (isset($page['use'])) {
             $uses = [];
             foreach ((array) $page['use'] as $k => $v) {
@@ -90,9 +90,9 @@ Hook::set('_', function ($_) use ($state, $url) {
         // Add alert(s) from `about.page` file if any
         if (isset($page->alert) && is_array($page->alert)) {
             foreach ($page->alert as $k => $v) {
-                foreach ($v as $kk => $vv) {
-                    if (!is_string($vv)) {
-                        continue; // TODO
+                foreach ((array) $v as $kk => $vv) {
+                    if (!is_string($vv) || "" === trim($vv)) {
+                        continue;
                     }
                     $_['alert'][$k][$kk] = Hook::fire('page.description', [$vv], $page);
                 }
