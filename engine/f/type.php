@@ -666,7 +666,7 @@ function input($value, $key) {
     $value[2]['maxlength'] = $value['max'] ?? null;
     $value[2]['minlength'] = $value['min'] ?? null;
     $value[2]['name'] = $value['name'] ?? $key;
-    $value[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
+    $value[2]['placeholder'] = \i(...((array) ($value['hint'] ?? "")));
     $value[2]['readonly'] = $is_fix;
     $value[2]['required'] = $is_vital;
     $value[2]['value'] = $value['value'] ?? null;
@@ -1098,7 +1098,7 @@ function select($value, $key) {
     $value[2] = $value[2] ?? [];
     $the_options = [];
     $the_value = $value['value'] ?? null;
-    // $the_placeholder = \i(...((array) ($value['hint'] ?? [])));
+    // $the_placeholder = \i(...((array) ($value['hint'] ?? "")));
     $is_options_flat = \array_is_list($value['lot']);
     $sort = !isset($value['sort']) || $value['sort'];
     foreach ($value['lot'] ?? [] as $k => $v) {
@@ -1470,7 +1470,7 @@ function textarea($value, $key) {
     $value[2]['maxlength'] = $value['max'] ?? null;
     $value[2]['minlength'] = $value['min'] ?? null;
     $value[2]['name'] = $value['name'] ?? $key;
-    $value[2]['placeholder'] = \i(...((array) ($value['hint'] ?? [])));
+    $value[2]['placeholder'] = \i(...((array) ($value['hint'] ?? "")));
     $value[2]['readonly'] = $is_fix;
     $value[2]['required'] = $is_vital;
     $value[2] = \x\panel\_decor_set($value[2], $value);
