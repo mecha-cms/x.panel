@@ -30,7 +30,7 @@ if (is_file($file ?? P)) {
             unset($field['width']);
         } else if (is_float($v) || is_int($v)) {
             $field['type'] = 'number';
-            $field['step'] = is_float($v) ? '.1' : '1';
+            $field['step'] = is_float($v) ? '0.1' : '1';
             unset($field['width']);
         } else if (is_string($v)) {
             $count = strlen($v);
