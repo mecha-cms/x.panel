@@ -253,7 +253,7 @@ $desk = [
                                         'tasks' => [
                                             'lot' => [
                                                 'set' => [
-                                                    'description' => ['Update as %s', ucfirst($x = $page->x)],
+                                                    'description' => ['Update as %s', ucfirst($x = $page->x ?? "")],
                                                     'name' => 'page[x]',
                                                     'skip' => 'set' === $_['task'],
                                                     'stack' => 10,

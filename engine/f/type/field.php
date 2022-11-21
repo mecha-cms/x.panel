@@ -229,7 +229,7 @@ function item($value, $key) {
             $input[2]['value'] = $v['value'] ?? $k;
             $input[2] = \x\panel\_tag_set($input[2], $v);
             unset($input[2]['placeholder']);
-            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
+            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
             $title = \x\panel\type\title(\x\panel\_value_set([
                 'content' => $v['title'] ?? "",
                 'icon' => $v['icon'] ?? [],
@@ -305,7 +305,7 @@ function items($value, $key) {
             }
             unset($input[2]['placeholder']);
             $input[2] = \x\panel\_tag_set($input[2], $v);
-            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))));
+            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
             $title = \x\panel\type\title(\x\panel\_value_set([
                 'content' => $v['title'] ?? "",
                 'icon' => $v['icon'] ?? [],
