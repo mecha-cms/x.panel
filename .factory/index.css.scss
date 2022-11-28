@@ -192,11 +192,6 @@
         }
       }
     }
-    --arc-#{$name}: var(--arc-input);
-    --color-#{$name}: var(--color-input);
-    --fill-#{$name}: var(--fill-input);
-    --shadow-#{$name}: var(--shadow-input);
-    --stroke-#{$name}: var(--stroke-input);
     @each $v in (hover, focus, active) {
       --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input));
       --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input));

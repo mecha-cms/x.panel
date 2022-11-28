@@ -5374,9 +5374,8 @@
     map.keys['Escape'] = function () {
         var current = D.activeElement,
             parent = current && getParent(getParent(current), '[tabindex]:not(.not\\:active)');
-        console.log([current, parent]);
         parent && parent.focus();
-        return false;
+        return !parent;
     };
     map.keys['F3'] = function () {
         var mainSearchForm = getFormElement('get'),
