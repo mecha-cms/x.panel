@@ -5,8 +5,8 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 
 $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
 
-function route($content, $path, $query, $hash, $r) {
-    $_ = $r['_'];
+function route($content, $path, $query, $hash) {
+    \extract($GLOBALS, \EXTR_SKIP);
     if ($_['status'] >= 400) {
         $_['lot']['bar']['skip'] = true;
         $_['lot']['desk']['lot']['form']['skip'] = true;
