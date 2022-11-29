@@ -1,6 +1,6 @@
 <?php
 
-// Disable page offset feature and request type other than `GET`
+// Disable page offset feature and task type other than `get`
 if (!empty($_['part']) || 'get' !== $_['task']) {
     $_['kick'] = [
         'part' => 0,

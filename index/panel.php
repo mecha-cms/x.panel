@@ -187,8 +187,9 @@ function route($content, $path, $query, $hash, $r) {
         if (!empty($has_alert) && \class_exists("\\Layout")) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
-        $r['_'] = $_;
-        return \Hook::fire('route.panel', [$content, $path, $query, $hash, $r]);
+        // Update panel data
+        $GLOBALS['_'] = $_;
+        return \Hook::fire('route.panel', [$content, $path, $query, $hash]);
     }
 }, 0);
 
@@ -199,7 +200,8 @@ foreach (\glob(\LOT . \D . '{x,y}' . \D . '*' . \D . 'index' . \D . 'panel.php',
     if (__FILE__ === $file) {
         continue;
     }
-    // Include the file only if current extension is active. An active extension will have an `index.php` file.
+    // Include this file only if current extension/layout is active.
+    // An active extension/layout will have an `index.php` file.
     if (!\is_file(\dirname($file) . '.php')) {
         continue;
     }

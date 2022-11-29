@@ -26,10 +26,10 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['description'] = x\panel\to\w($_POST['state']['description'] ?? "");
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
-	$route_panel = $state_r['x']['panel']['route'] ?? $state_panel['route'] ?? 'panel';
+    $route_panel = $state_r['x']['panel']['route'] ?? $state_panel['route'] ?? 'panel';
     $route_user = $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'] ?? 'user';
-	$route_panel = '/' . trim($route_panel, '/');
-	$route_user = '/' . trim($route_user, '/');
+    $route_panel = '/' . trim($route_panel, '/');
+    $route_user = '/' . trim($route_user, '/');
     if (!empty($_POST['state']['x']['panel']['route'])) {
         if ($v = To::kebab(trim($_POST['state']['x']['panel']['route'], '/'))) {
             $_POST['state']['x']['panel']['route'] = $route_panel = '/' . $v;
@@ -37,14 +37,14 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
             unset($_POST['state']['x']['panel']['route']);
         }
     } else {
-		$route_panel = $state_panel['route'] ?? '/panel';
+        $route_panel = $state_panel['route'] ?? '/panel';
         $route_panel_reset = true;
     }
-	if ($route_panel === ($state_r['x']['panel']['route'] ?? $state_panel['route'])) {
-		if (!empty($route_panel_reset) && !empty($state_r['x']['panel']['route'])) {
-			$_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
-		}
-	} else if (empty($route_panel_reset)) {
+    if ($route_panel === ($state_r['x']['panel']['route'] ?? $state_panel['route'])) {
+        if (!empty($route_panel_reset) && !empty($state_r['x']['panel']['route'])) {
+            $_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
+        }
+    } else if (empty($route_panel_reset)) {
         $_['alert']['info'][] = ['Your panel base URL has been changed to %s', '<code>' . $url . $route_panel . '</code>'];
     } else {
         $_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
@@ -56,14 +56,14 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
             unset($_POST['state']['x']['user']['guard']['route']);
         }
     } else {
-		$route_user = $state_user['guard']['route'] ?? $state_user['route'] ?? '/user';
+        $route_user = $state_user['guard']['route'] ?? $state_user['route'] ?? '/user';
         $route_user_reset = true;
     }
-	if ($route_user === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
-		if (!empty($route_user_reset) && !empty($state_r['x']['user']['guard']['route'])) {
-			$_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
-		}
-	} else if (empty($route_user_reset)) {
+    if ($route_user === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
+        if (!empty($route_user_reset) && !empty($state_r['x']['user']['guard']['route'])) {
+            $_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
+        }
+    } else if (empty($route_user_reset)) {
         $_['alert']['info'][] = ['Your user log-in URL has been changed to %s', '<code>' . $url . $route_user . '</code>'];
     } else {
         $_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
@@ -72,7 +72,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = [
-		'base' => $url . $route_panel,
+        'base' => $url . $route_panel,
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
