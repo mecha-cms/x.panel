@@ -1311,6 +1311,9 @@ pre.is\:text code {
 .option-picker::after {
   right: calc(var(--x) / 2);
 }
+.option-picker--focus:not(.is\:fix) {
+  box-shadow: var(--shadow-option-picker--focus, var(--shadow-option-picker));
+}
 .option-picker.has\:width {
   display: flex;
   width: 100%;

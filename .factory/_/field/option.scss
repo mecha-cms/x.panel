@@ -12,6 +12,7 @@ $name: option-picker;
   &--focus {
     &:not(.is\:fix) {
       @extend :focus-visible;
+      box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}));
     }
   }
   &.has\:width {
