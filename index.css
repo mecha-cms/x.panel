@@ -2610,6 +2610,9 @@ input[type=range]:disabled::-moz-range-thumb {
   display: flex;
   flex-direction: row;
 }
+.lot\:field > label + div .with\:fields.has\:height {
+  height: auto;
+}
 .lot\:field > label + div .with\:fields > * + * {
   margin-left: -1px;
 }
@@ -3492,7 +3495,6 @@ code {
 
 .has\:height {
   display: flex;
-  flex-direction: column;
   height: 100%;
 }
 
