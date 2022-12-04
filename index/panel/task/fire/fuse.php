@@ -16,7 +16,7 @@ function fuse ($_) {
     $_['kick'] = $_REQUEST['kick'] ?? [
         'hash' => null,
         'part' => 0,
-        'path' => "" !== $key ? $key . '/1' : ($state->x->panel->route ?? 'asset/1'),
+        'path' => "" !== $key ? $key . '/1' : 'asset/1',
         'query' => \x\panel\_query_set([
             'keep' => null,
             'minify' => null,
@@ -148,7 +148,7 @@ function fuse ($_) {
         $t = '<a href="' . \x\panel\to\link([
             'hash' => null,
             'part' => 0,
-            'path' => ($state->x->panel->route ?? 'asset/1'),
+            'path' => 'asset/1',
             'query' => \x\panel\_query_set([
                 'keep' => null,
                 'minify' => null,
@@ -256,7 +256,7 @@ function fuse ($_) {
         $t = '<a href="' . \x\panel\to\link([
             'hash' => null,
             'part' => 0,
-            'path' => "" !== $key ? $key . '/' . $value . '/1' : ($state->x->panel->route ?? 'asset/1'),
+            'path' => "" !== $key ? $key . '/' . $value . '/1' : 'asset/1',
             'query' => \x\panel\_query_set([
                 'keep' => null,
                 'minify' => null,

@@ -122,8 +122,8 @@ function _git_sync() {
             $versions = (array) require $file;
         }
         foreach ($versions as $k => $v) {
-            if ('^' === $v) {
-                continue;
+            if (!$v || '^' === $v) {
+                continue; // Skip package(s) that don’t have stable version yet!
             }
             // Core
             if ('mecha' === $k) {
@@ -185,7 +185,7 @@ function _git_sync() {
                             'part' => null,
                             'path' => 'mecha-cms/' . $k,
                             'query' => \x\panel\_query_set([
-                                'keep' => ['composer.json' => is_file(\PATH . \D . 'composer.json') ? 1 : null], // Preserve `composer.json` file?
+                                'keep' => ['composer.json' => is_file(\PATH . \D . 'composer.json') ? 1 : null], // Keep `composer.json` file?
                                 'minify' => 1,
                                 'token' => $_['token'],
                                 'version' => $v

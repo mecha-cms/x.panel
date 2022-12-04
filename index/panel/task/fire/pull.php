@@ -8,7 +8,7 @@ function pull($_) {
     $_['kick'] = $_REQUEST['kick'] ?? [
         'hash' => null,
         'part' => 0,
-        'path' => "" !== $key ? $key . '/1' : ($state->x->panel->route ?? 'asset/1'),
+        'path' => "" !== $key ? $key . '/1' : 'asset/1',
         'query' => \x\panel\_query_set([
             'keep' => null,
             'minify' => null,
@@ -25,7 +25,7 @@ function pull($_) {
             \mkdir($folder, 0775, true);
         }
         $version = $_['query']['version'] ?? "";
-        if (\file_put_contents($file_core = $folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob) && "" === $key && 'mecha' === $value) {
+        if ("" === $key && 'mecha' === $value && \file_put_contents($file_core = $folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob)) {
             $zip_core = new \ZipArchive;
             if (true === $zip_core->open($file_core)) {
                 // Pull other extension(s) as well when updating the core to make sure they are up-to-date
@@ -47,23 +47,35 @@ function pull($_) {
                         if ($value === $k || isset($cores[$k])) {
                             continue; // Already exists in the core ZIP file!
                         }
-                        // TODO: Skip extension and layout that has no version change
-                        $query = \array_replace_recursive($_['query'] ?? [], ['version' => $version = '^' === $v ? null : $v]);
+                        $key = 0 === \strpos($k, 'x.') ? 'x' : (0 === \strpos($k, 'y.') ? 'y' : "");
+                        $value = "" !== $key ? \substr($k, 2) : $k;
+                        $prefix = "" !== $key ? 'lot/' . $key . '/' . $value . '/' : "";
+                        $query = \array_replace_recursive($_['query'] ?? [], ['version' => $version = $v]);
+                        if (0 === \strpos($k, 'x.') && \is_file($file = \LOT . \D . 'x' . \D . $value . \D . 'about.page')) {
+                            $page = new \Page($file);
+                            // Skip extension(s) that does not have version change
+                            if ($version === $page->version) {
+                                continue;
+                            }
+                        }
+                        if (0 === \strpos($k, 'y.') && \is_file($file = \LOT . \D . 'y' . \D . $value . \D . 'about.page')) {
+                            $page = new \Page($file);
+                            // Skip layout(s) that does not have version change
+                            if ($version === $page->version) {
+                                continue;
+                            }
+                        }
                         if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . \dirname($path) . '/' . $k . \To::query($query)))) {
                             if (\file_put_contents($file = $folder . \D . $k . ($version ? '@v' . $version : "") . '.zip', $blob)) {
                                 // Merge other extension(s) and layout(s) ZIP file(s) to the core ZIP file
                                 $zip = new \ZipArchive;
                                 if (true === $zip->open($file)) {
-                                    $key = 0 === \strpos($k, 'x.') ? 'x' : (0 === \strpos($k, 'y.') ? 'y' : "");
-                                    $value = "" !== $key ? \substr($k, 2) : $k;
-                                    $prefix = "" !== $key ? 'lot/' . $key . '/' . $value . '/' : "";
                                     for ($i = 0; $i < $zip->numFiles; ++$i) {
                                         $name = \strtr($zip->getNameIndex($i), "\\", '/');
                                         if ('/' === \substr($name, -1)) {
                                             $zip_core->addEmptyDir($prefix . \substr($name, 0, -1));
                                         } else {
-                                            $value = $zip->getFromIndex($i);
-                                            $zip_core->addFromString($prefix . $name, $value);
+                                            $zip_core->addFromString($prefix . $name, $zip->getFromIndex($i));
                                         }
                                     }
                                     $zip->close();
