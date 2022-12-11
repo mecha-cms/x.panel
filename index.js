@@ -666,11 +666,12 @@
     }
     var dialogAlertDescription = setElement('p'),
         dialogAlertTasks = setElement('p', "", {
-            role: 'group'
+            'role': 'group'
         }),
         dialogAlertTaskOkay = setElement('button', 'OK', {
-            type: 'submit',
-            value: 'true'
+            'class': 'is:host',
+            'type': 'submit',
+            'value': 'true'
         });
     onEvent('keydown', dialogAlertTaskOkay, onDialogTaskKeyDown);
     onEvent('click', dialogAlertTaskOkay, onDialogTaskClick);
@@ -681,15 +682,17 @@
     };
     var dialogConfirmDescription = setElement('p'),
         dialogConfirmTasks = setElement('p', "", {
-            role: 'group'
+            'role': 'group'
         }),
         dialogConfirmTaskOkay = setElement('button', 'OK', {
-            type: 'submit',
-            value: 'true'
+            'class': 'is:host',
+            'type': 'submit',
+            'value': 'true'
         }),
         dialogConfirmTaskCancel = setElement('button', 'Cancel', {
-            type: 'reset',
-            value: 'false'
+            'class': 'is:host',
+            'type': 'reset',
+            'value': 'false'
         });
     onEvent('click', dialogConfirmTaskCancel, onDialogTaskClick);
     onEvent('click', dialogConfirmTaskOkay, onDialogTaskClick);
@@ -703,20 +706,23 @@
     };
     var dialogPromptKey = setElement('p'),
         dialogPromptValue = setElement('input', false, {
-            autofocus: true,
-            type: 'text'
+            'autofocus': true,
+            'class': 'is:host',
+            'type': 'text'
         }),
         dialogPromptValueP = setElement('p'),
         dialogPromptTasks = setElement('p', "", {
-            role: 'group'
+            'role': 'group'
         }),
         dialogPromptTaskOkay = setElement('button', 'OK', {
-            type: 'submit',
-            value: ""
+            'class': 'is:host',
+            'type': 'submit',
+            'value': ""
         }),
         dialogPromptTaskCancel = setElement('button', 'Cancel', {
-            type: 'reset',
-            value: 'false'
+            'class': 'is:host',
+            'type': 'reset',
+            'value': 'false'
         });
 
     function onDialogPromptValueInput() {
@@ -1570,9 +1576,10 @@
             $.pop();
             delete OP.instances[key];
         }
-        var sources = getElements('input[list],select');
+        var sources = getElements('input.is\\:host[list]:not([type="hidden"]),select.is\\:host');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
+            letClass(source, 'is:host');
             var c = getClasses(source);
             var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
@@ -2340,7 +2347,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.16';
+    TP.version = '3.4.17';
 
     function onChange$9(init) {
         // Destroy!
@@ -2350,9 +2357,10 @@
             $.pop();
             delete TP.instances[key];
         }
-        var sources = getElements('.lot\\:field.type\\:query input');
+        var sources = getElements('.lot\\:field.type\\:query input.is\\:host:not([type="hidden"])');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
+            letClass(source, 'is:host');
             var c = getClasses(source);
             var $ = new TP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
@@ -3929,7 +3937,7 @@
             delete TE.instances[key];
             _letEditorSource($.self);
         }
-        var sources = getElements('.lot\\:field.type\\:source textarea'),
+        var sources = getElements('.lot\\:field.type\\:source textarea.is\\:host'),
             editor,
             map,
             state,

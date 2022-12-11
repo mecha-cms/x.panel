@@ -11,6 +11,7 @@ function button($value, $key) {
 }
 
 function link($value, $key) {
+    $value['is']['host'] = $value['is']['host'] ?? true;
     $out = \x\panel\type\link($value, $key);
     $out['role'] = 'button';
     return $out;

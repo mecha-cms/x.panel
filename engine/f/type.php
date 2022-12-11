@@ -23,6 +23,7 @@ function bar($value, $key) {
 
 function button($value, $key) {
     $not_active = isset($value['active']) && !$value['active'];
+    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['not']['active'] = $value['not']['active'] ?? $not_active;
     $out = \x\panel\type\link($value, $key);
     $out['disabled'] = $not_active;
@@ -645,6 +646,7 @@ function input($value, $key) {
     $value['has']['pattern'] = $has_pattern;
     $value['is']['active'] = $is_active;
     $value['is']['fix'] = $is_fix;
+    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['is']['vital'] = $is_vital;
     $value['not']['active'] = !$is_active;
     $value['not']['fix'] = !$is_fix;
@@ -1090,6 +1092,7 @@ function select($value, $key) {
     $is_active = !isset($value['active']) || $value['active'];
     $is_vital = !empty($value['vital']);
     $value['is']['active'] = $value['is']['active'] ?? $is_active;
+    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
     $value['not']['vital'] = $value['not']['vital'] ?? !$is_vital;
@@ -1454,6 +1457,7 @@ function textarea($value, $key) {
     $value['has']['pattern'] = $value['has']['pattern'] ?? $has_pattern;
     $value['is']['active'] = $value['is']['active'] ?? $is_active;
     $value['is']['fix'] = $value['is']['fix'] ?? $is_fix;
+    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
     $value['not']['fix'] = $value['not']['fix'] ?? !$is_fix;

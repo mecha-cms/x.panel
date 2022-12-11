@@ -3,6 +3,7 @@ import {
     getClasses,
     getDatum,
     getElements,
+    letClass,
     setClasses
 } from '@taufik-nurrohman/document';
 
@@ -26,8 +27,9 @@ function onChange(init) {
         $.pop();
         delete OP.instances[key];
     }
-    let sources = getElements('input[list],select');
+    let sources = getElements('input.is\\:host[list]:not([type="hidden"]),select.is\\:host');
     sources && toCount(sources) && sources.forEach(source => {
+        letClass(source, 'is:host');
         let c = getClasses(source);
         let $ = new OP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);

@@ -1,6 +1,6 @@
 .a {
   color: inherit;
-  &:any-link {
+  &:where(:any-link) {
     background: var(--fill-link, none);
     color: var(--color-link);
     @each $v in (hover, focus, active) {

@@ -3,6 +3,7 @@ import {
     getClasses,
     getDatum,
     getElements,
+    letClass,
     setClasses
 } from '@taufik-nurrohman/document';
 
@@ -20,8 +21,9 @@ function onChange(init) {
         $.pop();
         delete TP.instances[key];
     }
-    let sources = getElements('.lot\\:field.type\\:query input');
+    let sources = getElements('.lot\\:field.type\\:query input.is\\:host:not([type="hidden"])');
     sources && toCount(sources) && sources.forEach(source => {
+        letClass(source, 'is:host');
         let c = getClasses(source);
         let $ = new TP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);
