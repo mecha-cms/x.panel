@@ -41,6 +41,7 @@ foreach ($tasks as $task) {
         if (
             is_callable($f = "\\x\\panel\\task\\" . strtr($v, [
                 '-' => '_',
+                '.' => '__',
                 D => "\\"
             ])) ||
             // If you have to use route(s) with number prefix, you can prefix the function name with a `_`.
