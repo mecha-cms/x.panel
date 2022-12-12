@@ -195,7 +195,13 @@ return (static function ($icons) {
                     'name' => 'set',
                     'stack' => 10,
                     'type' => 'form/post',
-                    'url' => $url->current
+                    'url' => [
+                        'hash' => $_['hash'],
+                        'part' => $_['part'],
+                        'path' => $_['path'],
+                        'query' => $_['query'],
+                        'task' => $_['task']
+                    ]
                 ]
             ],
             'stack' => 20
