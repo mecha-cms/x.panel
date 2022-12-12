@@ -106,7 +106,7 @@ if (false === strpos($_['path'], '/')) {
             \DateTimeZone::AUSTRALIA,
             \DateTimeZone::EUROPE,
             \DateTimeZone::INDIAN,
-            \DateTimeZone::PACIFIC,
+            \DateTimeZone::PACIFIC
         ];
         $timezones = [];
         $timezone_offsets = [];
