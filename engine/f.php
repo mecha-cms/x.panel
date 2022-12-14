@@ -90,8 +90,9 @@ function _decor_set(array $attr, array $value = []) {
     }
     $out = "";
     foreach ($decors as $k => $v) {
-        $out .= $k . ': ' . (\is_int($v) ? $v . 'px' : $v) . ';';
+        $out .= $k . ': ' . (\is_int($v) ? $v . 'px' : $v) . '; ';
     }
+    $out = \trim($out);
     $attr['style'] = "" !== $out ? $out : null;
     return $attr;
 }

@@ -2491,28 +2491,52 @@ label .is\:host[type=radio] + span {
   margin: 0;
   min-width: 0;
 }
-.lot\:column.size\:1\/6,
-.size\:1\/6.content\:column {
+.lot\:column.size\:1\/12,
+.size\:1\/12.content\:column {
+  max-width: 8.3333333333%;
+}
+.lot\:column.size\:2\/12,
+.size\:2\/12.content\:column {
   max-width: 16.6666666667%;
 }
-.lot\:column.size\:2\/6,
-.size\:2\/6.content\:column {
+.lot\:column.size\:3\/12,
+.size\:3\/12.content\:column {
+  max-width: 25%;
+}
+.lot\:column.size\:4\/12,
+.size\:4\/12.content\:column {
   max-width: 33.3333333333%;
 }
-.lot\:column.size\:3\/6,
-.size\:3\/6.content\:column {
+.lot\:column.size\:5\/12,
+.size\:5\/12.content\:column {
+  max-width: 41.6666666667%;
+}
+.lot\:column.size\:6\/12,
+.size\:6\/12.content\:column {
   max-width: 50%;
 }
-.lot\:column.size\:4\/6,
-.size\:4\/6.content\:column {
+.lot\:column.size\:7\/12,
+.size\:7\/12.content\:column {
+  max-width: 58.3333333333%;
+}
+.lot\:column.size\:8\/12,
+.size\:8\/12.content\:column {
   max-width: 66.6666666667%;
 }
-.lot\:column.size\:5\/6,
-.size\:5\/6.content\:column {
+.lot\:column.size\:9\/12,
+.size\:9\/12.content\:column {
+  max-width: 75%;
+}
+.lot\:column.size\:10\/12,
+.size\:10\/12.content\:column {
   max-width: 83.3333333333%;
 }
-.lot\:column.size\:6\/6,
-.size\:6\/6.content\:column {
+.lot\:column.size\:11\/12,
+.size\:11\/12.content\:column {
+  max-width: 91.6666666667%;
+}
+.lot\:column.size\:12\/12,
+.size\:12\/12.content\:column {
   max-width: 100%;
 }
 
