@@ -18,7 +18,7 @@
       "url": "https://paypal.me/tatautaufik"
     }
   ],
-  "description": "GUI extension for Mecha.",
+  "description": "Control panel feature.",
   "license": "GPL-3.0-or-later",
   "name": "mecha-cms/x.panel",
   "require": {
