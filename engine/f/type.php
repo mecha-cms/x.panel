@@ -1354,7 +1354,7 @@ function tabs($value, $key) {
                 if (empty($v['url']) && empty($v['link']) && (!\array_key_exists('active', $v) || $v['active'])) {
                     $v['url'] = '?' . \explode('?', \x\panel\to\link(['query' => ['tab' => [$name => $kk]]]), 2)[1];
                 } else {
-                    $v['has']['link'] = $v['has']['link'] ?? true;
+                    $v['has']['link'] = $v['has']['link'] ?? (!\array_key_exists('active', $v) || $v['active']);
                     if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {
                         // Make sure link tab has a content to preserve the tab title
                         $v['content'] = \P;

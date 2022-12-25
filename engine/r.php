@@ -169,7 +169,7 @@ return (static function ($icons) {
                             'type' => 'section'
                         ],
                         'alert' => [
-                            'content' => "",
+                            'content' => null,
                             'skip' => 0 === count($_SESSION['alert'] ?? []),
                             'stack' => 15,
                             'type' => 'section'

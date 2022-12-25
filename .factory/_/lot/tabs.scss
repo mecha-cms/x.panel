@@ -69,6 +69,10 @@
   &.count\:1 {
     .lot\:links {
       display: none;
+      + .p,
+      + p {
+        margin-top: 0;
+      }
     }
   }
 }

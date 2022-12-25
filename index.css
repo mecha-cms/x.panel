@@ -3428,6 +3428,30 @@ label .is\:host[type=radio] + span {
 .lot\:tabs.count\:1 .lot\:links {
   display: none;
 }
+.lot\:tabs.count\:1 .lot\:links + .p,
+.lot\:tabs.count\:1 .lot\:links + blockquote,
+.lot\:tabs.count\:1 .lot\:links + details,
+.lot\:tabs.count\:1 .lot\:links + dl,
+.lot\:tabs.count\:1 .lot\:links + dt,
+.lot\:tabs.count\:1 .lot\:links + fieldset,
+.lot\:tabs.count\:1 .lot\:links + figcaption,
+.lot\:tabs.count\:1 .lot\:links + figure,
+.lot\:tabs.count\:1 .lot\:links + form,
+.lot\:tabs.count\:1 .lot\:links + h1,
+.lot\:tabs.count\:1 .lot\:links + h2,
+.lot\:tabs.count\:1 .lot\:links + h3,
+.lot\:tabs.count\:1 .lot\:links + h4,
+.lot\:tabs.count\:1 .lot\:links + h5,
+.lot\:tabs.count\:1 .lot\:links + h6,
+.lot\:tabs.count\:1 .lot\:links + hr,
+.lot\:tabs.count\:1 .lot\:links + nav,
+.lot\:tabs.count\:1 .lot\:links + ol,
+.lot\:tabs.count\:1 .lot\:links + pre,
+.lot\:tabs.count\:1 .lot\:links + table,
+.lot\:tabs.count\:1 .lot\:links + ul,
+.lot\:tabs.count\:1 .lot\:links + p {
+  margin-top: 0;
+}
 
 .lot\:tasks {
   align-items: center;

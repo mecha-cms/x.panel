@@ -163,7 +163,9 @@ function route($content, $path, $query, $hash) {
             // Has alert data from queue
             $has_alert = true;
             // Make alert section visible
-            $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+            if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
+                $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+            }
             foreach ((array) $_['alert'] as $k => $v) {
                 foreach ((array) $v as $vv) {
                     $vv = (array) $vv;
@@ -182,9 +184,11 @@ function route($content, $path, $query, $hash) {
             // Has alert data from previous session
             $has_alert = true;
             // Make alert section visible
-            $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+            if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
+                $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+            }
         }
-        if (!empty($has_alert) && \class_exists("\\Layout")) {
+        if (!empty($has_alert) && !empty($_['lot']['desk']['lot']['form']['lot']['alert']) && \class_exists("\\Layout")) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
         }
         // Update panel data

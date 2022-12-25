@@ -40,7 +40,7 @@ if (defined('TEST') && TEST) {
         $out .= '<br><br>';
         $out .= '<code>' . strtr(htmlspecialchars($errors), ["\n" => '<br>']) . '</code>';
         $out .= '<br><br>';
-        $out .= i('If you think you have fixed the error' . ($one ? "" : 's') . ', you can then %s.', ['<a href="' . x\panel\to\link([
+        $out .= i('If you think you have fixed the error' . ($one ? "" : 's') . ', you can %s.', ['<a href="' . x\panel\to\link([
             'part' => 0,
             'path' => $v,
             'query' => x\panel\_query_set([
@@ -48,7 +48,7 @@ if (defined('TEST') && TEST) {
                 'token' => $_['token']
             ]),
             'task' => 'fire/fix'
-        ]) . '">' . i('remove the log file') . '</a>']);
+        ]) . '">' . i('remove the log') . '</a>']);
         $GLOBALS['_']['alert']['error'][$log] = $out;
     }
 }
