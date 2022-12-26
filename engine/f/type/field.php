@@ -395,11 +395,12 @@ function pass($value, $key) {
 }
 
 function path($value, $key) {
+    $keep = (string) ($value['keep'] ?? "");
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : "foo\\bar\\baz");
     $value['max'] = $value['max'] ?? (260 - (\strlen(\PATH) + 1)); // <https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation>
     $value['min'] = 0;
-    $value['pattern'] = $value['pattern'] ?? "^[_.]?[a-z\\d]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d]+([_.-][a-z\\d]+)*)*$";
+    $value['pattern'] = $value['pattern'] ?? "^[\\\\/]?[_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d]+)*([\\\\/][_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d]+)*)*$";
     return \x\panel\type\field\text($value, $key);
 }
 
