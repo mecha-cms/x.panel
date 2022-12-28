@@ -142,6 +142,7 @@ $desk = [
                 ]
             ],
             'values' => [
+                'kick' => $_GET['kick'] ?? null,
                 'token' => $_['token'],
                 'type' => $_['type']
             ]

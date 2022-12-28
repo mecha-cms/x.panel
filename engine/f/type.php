@@ -220,12 +220,14 @@ function field($value, $key) {
                 ];
             } else if (\is_array($vv)) {
                 if (isset($vv['icon'])) {
-                    $icon = \x\panel\to\icon((array) ($vv['icon'] ?? []));
-                    $icon[0][2] = \x\panel\_tag_set($icon[0][2] ?? [], [
+                    $icon = \x\panel\to\icon((array) $vv['icon']);
+                    $icon[0][2] = \array_replace(\x\panel\_tag_set($icon[0][2] ?? [], [
                         'tags' => ['fix' => true]
-                    ]);
+                    ]), $vv[2] ?? []);
+                    ${$v} = $icon[0];
+                } else {
+                    // TODO
                 }
-                ${$v} = $icon[0];
             }
         }
     }

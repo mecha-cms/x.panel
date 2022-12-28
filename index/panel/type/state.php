@@ -152,6 +152,7 @@ $desk = [
             ],
             'values' => [
                 'file' => ['seal' => '0600'],
+                'kick' => $_GET['kick'] ?? null,
                 'token' => $_['token'],
                 'trash' => $trash,
                 'type' => $_['type']
