@@ -38,9 +38,9 @@ function description($value) {
 
 function elapse($date, $all = false) {
     $current = new \DateTime;
-    $diff = $current->diff(new \DateTime($date));
-    $diff->w = \floor($diff->d / 7);
-    $diff->d -= $diff->w * 7;
+    $diff = (array) $current->diff(new \DateTime($date));
+    $diff['w'] = \floor($diff['d'] / 7);
+    $diff['d'] -= $diff['w'] * 7;
     $alter = [
         // It has to be in this order, please do not sort the array!
         'y' => 'year',
@@ -52,7 +52,7 @@ function elapse($date, $all = false) {
         's' => 'second'
     ];
     foreach ($alter as $k => &$v) {
-        if ($i = $diff->{$k} ?? 0) {
+        if ($i = $diff[$k] ?? 0) {
             $v = \i('%d ' . $alter[$k] . ($i > 1 ? 's' : ""), $i);
         } else {
             unset($alter[$k]);

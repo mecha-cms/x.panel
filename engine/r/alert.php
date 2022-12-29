@@ -34,7 +34,7 @@ if (defined('TEST') && TEST) {
         if (!is_file($log = ENGINE . D . 'log' . D . $v)) {
             continue;
         }
-        $errors = x\panel\from\path(trim(n(file_get_contents($log))));
+        $errors = x\panel\from\path(trim(n(file_get_contents($log)) ?? ""));
         $one = 0 === substr_count($errors, "\n");
         $out = i('Please fix ' . ($one ? 'this error' : 'these errors') . ':');
         $out .= '<br><br>';
