@@ -33,6 +33,13 @@
         display: inline-flex;
         position: relative;
         vertical-align: middle;
+        a {
+          &:where(:any-link) {
+            .fix {
+              cursor: pointer;
+            }
+          }
+        }
         &.has\:height,
         &.has\:width {
           display: flex;

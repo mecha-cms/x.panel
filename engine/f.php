@@ -322,7 +322,7 @@ function _value_set(array $value, $key = null) {
 }
 
 function type($value, $key) {
-    if (\is_string($value) || (\is_object($value) && $value instanceof \HTML)) {
+    if (\is_string($value) || (\is_object($value) && $value instanceof \XML)) {
         return $value;
     }
     if (false === $value || null === $value || !empty($value['skip'])) {

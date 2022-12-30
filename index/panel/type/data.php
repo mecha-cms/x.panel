@@ -81,11 +81,11 @@ $desk = [
                                                 ],
                                                 'name' => [
                                                     'focus' => true,
+                                                    'gist' => ["", '.data'],
                                                     'name' => 'data[name]',
                                                     'stack' => 20,
                                                     'type' => 'name',
                                                     'value' => $name,
-                                                    'value-after' => '.data',
                                                     'width' => true,
                                                     'x' => false
                                                 ]

@@ -28,7 +28,10 @@ function color($color) {
 }
 
 function content($value) {
-    return \is_array($value) ? new \HTML($value, true) : (string) $value;
+    if (\is_array($value)) {
+        return new \HTML($value, true);
+    }
+    return "" !== ($value = (string) $value) ? $value : null;
 }
 
 function description($value) {
@@ -77,14 +80,28 @@ function field($value, $key, $type = 'textarea') {
     return $value;
 }
 
+function gist($value) {
+    // Maybe an `Anemone`
+    if ($value instanceof \Traversable) {
+        $value = \iterator_to_array($value);
+    }
+    // Maybe a gist string
+    if (!\is_array($value) || !\array_is_list($value)) {
+        $value = [$value];
+    }
+    return \x\panel\type\gist($value, 0);
+}
+
 function icon($value) {
     // Maybe an `Anemone`
     if ($value instanceof \Traversable) {
         $value = \iterator_to_array($value);
     }
     // Maybe an icon string
-    $value = (array) $value;
-    return \x\panel\type\icon(['lot' => $value], 0);
+    if (!\is_array($value) || !\array_is_list($value)) {
+        $value = [$value];
+    }
+    return \x\panel\type\icon($value, 0);
 }
 
 function link($value) {
@@ -107,7 +124,7 @@ function link($value) {
 }
 
 function lot($lot, &$count = 0, $sort = true) {
-    if (!\is_array($lot)) {
+    if (!\is_array($lot) || !$lot) {
         return;
     }
     if ($sort) {
@@ -129,6 +146,7 @@ function lot($lot, &$count = 0, $sort = true) {
     return new \Anemone($out, "");
 }
 
+// TODO: Convert to recursive `HTML` content
 function pager(int $current, int $count, int $chunk, int $peek, callable $fn, string $first = 'First', string $prev = 'Previous', string $next = 'Next', string $last = 'Last') {
     $begin = 1;
     $end = (int) \ceil($count / $chunk);
@@ -192,6 +210,11 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
 
 function path($value) {
     return \strtr(\strtr($value, ["\\" => '/']), ['./' => \PATH . \D, '/' => \D]);
+}
+
+function text($value) {
+    $out = \trim(\strip_tags((string) $value));
+    return "" !== $out ? $out : null;
 }
 
 function title($value, $level = -1) {

@@ -2614,6 +2614,9 @@ label .is\:host[type=radio] + span {
   position: relative;
   vertical-align: middle;
 }
+.lot\:field > label + div .with\:fields a:where(:any-link) .fix {
+  cursor: pointer;
+}
 .lot\:field > label + div .with\:fields.has\:height,
 .lot\:field > label + div .with\:fields.has\:width {
   display: flex;

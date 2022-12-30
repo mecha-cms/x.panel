@@ -206,30 +206,44 @@ function field($value, $key) {
             ]
         ];
     }
-    $after = $before = "";
-    foreach (['after', 'before'] as $v) {
-        if (isset($value['value-' . $v])) {
-            $vv = $value['value-' . $v];
-            if (\is_string($vv)) {
-                ${$v} = [
-                    0 => 'span',
-                    1 => $vv,
-                    2 => [
-                        'class' => 'fix'
-                    ]
-                ];
-            } else if (\is_array($vv)) {
-                if (isset($vv['icon'])) {
-                    $icon = \x\panel\to\icon((array) $vv['icon']);
-                    $icon[0][2] = \array_replace(\x\panel\_tag_set($icon[0][2] ?? [], [
-                        'tags' => ['fix' => true]
-                    ]), $vv[2] ?? []);
-                    ${$v} = $icon[0];
-                } else {
-                    // TODO
-                }
-            }
+    $gist = \x\panel\to\gist($value['gist'] = (array) ($value['gist'] ?? [null, null]));
+    $icon = \x\panel\to\icon($value['icon'] = (array) ($value['icon'] ?? [null, null]));
+    foreach ($gist as $k => $v) {
+        if (\is_string($v) && "" !== $v) {
+            $gist[$k] = new \HTML(['span', $v, ['class' => 'fix']]);
+        } else if ($v instanceof \HTML) {
+            $gist[$k][2] = \x\panel\_tag_set($v[2], ['tags' => ['fix' => true]]);
         }
+    }
+    foreach ($icon as $k => $v) {
+        if (\is_string($v) && "" !== $v) {
+            $v = new \HTML($v);
+            $v[2] = \x\panel\_tag_set($v[2], ['tags' => ['fix' => true]]);
+        } else if ($v instanceof \XML) {
+            $v[2] = \x\panel\_tag_set($v[2], ['tags' => ['fix' => true]]);
+        }
+        if (isset($value['icon'][$k]['link'])) {
+            if (\is_array($link = $value['icon'][$k]['link'])) {
+                $link = \x\panel\to\link($link);
+            }
+            $description = \strip_tags(\i(...((array) ($value['icon'][$k]['description'] ?? ""))) ?? "");
+            $v = new \HTML(['a', ['icon' => $v], [
+                'href' => $link,
+                'target' => $value['icon'][$k]['target'] ?? '_blank',
+                'title' => "" !== $description ? $description : null
+            ]], true);
+        } else if (isset($value['icon'][$k]['url'])) {
+            if (\is_array($url = $value['icon'][$k]['url'])) {
+                $url = \x\panel\to\link($value['icon'][$k]['url']);
+            }
+            $description = \strip_tags(\i(...((array) ($value['icon'][$k]['description'] ?? ""))) ?? "");
+            $v = new \HTML(['a', ['icon' => $v], [
+                'href' => $url,
+                'target' => $value['icon'][$k]['target'] ?? null,
+                'title' => "" !== $description ? $description : null
+            ]], true);
+        }
+        $icon[$k] = $v;
     }
     $decors_field = $tags_field = [];
     if (isset($value['height']) && false !== $value['height']) {
@@ -259,9 +273,9 @@ function field($value, $key) {
         $value[1]['field'][1][] = [
             0 => 'div',
             1 => [
-                'before' => $before,
+                '(' => $icon[0] ?? $gist[0] ?? "",
                 'content' => $content,
-                'after' => $after
+                ')' => $icon[1] ?? $gist[1] ?? ""
             ],
             2 => [
                 'class' => \implode(' ', \array_keys(\array_filter([
@@ -282,9 +296,9 @@ function field($value, $key) {
         $value[1]['field'][1][] = [
             0 => 'div',
             1 => [
-                'before' => $before,
+                '(' => $icon[0] ?? $gist[0] ?? "",
                 'content' => $content,
-                'after' => $after
+                ')' => $icon[1] ?? $gist[1] ?? ""
             ],
             2 => [
                 'class' => 'content count:' . ("" === $content ? '0' : '1')
@@ -595,6 +609,54 @@ function form($value, $key) {
     return new \HTML($value);
 }
 
+function gist($value, $key) {
+    $gists = [null, null];
+    // Maybe a `HTML`
+    if (isset($value['content'])) {
+        $gists[0] = \x\panel\to\content($value['content']);
+    // Maybe an `Anemone`
+    } else if (isset($value['lot'])) {
+        $v = \x\panel\to\lot($value['lot']);
+        $gists[0] = $v[0] ?? null;
+        $gists[1] = $v[1] ?? null;
+    } else {
+        // Must be an array or string, force it to array!
+        if (!\is_array($value) || !\array_is_list($value)) {
+            $value = [$value];
+        }
+        $gists = \array_replace($gists, $value);
+    }
+    foreach ($gists as $k => $v) {
+        if (!$v) {
+            continue;
+        }
+        if (\is_array($v)) {
+            $attr = \array_replace($attr, $v[2] ?? []);
+            $attr = \x\panel\_decor_set($attr, $v);
+            $attr = \x\panel\_tag_set($attr, $v);
+            $content = \x\panel\to\content($v[1] ?? $v['content'] ?? null);
+            $description = \x\panel\to\description($v['description'] ?? "");
+            $target = $v['target'] ?? null;
+            $text = \x\panel\to\text($v['text'] ?? "");
+            $title = \x\panel\to\title($v['title'] ?? "");
+            $v = new \HTML(['span', $content ?? $title ?? $text, ['title' => $description]]);
+            if (isset($v['link'])) {
+                $link = \is_array($v['link']) ? \x\panel\to\link($v['link']) : $v['link'];
+                $v['href'] = $link;
+                $v['target'] = $target ?? '_blank';
+                $v[0] = 'a';
+            } else if (isset($v['url'])) {
+                $url = \is_array($v['url']) ? \x\panel\to\link($v['url']) : $v['url'];
+                $v['href'] = $url;
+                $v['target'] = $target ?? '_blank';
+                $v[0] = 'a';
+            }
+        }
+        $gists[$k] = $v;
+    }
+    return new \Anemone($gists, "");
+}
+
 function icon($value, $key) {
     $icons = [null, null];
     // Maybe a `HTML`
@@ -607,7 +669,9 @@ function icon($value, $key) {
         $icons[1] = $v[1] ?? null;
     } else {
         // Must be an array or string, force it to array!
-        $value = (array) $value;
+        if (!\is_array($value) || !\array_is_list($value)) {
+            $value = [$value];
+        }
         $icons = \array_replace($icons, $value);
     }
     $ref = $GLOBALS['_']['icon'] ?? [];
@@ -621,19 +685,57 @@ function icon($value, $key) {
         if (!$v) {
             continue;
         }
-        if (false === \strpos($v, '<')) {
-            // Named icon(s)
-            if (isset($ref[$v])) {
-                $v = new \HTML(['svg', '<use href="#i:' . $v . '"></use>', $attr]);
-            // Inline icon(s)
-            } else {
-                if (!isset($ref[$id = \dechex(\crc32($v))])) {
-                    $GLOBALS['_']['icon'][$id] = $v;
-                }
-                $v = new \HTML(['svg', '<use href="#i:' . $id . '"></use>', $attr]);
+        if (\is_array($v)) {
+            if (\is_array($rect = $v['rect'] ?? '0 0 24 24')) {
+                $rect = \implode(' ', $rect);
             }
-        } else if ('</svg>' !== \substr($v, -6)) {
-            $v = new \HTML(['svg', $v, $attr]);
+            $attr = \array_replace($attr, $v[2] ?? []);
+            $attr = \x\panel\_decor_set($attr, $v);
+            $attr = \x\panel\_tag_set($attr, $v);
+            $attr['viewBox'] = $v[2]['view-box'] ?? $v[2]['viewBox'] ?? $rect;
+            $content = \x\panel\to\content($v[1] ?? $v['content'] ?? null);
+            $d = $v['d'] ?? "";
+            $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
+            $id = $v['id'] ?? $v['name'] ?? \dechex(\crc32($d));
+            $title = \strip_tags(\i(...((array) ($v['title'] ?? ""))) ?? "");
+            // Inline icon(s)
+            if ("" !== $d) {
+                $v = new \XML(['svg', $content ?? [
+                    'path' => ['path', [
+                        'title' => $title ? ['title', $title, []] : "",
+                        'description' => $description ? ['desc', $description, []] : ""
+                    ], [
+                        'd' => $d,
+                        'fill' => $v['fill'] ?? null
+                    ]]
+                ], $attr], true);
+            // Inline icon(s)
+            } else if ($content) {
+                $v = new \XML(['svg', $content, $attr], true);
+            // Named icon(s)
+            } else if (isset($ref[$id])) {
+                $v = new \XML(['svg', [
+                    'use' => ['use', [
+                        'title' => $title ? ['title', $title, []] : "",
+                        'description' => $description ? ['desc', $description, []] : ""
+                    ], ['href' => '#i:' . $id]]
+                ], $attr], true);
+            }
+        } else if (\is_string($v)) {
+            if (false === \strpos($v, '<')) {
+                // Named icon(s)
+                if (isset($ref[$v])) {
+                    $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#i:' . $v]]], $attr], true);
+                // Inline icon(s)
+                } else {
+                    if (!isset($ref[$id = \dechex(\crc32($v))])) {
+                        $GLOBALS['_']['icon'][$id] = $v;
+                    }
+                    $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#i:' . $id]]], $attr], true);
+                }
+            } else if ('</svg>' !== \substr($v, -6)) {
+                $v = new \XML(['svg', $v, $attr]);
+            }
         }
         $icons[$k] = $v;
     }
@@ -835,11 +937,12 @@ function menu($value, $key, int $i = 0) {
                 }
                 $has_caret = false;
                 if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
+                    $v['icon'][0] = $v['icon'][0] ?? "";
                     $v['icon'][1] = $v['caret'] ?? ($i < -1 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z');
                     $has_caret = true;
                 }
                 $v['icon'] = \x\panel\to\icon($v['icon'] ?? []);
-                if ($has_caret) {
+                if ($has_caret && isset($v['icon'][1][2])) {
                     $v['icon'][1][2] = \x\panel\_tag_set($v['icon'][1][2], ['tags' => ['caret' => true]]);
                 }
                 $is_active = !isset($v['active']) || $v['active'];
