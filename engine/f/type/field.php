@@ -344,7 +344,7 @@ function items($value, $key) {
 
 function link($value, $key) {
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
-    $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s,]+,\\S+|(https?:)\\/\\/\\S+)$";
+    $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;|(https?:)?\\/\\/)\\S+$";
     return \x\panel\type\field\text($value, $key);
 }
 
@@ -528,7 +528,7 @@ function toggle($value, $key) {
 
 function u_r_l($value, $key) { // This is not a typo!
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
-    $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;\\S+|(https?:)?\\/\\/\\S+)$";
+    $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;|(https?:)?\\/\\/|[.]{0,2}\\/)[^\\/]\\S*$";
     return \x\panel\type\field\text($value, $key);
 }
 
