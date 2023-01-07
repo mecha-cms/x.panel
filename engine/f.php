@@ -333,7 +333,7 @@ function type($value, $key) {
         return new \HTML($value);
     }
     $out = "";
-    if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')))) {
+    if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')) ?? "")) {
         $type_exist = false;
         foreach (\array_values(\step($type, "\\")) as $v) {
             if ("" !== $v && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $v)) {
