@@ -20,11 +20,12 @@ function pull($_) {
     if (!empty($_['alert']['error'])) {
         return $_;
     }
-    if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . $path . \To::query($_['query'] ?? [])))) {
+    if (null !== ($blob = \fetch('https://mecha-cms.com/' . (\defined("\\TEST") && \TEST ? 'git-dev' : 'git') . '/zip/' . $path . \To::query($_['query'] ?? [])))) {
         if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . \dirname($path))) {
             \mkdir($folder, 0775, true);
         }
         $version = $_['query']['version'] ?? "";
+        // Core update
         if ("" === $key && 'mecha' === $value && \file_put_contents($file_core = $folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob)) {
             $zip_core = new \ZipArchive;
             if (true === $zip_core->open($file_core)) {
@@ -48,24 +49,22 @@ function pull($_) {
                             continue; // Already exists in the core ZIP file!
                         }
                         $key = 0 === \strpos($k, 'x.') ? 'x' : (0 === \strpos($k, 'y.') ? 'y' : "");
-                        $value = "" !== $key ? \substr($k, 2) : $k;
-                        $prefix = "" !== $key ? 'lot/' . $key . '/' . $value . '/' : "";
+                        if ("" === $key) {
+                            continue; // We only look for extension(s) and layout(s)
+                        }
+                        $value = \substr($k, 2);
+                        $prefix = 'lot/' . $key . '/' . $value . '/';
                         $query = \array_replace_recursive($_['query'] ?? [], ['version' => $version = $v]);
-                        if (0 === \strpos($k, 'x.') && \is_file($file = \LOT . \D . 'x' . \D . $value . \D . 'about.page')) {
+                        if (\is_file($file = \LOT . \D . $key . \D . $value . \D . 'about.page')) {
                             $page = new \Page($file);
-                            // Skip extension(s) that does not have version change
+                            // Skip extension(s) and layout(s) that does not have version change
                             if ($version === $page->version) {
+                                $zip_core->addEmptyDir(\substr($prefix, 0, -1));
+                                $zip_core->addFromString($prefix . '.keep', "");
                                 continue;
                             }
                         }
-                        if (0 === \strpos($k, 'y.') && \is_file($file = \LOT . \D . 'y' . \D . $value . \D . 'about.page')) {
-                            $page = new \Page($file);
-                            // Skip layout(s) that does not have version change
-                            if ($version === $page->version) {
-                                continue;
-                            }
-                        }
-                        if (null !== ($blob = \fetch('https://mecha-cms.com/git-dev/zip/' . \dirname($path) . '/' . $k . \To::query($query)))) {
+                        if (null !== ($blob = \fetch('https://mecha-cms.com/' . (\defined("\\TEST") && \TEST ? 'git-dev' : 'git') . '/zip/' . \dirname($path) . '/' . $k . \To::query($query)))) {
                             if (\file_put_contents($file = $folder . \D . $k . ($version ? '@v' . $version : "") . '.zip', $blob)) {
                                 // Merge other extension(s) and layout(s) ZIP file(s) to the core ZIP file
                                 $zip = new \ZipArchive;
@@ -87,7 +86,8 @@ function pull($_) {
                 }
                 $zip_core->close();
             }
-        }
+        // Extension and layout update
+        } else if ($key && \file_put_contents($file = $folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob)) {}
     }
     return $_;
 }

@@ -24,6 +24,7 @@ function fuse ($_) {
         ]),
         'task' => 'get'
     ];
+    // Core update
     if ("" === $key && 'mecha' === $value) {
         $folder = \PATH;
         $version = $_['query']['version'] ?? "";
@@ -134,7 +135,13 @@ function fuse ($_) {
             }
             // Skip file(s) and folder(s) in `.\lot` folder
             if (0 === \strpos($k, 'lot/')) {
-                continue; // TODO: Override core extension(s) and layout(s) anyway
+                if (0 === \strpos($k, 'lot/x/') || 0 === \strpos($k, 'lot/y/')) {
+                    if ('.keep' === \basename($k)) {
+                        continue;
+                    }
+                    // TODO: Override core extension(s) and layout(s) anyway
+                }
+                continue;
             }
             if (!isset($files_next[$k])) {
                 0 === $v ? \rmdir($f) : \unlink($f);
@@ -176,6 +183,7 @@ function fuse ($_) {
         \unlink($file);
         return $_;
     }
+    // Extension and layout update
     $folder = \LOT . \D . $key . \D . $value;
     $version = $_['query']['version'] ?? "";
     // Create a restore point from the currently installed version!

@@ -42,7 +42,7 @@ Hook::set('_', function ($_) use ($state, $url) {
         $page = new Page($file);
         $content = $page->content;
         // Make URL example(s) in content become usable
-        $content = strtr($content, [
+        $content = strtr($content ?? "", [
             '://127.0.0.1/panel/' => ':' . explode(':', $_['base'], 2)[1] . '/',
             '://127.0.0.1' => ':' . explode(':', $url . "", 2)[1]
         ]);

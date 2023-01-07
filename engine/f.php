@@ -112,7 +112,7 @@ function _git_sync() {
         $versions = [];
         // Sync version(s) data
         if (false === \choke($sync, 'git/versions/mecha-cms.php')) {
-            foreach (\explode("\n", \fetch('https://mecha-cms.com/git-dev/versions/mecha-cms') ?? "") as $v) {
+            foreach (\explode("\n", \fetch('https://mecha-cms.com/' . (\defined("\\TEST") && \TEST ? 'git-dev' : 'git') . '/versions/mecha-cms') ?? "") as $v) {
                 $v = \explode(' ', $v);
                 $versions[$v[1] ?? ""] = $v[0];
             }
