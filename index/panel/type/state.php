@@ -18,15 +18,23 @@ $fields = [];
 if (is_file($file ?? P)) {
     $i = 10;
     foreach ((array) require x\panel\_cache_let($file) as $k => $v) {
-        // Pre-defined field type
+        // Field type auto-detection
         $field = [
+            'name' => 'state[' . $k . ']',
             'stack' => $i,
             'type' => 'text',
             'value' => is_array($v) ? json_encode($v) : s($v),
             'width' => true
         ];
-        if (false === $v || true === $v) {
-            $field['type'] = 'toggle';
+        if (null === $v) {
+            $field['hint'] = 'NULL';
+            unset($field['value']);
+        } else if (false === $v || true === $v) {
+            $field['type'] = 'item';
+            $field['lot'] = [
+                'false' => 'No',
+                'true' => 'Yes'
+            ];
             unset($field['width']);
         } else if (is_float($v) || is_int($v)) {
             $field['type'] = 'number';
@@ -35,7 +43,7 @@ if (is_file($file ?? P)) {
         } else if (is_string($v)) {
             $count = strlen($v);
             // `#ffffff`
-            if ((4 === $count || 7 === $count) && '#' === $v[0] && ctype_xdigit(substr($v, 1))) {
+            if ((4 === $count || 7 === $count) && '#' === $v[0] && (function_exists('ctype_xdigit') && ctype_xdigit(substr($v, 1)) || preg_match('/^#[a-f\d]+$/i', $v))) {
                 $field['type'] = 'color';
                 unset($field['width']);
             // `00:00` or `00:00:00`
@@ -49,6 +57,10 @@ if (is_file($file ?? P)) {
             // `0000-00-00 00:00:00`
             } else if ($count >= 19 && is_numeric($v[0]) && preg_match('/^[1-9]\d{3,}-(0\d|1[0-2])-(0\d|[1-2]\d|3[0-1])[ ]([0-1]\d|2[0-4])(:([0-5]\d|60)){2}$/', $v)) {
                 $field['type'] = 'date-time';
+                unset($field['width']);
+            // `1.0.0` <https://semver.org#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
+            } else if ($count >= 5 && preg_match('/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/', $v)) {
+                $field['type'] = 'version';
                 unset($field['width']);
             }
         }
@@ -151,7 +163,10 @@ $desk = [
                 ]
             ],
             'values' => [
-                'file' => ['seal' => '0600'],
+                'file' => [
+                    'name' => is_file($file) ? basename($file) : null,
+                    'seal' => '0600'
+                ],
                 'kick' => $_GET['kick'] ?? null,
                 'token' => $_['token'],
                 'trash' => $trash,

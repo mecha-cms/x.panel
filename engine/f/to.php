@@ -80,16 +80,16 @@ function field($value, $key, $type = 'textarea') {
     return $value;
 }
 
-function gist($value) {
+function unit($value) {
     // Maybe an `Anemone`
     if ($value instanceof \Traversable) {
         $value = \iterator_to_array($value);
     }
-    // Maybe a gist string
+    // Maybe a unit string
     if (!\is_array($value) || !\array_is_list($value)) {
         $value = [$value];
     }
-    return \x\panel\type\gist($value, 0);
+    return \x\panel\type\unit($value, 0);
 }
 
 function icon($value) {

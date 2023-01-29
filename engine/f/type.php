@@ -206,13 +206,13 @@ function field($value, $key) {
             ]
         ];
     }
-    $gist = \x\panel\to\gist($value['gist'] = (array) ($value['gist'] ?? [null, null]));
-    $icon = \x\panel\to\icon($value['icon'] = (array) ($value['icon'] ?? [null, null]));
-    foreach ($gist as $k => $v) {
+    $icon = \x\panel\to\icon($value['icon'] = (array) ($value['icon'] ?? [null, null])); // Default as prefix
+    $unit = \x\panel\to\unit($value['unit'] = isset($value['unit']) && \is_string($value['unit']) ? [null, $value['unit']] : ((array) ($value['unit'] ?? [null, null]))); // Default as suffix
+    foreach ($unit as $k => $v) {
         if (\is_string($v) && "" !== $v) {
-            $gist[$k] = new \HTML(['span', $v, ['class' => 'fix']]);
+            $unit[$k] = new \HTML(['span', $v, ['class' => 'fix']]);
         } else if ($v instanceof \HTML) {
-            $gist[$k][2] = \x\panel\_tag_set($v[2], ['tags' => ['fix' => true]]);
+            $unit[$k][2] = \x\panel\_tag_set($v[2], ['tags' => ['fix' => true]]);
         }
     }
     foreach ($icon as $k => $v) {
@@ -273,9 +273,9 @@ function field($value, $key) {
         $value[1]['field'][1][] = [
             0 => 'div',
             1 => [
-                '(' => $icon[0] ?? $gist[0] ?? "",
+                '(' => $icon[0] ?? $unit[0] ?? "",
                 'content' => $content,
-                ')' => $icon[1] ?? $gist[1] ?? ""
+                ')' => $icon[1] ?? $unit[1] ?? ""
             ],
             2 => [
                 'class' => \implode(' ', \array_keys(\array_filter([
@@ -296,9 +296,9 @@ function field($value, $key) {
         $value[1]['field'][1][] = [
             0 => 'div',
             1 => [
-                '(' => $icon[0] ?? $gist[0] ?? "",
+                '(' => $icon[0] ?? $unit[0] ?? "",
                 'content' => $content,
-                ')' => $icon[1] ?? $gist[1] ?? ""
+                ')' => $icon[1] ?? $unit[1] ?? ""
             ],
             2 => [
                 'class' => 'content count:' . ("" === $content ? '0' : '1')
@@ -607,54 +607,6 @@ function form($value, $key) {
     $value[2] = \x\panel\_decor_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     return new \HTML($value);
-}
-
-function gist($value, $key) {
-    $gists = [null, null];
-    // Maybe a `HTML`
-    if (isset($value['content'])) {
-        $gists[0] = \x\panel\to\content($value['content']);
-    // Maybe an `Anemone`
-    } else if (isset($value['lot'])) {
-        $v = \x\panel\to\lot($value['lot']);
-        $gists[0] = $v[0] ?? null;
-        $gists[1] = $v[1] ?? null;
-    } else {
-        // Must be an array or string, force it to array!
-        if (!\is_array($value) || !\array_is_list($value)) {
-            $value = [$value];
-        }
-        $gists = \array_replace($gists, $value);
-    }
-    foreach ($gists as $k => $v) {
-        if (!$v) {
-            continue;
-        }
-        if (\is_array($v)) {
-            $attr = \array_replace($attr, $v[2] ?? []);
-            $attr = \x\panel\_decor_set($attr, $v);
-            $attr = \x\panel\_tag_set($attr, $v);
-            $content = \x\panel\to\content($v[1] ?? $v['content'] ?? null);
-            $description = \x\panel\to\description($v['description'] ?? "");
-            $target = $v['target'] ?? null;
-            $text = \x\panel\to\text($v['text'] ?? "");
-            $title = \x\panel\to\title($v['title'] ?? "");
-            $v = new \HTML(['span', $content ?? $title ?? $text, ['title' => $description]]);
-            if (isset($v['link'])) {
-                $link = \is_array($v['link']) ? \x\panel\to\link($v['link']) : $v['link'];
-                $v['href'] = $link;
-                $v['target'] = $target ?? '_blank';
-                $v[0] = 'a';
-            } else if (isset($v['url'])) {
-                $url = \is_array($v['url']) ? \x\panel\to\link($v['url']) : $v['url'];
-                $v['href'] = $url;
-                $v['target'] = $target ?? '_blank';
-                $v[0] = 'a';
-            }
-        }
-        $gists[$k] = $v;
-    }
-    return new \Anemone($gists, "");
 }
 
 function icon($value, $key) {
@@ -1622,6 +1574,54 @@ function title($value, $key) {
     $value[2] = \x\panel\_decor_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     return new \HTML($value);
+}
+
+function unit($value, $key) {
+    $units = [null, null];
+    // Maybe a `HTML`
+    if (isset($value['content'])) {
+        $units[0] = \x\panel\to\content($value['content']);
+    // Maybe an `Anemone`
+    } else if (isset($value['lot'])) {
+        $v = \x\panel\to\lot($value['lot']);
+        $units[0] = $v[0] ?? null;
+        $units[1] = $v[1] ?? null;
+    } else {
+        // Must be an array or string, force it to array!
+        if (!\is_array($value) || !\array_is_list($value)) {
+            $value = [null, $value];
+        }
+        $units = \array_replace($units, $value);
+    }
+    foreach ($units as $k => $v) {
+        if (!$v) {
+            continue;
+        }
+        if (\is_array($v)) {
+            $attr = \array_replace($attr, $v[2] ?? []);
+            $attr = \x\panel\_decor_set($attr, $v);
+            $attr = \x\panel\_tag_set($attr, $v);
+            $content = \x\panel\to\content($v[1] ?? $v['content'] ?? null);
+            $description = \x\panel\to\description($v['description'] ?? "");
+            $target = $v['target'] ?? null;
+            $text = \x\panel\to\text($v['text'] ?? "");
+            $title = \x\panel\to\title($v['title'] ?? "");
+            $v = new \HTML(['span', $content ?? $title ?? $text, ['title' => $description]]);
+            if (isset($v['link'])) {
+                $link = \is_array($v['link']) ? \x\panel\to\link($v['link']) : $v['link'];
+                $v['href'] = $link;
+                $v['target'] = $target ?? '_blank';
+                $v[0] = 'a';
+            } else if (isset($v['url'])) {
+                $url = \is_array($v['url']) ? \x\panel\to\link($v['url']) : $v['url'];
+                $v['href'] = $url;
+                $v['target'] = $target ?? '_blank';
+                $v[0] = 'a';
+            }
+        }
+        $units[$k] = $v;
+    }
+    return new \Anemone($units, "");
 }
 
 require __DIR__ . \D . 'type' . \D . 'button.php';

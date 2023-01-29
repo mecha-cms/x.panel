@@ -318,15 +318,21 @@ function state($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
+    $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : \dirname($_['file']);
     if (\is_file($file = $folder . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
+        foreach ($_POST['state'] as &$v) {
+            if (\Is::JSON($v)) {
+                $v = \json_decode($v, true);
+            }
+        }
+        unset($v);
         $_POST['file']['content'] = '<?php return' . \z((array) \drop($_POST['state'] ?? [])) . ';';
-        $_['file'] = \stream_resolve_include_path($file); // For hook(s)
+        $_['file'] = \stream_resolve_include_path($file) ?: null; // For hook(s)
         $_ = file($_); // Move to `file`
     }
     $_['kick'] = $_POST['kick'] ?? [
         'hash' => $_POST['hash'] ?? null,
-        'part' => 1,
+        'part' => $_['file'] ? 0 : 1,
         'query' => \x\panel\_query_set($_POST['query'] ?? []),
         'task' => 'get'
     ];

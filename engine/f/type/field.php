@@ -541,6 +541,6 @@ function version($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : '1.0.0');
     $value['max'] = $value['max'] ?? 255;
     $value['min'] = 1;
-    $value['pattern'] = $value['pattern'] ?? "^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"; // <https://semver.org#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
+    $value['pattern'] = $value['pattern'] ?? "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"; // <https://semver.org#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
     return \x\panel\type\field\text($value, $key);
 }
