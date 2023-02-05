@@ -257,7 +257,7 @@ function folder($_) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
-    $name = (string) \To::folder($_POST['folder']['name'] ?? "", '.@_~');
+    $name = \trim(\strtr((string) \To::folder($_POST['folder']['name'] ?? "", '.@_~'), '/', \D), \D);
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
     } else if (\stream_resolve_include_path($self = $folder . \D . $name)) {

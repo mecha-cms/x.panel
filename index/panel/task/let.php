@@ -111,7 +111,8 @@ function folder($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    if (\is_dir($folder = $_['folder'])) {
+    $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
+    if (\is_dir($folder)) {
         $trash = !empty($_POST['trash']) ? (new \Time($_POST['trash']))->name : false;
         foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($folder, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST) as $k) {
             $v = $k->getPathname();

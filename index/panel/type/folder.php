@@ -70,9 +70,10 @@ $desk = [
                                                     'focus' => true,
                                                     'name' => 'folder[name]',
                                                     'stack' => 10,
-                                                    'type' => 'route',
+                                                    'type' => 'set' === $_['task'] ? 'path' : 'name',
                                                     'value' => $name,
-                                                    'width' => true
+                                                    'width' => true,
+                                                    'x' => 'get' === $_['task'] ? false : null
                                                 ],
                                                 'options' => [
                                                     'flex' => false,
