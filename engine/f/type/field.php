@@ -444,6 +444,14 @@ function range($value, $key) {
     return \x\panel\type\field($out, $key);
 }
 
+function route($value, $key) {
+    $keep = (string) ($value['keep'] ?? "");
+    $v = (string) ($value['value'] ?? "");
+    $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : '/foo/bar/baz');
+    $value['pattern'] = $value['pattern'] ?? "^(\\/[._]?[a-z\\d" . \x($keep) . "]+([-_][a-z\\d" . \x($keep) . "]+)*)+$";
+    return \x\panel\type\field\text($value, $key);
+}
+
 function set($value, $key) {
     $content = (string) ($value['content'] ?? "");
     $description = (string) \x\panel\to\description($value['description'] ?? "");

@@ -197,18 +197,16 @@ if (false === strpos($_['path'], '/')) {
                                                         'description' => 'Set custom panel base path.',
                                                         'hint' => $state_panel['route'] ?? null,
                                                         'name' => 'state[x][panel][route]',
-                                                        'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
                                                         'stack' => 10,
-                                                        'type' => 'text',
+                                                        'type' => 'route',
                                                         'value' => $state_r['x']['panel']['route'] ?? null
                                                     ],
                                                     'user' => [
                                                         'description' => 'Set custom user log-in path.',
                                                         'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
                                                         'name' => 'state[x][user][guard][route]',
-                                                        'pattern' => "^/([a-z\\d]+)(-[a-z\\d]+)*$",
                                                         'stack' => 20,
-                                                        'type' => 'text',
+                                                        'type' => 'route',
                                                         'value' => $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? null
                                                     ],
                                                     'kick' => [

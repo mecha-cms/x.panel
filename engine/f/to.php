@@ -71,7 +71,7 @@ function elapse($date, $all = false) {
 }
 
 function field($value, $key, $type = 'textarea') {
-    $value['id'] = $value['id'] ?? \substr(\uniqid(), 6);
+    $value['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     $state = $value['state'] ?? [];
     unset($value['tags']);
     $content = \fire("\\x\\panel\\type\\" . $type, [$value, $key]);

@@ -36,14 +36,22 @@ if (is_file($file ?? P)) {
                 'true' => 'Yes'
             ];
             unset($field['width']);
+        } else if (is_array($v)) {
+            // TODO
         } else if (is_float($v) || is_int($v)) {
             $field['type'] = 'number';
             $field['step'] = is_float($v) ? '0.1' : '1';
             unset($field['width']);
         } else if (is_string($v)) {
             $count = strlen($v);
+            // `http://example.com`
+            if (0 === strpos($v, 'http://') || 0 === strpos($v, 'https://')) {
+                $field['type'] = 'link';
+            // `/foo/bar/baz`
+            } else if (0 === strpos($v, '/') && preg_match('/^(\/[._]?[a-z\d]+(-[a-z\d]+)*)+$/', $v)) {
+                $field['type'] = 'route';
             // `#ffffff`
-            if ((4 === $count || 7 === $count) && '#' === $v[0] && (function_exists('ctype_xdigit') && ctype_xdigit(substr($v, 1)) || preg_match('/^#[a-f\d]+$/i', $v))) {
+            } else if ((4 === $count || 7 === $count) && '#' === $v[0] && (function_exists('ctype_xdigit') && ctype_xdigit(substr($v, 1)) || preg_match('/^#[a-f\d]+$/i', $v))) {
                 $field['type'] = 'color';
                 unset($field['width']);
             // `00:00` or `00:00:00`
@@ -164,7 +172,7 @@ $desk = [
             ],
             'values' => [
                 'file' => [
-                    'name' => is_file($file) ? basename($file) : null,
+                    'name' => $file && is_file($file) ? basename($file) : null,
                     'seal' => '0600'
                 ],
                 'kick' => $_GET['kick'] ?? null,

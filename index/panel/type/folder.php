@@ -70,7 +70,7 @@ $desk = [
                                                     'focus' => true,
                                                     'name' => 'folder[name]',
                                                     'stack' => 10,
-                                                    'type' => 'path',
+                                                    'type' => 'route',
                                                     'value' => $name,
                                                     'width' => true
                                                 ],
