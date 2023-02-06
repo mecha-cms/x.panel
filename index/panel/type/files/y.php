@@ -47,7 +47,7 @@ Hook::set('_', function ($_) use ($state, $url) {
             '://127.0.0.1' => ':' . explode(':', $url . "", 2)[1]
         ]);
         $image = $use = "";
-        if (isset($page->images)) {
+        if (!empty($page->images)) {
             $image .= '<figure class="siema">';
             foreach ($page->images as $v) {
                 $image .= '<div>';
