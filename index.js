@@ -4953,16 +4953,19 @@
                 if (!hasClass(parent, 'has:link')) {
                     stacks.forEach(function (stack) {
                         if (stack !== parent) {
+                            letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
                             letClass(stack, 'is:current');
-                            letClass(getElement('a[target^="stack:"]', stack), 'is:current');
+                            setAttribute(current, 'aria-expanded', 'false');
                         }
                     });
                     if (hasClass(parent, 'can:toggle')) {
-                        toggleClass(t, 'is:current');
+                        setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
                         toggleClass(parent, 'is:current');
+                        toggleClass(t, 'is:current');
                     } else {
-                        setClass(t, 'is:current');
+                        setAttribute(t, 'aria-expanded', 'true');
                         setClass(parent, 'is:current');
+                        setClass(t, 'is:current');
                     }
                     current = hasClass(t, 'is:current');
                     input.value = value = current ? getDatum(parent, 'value') : null;

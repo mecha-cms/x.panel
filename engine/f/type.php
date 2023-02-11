@@ -1243,13 +1243,12 @@ function separator($value, $key) {
     return new \HTML($value);
 }
 
-// TODO: Implement WAI-ARIA to `stack` and `stacks` type.
-
 function stack($value, $key) {
     $tags = \array_replace([
         'lot' => true,
         'lot:stack' => true
     ], $value['tags'] ?? []);
+    $id = \substr(\uniqid(), 6);
     $can_toggle = !empty($value['toggle']);
     $is_active = !isset($value['active']) || $value['active'];
     $is_current = !empty($value['current']);
@@ -1262,7 +1261,12 @@ function stack($value, $key) {
     $value[2]['data-value'] = $value[2]['data-value'] ?? $value['value'] ?? $key;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? ($is_current ? 0 : -1);
     $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
-        '2' => ['tabindex' => -1],
+        '2' => [
+            'aria-controls' => 'c:' . $id,
+            'aria-expanded' => $is_current ? 'true' : 'false',
+            'id' => 's:' . $id,
+            'tabindex' => -1
+        ],
         'description' => $value['description'] ?? null,
         'icon' => $value['icon'] ?? [],
         'link' => $value['link'] ?? null,
@@ -1278,14 +1282,20 @@ function stack($value, $key) {
     ], $key), $key) . '</h3>';
     $count = 1;
     if (isset($value['content'])) {
-        $value[1] .= '<div class="content">';
-        $value[1] .= \x\panel\to\content($value['content']);
-        $value[1] .= '</div>';
+        $value[1] .= new \HTML(['div', \x\panel\to\content($value['content']), [
+            'aria-labelledby' => 's:' . $id,
+            'class' => 'content',
+            'id' => 'c:' . $id,
+            'role' => 'region'
+        ]]);
         $tags['count:' . ($count = 2)] = $tags['count:' . $count] ?? true;
     } else if (isset($value['lot'])) {
-        $value[1] .= '<div class="lot">';
-        $value[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
-        $value[1] .= '</div>';
+        $value[1] .= new \HTML(['div', \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true), [
+            'aria-labelledby' => 's:' . $id,
+            'class' => 'lot',
+            'id' => 'c:' . $id,
+            'role' => 'region'
+        ]]);
         $tags['count:' . $count] = $tags['count:' . $count] ?? true;
     }
     $value[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
