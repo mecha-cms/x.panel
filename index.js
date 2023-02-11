@@ -4255,6 +4255,7 @@
                 letClass(getParent(t), 'is:active');
                 letClass(parent, 'is:enter');
                 letClass(t, 'is:active');
+                setAttribute(getPrev(parent), 'aria-expanded', 'false');
                 if ('Tab' !== key) {
                     fireFocus$5(getPrev(parent));
                 } // Focus to the self menu
@@ -4265,6 +4266,7 @@
         } else if ('ArrowRight' === key) {
             next = getNext(t);
             if (next && hasClass(next, 'lot:menu')) {
+                setAttribute(t, 'aria-expanded', 'true');
                 setClass(getParent(t), 'is:active');
                 setClass(next, 'is:enter');
                 setClass(t, 'is:active');
@@ -4286,6 +4288,7 @@
                         if (current = getPrev(current)) {
                             letClass(current, 'is:active');
                             letClass(getParent(current), 'is:active');
+                            setAttribute(current, 'aria-expanded', 'false');
                             W.setTimeout(function () {
                                 fireFocus$5(current);
                             }, 1);
@@ -4358,6 +4361,7 @@
                     stop = true;
                 } // Apply only to the first level drop-down menu
             } else if ('ArrowDown' === key && hasClass(next, 'level:1')) {
+                setAttribute(t, 'aria-expanded', 'true');
                 setClass(getParent(t), 'is:active');
                 setClass(next, 'is:enter');
                 setClass(t, 'is:active');

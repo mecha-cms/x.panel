@@ -1336,6 +1336,7 @@ pre.is\:text code {
 }
 .option-picker__options .option-picker__option-group .option-picker__option {
   margin: 0 calc(var(--x) / -2);
+  padding-left: var(--x);
 }
 .option-picker__source + .option-picker {
   margin-left: 0 !important;
@@ -1814,6 +1815,11 @@ textarea.is\:host[required]:focus:invalid {
   border-color: var(--stroke-input--invalid, var(--stroke-input));
   box-shadow: var(--shadow-input--invalid, var(--shadow-input));
   color: var(--color-input--invalid, var(--color-input));
+}
+
+textarea.is\:host.has\:width {
+  display: flex;
+  width: 100%;
 }
 
 .is\:host[type=color] {

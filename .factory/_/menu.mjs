@@ -123,6 +123,7 @@ function onKeyDownMenu(e) {
             letClass(getParent(t), 'is:active');
             letClass(parent, 'is:enter');
             letClass(t, 'is:active');
+            setAttribute(getPrev(parent), 'aria-expanded', 'false');
             if ('Tab' !== key) {
                 fireFocus(getPrev(parent));
             }
@@ -134,6 +135,7 @@ function onKeyDownMenu(e) {
     } else if ('ArrowRight' === key) {
         next = getNext(t);
         if (next && hasClass(next, 'lot:menu')) {
+            setAttribute(t, 'aria-expanded', 'true');
             setClass(getParent(t), 'is:active');
             setClass(next, 'is:enter');
             setClass(t, 'is:active');
@@ -155,6 +157,7 @@ function onKeyDownMenu(e) {
                     if (current = getPrev(current)) {
                         letClass(current, 'is:active');
                         letClass(getParent(current), 'is:active');
+                        setAttribute(current, 'aria-expanded', 'false');
                         W.setTimeout(() => {
                             fireFocus(current);
                         }, 1);
@@ -227,6 +230,7 @@ function onKeyDownMenuToggle(e) {
             }
         // Apply only to the first level drop-down menu
         } else if ('ArrowDown' === key && hasClass(next, 'level:1')) {
+            setAttribute(t, 'aria-expanded', 'true');
             setClass(getParent(t), 'is:active');
             setClass(next, 'is:enter');
             setClass(t, 'is:active');

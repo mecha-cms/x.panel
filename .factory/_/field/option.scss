@@ -27,6 +27,7 @@ $name: option-picker;
         padding: 0 calc(var(--x) / 2);
         .#{$name}__option {
           margin: 0 calc(var(--x) / -2);
+          padding-left: var(--x);
         }
       }
     }

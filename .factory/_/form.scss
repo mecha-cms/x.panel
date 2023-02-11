@@ -127,6 +127,13 @@ textarea.is\:host {
   }
 }
 
+textarea.is\:host {
+  &.has\:width {
+    display: flex;
+    width: 100%;
+  }
+}
+
 .is\:host {
   &[type='color'] {
     height: calc(var(--y) * 1.5);
