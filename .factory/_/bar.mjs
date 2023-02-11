@@ -23,7 +23,7 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>[tabindex]:not(.not\\:active)';
+const targets = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
@@ -68,7 +68,6 @@ function onKeyDownBar(e) {
 }
 
 function onKeyDownBarItem(e) {
-    // TODO: Prevent conflict with `link.js.mjs` key binding.
     if (e.defaultPrevented) {
         return;
     }

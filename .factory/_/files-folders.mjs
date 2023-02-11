@@ -23,25 +23,25 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
+const targets = ':scope>:where(.lot\\:file[tabindex],.lot\\:folder[tabindex]):not([tabindex="-1"]):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange(init) {
-    let sources = getElements('.lot\\:pages[tabindex]');
+    let sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        let pages = getElements(targets, source);
-        pages.forEach(page => {
-            onEvent('keydown', page, onKeyDownPage);
+        let files = getElements(targets, source);
+        files.forEach(file => {
+            onEvent('keydown', file, onKeyDownFile);
         });
-        onEvent('keydown', source, onKeyDownPages);
+        onEvent('keydown', source, onKeyDownFiles);
     });
     1 === init && W._.on('change', onChange);
 }
 
-function onKeyDownPage(e) {
+function onKeyDownFile(e) {
     if (e.defaultPrevented) {
         return;
     }
@@ -76,7 +76,7 @@ function onKeyDownPage(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-function onKeyDownPages(e) {
+function onKeyDownFiles(e) {
     if (e.defaultPrevented) {
         return;
     }
@@ -84,12 +84,12 @@ function onKeyDownPages(e) {
         key = e.key,
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
-        keyIsShift = e.shiftKey,
-        any, stop;
+        keyIsShift = e.shiftKey, stop;
     if (t !== e.target) {
         return;
     }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+        let any, current;
         if ('ArrowDown' === key || 'Home' === key) {
             fireFocus(getElement(targets, t));
             stop = true;

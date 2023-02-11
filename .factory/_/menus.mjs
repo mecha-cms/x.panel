@@ -25,25 +25,25 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>ul>li>a[href]:not(.not\\:active)';
+const targets = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
 function onChange(init) {
-    let sources = getElements('.lot\\:links[tabindex]');
+    let sources = getElements('.lot\\:menus[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        let links = getElements(targets, source);
-        links && toCount(links) && links.forEach(link => {
-            onEvent('keydown', link, onKeyDownLink);
+        let menus = getElements(targets, source);
+        menus && toCount(menus) && menus.forEach(menu => {
+            onEvent('keydown', menu, onKeyDownMenu);
         });
-        onEvent('keydown', source, onKeyDownLinks);
+        onEvent('keydown', source, onKeyDownMenus);
     });
     1 === init && W._.on('change', onChange);
 }
 
-function onKeyDownLink(e) {
+function onKeyDownMenu(e) {
     if (e.defaultPrevented) {
         return;
     }
@@ -71,13 +71,13 @@ function onKeyDownLink(e) {
             fireFocus(next && getChildFirst(next));
             stop = true;
         } else if ('End' === key) {
-            if (parent = getParent(t, '.lot\\:links[tabindex]')) {
+            if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
                 any = [].slice.call(getElements(targets, parent));
                 fireFocus(any.pop());
             }
             stop = true;
         } else if ('Home' === key) {
-            if (parent = getParent(t, '.lot\\:links[tabindex]')) {
+            if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
                 fireFocus(getElement(targets, parent));
             }
             stop = true;
@@ -86,7 +86,7 @@ function onKeyDownLink(e) {
     stop && (offEventDefault(e), offEventPropagation(e));
 }
 
-function onKeyDownLinks(e) {
+function onKeyDownMenus(e) {
     if (e.defaultPrevented) {
         return;
     }

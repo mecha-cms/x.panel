@@ -499,22 +499,22 @@
             return onEvent(name, node, then, options);
         });
     };
-    var targets$7 = ':scope>[tabindex]:not(.not\\:active)';
+    var targets$8 = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not\\:active)';
 
-    function fireFocus$7(node) {
+    function fireFocus$8(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$b(init) {
+    function onChange$c(init) {
         var sources = getElements('.lot\\:bar[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
-            var items = getElements(targets$7, source);
+            var items = getElements(targets$8, source);
             items.forEach(function (item) {
                 onEvent('keydown', item, onKeyDownBarItem);
             });
             onEvent('keydown', source, onKeyDownBar);
         });
-        1 === init && W._.on('change', onChange$b);
+        1 === init && W._.on('change', onChange$c);
     }
 
     function onKeyDownBar(e) {
@@ -533,11 +533,11 @@
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             var any;
             if ('ArrowLeft' === key || 'End' === key) {
-                any = [].slice.call(getElements(targets$7, t));
-                fireFocus$7(any.pop());
+                any = [].slice.call(getElements(targets$8, t));
+                fireFocus$8(any.pop());
                 stop = true;
             } else if ('ArrowRight' === key || 'Home' === key) {
-                fireFocus$7(getElement(targets$7, t));
+                fireFocus$8(getElement(targets$8, t));
                 stop = true;
             }
         }
@@ -545,7 +545,6 @@
     }
 
     function onKeyDownBarItem(e) {
-        // TODO: Prevent conflict with `link.js.mjs` key binding.
         if (e.defaultPrevented) {
             return;
         }
@@ -567,17 +566,17 @@
             prev = getPrev(prev);
         }
         if ('ArrowLeft' === key) {
-            fireFocus$7(prev);
+            fireFocus$8(prev);
             stop = true;
         } else if ('ArrowRight' === key) {
-            fireFocus$7(next);
+            fireFocus$8(next);
             stop = true;
         } else if ('End' === key) {
-            any = [].slice.call(getElements(targets$7, getParent(t)));
-            fireFocus$7(any.pop());
+            any = [].slice.call(getElements(targets$8, getParent(t)));
+            fireFocus$8(any.pop());
             stop = true;
         } else if ('Home' === key) {
-            fireFocus$7(getElement(targets$7, getParent(t)));
+            fireFocus$8(getElement(targets$8, getParent(t)));
             stop = true;
         }
         stop && (offEventDefault(e), offEventPropagation(e));
@@ -1568,7 +1567,7 @@
     };
     OP.version = '1.3.10';
 
-    function onChange$a(init) {
+    function onChange$b(init) {
         // Destroy!
         var $;
         for (var key in OP.instances) {
@@ -1584,7 +1583,7 @@
             var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
         });
-        1 === init && W._.on('change', onChange$a);
+        1 === init && W._.on('change', onChange$b);
     }
     W.OP = OP;
     var esc = function esc(pattern, extra) {
@@ -2347,9 +2346,9 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.17';
+    TP.version = '3.4.16';
 
-    function onChange$9(init) {
+    function onChange$a(init) {
         // Destroy!
         var $;
         for (var key in TP.instances) {
@@ -2365,7 +2364,7 @@
             var $ = new TP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
         });
-        1 === init && W._.on('change', onChange$9);
+        1 === init && W._.on('change', onChange$a);
     }
     W.TP = TP;
     var name = 'TE';
@@ -3927,7 +3926,7 @@
         self.TE.record();
     }
 
-    function onChange$8(init) {
+    function onChange$9(init) {
         // Destroy!
         var $;
         for (var key in TE.instances) {
@@ -3972,7 +3971,7 @@
             _setEditorSource(source);
         });
         if (1 === init) {
-            W._.on('change', onChange$8);
+            W._.on('change', onChange$9);
             ['alert', 'confirm', 'prompt'].forEach(function (type) {
                 W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
             });
@@ -3980,27 +3979,27 @@
     }
     W.TE = TE;
 
-    function Field() {
+    function Fields() {
+        onChange$b(1);
         onChange$a(1);
         onChange$9(1);
-        onChange$8(1);
     }
-    var targets$6 = ':scope>.lot\\:file[tabindex]:not(.not\\:active),:scope>.lot\\:folder[tabindex]:not(.not\\:active)';
+    var targets$7 = ':scope>:where(.lot\\:file[tabindex],.lot\\:folder[tabindex]):not([tabindex="-1"]):not(.not\\:active)';
 
-    function fireFocus$6(node) {
+    function fireFocus$7(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$7(init) {
-        var sources = getElements('.lot\\:files[tabindex],.lot\\:folders[tabindex]');
+    function onChange$8(init) {
+        var sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
-            var files = getElements(targets$6, source);
+            var files = getElements(targets$7, source);
             files.forEach(function (file) {
                 onEvent('keydown', file, onKeyDownFile);
             });
             onEvent('keydown', source, onKeyDownFiles);
         });
-        1 === init && W._.on('change', onChange$7);
+        1 === init && W._.on('change', onChange$8);
     }
 
     function onKeyDownFile(e) {
@@ -4025,17 +4024,17 @@
             prev = getPrev(prev);
         }
         if ('ArrowDown' === key) {
-            fireFocus$6(next);
+            fireFocus$7(next);
             stop = true;
         } else if ('ArrowUp' === key) {
-            fireFocus$6(prev);
+            fireFocus$7(prev);
             stop = true;
         } else if ('End' === key) {
-            any = [].slice.call(getElements(targets$6, getParent(t)));
-            fireFocus$6(any.pop());
+            any = [].slice.call(getElements(targets$7, getParent(t)));
+            fireFocus$7(any.pop());
             stop = true;
         } else if ('Home' === key) {
-            fireFocus$6(getElement(targets$6, getParent(t)));
+            fireFocus$7(getElement(targets$7, getParent(t)));
             stop = true;
         }
         stop && (offEventDefault(e), offEventPropagation(e));
@@ -4057,32 +4056,32 @@
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             var any;
             if ('ArrowDown' === key || 'Home' === key) {
-                fireFocus$6(getElement(targets$6, t));
+                fireFocus$7(getElement(targets$7, t));
                 stop = true;
             } else if ('ArrowUp' === key || 'End' === key) {
-                any = [].slice.call(getElements(targets$6, t));
-                fireFocus$6(any.pop());
+                any = [].slice.call(getElements(targets$7, t));
+                fireFocus$7(any.pop());
                 stop = true;
             }
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$5 = ':scope>ul>li>a[href]:not(.not\\:active)';
+    var targets$6 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
 
-    function fireFocus$5(node) {
+    function fireFocus$6(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
-    function onChange$6(init) {
+    function onChange$7(init) {
         var sources = getElements('.lot\\:links[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
-            var links = getElements(targets$5, source);
+            var links = getElements(targets$6, source);
             links && toCount(links) && links.forEach(function (link) {
                 onEvent('keydown', link, onKeyDownLink);
             });
             onEvent('keydown', source, onKeyDownLinks);
         });
-        1 === init && W._.on('change', onChange$6);
+        1 === init && W._.on('change', onChange$7);
     }
 
     function onKeyDownLink(e) {
@@ -4111,20 +4110,20 @@
                 }
             }
             if ('ArrowLeft' === key) {
-                fireFocus$5(prev && getChildFirst(prev));
+                fireFocus$6(prev && getChildFirst(prev));
                 stop = true;
             } else if ('ArrowRight' === key) {
-                fireFocus$5(next && getChildFirst(next));
+                fireFocus$6(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
                 if (parent = getParent(t, '.lot\\:links[tabindex]')) {
-                    any = [].slice.call(getElements(targets$5, parent));
-                    fireFocus$5(any.pop());
+                    any = [].slice.call(getElements(targets$6, parent));
+                    fireFocus$6(any.pop());
                 }
                 stop = true;
             } else if ('Home' === key) {
                 if (parent = getParent(t, '.lot\\:links[tabindex]')) {
-                    fireFocus$5(getElement(targets$5, parent));
+                    fireFocus$6(getElement(targets$6, parent));
                 }
                 stop = true;
             }
@@ -4148,19 +4147,19 @@
         }
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             if ('ArrowRight' === key || 'Home' === key) {
-                fireFocus$5(getElement(targets$5, t));
+                fireFocus$6(getElement(targets$6, t));
                 stop = true;
             } else if ('ArrowLeft' === key || 'End' === key) {
-                any = [].slice.call(getElements(targets$5, t));
-                fireFocus$5(any.pop());
+                any = [].slice.call(getElements(targets$6, t));
+                fireFocus$6(any.pop());
                 stop = true;
             }
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$4 = 'a[href]:not(.not\\:active)';
+    var targets$5 = ':where(a,[tabindex]):not(.not\\:active)';
 
-    function fireFocus$4(node) {
+    function fireFocus$5(node) {
         node && isFunction(node.focus) && node.focus();
     }
 
@@ -4177,10 +4176,10 @@
         });
     }
 
-    function onChange$5(init) {
+    function onChange$6(init) {
         offEvent('click', D, onClickDocument);
         var menuParents = getElements('.has\\:menu'),
-            menuLinks = getElements('.lot\\:menu[tabindex] ' + targets$4);
+            menuLinks = getElements('.lot\\:menu[tabindex]>ul>li>' + targets$5);
         if (menuParents && toCount(menuParents)) {
             menuParents.forEach(function (menuParent) {
                 var menu = getElement('.lot\\:menu[tabindex]', menuParent),
@@ -4194,14 +4193,14 @@
         }
         if (menuLinks && toCount(menuLinks)) {
             menuLinks.forEach(function (menuLink) {
-                onEvent('keydown', menuLink, onKeyDownMenu);
+                onEvent('keydown', menuLink, onKeyDownMenu$1);
             });
         }
         var sources = getElements('.lot\\:menu[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
-            onEvent('keydown', source, onKeyDownMenus);
+            onEvent('keydown', source, onKeyDownMenus$1);
         });
-        1 === init && W._.on('change', onChange$5);
+        1 === init && W._.on('change', onChange$6);
     }
 
     function onClickDocument() {
@@ -4225,7 +4224,7 @@
         offEventPropagation(e);
     }
 
-    function onKeyDownMenu(e) {
+    function onKeyDownMenu$1(e) {
         if (e.defaultPrevented) {
             return;
         }
@@ -4248,7 +4247,7 @@
             }
         }
         if ('ArrowDown' === key) {
-            fireFocus$4(next && getChildFirst(next));
+            fireFocus$5(next && getChildFirst(next));
             stop = true;
         } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
             // Hide menu then focus to the parent menu link
@@ -4257,10 +4256,10 @@
                 letClass(parent, 'is:enter');
                 letClass(t, 'is:active');
                 if ('Tab' !== key) {
-                    fireFocus$4(getPrev(parent));
+                    fireFocus$5(getPrev(parent));
                 } // Focus to the self menu
             } else if ('Escape' === key) {
-                fireFocus$4(getParent(t, '.lot\\:menu[tabindex]'));
+                fireFocus$5(getParent(t, '.lot\\:menu[tabindex]'));
             }
             stop = 'Tab' !== key;
         } else if ('ArrowRight' === key) {
@@ -4271,39 +4270,46 @@
                 setClass(t, 'is:active');
                 W.setTimeout(function () {
                     // Focus to the first link of child menu
-                    fireFocus$4(getElement(targets$4, next));
+                    fireFocus$5(getElement(targets$5, next));
                 }, 1);
             }
             stop = true;
         } else if ('ArrowUp' === key) {
-            current = prev && getChildFirst(prev);
-            if (current) {
-                fireFocus$4(current);
+            if (current = prev && getChildFirst(prev)) {
+                fireFocus$5(current);
             } else {
                 if (current = getParent(t, '.lot\\:menu[tabindex].is\\:enter')) {
-                    // Hide menu then focus to the parent menu link
-                    if (current = getPrev(current)) {
-                        fireEvent('click', current), fireFocus$4(current);
+                    // Apply only to the first level drop-down menu
+                    if (hasClass(current, 'level:1')) {
+                        // Hide menu then focus to the parent menu link
+                        letClass(current, 'is:enter');
+                        if (current = getPrev(current)) {
+                            letClass(current, 'is:active');
+                            letClass(getParent(current), 'is:active');
+                            W.setTimeout(function () {
+                                fireFocus$5(current);
+                            }, 1);
+                        }
                     }
                 }
             }
             stop = true;
         } else if ('End' === key) {
             if (parent = getParent(t, '.lot\\:menu[tabindex]')) {
-                any = [].slice.call(getElements(targets$4, parent));
-                fireFocus$4(any.pop());
+                any = [].slice.call(getElements(targets$5, parent));
+                fireFocus$5(any.pop());
             }
             stop = true;
         } else if ('Home' === key) {
             if (parent = getParent(t, '.lot\\:menu[tabindex]')) {
-                fireFocus$4(getElement(targets$4, parent));
+                fireFocus$5(getElement(targets$5, parent));
             }
             stop = true;
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
 
-    function onKeyDownMenus(e) {
+    function onKeyDownMenus$1(e) {
         if (e.defaultPrevented) {
             return;
         }
@@ -4319,11 +4325,11 @@
         }
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             if ('ArrowDown' === key || 'Home' === key) {
-                fireFocus$4(getElement(targets$4, t));
+                fireFocus$5(getElement(targets$5, t));
                 stop = true;
             } else if ('ArrowUp' === key || 'End' === key) {
-                any = [].slice.call(getElements(targets$4, t));
-                fireFocus$4(any.pop());
+                any = [].slice.call(getElements(targets$5, t));
+                fireFocus$5(any.pop());
                 stop = true;
             }
         }
@@ -4345,22 +4351,117 @@
                     hasClass(next, 'is:enter') && fireEvent('click', t);
                 } else {
                     fireEvent('click', t);
+                    W.setTimeout(function () {
+                        // Focus to the first link of child menu
+                        fireFocus$5(getElement(targets$5, next));
+                    }, 1);
                     stop = true;
-                }
-            } else if ('ArrowDown' === key) {
-                if (!hasClass(next, 'is:enter')) {
-                    fireEvent('click', t);
-                }
+                } // Apply only to the first level drop-down menu
+            } else if ('ArrowDown' === key && hasClass(next, 'level:1')) {
+                setClass(getParent(t), 'is:active');
+                setClass(next, 'is:enter');
+                setClass(t, 'is:active');
                 W.setTimeout(function () {
                     // Focus to the first link of child menu
-                    fireFocus$4(getElement(targets$4, next));
+                    fireFocus$5(getElement(targets$5, next));
                 }, 1);
                 stop = true;
             }
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$3 = ':scope>.lot\\:page[tabindex]:not(.not\\:active)';
+    var targets$4 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
+
+    function fireFocus$4(node) {
+        node && isFunction(node.focus) && node.focus();
+    }
+
+    function onChange$5(init) {
+        var sources = getElements('.lot\\:menus[tabindex]');
+        sources && toCount(sources) && sources.forEach(function (source) {
+            var menus = getElements(targets$4, source);
+            menus && toCount(menus) && menus.forEach(function (menu) {
+                onEvent('keydown', menu, onKeyDownMenu);
+            });
+            onEvent('keydown', source, onKeyDownMenus);
+        });
+        1 === init && W._.on('change', onChange$5);
+    }
+
+    function onKeyDownMenu(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
+        var t = this,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            any,
+            parent,
+            next,
+            prev,
+            stop;
+        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            if (parent = getParent(t)) {
+                next = getNext(parent);
+                while (next && (hasClass(next, 'as:separator') || hasClass(next, 'not:active'))) {
+                    next = getNext(next);
+                }
+                prev = getPrev(parent);
+                while (prev && (hasClass(prev, 'as:separator') || hasClass(prev, 'not:active'))) {
+                    prev = getPrev(prev);
+                }
+            }
+            if ('ArrowLeft' === key) {
+                fireFocus$4(prev && getChildFirst(prev));
+                stop = true;
+            } else if ('ArrowRight' === key) {
+                fireFocus$4(next && getChildFirst(next));
+                stop = true;
+            } else if ('End' === key) {
+                if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
+                    any = [].slice.call(getElements(targets$4, parent));
+                    fireFocus$4(any.pop());
+                }
+                stop = true;
+            } else if ('Home' === key) {
+                if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
+                    fireFocus$4(getElement(targets$4, parent));
+                }
+                stop = true;
+            }
+        }
+        stop && (offEventDefault(e), offEventPropagation(e));
+    }
+
+    function onKeyDownMenus(e) {
+        if (e.defaultPrevented) {
+            return;
+        }
+        var t = this,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            any,
+            stop;
+        if (t !== e.target) {
+            return;
+        }
+        if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
+            if ('ArrowRight' === key || 'Home' === key) {
+                fireFocus$4(getElement(targets$4, t));
+                stop = true;
+            } else if ('ArrowLeft' === key || 'End' === key) {
+                any = [].slice.call(getElements(targets$4, t));
+                fireFocus$4(any.pop());
+                stop = true;
+            }
+        }
+        stop && (offEventDefault(e), offEventPropagation(e));
+    }
+    var targets$3 = ':scope>.lot\\:page[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
 
     function fireFocus$3(node) {
         node && isFunction(node.focus) && node.focus();
@@ -5218,7 +5319,7 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets = 'a[href]:not([tabindex="-1"]):not(.not\\:active),button:not(:disabled):not([tabindex="-1"]):not(.not\\:active),input:not(:disabled):not([tabindex="-1"]):not(.not\\:active),select:not(:disabled):not([tabindex="-1"]):not(.not\\:active),[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
+    var targets = ':scope>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
 
     function fireFocus(node) {
         node && isFunction(node.focus) && node.focus();
@@ -5443,9 +5544,10 @@
     onEvent('DOMContentLoaded', D, function () {
         return fire('set');
     });
-    onChange$b(1);
+    onChange$c(1);
     Dialog(1);
-    Field();
+    Fields();
+    onChange$8(1);
     onChange$7(1);
     onChange$6(1);
     onChange$5(1);

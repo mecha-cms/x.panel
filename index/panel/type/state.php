@@ -170,7 +170,7 @@ $desk = [
                     ]
                 ]
             ],
-            'values' => array_replace_recursive([
+            'values' => [
                 'file' => [
                     'name' => $file && is_file($file) ? basename($file) : null,
                     'seal' => '0600'
@@ -179,7 +179,7 @@ $desk = [
                 'token' => $_['token'],
                 'trash' => $trash,
                 'type' => $_['type']
-            ], $_['lot']['desk']['lot']['form']['values'] ?? [])
+            ]
         ]
     ]
 ];

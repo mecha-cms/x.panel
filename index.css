@@ -366,7 +366,6 @@
   border: 1px solid;
   border-color: var(--stroke-tag-picker);
   border-radius: var(--arc-tag-picker);
-  box-shadow: var(--shadow-tag-picker);
   color: var(--color-tag-picker);
   cursor: text;
   display: inline-flex;
@@ -624,6 +623,12 @@
   --color-menu-link--hover: #00f;
   --color-menu-link: #00f;
   --color-menu-status: #fff;
+  --color-menus-link--active: #009;
+  --color-menus-link--disabled: #66f;
+  --color-menus-link--focus: #00c;
+  --color-menus-link--hover: #00f;
+  --color-menus-link: #00f;
+  --color-menus-status: #fff;
   --color-output: #000;
   --color-stack--disabled: #666;
   --color-stack-link--active: #009;
@@ -653,12 +658,14 @@
   --fill-input: #fff;
   --fill-mark: #ff0;
   --fill-menu-status: #f00;
+  --fill-menus-status: #f00;
   --fill-output: none;
   --fill: #fff;
   --shadow-button--disabled: none;
   --shadow-dialog: 0 calc(var(--y) / 12) calc(var(--y) / 2) rgba(0, 0, 0, .5);
   --shadow-input--disabled: none;
   --shadow-menu: 0 calc(var(--y) / 12) calc(var(--y) / 4) rgba(0, 0, 0, .25);
+  --shadow-menus: none;
   --shadow-option-picker__options: 0 calc(var(--y) / 12) calc(var(--y) / 4) rgba(0, 0, 0, .25);
   --shadow-output: none;
   --stroke--focus-visible: rgba(0, 0, 255, .25);
@@ -2856,26 +2863,35 @@ label .is\:host[type=radio] + span {
   display: none;
 }
 
+.has\:menu {
+  position: relative;
+}
+.has\:menu .lot\:menu {
+  left: 0;
+  margin: 0;
+  top: 100%;
+}
+
 .lot\:menu {
-  background: var(--fill-menu, var(--fill));
+  background: var(--fill-menu, var(--fill-menus, var(--fill)));
   border-radius: var(--arc-menu);
+  box-shadow: var(--shadow-menu);
   color: var(--color-menu);
+  display: none;
   height: auto;
   line-height: var(--y);
+  margin: 0;
+  position: absolute;
   width: var(--width-menu);
+  z-index: 9998;
 }
 .lot\:menu .has\:menu {
   display: flex;
   position: relative;
 }
 .lot\:menu .has\:menu .lot\:menu {
-  box-shadow: var(--shadow-menu);
-  display: none;
   left: 100%;
-  margin: 0;
-  position: absolute;
   top: 0;
-  z-index: 9998;
 }
 .lot\:menu > ul,
 .lot\:menu > li {
@@ -2911,7 +2927,7 @@ label .is\:host[type=radio] + span {
   margin-right: calc(var(--x) / 4);
 }
 .lot\:menu > ul > li > a .title .icon.caret {
-  color: var(--color-bar-caret, inherit);
+  color: var(--color-menu-caret, inherit);
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
@@ -2971,12 +2987,28 @@ label .is\:host[type=radio] + span {
   display: block;
 }
 
-.has\:menu {
-  display: inline-flex;
+.lot\:menus {
+  background: var(--fill-menus, none);
+  border-radius: var(--arc-menus);
+  box-shadow: var(--shadow-menus);
+  color: var(--color-menus);
+  height: auto;
+  line-height: var(--y);
+}
+.lot\:menus > ul,
+.lot\:menus > li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lot\:menus > ul {
+  display: flex;
+}
+.lot\:menus > ul > .has\:menu {
+  display: flex;
   position: relative;
 }
-.has\:menu .lot\:menu {
-  box-shadow: var(--shadow-menu);
+.lot\:menus > ul > .has\:menu > .lot\:menu {
   display: none;
   left: 0;
   margin: 0;
@@ -2984,12 +3016,90 @@ label .is\:host[type=radio] + span {
   top: 100%;
   z-index: 9998;
 }
-.has\:menu .lot\:menu.is\:enter {
+.lot\:menus > ul > .has\:menu > .lot\:menu.is\:enter {
   display: block;
 }
-.has\:menu .lot\:menu .lot\:menu {
-  left: 100%;
-  top: 0;
+.lot\:menus > ul > li {
+  display: flex;
+  position: relative;
+}
+.lot\:menus > ul > li:hover > a {
+  background: var(--fill-menus-link--hover, var(--fill-menus-link));
+  color: var(--color-menus-link--hover, var(--color-menus-link));
+}
+.lot\:menus > ul > li > a {
+  background: var(--fill-menus-link, var(--fill-link, none));
+  color: var(--color-menus-link, var(--color-link));
+  display: flex;
+  flex: 1;
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+}
+.lot\:menus > ul > li > a .title {
+  flex: 1;
+}
+.lot\:menus > ul > li > a .title .icon:first-child {
+  margin-left: calc(var(--x) / -4);
+}
+.lot\:menus > ul > li > a .title .icon:last-child {
+  margin-right: calc(var(--x) / 4);
+}
+.lot\:menus > ul > li > a .title .icon.caret {
+  color: var(--color-menus-caret, inherit);
+  margin-left: calc(var(--x) / -4);
+  margin-right: calc(var(--x) / -4);
+}
+.lot\:menus > ul > li > a .title .status {
+  background: var(--fill-menus-status);
+  border-radius: var(--arc-menus-status);
+  box-shadow: var(--shadow-menus-status);
+  color: var(--color-menus-status);
+  float: right;
+  margin: 0 calc(var(--x) / -4) 0 0;
+  padding: 0 calc(var(--x) / 4);
+}
+.lot\:menus > ul > li > a:hover {
+  background: var(--fill-menus-link--hover, var(--fill-menus-link));
+  color: var(--color-menus-link--hover, var(--color-menus-link));
+}
+.lot\:menus > ul > li > a:focus {
+  background: var(--fill-menus-link--focus, var(--fill-menus-link));
+  color: var(--color-menus-link--focus, var(--color-menus-link));
+}
+.lot\:menus > ul > li > a:active {
+  background: var(--fill-menus-link--active, var(--fill-menus-link));
+  color: var(--color-menus-link--active, var(--color-menus-link));
+}
+.lot\:menus > ul > li > a:focus + ul {
+  display: block;
+}
+.lot\:menus > ul > li.as\:separator {
+  background: var(--stroke);
+  height: var(--y);
+  margin: calc(var(--y) / 4);
+  overflow: hidden;
+  width: 1px;
+}
+.lot\:menus > ul > li.as\:separator:first-child,
+.lot\:menus > ul > li.as\:separator:last-child {
+  display: none;
+}
+.lot\:menus > ul > li.is\:current > a {
+  background: var(--fill-menus-link--current, none);
+  color: var(--color-menus-link--current, inherit);
+}
+.lot\:menus > ul > li.not\:active > a {
+  background: var(--fill-menus-link--disabled, none);
+  color: var(--color-menus-link--disabled, inherit);
+}
+.lot\:menus > .description {
+  line-height: calc(var(--y) / 1.5);
+  margin: calc(var(--y) / -2) 0 0;
+  padding: calc(var(--y) / 2) calc(var(--x) / 2);
+}
+.lot\:menus > .title {
+  font-size: 100%;
+  line-height: inherit;
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 
 .lot\:page {
@@ -3596,7 +3706,8 @@ small,
 sub,
 sup,
 .lot\:field .description,
-.lot\:menu > .description {
+.lot\:menu > .description,
+.lot\:menus > .description {
   font-size: calc(var(--z) * 0.75);
 }
 

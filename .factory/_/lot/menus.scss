@@ -1,32 +1,10 @@
-.has\:menu {
-  position: relative;
-  .lot\:menu {
-    left: 0;
-    margin: 0;
-    top: 100%;
-  }
-}
-
-.lot\:menu {
-  background: var(--fill-menu, var(--fill-menus, var(--fill)));
-  border-radius: var(--arc-menu);
-  box-shadow: var(--shadow-menu);
-  color: var(--color-menu);
-  display: none;
+.lot\:menus {
+  background: var(--fill-menus, none);
+  border-radius: var(--arc-menus);
+  box-shadow: var(--shadow-menus);
+  color: var(--color-menus);
   height: auto;
   line-height: var(--y);
-  margin: 0;
-  position: absolute;
-  width: var(--width-menu);
-  z-index: 9998;
-  .has\:menu {
-    display: flex;
-    position: relative;
-    .lot\:menu {
-      left: 100%;
-      top: 0;
-    }
-  }
   > ul,
   > li {
     list-style: none;
@@ -34,21 +12,34 @@
     padding: 0;
   }
   > ul {
+    display: flex;
+    > .has\:menu {
+      display: flex;
+      position: relative;
+      > .lot\:menu {
+        display: none;
+        left: 0;
+        margin: 0;
+        position: absolute;
+        top: 100%;
+        z-index: 9998;
+        &.is\:enter {
+          display: block;
+        }
+      }
+    }
     > li {
       display: flex;
       position: relative;
       &:hover {
         > a {
-          background: var(--fill-menu-link--hover, var(--fill-menu-link));
-          color: var(--color-menu-link--hover, var(--color-menu-link));
-        }
-        > .lot\:menu {
-          display: block;
+          background: var(--fill-menus-link--hover, var(--fill-menus-link));
+          color: var(--color-menus-link--hover, var(--color-menus-link));
         }
       }
       > a {
-        background: var(--fill-menu-link, var(--fill-link, none));
-        color: var(--color-menu-link, var(--color-link));
+        background: var(--fill-menus-link, var(--fill-link, none));
+        color: var(--color-menus-link, var(--color-link));
         display: flex;
         flex: 1;
         padding: calc(var(--y) / 4) calc(var(--x) / 2);
@@ -62,16 +53,16 @@
               margin-right: calc(var(--x) / 4);
             }
             &.caret {
-              color: var(--color-menu-caret, inherit);
+              color: var(--color-menus-caret, inherit);
               margin-left: calc(var(--x) / -4);
               margin-right: calc(var(--x) / -4);
             }
           }
           .status {
-            background: var(--fill-menu-status);
-            border-radius: var(--arc-menu-status);
-            box-shadow: var(--shadow-menu-status);
-            color: var(--color-menu-status);
+            background: var(--fill-menus-status);
+            border-radius: var(--arc-menus-status);
+            box-shadow: var(--shadow-menus-status);
+            color: var(--color-menus-status);
             float: right;
             margin: 0 calc(var(--x) / -4) 0 0;
             padding: 0 calc(var(--x) / 4);
@@ -79,8 +70,8 @@
         }
         @each $v in (hover, focus, active) {
           &:#{$v} {
-            background: var(--fill-menu-link--#{$v}, var(--fill-menu-link));
-            color: var(--color-menu-link--#{$v}, var(--color-menu-link));
+            background: var(--fill-menus-link--#{$v}, var(--fill-menus-link));
+            color: var(--color-menus-link--#{$v}, var(--color-menus-link));
           }
         }
         &:focus {
@@ -91,9 +82,10 @@
       }
       &.as\:separator {
         background: var(--stroke);
-        height: 1px;
+        height: var(--y);
+        margin: calc(var(--y) / 4);
         overflow: hidden;
-        width: auto;
+        width: 1px;
         &:first-child,
         &:last-child {
           display: none;
@@ -101,14 +93,14 @@
       }
       &.is\:current {
         > a {
-          background: var(--fill-menu-link--current, none);
-          color: var(--color-menu-link--current, inherit);
+          background: var(--fill-menus-link--current, none);
+          color: var(--color-menus-link--current, inherit);
         }
       }
       &.not\:active {
         > a {
-          background: var(--fill-menu-link--disabled, none);
-          color: var(--color-menu-link--disabled, inherit);
+          background: var(--fill-menus-link--disabled, none);
+          color: var(--color-menus-link--disabled, inherit);
         }
       }
     }
@@ -123,8 +115,5 @@
     font-size: 100%;
     line-height: inherit;
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
-  }
-  &.is\:enter {
-    display: block;
   }
 }

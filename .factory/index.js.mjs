@@ -1,16 +1,17 @@
 import Bar from './_/bar.mjs';
-import Column from './_/column.mjs';
+import Columns from './_/columns.mjs';
 import Dialog from './_/dialog.mjs';
-import Field from './_/field.mjs';
-import File from './_/file.mjs';
-import Link from './_/link.mjs';
+import Fields from './_/fields.mjs';
+import FilesFolders from './_/files-folders.mjs';
+import Links from './_/links.mjs';
 import Menu from './_/menu.mjs';
-import Page from './_/page.mjs';
-import Row from './_/row.mjs';
+import Menus from './_/menus.mjs';
+import Pages from './_/pages.mjs';
+import Rows from './_/rows.mjs';
 import Siema from './_/siema.mjs';
-import Stack from './_/stack.mjs';
-import Tab from './_/tab.mjs';
-import Task from './_/task.mjs';
+import Stacks from './_/stacks.mjs';
+import Tabs from './_/tabs.mjs';
+import Tasks from './_/tasks.mjs';
 
 import {
     B,
@@ -110,15 +111,16 @@ onEvent('load', D, () => fire('get'));
 onEvent('DOMContentLoaded', D, () => fire('set'));
 
 Bar(1);
-Column(1);
+Columns(1);
 Dialog(1);
-Field(1);
-File(1);
-Link(1);
+Fields(1);
+FilesFolders(1);
+Links(1);
 Menu(1);
-Page(1);
-Row(1);
+Menus(1);
+Pages(1);
+Rows(1);
 Siema(1);
-Stack(1);
-Tab(1);
-Task(1);
+Stacks(1);
+Tabs(1);
+Tasks(1);

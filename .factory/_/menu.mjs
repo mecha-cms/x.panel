@@ -30,7 +30,7 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = 'a[href]:not(.not\\:active)';
+const targets = ':where(a,[tabindex]):not(.not\\:active)';
 
 function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
@@ -52,7 +52,7 @@ function doHideMenus(but, trigger) {
 function onChange(init) {
     offEvent('click', D, onClickDocument);
     let menuParents = getElements('.has\\:menu'),
-        menuLinks = getElements('.lot\\:menu[tabindex] ' + targets);
+        menuLinks = getElements('.lot\\:menu[tabindex]>ul>li>' + targets);
     if (menuParents && toCount(menuParents)) {
         menuParents.forEach(menuParent => {
             let menu = getElement('.lot\\:menu[tabindex]', menuParent),
@@ -144,14 +144,21 @@ function onKeyDownMenu(e) {
         }
         stop = true;
     } else if ('ArrowUp' === key) {
-        current = prev && getChildFirst(prev);
-        if (current) {
+        if (current = prev && getChildFirst(prev)) {
             fireFocus(current);
         } else {
             if (current = getParent(t, '.lot\\:menu[tabindex].is\\:enter')) {
-                // Hide menu then focus to the parent menu link
-                if (current = getPrev(current)) {
-                    fireEvent('click', current), fireFocus(current);
+                // Apply only to the first level drop-down menu
+                if (hasClass(current, 'level:1')) {
+                    // Hide menu then focus to the parent menu link
+                    letClass(current, 'is:enter');
+                    if (current = getPrev(current)) {
+                        letClass(current, 'is:active');
+                        letClass(getParent(current), 'is:active');
+                        W.setTimeout(() => {
+                            fireFocus(current);
+                        }, 1);
+                    }
                 }
             }
         }
@@ -212,12 +219,17 @@ function onKeyDownMenuToggle(e) {
                 hasClass(next, 'is:enter') && fireEvent('click', t);
             } else {
                 fireEvent('click', t);
+                W.setTimeout(() => {
+                    // Focus to the first link of child menu
+                    fireFocus(getElement(targets, next));
+                }, 1);
                 stop = true;
             }
-        } else if ('ArrowDown' === key) {
-            if (!hasClass(next, 'is:enter')) {
-                fireEvent('click', t);
-            }
+        // Apply only to the first level drop-down menu
+        } else if ('ArrowDown' === key && hasClass(next, 'level:1')) {
+            setClass(getParent(t), 'is:active');
+            setClass(next, 'is:enter');
+            setClass(t, 'is:active');
             W.setTimeout(() => {
                 // Focus to the first link of child menu
                 fireFocus(getElement(targets, next));

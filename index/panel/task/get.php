@@ -320,13 +320,13 @@ function state($_) {
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : \dirname($_['file']);
     if (\is_file($file = $folder . \D . \basename($_POST['file']['name'] ?? 'state.php'))) {
-        foreach ($_POST['state'] as &$v) {
+        foreach ($state = (array) ($_POST['state'] ?? []) as &$v) {
             if (\Is::JSON($v)) {
                 $v = \json_decode($v, true);
             }
         }
         unset($v);
-        $_POST['file']['content'] = '<?php return' . \z((array) \drop($_POST['state'] ?? [])) . ';';
+        $_POST['file']['content'] = '<?php return' . \z((array) \drop($state)) . ';';
         $_['file'] = \stream_resolve_include_path($file) ?: null; // For hook(s)
         $_ = file($_); // Move to `file`
     }

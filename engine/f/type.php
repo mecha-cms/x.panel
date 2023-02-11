@@ -761,6 +761,7 @@ function link($value, $key) {
 function links($value, $key) {
     $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? true;
     $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
+    $value['tags']['p'] = $value['tags']['p'] ?? true;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     return \x\panel\type\menu(\x\panel\_value_set($value), $key, -2);
 }
@@ -798,9 +799,9 @@ function lot($value, $key) {
 
 function menu($value, $key, int $i = 0) {
     $tags = \array_replace([
+        'level:' . ($i + 2) => true,
         'lot' => true,
-        'lot:menu' => true,
-        'p' => true
+        'lot:menu' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
@@ -889,8 +890,8 @@ function menu($value, $key, int $i = 0) {
                 }
                 $has_caret = false;
                 if (!empty($v['lot']) && (!empty($v['caret']) || !\array_key_exists('caret', $v))) {
-                    $v['icon'][0] = $v['icon'][0] ?? "";
-                    $v['icon'][1] = $v['caret'] ?? ($i < -1 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z');
+                    $v['icon'][0] = $v['icon'][0] ?? null;
+                    $v['icon'][1] = isset($v['caret']) && \is_string($v['caret']) ? $v['caret'] : ($i < -1 ? 'M7,10L12,15L17,10H7Z' : 'M10,17L15,12L10,7V17Z');
                     $has_caret = true;
                 }
                 $v['icon'] = \x\panel\to\icon($v['icon'] ?? []);
@@ -945,6 +946,14 @@ function menu($value, $key, int $i = 0) {
     }
     $value[1] = $title . $description . $value[1];
     return new \HTML($value);
+}
+
+function menus($value, $key) {
+    $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
+    $value['tags']['lot:menus'] = $value['tags']['lot:menus'] ?? true;
+    $value['tags']['p'] = $value['tags']['p'] ?? true;
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
+    return \x\panel\type\menu(\x\panel\_value_set($value), $key, -2);
 }
 
 function page($value, $key) {
@@ -1234,7 +1243,7 @@ function separator($value, $key) {
     return new \HTML($value);
 }
 
-// TODO: Implement WAI-ARIA to `task` and `tasks` type.
+// TODO: Implement WAI-ARIA to `stack` and `stacks` type.
 
 function stack($value, $key) {
     $tags = \array_replace([
@@ -1251,7 +1260,7 @@ function stack($value, $key) {
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
     $value[2]['data-value'] = $value[2]['data-value'] ?? $value['value'] ?? $key;
-    $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
+    $value[2]['tabindex'] = $value[2]['tabindex'] ?? ($is_current ? 0 : -1);
     $value[1] .= '<h3 class="title">' . \x\panel\type\link(\x\panel\_value_set([
         '2' => ['tabindex' => -1],
         'description' => $value['description'] ?? null,
@@ -1491,6 +1500,7 @@ function tasks($value, $key) {
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
+    $value[2]['role'] = $value[2]['role'] ?? 'group';
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     $count = 0;
     if (isset($value['content'])) {
