@@ -222,7 +222,7 @@ function item($value, $key) {
             $v['not']['active'] = $v['not']['active'] ?? !$is_active;
             $v['not']['fix'] = $v['not']['fix'] ?? !$is_fix;
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            $input[2]['checked'] = null !== $the_value && ((string) $the_value === (string) $k);
+            $input[2]['checked'] = null !== $the_value && (\s($the_value) === \s($v['value'] ?? $k));
             $input[2]['disabled'] = !$is_active;
             $input[2]['name'] = $v['name'] ?? $n;
             $input[2]['type'] = 'radio';
@@ -269,8 +269,8 @@ function item($value, $key) {
 function items($value, $key) {
     if (isset($value['lot'])) {
         $the_values = (array) (!empty($value['values']) ? $value['values'] : ($value['value'] ?? []));
-        if ($key_as_value = !empty($value['flat'])) {
-            $the_values = \P . \implode(\P, $the_values) . \P;
+        if ($key_as_value = !empty($value['as']['list'])) {
+            $the_values = \P . \implode(\P, \s($the_values)) . \P;
         }
         $n = $value['name'] ?? $key;
         unset($value['name'], $value['hint'], $value['value'], $value['values']);
