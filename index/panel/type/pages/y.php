@@ -55,7 +55,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 $p = $v['page'];
                 $description = To::description(x\panel\to\w($p->description ?? ""));
                 $icon = $p->icon ?? null;
-                $image = $p->image(72, 72, 100) ?? null;
+                $image = $icon ? null : ($p->image(72, 72, 100) ?? null);
                 $time = $p->time ?? null;
                 $title = x\panel\to\w($p->title ?? "");
                 $type = $p->type ?? null;
@@ -64,6 +64,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 asort($bound);
                 $pages[$k] = [
                     'author' => $p['author'],
+                    'color' => $p->color ?? null,
                     'current' => !empty($_SESSION['_']['folder'][$d]),
                     'description' => $description ? S . $description . S : null,
                     'icon' => $icon,

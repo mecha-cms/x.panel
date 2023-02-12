@@ -263,6 +263,15 @@ function field($value, $key) {
         1 => [],
         2 => []
     ];
+    // These data are useful for inserting HTML markup before and after the HTML markup of standard fields. Currently
+    // supports string value only. The naming of these data is currently non-standard so it is subject to change.
+    // These data should only be used internally when you create a new field type. The API consumer(s) are only in
+    // charge of determining the field type and providing some other data that has become a common standard.
+    $field_enter = $value['field-enter'] ?? "";
+    $field_exit = $value['field-exit'] ?? "";
+    if ("" !== $field_enter && \is_string($field_enter)) {
+        $value[1]['field'][1]['enter'] = $field_enter;
+    }
     // Special value returned by `x\panel\to\field()`
     if (isset($value['field'])) {
         if (\is_array($value['field'])) {
@@ -282,6 +291,7 @@ function field($value, $key) {
                     'count:' . ("" === $content ? '0' : '1') => true,
                     'has:height' => !empty($value['height']),
                     'has:width' => !empty($value['width']),
+                    'p' => true,
                     'with:fields' => true
                 ]))),
                 'role' => 'group'
@@ -317,6 +327,9 @@ function field($value, $key) {
     }
     $value['tags'] = $tags;
     $value[1]['field'][1]['description'] = \x\panel\to\description($value['description'] ?? "");
+    if ("" !== $field_exit && \is_string($field_exit)) {
+        $value[1]['field'][1]['exit'] = $field_exit;
+    }
     $value[2] = \x\panel\_decor_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
     if (isset($value['values']) && \is_array($value['values']) && $data = \To::query($value['values'])) {
@@ -986,17 +999,17 @@ function page($value, $key) {
         $div['hidden'] = true;
     // Prioritize `icon` over `image`
     } else if (!empty($icon)) {
-        $color = $value['color'] ?? '#fff';
-        $fill = $value['fill'] ?? '#' . \substr(\md5($icon), 0, 6);
+        $fill = $value['color'] ?? '#' . \substr(\md5($icon), 0, 6);
+        $color = true === \x\panel\is\dark($fill) ? '#fff' : '#000';
         $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
     } else if (!empty($image)) {
         $div[1] = '<img alt="" class="image" height="72" loading="lazy" src="' . \htmlspecialchars($image) . '" width="72">';
     } else {
-        $color = $value['color'] ?? '#fff';
-        $fill = $value['fill'] ?? '#' . \substr(\md5(\strtr($key, [
+        $fill = $value['color'] ?? '#' . \substr(\md5(\strtr($key, [
             \PATH => "",
             \D => '/'
         ])), 0, 6);
+        $color = true === \x\panel\is\dark($fill) ? '#fff' : '#000';
         $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';"></span>';
     }
     $value[1] .= $div;
