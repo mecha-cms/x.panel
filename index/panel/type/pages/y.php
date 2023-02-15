@@ -18,6 +18,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
         $author = $user->user;
         $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {
+            $_['sort'] = array_replace([1, 'title'], (array) ($_['query']['sort'] ?? []));
             foreach ($search($folder, 'page', 1) as $k => $v) {
                 if ('about.page' !== basename($k)) {
                     continue;
@@ -37,7 +38,6 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 }
                 ++$count;
             }
-            $_['sort'] = array_replace([1, 'path'], (array) ($_['sort'] ?? []));
             $pages = new Anemone($pages);
             $pages->sort($_['sort'], true);
             $pages = $pages->chunk($_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
