@@ -1002,7 +1002,7 @@ function page($value, $key) {
     // Prioritize `icon` over `image`
     } else if (!empty($icon)) {
         $fill = $value['color'] ?? '#' . \substr(\md5($icon), 0, 6);
-        $color = true === \x\panel\is\dark($fill) ? '#fff' : '#000';
+        $color = $value['stroke'] ?? '#fff';
         $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';">' . \x\panel\to\icon($icon)[0] . '</span>';
     } else if (!empty($image)) {
         $div[1] = '<img alt="" class="image" height="72" loading="lazy" src="' . \htmlspecialchars($image) . '" width="72">';
@@ -1011,7 +1011,7 @@ function page($value, $key) {
             \PATH => "",
             \D => '/'
         ])), 0, 6);
-        $color = true === \x\panel\is\dark($fill) ? '#fff' : '#000';
+        $color = $value['stroke'] ?? '#fff';
         $div[1] = '<span class="image" role="img" style="background: ' . $fill . '; color: ' . $color . ';"></span>';
     }
     $value[1] .= $div;

@@ -372,6 +372,5 @@ function type($value, $key) {
 }
 
 require __DIR__ . D . 'f' . D . 'from.php';
-require __DIR__ . D . 'f' . D . 'is.php';
 require __DIR__ . D . 'f' . D . 'to.php';
 require __DIR__ . D . 'f' . D . 'type.php';
