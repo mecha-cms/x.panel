@@ -430,7 +430,8 @@ function file($value, $key) {
     ], $key), $key) . '</h3>';
     $value[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
         '0' => 'p',
-        'lot' => $value['tasks'] ?? []
+        'lot' => $value['tasks'] ?? [],
+        'tags' => ['p' => false]
     ], $key), $key);
     $value[2] = \x\panel\_decor_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
@@ -556,7 +557,8 @@ function folder($value, $key) {
     ], $key), $key) . '</h3>';
     $value[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
         '0' => 'p',
-        'lot' => $value['tasks'] ?? []
+        'lot' => $value['tasks'] ?? [],
+        'tags' => ['p' => false]
     ], $key), $key);
     $value[2] = \x\panel\_decor_set($value[2], $value);
     $value[2] = \x\panel\_tag_set($value[2], $value);
@@ -1026,7 +1028,8 @@ function page($value, $key) {
     }
     $value[1] .= '<div>' . \x\panel\type\tasks\link(\x\panel\_value_set([
         '0' => 'p',
-        'lot' => $value['tasks'] ?? []
+        'lot' => $value['tasks'] ?? [],
+        'tags' => ['p' => false]
     ], $key), $key) . '</div>';
     $value['tags'] = $tags;
     $value[2] = \x\panel\_decor_set($value[2], $value);
@@ -1313,7 +1316,8 @@ function stack($value, $key) {
     }
     $value[1] .= \x\panel\type\tasks\link(\x\panel\_value_set([
         '0' => 'p',
-        'lot' => $value['tasks'] ?? []
+        'lot' => $value['tasks'] ?? [],
+        'tags' => ['p' => false]
     ], $key), $key);
     $value['tags'] = $tags;
     $value[2] = \x\panel\_decor_set($value[2], $value);
@@ -1519,7 +1523,8 @@ function tabs($value, $key) {
 function tasks($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:tasks' => true
+        'lot:tasks' => true,
+        'p' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
