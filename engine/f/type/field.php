@@ -79,7 +79,7 @@ function buttons($value, $key) {
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    unset($out['field'][2]['id'], $out['field'][2]['name']);
+    unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
     return \x\panel\type\field($out, $key);
 }
 
@@ -142,7 +142,7 @@ function colors($value, $key) {
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    unset($out['field'][2]['id'], $out['field'][2]['name']);
+    unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
     return \x\panel\type\field($out, $key);
 }
 
@@ -260,7 +260,7 @@ function item($value, $key) {
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-        unset($value['lot'], $out['field'][2]['id'], $out['field'][2]['name']);
+        unset($value['lot'], $out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
         return \x\panel\type\field($out, $key);
     }
     return \x\panel\type\field\text($value, $key);
@@ -336,7 +336,7 @@ function items($value, $key) {
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-        unset($value['lot'], $out['field'][2]['id'], $out['field'][2]['name']);
+        unset($value['lot'], $out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
         return \x\panel\type\field($out, $key);
     }
     return \x\panel\type\field\text($value, $key);
@@ -519,7 +519,6 @@ function toggle($value, $key) {
             0 => 'label',
             1 => [
                 'input' => $input,
-                'space' => ' ',
                 'title' => $title
             ],
             2 => \x\panel\_tag_set([], $value)
@@ -530,7 +529,7 @@ function toggle($value, $key) {
         'tags' => ['count:1' => true],
         'with' => ['options' => true]
     ]);
-    unset($out['hint'], $out['field'][2]['name'], $out['field'][2]['placeholder']);
+    unset($out['hint'], $out['field'][2]['disabled'], $out['field'][2]['name'], $out['field'][2]['placeholder'], $out['field'][2]['readonly']);
     return \x\panel\type\field($out, $key);
 }
 
