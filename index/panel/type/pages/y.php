@@ -9,18 +9,18 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
     ) {
         $bounds = [];
         $count = 0;
-        $search = static function ($folder, $x, $r) use ($_) {
-            $q = strtolower(s($_['query']['query'] ?? ""));
-            return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
+        $query = strtolower(s($_['query']['query'] ?? ""));
+        $search = static function ($folder, $x, $r) use ($query) {
+            return $query ? k($folder, $x, $r, preg_split('/\s+/', $query), true) : g($folder, $x, $r);
         };
         $pages = [];
         $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
         $author = $user->user;
         $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {
-            $_['sort'] = array_replace([1, 'title'], (array) ($_['query']['sort'] ?? []));
+            $_['sort'] = array_replace("" !== $query ? [] : [1, 'title'], (array) ($_['query']['sort'] ?? []));
             foreach ($search($folder, 'page', 1) as $k => $v) {
-                if ('about.page' !== basename($k)) {
+                if ('about.page' !== basename($k) || isset($pages[$k])) {
                     continue;
                 }
                 $p = new Page($k);
@@ -39,7 +39,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 ++$count;
             }
             $pages = new Anemone($pages);
-            $pages->sort($_['sort'], true);
+            $_['sort'] && $pages->sort($_['sort'], true);
             $pages = $pages->chunk($_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($d = dirname($k), [
@@ -66,7 +66,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                     'author' => $p['author'],
                     'color' => $p->color ?? null,
                     'current' => !empty($_SESSION['_']['folder'][$d]),
-                    'description' => $description ? S . $description . S : null,
+                    'description' => $description ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($description)) : $description) . S : null,
                     'icon' => $icon,
                     'image' => $image,
                     'tags' => [
@@ -126,7 +126,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                         ]
                     ],
                     'time' => $time,
-                    'title' => $title ? S . $title . S : null,
+                    'title' => $title ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($title)) : $title) . S : null,
                     'url' => [
                         'part' => 1,
                         'path' => $path,
@@ -142,7 +142,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
         }
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
         $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
-            'chunk' => $_GET['chunk'] ?? $_['chunk'] ?? 20,
+            'chunk' => $_['chunk'] ?? 20,
             'count' => $count,
             'current' => $_['part'] ?? 1,
             'stack' => 20,

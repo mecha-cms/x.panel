@@ -17,7 +17,8 @@ if (null !== $query && !empty($_['part'])) {
                 'title' => false,
                 'url' => ['query' => ['query' => null]]
             ]
-        ]
+        ],
+        'tags' => ['p' => false]
     ], 0);
     $GLOBALS['_']['alert']['info'][__FILE__] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
 }

@@ -10,8 +10,8 @@ Hook::set('_', function ($_) {
         extract($GLOBALS, EXTR_SKIP);
         $files = [[], []];
         $count = 0;
-        $search = static function ($folder, $x, $deep) use ($_) {
-            $query = strtolower(s($_['query']['query'] ?? ""));
+        $query = strtolower(s($_['query']['query'] ?? ""));
+        $search = static function ($folder, $x, $deep) use ($query) {
             return $query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep);
         };
         $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
@@ -19,14 +19,16 @@ Hook::set('_', function ($_) {
         if (is_dir($folder = $_['folder'] ?? P)) {
             foreach ($search($folder, $_['x'] ?? null, $_['deep'] ?? 0) as $k => $v) {
                 $n = basename($k);
-                if (false !== strpos('_.', $n[0]) && !$super) {
+                if (false !== strpos('_.', $n[0]) && !$super || isset($files[$v][$k])) {
                     continue; // User(s) with status other than `1` cannot see hidden file(s)
                 }
                 $files[$v][$k] = $v;
                 ++$count;
             }
-            uksort($files[0], 'strnatcmp');
-            uksort($files[1], 'strnatcmp');
+            if ("" === $query) {
+                uksort($files[0], 'strnatcmp');
+                uksort($files[1], 'strnatcmp');
+            }
             $files = array_merge($files[0], $files[1]);
             $_['count'] = $count;
         }
@@ -37,6 +39,7 @@ Hook::set('_', function ($_) {
                 D => '/'
             ]);
             $n = basename($k);
+            $title = substr($path, strlen($_['path']) + 1);
             $files[$k] = [
                 'current' => !empty($_SESSION['_'][0 === $v ? 'folder' : 'file'][$k]),
                 'description' => 0 === $v ? ['Open %s', 'Folder'] : S . size(filesize($k)) . S,
@@ -70,7 +73,7 @@ Hook::set('_', function ($_) {
                         ]
                     ]
                 ],
-                'title' => S . substr($path, strlen($_['path']) + 1) . S,
+                'title' => S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($title)) : $title) . S,
                 'type' => 0 === $v ? 'folder' : 'file',
                 'url' => 0 === $v ? [
                     'part' => 1,

@@ -194,7 +194,8 @@ function _git_sync() {
                             'task' => 'fire/' . ($ready ? 'fuse' : 'pull')
                         ]
                     ]
-                ]
+                ],
+                'tags' => ['p' => false]
             ], 0);
             $_['alert']['info'][$zip] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
         }

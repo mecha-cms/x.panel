@@ -8,9 +8,9 @@ Hook::set('_', function ($_) use ($state, $user) {
         'pages' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']
     ) {
         $count = 0;
-        $search = static function ($folder, $x, $r) use ($_) {
-            $q = strtolower(s($_['query']['query'] ?? ""));
-            return $q ? k($folder, $x, $r, preg_split('/\s+/', $q)) : g($folder, $x, $r);
+        $query = strtolower(s($_['query']['query'] ?? ""));
+        $search = static function ($folder, $x, $r) use ($query) {
+            return $query ? k($folder, $x, $r, preg_split('/\s+/', $query), true) : g($folder, $x, $r);
         };
         $pages = [];
         $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
@@ -23,7 +23,7 @@ Hook::set('_', function ($_) use ($state, $user) {
                 $folder . '.page'
             ], 1)) ? new Page($f) : new Page;
             foreach ($search($folder, $_['x'] ?? 'archive,draft,page', $_['deep'] ?? 0) as $k => $v) {
-                if (false !== strpos(',.archive,.draft,.page,', basename($k))) {
+                if (false !== strpos(',.archive,.draft,.page,', basename($k)) || isset($pages[$k])) {
                     continue; // Skip placeholder page(s)
                 }
                 $p = new Page($k);
@@ -38,9 +38,9 @@ Hook::set('_', function ($_) use ($state, $user) {
                 ++$count;
             }
             $_['count'] = $count;
-            $_['sort'] = array_replace([1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
+            $_['sort'] = array_replace("" !== $query ? [] : [1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
             $pages = new Anemone($pages);
-            $pages->sort($_['sort'], true);
+            $_['sort'] && $pages->sort($_['sort'], true);
             $pages = $pages->chunk($page->chunk ?? $_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
             foreach ($pages as $k => $v) {
                 $path = strtr($k, [
@@ -61,7 +61,7 @@ Hook::set('_', function ($_) use ($state, $user) {
                     'author' => $p['author'],
                     'color' => $p->color ?? null,
                     'current' => !empty($_SESSION['_']['file'][$k]),
-                    'description' => $description ? S . $description . S : null,
+                    'description' => $description ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($description)) : $description) . S : null,
                     'icon' => $icon,
                     'image' => $image,
                     'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),
@@ -126,7 +126,7 @@ Hook::set('_', function ($_) use ($state, $user) {
                         ]
                     ],
                     'time' => $time,
-                    'title' => $title ? S . $title . S : null,
+                    'title' => $title ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($title)) : $title) . S : null,
                 ];
                 unset($p);
                 if (isset($_SESSION['_']['file'][$k])) {
