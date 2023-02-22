@@ -1593,8 +1593,8 @@ function title($value, $key) {
     $icon = $value['icon'] ?? [];
     $status = $value['status'] ?? "";
     $title = \trim(\w(\i(...((array) $value[1])), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'mark', 'small', 'strong', 'sub', 'sup']) ?? "");
-    if ('0' !== $title && !$title && !$icon) {
-        return;
+    if (!$icon && !$title && '0' !== $title) {
+        return null;
     }
     $icon = \x\panel\to\icon($icon);
     if ("" !== $status) {

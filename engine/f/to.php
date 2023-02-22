@@ -125,7 +125,7 @@ function link($value) {
 
 function lot($lot, &$count = 0, $sort = true) {
     if (!\is_array($lot) || !$lot) {
-        return;
+        return null;
     }
     if ($sort) {
         if (true === $sort) {
@@ -229,7 +229,7 @@ function w($value, array $keep = []) {
     if ($keep && \array_is_list($keep)) {
         $keep = \array_fill_keys($keep, true);
     }
-    $keep = \array_replace([
+    return \w($value, \array_keys(\array_filter(\array_replace([
         'abbr' => true,
         'b' => true,
         'br' => true,
@@ -253,6 +253,5 @@ function w($value, array $keep = []) {
         'time' => true,
         'u' => true,
         'var' => true
-    ], $keep);
-    return \w($value, \array_keys(\array_filter($keep)));
+    ], $keep))));
 }
