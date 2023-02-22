@@ -225,6 +225,34 @@ function title($value, $level = -1) {
     return "" !== $out ? $out : null;
 }
 
-function w($value, $extra = null) {
-    return \w('<!--0-->' . $value, 'abbr,b,br,cite,code,del,dfn,em,i,img,ins,kbd,mark,q,small,span,strong,sub,sup,svg,time,u,var' . ($extra ? ',' . $extra : ""));
+function w($value, array $keep = []) {
+    if ($keep && \array_is_list($keep)) {
+        $keep = \array_fill_keys($keep, true);
+    }
+    $keep = \array_replace([
+        'abbr' => true,
+        'b' => true,
+        'br' => true,
+        'cite' => true,
+        'code' => true,
+        'del' => true,
+        'dfn' => true,
+        'em' => true,
+        'i' => true,
+        'img' => true,
+        'ins' => true,
+        'kbd' => true,
+        'mark' => true,
+        'q' => true,
+        'small' => true,
+        'span' => true,
+        'strong' => true,
+        'sub' => true,
+        'sup' => true,
+        'svg' => true,
+        'time' => true,
+        'u' => true,
+        'var' => true
+    ], $keep);
+    return \w($value, \array_keys(\array_filter($keep)));
 }

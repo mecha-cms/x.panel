@@ -115,7 +115,7 @@ function content($value, $key) {
 
 function description($value, $key) {
     $description = $value[1] ?? $value['content'] ?? "";
-    $description = \w('<!--/-->' . \i(...((array) $description)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'mark', 'span', 'strong', 'sub', 'sup']);
+    $description = \trim(\w(\i(...((array) $description)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'mark', 'span', 'strong', 'sub', 'sup']) ?? "");
     if (!$description && '0' !== $description) {
         return null;
     }
@@ -1592,7 +1592,7 @@ function title($value, $key) {
     $value[2] = $value[2] ?? [];
     $icon = $value['icon'] ?? [];
     $status = $value['status'] ?? "";
-    $title = \w('<!--0-->' . \i(...((array) $value[1])), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'mark', 'small', 'strong', 'sub', 'sup']);
+    $title = \trim(\w(\i(...((array) $value[1])), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'mark', 'small', 'strong', 'sub', 'sup']) ?? "");
     if ('0' !== $title && !$title && !$icon) {
         return;
     }
