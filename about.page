@@ -24,6 +24,8 @@ use:
   '.\lot\x\y-a-m-l': 1
 ...
 
+You need to install [Alert][1] and [User][2] extension to activate this control panel feature.
+
 This is the official control panel extension. It has been designed with a very simple look, but underneath it has a lot
 of potential for expansion. The initial design consisted of a single column interface which would generally only present
 you with either a file list view or a file editor view.
