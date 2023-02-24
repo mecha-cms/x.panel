@@ -33,7 +33,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
     }
     if (isset($_POST['page']['description'])) {
         // Remove all block HTML tag(s) from the `description` data if any
-        $_POST['page']['description'] = x\panel\to\w($_POST['page']['description'], 'a');
+        $_POST['page']['description'] = x\panel\to\w($_POST['page']['description'], ['a' => true]);
         // Limit `description` data value to 1275 character(s)
         $_POST['page']['description'] = To::description($_POST['page']['description'], 1275);
     }
