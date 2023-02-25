@@ -13,7 +13,7 @@ Hook::set('_', function ($_) use ($path, $super) {
         foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
             $page = new User($v['path'] ?? $k);
             $v['description'] = S . $page->user . S;
-            $v['image'] = $page->avatar(72) ?? null;
+            $v['image'] = $page->avatar(72, 72, 100) ?? null;
             $v['link'] = 'draft' !== $page->x ? $page->url : false;
             $v['tags']['status:' . $page->status] = true;
             $v['title'] = S . $page . S;
