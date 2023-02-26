@@ -48,7 +48,7 @@ Hook::set('_', function ($_) use ($state, $url) {
         ]);
         $image = $use = "";
         if (!empty($page->images)) {
-            $image .= '<figure class="siema">';
+            $image .= '<figure class="figure siema">';
             foreach ($page->images as $v) {
                 $image .= '<div>';
                 $image .= '<img alt="" class="image" src="' . $v . '">';
@@ -56,7 +56,7 @@ Hook::set('_', function ($_) use ($state, $url) {
             }
             $image .= '</figure>';
         } else if (isset($page->image)) {
-            $image .= '<figure class="siema">';
+            $image .= '<figure class="figure siema">';
             $image .= '<div>';
             $image .= '<img alt="" class="image" src="' . $page->image . '">';
             $image .= '</div>';

@@ -1207,11 +1207,9 @@ hr {
   border-width: 1px 0 0;
 }
 
+.siema.figure,
 .siema {
-  background: repeating-conic-gradient(rgba(128, 128, 128, 0.125) 0% 25%, rgba(0, 0, 0, 0) 0% 50%) 50% 50%/calc(var(--x) / 2) calc(var(--y) / 2);
-}
-.siema img {
-  box-shadow: var(--shadow-dialog);
+  padding: 0;
 }
 .siema > div {
   align-items: center;
@@ -3649,6 +3647,18 @@ code {
 
 .description {
   font-weight: 300;
+}
+
+.figure,
+.siema {
+  background: repeating-conic-gradient(rgba(128, 128, 128, 0.125) 0% 25%, rgba(0, 0, 0, 0) 0% 50%) 50% 50%/calc(var(--x) / 2) calc(var(--y) / 2);
+  padding: var(--x) var(--y);
+}
+.figure [role=img],
+.siema [role=img],
+.figure img,
+.siema img {
+  box-shadow: var(--shadow-dialog);
 }
 
 .has\:height {

@@ -30,6 +30,15 @@
   font-weight: 300;
 }
 
+.figure {
+  background: repeating-conic-gradient(rgba(128, 128, 128, .125) 0% 25%, rgba(0, 0, 0, 0) 0% 50%) 50% 50% / calc(var(--x) / 2) calc(var(--y) / 2);
+  padding: var(--x) var(--y);
+  [role='img'],
+  img {
+    box-shadow: var(--shadow-dialog);
+  }
+}
+
 .has\:height {
   display: flex;
   height: 100%;

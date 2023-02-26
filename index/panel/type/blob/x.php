@@ -29,7 +29,7 @@ Hook::set('do.blob.set', function ($_) use ($description, $zip) {
             $_POST['options'][$k]['zip']['keep'] = false; // Delete package
             // Allow ZIP archive(s) only
             if ('zip' !== $x) {
-                $_['alert']['error'][$folder] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
+                $_['alert']['error'][$folder ?: uniqid()] = ['File extension %s is not allowed.', '<code>' . $x . '</code>'];
             }
         }
     }
