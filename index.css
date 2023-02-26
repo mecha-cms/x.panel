@@ -1896,7 +1896,6 @@ output.is\:host:active {
 .is\:host[role=combobox],
 .is\:host[role=listbox],
 select.is\:host {
-  -moz-padding-start: calc(var(--x) / 2 - 3px);
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);

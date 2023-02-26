@@ -195,7 +195,6 @@ output.is\:host {
 .is\:host[role='combobox'],
 .is\:host[role='listbox'],
 select.is\:host {
-  -moz-padding-start: calc((var(--x) / 2) - 3px); // <https://github.com/twbs/bootstrap/issues/32636>
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
