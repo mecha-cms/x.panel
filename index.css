@@ -1161,13 +1161,16 @@ dl {
   margin-left: var(--x);
 }
 
-figure figcaption {
-  margin-top: calc(var(--y) / 2);
-}
 figure [role=img],
 figure img {
   display: block;
   margin: 0 auto;
+}
+figure figcaption + * {
+  margin-top: calc(var(--y) / 2);
+}
+figure * + figcaption {
+  margin-top: calc(var(--y) / 2);
 }
 
 ol,
@@ -3659,6 +3662,14 @@ code {
 .figure img,
 .siema img {
   box-shadow: var(--shadow-dialog);
+}
+.figure figcaption + *,
+.siema figcaption + * {
+  margin-top: var(--y);
+}
+.figure * + figcaption,
+.siema * + figcaption {
+  margin-top: var(--y);
 }
 
 .has\:height {

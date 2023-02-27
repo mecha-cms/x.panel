@@ -37,6 +37,16 @@
   img {
     box-shadow: var(--shadow-dialog);
   }
+  figcaption {
+    + * {
+      margin-top: var(--y);
+    }
+  }
+  * {
+    + figcaption {
+      margin-top: var(--y);
+    }
+  }
 }
 
 .has\:height {

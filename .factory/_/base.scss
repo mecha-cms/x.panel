@@ -332,13 +332,20 @@ dl {
 }
 
 figure {
-  figcaption {
-    margin-top: calc(var(--y) / 2);
-  }
   [role='img'],
   img {
     display: block;
     margin: 0 auto;
+  }
+  figcaption {
+    + * {
+      margin-top: calc(var(--y) / 2);
+    }
+  }
+  * {
+    + figcaption {
+      margin-top: calc(var(--y) / 2);
+    }
   }
 }
 
