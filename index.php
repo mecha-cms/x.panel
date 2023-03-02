@@ -4,13 +4,25 @@ if (!isset($state->x->user)) {
     abort('Missing <a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a> extension.');
 }
 
+$path = trim($url->path ?? "", '/');
+$route = trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
+
+// Set proper redirect target for non super user
+Hook::set('on.user.enter', function ($file) use ($route) {
+    $user = new User($file);
+    $status = $user->status ?? 0;
+    if (1 !== $status) {
+        if (2 !== $status) {
+            kick('/' . $route . '/get/user/' . $user->name(true));
+        }
+        kick('/' . $route . '/get/page/1');
+    }
+});
+
 // Clear the rest of file and folder marker(s)
 Hook::set('on.user.exit', function () {
     unset($_SESSION['_']);
 });
-
-$path = trim($url->path ?? "", '/');
-$route = trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);

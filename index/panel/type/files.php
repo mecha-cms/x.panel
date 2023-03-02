@@ -15,12 +15,11 @@ Hook::set('_', function ($_) {
             return $query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep);
         };
         $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
-        $super = 1 === $user->status;
         if (is_dir($folder = $_['folder'] ?? P)) {
             foreach ($search($folder, $_['x'] ?? null, $_['deep'] ?? 0) as $k => $v) {
                 $n = basename($k);
-                if (false !== strpos('_.', $n[0]) && !$super || isset($files[$v][$k])) {
-                    continue; // User(s) with status other than `1` cannot see hidden file(s)
+                if ('.' === $n[0] || isset($files[$v][$k])) {
+                    continue; // Skip hidden file(s) and folder(s)
                 }
                 $files[$v][$k] = $v;
                 ++$count;

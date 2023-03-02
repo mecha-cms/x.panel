@@ -13,6 +13,11 @@ if (!is_int($status = $user->status)) {
             mkdir($folder, 0775, true);
         }
         $_['kick'] = ['path' => 'asset/user/' . $user->name];
+    } else if (0 === strpos($_['path'] . '/', 'asset/user/' . $user->name . '/')) {
+        Hook::set('_', function ($_) use ($user) {
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][LOT . D . 'asset' . D . 'user' . D . $user->name]['skip'] = true;
+            return $_;
+        }, 10.1);
     }
     $name = strtok($_['path'] . '/', '/');
     $names = [
