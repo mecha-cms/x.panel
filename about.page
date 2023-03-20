@@ -9,9 +9,9 @@ type: Markdown
 version: 3.0.0
 price: [25, USD]
 prices:
-- if: Free to use for your own purposes or for the benefit of others who do not pay for your work.
+- for: Free to use for your own purposes or for the benefit of others who do not pay for your work.
   price: [0, USD]
-- if: Require profit sharing as the development support if you benefit from others.
+- for: Require profit sharing as the development support if you benefit from others.
   price: [25, USD]
 
 use:
