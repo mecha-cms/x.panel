@@ -73,7 +73,7 @@ return (static function ($icons) {
                                             'stack' => 10,
                                             'title' => 'Search',
                                             'type' => 'text',
-                                            'value' => $_GET['query'] ?? null,
+                                            'value' => $_['query']['query'] ?? null
                                         ]
                                     ],
                                     'stack' => 10,
@@ -84,8 +84,10 @@ return (static function ($icons) {
                             'stack' => 20,
                             'type' => 'form/get',
                             'url' => [
-                                'part' => is_int($_['part']) ? 1 : null,
-                                'query' => ['query' => null]
+                                'part' => 1,
+                                'path' => $_['file'] ? dirname($_['path']) : $_['path'],
+                                'query' => ['query' => null],
+                                'task' => 'get'
                             ]
                         ]
                     ],
