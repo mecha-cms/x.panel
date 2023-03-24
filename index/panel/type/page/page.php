@@ -4,15 +4,18 @@ $count = ($f = $_['file']) ? q(g(dirname($f) . D . pathinfo($f, PATHINFO_FILENAM
 $folder = $f ? dirname($f) . D . pathinfo($f, PATHINFO_FILENAME) : P;
 
 $layouts = [];
-foreach (glob(LOT . D . 'y' . D . '*' . D . '{page,pages}' . D . '*.php', GLOB_BRACE | GLOB_NOSORT) as $v) {
-    if (!is_file(($d = dirname($v, 2)) . D . 'index.php')) {
-        continue;
-    }
-    $n = substr($v, strlen($d) + 1, -4);
-    $layouts[$n] = $n;
-}
+$layouts_active = !!array_filter(glob(LOT . D . 'y' . D . '*' . D . '{page,pages}', GLOB_BRACE | GLOB_ONLYDIR), function ($v) {
+    return is_file(dirname($v) . D . 'index.php');
+});
 
-if ($layouts) {
+if ($layouts_active) {
+    foreach (glob(LOT . D . 'y' . D . '*' . D . '{page,pages}' . D . '*.php', GLOB_BRACE | GLOB_NOSORT) as $v) {
+        if (!is_file(($d = dirname($v, 2)) . D . 'index.php')) {
+            continue;
+        }
+        $n = substr($v, strlen($d) + 1, -4);
+        $layouts[$n] = $n;
+    }
     $layouts[""] = 'Default';
     $layouts['page'] = 'Page';
     $layouts['pages'] = 'Pages';
