@@ -62,37 +62,106 @@ Hook::set('_', function ($_) use ($state, $url) {
             $image .= '</div>';
             $image .= '</figure>';
         }
-        if (isset($page['use'])) {
-            $uses = [];
-            foreach ((array) $page['use'] as $k => $v) {
-                $p = is_file($kk = x\panel\to\path($k) . D . 'about.page') ? new Page($kk) : null;
-                $uses[$k] = [$v, $p ? ($p->title ?? $k) : $k, is_file(dirname($kk) . D . 'index.php')];
-            }
-            $links = [];
-            foreach ($uses as $k => $v) {
-                if (!empty($v[2])) {
-                    $links[strip_tags($v[1])] = '<li><a href="' . x\panel\to\link([
-                        'part' => 1,
-                        'path' => strtr($k, [
-                            ".\\lot\\" => "",
-                            "\\" => '/'
-                        ]),
-                        'query' => x\panel\_query_set(['tab' => ['info']]),
-                        'task' => 'get'
-                    ]) . '">' . $v[1] . '</a>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';
-                } else {
-                    $links[$v[1]] = '<li><s title="' . i('Missing %s extension.', $v[1]) . '">' . $v[1] . '</s>' . (0 === $v[0] ? ' (' . i('optional') . ')' : "") . '</li>';
+        if (is_file($meta = $folder . D . 'composer.json')) {
+            $list = [];
+            $meta = json_decode(file_get_contents($meta), true);
+            if (!empty($meta['require'])) {
+                foreach ($meta['require'] as $k => $v) {
+                    $n = basename($k);
+                    if (0 === strpos($n, 'x.')) {
+                        if (is_file($f = dirname($folder) . D . substr($n, 2) . D . 'index.php')) {
+                            $description = "";
+                            if (is_file($f = dirname($f) . D . 'composer.json')) {
+                                $f = json_decode(file_get_contents($f), true);
+                                $description = $f['description'] ?? "";
+                            }
+                            $list[1][$k] = '<li><a href="' . x\panel\to\link([
+                                'part' => 1,
+                                'path' => 'x/' . substr($n, 2),
+                                'query' => x\panel\_query_set(['tab' => ['info']]),
+                                'task' => 'get'
+                            ]) . '" target="_blank"><code>' . $k . '</code></a>' . ($description ? ' ' . $description : "") . '</li>';
+                        } else {
+                            $list[1][$k] = '<li><a href="https://packagist.org/packages/' . $k . '" target="_blank"><code>' . $k . '</code></a> ' . i('Missing.') . '</li>';
+                        }
+                    } else if (0 === strpos($n, 'y.')) {
+                        if (is_file(dirname($folder, 2) . D . 'y' . D . substr($n, 2) . D . 'index.php')) {
+                            $list[1][$k] = '<li><a href="' . x\panel\to\link([
+                                'part' => 1,
+                                'path' => 'y/' . substr($n, 2),
+                                'query' => x\panel\_query_set(['tab' => ['info']]),
+                                'task' => 'get'
+                            ]) . '" target="_blank"><code>' . $k . '</code></a></li>';
+                        } else {
+                            $list[1][$k] = '<li><a href="https://packagist.org/packages/' . $k . '" target="_blank"><code>' . $k . '</code></a> ' . i('Missing.') . '</li>';
+                        }
+                    }
                 }
             }
-            ksort($links);
-            $use .= '<hr>';
-            $use .= '<details>';
-            $use .= '<summary>';
-            $use .= '<strong>' . i('Dependenc' . (1 === ($i = count($uses)) ? 'y' : 'ies')) . '</strong> (' . $i . ')</summary>';
-            $use .= '<ul>';
-            $use .= implode("", $links);
-            $use .= '</ul>';
-            $use .= '</details>';
+            if (!empty($meta['suggest'])) {
+                foreach ($meta['suggest'] as $k => $v) {
+                    $n = basename($k);
+                    if (0 === strpos($n, 'x.')) {
+                        if (is_file($f = dirname($folder) . D . substr($n, 2) . D . 'index.php')) {
+                            $description = "";
+                            if (is_file($f = dirname($f) . D . 'composer.json')) {
+                                $f = json_decode(file_get_contents($f), true);
+                                $description = $f['description'] ?? "";
+                            }
+                            $list[0][$k] = '<li><a href="' . x\panel\to\link([
+                                'part' => 1,
+                                'path' => 'x/' . substr($n, 2),
+                                'query' => x\panel\_query_set(['tab' => ['info']]),
+                                'task' => 'get'
+                            ]) . '" target="_blank"><code>' . $k . '</code></a>' . ($description ? ' ' . $description : "") . '</li>';
+                        } else {
+                            $list[0][$k] = '<li><a href="https://packagist.org/packages/' . $k . '" target="_blank"><code>' . $k . '</code></a> ' . i('Missing.') . '</li>';
+                        }
+                    } else if (0 === strpos($n, 'y.')) {
+                        if (is_file(dirname($folder, 2) . D . 'y' . D . substr($n, 2) . D . 'index.php')) {
+                            $list[0][$k] = '<li><a href="' . x\panel\to\link([
+                                'part' => 1,
+                                'path' => 'y/' . substr($n, 2),
+                                'query' => x\panel\_query_set(['tab' => ['info']]),
+                                'task' => 'get'
+                            ]) . '" target="_blank"><code>' . $k . '</code></a></li>';
+                        } else {
+                            $list[0][$k] = '<li><a href="https://packagist.org/packages/' . $k . '" target="_blank"><code>' . $k . '</code></a> ' . i('Missing.') . '</li>';
+                        }
+                    }
+                }
+            }
+            if (!empty($list[0]) || !empty($list[1])) {
+                $use .= '<hr>';
+                $use .= '<p>' . i('These dependencies are defined in the %s file:', '<a href="' . x\panel\to\link([
+                    'part' => 0,
+                    'path' => $_['path'] . '/composer.json',
+                    'query' => null,
+                    'task' => 'get'
+                ]) . '"><code>composer.json</code></a>') . '</p>';
+            }
+            if (!empty($list[1])) {
+                ksort($list[1]);
+                $use .= '<details open>';
+                $use .= '<summary>';
+                $use .= '<b>' . i('Require') . '</b> (' . count($list[1]) . ')';
+                $use .= '</summary>';
+                $use .= '<ul>';
+                $use .= implode("", $list[1]);
+                $use .= '</ul>';
+                $use .= '</details>';
+            }
+            if (!empty($list[0])) {
+                ksort($list[0]);
+                $use .= '<details open>';
+                $use .= '<summary>';
+                $use .= '<b>' . i('Suggest') . '</b> (' . count($list[0]) . ')';
+                $use .= '</summary>';
+                $use .= '<ul>';
+                $use .= implode("", $list[0]);
+                $use .= '</ul>';
+                $use .= '</details>';
+            }
         }
         // Add alert(s) from `about.page` file if any
         if (isset($page->alert) && is_array($page->alert)) {

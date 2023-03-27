@@ -30,11 +30,13 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                     $sort => strip_tags((string) ($p->{$sort} ?? "")),
                     'page' => $p
                 ];
-                foreach ((array) $p['use'] as $kk => $vv) {
-                    if (!is_file(dirname($k) . D . 'index.php')) {
-                        continue;
+                if (is_file(dirname($k) . D . 'index.php') && is_file($meta = dirname($k) . D . 'composer.json')) {
+                    $meta = json_decode(file_get_contents($meta), true);
+                    if (!empty($meta['name']) && !empty($meta['require'])) {
+                        foreach ($meta['require'] as $kk => $vv) {
+                            $bounds[$kk][$n = $meta['name']] = $n;
+                        }
                     }
-                    $bounds[x\panel\to\path($kk)][dirname($k)] = $title;
                 }
                 ++$count;
             }
@@ -60,8 +62,13 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 $title = x\panel\to\w($p->title ?? "");
                 $type = $p->type ?? null;
                 $x = $p->x ?? null;
-                $bound = $bounds[dirname($k)] ?? [];
-                asort($bound);
+                $bound = [];
+                if (is_file($meta = dirname($k) . D . 'composer.json')) {
+                    $meta = json_decode(file_get_contents($meta), true);
+                    if (!empty($meta['name']) && ($bound = $bounds[$meta['name']] ?? [])) {
+                        asort($bound);
+                    }
+                }
                 $pages[$k] = [
                     'author' => $p['author'],
                     'color' => $p->color ?? null,

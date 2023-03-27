@@ -13,15 +13,6 @@ prices:
   price: [0, USD]
 - for: Require profit sharing as the development support if you benefit from others.
   price: [25, USD]
-
-use:
-  '.\lot\x\alert': 1
-  '.\lot\x\asset': 1
-  '.\lot\x\form': 0
-  '.\lot\x\layout': 1
-  '.\lot\x\page': 1
-  '.\lot\x\user': 1
-  '.\lot\x\y-a-m-l': 1
 ...
 
 You need to install [Alert][1] and [User][2] extension to activate this control panel feature.
