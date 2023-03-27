@@ -34,7 +34,7 @@ function data($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
-            'query' => \x\panel\_query_set($_POST['query'] ?? []),
+            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], ['trash' => null])),
             'task' => 'get'
         ];
     }
