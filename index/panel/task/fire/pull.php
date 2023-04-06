@@ -12,6 +12,7 @@ function pull($_) {
         'query' => \x\panel\_query_set([
             'keep' => null,
             'minify' => null,
+            'target' => null,
             'version' => null
         ]),
         'task' => 'get'

@@ -20,6 +20,7 @@ function fuse ($_) {
         'query' => \x\panel\_query_set([
             'keep' => null,
             'minify' => null,
+            'target' => null,
             'version' => null
         ]),
         'task' => 'get'
@@ -53,7 +54,7 @@ function fuse ($_) {
             $zip->close();
             \chmod($history, 0600);
         }
-        // Compare file/folder of currently installed version with the new version to be installed…
+        // Compare file/folder of the currently installed version with the new version to be installed…
         $files_current = $files_next = [];
         foreach (\g($folder, null, true) as $k => $v) {
             if ($k === $history) {
@@ -159,6 +160,7 @@ function fuse ($_) {
             'query' => \x\panel\_query_set([
                 'keep' => null,
                 'minify' => null,
+                'target' => null,
                 'version' => null
             ]),
             'task' => 'get'
@@ -268,6 +270,7 @@ function fuse ($_) {
             'query' => \x\panel\_query_set([
                 'keep' => null,
                 'minify' => null,
+                'target' => null,
                 'version' => null
             ]),
             'task' => 'get'

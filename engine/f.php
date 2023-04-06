@@ -188,6 +188,7 @@ function _git_sync() {
                             'query' => \x\panel\_query_set([
                                 'keep' => ['composer.json' => is_file(\PATH . \D . 'composer.json') ? 1 : null], // Keep `composer.json` file?
                                 'minify' => 1,
+                                'target' => \PHP_VERSION,
                                 'token' => $_['token'],
                                 'version' => $v
                             ]),
