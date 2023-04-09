@@ -350,9 +350,12 @@ function link($value, $key) {
 
 function name($value, $key) {
     $v = (string) ($value['value'] ?? "");
-    $x = $value['x'] ?? \implode('|', \array_keys(\array_filter((array) \State::get('x.panel.guard.file.x', true))));
-    if (\is_array($x)) {
-        $x = \implode('|', \array_keys(\array_filter($x)));
+    $default = \array_keys(\array_filter((array) \State::get('x.panel.guard.file.x', true)));
+    \sort($default);
+    if (\is_array($x = $value['x'] ?? \implode('|', $default))) {
+        $x = \array_keys(\array_filter($x));
+        \sort($x);
+        $x = \implode('|', $x);
     }
     $x = $x ? "\\.(" . $x . ")" : "";
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.baz' : ""));
