@@ -218,12 +218,22 @@ function onKeyDownTabs(e) {
         if (t !== e.target) {
             return;
         }
-        if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
+        if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
+            if (current = getElement(targets + '.is\\:current', t)) {
+                fireEvent('click', current), fireFocus(current);
+            }
+            stop = true;
+        } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
+            if (current = getElement(targets + '.is\\:current', t)) {
+                fireEvent('click', current), fireFocus(current);
+            }
+            stop = true;
+        } else if ('Home' === key) {
             if (current = getElement(targets, t)) {
                 fireEvent('click', current), fireFocus(current);
             }
             stop = true;
-        } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
+        } else if ('End' === key) {
             any = [].slice.call(getElements(targets, t));
             if (current = any.pop()) {
                 fireEvent('click', current), fireFocus(current);

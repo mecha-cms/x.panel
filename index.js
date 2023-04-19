@@ -69,6 +69,16 @@
         }
         return x;
     };
+    var toHTML = function toHTML(x, quote) {
+        if (quote === void 0) {
+            quote = true;
+        }
+        x = x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+        if (quote) {
+            x = x.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
+        }
+        return x;
+    };
     var toJSON = function toJSON(x) {
         return JSON.stringify(x);
     };
@@ -113,8 +123,12 @@
         }
         return x;
     };
-    var fromHTML = function fromHTML(x) {
-        return x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+    var fromHTML = function fromHTML(x, quote) {
+        x = x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
+        if (quote) {
+            x = x.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+        }
+        return x;
     };
     var fromJSON = function fromJSON(x) {
         var value = null;
@@ -134,20 +148,20 @@
                 if (!isSet$1(out[k])) {
                     out[k] = lot[i][k];
                     continue;
-                } // Merge array
+                }
+                // Merge array
                 if (isArray(out[k]) && isArray(lot[i][k])) {
-                    out[k] = [
-                        /* Clone! */
-                    ].concat(out[k]);
+                    out[k] = [ /* Clone! */ ].concat(out[k]);
                     for (var ii = 0, jj = toCount(lot[i][k]); ii < jj; ++ii) {
                         if (!hasValue(lot[i][k][ii], out[k])) {
                             out[k].push(lot[i][k][ii]);
                         }
-                    } // Merge object recursive
+                    }
+                    // Merge object recursive
                 } else if (isObject(out[k]) && isObject(lot[i][k])) {
                     out[k] = fromStates({
-                        /* Clone! */
-                    }, out[k], lot[i][k]); // Replace value
+                        /* Clone! */ }, out[k], lot[i][k]);
+                    // Replace value
                 } else {
                     out[k] = lot[i][k];
                 }
@@ -377,8 +391,10 @@
                     node.classList.remove(name);
                 }
             }
-        } // if (isString(classes)) {
-        node.className = classes; // }
+        }
+        // if (isString(classes)) {
+        node.className = classes;
+        // }
         return node;
     };
     var setData = function setData(node, data) {
@@ -822,7 +838,8 @@
                             hooks[name].splice(i, 1);
                             break;
                         }
-                    } // Clean-up empty hook(s)
+                    }
+                    // Clean-up empty hook(s)
                     if (0 === j) {
                         delete hooks[name];
                     }
@@ -878,10 +895,12 @@
         var $ = this;
         if (!source) {
             return $;
-        } // Already instantiated, skip!
+        }
+        // Already instantiated, skip!
         if (source[name$2]) {
             return source[name$2];
-        } // Return new instance if `OP` was called without the `new` operator
+        }
+        // Return new instance if `OP` was called without the `new` operator
         if (!isInstance($, OP)) {
             return new OP(source, state);
         }
@@ -890,8 +909,10 @@
         _hook.hooks;
         $.state = state = fromStates({}, OP.state, state);
         $.options = {};
-        $.source = source; // Store current instance to `OP.instances`
-        OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $; // Mark current DOM as active option picker to prevent duplicate instance
+        $.source = source;
+        // Store current instance to `OP.instances`
+        OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $;
+        // Mark current DOM as active option picker to prevent duplicate instance
         source[name$2] = $;
 
         function getLot() {
@@ -1211,7 +1232,8 @@
                 offEventDefault(e);
             } else if (KEY_END$1 === key) {
                 // Start from the last option position + 1
-                selectBoxOptionIndexCurrent = toCount(selectBoxOptions); // Continue walking up until it finds an option that is not disabled and not hidden
+                selectBoxOptionIndexCurrent = toCount(selectBoxOptions);
+                // Continue walking up until it finds an option that is not disabled and not hidden
                 while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption) && !selectBoxFakeOption.hidden) {
                         break;
@@ -1223,10 +1245,12 @@
                 selectBoxFakeOption && doClick(selectBoxFakeOption);
                 doToggle(), offEventDefault(e);
             } else if (KEY_ESCAPE === key) {
-                !selectBoxSize && doExit(); // offEventDefault(e);
+                !selectBoxSize && doExit();
+                // offEventDefault(e);
             } else if (KEY_START === key) {
                 // Start from the first option position - 1
-                selectBoxOptionIndexCurrent = -1; // Continue walking up until it finds an option that is not disabled and not hidden
+                selectBoxOptionIndexCurrent = -1;
+                // Continue walking up until it finds an option that is not disabled and not hidden
                 while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
                     if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption) && !selectBoxFakeOption.hidden) {
                         break;
@@ -1236,7 +1260,8 @@
                 offEventDefault(e);
             } else if (KEY_TAB$1 === key) {
                 !selectBoxFakeInput && selectBoxFakeOption && doClick(selectBoxFakeOption);
-                !selectBoxSize && doExit(); // offEventDefault(e);
+                !selectBoxSize && doExit();
+                // offEventDefault(e);
             }
             isEnter() && !_keyIsCtrl && !_keyIsShift && doFit();
         }
@@ -1305,12 +1330,14 @@
                             setHTML(selectBoxFakeOption, v);
                             selectBoxFakeOption.hidden = true;
                         }
-                    } // Always select the first match, but do not update the value
+                    }
+                    // Always select the first match, but do not update the value
                     if (first) {
                         selectBoxOptionIndex = first[PROP_INDEX];
                         setOptionSelected(first[PROP_SOURCE]);
                         setOptionFakeSelected(first);
-                        selectBoxFakeDropDown.hidden = false; // No match!
+                        selectBoxFakeDropDown.hidden = false;
+                        // No match!
                     } else {
                         selectBoxFakeDropDown.hidden = true;
                     }
@@ -1323,7 +1350,8 @@
                         if (hasValue('</mark>', _v)) {
                             ++marked;
                         }
-                    } // Reset all filter(s) if there is only one or none option marked
+                    }
+                    // Reset all filter(s) if there is only one or none option marked
                     if (marked <= 1) {
                         for (var _i3 = 0, _j8 = toCount(selectBoxFakeOptions), _v2; _i3 < _j8; ++_i3) {
                             selectBoxFakeOption = selectBoxFakeOptions[_i3];
@@ -1598,7 +1626,8 @@
     var toPattern = function toPattern(pattern, opt) {
         if (isPattern(pattern)) {
             return pattern;
-        } // No need to escape `/` in the pattern string
+        }
+        // No need to escape `/` in the pattern string
         pattern = pattern.replace(/\//g, '\\/');
         return new RegExp(pattern, isSet$1(opt) ? opt : 'g');
     };
@@ -1621,10 +1650,12 @@
         var $ = this;
         if (!source) {
             return $;
-        } // Already instantiated, skip!
+        }
+        // Already instantiated, skip!
         if (source[name$1]) {
             return source[name$1];
-        } // Return new instance if `TP` was called without the `new` operator
+        }
+        // Return new instance if `TP` was called without the `new` operator
         if (!isInstance($, TP)) {
             return new TP(source, state);
         }
@@ -1642,8 +1673,10 @@
         $.state = state = fromStates({}, TP.state, isString(state) ? {
             join: state
         } : state || {});
-        $.source = source; // Store current instance to `TP.instances`
-        TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $; // Mark current DOM as active tag picker to prevent duplicate instance
+        $.source = source;
+        // Store current instance to `TP.instances`
+        TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $;
+        // Mark current DOM as active tag picker to prevent duplicate instance
         source[name$1] = $;
         var classNameB = state['class'],
             classNameE = classNameB + '__',
@@ -1744,7 +1777,8 @@
         }
 
         function setTags(values) {
-            values = values ? values.split(state.join) : []; // Remove all tag(s) …
+            values = values ? values.split(state.join) : [];
+            // Remove all tag(s) …
             if (hasParent(self)) {
                 var theTagPrev, theTagPrevIndex, theTagPrevTitle;
                 while (theTagPrev = getPrev(text)) {
@@ -1757,7 +1791,8 @@
                 }
             }
             $.tags = [];
-            source.value = ""; // … then add tag(s)
+            source.value = "";
+            // … then add tag(s)
             for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
                 if (!values[i]) {
                     break;
@@ -1813,7 +1848,8 @@
             setText(textInput, value);
             setText(textInputHint, value ? "" : thePlaceholder);
             if (fireFocus) {
-                textInput.focus(); // Move caret to the end!
+                textInput.focus();
+                // Move caret to the end!
                 var range = D.createRange(),
                     selection = W.getSelection();
                 range.selectNodeContents(textInput);
@@ -2047,19 +2083,22 @@
                     }
                     offEventDefault(e);
                     return;
-                } // Focus to the first tag
+                }
+                // Focus to the first tag
                 if (KEY_BEGIN === key) {
                     if (theTag = getChildren(textOutput, 0)) {
                         theTag.focus(), offEventDefault(e);
                     }
                     return;
-                } // Focus to the last tag
+                }
+                // Focus to the last tag
                 if (KEY_END === key) {
                     if (theTag = getChildren(textOutput, toCount($.tags) - 1)) {
                         theTag.focus(), offEventDefault(e);
                         return;
                     }
-                } // Focus to the previous tag
+                }
+                // Focus to the previous tag
                 if (KEY_ARROW_LEFT === key) {
                     if (theTag = getChildren(textOutput, currentTagIndex - 1)) {
                         var theTagWasFocus = hasClass(theTag, classNameTagM + 'selected');
@@ -2078,7 +2117,8 @@
                         doBlurTags(getChildren(textOutput, 0));
                         return;
                     }
-                } // Focus to the next tag or to the tag editor
+                }
+                // Focus to the next tag or to the tag editor
                 if (KEY_ARROW_RIGHT === key) {
                     if (theTag = getChildren(textOutput, currentTagIndex + 1)) {
                         var _theTagWasFocus = hasClass(theTag, classNameTagM + 'selected');
@@ -2094,7 +2134,8 @@
                         return;
                     }
                 }
-            } // Select all tag(s) with `Ctrl+A` key
+            }
+            // Select all tag(s) with `Ctrl+A` key
             if (KEY_A === key) {
                 setTextCopy(1);
                 doFocusTags(), setCurrentTags(), offEventDefault(e);
@@ -2125,7 +2166,8 @@
             }
             delay(function () {
                 theValue = getText(textInput) || "";
-                setText(textInputHint, theValue ? "" : thePlaceholder); // Try to add support for browser(s) without `KeyboardEvent.prototype.key` feature
+                setText(textInputHint, theValue ? "" : thePlaceholder);
+                // Try to add support for browser(s) without `KeyboardEvent.prototype.key` feature
                 if (hasValue(getCharBeforeCaret(textInput), escapes)) {
                     if (theTagsCount < theTagsMax) {
                         // Add the tag name found in the tag editor
@@ -2136,19 +2178,22 @@
                     }
                     offEventDefault(e);
                 }
-            })(); // Focus to the first tag
+            })();
+            // Focus to the first tag
             if ("" === theValue && KEY_BEGIN === key) {
                 if (theTag = getChildren(textOutput, 0)) {
                     theTag.focus(), offEventDefault(e);
                     return;
                 }
-            } // Focus to the last tag
+            }
+            // Focus to the last tag
             if ("" === theValue && KEY_END === key) {
                 if (theTag = getChildren(textOutput, toCount($.tags) - 1)) {
                     theTag.focus(), offEventDefault(e);
                     return;
                 }
-            } // Select all tag(s) with `Ctrl+A` key
+            }
+            // Select all tag(s) with `Ctrl+A` key
             if (keyIsCtrl && "" === theValue && KEY_A === key) {
                 setTextCopy(1);
                 doFocusTags(), setCurrentTags(), offEventDefault(e);
@@ -2164,10 +2209,12 @@
                 }
                 offEventDefault(e);
                 return;
-            } // Skip `Tab` key
+            }
+            // Skip `Tab` key
             if (keyIsTab) {
                 return; // :)
-            } // Submit the closest `<form>` element with `Enter` key
+            }
+            // Submit the closest `<form>` element with `Enter` key
             if (!keyIsCtrl && keyIsEnter) {
                 doSubmitTry(), offEventDefault(e);
                 return;
@@ -2216,7 +2263,8 @@
                 fire('min.tags', [theTagsMin]);
                 offEventDefault(e);
                 return;
-            } // Do normal `submit` event
+            }
+            // Do normal `submit` event
             return 1;
         }
         setChildLast(self, textOutput);
@@ -2245,7 +2293,8 @@
         };
         $.click = function () {
             return self.click(), onClickSelf(), $;
-        }; // Default filter for the tag name
+        };
+        // Default filter for the tag name
         $.f = function (v) {
             return toCaseLower(v || "").replace(/[^ a-z\d-]/g, "").trim();
         };
@@ -2346,7 +2395,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.16';
+    TP.version = '3.4.17';
 
     function onChange$a(init) {
         // Destroy!
@@ -2380,18 +2429,23 @@
         var $ = this;
         if (!source) {
             return $;
-        } // Already instantiated, skip!
+        }
+        // Already instantiated, skip!
         if (source[name]) {
             return source[name];
-        } // Return new instance if `TE` was called without the `new` operator
+        }
+        // Return new instance if `TE` was called without the `new` operator
         if (!isInstance($, TE)) {
             return new TE(source, state);
         }
         $.state = state = fromStates({}, TE.state, isString(state) ? {
             tab: state
-        } : state || {}); // The `<textarea>` element
-        $.self = $.source = source; // Store current instance to `TE.instances`
-        TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $; // Mark current DOM as active text editor to prevent duplicate instance
+        } : state || {});
+        // The `<textarea>` element
+        $.self = $.source = source;
+        // Store current instance to `TE.instances`
+        TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $;
+        // Mark current DOM as active text editor to prevent duplicate instance
         source[name] = $;
         var any = /^([\s\S]*?)$/,
             // Any character(s)
@@ -2403,20 +2457,25 @@
             },
             sourceValue = function sourceValue() {
                 return source.value.replace(/\r/g, "");
-            }; // The initial value
-        $.value = sourceValue(); // Get value
+            };
+        // The initial value
+        $.value = sourceValue();
+        // Get value
         $.get = function () {
             return !sourceIsDisabled() && trim(sourceValue()) || null;
-        }; // Reset to the initial value
+        };
+        // Reset to the initial value
         $.let = function () {
             return source.value = $.value, $;
-        }; // Set value
+        };
+        // Set value
         $.set = function (value) {
             if (sourceIsDisabled() || sourceIsReadOnly()) {
                 return $;
             }
             return source.value = value, $;
-        }; // Get selection
+        };
+        // Get selection
         $.$ = function () {
             return new TE.S(source.selectionStart, source.selectionEnd, sourceValue());
         };
@@ -2433,10 +2492,12 @@
                 source.scrollTop = y;
             }
             return source.focus(), $;
-        }; // Blur from the editor
+        };
+        // Blur from the editor
         $.blur = function () {
             return source.blur(), $;
-        }; // Select value
+        };
+        // Select value
         $.select = function () {
             if (sourceIsDisabled() || sourceIsReadOnly()) {
                 return source.focus(), $;
@@ -2468,13 +2529,15 @@
                 }
                 lot[1] = lot[0];
             }
-            source.focus(); // Default `$.select(7, 100)`
+            source.focus();
+            // Default `$.select(7, 100)`
             source.selectionStart = lot[0];
             source.selectionEnd = lot[1];
             source.scrollLeft = X;
             source.scrollTop = Y;
             return W.scroll(x, y), $;
-        }; // Match at selection
+        };
+        // Match at selection
         $.match = function (pattern, then) {
             var _$$$2 = $.$(),
                 after = _$$$2.after,
@@ -2486,7 +2549,8 @@
             }
             var m = value.match(pattern);
             return isFunction(then) ? then.call($, m || []) : !!m;
-        }; // Replace at selection
+        };
+        // Replace at selection
         $.replace = function (from, to, mode) {
             var _$$$3 = $.$(),
                 after = _$$$3.after,
@@ -2503,7 +2567,8 @@
                 value = value.replace(from, to);
             }
             return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
-        }; // Insert/replace at caret
+        };
+        // Insert/replace at caret
         $.insert = function (value, mode, clear) {
             var from = any;
             if (clear) {
@@ -2517,7 +2582,8 @@
                 from = /^/;
             }
             return $.replace(from, value, mode);
-        }; // Wrap current selection
+        };
+        // Wrap current selection
         $.wrap = function (open, close, wrap) {
             var _$$$4 = $.$(),
                 after = _$$$4.after,
@@ -2527,7 +2593,8 @@
                 return $.replace(any, open + '$1' + close);
             }
             return $.set(before + open + value + close + after).select(before = toCount(before + open), before + toCount(value));
-        }; // Unwrap current selection
+        };
+        // Unwrap current selection
         $.peel = function (open, close, wrap) {
             var _$$$5 = $.$(),
                 after = _$$$5.after,
@@ -2607,13 +2674,15 @@
             if (false !== start) value = trim(value, -1);
             if (false !== end) value = trim(value, 1);
             return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
-        }; // Destructor
+        };
+        // Destructor
         $.pop = function () {
             if (!source[name]) {
                 return $; // Already ejected!
             }
             return delete source[name], $;
-        }; // Return the text editor state
+        };
+        // Return the text editor state
         $.state = state;
         return $;
     }
@@ -2639,14 +2708,16 @@
     TE.x = x;
     var that$2 = {};
     that$2._history = [];
-    that$2._historyState = -1; // Get history data
+    that$2._historyState = -1;
+    // Get history data
     that$2.history = function (index) {
         var t = this;
         if (!isSet$1(index)) {
             return t._history;
         }
         return isSet$1(t._history[index]) ? t._history[index] : null;
-    }; // Remove state from history
+    };
+    // Remove state from history
     that$2.loss = function (index) {
         var t = this,
             current;
@@ -2658,7 +2729,8 @@
         current = t._history.splice(isSet$1(index) ? index : t._historyState, 1);
         t._historyState = toEdge(t._historyState - 1, [-1]);
         return current;
-    }; // Save current state to history
+    };
+    // Save current state to history
     that$2.record = function (index) {
         var t = this,
             _t$$ = t.$(),
@@ -2671,14 +2743,16 @@
         }
         ++t._historyState;
         return t._history[isSet$1(index) ? index : t._historyState] = next, t;
-    }; // Redo previous state
+    };
+    // Redo previous state
     that$2.redo = function () {
         var t = this,
             state;
         t._historyState = toEdge(t._historyState + 1, [0, toCount(t._history) - 1]);
         state = t._history[t._historyState];
         return t.set(state[0]).select(state[1], state[2]);
-    }; // Undo current state
+    };
+    // Undo current state
     that$2.undo = function () {
         var t = this,
             state;
@@ -2757,7 +2831,8 @@
             charPairsValues = toObjectValues(charPairs),
             key = map.key,
             queue = map.queue,
-            keyValue = map + ""; // Do nothing
+            keyValue = map + "";
+        // Do nothing
         if (queue.Alt || queue.Control) {
             return true;
         }
@@ -2802,7 +2877,8 @@
             var _lineBefore = _before3.split('\n').pop(),
                 _lineMatch = _lineBefore.match(/^(\s+)/),
                 _lineMatchIndent = _lineMatch && _lineMatch[1] || "";
-            charAfter = charPairs[charBefore = _before3.slice(-1)]; // Do nothing on escape
+            charAfter = charPairs[charBefore = _before3.slice(-1)];
+            // Do nothing on escape
             if ('\\' === charBefore) {
                 return true;
             }
@@ -2820,7 +2896,8 @@
                     that.trim("", "").record();
                     return false;
                 }
-            } // Outdent
+            }
+            // Outdent
             if (_lineBefore.endsWith(charIndent)) {
                 that.pull(charIndent).record();
                 return false;
@@ -2838,11 +2915,13 @@
             after = _that$$4.after,
             before = _that$$4.before,
             start = _that$$4.start,
-            value = _that$$4.value; // Do nothing on escape
+            value = _that$$4.value;
+        // Do nothing on escape
         if ('\\' === (charBefore = before.slice(-1))) {
             return true;
         }
-        charAfter = hasValue(after[0], charPairsValues) ? after[0] : charPairs[charBefore]; // `|}`
+        charAfter = hasValue(after[0], charPairsValues) ? after[0] : charPairs[charBefore];
+        // `|}`
         if (!value && after && before && charAfter && key === charAfter) {
             // Move to the next character
             // `}|`
@@ -2850,13 +2929,15 @@
             return false;
         }
         for (charBefore in charPairs) {
-            charAfter = charPairs[charBefore]; // `{|`
+            charAfter = charPairs[charBefore];
+            // `{|`
             if (key === charBefore && charAfter) {
                 // Wrap pair or selection
                 // `{|}` `{|aaa|}`
                 that.wrap(charBefore, charAfter).record();
                 return false;
-            } // `|}`
+            }
+            // `|}`
             if (key === charAfter) {
                 if (value) {
                     // Wrap selection
@@ -2874,11 +2955,13 @@
         var charIndent = that.state.source.tab || that.state.tab || '\t';
         map.key;
         map.queue;
-        var keyValue = map + ""; // Indent with `⎈]`
+        var keyValue = map + "";
+        // Indent with `⎈]`
         if (CTRL_PREFIX + ']' === keyValue) {
             that.push(charIndent).record();
             return false;
-        } // Outdent with `⎈[`
+        }
+        // Outdent with `⎈[`
         if (CTRL_PREFIX + '[' === keyValue) {
             that.pull(charIndent).record();
             return false;
@@ -2904,7 +2987,8 @@
                 if (queue.Shift) {
                     // Insert line over with `⎈⇧↵`
                     return that.select(start - toCount(lineBefore)).wrap(lineMatchIndent, '\n').insert(value).record(), false;
-                } // Insert line below with `⎈↵`
+                }
+                // Insert line below with `⎈↵`
                 return that.select(end + toCount(lineAfter)).wrap('\n' + lineMatchIndent, "").insert(value).record(), false;
             }
         }
@@ -2912,10 +2996,12 @@
     }
 
     function canKeyDownHistory(map, that) {
-        var keyValue = map + ""; // Redo with `⎈y`
+        var keyValue = map + "";
+        // Redo with `⎈y`
         if (CTRL_PREFIX + 'y' === keyValue) {
             return that.redo(), false;
-        } // Undo with `⎈z`
+        }
+        // Undo with `⎈z`
         if (CTRL_PREFIX + 'z' === keyValue) {
             return that.undo(), false;
         }
@@ -2968,7 +3054,8 @@
         var lineAfter = after.split('\n').shift(),
             lineBefore = before.split('\n').pop(),
             lineMatch = lineBefore.match(/^(\s+)/);
-        lineMatch && lineMatch[1] || ""; // Force to select the current line if there is no selection
+        lineMatch && lineMatch[1] || "";
+        // Force to select the current line if there is no selection
         end += toCount(lineAfter);
         start -= toCount(lineBefore);
         value = lineBefore + value + lineAfter;
@@ -3038,7 +3125,8 @@
     function toAttributes(attributes) {
         if (!attributes) {
             return "";
-        } // Sort object by key(s)
+        }
+        // Sort object by key(s)
         attributes = toObjectKeys(attributes).sort().reduce(function (r, k) {
             return r[k] = attributes[k], r;
         }, {});
@@ -3052,7 +3140,7 @@
             }
             out += ' ' + attribute;
             if (true !== v) {
-                out += '="' + fromHTML(fromValue(v)) + '"';
+                out += '="' + fromHTML(fromValue(v), true) + '"';
             }
         }
         return out;
@@ -3155,7 +3243,8 @@
             charIndent = state.sourceXML.tab || state.tab || '\t',
             key = map.key,
             queue = map.queue,
-            keyValue = map + ""; // Do nothing
+            keyValue = map + "";
+        // Do nothing
         if (queue.Alt || queue.Control) {
             return true;
         }
@@ -3184,11 +3273,14 @@
                         }
                         that.trim("", false).insert(' />', -1).record();
                         return false;
-                    } // `<div|></div>`
+                    }
+                    // `<div|></div>`
                     if (after.startsWith('></' + tagStartMatch[1] + '>')) {
-                        that.select(start + 1).record(); // `<div|</div>`
+                        that.select(start + 1).record();
+                        // `<div|</div>`
                     } else if (after.startsWith('</' + tagStartMatch[1] + '>')) {
-                        that.insert('>', -1).record(); // `<div|`
+                        that.insert('>', -1).record();
+                        // `<div|`
                     } else {
                         that.wrap('>', '</' + tagStartMatch[1] + ('>' === after[0] ? "" : '>')).record();
                     }
@@ -3204,8 +3296,10 @@
             }
             if (' ' === keyValue) {
                 if (!value) {
-                    if ( // `<!--|-->`
-                        '-->' === after.slice(0, 3) && '<!--' === before.slice(-4) || // `<?foo|?>`
+                    if (
+                        // `<!--|-->`
+                        '-->' === after.slice(0, 3) && '<!--' === before.slice(-4) ||
+                        // `<?foo|?>`
                         '?>' === after.slice(0, 2) && '<?' === before.slice(0, 2) && /<\?\S*$/.test(before)) {
                         that.wrap(' ', ' ').record();
                         return false;
@@ -3219,7 +3313,8 @@
                 _start = _that$$2.start,
                 _value = _that$$2.value;
             if (!_value) {
-                var tagMatch = toPattern(tagTokens + '$', "").exec(_before); // `<foo>|bar`
+                var tagMatch = toPattern(tagTokens + '$', "").exec(_before);
+                // `<foo>|bar`
                 if (tagMatch) {
                     that.select(_start - toCount(tagMatch[0]), _start);
                     return false;
@@ -3232,7 +3327,8 @@
                 _start2 = _that$$3.start,
                 _value2 = _that$$3.value;
             if (!_value2) {
-                var _tagMatch = toPattern('^' + tagTokens, "").exec(_after); // `foo|<bar>`
+                var _tagMatch = toPattern('^' + tagTokens, "").exec(_after);
+                // `foo|<bar>`
                 if (_tagMatch) {
                     that.select(_start2, _start2 + toCount(_tagMatch[0]));
                     return false;
@@ -3249,8 +3345,10 @@
                 lineMatchIndent = lineMatch && lineMatch[1] || "",
                 _tagStartMatch = _before2.match(toPattern(tagStart$1(tagName$1) + '$', ""));
             if (!_value3) {
-                if ( // `<!--|-->`
-                    /^[ \t]*-->/.test(_after2) && /<!--[ \t]*$/.test(_before2) || // `<?foo|?>`
+                if (
+                    // `<!--|-->`
+                    /^[ \t]*-->/.test(_after2) && /<!--[ \t]*$/.test(_before2) ||
+                    // `<?foo|?>`
                     /^[ \t]*\?>/.test(_after2) && /<\?\S*[ \t]*$/.test(_before2)) {
                     that.trim().wrap('\n' + lineMatchIndent, '\n' + lineMatchIndent).record();
                     return false;
@@ -3273,7 +3371,8 @@
             if (!_value4) {
                 // `<!--|`
                 if ('<!--' === _before3.slice(-4)) {
-                    that.replace(/<!--$/, "", -1); // `<!--|-->`
+                    that.replace(/<!--$/, "", -1);
+                    // `<!--|-->`
                     if ('-->' === _after3.slice(0, 3)) {
                         that.replace(/^-->/, "", 1);
                     }
@@ -3283,9 +3382,11 @@
                 if (/^\s+-->/.test(_after3) && /<!--\s+$/.test(_before3)) {
                     that.trim(' ' === _before3.slice(-1) ? "" : ' ', ' ' === _after3[0] ? "" : ' ').record();
                     return false;
-                } // `<?|`
+                }
+                // `<?|`
                 if (/<\?\S*$/.test(_before3)) {
-                    that.replace(/<\?\S*$/, "", -1); // `<?|?>`
+                    that.replace(/<\?\S*$/, "", -1);
+                    // `<?|?>`
                     if ('?>' === _after3.slice(0, 2)) {
                         that.replace(/^\?>/, "", 1);
                     }
@@ -3303,7 +3404,8 @@
                     if (' />' === _before3.slice(-3)) {
                         that.replace(/ \/>$/, '/>', -1).record();
                         return false;
-                    } // `<div/>|`
+                    }
+                    // `<div/>|`
                     if ('/>' === _before3.slice(-2)) {
                         that.replace(/\/>$/, '>', -1).record();
                         return false;
@@ -3333,7 +3435,8 @@
                 if ('-->' === _after4.slice(0, 3)) {
                     that.replace(/^-->/, "", 1).record();
                     return false;
-                } // `|?>`
+                }
+                // `|?>`
                 if ('?>' === _after4.slice(0, 2)) {
                     that.replace(/^\?>/, "", 1).record();
                     return false;
@@ -3482,8 +3585,20 @@
     }
 
     function toggleBlocks(that) {
+        var _that$$ = that.$(),
+            after = _that$$.after,
+            end = _that$$.end,
+            before = _that$$.before,
+            start = _that$$.start,
+            value = _that$$.value;
         var patternBefore = /<(?:h([1-6])|p)(\s[^>]*)?>$/,
             patternAfter = /^<\/(?:h[1-6]|p)>/;
+        // Wrap current line if selection is empty
+        if (!value) {
+            var lineAfter = after.split('\n').shift(),
+                lineBefore = before.split('\n').pop();
+            that.select(start - toCount(lineBefore), end + toCount(lineAfter));
+        }
         that.match([patternBefore, /.*/, patternAfter], function (before, value, after) {
             var t = this,
                 h = +(before[1] || 0),
@@ -3492,7 +3607,8 @@
                 element = before[0] ? elements[before[0].slice(1, -1).split(/\s/)[0]] : ["", "", {}];
             if (!attr && element[2]) {
                 attr = toAttributes(element[2]);
-            } // ``
+            }
+            // ``
             t.replace(patternBefore, "", -1);
             t.replace(/\n+/g, ' ');
             t.replace(patternAfter, "", 1);
@@ -3523,6 +3639,11 @@
                 }
             }
         });
+        // Unwrap selection from block element(s)
+        if (value) {
+            that.replace(toPattern('^\\s*' + tagStart('blockquote|h[1-6]|p(re)?')), "");
+            that.replace(toPattern(tagEnd('blockquote|h[1-6]|p(re)?') + '\\s*$'), "");
+        }
     }
 
     function toggleCodes(that) {
@@ -3531,7 +3652,8 @@
         that.match([patternBefore, /.*/, patternAfter], function (before, value, after) {
             var t = this,
                 tidy,
-                elements = that.state.sourceHTML.elements; // ``
+                elements = that.state.sourceHTML.elements;
+            // ``
             t.replace(patternBefore, "", -1);
             t.replace(patternAfter, "", 1);
             if (after[0]) {
@@ -3541,20 +3663,22 @@
                     if (false !== (tidy = toTidy(tidy))) {
                         t.trim(tidy[0], tidy[1]);
                     }
-                    t.insert(decode(value[0])); // `<pre><code>…</code></pre>`
+                    t.insert(toHTML(value[0]));
+                    // `<pre><code>…</code></pre>`
                 } else if (after[0].slice(0, 7) === '</' + elements.code[0] + '>') {
                     tidy = elements.pre[3];
                     if (false !== (tidy = toTidy(tidy))) {
                         t.trim(tidy[0], tidy[1]);
                     }
                     t.wrap('<' + elements.pre[0] + toAttributes(elements.pre[2]) + '><' + elements.code[0] + toAttributes(elements.code[2]) + '>', '</' + elements.code[0] + '></' + elements.pre[0] + '>');
-                } // `<code>…</code>`
+                }
+                // `<code>…</code>`
             } else {
                 tidy = elements.code[3];
                 if (false !== (tidy = toTidy(tidy))) {
                     t.trim(tidy[0], tidy[1]);
                 }
-                t.wrap('<' + elements.code[0] + toAttributes(elements.code[2]) + '>', '</' + elements.code[0] + '>').insert(encode(value[0] || elements.code[1]));
+                t.wrap('<' + elements.code[0] + toAttributes(elements.code[2]) + '>', '</' + elements.code[0] + '>').insert(fromHTML(value[0] || elements.code[1]));
             }
         });
     }
@@ -3567,7 +3691,8 @@
                 tidy,
                 state = that.state,
                 charIndent = state.sourceHTML.tab || state.source.tab || state.tab || '\t',
-                elements = that.state.sourceHTML.elements || {}; // ``
+                elements = that.state.sourceHTML.elements || {};
+            // ``
             t.replace(patternBefore, "", -1);
             t.replace(patternAfter, "", 1);
             if (after[0]) {
@@ -3575,14 +3700,16 @@
                 if (elements.blockquote[0] === after[1]) {
                     if (false !== (tidy = toTidy(elements[""][3]))) {
                         t.trim(tidy[0], tidy[1]);
-                    } // `<blockquote>…</blockquote>`
+                    }
+                    // `<blockquote>…</blockquote>`
                 } else if (elements.q[0] === after[1]) {
                     if (false !== (tidy = toTidy(elements.blockquote[3]))) {
                         t.trim(tidy[0], tidy[1]);
                     }
                     t.wrap('<' + elements.blockquote[0] + toAttributes(elements.blockquote[2]) + '>\n', '\n</' + elements.blockquote[0] + '>').insert(value[0] || elements.blockquote[1]);
                     t.replace(toPattern('(^|\\n)'), '$1' + charIndent);
-                } // `<q>…</q>`
+                }
+                // `<q>…</q>`
             } else {
                 if (false !== (tidy = toTidy(elements.q[3]))) {
                     t.trim(tidy[0], tidy[1]);
@@ -3591,14 +3718,6 @@
                 t.replace(toPattern('(^|\\n)' + charIndent), '$1');
             }
         });
-    }
-
-    function encode(x) {
-        return x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function decode(x) {
-        return x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
     }
     var commands = {};
     commands.blocks = function () {
@@ -3609,7 +3728,7 @@
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
-        return that.record(), toggle.apply(this, elements.b), false;
+        return that.record(), toggle.apply(that, elements.b), false;
     };
     commands.code = function () {
         var that = this;
@@ -3620,10 +3739,10 @@
             label = 'URL:';
         }
         var that = this,
-            _that$$ = that.$(),
-            after = _that$$.after,
-            before = _that$$.before,
-            value = _that$$.value,
+            _that$$2 = that.$(),
+            after = _that$$2.after,
+            before = _that$$2.before,
+            value = _that$$2.value,
             state = that.state,
             elements = state.sourceHTML.elements || {},
             charIndent = state.sourceHTML.tab || state.source.tab || state.tab || '\t',
@@ -3659,6 +3778,8 @@
                 } else {
                     that.insert('<' + element[0] + toAttributes(element[2]) + '>' + (false !== tidy ? tidy[1] : ""), -1, true);
                 }
+            }).catch(function (e) {
+                return 0;
             });
         }
         return that.record(), false;
@@ -3667,25 +3788,37 @@
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
-        return that.record(), toggle.apply(this, elements.i), false;
+        return that.record(), toggle.apply(that, elements.i), false;
     };
     commands.link = function (label, placeholder) {
         if (label === void 0) {
             label = 'URL:';
         }
         var that = this,
-            _that$$2 = that.$(),
-            value = _that$$2.value,
+            _that$$3 = that.$(),
+            before = _that$$3.before,
+            value = _that$$3.value,
             state = that.state,
             elements = state.sourceHTML.elements || {},
             prompt = state.source.prompt;
         if (isFunction(prompt)) {
-            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function (href) {
+            var element = elements.a,
+                href,
+                m,
+                wrapped;
+            if (m = toPattern(tagStart(element[0])).exec(before)) {
+                wrapped = true;
+                m = /\shref=(?:"([^"]+)"|'([^']+)'|([^>\/\s]+))/.exec(m[2]);
+                href = toHTML((m[1] || "") + (m[2] || "") + (m[3] || ""));
+            } else if (m = toPattern('^\\s*' + tagStart(element[0])).exec(value)) {
+                m = /\shref=(?:"([^"]+)"|'([^']+)'|([^>\/\s]+))/.exec(m[2]);
+                href = toHTML((m[1] || "") + (m[2] || "") + (m[3] || ""));
+            }
+            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : href || placeholder || protocol + '//').then(function (href) {
                 if (!href) {
                     that.focus();
                     return;
                 }
-                var element = elements.a;
                 if (value) {
                     that.record(); // Record selection
                 }
@@ -3701,7 +3834,12 @@
                     // Tidy link with a space if there is no selection
                     tidy = [' ', ' '];
                 }
-                toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), tidy]);
+                if (wrapped) {
+                    toggle.apply(that, [element[0]]); // Unwrap if already wrapped, then…
+                }
+                toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), tidy]); // Wrap!
+            }).catch(function (e) {
+                return 0;
             });
         }
         return that.record(), false;
@@ -3714,7 +3852,7 @@
         var that = this,
             state = that.state,
             elements = state.sourceHTML.elements || {};
-        return that.record(), toggle.apply(this, elements.u), false;
+        return that.record(), toggle.apply(that, elements.u), false;
     };
 
     function canKeyDown(map, that) {
@@ -3724,12 +3862,12 @@
             key = map.key,
             queue = map.queue;
         if (queue.Control) {
-            var _that$$3 = that.$(),
-                after = _that$$3.after,
-                before = _that$$3.before,
-                end = _that$$3.end,
-                start = _that$$3.start;
-            _that$$3.value;
+            var _that$$4 = that.$(),
+                after = _that$$4.after,
+                before = _that$$4.before,
+                end = _that$$4.end,
+                start = _that$$4.start;
+            _that$$4.value;
             var lineAfter = after.split('\n').shift(),
                 lineBefore = before.split('\n').pop(),
                 lineMatch = lineBefore.match(/^(\s+)/),
@@ -3742,15 +3880,16 @@
                 toggle.apply(that, element);
                 return that.record(), false;
             }
-        } // Do nothing
+        }
+        // Do nothing
         if (queue.Alt || queue.Control) {
             return true;
         }
         if ('>' === key) {
-            var _that$$4 = that.$(),
-                _after = _that$$4.after,
-                _before = _that$$4.before,
-                _end = _that$$4.end,
+            var _that$$5 = that.$(),
+                _after = _that$$5.after,
+                _before = _that$$5.before,
+                _end = _that$$5.end,
                 _lineBefore = _before.split('\n').pop(),
                 _m2 = (_lineBefore + '>').match(toPattern(tagStart(tagName) + '$', "")),
                 _n,
@@ -3784,10 +3923,10 @@
             return that.record(), false;
         }
         if ('Enter' === key) {
-            var _that$$5 = that.$(),
-                _after2 = _that$$5.after,
-                _before2 = _that$$5.before,
-                _value = _that$$5.value,
+            var _that$$6 = that.$(),
+                _after2 = _that$$6.after,
+                _before2 = _that$$6.before,
+                _value = _that$$6.value,
                 _lineAfter = _after2.split('\n').shift(),
                 _lineBefore2 = _before2.split('\n').pop(),
                 _lineMatch = _lineBefore2.match(/^(\s+)/),
@@ -3802,6 +3941,11 @@
                     return that.insert('\n' + _lineMatchIndent, -1).record(), false;
                 }
             }
+            // `<br>`
+            if (queue.Shift) {
+                var br = elements.br;
+                return that.insert('<' + br[0] + toAttributes(br[2]) + '>' + (false === br[1] ? "" : br[1] + '</' + br[0] + '>') + '\n', -1).record(), false;
+            }
             if (_after2 && _before2) {
                 for (var i = 0, j = toCount(continueOnEnterTags); i < j; ++i) {
                     _n2 = continueOnEnterTags[i];
@@ -3809,12 +3953,14 @@
                         // `<foo>|</foo>`
                         if (_m3[0] === _lineBefore2) {
                             if (elements[_n2] && _value && elements[_n2][1] === _value) {
-                                that.insert("").wrap('\n' + _lineMatchIndent + charIndent, '\n' + _lineMatchIndent); // Unwrap if empty!
+                                that.insert("").wrap('\n' + _lineMatchIndent + charIndent, '\n' + _lineMatchIndent);
+                                // Unwrap if empty!
                             } else {
                                 toggle.apply(that, [_n2]);
                             }
                             return that.record(), false;
-                        } // `<foo>bar|</foo>`
+                        }
+                        // `<foo>bar|</foo>`
                         return that.insert('</' + _n2 + '>\n' + _lineMatchIndent + '<' + _n2 + (_m3[2] || "") + '>', -1).insert(elements[_n2] ? elements[_n2][1] || "" : "").record(), false;
                     }
                 }
@@ -3827,7 +3973,8 @@
                 for (var _i2 = 1; _i2 < 7; ++_i2) {
                     if (_lineAfter.startsWith('</' + elements['h' + _i2][0] + '>') && _lineBefore2.match(toPattern('^\\s*' + tagStart(elements['h' + _i2][0]), ""))) {
                         if (elements['h' + _i2] && _value && elements['h' + _i2][1] === _value) {
-                            that.insert("").wrap('\n' + _lineMatchIndent + charIndent, '\n' + _lineMatchIndent); // Insert paragraph below!
+                            that.insert("").wrap('\n' + _lineMatchIndent + charIndent, '\n' + _lineMatchIndent);
+                            // Insert paragraph below!
                         } else {
                             that.insert('</' + elements['h' + _i2][0] + '>\n' + _lineMatchIndent + '<' + elements.p[0] + '>', -1).replace(toPattern('^' + tagEnd(elements['h' + _i2][0])), '</' + elements.p[0] + '>', 1).insert(elements.p[1]);
                         }
@@ -3840,7 +3987,8 @@
     }
     var state = defaults;
     Object.assign(TE.prototype, that$2, that$1);
-    TE.state = fromStates({}, TE.state, state$2, state$1, state); // Be sure to remove the default source type
+    TE.state = fromStates({}, TE.state, state$2, state$1, state);
+    // Be sure to remove the default source type
     delete TE.state.source.type;
     var bounce$1 = debounce(function (map) {
         return map.pull();
@@ -3884,7 +4032,8 @@
                     offEventDefault(e);
                 }
                 return;
-            } // Default
+            }
+            // Default
             if (canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
             else {
                 offEventDefault(e);
@@ -3945,7 +4094,8 @@
             var _getDatum;
             editor = new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             state = editor.state;
-            type = state.source.type; // Get it from `window` context as this `K` object already defined in `./.github/factory/index.js.mjs` globally
+            type = state.source.type;
+            // Get it from `window` context as this `K` object already defined in `./.github/factory/index.js.mjs` globally
             map = new W.K(editor);
             map.keys['Escape'] = function () {
                 var parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
@@ -4258,7 +4408,8 @@
                 setAttribute(getPrev(parent), 'aria-expanded', 'false');
                 if ('Tab' !== key) {
                     fireFocus$5(getPrev(parent));
-                } // Focus to the self menu
+                }
+                // Focus to the self menu
             } else if ('Escape' === key) {
                 fireFocus$5(getParent(t, '.lot\\:menu[tabindex]'));
             }
@@ -4359,7 +4510,8 @@
                         fireFocus$5(getElement(targets$5, next));
                     }, 1);
                     stop = true;
-                } // Apply only to the first level drop-down menu
+                }
+                // Apply only to the first level drop-down menu
             } else if ('ArrowDown' === key && hasClass(next, 'level:1')) {
                 setAttribute(t, 'aria-expanded', 'true');
                 setClass(getParent(t), 'is:active');
@@ -4673,9 +4825,7 @@
                                 if ("number" == typeof this.config.perPage) this.perPage = this.config.perPage;
                                 else if ("object" === n(this.config.perPage)) {
                                     this.perPage = 1;
-                                    for (var e in this.config.perPage) {
-                                        window.innerWidth >= e && (this.perPage = this.config.perPage[e]);
-                                    }
+                                    for (var e in this.config.perPage) window.innerWidth >= e && (this.perPage = this.config.perPage[e]);
                                 }
                             }
                         }, {
@@ -4862,9 +5012,7 @@
                                 var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0],
                                     t = arguments[1];
                                 if (this.detachEvents(), this.selector.style.cursor = "auto", e) {
-                                    for (var i = document.createDocumentFragment(), r = 0; r < this.innerElements.length; r++) {
-                                        i.appendChild(this.innerElements[r]);
-                                    }
+                                    for (var i = document.createDocumentFragment(), r = 0; r < this.innerElements.length; r++) i.appendChild(this.innerElements[r]);
                                     this.selector.innerHTML = "", this.selector.appendChild(i), this.selector.removeAttribute("style");
                                 }
                                 t && t.call(this);
@@ -4887,9 +5035,7 @@
                                         onChange: function onChange() {}
                                     },
                                     i = e;
-                                for (var r in i) {
-                                    t[r] = i[r];
-                                }
+                                for (var r in i) t[r] = i[r];
                                 return t;
                             }
                         }, {
@@ -4922,7 +5068,8 @@
             onEvent('touchstart', siema, function () {
                 return W.clearInterval(interval);
             });
-        }); // Re-calculate the Siema dimension!
+        });
+        // Re-calculate the Siema dimension!
         if (1 === init) {
             _.on('change.stack', function () {
                 return fireEvent('resize', W);
@@ -5311,12 +5458,22 @@
             if (t !== e.target) {
                 return;
             }
-            if ('ArrowDown' === key || 'ArrowRight' === key || 'Home' === key || 'PageDown' === key) {
+            if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
+                if (current = getElement(targets$1 + '.is\\:current', t)) {
+                    fireEvent('click', current), fireFocus$1(current);
+                }
+                stop = true;
+            } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
+                if (current = getElement(targets$1 + '.is\\:current', t)) {
+                    fireEvent('click', current), fireFocus$1(current);
+                }
+                stop = true;
+            } else if ('Home' === key) {
                 if (current = getElement(targets$1, t)) {
                     fireEvent('click', current), fireFocus$1(current);
                 }
                 stop = true;
-            } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'End' === key || 'PageUp' === key) {
+            } else if ('End' === key) {
                 any = [].slice.call(getElements(targets$1, t));
                 if (current = any.pop()) {
                     fireEvent('click', current), fireFocus$1(current);
