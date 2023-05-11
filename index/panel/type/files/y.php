@@ -144,7 +144,7 @@ Hook::set('_', function ($_) use ($state, $url) {
                 ksort($list[1]);
                 $use .= '<details open>';
                 $use .= '<summary>';
-                $use .= '<b>' . i('Require') . '</b> (' . count($list[1]) . ')';
+                $use .= '<code>require: ' . count($list[1]) . '</code>';
                 $use .= '</summary>';
                 $use .= '<ul>';
                 $use .= implode("", $list[1]);
@@ -155,7 +155,7 @@ Hook::set('_', function ($_) use ($state, $url) {
                 ksort($list[0]);
                 $use .= '<details open>';
                 $use .= '<summary>';
-                $use .= '<b>' . i('Suggest') . '</b> (' . count($list[0]) . ')';
+                $use .= '<code>suggest: ' . count($list[0]) . '</code>';
                 $use .= '</summary>';
                 $use .= '<ul>';
                 $use .= implode("", $list[0]);
