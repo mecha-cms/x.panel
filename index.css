@@ -828,6 +828,7 @@
 ::before,
 ::after {
   background: none;
+  border: 0;
   box-sizing: border-box;
   color: inherit;
   font: inherit;
@@ -3625,6 +3626,12 @@ a:where(:any-link):focus {
 a:where(:any-link):active {
   background: var(--fill-link--active, var(--fill-link, none));
   color: var(--color-link--active, var(--color-link));
+}
+.a:where([aria-disabled=true]:not([class])),
+[role=link]:where([aria-disabled=true]:not([class])),
+a:where([aria-disabled=true]:not([class])) {
+  background: var(--fill-link--disabled, var(--fill-link, none));
+  color: var(--color-link--disabled, var(--color-link));
 }
 .a.not\:active,
 .not\:active[role=link],

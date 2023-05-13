@@ -10,6 +10,10 @@
       }
     }
   }
+  &:where([aria-disabled='true']:not([class])) {
+    background: var(--fill-link--disabled, var(--fill-link, none));
+    color: var(--color-link--disabled, var(--color-link));
+  }
   &.not\:active {
     background: var(--fill-link--disabled, var(--fill-link, none));
     color: var(--color-link--disabled, var(--color-link));
