@@ -15,7 +15,7 @@ function data($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
@@ -44,7 +44,7 @@ function file($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $base = \basename((string) ($file = $_['file'])); // Old file name
@@ -97,7 +97,7 @@ function file($_) {
         $_['file'] = $self; // For hook(s)
         $_SESSION['_']['file'][\rtrim($self, \D)] = 1;
     }
-    if (!empty($_['alert']['error'])) {
+    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         unset($_POST['query'], $_POST['token']);
         $_SESSION['form'] = $_POST;
     }
@@ -114,7 +114,7 @@ function folder($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
@@ -194,7 +194,7 @@ function folder($_) {
             $_SESSION['_']['folder'][$v] = 1;
         }
     }
-    if (!empty($_['alert']['error'])) {
+    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         unset($_POST['query'], $_POST['token']);
         $_SESSION['form'] = $_POST;
     }
@@ -211,7 +211,7 @@ function page($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $base = \basename((string) ($file = $_['file'])); // Old file name
@@ -315,7 +315,7 @@ function state($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : \dirname($_['file']);
@@ -336,7 +336,7 @@ function state($_) {
         'query' => \x\panel\_query_set($_POST['query'] ?? []),
         'task' => 'get'
     ];
-    if (!empty($_['alert']['error'])) {
+    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         unset($_POST['query'], $_POST['token']);
         $_SESSION['form'] = $_POST;
     }

@@ -11,7 +11,7 @@ function zip($_) {
         'task' => 'get'
     ];
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         $_['kick'] = $kick;
         return $_;
     }

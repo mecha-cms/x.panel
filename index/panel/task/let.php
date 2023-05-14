@@ -25,7 +25,7 @@ function data($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $_ = file($_); // Move to `file`
@@ -61,7 +61,7 @@ function file($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     if (\is_file($file = $_['file'])) {
@@ -108,7 +108,7 @@ function folder($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
@@ -172,7 +172,7 @@ function page($_) {
         $_['alert']['error'][] = 'Invalid token.';
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error'])) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     if (\is_file($file = $_['file'])) {

@@ -1,11 +1,11 @@
 <?php namespace x\panel\task\fire;
 
-function fuse ($_) {
+function fuse($_) {
     if (!\extension_loaded('zip')) {
-        $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/manual/en/class.ziparchive.php" rel="nofollow" target="_blank"><code>zip</code></a>'];
+        $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/book.zip" rel="nofollow" target="_blank"><code>zip</code></a>'];
     }
     // Abort by previous hook’s return value if any
-    if (!empty($_['alert']['error'])) {
+    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     \extract($GLOBALS, \EXTR_SKIP);

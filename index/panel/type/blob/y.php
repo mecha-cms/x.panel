@@ -7,7 +7,7 @@ Hook::set('do.blob.set', function ($_) use ($description, $zip) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $_;
     }
-    if (!empty($_['alert']['error'])) {
+    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     $error = false;
