@@ -22,10 +22,6 @@ function route($content, $path, $query, $hash) {
     }
     $content = $icon = $list = "";
     $id = \strtok($_['path'], '/');
-    $route = $_['route'] ?? [];
-    if (\is_array($route)) {
-        $route = $route[$path] ?? null;
-    }
     // Load the content first to queue the asset, icon, and (data)list
     if (isset($_['content'])) {
         $content = \x\panel\type\content([
