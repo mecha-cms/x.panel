@@ -20,8 +20,12 @@ function route($content, $path, $query, $hash) {
         ], $_['lot']['desk']['lot']['alert'] ?? []);
         $_['title'] = $_['title'] ?? 'Error';
     }
-    $id = \strtok($_['path'], '/');
     $content = $icon = $list = "";
+    $id = \strtok($_['path'], '/');
+    $route = $_['route'] ?? [];
+    if (\is_array($route)) {
+        $route = $route[$path] ?? null;
+    }
     // Load the content first to queue the asset, icon, and (data)list
     if (isset($_['content'])) {
         $content = \x\panel\type\content([
@@ -52,7 +56,7 @@ function route($content, $path, $query, $hash) {
         }
     }
     if (!empty($_['icon'])) {
-        $icon .= '<svg xmlns="http://www.w3.org/2000/svg" display="none">';
+        $icon .= '<svg display="none" xmlns="http://www.w3.org/2000/svg">';
         foreach ($_['icon'] as $k => $v) {
             $icon .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
             if (false === $v || null === $v) {
