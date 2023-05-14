@@ -4,27 +4,42 @@ if (!isset($state->x->user)) {
     abort('Missing <a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a> extension.');
 }
 
-$path = trim($url->path ?? "", '/');
-$route = trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
-
 // Set proper redirect target for non super user
-Hook::set('on.user.enter', function ($file) use ($route) {
+function _user_enter($file) {
+    extract($GLOBALS, EXTR_SKIP);
     $user = new User($file);
+    $route = trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
     $status = $user->status ?? 0;
+    // If current user is not super user
     if (1 !== $status) {
+        // And if current user is not an editor
         if (2 !== $status) {
+            // Redirect to the user page
             kick('/' . $route . '/get/user/' . $user->name(true));
         }
-        kick('/' . $route . '/get/page/1');
+        // Else, redirect to the default page
+        $kick = trim($state->x->panel->kick ?? 'get/asset/1', '/');
+        // Redirect target without `/` prefix will be resolved relative to the panel base URL
+        if (0 !== strpos($kick, '/') && false === strpos($kick, '://')) {
+            $kick = '/' . $route . '/' . $kick;
+        }
+        kick($kick);
     }
-});
+}
 
-// Clear the rest of file and folder marker(s)
-Hook::set('on.user.exit', function () {
+// Clear file and folder marker(s)
+function _user_exit() {
     unset($_SESSION['_']);
-});
+}
+
+Hook::set('on.user.enter', '_user_enter');
+Hook::set('on.user.exit', '_user_exit');
+
+$path = trim($url->path ?? "", '/');
+$query = From::query($url->query ?? "");
 
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$route = trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 $test = preg_match('/^' . x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
 
 // Create `$user` variable just in case `user` extension is too late to be loaded due to the default extension order.
@@ -43,8 +58,8 @@ if (!empty($user) && !($user instanceof User)) {
     abort('<code>$user</code> must be an instance of <code>User</code>.');
 }
 
-// File/folder path takes from the current path or from the current path without the
-// numeric suffix which is commonly used to indicate current pagination offset.
+// File/folder path is taken from the current path or from the current path without the numeric suffix which is
+// commonly used to indicate current pagination offset.
 $f = $part = 0;
 if ($test) {
     if (!$f = stream_resolve_include_path(LOT . D . $m[2])) {
@@ -56,7 +71,6 @@ if ($test) {
     }
 }
 
-$query = From::query($_SERVER['QUERY_STRING']);
 $GLOBALS['_'] = $_ = array_replace_recursive([
     '0' => null,
     '1' => null,
@@ -108,7 +122,7 @@ if ('GET' === $r && !array_key_exists('kick', $_GET)) {
     }
 }
 
-// Load the panel interface only if the location value is at least started with `http://127.0.0.1/panel/`
+// Load the panel interface only if current location path is at least started with `http://127.0.0.1/panel/`
 if (!empty($user) && 0 === strpos($path . '/', $route . '/') && $test) {
     require __DIR__ . D . 'index' . D . 'panel.php';
 }
