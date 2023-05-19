@@ -1041,7 +1041,13 @@ function page($value, $key) {
 }
 
 function pager($value, $key) {
-    $content = (string) \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, 2, $value['ref'] ?? static function ($i) use ($value) {
+    $route = $value['route'] ?? null;
+    if (\is_string($route) && (false !== \strpos($route, '%d') || !\is_callable($route))) {
+        $route = static function ($i) use ($route) {
+            return \long(\sprintf($route, $i));
+        };
+    }
+    $content = (string) \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, $value['peek'] ?? 2, $route ?? static function ($i) use ($value) {
         return \x\panel\to\link([
             'part' => $i,
             'path' => $value['path'] ?? $GLOBALS['_']['path']
