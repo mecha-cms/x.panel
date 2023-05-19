@@ -119,7 +119,7 @@ function colors($value, $key) {
             }
             ++$count;
             if (!\is_array($v)) {
-                $v = ['value' => $v];
+                $v = ['value' => \s($v)];
             }
             $n = $name . '[' . $k . ']';
             $input = \x\panel\to\field($v, $k, 'input')['field'];
@@ -213,7 +213,7 @@ function item($value, $key) {
             }
             ++$count;
             if (!\is_array($v)) {
-                $v = ['title' => $v];
+                $v = ['title' => \s($v)];
             }
             $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
@@ -279,12 +279,12 @@ function items($value, $key) {
         $sort = !isset($value['sort']) || $value['sort'];
         $is_active_all = !isset($value['active']) || $value['active'];
         foreach ($value['lot'] as $k => $v) {
-            if (null === $v || false === $v || !empty($v['skip'])) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
             ++$count;
             if (!\is_array($v)) {
-                $v = ['title' => $v];
+                $v = ['title' => \s($v)];
             }
             $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
@@ -293,7 +293,11 @@ function items($value, $key) {
             $v['not']['active'] = $v['not']['active'] ?? !$is_active;
             $v['not']['fix'] = $v['not']['fix'] ?? !$is_fix;
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            $input[2]['checked'] = $key_as_value ? false !== \strpos($the_values, \P . $k . \P) : isset($the_values[$k]);
+            if ($key_as_value) {
+                $input[2]['checked'] = false !== \strpos($the_values, \P . $k . \P);
+            } else {
+                $input[2]['checked'] = isset($v['value']) ? (isset($the_values[$k]) && $v['value'] === $the_values[$k]) : isset($the_values[$k]);
+            }
             $input[2]['type'] = 'checkbox';
             $input[2]['name'] = $v['name'] ?? $n . '[' . ($key_as_value ? "" : $k) . ']';
             $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_values[$k] ?? true));

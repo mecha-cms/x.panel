@@ -30,6 +30,6 @@ function detach($_) {
         'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
-    $_SESSION['_']['folder'][$folder] = 1;
+    $_SESSION['_']['folders'][$folder] = 1;
     return $_;
 }

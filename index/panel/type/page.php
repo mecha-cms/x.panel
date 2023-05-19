@@ -319,7 +319,7 @@ $desk = [
     ]
 ];
 
-$session = $_SESSION['_']['file'] ?? [];
+$session = $_SESSION['_']['files'] ?? [];
 
 Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
     $apart = [];
@@ -408,7 +408,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
                     ]
                 ];
                 if (isset($session[$k])) {
-                    unset($_SESSION['_']['file'][$k]);
+                    unset($_SESSION['_']['files'][$k]);
                 }
             }
             ksort($files);

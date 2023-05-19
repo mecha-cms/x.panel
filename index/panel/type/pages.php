@@ -60,7 +60,7 @@ Hook::set('_', function ($_) use ($state, $user) {
                 $pages[$k] = [
                     'author' => $p['author'],
                     'color' => $p->color ?? null,
-                    'current' => !empty($_SESSION['_']['file'][$k]),
+                    'current' => !empty($_SESSION['_']['files'][$k]),
                     'description' => $description ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($description)) : $description) . S : null,
                     'icon' => $icon,
                     'image' => $image,
@@ -129,8 +129,8 @@ Hook::set('_', function ($_) use ($state, $user) {
                     'title' => $title ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($title)) : $title) . S : null,
                 ];
                 unset($p);
-                if (isset($_SESSION['_']['file'][$k])) {
-                    unset($_SESSION['_']['file'][$k]);
+                if (isset($_SESSION['_']['files'][$k])) {
+                    unset($_SESSION['_']['files'][$k]);
                 }
             }
             if (
@@ -146,7 +146,7 @@ Hook::set('_', function ($_) use ($state, $user) {
                         D => '/'
                     ]);
                     $files[$k] = [
-                        'current' => !empty($_SESSION['_']['file'][$k]),
+                        'current' => !empty($_SESSION['_']['files'][$k]),
                         'description' => size(filesize($k)),
                         'tags' => ['x:data' => true],
                         'tasks' => [
@@ -187,8 +187,8 @@ Hook::set('_', function ($_) use ($state, $user) {
                             'task' => 'get'
                         ]
                     ];
-                    if (isset($_SESSION['_']['file'][$k])) {
-                        unset($_SESSION['_']['file'][$k]);
+                    if (isset($_SESSION['_']['files'][$k])) {
+                        unset($_SESSION['_']['files'][$k]);
                     }
                 }
                 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['lot'] = $files;

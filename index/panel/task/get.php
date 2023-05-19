@@ -95,7 +95,7 @@ function file($_) {
             'task' => 'get'
         ];
         $_['file'] = $self; // For hook(s)
-        $_SESSION['_']['file'][\rtrim($self, \D)] = 1;
+        $_SESSION['_']['files'][\rtrim($self, \D)] = 1;
     }
     if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         unset($_POST['query'], $_POST['token']);
@@ -148,7 +148,7 @@ function folder($_) {
                 'task' => 'get'
             ];
         }
-        $_SESSION['_']['folder'][\rtrim($folder, \D)] = 1;
+        $_SESSION['_']['folders'][\rtrim($folder, \D)] = 1;
     } else {
         $seal = \octdec($_POST['folder']['seal'] ?? '0775');
         if ($seal < 0 || $seal > 0777) {
@@ -191,7 +191,7 @@ function folder($_) {
         }
         $_['folder'] = $self; // For hook(s)
         foreach (\step(\rtrim($self, \D), \D) as $v) {
-            $_SESSION['_']['folder'][$v] = 1;
+            $_SESSION['_']['folders'][$v] = 1;
         }
     }
     if (!empty($_['alert']['error']) || $_['status'] >= 400) {

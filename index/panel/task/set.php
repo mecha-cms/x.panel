@@ -83,7 +83,7 @@ function blob($_) {
         }
         $_['alert']['success'][$blob] = ['File %s successfully uploaded.', '<code>' . \x\panel\from\path($blob) . '</code>'];
         $_['file'] = $blob; // For hook(s)
-        $_SESSION['_']['file'][\rtrim($blob, \D)] = 1;
+        $_SESSION['_']['files'][\rtrim($blob, \D)] = 1;
         // Perform package “extract”
         if ((!empty($_POST['options'][$k]['zip']['extract']) || !empty($_POST['options']['zip']['extract'])) && \extension_loaded('zip') && ('zip' === $x || 'application/zip' === $type)) {
             $zip = new \ZipArchive;
@@ -104,13 +104,13 @@ function blob($_) {
                     } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
                         try {
                             \token_get_all($content, \TOKEN_PARSE);
-                            $_SESSION['_']['file'][$v] = 1;
+                            $_SESSION['_']['files'][$v] = 1;
                         } catch (\Throwable $e) {
                             $_['alert']['error'][$v] = (string) $e;
                         }
                     } else {
-                        $_SESSION['_']['file'][$v] = 1;
-                        $_SESSION['_']['folder'][\rtrim(\dirname($v), \D)] = 1;
+                        $_SESSION['_']['files'][$v] = 1;
+                        $_SESSION['_']['folders'][\rtrim(\dirname($v), \D)] = 1;
                     }
                 }
                 if (!empty($_['alert']['error'])) {
@@ -212,7 +212,7 @@ function file($_) {
             if (!\is_dir($folder = \dirname($file))) {
                 \mkdir($folder, 0775, true);
                 foreach (\step(\rtrim($folder, \D), \D) as $v) {
-                    $_SESSION['_']['folder'][$v] = 1;
+                    $_SESSION['_']['folders'][$v] = 1;
                 }
             }
             if (\is_writable($folder)) {
@@ -234,7 +234,7 @@ function file($_) {
             'task' => 'get'
         ];
         $_['file'] = $file; // For hook(s)
-        $_SESSION['_']['file'][\rtrim($file, \D)] = 1;
+        $_SESSION['_']['files'][\rtrim($file, \D)] = 1;
     }
     if (!empty($_['alert']['error']) || $_['status'] >= 400) {
         unset($_POST['query'], $_POST['token']);
@@ -290,7 +290,7 @@ function folder($_) {
         }
         $_['folder'] = $self; // For hook(s)
         foreach (\step(\rtrim($self, \D), \D) as $v) {
-            $_SESSION['_']['folder'][$v] = 1;
+            $_SESSION['_']['folders'][$v] = 1;
         }
     }
     if (!empty($_['alert']['error']) || $_['status'] >= 400) {

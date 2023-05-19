@@ -72,7 +72,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                 $pages[$k] = [
                     'author' => $p['author'],
                     'color' => $p->color ?? null,
-                    'current' => !empty($_SESSION['_']['folder'][$d]),
+                    'current' => !empty($_SESSION['_']['folders'][$d]),
                     'description' => $description ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($description)) : $description) . S : null,
                     'icon' => $icon,
                     'image' => $image,
@@ -142,8 +142,8 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                     ]
                 ];
                 unset($p);
-                if (isset($_SESSION['_']['folder'][$d])) {
-                    unset($_SESSION['_']['folder'][$d]);
+                if (isset($_SESSION['_']['folders'][$d])) {
+                    unset($_SESSION['_']['folders'][$d]);
                 }
             }
         }
@@ -160,7 +160,7 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
             $n = basename($k, '.zip');
             $path = 'y/' . basename($k);
             $files[$k] = [
-                'current' => !empty($_SESSION['_']['file'][$k]),
+                'current' => !empty($_SESSION['_']['files'][$k]),
                 'description' => S . x\panel\to\elapse($time = new Time(substr($n, strrpos($n, '.') + 1))) . S,
                 'tasks' => [
                     'let' => [
@@ -187,8 +187,8 @@ Hook::set('_', function ($_) use ($state, $url, $user) {
                     'path' => $path
                 ]
             ];
-            if (isset($_SESSION['_']['file'][$k])) {
-                unset($_SESSION['_']['file'][$k]);
+            if (isset($_SESSION['_']['files'][$k])) {
+                unset($_SESSION['_']['files'][$k]);
             }
         }
         if ($files) {

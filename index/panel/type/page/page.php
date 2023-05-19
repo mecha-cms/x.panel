@@ -49,6 +49,7 @@ $sort = $state->x->page->page->sort ?? [1, 'path'];
 $page_chunk = $page['chunk'] ?? null;
 $page_deep = $page['deep'] ?? null;
 $page_sort = $page['sort'] ?? null;
+$page_state = (array) ($page['state'] ?? []);
 
 $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['layout'] = [
     'lot' => $layouts,
@@ -96,6 +97,14 @@ $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
                     'stack' => 30,
                     'type' => 'item',
                     'value' => $page_sort === $sort ? null : json_encode($page_sort)
+                ],
+                'extension' => [
+                    'flex' => false,
+                    'lot' => [],
+                    'name' => 'page[state][x]',
+                    'stack' => 40,
+                    'type' => 'items',
+                    'values' => $page_state['x'] ?? []
                 ]
             ],
             'type' => 'fields'
@@ -106,5 +115,13 @@ $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
 ];
 
 $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['set']['title'] = 'set' === $_['task'] ? 'Publish' : 'Update';
+
+Hook::set('_', function ($_) {
+    // Hide the extension option(s) if it is empty, unless there is a `skip` property that was explicitly set
+    if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']) && !isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'])) {
+        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'] = empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['lot']);
+    }
+    return $_;
+}, 20);
 
 return $_;

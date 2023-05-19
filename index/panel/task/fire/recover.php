@@ -17,7 +17,7 @@ function recover($_) {
     foreach (\g($folder, null, true) as $k => $v) {
         $to = \LOT . \D . ($kk = \strtr($k, [$folder . \D => ""]));
         if (0 === $v) {
-            $_SESSION['_']['folder'][$to] = 1;
+            $_SESSION['_']['folders'][$to] = 1;
             continue;
         }
         if (!\is_dir($parent = \dirname($to))) {
@@ -27,7 +27,7 @@ function recover($_) {
             continue; // File already exists
         }
         \rename($k, $to);
-        $_SESSION['_']['file'][$to] = 1;
+        $_SESSION['_']['files'][$to] = 1;
     }
     // Remove empty folder(s)
     foreach (\g($folder, 0, true) as $k => $v) {

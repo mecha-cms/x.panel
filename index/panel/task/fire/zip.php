@@ -61,13 +61,13 @@ function zip($_) {
                 } else if ('php' === $x && $content = $zip->getFromIndex($i)) {
                     try {
                         \token_get_all($content, \TOKEN_PARSE);
-                        $_SESSION['_']['file'][$v] = 1;
+                        $_SESSION['_']['files'][$v] = 1;
                     } catch (\Throwable $e) {
                         $_['alert']['error'][$v] = (string) $e;
                     }
                 } else {
-                    $_SESSION['_']['file'][$v] = 1;
-                    $_SESSION['_']['folder'][\rtrim(\dirname($v), \D)] = 1;
+                    $_SESSION['_']['files'][$v] = 1;
+                    $_SESSION['_']['folders'][\rtrim(\dirname($v), \D)] = 1;
                 }
             }
             if (!empty($_['alert']['error'])) {
