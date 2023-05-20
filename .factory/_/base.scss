@@ -242,6 +242,14 @@ table {
   }
 }
 
+:disabled {
+  @each $v in (-ms-browse, -webkit-file-upload-button, file-selector-button) {
+    &::#{$v} {
+      color: var(--color-link--disabled);
+    }
+  }
+}
+
 // [role='combobox'],
 [role='button'],
 [role='checkbox'],

@@ -1077,6 +1077,16 @@ pre code {
   color: var(--color-link--active, var(--color-link));
 }
 
+:disabled::-ms-browse {
+  color: var(--color-link--disabled);
+}
+:disabled::-webkit-file-upload-button {
+  color: var(--color-link--disabled);
+}
+:disabled::file-selector-button {
+  color: var(--color-link--disabled);
+}
+
 [role=button],
 [role=checkbox],
 [role=listbox],
@@ -1257,22 +1267,26 @@ pre.is\:text code {
 .lot\:field.type\:blob > label + div input.is\:host,
 .lot\:field.type\:blobs > label + div input.is\:host {
   border: 1px dashed;
-  border-color: var(--stroke);
+  border-color: var(--stroke-input);
   height: auto;
   line-height: normal;
   padding: var(--y) var(--x);
 }
 .lot\:field.type\:blob > label + div input.is\:host:hover,
 .lot\:field.type\:blobs > label + div input.is\:host:hover {
-  border-color: var(--stroke--hover, var(--stroke));
+  border-color: var(--stroke--input-hover, var(--stroke-input));
 }
 .lot\:field.type\:blob > label + div input.is\:host:focus,
 .lot\:field.type\:blobs > label + div input.is\:host:focus {
-  border-color: var(--stroke--focus, var(--stroke));
+  border-color: var(--stroke--input-focus, var(--stroke-input));
 }
 .lot\:field.type\:blob > label + div input.is\:host:active,
 .lot\:field.type\:blobs > label + div input.is\:host:active {
-  border-color: var(--stroke--active, var(--stroke));
+  border-color: var(--stroke--input-active, var(--stroke-input));
+}
+.lot\:field.type\:blob > label + div input.is\:host:disabled,
+.lot\:field.type\:blobs > label + div input.is\:host:disabled {
+  border-color: var(--stroke-input--disabled);
 }
 
 .lot\:field.type\:buttons > label + div .with\:options {
@@ -3781,7 +3795,6 @@ table td {
 
 .title .status {
   display: inline-block;
-  line-height: normal;
   margin-left: calc(var(--x) / 4);
   vertical-align: middle;
 }
