@@ -33,69 +33,8 @@ function button($value, $key) {
 
 function buttons($value, $key) {
     $count = 0;
-    $name = $value['name'] ?? $key;
-    if (isset($value['values'])) {
-        if (isset($value['lot']) && \is_array($value['lot'])) {
-            foreach ($value['values'] as $k => $v) {
-                if (!isset($value['lot'][$k]) || (\is_array($value['lot'][$k]) && !\array_key_exists('value', $value['lot'][$k]))) {
-                    $value['lot'][$k]['value'] = $v;
-                }
-            }
-        } else {
-            $value['lot'] = $value['values'];
-        }
-        unset($value['values']);
-    }
-    $out = \x\panel\to\field($value, $key);
-    $out['field'][0] = 'div';
-    if (isset($value['lot'])) {
-        // TODO: Sort by `stack`
-        foreach ($value['lot'] as $k => $v) {
-            if (false === $v || null === $v || !empty($v['skip'])) {
-                continue;
-            }
-            ++$count;
-            if (!\is_array($v)) {
-                $v = ['value' => $v];
-            }
-            $is_active = !isset($v['active']) || $v['active'];
-            $v['is']['active'] = $v['is']['active'] ?? $is_active;
-            $v['not']['active'] = $v['not']['active'] ?? !$is_active;
-            $n = $name . '[' . $k . ']';
-            $button = \x\panel\to\field($v, $k, 'button')['field'];
-            $button[1] = \i(...((array) ($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k)));
-            $button[2]['name'] = $n;
-            $button[2]['type'] = 'button';
-            $button[2] = \x\panel\_tag_set($button[2], $v);
-            $out['field'][1] .= new \HTML($button);
-        }
-        unset($value['lot']);
-    }
-    $out['field'][2]['role'] = 'group';
-    $value['has']['gap'] = $value['has']['gap'] ?? false;
-    $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
-    $value['is']['flex'] = $value['is']['flex'] ?? true;
-    $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
-    $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
-    $value['with']['options'] = $value['with']['options'] ?? true;
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
-    return \x\panel\type\field($out, $key);
-}
-
-function color($value, $key) {
-    $out = \x\panel\to\field($value, $key, 'input');
-    $out['field'][2]['type'] = 'color';
-    if ($the_value = \x\panel\to\color((string) ($value['value'] ?? ""))) {
-        $out['field'][2]['title'] = $the_value;
-        $out['field'][2]['value'] = $the_value;
-    }
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
-}
-
-function colors($value, $key) {
-    $count = 0;
+    $has_gap = !isset($value['gap']) || $value['gap'];
+    $is_flex = !isset($value['flex']) || $value['flex'];
     $name = $value['name'] ?? $key;
     if (isset($value['values'])) {
         if (isset($value['lot']) && \is_array($value['lot'])) {
@@ -121,7 +60,72 @@ function colors($value, $key) {
             if (!\is_array($v)) {
                 $v = ['value' => \s($v)];
             }
-            $n = $name . '[' . $k . ']';
+            $is_active = !isset($v['active']) || $v['active'];
+            $v['is']['active'] = $v['is']['active'] ?? $is_active;
+            $v['not']['active'] = $v['not']['active'] ?? !$is_active;
+            $n = $v['name'] ?? $name . '[' . $k . ']';
+            $button = \x\panel\to\field($v, $k, 'button')['field'];
+            $button[1] = \i(...((array) ($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k)));
+            $button[2]['name'] = $n;
+            $button[2]['type'] = $v['type'] ?? 'button';
+            $button[2] = \x\panel\_tag_set($button[2], $v);
+            $out['field'][1] .= new \HTML($button);
+        }
+        unset($value['lot']);
+    }
+    $out['field'][2]['role'] = 'group';
+    $value['has']['gap'] = $value['has']['gap'] ?? $has_gap;
+    $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
+    $value['is']['flex'] = $value['is']['flex'] ?? $is_flex;
+    $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
+    $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    $value['with']['options'] = $value['with']['options'] ?? true;
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
+    unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
+    return \x\panel\type\field($out, $key);
+}
+
+function color($value, $key) {
+    $out = \x\panel\to\field($value, $key, 'input');
+    $out['field'][2]['type'] = 'color';
+    if ($the_value = \x\panel\to\color((string) ($value['value'] ?? ""))) {
+        $out['field'][2]['title'] = $the_value;
+        $out['field'][2]['value'] = $the_value;
+    }
+    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
+    return \x\panel\type\field($out, $key);
+}
+
+function colors($value, $key) {
+    $count = 0;
+    $has_gap = !isset($value['gap']) || $value['gap'];
+    $is_flex = $value['is']['flex'] ?? $has_gap;
+    $name = $value['name'] ?? $key;
+    if (isset($value['values'])) {
+        if (isset($value['lot']) && \is_array($value['lot'])) {
+            foreach ($value['values'] as $k => $v) {
+                if (!isset($value['lot'][$k]) || (\is_array($value['lot'][$k]) && !\array_key_exists('value', $value['lot'][$k]))) {
+                    $value['lot'][$k]['value'] = $v;
+                }
+            }
+        } else {
+            $value['lot'] = $value['values'];
+        }
+        unset($value['values']);
+    }
+    $out = \x\panel\to\field($value, $key);
+    $out['field'][0] = 'div';
+    if (isset($value['lot'])) {
+        // TODO: Sort by `stack`
+        foreach ($value['lot'] as $k => $v) {
+            if (false === $v || null === $v || !empty($v['skip'])) {
+                continue;
+            }
+            ++$count;
+            if (!\is_array($v)) {
+                $v = ['value' => \s($v)];
+            }
+            $n = $v['name'] ?? $name . '[' . $k . ']';
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['name'] = $n;
             $input[2]['type'] = 'color';
@@ -135,7 +139,7 @@ function colors($value, $key) {
         unset($value['lot']);
     }
     $out['field'][2]['role'] = 'group';
-    $value['has']['gap'] = $value['has']['gap'] ?? ($is_flex = $value['is']['flex'] ?? true);
+    $value['has']['gap'] = $value['has']['gap'] ?? $is_flex;
     $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
     $value['is']['flex'] = $is_flex;
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class

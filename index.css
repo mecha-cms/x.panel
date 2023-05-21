@@ -1293,6 +1293,12 @@ pre.is\:text code {
   padding-bottom: 0;
   padding-top: 0;
 }
+.lot\:field.type\:buttons > label + div .with\:options.has\:gap {
+  gap: calc(var(--y) / 4) calc(var(--x) / 4);
+}
+.lot\:field.type\:buttons > label + div .with\:options.is\:flex {
+  display: inline-flex;
+}
 
 .lot\:field.type\:colors > label + div .with\:options {
   padding-bottom: 0;
