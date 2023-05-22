@@ -1352,6 +1352,9 @@ pre.is\:text code {
   display: flex;
   width: 100%;
 }
+.option-picker.has\:width .option-picker__input {
+  flex: 1;
+}
 .option-picker__options {
   line-height: var(--h);
 }

@@ -245,7 +245,7 @@ function item($value, $key) {
                 1 => (new \HTML($input)) . ' ' . $title,
                 2 => \x\panel\_tag_set([], $v)
             ];
-            $a[$title . $k] = new \HTML($label);
+            $a[\strip_tags($title)] = new \HTML($label);
         }
         $sort && \ksort($a);
         if (!isset($value['flex'])) {
@@ -325,7 +325,7 @@ function items($value, $key) {
                 1 => (new \HTML($input)) . ' ' . $title,
                 2 => \x\panel\_tag_set([], $v)
             ];
-            $a[$title . $k] = new \HTML($label);
+            $a[\strip_tags($title)] = new \HTML($label);
         }
         $sort && \ksort($a);
         if (!isset($value['flex'])) {
@@ -357,6 +357,7 @@ function link($value, $key) {
 }
 
 function name($value, $key) {
+    $keep = (string) ($value['keep'] ?? "");
     $v = (string) ($value['value'] ?? "");
     $default = \array_keys(\array_filter((array) \State::get('x.panel.guard.file.x', true)));
     \sort($default);
@@ -369,7 +370,7 @@ function name($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.baz' : ""));
     $value['max'] = $value['max'] ?? 255; // <https://serverfault.com/a/9548>
     $value['min'] = $value['min'] ?? $x ? 2 : 1;
-    $value['pattern'] = $value['pattern'] ?? "^([_.]?[a-z\\d]+([_.-][a-z\\d]+)*)?" . $x . "$";
+    $value['pattern'] = $value['pattern'] ?? "^([_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d" . \x($keep) . "]+)*)?" . $x . "$";
     return \x\panel\type\field\text($value, $key);
 }
 
