@@ -199,7 +199,7 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
     if ($next = \i($next)) {
         $out .= '<span>';
         if ($current === $end) {
-            $out .= '<a aria-disabled="true" title="' . \i('Go to the %s page', [\l($next)]) . '">' . $next . '</b>';
+            $out .= '<a aria-disabled="true" title="' . \i('Go to the %s page', [\l($next)]) . '">' . $next . '</a>';
         } else {
             $out .= '<a href="' . \call_user_func($fn, $current + 1) . '" rel="next" title="' . \i('Go to the %s page', [\l($next)]) . '">' . $next . '</a>';
         }
