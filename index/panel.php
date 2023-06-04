@@ -6,6 +6,74 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
 
 function route($content, $path, $query, $hash) {
+    if (null !== $content || !\Is::user()) {
+        return $content;
+    }
+    // Check for update(s)
+    if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task'] && empty($_['query']['token'])) {
+        \x\panel\_git_sync();
+    }
+    // Load pre-defined route(s) and type(s)
+    (static function () {
+        \extract($GLOBALS);
+        require __DIR__ . \D . 'panel' . \D . 'route.php';
+        require __DIR__ . \D . 'panel' . \D . 'status.php';
+        require __DIR__ . \D . 'panel' . \D . 'task.php';
+        require __DIR__ . \D . 'panel' . \D . 'type.php';
+        if (isset($_)) {
+            // Update panel data from the route file!
+            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+        }
+    })();
+    \x\panel\_asset_get();
+    \x\panel\_asset_let();
+    $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
+    $task = \strtr($_['task'] ?? 'get', "\\", '/');
+    $types = \step(\strtr($_['type'] ?? \P, "\\", '/'), '/');
+    foreach (\array_reverse($types) as $type) {
+        $_ = $GLOBALS['_'] = \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_;
+    }
+    if (!empty($_['alert']) && \class_exists("\\Alert")) {
+        // Has alert data from queue
+        $has_alert = true;
+        // Make alert section visible
+        if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
+            $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+        }
+        foreach ((array) $_['alert'] as $k => $v) {
+            foreach ((array) $v as $vv) {
+                $vv = (array) $vv;
+                \call_user_func("\\Alert::" . $k, ...$vv);
+            }
+        }
+    }
+    if ($kick = $_['kick']) {
+        // Force redirect!
+        \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);
+    }
+    if (isset($_REQUEST['token'])) {
+        \kick(\x\panel\to\link(['query' => ['token' => null]]));
+    }
+    if (!empty($_SESSION['alert'])) {
+        // Has alert data from previous session
+        $has_alert = true;
+        // Make alert section visible
+        if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
+            $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
+        }
+    }
+    if (!empty($has_alert) && !empty($_['lot']['desk']['lot']['form']['lot']['alert']) && \class_exists("\\Layout")) {
+        $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
+    }
+    // Update panel data
+    $GLOBALS['_'] = $_;
+    return \Hook::fire('route.panel', [$content, $path, $query, $hash]);
+}
+
+function route__panel($content, $path, $query, $hash) {
+    if (null !== $content) {
+        return $content;
+    }
     \extract($GLOBALS, \EXTR_SKIP);
     if ($_['status'] >= 400) {
         $_['lot']['bar']['skip'] = true;
@@ -130,74 +198,8 @@ function route($content, $path, $query, $hash) {
 \Hook::set('route', "x\\layout\\route", 1000);
 
 // Load `route.panel` hook only if user is active!
-\Hook::set('route', function ($content, $path, $query, $hash) use ($_) {
-    if (null !== $content) {
-        return $content;
-    }
-    if (\Is::user()) {
-        // Check for update(s)
-        if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task'] && empty($_['query']['token'])) {
-            \x\panel\_git_sync();
-        }
-        // Load pre-defined route(s) and type(s)
-        (static function () {
-            \extract($GLOBALS);
-            require __DIR__ . \D . 'panel' . \D . 'route.php';
-            require __DIR__ . \D . 'panel' . \D . 'status.php';
-            require __DIR__ . \D . 'panel' . \D . 'task.php';
-            require __DIR__ . \D . 'panel' . \D . 'type.php';
-            if (isset($_)) {
-                // Update panel data from the route file!
-                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-            }
-        })();
-        \x\panel\_asset_get();
-        \x\panel\_asset_let();
-        $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
-        $task = \strtr($_['task'] ?? 'get', "\\", '/');
-        $types = \step(\strtr($_['type'] ?? \P, "\\", '/'), '/');
-        foreach (\array_reverse($types) as $type) {
-            $_ = $GLOBALS['_'] = \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_;
-        }
-        if (!empty($_['alert']) && \class_exists("\\Alert")) {
-            // Has alert data from queue
-            $has_alert = true;
-            // Make alert section visible
-            if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
-                $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
-            }
-            foreach ((array) $_['alert'] as $k => $v) {
-                foreach ((array) $v as $vv) {
-                    $vv = (array) $vv;
-                    \call_user_func("\\Alert::" . $k, ...$vv);
-                }
-            }
-        }
-        if ($kick = $_['kick']) {
-            // Force redirect!
-            \kick(\is_array($kick) ? \x\panel\to\link($kick) : $kick);
-        }
-        if (isset($_REQUEST['token'])) {
-            \kick(\x\panel\to\link(['query' => ['token' => null]]));
-        }
-        if (!empty($_SESSION['alert'])) {
-            // Has alert data from previous session
-            $has_alert = true;
-            // Make alert section visible
-            if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
-                $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
-            }
-        }
-        if (!empty($has_alert) && !empty($_['lot']['desk']['lot']['form']['lot']['alert']) && \class_exists("\\Layout")) {
-            $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
-        }
-        // Update panel data
-        $GLOBALS['_'] = $_;
-        return \Hook::fire('route.panel', [$content, $path, $query, $hash]);
-    }
-}, 0);
-
-\Hook::set('route.panel', __NAMESPACE__ . "\\route", 100);
+\Hook::set('route', __NAMESPACE__ . "\\route", 0);
+\Hook::set('route.panel', __NAMESPACE__ . "\\route__panel", 100);
 
 foreach (\glob(\LOT . \D . '{x,y}' . \D . '*' . \D . 'index' . \D . 'panel.php', \GLOB_BRACE | \GLOB_NOSORT) as $file) {
     // Ignore this very file!
