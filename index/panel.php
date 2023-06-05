@@ -9,6 +9,7 @@ function route($content, $path, $query, $hash) {
     if (null !== $content || !\Is::user()) {
         return $content;
     }
+    $_ = $GLOBALS['_'] ?? [];
     // Check for update(s)
     if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task'] && empty($_['query']['token'])) {
         \x\panel\_git_sync();
