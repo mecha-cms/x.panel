@@ -70,7 +70,7 @@ function fuse($_) {
         }
         $zip = new \ZipArchive;
         if (true === $zip->open($file = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms' . \D . $n . ($version ? '@v' . $version : "") . '.zip')) {
-            for ($i = 0; $i < $zip->numFiles; ++$i) {
+            for ($i = 0, $j = $zip->numFiles; $i < $j; ++$i) {
                 $k = \trim($v = \strtr($zip->statIndex($i)['name'], \D, '/'), '/');
                 // Ignore default asset and page file(s)…
                 if (0 === \strpos($k . '/', 'lot/asset/') || 0 === \strpos($k . '/', 'lot/page/')) {
@@ -85,7 +85,7 @@ function fuse($_) {
         // ++diff
         foreach ($files_next as $k => $v) {
             $counter[isset($files_current[$k]) ? 2 : 1][$k] = 1;
-            $_SESSION['_'][0 === $v ? 'folder' : 'file'][$folder . \D . \strtr($k, '/', \D)] = 1;
+            $_SESSION['_'][0 === $v ? 'folders' : 'files'][$folder . \D . \strtr($k, '/', \D)] = 1;
             $f = $folder . \D . $k;
             // Prioritize folder over file
             if (0 === $v) {
@@ -212,7 +212,7 @@ function fuse($_) {
         }
         $zip = new \ZipArchive;
         if (true === $zip->open($file = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . 'mecha-cms' . \D . $n . ($version ? '@v' . $version : "") . '.zip')) {
-            for ($i = 0; $i < $zip->numFiles; ++$i) {
+            for ($i = 0, $j = $zip->numFiles; $i < $j; ++$i) {
                 $k = \trim($v = \strtr($zip->statIndex($i)['name'], \D, '/'), '/');
                 $files_next[$k] = '/' === \substr($v, -1) ? 0 : 1;
             }
@@ -223,7 +223,7 @@ function fuse($_) {
         // ++diff
         foreach ($files_next as $k => $v) {
             $counter[isset($files_current[$k]) ? 2 : 1][$k] = 1;
-            $_SESSION['_'][0 === $v ? 'folder' : 'file'][$folder . \D . \strtr($k, '/', \D)] = 1;
+            $_SESSION['_'][0 === $v ? 'folders' : 'files'][$folder . \D . \strtr($k, '/', \D)] = 1;
             $f = $folder . \D . $k;
             // Prioritize folder over file
             if (0 === $v) {
