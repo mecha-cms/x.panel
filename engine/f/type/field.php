@@ -216,7 +216,7 @@ function item($value, $key) {
                 continue;
             }
             ++$count;
-            if (!\is_array($v)) {
+            if (!\is_array($v) || (\array_is_list($v) && 2 === \count($v))) {
                 $v = ['title' => \s($v)];
             }
             $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
@@ -235,7 +235,7 @@ function item($value, $key) {
             unset($input[2]['placeholder']);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
             $title = \x\panel\type\title(\x\panel\_value_set([
-                'content' => $v['title'] ?? "",
+                'content' => \i(...((array) ($v['title'] ?? ""))),
                 'icon' => $v['icon'] ?? [],
                 'level' => -1,
                 '2' => ['title' => "" !== $description ? $description : null]
@@ -245,7 +245,7 @@ function item($value, $key) {
                 1 => (new \HTML($input)) . ' ' . $title,
                 2 => \x\panel\_tag_set([], $v)
             ];
-            $a[\strip_tags($title)] = new \HTML($label);
+            $a[\strip_tags($title ?? "")] = new \HTML($label);
         }
         $sort && \ksort($a);
         if (!isset($value['flex'])) {
@@ -287,7 +287,7 @@ function items($value, $key) {
                 continue;
             }
             ++$count;
-            if (!\is_array($v)) {
+            if (!\is_array($v) || (\array_is_list($v) && 2 === \count($v))) {
                 $v = ['title' => \s($v)];
             }
             $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
@@ -315,7 +315,7 @@ function items($value, $key) {
             $input[2] = \x\panel\_tag_set($input[2], $v);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
             $title = \x\panel\type\title(\x\panel\_value_set([
-                'content' => $v['title'] ?? "",
+                'content' => \i(...((array) ($v['title'] ?? ""))),
                 'icon' => $v['icon'] ?? [],
                 'level' => -1,
                 '2' => ['title' => "" !== $description ? $description : null]
@@ -325,7 +325,7 @@ function items($value, $key) {
                 1 => (new \HTML($input)) . ' ' . $title,
                 2 => \x\panel\_tag_set([], $v)
             ];
-            $a[\strip_tags($title)] = new \HTML($label);
+            $a[\strip_tags($title ?? "")] = new \HTML($label);
         }
         $sort && \ksort($a);
         if (!isset($value['flex'])) {
@@ -520,7 +520,7 @@ function toggle($value, $key) {
     $input[2]['value'] = 'true'; // Force value to be `true`
     unset($input[2]['placeholder']);
     $title = \x\panel\type\title(\x\panel\_value_set([
-        'content' => $value['hint'] ?? $value['title'] ?? "",
+        'content' => \i(...((array) ($value['hint'] ?? $value['title'] ?? ""))),
         'icon' => $value['icon'] ?? [],
         'level' => -1
     ], 0), 0);

@@ -230,13 +230,14 @@ if (false === strpos($_['path'], '/')) {
                                             'fields' => [
                                                 'lot' => [
                                                     'sync' => [
+                                                        'description' => is_file($versions = ENGINE . D . 'log' . D . 'git' . D . 'versions' . D . 'mecha-cms.php') ? ['Last synced %s.', x\panel\to\elapse(filemtime($versions))] : null,
                                                         'flex' => false,
                                                         'lot' => [
                                                             0 => 'Never',
-                                                            2592000 => 'Every month', // `strtotime('+1 month') - time()`
-                                                            3600 => 'Every hour', // `strtotime('+1 hour') - time()`
-                                                            604800 => 'Every week', // `strtotime('+1 week') - time()`
-                                                            86400 => 'Every day' // `strtotime('+1 day') - time()`
+                                                            2592000 => ['Every %s', 'month'], // `strtotime('+1 month') - time()`
+                                                            3600 => ['Every %s', 'hour'], // `strtotime('+1 hour') - time()`
+                                                            604800 => ['Every %s', 'week'], // `strtotime('+1 week') - time()`
+                                                            86400 => ['Every %s', 'day'] // `strtotime('+1 day') - time()`
                                                         ],
                                                         'name' => 'state[x][panel][sync]',
                                                         'stack' => 10,

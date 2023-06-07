@@ -105,7 +105,7 @@ function _git_sync() {
             \mkdir($folder, 0775, true);
         }
         \file_put_contents($file, '<?' . 'php return[];');
-        \touch($file, 0);
+        \touch($file);
     }
     $sync = $state->x->panel->sync ?? 0;
     if (!empty($sync)) {

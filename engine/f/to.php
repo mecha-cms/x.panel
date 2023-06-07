@@ -41,7 +41,7 @@ function description($value) {
 
 function elapse($date, $all = false) {
     $current = new \DateTime;
-    $diff = (array) $current->diff(new \DateTime($date));
+    $diff = (array) $current->diff(new \DateTime(\is_int($date) ? \date('Y-m-d H:i:s', $date) : $date));
     $diff['w'] = \floor($diff['d'] / 7);
     $diff['d'] -= $diff['w'] * 7;
     $alter = [
