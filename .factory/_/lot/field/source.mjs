@@ -204,7 +204,7 @@ function onChange(init) {
         editor = new TE(source, getDatum(source, 'state') ?? {});
         state = editor.state;
         type = state.source.type;
-        // Get it from `window` context as this `K` object already defined in `./.github/factory/index.js.mjs` globally
+        // Get it from `window` context as this `K` object already defined in `./.factory/index.js.mjs` globally
         map = new W.K(editor);
         map.keys['Escape'] = function () {
             let parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
@@ -215,13 +215,14 @@ function onChange(init) {
         };
         if ('HTML' === type) {
             map.commands = commandsSourceHTML;
+            map.keys['Control-Shift-"'] = 'quote';
+            map.keys['Control-\''] = 'quote';
             map.keys['Control-b'] = 'bold';
             map.keys['Control-e'] = 'code';
             map.keys['Control-h'] = 'blocks';
             map.keys['Control-i'] = 'italic';
-            map.keys['Control-k'] = 'link';
+            map.keys['Control-l'] = 'link';
             map.keys['Control-o'] = 'image';
-            map.keys['Control-q'] = 'quote';
             map.keys['Control-u'] = 'underline';
         } else if ('Markdown' === type) {
             // TODO

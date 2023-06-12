@@ -93,12 +93,12 @@ function route__panel($content, $path, $query, $hash) {
     $id = \strtok($_['path'], '/');
     // Load the content first to queue the asset, icon, and (data)list
     if (isset($_['content'])) {
-        $content = \x\panel\type\content([
+        $content = \x\panel\lot\type\content([
             'content' => (string) $_['content'],
             'tags' => ['p' => false]
         ], 0);
     } else if (isset($_['lot'])) {
-        $content = \x\panel\type\lot([
+        $content = \x\panel\lot\type\lot([
             'lot' => (array) $_['lot'],
             'tags' => ['p' => false]
         ], 0);

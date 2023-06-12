@@ -35,7 +35,7 @@ function content($value) {
 }
 
 function description($value) {
-    $out = (string) \x\panel\type\description(\x\panel\_value_set(['content' => $value], 0), 0);
+    $out = (string) \x\panel\lot\type\description(\x\panel\lot\_value_set(['content' => $value], 0), 0);
     return "" !== $out ? $out : null;
 }
 
@@ -74,7 +74,7 @@ function field($value, $key, $type = 'textarea') {
     $value['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     $state = $value['state'] ?? [];
     unset($value['tags']);
-    $content = \fire("\\x\\panel\\type\\" . $type, [$value, $key]);
+    $content = \fire("\\x\\panel\\lot\\type\\" . $type, [$value, $key]);
     $content['data-state'] = $state ? \json_encode($state) : null;
     $value['field'] = [$content[0], $content[1], $content[2]]; // Extract!
     return $value;
@@ -89,7 +89,7 @@ function unit($value) {
     if (!\is_array($value) || !\array_is_list($value)) {
         $value = [$value];
     }
-    return \x\panel\type\unit($value, 0);
+    return \x\panel\lot\type\unit($value, 0);
 }
 
 function icon($value) {
@@ -101,7 +101,7 @@ function icon($value) {
     if (!\is_array($value) || !\array_is_list($value)) {
         $value = [$value];
     }
-    return \x\panel\type\icon($value, 0);
+    return \x\panel\lot\type\icon($value, 0);
 }
 
 function link($value) {
@@ -138,7 +138,7 @@ function lot($lot, &$count = 0, $sort = true) {
         if (false === $v || null === $v || !empty($v['skip'])) {
             continue;
         }
-        if ($v = \x\panel\type($v, $k)) {
+        if ($v = \x\panel\lot\type($v, $k)) {
             $out[$k] = $v;
             ++$count;
         }
@@ -218,7 +218,7 @@ function text($value) {
 }
 
 function title($value, $level = -1) {
-    $out = (string) \x\panel\type\title(\x\panel\_value_set([
+    $out = (string) \x\panel\lot\type\title(\x\panel\lot\_value_set([
         'content' => $value,
         'level' => $level
     ], 0), 0);

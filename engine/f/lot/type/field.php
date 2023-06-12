@@ -1,7 +1,7 @@
-<?php namespace x\panel\type\field;
+<?php namespace x\panel\lot\type\field;
 
 function _($value, $key) {
-    $out = \x\panel\type\field\content($value, $key); // Unknown `field` type
+    $out = \x\panel\lot\type\field\content($value, $key); // Unknown `field` type
     $out['skip'] = true;
     return $out;
 }
@@ -9,8 +9,8 @@ function _($value, $key) {
 function blob($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'file';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function blobs($value, $key) {
@@ -19,16 +19,16 @@ function blobs($value, $key) {
     $out['field'][2]['multiple'] = true;
     $out['field'][2]['name'] = $name . ('[]' === \substr($name, -2) ? "" : '[]');
     $out['field'][2]['type'] = 'file';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function button($value, $key) {
     $out = \x\panel\to\field($value, $key, 'button');
     $out['field'][1] = \i(...((array) ($value['hint'] ?? $value['title'] ?? $value['value'] ?? $key)));
     $out['field'][2]['type'] = 'button';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function buttons($value, $key) {
@@ -68,7 +68,7 @@ function buttons($value, $key) {
             $button[1] = \i(...((array) ($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k)));
             $button[2]['name'] = $n;
             $button[2]['type'] = $v['type'] ?? 'button';
-            $button[2] = \x\panel\_tag_set($button[2], $v);
+            $button[2] = \x\panel\lot\_tag_set($button[2], $v);
             $out['field'][1] .= new \HTML($button);
         }
         unset($value['lot']);
@@ -80,9 +80,9 @@ function buttons($value, $key) {
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
     $value['with']['options'] = $value['with']['options'] ?? true;
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
-    return \x\panel\type\field($out, $key);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function color($value, $key) {
@@ -92,8 +92,8 @@ function color($value, $key) {
         $out['field'][2]['title'] = $the_value;
         $out['field'][2]['value'] = $the_value;
     }
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function colors($value, $key) {
@@ -133,7 +133,7 @@ function colors($value, $key) {
                 $input[2]['title'] = $v['title'] ?? $the_value;
                 $input[2]['value'] = $the_value;
             }
-            $input[2] = \x\panel\_tag_set($input[2], $v);
+            $input[2] = \x\panel\lot\_tag_set($input[2], $v);
             $out['field'][1] .= new \HTML($input);
         }
         unset($value['lot']);
@@ -145,23 +145,23 @@ function colors($value, $key) {
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
     $value['with']['options'] = $value['with']['options'] ?? true;
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
-    return \x\panel\type\field($out, $key);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function content($value, $key) {
     $value['hint'] = $value['hint'] ?? 'Content goes here...';
     $out = \x\panel\to\field($value, $key);
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function date($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : \date('Y-m-d'));
     $value['pattern'] = $value['pattern'] ?? "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
-    return \x\panel\type\field\date_time($value, $key);
+    return \x\panel\lot\type\field\date_time($value, $key);
 }
 
 function date_time($value, $key) {
@@ -176,30 +176,32 @@ function date_time($value, $key) {
         }
         $value['value'] = (string) $value['value'];
     }
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function description($value, $key) {
     $value['hint'] = $value['hint'] ?? 'Description goes here...';
     $value['max'] = $value['max'] ?? 1275; // 255 * 5
-    return \x\panel\type\field\content($value, $key);
+    return \x\panel\lot\type\field\content($value, $key);
 }
 
 function email($value, $key) {
     $value['hint'] = $value['hint'] ?? (\S . \i('hello') . \S . '@' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
     $value['pattern'] = $value['pattern'] ?? "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function flex($value, $key) {
     $value['can']['flex'] = $value['can']['flex'] = true;
     $value['has']['gap'] = $value['has']['gap'] = true;
-    return \x\panel\type\fields($value, $key);
+    return \x\panel\lot\type\fields($value, $key);
 }
 
 function hidden($value, $key) {
     unset($value['decors'], $value['hint'], $value['tags']);
-    return \x\panel\type\input\hidden($value, $key);
+    return \x\panel\lot\type\input\hidden($value, $key);
 }
 
 function item($value, $key) {
@@ -231,10 +233,10 @@ function item($value, $key) {
             $input[2]['name'] = $v['name'] ?? $n;
             $input[2]['type'] = 'radio';
             $input[2]['value'] = $v['value'] ?? $k;
-            $input[2] = \x\panel\_tag_set($input[2], $v);
+            $input[2] = \x\panel\lot\_tag_set($input[2], $v);
             unset($input[2]['placeholder']);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
-            $title = \x\panel\type\title(\x\panel\_value_set([
+            $title = \x\panel\lot\type\title(\x\panel\lot\_value_set([
                 'content' => \i(...((array) ($v['title'] ?? ""))),
                 'icon' => $v['icon'] ?? [],
                 'level' => -1,
@@ -243,7 +245,7 @@ function item($value, $key) {
             $label = [
                 0 => 'label',
                 1 => (new \HTML($input)) . ' ' . $title,
-                2 => \x\panel\_tag_set([], $v)
+                2 => \x\panel\lot\_tag_set([], $v)
             ];
             $a[\strip_tags($title ?? "")] = new \HTML($label);
         }
@@ -263,11 +265,11 @@ function item($value, $key) {
         $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
         $value['with']['options'] = $value['with']['options'] ?? true;
-        $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
+        $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
-        return \x\panel\type\field($out, $key);
+        return \x\panel\lot\type\field($out, $key);
     }
-    return \x\panel\type\field\text($value, $key);
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function items($value, $key) {
@@ -312,9 +314,9 @@ function items($value, $key) {
                 $input[2]['readonly'] = true;
             }
             unset($input[2]['placeholder']);
-            $input[2] = \x\panel\_tag_set($input[2], $v);
+            $input[2] = \x\panel\lot\_tag_set($input[2], $v);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
-            $title = \x\panel\type\title(\x\panel\_value_set([
+            $title = \x\panel\lot\type\title(\x\panel\lot\_value_set([
                 'content' => \i(...((array) ($v['title'] ?? ""))),
                 'icon' => $v['icon'] ?? [],
                 'level' => -1,
@@ -323,7 +325,7 @@ function items($value, $key) {
             $label = [
                 0 => 'label',
                 1 => (new \HTML($input)) . ' ' . $title,
-                2 => \x\panel\_tag_set([], $v)
+                2 => \x\panel\lot\_tag_set([], $v)
             ];
             $a[\strip_tags($title ?? "")] = new \HTML($label);
         }
@@ -343,17 +345,18 @@ function items($value, $key) {
         $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
         $value['with']['options'] = $value['with']['options'] ?? true;
-        $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
+        $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
-        return \x\panel\type\field($out, $key);
+        return \x\panel\lot\type\field($out, $key);
     }
-    return \x\panel\type\field\text($value, $key);
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function link($value, $key) {
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
     $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;|(https?:)?\\/\\/)\\S+$";
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function name($value, $key) {
@@ -371,7 +374,8 @@ function name($value, $key) {
     $value['max'] = $value['max'] ?? 255; // <https://serverfault.com/a/9548>
     $value['min'] = $value['min'] ?? $x ? 2 : 1;
     $value['pattern'] = $value['pattern'] ?? "^([_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d" . \x($keep) . "]+)*)?" . $x . "$";
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function number($value, $key) {
@@ -381,17 +385,17 @@ function number($value, $key) {
     $out['field'][2]['min'] = $value['min'] ?? null;
     $out['field'][2]['step'] = $value['step'] ?? null;
     $out['field'][2]['type'] = 'number';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function option($value, $key) {
     if (isset($value['lot'])) {
         $out = \x\panel\to\field($value, $key, 'select');
         unset($value['lot']);
-        return \x\panel\type\field($out, $key);
+        return \x\panel\lot\type\field($out, $key);
     }
-    return \x\panel\type\field\text($value, $key);
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function options($value, $key) {
@@ -402,8 +406,8 @@ function pass($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'password';
     unset($out['field'][2]['value']); // Never show `value` on this field
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function path($value, $key) {
@@ -413,7 +417,8 @@ function path($value, $key) {
     $value['max'] = $value['max'] ?? (260 - (\strlen(\PATH) + 1)); // <https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation>
     $value['min'] = 0;
     $value['pattern'] = $value['pattern'] ?? "^([\\\\/][._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+$";
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function query($value, $key) {
@@ -428,8 +433,8 @@ function query($value, $key) {
     unset($value['values']);
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function range($value, $key) {
@@ -452,8 +457,8 @@ function range($value, $key) {
     $out['field'][2]['value'] = $value['value'] ?? null;
     $out['field'][2]['step'] = $value['step'] ?? null;
     unset($out['field'][2]['maxlength'], $out['field'][2]['minlength']);
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function route($value, $key) {
@@ -461,7 +466,8 @@ function route($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : '/foo/bar/baz');
     $value['pattern'] = $value['pattern'] ?? "^(\\/[._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+$";
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function set($value, $key) {
@@ -472,7 +478,7 @@ function set($value, $key) {
     $value[1] = $value[1] ?? ("" !== $title ? '<legend>' . $title . '</legend>' : "") . $description . $content;
     $value[2] = $value[2] ?? [];
     unset($value['description'], $value['title'], $value['type']);
-    return \x\panel\type($value, $key);
+    return \x\panel\lot\type($value, $key);
 }
 
 function source($value, $key) {
@@ -480,29 +486,30 @@ function source($value, $key) {
     $value['state'] = \array_replace(['tab' => '  '], $value['state'] ?? []);
     $out = \x\panel\to\field($value, $key);
     $value['tags']['code'] = $value['tags']['code'] ?? true;
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function text($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], $value);
-    return \x\panel\type\field($out, $key);
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function time($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : \date('H:i:s'));
     $value['pattern'] = $value['pattern'] ?? "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
-    return \x\panel\type\field\date_time($value, $key);
+    return \x\panel\lot\type\field\date_time($value, $key);
 }
 
 function title($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'Title Goes Here');
     $value['max'] = $value['max'] ?? 255;
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'words';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function toggle($value, $key) {
@@ -519,7 +526,7 @@ function toggle($value, $key) {
     $input[2]['type'] = 'checkbox';
     $input[2]['value'] = 'true'; // Force value to be `true`
     unset($input[2]['placeholder']);
-    $title = \x\panel\type\title(\x\panel\_value_set([
+    $title = \x\panel\lot\type\title(\x\panel\lot\_value_set([
         'content' => \i(...((array) ($value['hint'] ?? $value['title'] ?? ""))),
         'icon' => $value['icon'] ?? [],
         'level' => -1
@@ -533,26 +540,27 @@ function toggle($value, $key) {
                 'input' => $input,
                 'title' => $title
             ],
-            2 => \x\panel\_tag_set([], $value)
+            2 => \x\panel\lot\_tag_set([], $value)
         ]
     ];
     $out['field'][2]['role'] = 'group';
-    $out['field'][2] = \x\panel\_tag_set($out['field'][2], [
+    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], [
         'tags' => ['count:1' => true],
         'with' => ['options' => true]
     ]);
     unset($out['hint'], $out['field'][2]['disabled'], $out['field'][2]['name'], $out['field'][2]['placeholder'], $out['field'][2]['readonly']);
-    return \x\panel\type\field($out, $key);
+    return \x\panel\lot\type\field($out, $key);
 }
 
 function u_r_l($value, $key) { // This is not a typo!
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
     $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;|(https?:)?\\/\\/|[.]{0,2}\\/)[^\\/]\\S*$";
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }
 
 function url($value, $key) {
-    return \x\panel\type\u_r_l($value, $key);
+    return \x\panel\lot\type\u_r_l($value, $key);
 }
 
 function version($value, $key) {
@@ -561,5 +569,6 @@ function version($value, $key) {
     $value['max'] = $value['max'] ?? 255;
     $value['min'] = 1;
     $value['pattern'] = $value['pattern'] ?? "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"; // <https://semver.org#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
-    return \x\panel\type\field\text($value, $key);
+    $value[2]['autocapitalize'] = 'off';
+    return \x\panel\lot\type\field\text($value, $key);
 }

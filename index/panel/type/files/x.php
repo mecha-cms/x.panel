@@ -13,31 +13,6 @@ $_['lot']['bar']['lot'][0]['lot']['link']['url'] = [
 ];
 
 Hook::set('_', function ($_) use ($state, $url) {
-    $bounds = [];
-    foreach (g(LOT . D . 'x', 'page', 1) as $k => $v) {
-        if ('about.page' !== basename($k)) {
-            continue;
-        }
-        $p = new Page($k);
-        $title = strip_tags((string) ($p->title ?? ""));
-        $key = strtr(x\panel\from\path(dirname($k)), [
-            "\\" => '/'
-        ]);
-        foreach ((array) ($p['use'] ?? []) as $kk => $vv) {
-            $bounds[strtr($kk, [
-                "\\" => '/'
-            ])][$key] = $title;
-        }
-    }
-    $bound = $bounds[x\panel\from\path(LOT . D . 'x' . D . strtok($_['path'], '/'))] ?? [];
-    if (!empty($bound)) {
-        asort($bound);
-        // Disable delete button where possible
-        $index = $_['folder'] . D . 'index.php';
-        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['let']['active'] = false;
-        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['let']['description'] = ['Required by %s', implode(', ', $bound)];
-        unset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files']['lot']['files']['lot'][$index]['tasks']['let']['url']);
-    }
     if (is_file($file = ($folder = $_['folder']) . D . 'about.page')) {
         $page = new Page($file);
         $content = $page->content;

@@ -1,17 +1,17 @@
-import Bar from './_/bar.mjs';
-import Columns from './_/columns.mjs';
+import Bar from './_/lot/bar.mjs';
+import Columns from './_/lot/columns.mjs';
 import Dialog from './_/dialog.mjs';
-import Fields from './_/fields.mjs';
-import FilesFolders from './_/files-folders.mjs';
-import Links from './_/links.mjs';
-import Menu from './_/menu.mjs';
-import Menus from './_/menus.mjs';
-import Pages from './_/pages.mjs';
-import Rows from './_/rows.mjs';
+import Fields from './_/lot/fields.mjs';
+import FilesFolders from './_/lot/files-folders.mjs';
+import Links from './_/lot/links.mjs';
+import Menu from './_/lot/menu.mjs';
+import Menus from './_/lot/menus.mjs';
+import Pages from './_/lot/pages.mjs';
+import Rows from './_/lot/rows.mjs';
 import Siema from './_/siema.mjs';
-import Stacks from './_/stacks.mjs';
-import Tabs from './_/tabs.mjs';
-import Tasks from './_/tasks.mjs';
+import Stacks from './_/lot/stacks.mjs';
+import Tabs from './_/lot/tabs.mjs';
+import Tasks from './_/lot/tasks.mjs';
 
 import {
     B,

@@ -3,11 +3,11 @@
 $query = $_GET['query'] ?? null;
 
 if (null !== $query && !empty($_['part'])) {
-    $title = x\panel\type\title([
+    $title = x\panel\lot\type\title([
         'content' => i('Search results for query %s', ['<em>' . $query . '</em>']),
         'level' => -1
     ], 0);
-    $tasks = x\panel\type\tasks\link([
+    $tasks = x\panel\lot\type\tasks\link([
         '0' => 'span',
         'lot' => [
             'exit' => [

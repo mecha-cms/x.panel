@@ -1,4 +1,4 @@
-<?php namespace x\panel\type\select;
+<?php namespace x\panel\lot\type\select;
 
 // TODO
 

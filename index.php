@@ -76,12 +76,12 @@ $GLOBALS['_'] = $_ = \array_replace_recursive([
     '1' => null,
     '2' => [],
     'alert' => [],
-    'are' => [],
+    'are' => (array) ($state->are ?? []), // Inherit to the front-end state(s)
     'as' => [],
     'asset' => [],
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
-    'can' => [],
+    'can' => (array) ($state->can ?? []), // Inherit to the front-end state(s)
     'chunk' => $query['chunk'] ?? null, // Default is `20`
     'content' => null,
     'count' => 0,
@@ -89,13 +89,13 @@ $GLOBALS['_'] = $_ = \array_replace_recursive([
     'description' => null,
     'file' => $f && \is_file($f) ? $f : null,
     'folder' => $f && \is_dir($f) ? $f : null,
-    'has' => [],
+    'has' => (array) ($state->has ?? []), // Inherit to the front-end state(s)
     'hash' => $url['hash'],
     'icon' => [],
-    'is' => [],
+    'is' => \array_replace((array) ($state->is ?? []), ['error' => false]), // Inherit to the front-end state(s)
     'kick' => null,
     'lot' => [],
-    'not' => [],
+    'not' => (array) ($state->not ?? []), // Inherit to the front-end state(s)
     'of' => [],
     'part' => (int) $part,
     'path' => $test ? $m[2] : null,

@@ -850,6 +850,8 @@
 }
 
 :focus-visible,
+.tag-picker--focus:not(.is\:fix),
+.option-picker--focus:not(.is\:fix),
 .is\:host[role=button]:focus,
 .is\:host[role=combobox]:focus,
 .is\:host[role=listbox]:focus,
@@ -860,9 +862,7 @@ button.is\:host:focus,
 input.is\:host:focus,
 output.is\:host:focus,
 select.is\:host:focus,
-textarea.is\:host:focus,
-.tag-picker--focus:not(.is\:fix),
-.option-picker--focus:not(.is\:fix) {
+textarea.is\:host:focus {
   box-shadow: var(--shadow--focus-visible, none);
   outline: 3px solid var(--stroke--focus-visible, transparent);
   z-index: 1;
@@ -1262,172 +1262,6 @@ pre.is\:text code {
 }
 .is\:error > * .title > .icon + span {
   margin-left: calc(var(--x) / 4);
-}
-
-.lot\:field.type\:blob > label + div input.is\:host,
-.lot\:field.type\:blobs > label + div input.is\:host {
-  border: 1px dashed;
-  border-color: var(--stroke-input);
-  height: auto;
-  line-height: normal;
-  padding: var(--y) var(--x);
-}
-.lot\:field.type\:blob > label + div input.is\:host:hover,
-.lot\:field.type\:blobs > label + div input.is\:host:hover {
-  border-color: var(--stroke--input-hover, var(--stroke-input));
-}
-.lot\:field.type\:blob > label + div input.is\:host:focus,
-.lot\:field.type\:blobs > label + div input.is\:host:focus {
-  border-color: var(--stroke--input-focus, var(--stroke-input));
-}
-.lot\:field.type\:blob > label + div input.is\:host:active,
-.lot\:field.type\:blobs > label + div input.is\:host:active {
-  border-color: var(--stroke--input-active, var(--stroke-input));
-}
-.lot\:field.type\:blob > label + div input.is\:host:disabled,
-.lot\:field.type\:blobs > label + div input.is\:host:disabled {
-  border-color: var(--stroke-input--disabled);
-}
-
-.lot\:field.type\:buttons > label + div .with\:options {
-  padding-bottom: 0;
-  padding-top: 0;
-}
-.lot\:field.type\:buttons > label + div .with\:options.has\:gap {
-  gap: calc(var(--y) / 4) calc(var(--x) / 4);
-}
-.lot\:field.type\:buttons > label + div .with\:options.is\:flex {
-  display: inline-flex;
-}
-
-.lot\:field.type\:colors > label + div .with\:options {
-  padding-bottom: 0;
-  padding-top: 0;
-}
-
-.lot\:field.type\:item .with\:options,
-.lot\:field.type\:toggle .with\:options,
-.lot\:field.type\:items .with\:options,
-.lot\:field.type\:colors .with\:options {
-  height: auto;
-  max-height: 100%;
-}
-.lot\:field.type\:item .with\:options.has\:gap,
-.lot\:field.type\:toggle .with\:options.has\:gap,
-.lot\:field.type\:items .with\:options.has\:gap,
-.lot\:field.type\:colors .with\:options.has\:gap {
-  gap: 0 var(--x);
-}
-.lot\:field.type\:item .with\:options.is\:flex,
-.lot\:field.type\:toggle .with\:options.is\:flex,
-.lot\:field.type\:items .with\:options.is\:flex,
-.lot\:field.type\:colors .with\:options.is\:flex {
-  display: flex;
-  flex-wrap: wrap;
-}
-.lot\:field.type\:item .with\:options > label,
-.lot\:field.type\:toggle .with\:options > label,
-.lot\:field.type\:items .with\:options > label,
-.lot\:field.type\:colors .with\:options > label {
-  align-items: center;
-  display: inline-flex;
-  gap: 0 calc(var(--x) / 3);
-  white-space: nowrap;
-}
-
-.option-picker {
-  height: calc(var(--y) * 1.5);
-  line-height: calc(var(--y) * 1.5 - var(--y) / 2 - 2px);
-  outline: 0;
-  padding: calc(var(--y) / 4) calc(var(--x) / 2);
-  width: var(--width-input);
-}
-.option-picker::after {
-  right: calc(var(--x) / 2);
-}
-.option-picker--focus:not(.is\:fix) {
-  box-shadow: var(--shadow-option-picker--focus, var(--shadow-option-picker));
-}
-.option-picker.has\:width {
-  display: flex;
-  width: 100%;
-}
-.option-picker.has\:width .option-picker__input {
-  flex: 1;
-}
-.option-picker__options {
-  line-height: var(--h);
-}
-.option-picker__options .option-picker__option {
-  padding: 0 calc(var(--x) / 2);
-}
-.option-picker__options .option-picker__option-group {
-  padding: 0 calc(var(--x) / 2);
-}
-.option-picker__options .option-picker__option-group .option-picker__option {
-  margin: 0 calc(var(--x) / -2);
-  padding-left: var(--x);
-}
-.option-picker__source + .option-picker {
-  margin-left: 0 !important;
-}
-.option-picker__source:not([multiple]) + .option-picker {
-  padding-bottom: calc(var(--y) / 4);
-  padding-top: calc(var(--y) / 4);
-}
-.option-picker__input,
-.option-picker__values {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.tag-picker {
-  height: auto;
-  min-height: calc(var(--y) * 1.5);
-  padding: calc(var(--y) / 12) calc(var(--x) / 12);
-  width: var(--width-input);
-}
-.tag-picker--focus:not(.is\:fix) {
-  box-shadow: var(--shadow-tag-picker--focus, var(--shadow-tag-picker));
-}
-.tag-picker.has\:width {
-  display: flex;
-  width: 100%;
-}
-.tag-picker__input span {
-  min-height: var(--y);
-}
-.tag-picker__tag {
-  margin: calc(var(--y) / 12) calc(var(--x) / 12);
-  padding: 0 calc(var(--z) / 2);
-}
-.tag-picker__tag-x:any-link {
-  color: var(--color-tag-picker__tag-x);
-}
-.tag-picker__tag-x:any-link:hover {
-  color: var(--color-tag-picker__tag-x--hover, var(--color-tag-picker__tag-x));
-}
-.tag-picker__tag-x:any-link:focus {
-  color: var(--color-tag-picker__tag-x--focus, var(--color-tag-picker__tag-x));
-}
-.tag-picker__tag-x:any-link:active {
-  color: var(--color-tag-picker__tag-x--active, var(--color-tag-picker__tag-x));
-}
-.tag-picker__source {
-  position: fixed;
-}
-.tag-picker__source:not(:read-only) + .tag-picker {
-  --color-input--read-only: var(--color-input);
-  --fill-input--read-only: var(--fill-input);
-  --shadow-input--read-only: var(--shadow-input);
-  --stroke-input--read-only: var(--stroke-input);
-}
-.tag-picker__source + .tag-picker {
-  margin-left: 0 !important;
-}
-.tag-picker__source + .tag-picker .tag-picker__tag {
-  border: 1px solid transparent;
-  line-height: calc(var(--y) - 2px);
 }
 
 .is\:host[role=button],
@@ -2612,10 +2446,10 @@ label .is\:host[type=radio] + span {
 }
 
 .lot\:field,
-.lot\:field.type\:blobs,
-.lot\:field.type\:colors,
+.lot\:field.type\:toggle,
 .lot\:field.type\:items,
-.lot\:field.type\:toggle {
+.lot\:field.type\:colors,
+.lot\:field.type\:blobs {
   display: flex;
   gap: 0 var(--x);
 }
@@ -2632,10 +2466,10 @@ label .is\:host[type=radio] + span {
   color: inherit;
 }
 .lot\:field > label,
-.lot\:field.type\:blobs > label,
-.lot\:field.type\:colors > label,
+.lot\:field.type\:toggle > label,
 .lot\:field.type\:items > label,
-.lot\:field.type\:toggle > label {
+.lot\:field.type\:colors > label,
+.lot\:field.type\:blobs > label {
   display: block;
   overflow: hidden;
   padding: calc(var(--y) / 4) 0;
@@ -2645,10 +2479,10 @@ label .is\:host[type=radio] + span {
   width: calc(var(--x) * 5);
 }
 .lot\:field > label + div,
-.lot\:field.type\:blobs > label + div,
-.lot\:field.type\:colors > label + div,
+.lot\:field.type\:toggle > label + div,
 .lot\:field.type\:items > label + div,
-.lot\:field.type\:toggle > label + div {
+.lot\:field.type\:colors > label + div,
+.lot\:field.type\:blobs > label + div {
   display: block;
   flex: 1;
   min-width: 0;
@@ -2707,6 +2541,172 @@ label .is\:host[type=radio] + span {
 .lot\:field > label + div .with\:options {
   display: block;
   padding: calc(var(--y) / 4) 0;
+}
+
+.lot\:field.type\:blob > label + div input.is\:host,
+.lot\:field.type\:blobs > label + div input.is\:host {
+  border: 1px dashed;
+  border-color: var(--stroke-input);
+  height: auto;
+  line-height: normal;
+  padding: var(--y) var(--x);
+}
+.lot\:field.type\:blob > label + div input.is\:host:hover,
+.lot\:field.type\:blobs > label + div input.is\:host:hover {
+  border-color: var(--stroke--input-hover, var(--stroke-input));
+}
+.lot\:field.type\:blob > label + div input.is\:host:focus,
+.lot\:field.type\:blobs > label + div input.is\:host:focus {
+  border-color: var(--stroke--input-focus, var(--stroke-input));
+}
+.lot\:field.type\:blob > label + div input.is\:host:active,
+.lot\:field.type\:blobs > label + div input.is\:host:active {
+  border-color: var(--stroke--input-active, var(--stroke-input));
+}
+.lot\:field.type\:blob > label + div input.is\:host:disabled,
+.lot\:field.type\:blobs > label + div input.is\:host:disabled {
+  border-color: var(--stroke-input--disabled);
+}
+
+.lot\:field.type\:buttons > label + div .with\:options {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.lot\:field.type\:buttons > label + div .with\:options.has\:gap {
+  gap: calc(var(--y) / 4) calc(var(--x) / 4);
+}
+.lot\:field.type\:buttons > label + div .with\:options.is\:flex {
+  display: inline-flex;
+}
+
+.lot\:field.type\:colors > label + div .with\:options {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.lot\:field.type\:item .with\:options,
+.lot\:field.type\:toggle .with\:options,
+.lot\:field.type\:items .with\:options,
+.lot\:field.type\:colors .with\:options {
+  height: auto;
+  max-height: 100%;
+}
+.lot\:field.type\:item .with\:options.has\:gap,
+.lot\:field.type\:toggle .with\:options.has\:gap,
+.lot\:field.type\:items .with\:options.has\:gap,
+.lot\:field.type\:colors .with\:options.has\:gap {
+  gap: 0 var(--x);
+}
+.lot\:field.type\:item .with\:options.is\:flex,
+.lot\:field.type\:toggle .with\:options.is\:flex,
+.lot\:field.type\:items .with\:options.is\:flex,
+.lot\:field.type\:colors .with\:options.is\:flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.lot\:field.type\:item .with\:options > label,
+.lot\:field.type\:toggle .with\:options > label,
+.lot\:field.type\:items .with\:options > label,
+.lot\:field.type\:colors .with\:options > label {
+  align-items: center;
+  display: inline-flex;
+  gap: 0 calc(var(--x) / 3);
+  white-space: nowrap;
+}
+
+.option-picker {
+  height: calc(var(--y) * 1.5);
+  line-height: calc(var(--y) * 1.5 - var(--y) / 2 - 2px);
+  outline: 0;
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  width: var(--width-input);
+}
+.option-picker::after {
+  right: calc(var(--x) / 2);
+}
+.option-picker--focus:not(.is\:fix) {
+  box-shadow: var(--shadow-option-picker--focus, var(--shadow-option-picker));
+}
+.option-picker.has\:width {
+  display: flex;
+  width: 100%;
+}
+.option-picker.has\:width .option-picker__input {
+  flex: 1;
+}
+.option-picker__options {
+  line-height: var(--h);
+}
+.option-picker__options .option-picker__option {
+  padding: 0 calc(var(--x) / 2);
+}
+.option-picker__options .option-picker__option-group {
+  padding: 0 calc(var(--x) / 2);
+}
+.option-picker__options .option-picker__option-group .option-picker__option {
+  margin: 0 calc(var(--x) / -2);
+  padding-left: var(--x);
+}
+.option-picker__source + .option-picker {
+  margin-left: 0 !important;
+}
+.option-picker__source:not([multiple]) + .option-picker {
+  padding-bottom: calc(var(--y) / 4);
+  padding-top: calc(var(--y) / 4);
+}
+.option-picker__input,
+.option-picker__values {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.tag-picker {
+  height: auto;
+  min-height: calc(var(--y) * 1.5);
+  padding: calc(var(--y) / 12) calc(var(--x) / 12);
+  width: var(--width-input);
+}
+.tag-picker--focus:not(.is\:fix) {
+  box-shadow: var(--shadow-tag-picker--focus, var(--shadow-tag-picker));
+}
+.tag-picker.has\:width {
+  display: flex;
+  width: 100%;
+}
+.tag-picker__input span {
+  min-height: var(--y);
+}
+.tag-picker__tag {
+  margin: calc(var(--y) / 12) calc(var(--x) / 12);
+  padding: 0 calc(var(--z) / 2);
+}
+.tag-picker__tag-x:any-link {
+  color: var(--color-tag-picker__tag-x);
+}
+.tag-picker__tag-x:any-link:hover {
+  color: var(--color-tag-picker__tag-x--hover, var(--color-tag-picker__tag-x));
+}
+.tag-picker__tag-x:any-link:focus {
+  color: var(--color-tag-picker__tag-x--focus, var(--color-tag-picker__tag-x));
+}
+.tag-picker__tag-x:any-link:active {
+  color: var(--color-tag-picker__tag-x--active, var(--color-tag-picker__tag-x));
+}
+.tag-picker__source {
+  position: fixed;
+}
+.tag-picker__source:not(:read-only) + .tag-picker {
+  --color-input--read-only: var(--color-input);
+  --fill-input--read-only: var(--fill-input);
+  --shadow-input--read-only: var(--shadow-input);
+  --stroke-input--read-only: var(--stroke-input);
+}
+.tag-picker__source + .tag-picker {
+  margin-left: 0 !important;
+}
+.tag-picker__source + .tag-picker .tag-picker__tag {
+  border: 1px solid transparent;
+  line-height: calc(var(--y) - 2px);
 }
 
 .lot\:file,

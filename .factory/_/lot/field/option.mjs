@@ -8,12 +8,6 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
-    offEvent,
-    offEventDefault,
-    onEvent
-} from '@taufik-nurrohman/event';
-
-import {
     toCount
 } from '@taufik-nurrohman/to';
 
