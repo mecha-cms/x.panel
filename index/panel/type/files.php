@@ -40,7 +40,7 @@ Hook::set('_', function ($_) {
             $n = basename($k);
             $title = substr($path, strlen($_['path']) + 1);
             $files[$k] = [
-                'current' => !empty($_SESSION['_'][0 === $v ? 'folder' : 'file'][$k]),
+                'current' => !empty($_SESSION['_'][0 === $v ? 'folders' : 'files'][$k]),
                 'description' => 0 === $v ? ['Open %s', 'Folder'] : S . size(filesize($k)) . S,
                 'link' => 1 === $v ? To::URL($k) : null,
                 'tags' => ['x:' . pathinfo($n, PATHINFO_EXTENSION) => 1 === $v],
@@ -81,8 +81,8 @@ Hook::set('_', function ($_) {
                     'task' => 'get'
                 ] : null
             ];
-            if (isset($_SESSION['_'][0 === $v ? 'folder' : 'file'][$k])) {
-                unset($_SESSION['_'][0 === $v ? 'folder' : 'file'][$k]);
+            if (isset($_SESSION['_'][0 === $v ? 'folders' : 'files'][$k])) {
+                unset($_SESSION['_'][0 === $v ? 'folders' : 'files'][$k]);
             }
         }
         if (substr_count($_['path'], '/') > 0 && $_['part'] <= 1) {
