@@ -207,6 +207,13 @@ function _state_set() {
     $GLOBALS['_'] = $_;
 }
 
+function type(array $lot = [], string $k = 'blank') {
+    \extract(\array_diff_key($lot, ['_' => true]), \EXTR_SKIP);
+    \extract($GLOBALS, \EXTR_SKIP);
+    $_with_hooks = false; // Tell the file not to execute the default hook(s)
+    return \array_replace_recursive(require \x\panel\folder . \D . 'index' . \D . 'panel' . \D . 'type' . \D . \strtr($k, ['/' => \D]) . '.php', $lot['_'] ?? []);
+}
+
 require __DIR__ . D . 'f' . D . 'from.php';
 require __DIR__ . D . 'f' . D . 'lot.php';
 require __DIR__ . D . 'f' . D . 'to.php';

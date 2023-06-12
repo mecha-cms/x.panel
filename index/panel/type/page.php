@@ -319,108 +319,109 @@ $desk = [
     ]
 ];
 
-$session = $_SESSION['_']['files'] ?? [];
-
-Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
-    $apart = [];
-    if (!empty($_['lot']['desk']['lot']['form']['values'])) {
-        foreach ($_['lot']['desk']['lot']['form']['values'] as $k => $v) {
-            if ('data' === $k && is_array($v)) {
-                $apart = array_replace($apart, $v);
-                continue;
-            }
-            if (0 === strpos($k, 'data[')) {
-                $apart[substr(explode(']', $k, 2)[0], 5)] = 1;
-            }
-        }
-    }
-    if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'])) {
-        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] as $k => $v) {
-            foreach ($v as $kk => $vv) {
-                if (empty($vv['fields']['lot'])) {
+if (!isset($_with_hooks) || $_with_hooks) {
+    $session = $_SESSION['_']['files'] ?? [];
+    Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
+        $apart = [];
+        if (!empty($_['lot']['desk']['lot']['form']['values'])) {
+            foreach ($_['lot']['desk']['lot']['form']['values'] as $k => $v) {
+                if ('data' === $k && is_array($v)) {
+                    $apart = array_replace($apart, $v);
                     continue;
                 }
-                foreach ($vv['fields']['lot'] as $kkk => $vvv) {
-                    $vvvv = $vvv['name'] ?? $kkk;
-                    if (0 === strpos($vvvv, 'data[')) {
-                        $apart[substr(explode(']', $vvvv, 2)[0], 5)] = 1;
+                if (0 === strpos($k, 'data[')) {
+                    $apart[substr(explode(']', $k, 2)[0], 5)] = 1;
+                }
+            }
+        }
+        if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'])) {
+            foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot'] as $k => $v) {
+                foreach ($v as $kk => $vv) {
+                    if (empty($vv['fields']['lot'])) {
+                        continue;
+                    }
+                    foreach ($vv['fields']['lot'] as $kkk => $vvv) {
+                        $vvvv = $vvv['name'] ?? $kkk;
+                        if (0 === strpos($vvvv, 'data[')) {
+                            $apart[substr(explode(']', $vvvv, 2)[0], 5)] = 1;
+                        }
                     }
                 }
             }
-        }
-        $count = 0;
-        $files = [];
-        if ($page->exist) {
-            $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
-            foreach (g(dirname($path) . D . pathinfo($path, PATHINFO_FILENAME), 'data') as $k => $v) {
-                $pp = strtr($k, [
-                    LOT . D => "",
-                    D => '/'
-                ]);
-                if (!$skip = isset($p[basename($k, '.data')])) {
-                    ++$count;
-                }
-                $files[$k] = [
-                    'current' => !empty($session[$k]),
-                    'description' => size(filesize($k)),
-                    'path' => $k,
-                    'skip' => $skip,
-                    'tags' => [
-                        'x:data' => true
-                    ],
-                    'tasks' => [
-                        'get' => [
-                            'description' => 'Edit',
-                            'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
-                            'stack' => 10,
-                            'title' => 'Edit',
-                            'url' => [
-                                'part' => 0,
-                                'path' => $pp,
-                                'query' => x\panel\_query_set(),
-                                'task' => 'get'
+            $count = 0;
+            $files = [];
+            if ($page->exist) {
+                $p = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
+                foreach (g(dirname($path) . D . pathinfo($path, PATHINFO_FILENAME), 'data') as $k => $v) {
+                    $pp = strtr($k, [
+                        LOT . D => "",
+                        D => '/'
+                    ]);
+                    if (!$skip = isset($p[basename($k, '.data')])) {
+                        ++$count;
+                    }
+                    $files[$k] = [
+                        'current' => !empty($session[$k]),
+                        'description' => size(filesize($k)),
+                        'path' => $k,
+                        'skip' => $skip,
+                        'tags' => [
+                            'x:data' => true
+                        ],
+                        'tasks' => [
+                            'get' => [
+                                'description' => 'Edit',
+                                'icon' => 'M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z',
+                                'stack' => 10,
+                                'title' => 'Edit',
+                                'url' => [
+                                    'part' => 0,
+                                    'path' => $pp,
+                                    'query' => x\panel\_query_set(),
+                                    'task' => 'get'
+                                ]
+                            ],
+                            'let' => [
+                                'title' => 'Delete',
+                                'description' => 'Delete',
+                                'stack' => 20,
+                                'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
+                                'url' => [
+                                    'part' => 0,
+                                    'path' => $pp,
+                                    'query' => x\panel\_query_set([
+                                        'tab' => ['data'],
+                                        'token' => $_['token'],
+                                        'trash' => $trash
+                                    ]),
+                                    'task' => 'let'
+                                ]
                             ]
                         ],
-                        'let' => [
-                            'title' => 'Delete',
-                            'description' => 'Delete',
-                            'stack' => 20,
-                            'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
-                            'url' => [
-                                'part' => 0,
-                                'path' => $pp,
-                                'query' => x\panel\_query_set([
-                                    'tab' => ['data'],
-                                    'token' => $_['token'],
-                                    'trash' => $trash
-                                ]),
-                                'task' => 'let'
-                            ]
+                        'title' => S . ($n = basename($k)) . S,
+                        'type' => 'file',
+                        'url' => [
+                            'part' => 0,
+                            'path' => $pp,
+                            'query' => x\panel\_query_set(),
+                            'task' => 'get'
                         ]
-                    ],
-                    'title' => S . ($n = basename($k)) . S,
-                    'type' => 'file',
-                    'url' => [
-                        'part' => 0,
-                        'path' => $pp,
-                        'query' => x\panel\_query_set(),
-                        'task' => 'get'
-                    ]
-                ];
-                if (isset($session[$k])) {
-                    unset($_SESSION['_']['files'][$k]);
+                    ];
+                    if (isset($session[$k])) {
+                        unset($_SESSION['_']['files'][$k]);
+                    }
                 }
+                ksort($files);
             }
-            ksort($files);
+            if ($count) {
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
+            } else {
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['skip'] = true;
+            }
         }
-        if ($count) {
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['lot'] = $files;
-        } else {
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['lot']['files']['skip'] = true;
-        }
-    }
-    return $_;
-}, 20);
+        return $_;
+    }, 20);
+}
 
 $GLOBALS['page'] = $page;
 

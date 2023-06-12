@@ -116,12 +116,14 @@ $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
 
 $_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['set']['title'] = 'set' === $_['task'] ? 'Publish' : 'Update';
 
-Hook::set('_', function ($_) {
-    // Hide the extension option(s) if it is empty, unless there is a `skip` property that was explicitly set
-    if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']) && !isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'])) {
-        $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'] = empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['lot']);
-    }
-    return $_;
-}, 20);
+if (!isset($_with_hooks) || $_with_hooks) {
+    Hook::set('_', function ($_) {
+        // Hide the extension option(s) if it is empty, unless there is a `skip` property that was explicitly set
+        if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']) && !isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'])) {
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'] = empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['lot']);
+        }
+        return $_;
+    }, 20);
+}
 
 return $_;

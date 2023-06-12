@@ -1,15 +1,44 @@
 <?php namespace x\panel\type;
 
-function blank($_) {}
-function blob($_) {}
-function data($_) {}
-function file($_) {}
-function files($_) {}
-function folder($_) {}
-function folders($_) {}
-function page($_) {}
-function pages($_) {}
-function state($_) {}
+function blank(array $lot = []) {
+    return \x\panel\type($lot);
+}
+
+function blob(array $lot = []) {
+    return \x\panel\type($lot, 'blob');
+}
+
+function data(array $lot = []) {
+    return \x\panel\type($lot, 'data');
+}
+
+function file(array $lot = []) {
+    return \x\panel\type($lot, 'file');
+}
+
+function files(array $lot = []) {
+    return \x\panel\type($lot, 'files');
+}
+
+function folder(array $lot = []) {
+    return \x\panel\type($lot, 'folder');
+}
+
+function folders(array $lot = []) {
+    return \x\panel\type\files($lot);
+}
+
+function page(array $lot = []) {
+    return \x\panel\type($lot, 'page');
+}
+
+function pages(array $lot = []) {
+    return \x\panel\type($lot, 'pages');
+}
+
+function state(array $lot = []) {
+    return \x\panel\type($lot, 'state');
+}
 
 require __DIR__ . \D . 'type' . \D . 'blob.php';
 require __DIR__ . \D . 'type' . \D . 'data.php';
