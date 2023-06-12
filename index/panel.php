@@ -1,12 +1,11 @@
 <?php namespace x\panel;
 
-// Private use only!
-\define(__NAMESPACE__ . "\\folder", \stream_resolve_include_path(__DIR__ . \D . '..'));
-
-require \x\panel\folder . \D . 'engine' . \D . 'f.php';
-require \x\panel\folder . \D . 'engine' . \D . 'fire.php';
+require __DIR__ . \D . '..' . \D . 'engine' . \D . 'f.php';
+require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 
 $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
+
+// \test(type\files\trash());exit;
 
 function route($content, $path, $query, $hash) {
     if (null !== $content || !\Is::user()) {

@@ -207,11 +207,182 @@ function _state_set() {
     $GLOBALS['_'] = $_;
 }
 
-function type(array $lot = [], string $k = 'blank') {
-    \extract(\array_diff_key($lot, ['_' => true]), \EXTR_SKIP);
-    \extract($GLOBALS, \EXTR_SKIP);
-    $_with_hooks = false; // Tell the file not to execute the default hook(s)
-    return \array_replace_recursive(require \x\panel\folder . \D . 'index' . \D . 'panel' . \D . 'type' . \D . \strtr($k, ['/' => \D]) . '.php', $lot['_'] ?? []);
+function type(array $_ = []) {
+    if (isset($_[0]) || isset($_[1]) || isset($_['content'])) {
+        return $_; // Skip!
+    }
+    $hash = $_['hash'] ?? null;
+    $part = (int) ($_['part'] ?? 0);
+    $path = $_['path'] ?? null;
+    $query = (array) ($_['query'] ?? []);
+    $task = $_['task'] ?? null;
+    return \array_replace_recursive([
+        '0' => null,
+        '1' => null,
+        '2' => [],
+        'alert' => [],
+        'are' => [],
+        'as' => [],
+        'asset' => [],
+        'author' => null,
+        'base' => null,
+        'can' => [],
+        'chunk' => null,
+        'content' => null,
+        'count' => 0,
+        'deep' => null,
+        'description' => null,
+        'file' => null,
+        'folder' => null,
+        'has' => [
+            'parent' => $path && false !== \strpos($path, '/'),
+            'part' => $part > 0
+        ],
+        'hash' => null,
+        'icon' => [],
+        'is' => [
+            'error' => false,
+            'page' => $part <= 0,
+            'pages' => $part > 0
+        ],
+        'kick' => null,
+        'lot' => [
+            'bar' => [
+                '0' => 'header',
+                'lot' => [
+                    0 => [
+                        'lot' => [
+                            'folder' => [
+                                'caret' => false,
+                                'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
+                                'lot' => [],
+                                'stack' => 10,
+                                'title' => false,
+                                'url' => [
+                                    'part' => 1,
+                                    'path' => 'asset',
+                                    'query' => \x\panel\_query_set(),
+                                    'task' => 'get'
+                                ]
+                            ],
+                            'link' => [
+                                'description' => 'Back',
+                                'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
+                                'skip' => true,
+                                'stack' => 10,
+                                'title' => false
+                            ],
+                            'search' => [
+                                '2' => ['role' => 'search'],
+                                'lot' => [
+                                    'fields' => [
+                                        'lot' => [
+                                            'query' => [
+                                                'hint' => 'Search',
+                                                'stack' => 10,
+                                                'title' => 'Search',
+                                                'type' => 'text',
+                                                'value' => $query['query'] ?? null
+                                            ]
+                                        ],
+                                        'stack' => 10,
+                                        'type' => 'fields'
+                                    ]
+                                ],
+                                'name' => 'get',
+                                'stack' => 20,
+                                'type' => 'form/get',
+                                'url' => [
+                                    'part' => 1,
+                                    'path' => $path,
+                                    'query' => ['query' => null],
+                                    'task' => 'get'
+                                ]
+                            ]
+                        ],
+                        'of' => ['lot' => true],
+                        'stack' => 10,
+                        'type' => 'links'
+                    ],
+                    1 => [
+                        'lot' => [],
+                        'of' => ['links' => true],
+                        'stack' => 20,
+                        'type' => 'links'
+                    ],
+                    2 => [
+                        'lot' => [],
+                        'of' => ['user' => true],
+                        'stack' => 30,
+                        'type' => 'links'
+                    ]
+                ],
+                'stack' => 10,
+                'type' => 'bar'
+            ],
+            'desk' => [
+                'type' => 'desk',
+                'lot' => [
+                    'form' => [
+                        'lot' => [
+                            0 => [
+                                'lot' => [],
+                                'stack' => 10,
+                                'type' => 'section'
+                            ],
+                            'alert' => [
+                                'content' => null,
+                                'skip' => true,
+                                'stack' => 15,
+                                'type' => 'section'
+                            ],
+                            1 => [
+                                'lot' => [
+                                    'tabs' => [
+                                        'gap' => false,
+                                        'lot' => [],
+                                        'name' => 0,
+                                        'type' => 'tabs'
+                                    ]
+                                ],
+                                'stack' => 20,
+                                'type' => 'section'
+                            ],
+                            2 => [
+                                'lot' => [],
+                                'stack' => 30,
+                                'type' => 'section'
+                            ]
+                        ],
+                        'name' => 'set',
+                        'stack' => 10,
+                        'type' => 'form/post',
+                        'url' => [
+                            'hash' => $hash,
+                            'part' => $part,
+                            'path' => $path,
+                            'query' => $query,
+                            'task' => $task
+                        ]
+                    ]
+                ],
+                'stack' => 20
+            ]
+        ],
+        'not' => [],
+        'of' => [],
+        'part' => 0,
+        'path' => null,
+        'query' => [],
+        'sort' => null,
+        'status' => 404,
+        'task' => null,
+        'title' => null,
+        'token' => null,
+        'type' => null,
+        'with' => [],
+        'x' => null
+    ], $_);
 }
 
 require __DIR__ . D . 'f' . D . 'from.php';

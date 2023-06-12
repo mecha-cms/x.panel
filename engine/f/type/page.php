@@ -1,9 +1,17 @@
 <?php namespace x\panel\type\page;
 
-function page(array $lot = []) {
-    return \x\panel\type($lot, 'page/page');
+function page(array $_ = []) {
+    $type = $_['type'] ?? 'page/page';
+    return \x\panel\type\page(\array_replace_recursive([
+        // TODO
+        'type' => $type
+    ], $_));
 }
 
 function user(array $lot = []) {
-    return \x\panel\type($lot, 'page/user');
+    $type = $_['type'] ?? 'page/user';
+    return \x\panel\type\page(\array_replace_recursive([
+        // TODO
+        'type' => $type
+    ], $_));
 }

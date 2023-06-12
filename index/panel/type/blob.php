@@ -120,7 +120,6 @@ $desk = [
                                         'tasks' => [
                                             'lot' => [
                                                 'set' => [
-                                                    'description' => ['Upload to %s', x\panel\from\path($_['folder'])],
                                                     'name' => 'task',
                                                     'stack' => 10,
                                                     'title' => 'Upload',
