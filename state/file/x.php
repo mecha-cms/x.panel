@@ -1,6 +1,6 @@
 <?php
 
-// List of file extension allowed to upload
+// List of file extension(s) allowed to upload
 return [
     '7z' => 1,
     'apng' => 1,

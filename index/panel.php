@@ -5,8 +5,6 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 
 $GLOBALS['_'] = $_ = require __DIR__ . \D . '..' . \D . 'engine' . \D . 'r.php';
 
-// \test(type\files\trash());exit;
-
 function route($content, $path, $query, $hash) {
     if (null !== $content || !\Is::user()) {
         return $content;

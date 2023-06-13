@@ -12,16 +12,22 @@ function x(array $_ = []) {
     return \x\panel\type\blob(\array_replace_recursive([
         'lot' => [
             'desk' => [
+                // `desk`
                 'lot' => [
                     'form' => [
+                        // `form/post`
                         'lot' => [
                             1 => [
+                                // `section`
                                 'lot' => [
                                     'tabs' => [
+                                        // `tabs`
                                         'lot' => [
                                             'blob' => [
+                                                // `tab`
                                                 'lot' => [
                                                     'fields' => [
+                                                        // `fields`
                                                         'lot' => [
                                                             'blob' => [
                                                                 // Disable file upload if it is not possible to extract package with the current environment
@@ -32,8 +38,10 @@ function x(array $_ = []) {
                                                                 'type' => 'blob'
                                                             ],
                                                             'description' => [
+                                                                // `field`
                                                                 'lot' => [
                                                                     'content' => [
+                                                                        // `content`
                                                                         'content' => $content,
                                                                         'stack' => 10,
                                                                         'type' => 'content'
@@ -74,20 +82,28 @@ function y(array $_ = []) {
     return \x\panel\type\blob\x(\array_replace_recursive([
         'lot' => [
             'desk' => [
+                // `desk`
                 'lot' => [
                     'form' => [
+                        // `form/post`
                         'lot' => [
                             1 => [
+                                // `section`
                                 'lot' => [
                                     'tabs' => [
+                                        // `tabs`
                                         'lot' => [
                                             'blob' => [
+                                                // `tab`
                                                 'lot' => [
                                                     'fields' => [
+                                                        // `fields`
                                                         'lot' => [
                                                             'description' => [
+                                                                // `field`
                                                                 'lot' => [
                                                                     'content' => [
+                                                                        // `content`
                                                                         'content' => $content
                                                                     ]
                                                                 ]

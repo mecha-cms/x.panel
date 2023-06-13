@@ -1,6 +1,6 @@
 <?php
 
-// List of file MIME type allowed to upload
+// List of file type(s) allowed to upload
 return [
     'application/javascript' => 1,
     'application/json' => 1,

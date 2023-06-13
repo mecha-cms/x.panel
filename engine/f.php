@@ -235,6 +235,8 @@ function type(array $_ = []) {
         'file' => null,
         'folder' => null,
         'has' => [
+            'page' => false,
+            'pages' => false,
             'parent' => $path && false !== \strpos($path, '/'),
             'part' => $part > 0
         ],
@@ -249,8 +251,10 @@ function type(array $_ = []) {
         'lot' => [
             'bar' => [
                 '0' => 'header',
+                // `bar`
                 'lot' => [
                     0 => [
+                        // `links`
                         'lot' => [
                             'folder' => [
                                 'caret' => false,
@@ -293,8 +297,8 @@ function type(array $_ = []) {
                                 'stack' => 20,
                                 'type' => 'form/get',
                                 'url' => [
-                                    'part' => 1,
-                                    'path' => $path,
+                                    'part' => $part,
+                                    'path' => $part > 0 ? $path : \dirname($path),
                                     'query' => ['query' => null],
                                     'task' => 'get'
                                 ]
@@ -305,12 +309,14 @@ function type(array $_ = []) {
                         'type' => 'links'
                     ],
                     1 => [
+                        // `links`
                         'lot' => [],
                         'of' => ['links' => true],
                         'stack' => 20,
                         'type' => 'links'
                     ],
                     2 => [
+                        // `links`
                         'lot' => [],
                         'of' => ['user' => true],
                         'stack' => 30,
@@ -321,25 +327,30 @@ function type(array $_ = []) {
                 'type' => 'bar'
             ],
             'desk' => [
-                'type' => 'desk',
+                // `desk`
                 'lot' => [
                     'form' => [
+                        // `form/post`
                         'lot' => [
                             0 => [
+                                // `section`
                                 'lot' => [],
                                 'stack' => 10,
                                 'type' => 'section'
                             ],
                             'alert' => [
+                                // `section`
                                 'content' => null,
                                 'skip' => true,
                                 'stack' => 15,
                                 'type' => 'section'
                             ],
                             1 => [
+                                // `section`
                                 'lot' => [
                                     'tabs' => [
                                         'gap' => false,
+                                        // `tabs`
                                         'lot' => [],
                                         'name' => 0,
                                         'type' => 'tabs'
@@ -349,6 +360,7 @@ function type(array $_ = []) {
                                 'type' => 'section'
                             ],
                             2 => [
+                                // `section`
                                 'lot' => [],
                                 'stack' => 30,
                                 'type' => 'section'
@@ -366,7 +378,8 @@ function type(array $_ = []) {
                         ]
                     ]
                 ],
-                'stack' => 20
+                'stack' => 20,
+                'type' => 'desk'
             ]
         ],
         'not' => [],

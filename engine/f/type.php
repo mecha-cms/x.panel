@@ -26,8 +26,8 @@ function blob(array $_ = []) {
             'bar' => [
                 // `bar`
                 'lot' => [
-                    // `links`
                     0 => [
+                        // `links`
                         'lot' => [
                             'folder' => ['skip' => true],
                             'link' => [
@@ -159,8 +159,8 @@ function data(array $_ = []) {
             'bar' => [
                 // `bar`
                 'lot' => [
-                    // `links`
                     0 => [
+                        // `links`
                         'lot' => [
                             'folder' => ['skip' => true],
                             'link' => [
@@ -303,8 +303,8 @@ function file(array $_ = []) {
             'bar' => [
                 // `bar`
                 'lot' => [
-                    // `links`
                     0 => [
+                        // `links`
                         'lot' => [
                             'folder' => ['skip' => true],
                             'link' => [
@@ -537,8 +537,8 @@ function folder(array $_ = []) {
             'bar' => [
                 // `bar`
                 'lot' => [
-                    // `links`
                     0 => [
+                        // `links`
                         'lot' => [
                             'folder' => ['skip' => true],
                             'link' => [
@@ -595,7 +595,9 @@ function folder(array $_ = []) {
                                                             ],
                                                             'options' => [
                                                                 'flex' => false,
-                                                                'lot' => ['kick' => 'Redirect to folder'],
+                                                                'lot' => [
+                                                                    'kick' => ['Redirect to %s', ['folder']]
+                                                                ],
                                                                 'stack' => 20,
                                                                 'title' => "",
                                                                 'type' => 'items',
@@ -683,8 +685,8 @@ function page(array $_ = []) {
             'bar' => [
                 // `bar`
                 'lot' => [
-                    // `links`
                     0 => [
+                        // `links`
                         'lot' => [
                             'folder' => ['skip' => true],
                             'link' => [
@@ -1065,8 +1067,8 @@ function state(array $_ = []) {
             'bar' => [
                 // `bar`
                 'lot' => [
-                    // `links`
                     0 => [
+                        // `links`
                         'lot' => [
                             'link' => [
                                 'skip' => false,
