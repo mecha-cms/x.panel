@@ -24,13 +24,17 @@ if (!isset($_with_hooks) || $_with_hooks) {
                             foreach (g($k, null, true) as $kk => $vv) {
                                 ++$stats[$vv];
                             }
-                            $v['description'] = implode(', ', [
-                                i('%d folder' . (1 === $stats[0] ? "" : 's'), $stats[0]),
-                                i('%d file' . (1 === $stats[1] ? "" : 's'), $stats[1])
-                            ]);
+                            $v['description'] = x\panel\to\elapse(new Time(strtr($v['title'], [S => ""])));
                         }
                         if (false === strpos($v['title'], '/')) {
-                            $v['title'] = S . x\panel\to\elapse(new Time(strtr($v['title'], [S => ""]))) . S;
+                            if ($stats[1] > 1) {
+                                $v['title'] = S . basename(g($k, 0, true)->key() ?? "") . S;
+                            } else if ($stats[0] > 1) {
+                                $v['title'] = S . basename(g($k, 0, true)->key() ?? "") . S;
+                            } else {
+                                $v['title'] = S . basename(g($k, 1, true)->key() ?? "") . S;
+                                $v['type'] = 'file';
+                            }
                         }
                         $v['tasks']['recover'] = [
                             'description' => 'Recover this state',
