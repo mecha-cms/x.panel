@@ -21,7 +21,7 @@ function cache(array $_ = []) {
                                             'file' => ['skip' => true],
                                             'folder' => ['skip' => true],
                                             'let' => [
-                                                'icon' => 'M5,13H19V11H5M3,17H17V15H3M7,7V9H21V7',
+                                                'icon' => 'M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z',
                                                 'skip' => false,
                                                 'stack' => 10,
                                                 'title' => 'Flush',
@@ -65,10 +65,10 @@ function trash(array $_ = []) {
                                             'file' => ['skip' => true],
                                             'folder' => ['skip' => true],
                                             'let' => [
-                                                'icon' => 'M5,13H19V11H5M3,17H17V15H3M7,7V9H21V7',
+                                                'icon' => 'M15,16H19V18H15V16M15,8H22V10H15V8M15,12H21V14H15V12M11,10V18H5V10H11M13,8H3V18A2,2 0 0,0 5,20H11A2,2 0 0,0 13,18V8M14,5H11L10,4H6L5,5H2V7H14V5Z',
                                                 'skip' => false,
                                                 'stack' => 10,
-                                                'title' => 'Flush',
+                                                'title' => 'Clear',
                                                 'type' => 'link',
                                                 'url' => [
                                                     'query' => \x\panel\_query_set(['token' => $token]),

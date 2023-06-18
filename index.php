@@ -82,10 +82,10 @@ $GLOBALS['_'] = $_ = \array_replace_recursive([
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
     'can' => (array) ($state->can ?? []), // Inherit to the front-end state(s)
-    'chunk' => $query['chunk'] ?? null, // Default is `20`
+    'chunk' => $query['chunk'] ?? 20,
     'content' => null,
     'count' => 0,
-    'deep' => $query['deep'] ?? null, // Default is `0`
+    'deep' => $query['deep'] ?? 0,
     'description' => null,
     'file' => $f && \is_file($f) ? $f : null,
     'folder' => $f && \is_dir($f) ? $f : null,
