@@ -447,6 +447,8 @@ function files(array $_ = []) {
     $task = $_['task'] ?? 'get';
     $type = $_['type'] ?? 'files';
     return \x\panel\type(\array_replace_recursive([
+        'chunk' => $chunk,
+        'count' => $count,
         'lot' => [
             'desk' => [
                 // `desk`
@@ -534,6 +536,7 @@ function files(array $_ = []) {
                 ]
             ]
         ],
+        'part' => $part,
         'status' => 200,
         'task' => $task,
         'type' => $type
@@ -959,6 +962,8 @@ function pages(array $_ = []) {
     $task = $_['task'] ?? 'get';
     $type = $_['type'] ?? 'pages';
     return \x\panel\type(\array_replace_recursive([
+        'chunk' => $chunk,
+        'count' => $count,
         'lot' => [
             'desk' => [
                 // `desk`
@@ -1076,6 +1081,7 @@ function pages(array $_ = []) {
                 ]
             ]
         ],
+        'part' => $part,
         'status' => 200,
         'task' => $task,
         'type' => $type
