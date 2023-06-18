@@ -10,11 +10,19 @@ if (!empty($_['part']) || 'get' !== $_['task']) {
     return $_;
 }
 
-// Hide license link
-$_['lot']['bar']['lot'][1]['lot']['license']['skip'] = true;
+$_['status'] = 200;
+if (!array_key_exists('type', $_GET) && !isset($_['type'])) {
+    $_['type'] = 'blank';
+}
 
-// Hide search form
-$_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true;
+if (false !== strpos($_['path'] ?? "", '/')) {
+    $_['status'] = 404;
+    return $_;
+}
+
+$_['lot']['bar']['lot'][0]['lot']['link']['skip'] = true; // Hide back link
+$_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true; // Hide search form
+$_['lot']['bar']['lot'][1]['lot']['license']['skip'] = true; // Hide license link
 
 // Mark this license as read
 if (!is_file($f = ENGINE . D . 'log' . D . dechex(crc32(PATH)))) {

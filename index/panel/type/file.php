@@ -1,7 +1,7 @@
 <?php
 
-if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
-    $_['alert']['error'][$file] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file) . '</code>', 'file']];
+if (!$file->exist && 'get' === $_['task']) {
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file->path ?? $folder->path ?? P) . '</code>', 'file']];
     $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
@@ -11,16 +11,20 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     return $_;
 }
 
-$type = $file ? mime_content_type($file) : null;
+if ($file->exist && 'set' === $_['task']) {
+    $_['kick'] = ['task' => 'get'];
+    return $_;
+}
+
 $editable = 'set' === $_['task'];
-$name = 'get' === $_['task'] ? basename($file ?? "") : "";
+$type = $file->type ?? "";
 
 if (0 === strpos($type, 'text/') || 'inode/x-empty' === $type || 'image/svg+xml' === $type) {
     $editable = true;
 }
 
 if (0 === strpos($type, 'application/')) {
-    $editable = false !== strpos(',javascript,json,ld+json,php,x-httpd-php,x-httpd-php-source,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',');
+    $editable = false !== strpos(',javascript,json,ld+json,php,x-httpd-php,x-httpd-php-source,x-javascript,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',');
 }
 
 // <https://stackoverflow.com/a/60861168>
@@ -32,33 +36,33 @@ if (0 === strpos($type, 'application/')) {
 // +3: Binary
 $check_mode = static function ($path, $printable = false, $max = 256) {
     $max = floor($max);
-    if (is_file($path)) {
-        if (is_readable($path)) {
-            $size = filesize($path);
-            if (0 === $size) {
-                return 0; // Empty
-            }
-            if ($max > $size) {
-                $max = $size;
-            }
-            $chunk = ceil($size / $max);
-            $h = fopen($path, 'rb');
-            for ($i = 0; $i < $chunk; ++$i) {
-                $buffer = fread($h, $max);
-                if (preg_match('/[\x80-\xFF]/', $buffer)) {
-                    fclose($h);
-                    return 3; // Binary
-                }
-                if ($printable) {
-                    $printable = ctype_print($buffer);
-                }
-            }
-            fclose($h);
-            return $printable ? 1 : 2; // Printable or ASCII
-        }
+    if (!is_file($path)) {
+        return -1; // Missing
+    }
+    if (!is_readable($path)) {
         return -2; // Unreadable
     }
-    return -1; // Missing
+    $size = filesize($path);
+    if (0 === $size) {
+        return 0; // Empty
+    }
+    if ($max > $size) {
+        $max = $size;
+    }
+    $chunk = (int) ceil($size / $max);
+    $h = fopen($path, 'rb');
+    for ($i = 0; $i < $chunk; ++$i) {
+        $buffer = fread($h, $max);
+        if (preg_match('/[\x80-\xFF]/', $buffer)) {
+            fclose($h);
+            return 3; // Binary
+        }
+        if ($printable && function_exists('ctype_print')) {
+            $printable = ctype_print($buffer);
+        }
+    }
+    fclose($h);
+    return $printable ? 1 : 2; // Printable or ASCII
 };
 
 if (!$editable) {
@@ -66,144 +70,72 @@ if (!$editable) {
     $editable = 0 === $test || 1 === $test || 2 === $test;
 }
 
-$content = 'get' === $_['task'] && $file && $editable ? file_get_contents($file) : "";
+$content = 'get' === $_['task'] && $editable ? ($file->content ?? "") : "";
+$name = 'get' === $_['task'] ? ($file->name(true) ?? "") : "";
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
 if ("" === $content) $content = null;
 if ("" === $name) $name = null;
 
-$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
-
-$bar = [
-    // `bar`
+return x\panel\type\file(array_replace_recursive($_, [
     'lot' => [
-        // `links`
-        0 => [
+        'desk' => [
+            // `desk`
             'lot' => [
-                'folder' => ['skip' => true],
-                'link' => [
-                    'skip' => false,
-                    'url' => [
-                        'part' => 1,
-                        'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
-                        'query' => x\panel\_query_set(),
-                        'task' => 'get'
-                    ]
-                ],
-                'set' => [
-                    'description' => ['New %s', 'File'],
-                    'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
-                    'skip' => 'set' === $_['task'],
-                    'stack' => 10.5,
-                    'title' => false,
-                    'url' => [
-                        'part' => 0,
-                        'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
-                        'query' => x\panel\_query_set(['type' => 'file']),
-                        'task' => 'set'
-                    ]
-                ]
-            ]
-        ]
-    ]
-];
-
-$desk = [
-    // `desk`
-    'lot' => [
-        'form' => [
-            // `form/post`
-            'lot' => [
-                1 => [
-                    // `section`
+                'form' => [
+                    // `form/post`
                     'lot' => [
-                        'tabs' => [
-                            // `tabs`
+                        1 => [
+                            // `section`
                             'lot' => [
-                                'file' => [
+                                'tabs' => [
+                                    // `tabs`
                                     'lot' => [
-                                        'fields' => [
+                                        'file' => [
+                                            // `tab`
                                             'lot' => [
-                                                'content' => [
-                                                    'height' => true,
-                                                    'name' => 'file[content]',
-                                                    'skip' => !$editable,
-                                                    'stack' => 10,
-                                                    'type' => 'source',
-                                                    'value' => $content,
-                                                    'width' => true
-                                                ],
-                                                'name' => [
-                                                    'focus' => true,
-                                                    'name' => 'file[name]',
-                                                    'stack' => 20,
-                                                    'type' => 'name',
-                                                    'value' => $name,
-                                                    'width' => true
+                                                'fields' => [
+                                                    'lot' => [
+                                                        'content' => [
+                                                            'skip' => !$editable,
+                                                            'value' => $content
+                                                        ],
+                                                        'name' => ['value' => $name]
+                                                    ]
                                                 ]
-                                            ],
-                                            'stack' => 10,
-                                            'type' => 'fields'
-                                        ]
-                                    ],
-                                    'stack' => 10
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                2 => [
-                    // `section`
-                    'lot' => [
-                        'fields' => [
-                            'lot' => [
-                                0 => [
-                                    'title' => "",
-                                    'type' => 'field',
-                                    'lot' => [
-                                        'tasks' => [
-                                            'lot' => [
-                                                'set' => [
-                                                    'description' => ['Save to %s', x\panel\from\path($file)],
-                                                    'name' => 'task',
-                                                    'stack' => 10,
-                                                    'title' => 'get' === $_['task'] ? 'Update' : 'Create',
-                                                    'type' => 'submit',
-                                                    'value' => $_['task']
-                                                ],
-                                                'let' => [
-                                                    'name' => 'task',
-                                                    'skip' => 'set' === $_['task'],
-                                                    'stack' => 20,
-                                                    'title' => 'Delete',
-                                                    'value' => 'let'
-                                                ]
-                                            ],
-                                            'type' => 'tasks/button'
+                                            ]
                                         ]
                                     ]
                                 ]
-                            ],
-                            'stack' => 10,
-                            'type' => 'fields'
+                            ]
+                        ],
+                        2 => [
+                            // `section`
+                            'lot' => [
+                                'fields' => [
+                                    // `fields`
+                                    'lot' => [
+                                        0 => [
+                                            // `field`
+                                            'lot' => [
+                                                'tasks' => [
+                                                    // `tasks/button`
+                                                    'lot' => [
+                                                        'set' => [
+                                                            'description' => $file->exist && 'set' === $_['task'] ? ['Save to %s', x\panel\from\path($file->path)] : null
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
                         ]
-                    ]
+                    ],
+                    'values' => ['trash' => $trash]
                 ]
-            ],
-            'values' => [
-                'kick' => $_GET['kick'] ?? null,
-                'token' => $_['token'],
-                'trash' => $trash,
-                'type' => $_['type']
             ]
         ]
-    ]
-];
-
-$GLOBALS['file'] = is_file($file ?? P) ? new File($file) : new File;
-
-return ($_ = array_replace_recursive($_, [
-    'lot' => [
-        'bar' => $bar,
-        'desk' => $desk
     ]
 ]));

@@ -80,6 +80,12 @@ button.is\:host {
   }
 }
 
+.is\:host[role='button'] {
+  &.not\:active {
+    @extend button, .is\:host, :disabled;
+  }
+}
+
 .is\:host[role='searchbox'],
 .is\:host[role='spinbutton'],
 .is\:host[role='textbox'],

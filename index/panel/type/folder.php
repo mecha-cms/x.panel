@@ -1,7 +1,7 @@
 <?php
 
-if (is_file(($folder = $_['folder'] ?? $_['file']) ?? P) && 'get' === $_['task']) {
-    $_['alert']['error'][$folder] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($folder) . '</code>', 'folder']];
+if (!$folder->exist && 'get' === $_['task']) {
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($folder->path ?? $file->path ?? P) . '</code>', 'folder']];
     $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
@@ -11,11 +11,76 @@ if (is_file(($folder = $_['folder'] ?? $_['file']) ?? P) && 'get' === $_['task']
     return $_;
 }
 
-$name = 'get' === $_['task'] ? basename($_['folder']) : "";
+if ($folder->exist && 'set' === $_['task'] && 0 !== strpos($_['type'] . '/', 'folder/')) {
+    $_['kick'] = ['task' => 'get'];
+    return $_;
+}
+
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
+
+$name = 'get' === $_['task'] ? ($folder->name(true) ?? "") : "";
 
 if ("" === $name) $name = null;
 
-$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
+return x\panel\type\folder(array_replace_recursive($_, [
+    'lot' => [
+        'desk' => [
+            // `desk`
+            'lot' => [
+                'form' => [
+                    // `form/post`
+                    'lot' => [
+                        1 => [
+                            // `section`
+                            'lot' => [
+                                'tabs' => [
+                                    // `tabs`
+                                    'lot' => [
+                                        'folder' => [
+                                            // `tab`
+                                            'lot' => [
+                                                'fields' => [
+                                                    // `fields`
+                                                    'lot' => [
+                                                        'name' => ['value' => $name]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        2 => [
+                            // `section`
+                            'lot' => [
+                                'fields' => [
+                                    // `fields`
+                                    'lot' => [
+                                        0 => [
+                                            // `field`
+                                            'lot' => [
+                                                'tasks' => [
+                                                    // `tasks/button`
+                                                    'lot' => [
+                                                        'set' => [
+                                                            'description' => $folder->exist && 'set' === $_['task'] ? ['Save to %s', x\panel\from\path($folder->path)] : null,
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'values' => ['trash' => $trash]
+                ]
+            ]
+        ]
+    ]
+]));
 
 $bar = [
     // `bar`
@@ -51,98 +116,7 @@ $bar = [
 ];
 
 $desk = [
-    // `desk`
-    'lot' => [
-        'form' => [
-            // `form/post`
-            'lot' => [
-                1 => [
-                    // `section`
-                    'lot' => [
-                        'tabs' => [
-                            // `tabs`
-                            'lot' => [
-                                'folder' => [
-                                    'lot' => [
-                                        'fields' => [
-                                            'lot' => [
-                                                'name' => [
-                                                    'focus' => true,
-                                                    'name' => 'folder[name]',
-                                                    'stack' => 10,
-                                                    'type' => 'set' === $_['task'] ? 'path' : 'name',
-                                                    'value' => $name,
-                                                    'width' => true,
-                                                    'x' => 'get' === $_['task'] ? false : null
-                                                ],
-                                                'options' => [
-                                                    'flex' => false,
-                                                    'lot' => ['kick' => 'Redirect to folder'],
-                                                    'stack' => 20,
-                                                    'title' => "",
-                                                    'type' => 'items',
-                                                    'value' => 'set' === $_['task'] ? ['kick' => true] : []
-                                                ]
-                                            ],
-                                            'stack' => 10,
-                                            'type' => 'fields'
-                                        ]
-                                    ],
-                                    'stack' => 10
-                                ]
-                            ]
-                        ]
-                    ]
-                ],
-                2 => [
-                    // `section`
-                    'lot' => [
-                        'fields' => [
-                            'type' => 'fields',
-                            'lot' => [
-                                0 => [
-                                    'lot' => [
-                                        'tasks' => [
-                                            'lot' => [
-                                                'set' => [
-                                                    'description' => ['Create in %s', x\panel\from\path($_['folder'])],
-                                                    'name' => 'task',
-                                                    'stack' => 10,
-                                                    'title' => 'get' === $_['task'] ? 'Update' : 'Create',
-                                                    'type' => 'submit',
-                                                    'value' => $_['task']
-                                                ],
-                                                'let' => [
-                                                    'name' => 'task',
-                                                    'skip' => 'set' === $_['task'],
-                                                    'stack' => 20,
-                                                    'title' => 'Delete',
-                                                    'value'=> 'let'
-                                                ]
-                                            ],
-                                            'type' => 'tasks/button'
-                                        ]
-                                    ],
-                                    'title' => "",
-                                    'type' => 'field'
-                                ]
-                            ],
-                            'stack' => 10
-                        ]
-                    ]
-                ]
-            ],
-            'values' => [
-                'kick' => $_GET['kick'] ?? null,
-                'token' => $_['token'],
-                'trash' => $trash,
-                'type' => $_['type']
-            ]
-        ]
-    ]
 ];
-
-$GLOBALS['folder'] = is_dir($folder ?? P) ? new Folder($folder) : new Folder;
 
 return ($_ = array_replace_recursive($_, [
     'lot' => [

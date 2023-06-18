@@ -119,7 +119,7 @@ function link($value) {
     $part = $v['part'] ?? "";
     $path = \trim($v['path'] ?? "", '/');
     $query = $v['query'];
-    $task = \trim($v['task'], '/');
+    $task = \trim($v['task'] ?? 'get', '/');
     return $base . \strtr(("" !== $task ? '/' . $task : "") . ("" !== $path ? '/' . $path : ""), "\\", '/') . (!\is_int($part) || 0 === $part ? "" : '/' . $part) . ($query ? \To::query($query) : "") . ($hash ? '#' . $hash : "");
 }
 

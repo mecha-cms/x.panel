@@ -1,7 +1,7 @@
 <?php
 
-if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
-    $_['alert']['error'][$file] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file) . '</code>', 'file']];
+if (!$file->exist && 'get' === $_['task']) {
+    $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file->path ?? $folder->path ?? P) . '</code>', 'file']];
     $_['kick'] = [
         'part' => 1,
         'path' => dirname($_['path']),
@@ -11,17 +11,26 @@ if (is_dir(($file = $_['file'] ?? $_['folder']) ?? P) && 'get' === $_['task']) {
     return $_;
 }
 
-$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
+if ($file->exist && 'set' === $_['task']) {
+    $_['kick'] = ['task' => 'get'];
+    return $_;
+}
 
 $fields = [];
+$stack = 10;
+$trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
-if (is_file($file ?? P)) {
-    $i = 10;
-    foreach ((array) require x\panel\_cache_let($file) as $k => $v) {
-        // Field type auto-detection
+// TODO: Sanitize the form data
+if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    // test($_POST['state']); exit;
+}
+
+if ($file->exist) {
+    foreach ((array) require x\panel\_cache_let($file->path) as $k => $v) {
+        // Auto-detect field type(s)
         $field = [
             'name' => 'state[' . $k . ']',
-            'stack' => $i,
+            'stack' => $stack,
             'type' => 'text',
             'value' => is_array($v) ? json_encode($v) : s($v),
             'width' => true
@@ -73,120 +82,73 @@ if (is_file($file ?? P)) {
             }
         }
         $fields[$k] = $field;
-        $i += 10;
+        $stack += 10;
     }
 }
 
-$back = trim(dirname($_['path']), '.');
+$back = trim(dirname($_['path'] ?? ""), '.');
 $kick = $state->x->panel->kick ?? 'get/asset/1';
 
-// Check if redirect target is relative to the panel base URL
+// Check if the redirect target is relative to the panel base URL
 if (0 !== strpos($kick, '/')) {
     // Remove task part from redirect target path
     $kick = preg_replace('/^(?:[gls]et|fire\/[^\/]+)\//', '/', $kick);
-// Redirect target is a full URL
+// The redirect target is a full URL
 } else if (false !== strpos($kick, '://')) {
-    // Set to default back link
+    // Set to default
     $kick = 'asset/1';
 }
 
 $end = array_slice(explode('/', "" !== $back ? $back : $kick), -1)[0];
 $has_part = is_numeric($end) && '0' !== $end && '-' !== $end[0];
 
-$bar = [
-    // `bar`
+return x\panel\type\state(array_replace_recursive($_, [
     'lot' => [
-        // `links`
-        0 => [
+        'bar' => [
+            // `bar`
             'lot' => [
-                'link' => [
-                    'skip' => false,
-                    'url' => [
-                        'part' => $has_part ? 0 : 1,
-                        'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : $kick, '/') : $_['path'],
-                        'query' => x\panel\_query_set()
-                    ]
-                ],
-                'folder' => ['skip' => true]
-            ]
-        ]
-    ]
-];
-
-$desk = [
-    // `desk`
-    'lot' => [
-        'form' => [
-            // `form/post`
-            'lot' => [
-                1 => [
-                    // `section`
+                0 => [
+                    // `links`
                     'lot' => [
-                        'tabs' => [
-                            // `tabs`
-                            'gap' => false,
+                        'link' => [
+                            'url' => [
+                                'part' => $has_part ? 0 : 1,
+                                'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : $kick, '/') : $_['path']
+                            ]
+                        ],
+                        'folder' => ['skip' => true]
+                    ]
+                ]
+            ]
+        ],
+        'desk' => [
+            // `desk`
+            'lot' => [
+                'form' => [
+                    // `form/post`
+                    'lot' => [
+                        1 => [
+                            // `section`
                             'lot' => [
-                                'file' => [
+                                'tabs' => [
+                                    // `tabs`
                                     'lot' => [
-                                        'fields' => [
-                                            'lot' => $fields,
-                                            'stack' => 10,
-                                            'type' => 'fields'
+                                        'file' => [
+                                            // `tab`
+                                            'lot' => [
+                                                'fields' => ['lot' => $fields]
+                                            ]
                                         ]
-                                    ],
-                                    'stack' => 10
+                                    ]
                                 ]
                             ]
                         ]
-                    ]
-                ],
-                2 => [
-                    // `section`
-                    'lot' => [
-                        'fields' => [
-                            'lot' => [
-                                0 => [
-                                    'lot' => [
-                                        'tasks' => [
-                                            'lot' => [
-                                                'set' => [
-                                                    'name' => false,
-                                                    'stack' => 10,
-                                                    'title' => 'get' === $_['task'] ? 'Update' : 'Create',
-                                                    'type' => 'submit'
-                                                ],
-                                                'let' => ['skip' => true]
-                                            ],
-                                            'type' => 'tasks/button'
-                                        ]
-                                    ],
-                                    'title' => "",
-                                    'type' => 'field'
-                                ]
-                            ],
-                            'stack' => 10,
-                            'type' => 'fields'
-                        ]
+                    ],
+                    'values' => [
+                        'file' => ['name' => $file->name(true)]
                     ]
                 ]
-            ],
-            'values' => [
-                'file' => [
-                    'name' => $file && is_file($file) ? basename($file) : null,
-                    'seal' => '0600'
-                ],
-                'kick' => $_GET['kick'] ?? null,
-                'token' => $_['token'],
-                'trash' => $trash,
-                'type' => $_['type']
             ]
         ]
-    ]
-];
-
-return ($_ = array_replace_recursive($_, [
-    'lot' => [
-        'bar' => $bar,
-        'desk' => $desk
     ]
 ]));

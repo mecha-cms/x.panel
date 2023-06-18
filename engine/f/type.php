@@ -1,7 +1,10 @@
 <?php namespace x\panel\type;
 
 function blank(array $_ = []) {
-    return \x\panel\type(\array_replace_recursive(['type' => 'blank'], $_));
+    return \x\panel\type(\array_replace_recursive([
+        'status' => 200,
+        'type' => 'blank'
+    ], $_));
 }
 
 function blob(array $_ = []) {
@@ -168,6 +171,7 @@ function data(array $_ = []) {
                                 'url' => [
                                     'part' => 1,
                                     'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'query' => \x\panel\_query_set(['tab' => ['data']]),
                                     'task' => 'get'
                                 ]
                             ],
@@ -435,6 +439,9 @@ function file(array $_ = []) {
 }
 
 function files(array $_ = []) {
+    $chunk = $_['chunk'] ?? 20;
+    $count = $_['count'] ?? 0;
+    $part = $_['part'] ?? 1;
     $path = $_['path'] ?? null;
     $query = (array) ($_['query'] ?? []);
     $task = $_['task'] ?? 'get';
@@ -507,6 +514,13 @@ function files(array $_ = []) {
                                                         'lot' => [],
                                                         'stack' => 10,
                                                         'type' => 'files'
+                                                    ],
+                                                    'pager' => [
+                                                        'chunk' => $chunk,
+                                                        'count' => $count,
+                                                        'current' => $part,
+                                                        'stack' => 20,
+                                                        'type' => 'pager'
                                                     ]
                                                 ],
                                                 'stack' => 10
@@ -820,6 +834,7 @@ function page(array $_ = []) {
                                                                         // `tasks/link`
                                                                         'lot' => [
                                                                             'set' => [
+                                                                                'description' => ['New %s', 'Data'],
                                                                                 'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                                                                 'stack' => 10,
                                                                                 'title' => 'Data',
@@ -864,6 +879,7 @@ function page(array $_ = []) {
                                                         // `tasks/button`
                                                         'lot' => [
                                                             'set' => [
+                                                                'description' => $x ? ['Update as %s', ucfirst($x)] : null,
                                                                 'name' => 'page[x]',
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 10,
@@ -880,7 +896,7 @@ function page(array $_ = []) {
                                                                 'value' => 'page'
                                                             ],
                                                             'draft' => [
-                                                                'description' => ['Save as %s', 'Draft'],
+                                                                'description' => $x ? ['Save as %s', 'Draft'] : null,
                                                                 'name' => 'page[x]',
                                                                 'skip' => 'draft' === $x,
                                                                 'stack' => 30,
@@ -889,7 +905,7 @@ function page(array $_ = []) {
                                                                 'value' => 'draft'
                                                             ],
                                                             'archive' => [
-                                                                'description' => ['Save as %s', 'Archive'],
+                                                                'description' => $x ? ['Save as %s', 'Archive'] : null,
                                                                 'name' => 'page[x]',
                                                                 'skip' => 'archive' === $x || 'set' === $task,
                                                                 'stack' => 40,
@@ -935,6 +951,9 @@ function page(array $_ = []) {
 }
 
 function pages(array $_ = []) {
+    $chunk = $_['chunk'] ?? 20;
+    $count = $_['count'] ?? 0;
+    $part = $_['part'] ?? 1;
     $path = $_['path'] ?? null;
     $query = (array) ($_['query'] ?? []);
     $task = $_['task'] ?? 'get';
@@ -1024,6 +1043,13 @@ function pages(array $_ = []) {
                                                         'lot' => [],
                                                         'stack' => 10,
                                                         'type' => 'pages'
+                                                    ],
+                                                    'pager' => [
+                                                        'chunk' => $chunk,
+                                                        'count' => $count,
+                                                        'current' => $part,
+                                                        'stack' => 20,
+                                                        'type' => 'pager'
                                                     ]
                                                 ],
                                                 'stack' => 10
@@ -1165,7 +1191,10 @@ function state(array $_ = []) {
 }
 
 function void(array $_ = []) {
-    return \x\panel\type(\array_replace_recursive(['type' => 'void'], $_));
+    return \x\panel\type(\array_replace_recursive([
+        'status' => 404,
+        'type' => 'void'
+    ], $_));
 }
 
 require __DIR__ . \D . 'type' . \D . 'blob.php';

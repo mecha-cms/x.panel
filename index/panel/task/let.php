@@ -34,7 +34,12 @@ function data($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
             'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
-            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], ['trash' => null])),
+            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
+                'stack' => $_POST['stack'] ?? [],
+                'tab' => $_POST['tab'] ?? [],
+                'trash' => null,
+                'type' => $_POST['type'] ?? null
+            ])),
             'task' => 'get'
         ];
     }
@@ -81,7 +86,12 @@ function file($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'path' => \dirname($_['path']),
-            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], ['trash' => null])),
+            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
+                'stack' => $_POST['stack'] ?? [],
+                'tab' => $_POST['tab'] ?? [],
+                'trash' => null,
+                'type' => $_POST['type'] ?? null
+            ])),
             'task' => 'get'
         ];
     }
@@ -145,7 +155,12 @@ function folder($_) {
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
             'path' => \dirname($_['path']),
-            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], ['trash' => null])),
+            'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
+                'stack' => $_POST['stack'] ?? [],
+                'tab' => $_POST['tab'] ?? [],
+                'trash' => null,
+                'type' => $_POST['type'] ?? null
+            ])),
             'task' => 'get'
         ];
     }

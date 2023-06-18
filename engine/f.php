@@ -272,7 +272,7 @@ function type(array $_ = []) {
                             'link' => [
                                 'description' => 'Back',
                                 'icon' => 'M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z',
-                                'skip' => true,
+                                'skip' => $part > 0,
                                 'stack' => 10,
                                 'title' => false
                             ],
@@ -298,7 +298,7 @@ function type(array $_ = []) {
                                 'type' => 'form/get',
                                 'url' => [
                                     'part' => $part,
-                                    'path' => $part > 0 ? $path : \dirname($path),
+                                    'path' => $part <= 0 && $path ? \dirname($path) : $path,
                                     'query' => ['query' => null],
                                     'task' => 'get'
                                 ]
