@@ -122,7 +122,7 @@ return x\panel\type\file(array_replace_recursive($_, [
                                                     // `tasks/button`
                                                     'lot' => [
                                                         'set' => [
-                                                            'description' => $file->exist && 'set' === $_['task'] ? ['Save to %s', x\panel\from\path($file->path)] : null
+                                                            'description' => $folder->exist && 'set' === $_['task'] ? ['Save to %s', x\panel\from\path($folder->path)] : null
                                                         ]
                                                     ]
                                                 ]

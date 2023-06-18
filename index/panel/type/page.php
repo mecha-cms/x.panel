@@ -16,7 +16,8 @@ if ($file->exist && 'set' === $_['task']) {
     return $_;
 }
 
-$has_folder = $file->exist ? is_dir($parent = $file->parent->path . D . $file->name) : false;
+$folder_parent = $file->exist ? $file->parent->path . D . $file->name : false;
+$has_folder = $file->exist ? is_dir($folder_parent) : false;
 $page = $file->exist ? new Page($file->path) : new Page;
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
@@ -235,7 +236,7 @@ return x\panel\type\page(array_replace_recursive($_, [
                                                                     'lot' => [
                                                                         'set' => [
                                                                             'active' => $has_folder,
-                                                                            'description' => $has_folder ? ['New %s', 'Data'] : ['Missing folder %s', x\panel\from\path($parent)],
+                                                                            'description' => $has_folder ? ['New %s', 'Data'] : ($folder_parent ? ['Missing folder %s', x\panel\from\path($folder_parent)] : null),
                                                                             'url' => $has_folder ? [] : null
                                                                         ]
                                                                     ]
