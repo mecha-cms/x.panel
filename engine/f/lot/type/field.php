@@ -160,14 +160,14 @@ function content($value, $key) {
 function date($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : \date('Y-m-d'));
-    $value['pattern'] = $value['pattern'] ?? "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])$";
+    $value['pattern'] = $value['pattern'] ?? "[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])";
     return \x\panel\lot\type\field\date_time($value, $key);
 }
 
 function date_time($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : \date('Y-m-d H:i:s'));
-    $value['pattern'] = $value['pattern'] ?? "^[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])[ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}$";
+    $value['pattern'] = $value['pattern'] ?? "[1-9]\\d{3,}-(0\\d|1[0-2])-(0\\d|[1-2]\\d|3[0-1])[ ]([0-1]\\d|2[0-4])(:([0-5]\\d|60)){2}";
     if (isset($value['value'])) {
         if (\is_string($value['value']) || \is_numeric($value['value'])) {
             $value['value'] = new \Time($value['value']);
@@ -188,7 +188,7 @@ function description($value, $key) {
 
 function email($value, $key) {
     $value['hint'] = $value['hint'] ?? (\S . \i('hello') . \S . '@' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
-    $value['pattern'] = $value['pattern'] ?? "^[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)$";
+    $value['pattern'] = $value['pattern'] ?? "[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -354,7 +354,7 @@ function items($value, $key) {
 
 function link($value, $key) {
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
-    $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;|(https?:)?\\/\\/)\\S+$";
+    $value['pattern'] = $value['pattern'] ?? "(data:[^\\s;]+;|(https?:)?\\/\\/)\\S+";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -367,13 +367,13 @@ function name($value, $key) {
     if (\is_array($x = $value['x'] ?? \implode('|', $default))) {
         $x = \array_keys(\array_filter($x));
         \sort($x);
-        $x = \implode('|', $x);
+        $x = \implode('|', \x($x));
     }
     $x = $x ? "\\.(" . $x . ")" : "";
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.baz' : ""));
     $value['max'] = $value['max'] ?? 255; // <https://serverfault.com/a/9548>
     $value['min'] = $value['min'] ?? $x ? 2 : 1;
-    $value['pattern'] = $value['pattern'] ?? "^([_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d" . \x($keep) . "]+)*)?" . $x . "$";
+    $value['pattern'] = $value['pattern'] ?? "([_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d" . \x($keep) . "]+)*)?" . $x;
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -416,14 +416,14 @@ function path($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : "\\foo\\bar\\baz");
     $value['max'] = $value['max'] ?? (260 - (\strlen(\PATH) + 1)); // <https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation>
     $value['min'] = 0;
-    $value['pattern'] = $value['pattern'] ?? "^([\\\\/][._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+$";
+    $value['pattern'] = $value['pattern'] ?? "([\\\\/][._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
 
 function query($value, $key) {
     $value['hint'] = $value['hint'] ?? 'foo, bar, baz';
-    $value['pattern'] = $value['pattern'] ?? "^([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*$";
+    $value['pattern'] = $value['pattern'] ?? "([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*";
     $values = (array) (!empty($value['values']) ? $value['values'] : ($value['value'] ?? []));
     // Key-value pair(s)
     if (\array_keys($values) !== \range(0, \count($values) - 1)) {
@@ -465,7 +465,7 @@ function route($value, $key) {
     $keep = (string) ($value['keep'] ?? "");
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : '/foo/bar/baz');
-    $value['pattern'] = $value['pattern'] ?? "^(\\/[._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+$";
+    $value['pattern'] = $value['pattern'] ?? "(\\/[._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -500,7 +500,7 @@ function text($value, $key) {
 function time($value, $key) {
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : \date('H:i:s'));
-    $value['pattern'] = $value['pattern'] ?? "^([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}$";
+    $value['pattern'] = $value['pattern'] ?? "([0-1]\\d|2[0-4])(:([0-5]\\d|60)){1,2}";
     return \x\panel\lot\type\field\date_time($value, $key);
 }
 
@@ -554,7 +554,7 @@ function toggle($value, $key) {
 
 function u_r_l($value, $key) { // This is not a typo!
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
-    $value['pattern'] = $value['pattern'] ?? "^(data:[^\\s;]+;|(https?:)?\\/\\/|[.]{0,2}\\/)[^\\/]\\S*$";
+    $value['pattern'] = $value['pattern'] ?? "(data:[^\\s;]+;|(https?:)?\\/\\/|[.]{0,2}\\/)[^\\/]\\S*";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -568,7 +568,7 @@ function version($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : '1.0.0');
     $value['max'] = $value['max'] ?? 255;
     $value['min'] = 1;
-    $value['pattern'] = $value['pattern'] ?? "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"; // <https://semver.org#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
+    $value['pattern'] = $value['pattern'] ?? "(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?"; // <https://semver.org#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string>
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
