@@ -43,7 +43,7 @@ if (!isset($_with_hooks) || $_with_hooks) {
                 }
                 $pages = new Anemone($pages);
                 $_['sort'] && $pages->sort($_['sort'], true);
-                $pages = $pages->chunk($_['chunk'] ?? 20, ($_['part'] ?? 1) - 1, true)->get();
+                $pages = $pages->chunk(20, ($_['part'] ?? 1) - 1, true)->get();
                 foreach ($pages as $k => $v) {
                     $path = strtr($d = dirname($k), [
                         LOT . D => "",
@@ -147,7 +147,7 @@ if (!isset($_with_hooks) || $_with_hooks) {
             }
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] = $pages;
             $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pager'] = [
-                'chunk' => $_['chunk'] ?? 20,
+                'chunk' => 20,
                 'count' => $count,
                 'current' => $_['part'] ?? 1,
                 'stack' => 20,
