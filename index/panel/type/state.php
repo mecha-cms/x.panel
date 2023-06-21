@@ -25,7 +25,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
     // test($_POST['state']); exit;
 }
 
-if ($file->exist) {
+if ($file->exist && empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['file']['lot']['fields'])) {
     foreach ((array) require x\panel\_cache_let($file->path) as $k => $v) {
         // Auto-detect field type(s)
         $field = [

@@ -264,12 +264,12 @@ function field($value, $key) {
         2 => []
     ];
     // These data are useful for inserting HTML markup before and after the HTML markup of standard fields. Currently
-    // supports string value only. The naming of these data is currently non-standard so it is subject to change.
-    // These data should only be used internally when you create a new field type. The API consumer(s) are only in
-    // charge of determining the field type and providing some other data that has become a common standard.
+    // supports closure and string value(s) only. The naming of these data is currently non-standard so it is subject to
+    // change. These data should only be used internally when you create a new field type. The API consumer(s) are only
+    // in charge of determining the field type and providing some other data that has become a common standard.
     $field_enter = $value['field-enter'] ?? "";
     $field_exit = $value['field-exit'] ?? "";
-    if ("" !== $field_enter && \is_string($field_enter)) {
+    if ("" !== $field_enter && (\is_callable($field_enter) || \is_string($field_enter))) {
         $value[1]['field'][1]['enter'] = $field_enter;
     }
     // Special value returned by `x\panel\to\field()`
@@ -327,7 +327,7 @@ function field($value, $key) {
     }
     $value['tags'] = $tags;
     $value[1]['field'][1]['description'] = \x\panel\to\description($value['description'] ?? "");
-    if ("" !== $field_exit && \is_string($field_exit)) {
+    if ("" !== $field_exit && (\is_callable($field_exit) || \is_string($field_exit))) {
         $value[1]['field'][1]['exit'] = $field_exit;
     }
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
@@ -345,6 +345,13 @@ function field($value, $key) {
                 ]
             ];
         }
+    }
+    // Return the string value as late as possible
+    if (isset($value[1]['field'][1]['enter']) && \is_callable($value[1]['field'][1]['enter'])) {
+        $value[1]['field'][1]['enter'] = \call_user_func($value[1]['field'][1]['enter'], $value, $key);
+    }
+    if (isset($value[1]['field'][1]['exit']) && \is_callable($value[1]['field'][1]['exit'])) {
+        $value[1]['field'][1]['exit'] = \call_user_func($value[1]['field'][1]['exit'], $value, $key);
     }
     return new \HTML($value, true);
 }

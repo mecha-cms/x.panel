@@ -74,7 +74,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     } else {
         $_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
     }
-    x\panel\_cache_let(PATH . D . 'state.php');
+    x\panel\_cache_let($file->path);
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = [
@@ -135,185 +135,175 @@ $zones = (static function () {
     return $zones;
 })();
 
-$bar = [
-    // `bar`
+return array_replace_recursive($_, [
     'lot' => [
-        0 => [
-            // `links`
+        'bar' => [
+            // `bar`
             'lot' => [
-                'search' => ['skip' => true], // Hide search form
-                'set' => ['skip' => true]
-            ]
-        ]
-    ]
-];
-
-$desk = [
-    // `desk`
-    'lot' => [
-        'form' => [
-            // `form/post`
-            'lot' => [
-                1 => [
-                    // `section`
+                0 => [
+                    // `links`
                     'lot' => [
-                        'tabs' => [
-                            // `tabs`
+                        'search' => ['skip' => true], // Hide search form
+                        'set' => ['skip' => true]
+                    ]
+                ]
+            ]
+        ],
+        'desk' => [
+            // `desk`
+            'lot' => [
+                'form' => [
+                    // `form/post`
+                    'lot' => [
+                        1 => [
+                            // `section`
                             'lot' => [
-                                'file' => [
-                                    // `tab`
+                                'tabs' => [
+                                    // `tabs`
                                     'lot' => [
-                                        'fields' => [
-                                            // `fields`
+                                        'file' => [
+                                            // `tab`
                                             'lot' => [
-                                                'zone' => [
-                                                    'lot' => $zones,
-                                                    'name' => 'state[zone]',
-                                                    'stack' => 10,
-                                                    'type' => 'option',
-                                                    'value' => $state_r['zone'] ?? null,
-                                                    'width' => true
-                                                ],
-                                                'title' => [
-                                                    'focus' => true,
-                                                    'name' => 'state[title]',
-                                                    'stack' => 20,
-                                                    'type' => 'title',
-                                                    'value' => $state_r['title'] ?? null,
-                                                    'width' => true
-                                                ],
-                                                'description' => [
-                                                    'name' => 'state[description]',
-                                                    'stack' => 30,
-                                                    'type' => 'description',
-                                                    'value' => $state_r['description'] ?? null,
-                                                    'width' => true
-                                                ],
-                                                'route' => [
-                                                    'description' => 'Choose default page that will open in the home page.',
-                                                    'lot' => $routes,
-                                                    'name' => 'state[route]',
-                                                    'stack' => 40,
-                                                    'title' => 'Home',
-                                                    'type' => 'option',
-                                                    'value' => $state_r['route'] ?? null,
-                                                ]
-                                            ]
-                                        ]
-                                    ],
-                                    'value' => 'site'
-                                ],
-                                'panel' => [
-                                    'lot' => [
-                                        'fields' => [
-                                            'lot' => [
-                                                'route' => [
-                                                    'description' => 'Set custom panel base path.',
-                                                    'hint' => $state_panel['route'] ?? null,
-                                                    'name' => 'state[x][panel][route]',
-                                                    'stack' => 10,
-                                                    'type' => 'route',
-                                                    'value' => $state_r['x']['panel']['route'] ?? null
-                                                ],
-                                                'user' => [
-                                                    'description' => 'Set custom user log-in path.',
-                                                    'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
-                                                    'name' => 'state[x][user][guard][route]',
-                                                    'stack' => 20,
-                                                    'type' => 'route',
-                                                    'value' => $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? null
-                                                ],
-                                                'kick' => [
-                                                    'description' => 'Choose default page that will open after logged-in.',
-                                                    'lot' => $panels,
-                                                    'name' => 'state[x][panel][kick]',
-                                                    'stack' => 30,
-                                                    'title' => 'Home',
-                                                    'type' => 'option',
-                                                    'value' => $state_r['x']['panel']['kick'] ?? $state_panel['kick'] ?? null
-                                                ]
-                                            ],
-                                            'stack' => 10,
-                                            'type' => 'fields'
-                                        ]
-                                    ],
-                                    'stack' => 20
-                                ],
-                                'alert' => [
-                                    'lot' => [
-                                        'fields' => [
-                                            'lot' => [
-                                                'sync' => [
-                                                    'description' => is_file($versions = ENGINE . D . 'log' . D . 'git' . D . 'versions' . D . 'mecha-cms.php') ? ['Last synced %s.', x\panel\to\elapse(filemtime($versions))] : null,
-                                                    'flex' => false,
+                                                'fields' => [
+                                                    // `fields`
                                                     'lot' => [
-                                                        0 => 'Never',
-                                                        2592000 => ['Every %s', 'month'], // `strtotime('+1 month') - time()`
-                                                        3600 => ['Every %s', 'hour'], // `strtotime('+1 hour') - time()`
-                                                        604800 => ['Every %s', 'week'], // `strtotime('+1 week') - time()`
-                                                        86400 => ['Every %s', 'day'] // `strtotime('+1 day') - time()`
-                                                    ],
-                                                    'name' => 'state[x][panel][sync]',
-                                                    'stack' => 10,
-                                                    'type' => 'item',
-                                                    'value' => $state_r['x']['panel']['sync'] ?? $state_panel['sync'] ?? null
-                                                ],
-                                                'email' => [
-                                                    'description' => 'This email address will be used to receive certain messages to your inbox as the fastest solution for notifications. At this time you may not use it to receive any messages, but some extensions that require an email address may depend on this value.',
-                                                    'name' => 'state[email]',
-                                                    'stack' => 20,
-                                                    'type' => 'email',
-                                                    'value' => $state_r['email'] ?? null
+                                                        'zone' => [
+                                                            'lot' => $zones,
+                                                            'name' => 'state[zone]',
+                                                            'stack' => 10,
+                                                            'type' => 'option',
+                                                            'value' => $state_r['zone'] ?? null,
+                                                            'width' => true
+                                                        ],
+                                                        'title' => [
+                                                            'focus' => true,
+                                                            'name' => 'state[title]',
+                                                            'stack' => 20,
+                                                            'type' => 'title',
+                                                            'value' => $state_r['title'] ?? null,
+                                                            'width' => true
+                                                        ],
+                                                        'description' => [
+                                                            'name' => 'state[description]',
+                                                            'stack' => 30,
+                                                            'type' => 'description',
+                                                            'value' => $state_r['description'] ?? null,
+                                                            'width' => true
+                                                        ],
+                                                        'route' => [
+                                                            'description' => 'Choose default page that will open in the home page.',
+                                                            'lot' => $routes,
+                                                            'name' => 'state[route]',
+                                                            'stack' => 40,
+                                                            'title' => 'Home',
+                                                            'type' => 'option',
+                                                            'value' => $state_r['route'] ?? null,
+                                                        ]
+                                                    ]
                                                 ]
                                             ],
-                                            'stack' => 10,
-                                            'type' => 'fields'
+                                            'value' => 'site'
+                                        ],
+                                        'panel' => [
+                                            'lot' => [
+                                                'fields' => [
+                                                    'lot' => [
+                                                        'route' => [
+                                                            'description' => 'Set custom panel base path.',
+                                                            'hint' => $state_panel['route'] ?? null,
+                                                            'name' => 'state[x][panel][route]',
+                                                            'stack' => 10,
+                                                            'type' => 'route',
+                                                            'value' => $state_r['x']['panel']['route'] ?? null
+                                                        ],
+                                                        'user' => [
+                                                            'description' => 'Set custom user log-in path.',
+                                                            'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
+                                                            'name' => 'state[x][user][guard][route]',
+                                                            'stack' => 20,
+                                                            'type' => 'route',
+                                                            'value' => $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? null
+                                                        ],
+                                                        'kick' => [
+                                                            'description' => 'Choose default page that will open after logged-in.',
+                                                            'lot' => $panels,
+                                                            'name' => 'state[x][panel][kick]',
+                                                            'stack' => 30,
+                                                            'title' => 'Home',
+                                                            'type' => 'option',
+                                                            'value' => $state_r['x']['panel']['kick'] ?? $state_panel['kick'] ?? null
+                                                        ]
+                                                    ],
+                                                    'stack' => 10,
+                                                    'type' => 'fields'
+                                                ]
+                                            ],
+                                            'stack' => 20
+                                        ],
+                                        'alert' => [
+                                            'lot' => [
+                                                'fields' => [
+                                                    'lot' => [
+                                                        'sync' => [
+                                                            'description' => is_file($versions = ENGINE . D . 'log' . D . 'git' . D . 'versions' . D . 'mecha-cms.php') ? ['Last synced %s.', x\panel\to\elapse(filemtime($versions))] : null,
+                                                            'flex' => false,
+                                                            'lot' => [
+                                                                0 => 'Never',
+                                                                2592000 => ['Every %s', 'month'], // `strtotime('+1 month') - time()`
+                                                                3600 => ['Every %s', 'hour'], // `strtotime('+1 hour') - time()`
+                                                                604800 => ['Every %s', 'week'], // `strtotime('+1 week') - time()`
+                                                                86400 => ['Every %s', 'day'] // `strtotime('+1 day') - time()`
+                                                            ],
+                                                            'name' => 'state[x][panel][sync]',
+                                                            'stack' => 10,
+                                                            'type' => 'item',
+                                                            'value' => $state_r['x']['panel']['sync'] ?? $state_panel['sync'] ?? null
+                                                        ],
+                                                        'email' => [
+                                                            'description' => 'This email address will be used to receive certain messages to your inbox as the fastest solution for notifications. At this time you may not use it to receive any messages, but some extensions that require an email address may depend on this value.',
+                                                            'name' => 'state[email]',
+                                                            'stack' => 20,
+                                                            'type' => 'email',
+                                                            'value' => $state_r['email'] ?? null
+                                                        ]
+                                                    ],
+                                                    'stack' => 10,
+                                                    'type' => 'fields'
+                                                ]
+                                            ],
+                                            'stack' => 40,
+                                            'title' => 'Notifications'
                                         ]
-                                    ],
-                                    'stack' => 40,
-                                    'title' => 'Notifications'
+                                    ]
                                 ]
                             ]
-                        ]
-                    ]
-                ],
-                2 => [
-                    'lot' => [
-                        'fields' => [
+                        ],
+                        2 => [
                             'lot' => [
-                                0 => [
+                                'fields' => [
                                     'lot' => [
-                                        'tasks' => [
+                                        0 => [
                                             'lot' => [
-                                                'let' => ['skip' => true], // Hide delete button
-                                                'set' => ['description' => ['Save to %s', ".\\state.php"]]
+                                                'tasks' => [
+                                                    'lot' => [
+                                                        'let' => ['skip' => true], // Hide delete button
+                                                        'set' => ['description' => ['Save to %s', ".\\state.php"]]
+                                                    ]
+                                                ]
                                             ]
                                         ]
                                     ]
                                 ]
                             ]
                         ]
+                    ],
+                    'values' => [
+                        // Store the file to `.\state.php`
+                        'file' => ['name' => 'state.php'],
+                        'path' => '..' // Parent folder
                     ]
                 ]
-            ],
-            'values' => [
-                // Store the file to `.\state.php`
-                'file' => ['name' => 'state.php'],
-                'path' => '..' // Parent folder
             ]
         ]
     ]
-];
-
-Hook::set('_', function ($_) use ($bar, $desk) {
-    // Remove automatic field(s)
-    unset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['file']['lot']['fields']['lot']);
-    return array_replace_recursive($_, [
-        'lot' => [
-            'bar' => $bar,
-            'desk' => $desk
-        ]
-    ]);
-}, 0);
-
-return $_;
+]);

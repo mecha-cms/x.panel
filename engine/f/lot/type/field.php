@@ -494,7 +494,6 @@ function text($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'text';
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
-    unset($out[2]['autocapitalize']);
     return \x\panel\lot\type\field($out, $key);
 }
 

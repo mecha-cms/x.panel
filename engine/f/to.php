@@ -74,9 +74,10 @@ function field($value, $key, $type = 'textarea') {
     $value['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     $state = $value['state'] ?? [];
     unset($value['tags']);
-    $content = \fire("\\x\\panel\\lot\\type\\" . $type, [$value, $key]);
-    $content['data-state'] = $state ? \json_encode($state) : null;
-    $value['field'] = [$content[0], $content[1], $content[2]]; // Extract!
+    $out = \fire("\\x\\panel\\lot\\type\\" . $type, [$value, $key]);
+    unset($value[2]['autocapitalize']);
+    $out['data-state'] = $state ? \json_encode($state) : null;
+    $value['field'] = [$out[0], $out[1], $out[2]]; // Extract!
     return $value;
 }
 
