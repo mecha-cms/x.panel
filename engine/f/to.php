@@ -65,9 +65,8 @@ function content($value) {
 }
 
 function description($value) {
-    $value = \x\panel\to\content($value);
-    $out = (string) \x\panel\lot\type\description(\x\panel\lot\_value_set(['content' => $value], 0), 0);
-    return "" !== $out ? $out : null;
+    $value = (string) \x\panel\lot\type\description(\x\panel\lot\_value_set(['content' => $value], 0), 0);
+    return "" !== $value ? $value : null;
 }
 
 function elapse($date, $all = false) {
@@ -153,17 +152,17 @@ function lot($lot, &$count = 0, $sort = true) {
         }
         $lot = (new \Anemone($lot))->sort($sort, true);
     }
-    $out = [];
+    $values = [];
     foreach ($lot as $k => $v) {
         if (false === $v || null === $v || !empty($v['skip'])) {
             continue;
         }
         if ($v = \x\panel\lot\type($v, $k)) {
-            $out[$k] = $v;
+            $values[$k] = $v;
             ++$count;
         }
     }
-    return new \Anemone($out, "");
+    return new \Anemone($values, "");
 }
 
 // TODO: Convert to recursive `HTML` content
@@ -233,18 +232,16 @@ function path($value) {
 }
 
 function text($value) {
-    $value = \x\panel\to\content($value);
-    $out = \trim(\strip_tags((string) $value));
-    return "" !== $out ? $out : null;
+    $value = \trim(\strip_tags((string) $value));
+    return "" !== $value ? $value : null;
 }
 
 function title($value, $level = -1) {
-    $value = \x\panel\to\content($value);
-    $out = (string) \x\panel\lot\type\title(\x\panel\lot\_value_set([
+    $value = (string) \x\panel\lot\type\title(\x\panel\lot\_value_set([
         'content' => $value,
         'level' => $level
     ], 0), 0);
-    return "" !== $out ? $out : null;
+    return "" !== $value ? $value : null;
 }
 
 function unit($value) {
@@ -263,8 +260,7 @@ function w($value, array $keep = []) {
     if ($keep && \array_is_list($keep)) {
         $keep = \array_fill_keys($keep, true);
     }
-    $value = \x\panel\to\content($value);
-    return \w($value, \array_keys(\array_filter(\array_replace([
+    return \w($value ?? "", \array_keys(\array_filter(\array_replace([
         'abbr' => true,
         'b' => true,
         'br' => true,
