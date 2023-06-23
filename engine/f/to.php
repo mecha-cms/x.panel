@@ -1,6 +1,19 @@
 <?php namespace x\panel\to;
 
 function color($color) {
+    if (!\is_array($color) && !\is_string($color)) {
+        return null;
+    }
+    if (\is_array($color)) {
+        [$r, $g, $b, $a] = \array_replace([0, 0, 0, null], $color);
+        if (!\is_int($r) || !\is_int($g) || !\is_int($b) || (!\is_float($a) && !\is_int($a) && null !== $a)) {
+            return null; // Invalid color array!
+        }
+        if ($r < 0 || $r > 255 || $g < 0 || $g > 255 || $b < 0 || $b > 255 || (null !== $a && ($a < 0 || $a > 1))) {
+            return null;
+        }
+        return '#' . \sprintf('%02x%02x%02x' . (null !== $a ? '%02x' : ""), $r, $g, $b, $a * 255);
+    }
     $color = \trim($color);
     // `rgba(255, 255, 255, 0.5)`
     $pattern_1 = '/^rgba?\s*\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(?:\s*,\s*([01]|0?\.\d+))?\s*\)$/';
@@ -8,26 +21,43 @@ function color($color) {
     $pattern_2 = '/^rgba?\s*\(\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s+([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s+([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(?:\s*\/\s*([01]|0?\.\d+))?\s*\)$/';
     // Convert RGB color string into HEX color string
     if (0 === \strpos($color, 'rgb')) {
-        if (\preg_match($pattern_1, $color, $m)) {
-            $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
-        } else if (\preg_match($pattern_2, $color, $m)) {
-            $color = '#' . \sprintf('%02x%02x%02x', (int) $m[1], (int) $m[2], (int) $m[3]);
+        $rgba = 0 === \strpos($color, 'rgba');
+        if (\preg_match($pattern_1, $color, $m) || \preg_match($pattern_2, $color, $m)) {
+            if (!isset($m[4]) && $rgba) {
+                return null;
+            }
+            return '#' . \sprintf('%02x%02x%02x' . ($rgba ? '%02x' : ""), (int) $m[1], (int) $m[2], (int) $m[3], ((float) ($m[4] ?? 1)) * 255);
         }
     }
     // Validate HEX color string
     $count = \strlen($color);
-    if ((4 === $count || 7 === $count) && '#' === $color[0] && (\function_exists("\\ctype_xdigit") && \ctype_xdigit(\substr($color, 1)) || \preg_match('/^#([a-f\d]{3}){1,2}$/i', $color))) {
+    // `#fff`, `#ffff`, `#ffffff`, `#ffffffff`
+    if ((
+        4 === $count ||
+        5 === $count ||
+        7 === $count ||
+        9 === $count
+    ) && '#' === $color[0] && (
+        \function_exists("\\ctype_xdigit") && \ctype_xdigit(\substr($color, 1)) ||
+        \preg_match('/^#([a-f\d]{3,4}){1,2}$/i', $color)
+    )) {
         // Convert short HEX color string into long HEX color string
-        if (4 === $count) {
+        if (4 === $count || 5 === $count) {
             $m = \str_split(\substr($color, 1));
-            $color = '#' . ($m[0] . $m[0]) . ($m[1] . $m[1]) . ($m[2] . $m[2]);
+            return '#' . ($m[0] . $m[0]) . ($m[1] . $m[1]) . ($m[2] . $m[2]) . (($m[3] ?? "") . ($m[3] ?? ""));
         }
-        return $color;
+        return \strtolower($color);
     }
     return null; // Invalid color string!
 }
 
 function content($value) {
+    if (null === $value || \is_object($value)) {
+        if (!($value instanceof \XML)) {
+            return null;
+        }
+        return $value;
+    }
     if (\is_array($value)) {
         return new \HTML($value, true);
     }
@@ -35,6 +65,7 @@ function content($value) {
 }
 
 function description($value) {
+    $value = \x\panel\to\content($value);
     $out = (string) \x\panel\lot\type\description(\x\panel\lot\_value_set(['content' => $value], 0), 0);
     return "" !== $out ? $out : null;
 }
@@ -79,18 +110,6 @@ function field($value, $key, $type = 'textarea') {
     $out['data-state'] = $state ? \json_encode($state) : null;
     $value['field'] = [$out[0], $out[1], $out[2]]; // Extract!
     return $value;
-}
-
-function unit($value) {
-    // Maybe an `Anemone`
-    if ($value instanceof \Traversable) {
-        $value = \iterator_to_array($value);
-    }
-    // Maybe a unit string
-    if (!\is_array($value) || !\array_is_list($value)) {
-        $value = [$value];
-    }
-    return \x\panel\lot\type\unit($value, 0);
 }
 
 function icon($value) {
@@ -210,15 +229,17 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
 }
 
 function path($value) {
-    return \strtr(\strtr($value, ["\\" => '/']), ['./' => \PATH . \D, '/' => \D]);
+    return \strtr(\strtr($value ?? "", ["\\" => '/']), ['./' => \PATH . \D, '/' => \D]);
 }
 
 function text($value) {
+    $value = \x\panel\to\content($value);
     $out = \trim(\strip_tags((string) $value));
     return "" !== $out ? $out : null;
 }
 
 function title($value, $level = -1) {
+    $value = \x\panel\to\content($value);
     $out = (string) \x\panel\lot\type\title(\x\panel\lot\_value_set([
         'content' => $value,
         'level' => $level
@@ -226,10 +247,23 @@ function title($value, $level = -1) {
     return "" !== $out ? $out : null;
 }
 
+function unit($value) {
+    // Maybe an `Anemone`
+    if ($value instanceof \Traversable) {
+        $value = \iterator_to_array($value);
+    }
+    // Maybe a unit string
+    if (!\is_array($value) || !\array_is_list($value)) {
+        $value = [$value];
+    }
+    return \x\panel\lot\type\unit($value, 0);
+}
+
 function w($value, array $keep = []) {
     if ($keep && \array_is_list($keep)) {
         $keep = \array_fill_keys($keep, true);
     }
+    $value = \x\panel\to\content($value);
     return \w($value, \array_keys(\array_filter(\array_replace([
         'abbr' => true,
         'b' => true,

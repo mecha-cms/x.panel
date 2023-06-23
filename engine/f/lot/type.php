@@ -668,7 +668,7 @@ function icon($value, $key) {
             $attr = \x\panel\lot\_tag_set($attr, $v);
             $attr['viewBox'] = $v[2]['view-box'] ?? $v[2]['viewBox'] ?? $rect;
             $content = \x\panel\to\content($v[1] ?? $v['content'] ?? null);
-            $d = $v['d'] ?? "";
+            $d = $v['d'] ?? $v['path'] ?? "";
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
             $id = $v['id'] ?? $v['name'] ?? \dechex(\crc32($d));
             $title = \strip_tags(\i(...((array) ($v['title'] ?? ""))) ?? "");
@@ -692,20 +692,20 @@ function icon($value, $key) {
                     'use' => ['use', [
                         'title' => $title ? ['title', $title, []] : "",
                         'description' => $description ? ['desc', $description, []] : ""
-                    ], ['href' => '#i:' . $id]]
+                    ], ['href' => '#icon:' . $id]]
                 ], $attr], true);
             }
         } else if (\is_string($v)) {
             if (false === \strpos($v, '<')) {
                 // Named icon(s)
                 if (isset($ref[$v])) {
-                    $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#i:' . $v]]], $attr], true);
+                    $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#icon:' . $v]]], $attr], true);
                 // Inline icon(s)
                 } else {
                     if (!isset($ref[$id = \dechex(\crc32($v))])) {
                         $GLOBALS['_']['icon'][$id] = $v;
                     }
-                    $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#i:' . $id]]], $attr], true);
+                    $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#icon:' . $id]]], $attr], true);
                 }
             } else if ('</svg>' !== \substr($v, -6)) {
                 $v = new \XML(['svg', $v, $attr]);

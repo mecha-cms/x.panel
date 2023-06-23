@@ -1,11 +1,5 @@
 <?php namespace x\panel\lot\type\field;
 
-function _($value, $key) {
-    $out = \x\panel\lot\type\field\content($value, $key); // Unknown `field` type
-    $out['skip'] = true;
-    return $out;
-}
-
 function blob($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'file';

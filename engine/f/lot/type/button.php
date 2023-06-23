@@ -1,9 +1,5 @@
 <?php namespace x\panel\lot\type\button;
 
-function _($value, $key) {
-    return \x\panel\lot\type\button($value, $key); // Unknown `button` type
-}
-
 function button($value, $key) {
     $out = \x\panel\lot\type\button($value, $key);
     $out['type'] = 'button';

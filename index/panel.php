@@ -219,7 +219,7 @@ function route__panel($content, $path, $query, $hash) {
     if (!empty($_['icon'])) {
         $icon .= '<svg display="none" xmlns="http://www.w3.org/2000/svg">';
         foreach ($_['icon'] as $k => $v) {
-            $icon .= '<symbol id="i:' . $k . '" viewBox="0 0 24 24">';
+            $icon .= '<symbol id="icon:' . $k . '" viewBox="0 0 24 24">';
             if (false === $v || null === $v) {
                 continue;
             }
