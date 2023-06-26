@@ -34,13 +34,11 @@ Hook::set('_', function ($_) {
                     $v['description'] = x\panel\to\elapse(new Time(strtr($v['title'], [S => ""])));
                 }
                 if (false === strpos($v['title'], '/')) {
-                    if ($stats[1] > 1) {
-                        $v['title'] = S . basename(g($k, 0, true)->key() ?? "") . S;
-                    } else if ($stats[0] > 1) {
-                        $v['title'] = S . basename(g($k, 0, true)->key() ?? "") . S;
-                    } else {
+                    if (1 === $stats[1]) {
                         $v['title'] = S . basename(g($k, 1, true)->key() ?? "") . S;
                         $v['type'] = 'file';
+                    } else {
+                        $v['title'] = S . basename(g($k, 0, true)->key() ?? "") . S;
                     }
                 }
                 $v['tasks']['recover'] = [
