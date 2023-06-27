@@ -17,7 +17,7 @@ if ($file->exist && 'set' === $_['task']) {
 }
 
 $fields = [];
-$stack = 10;
+$stack = 0;
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
 // TODO: Sanitize the form data
@@ -30,7 +30,7 @@ if ($file->exist && empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tab
         // Auto-detect field type(s)
         $field = [
             'name' => 'state[' . $k . ']',
-            'stack' => $stack,
+            'stack' => $stack = $stack + 10,
             'type' => 'text',
             'value' => is_array($v) ? json_encode($v) : s($v),
             'width' => true
@@ -38,20 +38,53 @@ if ($file->exist && empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tab
         if (null === $v) {
             $field['hint'] = 'NULL';
             unset($field['value']);
-        } else if (false === $v || true === $v) {
+            $fields[$k] = $field;
+            continue;
+        }
+        if (false === $v || true === $v) {
             $field['type'] = 'item';
             $field['lot'] = [
                 'false' => 'No',
                 'true' => 'Yes'
             ];
             unset($field['width']);
-        } else if (is_array($v)) {
-            // TODO
-        } else if (is_float($v) || is_int($v)) {
+            $fields[$k] = $field;
+            continue;
+        }
+        if (is_array($v)) {
+            $it = new RecursiveIteratorIterator(new RecursiveArrayIterator($v), RecursiveIteratorIterator::SELF_FIRST);
+            $path = [];
+            $values = [];
+            foreach ($it as $kk => $vv) {
+                $path[$deep = $it->getDepth()] = $kk;
+                if (!is_array($vv)) {
+                    $values['state[' . $k . '][' . implode('][', array_slice($path, 0, $deep + 1)) . ']'] = $vv;
+                }
+            }
+            if ($values) {
+                foreach ($values as $kk => $vv) {
+                    $fields[strtr(substr($kk, 0, -1), [
+                        '.' => "\\.",
+                        '][' => '.',
+                        '[' => '.'
+                    ])] = [
+                        'name' => $kk,
+                        'stack' => $stack,
+                        'type' => 'hidden',
+                        'value' => $vv
+                    ];
+                }
+            }
+            continue;
+        }
+        if (is_float($v) || is_int($v)) {
             $field['type'] = 'number';
             $field['step'] = is_float($v) ? '0.1' : '1';
             unset($field['width']);
-        } else if (is_string($v)) {
+            $fields[$k] = $field;
+            continue;
+        }
+        if (is_string($v)) {
             $count = strlen($v);
             // `http://example.com`
             if (0 === strpos($v, 'http://') || 0 === strpos($v, 'https://')) {
@@ -80,9 +113,9 @@ if ($file->exist && empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tab
                 $field['type'] = 'version';
                 unset($field['width']);
             }
+            $fields[$k] = $field;
+            continue;
         }
-        $fields[$k] = $field;
-        $stack += 10;
     }
 }
 
