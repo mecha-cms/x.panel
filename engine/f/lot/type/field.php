@@ -9,7 +9,7 @@ function blob($value, $key) {
 
 function blobs($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
-    $name = $value['name'] ?? $key;
+    $name = (string) ($value['name'] ?? $key);
     $out['field'][2]['multiple'] = true;
     $out['field'][2]['name'] = $name . ('[]' === \substr($name, -2) ? "" : '[]');
     $out['field'][2]['type'] = 'file';
@@ -29,7 +29,7 @@ function buttons($value, $key) {
     $count = 0;
     $has_gap = !isset($value['gap']) || $value['gap'];
     $is_flex = !isset($value['flex']) || $value['flex'];
-    $name = $value['name'] ?? $key;
+    $name = (string) ($value['name'] ?? $key);
     if (isset($value['values'])) {
         if (isset($value['lot']) && \is_array($value['lot'])) {
             foreach ($value['values'] as $k => $v) {
@@ -54,10 +54,11 @@ function buttons($value, $key) {
             if (!\is_array($v)) {
                 $v = ['value' => \s($v)];
             }
+            $n = (string) ($v['name'] ?? "");
+            $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name . '[' . $k . ']';
             $is_active = !isset($v['active']) || $v['active'];
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
             $v['not']['active'] = $v['not']['active'] ?? !$is_active;
-            $n = $v['name'] ?? $name . '[' . $k . ']';
             $button = \x\panel\to\field($v, $k, 'button')['field'];
             $button[1] = \i(...((array) ($v['hint'] ?? $v['title'] ?? $v['value'] ?? $k)));
             $button[2]['name'] = $n;
@@ -94,7 +95,7 @@ function colors($value, $key) {
     $count = 0;
     $has_gap = !isset($value['gap']) || $value['gap'];
     $is_flex = $value['is']['flex'] ?? $has_gap;
-    $name = $value['name'] ?? $key;
+    $name = (string) ($value['name'] ?? $key);
     if (isset($value['values'])) {
         if (isset($value['lot']) && \is_array($value['lot'])) {
             foreach ($value['values'] as $k => $v) {
@@ -119,7 +120,8 @@ function colors($value, $key) {
             if (!\is_array($v)) {
                 $v = ['value' => \s($v)];
             }
-            $n = $v['name'] ?? $name . '[' . $k . ']';
+            $n = (string) ($v['name'] ?? "");
+            $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name . '[' . $k . ']';
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['name'] = $n;
             $input[2]['type'] = 'color';
@@ -201,7 +203,7 @@ function hidden($value, $key) {
 function item($value, $key) {
     if (isset($value['lot'])) {
         $the_value = $value['value'] ?? null;
-        $n = $value['name'] ?? $key;
+        $name = (string) ($value['name'] ?? $key);
         unset($value['name'], $value['hint'], $value['value']);
         $a = [];
         $count = 0;
@@ -215,6 +217,8 @@ function item($value, $key) {
             if (!\is_array($v) || (\array_is_list($v) && 2 === \count($v))) {
                 $v = ['title' => \s($v)];
             }
+            $n = (string) ($v['name'] ?? "");
+            $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name;
             $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
@@ -224,7 +228,7 @@ function item($value, $key) {
             $input = \x\panel\to\field($v, $k, 'input')['field'];
             $input[2]['checked'] = null !== $the_value && (\s($the_value) === \s($v['value'] ?? $k));
             $input[2]['disabled'] = !$is_active;
-            $input[2]['name'] = $v['name'] ?? $n;
+            $input[2]['name'] = $n;
             $input[2]['type'] = 'radio';
             $input[2]['value'] = $v['value'] ?? $k;
             $input[2] = \x\panel\lot\_tag_set($input[2], $v);
@@ -272,7 +276,7 @@ function items($value, $key) {
         if ($key_as_value = !empty($value['as']['list'])) {
             $the_values = \P . \implode(\P, \s($the_values)) . \P;
         }
-        $n = $value['name'] ?? $key;
+        $name = (string) ($value['name'] ?? $key);
         unset($value['name'], $value['hint'], $value['value'], $value['values']);
         $a = [];
         $count = 0;
@@ -286,6 +290,8 @@ function items($value, $key) {
             if (!\is_array($v) || (\array_is_list($v) && 2 === \count($v))) {
                 $v = ['title' => \s($v)];
             }
+            $n = (string) ($v['name'] ?? "");
+            $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name . '[' . ($key_as_value ? "" : $k) . ']';
             $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
@@ -299,7 +305,7 @@ function items($value, $key) {
                 $input[2]['checked'] = isset($v['value']) ? (isset($the_values[$k]) && $v['value'] === $the_values[$k]) : isset($the_values[$k]);
             }
             $input[2]['type'] = 'checkbox';
-            $input[2]['name'] = $v['name'] ?? $n . '[' . ($key_as_value ? "" : $k) . ']';
+            $input[2]['name'] = $n;
             $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_values[$k] ?? true));
             if (!$is_active) {
                 $input[2]['disabled'] = true;

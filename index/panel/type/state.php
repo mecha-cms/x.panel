@@ -58,17 +58,17 @@ if ($file->exist && empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tab
             foreach ($it as $kk => $vv) {
                 $path[$deep = $it->getDepth()] = $kk;
                 if (!is_array($vv)) {
-                    $values['state[' . $k . '][' . implode('][', array_slice($path, 0, $deep + 1)) . ']'] = $vv;
+                    $values['[' . $k . '][' . implode('][', array_slice($path, 0, $deep + 1)) . ']'] = $vv;
                 }
             }
             if ($values) {
                 foreach ($values as $kk => $vv) {
-                    $fields[strtr(substr($kk, 0, -1), [
+                    $fields[strtr(substr($kk, 1, -1), [
                         '.' => "\\.",
                         '][' => '.',
                         '[' => '.'
                     ])] = [
-                        'name' => $kk,
+                        'name' => 'state' . $kk,
                         'stack' => $stack,
                         'type' => 'hidden',
                         'value' => $vv
