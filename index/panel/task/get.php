@@ -271,7 +271,7 @@ function page($_) {
         }
     }
     if (\is_file($self = $_['file'])) {
-        $id = \strtok($_['path'], '/');
+        $id = \strtok($p = $_['path'] ?? "", '/');
         $key = \ucfirst(\ltrim($id, '_.-'));
         $path = '<code>' . \x\panel\from\path($file ?? $self) . '</code>';
         $alter = [
@@ -284,7 +284,7 @@ function page($_) {
             $alter['File %s successfully renamed.'] = ['%s %s successfully converted to archive.', [$key, $path]];
         } else if ('draft' === $x) {
             $alter['File %s successfully renamed.'] = ['%s %s successfully reverted to draft.', [$key, $path]];
-        } else if ('page' === $x) {
+        } else if ('page' === $x && 'page' !== \pathinfo($p, \PATHINFO_EXTENSION)) {
             $alter['File %s successfully renamed.'] = ['%s %s successfully published.', [$key, $path]];
         }
         foreach ($_['alert'] as $k => &$v) {
