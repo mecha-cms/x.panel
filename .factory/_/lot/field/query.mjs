@@ -21,9 +21,9 @@ function onChange(init) {
         $.pop();
         delete TP.instances[key];
     }
-    let sources = getElements('.lot\\:field.type\\:query input.is\\:host:not([type="hidden"])');
+    let sources = getElements('.lot\\:field.type\\:query .input:not([type="hidden"])');
     sources && toCount(sources) && sources.forEach(source => {
-        letClass(source, 'is:host');
+        letClass(source, 'input');
         let c = getClasses(source);
         let $ = new TP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);

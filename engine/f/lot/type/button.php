@@ -7,7 +7,7 @@ function button($value, $key) {
 }
 
 function link($value, $key) {
-    $value['is']['host'] = $value['is']['host'] ?? true;
+    $value['tags']['button'] = true;
     $out = \x\panel\lot\type\link($value, $key);
     $out['role'] = 'button';
     return $out;

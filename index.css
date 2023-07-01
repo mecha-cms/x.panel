@@ -230,30 +230,30 @@
   top: -9999px;
 }
 .option-picker__source:disabled + .option-picker,
-.option-picker__source.is\:host[role=button].not\:active + .option-picker {
+.option-picker__source.button.not\:active + .option-picker {
   background: var(--fill-option-picker--disabled, var(--fill-option-picker));
   border-color: var(--stroke-option-picker--disabled, var(--stroke-option-picker));
   color: var(--color-option-picker--disabled, var(--color-option-picker));
   cursor: not-allowed;
 }
 .option-picker__source:disabled + .option-picker::after,
-.option-picker__source.is\:host[role=button].not\:active + .option-picker::after {
+.option-picker__source.button.not\:active + .option-picker::after {
   border-top-color: var(--stroke-option-picker--disabled, var(--stroke-option-picker));
 }
 .option-picker__source:disabled + .option-picker .option-picker__option,
-.option-picker__source.is\:host[role=button].not\:active + .option-picker .option-picker__option {
+.option-picker__source.button.not\:active + .option-picker .option-picker__option {
   color: var(--color-option-picker--disabled, var(--color-option-picker));
 }
 .option-picker__source:disabled + .option-picker .option-picker__options,
-.option-picker__source.is\:host[role=button].not\:active + .option-picker .option-picker__options {
+.option-picker__source.button.not\:active + .option-picker .option-picker__options {
   background: var(--fill-option-picker__options--disabled, var(--fill-option-picker--disabled), var(--fill-option-picker));
   border-color: var(--stroke-option-picker__options--disabled, var(--stroke-option-picker--disabled, var(--stroke-option-picker)));
   color: var(--color-option-picker__options--disabled, var(--color-option-picker--disabled, var(--color-option-picker)));
 }
 .option-picker__source:disabled + .option-picker .option-picker__options,
-.option-picker__source.is\:host[role=button].not\:active + .option-picker .option-picker__options,
+.option-picker__source.button.not\:active + .option-picker .option-picker__options,
 .option-picker__source:disabled + .option-picker .option-picker__values,
-.option-picker__source.is\:host[role=button].not\:active + .option-picker .option-picker__values {
+.option-picker__source.button.not\:active + .option-picker .option-picker__values {
   pointer-events: none;
 }
 .option-picker__source[size] + .option-picker {
@@ -566,20 +566,20 @@
   color: var(--color-tag-picker__tag--read-only, var(--color-tag-picker__tag));
 }
 .tag-picker__source:disabled + .tag-picker,
-.tag-picker__source.is\:host[role=button].not\:active + .tag-picker {
+.tag-picker__source.button.not\:active + .tag-picker {
   background: var(--fill-tag-picker--disabled, var(--fill-tag-picker));
   border-color: var(--stroke-tag-picker--disabled, var(--stroke-tag-picker));
   box-shadow: var(--shadow-tag-picker--disabled, var(--shadow-tag-picker));
   color: var(--color-tag-picker--disabled, var(--color-tag-picker));
 }
 .tag-picker__source:disabled + .tag-picker,
-.tag-picker__source.is\:host[role=button].not\:active + .tag-picker,
+.tag-picker__source.button.not\:active + .tag-picker,
 .tag-picker__source:disabled + .tag-picker *,
-.tag-picker__source.is\:host[role=button].not\:active + .tag-picker * {
+.tag-picker__source.button.not\:active + .tag-picker * {
   cursor: not-allowed;
 }
 .tag-picker__source:disabled + .tag-picker .tag-picker__tag:not(.tag-picker__input),
-.tag-picker__source.is\:host[role=button].not\:active + .tag-picker .tag-picker__tag:not(.tag-picker__input) {
+.tag-picker__source.button.not\:active + .tag-picker .tag-picker__tag:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag--disabled, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--disabled, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--disabled, var(--shadow-tag-picker__tag));
@@ -770,9 +770,9 @@
   --stroke-option-picker--read-only: var(--stroke-input--read-only, var(--stroke-input));
 }
 :root .option-picker__source:disabled + .option-picker,
-:root .option-picker__source.is\:host[role=button].not\:active + .option-picker,
+:root .option-picker__source.button.not\:active + .option-picker,
 :root .option-picker__source:disabled + .option-picker--focus,
-:root .option-picker__source.is\:host[role=button].not\:active + .option-picker--focus {
+:root .option-picker__source.button.not\:active + .option-picker--focus {
   --color-option-picker--disabled: var(--color-input--disabled, var(--color-input));
   --fill-option-picker--disabled: var(--fill-input--disabled, var(--fill-input));
   --shadow-option-picker--disabled: var(--shadow-input--disabled, var(--shadow-input));
@@ -808,9 +808,9 @@
   --stroke-tag-picker--read-only: var(--stroke-input--read-only, var(--stroke-input));
 }
 :root .tag-picker__source:disabled + .tag-picker,
-:root .tag-picker__source.is\:host[role=button].not\:active + .tag-picker,
+:root .tag-picker__source.button.not\:active + .tag-picker,
 :root .tag-picker__source:disabled + .tag-picker--focus,
-:root .tag-picker__source.is\:host[role=button].not\:active + .tag-picker--focus {
+:root .tag-picker__source.button.not\:active + .tag-picker--focus {
   --color-tag-picker--disabled: var(--color-input--disabled, var(--color-input));
   --fill-tag-picker--disabled: var(--fill-input--disabled, var(--fill-input));
   --shadow-tag-picker--disabled: var(--shadow-input--disabled, var(--shadow-input));
@@ -866,17 +866,11 @@
 :focus-visible,
 .tag-picker--focus:not(.is\:fix),
 .option-picker--focus:not(.is\:fix),
-.is\:host[role=button]:focus,
-.is\:host[role=combobox]:focus,
-.is\:host[role=listbox]:focus,
-.is\:host[role=searchbox]:focus,
-.is\:host[role=spinbutton]:focus,
-.is\:host[role=textbox]:focus,
-button.is\:host:focus,
-input.is\:host:focus,
-output.is\:host:focus,
-select.is\:host:focus,
-textarea.is\:host:focus {
+.button:focus,
+.input:focus,
+.output:focus,
+.select:focus,
+.textarea:focus {
   box-shadow: var(--shadow--focus-visible, none);
   outline: 3px solid var(--stroke--focus-visible, transparent);
   z-index: 1;
@@ -1092,15 +1086,15 @@ pre code {
 }
 
 :disabled::-ms-browse,
-.is\:host[role=button].not\:active::-ms-browse {
+.button.not\:active::-ms-browse {
   color: var(--color-link--disabled);
 }
 :disabled::-webkit-file-upload-button,
-.is\:host[role=button].not\:active::-webkit-file-upload-button {
+.button.not\:active::-webkit-file-upload-button {
   color: var(--color-link--disabled);
 }
 :disabled::file-selector-button,
-.is\:host[role=button].not\:active::file-selector-button {
+.button.not\:active::file-selector-button {
   color: var(--color-link--disabled);
 }
 
@@ -1111,7 +1105,6 @@ pre code {
 [role=slider],
 [role=switch],
 button,
-.is\:host[role=button].not\:active,
 input[type=button],
 input[type=checkbox],
 input[type=color],
@@ -1138,11 +1131,18 @@ input[type=search] {
 }
 
 button:disabled,
-.is\:host[role=button].not\:active,
+button.button.not\:active,
 input:disabled,
+input.button.not\:active,
 select:disabled,
-textarea:disabled {
+select.button.not\:active,
+textarea:disabled,
+textarea.button.not\:active {
   cursor: not-allowed;
+}
+
+button {
+  white-space: nowrap;
 }
 
 h1 {
@@ -1283,18 +1283,11 @@ pre.is\:text code {
   margin-left: calc(var(--x) / 4);
 }
 
-.is\:host[role=button],
-[role=button].is\:host.not\:active,
-.is\:host[role=combobox],
-.is\:host[role=listbox],
-.is\:host[role=searchbox],
-.is\:host[role=spinbutton],
-.is\:host[role=textbox],
-button.is\:host,
-input.is\:host,
-output.is\:host,
-select.is\:host,
-textarea.is\:host {
+.button,
+.input,
+.output,
+.select,
+.textarea {
   accent-color: var(--fill-button);
   border: 1px solid transparent;
   display: inline-block;
@@ -1307,12 +1300,7 @@ textarea.is\:host {
   width: auto;
   z-index: 0;
 }
-.is\:host[role=button],
-[role=button].is\:host.not\:active,
-.is\:host[type=button],
-.is\:host[type=reset],
-.is\:host[type=submit],
-button.is\:host {
+.button {
   background: var(--fill-button);
   border-color: var(--stroke-button);
   border-radius: var(--arc-button);
@@ -1323,156 +1311,76 @@ button.is\:host {
   text-align: center;
   width: auto;
 }
-.is\:host[role=button]:hover,
-.is\:host[type=button]:hover,
-.is\:host[type=reset]:hover,
-.is\:host[type=submit]:hover,
-button.is\:host:hover {
+.button:hover {
   background: var(--fill-button--hover, var(--fill-button));
   border-color: var(--stroke-button--hover, var(--stroke-button));
   border-radius: var(--arc-button--hover, var(--arc-button));
   box-shadow: var(--shadow-button--hover, var(--shadow-button));
   color: var(--color-button--hover, var(--color-button));
 }
-.is\:host[role=button]:focus,
-.is\:host[type=button]:focus,
-.is\:host[type=reset]:focus,
-.is\:host[type=submit]:focus,
-button.is\:host:focus {
+.button:focus {
   background: var(--fill-button--focus, var(--fill-button));
   border-color: var(--stroke-button--focus, var(--stroke-button));
   border-radius: var(--arc-button--focus, var(--arc-button));
   box-shadow: var(--shadow-button--focus, var(--shadow-button));
   color: var(--color-button--focus, var(--color-button));
 }
-.is\:host[role=button]:active,
-.is\:host[type=button]:active,
-.is\:host[type=reset]:active,
-.is\:host[type=submit]:active,
-button.is\:host:active {
+.button:active {
   background: var(--fill-button--active, var(--fill-button));
   border-color: var(--stroke-button--active, var(--stroke-button));
   border-radius: var(--arc-button--active, var(--arc-button));
   box-shadow: var(--shadow-button--active, var(--shadow-button));
   color: var(--color-button--active, var(--color-button));
 }
-.is\:host[role=button]:disabled,
-.is\:host[role=button].not\:active,
-.is\:host[type=button]:disabled,
-.is\:host[type=reset]:disabled,
-.is\:host[type=submit]:disabled,
-button.is\:host:disabled {
+.button:disabled,
+.button.not\:active {
   background: var(--fill-button--disabled, var(--fill-button));
   border-color: var(--stroke-button--disabled, var(--stroke-button));
   border-radius: var(--arc-button--disabled, var(--arc-button));
   box-shadow: var(--shadow-button--disabled, var(--shadow-button));
   color: var(--color-button--disabled, var(--color-button));
 }
-.is\:host[role=button][role=link],
-.is\:host[type=button][role=link],
-.is\:host[type=reset][role=link],
-.is\:host[type=submit][role=link],
-button.is\:host[role=link] {
+.button[role=link] {
   background: none;
   border-color: transparent;
   border-radius: 0;
   box-shadow: none;
   color: var(--color-link);
 }
-.is\:host[role=button][role=link]:hover,
-.is\:host[type=button][role=link]:hover,
-.is\:host[type=reset][role=link]:hover,
-.is\:host[type=submit][role=link]:hover,
-button.is\:host[role=link]:hover {
+.button[role=link]:hover {
   background: none;
   border-color: transparent;
   border-radius: 0;
   box-shadow: none;
   color: var(--color-link--hover, var(--color-link));
 }
-.is\:host[role=button][role=link]:focus,
-.is\:host[type=button][role=link]:focus,
-.is\:host[type=reset][role=link]:focus,
-.is\:host[type=submit][role=link]:focus,
-button.is\:host[role=link]:focus {
+.button[role=link]:focus {
   background: none;
   border-color: transparent;
   border-radius: 0;
   box-shadow: none;
   color: var(--color-link--focus, var(--color-link));
 }
-.is\:host[role=button][role=link]:active,
-.is\:host[type=button][role=link]:active,
-.is\:host[type=reset][role=link]:active,
-.is\:host[type=submit][role=link]:active,
-button.is\:host[role=link]:active {
+.button[role=link]:active {
   background: none;
   border-color: transparent;
   border-radius: 0;
   box-shadow: none;
   color: var(--color-link--active, var(--color-link));
 }
-.is\:host[role=button] .title > .icon:first-child,
-.is\:host[type=button] .title > .icon:first-child,
-.is\:host[type=reset] .title > .icon:first-child,
-.is\:host[type=submit] .title > .icon:first-child,
-button.is\:host .title > .icon:first-child {
+.button .title > .icon:first-child {
   margin-left: calc(var(--x) / -4);
 }
-.is\:host[role=button] .title > .icon:last-child,
-.is\:host[type=button] .title > .icon:last-child,
-.is\:host[type=reset] .title > .icon:last-child,
-.is\:host[type=submit] .title > .icon:last-child,
-button.is\:host .title > .icon:last-child {
+.button .title > .icon:last-child {
   margin-right: calc(var(--x) / -4);
 }
-.is\:host[role=button] .title > .icon.caret,
-.is\:host[type=button] .title > .icon.caret,
-.is\:host[type=reset] .title > .icon.caret,
-.is\:host[type=submit] .title > .icon.caret,
-button.is\:host .title > .icon.caret {
+.button .title > .icon.caret {
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
 
-.is\:host[role=searchbox],
-[role=searchbox].is\:host[role=button].not\:active,
-.is\:host[role=spinbutton],
-[role=spinbutton].is\:host[role=button].not\:active,
-.is\:host[role=textbox],
-[role=textbox].is\:host[role=button].not\:active,
-.is\:host[type=color],
-[type=color].is\:host[role=button].not\:active,
-.is\:host[type=date],
-[type=date].is\:host[role=button].not\:active,
-.is\:host[type=datetime],
-[type=datetime].is\:host[role=button].not\:active,
-.is\:host[type=datetime-local],
-[type=datetime-local].is\:host[role=button].not\:active,
-.is\:host[type=email],
-[type=email].is\:host[role=button].not\:active,
-.is\:host[type=month],
-[type=month].is\:host[role=button].not\:active,
-.is\:host[type=number],
-[type=number].is\:host[role=button].not\:active,
-.is\:host[type=password],
-[type=password].is\:host[role=button].not\:active,
-.is\:host[type=search],
-[type=search].is\:host[role=button].not\:active,
-.is\:host[type=tel],
-[type=tel].is\:host[role=button].not\:active,
-.is\:host[type=text],
-[type=text].is\:host[role=button].not\:active,
-.is\:host[type=time],
-[type=time].is\:host[role=button].not\:active,
-.is\:host[type=url],
-[type=url].is\:host[role=button].not\:active,
-.is\:host[type=week],
-[type=week].is\:host[role=button].not\:active,
-input.is\:host:not([type]),
-input.is\:host[role=button].not\:active:not([type]),
-textarea.is\:host,
-textarea.is\:host[role=button].not\:active {
+.input,
+.textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
   border-radius: var(--arc-input);
@@ -1480,294 +1388,86 @@ textarea.is\:host[role=button].not\:active {
   color: var(--color-input);
   width: var(--width-input);
 }
-.is\:host[role=searchbox]:read-write,
-.is\:host[role=spinbutton]:read-write,
-.is\:host[role=textbox]:read-write,
-.is\:host[type=color]:read-write,
-.is\:host[type=date]:read-write,
-.is\:host[type=datetime]:read-write,
-.is\:host[type=datetime-local]:read-write,
-.is\:host[type=email]:read-write,
-.is\:host[type=month]:read-write,
-.is\:host[type=number]:read-write,
-.is\:host[type=password]:read-write,
-.is\:host[type=search]:read-write,
-.is\:host[type=tel]:read-write,
-.is\:host[type=text]:read-write,
-.is\:host[type=time]:read-write,
-.is\:host[type=url]:read-write,
-.is\:host[type=week]:read-write,
-input.is\:host:not([type]):read-write,
-textarea.is\:host:read-write,
-textarea.is\:host[role=button].not\:active:read-write {
+.input:read-write,
+.textarea:read-write {
   background: var(--fill-input--read-write, var(--fill-input));
   border-color: var(--stroke-input--read-write, var(--stroke-input));
   box-shadow: var(--shadow-input--read-write, var(--shadow-input));
   color: var(--color-input--read-write, var(--color-input));
 }
-.is\:host[role=searchbox]:hover,
-.is\:host[role=spinbutton]:hover,
-.is\:host[role=textbox]:hover,
-.is\:host[type=color]:hover,
-.is\:host[type=date]:hover,
-.is\:host[type=datetime]:hover,
-.is\:host[type=datetime-local]:hover,
-.is\:host[type=email]:hover,
-.is\:host[type=month]:hover,
-.is\:host[type=number]:hover,
-.is\:host[type=password]:hover,
-.is\:host[type=search]:hover,
-.is\:host[type=tel]:hover,
-.is\:host[type=text]:hover,
-.is\:host[type=time]:hover,
-.is\:host[type=url]:hover,
-.is\:host[type=week]:hover,
-input.is\:host:not([type]):hover,
-textarea.is\:host:hover,
-textarea.is\:host[role=button].not\:active:hover {
+.input:hover,
+.textarea:hover {
   background: var(--fill-input--hover, var(--fill-input));
   border-color: var(--stroke-input--hover, var(--stroke-input));
   box-shadow: var(--shadow-input--hover, var(--shadow-input));
   color: var(--color-input--hover, var(--color-input));
 }
-.is\:host[role=searchbox]:focus,
-.is\:host[role=spinbutton]:focus,
-.is\:host[role=textbox]:focus,
-.is\:host[type=color]:focus,
-.is\:host[type=date]:focus,
-.is\:host[type=datetime]:focus,
-.is\:host[type=datetime-local]:focus,
-.is\:host[type=email]:focus,
-.is\:host[type=month]:focus,
-.is\:host[type=number]:focus,
-.is\:host[type=password]:focus,
-.is\:host[type=search]:focus,
-.is\:host[type=tel]:focus,
-.is\:host[type=text]:focus,
-.is\:host[type=time]:focus,
-.is\:host[type=url]:focus,
-.is\:host[type=week]:focus,
-input.is\:host:not([type]):focus,
-textarea.is\:host:focus,
-textarea.is\:host[role=button].not\:active:focus {
+.input:focus,
+.textarea:focus {
   background: var(--fill-input--focus, var(--fill-input));
   border-color: var(--stroke-input--focus, var(--stroke-input));
   box-shadow: var(--shadow-input--focus, var(--shadow-input));
   color: var(--color-input--focus, var(--color-input));
 }
-.is\:host[role=searchbox]:active,
-.is\:host[role=spinbutton]:active,
-.is\:host[role=textbox]:active,
-.is\:host[type=color]:active,
-.is\:host[type=date]:active,
-.is\:host[type=datetime]:active,
-.is\:host[type=datetime-local]:active,
-.is\:host[type=email]:active,
-.is\:host[type=month]:active,
-.is\:host[type=number]:active,
-.is\:host[type=password]:active,
-.is\:host[type=search]:active,
-.is\:host[type=tel]:active,
-.is\:host[type=text]:active,
-.is\:host[type=time]:active,
-.is\:host[type=url]:active,
-.is\:host[type=week]:active,
-input.is\:host:not([type]):active,
-textarea.is\:host:active,
-textarea.is\:host[role=button].not\:active:active {
+.input:active,
+.textarea:active {
   background: var(--fill-input--active, var(--fill-input));
   border-color: var(--stroke-input--active, var(--stroke-input));
   box-shadow: var(--shadow-input--active, var(--shadow-input));
   color: var(--color-input--active, var(--color-input));
 }
-.is\:host[role=searchbox]:read-only,
-.is\:host[role=spinbutton]:read-only,
-.is\:host[role=textbox]:read-only,
-.is\:host[type=color]:read-only,
-.is\:host[type=date]:read-only,
-.is\:host[type=datetime]:read-only,
-.is\:host[type=datetime-local]:read-only,
-.is\:host[type=email]:read-only,
-.is\:host[type=month]:read-only,
-.is\:host[type=number]:read-only,
-.is\:host[type=password]:read-only,
-.is\:host[type=search]:read-only,
-.is\:host[type=tel]:read-only,
-.is\:host[type=text]:read-only,
-.is\:host[type=time]:read-only,
-.is\:host[type=url]:read-only,
-.is\:host[type=week]:read-only,
-input.is\:host:not([type]):read-only,
-textarea.is\:host:read-only,
-textarea.is\:host[role=button].not\:active:read-only {
+.input:read-only,
+.textarea:read-only {
   background: var(--fill-input--read-only, var(--fill-input));
   border-color: var(--stroke-input--read-only, var(--stroke-input));
   box-shadow: var(--shadow-input--read-only, var(--shadow-input));
   color: var(--color-input--read-only, var(--color-input));
 }
-.is\:host[role=searchbox]:disabled,
-.is\:host[role=searchbox][role=button].not\:active,
-.is\:host[role=spinbutton]:disabled,
-.is\:host[role=spinbutton][role=button].not\:active,
-.is\:host[role=textbox]:disabled,
-.is\:host[role=textbox][role=button].not\:active,
-.is\:host[type=color]:disabled,
-.is\:host[type=color][role=button].not\:active,
-.is\:host[type=date]:disabled,
-.is\:host[type=date][role=button].not\:active,
-.is\:host[type=datetime]:disabled,
-.is\:host[type=datetime][role=button].not\:active,
-.is\:host[type=datetime-local]:disabled,
-.is\:host[type=datetime-local][role=button].not\:active,
-.is\:host[type=email]:disabled,
-.is\:host[type=email][role=button].not\:active,
-.is\:host[type=month]:disabled,
-.is\:host[type=month][role=button].not\:active,
-.is\:host[type=number]:disabled,
-.is\:host[type=number][role=button].not\:active,
-.is\:host[type=password]:disabled,
-.is\:host[type=password][role=button].not\:active,
-.is\:host[type=search]:disabled,
-.is\:host[type=search][role=button].not\:active,
-.is\:host[type=tel]:disabled,
-.is\:host[type=tel][role=button].not\:active,
-.is\:host[type=text]:disabled,
-.is\:host[type=text][role=button].not\:active,
-.is\:host[type=time]:disabled,
-.is\:host[type=time][role=button].not\:active,
-.is\:host[type=url]:disabled,
-.is\:host[type=url][role=button].not\:active,
-.is\:host[type=week]:disabled,
-.is\:host[type=week][role=button].not\:active,
-input.is\:host:not([type]):disabled,
-input.is\:host[role=button].not\:active:not([type]),
-textarea.is\:host:disabled,
-textarea.is\:host[role=button].not\:active {
+.input:disabled,
+.input.button.not\:active,
+.textarea:disabled,
+.textarea.button.not\:active {
   background: var(--fill-input--disabled, var(--fill-input));
   border-color: var(--stroke-input--disabled, var(--stroke-input));
   box-shadow: var(--shadow-input--disabled, var(--shadow-input));
   color: var(--color-input--disabled, var(--color-input));
 }
-.is\:host[role=searchbox][pattern]:focus:valid,
-.is\:host[role=searchbox][required]:focus:valid,
-.is\:host[role=spinbutton][pattern]:focus:valid,
-.is\:host[role=spinbutton][required]:focus:valid,
-.is\:host[role=textbox][pattern]:focus:valid,
-.is\:host[role=textbox][required]:focus:valid,
-.is\:host[type=color][pattern]:focus:valid,
-.is\:host[type=color][required]:focus:valid,
-.is\:host[type=date][pattern]:focus:valid,
-.is\:host[type=date][required]:focus:valid,
-.is\:host[type=datetime][pattern]:focus:valid,
-.is\:host[type=datetime][required]:focus:valid,
-.is\:host[type=datetime-local][pattern]:focus:valid,
-.is\:host[type=datetime-local][required]:focus:valid,
-.is\:host[type=email][pattern]:focus:valid,
-.is\:host[type=email][required]:focus:valid,
-.is\:host[type=month][pattern]:focus:valid,
-.is\:host[type=month][required]:focus:valid,
-.is\:host[type=number][pattern]:focus:valid,
-.is\:host[type=number][required]:focus:valid,
-.is\:host[type=password][pattern]:focus:valid,
-.is\:host[type=password][required]:focus:valid,
-.is\:host[type=search][pattern]:focus:valid,
-.is\:host[type=search][required]:focus:valid,
-.is\:host[type=tel][pattern]:focus:valid,
-.is\:host[type=tel][required]:focus:valid,
-.is\:host[type=text][pattern]:focus:valid,
-.is\:host[type=text][required]:focus:valid,
-.is\:host[type=time][pattern]:focus:valid,
-.is\:host[type=time][required]:focus:valid,
-.is\:host[type=url][pattern]:focus:valid,
-.is\:host[type=url][required]:focus:valid,
-.is\:host[type=week][pattern]:focus:valid,
-.is\:host[type=week][required]:focus:valid,
-input.is\:host:not([type])[pattern]:focus:valid,
-input.is\:host:not([type])[required]:focus:valid,
-textarea.is\:host[pattern]:focus:valid,
-textarea.is\:host[required]:focus:valid {
+.input[pattern]:focus:valid,
+.input[required]:focus:valid,
+.textarea[pattern]:focus:valid,
+.textarea[required]:focus:valid {
   background: var(--fill-input--valid, var(--fill-input));
   border-color: var(--stroke-input--valid, var(--stroke-input));
   box-shadow: var(--shadow-input--valid, var(--shadow-input));
   color: var(--color-input--valid, var(--color-input));
 }
-.is\:host[role=searchbox][pattern]:focus:invalid,
-.is\:host[role=searchbox][required]:focus:invalid,
-.is\:host[role=spinbutton][pattern]:focus:invalid,
-.is\:host[role=spinbutton][required]:focus:invalid,
-.is\:host[role=textbox][pattern]:focus:invalid,
-.is\:host[role=textbox][required]:focus:invalid,
-.is\:host[type=color][pattern]:focus:invalid,
-.is\:host[type=color][required]:focus:invalid,
-.is\:host[type=date][pattern]:focus:invalid,
-.is\:host[type=date][required]:focus:invalid,
-.is\:host[type=datetime][pattern]:focus:invalid,
-.is\:host[type=datetime][required]:focus:invalid,
-.is\:host[type=datetime-local][pattern]:focus:invalid,
-.is\:host[type=datetime-local][required]:focus:invalid,
-.is\:host[type=email][pattern]:focus:invalid,
-.is\:host[type=email][required]:focus:invalid,
-.is\:host[type=month][pattern]:focus:invalid,
-.is\:host[type=month][required]:focus:invalid,
-.is\:host[type=number][pattern]:focus:invalid,
-.is\:host[type=number][required]:focus:invalid,
-.is\:host[type=password][pattern]:focus:invalid,
-.is\:host[type=password][required]:focus:invalid,
-.is\:host[type=search][pattern]:focus:invalid,
-.is\:host[type=search][required]:focus:invalid,
-.is\:host[type=tel][pattern]:focus:invalid,
-.is\:host[type=tel][required]:focus:invalid,
-.is\:host[type=text][pattern]:focus:invalid,
-.is\:host[type=text][required]:focus:invalid,
-.is\:host[type=time][pattern]:focus:invalid,
-.is\:host[type=time][required]:focus:invalid,
-.is\:host[type=url][pattern]:focus:invalid,
-.is\:host[type=url][required]:focus:invalid,
-.is\:host[type=week][pattern]:focus:invalid,
-.is\:host[type=week][required]:focus:invalid,
-input.is\:host:not([type])[pattern]:focus:invalid,
-input.is\:host:not([type])[required]:focus:invalid,
-textarea.is\:host[pattern]:focus:invalid,
-textarea.is\:host[required]:focus:invalid {
+.input[pattern]:focus:invalid,
+.input[required]:focus:invalid,
+.textarea[pattern]:focus:invalid,
+.textarea[required]:focus:invalid {
   background: var(--fill-input--invalid, var(--fill-input));
   border-color: var(--stroke-input--invalid, var(--stroke-input));
   box-shadow: var(--shadow-input--invalid, var(--shadow-input));
   color: var(--color-input--invalid, var(--color-input));
 }
 
-textarea.is\:host.has\:width,
-textarea.has\:width.is\:host[role=button].not\:active {
-  display: flex;
-  width: 100%;
-}
-
-.is\:host[type=color],
-[type=color].is\:host[role=button].not\:active {
+.input[type=color] {
   height: calc(var(--y) * 1.5);
   padding: 0;
   width: calc(var(--x) * 1.5);
 }
-.is\:host[type=file],
-[type=file].is\:host[role=button].not\:active {
+.input[type=file] {
   line-height: normal;
 }
-.is\:host[type=image],
-[type=image].is\:host[role=button].not\:active {
+.input[type=image] {
   box-shadow: none;
   height: auto;
   width: auto;
 }
 
-.is\:host[role=checkbox],
-[role=checkbox].is\:host[role=button].not\:active,
-.is\:host[role=radio],
-[role=radio].is\:host[role=button].not\:active,
-.is\:host[type=checkbox],
-[type=checkbox].is\:host[role=button].not\:active,
-.is\:host[type=image],
-[type=image].is\:host[role=button].not\:active,
-.is\:host[type=radio],
-[type=radio].is\:host[role=button].not\:active {
+.input[type=checkbox],
+.input[type=image],
+.input[type=radio] {
   background: none;
   border: 0;
   height: var(--z);
@@ -1777,12 +1477,8 @@ textarea.has\:width.is\:host[role=button].not\:active {
   width: var(--z);
 }
 
-.is\:host[role=slider],
-[role=slider].is\:host[role=button].not\:active,
-.is\:host[type=file],
-[type=file].is\:host[role=button].not\:active,
-.is\:host[type=range],
-[type=range].is\:host[role=button].not\:active {
+.input[type=file],
+.input[type=range] {
   background: none;
   border: 0;
   box-shadow: none;
@@ -1790,32 +1486,28 @@ textarea.has\:width.is\:host[role=button].not\:active {
   padding: 0;
 }
 
-output.is\:host,
-output.is\:host[role=button].not\:active {
+.output {
   background: var(--fill-output);
   border-color: var(--stroke-output);
   border-radius: var(--arc-output);
   box-shadow: var(--shadow-output);
   color: var(--color-output);
 }
-output.is\:host:hover,
-output.is\:host[role=button].not\:active:hover {
+.output:hover {
   background: var(--fill-output--hover, var(--fill-output));
   border-color: var(--stroke-output--hover, var(--stroke-output));
   border-radius: var(--arc-output--hover, var(--arc-output));
   box-shadow: var(--shadow-output--hover, var(--shadow-output));
   color: var(--color-output--hover, var(--color-output));
 }
-output.is\:host:focus,
-output.is\:host[role=button].not\:active:focus {
+.output:focus {
   background: var(--fill-output--focus, var(--fill-output));
   border-color: var(--stroke-output--focus, var(--stroke-output));
   border-radius: var(--arc-output--focus, var(--arc-output));
   box-shadow: var(--shadow-output--focus, var(--shadow-output));
   color: var(--color-output--focus, var(--color-output));
 }
-output.is\:host:active,
-output.is\:host[role=button].not\:active:active {
+.output:active {
   background: var(--fill-output--active, var(--fill-output));
   border-color: var(--stroke-output--active, var(--stroke-output));
   border-radius: var(--arc-output--active, var(--arc-output));
@@ -1823,12 +1515,7 @@ output.is\:host[role=button].not\:active:active {
   color: var(--color-output--active, var(--color-output));
 }
 
-.is\:host[role=combobox],
-[role=combobox].is\:host[role=button].not\:active,
-.is\:host[role=listbox],
-[role=listbox].is\:host[role=button].not\:active,
-select.is\:host,
-select.is\:host[role=button].not\:active {
+.select {
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
@@ -1837,210 +1524,97 @@ select.is\:host[role=button].not\:active {
   color: var(--color-input);
   width: var(--width-input);
 }
-.is\:host[role=combobox]:hover,
-.is\:host[role=listbox]:hover,
-select.is\:host:hover,
-select.is\:host[role=button].not\:active:hover {
+.select:hover {
   background: var(--fill-input--hover, var(--fill-input));
   border-color: var(--stroke-input--hover, var(--stroke-input));
   box-shadow: var(--shadow-input--hover, var(--shadow-input));
   color: var(--color-input--hover, var(--color-input));
 }
-.is\:host[role=combobox]:focus,
-.is\:host[role=listbox]:focus,
-select.is\:host:focus,
-select.is\:host[role=button].not\:active:focus {
+.select:focus {
   background: var(--fill-input--focus, var(--fill-input));
   border-color: var(--stroke-input--focus, var(--stroke-input));
   box-shadow: var(--shadow-input--focus, var(--shadow-input));
   color: var(--color-input--focus, var(--color-input));
 }
-.is\:host[role=combobox]:active,
-.is\:host[role=listbox]:active,
-select.is\:host:active,
-select.is\:host[role=button].not\:active:active {
+.select:active {
   background: var(--fill-input--active, var(--fill-input));
   border-color: var(--stroke-input--active, var(--stroke-input));
   box-shadow: var(--shadow-input--active, var(--shadow-input));
   color: var(--color-input--active, var(--color-input));
 }
-.is\:host[role=combobox]:disabled,
-.is\:host[role=combobox][role=button].not\:active,
-.is\:host[role=listbox]:disabled,
-.is\:host[role=listbox][role=button].not\:active,
-select.is\:host:disabled,
-select.is\:host[role=button].not\:active {
+.select:disabled,
+.select.button.not\:active {
   background: var(--fill-input--disabled, var(--fill-input));
   border-color: var(--stroke-input--disabled, var(--stroke-input));
   box-shadow: var(--shadow-input--disabled, var(--shadow-input));
   color: var(--color-input--disabled, var(--color-input));
 }
-.is\:host[role=combobox][aria-multiselectable=true],
-.is\:host[role=combobox][multiple],
-.is\:host[role=listbox][aria-multiselectable=true],
-.is\:host[role=listbox][multiple],
-select.is\:host[aria-multiselectable=true],
-select[aria-multiselectable=true].is\:host[role=button].not\:active,
-select.is\:host[multiple],
-select[multiple].is\:host[role=button].not\:active {
+.select[multiple] {
   height: auto;
 }
-.is\:host[role=combobox][aria-multiselectable=true] [role=group],
-.is\:host[role=combobox][aria-multiselectable=true] [role=option],
-.is\:host[role=combobox][aria-multiselectable=true] optgroup,
-.is\:host[role=combobox][aria-multiselectable=true] option,
-.is\:host[role=combobox][multiple] [role=group],
-.is\:host[role=combobox][multiple] [role=option],
-.is\:host[role=combobox][multiple] optgroup,
-.is\:host[role=combobox][multiple] option,
-.is\:host[role=listbox][aria-multiselectable=true] [role=group],
-.is\:host[role=listbox][aria-multiselectable=true] [role=option],
-.is\:host[role=listbox][aria-multiselectable=true] optgroup,
-.is\:host[role=listbox][aria-multiselectable=true] option,
-.is\:host[role=listbox][multiple] [role=group],
-.is\:host[role=listbox][multiple] [role=option],
-.is\:host[role=listbox][multiple] optgroup,
-.is\:host[role=listbox][multiple] option,
-select.is\:host[aria-multiselectable=true] [role=group],
-select.is\:host[aria-multiselectable=true] [role=option],
-select.is\:host[aria-multiselectable=true] optgroup,
-select[aria-multiselectable=true].is\:host[role=button].not\:active optgroup,
-select.is\:host[aria-multiselectable=true] option,
-select[aria-multiselectable=true].is\:host[role=button].not\:active option,
-select.is\:host[multiple] [role=group],
-select.is\:host[multiple] [role=option],
-select.is\:host[multiple] optgroup,
-select[multiple].is\:host[role=button].not\:active optgroup,
-select.is\:host[multiple] option,
-select[multiple].is\:host[role=button].not\:active option {
+.select[multiple] [role=group],
+.select[multiple] [role=option],
+.select[multiple] optgroup,
+.select[multiple] option {
   background: none;
 }
-.is\:host[role=combobox] [role=group],
-.is\:host[role=combobox] [role=option],
-.is\:host[role=combobox] optgroup,
-[role=combobox].is\:host[role=button].not\:active optgroup,
-.is\:host[role=combobox] option,
-[role=combobox].is\:host[role=button].not\:active option,
-.is\:host[role=listbox] [role=group],
-.is\:host[role=listbox] [role=option],
-.is\:host[role=listbox] optgroup,
-[role=listbox].is\:host[role=button].not\:active optgroup,
-.is\:host[role=listbox] option,
-[role=listbox].is\:host[role=button].not\:active option,
-select.is\:host [role=group],
-select.is\:host[role=button].not\:active [role=group],
-select.is\:host [role=option],
-select.is\:host[role=button].not\:active [role=option],
-select.is\:host optgroup,
-select.is\:host[role=button].not\:active optgroup,
-select.is\:host option,
-select.is\:host[role=button].not\:active option {
+.select [role=group],
+.select [role=option],
+.select optgroup,
+.select option {
   background: var(--fill-input);
   color: var(--color-input);
   margin: 0;
   padding: 0;
 }
-.is\:host[role=combobox] [role=group]:disabled,
-.is\:host[role=combobox] [role=group].is\:host[role=button].not\:active,
-.is\:host[role=combobox] [role=option]:disabled,
-.is\:host[role=combobox] [role=option].is\:host[role=button].not\:active,
-.is\:host[role=combobox] optgroup:disabled,
-.is\:host[role=combobox] optgroup.is\:host[role=button].not\:active,
-.is\:host[role=combobox] option:disabled,
-.is\:host[role=combobox] option.is\:host[role=button].not\:active,
-.is\:host[role=listbox] [role=group]:disabled,
-.is\:host[role=listbox] [role=group].is\:host[role=button].not\:active,
-.is\:host[role=listbox] [role=option]:disabled,
-.is\:host[role=listbox] [role=option].is\:host[role=button].not\:active,
-.is\:host[role=listbox] optgroup:disabled,
-.is\:host[role=listbox] optgroup.is\:host[role=button].not\:active,
-.is\:host[role=listbox] option:disabled,
-.is\:host[role=listbox] option.is\:host[role=button].not\:active,
-select.is\:host [role=group]:disabled,
-select.is\:host [role=group].is\:host[role=button].not\:active,
-select.is\:host [role=option]:disabled,
-select.is\:host [role=option].is\:host[role=button].not\:active,
-select.is\:host optgroup:disabled,
-select.is\:host[role=button].not\:active optgroup:disabled,
-select.is\:host optgroup.is\:host[role=button].not\:active,
-select.is\:host option:disabled,
-select.is\:host[role=button].not\:active option:disabled,
-select.is\:host option.is\:host[role=button].not\:active {
+.select [role=group]:disabled,
+.select [role=group].button.not\:active,
+.select [role=option]:disabled,
+.select [role=option].button.not\:active,
+.select optgroup:disabled,
+.select optgroup.button.not\:active,
+.select option:disabled,
+.select option.button.not\:active {
   background: var(--fill-input--disabled, var(--fill-input));
   color: var(--color-input--disabled, var(--color-input));
 }
-.is\:host[role=combobox] [role=group],
-.is\:host[role=combobox] optgroup,
-[role=combobox].is\:host[role=button].not\:active optgroup,
-.is\:host[role=listbox] [role=group],
-.is\:host[role=listbox] optgroup,
-[role=listbox].is\:host[role=button].not\:active optgroup,
-select.is\:host [role=group],
-select.is\:host[role=button].not\:active [role=group],
-select.is\:host optgroup,
-select.is\:host[role=button].not\:active optgroup {
+.select [role=group],
+.select optgroup {
   font-weight: bolder;
 }
-.is\:host[role=combobox] [role=group] [role=option],
-.is\:host[role=combobox] [role=group] option,
-.is\:host[role=combobox] optgroup [role=option],
-.is\:host[role=combobox] optgroup option,
-[role=combobox].is\:host[role=button].not\:active optgroup option,
-.is\:host[role=listbox] [role=group] [role=option],
-.is\:host[role=listbox] [role=group] option,
-.is\:host[role=listbox] optgroup [role=option],
-.is\:host[role=listbox] optgroup option,
-[role=listbox].is\:host[role=button].not\:active optgroup option,
-select.is\:host [role=group] [role=option],
-select.is\:host [role=group] option,
-select.is\:host[role=button].not\:active [role=group] option,
-select.is\:host optgroup [role=option],
-select.is\:host[role=button].not\:active optgroup [role=option],
-select.is\:host optgroup option,
-select.is\:host[role=button].not\:active optgroup option {
+.select [role=group] [role=option],
+.select [role=group] option,
+.select optgroup [role=option],
+.select optgroup option {
   font-weight: normal;
   padding-left: calc(var(--x) / 3);
 }
-.is\:host[role=combobox]:not([multiple]):not([aria-multiselectable=true]),
-.is\:host[role=listbox]:not([multiple]):not([aria-multiselectable=true]),
-select.is\:host:not([multiple]):not([aria-multiselectable=true]) {
+.select:not([multiple]) {
   padding-bottom: 0;
   padding-top: 0;
 }
 
-.is\:host[role=textbox][aria-multiline=true],
-textarea.is\:host,
-textarea.is\:host[role=button].not\:active {
+.textarea {
   min-height: calc(var(--y) * 3.75);
   overflow: auto;
   resize: vertical;
 }
-.is\:host[role=textbox][aria-multiline=true].has\:height,
-textarea.is\:host.has\:height,
-textarea.has\:height.is\:host[role=button].not\:active {
+.textarea.has\:height {
   height: calc(var(--y) * 10.75);
 }
+.textarea.has\:width {
+  display: flex;
+  width: 100%;
+}
 
-label .is\:host[role=checkbox] + span,
-label [role=checkbox].is\:host[role=button].not\:active + span,
-label .is\:host[role=radio] + span,
-label [role=radio].is\:host[role=button].not\:active + span,
-label .is\:host[type=checkbox] + span,
-label [type=checkbox].is\:host[role=button].not\:active + span,
-label .is\:host[type=radio] + span,
-label [type=radio].is\:host[role=button].not\:active + span {
+label .input[type=checkbox] + span,
+label .input[type=radio] + span {
   display: inline-flex;
   vertical-align: middle;
 }
 
-.is\:host[role=checkbox],
-[role=checkbox].is\:host[role=button].not\:active,
-.is\:host[role=radio],
-[role=radio].is\:host[role=button].not\:active,
-.is\:host[type=checkbox],
-[type=checkbox].is\:host[role=button].not\:active,
-.is\:host[type=radio],
-[type=radio].is\:host[role=button].not\:active {
+.input[type=checkbox],
+.input[type=radio] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -2050,14 +1624,8 @@ label [type=radio].is\:host[role=button].not\:active + span {
   box-shadow: var(--shadow-button);
   color: var(--color-button);
 }
-.is\:host[role=checkbox]::before,
-[role=checkbox].is\:host[role=button].not\:active::before,
-.is\:host[role=radio]::before,
-[role=radio].is\:host[role=button].not\:active::before,
-.is\:host[type=checkbox]::before,
-[type=checkbox].is\:host[role=button].not\:active::before,
-.is\:host[type=radio]::before,
-[type=radio].is\:host[role=button].not\:active::before {
+.input[type=checkbox]::before,
+.input[type=radio]::before {
   background: var(--fill);
   bottom: 2px;
   content: "";
@@ -2066,48 +1634,37 @@ label [type=radio].is\:host[role=button].not\:active + span {
   right: 2px;
   top: 2px;
 }
-.is\:host[role=checkbox]:hover,
-.is\:host[role=radio]:hover,
-.is\:host[type=checkbox]:hover,
-.is\:host[type=radio]:hover {
+.input[type=checkbox]:hover,
+.input[type=radio]:hover {
   background: var(--fill-button--hover, var(--fill-button));
   border-color: var(--stroke-button--hover, var(--stroke-button));
   box-shadow: var(--shadow-button--hover, var(--shadow-button));
   color: var(--color-button--hover, var(--color-button));
 }
-.is\:host[role=checkbox]:focus,
-.is\:host[role=radio]:focus,
-.is\:host[type=checkbox]:focus,
-.is\:host[type=radio]:focus {
+.input[type=checkbox]:focus,
+.input[type=radio]:focus {
   background: var(--fill-button--focus, var(--fill-button));
   border-color: var(--stroke-button--focus, var(--stroke-button));
   box-shadow: var(--shadow-button--focus, var(--shadow-button));
   color: var(--color-button--focus, var(--color-button));
 }
-.is\:host[role=checkbox]:active,
-.is\:host[role=radio]:active,
-.is\:host[type=checkbox]:active,
-.is\:host[type=radio]:active {
+.input[type=checkbox]:active,
+.input[type=radio]:active {
   background: var(--fill-button--active, var(--fill-button));
   border-color: var(--stroke-button--active, var(--stroke-button));
   box-shadow: var(--shadow-button--active, var(--shadow-button));
   color: var(--color-button--active, var(--color-button));
 }
-.is\:host[role=checkbox]:disabled,
-.is\:host[role=checkbox][role=button].not\:active,
-.is\:host[role=radio]:disabled,
-.is\:host[role=radio][role=button].not\:active,
-.is\:host[type=checkbox]:disabled,
-.is\:host[type=checkbox][role=button].not\:active,
-.is\:host[type=radio]:disabled,
-.is\:host[type=radio][role=button].not\:active {
+.input[type=checkbox]:disabled,
+.input[type=checkbox].button.not\:active,
+.input[type=radio]:disabled,
+.input[type=radio].button.not\:active {
   background: var(--fill-button--disabled, var(--fill-button));
   border-color: var(--stroke-button--disabled, var(--stroke-button));
   box-shadow: var(--shadow-button--disabled, var(--shadow-button));
   color: var(--color-button--disabled, var(--color-button));
 }
-.is\:host[aria-checked=true][role=checkbox]::before,
-.is\:host[type=checkbox]:checked::before {
+.input[type=checkbox]:checked::before {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   transform: rotate(45deg);
@@ -2120,72 +1677,55 @@ label [type=radio].is\:host[role=button].not\:active + span {
   top: 1px;
   visibility: visible;
 }
-.is\:host[aria-checked=true][role=checkbox]:hover::before,
-.is\:host[type=checkbox]:checked:hover::before {
+.input[type=checkbox]:checked:hover::before {
   border-bottom-color: var(--color-button--hover);
   border-right-color: var(--color-button--hover);
 }
-.is\:host[aria-checked=true][role=checkbox]:focus::before,
-.is\:host[type=checkbox]:checked:focus::before {
+.input[type=checkbox]:checked:focus::before {
   border-bottom-color: var(--color-button--focus);
   border-right-color: var(--color-button--focus);
 }
-.is\:host[aria-checked=true][role=checkbox]:active::before,
-.is\:host[type=checkbox]:checked:active::before {
+.input[type=checkbox]:checked:active::before {
   border-bottom-color: var(--color-button--active);
   border-right-color: var(--color-button--active);
 }
-.is\:host[aria-checked=true][role=checkbox]:disabled::before,
-.is\:host[aria-checked=true][role=checkbox][role=button].not\:active::before,
-.is\:host[type=checkbox]:checked:disabled::before,
-.is\:host[type=checkbox][role=button].not\:active:checked::before {
+.input[type=checkbox]:checked:disabled::before,
+.input[type=checkbox].button.not\:active:checked::before {
   border-bottom-color: var(--color-button--disabled);
   border-right-color: var(--color-button--disabled);
 }
-.is\:host[role=radio],
-[role=radio].is\:host[role=button].not\:active,
-.is\:host[role=radio]::before,
-[role=radio].is\:host[role=button].not\:active::before,
-.is\:host[type=radio],
-[type=radio].is\:host[role=button].not\:active,
-.is\:host[type=radio]::before,
-[type=radio].is\:host[role=button].not\:active::before {
+.input[type=radio],
+.input[type=radio]::before {
   border-radius: 100%;
 }
-.is\:host[aria-checked=true][role=radio]::before,
-.is\:host[type=radio]:checked::before {
+.input[type=radio]:checked::before {
   background: none;
   border: 2px solid;
   border-color: var(--fill);
   visibility: visible;
 }
-.is\:host[aria-checked=true][role=radio]:hover::before,
-.is\:host[type=radio]:checked:hover::before {
+.input[type=radio]:checked:hover::before {
   border-color: var(--fill--hover, var(--fill));
 }
-.is\:host[aria-checked=true][role=radio]:focus::before,
-.is\:host[type=radio]:checked:focus::before {
+.input[type=radio]:checked:focus::before {
   border-color: var(--fill--focus, var(--fill));
 }
-.is\:host[aria-checked=true][role=radio]:active::before,
-.is\:host[type=radio]:checked:active::before {
+.input[type=radio]:checked:active::before {
   border-color: var(--fill--active, var(--fill));
 }
-.is\:host[aria-checked=true][role=radio]:disabled::before,
-.is\:host[aria-checked=true][role=radio][role=button].not\:active::before,
-.is\:host[type=radio]:checked:disabled::before,
-.is\:host[type=radio][role=button].not\:active:checked::before {
+.input[type=radio]:checked:disabled::before,
+.input[type=radio].button.not\:active:checked::before {
   border-color: var(--fill--disabled, var(--fill));
 }
-.is\:host[type=checkbox][role=switch],
-.is\:host[type=radio][role=switch] {
+.input[type=checkbox][role=switch],
+.input[type=radio][role=switch] {
   border-radius: calc(var(--z) * 1.25 / 2);
   border-width: 0;
   height: calc(var(--z) * 1.25);
   width: calc(var(--z) * 2);
 }
-.is\:host[type=checkbox][role=switch]::before,
-.is\:host[type=radio][role=switch]::before {
+.input[type=checkbox][role=switch]::before,
+.input[type=radio][role=switch]::before {
   -webkit-transform: rotate(0);
   -moz-transform: rotate(0);
   transform: rotate(0);
@@ -2198,32 +1738,23 @@ label [type=radio].is\:host[role=button].not\:active + span {
   visibility: visible;
   width: calc(var(--z) * 1.25 - 4px);
 }
-.is\:host[type=checkbox][role=switch]:checked::before,
-.is\:host[type=radio][role=switch]:checked::before {
+.input[type=checkbox][role=switch]:checked::before,
+.input[type=radio][role=switch]:checked::before {
   left: calc(var(--z) - 2px);
 }
-.is\:host[role=slider],
-[role=slider].is\:host[role=button].not\:active,
-.is\:host[type=range],
-[type=range].is\:host[role=button].not\:active {
+.input[type=range] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
-.is\:host[role=slider]::-webkit-slider-runnable-track,
-[role=slider].is\:host[role=button].not\:active::-webkit-slider-runnable-track,
-.is\:host[type=range]::-webkit-slider-runnable-track,
-[type=range].is\:host[role=button].not\:active::-webkit-slider-runnable-track {
+.input[type=range]::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   background: var(--stroke-input);
   border: 0;
   height: 2px;
   overflow: visible;
 }
-.is\:host[role=slider]::-webkit-slider-thumb,
-[role=slider].is\:host[role=button].not\:active::-webkit-slider-thumb,
-.is\:host[type=range]::-webkit-slider-thumb,
-[type=range].is\:host[role=button].not\:active::-webkit-slider-thumb {
+.input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   background: var(--fill-button);
   border-color: var(--stroke-button);
@@ -2235,18 +1766,12 @@ label [type=radio].is\:host[role=button].not\:active + span {
   margin-top: calc(var(--y) / -2 + 1px);
   width: calc(var(--x) / 2);
 }
-.is\:host[role=slider]::-moz-range-track,
-[role=slider].is\:host[role=button].not\:active::-moz-range-track,
-.is\:host[type=range]::-moz-range-track,
-[type=range].is\:host[role=button].not\:active::-moz-range-track {
+.input[type=range]::-moz-range-track {
   background: var(--stroke-input);
   border: 0;
   height: 2px;
 }
-.is\:host[role=slider]::-moz-range-thumb,
-[role=slider].is\:host[role=button].not\:active::-moz-range-thumb,
-.is\:host[type=range]::-moz-range-thumb,
-[type=range].is\:host[role=button].not\:active::-moz-range-thumb {
+.input[type=range]::-moz-range-thumb {
   background: var(--fill-button);
   border-color: var(--stroke-button);
   border-radius: var(--arc-button);
@@ -2257,97 +1782,77 @@ label [type=radio].is\:host[role=button].not\:active + span {
   margin-top: calc(var(--y) / -2 + 1px);
   width: calc(var(--x) / 2);
 }
-.is\:host[role=slider]:hover::-webkit-slider-runnable-track,
-.is\:host[type=range]:hover::-webkit-slider-runnable-track {
+.input[type=range]:hover::-webkit-slider-runnable-track {
   background: var(--stroke-input--hover, var(--stroke-input));
 }
-.is\:host[role=slider]:hover::-moz-range-track,
-.is\:host[type=range]:hover::-moz-range-track {
+.input[type=range]:hover::-moz-range-track {
   background: var(--stroke-input--hover, var(--stroke-input));
 }
-.is\:host[role=slider]:hover::-webkit-slider-thumb,
-.is\:host[type=range]:hover::-webkit-slider-thumb {
+.input[type=range]:hover::-webkit-slider-thumb {
   background: var(--fill-button--hover, var(--fill-button));
   border-color: var(--stroke-button--hover, var(--stroke-button));
   box-shadow: var(--shadow-button--hover, var(--shadow-button));
   color: var(--color-button--hover, var(--color-button));
 }
-.is\:host[role=slider]:hover::-moz-range-thumb,
-.is\:host[type=range]:hover::-moz-range-thumb {
+.input[type=range]:hover::-moz-range-thumb {
   background: var(--fill-button--hover, var(--fill-button));
   border-color: var(--stroke-button--hover, var(--stroke-button));
   box-shadow: var(--shadow-button--hover, var(--shadow-button));
   color: var(--color-button--hover, var(--color-button));
 }
-.is\:host[role=slider]:focus::-webkit-slider-runnable-track,
-.is\:host[type=range]:focus::-webkit-slider-runnable-track {
+.input[type=range]:focus::-webkit-slider-runnable-track {
   background: var(--stroke-input--focus, var(--stroke-input));
 }
-.is\:host[role=slider]:focus::-moz-range-track,
-.is\:host[type=range]:focus::-moz-range-track {
+.input[type=range]:focus::-moz-range-track {
   background: var(--stroke-input--focus, var(--stroke-input));
 }
-.is\:host[role=slider]:focus::-webkit-slider-thumb,
-.is\:host[type=range]:focus::-webkit-slider-thumb {
+.input[type=range]:focus::-webkit-slider-thumb {
   background: var(--fill-button--focus, var(--fill-button));
   border-color: var(--stroke-button--focus, var(--stroke-button));
   box-shadow: var(--shadow-button--focus, var(--shadow-button));
   color: var(--color-button--focus, var(--color-button));
 }
-.is\:host[role=slider]:focus::-moz-range-thumb,
-.is\:host[type=range]:focus::-moz-range-thumb {
+.input[type=range]:focus::-moz-range-thumb {
   background: var(--fill-button--focus, var(--fill-button));
   border-color: var(--stroke-button--focus, var(--stroke-button));
   box-shadow: var(--shadow-button--focus, var(--shadow-button));
   color: var(--color-button--focus, var(--color-button));
 }
-.is\:host[role=slider]:active::-webkit-slider-runnable-track,
-.is\:host[type=range]:active::-webkit-slider-runnable-track {
+.input[type=range]:active::-webkit-slider-runnable-track {
   background: var(--stroke-input--active, var(--stroke-input));
 }
-.is\:host[role=slider]:active::-moz-range-track,
-.is\:host[type=range]:active::-moz-range-track {
+.input[type=range]:active::-moz-range-track {
   background: var(--stroke-input--active, var(--stroke-input));
 }
-.is\:host[role=slider]:active::-webkit-slider-thumb,
-.is\:host[type=range]:active::-webkit-slider-thumb {
+.input[type=range]:active::-webkit-slider-thumb {
   background: var(--fill-button--active, var(--fill-button));
   border-color: var(--stroke-button--active, var(--stroke-button));
   box-shadow: var(--shadow-button--active, var(--shadow-button));
   color: var(--color-button--active, var(--color-button));
 }
-.is\:host[role=slider]:active::-moz-range-thumb,
-.is\:host[type=range]:active::-moz-range-thumb {
+.input[type=range]:active::-moz-range-thumb {
   background: var(--fill-button--active, var(--fill-button));
   border-color: var(--stroke-button--active, var(--stroke-button));
   box-shadow: var(--shadow-button--active, var(--shadow-button));
   color: var(--color-button--active, var(--color-button));
 }
-.is\:host[role=slider]:disabled::-webkit-slider-runnable-track,
-.is\:host[role=slider][role=button].not\:active::-webkit-slider-runnable-track,
-.is\:host[type=range]:disabled::-webkit-slider-runnable-track,
-.is\:host[type=range][role=button].not\:active::-webkit-slider-runnable-track {
+.input[type=range]:disabled::-webkit-slider-runnable-track,
+.input[type=range].button.not\:active::-webkit-slider-runnable-track {
   background: var(--stroke-input--disabled, var(--stroke-input));
 }
-.is\:host[role=slider]:disabled::-moz-range-track,
-.is\:host[role=slider][role=button].not\:active::-moz-range-track,
-.is\:host[type=range]:disabled::-moz-range-track,
-.is\:host[type=range][role=button].not\:active::-moz-range-track {
+.input[type=range]:disabled::-moz-range-track,
+.input[type=range].button.not\:active::-moz-range-track {
   background: var(--stroke-input--disabled, var(--stroke-input));
 }
-.is\:host[role=slider]:disabled::-webkit-slider-thumb,
-.is\:host[role=slider][role=button].not\:active::-webkit-slider-thumb,
-.is\:host[type=range]:disabled::-webkit-slider-thumb,
-.is\:host[type=range][role=button].not\:active::-webkit-slider-thumb {
+.input[type=range]:disabled::-webkit-slider-thumb,
+.input[type=range].button.not\:active::-webkit-slider-thumb {
   background: var(--fill-button--disabled, var(--fill-button));
   border-color: var(--stroke-button--disabled, var(--stroke-button));
   box-shadow: var(--shadow-button--disabled, var(--shadow-button));
   color: var(--color-button--disabled, var(--color-button));
 }
-.is\:host[role=slider]:disabled::-moz-range-thumb,
-.is\:host[role=slider][role=button].not\:active::-moz-range-thumb,
-.is\:host[type=range]:disabled::-moz-range-thumb,
-.is\:host[type=range][role=button].not\:active::-moz-range-thumb {
+.input[type=range]:disabled::-moz-range-thumb,
+.input[type=range].button.not\:active::-moz-range-thumb {
   background: var(--fill-button--disabled, var(--fill-button));
   border-color: var(--stroke-button--disabled, var(--stroke-button));
   box-shadow: var(--shadow-button--disabled, var(--shadow-button));
@@ -2493,7 +1998,7 @@ label [type=radio].is\:host[role=button].not\:active + span {
 .lot\:bar .lot\:field > label + div > div {
   display: block;
 }
-.lot\:bar .lot\:field input.is\:host {
+.lot\:bar .lot\:field .input {
   border: 0;
   box-shadow: none;
   display: block;
@@ -2703,30 +2208,30 @@ label [type=radio].is\:host[role=button].not\:active + span {
   padding: calc(var(--y) / 4) 0;
 }
 
-.lot\:field.type\:blob > label + div input.is\:host,
-.lot\:field.type\:blobs > label + div input.is\:host {
+.lot\:field.type\:blob > label + div .input,
+.lot\:field.type\:blobs > label + div .input {
   border: 1px dashed;
   border-color: var(--stroke-input);
   height: auto;
   line-height: normal;
   padding: var(--y) var(--x);
 }
-.lot\:field.type\:blob > label + div input.is\:host:hover,
-.lot\:field.type\:blobs > label + div input.is\:host:hover {
+.lot\:field.type\:blob > label + div .input:hover,
+.lot\:field.type\:blobs > label + div .input:hover {
   border-color: var(--stroke--input-hover, var(--stroke-input));
 }
-.lot\:field.type\:blob > label + div input.is\:host:focus,
-.lot\:field.type\:blobs > label + div input.is\:host:focus {
+.lot\:field.type\:blob > label + div .input:focus,
+.lot\:field.type\:blobs > label + div .input:focus {
   border-color: var(--stroke--input-focus, var(--stroke-input));
 }
-.lot\:field.type\:blob > label + div input.is\:host:active,
-.lot\:field.type\:blobs > label + div input.is\:host:active {
+.lot\:field.type\:blob > label + div .input:active,
+.lot\:field.type\:blobs > label + div .input:active {
   border-color: var(--stroke--input-active, var(--stroke-input));
 }
-.lot\:field.type\:blob > label + div input.is\:host:disabled,
-.lot\:field.type\:blobs > label + div input.is\:host:disabled,
-.lot\:field.type\:blob > label + div input.is\:host[role=button].not\:active,
-.lot\:field.type\:blobs > label + div input.is\:host[role=button].not\:active {
+.lot\:field.type\:blob > label + div .input:disabled,
+.lot\:field.type\:blobs > label + div .input:disabled,
+.lot\:field.type\:blob > label + div .input.button.not\:active,
+.lot\:field.type\:blobs > label + div .input.button.not\:active {
   border-color: var(--stroke-input--disabled);
 }
 

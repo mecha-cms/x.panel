@@ -1603,10 +1603,11 @@
             $.pop();
             delete OP.instances[key];
         }
-        var sources = getElements('input.is\\:host[list]:not([type="hidden"]),select.is\\:host');
+        var sources = getElements('.input[list]:not([type="hidden"]),.select');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
-            letClass(source, 'is:host');
+            letClass(source, 'input');
+            letClass(source, 'select');
             var c = getClasses(source);
             var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
@@ -2405,10 +2406,10 @@
             $.pop();
             delete TP.instances[key];
         }
-        var sources = getElements('.lot\\:field.type\\:query input.is\\:host:not([type="hidden"])');
+        var sources = getElements('.lot\\:field.type\\:query .input:not([type="hidden"])');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
-            letClass(source, 'is:host');
+            letClass(source, 'input');
             var c = getClasses(source);
             var $ = new TP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
             setClasses($.self, c);
@@ -4202,7 +4203,7 @@
             delete TE.instances[key];
             _letEditorSource($.self);
         }
-        var sources = getElements('.lot\\:field.type\\:source textarea.is\\:host'),
+        var sources = getElements('.lot\\:field.type\\:source .textarea'),
             editor,
             map,
             state,

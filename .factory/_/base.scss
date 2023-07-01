@@ -288,6 +288,10 @@ textarea {
   }
 }
 
+button {
+  white-space: nowrap;
+}
+
 @for $i from 0 through 5 {
   h#{$i + 1} {
     @if 0 == $i {

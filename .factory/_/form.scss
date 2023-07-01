@@ -1,14 +1,8 @@
-.is\:host[role='button'],
-.is\:host[role='combobox'],
-.is\:host[role='listbox'],
-.is\:host[role='searchbox'],
-.is\:host[role='spinbutton'],
-.is\:host[role='textbox'],
-button.is\:host,
-input.is\:host,
-output.is\:host,
-select.is\:host,
-textarea.is\:host {
+.button,
+.input,
+.output,
+.select,
+.textarea {
   accent-color: var(--fill-button);
   border: 1px solid transparent;
   display: inline-block;
@@ -25,11 +19,7 @@ textarea.is\:host {
   }
 }
 
-.is\:host[role='button'],
-.is\:host[type='button'],
-.is\:host[type='reset'],
-.is\:host[type='submit'],
-button.is\:host {
+.button {
   background: var(--fill-button);
   border-color: var(--stroke-button);
   border-radius: var(--arc-button);
@@ -64,6 +54,9 @@ button.is\:host {
       }
     }
   }
+  &.not\:active {
+    @extend :disabled;
+  }
   .title {
     > .icon {
       &:first-child {
@@ -80,32 +73,8 @@ button.is\:host {
   }
 }
 
-.is\:host[role='button'] {
-  &.not\:active {
-    @extend button, .is\:host, :disabled;
-  }
-}
-
-.is\:host[role='searchbox'],
-.is\:host[role='spinbutton'],
-.is\:host[role='textbox'],
-.is\:host[type='color'], // Need the border
-.is\:host[type='date'],
-.is\:host[type='datetime'],
-.is\:host[type='datetime-local'],
-.is\:host[type='email'],
-.is\:host[type='month'],
-.is\:host[type='number'],
-.is\:host[type='password'],
-.is\:host[type='password'],
-.is\:host[type='search'],
-.is\:host[type='tel'],
-.is\:host[type='text'],
-.is\:host[type='time'],
-.is\:host[type='url'],
-.is\:host[type='week'],
-input.is\:host:not([type]),
-textarea.is\:host {
+.input,
+.textarea {
   background: var(--fill-input);
   border-color: var(--stroke-input);
   border-radius: var(--arc-input);
@@ -133,14 +102,7 @@ textarea.is\:host {
   }
 }
 
-textarea.is\:host {
-  &.has\:width {
-    display: flex;
-    width: 100%;
-  }
-}
-
-.is\:host {
+.input {
   &[type='color'] {
     height: calc(var(--y) * 1.5);
     padding: 0;
@@ -156,11 +118,9 @@ textarea.is\:host {
   }
 }
 
-.is\:host[role='checkbox'],
-.is\:host[role='radio'],
-.is\:host[type='checkbox'],
-.is\:host[type='image'],
-.is\:host[type='radio'] {
+.input[type='checkbox'],
+.input[type='image'],
+.input[type='radio'] {
   background: none;
   border: 0;
   height: var(--z);
@@ -170,9 +130,8 @@ textarea.is\:host {
   width: var(--z);
 }
 
-.is\:host[role='slider'],
-.is\:host[type='file'],
-.is\:host[type='range'] {
+.input[type='file'],
+.input[type='range'] {
   background: none;
   border: 0;
   box-shadow: none;
@@ -181,7 +140,7 @@ textarea.is\:host {
   padding: 0;
 }
 
-output.is\:host {
+.output {
   background: var(--fill-output);
   border-color: var(--stroke-output);
   border-radius: var(--arc-output);
@@ -198,9 +157,7 @@ output.is\:host {
   }
 }
 
-.is\:host[role='combobox'],
-.is\:host[role='listbox'],
-select.is\:host {
+.select {
   appearance: none;
   background: var(--fill-input);
   border-color: var(--stroke-input);
@@ -216,7 +173,6 @@ select.is\:host {
       color: var(--color-input--#{$v}, var(--color-input));
     }
   }
-  &[aria-multiselectable='true'],
   &[multiple] {
     height: auto;
     [role='group'],
@@ -250,26 +206,27 @@ select.is\:host {
       padding-left: calc(var(--x) / 3);
     }
   }
-  &:not([multiple]):not([aria-multiselectable='true']) {
+  &:not([multiple]) {
     padding-bottom: 0;
     padding-top: 0;
   }
 }
 
-.is\:host[role='textbox'][aria-multiline='true'],
-textarea.is\:host {
+.textarea {
   min-height: calc(var(--y) * 3.75);
   overflow: auto;
   resize: vertical;
   &.has\:height {
     height: calc(var(--y) * 10.75);
   }
+  &.has\:width {
+    display: flex;
+    width: 100%;
+  }
 }
 
 label {
-  .is\:host {
-    &[role='checkbox'],
-    &[role='radio'],
+  .input {
     &[type='checkbox'],
     &[type='radio'] {
       + span {
@@ -281,9 +238,7 @@ label {
 }
 
 // Custom appearance for modern browser(s)
-.is\:host {
-  &[role='checkbox'],
-  &[role='radio'],
+.input {
   &[type='checkbox'],
   &[type='radio'] {
     @include appearance(none);
@@ -310,7 +265,6 @@ label {
       }
     }
   }
-  &[aria-checked='true'][role='checkbox'],
   &[type='checkbox']:checked {
     &::before {
       @include transform(rotate(45deg));
@@ -332,14 +286,12 @@ label {
       }
     }
   }
-  &[role='radio'],
   &[type='radio'] {
     &,
     &::before {
       border-radius: 100%;
     }
   }
-  &[aria-checked='true'][role='radio'],
   &[type='radio']:checked {
     &::before {
       background: none;
@@ -380,7 +332,6 @@ label {
       }
     }
   }
-  &[role='slider'],
   &[type='range'] {
     @include appearance(none);
     &::-webkit-slider-runnable-track {

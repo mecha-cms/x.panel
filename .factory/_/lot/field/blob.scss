@@ -1,7 +1,7 @@
 .lot\:field.type\:blob {
   > label {
     + div {
-      input.is\:host {
+      .input {
         border: 1px dashed;
         border-color: var(--stroke-input);
         height: auto;

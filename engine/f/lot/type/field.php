@@ -74,6 +74,7 @@ function buttons($value, $key) {
     $value['is']['flex'] = $value['is']['flex'] ?? $is_flex;
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    $value['tags']['textarea'] = false;
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
@@ -140,6 +141,7 @@ function colors($value, $key) {
     $value['is']['flex'] = $is_flex;
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
     $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    $value['tags']['textarea'] = false;
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
     unset($out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
@@ -262,6 +264,7 @@ function item($value, $key) {
         $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
         $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+        $value['tags']['textarea'] = false;
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
@@ -344,6 +347,7 @@ function items($value, $key) {
         $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
         $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
         $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+        $value['tags']['textarea'] = false;
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
         unset($value['lot'], $out['field'][2]['disabled'], $out['field'][2]['id'], $out['field'][2]['name'], $out['field'][2]['readonly']);
@@ -545,8 +549,9 @@ function toggle($value, $key) {
     ];
     $out['field'][2]['role'] = 'group';
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], [
-        'tags' => ['count:1' => true],
-        'with' => ['options' => true]
+        'count:1' => true,
+        'textarea' => false,
+        'with:options' => true
     ]);
     unset($out['hint'], $out['field'][2]['disabled'], $out['field'][2]['name'], $out['field'][2]['placeholder'], $out['field'][2]['readonly']);
     return \x\panel\lot\type\field($out, $key);

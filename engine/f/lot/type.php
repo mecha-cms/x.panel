@@ -23,8 +23,8 @@ function bar($value, $key) {
 
 function button($value, $key) {
     $not_active = isset($value['active']) && !$value['active'];
-    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['not']['active'] = $value['not']['active'] ?? $not_active;
+    $value['tags']['button'] = true;
     $out = \x\panel\lot\type\link($value, $key);
     $out['disabled'] = $not_active;
     $out['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
@@ -724,11 +724,11 @@ function input($value, $key) {
     $value['has']['pattern'] = $has_pattern;
     $value['is']['active'] = $is_active;
     $value['is']['fix'] = $is_fix;
-    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['is']['vital'] = $is_vital;
     $value['not']['active'] = !$is_active;
     $value['not']['fix'] = !$is_fix;
     $value['not']['vital'] = !$is_vital;
+    $value['tags']['input'] = true;
     $value[0] = $value[0] ?? 'input';
     $value[1] = $value[1] ?? false;
     $value[2] = $value[2] ?? [];
@@ -1187,10 +1187,10 @@ function select($value, $key) {
     $is_active = !isset($value['active']) || $value['active'];
     $is_vital = !empty($value['vital']);
     $value['is']['active'] = $value['is']['active'] ?? $is_active;
-    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
     $value['not']['vital'] = $value['not']['vital'] ?? !$is_vital;
+    $value['tags']['select'] = true;
     $value[0] = $value[0] ?? 'select';
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
@@ -1565,11 +1565,11 @@ function textarea($value, $key) {
     $value['has']['pattern'] = $value['has']['pattern'] ?? $has_pattern;
     $value['is']['active'] = $value['is']['active'] ?? $is_active;
     $value['is']['fix'] = $value['is']['fix'] ?? $is_fix;
-    $value['is']['host'] = $value['is']['host'] ?? true;
     $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
     $value['not']['fix'] = $value['not']['fix'] ?? !$is_fix;
     $value['not']['vital'] = $value['not']['vital'] ?? !$is_vital;
+    $value['tags']['textarea'] = true;
     $value[0] = $value[0] ?? 'textarea';
     $value[1] = \htmlspecialchars($value[1] ?? $value['value'] ?? "");
     $value[2] = $value[2] ?? [];

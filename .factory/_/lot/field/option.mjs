@@ -21,9 +21,10 @@ function onChange(init) {
         $.pop();
         delete OP.instances[key];
     }
-    let sources = getElements('input.is\\:host[list]:not([type="hidden"]),select.is\\:host');
+    let sources = getElements('.input[list]:not([type="hidden"]),.select');
     sources && toCount(sources) && sources.forEach(source => {
-        letClass(source, 'is:host');
+        letClass(source, 'input');
+        letClass(source, 'select');
         let c = getClasses(source);
         let $ = new OP(source, getDatum(source, 'state') ?? {});
         setClasses($.self, c);
