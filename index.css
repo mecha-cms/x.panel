@@ -1458,6 +1458,7 @@ pre.is\:text code {
 }
 .input[type=file] {
   line-height: normal;
+  width: auto;
 }
 .input[type=image] {
   box-shadow: none;
@@ -2111,7 +2112,6 @@ label .input[type=radio] + span {
 }
 
 .lot\:field,
-.lot\:field.type\:toggle,
 .lot\:field.type\:items,
 .lot\:field.type\:colors,
 .lot\:field.type\:blobs {
@@ -2131,7 +2131,6 @@ label .input[type=radio] + span {
   color: inherit;
 }
 .lot\:field > label,
-.lot\:field.type\:toggle > label,
 .lot\:field.type\:items > label,
 .lot\:field.type\:colors > label,
 .lot\:field.type\:blobs > label {
@@ -2144,7 +2143,6 @@ label .input[type=radio] + span {
   width: calc(var(--x) * 5);
 }
 .lot\:field > label + div,
-.lot\:field.type\:toggle > label + div,
 .lot\:field.type\:items > label + div,
 .lot\:field.type\:colors > label + div,
 .lot\:field.type\:blobs > label + div {
@@ -2252,27 +2250,23 @@ label .input[type=radio] + span {
 }
 
 .lot\:field.type\:item .with\:options,
-.lot\:field.type\:toggle .with\:options,
 .lot\:field.type\:items .with\:options,
 .lot\:field.type\:colors .with\:options {
   height: auto;
   max-height: 100%;
 }
 .lot\:field.type\:item .with\:options.has\:gap,
-.lot\:field.type\:toggle .with\:options.has\:gap,
 .lot\:field.type\:items .with\:options.has\:gap,
 .lot\:field.type\:colors .with\:options.has\:gap {
   gap: 0 var(--x);
 }
 .lot\:field.type\:item .with\:options.is\:flex,
-.lot\:field.type\:toggle .with\:options.is\:flex,
 .lot\:field.type\:items .with\:options.is\:flex,
 .lot\:field.type\:colors .with\:options.is\:flex {
   display: flex;
   flex-wrap: wrap;
 }
 .lot\:field.type\:item .with\:options > label,
-.lot\:field.type\:toggle .with\:options > label,
 .lot\:field.type\:items .with\:options > label,
 .lot\:field.type\:colors .with\:options > label {
   align-items: center;
@@ -3613,23 +3607,20 @@ u {
   .lot\:field,
   .lot\:field.type\:blobs,
   .lot\:field.type\:colors,
-  .lot\:field.type\:items,
-  .lot\:field.type\:toggle {
+  .lot\:field.type\:items {
     flex-direction: column;
     width: auto;
   }
   .lot\:field > * + *,
   .lot\:field.type\:blobs > * + *,
   .lot\:field.type\:colors > * + *,
-  .lot\:field.type\:items > * + *,
-  .lot\:field.type\:toggle > * + * {
+  .lot\:field.type\:items > * + * {
     margin-top: calc(var(--y) / 3);
   }
   .lot\:field > label,
   .lot\:field.type\:blobs > label,
   .lot\:field.type\:colors > label,
-  .lot\:field.type\:items > label,
-  .lot\:field.type\:toggle > label {
+  .lot\:field.type\:items > label {
     padding: 0;
     text-align: inherit;
     width: auto;
@@ -3637,8 +3628,7 @@ u {
   .lot\:field > label + div,
   .lot\:field.type\:blobs > label + div,
   .lot\:field.type\:colors > label + div,
-  .lot\:field.type\:items > label + div,
-  .lot\:field.type\:toggle > label + div {
+  .lot\:field.type\:items > label + div {
     padding: 0;
     text-align: inherit;
     width: auto;

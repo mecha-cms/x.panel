@@ -516,47 +516,6 @@ function title($value, $key) {
     return \x\panel\lot\type\field\text($value, $key);
 }
 
-function toggle($value, $key) {
-    $is_active = !isset($value['active']) || $value['active'];
-    $is_fix = !empty($value['fix']);
-    $the_value = $value['value'] ?? null;
-    $value['is']['active'] = $value['is']['active'] ?? $is_active;
-    $value['is']['fix'] = $value['is']['fix'] ?? $is_fix;
-    $value['not']['active'] = $value['not']['active'] ?? !$is_active;
-    $value['not']['fix'] = $value['not']['fix'] ?? !$is_fix;
-    $input = \x\panel\to\field($value, $key, 'input')['field'];
-    $input[2]['checked'] = !empty($the_value);
-    $input[2]['role'] = 'switch';
-    $input[2]['type'] = 'checkbox';
-    $input[2]['value'] = 'true'; // Force value to be `true`
-    unset($input[2]['placeholder']);
-    $title = \x\panel\lot\type\title(\x\panel\lot\_value_set([
-        'content' => \i(...((array) ($value['hint'] ?? $value['title'] ?? ""))),
-        'icon' => $value['icon'] ?? [],
-        'level' => -1
-    ], 0), 0);
-    $out = \x\panel\to\field($value, $key);
-    $out['field'][0] = 'div';
-    $out['field'][1] = [
-        'toggle' => [
-            0 => 'label',
-            1 => [
-                'input' => $input,
-                'title' => $title
-            ],
-            2 => \x\panel\lot\_tag_set([], $value)
-        ]
-    ];
-    $out['field'][2]['role'] = 'group';
-    $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], [
-        'count:1' => true,
-        'textarea' => false,
-        'with:options' => true
-    ]);
-    unset($out['hint'], $out['field'][2]['disabled'], $out['field'][2]['name'], $out['field'][2]['placeholder'], $out['field'][2]['readonly']);
-    return \x\panel\lot\type\field($out, $key);
-}
-
 function u_r_l($value, $key) { // This is not a typo!
     $value['hint'] = $value['hint'] ?? (\S . 'http://' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
     $value['pattern'] = $value['pattern'] ?? "(data:[^\\s;]+;|(https?:)?\\/\\/|[.]{0,2}\\/)[^\\/]\\S*";
