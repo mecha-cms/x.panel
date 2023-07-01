@@ -115,7 +115,7 @@ let dialogAlertDescription = setElement('p'),
         'role': 'group'
     }),
     dialogAlertTaskOkay = setElement('button', 'OK', {
-        'class': 'is:host',
+        'class': 'button',
         'type': 'submit',
         'value': 'true'
     });
@@ -135,12 +135,12 @@ let dialogConfirmDescription = setElement('p'),
         'role': 'group'
     }),
     dialogConfirmTaskOkay = setElement('button', 'OK', {
-        'class': 'is:host',
+        'class': 'button',
         'type': 'submit',
         'value': 'true'
     }),
     dialogConfirmTaskCancel = setElement('button', 'Cancel', {
-        'class': 'is:host',
+        'class': 'button',
         'type': 'reset',
         'value': 'false'
     });
@@ -161,7 +161,7 @@ setDialog.confirm = function (description) {
 let dialogPromptKey = setElement('p'),
     dialogPromptValue = setElement('input', false, {
         'autofocus': true,
-        'class': 'is:host',
+        'class': 'input',
         'type': 'text'
     }),
     dialogPromptValueP = setElement('p'),
@@ -169,12 +169,12 @@ let dialogPromptKey = setElement('p'),
         'role': 'group'
     }),
     dialogPromptTaskOkay = setElement('button', 'OK', {
-        'class': 'is:host',
+        'class': 'button',
         'type': 'submit',
         'value': ""
     }),
     dialogPromptTaskCancel = setElement('button', 'Cancel', {
-        'class': 'is:host',
+        'class': 'button',
         'type': 'reset',
         'value': 'false'
     });
