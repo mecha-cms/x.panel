@@ -11,8 +11,6 @@
     "@taufik-nurrohman/text-editor": "*",
     "@taufik-nurrohman/text-editor.history": "*",
     "@taufik-nurrohman/text-editor.source": "*",
-    "@taufik-nurrohman/text-editor.source-h-t-m-l": "*",
-    "@taufik-nurrohman/text-editor.source-x-m-l": "*",
     "@taufik-nurrohman/tick": "*",
     "@taufik-nurrohman/to": "*",
     "siema": "^1.5.1"

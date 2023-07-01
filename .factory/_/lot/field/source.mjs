@@ -41,22 +41,9 @@ import {
     that as thatSource
 } from '@taufik-nurrohman/text-editor.source';
 
-import {
-    canKeyDown as canKeyDownSourceHTML,
-    commands as commandsSourceHTML,
-    state as stateSourceHTML
-} from '@taufik-nurrohman/text-editor.source-h-t-m-l';
-
-import {
-    canKeyDown as canKeyDownSourceXML,
-    canMouseDown as canMouseDownSourceXML,
-    state as stateSourceXML,
-    that as thatSourceXML
-} from '@taufik-nurrohman/text-editor.source-x-m-l';
-
 Object.assign(TE.prototype, thatHistory, thatSource);
 
-TE.state = fromStates({}, TE.state, stateSource, stateSourceXML, stateSourceHTML);
+TE.state = fromStates({}, TE.state, stateSource);
 
 // Be sure to remove the default source type
 delete TE.state.source.type;
@@ -87,62 +74,6 @@ function _onKeyDownSource(e) {
             console.error('Unknown command:', command);
         }
     } else {
-        if ('CSS' === type) {
-            // TODO
-            // if () {} else {
-            //     offEventDefault(e);
-            // }
-            // return;
-        }
-        if ('HTML' === type) {
-            if (
-                canKeyDownSourceHTML(map, editor) &&
-                canKeyDownSourceXML(map, editor) &&
-                canKeyDownSource(map, editor) &&
-                canKeyDownDentSource(map, editor) &&
-                canKeyDownEnterSource(map, editor) &&
-                canKeyDownHistorySource(map, editor) &&
-                canKeyDownMoveSource(map, editor)
-            ) {} else {
-                offEventDefault(e);
-            }
-            return;
-        }
-        if ('JavaScript' === type) {
-            // TODO
-            // if () {} else {
-            //     offEventDefault(e);
-            // }
-            // return;
-        }
-        if ('Markdown' === type) {
-            // TODO
-            // if () {} else {
-            //     offEventDefault(e);
-            // }
-            // return;
-        }
-        if ('PHP' === type) {
-            // TODO
-            // if () {} else {
-            //     offEventDefault(e);
-            // }
-            // return;
-        }
-        if ('XML' === type) {
-            if (
-                canKeyDownSourceXML(map, editor) &&
-                canKeyDownSource(map, editor) &&
-                canKeyDownDentSource(map, editor) &&
-                canKeyDownEnterSource(map, editor) &&
-                canKeyDownHistorySource(map, editor) &&
-                canKeyDownMoveSource(map, editor)
-            ) {} else {
-                offEventDefault(e);
-            }
-            return;
-        }
-        // Default
         if (
             canKeyDownSource(map, editor) &&
             canKeyDownDentSource(map, editor) &&
@@ -164,19 +95,11 @@ function _onKeyUpSource(e) {
     map.pull(key);
 }
 
-function _onMouseDownSource(e) {
-    let editor = this.TE,
-        map = this.K;
-    canMouseDownSourceXML(map, editor) || offEventDefault(e);
-}
-
 function _letEditorSource(self) {
     offEvent('blur', self, _onBlurSource);
     offEvent('input', self, _onInputSource);
     offEvent('keydown', self, _onKeyDownSource);
     offEvent('keyup', self, _onKeyUpSource);
-    offEvent('mousedown', self, _onMouseDownSource);
-    offEvent('touchstart', self, _onMouseDownSource);
 }
 
 function _setEditorSource(self) {
@@ -184,8 +107,6 @@ function _setEditorSource(self) {
     onEvent('input', self, _onInputSource);
     onEvent('keydown', self, _onKeyDownSource);
     onEvent('keyup', self, _onKeyUpSource);
-    onEvent('mousedown', self, _onMouseDownSource);
-    onEvent('touchstart', self, _onMouseDownSource);
     self.TE.record();
 }
 

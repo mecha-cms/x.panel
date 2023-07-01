@@ -69,16 +69,6 @@
         }
         return x;
     };
-    var toHTML = function toHTML(x, quote) {
-        if (quote === void 0) {
-            quote = true;
-        }
-        x = x.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-        if (quote) {
-            x = x.replace(/&apos;/g, "'").replace(/&quot;/g, '"');
-        }
-        return x;
-    };
     var toJSON = function toJSON(x) {
         return JSON.stringify(x);
     };
@@ -120,13 +110,6 @@
         }
         if ('true' === x) {
             return true;
-        }
-        return x;
-    };
-    var fromHTML = function fromHTML(x, quote) {
-        x = x.replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;');
-        if (quote) {
-            x = x.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
         }
         return x;
     };
@@ -476,7 +459,6 @@
     var toggleClass = function toggleClass(node, name, force) {
         return node.classList.toggle(name, force), node;
     };
-    var theLocation = W.location;
     var event = function event(name, options, cache) {
         if (cache && isSet(events[name])) {
             return events[name];
@@ -2707,11 +2689,11 @@
     };
     TE.version = '3.3.14';
     TE.x = x;
-    var that$2 = {};
-    that$2._history = [];
-    that$2._historyState = -1;
+    var that$1 = {};
+    that$1._history = [];
+    that$1._historyState = -1;
     // Get history data
-    that$2.history = function (index) {
+    that$1.history = function (index) {
         var t = this;
         if (!isSet(index)) {
             return t._history;
@@ -2719,7 +2701,7 @@
         return isSet(t._history[index]) ? t._history[index] : null;
     };
     // Remove state from history
-    that$2.loss = function (index) {
+    that$1.loss = function (index) {
         var t = this,
             current;
         if (true === index) {
@@ -2732,7 +2714,7 @@
         return current;
     };
     // Save current state to history
-    that$2.record = function (index) {
+    that$1.record = function (index) {
         var t = this,
             _t$$ = t.$(),
             end = _t$$.end,
@@ -2746,7 +2728,7 @@
         return t._history[isSet(index) ? index : t._historyState] = next, t;
     };
     // Redo previous state
-    that$2.redo = function () {
+    that$1.redo = function () {
         var t = this,
             state;
         t._historyState = toEdge(t._historyState + 1, [0, toCount(t._history) - 1]);
@@ -2754,7 +2736,7 @@
         return t.set(state[0]).select(state[1], state[2]);
     };
     // Undo current state
-    that$2.undo = function () {
+    that$1.undo = function () {
         var t = this,
             state;
         t._historyState = toEdge(t._historyState - 1, [0, toCount(t._history) - 1]);
@@ -2777,22 +2759,22 @@
             return r ? resolve(r) : reject(r);
         });
     }
-    var defaults$2 = {
+    var defaults = {
         source: {
             pairs: pairs,
             type: null
         }
     };
     ['alert', 'confirm', 'prompt'].forEach(function (type) {
-        defaults$2.source[type] = function () {
+        defaults.source[type] = function () {
             for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
                 lot[_key] = arguments[_key];
             }
             return promisify(type, lot);
         };
     });
-    var that$1 = {};
-    that$1.toggle = function (open, close, wrap, tidy) {
+    var that = {};
+    that.toggle = function (open, close, wrap, tidy) {
         if (tidy === void 0) {
             tidy = false;
         }
@@ -2824,7 +2806,7 @@
     };
     var CTRL_PREFIX = 'Control-';
 
-    function canKeyDown$2(map, of) {
+    function canKeyDown(map, of) {
         var charAfter,
             charBefore,
             charIndent = of.state.source.tab || of.state.tab || '\t',
@@ -3100,1012 +3082,9 @@
     function canKeyUp(map, of) {
         return bounce$2(of), true;
     }
-    var state$2 = defaults$2;
-    var tagComment = '<!--([\\s\\S](?!-->)*)-->',
-        tagData = '<!((?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^>\'"])*)>',
-        tagName$1 = '[\\w:.-]+',
-        tagStart$1 = function tagStart(name) {
-            return '<(' + name + ')(\\s(?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^/>\'"])*)?>';
-        },
-        tagEnd$1 = function tagEnd(name) {
-            return '</(' + name + ')>';
-        },
-        tagVoid = function tagVoid(name) {
-            return '<(' + name + ')(\\s(?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^/>\'"])*)?/?>';
-        },
-        tagPreamble = '<\\?((?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^>\'"])*)\\?>',
-        tagTokens = '(?:' + tagComment + '|' + tagData + '|' + tagEnd$1(tagName$1) + '|' + tagPreamble + '|' + tagVoid(tagName$1) + '|' + tagStart$1(tagName$1) + ')';
-    var defaults$1 = {
-        source: {
-            type: 'XML'
-        }
-    };
-    var that = {};
-
-    function toAttributes(attributes) {
-        if (!attributes) {
-            return "";
-        }
-        // Sort object by key(s)
-        attributes = toObjectKeys(attributes).sort().reduce(function (r, k) {
-            return r[k] = attributes[k], r;
-        }, {});
-        var attribute,
-            v,
-            out = "";
-        for (attribute in attributes) {
-            v = attributes[attribute];
-            if (false === v || null === v) {
-                continue;
-            }
-            out += ' ' + attribute;
-            if (true !== v) {
-                out += '="' + fromHTML(fromValue(v), true) + '"';
-            }
-        }
-        return out;
-    }
-
-    function toTidy(tidy) {
-        if (false !== tidy) {
-            if (isString(tidy)) {
-                tidy = [tidy, tidy];
-            } else if (!isArray(tidy)) {
-                tidy = ["", ""];
-            }
-            if (!isSet(tidy[1])) {
-                tidy[1] = tidy[0];
-            }
-        }
-        return tidy; // Return `[…]` or `false`
-    }
-    that.insert = function (name, content, attributes, tidy) {
-        if (content === void 0) {
-            content = "";
-        }
-        if (attributes === void 0) {
-            attributes = {};
-        }
-        if (tidy === void 0) {
-            tidy = false;
-        }
-        var t = this;
-        if (false !== (tidy = toTidy(tidy))) {
-            t.trim(tidy[0], "");
-        }
-        return t.insert('<' + name + toAttributes(attributes) + (false !== content ? '>' + content + '</' + name + '>' : ' />') + (false !== tidy ? tidy[1] : ""), -1, true);
-    };
-    that.toggle = function (name, content, attributes, tidy) {
-        if (content === void 0) {
-            content = "";
-        }
-        if (attributes === void 0) {
-            attributes = {};
-        }
-        if (tidy === void 0) {
-            tidy = false;
-        }
-        var t = this,
-            _t$$ = t.$(),
-            after = _t$$.after,
-            before = _t$$.before,
-            value = _t$$.value,
-            tagStartLocal = tagStart$1(name),
-            tagEndLocal = tagEnd$1(name),
-            tagStartLocalPattern = toPattern(tagStartLocal + '$', ""),
-            tagEndLocalPattern = toPattern('^' + tagEndLocal, ""),
-            tagStartLocalMatch = tagStartLocalPattern.test(before),
-            tagEndLocalMatch = tagEndLocalPattern.test(after);
-        if (tagEndLocalMatch && tagStartLocalMatch) {
-            return t.replace(tagEndLocalPattern, "", 1).replace(tagStartLocalPattern, "", -1);
-        }
-        tagStartLocalPattern = toPattern('^' + tagStartLocal, "");
-        tagEndLocalPattern = toPattern(tagEndLocal + '$', "");
-        tagStartLocalMatch = tagStartLocalPattern.test(value);
-        tagEndLocalMatch = tagEndLocalPattern.test(value);
-        if (tagEndLocalMatch && tagStartLocalMatch) {
-            t.insert(value = value.replace(tagEndLocalPattern, "").replace(tagStartLocalPattern, ""));
-        }
-        if (!value && content) {
-            t.insert(content);
-        }
-        if (false !== (tidy = toTidy(tidy))) {
-            t.trim(tidy[0], tidy[1]);
-        }
-        return t.wrap('<' + name + toAttributes(attributes) + '>', '</' + name + '>');
-    };
-    that.wrap = function (name, content, attributes, tidy) {
-        if (content === void 0) {
-            content = "";
-        }
-        if (attributes === void 0) {
-            attributes = {};
-        }
-        if (tidy === void 0) {
-            tidy = false;
-        }
-        var t = this,
-            _t$$2 = t.$();
-        _t$$2.after;
-        _t$$2.before;
-        var value = _t$$2.value;
-        if (!value && content) {
-            t.insert(content);
-        }
-        if (false !== (tidy = toTidy(tidy))) {
-            t.trim(tidy[0], tidy[1]);
-        }
-        return t.wrap('<' + name + toAttributes(attributes) + '>', '</' + name + '>');
-    };
-
-    function canKeyDown$1(map, of) {
-        var state = of.state,
-            charIndent = state.source.tab || state.tab || '\t',
-            key = map.key,
-            queue = map.queue,
-            keyValue = map + "";
-        // Do nothing
-        if (queue.Alt || queue.Control) {
-            return true;
-        }
-        if (['-', '>', '/', '?', ' '].includes(key)) {
-            var _of$$ = of.$(),
-                after = _of$$.after,
-                before = _of$$.before,
-                value = _of$$.value,
-                start = _of$$.start;
-            if ('-' === key) {
-                // `<!-|`
-                if (!value && '<!-' === before.slice(-3)) {
-                    of.wrap('- ', ' --' + ('>' === after[0] ? "" : '>')).record();
-                    return false;
-                }
-            }
-            if ('>' === key || '/' === key) {
-                var tagStartMatch = toPattern(tagStart$1(tagName$1) + '$', "").exec(before + '>');
-                if (!value && tagStartMatch) {
-                    // `<div|`
-                    if ('/' === key) {
-                        // `<div|>`
-                        if ('>' === after[0]) {
-                            of.trim("", false).insert(' /', -1).select(of.$().start + 1).record();
-                            return false;
-                        }
-                        of.trim("", false).insert(' />', -1).record();
-                        return false;
-                    }
-                    // `<div|></div>`
-                    if (after.startsWith('></' + tagStartMatch[1] + '>')) {
-                        of.select(start + 1).record();
-                        // `<div|</div>`
-                    } else if (after.startsWith('</' + tagStartMatch[1] + '>')) {
-                        of.insert('>', -1).record();
-                        // `<div|`
-                    } else {
-                        of.wrap('>', '</' + tagStartMatch[1] + ('>' === after[0] ? "" : '>')).record();
-                    }
-                    return false;
-                }
-            }
-            if ('?' === key) {
-                // `<|`
-                if (!value && '<' === before.slice(-1)) {
-                    of.wrap('?', '?' + ('>' === after[0] ? "" : '>')).record();
-                    return false;
-                }
-            }
-            if (' ' === keyValue) {
-                if (!value) {
-                    if (
-                        // `<!--|-->`
-                        '-->' === after.slice(0, 3) && '<!--' === before.slice(-4) ||
-                        // `<?foo|?>`
-                        '?>' === after.slice(0, 2) && '<?' === before.slice(0, 2) && /<\?\S*$/.test(before)) {
-                        of.wrap(' ', ' ').record();
-                        return false;
-                    }
-                }
-            }
-        }
-        if ('ArrowLeft' === keyValue) {
-            var _of$$2 = of.$(),
-                _before = _of$$2.before,
-                _start = _of$$2.start,
-                _value = _of$$2.value;
-            if (!_value) {
-                var tagMatch = toPattern(tagTokens + '$', "").exec(_before);
-                // `<foo>|bar`
-                if (tagMatch) {
-                    of.select(_start - toCount(tagMatch[0]), _start);
-                    return false;
-                }
-            }
-        }
-        if ('ArrowRight' === keyValue) {
-            var _of$$3 = of.$(),
-                _after = _of$$3.after,
-                _start2 = _of$$3.start,
-                _value2 = _of$$3.value;
-            if (!_value2) {
-                var _tagMatch = toPattern('^' + tagTokens, "").exec(_after);
-                // `foo|<bar>`
-                if (_tagMatch) {
-                    of.select(_start2, _start2 + toCount(_tagMatch[0]));
-                    return false;
-                }
-            }
-        }
-        if ('Enter' === keyValue) {
-            var _of$$4 = of.$(),
-                _after2 = _of$$4.after,
-                _before2 = _of$$4.before,
-                _value3 = _of$$4.value,
-                lineBefore = _before2.split('\n').pop(),
-                lineMatch = lineBefore.match(/^(\s+)/),
-                lineMatchIndent = lineMatch && lineMatch[1] || "",
-                _tagStartMatch = _before2.match(toPattern(tagStart$1(tagName$1) + '$', ""));
-            if (!_value3) {
-                if (
-                    // `<!--|-->`
-                    /^[ \t]*-->/.test(_after2) && /<!--[ \t]*$/.test(_before2) ||
-                    // `<?foo|?>`
-                    /^[ \t]*\?>/.test(_after2) && /<\?\S*[ \t]*$/.test(_before2)) {
-                    of.trim().wrap('\n' + lineMatchIndent, '\n' + lineMatchIndent).record();
-                    return false;
-                }
-                if (_tagStartMatch) {
-                    if (_after2.startsWith('</' + _tagStartMatch[1] + '>')) {
-                        of.record().trim().wrap('\n' + lineMatchIndent + charIndent, '\n' + lineMatchIndent).record();
-                    } else {
-                        of.record().wrap('\n' + lineMatchIndent + charIndent, '\n' + lineMatchIndent + '</' + _tagStartMatch[1] + '>').record();
-                    }
-                    return false;
-                }
-            }
-        }
-        if ('Backspace' === keyValue) {
-            var _of$$5 = of.$(),
-                _after3 = _of$$5.after,
-                _before3 = _of$$5.before,
-                _value4 = _of$$5.value;
-            if (!_value4) {
-                // `<!--|`
-                if ('<!--' === _before3.slice(-4)) {
-                    of.replace(/<!--$/, "", -1);
-                    // `<!--|-->`
-                    if ('-->' === _after3.slice(0, 3)) {
-                        of.replace(/^-->/, "", 1);
-                    }
-                    of.record();
-                    return false;
-                }
-                if (/^\s+-->/.test(_after3) && /<!--\s+$/.test(_before3)) {
-                    of.trim(' ' === _before3.slice(-1) ? "" : ' ', ' ' === _after3[0] ? "" : ' ').record();
-                    return false;
-                }
-                // `<?|`
-                if (/<\?\S*$/.test(_before3)) {
-                    of.replace(/<\?\S*$/, "", -1);
-                    // `<?|?>`
-                    if ('?>' === _after3.slice(0, 2)) {
-                        of.replace(/^\?>/, "", 1);
-                    }
-                    of.record();
-                    return false;
-                }
-                if (/^\s+\?>/.test(_after3) && /<\?\S*\s+$/.test(_before3)) {
-                    of.trim(' ' === _before3.slice(-1) ? "" : ' ', ' ' === _after3[0] ? "" : ' ').record();
-                    return false;
-                }
-                var tagPattern = toPattern(tagTokens + '$', ""),
-                    _tagMatch2 = tagPattern.exec(_before3);
-                if (_tagMatch2) {
-                    // `<div />|`
-                    if (' />' === _before3.slice(-3)) {
-                        of.replace(/ \/>$/, '/>', -1).record();
-                        return false;
-                    }
-                    // `<div/>|`
-                    if ('/>' === _before3.slice(-2)) {
-                        of.replace(/\/>$/, '>', -1).record();
-                        return false;
-                    }
-                    of.replace(tagPattern, "", -1);
-                    var name = _tagMatch2[0].slice(1).split(/\s+|>/)[0];
-                    if (_tagMatch2[0] && '/' !== _tagMatch2[0][1]) {
-                        if (_after3.startsWith('</' + name + '>')) {
-                            of.replace(toPattern('^</' + name + '>', ""), "", 1);
-                        }
-                    }
-                    of.record();
-                    return false;
-                }
-                if (toPattern(tagStart$1(tagName$1) + '\\n(?:' + esc(charIndent) + ')?$', "").test(_before3) && toPattern('^\\s*' + tagEnd$1(tagName$1), "").test(_after3)) {
-                    of.trim().record(); // Collapse!
-                    return false;
-                }
-            }
-        }
-        if ('Delete' === keyValue) {
-            var _of$$6 = of.$(),
-                _after4 = _of$$6.after,
-                _value5 = _of$$6.value;
-            if (!_value5) {
-                // `|-->`
-                if ('-->' === _after4.slice(0, 3)) {
-                    of.replace(/^-->/, "", 1).record();
-                    return false;
-                }
-                // `|?>`
-                if ('?>' === _after4.slice(0, 2)) {
-                    of.replace(/^\?>/, "", 1).record();
-                    return false;
-                }
-                var _tagPattern = toPattern('^' + tagTokens, ""),
-                    _tagMatch3 = _tagPattern.exec(_after4);
-                if (_tagMatch3) {
-                    of.replace(_tagPattern, "", 1).record();
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    function canMouseDown(map, of) {
-        map.key;
-        var queue = map.queue;
-        if (!queue.Control) {
-            W.setTimeout(function () {
-                var _of$$7 = of.$(),
-                    after = _of$$7.after,
-                    end = _of$$7.end,
-                    before = _of$$7.before,
-                    value = _of$$7.value;
-                if (!value) {
-                    var caret = "\uFEFF",
-                        tagTokensLocal = tagTokens.split('(' + tagName$1 + ')').join('((?:' + tagName$1 + '|' + caret + ')+)'),
-                        tagTokensLocalPattern = toPattern(tagTokensLocal),
-                        content = before + value + caret + after,
-                        m,
-                        v;
-                    while (m = tagTokensLocalPattern.exec(content)) {
-                        if (hasValue(caret, m[0])) {
-                            var parts = m[0].split(caret);
-                            // `<asdf asdf="asdf"|/>` or `<asdf asdf="asdf" |/>`
-                            if ('>' === parts[1] || '/>' === (parts[1] || "").trim()) {
-                                of.select(v = m.index, v + toCount(m[0]) - 1);
-                                break;
-                            }
-                            // `<as|df asdf="asdf">`
-                            if ('<' !== parts[0] && '</' !== parts[0] && !/\s/.test(parts[0])) {
-                                of.select(v = m.index + ('/' === parts[0][1] ? 2 : 1), end + toCount(parts[1].split(/[\s\/>]/).shift()));
-                                break;
-                            }
-                            var mm = void 0;
-                            // `<asdf asdf="as|df">` or `<asdf asdf='as|df'>`
-                            if (mm = toPattern('=("[^"]*' + caret + '[^"]*"|\'[^\']*' + caret + '[^\']*\')').exec(m[0])) {
-                                of.select(v = m.index + mm.index + 2, v + toCount(mm[1]) - 3);
-                                break;
-                            }
-                            // `<asdf asdf=as|df>`
-                            if (mm = toPattern('=([^"\'\\s\\/>]*' + caret + '[^"\'\\s\\/>]*)').exec(m[0])) {
-                                of.select(v = m.index + mm.index + 1, v + toCount(mm[1]) - 1);
-                                break;
-                            }
-                            // `<asdf as|df="asdf">`
-                            if ('<' !== parts[0] && '</' !== parts[0]) {
-                                if (mm = toPattern('([^="\'\\s]*' + caret + '[^="\'\\s]*)[=\\s\\/>]').exec(m[0])) {
-                                    of.select(v = m.index + mm.index, v + toCount(mm[1]) - 1);
-                                    break;
-                                }
-                            }
-                            // Other caret position(s) will select the element
-                            of.select(v = m.index, v + toCount(m[0]) - 1);
-                            break;
-                        }
-                    }
-                }
-            }, 1);
-        }
-        return true;
-    }
-    var state$1 = defaults$1;
-    var protocol = theLocation.protocol;
-    var defaults = {
-        blocks: {
-            blockquote: 1,
-            div: 1,
-            dl: 1,
-            figure: 1,
-            form: 1,
-            h1: 1,
-            h2: 1,
-            h3: 1,
-            h4: 1,
-            h5: 1,
-            h6: 1,
-            hr: 1,
-            ol: 1,
-            p: 1,
-            pre: 1,
-            table: 1,
-            ul: 1
-        },
-        defaults: {
-            "": ["", 'text goes here…', {}],
-            a: ['a', 'link text goes here…', {}],
-            area: ['area', false, {}],
-            b: ['strong', 'text goes here…', {}],
-            base: ['base', false, {
-                href: ""
-            }],
-            blockquote: ['blockquote', 'quote goes here…', {}],
-            br: ['br', false, {}],
-            button: ['button', 'text goes here…', {
-                name: "",
-                type: 'submit'
-            }],
-            caption: ['caption', 'table caption goes here…', {}],
-            code: ['code', 'code goes here…', {}],
-            col: ['col', false, {}],
-            dd: ['dd', 'data goes here…', {}],
-            dl: ['dl', "", {}],
-            dt: ['dt', 'title goes here…', {}],
-            em: ['em', 'text goes here…', {}],
-            figcaption: ['figcaption', 'image caption goes here…', {}],
-            figure: ['figure', "", {}],
-            h1: ['h1', 'title goes here…', {}],
-            h2: ['h2', 'title goes here…', {}],
-            h3: ['h3', 'title goes here…', {}],
-            h4: ['h4', 'title goes here…', {}],
-            h5: ['h5', 'title goes here…', {}],
-            h6: ['h6', 'title goes here…', {}],
-            hr: ['hr', false, {}],
-            i: ['em', 'text goes here…', {}],
-            img: ['img', false, {
-                alt: "",
-                src: ""
-            }],
-            input: ['input', false, {
-                name: "",
-                type: 'text'
-            }],
-            li: ['li', 'list item goes here…', {}],
-            link: ['link', false, {
-                href: ""
-            }],
-            meta: ['meta', false, {}],
-            ol: ['ol', "", {}],
-            option: ['option', 'option goes here…', {}],
-            p: ['p', 'paragraph goes here…', {}],
-            param: ['param', false, {
-                name: ""
-            }],
-            pre: ['pre', 'text goes here…', {}],
-            q: ['q', 'quote goes here…', {}],
-            script: ['script', 'code goes here…', {}],
-            select: ['select', "", {
-                name: ""
-            }],
-            source: ['source', false, {
-                src: ""
-            }],
-            strong: ['strong', 'text goes here…', {}],
-            style: ['style', 'code goes here…', {}],
-            tbody: ['tbody', "", {}],
-            td: ['td', 'data goes here…', {}],
-            textarea: ['textarea', 'value goes here…', {
-                name: ""
-            }],
-            tfoot: ['tfoot', "", {}],
-            th: ['th', 'title goes here…', {}],
-            thead: ['thead', "", {}],
-            tr: ['tr', "", {}],
-            track: ['track', false, {}],
-            u: ['u', 'text goes here…', {}],
-            ul: ['ul', "", {}, '\n'],
-            wbr: ['wbr', false, {}]
-        },
-        source: {
-            type: 'HTML'
-        }
-    };
-    var toggle = that.toggle;
-    var tagName = '[\\w:.-]+',
-        tagStart = function tagStart(name) {
-            return '<(' + name + ')(\\s(?:\'(?:\\\\.|[^\'])*\'|"(?:\\\\.|[^"])*"|[^/>\'"])*)?>';
-        },
-        tagEnd = function tagEnd(name) {
-            return '</(' + name + ')>';
-        };
-
-    function isBlock(before, value, after) {
-        return (!value || hasValue('\n', value)) && (!after || '\n' === after[0]) && (!before || '\n' === before.slice(-1));
-    }
-
-    function isValueDefaultBlocks(value, defaults) {
-        return value === defaults.h1[1] || value === defaults.h2[1] || value === defaults.h3[1] || value === defaults.h4[1] || value === defaults.h5[1] || value === defaults.h6[1] || value === defaults.p[1];
-    }
-
-    function toggleBlocks(that) {
-        var patternBefore = toPattern(tagStart('h([1-6])|p') + '$', 'i'),
-            patternAfter = toPattern('^' + tagEnd('h[1-6]|p'), 'i');
-        var _that$$ = that.$(),
-            after = _that$$.after,
-            end = _that$$.end,
-            before = _that$$.before,
-            start = _that$$.start,
-            value = _that$$.value,
-            state = that.state,
-            charIndent = state.source.tab || state.tab || '\t',
-            defaults = state.defaults || {};
-        // Wrap current line if selection is empty
-        if (!value) {
-            var lineAfter = after.split('\n').shift(),
-                lineBefore = before.split('\n').pop();
-            if (!lineAfter.trim() && !lineBefore.trim()) {
-                that.insert(defaults.h1[1]);
-            } else {
-                that.select(start - toCount(lineBefore), end + toCount(lineAfter));
-            }
-            // Update!
-            var v = that.$();
-            after = v.after;
-            before = v.before;
-            end = v.end;
-            start = v.start;
-            value = v.value;
-        }
-        var lineMatch = before.split('\n').pop().match(/^(\s+)/),
-            lineMatchIndent = lineMatch && lineMatch[1] || "";
-        that.match([patternBefore, /[\s\S]*/, patternAfter], function (before, value, after) {
-            var h = +(before[2] || 0),
-                attr = before[3] || "",
-                element = before[1] ? defaults[before[1]] : ["", "", {}];
-            if (!attr && element[2]) {
-                attr = toAttributes(element[2]);
-            }
-            // ``
-            that.replace(patternBefore, "", -1);
-            that.replace(/\n+/g, ' ');
-            that.replace(patternAfter, "", 1);
-            if (!h) {
-                // `<h1>`
-                that.trim('\n', '\n');
-                that.wrap(lineMatchIndent + '<' + defaults.h1[0] + (attr || toAttributes(defaults.h1[2])) + '>', '</' + defaults.h1[0] + '>');
-                if (!value[0] || isValueDefaultBlocks(value[0], defaults)) {
-                    that.insert(defaults.h1[1]);
-                }
-            } else {
-                ++h;
-                if (h > 6) {
-                    // `<p>`
-                    that.wrap(lineMatchIndent + '<' + defaults.p[0] + (attr || toAttributes(defaults.p[2])) + '>', '</' + defaults.p[0] + '>');
-                    if (!value[0] || isValueDefaultBlocks(value[0], defaults)) {
-                        that.insert(defaults.p[1]);
-                    }
-                } else {
-                    // `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>`, `<h6>`
-                    that.wrap(lineMatchIndent + '<' + defaults['h' + h][0] + (attr || toAttributes(defaults['h' + h][2])) + '>', '</' + defaults['h' + h][0] + '>');
-                    if (!value[0] || isValueDefaultBlocks(value[0], defaults)) {
-                        that.insert(defaults['h' + h][1]);
-                    }
-                }
-            }
-            that.replace(toPattern('^(' + tagEnd('h[1-6]|p') + ')\\s*(' + tagEnd(tagName) + ')'), '$1\n' + lineMatchIndent.replace(toPattern('^' + charIndent), "") + '$3', 1);
-        });
-        // Unwrap selection from block element(s)
-        that.replace(toPattern('^\\s*' + tagStart('blockquote|h[1-6]|p(re)?')), "");
-        that.replace(toPattern(tagEnd('blockquote|h[1-6]|p(re)?') + '\\s*$'), "");
-    }
-
-    function toggleCodes(that) {
-        var patternBefore = /<(p|pre|code)(?:\s[^>]*)?>(?:\s*<code(?:\s[^>]*)?>)?$/,
-            patternAfter = /^(?:<\/code>\s*)?<\/(p|pre|code)>/;
-        var _that$$2 = that.$(),
-            after = _that$$2.after;
-        _that$$2.end;
-        var before = _that$$2.before;
-        _that$$2.start;
-        var value = _that$$2.value,
-            state = that.state;
-        state.source.tab || state.tab || '\t';
-        var defaults = that.state.defaults || {};
-        // Wrap current line if selection is empty
-        // if (!value) {
-        //     let lineAfter = after.split('\n').shift(),
-        //         lineBefore = before.split('\n').pop();
-        //     if (!lineAfter.trim() && !lineBefore.trim()) {
-        //         that.insert(defaults.h1[1]);
-        //     } else {
-        //         that.select(start - toCount(lineBefore), end + toCount(lineAfter));
-        //     }
-        // }
-        if (!value && isBlock(before, value, after)) {
-            that.trim('\n', '\n');
-            that.wrap('<' + defaults.pre[0] + toAttributes(defaults.pre[2]) + '><' + defaults.code[0] + toAttributes(defaults.code[2]) + '>', '</' + defaults.code[0] + '></' + defaults.pre[0] + '>').insert(fromHTML(defaults.code[1]));
-        } else {
-            that.match([patternBefore, /[\s\S]*/, patternAfter], function (before, value, after) {
-                that.replace(patternBefore, "", -1);
-                that.replace(patternAfter, "", 1);
-                if (isBlock(before[0], value[0], after[0]) || defaults.p[0] === after[1] || defaults.pre[0] === after[1]) {
-                    that.trim('\n', '\n');
-                    // `<pre><code>…</code></pre>`
-                    if (defaults.pre[0] === after[1]) {
-                        that.wrap('<' + defaults.p[0] + toAttributes(defaults.p[2]) + '>', '</' + defaults.p[0] + '>').insert(toHTML(value[0]));
-                        if (!value[0] || value[0] === defaults.code[1]) {
-                            that.insert(defaults.p[1]);
-                        }
-                        // `<p>…</p>`
-                    } else {
-                        that.wrap('<' + defaults.pre[0] + toAttributes(defaults.pre[2]) + '><' + defaults.code[0] + toAttributes(defaults.code[2]) + '>', '</' + defaults.code[0] + '></' + defaults.pre[0] + '>').insert(fromHTML(value[0]));
-                        if (!value[0] || value[0] === defaults.p[1]) {
-                            that.insert(defaults.code[1]);
-                        }
-                    }
-                } else if (defaults.code[0] === after[1]) {
-                    that.insert(toHTML(value[0]));
-                } else {
-                    toggle.apply(that, [].concat(defaults.code, value && defaults.code[1] !== value ? false : ' '));
-                }
-            });
-        }
-    }
-
-    function toggleQuotes(that) {
-        var patternBefore = toPattern(tagStart('blockquote') + '\\s*(' + tagStart('p') + ')?\\s*$', ""),
-            patternAfter = toPattern('^\\s*(' + tagEnd('p') + ')?\\s*' + tagEnd('blockquote'), "");
-        var _that$$3 = that.$(),
-            after = _that$$3.after,
-            end = _that$$3.end,
-            before = _that$$3.before,
-            start = _that$$3.start,
-            value = _that$$3.value,
-            state = that.state,
-            charIndent = state.source.tab || state.tab || '\t',
-            defaults = that.state.defaults || {};
-        var block,
-            blocks = [],
-            list = state.blocks;
-        for (block in list) {
-            if (list[block]) {
-                blocks.push(block);
-            }
-        }
-        if (value && !isBlock(before, value, after) && !toPattern(tagEnd(blocks.join('|')), 'i').test(value) && !patternBefore.test(before) && !patternAfter.test(after) && defaults.blockquote[1] !== value && defaults.p[1] !== value) {
-            return that.record(), toggle.apply(that, [].concat(defaults.q, defaults.q[1] !== value ? false : ' '));
-        }
-        // Wrap current line if selection is empty
-        if (!value) {
-            var lineAfter = after.split('\n').shift(),
-                lineBefore = before.split('\n').pop();
-            if (!lineAfter.trim() && !lineBefore.trim()) {
-                that.insert(defaults.p[1]);
-            } else {
-                that.select(start - toCount(lineBefore), end + toCount(lineAfter));
-            }
-            // Update!
-            var v = that.$();
-            after = v.after;
-            before = v.before;
-            end = v.end;
-            start = v.start;
-            value = v.value;
-        }
-        var lineMatch = before.split('\n').pop().match(/^(\s+)/),
-            lineMatchIndent = lineMatch && lineMatch[1] || "";
-        that.match([patternBefore, /[\s\S]*/, patternAfter], function (before, value, after) {
-            // `<blockquote>…</blockquote>`
-            if (defaults.blockquote[0] === after[3]) {
-                that.replace(patternBefore, "", -1);
-                that.replace(patternAfter, "", 1);
-                that.pull(charIndent);
-            } else {
-                that.trim('\n', '\n');
-                // Check if selection contains block tag(s) or a line break
-                if (hasValue('\n', value[0]) || toPattern(tagEnd(blocks.join('|')), 'i').test(value[0])) {
-                    that.wrap(lineMatchIndent + '<' + defaults.blockquote[0] + toAttributes(defaults.blockquote[2]) + '>\n', '\n' + lineMatchIndent + '</' + defaults.blockquote[0] + '>');
-                    that.push(charIndent);
-                } else {
-                    that.wrap(lineMatchIndent + '<' + defaults.blockquote[0] + toAttributes(defaults.blockquote[2]) + '>\n' + charIndent + '<' + defaults.p[0] + toAttributes(defaults.p[2]) + '>', '</' + defaults.p[0] + '>\n' + lineMatchIndent + '</' + defaults.blockquote[0] + '>');
-                }
-            }
-        });
-    }
-    var commands = {};
-    commands.blocks = function () {
-        var that = this;
-        return that.record(), toggleBlocks(that), that.record(), false;
-    };
-    commands.bold = function () {
-        var that = this,
-            state = that.state,
-            defaults = state.defaults || {},
-            _that$$4 = that.$(),
-            value = _that$$4.value;
-        return that.record(), toggle.apply(that, [].concat(defaults.b, value && defaults.b[1] !== value ? false : ' ')), false;
-    };
-    commands.code = function () {
-        var that = this;
-        return that.record(), toggleCodes(that), that.record(), false;
-    };
-    commands.image = function (label, placeholder) {
-        if (label === void 0) {
-            label = 'URL:';
-        }
-        var that = this,
-            _that$$5 = that.$(),
-            after = _that$$5.after,
-            before = _that$$5.before,
-            value = _that$$5.value,
-            state = that.state,
-            charIndent = state.source.tab || state.tab || '\t',
-            defaults = state.defaults || {},
-            lineBefore = before.split('\n').pop(),
-            lineMatch = lineBefore.match(/^(\s+)/),
-            lineMatchIndent = lineMatch && lineMatch[1] || "",
-            prompt = state.source.prompt;
-        if (isFunction(prompt)) {
-            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : placeholder || protocol + '//').then(function (src) {
-                if (!src) {
-                    that.focus();
-                    return;
-                }
-                var element = [].concat(defaults.img);
-                if (value) {
-                    element[2].alt = value;
-                    that.record(); // Record selection
-                }
-                element[2].src = src;
-                if (isBlock(before, value, after)) {
-                    that.insert("").trim('\n', '\n');
-                    that.wrap(lineMatchIndent + '<' + defaults.figure[0] + toAttributes(defaults.figure[2]) + '>\n' + lineMatchIndent + charIndent, lineMatchIndent + '\n</' + defaults.figure[0] + '>');
-                    that.insert('<' + element[0] + toAttributes(element[2]) + '>\n' + lineMatchIndent + charIndent, -1);
-                    that.wrap('<' + defaults.figcaption[0] + toAttributes(defaults.figcaption[2]) + '>', '</' + defaults.figcaption[0] + '>').insert(defaults.figcaption[1]);
-                } else {
-                    that.trim(' ', "").insert('<' + element[0] + toAttributes(element[2]) + '>' + (after ? ' ' : ""), -1, true);
-                }
-            }).catch(function (e) {
-                return 0;
-            });
-        }
-        return that.record(), false;
-    };
-    commands.italic = function () {
-        var that = this,
-            state = that.state,
-            defaults = state.defaults || {},
-            _that$$6 = that.$(),
-            value = _that$$6.value;
-        return that.record(), toggle.apply(that, [].concat(defaults.i, value && defaults.i[1] !== value ? false : ' ')), false;
-    };
-    commands.link = function (label, placeholder) {
-        if (label === void 0) {
-            label = 'URL:';
-        }
-        var that = this,
-            _that$$7 = that.$(),
-            after = _that$$7.after,
-            end = _that$$7.end,
-            before = _that$$7.before,
-            value = _that$$7.value,
-            state = that.state,
-            defaults = state.defaults || {},
-            prompt = state.source.prompt;
-        if (isFunction(prompt)) {
-            var element = [].concat(defaults.a),
-                href,
-                m,
-                wrapped;
-            if (m = toPattern(tagStart(element[0])).exec(before)) {
-                wrapped = true;
-                that.select(m.index + toCount(m[0]), end + after.indexOf('</' + element[0] + '>'));
-                m = /\shref=(?:"([^"]+)"|'([^']+)'|([^>\/\s]+))/.exec(m[2]);
-                href = toHTML((m[1] || "") + (m[2] || "") + (m[3] || ""));
-            } else if (m = toPattern('^\\s*' + tagStart(element[0])).exec(value)) {
-                m = /\shref=(?:"([^"]+)"|'([^']+)'|([^>\/\s]+))/.exec(m[2]);
-                href = toHTML((m[1] || "") + (m[2] || "") + (m[3] || ""));
-            }
-            prompt(label, value && /^https?:\/\/\S+$/.test(value) ? value : href || placeholder || protocol + '//').then(function (href) {
-                if (!href) {
-                    that.focus();
-                    return;
-                }
-                if (value) {
-                    that.record(); // Record selection
-                }
-                element[2].href = href;
-                var local = /[.\/?&#]/.test(href[0]) || /^(data|javascript|mailto):/.test(href) || !hasValue('://', href),
-                    extras = {};
-                if (!local) {
-                    extras.rel = 'nofollow';
-                    extras.target = '_blank';
-                }
-                if (wrapped) {
-                    toggle.apply(that, [element[0]]); // Unwrap if already wrapped, then…
-                }
-                toggle.apply(that, [element[0], element[1], fromStates(extras, element[2]), value && element[1] !== value ? false : ' ']); // Wrap!
-            }).catch(function (e) {
-                return 0;
-            });
-        }
-        return that.record(), false;
-    };
-    commands.quote = function () {
-        var that = this;
-        return that.record(), toggleQuotes(that), that.record(), false;
-    };
-    commands.underline = function () {
-        var that = this,
-            state = that.state,
-            defaults = state.defaults || {},
-            _that$$8 = that.$(),
-            value = _that$$8.value;
-        return that.record(), toggle.apply(that, [].concat(defaults.u, value && defaults.u[1] !== value ? false : ' ')), false;
-    };
-
-    function canKeyDown(map, that) {
-        var state = that.state,
-            charIndent = state.source.tab || state.tab || '\t',
-            defaults = state.defaults || {},
-            key = map.key,
-            queue = map.queue;
-        if (queue.Control) {
-            var _that$$9 = that.$(),
-                after = _that$$9.after,
-                before = _that$$9.before,
-                end = _that$$9.end,
-                start = _that$$9.start;
-            _that$$9.value;
-            var lineAfter = after.split('\n').shift(),
-                lineBefore = before.split('\n').pop(),
-                lineMatch = lineBefore.match(/^(\s+)/),
-                lineMatchIndent = lineMatch && lineMatch[1] || "";
-            if ('Enter' === key) {
-                var _m = lineAfter.match(toPattern(tagEnd(tagName) + '\\s*$', "")),
-                    element = defaults[_m && _m[1] || 'p'] || defaults.p;
-                element[3] = ['\n' + lineMatchIndent, '\n' + (!queue.Shift && after && toPattern('^\\s*' + tagEnd(tagName)).test(after.split('\n')[1] || "") ? lineMatchIndent.replace(toPattern('^' + charIndent), "") : lineMatchIndent)];
-                that.select(queue.Shift ? start - toCount(lineBefore) : end + toCount(lineAfter));
-                toggle.apply(that, element);
-                return that.record(), false;
-            }
-        }
-        // Do nothing
-        if (queue.Alt || queue.Control) {
-            return true;
-        }
-        if ('>' === key) {
-            var _that$$10 = that.$(),
-                _after = _that$$10.after,
-                _before = _that$$10.before,
-                _end = _that$$10.end;
-            _after.split('\n').shift();
-            var _lineBefore = _before.split('\n').pop(),
-                _lineMatch = _lineBefore.match(/^(\s+)/),
-                _lineMatchIndent = _lineMatch && _lineMatch[1] || "",
-                _m2 = (_lineBefore + '>').match(toPattern(tagStart(tagName) + '$', "")),
-                _n,
-                _element = defaults[_n = _m2 && _m2[1] || ""];
-            if (!_n) {
-                return true;
-            }
-            if (_element) {
-                if (false !== _element[1]) {
-                    if ('>' === _after[0]) {
-                        that.select(_end + 1);
-                    } else {
-                        that.insert('>', -1);
-                    }
-                    that.insert('</' + _n + '>', 1).insert(_element[1]);
-                    if ('blockquote' === _element[0]) {
-                        that.insert(defaults.p[1]);
-                        that.wrap('\n' + _lineMatchIndent + charIndent + '<' + defaults.p[0] + toAttributes(defaults.p[2]) + '>', '</' + defaults.p[0] + '>\n' + _lineMatchIndent);
-                    } else if ('dl' === _element[0]) {
-                        that.insert(defaults.dt[1]);
-                        that.wrap('\n' + _lineMatchIndent + charIndent + '<' + defaults.dt[0] + toAttributes(defaults.dt[2]) + '>', '</' + defaults.dt[0] + '>\n' + _lineMatchIndent);
-                    } else if ('ol' === _element[0] || 'ul' === _element[0]) {
-                        that.insert(defaults.li[1]);
-                        that.wrap('\n' + _lineMatchIndent + charIndent + '<' + defaults.li[0] + toAttributes(defaults.li[2]) + '>', '</' + defaults.li[0] + '>\n' + _lineMatchIndent);
-                    } else if ('select' === _element[0]) {
-                        that.insert(defaults.option[1]);
-                        that.wrap('\n' + _lineMatchIndent + charIndent + '<' + defaults.option[0] + toAttributes(defaults.option[2]) + '>', '</' + defaults.option[0] + '>\n' + _lineMatchIndent);
-                    } else if ('tbody' === _element[0] || 'tfoot' === _element[0] || 'thead' === _element[0]) {
-                        that.insert(defaults.tr[1]);
-                        that.wrap('\n' + _lineMatchIndent + charIndent + '<' + defaults.tr[0] + toAttributes(defaults.tr[2]) + '>', '</' + defaults.tr[0] + '>\n' + _lineMatchIndent);
-                    }
-                } else {
-                    if ('>' === _after[0]) {
-                        that.insert(' /', -1).select(_end + 3);
-                    } else {
-                        that.insert(' />', -1);
-                    }
-                }
-            } else {
-                if ('>' === _after[0]) {
-                    that.select(_end + 1);
-                } else {
-                    that.insert('>', -1);
-                }
-                that.insert('</' + _n + '>', 1);
-            }
-            return that.record(), false;
-        }
-        if ('Enter' === key) {
-            var _that$$11 = that.$(),
-                _after2 = _that$$11.after,
-                _before2 = _that$$11.before,
-                _value = _that$$11.value,
-                _lineAfter2 = _after2.split('\n').shift(),
-                _lineBefore2 = _before2.split('\n').pop(),
-                _lineMatch2 = _lineBefore2.match(/^(\s+)/),
-                _lineMatchIndent2 = _lineMatch2 && _lineMatch2[1] || "",
-                _m3,
-                _n2;
-            var continueOnEnterTags = ['dd', 'li', 'option', 'p', 'td', 'th'],
-                noIndentOnEnterTags = ['pre', 'script', 'style'];
-            if (_m3 = _lineBefore2.match(toPattern(tagStart(tagName) + '$', ""))) {
-                var _element2 = defaults[_m3[1]];
-                if (_element2 && false === _element2[1]) {
-                    return that.insert('\n' + _lineMatchIndent2, -1).record(), false;
-                }
-            }
-            // `<br>`
-            if (queue.Shift) {
-                var br = defaults.br;
-                return that.insert('<' + br[0] + toAttributes(br[2]) + '>' + (false === br[1] ? "" : br[1] + '</' + br[0] + '>') + '\n', -1).record(), false;
-            }
-            if (_after2 && _before2) {
-                if (_lineAfter2.startsWith('</' + defaults.dt[0] + '>') && _lineBefore2.match(toPattern('^\\s*' + tagStart(defaults.dt[0]), ""))) {
-                    if (_value && defaults.dt[1] === _value) {
-                        that.insert("").wrap('\n' + _lineMatchIndent2 + charIndent, '\n' + _lineMatchIndent2);
-                        // Insert definition data below!
-                    } else {
-                        that.insert('</' + defaults.dt[0] + '>\n' + _lineMatchIndent2 + '<' + defaults.dd[0] + toAttributes(defaults.dd[2]) + '>', -1).replace(toPattern('^' + tagEnd(defaults.dt[0])), '</' + defaults.dd[0] + '>', 1).insert(defaults.dd[1]);
-                    }
-                    return that.record(), false;
-                }
-                for (var i = 0, j = toCount(continueOnEnterTags); i < j; ++i) {
-                    _n2 = continueOnEnterTags[i];
-                    if (toPattern('^' + tagEnd(_n2), "").test(_lineAfter2) && (_m3 = _lineBefore2.match(toPattern('^\\s*' + tagStart(_n2), "")))) {
-                        // `<foo>|</foo>`
-                        if (_m3[0] === _lineBefore2) {
-                            if (defaults[_n2] && _value && defaults[_n2][1] === _value) {
-                                that.insert("").wrap('\n' + _lineMatchIndent2 + charIndent, '\n' + _lineMatchIndent2);
-                                // Unwrap if empty!
-                            } else {
-                                toggle.apply(that, [_n2]);
-                            }
-                            return that.record(), false;
-                        }
-                        // `<foo>bar|</foo>`
-                        return that.insert('</' + _n2 + '>\n' + _lineMatchIndent2 + '<' + _n2 + (_m3[2] || "") + '>', -1).insert(defaults[_n2] ? defaults[_n2][1] || "" : "").record(), false;
-                    }
-                }
-                for (var _i = 0, _j = toCount(noIndentOnEnterTags); _i < _j; ++_i) {
-                    _n2 = noIndentOnEnterTags[_i];
-                    if (toPattern('^' + tagEnd(_n2), "").test(_lineAfter2) && toPattern(tagStart(_n2) + '$', "").test(_lineBefore2)) {
-                        return that.wrap('\n' + _lineMatchIndent2, '\n' + _lineMatchIndent2).insert(defaults[_n2] ? defaults[_n2][1] || "" : "").record(), false;
-                    }
-                }
-                for (var _i2 = 1; _i2 < 7; ++_i2) {
-                    if (_lineAfter2.startsWith('</' + defaults['h' + _i2][0] + '>') && _lineBefore2.match(toPattern('^\\s*' + tagStart(defaults['h' + _i2][0]), ""))) {
-                        if (defaults['h' + _i2] && _value && defaults['h' + _i2][1] === _value) {
-                            that.insert("").wrap('\n' + _lineMatchIndent2 + charIndent, '\n' + _lineMatchIndent2);
-                            // Insert paragraph below!
-                        } else {
-                            that.insert('</' + defaults['h' + _i2][0] + '>\n' + _lineMatchIndent2 + '<' + defaults.p[0] + toAttributes(defaults.p[2]) + '>', -1).replace(toPattern('^' + tagEnd(defaults['h' + _i2][0])), '</' + defaults.p[0] + '>', 1).insert(defaults.p[1]);
-                        }
-                        return that.record(), false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
     var state = defaults;
-    Object.assign(TE.prototype, that$2, that$1);
-    TE.state = fromStates({}, TE.state, state$2, state$1, state);
+    Object.assign(TE.prototype, that$1, that);
+    TE.state = fromStates({}, TE.state, state);
     // Be sure to remove the default source type
     delete TE.state.source.type;
     var bounce$1 = debounce(function (map) {
@@ -4123,9 +3102,9 @@
     function _onKeyDownSource(e) {
         var editor = this.TE,
             map = this.K,
-            key = e.key,
-            type = editor.state.source.type,
-            command,
+            key = e.key;
+        editor.state.source.type;
+        var command,
             value;
         offEventPropagation(e);
         map.push(key);
@@ -4137,22 +3116,7 @@
                 console.error('Unknown command:', command);
             }
         } else {
-            if ('HTML' === type) {
-                if (canKeyDown(map, editor) && canKeyDown$1(map, editor) && canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
-                else {
-                    offEventDefault(e);
-                }
-                return;
-            }
-            if ('XML' === type) {
-                if (canKeyDown$1(map, editor) && canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
-                else {
-                    offEventDefault(e);
-                }
-                return;
-            }
-            // Default
-            if (canKeyDown$2(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
+            if (canKeyDown(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
             else {
                 offEventDefault(e);
             }
@@ -4168,19 +3132,11 @@
         map.pull(key);
     }
 
-    function _onMouseDownSource(e) {
-        var editor = this.TE,
-            map = this.K;
-        canMouseDown(map, editor);
-    }
-
     function _letEditorSource(self) {
         offEvent('blur', self, _onBlurSource);
         offEvent('input', self, _onInputSource);
         offEvent('keydown', self, _onKeyDownSource);
         offEvent('keyup', self, _onKeyUpSource);
-        offEvent('mousedown', self, _onMouseDownSource);
-        offEvent('touchstart', self, _onMouseDownSource);
     }
 
     function _setEditorSource(self) {
@@ -4188,8 +3144,6 @@
         onEvent('input', self, _onInputSource);
         onEvent('keydown', self, _onKeyDownSource);
         onEvent('keyup', self, _onKeyUpSource);
-        onEvent('mousedown', self, _onMouseDownSource);
-        onEvent('touchstart', self, _onMouseDownSource);
         self.TE.record();
     }
 
@@ -4223,7 +3177,7 @@
                 return true;
             };
             if ('HTML' === type) {
-                map.commands = commands;
+                map.commands = commandsSourceHTML;
                 map.keys['Control-Shift-"'] = 'quote';
                 map.keys['Control-\''] = 'quote';
                 map.keys['Control-b'] = 'bold';
