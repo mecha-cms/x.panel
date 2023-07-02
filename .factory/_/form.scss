@@ -313,22 +313,21 @@ label {
     &[role='switch'] {
       border-radius: calc((var(--z) * 1.25) / 2);
       border-width: 0;
-      height: calc(var(--z) * 1.25);
-      width: calc(var(--z) * 2);
+      width: calc(var(--z) * 1.5);
       &::before {
         @include transform(rotate(0));
         background: var(--color-button);
         border-radius: calc(((var(--z) * 1.25) - 4px) / 2);
         border: 0;
-        height: calc((var(--z) * 1.25) - 4px);
+        height: calc(var(--z) - 4px);
         left: 2px;
         top: 2px;
         visibility: visible;
-        width: calc((var(--z) * 1.25) - 4px);
+        width: calc(var(--z) - 4px);
       }
       &:checked {
         &::before {
-          left: calc(var(--z) - 2px);
+          left: calc(var(--z) - 6px);
         }
       }
     }
