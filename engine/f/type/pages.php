@@ -18,9 +18,7 @@ function page(array $_ = []) {
                                         'lot' => [
                                             'page' => [
                                                 'url' => [
-                                                    'part' => 0,
-                                                    'query' => \x\panel\_query_set(['type' => 'page/page']),
-                                                    'task' => 'set'
+                                                    'query' => \x\panel\_query_set(['type' => 'page/page'])
                                                 ]
                                             ]
                                         ]

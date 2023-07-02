@@ -1,5 +1,36 @@
 <?php namespace x\panel\to;
 
+function ago($date, $all = false) {
+    $current = new \DateTime;
+    $diff = (array) $current->diff(new \DateTime(\is_int($date) ? \date('Y-m-d H:i:s', $date) : $date));
+    $diff['w'] = \floor($diff['d'] / 7);
+    $diff['d'] -= $diff['w'] * 7;
+    $alter = [
+        // It has to be in this order, please do not sort the array!
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'minute',
+        's' => 'second'
+    ];
+    foreach ($alter as $k => &$v) {
+        if ($i = $diff[$k] ?? 0) {
+            $v = \i('%d ' . $alter[$k] . ($i > 1 ? 's' : ""), $i);
+        } else {
+            unset($alter[$k]);
+        }
+        unset($v);
+    }
+    if (false === $all) {
+        $alter = \array_slice($alter, 0, 1);
+    } else if (\is_int($all)) {
+        $alter = \array_slice($alter, 0, $all);
+    }
+    return $alter ? \i('%s ago', \implode(', ', $alter)) : \i('just now');
+}
+
 function color($color) {
     if (!\is_array($color) && !\is_string($color)) {
         return null;
@@ -67,37 +98,6 @@ function content($value) {
 function description($value) {
     $value = (string) \x\panel\lot\type\description(\x\panel\lot\_value_set(['content' => $value], 0), 0);
     return "" !== $value ? $value : null;
-}
-
-function elapse($date, $all = false) {
-    $current = new \DateTime;
-    $diff = (array) $current->diff(new \DateTime(\is_int($date) ? \date('Y-m-d H:i:s', $date) : $date));
-    $diff['w'] = \floor($diff['d'] / 7);
-    $diff['d'] -= $diff['w'] * 7;
-    $alter = [
-        // It has to be in this order, please do not sort the array!
-        'y' => 'year',
-        'm' => 'month',
-        'w' => 'week',
-        'd' => 'day',
-        'h' => 'hour',
-        'i' => 'minute',
-        's' => 'second'
-    ];
-    foreach ($alter as $k => &$v) {
-        if ($i = $diff[$k] ?? 0) {
-            $v = \i('%d ' . $alter[$k] . ($i > 1 ? 's' : ""), $i);
-        } else {
-            unset($alter[$k]);
-        }
-        unset($v);
-    }
-    if (false === $all) {
-        $alter = \array_slice($alter, 0, 1);
-    } else if (\is_int($all)) {
-        $alter = \array_slice($alter, 0, $all);
-    }
-    return $alter ? \i('%s ago', \implode(', ', $alter)) : \i('just now');
 }
 
 function field($value, $key, $type = 'textarea') {

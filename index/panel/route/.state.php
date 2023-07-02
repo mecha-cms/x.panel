@@ -245,7 +245,7 @@ return array_replace_recursive($_, [
                                                 'fields' => [
                                                     'lot' => [
                                                         'sync' => [
-                                                            'description' => is_file($versions = ENGINE . D . 'log' . D . 'git' . D . 'versions' . D . 'mecha-cms.php') ? ['Last synced %s.', x\panel\to\elapse(filemtime($versions))] : null,
+                                                            'description' => is_file($versions = ENGINE . D . 'log' . D . 'git' . D . 'versions' . D . 'mecha-cms.php') ? ['Last synced %s.', x\panel\to\ago(filemtime($versions))] : null,
                                                             'flex' => false,
                                                             'lot' => [
                                                                 0 => 'Never',

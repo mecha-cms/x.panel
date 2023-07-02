@@ -1,35 +1,33 @@
 <?php
 
-if (!isset($_with_hooks) || $_with_hooks) {
-    Hook::set('_', function ($_) use ($state) {
-        if (
-            !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot']) &&
-            !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']) &&
-            'pages' === $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type']
-        ) {
-            foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
-                $path = strtr($k, [
-                    LOT . D => "",
-                    D => '/'
-                ]);
-                if (!empty($v['tasks']['set']['url'])) {
-                    $v['tasks']['set']['url'] = [
-                        'part' => 0,
-                        'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
-                        'query' => x\panel\_query_set(['type' => 'page/page']),
-                        'task' => 'set'
-                    ];
-                }
-            }
-        }
-        return $_;
-    }, 10.1);
+unset($_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url']['query']['type']);
+
+$_ = x\panel\type\pages\page($_);
+
+if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['skip'])) {
+    return $_;
 }
 
-$_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url'] = [
-    'part' => 0,
-    'query' => x\panel\_query_set(['type' => 'page/page']),
-    'task' => 'set'
-];
+if (!isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type'])) {
+    return $_;
+}
+
+if (0 !== strpos($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['type'] . '/', 'pages/')) {
+    return $_;
+}
+
+if (!is_dir($folder = $_['folder'] ?? P)) {
+    return $_;
+}
+
+if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'])) {
+    $default = $_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['page']['url']['query']['type'] ?? 'page';
+    foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pages']['lot']['pages']['lot'] as $k => &$v) {
+        if (!empty($v['tasks']['set']['url'])) {
+            $v['tasks']['set']['url']['query']['type'] = $default;
+        }
+    }
+    unset($v);
+}
 
 return $_;

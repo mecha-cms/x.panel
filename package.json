@@ -10,7 +10,7 @@
     "@taufik-nurrohman/tag-picker": "*",
     "@taufik-nurrohman/text-editor": "*",
     "@taufik-nurrohman/text-editor.history": "*",
-    "@taufik-nurrohman/text-editor.source": "*",
+    "@taufik-nurrohman/text-editor.source": "^2.2.11",
     "@taufik-nurrohman/tick": "*",
     "@taufik-nurrohman/to": "*",
     "siema": "^1.5.1"

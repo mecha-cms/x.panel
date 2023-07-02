@@ -216,8 +216,10 @@ function item($value, $key) {
                 continue;
             }
             ++$count;
-            if (!\is_array($v) || (\array_is_list($v) && 2 === \count($v))) {
+            if (!\is_array($v)) {
                 $v = ['title' => \s($v)];
+            } else if (\array_is_list($v) && \is_string($v[0])) {
+                $v = ['title' => $v];
             }
             $n = (string) ($v['name'] ?? "");
             $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name;
@@ -290,8 +292,10 @@ function items($value, $key) {
                 continue;
             }
             ++$count;
-            if (!\is_array($v) || (\array_is_list($v) && 2 === \count($v))) {
+            if (!\is_array($v)) {
                 $v = ['title' => \s($v)];
+            } else if (\array_is_list($v) && \is_string($v[0])) {
+                $v = ['title' => $v];
             }
             $n = (string) ($v['name'] ?? "");
             $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name . '[' . ($key_as_value ? "" : $k) . ']';

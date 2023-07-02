@@ -2805,6 +2805,7 @@
         return t.wrap(open, close, wrap);
     };
     var CTRL_PREFIX = 'Control-';
+    var SHIFT_PREFIX = 'Shift-';
 
     function canKeyDown(map, of) {
         var charAfter,
@@ -2831,7 +2832,7 @@
             }
             return true;
         }
-        if ('Enter' === keyValue) {
+        if ('Enter' === keyValue || SHIFT_PREFIX + 'Enter' === keyValue) {
             var _of$$2 = of.$(),
                 _after2 = _of$$2.after,
                 _before2 = _of$$2.before,
@@ -2968,7 +2969,7 @@
                 lineMatchIndent = lineMatch && lineMatch[1] || "";
             if (before || after) {
                 if (queue.Shift) {
-                    // Insert line over with `⎈⇧↵`
+                    // Insert line above with `⎈⇧↵`
                     return of.select(start - toCount(lineBefore)).wrap(lineMatchIndent, '\n').insert(value).record(), false;
                 }
                 // Insert line below with `⎈↵`

@@ -1,5 +1,19 @@
 <?php
 
+if ('POST' === $_SERVER['REQUEST_METHOD']) {
+    $chunk = $_POST['data']['chunk'] ?? $_POST['page']['chunk'] ?? null;
+    $x = $_POST['page']['x'] ?? 'page';
+    // Having chunk value less than `1` will not create a `chunk.data` file. Instead, it will create a placeholder page
+    // to hide the pages.
+    if (is_int($chunk) && $chunk < 1 && is_dir($folder)) {
+        unset($_POST['data']['chunk'], $_POST['page']['chunk']);
+        file_put_contents($ff = $folder . D . '.' . $x, "");
+        chmod($ff, 0600);
+    } else if (is_file($ff = $folder . D . '.' . $x)) {
+        unlink($ff);
+    }
+}
+
 $count = ($f = $_['file']) ? q(g(dirname($f) . D . pathinfo($f, PATHINFO_FILENAME), 'page')) : 0;
 $folder = $f ? dirname($f) . D . pathinfo($f, PATHINFO_FILENAME) : P;
 
@@ -16,31 +30,7 @@ if ($layouts_active) {
         $n = substr($v, strlen($d) + 1, -4);
         $layouts[$n] = $n;
     }
-    $layouts[""] = 'Default';
-    $layouts['page'] = 'Page';
-    $layouts['pages'] = 'Pages';
 }
-
-if ('POST' === $_SERVER['REQUEST_METHOD']) {
-    $chunk = $_POST['data']['chunk'] ?? $_POST['page']['chunk'] ?? null;
-    $x = $_POST['page']['x'] ?? 'page';
-    // Having chunk value less than `1` will not create a `chunk.data` file.
-    // Instead, it will create a placeholder page to hide the pages.
-    if (is_int($chunk) && $chunk < 1 && is_dir($folder)) {
-        unset($_POST['data']['chunk'], $_POST['page']['chunk']);
-        file_put_contents($ff = $folder . D . '.' . $x, "");
-        chmod($ff, 0600);
-    } else if (is_file($ff = $folder . D . '.' . $x)) {
-        unlink($ff);
-    }
-}
-
-$_['lot']['bar']['lot'][0]['lot']['set']['url'] = [
-    'part' => 0,
-    'path' => 'get' === $_['task'] ? dirname($_['path']) : $_['path'],
-    'query' => x\panel\_query_set(['type' => 'page/page']),
-    'task' => 'set'
-];
 
 $chunk = $state->x->page->page->chunk ?? 5;
 $deep = $state->x->page->page->deep ?? 0;
@@ -51,79 +41,85 @@ $page_deep = $page['deep'] ?? null;
 $page_sort = $page['sort'] ?? null;
 $page_state = (array) ($page['state'] ?? []);
 
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page']['lot']['fields']['lot']['layout'] = [
-    'lot' => $layouts,
-    'name' => 'page[layout]',
-    'skip' => !$layouts,
-    'stack' => 51,
-    'type' => 'option',
-    'value' => $page['layout'] ?? ""
-];
-
-$_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state'] = [
-    'lot' => [
-        'fields' => [
-            'lot' => [
-                'chunk' => [
-                    'active' => $count > 0, // Disable this field if child page(s) count is `0`
-                    'description' => ['Number of %s to show. Set value to %s to hide the pages.', ['pages', '<code>0</code>']],
-                    'hint' => $chunk,
-                    'min' => 0,
-                    'name' => 'data[chunk]',
-                    'stack' => 10,
-                    'step' => 1,
-                    'type' => 'number',
-                    'value' => is_file($folder . D . '.archive') || is_file($folder . D . '.page') ? 0 : ($page_chunk === $chunk ? null : $page_chunk)
-                ],
-                'deep' => [
-                    'active' => $count > 0,
-                    'description' => ['Scan %s recursively. Set value to the maximum directory level to scan.', ['pages']],
-                    'hint' => $deep,
-                    'min' => 0,
-                    'name' => 'data[deep]',
-                    'stack' => 20,
-                    'step' => 1,
-                    'type' => 'number',
-                    'value' => $page_deep === $deep ? null : $page_deep,
-                ],
-                'sort' => [
-                    'active' => $count > 0,
-                    'flex' => false,
-                    'lot' => [
-                        '[-1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'time']]],
-                        '[1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'time']]]
-                    ],
-                    'name' => 'data[sort]',
-                    'stack' => 30,
-                    'type' => 'item',
-                    'value' => $page_sort === $sort ? null : json_encode($page_sort)
-                ],
-                'extension' => [
-                    'flex' => false,
-                    'lot' => [],
-                    'name' => 'page[state][x]',
-                    'stack' => 40,
-                    'type' => 'items',
-                    'values' => $page_state['x'] ?? []
-                ]
-            ],
-            'type' => 'fields'
-        ]
-    ],
-    'skip' => 'get' !== $_['task'],
-    'stack' => 30
-];
-
-$_['lot']['desk']['lot']['form']['lot'][2]['lot']['fields']['lot'][0]['lot']['tasks']['lot']['set']['title'] = 'set' === $_['task'] ? 'Publish' : 'Update';
-
-if (!isset($_with_hooks) || $_with_hooks) {
-    Hook::set('_', function ($_) {
-        // Hide the extension option(s) if it is empty, unless there is a `skip` property that was explicitly set
-        if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']) && !isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'])) {
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['skip'] = empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['lot']);
+Hook::set('_', function ($_) {
+    // Hide the extension and layout option(s) if it is empty, unless there is a `skip` property that was explicitly set
+    foreach (['x', 'y'] as $k) {
+        if (!isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['state.' . $k])) {
+            continue;
         }
-        return $_;
-    }, 20);
-}
+        if (!isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['state.' . $k]['skip'])) {
+            $default = empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['state.' . $k]['lot']);
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['state.' . $k]['skip'] = $default;
+        }
+    }
+    return $_;
+}, 20);
 
-return $_;
+return x\panel\type\page\page(array_replace_recursive($_, [
+    'lot' => [
+        'desk' => [
+            // `desk`
+            'lot' => [
+                'form' => [
+                    // `form/post`
+                    'lot' => [
+                        1 => [
+                            // `section`
+                            'lot' => [
+                                'tabs' => [
+                                    // `tabs`
+                                    'lot' => [
+                                        'page' => [
+                                            // `tab`
+                                            'lot' => [
+                                                'fields' => [
+                                                    // `fields`
+                                                    'lot' => [
+                                                        'layout' => [
+                                                            'lot' => $layouts,
+                                                            'value' => $page['layout'] ?? ""
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ],
+                                        'state' => [
+                                            // `tab`
+                                            'lot' => [
+                                                'fields' => [
+                                                    // `fields`
+                                                    'lot' => [
+                                                        'chunk' => [
+                                                            'active' => $count > 0, // Disable this field if child page(s) count is `0`
+                                                            'hint' => $chunk,
+                                                            'value' => is_file($folder . D . '.archive') || is_file($folder . D . '.page') ? 0 : ($page_chunk === $chunk ? null : $page_chunk)
+                                                        ],
+                                                        'deep' => [
+                                                            'active' => $count > 0,
+                                                            'hint' => $deep,
+                                                            'value' => $page_deep === $deep ? null : $page_deep,
+                                                        ],
+                                                        'sort' => [
+                                                            'active' => $count > 0,
+                                                            'value' => $page_sort === $sort ? null : json_encode($page_sort)
+                                                        ],
+                                                        'state.x' => [
+                                                            'values' => $page_state['x'] ?? []
+                                                        ],
+                                                        'state.y' => [
+                                                            'values' => $page_state['y'] ?? []
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+]));

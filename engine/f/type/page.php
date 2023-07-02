@@ -14,10 +14,7 @@ function page(array $_ = []) {
                         'lot' => [
                             'set' => [
                                 'url' => [
-                                    'part' => 0,
-                                    'path' => 'get' === $task & $path ? \dirname($path) : $path,
-                                    'query' => \x\panel\_query_set(['type' => $type]),
-                                    'task' => 'set'
+                                    'query' => \x\panel\_query_set(['type' => $type])
                                 ]
                             ]
                         ]
@@ -90,10 +87,10 @@ function page(array $_ = []) {
                                                                 'active' => false,
                                                                 'flex' => false,
                                                                 'lot' => [
-                                                                    '[-1,"time"]' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'time']],
-                                                                    '[-1,"title"]' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'title']],
-                                                                    '[1,"time"]' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'time']],
-                                                                    '[1,"title"]' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'title']]
+                                                                    '[-1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'time']]],
+                                                                    '[-1,"title"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'descending', 'title']]],
+                                                                    '[1,"time"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'time']]],
+                                                                    '[1,"title"]' => ['title' => ['Sort %1$s %2$s by %3$s', ['pages', 'ascending', 'title']]]
                                                                 ],
                                                                 'name' => 'data[sort]',
                                                                 'stack' => 30,
@@ -105,6 +102,16 @@ function page(array $_ = []) {
                                                                 'lot' => [],
                                                                 'name' => 'page[state][x]',
                                                                 'stack' => 40,
+                                                                'title' => 'Extension',
+                                                                'type' => 'items',
+                                                                'values' => []
+                                                            ],
+                                                            'state.y' => [
+                                                                'flex' => false,
+                                                                'lot' => [],
+                                                                'name' => 'page[state][y]',
+                                                                'stack' => 50,
+                                                                'title' => 'Layout',
                                                                 'type' => 'items',
                                                                 'values' => []
                                                             ]
@@ -155,7 +162,7 @@ function user(array $_ = []) {
     $path = $_['path'] ?? null;
     $task = $_['task'] ?? 'set';
     $type = $_['type'] ?? 'page/user';
-    return \x\panel\type\page\page(\array_replace_recursive([
+    return \x\panel\type\page(\array_replace_recursive([
         'lot' => [
             'bar' => [
                 // `bar`
@@ -167,10 +174,7 @@ function user(array $_ = []) {
                                 'description' => [1 => 'User'],
                                 'icon' => 'M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z',
                                 'url' => [
-                                    'part' => 0,
-                                    'path' => $path ? \dirname($path) : $path,
-                                    'query' => \x\panel\_query_set(['type' => $type]),
-                                    'task' => 'set'
+                                    'query' => \x\panel\_query_set(['type' => $type])
                                 ]
                             ]
                         ]

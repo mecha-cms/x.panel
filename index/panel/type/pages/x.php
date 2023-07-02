@@ -159,7 +159,7 @@ if (!isset($_with_hooks) || $_with_hooks) {
                 $path = 'x/' . basename($k);
                 $files[$k] = [
                     'current' => !empty($_SESSION['_']['files'][$k]),
-                    'description' => S . x\panel\to\elapse($time = new Time(substr($n, strrpos($n, '.') + 1))) . S,
+                    'description' => S . x\panel\to\ago($time = new Time(substr($n, strrpos($n, '.') + 1))) . S,
                     'tasks' => [
                         'recover' => [
                             'description' => 'Recover',
