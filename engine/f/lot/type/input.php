@@ -62,7 +62,7 @@ function hidden($value, $key) {
     $out = \x\panel\lot\type\input($value, $key);
     $tags = \explode(' ', (string) ($out['class'] ?? ""));
     foreach ($tags as $k => $v) {
-        if (false !== \strpos(',are,as,can,has,is,not,of,with,', ',' . \strtok($v, ':') . ',')) {
+        if ('input' === $v || false !== \strpos(',are,as,can,has,is,not,of,with,', ',' . \strtok($v, ':') . ',')) {
             unset($tags[$k]);
         }
     }
