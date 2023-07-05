@@ -93,16 +93,14 @@ function x(array $_ = []) {
                                                 'description' => false,
                                                 'icon' => 'M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z',
                                                 'skip' => false,
-                                                'title' => 'Add'
+                                                'title' => 'Add',
+                                                'url' => [
+                                                    'part' => 0,
+                                                    'query' => \x\panel\_query_set(['type' => 'blob/x']),
+                                                    'task' => 'set'
+                                                ]
                                             ],
-                                            'page' => [
-                                                'skip' => true
-                                            ],
-                                            'url' => [
-                                                'part' => 0,
-                                                'query' => \x\panel\_query_set(['type' => 'blob/x']),
-                                                'task' => 'set'
-                                            ]
+                                            'page' => ['skip' => true]
                                         ]
                                     ]
                                 ]
@@ -145,8 +143,10 @@ function y(array $_ = []) {
                                     'tasks' => [
                                         // `tasks/button`
                                         'lot' => [
-                                            'url' => [
-                                                'query' => \x\panel\_query_set(['type' => 'blob/y'])
+                                            'blob' => [
+                                                'url' => [
+                                                    'query' => \x\panel\_query_set(['type' => 'blob/y'])
+                                                ]
                                             ]
                                         ]
                                     ]
