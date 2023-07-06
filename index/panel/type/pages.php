@@ -60,13 +60,7 @@ $super = 1 === $user->status;
 $token = $_['token'] ?? null;
 $x = $_['x'] ?? 'archive,draft,page';
 
-$page = is_file($f = exist([
-    $folder . '.archive',
-    $folder . '.draft',
-    $folder . '.page'
-], 1)) ? new Page($f) : new Page;
-$pages = [];
-
+$files = $pages = [];
 $sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($_['sort'] ?? []));
 
 foreach ($query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep) as $k => $v) {
@@ -186,7 +180,6 @@ if (
     isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['type']) &&
     0 === strpos($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['type'] . '/', 'files/')
 ) {
-    $files = [];
     foreach (g($folder, 'data') as $k => $v) {
         $path = strtr($k, [
             LOT . D => "",
