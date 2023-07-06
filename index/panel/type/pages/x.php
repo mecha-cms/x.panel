@@ -1,6 +1,5 @@
 <?php
 
-unset($_['chunk']);
 unset($_['lot']['desk']['lot']['form']['lot'][0]['lot']['tasks']['lot']['blob']);
 
 $_ = x\panel\type\pages\x(array_replace_recursive($_, []));
@@ -30,7 +29,7 @@ $token = $_['token'] ?? null;
 
 $files = $pages = [];
 
-$sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
+$sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($_['sort'] ?? []));
 
 foreach ($query ? k($folder, 'page', 1, preg_split('/\s+/', $query)) : g($folder, 'page', 1) as $k => $v) {
     if ('about.page' !== basename($k) || isset($pages[$k])) {

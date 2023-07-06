@@ -67,7 +67,7 @@ $page = is_file($f = exist([
 ], 1)) ? new Page($f) : new Page;
 $pages = [];
 
-$sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
+$sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($_['sort'] ?? []));
 
 foreach ($query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep) as $k => $v) {
     if (false !== strpos(',.archive,.draft,.page,', basename($k)) || isset($pages[$k])) {
@@ -86,7 +86,7 @@ foreach ($query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder
 
 $pages = new Anemone($pages);
 $sort && $pages->sort($sort, true);
-$pages = $pages->chunk($chunk = $page->chunk ?? $chunk, $part - 1, true)->get();
+$pages = $pages->chunk($chunk, $part - 1, true)->get();
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
 foreach ($pages as $k => $v) {
     $path = strtr($k, [
