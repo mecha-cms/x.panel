@@ -17,6 +17,7 @@ if (!array_key_exists('type', $_GET) && !isset($_['type'])) {
 
 if (false !== strpos($_['path'] ?? "", '/')) {
     $_['status'] = 404;
+    $_['type'] = 'void';
     return $_;
 }
 
