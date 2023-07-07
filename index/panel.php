@@ -8,6 +8,7 @@ $GLOBALS['_'] = $_ = \x\panel\type((static function ($icons) {
     if (isset($_[0]) || isset($_[1]) || isset($_['content'])) {
         return $_; // Skip!
     }
+    $part = (int) ($_['part'] ?? 0);
     $path = $_['path'] ?? null;
     $task = $_['task'] ?? 'get';
     $folders = [];
@@ -41,6 +42,7 @@ $GLOBALS['_'] = $_ = \x\panel\type((static function ($icons) {
     }
     $_['lot']['bar']['lot'][0]['lot']['folder']['icon'] = 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z';
     $_['lot']['bar']['lot'][0]['lot']['folder']['lot'] = $list;
+    $_['lot']['bar']['lot'][0]['lot']['link']['skip'] = $part > 0;
     $_['lot']['bar']['lot'][0]['lot']['search']['lot']['fields']['lot']['query'][2]['title'] = \i('Search in %s', ".\\lot\\" . \strtr($_['file'] && $path ? \dirname($path) : $path, '/', "\\"));
     $_['lot']['bar']['lot'][1]['lot']['license'] = [
         'current' => 'get' === $task && 0 === \strpos($path . '/', '.license/'),
@@ -173,18 +175,14 @@ function route__panel($content, $path, $query, $hash) {
         return $content;
     }
     \extract($GLOBALS, \EXTR_SKIP);
+    $type = $_['type'] ?? 'blank';
     if ($_['status'] >= 400) {
-        $_['lot']['bar']['skip'] = true;
-        $_['lot']['desk']['lot']['form']['skip'] = true;
         $_['lot']['desk']['lot']['alert'] = \array_replace_recursive([
-            '2' => ['role' => 'status'],
             'content' => \i('%s does not exist.', ['Page']),
-            'icon' => 'M12,2A9,9 0 0,0 3,11V22L6,19L9,22L12,19L15,22L18,19L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z',
-            'level' => 0,
-            'stack' => 10,
-            'type' => 'title'
+            'icon' => 'M12,2A9,9 0 0,0 3,11V22L6,19L9,22L12,19L15,22L18,19L21,22V11A9,9 0 0,0 12,2M9,8A2,2 0 0,1 11,10A2,2 0 0,1 9,12A2,2 0 0,1 7,10A2,2 0 0,1 9,8M15,8A2,2 0 0,1 17,10A2,2 0 0,1 15,12A2,2 0 0,1 13,10A2,2 0 0,1 15,8Z'
         ], $_['lot']['desk']['lot']['alert'] ?? []);
         $_['title'] = $_['title'] ?? 'Error';
+        $_['type'] = $type = 'void';
     }
     $content = $icon = $list = "";
     $id = \strtok($_['path'] ?? "", '/');
@@ -278,6 +276,7 @@ function route__panel($content, $path, $query, $hash) {
         'link' => 'data:text/js;base64,' . \base64_encode('window._=Object.assign(window._||{},' . \json_encode($js) . ');'),
         'stack' => 0
     ];
+    $GLOBALS['_']['type'] = $type;
     $GLOBALS['content'] = $icon . $content . $list;
     $GLOBALS['description'] = \i(...((array) ($_['description'] ?? "")));
     $GLOBALS['t'][] = \i('Panel');

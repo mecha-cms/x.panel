@@ -1266,23 +1266,6 @@ pre.is\:text code {
   display: inline-block;
 }
 
-.is\:error {
-  align-content: center;
-  align-items: center;
-  border-top-width: 4px;
-  display: flex;
-  text-align: center;
-}
-.is\:error > * {
-  flex: 1;
-}
-.is\:error > * .title {
-  display: inline-flex;
-}
-.is\:error > * .title > .icon + span {
-  margin-left: calc(var(--x) / 4);
-}
-
 .button,
 .input,
 .output,
@@ -3476,6 +3459,20 @@ u {
 
 [hidden] {
   display: none !important;
+}
+
+.type\:void {
+  align-content: center;
+  align-items: center;
+  border-top-width: 4px;
+  display: flex;
+  text-align: center;
+}
+.type\:void > * {
+  flex: 1;
+}
+.type\:void > * .title {
+  display: inline-flex;
 }
 
 @media (prefers-reduced-motion: reduce) {

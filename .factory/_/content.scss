@@ -18,20 +18,3 @@ pre {
     }
   }
 }
-
-.is\:error {
-  align-content: center;
-  align-items: center;
-  border-top-width: 4px;
-  display: flex;
-  text-align: center;
-  > * {
-    flex: 1;
-    .title {
-      display: inline-flex;
-      > .icon + span {
-        margin-left: calc(var(--x) / 4);
-      }
-    }
-  }
-}

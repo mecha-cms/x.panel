@@ -128,3 +128,17 @@
 [hidden] {
   display: none !important;
 }
+
+.type\:void {
+  align-content: center;
+  align-items: center;
+  border-top-width: 4px;
+  display: flex;
+  text-align: center;
+  > * {
+    flex: 1;
+    .title {
+      display: inline-flex;
+    }
+  }
+}
