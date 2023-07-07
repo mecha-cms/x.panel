@@ -72,7 +72,7 @@ foreach ($query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder
         continue;
     }
     $pages[$k] = [
-        $sort[1] => strip_tags((string) ($p->{$sort[1]} ?? "")),
+        ($sort[1] ?? P) => strip_tags((string) ($p->{$sort[1] ?? P} ?? "")),
         'page' => $p
     ];
     ++$count;

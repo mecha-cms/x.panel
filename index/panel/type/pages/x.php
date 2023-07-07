@@ -37,7 +37,7 @@ foreach ($query ? k($folder, 'page', 1, preg_split('/\s+/', $query)) : g($folder
     }
     $p = new Page($k);
     $pages[$k] = [
-        $sort[1] => strip_tags((string) ($p->{$sort[1]} ?? "")),
+        ($sort[1] ?? P) => strip_tags((string) ($p->{$sort[1] ?? P} ?? "")),
         'page' => $p
     ];
     if (is_file(dirname($k) . D . 'index.php') && is_file($meta = dirname($k) . D . 'composer.json')) {
