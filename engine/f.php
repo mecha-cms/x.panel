@@ -258,16 +258,11 @@ function type(array $_ = []) {
                         'lot' => [
                             'folder' => [
                                 'caret' => false,
-                                'icon' => 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z',
+                                'icon' => 'M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z',
                                 'lot' => [],
                                 'stack' => 10,
                                 'title' => false,
-                                'url' => [
-                                    'part' => 1,
-                                    'path' => 'asset',
-                                    'query' => \x\panel\_query_set(),
-                                    'task' => 'get'
-                                ]
+                                'url' => []
                             ],
                             'link' => [
                                 'description' => 'Back',

@@ -39,6 +39,7 @@ $GLOBALS['_'] = $_ = \x\panel\type((static function ($icons) {
         $stack += 10;
         $list[$k] = $v;
     }
+    $_['lot']['bar']['lot'][0]['lot']['folder']['icon'] = 'M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z';
     $_['lot']['bar']['lot'][0]['lot']['folder']['lot'] = $list;
     $_['lot']['bar']['lot'][0]['lot']['search']['lot']['fields']['lot']['query'][2]['title'] = \i('Search in %s', ".\\lot\\" . \strtr($_['file'] && $path ? \dirname($path) : $path, '/', "\\"));
     $_['lot']['bar']['lot'][1]['lot']['license'] = [
