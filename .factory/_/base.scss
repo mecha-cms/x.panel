@@ -38,21 +38,22 @@ a {
 }
 
 :root {
-  background: var(--fill);
-  border: 0 solid var(--stroke);
-  color: var(--color);
+  background: var(--fill, none);
+  border: 0 solid;
+  border-color: var(--stroke, transparent);
+  color: var(--color, inherit);
   font: normal normal var(--font-size)/var(--font-height) var(--font-face);
   scroll-behavior: smooth;
   text-align: left;
 }
 
 abbr {
-  border: 0;
-  border-bottom: 1px solid transparent;
+  border: 0 solid transparent;
+  border-width: 0 0 1px;
   cursor: inherit;
   text-decoration: none;
   &[title]:hover {
-    border-bottom-color: var(--stroke);
+    border-color: var(--stroke, transparent);
     cursor: help;
   }
 }
@@ -97,12 +98,12 @@ s {
 }
 
 dialog {
-  background: var(--fill-dialog, var(--fill));
-  border: 0 solid transparent;
-  border-color: var(--stroke-dialog, var(--stroke));
+  background: var(--fill-dialog, var(--fill, none));
+  border: 0 solid;
+  border-color: var(--stroke-dialog, var(--stroke, transparent));
   bottom: 0;
-  box-shadow: var(--shadow-dialog, var(--shadow));
-  color: var(--color-dialog, var(--color));
+  box-shadow: var(--shadow-dialog, var(--shadow, none));
+  color: var(--color-dialog, var(--color, inherit));
   display: block;
   height: fit-content;
   left: 0;
@@ -118,7 +119,7 @@ dialog {
 
 dialog::backdrop {
   @include user-select(none);
-  background: var(--fill-dialog--backdrop, rgba(0, 0, 0, .5));
+  background: var(--fill-dialog--backdrop, rgba(0, 0, 0, 0.5));
 }
 
 dialog:not([open]) {
@@ -174,8 +175,8 @@ sup {
 }
 
 mark {
-  background: var(--fill-mark);
-  color: var(--color-mark);
+  background: var(--fill-mark, var(--fill, none));
+  color: var(--color-mark, var(--color, inherit));
 }
 
 pre {
@@ -185,12 +186,12 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
   code {
-    background: var(--fill-code-block);
+    background: var(--fill-code-block, var(--fill-code, var(--fill, none)));
     border: 0 solid;
-    border-color: var(--stroke-code-block);
-    border-radius: var(--arc-code-block);
-    box-shadow: var(--shadow-code-block);
-    color: var(--color-code-block);
+    border-color: var(--stroke-code-block, var(--stroke-code, var(--stroke, transparent)));
+    border-radius: var(--arc-code-block, var(--arc-code, var(--arc, 0)));
+    box-shadow: var(--shadow-code-block, var(--shadow-code, var(--shadow, none)));
+    color: var(--color-code-block, var(--color-code, var(--color, inherit)));
     display: block;
     padding: calc(var(--y) - var(--z)) calc(var(--x) / 2);
   }
@@ -227,25 +228,36 @@ table {
 
 @each $v in (-ms-browse, -webkit-file-upload-button, file-selector-button) {
   ::#{$v} {
-    background: rgba(128, 128, 128, .025);
-    border: 0;
-    color: var(--color-link);
+    background: var(--fill-input__file-selector-button, var(--fill-button, var(--fill, none)));
+    border: 0 solid;
+    border-color: var(--stroke-input__file-selector-button, var(--stroke-button, var(--stroke, transparent)));
+    border-radius: var(--arc-input__file-selector-button, var(--arc-button, var(--arc, 0)));
+    box-shadow: var(--shadow-input__file-selector-button, var(--shadow-button, var(--shadow, none)));
+    color: var(--color-input__file-selector-button, var(--color-button, var(--color-link, var(--color, inherit))));
     font: inherit;
     margin: 0;
     margin-inline-end: calc(var(--x) / 2);
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
     @each $w in (hover, focus, active) {
       &:#{$w} {
-        color: var(--color-link--#{$w}, var(--color-link));
+        background: var(--fill-input__file-selector-button--#{$w}, var(--fill-input__file-selector-button, var(--fill-button--#{$w}, var(--fill-button, var(--fill--#{$w}, var(--fill, none))))));
+        border-color: var(--stroke-input__file-selector-button--#{$w}, var(--stroke-input__file-selector-button, var(--stroke-button--#{$w}, var(--stroke-button, var(--stroke--#{$w}, var(--stroke, transparent))))));
+        border-radius: var(--arc-input__file-selector-button--#{$w}, var(--arc-input__file-selector-button, var(--arc-button--#{$w}, var(--arc-button, var(--arc--#{$w}, var(--arc, 0))))));
+        box-shadow: var(--shadow-input__file-selector-button--#{$w}, var(--shadow-input__file-selector-button, var(--shadow-button--#{$w}, var(--shadow-button, var(--shadow--#{$w}, var(--shadow, none))))));
+        color: var(--color-input__file-selector-button--#{$w}, var(--color-input__file-selector-button, var(--color-button--#{$w}, var(--color-button, var(--color-link--#{$w}, var(--color-link--#{$w}, var(--color-link, var(--color--#{$w}, var(--color, inherit)))))))));
       }
     }
   }
 }
 
-:disabled {
-  @each $v in (-ms-browse, -webkit-file-upload-button, file-selector-button) {
-    &::#{$v} {
-      color: var(--color-link--disabled);
+@each $v in (hover, focus, active, disabled) {
+  @each $w in (-ms-browse, -webkit-file-upload-button, file-selector-button) {
+    input:#{$v}::#{$w} {
+      background: var(--fill-input__file-selector-button--#{$v}, var(--fill-input__file-selector-button, var(--fill-button--#{$v}, var(--fill-button, var(--fill--#{$v}, var(--fill, none))))));
+      border-color: var(--stroke-input__file-selector-button--#{$v}, var(--stroke-input__file-selector-button, var(--stroke-button--#{$v}, var(--stroke-button, var(--stroke--#{$v}, var(--stroke, transparent))))));
+      border-radius: var(--arc-input__file-selector-button--#{$v}, var(--arc-input__file-selector-button, var(--arc-button--#{$v}, var(--arc-button, var(--arc--#{$v}, var(--arc, 0))))));
+      box-shadow: var(--shadow-input__file-selector-button--#{$v}, var(--shadow-input__file-selector-button, var(--shadow-button--#{$v}, var(--shadow-button, var(--shadow--#{$v}, var(--shadow, none))))));
+      color: var(--color-input__file-selector-button--#{$v}, var(--color-input__file-selector-button, var(--color-button--#{$v}, var(--color-button, var(--color-link--#{$v}, var(--color-link--#{$v}, var(--color-link, var(--color--#{$v}, var(--color, inherit)))))))));
     }
   }
 }
@@ -380,7 +392,8 @@ ul {
 
 fieldset,
 hr {
-  border: 1px solid var(--stroke);
+  border: 1px solid;
+  border-color: var(--stroke, transparent);
   color: inherit;
 }
 

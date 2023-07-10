@@ -1,21 +1,21 @@
 .lot\:page {
   @extend .lot\:file;
-  background: var(--fill-page, var(--fill-file, none));
-  border-color: var(--stroke-page, var(--stroke-file, transparent));
-  border-radius: var(--arc-page, var(--arc-file));
-  box-shadow: var(--shadow-page, var(--shadow-file));
+  background: var(--fill-page, var(--fill-file, var(--fill, none)));
+  border-color: var(--stroke-page, var(--stroke-file, var(--stroke, transparent)));
+  border-radius: var(--arc-page, var(--arc-file, var(--arc, 0)));
+  box-shadow: var(--shadow-page, var(--shadow-file, var(--shadow, none)));
   padding: calc(var(--y) / 2) calc(var(--x) / 4);
   @each $v in (focus, hover, active) {
     &:#{$v} {
-      background: var(--fill-page--#{$v}, var(--fill-page));
-      border-color: var(--stroke-page--#{$v}, var(--stroke-page));
-      box-shadow: var(--shadow-page--#{$v}, var(--shadow-page));
+      background: var(--fill-page--#{$v}, var(--fill-page, var(--fill-file--#{$v}, var(--fill-file, var(--fill, none)))));
+      border-color: var(--stroke-page--#{$v}, var(--stroke-page, var(--stroke-file--#{$v}, var(--stroke-file, var(--stroke, transparent)))));
+      box-shadow: var(--shadow-page--#{$v}, var(--shadow-page, var(--shadow-file--#{$v}, var(--shadow-file, var(--shadow, none)))));
     }
   }
   &.is\:current {
-    background: var(--fill-page--current, var(--fill-page));
-    border-color: var(--stroke-page--current, var(--stroke-page));
-    box-shadow: var(--shadow-page--current, var(--shadow-page));
+    background: var(--fill-page--current, var(--fill-page, var(--fill-file--current, var(--fill-file, var(--fill, none)))));
+    border-color: var(--stroke-page--current, var(--stroke-page, var(--stroke-file--current, var(--stroke-file, var(--stroke, transparent)))));
+    box-shadow: var(--shadow-page--current, var(--shadow-page, var(--shadow-file--current, var(--shadow-file, var(--shadow, none)))));
   }
   > * {
     margin: 0 calc(var(--x) / 4);

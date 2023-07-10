@@ -1,10 +1,10 @@
 [role='alert'] {
-  background: var(--fill-alert);
+  background: var(--fill-alert, var(--fill, none));
   border: 0 solid;
-  border-color: var(--stroke-alert);
-  border-radius: var(--arc-alert);
-  box-shadow: var(--shadow-alert);
-  color: var(--color-alert);
+  border-color: var(--stroke-alert, var(--stroke, transparent));
+  border-radius: var(--arc-alert, var(--arc, 0));
+  box-shadow: var(--shadow-alert, var(--shadow, none));
+  color: var(--color-alert, var(--color, inherit));
   padding: calc(var(--z) * .75) calc(var(--z) * 1.25);
   + [role='alert'] {
     margin-top: calc(var(--y) / 2);

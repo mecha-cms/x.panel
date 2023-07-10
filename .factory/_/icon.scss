@@ -27,7 +27,7 @@
   gap: 0 calc(var(--x) / 4);
   .icon {}
   .status {
-    color: var(--color-status);
+    color: var(--color-status, var(--color, inherit));
   }
   > span {
     flex: 1;

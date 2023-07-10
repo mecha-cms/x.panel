@@ -1,10 +1,10 @@
 .lot\:bar {
-  background: var(--fill-bar);
+  background: var(--fill-bar, var(--fill, none));
   border: 0 solid;
-  border-color: var(--stroke-bar);
-  border-radius: var(--arc-bar);
-  box-shadow: var(--shadow-bar);
-  color: var(--color-bar);
+  border-color: var(--stroke-bar, var(--stroke, transparent));
+  border-radius: var(--arc-bar, var(--arc, 0));
+  box-shadow: var(--shadow-bar, var(--shadow, none));
+  color: var(--color-bar, var(--color, inherit));
   display: flex;
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
@@ -23,8 +23,8 @@
       height: calc(var(--y) * 2);
       > li {
         > a {
-          background: var(--fill-bar-link, var(--fill-link, none));
-          color: var(--color-bar-link, var(--color-link));
+          background: var(--fill-bar-link, var(--fill-link, var(--fill, none)));
+          color: var(--color-bar-link, var(--color-link, var(--color, inherit)));
           display: flex;
           height: inherit;
           overflow: hidden;
@@ -39,16 +39,16 @@
                 margin-right: calc(var(--x) / -4);
               }
               &.caret {
-                color: var(--color-bar-caret, inherit);
+                fill: var(--color-bar-caret, var(--color-caret, var(--color, currentColor)));
                 margin-left: calc(var(--x) / -4);
                 margin-right: calc(var(--x) / -4);
               }
             }
             .status {
-              background: var(--fill-bar-status);
-              border-radius: var(--arc-bar-status);
-              box-shadow: var(--shadow-bar-status);
-              color: var(--color-bar-status);
+              background: var(--fill-bar-status, var(--fill-status, var(--fill, none)));
+              border-radius: var(--arc-bar-status, var(--arc-status, var(--arc, 0)));
+              box-shadow: var(--shadow-bar-status, var(--shadow-status, var(--shadow, none)));
+              color: var(--color-bar-status, var(--color-status, var(--color, inherit)));
               float: right;
               line-height: var(--h);
               margin: calc(var(--y) / 2) 0 0 calc(var(--x) / 4);
@@ -57,8 +57,8 @@
           }
           @each $v in (hover, focus, active) {
             &:#{$v} {
-              background: var(--fill-bar-link--#{$v}, var(--fill-bar-link));
-              color: var(--color-bar-link--#{$v}, var(--color-bar-link));
+              background: var(--fill-bar-link--#{$v}, var(--fill-bar-link, var(--fill-link--#{$v}, var(--fill-link, var(--fill, none)))));
+              color: var(--color-bar-link--#{$v}, var(--color-bar-link, var(--color-link--#{$v}, var(--color-link, var(--color, inherit)))));
             }
           }
         }
@@ -75,14 +75,14 @@
         }
         &.is\:current {
           > a {
-            background: var(--fill-bar-link--current, none);
-            color: var(--color-bar-link--current, inherit);
+            background: var(--fill-bar-link--current, var(--fill-bar-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
+            color: var(--color-bar-link--current, var(--color-bar-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
           }
         }
         &.not\:active {
           > a {
-            background: var(--fill-bar-link--disabled, none);
-            color: var(--color-bar-link--disabled, inherit);
+            background: var(--fill-bar-link--disabled, var(--fill-bar-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
+            color: var(--color-bar-link--disabled, var(--color-bar-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
           }
         }
       }

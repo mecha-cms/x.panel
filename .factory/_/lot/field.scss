@@ -46,8 +46,8 @@
           flex-direction: row;
         }
         &.has\:height {
-          // This prevents `lot:field.type:content`’s description from being pushed down due to the 100% height of its
-          // previous container (this very container) that has a `has:height` class on it. The default `has:height`
+          // This prevents `.lot:field.type:content`’s description from being pushed down due to the 100% height of its
+          // previous container (this very container) that has a `.has:height` class on it. The default `.has:height`
           // class gives the element’s height to be 100%
           height: auto;
         }
@@ -63,10 +63,10 @@
         }
         .fix {
           @include user-select(none);
-          background: var(--fill-fix, var(--fill-input));
+          background: var(--fill-fix, var(--fill-input, var(--fill, none)));
           border: 1px solid;
-          border-color: var(--stroke-fix, var(--stroke-input));
-          color: var(--color-fix, var(--color-output));
+          border-color: var(--stroke-fix, var(--stroke-input, var(--stroke, transparent)));
+          color: var(--color-fix, var(--color-output, var(--color, inherit)));
           cursor: default;
           height: calc(var(--y) * 1.5);
           line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px);

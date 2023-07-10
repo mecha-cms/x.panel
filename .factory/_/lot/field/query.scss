@@ -6,10 +6,10 @@ $name: tag-picker;
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
   width: var(--width-input);
   &--focus {
-    &:not(.is\:fix) {
-      @extend :focus-visible;
-      box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}));
-    }
+    @extend :focus-visible;
+    background: var(--fill-#{$name}--focus, var(--fill-#{$name}, var(--fill--focus, var(--fill, none))));
+    border-color: var(--stroke-#{$name}--focus, var(--stroke-#{$name}, var(--stroke--focus, var(--stroke, transparent))));
+    box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}, var(--shadow--focus, var(--shadow, none))));
   }
   &.has\:width {
     display: flex;
@@ -25,26 +25,16 @@ $name: tag-picker;
     padding: 0 calc(var(--z) / 2);
     // Fix link color specifity
     &-x:any-link {
-      color: var(--color-tag-picker__tag-x);
+      color: var(--color-#{$name}__tag-x, var(--color, inherit));
       @each $v in (hover, focus, active) {
         &:#{$v} {
-          color: var(--color-tag-picker__tag-x--#{$v}, var(--color-tag-picker__tag-x));
+          color: var(--color-#{$name}__tag-x--#{$v}, var(--color-#{$name}__tag-x, var(--color--#{$v}, var(--color, inherit))));
         }
       }
     }
   }
   &__source {
     position: fixed;
-    &:not(:read-only) {
-      // This is a fake `<input>` element with `tabindex`, so this will always match with the `:read-only` pseudo class
-      // But this element does not mean to be styled as a read-only `<input>` element, so we need to normalize it!
-      + .#{$name} {
-        --color-input--read-only: var(--color-input);
-        --fill-input--read-only: var(--fill-input);
-        --shadow-input--read-only: var(--shadow-input);
-        --stroke-input--read-only: var(--stroke-input);
-      }
-    }
     + .#{$name} {
       margin-left: 0 !important;
       .#{$name}__tag {

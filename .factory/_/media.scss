@@ -26,41 +26,43 @@
   }
   .lot\:tabs {
     .lot\:links {
-      border-bottom: 1px solid;
-      border-bottom-color: var(--stroke-tab--current, var(--stroke-tab));
+      border: 0 solid;
+      border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
+      border-width: 0 0 1px;
       line-height: calc(var(--y) * 2);
       li {
-        background: var(--fill-tab);
-        border-radius: var(--arc-tab);
+        background: var(--fill-tab, var(--fill, none));
+        border-radius: var(--arc-tab, var(--arc, 0));
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         border: 1px solid;
-        border-color: var(--stroke-tab);
+        border-color: var(--stroke-tab, var(--stroke, transparent));
         border-bottom-width: 0;
-        box-shadow: var(--shadow-tab);
+        box-shadow: var(--shadow-tab, var(--shadow, none));
         + li {
           margin-left: -1px;
         }
         &.has\:link {
-          background: var(--fill-tab-link, var(--fill-tab));
-          border-color: var(--stroke-tab-link, var(--stroke-tab));
-          box-shadow: var(--shadow-tab-link, var(--shadow-tab));
+          background: var(--fill-tab-link, var(--fill-tab, var(--fill-link, var(--fill, none))));
+          border-color: var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link, var(--stroke, transparent))));
+          box-shadow: var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link, var(--shadow, none))));
           @each $v in (hover, focus, active) {
             &:#{$v} {
-              background: var(--fill-tab-link--#{$v}, var(--fill-tab-link, var(--fill-tab)));
-              border-color: var(--stroke-tab-link--#{$v}, var(--stroke-tab-link, var(--stroke-tab)));
-              box-shadow: var(--shadow-tab-link--#{$v}, var(--shadow-tab-link, var(--shadow-tab)));
+              background: var(--fill-tab-link--#{$v}, var(--fill-tab-link, var(--fill-tab, var(--fill-link--#{$v}, var(--fill-link, var(--fill--#{$v}, var(--fill, none)))))));
+              border-color: var(--stroke-tab-link--#{$v}, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--#{$v}, var(--stroke-link, var(--stroke--#{$v}, var(--stroke, transparent)))))));
+              box-shadow: var(--shadow-tab-link--#{$v}, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--#{$v}, var(--shadow-link, var(--shadow--#{$v}, var(--shadow, none)))))));
             }
           }
         }
         &.is\:current {
-          background: var(--fill-tab--current, var(--fill-tab));
-          border-color: var(--stroke-tab--current, var(--stroke-tab));
-          box-shadow: var(--shadow-tab--current, var(--shadow-tab));
+          background: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
+          border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
+          box-shadow: var(--shadow-tab--current, var(--shadow-tab, var(--shadow--current, var(--shadow, none))));
           z-index: 1;
           &::after {
-            border-bottom: 1px solid;
-            border-bottom-color: var(--fill);
+            border: 0 solid;
+            border-color: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
+            border-width: 0 0 1px;
             bottom: -1px;
             content: "";
             left: 0;
@@ -70,8 +72,8 @@
           }
         }
         &.not\:active {
-          background: var(--fill-tab--disabled, var(--fill-tab));
-          border-color: var(--stroke-tab--disabled, var(--stroke-tab));
+          background: var(--fill-tab--disabled, var(--fill-tab, var(--fill--disabled, var(--fill, none))));
+          border-color: var(--stroke-tab--disabled, var(--stroke-tab, var(--stroke--disabled, var(--stroke, transparent))));
         }
       }
       a {
@@ -81,14 +83,14 @@
     &.has\:gap {
       .content\:tab,
       .lot\:tab {
-        background: var(--fill-tab);
+        background: var(--fill-tab, var(--fill, none));
         border: 1px solid;
-        border-color: var(--stroke-tab);
+        border-color: var(--stroke-tab, var(--stroke, transparent));
         border-top-width: 0;
         padding: var(--y) var(--x);
         &.is\:current {
-          background: var(--fill-tab--current, var(--fill-tab));
-          border-color: var(--stroke-tab--current, var(--stroke-tab));
+          background: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
+          border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
         }
       }
     }
@@ -100,7 +102,7 @@
     }
     &:not(.has\:current) {
       .lot\:links {
-        border-bottom-color: var(--stroke-tab);
+        border-color: var(--stroke-tab, var(--stroke, transparent));
       }
     }
   }
@@ -179,9 +181,9 @@
         margin-bottom: var(--y);
       }
       li {
-        color: var(--color--disabled);
+        color: var(--color--disabled, var(--color, inherit));
         &.is\:current {
-          color: var(--color);
+          color: var(--color--current, var(--color, inherit));
         }
         [role='link'],
         a:any-link {

@@ -3,17 +3,14 @@
     + div {
       .input {
         border: 1px dashed;
-        border-color: var(--stroke-input);
+        border-color: var(--stroke-input, var(--stroke, transparent));
         height: auto;
         line-height: normal;
         padding: var(--y) var(--x);
-        @each $v in (hover, focus, active) {
+        @each $v in (hover, focus, active, disabled) {
           &:#{$v} {
-            border-color: var(--stroke--input-#{$v}, var(--stroke-input));
+            border-color: var(--stroke--input--#{$v}, var(--stroke-input, var(--stroke, transparent)));
           }
-        }
-        &:disabled {
-          border-color: var(--stroke-input--disabled);
         }
       }
     }

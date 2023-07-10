@@ -1,22 +1,22 @@
 .a {
   color: inherit;
   &:where(:any-link) {
-    background: var(--fill-link, none);
-    color: var(--color-link);
+    background: var(--fill-link, var(--fill, none));
+    color: var(--color-link, var(--color, inherit));
     @each $v in (hover, focus, active) {
       &:#{$v} {
-        background: var(--fill-link--#{$v}, var(--fill-link, none));
-        color: var(--color-link--#{$v}, var(--color-link));
+        background: var(--fill-link--#{$v}, var(--fill-link, var(--fill--#{$v}, var(--fill, none))));
+        color: var(--color-link--#{$v}, var(--color-link, var(--color--#{$v}, var(--color, inherit))));
       }
     }
   }
   &:where([aria-disabled='true']:not([class])) {
-    background: var(--fill-link--disabled, var(--fill-link, none));
-    color: var(--color-link--disabled, var(--color-link));
+    background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
+    color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
   }
   &.not\:active {
-    background: var(--fill-link--disabled, var(--fill-link, none));
-    color: var(--color-link--disabled, var(--color-link));
+    background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
+    color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
   }
 }
 
@@ -25,7 +25,7 @@
 }
 
 .code {
-  color: var(--color-code);
+  color: var(--color-code, var(--color, inherit));
   font-family: var(--font-face-mono);
   font-size: 90%; // Magic :(
 }
@@ -35,11 +35,11 @@
 }
 
 .figure {
-  background: repeating-conic-gradient(rgba(128, 128, 128, .125) 0% 25%, rgba(0, 0, 0, 0) 0% 50%) 50% 50% / calc(var(--x) / 2) calc(var(--y) / 2);
+  background: var(--fill-figure, var(--fill, none));
   padding: var(--x) var(--y);
   [role='img'],
   img {
-    box-shadow: var(--shadow-dialog);
+    box-shadow: var(--shadow-dialog, var(--shadow, none));
   }
   figcaption {
     + * {
@@ -79,7 +79,7 @@
 }
 
 .not\:active {
-  color: var(--color--disabled, inherit);
+  color: var(--color--disabled, var(--color, inherit));
   cursor: not-allowed;
 }
 
@@ -106,7 +106,8 @@
   }
   th,
   td {
-    border: 1px solid var(--stroke);
+    border: 1px solid;
+    border-color: var(--stroke, transparent);
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
     text-align: inherit;
     vertical-align: top;

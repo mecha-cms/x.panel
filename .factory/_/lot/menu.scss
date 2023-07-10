@@ -8,10 +8,10 @@
 }
 
 .lot\:menu {
-  background: var(--fill-menu, var(--fill-menus, var(--fill)));
-  border-radius: var(--arc-menu);
-  box-shadow: var(--shadow-menu);
-  color: var(--color-menu);
+  background: var(--fill-menu, var(--fill, none));
+  border-radius: var(--arc-menu, var(--arc, 0));
+  box-shadow: var(--shadow-menu, var(--shadow, none));
+  color: var(--color-menu, var(--color, inherit));
   display: none;
   height: auto;
   line-height: var(--y);
@@ -39,16 +39,16 @@
       position: relative;
       &:hover {
         > a {
-          background: var(--fill-menu-link--hover, var(--fill-menu-link));
-          color: var(--color-menu-link--hover, var(--color-menu-link));
+          background: var(--fill-menu-link--hover, var(--fill-menu-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
+          color: var(--color-menu-link--hover, var(--color-menu-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
         }
         > .lot\:menu {
           display: block;
         }
       }
       > a {
-        background: var(--fill-menu-link, var(--fill-link, none));
-        color: var(--color-menu-link, var(--color-link));
+        background: var(--fill-menu-link, var(--fill-link, var(--fill, none)));
+        color: var(--color-menu-link, var(--color-link, var(--color, inherit)));
         display: flex;
         flex: 1;
         padding: calc(var(--y) / 4) calc(var(--x) / 2);
@@ -62,16 +62,16 @@
               margin-right: calc(var(--x) / 4);
             }
             &.caret {
-              color: var(--color-menu-caret, inherit);
+              fill: var(--color-menu-caret, var(--color-caret, var(--color, currentColor)));
               margin-left: calc(var(--x) / -4);
               margin-right: calc(var(--x) / -4);
             }
           }
           .status {
-            background: var(--fill-menu-status);
-            border-radius: var(--arc-menu-status);
-            box-shadow: var(--shadow-menu-status);
-            color: var(--color-menu-status);
+            background: var(--fill-menu-status, var(--fill-status, var(--fill, none)));
+            border-radius: var(--arc-menu-status, var(--arc-status, var(--arc, 0)));
+            box-shadow: var(--shadow-menu-status, var(--shadow-status, var(--shadow, none)));
+            color: var(--color-menu-status, var(--color-status, var(--color, inherit)));
             float: right;
             margin: 0 calc(var(--x) / -4) 0 0;
             padding: 0 calc(var(--x) / 4);
@@ -79,8 +79,8 @@
         }
         @each $v in (hover, focus, active) {
           &:#{$v} {
-            background: var(--fill-menu-link--#{$v}, var(--fill-menu-link));
-            color: var(--color-menu-link--#{$v}, var(--color-menu-link));
+            background: var(--fill-menu-link--#{$v}, var(--fill-menu-link, var(--fill-link--#{$v}, var(--fill-link, var(--fill, none)))));
+            color: var(--color-menu-link--#{$v}, var(--color-menu-link, var(--color-link--#{$v}, var(--color-link, var(--color, inherit)))));
           }
         }
         &:focus {
@@ -101,14 +101,14 @@
       }
       &.is\:current {
         > a {
-          background: var(--fill-menu-link--current, none);
-          color: var(--color-menu-link--current, inherit);
+          background: var(--fill-menu-link--current, var(--fill-menu-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
+          color: var(--color-menu-link--current, var(--color-menu-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
         }
       }
       &.not\:active {
         > a {
-          background: var(--fill-menu-link--disabled, none);
-          color: var(--color-menu-link--disabled, inherit);
+          background: var(--fill-menu-link--disabled, var(--fill-menu-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
+          color: var(--color-menu-link--disabled, var(--color-menu-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
         }
       }
     }

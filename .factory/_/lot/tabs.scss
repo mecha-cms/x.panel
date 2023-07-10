@@ -12,32 +12,32 @@
     }
     li {
       @include user-select(none);
-      color: var(--color-tab);
+      color: var(--color-tab, var(--color, inherit));
       position: relative;
       a {
         color: inherit;
         display: flex;
         @each $v in (hover, focus, active) {
           &:#{$v} {
-            color: var(--color-tab--#{$v}, var(--color-tab));
+            color: var(--color-tab--#{$v}, var(--color-tab, var(--color, inherit)));
           }
         }
       }
       &.has\:link {
-        color: var(--color-tab-link, var(--color-tab));
+        color: var(--color-tab-link, var(--color-tab, var(--color-link, var(--color, inherit))));
         > a {
           @each $v in (hover, focus, active) {
             &:#{$v} {
-              color: var(--color-tab-link--#{$v}, var(--color-tab-link));
+              color: var(--color-tab-link--#{$v}, var(--color-tab-link, var(--color-tab--#{$v}, var(--color-tab, var(--color-link--#{$v}, var(--color-link, var(--color, inherit)))))));
             }
           }
         }
       }
       &.is\:current {
-        color: var(--color-tab--current, var(--color-tab));
+        color: var(--color-tab--current, var(--color-tab, var(--color, inherit)));
       }
       &.not\:active {
-        color: var(--color-tab--disabled, var(--color-tab));
+        color: var(--color-tab--disabled, var(--color-tab, var(--color, inherit)));
         > a {
           @each $v in (hover, focus, active) {
             &:#{$v} {
