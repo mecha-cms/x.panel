@@ -21,15 +21,14 @@ if (!is_dir($folder = $_['folder'] ?? P)) {
 }
 
 $bounds = [];
-$chunk = $_['chunk'] ?? 20;
+$chunk = $_['query']['chunk'] ?? 20;
 $count = 0;
 $part = $_['part'] ?? 1;
 $query = strtolower(s($_['query']['query'] ?? ""));
+$sort = array_replace([1, 'title'], (array) ($_['query']['sort'] ?? []));
 $token = $_['token'] ?? null;
 
 $files = $pages = [];
-
-$sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($_['sort'] ?? []));
 
 foreach ($query ? k($folder, 'page', 1, preg_split('/\s+/', $query)) : g($folder, 'page', 1) as $k => $v) {
     if ('about.page' !== basename($k) || isset($pages[$k])) {

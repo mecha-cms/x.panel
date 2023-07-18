@@ -50,18 +50,24 @@ if (!is_dir($folder = $_['folder'] ?? P)) {
     return $_;
 }
 
+$page = new Page(exist([
+    $folder . '.archive',
+    $folder . '.draft',
+    $folder . '.page'
+], 1) ?: null);
+
 $author = $user->user;
-$chunk = $_['chunk'] ?? 20;
+$chunk = $page->chunk ?? $_['chunk'] ?? 20;
 $count = 0;
 $deep = $_['deep'] ?? 0;
 $part = $_['part'] ?? 1;
 $query = strtolower(s($_['query']['query'] ?? ""));
+$sort = array_replace((array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
 $super = 1 === $user->status;
 $token = $_['token'] ?? null;
 $x = $_['x'] ?? 'archive,draft,page';
 
 $files = $pages = [];
-$sort = array_replace("" !== $query ? [] : [1, 'path'], (array) ($_['sort'] ?? []));
 
 foreach ($query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep) as $k => $v) {
     if (false !== strpos(',.archive,.draft,.page,', basename($k)) || isset($pages[$k])) {
