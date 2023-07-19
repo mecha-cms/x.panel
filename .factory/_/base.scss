@@ -237,6 +237,7 @@ table {
     font: inherit;
     margin: 0;
     margin-inline-end: calc(var(--x) / 2);
+    outline: 0;
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
     @each $w in (hover, focus, active) {
       &:#{$w} {
@@ -245,6 +246,7 @@ table {
         border-radius: var(--arc-input__file-selector-button--#{$w}, var(--arc-input__file-selector-button, var(--arc-button--#{$w}, var(--arc-button, var(--arc--#{$w}, var(--arc, 0))))));
         box-shadow: var(--shadow-input__file-selector-button--#{$w}, var(--shadow-input__file-selector-button, var(--shadow-button--#{$w}, var(--shadow-button, var(--shadow--#{$w}, var(--shadow, none))))));
         color: var(--color-input__file-selector-button--#{$w}, var(--color-input__file-selector-button, var(--color-button--#{$w}, var(--color-button, var(--color-link--#{$w}, var(--color-link--#{$w}, var(--color-link, var(--color--#{$w}, var(--color, inherit)))))))));
+        outline: 0;
       }
     }
   }
@@ -258,6 +260,7 @@ table {
       border-radius: var(--arc-input__file-selector-button--#{$v}, var(--arc-input__file-selector-button, var(--arc-button--#{$v}, var(--arc-button, var(--arc--#{$v}, var(--arc, 0))))));
       box-shadow: var(--shadow-input__file-selector-button--#{$v}, var(--shadow-input__file-selector-button, var(--shadow-button--#{$v}, var(--shadow-button, var(--shadow--#{$v}, var(--shadow, none))))));
       color: var(--color-input__file-selector-button--#{$v}, var(--color-input__file-selector-button, var(--color-button--#{$v}, var(--color-button, var(--color-link--#{$v}, var(--color-link--#{$v}, var(--color-link, var(--color--#{$v}, var(--color, inherit)))))))));
+      outline: 0;
     }
   }
 }

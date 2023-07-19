@@ -104,9 +104,11 @@ return x\panel\type\page\page(array_replace_recursive($_, [
                                                             'value' => $page_sort === $sort ? null : json_encode($page_sort)
                                                         ],
                                                         'state.x' => [
+                                                            'skip' => null,
                                                             'values' => $page_state['x'] ?? []
                                                         ],
                                                         'state.y' => [
+                                                            'skip' => null,
                                                             'values' => $page_state['y'] ?? []
                                                         ]
                                                     ]
