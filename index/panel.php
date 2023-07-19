@@ -290,32 +290,34 @@ function route__panel($content, $path, $query, $hash) {
     return ['panel', [], (int) ($_['status'] ?? 404)];
 }
 
+function set() {
+    foreach (\glob(\LOT . \D . '{x,y}' . \D . '*' . \D . 'index' . \D . 'panel.php', \GLOB_BRACE | \GLOB_NOSORT) as $file) {
+        // Ignore this very file!
+        if (__FILE__ === $file) {
+            continue;
+        }
+        // Include this file only if current extension/layout is active.
+        // An active extension/layout will have an `index.php` file.
+        if (!\is_file(\dirname($file) . '.php')) {
+            continue;
+        }
+        (static function ($f) {
+            \extract($GLOBALS, \EXTR_SKIP);
+            require $f;
+            if (isset($_)) {
+                // Update panel data from the special panel file!
+                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            }
+        })($file);
+    }
+}
+
 // Remove all front-end route(s)
 \Hook::let('route');
 
 // But final front-end route(s)
 \Hook::set('route', "x\\layout\\route", 1000);
 
-// Load `route.panel` hook only if user is active!
 \Hook::set('route', __NAMESPACE__ . "\\route", 0);
 \Hook::set('route.panel', __NAMESPACE__ . "\\route__panel", 100);
-
-foreach (\glob(\LOT . \D . '{x,y}' . \D . '*' . \D . 'index' . \D . 'panel.php', \GLOB_BRACE | \GLOB_NOSORT) as $file) {
-    // Ignore this very file!
-    if (__FILE__ === $file) {
-        continue;
-    }
-    // Include this file only if current extension/layout is active.
-    // An active extension/layout will have an `index.php` file.
-    if (!\is_file(\dirname($file) . '.php')) {
-        continue;
-    }
-    (static function ($f) {
-        \extract($GLOBALS, \EXTR_SKIP);
-        require $f;
-        if (isset($_)) {
-            // Update panel data from the special panel file!
-            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
-        }
-    })($file);
-}
+\Hook::set('set', __NAMESPACE__ . "\\set", 0);
