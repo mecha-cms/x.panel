@@ -1026,7 +1026,6 @@ pre code {
   font: inherit;
   margin: 0;
   margin-inline-end: calc(var(--x) / 2);
-  outline: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 ::-ms-browse:hover {
@@ -1035,7 +1034,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--hover, var(--arc-input__file-selector-button, var(--arc-button--hover, var(--arc-button, var(--arc--hover, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--hover, var(--shadow-input__file-selector-button, var(--shadow-button--hover, var(--shadow-button, var(--shadow--hover, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--hover, var(--color-input__file-selector-button, var(--color-button--hover, var(--color-button, var(--color-link--hover, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit)))))))));
-  outline: 0;
 }
 ::-ms-browse:focus {
   background: var(--fill-input__file-selector-button--focus, var(--fill-input__file-selector-button, var(--fill-button--focus, var(--fill-button, var(--fill--focus, var(--fill, none))))));
@@ -1043,7 +1041,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--focus, var(--arc-input__file-selector-button, var(--arc-button--focus, var(--arc-button, var(--arc--focus, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--focus, var(--shadow-input__file-selector-button, var(--shadow-button--focus, var(--shadow-button, var(--shadow--focus, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--focus, var(--color-input__file-selector-button, var(--color-button--focus, var(--color-button, var(--color-link--focus, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit)))))))));
-  outline: 0;
 }
 ::-ms-browse:active {
   background: var(--fill-input__file-selector-button--active, var(--fill-input__file-selector-button, var(--fill-button--active, var(--fill-button, var(--fill--active, var(--fill, none))))));
@@ -1051,7 +1048,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--active, var(--arc-input__file-selector-button, var(--arc-button--active, var(--arc-button, var(--arc--active, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--active, var(--shadow-input__file-selector-button, var(--shadow-button--active, var(--shadow-button, var(--shadow--active, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--active, var(--color-input__file-selector-button, var(--color-button--active, var(--color-button, var(--color-link--active, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 ::-webkit-file-upload-button {
@@ -1064,7 +1060,6 @@ pre code {
   font: inherit;
   margin: 0;
   margin-inline-end: calc(var(--x) / 2);
-  outline: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 ::-webkit-file-upload-button:hover {
@@ -1073,7 +1068,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--hover, var(--arc-input__file-selector-button, var(--arc-button--hover, var(--arc-button, var(--arc--hover, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--hover, var(--shadow-input__file-selector-button, var(--shadow-button--hover, var(--shadow-button, var(--shadow--hover, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--hover, var(--color-input__file-selector-button, var(--color-button--hover, var(--color-button, var(--color-link--hover, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit)))))))));
-  outline: 0;
 }
 ::-webkit-file-upload-button:focus {
   background: var(--fill-input__file-selector-button--focus, var(--fill-input__file-selector-button, var(--fill-button--focus, var(--fill-button, var(--fill--focus, var(--fill, none))))));
@@ -1081,7 +1075,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--focus, var(--arc-input__file-selector-button, var(--arc-button--focus, var(--arc-button, var(--arc--focus, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--focus, var(--shadow-input__file-selector-button, var(--shadow-button--focus, var(--shadow-button, var(--shadow--focus, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--focus, var(--color-input__file-selector-button, var(--color-button--focus, var(--color-button, var(--color-link--focus, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit)))))))));
-  outline: 0;
 }
 ::-webkit-file-upload-button:active {
   background: var(--fill-input__file-selector-button--active, var(--fill-input__file-selector-button, var(--fill-button--active, var(--fill-button, var(--fill--active, var(--fill, none))))));
@@ -1089,7 +1082,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--active, var(--arc-input__file-selector-button, var(--arc-button--active, var(--arc-button, var(--arc--active, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--active, var(--shadow-input__file-selector-button, var(--shadow-button--active, var(--shadow-button, var(--shadow--active, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--active, var(--color-input__file-selector-button, var(--color-button--active, var(--color-button, var(--color-link--active, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 ::file-selector-button {
@@ -1102,7 +1094,6 @@ pre code {
   font: inherit;
   margin: 0;
   margin-inline-end: calc(var(--x) / 2);
-  outline: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 ::file-selector-button:hover {
@@ -1111,7 +1102,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--hover, var(--arc-input__file-selector-button, var(--arc-button--hover, var(--arc-button, var(--arc--hover, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--hover, var(--shadow-input__file-selector-button, var(--shadow-button--hover, var(--shadow-button, var(--shadow--hover, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--hover, var(--color-input__file-selector-button, var(--color-button--hover, var(--color-button, var(--color-link--hover, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit)))))))));
-  outline: 0;
 }
 ::file-selector-button:focus {
   background: var(--fill-input__file-selector-button--focus, var(--fill-input__file-selector-button, var(--fill-button--focus, var(--fill-button, var(--fill--focus, var(--fill, none))))));
@@ -1119,7 +1109,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--focus, var(--arc-input__file-selector-button, var(--arc-button--focus, var(--arc-button, var(--arc--focus, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--focus, var(--shadow-input__file-selector-button, var(--shadow-button--focus, var(--shadow-button, var(--shadow--focus, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--focus, var(--color-input__file-selector-button, var(--color-button--focus, var(--color-button, var(--color-link--focus, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit)))))))));
-  outline: 0;
 }
 ::file-selector-button:active {
   background: var(--fill-input__file-selector-button--active, var(--fill-input__file-selector-button, var(--fill-button--active, var(--fill-button, var(--fill--active, var(--fill, none))))));
@@ -1127,7 +1116,6 @@ pre code {
   border-radius: var(--arc-input__file-selector-button--active, var(--arc-input__file-selector-button, var(--arc-button--active, var(--arc-button, var(--arc--active, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--active, var(--shadow-input__file-selector-button, var(--shadow-button--active, var(--shadow-button, var(--shadow--active, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--active, var(--color-input__file-selector-button, var(--color-button--active, var(--color-button, var(--color-link--active, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:hover::-ms-browse {
@@ -1136,7 +1124,6 @@ input:hover::-ms-browse {
   border-radius: var(--arc-input__file-selector-button--hover, var(--arc-input__file-selector-button, var(--arc-button--hover, var(--arc-button, var(--arc--hover, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--hover, var(--shadow-input__file-selector-button, var(--shadow-button--hover, var(--shadow-button, var(--shadow--hover, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--hover, var(--color-input__file-selector-button, var(--color-button--hover, var(--color-button, var(--color-link--hover, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:hover::-webkit-file-upload-button {
@@ -1145,7 +1132,6 @@ input:hover::-webkit-file-upload-button {
   border-radius: var(--arc-input__file-selector-button--hover, var(--arc-input__file-selector-button, var(--arc-button--hover, var(--arc-button, var(--arc--hover, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--hover, var(--shadow-input__file-selector-button, var(--shadow-button--hover, var(--shadow-button, var(--shadow--hover, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--hover, var(--color-input__file-selector-button, var(--color-button--hover, var(--color-button, var(--color-link--hover, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:hover::file-selector-button {
@@ -1154,7 +1140,6 @@ input:hover::file-selector-button {
   border-radius: var(--arc-input__file-selector-button--hover, var(--arc-input__file-selector-button, var(--arc-button--hover, var(--arc-button, var(--arc--hover, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--hover, var(--shadow-input__file-selector-button, var(--shadow-button--hover, var(--shadow-button, var(--shadow--hover, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--hover, var(--color-input__file-selector-button, var(--color-button--hover, var(--color-button, var(--color-link--hover, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:focus::-ms-browse {
@@ -1163,7 +1148,6 @@ input:focus::-ms-browse {
   border-radius: var(--arc-input__file-selector-button--focus, var(--arc-input__file-selector-button, var(--arc-button--focus, var(--arc-button, var(--arc--focus, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--focus, var(--shadow-input__file-selector-button, var(--shadow-button--focus, var(--shadow-button, var(--shadow--focus, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--focus, var(--color-input__file-selector-button, var(--color-button--focus, var(--color-button, var(--color-link--focus, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:focus::-webkit-file-upload-button {
@@ -1172,7 +1156,6 @@ input:focus::-webkit-file-upload-button {
   border-radius: var(--arc-input__file-selector-button--focus, var(--arc-input__file-selector-button, var(--arc-button--focus, var(--arc-button, var(--arc--focus, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--focus, var(--shadow-input__file-selector-button, var(--shadow-button--focus, var(--shadow-button, var(--shadow--focus, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--focus, var(--color-input__file-selector-button, var(--color-button--focus, var(--color-button, var(--color-link--focus, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:focus::file-selector-button {
@@ -1181,7 +1164,6 @@ input:focus::file-selector-button {
   border-radius: var(--arc-input__file-selector-button--focus, var(--arc-input__file-selector-button, var(--arc-button--focus, var(--arc-button, var(--arc--focus, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--focus, var(--shadow-input__file-selector-button, var(--shadow-button--focus, var(--shadow-button, var(--shadow--focus, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--focus, var(--color-input__file-selector-button, var(--color-button--focus, var(--color-button, var(--color-link--focus, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:active::-ms-browse {
@@ -1190,7 +1172,6 @@ input:active::-ms-browse {
   border-radius: var(--arc-input__file-selector-button--active, var(--arc-input__file-selector-button, var(--arc-button--active, var(--arc-button, var(--arc--active, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--active, var(--shadow-input__file-selector-button, var(--shadow-button--active, var(--shadow-button, var(--shadow--active, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--active, var(--color-input__file-selector-button, var(--color-button--active, var(--color-button, var(--color-link--active, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:active::-webkit-file-upload-button {
@@ -1199,7 +1180,6 @@ input:active::-webkit-file-upload-button {
   border-radius: var(--arc-input__file-selector-button--active, var(--arc-input__file-selector-button, var(--arc-button--active, var(--arc-button, var(--arc--active, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--active, var(--shadow-input__file-selector-button, var(--shadow-button--active, var(--shadow-button, var(--shadow--active, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--active, var(--color-input__file-selector-button, var(--color-button--active, var(--color-button, var(--color-link--active, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:active::file-selector-button {
@@ -1208,7 +1188,6 @@ input:active::file-selector-button {
   border-radius: var(--arc-input__file-selector-button--active, var(--arc-input__file-selector-button, var(--arc-button--active, var(--arc-button, var(--arc--active, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--active, var(--shadow-input__file-selector-button, var(--shadow-button--active, var(--shadow-button, var(--shadow--active, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--active, var(--color-input__file-selector-button, var(--color-button--active, var(--color-button, var(--color-link--active, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:disabled::-ms-browse,
@@ -1218,7 +1197,6 @@ input.button.not\:active::-ms-browse {
   border-radius: var(--arc-input__file-selector-button--disabled, var(--arc-input__file-selector-button, var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--disabled, var(--shadow-input__file-selector-button, var(--shadow-button--disabled, var(--shadow-button, var(--shadow--disabled, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--disabled, var(--color-input__file-selector-button, var(--color-button--disabled, var(--color-button, var(--color-link--disabled, var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:disabled::-webkit-file-upload-button,
@@ -1228,7 +1206,6 @@ input.button.not\:active::-webkit-file-upload-button {
   border-radius: var(--arc-input__file-selector-button--disabled, var(--arc-input__file-selector-button, var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--disabled, var(--shadow-input__file-selector-button, var(--shadow-button--disabled, var(--shadow-button, var(--shadow--disabled, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--disabled, var(--color-input__file-selector-button, var(--color-button--disabled, var(--color-button, var(--color-link--disabled, var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 input:disabled::file-selector-button,
@@ -1238,7 +1215,6 @@ input.button.not\:active::file-selector-button {
   border-radius: var(--arc-input__file-selector-button--disabled, var(--arc-input__file-selector-button, var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))))));
   box-shadow: var(--shadow-input__file-selector-button--disabled, var(--shadow-input__file-selector-button, var(--shadow-button--disabled, var(--shadow-button, var(--shadow--disabled, var(--shadow, none))))));
   color: var(--color-input__file-selector-button--disabled, var(--color-input__file-selector-button, var(--color-button--disabled, var(--color-button, var(--color-link--disabled, var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit)))))))));
-  outline: 0;
 }
 
 [role=button],

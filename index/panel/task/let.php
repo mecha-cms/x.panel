@@ -38,7 +38,7 @@ function data($_) {
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],
                 'trash' => null,
-                'type' => $_POST['type'] ?? null
+                // 'type' => $_POST['type'] ?? null
             ])),
             'task' => 'get'
         ];
@@ -90,7 +90,7 @@ function file($_) {
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],
                 'trash' => null,
-                'type' => $_POST['type'] ?? null
+                // 'type' => $_POST['type'] ?? null
             ])),
             'task' => 'get'
         ];
@@ -159,7 +159,7 @@ function folder($_) {
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],
                 'trash' => null,
-                'type' => $_POST['type'] ?? null
+                // 'type' => $_POST['type'] ?? null
             ])),
             'task' => 'get'
         ];
