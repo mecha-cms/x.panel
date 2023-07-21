@@ -84,7 +84,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
                 continue;
             }
             if (0 === strpos($k, 'data[')) {
-                $apart[substr(explode(']', $k, 2)[0], 5)] = 1;
+                $apart[substr(strstr($k, ']', true), 5)] = 1;
             }
         }
     }
@@ -98,7 +98,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
                 foreach ($vv['fields']['lot'] as $kkk => $vvv) {
                     $vvvv = $vvv['name'] ?? $kkk;
                     if (0 === strpos($vvvv, 'data[')) {
-                        $apart[substr(explode(']', $vvvv, 2)[0], 5)] = 1;
+                        $apart[substr(strstr($vvvv, ']', true), 5)] = 1;
                     }
                 }
             }

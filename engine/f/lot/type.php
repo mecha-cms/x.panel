@@ -1373,7 +1373,7 @@ function stacks($value, $key) {
                     $has_current = true;
                 }
                 if (empty($v['url']) && empty($v['link'])) {
-                    $v['url'] = '?' . \explode('?', \x\panel\to\link(['query' => ['stack' => [$name => $kk]]]), 2)[1];
+                    $v['url'] = \strstr(\x\panel\to\link(['query' => ['stack' => [$name => $kk]]]), '?');
                 } else {
                     $v['has']['link'] = $v['has']['link'] ?? true;
                     if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {
@@ -1458,7 +1458,7 @@ function tabs($value, $key) {
                 $v[3]['tabindex'] = -1;
                 $v[3]['target'] = $v[2]['target'] ?? $v['target'] ?? 'tab:' . $kk;
                 if (empty($v['url']) && empty($v['link']) && (!\array_key_exists('active', $v) || $v['active'])) {
-                    $v['url'] = '?' . \explode('?', \x\panel\to\link(['query' => ['tab' => [$name => $kk]]]), 2)[1];
+                    $v['url'] = \strstr(\x\panel\to\link(['query' => ['tab' => [$name => $kk]]]), '?');
                 } else {
                     $v['has']['link'] = $v['has']['link'] ?? (!\array_key_exists('active', $v) || $v['active']);
                     if (!\array_key_exists('content', $v) && !\array_key_exists('lot', $v)) {
