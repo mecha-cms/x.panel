@@ -687,6 +687,7 @@
             'value': 'true'
         }),
         dialogConfirmTaskCancel = setElement('button', 'Cancel', {
+            'autofocus': true,
             'class': 'button',
             'type': 'reset',
             'value': 'false'
