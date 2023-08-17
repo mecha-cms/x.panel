@@ -186,7 +186,7 @@ function description($value, $key) {
 
 function email($value, $key) {
     $value['hint'] = $value['hint'] ?? (\S . \i('hello') . \S . '@' . \S . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']) . \S);
-    $value['pattern'] = $value['pattern'] ?? "[a-z\\d]+([_.-][a-z\\d]+)*@[a-z\\d]+([_.-][a-z\\d]+)*(\\.[a-z]+)";
+    $value['pattern'] = $value['pattern'] ?? "[a-z\\d]+([_.\\-][a-z\\d]+)*@[a-z\\d]+([_.\\-][a-z\\d]+)*(\\.[a-z]+)";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -381,7 +381,7 @@ function name($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.baz' : ""));
     $value['max'] = $value['max'] ?? 255; // <https://serverfault.com/a/9548>
     $value['min'] = $value['min'] ?? $x ? 2 : 1;
-    $value['pattern'] = $value['pattern'] ?? "([_.]?[a-z\\d" . \x($keep) . "]+([_.-][a-z\\d" . \x($keep) . "]+)*)?" . $x;
+    $value['pattern'] = $value['pattern'] ?? "([_.]?[a-z\\d" . \x($keep) . "]+([_.\\-][a-z\\d" . \x($keep) . "]+)*)?" . $x;
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
@@ -424,14 +424,14 @@ function path($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : "\\foo\\bar\\baz");
     $value['max'] = $value['max'] ?? (260 - (\strlen(\PATH) + 1)); // <https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation>
     $value['min'] = 0;
-    $value['pattern'] = $value['pattern'] ?? "([\\\\/][._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+";
+    $value['pattern'] = $value['pattern'] ?? "([\\\\\\/][._]?[a-z\\d" . \x($keep) . "]+([._\\-][a-z\\d" . \x($keep) . "]+)*)+";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
 
 function query($value, $key) {
     $value['hint'] = $value['hint'] ?? 'foo, bar, baz';
-    $value['pattern'] = $value['pattern'] ?? "([A-Za-z\\d]+([- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([- ][A-Za-z\\d]+)*)*";
+    $value['pattern'] = $value['pattern'] ?? "([A-Za-z\\d]+([\\- ][A-Za-z\\d]+)*)(\\s*,\\s*[A-Za-z\\d]+([\\- ][A-Za-z\\d]+)*)*";
     $values = (array) (!empty($value['values']) ? $value['values'] : ($value['value'] ?? []));
     // Key-value pair(s)
     if (\array_keys($values) !== \range(0, \count($values) - 1)) {
@@ -473,7 +473,7 @@ function route($value, $key) {
     $keep = (string) ($value['keep'] ?? "");
     $v = (string) ($value['value'] ?? "");
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : '/foo/bar/baz');
-    $value['pattern'] = $value['pattern'] ?? "(\\/[._]?[a-z\\d" . \x($keep) . "]+([._-][a-z\\d" . \x($keep) . "]+)*)+";
+    $value['pattern'] = $value['pattern'] ?? "(\\/[._]?[a-z\\d" . \x($keep) . "]+([._\\-][a-z\\d" . \x($keep) . "]+)*)+";
     $value[2]['autocapitalize'] = 'off';
     return \x\panel\lot\type\field\text($value, $key);
 }
