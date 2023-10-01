@@ -1214,7 +1214,7 @@ function select($value, $key) {
             foreach ($v['lot'] as $kk => $vv) {
                 $option = new \HTML(['option', "", [
                     'selected' => null !== $the_value && (string) $the_value === (string) $kk,
-                    'value' => $is_options_group_flat ? null : $kk
+                    'value' => $vv['value'] ?? ($is_options_group_flat ? null : $kk)
                 ]]);
                 if (\is_array($vv) && \array_key_exists('title', $vv)) {
                     $tt = $vv['title'] ?? $kk;
@@ -1236,7 +1236,7 @@ function select($value, $key) {
         } else {
             $option = new \HTML(['option', $k, [
                 'selected' => null !== $the_value && (string) $the_value === (string) $k,
-                'value' => $is_options_flat ? null : $k
+                'value' => $v['value'] ?? ($is_options_flat ? null : $k)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = $v['title'] ?? $k;
