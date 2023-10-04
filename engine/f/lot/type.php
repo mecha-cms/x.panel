@@ -259,7 +259,7 @@ function field($value, $key) {
     }
     $decors_field = $tags_field = [];
     if (isset($value['height']) && false !== $value['height']) {
-        $tags_field['has']['height'] = $value['has']['height'] ?? true;
+        $value['has']['height'] = $value['has']['height'] ?? true;
         if (true !== $value['height']) {
             if (\is_array($value['height'])) {
                 if (isset($value['height'][0])) {
@@ -277,7 +277,7 @@ function field($value, $key) {
         }
     }
     if (isset($value['width']) && false !== $value['width']) {
-        $tags_field['has']['width'] = $value['has']['width'] ?? true;
+        $value['has']['width'] = $value['has']['width'] ?? true;
         if (true !== $value['width']) {
             if (\is_array($value['width'])) {
                 if (isset($value['width'][0])) {
@@ -312,7 +312,10 @@ function field($value, $key) {
     if (isset($value['field'])) {
         if (\is_array($value['field'])) {
             $value['field'][2] = \x\panel\lot\_decor_set($value['field'][2] ?? [], ['decors' => $decors_field]);
-            $value['field'][2] = \x\panel\lot\_tag_set($value['field'][2] ?? [], ['tags' => $tags_field]);
+            $value['field'][2] = \x\panel\lot\_tag_set($value['field'][2] ?? [], [
+                'has' => $value['has'] ?? [],
+                'tags' => $tags_field
+            ]);
         }
         $content = (string) \x\panel\to\content($value['field']);
         $value[1]['field'][1][] = [
