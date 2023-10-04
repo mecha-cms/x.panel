@@ -21,6 +21,9 @@ function _decor_set(array $attr, array $value = []) {
     }
     $out = "";
     foreach ($decors as $k => $v) {
+        if (false === $v || null === $v) {
+            continue;
+        }
         $out .= $k . ': ' . (\is_int($v) ? $v . 'px' : $v) . '; ';
     }
     $out = \trim($out);

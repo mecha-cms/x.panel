@@ -136,7 +136,19 @@ function desk($value, $key) {
     if (isset($value['width']) && false !== $value['width']) {
         $value['has']['width'] = $value['has']['width'] ?? true;
         if (true !== $value['width']) {
-            $value['decors']['width'] = $value['width'];
+            if (\is_array($value['width'])) {
+                if (isset($value['width'][0])) {
+                    $value['decors']['min-width'] = $value['width'][0];
+                }
+                if (isset($value['width'][1])) {
+                    $value['decors']['width'] = $value['width'][1];
+                }
+                if (isset($value['width'][2])) {
+                    $value['decors']['max-width'] = $value['width'][2];
+                }
+            } else {
+                $value['decors']['width'] = $value['width'];
+            }
         }
     }
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
@@ -247,15 +259,39 @@ function field($value, $key) {
     }
     $decors_field = $tags_field = [];
     if (isset($value['height']) && false !== $value['height']) {
-        $tags_field['has:height'] = true;
+        $tags_field['has']['height'] = $value['has']['height'] ?? true;
         if (true !== $value['height']) {
-            $decors_field['height'] = \is_int($value['height']) ? $value['height'] . 'px' : $value['height'];
+            if (\is_array($value['height'])) {
+                if (isset($value['height'][0])) {
+                    $decors_field['min-height'] = $value['height'][0];
+                }
+                if (isset($value['height'][1])) {
+                    $decors_field['height'] = $value['height'][1];
+                }
+                if (isset($value['height'][2])) {
+                    $decors_field['max-height'] = $value['height'][2];
+                }
+            } else {
+                $decors_field['height'] = $value['height'];
+            }
         }
     }
     if (isset($value['width']) && false !== $value['width']) {
-        $tags_field['has:width'] = true;
+        $tags_field['has']['width'] = $value['has']['width'] ?? true;
         if (true !== $value['width']) {
-            $decors_field['width'] = \is_int($value['width']) ? $value['width'] . 'px' : $value['width'];
+            if (\is_array($value['width'])) {
+                if (isset($value['width'][0])) {
+                    $decors_field['min-width'] = $value['width'][0];
+                }
+                if (isset($value['width'][1])) {
+                    $decors_field['width'] = $value['width'][1];
+                }
+                if (isset($value['width'][2])) {
+                    $decors_field['max-width'] = $value['width'][2];
+                }
+            } else {
+                $decors_field['width'] = $value['width'];
+            }
         }
     }
     $value[1]['field'] = [
@@ -825,6 +861,24 @@ function menu($value, $key, int $i = 0) {
         'lot' => true,
         'lot:menu' => true
     ], $value['tags'] ?? []);
+    if (isset($value['width']) && false !== $value['width']) {
+        $value['has']['width'] = $value['has']['width'] ?? true;
+        if (true !== $value['width']) {
+            if (\is_array($value['width'])) {
+                if (isset($value['width'][0])) {
+                    $value['decors']['min-width'] = $value['width'][0];
+                }
+                if (isset($value['width'][1])) {
+                    $value['decors']['width'] = $value['width'][1];
+                }
+                if (isset($value['width'][2])) {
+                    $value['decors']['max-width'] = $value['width'][2];
+                }
+            } else {
+                $value['decors']['width'] = $value['width'];
+            }
+        }
+    }
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
