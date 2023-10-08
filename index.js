@@ -2008,17 +2008,17 @@
             if ('copy' === type) {
                 delay(function () {
                     return letTextCopy(1);
-                })();
+                }, 1)();
             } else if ('cut' === type) {
                 !sourceIsReadOnly() && setTags("");
                 delay(function () {
                     return letTextCopy(1);
-                })();
+                }, 1)();
             } else if ('paste' === type) {
                 delay(function () {
                     !sourceIsReadOnly() && setTags(textCopy.value);
                     letTextCopy(1);
-                })();
+                }, 1)();
             }
             delay(function () {
                 var tags = $.tags;
@@ -2162,7 +2162,7 @@
                     }
                     offEventDefault(e);
                 }
-            })();
+            }, 1)();
             // Focus to the first tag
             if ("" === theValue && KEY_BEGIN === key) {
                 if (theTag = getChildren(textOutput, 0)) {
@@ -2233,7 +2233,7 @@
                     });
                 }
                 setValue("");
-            })();
+            }, 1)();
         }
 
         function onSubmitForm(e) {
@@ -2379,7 +2379,7 @@
         'min': 0,
         'pattern': null
     };
-    TP.version = '3.4.17';
+    TP.version = '3.4.18';
 
     function onChange$a(init) {
         // Destroy!
