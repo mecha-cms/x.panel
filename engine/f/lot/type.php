@@ -821,10 +821,10 @@ function link($value, $key) {
 
 function links($value, $key) {
     $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? true;
-    $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
+    $value['tags']['lot:menus'] = $value['tags']['lot:menus'] ?? false;
     $value['tags']['p'] = $value['tags']['p'] ?? true;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
-    return \x\panel\lot\type\menu(\x\panel\lot\_value_set($value), $key, -2);
+    return \x\panel\lot\type\menus(\x\panel\lot\_value_set($value), $key, -2);
 }
 
 function lot($value, $key) {
@@ -835,16 +835,19 @@ function lot($value, $key) {
     $value = \x\panel\lot\_value_set($value);
     $count = 0;
     if ($description = \x\panel\to\description($value['description'] ?? "")) {
+        $value['has']['description'] = $value['has']['description'] ?? true;
         ++$count;
     }
     if ($title = \x\panel\to\title($value['title'] ?? "", $value['level'] ?? 2)) {
+        $value['has']['title'] = $value['has']['title'] ?? true;
         ++$count;
     }
     $value[0] = $value[0] ?? 'div';
-    $value[1] = $value[1] ?? $title . $description;
+    $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
     if (isset($value['lot'])) {
-        $value[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
+        // Add `description` and `title` only if `lot` exists
+        $value[1] .= $title . $description . \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
     $tags['count:' . $count] = $tags['count:' . $count] ?? true;
     if ($type = $value['type'] ?? null) {
@@ -864,6 +867,7 @@ function menu($value, $key, int $i = 0) {
         'lot' => true,
         'lot:menu' => true
     ], $value['tags'] ?? []);
+    $value['is']['flex'] = $value['is']['flex'] ?? ($value['flex'] ?? false);
     if (isset($value['width']) && false !== $value['width']) {
         $value['has']['width'] = $value['has']['width'] ?? true;
         if (true !== $value['width']) {
@@ -1028,6 +1032,7 @@ function menu($value, $key, int $i = 0) {
 }
 
 function menus($value, $key) {
+    $value['is']['flex'] = $value['is']['flex'] ?? ($value['flex'] ?? true);
     $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
     $value['tags']['lot:menus'] = $value['tags']['lot:menus'] ?? true;
     $value['tags']['p'] = $value['tags']['p'] ?? true;

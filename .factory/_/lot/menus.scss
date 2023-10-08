@@ -6,13 +6,12 @@
   height: auto;
   line-height: var(--y);
   > ul,
-  > li {
+  > ul > li {
     list-style: none;
     margin: 0;
     padding: 0;
   }
   > ul {
-    display: flex;
     > .has\:menu {
       display: flex;
       position: relative;
@@ -115,5 +114,10 @@
     font-size: 100%;
     line-height: inherit;
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  }
+  &.is\:flex {
+    > ul {
+      display: flex;
+    }
   }
 }
