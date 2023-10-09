@@ -8,6 +8,11 @@
   > ul {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    > li {
+      display: flex;
+      position: relative;
+    }
   }
   > .description {
     @extend .small;

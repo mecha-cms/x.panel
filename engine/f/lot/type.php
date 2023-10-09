@@ -1581,6 +1581,7 @@ function tabs($value, $key) {
                 '0' => 'nav',
                 '2' => ['tabindex' => false],
                 '3' => ['role' => 'tablist'],
+                'gap' => false,
                 'lot' => $links
             ], $name), $name);
         }

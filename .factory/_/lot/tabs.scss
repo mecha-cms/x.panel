@@ -1,19 +1,8 @@
 .lot\:tabs {
   .lot\:links {
-    ul,
-    li {
-      display: flex;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    ul {
-      flex-wrap: wrap;
-    }
     li {
       @include user-select(none);
       color: var(--color-tab, var(--color, inherit));
-      position: relative;
       a {
         color: inherit;
         display: flex;

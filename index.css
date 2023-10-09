@@ -2672,6 +2672,11 @@ label .input[type=radio] + span {
 .lot\:links > ul {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+}
+.lot\:links > ul > li {
+  display: flex;
+  position: relative;
 }
 .lot\:links > .description {
   line-height: calc(var(--y) / 1.5);
@@ -3296,22 +3301,11 @@ label .input[type=radio] + span {
   display: block;
 }
 
-.lot\:tabs .lot\:links ul,
-.lot\:tabs .lot\:links li {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.lot\:tabs .lot\:links ul {
-  flex-wrap: wrap;
-}
 .lot\:tabs .lot\:links li {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
   color: var(--color-tab, var(--color, inherit));
-  position: relative;
 }
 .lot\:tabs .lot\:links li a {
   color: inherit;
