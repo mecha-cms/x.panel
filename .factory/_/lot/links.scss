@@ -5,9 +5,29 @@
     margin: 0;
     padding: 0;
   }
+  > ul {
+    display: flex;
+    flex-direction: column;
+  }
+  > .description {
+    @extend .small;
+    line-height: calc(var(--y) / 1.5);
+    margin: calc(var(--y) / -2) 0 0;
+    padding: calc(var(--y) / 2) 0;
+  }
+  > .title {
+    font-size: 100%;
+    line-height: inherit;
+    padding: calc(var(--y) / 4) 0;
+  }
+  &.has\:gap {
+    > ul {
+      gap: calc(var(--y) / 2) calc(var(--x) / 2);
+    }
+  }
   &.is\:flex {
     > ul {
-      display: flex;
+      flex-direction: row;
     }
   }
 }

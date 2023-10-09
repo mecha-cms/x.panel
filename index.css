@@ -2669,8 +2669,25 @@ label .input[type=radio] + span {
   margin: 0;
   padding: 0;
 }
-.lot\:links.is\:flex > ul {
+.lot\:links > ul {
   display: flex;
+  flex-direction: column;
+}
+.lot\:links > .description {
+  line-height: calc(var(--y) / 1.5);
+  margin: calc(var(--y) / -2) 0 0;
+  padding: calc(var(--y) / 2) 0;
+}
+.lot\:links > .title {
+  font-size: 100%;
+  line-height: inherit;
+  padding: calc(var(--y) / 4) 0;
+}
+.lot\:links.has\:gap > ul {
+  gap: calc(var(--y) / 2) calc(var(--x) / 2);
+}
+.lot\:links.is\:flex > ul {
+  flex-direction: row;
 }
 
 .has\:menu {
@@ -2704,7 +2721,7 @@ label .input[type=radio] + span {
   top: 0;
 }
 .lot\:menu > ul,
-.lot\:menu > li {
+.lot\:menu > ul > li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2792,6 +2809,9 @@ label .input[type=radio] + span {
   font-size: 100%;
   line-height: inherit;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
+}
+.lot\:menu.has\:width {
+  display: none;
 }
 .lot\:menu.is\:enter {
   display: block;
@@ -3543,6 +3563,7 @@ small,
 sub,
 sup,
 .lot\:field .description,
+.lot\:links > .description,
 .lot\:menu > .description,
 .lot\:menus > .description {
   font-size: calc(var(--z) * 0.75);

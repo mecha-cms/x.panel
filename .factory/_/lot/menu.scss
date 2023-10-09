@@ -28,7 +28,7 @@
     }
   }
   > ul,
-  > li {
+  > ul > li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -123,6 +123,9 @@
     font-size: 100%;
     line-height: inherit;
     padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  }
+  &.has\:width {
+    display: none;
   }
   &.is\:enter {
     display: block;

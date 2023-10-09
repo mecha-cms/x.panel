@@ -11,7 +11,10 @@ function bar($value, $key) {
                 $v['tags']['p'] = $v['tags']['p'] ?? false;
                 $v[0] = $v[0] ?? 'nav';
                 // If `type` is not defined, the default value will be `links`
-                $v['type'] = $v['type'] ?? 'links';
+                $type = $v['type'] = $v['type'] ?? 'links';
+                if ('links' === $type) {
+                    $v['gap'] = $v['gap'] ?? false;
+                }
             }
         }
         unset($v);
@@ -820,11 +823,13 @@ function link($value, $key) {
 }
 
 function links($value, $key) {
+    $value['has']['gap'] = $value['has']['gap'] ?? ($value['gap'] ?? true);
+    $value['is']['flex'] = $value['is']['flex'] ?? ($value['flex'] ?? true);
     $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? true;
-    $value['tags']['lot:menus'] = $value['tags']['lot:menus'] ?? false;
+    $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
     $value['tags']['p'] = $value['tags']['p'] ?? true;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
-    return \x\panel\lot\type\menus(\x\panel\lot\_value_set($value), $key, -2);
+    return \x\panel\lot\type\menu(\x\panel\lot\_value_set($value), $key, -2);
 }
 
 function lot($value, $key) {
@@ -1032,12 +1037,11 @@ function menu($value, $key, int $i = 0) {
 }
 
 function menus($value, $key) {
-    $value['is']['flex'] = $value['is']['flex'] ?? ($value['flex'] ?? true);
-    $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
+    $value['has']['gap'] = $value['has']['gap'] ?? ($value['gap'] ?? false);
+    $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? false;
     $value['tags']['lot:menus'] = $value['tags']['lot:menus'] ?? true;
-    $value['tags']['p'] = $value['tags']['p'] ?? true;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
-    return \x\panel\lot\type\menu(\x\panel\lot\_value_set($value), $key, -2);
+    return \x\panel\lot\type\links(\x\panel\lot\_value_set($value), $key);
 }
 
 function page($value, $key) {
