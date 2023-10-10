@@ -32,6 +32,7 @@ function button($value, $key) {
     $out['disabled'] = $not_active;
     $out['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     $out['name'] = $value['name'] ?? $key;
+    $out['type'] = 'button';
     $out['value'] = $value['value'] ?? null;
     $out[0] = 'button';
     unset($out['href'], $out['rel'], $out['target']);

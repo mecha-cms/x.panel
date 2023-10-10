@@ -1,5 +1,9 @@
 <?php namespace x\panel\lot\type\field;
 
+function blank($value, $key) {
+    return \x\panel\lot\type\field($value, $key);
+}
+
 function blob($value, $key) {
     $out = \x\panel\to\field($value, $key, 'input');
     $out['field'][2]['type'] = 'file';
