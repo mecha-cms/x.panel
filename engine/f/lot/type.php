@@ -33,7 +33,7 @@ function button($value, $key) {
     $out['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     $out['name'] = $value['name'] ?? $key;
     $out['type'] = 'button';
-    $out['value'] = $value['value'] ?? null;
+    $out['value'] = \array_key_exists('value', $value) ? \s($value['value']) : null;
     $out[0] = 'button';
     unset($out['href'], $out['rel'], $out['target']);
     return $out;
@@ -792,7 +792,7 @@ function input($value, $key) {
     $value[2]['placeholder'] = \i(...((array) ($value['hint'] ?? "")));
     $value[2]['readonly'] = $is_fix;
     $value[2]['required'] = $is_vital;
-    $value[2]['value'] = $value['value'] ?? null;
+    $value[2]['value'] = isset($value['value']) ? \s($value['value']) : null;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);
     return new \HTML($value);
@@ -1262,7 +1262,7 @@ function select($value, $key) {
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
     $the_options = [];
-    $the_value = $value['value'] ?? null;
+    $the_value = \array_key_exists('value', $value) ? \s($value['value']) : null;
     // $the_placeholder = \i(...((array) ($value['hint'] ?? "")));
     $is_options_flat = \array_is_list($value['lot']);
     $sort = !isset($value['sort']) || $value['sort'];
@@ -1280,8 +1280,8 @@ function select($value, $key) {
             $is_options_group_flat = \array_is_list($v['lot']);
             foreach ($v['lot'] as $kk => $vv) {
                 $option = new \HTML(['option', "", [
-                    'selected' => null !== $the_value && (string) $the_value === (string) $kk,
-                    'value' => $vv['value'] ?? ($is_options_group_flat ? null : $kk)
+                    'selected' => null !== $the_value && $the_value === (string) $kk,
+                    'value' => \is_array($vv) && \array_key_exists('value', $vv) ? $vv['value'] : ($is_options_group_flat ? null : $kk)
                 ]]);
                 if (\is_array($vv) && \array_key_exists('title', $vv)) {
                     $tt = $vv['title'] ?? $kk;
@@ -1302,8 +1302,8 @@ function select($value, $key) {
         // Flat
         } else {
             $option = new \HTML(['option', $k, [
-                'selected' => null !== $the_value && (string) $the_value === (string) $k,
-                'value' => $v['value'] ?? ($is_options_flat ? null : $k)
+                'selected' => null !== $the_value && $the_value === (string) $k,
+                'value' => \is_array($v) && \array_key_exists('value', $v) ? $v['value'] : ($is_options_flat ? null : $k)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = $v['title'] ?? $k;
@@ -1639,7 +1639,7 @@ function textarea($value, $key) {
     $value['not']['vital'] = $value['not']['vital'] ?? !$is_vital;
     $value['tags']['textarea'] = true;
     $value[0] = $value[0] ?? 'textarea';
-    $value[1] = \htmlspecialchars($value[1] ?? $value['value'] ?? "");
+    $value[1] = \htmlspecialchars($value[1] ?? (isset($value['value']) ? \s($value['value']) : ""));
     $value[2] = $value[2] ?? [];
     if ($has_pattern) {
         $value[2]['pattern'] = $value['pattern'];

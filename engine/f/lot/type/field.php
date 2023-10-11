@@ -208,7 +208,7 @@ function hidden($value, $key) {
 
 function item($value, $key) {
     if (isset($value['lot'])) {
-        $the_value = $value['value'] ?? null;
+        $the_value = \array_key_exists('value', $value) ? \s($value['value']) : null;
         $name = (string) ($value['name'] ?? $key);
         unset($value['name'], $value['hint'], $value['value']);
         $a = [];
@@ -227,18 +227,19 @@ function item($value, $key) {
             }
             $n = (string) ($v['name'] ?? "");
             $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name;
-            $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
+            $is_active = \is_array($v) && \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
             $v['is']['fix'] = $v['is']['fix'] ?? $is_fix;
             $v['not']['active'] = $v['not']['active'] ?? !$is_active;
             $v['not']['fix'] = $v['not']['fix'] ?? !$is_fix;
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            $input[2]['checked'] = null !== $the_value && (\s($the_value) === \s($v['value'] ?? $k));
+            $the_v = \is_array($v) && \array_key_exists('value', $v) ? \s($v['value']) : $k;
+            $input[2]['checked'] = null !== $the_value && ($the_value === $the_v);
             $input[2]['disabled'] = !$is_active;
             $input[2]['name'] = $n;
             $input[2]['type'] = 'radio';
-            $input[2]['value'] = $v['value'] ?? $k;
+            $input[2]['value'] = $the_v;
             $input[2] = \x\panel\lot\_tag_set($input[2], $v);
             unset($input[2]['placeholder']);
             $description = \strip_tags(\i(...((array) ($v['description'] ?? ""))) ?? "");
@@ -303,7 +304,7 @@ function items($value, $key) {
             }
             $n = (string) ($v['name'] ?? "");
             $n = $n ? (0 === \strpos($n, '[') ? $name . $n : $n) : $name . '[' . ($key_as_value ? "" : $k) . ']';
-            $is_active = \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
+            $is_active = \is_array($v) && \array_key_exists('active', $v) ? (null === $v['active'] || $v['active']) : $is_active_all;
             $is_fix = !empty($v['fix']);
             $v['is']['active'] = $v['is']['active'] ?? $is_active;
             $v['is']['fix'] = $v['is']['fix'] ?? $is_fix;
@@ -317,7 +318,7 @@ function items($value, $key) {
             }
             $input[2]['type'] = 'checkbox';
             $input[2]['name'] = $n;
-            $input[2]['value'] = $v['value'] ?? ($key_as_value ? $k : \s($the_values[$k] ?? true));
+            $input[2]['value'] = \is_array($v) && \array_key_exists('value', $v) ? \s($v['value']) : ($key_as_value ? $k : \s($the_values[$k] ?? true));
             if (!$is_active) {
                 $input[2]['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
