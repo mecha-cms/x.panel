@@ -33,7 +33,7 @@ function button($value, $key) {
     $out['id'] = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     $out['name'] = $value['name'] ?? $key;
     $out['type'] = 'button';
-    $out['value'] = \array_key_exists('value', $value) ? \s($value['value']) : null;
+    $out['value'] = isset($value['value']) ? \s($value['value']) : null;
     $out[0] = 'button';
     unset($out['href'], $out['rel'], $out['target']);
     return $out;
@@ -1262,7 +1262,7 @@ function select($value, $key) {
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
     $the_options = [];
-    $the_value = \array_key_exists('value', $value) ? \s($value['value']) : null;
+    $the_value = isset($value['value']) ? \s($value['value']) : null;
     // $the_placeholder = \i(...((array) ($value['hint'] ?? "")));
     $is_options_flat = \array_is_list($value['lot']);
     $sort = !isset($value['sort']) || $value['sort'];
@@ -1281,7 +1281,7 @@ function select($value, $key) {
             foreach ($v['lot'] as $kk => $vv) {
                 $option = new \HTML(['option', "", [
                     'selected' => null !== $the_value && $the_value === (string) $kk,
-                    'value' => \is_array($vv) && \array_key_exists('value', $vv) ? $vv['value'] : ($is_options_group_flat ? null : $kk)
+                    'value' => isset($vv['value']) ? \s($vv['value']) : ($is_options_group_flat ? null : $kk)
                 ]]);
                 if (\is_array($vv) && \array_key_exists('title', $vv)) {
                     $tt = $vv['title'] ?? $kk;
@@ -1303,7 +1303,7 @@ function select($value, $key) {
         } else {
             $option = new \HTML(['option', $k, [
                 'selected' => null !== $the_value && $the_value === (string) $k,
-                'value' => \is_array($v) && \array_key_exists('value', $v) ? $v['value'] : ($is_options_flat ? null : $k)
+                'value' => isset($v['value']) ? \s($v['value']) : ($is_options_flat ? null : $k)
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = $v['title'] ?? $k;
