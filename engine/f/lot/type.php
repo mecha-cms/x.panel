@@ -1279,9 +1279,10 @@ function select($value, $key) {
             ]]);
             $is_options_group_flat = \array_is_list($v['lot']);
             foreach ($v['lot'] as $kk => $vv) {
+                $the_vv = isset($vv['value']) ? \s($vv['value']) : ($is_options_group_flat ? null : (string) $kk);
                 $option = new \HTML(['option', "", [
-                    'selected' => null !== $the_value && $the_value === (string) $kk,
-                    'value' => isset($vv['value']) ? \s($vv['value']) : ($is_options_group_flat ? null : $kk)
+                    'selected' => null !== $the_value && $the_value === $the_vv,
+                    'value' => $the_vv
                 ]]);
                 if (\is_array($vv) && \array_key_exists('title', $vv)) {
                     $tt = $vv['title'] ?? $kk;
@@ -1301,9 +1302,10 @@ function select($value, $key) {
             $the_options[$t . $k . '0'] = $optgroup;
         // Flat
         } else {
+            $the_v = isset($v['value']) ? \s($v['value']) : ($is_options_flat ? null : (string) $k);
             $option = new \HTML(['option', $k, [
-                'selected' => null !== $the_value && $the_value === (string) $k,
-                'value' => isset($v['value']) ? \s($v['value']) : ($is_options_flat ? null : $k)
+                'selected' => null !== $the_value && $the_value === $the_v,
+                'value' => $the_v
             ]]);
             if (\is_array($v) && \array_key_exists('title', $v)) {
                 $t = $v['title'] ?? $k;
