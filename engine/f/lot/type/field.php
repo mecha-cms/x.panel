@@ -234,7 +234,7 @@ function item($value, $key) {
             $v['not']['active'] = $v['not']['active'] ?? !$is_active;
             $v['not']['fix'] = $v['not']['fix'] ?? !$is_fix;
             $input = \x\panel\to\field($v, $k, 'input')['field'];
-            $the_v = isset($v['value']) ? \s($v['value']) : $k;
+            $the_v = isset($v['value']) ? \s($v['value']) : (string) $k;
             $input[2]['checked'] = null !== $the_value && ($the_value === $the_v);
             $input[2]['disabled'] = !$is_active;
             $input[2]['name'] = $n;
@@ -318,7 +318,7 @@ function items($value, $key) {
             }
             $input[2]['type'] = 'checkbox';
             $input[2]['name'] = $n;
-            $input[2]['value'] = isset($v['value']) ? \s($v['value']) : ($key_as_value ? $k : \s($the_values[$k] ?? true));
+            $input[2]['value'] = isset($v['value']) ? \s($v['value']) : ($key_as_value ? (string) $k : \s($the_values[$k] ?? true));
             if (!$is_active) {
                 $input[2]['disabled'] = true;
             // `else if` because mixing both `disabled` and `readonly` attribute does not make sense
