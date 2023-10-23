@@ -380,10 +380,14 @@ function name($value, $key) {
     if (\is_array($x = $value['x'] ?? \implode('|', $default))) {
         $x = \array_keys(\array_filter($x));
         \sort($x);
-        $x = \implode('|', \x($x));
+        foreach ($x as &$xx) {
+            $xx = \x($xx);
+        }
+        unset($xx);
+        $x = \implode('|', $x);
     }
     $x = $x ? "\\.(" . $x . ")" : "";
-    $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.baz' : ""));
+    $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.' . (false === \strpos($x, '|') ? \substr($x, 3, -1) : 'baz') : ""));
     $value['max'] = $value['max'] ?? 255; // <https://serverfault.com/a/9548>
     $value['min'] = $value['min'] ?? $x ? 2 : 1;
     $value['pattern'] = $value['pattern'] ?? "([_.]?[a-z\\d" . \x($keep) . "]+([_.\\-][a-z\\d" . \x($keep) . "]+)*)?" . $x;
