@@ -42,17 +42,6 @@ $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 $test = \preg_match('/^' . \x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
 
-// Create `$user` variable just in case `user` extension is too late to be loaded due to the default extension order.
-// Since `panel` is less than `user` when sorted alphabetically, then this `panel` extension will most likely be loaded
-// before `user` extension. Here we use the user’s cookie data to reconstruct the variable.
-if (empty($user) && ($name = \cookie('user.name')) && ($token = \cookie('user.token'))) {
-    if (\is_file($file = \LOT . \D . 'user' . \D . $name . '.page')) {
-        if ($token === \content(\LOT . \D . 'user' . \D . $name . \D . 'token.data')) {
-            $GLOBALS['user'] = $user = new \User($file);
-        }
-    }
-}
-
 // Someone just tried to replace you!
 if (!empty($user) && !($user instanceof \User)) {
     \abort(\i('%s must be an instance of %s.', ['<code>$user</code>', '<code>User</code>']));
