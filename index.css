@@ -2009,8 +2009,12 @@ label .input[type=radio] + span {
   box-shadow: var(--shadow-bar, var(--shadow, none));
   color: var(--color-bar, var(--color, inherit));
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
+}
+.lot\:bar.is\:flex {
+  flex-direction: row;
 }
 .lot\:bar .lot\:links {
   margin: 0;

@@ -72,7 +72,8 @@ function buttons($value, $key) {
         }
         unset($value['lot']);
     }
-    $out['field'][2]['role'] = 'group';
+    $out['field'][2]['aria-orientation'] = $out['field'][2]['aria-orientation'] ?? ($is_flex ? 'horizontal' : 'vertical');
+    $out['field'][2]['role'] = $out['field'][2]['role'] ?? 'group';
     $value['has']['gap'] = $value['has']['gap'] ?? $has_gap;
     $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
     $value['is']['flex'] = $value['is']['flex'] ?? $is_flex;
@@ -139,7 +140,8 @@ function colors($value, $key) {
         }
         unset($value['lot']);
     }
-    $out['field'][2]['role'] = 'group';
+    $out['field'][2]['aria-orientation'] = $out['field'][2]['aria-orientation'] ?? ($is_flex ? 'horizontal' : 'vertical');
+    $out['field'][2]['role'] = $out['field'][2]['role'] ?? 'group';
     $value['has']['gap'] = $value['has']['gap'] ?? $is_flex;
     $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
     $value['is']['flex'] = $is_flex;
@@ -265,7 +267,8 @@ function item($value, $key) {
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
         $out['field'][1] = \implode($flex, $a);
-        $out['field'][2]['role'] = 'group';
+        $out['field'][2]['aria-orientation'] = $out['field'][2]['aria-orientation'] ?? ("" === $flex ? 'horizontal' : 'vertical');
+        $out['field'][2]['role'] = $out['field'][2]['role'] ?? 'group';
         $value['has']['gap'] = $value['has']['gap'] ?? "" === $flex;
         $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
         $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
@@ -350,7 +353,8 @@ function items($value, $key) {
         $out = \x\panel\to\field($value, $key);
         $out['field'][0] = 'div';
         $out['field'][1] = \implode($flex, $a);
-        $out['field'][2]['role'] = 'group';
+        $out['field'][2]['aria-orientation'] = $out['field'][2]['aria-orientation'] ?? ("" === $flex ? 'horizontal' : 'vertical');
+        $out['field'][2]['role'] = $out['field'][2]['role'] ?? 'group';
         $value['has']['gap'] = $value['has']['gap'] ?? "" === $flex;
         $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
         $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;

@@ -6,8 +6,12 @@
   box-shadow: var(--shadow-bar, var(--shadow, none));
   color: var(--color-bar, var(--color, inherit));
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   line-height: calc(var(--y) * 2);
+  &.is\:flex {
+    flex-direction: row;
+  }
   .lot\:links {
     margin: 0;
     > ul,

@@ -1,6 +1,7 @@
 <?php namespace x\panel\lot\type;
 
 function bar($value, $key) {
+    $value['is']['flex'] = $value['is']['flex'] ?? $value['flex'] ?? true;
     $value['level'] = $value['level'] ?? 1;
     $value['tags']['p'] = $value['tags']['p'] ?? false;
     if (isset($value['content'])) {
@@ -20,6 +21,7 @@ function bar($value, $key) {
         unset($v);
         $out = \x\panel\lot\type\lot($value, $key);
     }
+    $out['aria-orientation'] = $out['aria-orientation'] ?? 'horizontal';
     $out['tabindex'] = -1; // Allow focus but remove from the default tab order!
     return $out;
 }
@@ -69,6 +71,7 @@ function columns($value, $key) {
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
+    $value[2]['aria-orientation'] = $value[2]['aria-orientation'] ?? 'horizontal';
     if (isset($value['content'])) {
         return \x\panel\lot\type\content($value, $key);
     }
@@ -570,6 +573,7 @@ function flex($value, $key) {
             'type' => 'lot'
         ]
     ];
+    $value[2]['aria-orientation'] = $value[2]['aria-orientation'] ?? 'horizontal';
     unset($value['description'], $value['title']);
     $value['lot']['lot']['can']['flex'] = $value['lot']['lot']['can']['flex'] ?? true;
     $value['lot']['lot']['has']['gap'] = $value['lot']['lot']['has']['gap'] ?? true;
@@ -873,7 +877,7 @@ function menu($value, $key, int $i = 0) {
         'lot' => true,
         'lot:menu' => true
     ], $value['tags'] ?? []);
-    $value['is']['flex'] = $value['is']['flex'] ?? ($value['flex'] ?? false);
+    $value['is']['flex'] = $is_flex = $value['is']['flex'] ?? ($value['flex'] ?? false);
     if (isset($value['width']) && false !== $value['width']) {
         $value['has']['width'] = $value['has']['width'] ?? true;
         if (true !== $value['width']) {
@@ -894,6 +898,7 @@ function menu($value, $key, int $i = 0) {
     }
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
+    $value[2]['aria-orientation'] = $value[2]['aria-orientation'] ?? ($is_flex ? 'horizontal' : 'vertical');
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? 0;
     $count_parent = 0;
     if (isset($value['with']['description'])) {
@@ -1213,6 +1218,7 @@ function rows($value, $key) {
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
+    $value[2]['aria-orientation'] = $value[2]['aria-orientation'] ?? 'vertical';
     $tags['p'] = $value['tags']['p'] ?? false;
     $value['tags'] = $tags;
     if (isset($value['content'])) {
@@ -1611,6 +1617,7 @@ function tasks($value, $key) {
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
+    $value[2]['aria-orientation'] = $value[2]['aria-orientation'] ?? 'horizontal';
     $value[2]['role'] = $value[2]['role'] ?? 'group';
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     $count = 0;
