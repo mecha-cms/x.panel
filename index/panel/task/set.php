@@ -197,6 +197,12 @@ function file($_) {
         $_['alert']['error'][$file] = [(\is_dir($file) ? 'Folder' : 'File') . ' %s already exists.', '<code>' . \x\panel\from\path($file) . '</code>'];
         $_[\is_dir($file) ? 'folder' : 'file'] = $file; // For hook(s)
     } else {
+        if (!\is_dir($folder = \dirname($file))) {
+            \mkdir($folder, 0775, true);
+            foreach (\step(\rtrim($folder, \D), \D) as $v) {
+                $_SESSION['_']['folders'][$v] = 1;
+            }
+        }
         if (\array_key_exists('content', $_POST['file'] ?? [])) {
             // Special case for PHP file(s)
             if ('php' === $x) {
@@ -209,17 +215,13 @@ function file($_) {
                     return $_; // Skip!
                 }
             }
-            if (!\is_dir($folder = \dirname($file))) {
-                \mkdir($folder, 0775, true);
-                foreach (\step(\rtrim($folder, \D), \D) as $v) {
-                    $_SESSION['_']['folders'][$v] = 1;
-                }
-            }
             if (\is_writable($folder)) {
                 \file_put_contents($file, $_POST['file']['content']);
             } else {
                 $_['alert']['error'][$folder] = ['Folder %s is not writable.', '<code>' . \x\panel\from\path($folder) . '</code>'];
             }
+        } else {
+            \touch($file);
         }
         $seal = \octdec($_POST['file']['seal'] ?? '0777');
         if ($seal < 0 || $seal > 0777) {

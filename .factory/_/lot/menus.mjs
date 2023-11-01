@@ -1,6 +1,7 @@
 import {
     D,
     W,
+    getAttribute,
     getChildFirst,
     getElement,
     getElements,
@@ -52,7 +53,10 @@ function onKeyDownMenu(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
         keyIsShift = e.shiftKey,
-        any, current, parent, next, prev, stop;
+        any, current, parent, next, prev, stop, vertical;
+    if (parent = getParent(t, '[aria-orientation]')) {
+        vertical = 'v' === (getAttribute(parent, 'aria-orientation') || [""])[0];
+    }
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         if (parent = getParent(t)) {
             next = getNext(parent);
@@ -64,10 +68,10 @@ function onKeyDownMenu(e) {
                 prev = getPrev(prev);
             }
         }
-        if ('ArrowLeft' === key) {
+        if ('Arrow' + (vertical ? 'Up' : 'Left') === key) {
             fireFocus(prev && getChildFirst(prev));
             stop = true;
-        } else if ('ArrowRight' === key) {
+        } else if ('Arrow' + (vertical ? 'Down' : 'Right') === key) {
             fireFocus(next && getChildFirst(next));
             stop = true;
         } else if ('End' === key) {
@@ -95,15 +99,16 @@ function onKeyDownMenus(e) {
         keyIsAlt = e.altKey,
         keyIsCtrl = e.ctrlKey,
         keyIsShift = e.shiftKey,
-        any, stop;
+        any, stop, vertical;
     if (t !== e.target) {
         return;
     }
+    vertical = 'v' === (getAttribute(t, 'aria-orientation') || [""])[0];
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-        if ('ArrowRight' === key || 'Home' === key) {
+        if ('Arrow' + (vertical ? 'Down' : 'Right') === key || 'Home' === key) {
             fireFocus(getElement(targets, t));
             stop = true;
-        } else if ('ArrowLeft' === key || 'End' === key) {
+        } else if ('Arrow' + (vertical ? 'Up' : 'Left') === key || 'End' === key) {
             any = [].slice.call(getElements(targets, t));
             fireFocus(any.pop());
             stop = true;

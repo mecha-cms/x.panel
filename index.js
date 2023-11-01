@@ -3322,7 +3322,11 @@
             parent,
             next,
             prev,
-            stop;
+            stop,
+            vertical;
+        if (parent = getParent(t, '[aria-orientation]')) {
+            vertical = 'v' === (getAttribute(parent, 'aria-orientation') || [""])[0];
+        }
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             if (parent = getParent(t)) {
                 next = getNext(parent);
@@ -3334,10 +3338,10 @@
                     prev = getPrev(prev);
                 }
             }
-            if ('ArrowLeft' === key) {
+            if ('Arrow' + (vertical ? 'Up' : 'Left') === key) {
                 fireFocus$6(prev && getChildFirst(prev));
                 stop = true;
-            } else if ('ArrowRight' === key) {
+            } else if ('Arrow' + (vertical ? 'Down' : 'Right') === key) {
                 fireFocus$6(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
@@ -3366,15 +3370,17 @@
             keyIsCtrl = e.ctrlKey,
             keyIsShift = e.shiftKey,
             any,
-            stop;
+            stop,
+            vertical;
         if (t !== e.target) {
             return;
         }
+        vertical = 'v' === (getAttribute(t, 'aria-orientation') || [""])[0];
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            if ('ArrowRight' === key || 'Home' === key) {
+            if ('Arrow' + (vertical ? 'Down' : 'Right') === key || 'Home' === key) {
                 fireFocus$6(getElement(targets$6, t));
                 stop = true;
-            } else if ('ArrowLeft' === key || 'End' === key) {
+            } else if ('Arrow' + (vertical ? 'Up' : 'Left') === key || 'End' === key) {
                 any = [].slice.call(getElements(targets$6, t));
                 fireFocus$6(any.pop());
                 stop = true;
@@ -3632,7 +3638,11 @@
             parent,
             next,
             prev,
-            stop;
+            stop,
+            vertical;
+        if (parent = getParent(t, '[aria-orientation]')) {
+            vertical = 'v' === (getAttribute(parent, 'aria-orientation') || [""])[0];
+        }
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             if (parent = getParent(t)) {
                 next = getNext(parent);
@@ -3644,10 +3654,10 @@
                     prev = getPrev(prev);
                 }
             }
-            if ('ArrowLeft' === key) {
+            if ('Arrow' + (vertical ? 'Up' : 'Left') === key) {
                 fireFocus$4(prev && getChildFirst(prev));
                 stop = true;
-            } else if ('ArrowRight' === key) {
+            } else if ('Arrow' + (vertical ? 'Down' : 'Right') === key) {
                 fireFocus$4(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
@@ -3676,15 +3686,17 @@
             keyIsCtrl = e.ctrlKey,
             keyIsShift = e.shiftKey,
             any,
-            stop;
+            stop,
+            vertical;
         if (t !== e.target) {
             return;
         }
+        vertical = 'v' === (getAttribute(t, 'aria-orientation') || [""])[0];
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
-            if ('ArrowRight' === key || 'Home' === key) {
+            if ('Arrow' + (vertical ? 'Down' : 'Right') === key || 'Home' === key) {
                 fireFocus$4(getElement(targets$4, t));
                 stop = true;
-            } else if ('ArrowLeft' === key || 'End' === key) {
+            } else if ('Arrow' + (vertical ? 'Up' : 'Left') === key || 'End' === key) {
                 any = [].slice.call(getElements(targets$4, t));
                 fireFocus$4(any.pop());
                 stop = true;
