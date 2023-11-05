@@ -117,6 +117,16 @@
     height: auto;
     width: auto;
   }
+  &[type='number'] {
+    @each $v in (in-range, out-of-range) {
+      &:where(:focus:#{$v}) {
+        background: var(--fill-input--#{$v}, var(--fill-input--focus, var(--fill-input, var(--fill--#{$v}, var(--fill--focus, var(--fill, none))))));
+        border-color: var(--stroke-input--#{$v}, var(--stroke-input--focus, var(--stroke-input, var(--stroke--#{$v}, var(--stroke--focus, var(--stroke, transparent))))));
+        box-shadow: var(--shadow-input--#{$v}, var(--shadow-input--focus, var(--shadow-input, var(--shadow--#{$v}, var(--shadow--focus, var(--shadow, none))))));
+        color: var(--color-input--#{$v}, var(--color-input--focus, var(--color-input, var(--color--#{$v}, var(--color--focus, var(--color, inherit))))));
+      }
+    }
+  }
 }
 
 .input[type='checkbox'],

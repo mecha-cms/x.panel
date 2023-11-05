@@ -52,7 +52,6 @@ function user(array $_ = []) {
                                         'lot' => [
                                             'page' => [
                                                 'description' => [1 => 'User'],
-                                                'skip' => true,
                                                 'title' => 'User',
                                                 'url' => [
                                                     'part' => 0,
