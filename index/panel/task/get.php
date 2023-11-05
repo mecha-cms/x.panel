@@ -20,6 +20,7 @@ function data($_) {
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
     $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? ""), '.@_~'));
+    $_POST['file']['content'] = $_POST['data']['content'] ?? "";
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && isset($folder) && $parent = \glob(\dirname($folder) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {

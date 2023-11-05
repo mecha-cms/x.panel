@@ -159,6 +159,7 @@ function data($_) {
         return $_;
     }
     $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? "")));
+    $_POST['file']['content'] = $_POST['data']['content'] ?? "";
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
     if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {

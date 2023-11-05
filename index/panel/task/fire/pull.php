@@ -1,6 +1,10 @@
 <?php namespace x\panel\task\fire;
 
 function pull($_) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
+        return $_;
+    }
     \extract($GLOBALS, \EXTR_SKIP);
     $n = \basename($path = (string) $_['path']);
     $key = 0 === \strpos($n, 'x.') ? 'x' : (0 === \strpos($n, 'y.') ? 'y' : "");
@@ -17,10 +21,6 @@ function pull($_) {
         ]),
         'task' => 'get'
     ];
-    // Abort by previous hook’s return value if any
-    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
-        return $_;
-    }
     if (null !== ($blob = \fetch('https://mecha-cms.com/' . (\defined("\\TEST") && \TEST ? 'git-dev' : 'git') . '/zip/' . $path . \To::query($_['query'] ?? [])))) {
         if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . \dirname($path))) {
             \mkdir($folder, 0775, true);

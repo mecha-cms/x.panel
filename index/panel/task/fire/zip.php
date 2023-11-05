@@ -1,6 +1,14 @@
 <?php namespace x\panel\task\fire;
 
 function zip($_) {
+    if (!\extension_loaded('zip')) {
+        $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/manual/en/class.ziparchive.php" rel="nofollow" target="_blank"><code>zip</code></a>'];
+        return $_;
+    }
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
+        return $_;
+    }
     $file = $_['file'];
     $folder = $_['folder'];
     $file_zip = $file && \is_file($file) && 'zip' === \pathinfo($file, \PATHINFO_EXTENSION);
@@ -10,20 +18,11 @@ function zip($_) {
         'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];
-    // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
-        $_['kick'] = $kick;
-        return $_;
-    }
     $_['kick'] = $kick;
     if (!$file && !$folder) {
         $_['alert']['error'][] = ['Failed to run task %s.', '<code>' . __FUNCTION__ . '()</code>'];
         $_['alert']['error'][] = ['File %s does not exist.', '<code>' . ($f = \x\panel\from\path(\LOT . \D . $_['path'])) . '</code>'];
         $_['alert']['error'][] = ['Folder %s does not exist.', '<code>' . $f . '</code>'];
-        return $_;
-    }
-    if (!\extension_loaded('zip')) {
-        $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/manual/en/class.ziparchive.php" rel="nofollow" target="_blank"><code>zip</code></a>'];
         return $_;
     }
     if (\is_array($wrap = \s($_REQUEST['folder'] ?? "")) || 'false' === $wrap || 'null' === $wrap) {

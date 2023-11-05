@@ -1,6 +1,10 @@
 <?php namespace x\panel\task\fire;
 
 function attach($_) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
+        return $_;
+    }
     $n = \dirname($_['path']);
     $name = \basename($folder = \LOT . \D . $_['path']);
     $title = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : 'Folder');

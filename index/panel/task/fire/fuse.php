@@ -5,7 +5,7 @@ function fuse($_) {
         $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/book.zip" rel="nofollow" target="_blank"><code>zip</code></a>'];
     }
     // Abort by previous hook’s return value if any
-    if (!empty($_['alert']['error']) || $_['status'] >= 400) {
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
     \extract($GLOBALS, \EXTR_SKIP);

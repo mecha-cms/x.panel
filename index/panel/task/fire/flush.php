@@ -1,6 +1,10 @@
 <?php namespace x\panel\task\fire;
 
 function flush($_) {
+    // Abort by previous hook’s return value if any
+    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
+        return $_;
+    }
     foreach (\g($folder = \LOT . \D . $_['path'], null, true) as $k => $v) {
         0 === $v ? \rmdir($k) : \unlink($k);
     }
