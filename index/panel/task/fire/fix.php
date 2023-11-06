@@ -1,10 +1,6 @@
 <?php namespace x\panel\task\fire;
 
 function fix($_) {
-    // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
-        return $_;
-    }
     if ('GET' === $_SERVER['REQUEST_METHOD']) {
         if (\is_file($file = \ENGINE . \D . 'log' . \D . $_['path'])) {
             \unlink($file);
