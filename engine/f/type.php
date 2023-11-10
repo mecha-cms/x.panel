@@ -263,6 +263,7 @@ function data(array $_ = []) {
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 20,
                                                                 'title' => 'Delete',
+                                                                'type' => 'submit',
                                                                 'value' => 'let'
                                                             ]
                                                         ],
@@ -407,6 +408,7 @@ function file(array $_ = []) {
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 20,
                                                                 'title' => 'Delete',
+                                                                'type' => 'submit',
                                                                 'value' => 'let'
                                                             ]
                                                         ],
@@ -655,7 +657,8 @@ function folder(array $_ = []) {
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 20,
                                                                 'title' => 'Delete',
-                                                                'value'=> 'let'
+                                                                'type' => 'submit',
+                                                                'value' => 'let'
                                                             ]
                                                         ],
                                                         'type' => 'tasks/button'
@@ -921,7 +924,8 @@ function page(array $_ = []) {
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 50,
                                                                 'title' => 'Delete',
-                                                                'value' => 'let',
+                                                                'type' => 'submit',
+                                                                'value' => 'let'
                                                             ]
                                                         ],
                                                         'type' => 'tasks/button'
