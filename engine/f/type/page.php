@@ -260,6 +260,10 @@ function user(array $_ = []) {
                                                                 'value' => null,
                                                                 'width' => true
                                                             ],
+                                                            // 1: create-read-write-delete
+                                                            // 2: create(self)-read(self)-write(self)
+                                                            // 3: read(self)-write(self)
+                                                            // 4: read(self)
                                                             'status' => [
                                                                 'lot' => [
                                                                     1 => [
@@ -272,7 +276,7 @@ function user(array $_ = []) {
                                                                     ],
                                                                     3 => [
                                                                         'description' => 3,
-                                                                        'title' => 'Member'
+                                                                        'title' => 'Guest'
                                                                     ],
                                                                     0 => [
                                                                         'description' => 0,
