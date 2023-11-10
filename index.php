@@ -4,6 +4,11 @@ if (!isset($state->x->user)) {
     \abort(\i('Missing %s extension.', ['<a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a>']));
 }
 
+// Someone just tried to replace you!
+if (!empty($user) && !($user instanceof \User)) {
+    \abort(\i('%s must be an instance of %s.', ['<code>$user</code>', '<code>User</code>']));
+}
+
 // Set proper redirect target for non super user
 function on__user__enter($file) {
     \extract($GLOBALS, \EXTR_SKIP);
@@ -41,11 +46,6 @@ $query = \From::query($url->query ?? "");
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
 $test = \preg_match('/^' . \x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
-
-// Someone just tried to replace you!
-if (!empty($user) && !($user instanceof \User)) {
-    \abort(\i('%s must be an instance of %s.', ['<code>$user</code>', '<code>User</code>']));
-}
 
 // File/folder path is taken from the current path or from the current path without the numeric suffix which is
 // commonly used to indicate current pagination offset.
@@ -112,6 +112,6 @@ if ('GET' === $r && !\array_key_exists('kick', $_GET)) {
 }
 
 // Load the panel interface only if current location path is at least started with `http://127.0.0.1/panel/`
-if (!empty($user) && 0 === \strpos($path . '/', $route . '/') && $test) {
+if (!empty($user->exist) && 0 === \strpos($path . '/', $route . '/') && $test) {
     require __DIR__ . \D . 'index' . \D . 'panel.php';
 }

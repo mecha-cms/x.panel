@@ -29,7 +29,7 @@ if (isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['page
 
 $task = $_['task'] ?? 'set';
 
-return x\panel\type\page\user(array_replace_recursive($_, [
+$_ = x\panel\type\page\user(array_replace_recursive($_, [
     'lot' => [
         'desk' => [
             // `desk`
@@ -90,3 +90,24 @@ return x\panel\type\page\user(array_replace_recursive($_, [
         ]
     ]
 ]));
+
+if (1 !== ($status = $user->status)) {
+    if (is_array($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] ?? 0)) {
+        foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['status']['lot'] as $k => &$v) {
+            if ($status === ($v['value'] ?? $k)) {
+                $_['lot']['desk']['lot']['form']['values']['page']['status'] = $status;
+                $v['active'] = false;
+            } else {
+                $v['skip'] = true;
+            }
+        }
+        unset($v);
+    }
+    $_['lot']['bar']['lot'][0]['lot']['link']['active'] = false;
+    $_['lot']['bar']['lot'][0]['lot']['search']['skip'] = true;
+    $_['lot']['bar']['lot'][0]['lot']['set']['skip'] = true;
+    $_['lot']['bar']['lot'][1]['lot']['site']['lot']['state']['skip'] = true;
+    $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['fields']['lot']['files']['skip'] = true;
+}
+
+return $_;
