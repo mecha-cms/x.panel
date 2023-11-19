@@ -1,15 +1,12 @@
 <?php
 
-$query = $_GET['query'] ?? null;
+$query = $_['query']['query'] ?? null;
 
 if (null !== $query && !empty($_['part'])) {
-    $title = x\panel\lot\type\title([
-        'content' => i('Search results for query %s', ['<em>' . $query . '</em>']),
-        'level' => -1
-    ], 0);
-    $tasks = x\panel\lot\type\tasks\link([
-        '0' => 'span',
-        'lot' => [
+    $GLOBALS['_']['alert']['info'][__FILE__] = [
+        'description' => ['Search results for query %s', ['&#x201c;' . eat($query) . '&#x201d;']],
+        'stack' => 10,
+        'tasks' => [
             'exit' => [
                 'description' => ['Exit %s', 'search'],
                 'icon' => 'M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z',
@@ -17,10 +14,8 @@ if (null !== $query && !empty($_['part'])) {
                 'title' => false,
                 'url' => ['query' => ['query' => null]]
             ]
-        ],
-        'tags' => ['p' => false]
-    ], 0);
-    $GLOBALS['_']['alert']['info'][__FILE__] = '<span role="group">' . $title . ' ' . $tasks . '</span>';
+        ]
+    ];
 }
 
 // Always monitor the remaining disk space!

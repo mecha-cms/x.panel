@@ -122,7 +122,7 @@ function content($value, $key) {
 
 function description($value, $key) {
     $description = $value[1] ?? $value['content'] ?? "";
-    $description = \trim(\w(\i(...((array) $description)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'ins', 'mark', 'span', 'strong', 'sub', 'sup']) ?? "");
+    $description = \trim(\w(\i(...((array) $description)), ['a', 'abbr', 'b', 'code', 'del', 'em', 'i', 'input', 'ins', 'mark', 'span', 'strong', 'sub', 'sup']) ?? "");
     if (!$description && '0' !== $description) {
         return null;
     }

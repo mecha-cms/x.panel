@@ -2,7 +2,7 @@
 
 function pull($_) {
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
     \extract($GLOBALS, \EXTR_SKIP);
@@ -21,7 +21,7 @@ function pull($_) {
         ]),
         'task' => 'get'
     ];
-    if (null !== ($blob = \fetch('https://mecha-cms.com/' . (\defined("\\TEST") && \TEST ? 'git-dev' : 'git') . '/zip/' . $path . \To::query($_['query'] ?? [])))) {
+    if (null !== ($blob = \fetch('https://' . (\defined("\\TEST") && \TEST ? 'dev.' : "") . 'mecha-cms.com/git/zip/' . $path . \To::query($_['query'] ?? [])))) {
         if (!\is_dir($folder = \ENGINE . \D . 'log' . \D . 'git' . \D . 'zip' . \D . \dirname($path))) {
             \mkdir($folder, 0775, true);
         }
@@ -87,8 +87,13 @@ function pull($_) {
                 }
                 $zip_core->close();
             }
+            return $_;
+        }
         // Extension and layout update
-        } else if ($key && \file_put_contents($file = $folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob)) {}
+        if ($key && \file_put_contents($file = $folder . \D . $n . ($version ? '@v' . $version : "") . '.zip', $blob)) {
+            return $_;
+        }
     }
+    $_['alert']['error'][$path] = ['Failed to pull ' . ('x' === $key ? 'extension' : ('y' === $key ? 'layout' : 'package')) . ' %s due to a network error.', ['<a href="" target="_blank">' . $path . '</a>']];
     return $_;
 }

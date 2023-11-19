@@ -5,7 +5,7 @@ function fuse($_) {
         $_['alert']['error'][] = ['Missing %s extension.', 'PHP <a href="https://www.php.net/book.zip" rel="nofollow" target="_blank"><code>zip</code></a>'];
     }
     // Abort by previous hook’s return value if any
-    if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
+    if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
     \extract($GLOBALS, \EXTR_SKIP);
@@ -53,6 +53,7 @@ function fuse($_) {
             }
             $zip->close();
             \chmod($history, 0600);
+            $_SESSION['_']['files'][$history] = 1;
         }
         // Compare file/folder of the currently installed version with the new version to be installed…
         $files_current = $files_next = [];
@@ -149,6 +150,7 @@ function fuse($_) {
                 $counter[0][$k] = 1;
             }
         }
+        $_SESSION['_']['folders'][$folder] = 1;
         $page = new \Page(null, [
             'title' => 'Mecha',
             'version' => $version
@@ -204,6 +206,7 @@ function fuse($_) {
             }
             $zip->close();
             \chmod($history, 0600);
+            $_SESSION['_']['files'][$history] = 1;
         }
         // Compare file/folder of currently installed version with the new version to be installed…
         $files_current = $files_next = [];
@@ -262,6 +265,7 @@ function fuse($_) {
                 $counter[0][$k] = 1;
             }
         }
+        $_SESSION['_']['folders'][$folder] = 1;
         $page = new \Page(\exist($folder . \D . 'about.page', 1) ?: null);
         $t = '<a href="' . \x\panel\to\link([
             'hash' => null,
@@ -293,6 +297,8 @@ function fuse($_) {
         }
         $zip->close();
         \unlink($file);
+        return $_;
     }
+    $_['alert'][$folder] = 'Error.';
     return $_;
 }

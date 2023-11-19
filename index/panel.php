@@ -133,19 +133,50 @@ function route($content, $path, $query, $hash) {
     foreach (\array_reverse($types) as $type) {
         $_ = $GLOBALS['_'] = \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_;
     }
-    if (!empty($_['alert']) && \class_exists("\\Alert")) {
+    if (!empty($_['alert']) && \is_array($_['alert']) && \class_exists("\\Alert")) {
         // Has alert data from queue
         $has_alert = true;
         // Make alert section visible
         if (!empty($_['lot']['desk']['lot']['form']['lot']['alert'])) {
             $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = false;
         }
-        foreach ((array) $_['alert'] as $k => $v) {
-            foreach ((array) $v as $vv) {
+        $stack = 10;
+        foreach ($_['alert'] as $k => $v) {
+            foreach ((array) $v as $kk => $vv) {
                 $vv = (array) $vv;
-                \call_user_func("\\Alert::" . $k, ...$vv);
+                if (!\array_key_exists('stack', $vv)) {
+                    $vv = [
+                        'description' => $vv,
+                        'stack' => $stack,
+                        'tasks' => []
+                    ];
+                }
+                $_['alert'][$k][$kk] = $vv;
+                $stack += 0.01;
+            }
+            foreach ((new \Anemone($_['alert'][$k]))->sort([1, 'stack', 10], true)->get() as $kk => $vv) {
+                if (false === $vv || null === $vv || !empty($vv['skip'])) {
+                    continue;
+                }
+                if (!empty($vv['tasks'])) {
+                    $description = \x\panel\lot\type\description([
+                        '0' => 'span',
+                        'content' => $vv['description'],
+                        'tags' => ['description' => false]
+                    ], $kk);
+                    $tasks = \x\panel\lot\type\tasks\link([
+                        '0' => 'span',
+                        'lot' => (array) $vv['tasks'],
+                        'tags' => ['p' => false]
+                    ], $kk);
+                    \call_user_func("\\Alert::" . $k, '<span role="group">' . $description . ' ' . $tasks . '</span>');
+                    continue;
+                }
+                \call_user_func("\\Alert::" . $k, ...((array) ($vv['description'] ?? [])));
             }
         }
+        // Update the panel icon data of the alert task(s)
+        $_['icon'] = $GLOBALS['_']['icon'] ?? [];
     }
     if ($kick = $_['kick']) {
         // Force redirect!
