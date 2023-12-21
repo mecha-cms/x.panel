@@ -1,5 +1,22 @@
 <?php namespace x\panel;
 
+$prefix = \ENGINE . \D . 'log' . \D . 'error';
+if (\is_file($log = $prefix . '-x') || \is_file($log = $prefix . '-y')) {
+    $log = \file_get_contents($log);
+    if (\preg_match_all('/' . \x(\LOT . \D . '[xy]' . \D) . '[^' . \x(\D) . ']+/', $log, $m)) {
+        $stuck = [];
+        foreach ($m[0] as $v) {
+            if (\is_file($v . \D . '.index.php')) {
+                $stuck[] = $v;
+            }
+        }
+        // TODO: Attempt to revert to the previous state if recent update(s) are not compatible with other extension(s)
+        // and layout(s) in the current system set up.
+        // // \test($stuck);
+        // // exit;
+    }
+}
+
 if (!isset($state->x->user)) {
     \abort(\i('Missing %s extension.', ['<a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a>']));
 }
