@@ -227,13 +227,6 @@ function field($value, $key) {
     }
     $icon = \x\panel\to\icon($value['icon'] = (array) ($value['icon'] ?? [null, null])); // Default as prefix
     $unit = \x\panel\to\unit($value['unit'] = isset($value['unit']) && \is_string($value['unit']) ? [null, $value['unit']] : ((array) ($value['unit'] ?? [null, null]))); // Default as suffix
-    foreach ($unit as $k => $v) {
-        if (\is_string($v) && "" !== $v) {
-            $unit[$k] = new \HTML(['span', $v, ['class' => 'fix']]);
-        } else if ($v instanceof \HTML) {
-            $unit[$k][2] = \x\panel\lot\_tag_set($v[2], ['tags' => ['fix' => true]]);
-        }
-    }
     foreach ($icon as $k => $v) {
         if (\is_string($v) && "" !== $v) {
             $v = new \HTML($v);
@@ -263,6 +256,13 @@ function field($value, $key) {
             ]], true);
         }
         $icon[$k] = $v;
+    }
+    foreach ($unit as $k => $v) {
+        if (\is_string($v) && "" !== $v) {
+            $unit[$k] = new \HTML(['span', $v, ['class' => 'fix']]);
+        } else if ($v instanceof \HTML) {
+            $unit[$k][2] = \x\panel\lot\_tag_set($v[2], ['tags' => ['fix' => true]]);
+        }
     }
     $decors_field = $tags_field = [];
     if (isset($value['height']) && false !== $value['height']) {
@@ -325,17 +325,26 @@ function field($value, $key) {
             ]);
         }
         $content = (string) \x\panel\to\content($value['field']);
+        if ($tasks = $value['tasks'] ?? "") {
+            $tasks = \x\panel\lot\type\tasks\link(\x\panel\lot\_value_set([
+                '0' => 'span',
+                'are' => ['links' => false],
+                'lot' => (array) $tasks,
+                'tags' => ['p' => false]
+            ]), $key);
+        }
         $value[1]['field'][1][] = [
             0 => 'div',
             1 => [
                 '(' => $icon[0] ?? $unit[0] ?? "",
-                'content' => $content,
+                'content' => $content . $tasks,
                 ')' => $icon[1] ?? $unit[1] ?? ""
             ],
             2 => [
                 'class' => \implode(' ', \array_keys(\array_filter([
                     'count:' . ("" === $content ? '0' : '1') => true,
                     'has:height' => !empty($value['height']),
+                    'has:tasks' => "" !== $tasks,
                     'has:width' => !empty($value['width']),
                     'p' => true,
                     'with:fields' => true

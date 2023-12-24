@@ -40,6 +40,13 @@
             }
           }
         }
+        :focus {
+          + .lot\:tasks {
+            &::after {
+              border-color: var(--stroke-input--focus, var(--stroke-input));
+            }
+          }
+        }
         &.has\:height,
         &.has\:width {
           display: flex;
@@ -50,6 +57,38 @@
           // previous container (this very container) that has a `.has:height` class on it. The default `.has:height`
           // class gives the element’s height to be 100%
           height: auto;
+        }
+        &.has\:tasks {
+          .lot\:tasks {
+            background: var(--fill-input);
+            bottom: 1px;
+            padding: 0 calc(var(--x) / 4);
+            position: absolute;
+            right: 1px;
+            top: 1px;
+            z-index: 2;
+            .title {
+              span {
+                padding: calc(var(--x) / 6);
+              }
+              svg {
+                + span {
+                  padding-left: 0;
+                }
+              }
+            }
+            &::after {
+              border: 1px solid;
+              border-color: var(--stroke-input);
+              border-width: 0 0 0 1px;
+              bottom: 0;
+              content: "";
+              opacity: 0.5;
+              position: absolute;
+              right: 100%;
+              top: 0;
+            }
+          }
         }
         > * {
           + * {
