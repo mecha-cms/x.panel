@@ -40,13 +40,6 @@
             }
           }
         }
-        :focus {
-          + .lot\:tasks {
-            &::after {
-              border-color: var(--stroke-input--focus, var(--stroke-input));
-            }
-          }
-        }
         &.has\:height,
         &.has\:width {
           display: flex;
@@ -61,15 +54,35 @@
         &.has\:tasks {
           .lot\:tasks {
             background: var(--fill-input);
-            bottom: 1px;
-            padding: 0 calc(var(--x) / 4);
+            background-clip: padding-box;
+            border: 1px solid transparent;
+            bottom: 0;
+            gap: 1px; // border-x-width
+            margin: 0;
             position: absolute;
-            right: 1px;
-            top: 1px;
+            right: 0;
+            top: 0;
             z-index: 2;
+            > * {
+              padding: 0 calc((var(--x) / 6) + 1px); // 0 (($x / 6) + border-x-width)
+              position: relative;
+              + * {
+                &::after {
+                  border: 1px solid;
+                  border-color: var(--stroke-input);
+                  border-width: 0 0 0 1px;
+                  bottom: 0;
+                  content: "";
+                  opacity: 0.5;
+                  position: absolute;
+                  right: 100%;
+                  top: 0;
+                }
+              }
+            }
             .title {
               span {
-                padding: calc(var(--x) / 6);
+                padding: 0 calc(var(--x) / 6);
               }
               svg {
                 + span {
@@ -87,6 +100,18 @@
               position: absolute;
               right: 100%;
               top: 0;
+            }
+          }
+          :focus {
+            + .lot\:tasks {
+              > * {
+                &::after {
+                  border-color: var(--stroke-input--focus, var(--stroke-input));
+                }
+              }
+              &::after {
+                border-color: var(--stroke-input--focus, var(--stroke-input));
+              }
             }
           }
         }
