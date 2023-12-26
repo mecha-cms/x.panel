@@ -104,6 +104,8 @@
           }
           :focus {
             + .lot\:tasks {
+              background: var(--fill-input--focus, var(--fill-input));
+              background-clip: padding-box;
               > * {
                 &::after {
                   border-color: var(--stroke-input--focus, var(--stroke-input));

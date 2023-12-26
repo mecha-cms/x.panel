@@ -2333,6 +2333,10 @@ label .input[type=radio] + span {
   right: 100%;
   top: 0;
 }
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks {
+  background: var(--fill-input--focus, var(--fill-input));
+  background-clip: padding-box;
+}
 .lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks > *::after {
   border-color: var(--stroke-input--focus, var(--stroke-input));
 }
