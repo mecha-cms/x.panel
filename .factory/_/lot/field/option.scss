@@ -40,14 +40,18 @@ $name: option-picker;
     }
     &:not([multiple]) {
       + .#{$name} {
-        padding-bottom: calc(var(--y) / 4);
-        padding-top: calc(var(--y) / 4);
+        padding: {
+          bottom: calc(var(--y) / 4);
+          top: calc(var(--y) / 4);
+        }
       }
     }
   }
   &__input,
   &__values {
-    padding-left: 0;
-    padding-right: 0;
+    padding: {
+      left: 0;
+      right: 0;
+    }
   }
 }

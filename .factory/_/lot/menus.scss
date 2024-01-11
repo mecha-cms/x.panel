@@ -49,7 +49,7 @@
               margin-left: calc(var(--x) / -4);
             }
             &:last-child {
-              margin-right: calc(var(--x) / 4);
+              margin-right: calc(var(--x) / -4);
             }
             &.caret {
               fill: var(--color-menus-caret, var(--color-caret, var(--color, currentColor)));

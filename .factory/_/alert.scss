@@ -13,8 +13,10 @@
     display: flex;
     .lot\:tasks {
       gap: calc(var(--y) / 6) calc(var(--x) / 6);
-      margin-left: auto;
-      margin-right: calc(var(--x) / -4);
+      margin: {
+        left: auto;
+        right: calc(var(--x) / -4);
+      }
     }
   }
 }

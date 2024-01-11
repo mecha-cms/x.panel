@@ -44,8 +44,10 @@
               }
               &.caret {
                 fill: var(--color-bar-caret, var(--color-caret, var(--color, currentColor)));
-                margin-left: calc(var(--x) / -4);
-                margin-right: calc(var(--x) / -4);
+                margin: {
+                  left: calc(var(--x) / -4);
+                  right: calc(var(--x) / -4);
+                }
               }
             }
             .status {
@@ -122,8 +124,10 @@
       display: none;
     }
     > * {
-      margin-left: 0;
-      margin-right: 0;
+      margin: {
+        left: 0;
+        right: 0;
+      }
     }
   }
   > .description,
@@ -133,7 +137,9 @@
     padding: 0 calc(var(--x) * .75);
   }
   > .title {
-    font-size: 100%;
-    font-weight: bold;
+    font: {
+      size: 100%;
+      weight: bold;
+    }
   }
 }

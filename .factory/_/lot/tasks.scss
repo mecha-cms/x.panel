@@ -8,8 +8,10 @@
     .title {
       gap: calc(var(--y) / 8) calc(var(--x) / 8);
       > .icon {
-        margin-left: 0;
-        margin-right: 0;
+        margin: {
+          left: 0;
+          right: 0;
+        }
       }
     }
   }

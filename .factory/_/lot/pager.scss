@@ -1,6 +1,8 @@
 .lot\:pager {
-  margin-right: calc(var(--x) / -8);
-  margin-left: calc(var(--x) / -8);
+  margin: {
+    right: calc(var(--x) / -8);
+    left: calc(var(--x) / -8);
+  }
   &,
   > span {
     align-items: center;

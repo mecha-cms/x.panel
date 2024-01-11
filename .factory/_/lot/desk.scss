@@ -3,8 +3,10 @@
   padding: var(--y) var(--x);
   position: relative;
   > * {
-    margin-left: auto;
-    margin-right: auto;
+    margin: {
+      left: auto;
+      right: auto;
+    }
     max-width: calc(var(--x) * 36);
   }
   &.has\:width {

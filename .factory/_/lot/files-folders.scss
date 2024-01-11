@@ -1,8 +1,10 @@
 .lot\:files {
   display: block;
   list-style: none;
-  margin-left: 0;
-  margin-right: 0;
+  margin: {
+    left: 0;
+    right: 0;
+  }
   .description {
     margin: 0;
     padding: 0;

@@ -2,8 +2,10 @@
   > label {
     + div {
       .with\:options {
-        padding-bottom: 0;
-        padding-top: 0;
+        padding: {
+          bottom: 0;
+          top: 0;
+        }
         &.has\:gap {
           gap: calc(var(--y) / 4) calc(var(--x) / 4);
         }

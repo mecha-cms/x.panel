@@ -146,9 +146,9 @@ function route($content, $path, $query, $hash) {
                 $vv = (array) $vv;
                 if (!\array_key_exists('stack', $vv)) {
                     $vv = [
-                        'description' => $vv,
+                        'description' => $vv['description'] ?? $vv,
                         'stack' => $stack,
-                        'tasks' => []
+                        'tasks' => $vv['tasks'] ?? []
                     ];
                 }
                 $_['alert'][$k][$kk] = $vv;
