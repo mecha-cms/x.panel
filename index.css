@@ -1383,6 +1383,11 @@ pre.is\:text code {
   display: inline-block;
 }
 
+[role=doc-endnotes] {
+  color: var(--color-description);
+  margin-top: calc(var(--y) * 1);
+}
+
 .button,
 .input,
 .output,
@@ -2488,6 +2493,7 @@ label .input[type=radio] + span {
   background: var(--fill-option-picker--focus, var(--fill-option-picker, var(--fill--focus, var(--fill, none))));
   border-color: var(--stroke-option-picker--focus, var(--stroke-option-picker, var(--stroke--focus, var(--stroke, transparent))));
   box-shadow: var(--shadow-option-picker--focus, var(--shadow-option-picker, var(--shadow--focus, var(--shadow, none))));
+  z-index: 9999;
 }
 .option-picker.has\:width {
   display: flex;
@@ -3652,6 +3658,7 @@ kbd,
 small,
 sub,
 sup,
+[role=doc-endnotes],
 .lot\:field .description,
 .lot\:links > .description,
 .lot\:menu > .description,

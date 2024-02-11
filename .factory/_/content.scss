@@ -18,3 +18,9 @@ pre {
     }
   }
 }
+
+[role='doc-endnotes'] {
+  @extend .small;
+  color: var(--color-description);
+  margin-top: calc(var(--y) * 1);
+}

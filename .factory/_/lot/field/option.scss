@@ -13,6 +13,7 @@ $name: option-picker;
     background: var(--fill-#{$name}--focus, var(--fill-#{$name}, var(--fill--focus, var(--fill, none))));
     border-color: var(--stroke-#{$name}--focus, var(--stroke-#{$name}, var(--stroke--focus, var(--stroke, transparent))));
     box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}, var(--shadow--focus, var(--shadow, none))));
+    z-index: 9999;
   }
   &.has\:width {
     display: flex;
