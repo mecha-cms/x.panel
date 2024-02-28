@@ -22,13 +22,13 @@
   "license": "GPL-3.0-or-later",
   "name": "mecha-cms/x.panel",
   "require": {
-    "mecha-cms/x.alert": "^2.0.0",
+    "mecha-cms/x.alert": "^3.0.0",
     "mecha-cms/x.asset": "^2.0.0",
     "mecha-cms/x.layout": "^2.0.0",
     "mecha-cms/x.markdown": "^3.0.0",
     "mecha-cms/x.page": "^3.0.0",
     "mecha-cms/x.user": "^2.0.0",
-    "mecha-cms/x.y-a-m-l": "^2.0.0"
+    "mecha-cms/x.y-a-m-l": "^3.0.0"
   },
   "suggest": {
     "ext-zip": "Make sure this extension is available to work with ZIP files.",
