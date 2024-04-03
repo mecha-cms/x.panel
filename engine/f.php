@@ -28,7 +28,7 @@ function _asset_get() {
     $z = \defined("\\TEST") && \TEST ? '.' : '.min.';
     $data[$folder . \D . 'index' . $z . 'css'] = ['stack' => 20];
     $data[$folder . \D . 'index' . $z . 'js'] = ['stack' => 20];
-    $GLOBALS['_']['asset'] = \array_replace_recursive($GLOBALS['_']['asset'], $data);
+    \lot('_')['asset'] = \array_replace_recursive(\lot('_')['asset'], $data);
     unset($data);
 }
 
@@ -37,7 +37,7 @@ function _asset_let() {
 }
 
 function _asset_set() {
-    $_ = $GLOBALS['_'];
+    $_ = \lot('_');
     if (!empty($_['asset'])) {
         foreach ((new \Anemone((array) $_['asset']))->sort([1, 'stack', 10], true)->get() as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
@@ -71,7 +71,7 @@ function _cache_let(string $path) {
 
 // Check for update(s)
 function _git_sync() {
-    \extract($GLOBALS);
+    \extract(\lot());
     if (!\is_file($file = \ENGINE . \D . 'log' . \D . 'git' . \D . 'versions' . \D . 'mecha-cms.php')) {
         if (!\is_dir($folder = \dirname($file))) {
             \mkdir($folder, 0775, true);
@@ -172,7 +172,7 @@ function _git_sync() {
         }
     }
     // Recursive-replace instead of re-assign the value because icon(s) data also updated!
-    $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+    \lot('_', \array_replace_recursive(\lot('_'), $_));
 }
 
 function _query_set(array $query = [], $reset = true) {
@@ -187,11 +187,11 @@ function _query_set(array $query = [], $reset = true) {
         'token' => null,
         'type' => null,
         'x' => null
-    ] : (array) ($GLOBALS['_']['query'] ?? []), $query);
+    ] : (array) (\lot('_')['query'] ?? []), $query);
 }
 
 function _state_set() {
-    $_ = $GLOBALS['_'];
+    $_ = \lot('_');
     if ($_['status'] >= 400) {
         $_['is']['error'] = $_['status'];
     }
@@ -203,7 +203,7 @@ function _state_set() {
             \State::set($v, $_[$v]);
         }
     }
-    $GLOBALS['_'] = $_;
+    \lot('_', $_);
 }
 
 function type(array $_ = []) {

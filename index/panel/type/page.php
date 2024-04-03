@@ -178,7 +178,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
     return $_;
 }, 20);
 
-$GLOBALS['page'] = $page;
+lot('page', $page);
 
 $page_type = 'text/html' === $page->type ? 'HTML' : $page->type;
 

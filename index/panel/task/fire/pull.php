@@ -5,7 +5,7 @@ function pull($_) {
     if (isset($_['kick']) || !empty($_['alert']['error'])) {
         return $_;
     }
-    \extract($GLOBALS, \EXTR_SKIP);
+    \extract(\lot(), \EXTR_SKIP);
     $n = \basename($path = (string) $_['path']);
     $key = 0 === \strpos($n, 'x.') ? 'x' : (0 === \strpos($n, 'y.') ? 'y' : "");
     $value = "" !== $key ? \substr($n, 2) : $n;

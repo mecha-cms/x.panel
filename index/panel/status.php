@@ -108,4 +108,4 @@ if (!is_int($status = $user->status)) {
     $_['type'] = 'void';
 }
 
-$GLOBALS['_'] = $_;
+lot('_', $_);

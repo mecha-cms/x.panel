@@ -28,7 +28,7 @@ if (!empty($user) && !($user instanceof \User)) {
 
 // Set proper redirect target for non super user
 function on__user__enter($file) {
-    \extract($GLOBALS, \EXTR_SKIP);
+    \extract(\lot(), \EXTR_SKIP);
     $user = new \User($file);
     $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
     $status = $user->status ?? 0;
@@ -77,7 +77,7 @@ if ($test) {
     }
 }
 
-$GLOBALS['_'] = $_ = \array_replace_recursive([
+\lot('_', $_ = \array_replace_recursive([
     '0' => null,
     '1' => null,
     '2' => [],
@@ -108,13 +108,13 @@ $GLOBALS['_'] = $_ = \array_replace_recursive([
     'query' => $query,
     'sort' => $query['sort'] ?? null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
-    'task' => $GLOBALS['_' . $r]['task'] ?? ($test ? $m[1] : null),
+    'task' => \lot('_' . $r)['task'] ?? ($test ? $m[1] : null),
     'title' => null,
     'token' => $user->token ?? null,
-    'type' => $GLOBALS['_' . $r]['type'] ?? null,
+    'type' => \lot('_' . $r)['type'] ?? null,
     'with' => [],
     'x' => $query['x'] ?? null
-], $GLOBALS['_'] ?? []);
+], \lot('_') ?? []));
 
 // Modify default log-in redirection to the panel page if it is not set
 if ('GET' === $r && !\array_key_exists('kick', $_GET)) {

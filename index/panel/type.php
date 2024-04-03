@@ -26,14 +26,14 @@ if (!array_key_exists('type', $_GET) && !isset($_['type'])) {
 }
 
 // Set
-$GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], $_);
+lot('_', array_replace_recursive(lot('_'), $_));
 
 foreach (array_reverse(step(strtr($_['type'] ?? 'void', '/', D), D)) as $v) {
     if (is_file($f = __DIR__ . D . 'type' . D . $v . '.php')) {
          (static function ($f) {
-            extract($GLOBALS, EXTR_SKIP);
+            extract(lot(), EXTR_SKIP);
             if ($_ = require $f) {
-                $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], (array) $_);
+                lot('_', array_replace_recursive(lot('_'), (array) $_));
             }
         })($f);
     } else if (is_callable($f = "\\x\\panel\\type\\" . strtr($v, [
@@ -41,12 +41,12 @@ foreach (array_reverse(step(strtr($_['type'] ?? 'void', '/', D), D)) as $v) {
         '.' => '__',
         D => "\\"
     ]))) {
-        $GLOBALS['_'] = array_replace_recursive(call_user_func($f, []), $GLOBALS['_']);
+        lot('_', array_replace_recursive(call_user_func($f, []), lot('_')));
     }
 }
 
 // Get
-$_ = $GLOBALS['_'];
+$_ = lot('_');
 
 // Run the task(s) to `do.*.*` hook after panel type is set
 $tasks = array_reverse(step(trim(strtr($_['task'] ?? 'get', '/', D), D), D));

@@ -3,8 +3,8 @@
 require __DIR__ . \D . '..' . \D . 'engine' . \D . 'f.php';
 require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
 
-$GLOBALS['_'] = $_ = \x\panel\type((static function ($icons) {
-    \extract($GLOBALS, \EXTR_SKIP);
+\lot('_', $_ = \x\panel\type((static function ($icons) {
+    \extract(\lot(), \EXTR_SKIP);
     if (isset($_[0]) || isset($_[1]) || isset($_['content'])) {
         return $_; // Skip!
     }
@@ -100,38 +100,38 @@ $GLOBALS['_'] = $_ = \x\panel\type((static function ($icons) {
     'user' => 'M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z',
     'x' => 'M20.5,11H19V7C19,5.89 18.1,5 17,5H13V3.5A2.5,2.5 0 0,0 10.5,1A2.5,2.5 0 0,0 8,3.5V5H4A2,2 0 0,0 2,7V10.8H3.5C5,10.8 6.2,12 6.2,13.5C6.2,15 5,16.2 3.5,16.2H2V20A2,2 0 0,0 4,22H7.8V20.5C7.8,19 9,17.8 10.5,17.8C12,17.8 13.2,19 13.2,20.5V22H17A2,2 0 0,0 19,20V16H20.5A2.5,2.5 0 0,0 23,13.5A2.5,2.5 0 0,0 20.5,11Z',
     'y' => 'M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z'
-]));
+])));
 
 function route($content, $path, $query, $hash) {
     if (null !== $content) {
         return $content;
     }
-    $_ = $GLOBALS['_'] ?? [];
+    $_ = \lot('_') ?? [];
     // Check for update(s)
     if ('GET' === $_SERVER['REQUEST_METHOD'] && 'get' === $_['task'] && empty($_['query']['token'])) {
         \x\panel\_git_sync();
     }
-    $GLOBALS['file'] = $file = new \File(\is_file($v = $_['file'] ?? \P) ? $v : null);
-    $GLOBALS['folder'] = $folder = new \Folder(\is_dir($v = $_['folder'] ?? \P) ? $v : null);
+    \lot('file', $file = new \File(\is_file($v = $_['file'] ?? \P) ? $v : null));
+    \lot('folder', $folder = new \Folder(\is_dir($v = $_['folder'] ?? \P) ? $v : null));
     // Load pre-defined route(s) and type(s)
     (static function () {
-        \extract($GLOBALS);
+        \extract(\lot());
         require __DIR__ . \D . 'panel' . \D . 'route.php';
         require __DIR__ . \D . 'panel' . \D . 'status.php';
         require __DIR__ . \D . 'panel' . \D . 'task.php';
         require __DIR__ . \D . 'panel' . \D . 'type.php';
         if (isset($_)) {
             // Update panel data from the route file!
-            $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+            \lot('_', \array_replace_recursive(\lot('_'), $_));
         }
     })();
     \x\panel\_asset_get();
     \x\panel\_asset_let();
-    $_ = $GLOBALS['_'] = \Hook::fire('_', [$GLOBALS['_']]) ?? $_;
+    $_ = \lot('_', \Hook::fire('_', [\lot('_')]) ?? $_);
     $task = \strtr($_['task'] ?? 'get', "\\", '/');
     $types = \step(\strtr($_['type'] ?? \P, "\\", '/'), '/');
     foreach (\array_reverse($types) as $type) {
-        $_ = $GLOBALS['_'] = \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_;
+        $_ = \lot('_', \Hook::fire('do.' . $type . '.' . $task, [$_]) ?? $_);
     }
     if (!empty($_['alert']) && \is_array($_['alert']) && \class_exists("\\Alert")) {
         // Has alert data from queue
@@ -176,7 +176,7 @@ function route($content, $path, $query, $hash) {
             }
         }
         // Update the panel icon data of the alert task(s)
-        $_['icon'] = $GLOBALS['_']['icon'] ?? [];
+        $_['icon'] = \lot('_')['icon'] ?? [];
     }
     if ($kick = $_['kick']) {
         // Force redirect!
@@ -197,7 +197,7 @@ function route($content, $path, $query, $hash) {
         $_['lot']['desk']['lot']['form']['lot']['alert']['content'] = \Layout::alert('panel');
     }
     // Update panel data
-    $GLOBALS['_'] = $_;
+    \lot('_', $_);
     return \Hook::fire('route.panel', [$content, $path, $query, $hash]);
 }
 
@@ -205,7 +205,7 @@ function route__panel($content, $path, $query, $hash) {
     if (null !== $content) {
         return $content;
     }
-    \extract($GLOBALS, \EXTR_SKIP);
+    \extract(\lot(), \EXTR_SKIP);
     $type = $_['type'] ?? 'void';
     if ($_['status'] >= 400) {
         $_['lot']['desk']['lot']['alert'] = \array_replace_recursive([
@@ -230,8 +230,8 @@ function route__panel($content, $path, $query, $hash) {
         ], 0);
     }
     // Update!
-    $_['data-list'] = (array) ($GLOBALS['_']['data-list'] ?? []);
-    $_['icon'] = (array) ($GLOBALS['_']['icon'] ?? []);
+    $_['data-list'] = (array) (\lot('_')['data-list'] ?? []);
+    $_['icon'] = (array) (\lot('_')['icon'] ?? []);
     if (!empty($_['data-list'])) {
         foreach ($_['data-list'] as $k => $v) {
             $list .= '<datalist id="l:' . $k . '">';
@@ -302,22 +302,22 @@ function route__panel($content, $path, $query, $hash) {
             $js[$v] = $_[$v];
         }
     }
-    $GLOBALS['_']['asset']['script'] = [
+    \lot('_')['asset']['script'] = [
         'id' => false,
         'link' => 'data:text/js;base64,' . \base64_encode('window._=Object.assign(window._||{},' . \json_encode($js) . ');'),
         'stack' => 0
     ];
-    $GLOBALS['_']['type'] = $type;
-    $GLOBALS['content'] = $icon . $content . $list;
-    $GLOBALS['description'] = \i(...((array) ($_['description'] ?? "")));
-    $GLOBALS['t'][] = \i('Panel');
+    \lot('_')['type'] = $type;
+    \lot('content', $icon . $content . $list);
+    \lot('description', \i(...((array) ($_['description'] ?? ""))));
+    \lot('t')[] = \i('Panel');
     if ($id) {
-        $GLOBALS['t'][] = \i(...((array) ($_['title'] ?? ('x' === $id ? 'Extension' : ('y' === $id ? 'Layout' : \To::title($id))))));
+        \lot('t')[] = \i(...((array) ($_['title'] ?? ('x' === $id ? 'Extension' : ('y' === $id ? 'Layout' : \To::title($id))))));
     }
-    $GLOBALS['title'] = (string) $GLOBALS['t']->reverse();
+    \lot('title', (string) \lot('t')->reverse());
     \x\panel\_asset_set();
     \x\panel\_state_set();
-    $_ = $GLOBALS['_']; // Update!
+    $_ = \lot('_'); // Update!
     return ['panel', [], (int) ($_['status'] ?? 404)];
 }
 
@@ -333,11 +333,11 @@ function set() {
             continue;
         }
         (static function ($f) {
-            \extract($GLOBALS, \EXTR_SKIP);
+            \extract(\lot(), \EXTR_SKIP);
             require $f;
             if (isset($_)) {
                 // Update panel data from the special panel file!
-                $GLOBALS['_'] = \array_replace_recursive($GLOBALS['_'], $_);
+                \lot('_', \array_replace_recursive(\lot('_'), $_));
             }
         })($file);
     }

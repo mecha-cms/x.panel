@@ -704,7 +704,7 @@ function icon($value, $key) {
         }
         $icons = \array_replace($icons, $value);
     }
-    $ref = $GLOBALS['_']['icon'] ?? [];
+    $ref = \lot('_')['icon'] ?? [];
     $attr = [
         'aria-hidden' => 'true',
         'class' => 'icon',
@@ -759,7 +759,7 @@ function icon($value, $key) {
                 // Inline icon(s)
                 } else {
                     if (!isset($ref[$id = \dechex(\crc32($v))])) {
-                        $GLOBALS['_']['icon'][$id] = $v;
+                        \lot('_')['icon'][$id] = $v;
                     }
                     $v = new \XML(['svg', ['use' => ['use', "", ['href' => '#icon:' . $id]]], $attr], true);
                 }
@@ -793,7 +793,7 @@ function input($value, $key) {
     }
     $id = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
     if (!empty($value['lot']) && \is_array($value['lot'])) {
-        $GLOBALS['_']['data-list'][$id] = $value['lot'];
+        \lot('_')['data-list'][$id] = $value['lot'];
         $value[2]['list'] = 'l:' . $id;
     }
     $value[2]['autofocus'] = !empty($value['focus']);
@@ -1138,7 +1138,7 @@ function pager($value, $key) {
     $content = (string) \x\panel\to\pager($value['current'] ?? 1, $value['count'] ?? 0, $value['chunk'] ?? 20, $value['peek'] ?? 2, $route ?? static function ($i) use ($value) {
         return \x\panel\to\link([
             'part' => $i,
-            'path' => $value['path'] ?? $GLOBALS['_']['path']
+            'path' => $value['path'] ?? \lot('_')['path']
         ]);
     });
     $value['lot'] = [

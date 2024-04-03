@@ -3,7 +3,7 @@
 $query = $_['query']['query'] ?? null;
 
 if (null !== $query && !empty($_['part'])) {
-    $GLOBALS['_']['alert']['info'][__FILE__] = [
+    lot('_')['alert']['info'][__FILE__] = [
         'description' => ['Search results for query %s', ['&#x201c;' . eat($query) . '&#x201d;']],
         'stack' => 10,
         'tasks' => [
@@ -22,7 +22,7 @@ if (null !== $query && !empty($_['part'])) {
 // TODO: Make this alert can be set by the user
 $limit = 1000000; // 1 MB
 if (disk_free_space(PATH) <= $limit) {
-    $GLOBALS['_']['alert']['info'][] = ['There is no more than %s of disk space left.', size($limit)];
+    lot('_')['alert']['info'][] = ['There is no more than %s of disk space left.', size($limit)];
 }
 
 if (defined('TEST') && TEST) {
@@ -45,6 +45,6 @@ if (defined('TEST') && TEST) {
             ]),
             'task' => 'fire/fix'
         ]) . '">' . i('remove the log') . '</a>']);
-        $GLOBALS['_']['alert']['error'][$log] = $out;
+        lot('_')['alert']['error'][$log] = $out;
     }
 }

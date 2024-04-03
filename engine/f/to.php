@@ -124,7 +124,7 @@ function icon($value) {
 }
 
 function link($value) {
-    \extract($GLOBALS, \EXTR_SKIP);
+    \extract(\lot(), \EXTR_SKIP);
     $v = \array_replace_recursive([
         'base' => $_['base'] ?? "",
         'hash' => $_['hash'] ?? "",

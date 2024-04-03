@@ -10,10 +10,10 @@ foreach ([
     'Content goes here...' => "Content goes here\u{2026}",
     'Description goes here...' => "Description goes here\u{2026}"
 ] as $k => $v) {
-    if (isset($GLOBALS['I'][$k])) {
+    if (isset(lot('I')[$k])) {
         continue;
     }
-    $GLOBALS['I'][$k] = $v;
+    lot('I')[$k] = $v;
 }
 
 require __DIR__ . D . 'r' . D . 'alert.php';

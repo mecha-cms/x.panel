@@ -19,12 +19,12 @@ function set($_) {}
 $tasks = \array_reverse(\step(\trim(\strtr($_['task'] ?? 'get', '/', \D), \D), \D));
 foreach ($tasks as $task) {
     \is_file($f = __DIR__ . \D . 'task' . \D . $task . '.php') && (static function ($f) {
-        \extract($GLOBALS, \EXTR_SKIP);
+        \extract(\lot(), \EXTR_SKIP);
         if (($_ = require $f) && \is_array($_)) {
-            $GLOBALS['_'] = array_replace_recursive($GLOBALS['_'], $_);
+            \lot('_', \array_replace_recursive(\lot('_'), $_));
         }
     })($f);
 }
 
 // Get
-$_ = $GLOBALS['_'];
+$_ = lot('_');
