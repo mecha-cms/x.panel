@@ -10,7 +10,7 @@ if (!empty($_['part']) || 'get' !== $_['task']) {
     return $_;
 }
 
-$GLOBALS['file'] = $file = new File(is_file($v = PATH . D . 'state.php') ? $v : null);
+lot('file', $file = new File(is_file($v = PATH . D . 'state.php') ? $v : null));
 
 $_['status'] = 200;
 if (!array_key_exists('type', $_GET) && !isset($_['type'])) {
@@ -28,8 +28,42 @@ $state_r = require x\panel\_cache_let($file->path);
 $state_user = require x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
 $state_panel = require x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
 
+$layouts = [];
+$layouts_current = null;
+
+foreach (glob(LOT . D . 'y' . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $layout) {
+    if (!is_file($layout . D . '.index.php') && !is_file($layout . D . 'index.php')) {
+        continue;
+    }
+    $n = basename($layout);
+    if (false !== strpos('._', $n[0])) {
+        continue;
+    }
+    $about = new Page(is_file($f = $layout . D . 'about.page') ? $f : null);
+    $layouts[$n] = $about->title ?? x\panel\from\path($layout);
+    if (null === $layouts_current) {
+        $layouts_current = is_file($layout . D . 'index.php') ? $n : null;
+    }
+}
+
 // Sanitize the form data
 if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
+    // Update current layout
+    if (isset($_POST['y']) && is_string($y = $_POST['y'])) {
+        $folder_y = LOT . D . 'y' . D . $y;
+        if ($layouts_current !== $y && (is_file($folder_y . D . '.index.php') || is_file($folder_y . D . 'index.php'))) {
+            foreach (glob(dirname($folder_y) . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $layout) {
+                if (is_file($f = $layout . D . 'index.php')) {
+                    rename($f, $layout . D . '.index.php');
+                }
+            }
+            if (rename($f = $folder_y . D . '.index.php', $folder_y . D . 'index.php')) {
+                $_['alert']['success'][$f] = ['%s %s successfully attached.', ['Layout', '<code>' . $y . '</code>']];
+            } else {
+                $_['alert']['info'][$f] = ['%s %s could not be attached.', ['Layout', '<code>' . $y . '</code>']];
+            }
+        }
+    }
     $_POST['state']['description'] = x\panel\to\w($_POST['state']['description'] ?? "");
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
@@ -92,7 +126,7 @@ $panels = $routes = [];
 
 foreach (glob(LOT . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
     $n = basename($panel);
-    if (false !== strpos('_.-', $n[0])) {
+    if (false !== strpos('._', $n[0])) {
         continue;
     }
     $panels['get/' . $n . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
@@ -102,35 +136,36 @@ foreach (glob(LOT . D . 'page' . D . '*.{archive,page}', GLOB_NOSORT | GLOB_BRAC
     $routes['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
 }
 
+asort($layouts);
 asort($panels);
 asort($routes);
 
 $zones = (static function () {
     $zones = [];
     $regions = [
-        \DateTimeZone::AFRICA,
-        \DateTimeZone::AMERICA,
-        \DateTimeZone::ANTARCTICA,
-        \DateTimeZone::ASIA,
-        \DateTimeZone::ATLANTIC,
-        \DateTimeZone::AUSTRALIA,
-        \DateTimeZone::EUROPE,
-        \DateTimeZone::INDIAN,
-        \DateTimeZone::PACIFIC
+        DateTimeZone::AFRICA,
+        DateTimeZone::AMERICA,
+        DateTimeZone::ANTARCTICA,
+        DateTimeZone::ASIA,
+        DateTimeZone::ATLANTIC,
+        DateTimeZone::AUSTRALIA,
+        DateTimeZone::EUROPE,
+        DateTimeZone::INDIAN,
+        DateTimeZone::PACIFIC
     ];
-    $timezones = [];
-    $timezone_offsets = [];
+    $time_zones = [];
+    $time_zone_offsets = [];
     foreach ($regions as $region) {
-        $timezones = \array_merge($timezones, \DateTimeZone::listIdentifiers($region));
+        $time_zones = array_merge($time_zones, DateTimeZone::listIdentifiers($region));
     }
-    foreach ($timezones as $timezone) {
-        $tz = new \DateTimeZone($timezone);
-        $timezone_offsets[$timezone] = $tz->getOffset(new \DateTime);
+    foreach ($time_zones as $time_zone) {
+        $tz = new DateTimeZone($time_zone);
+        $time_zone_offsets[$time_zone] = $tz->getOffset(new DateTime);
     }
-    asort($timezone_offsets);
-    foreach ($timezone_offsets as $zone => $offset) {
+    asort($time_zone_offsets);
+    foreach ($time_zone_offsets as $zone => $offset) {
         $offset_prefix = $offset < 0 ? '-' : '+';
-        $offset_formatted = gmdate('H:i', \abs($offset));
+        $offset_formatted = gmdate('H:i', abs($offset));
         $zones[$zone] = strtr($zone, '_', ' ') . ' ' . $offset_prefix . $offset_formatted;
     }
     return $zones;
@@ -191,11 +226,18 @@ return array_replace_recursive($_, [
                                                             'value' => $state_r['description'] ?? null,
                                                             'width' => true
                                                         ],
+                                                        'layout' => [
+                                                            'lot' => $layouts,
+                                                            'name' => 'y',
+                                                            'stack' => 40,
+                                                            'type' => 'option',
+                                                            'value' => $layouts_current
+                                                        ],
                                                         'route' => [
                                                             'description' => 'Choose default page that will open in the home page.',
                                                             'lot' => $routes,
                                                             'name' => 'state[route]',
-                                                            'stack' => 40,
+                                                            'stack' => 50,
                                                             'title' => 'Home',
                                                             'type' => 'option',
                                                             'value' => $state_r['route'] ?? null,
