@@ -184,12 +184,16 @@ function field($value, $key) {
     $has_description = !empty($value['description']);
     $has_pattern = !empty($value['pattern']);
     $has_title = !empty($value['title']);
+    $has_value = isset($value['value']);
+    $has_values = !empty($value['values']);
     $is_active = !isset($value['active']) || $value['active'];
     $is_fix = !empty($value['fix']);
     $is_vital = !empty($value['vital']);
     $value['has']['description'] = $value['has']['description'] ?? $has_description;
     $value['has']['pattern'] = $value['has']['pattern'] ?? $has_pattern;
     $value['has']['title'] = $value['has']['title'] ?? $has_title;
+    $value['has']['value'] = $value['has']['value'] ?? $has_value;
+    $value['has']['values'] = $value['has']['values'] ?? $has_values;
     $value['is']['active'] = $value['is']['active'] ?? $is_active;
     $value['is']['fix'] = $value['is']['fix'] ?? $is_fix;
     $value['is']['vital'] = $value['is']['vital'] ?? $is_vital;
@@ -319,8 +323,15 @@ function field($value, $key) {
     if (isset($value['field'])) {
         if (\is_array($value['field'])) {
             $value['field'][2] = \x\panel\lot\_decor_set($value['field'][2] ?? [], ['decors' => $decors_field]);
+            $has = $value['has'] ?? [];
+            // Valid `has:*` class(es) for field target are `has:height`, `has:pattern`, `has:value`, `has:values`, and `has:width`
+            foreach ($has as $k => $v) {
+                if (false === \strpos(',height,pattern,value,values,width,', ',' . $k . ',')) {
+                    unset($has[$k]);
+                }
+            }
             $value['field'][2] = \x\panel\lot\_tag_set($value['field'][2] ?? [], [
-                'has' => $value['has'] ?? [],
+                'has' => $has,
                 'tags' => $tags_field
             ]);
         }
