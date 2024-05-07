@@ -166,8 +166,7 @@ function route($content, $path, $query, $hash) {
                     ], $kk);
                     $tasks = \x\panel\lot\type\tasks\link([
                         '0' => 'span',
-                        'lot' => (array) $vv['tasks'],
-                        'tags' => ['p' => false]
+                        'lot' => (array) $vv['tasks']
                     ], $kk);
                     \call_user_func("\\Alert::" . $k, '<span role="group">' . $description . ' ' . $tasks . '</span>');
                     continue;
@@ -219,15 +218,9 @@ function route__panel($content, $path, $query, $hash) {
     $id = \strtok($_['path'] ?? "", '/');
     // Load the content first to queue the asset, icon, and (data)list
     if (isset($_['content'])) {
-        $content = \x\panel\lot\type\content([
-            'content' => (string) $_['content'],
-            'tags' => ['p' => false]
-        ], 0);
+        $content = \x\panel\lot\type\content(['content' => (string) $_['content']], 0);
     } else if (isset($_['lot'])) {
-        $content = \x\panel\lot\type\lot([
-            'lot' => (array) $_['lot'],
-            'tags' => ['p' => false]
-        ], 0);
+        $content = \x\panel\lot\type\lot(['lot' => (array) $_['lot']], 0);
     }
     // Update!
     $_['data-list'] = (array) (\lot('_')['data-list'] ?? []);

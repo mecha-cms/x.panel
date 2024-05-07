@@ -162,7 +162,7 @@
   .lot\:page {
     > div:last-child {
       flex-basis: 100%;
-      margin: calc(var(--y) / 3) 0 0 calc(var(--x) * 3);
+      margin: 0 0 0 calc(var(--x) * 2.75);
       min-height: 0;
     }
   }

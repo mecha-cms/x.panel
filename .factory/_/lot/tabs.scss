@@ -1,5 +1,6 @@
 .lot\:tabs {
   .lot\:links {
+    margin-bottom: 0;
     li {
       @include user-select(none);
       color: var(--color-tab, var(--color, inherit));
@@ -58,10 +59,6 @@
   &.count\:1 {
     .lot\:links {
       display: none;
-      + .p,
-      + p {
-        margin-top: 0;
-      }
     }
   }
 }

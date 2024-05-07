@@ -14,16 +14,20 @@
       position: relative;
     }
   }
-  > .description {
-    @extend .small;
-    line-height: calc(var(--y) / 1.5);
-    margin: calc(var(--y) / -2) 0 0;
-    padding: calc(var(--y) / 2) 0;
-  }
-  > .title {
-    font-size: 100%;
-    line-height: inherit;
-    padding: calc(var(--y) / 4) 0;
+  > hgroup {
+    margin: 0;
+    > .description {
+      @extend .small;
+      line-height: calc(var(--y) / 1.5);
+      margin: calc(var(--y) / -2) 0 0;
+      padding: calc(var(--y) / 2) 0;
+    }
+    > .title {
+      font-size: 100%;
+      line-height: inherit;
+      margin: 0;
+      padding: calc(var(--y) / 4) 0;
+    }
   }
   &.has\:gap {
     > ul {
@@ -33,6 +37,11 @@
   &.is\:flex {
     > ul {
       flex-direction: row;
+      > li {
+        > form {
+          margin-top: 0;
+        }
+      }
     }
   }
 }

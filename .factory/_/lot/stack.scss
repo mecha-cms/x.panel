@@ -12,6 +12,7 @@
     color: var(--color-stack, var(--color, inherit));
     display: block;
     font: inherit;
+    margin-bottom: 0;
     > a {
       color: inherit;
       cursor: pointer;
@@ -53,7 +54,8 @@
   > .content,
   > .lot {
     display: none;
-    padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+    margin-bottom: 0;
+    padding: calc(var(--y) - ((var(--h) - var(--z)) / 2)) var(--x);
   }
   &.has\:link {
     border-color: var(--stroke-stack-link, var(--stroke-stack, var(--stroke-link, var(--stroke, transparent))));

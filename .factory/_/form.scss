@@ -99,6 +99,9 @@
       }
     }
   }
+}
+
+.input {
   @each $v in (in-range, out-of-range) {
     &:focus:#{$v} {
       background: var(--fill-input--#{$v}, var(--fill-input--focus, var(--fill-input, var(--fill--#{$v}, var(--fill--focus, var(--fill, none))))));
@@ -107,9 +110,6 @@
       color: var(--color-input--#{$v}, var(--color-input--focus, var(--color-input, var(--color--#{$v}, var(--color--focus, var(--color, inherit))))));
     }
   }
-}
-
-.input {
   &[type='color'] {
     height: calc(var(--y) * 1.5);
     padding: 0;
@@ -337,6 +337,12 @@ label {
   }
   &[type='range'] {
     @include appearance(none);
+    @each $v in (in-range, out-of-range) {
+      &:#{$v} {
+        background: none;
+        box-shadow: none;
+      }
+    }
     &::-webkit-slider-runnable-track {
       -webkit-appearance: none;
       background: var(--stroke-input, var(--stroke, transparent));

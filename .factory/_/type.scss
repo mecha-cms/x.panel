@@ -1,3 +1,7 @@
+* + .p {
+  margin-top: var(--y);
+}
+
 .a {
   color: inherit;
   &:where(:any-link) {
@@ -81,12 +85,6 @@
 .not\:active {
   color: var(--color--disabled, var(--color, inherit));
   cursor: not-allowed;
-}
-
-.p {
-  * + & {
-    margin-top: var(--y);
-  }
 }
 
 .small {

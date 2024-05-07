@@ -1,13 +1,10 @@
 .lot\:pager {
-  margin: {
-    right: calc(var(--x) / -8);
-    left: calc(var(--x) / -8);
-  }
   &,
   > span {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+    gap: calc(var(--x) / 4);
   }
   > span {
     > a,
@@ -19,7 +16,6 @@
       box-shadow: var(--shadow-button, var(--shadow, none));
       color: var(--color-button, var(--color, inherit));
       font: inherit;
-      margin: 0 calc(var(--x) / 8);
       padding: 0 calc(var(--x) / 4);
     }
     > a {

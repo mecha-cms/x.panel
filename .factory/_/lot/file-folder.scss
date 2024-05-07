@@ -6,6 +6,7 @@
   box-shadow: var(--shadow-file, var(--shadow, none));
   display: flex;
   flex-wrap: wrap;
+  gap: calc(var(--x) / 8);
   list-style: none;
   margin: 0;
   overflow: hidden;
@@ -36,9 +37,6 @@
     position: absolute;
     top: calc(var(--y) / 4);
     width: var(--x);
-  }
-  > * {
-    margin: 0 calc(var(--x) / 8);
   }
   > .lot\:tasks {
     margin-right: calc(var(--x) / -4);

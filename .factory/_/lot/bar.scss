@@ -130,16 +130,22 @@
       }
     }
   }
-  > .description,
-  > .title {
-    line-height: inherit;
+  > hgroup {
+    line-height: var(--font-height);
     margin: 0;
-    padding: 0 calc(var(--x) * .75);
-  }
-  > .title {
-    font: {
-      size: 100%;
-      weight: bold;
+    padding: calc(var(--y) * 0.25) calc(var(--x) * 0.75);
+    > .description {
+      @extend .small;
+      line-height: calc(var(--y) / 1.5);
+      margin: calc(var(--y) / 4) 0 0;
+    }
+    > .title {
+      font: {
+        size: 100%;
+        weight: bold;
+      }
+      line-height: inherit;
+      margin: 0;
     }
   }
 }

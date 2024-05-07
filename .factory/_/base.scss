@@ -28,9 +28,16 @@
   z-index: 1;
 }
 
-[role='link'],
-a {
-  @extend .a;
+:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):not(:last-child) {
+  margin-bottom: var(--y);
+}
+
+li {
+  > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table) {
+    &:first-child {
+      margin-top: var(--y);
+    }
+  }
 }
 
 :root, body {
@@ -45,6 +52,10 @@ a {
   font: normal normal var(--font-size)/var(--font-height) var(--font-face);
   scroll-behavior: smooth;
   text-align: left;
+}
+
+a {
+  @extend .a;
 }
 
 abbr {
@@ -64,6 +75,7 @@ footer,
 header,
 main,
 nav,
+search,
 section {
   display: block;
 }
@@ -92,10 +104,20 @@ code {
   @extend .code;
 }
 
-[role='deletion'],
 del,
 s {
   @extend .s;
+}
+
+details {
+  summary {
+    @extend a, :where(:any-link);
+  }
+  &[open] {
+    > summary {
+      margin-bottom: var(--y);
+    }
+  }
 }
 
 dialog {
@@ -142,12 +164,10 @@ dialog {
   }
 }
 
-[role='img'],
 img {
   @extend .img;
 }
 
-[role='insertion'],
 ins,
 u {
   @extend .u;
@@ -176,7 +196,6 @@ sup {
   vertical-align: super;
 }
 
-[role='mark'],
 mark {
   background: var(--fill-mark, var(--fill, none));
   color: var(--color-mark, var(--color, inherit));
@@ -265,7 +284,6 @@ table {
   }
 }
 
-[role='button'],
 [role='switch'],
 button,
 input[type='button'],
@@ -320,30 +338,6 @@ kbd {
   vertical-align: middle;
 }
 
-blockquote,
-details,
-dl,
-dt,
-fieldset,
-figcaption,
-figure,
-footer,
-form,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-ol,
-p,
-pre,
-table,
-ul {
-  @extend .p;
-}
-
 blockquote {
   font-size: calc(var(--z) * 1.1);
   margin: {
@@ -357,8 +351,10 @@ dl {
 }
 
 figure {
-  [role='img'],
-  img {
+  audio,
+  iframe,
+  img,
+  video {
     display: block;
     margin: 0 auto;
   }
@@ -401,8 +397,8 @@ fieldset {
   padding: var(--y) var(--x);
   legend {
     padding: 0 calc(var(--x) / 3);
-    + * {
-      margin-top: calc(var(--h) / -2);
+    &:not(:only-child) {
+      margin-bottom: calc(var(--y) / -2);
     }
   }
 }
@@ -410,4 +406,27 @@ fieldset {
 hr {
   border-style: dashed;
   border-width: 1px 0 0;
+}
+
+[role='button'] {
+  @extend button;
+}
+
+[role='deletion'] {
+  @extend del;
+}
+
+[role='img'] {
+  @extend img;
+}
+
+[role='insertion'] {
+  @extend ins;
+}
+[role='link'] {
+  @extend a;
+}
+
+[role='mark'] {
+  @extend mark;
 }

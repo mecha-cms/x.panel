@@ -1,3 +1,19 @@
+body {
+  > .lot {
+    margin-bottom: 0;
+    > .lot\:bar {
+      margin-bottom: 0;
+    }
+    > .lot\:desk {
+      margin-bottom: 0;
+    }
+  }
+}
+
+form[name='set'] {
+  margin-bottom: 0;
+}
+
 @import './lot/bar.scss';
 @import './lot/column.scss';
 @import './lot/columns.scss';

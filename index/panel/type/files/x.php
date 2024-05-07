@@ -144,7 +144,6 @@ if (is_file($file = $folder . D . 'about.page')) {
                     'type' => 'row'
                 ]
             ],
-            'tags' => ['p' => true],
             'type' => 'rows'
         ], 0);
     }
