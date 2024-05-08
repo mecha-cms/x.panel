@@ -817,9 +817,6 @@
   color: var(--color-alert, var(--color, inherit));
   padding: calc(var(--z) * 0.75) calc(var(--z) * 1.25);
 }
-[role=alert] + [role=alert] {
-  margin-top: calc(var(--y) / -2);
-}
 [role=alert] > [role=group] {
   display: flex;
 }
@@ -830,8 +827,8 @@
 }
 
 *,
-::before,
-::after {
+::after,
+::before {
   background: none;
   border: 0;
   box-sizing: border-box;
@@ -867,11 +864,11 @@
   z-index: 1;
 }
 
-:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):not(:last-child) {
+:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):where(:not(:last-child)) {
   margin-bottom: var(--y);
 }
 
-li > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table):first-child {
+li > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table):where(:first-child) {
   margin-top: var(--y);
 }
 
@@ -2167,10 +2164,7 @@ details .lot\:bar .lot\:links > ul > li.not\:active > summary,
 .lot\:bar .lot\:links.of\:links {
   flex: 1;
 }
-.lot\:bar .lot\:field,
-.lot\:bar .lot\:field.type\:items,
-.lot\:bar .lot\:field.type\:colors,
-.lot\:bar .lot\:field.type\:blobs {
+.lot\:bar .lot\:field {
   height: inherit;
   margin: 0;
   padding: 0;
@@ -2195,21 +2189,16 @@ details .lot\:bar .lot\:links > ul > li.not\:active > summary,
 .lot\:bar .lot\:field label {
   display: none;
 }
-.lot\:bar .lot\:field > *,
-.lot\:bar .lot\:field.type\:items > *,
-.lot\:bar .lot\:field.type\:colors > *,
-.lot\:bar .lot\:field.type\:blobs > * {
+.lot\:bar .lot\:field > * {
   margin-left: 0;
   margin-right: 0;
 }
 .lot\:bar > hgroup {
-  line-height: var(--font-height);
   margin: 0;
-  padding: calc(var(--y) * 0.25) calc(var(--x) * 0.75);
+  padding: 0 calc(var(--x) * 0.75);
 }
 .lot\:bar > hgroup > .description {
-  line-height: calc(var(--y) / 1.5);
-  margin: calc(var(--y) / 4) 0 0;
+  display: none;
 }
 .lot\:bar > hgroup > .title {
   font-size: 100%;
@@ -3748,10 +3737,6 @@ details .lot\:tabs .lot\:links li.not\:active > summary:active,
   margin-bottom: 0;
 }
 
-* + .p {
-  margin-top: var(--y);
-}
-
 .a,
 a,
 details summary,
@@ -3884,7 +3869,6 @@ small,
 sub,
 sup,
 [role=doc-endnotes],
-.lot\:bar > hgroup > .description,
 .lot\:field .description,
 .lot\:links > hgroup > .description,
 .lot\:menu > hgroup > .description,

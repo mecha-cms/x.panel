@@ -6,9 +6,6 @@
   box-shadow: var(--shadow-alert, var(--shadow, none));
   color: var(--color-alert, var(--color, inherit));
   padding: calc(var(--z) * .75) calc(var(--z) * 1.25);
-  + [role='alert'] {
-    margin-top: calc(var(--y) / -2);
-  }
   > [role='group'] {
     display: flex;
     .lot\:tasks {

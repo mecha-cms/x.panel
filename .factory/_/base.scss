@@ -1,6 +1,6 @@
 *,
-::before,
-::after {
+::after,
+::before {
   background: none;
   border: 0;
   box-sizing: border-box;
@@ -28,13 +28,13 @@
   z-index: 1;
 }
 
-:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):not(:last-child) {
+:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):where(:not(:last-child)) {
   margin-bottom: var(--y);
 }
 
 li {
   > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table) {
-    &:first-child {
+    &:where(:first-child) {
       margin-top: var(--y);
     }
   }

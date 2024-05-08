@@ -131,13 +131,10 @@
     }
   }
   > hgroup {
-    line-height: var(--font-height);
     margin: 0;
-    padding: calc(var(--y) * 0.25) calc(var(--x) * 0.75);
+    padding: 0 calc(var(--x) * 0.75);
     > .description {
-      @extend .small;
-      line-height: calc(var(--y) / 1.5);
-      margin: calc(var(--y) / 4) 0 0;
+      display: none;
     }
     > .title {
       font: {
