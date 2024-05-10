@@ -205,9 +205,10 @@ return x\panel\type\page(array_replace_recursive($_, [
                                                         'title' => ['value' => $page['title']],
                                                         'name' => ['value' => $page->name],
                                                         'content' => [
-                                                            'state' => $page_type ? [
-                                                                'source' => ['type' => $page_type]
-                                                            ] : null,
+                                                            '2' => [
+                                                                'data-file-type' => $file->type,
+                                                                'data-page-type' => $page_type
+                                                            ],
                                                             'value' => $page['content']
                                                         ],
                                                         'description' => ['value' => $page['description']],

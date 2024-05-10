@@ -24,7 +24,7 @@ if (0 === strpos($type, 'text/') || 'inode/x-empty' === $type || 'image/svg+xml'
 }
 
 if (0 === strpos($type, 'application/')) {
-    $editable = false !== strpos(',javascript,json,ld+json,php,x-httpd-php,x-httpd-php-source,x-javascript,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',');
+    $editable = false !== strpos(',javascript,json,ld+json,php,x-empty,x-httpd-php,x-httpd-php-source,x-javascript,x-php,xhtml+xml,xml,', ',' . substr($type, 12) . ',');
 }
 
 // <https://stackoverflow.com/a/60861168>
@@ -97,6 +97,7 @@ return x\panel\type\file(array_replace_recursive($_, [
                                                 'fields' => [
                                                     'lot' => [
                                                         'content' => [
+                                                            '2' => ['data-file-type' => $type],
                                                             'skip' => !$editable,
                                                             'value' => $content
                                                         ],
