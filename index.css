@@ -868,7 +868,7 @@
   margin-bottom: var(--y);
 }
 
-li > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table):where(:first-child) {
+li:where(:not(:first-child)) > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table):where(:first-child) {
   margin-top: var(--y);
 }
 
@@ -2026,20 +2026,6 @@ label .input[type=radio] + span {
   flex: 1;
 }
 
-body > .lot {
-  margin-bottom: 0;
-}
-body > .lot > .lot\:bar {
-  margin-bottom: 0;
-}
-body > .lot > .lot\:desk {
-  margin-bottom: 0;
-}
-
-form[name=set] {
-  margin-bottom: 0;
-}
-
 .lot\:bar {
   background: var(--fill-bar, var(--fill, none));
   border: 0 solid;
@@ -2275,6 +2261,7 @@ details .lot\:bar .lot\:links > ul > li.not\:active > summary,
 }
 
 .lot\:desk {
+  display: block;
   outline-offset: calc(var(--y) * -1);
   padding: var(--y) var(--x);
   position: relative;
@@ -3361,8 +3348,20 @@ details .lot\:pager > span > summary[aria-disabled=true],
 
 .lot\:section,
 .content\:section {
-  margin: 0 auto;
   padding: var(--y) var(--x);
+}
+.lot\:section:where([role=none]),
+.content\:section:where([role=none]) {
+  margin: 0 auto;
+}
+.lot\:section:where(:not([role=none])),
+.content\:section:where(:not([role=none])) {
+  background: var(--fill-section, var(--fill, none));
+  border: 0 solid;
+  border-color: var(--stroke-section, var(--stroke, transparent));
+  border-radius: var(--arc-section, var(--arc, 0));
+  box-shadow: var(--shadow-section, var(--shadow, none));
+  color: var(--color-section, var(--color, inherit));
 }
 .lot\:section.count\:0,
 .count\:0.content\:section {
@@ -3731,6 +3730,20 @@ details .lot\:tabs .lot\:links li.not\:active > summary:active,
 .lot\:tasks.are\:links .title > .icon {
   margin-left: 0;
   margin-right: 0;
+}
+
+body > .lot {
+  margin-bottom: 0;
+}
+body > .lot > .lot\:bar {
+  margin-bottom: 0;
+}
+body > .lot > .lot\:desk {
+  margin-bottom: 0;
+}
+
+form[name=set] {
+  margin-bottom: 0;
 }
 
 .siema div {

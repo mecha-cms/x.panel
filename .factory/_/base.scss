@@ -33,9 +33,11 @@
 }
 
 li {
-  > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table) {
-    &:where(:first-child) {
-      margin-top: var(--y);
+  &:where(:not(:first-child)) {
+    > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table) {
+      &:where(:first-child) {
+        margin-top: var(--y);
+      }
     }
   }
 }

@@ -328,12 +328,14 @@ function type(array $_ = []) {
                         'lot' => [
                             0 => [
                                 // `section`
+                                '2' => ['role' => 'none'],
                                 'lot' => [],
                                 'stack' => 10,
                                 'type' => 'section'
                             ],
                             'alert' => [
                                 // `section`
+                                '2' => ['role' => 'none'],
                                 'content' => null,
                                 'skip' => true,
                                 'stack' => 15,
@@ -341,6 +343,7 @@ function type(array $_ = []) {
                             ],
                             1 => [
                                 // `section`
+                                '2' => ['role' => 'none'],
                                 'lot' => [
                                     'tabs' => [
                                         'gap' => false,
@@ -355,6 +358,7 @@ function type(array $_ = []) {
                             ],
                             2 => [
                                 // `section`
+                                '2' => ['role' => 'none'],
                                 'lot' => [],
                                 'stack' => 30,
                                 'type' => 'section'
