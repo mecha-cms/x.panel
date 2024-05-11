@@ -12,6 +12,13 @@
   text-transform: none;
 }
 
+::-moz-focus-inner {
+  border: 0;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+}
+
 ::placeholder {
   @include placeholder(0.5);
 }
@@ -28,8 +35,10 @@
   z-index: 1;
 }
 
-:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):where(:not(:last-child)) {
-  margin-bottom: var(--y);
+:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul) {
+  & + & {
+    margin-top: var(--y);
+  }
 }
 
 li {
@@ -97,6 +106,14 @@ var {
   @extend .i;
 }
 
+audio,
+iframe,
+video {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
 caption,
 figure {
   text-align: center;
@@ -112,7 +129,7 @@ s {
 }
 
 details {
-  summary {
+  > summary {
     @extend a, :where(:any-link);
   }
   &[open] {
@@ -225,19 +242,10 @@ table {
   @extend .table;
 }
 
-::-moz-color-swatch {
-  border: 0;
-}
-
-::-moz-focus-inner {
-  border: 0;
-  margin: 0;
-  outline: 0;
-  padding: 0;
-}
-
-::-webkit-color-swatch {
-  border: 0;
+@each $v in (-moz-color-swatch, -webkit-color-swatch) {
+  ::#{$v} {
+    border: 0;
+  }
 }
 
 ::-webkit-color-swatch-wrapper {
@@ -349,14 +357,14 @@ blockquote {
 }
 
 dl {
-  margin-left: var(--x);
+  margin: {
+    left: var(--x);
+    right: var(--x);
+  }
 }
 
 figure {
-  audio,
-  iframe,
-  img,
-  video {
+  img {
     display: block;
     margin: 0 auto;
   }
@@ -398,10 +406,8 @@ hr {
 fieldset {
   padding: var(--y) var(--x);
   legend {
+    margin-bottom: calc(var(--h) / -2);
     padding: 0 calc(var(--x) / 3);
-    &:not(:only-child) {
-      margin-bottom: calc(var(--y) / -2);
-    }
   }
 }
 
@@ -412,6 +418,9 @@ hr {
 
 [role='button'] {
   @extend button;
+  &:not(:any-link) {
+    @extend :disabled;
+  }
 }
 
 [role='deletion'] {

@@ -1,6 +1,5 @@
 .lot\:tabs {
   .lot\:links {
-    margin-bottom: 0;
     li {
       @include user-select(none);
       color: var(--color-tab, var(--color, inherit));

@@ -20,19 +20,3 @@
 @import './lot/tab.scss';
 @import './lot/tabs.scss';
 @import './lot/tasks.scss';
-
-body {
-  > .lot {
-    margin-bottom: 0;
-    > .lot\:bar {
-      margin-bottom: 0;
-    }
-    > .lot\:desk {
-      margin-bottom: 0;
-    }
-  }
-}
-
-form[name='set'] {
-  margin-bottom: 0;
-}

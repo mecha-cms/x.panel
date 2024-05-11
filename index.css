@@ -230,30 +230,36 @@
   top: -9999px;
 }
 .option-picker__source:disabled + .option-picker,
-.option-picker__source.button.not\:active + .option-picker {
+.option-picker__source.button.not\:active + .option-picker,
+.option-picker__source[role=button]:not(:any-link) + .option-picker {
   background: var(--fill-option-picker--disabled, var(--fill-option-picker));
   border-color: var(--stroke-option-picker--disabled, var(--stroke-option-picker));
   color: var(--color-option-picker--disabled, var(--color-option-picker));
   cursor: not-allowed;
 }
 .option-picker__source:disabled + .option-picker::after,
-.option-picker__source.button.not\:active + .option-picker::after {
+.option-picker__source.button.not\:active + .option-picker::after,
+.option-picker__source[role=button]:not(:any-link) + .option-picker::after {
   border-top-color: var(--stroke-option-picker--disabled, var(--stroke-option-picker));
 }
 .option-picker__source:disabled + .option-picker .option-picker__option,
-.option-picker__source.button.not\:active + .option-picker .option-picker__option {
+.option-picker__source.button.not\:active + .option-picker .option-picker__option,
+.option-picker__source[role=button]:not(:any-link) + .option-picker .option-picker__option {
   color: var(--color-option-picker--disabled, var(--color-option-picker));
 }
 .option-picker__source:disabled + .option-picker .option-picker__options,
-.option-picker__source.button.not\:active + .option-picker .option-picker__options {
+.option-picker__source.button.not\:active + .option-picker .option-picker__options,
+.option-picker__source[role=button]:not(:any-link) + .option-picker .option-picker__options {
   background: var(--fill-option-picker__options--disabled, var(--fill-option-picker--disabled), var(--fill-option-picker));
   border-color: var(--stroke-option-picker__options--disabled, var(--stroke-option-picker--disabled, var(--stroke-option-picker)));
   color: var(--color-option-picker__options--disabled, var(--color-option-picker--disabled, var(--color-option-picker)));
 }
 .option-picker__source:disabled + .option-picker .option-picker__options,
 .option-picker__source.button.not\:active + .option-picker .option-picker__options,
+.option-picker__source[role=button]:not(:any-link) + .option-picker .option-picker__options,
 .option-picker__source:disabled + .option-picker .option-picker__values,
-.option-picker__source.button.not\:active + .option-picker .option-picker__values {
+.option-picker__source.button.not\:active + .option-picker .option-picker__values,
+.option-picker__source[role=button]:not(:any-link) + .option-picker .option-picker__values {
   pointer-events: none;
 }
 .option-picker__source[size] + .option-picker {
@@ -566,7 +572,8 @@
   color: var(--color-tag-picker__tag--read-only, var(--color-tag-picker__tag));
 }
 .tag-picker__source:disabled + .tag-picker,
-.tag-picker__source.button.not\:active + .tag-picker {
+.tag-picker__source.button.not\:active + .tag-picker,
+.tag-picker__source[role=button]:not(:any-link) + .tag-picker {
   background: var(--fill-tag-picker--disabled, var(--fill-tag-picker));
   border-color: var(--stroke-tag-picker--disabled, var(--stroke-tag-picker));
   box-shadow: var(--shadow-tag-picker--disabled, var(--shadow-tag-picker));
@@ -574,12 +581,15 @@
 }
 .tag-picker__source:disabled + .tag-picker,
 .tag-picker__source.button.not\:active + .tag-picker,
+.tag-picker__source[role=button]:not(:any-link) + .tag-picker,
 .tag-picker__source:disabled + .tag-picker *,
-.tag-picker__source.button.not\:active + .tag-picker * {
+.tag-picker__source.button.not\:active + .tag-picker *,
+.tag-picker__source[role=button]:not(:any-link) + .tag-picker * {
   cursor: not-allowed;
 }
 .tag-picker__source:disabled + .tag-picker .tag-picker__tag:not(.tag-picker__input),
-.tag-picker__source.button.not\:active + .tag-picker .tag-picker__tag:not(.tag-picker__input) {
+.tag-picker__source.button.not\:active + .tag-picker .tag-picker__tag:not(.tag-picker__input),
+.tag-picker__source[role=button]:not(:any-link) + .tag-picker .tag-picker__tag:not(.tag-picker__input) {
   background: var(--fill-tag-picker__tag--disabled, var(--fill-tag-picker__tag));
   border-color: var(--stroke-tag-picker__tag--disabled, var(--stroke-tag-picker__tag));
   box-shadow: var(--shadow-tag-picker__tag--disabled, var(--shadow-tag-picker__tag));
@@ -788,7 +798,8 @@
   --stroke-option-picker--read-only: var(--stroke-input--read-only, var(--stroke-input, var(--stroke--read-only, var(--stroke, transparent))));
 }
 :root .option-picker__source:disabled + .option-picker,
-:root .option-picker__source.button.not\:active + .option-picker {
+:root .option-picker__source.button.not\:active + .option-picker,
+:root .option-picker__source[role=button]:not(:any-link) + .option-picker {
   --color-option-picker--disabled: var(--color-input--disabled, var(--color-input, var(--color--disabled, var(--color, inherit))));
   --fill-option-picker--disabled: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
   --shadow-option-picker--disabled: var(--shadow-input--disabled, var(--shadow-input, var(--shadow--disabled, var(--shadow, none))));
@@ -801,7 +812,8 @@
   --stroke-tag-picker--read-only: var(--stroke-input--read-only, var(--stroke-input, var(--stroke--read-only, var(--stroke, transparent))));
 }
 :root .tag-picker__source:disabled + .tag-picker,
-:root .tag-picker__source.button.not\:active + .tag-picker {
+:root .tag-picker__source.button.not\:active + .tag-picker,
+:root .tag-picker__source[role=button]:not(:any-link) + .tag-picker {
   --color-tag-picker--disabled: var(--color-input--disabled, var(--color-input, var(--color--disabled, var(--color, inherit))));
   --fill-tag-picker--disabled: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
   --shadow-tag-picker--disabled: var(--shadow-input--disabled, var(--shadow-input, var(--shadow--disabled, var(--shadow, none))));
@@ -840,6 +852,13 @@
   text-transform: none;
 }
 
+::-moz-focus-inner {
+  border: 0;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+}
+
 ::placeholder {
   color: inherit;
   opacity: 0.5;
@@ -864,8 +883,8 @@
   z-index: 1;
 }
 
-:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul):where(:not(:last-child)) {
-  margin-bottom: var(--y);
+:where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul) + :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, ol, p, pre, search, section, table, ul) {
+  margin-top: var(--y);
 }
 
 li:where(:not(:first-child)) > :where(address, article, aside, blockquote, dd, details, div, dl, dt, fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, hr, main, nav, p, pre, search, section, table):where(:first-child) {
@@ -907,6 +926,14 @@ nav,
 search,
 section {
   display: block;
+}
+
+audio,
+iframe,
+video {
+  display: block;
+  height: auto;
+  width: 100%;
 }
 
 caption,
@@ -1002,13 +1029,6 @@ pre code {
 
 ::-moz-color-swatch {
   border: 0;
-}
-
-::-moz-focus-inner {
-  border: 0;
-  margin: 0;
-  outline: 0;
-  padding: 0;
 }
 
 ::-webkit-color-swatch {
@@ -1202,7 +1222,8 @@ input:active::file-selector-button {
 }
 
 input:disabled::-ms-browse,
-input.button.not\:active::-ms-browse {
+input.button.not\:active::-ms-browse,
+input[role=button]:not(:any-link)::-ms-browse {
   background: var(--fill-input__file-selector-button--disabled, var(--fill-input__file-selector-button, var(--fill-button--disabled, var(--fill-button, var(--fill--disabled, var(--fill, none))))));
   border-color: var(--stroke-input__file-selector-button--disabled, var(--stroke-input__file-selector-button, var(--stroke-button--disabled, var(--stroke-button, var(--stroke--disabled, var(--stroke, transparent))))));
   border-radius: var(--arc-input__file-selector-button--disabled, var(--arc-input__file-selector-button, var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))))));
@@ -1211,7 +1232,8 @@ input.button.not\:active::-ms-browse {
 }
 
 input:disabled::-webkit-file-upload-button,
-input.button.not\:active::-webkit-file-upload-button {
+input.button.not\:active::-webkit-file-upload-button,
+input[role=button]:not(:any-link)::-webkit-file-upload-button {
   background: var(--fill-input__file-selector-button--disabled, var(--fill-input__file-selector-button, var(--fill-button--disabled, var(--fill-button, var(--fill--disabled, var(--fill, none))))));
   border-color: var(--stroke-input__file-selector-button--disabled, var(--stroke-input__file-selector-button, var(--stroke-button--disabled, var(--stroke-button, var(--stroke--disabled, var(--stroke, transparent))))));
   border-radius: var(--arc-input__file-selector-button--disabled, var(--arc-input__file-selector-button, var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))))));
@@ -1220,7 +1242,8 @@ input.button.not\:active::-webkit-file-upload-button {
 }
 
 input:disabled::file-selector-button,
-input.button.not\:active::file-selector-button {
+input.button.not\:active::file-selector-button,
+input[role=button]:not(:any-link)::file-selector-button {
   background: var(--fill-input__file-selector-button--disabled, var(--fill-input__file-selector-button, var(--fill-button--disabled, var(--fill-button, var(--fill--disabled, var(--fill, none))))));
   border-color: var(--stroke-input__file-selector-button--disabled, var(--stroke-input__file-selector-button, var(--stroke-button--disabled, var(--stroke-button, var(--stroke--disabled, var(--stroke, transparent))))));
   border-radius: var(--arc-input__file-selector-button--disabled, var(--arc-input__file-selector-button, var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))))));
@@ -1260,6 +1283,7 @@ button:disabled,
 button.button.not\:active,
 [role=button]:disabled,
 [role=button].button.not\:active,
+[role=button]:not(:any-link),
 input:disabled,
 input.button.not\:active,
 select:disabled,
@@ -1319,13 +1343,11 @@ blockquote {
 
 dl {
   margin-left: var(--x);
+  margin-right: var(--x);
 }
 
-figure audio,
-figure iframe,
 figure img,
-figure [role=img],
-figure video {
+figure [role=img] {
   display: block;
   margin: 0 auto;
 }
@@ -1363,10 +1385,8 @@ fieldset {
   padding: var(--y) var(--x);
 }
 fieldset legend {
+  margin-bottom: calc(var(--h) / -2);
   padding: 0 calc(var(--x) / 3);
-}
-fieldset legend:not(:only-child) {
-  margin-bottom: calc(var(--y) / -2);
 }
 
 hr {
@@ -1452,7 +1472,8 @@ pre.is\:text code {
   color: var(--color-button--active, var(--color-button, var(--color--active, var(--color, inherit))));
 }
 .button:disabled,
-.button.not\:active {
+.button.not\:active,
+.button[role=button]:not(:any-link) {
   background: var(--fill-button--disabled, var(--fill-button, var(--fill--disabled, var(--fill, none))));
   border-color: var(--stroke-button--disabled, var(--stroke-button, var(--stroke--disabled, var(--stroke, transparent))));
   border-radius: var(--arc-button--disabled, var(--arc-button, var(--arc--disabled, var(--arc, 0))));
@@ -1546,8 +1567,10 @@ pre.is\:text code {
   color: var(--color-input--read-only, var(--color-input, var(--color--read-only, var(--color, inherit))));
 }
 .input:disabled,
+.input[role=button]:not(:any-link),
 .input.button.not\:active,
 .textarea:disabled,
+.textarea[role=button]:not(:any-link),
 .textarea.button.not\:active {
   background: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
   border-color: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
@@ -1678,6 +1701,7 @@ pre.is\:text code {
   color: var(--color-input--active, var(--color-input, var(--color--active, var(--color, inherit))));
 }
 .select:disabled,
+.select[role=button]:not(:any-link),
 .select.button.not\:active {
   background: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
   border-color: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
@@ -1699,8 +1723,10 @@ pre.is\:text code {
   padding: 0;
 }
 .select optgroup:disabled,
+.select optgroup[role=button]:not(:any-link),
 .select optgroup.button.not\:active,
 .select option:disabled,
+.select option[role=button]:not(:any-link),
 .select option.button.not\:active {
   background: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
   color: var(--color-input--disabled, var(--color-input, var(--color--disabled, var(--color, inherit))));
@@ -1779,8 +1805,10 @@ label .input[type=radio] + span {
   color: var(--color-button--active, var(--color-button, var(--color--active, var(--color, inherit))));
 }
 .input[type=checkbox]:disabled,
+.input[type=checkbox][role=button]:not(:any-link),
 .input[type=checkbox].button.not\:active,
 .input[type=radio]:disabled,
+.input[type=radio][role=button]:not(:any-link),
 .input[type=radio].button.not\:active {
   background: var(--fill-button--disabled, var(--fill-button, var(--fill--disabled, var(--fill, none))));
   border-color: var(--stroke-button--disabled, var(--stroke-button, var(--stroke--disabled, var(--stroke, transparent))));
@@ -1813,6 +1841,7 @@ label .input[type=radio] + span {
   border-right-color: var(--color-button--active, var(--color--active, var(--color, inherit)));
 }
 .input[type=checkbox]:checked:disabled::before,
+.input[type=checkbox][role=button]:checked:not(:any-link)::before,
 .input[type=checkbox].button.not\:active:checked::before {
   border-bottom-color: var(--color-button--disabled, var(--color--disabled, var(--color, inherit)));
   border-right-color: var(--color-button--disabled, var(--color--disabled, var(--color, inherit)));
@@ -1837,6 +1866,7 @@ label .input[type=radio] + span {
   border-color: var(--fill--active, var(--fill, none));
 }
 .input[type=radio]:checked:disabled::before,
+.input[type=radio][role=button]:checked:not(:any-link)::before,
 .input[type=radio].button.not\:active:checked::before {
   border-color: var(--fill--disabled, var(--fill, none));
 }
@@ -1967,14 +1997,17 @@ label .input[type=radio] + span {
   color: var(--color-button--active, var(--color-button, var(--color, inherit)));
 }
 .input[type=range]:disabled::-webkit-slider-runnable-track,
+.input[type=range][role=button]:not(:any-link)::-webkit-slider-runnable-track,
 .input[type=range].button.not\:active::-webkit-slider-runnable-track {
   background: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
 }
 .input[type=range]:disabled::-moz-range-track,
+.input[type=range][role=button]:not(:any-link)::-moz-range-track,
 .input[type=range].button.not\:active::-moz-range-track {
   background: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
 }
 .input[type=range]:disabled::-webkit-slider-thumb,
+.input[type=range][role=button]:not(:any-link)::-webkit-slider-thumb,
 .input[type=range].button.not\:active::-webkit-slider-thumb {
   background: var(--fill-button--disabled, var(--fill-button, var(--fill--disabled, var(--fill, none))));
   border-color: var(--stroke-button--disabled, var(--stroke-button, var(--stroke--disabled, var(--stroke, transparent))));
@@ -1982,6 +2015,7 @@ label .input[type=radio] + span {
   color: var(--color-button--disabled, var(--color-button, var(--color--disabled, var(--color, inherit))));
 }
 .input[type=range]:disabled::-moz-range-thumb,
+.input[type=range][role=button]:not(:any-link)::-moz-range-thumb,
 .input[type=range].button.not\:active::-moz-range-thumb {
   background: var(--fill-button--disabled, var(--fill-button, var(--fill, none)));
   border-color: var(--stroke-button--disabled, var(--stroke-button, var(--stroke, transparent)));
@@ -2057,8 +2091,6 @@ label .input[type=radio] + span {
   height: calc(var(--y) * 2);
 }
 .lot\:bar .lot\:links > ul > li > a,
-.lot\:bar details .lot\:links > ul > li > summary,
-details .lot\:bar .lot\:links > ul > li > summary,
 .lot\:bar .lot\:links > ul > li > [role=link] {
   background: var(--fill-bar-link, var(--fill-link, var(--fill, none)));
   color: var(--color-bar-link, var(--color-link, var(--color, inherit)));
@@ -2069,28 +2101,20 @@ details .lot\:bar .lot\:links > ul > li > summary,
   position: relative;
 }
 .lot\:bar .lot\:links > ul > li > a .title .icon:first-child,
-.lot\:bar details .lot\:links > ul > li > summary .title .icon:first-child,
-details .lot\:bar .lot\:links > ul > li > summary .title .icon:first-child,
 .lot\:bar .lot\:links > ul > li > [role=link] .title .icon:first-child {
   margin-left: calc(var(--x) / -4);
 }
 .lot\:bar .lot\:links > ul > li > a .title .icon:last-child,
-.lot\:bar details .lot\:links > ul > li > summary .title .icon:last-child,
-details .lot\:bar .lot\:links > ul > li > summary .title .icon:last-child,
 .lot\:bar .lot\:links > ul > li > [role=link] .title .icon:last-child {
   margin-right: calc(var(--x) / -4);
 }
 .lot\:bar .lot\:links > ul > li > a .title .icon.caret,
-.lot\:bar details .lot\:links > ul > li > summary .title .icon.caret,
-details .lot\:bar .lot\:links > ul > li > summary .title .icon.caret,
 .lot\:bar .lot\:links > ul > li > [role=link] .title .icon.caret {
   fill: var(--color-bar-caret, var(--color-caret, var(--color, currentColor)));
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
 .lot\:bar .lot\:links > ul > li > a .title .status,
-.lot\:bar details .lot\:links > ul > li > summary .title .status,
-details .lot\:bar .lot\:links > ul > li > summary .title .status,
 .lot\:bar .lot\:links > ul > li > [role=link] .title .status {
   background: var(--fill-bar-status, var(--fill-status, var(--fill, none)));
   border-radius: var(--arc-bar-status, var(--arc-status, var(--arc, 0)));
@@ -2102,22 +2126,16 @@ details .lot\:bar .lot\:links > ul > li > summary .title .status,
   padding: 0 calc(var(--x) / 4);
 }
 .lot\:bar .lot\:links > ul > li > a:hover,
-.lot\:bar details .lot\:links > ul > li > summary:hover,
-details .lot\:bar .lot\:links > ul > li > summary:hover,
 .lot\:bar .lot\:links > ul > li > [role=link]:hover {
   background: var(--fill-bar-link--hover, var(--fill-bar-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--hover, var(--color-bar-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
 }
 .lot\:bar .lot\:links > ul > li > a:focus,
-.lot\:bar details .lot\:links > ul > li > summary:focus,
-details .lot\:bar .lot\:links > ul > li > summary:focus,
 .lot\:bar .lot\:links > ul > li > [role=link]:focus {
   background: var(--fill-bar-link--focus, var(--fill-bar-link, var(--fill-link--focus, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--focus, var(--color-bar-link, var(--color-link--focus, var(--color-link, var(--color, inherit)))));
 }
 .lot\:bar .lot\:links > ul > li > a:active,
-.lot\:bar details .lot\:links > ul > li > summary:active,
-details .lot\:bar .lot\:links > ul > li > summary:active,
 .lot\:bar .lot\:links > ul > li > [role=link]:active {
   background: var(--fill-bar-link--active, var(--fill-bar-link, var(--fill-link--active, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--active, var(--color-bar-link, var(--color-link--active, var(--color-link, var(--color, inherit)))));
@@ -2134,15 +2152,11 @@ details .lot\:bar .lot\:links > ul > li > summary:active,
   display: none;
 }
 .lot\:bar .lot\:links > ul > li.is\:current > a,
-.lot\:bar details .lot\:links > ul > li.is\:current > summary,
-details .lot\:bar .lot\:links > ul > li.is\:current > summary,
 .lot\:bar .lot\:links > ul > li.is\:current > [role=link] {
   background: var(--fill-bar-link--current, var(--fill-bar-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--current, var(--color-bar-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
 }
 .lot\:bar .lot\:links > ul > li.not\:active > a,
-.lot\:bar details .lot\:links > ul > li.not\:active > summary,
-details .lot\:bar .lot\:links > ul > li.not\:active > summary,
 .lot\:bar .lot\:links > ul > li.not\:active > [role=link] {
   background: var(--fill-bar-link--disabled, var(--fill-bar-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--disabled, var(--color-bar-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
@@ -2262,6 +2276,7 @@ details .lot\:bar .lot\:links > ul > li.not\:active > summary,
 
 .lot\:desk {
   display: block;
+  margin-top: 0;
   outline-offset: calc(var(--y) * -1);
   padding: var(--y) var(--x);
   position: relative;
@@ -2320,14 +2335,12 @@ details .lot\:bar .lot\:links > ul > li.not\:active > summary,
 }
 .lot\:field > label + div .with\:fields {
   display: inline-flex;
-  margin-bottom: 0;
   position: relative;
   vertical-align: middle;
 }
 .lot\:field > label + div .with\:fields a:where(:any-link) .fix,
 .lot\:field > label + div .with\:fields [role=link]:where(:any-link) .fix,
-.lot\:field > label + div .with\:fields details summary .fix,
-details .lot\:field > label + div .with\:fields summary .fix {
+.lot\:field > label + div .with\:fields details > summary .fix {
   cursor: pointer;
 }
 .lot\:field > label + div .with\:fields.has\:height,
@@ -2493,6 +2506,8 @@ details .lot\:field > label + div .with\:fields summary .fix {
 }
 .lot\:field.type\:blob > label + div .input:disabled,
 .lot\:field.type\:blobs > label + div .input:disabled,
+.lot\:field.type\:blob > label + div .input[role=button]:not(:any-link),
+.lot\:field.type\:blobs > label + div .input[role=button]:not(:any-link),
 .lot\:field.type\:blob > label + div .input.button.not\:active,
 .lot\:field.type\:blobs > label + div .input.button.not\:active {
   border-color: var(--stroke--disabled, var(--stroke, transparent));
@@ -2543,7 +2558,6 @@ details .lot\:field > label + div .with\:fields summary .fix {
 .option-picker {
   height: calc(var(--y) * 1.5);
   line-height: calc(var(--y) * 1.5 - var(--y) / 2 - 2px);
-  margin: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   width: var(--width-input);
 }
@@ -2585,14 +2599,12 @@ details .lot\:field > label + div .with\:fields summary .fix {
 }
 .option-picker__input,
 .option-picker__values {
-  margin: 0;
   padding-left: 0;
   padding-right: 0;
 }
 
 .tag-picker {
   height: auto;
-  margin: 0;
   min-height: calc(var(--y) * 1.5);
   padding: calc(var(--y) / 12) calc(var(--x) / 12);
   width: var(--width-input);
@@ -2704,7 +2716,7 @@ details .lot\:field > label + div .with\:fields summary .fix {
 .lot\:file > .lot\:tasks,
 .lot\:page > .lot\:tasks,
 .lot\:folder > .lot\:tasks {
-  margin-right: calc(var(--x) / -4);
+  margin: 0 calc(var(--x) / -4) 0 0;
 }
 .lot\:file.not\:active,
 .not\:active.lot\:page,
@@ -2803,12 +2815,9 @@ details .lot\:field > label + div .with\:fields summary .fix {
 .lot\:files .title a.not\:active,
 .lot\:pages .title a.not\:active,
 .lot\:folders .title a.not\:active,
-.lot\:files .title details summary.not\:active,
-.lot\:pages .title details summary.not\:active,
-.lot\:folders .title details summary.not\:active,
-details .lot\:files .title summary.not\:active,
-details .lot\:pages .title summary.not\:active,
-details .lot\:folders .title summary.not\:active,
+.lot\:files .title details > summary.not\:active,
+.lot\:pages .title details > summary.not\:active,
+.lot\:folders .title details > summary.not\:active,
 .lot\:files .title .not\:active[role=link],
 .lot\:pages .title .not\:active[role=link],
 .lot\:folders .title .not\:active[role=link] {
@@ -2913,7 +2922,6 @@ details .lot\:folders .title summary.not\:active,
   position: relative;
 }
 .lot\:menu > ul > li:hover > a,
-details .lot\:menu > ul > li:hover > summary,
 .lot\:menu > ul > li:hover > [role=link] {
   background: var(--fill-menu-link--hover, var(--fill-menu-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
   color: var(--color-menu-link--hover, var(--color-menu-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
@@ -2922,7 +2930,6 @@ details .lot\:menu > ul > li:hover > summary,
   display: block;
 }
 .lot\:menu > ul > li > a,
-details .lot\:menu > ul > li > summary,
 .lot\:menu > ul > li > [role=link] {
   background: var(--fill-menu-link, var(--fill-link, var(--fill, none)));
   color: var(--color-menu-link, var(--color-link, var(--color, inherit)));
@@ -2931,29 +2938,24 @@ details .lot\:menu > ul > li > summary,
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 .lot\:menu > ul > li > a .title,
-details .lot\:menu > ul > li > summary .title,
 .lot\:menu > ul > li > [role=link] .title {
   flex: 1;
 }
 .lot\:menu > ul > li > a .title .icon:first-child,
-details .lot\:menu > ul > li > summary .title .icon:first-child,
 .lot\:menu > ul > li > [role=link] .title .icon:first-child {
   margin-left: calc(var(--x) / -4);
 }
 .lot\:menu > ul > li > a .title .icon:last-child,
-details .lot\:menu > ul > li > summary .title .icon:last-child,
 .lot\:menu > ul > li > [role=link] .title .icon:last-child {
   margin-right: calc(var(--x) / -4);
 }
 .lot\:menu > ul > li > a .title .icon.caret,
-details .lot\:menu > ul > li > summary .title .icon.caret,
 .lot\:menu > ul > li > [role=link] .title .icon.caret {
   fill: var(--color-menu-caret, var(--color-caret, var(--color, currentColor)));
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
 .lot\:menu > ul > li > a .title .status,
-details .lot\:menu > ul > li > summary .title .status,
 .lot\:menu > ul > li > [role=link] .title .status {
   background: var(--fill-menu-status, var(--fill-status, var(--fill, none)));
   border-radius: var(--arc-menu-status, var(--arc-status, var(--arc, 0)));
@@ -2964,25 +2966,21 @@ details .lot\:menu > ul > li > summary .title .status,
   padding: 0 calc(var(--x) / 4);
 }
 .lot\:menu > ul > li > a:hover,
-details .lot\:menu > ul > li > summary:hover,
 .lot\:menu > ul > li > [role=link]:hover {
   background: var(--fill-menu-link--hover, var(--fill-menu-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
   color: var(--color-menu-link--hover, var(--color-menu-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menu > ul > li > a:focus,
-details .lot\:menu > ul > li > summary:focus,
 .lot\:menu > ul > li > [role=link]:focus {
   background: var(--fill-menu-link--focus, var(--fill-menu-link, var(--fill-link--focus, var(--fill-link, var(--fill, none)))));
   color: var(--color-menu-link--focus, var(--color-menu-link, var(--color-link--focus, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menu > ul > li > a:active,
-details .lot\:menu > ul > li > summary:active,
 .lot\:menu > ul > li > [role=link]:active {
   background: var(--fill-menu-link--active, var(--fill-menu-link, var(--fill-link--active, var(--fill-link, var(--fill, none)))));
   color: var(--color-menu-link--active, var(--color-menu-link, var(--color-link--active, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menu > ul > li > a:focus + ul,
-details .lot\:menu > ul > li > summary:focus + ul,
 .lot\:menu > ul > li > [role=link]:focus + ul {
   display: block;
 }
@@ -2997,13 +2995,11 @@ details .lot\:menu > ul > li > summary:focus + ul,
   display: none;
 }
 .lot\:menu > ul > li.is\:current > a,
-details .lot\:menu > ul > li.is\:current > summary,
 .lot\:menu > ul > li.is\:current > [role=link] {
   background: var(--fill-menu-link--current, var(--fill-menu-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
   color: var(--color-menu-link--current, var(--color-menu-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menu > ul > li.not\:active > a,
-details .lot\:menu > ul > li.not\:active > summary,
 .lot\:menu > ul > li.not\:active > [role=link] {
   background: var(--fill-menu-link--disabled, var(--fill-menu-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
   color: var(--color-menu-link--disabled, var(--color-menu-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
@@ -3063,13 +3059,11 @@ details .lot\:menu > ul > li.not\:active > summary,
   position: relative;
 }
 .lot\:menus > ul > li:hover > a,
-details .lot\:menus > ul > li:hover > summary,
 .lot\:menus > ul > li:hover > [role=link] {
   background: var(--fill-menus-link--hover, var(--fill-menus-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
   color: var(--color-menus-link--hover, var(--color-menus-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menus > ul > li > a,
-details .lot\:menus > ul > li > summary,
 .lot\:menus > ul > li > [role=link] {
   background: var(--fill-menus-link, var(--fill-link, var(--fill, none)));
   color: var(--color-menus-link, var(--color-link, var(--color, inherit)));
@@ -3078,29 +3072,24 @@ details .lot\:menus > ul > li > summary,
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
 }
 .lot\:menus > ul > li > a .title,
-details .lot\:menus > ul > li > summary .title,
 .lot\:menus > ul > li > [role=link] .title {
   flex: 1;
 }
 .lot\:menus > ul > li > a .title .icon:first-child,
-details .lot\:menus > ul > li > summary .title .icon:first-child,
 .lot\:menus > ul > li > [role=link] .title .icon:first-child {
   margin-left: calc(var(--x) / -4);
 }
 .lot\:menus > ul > li > a .title .icon:last-child,
-details .lot\:menus > ul > li > summary .title .icon:last-child,
 .lot\:menus > ul > li > [role=link] .title .icon:last-child {
   margin-right: calc(var(--x) / -4);
 }
 .lot\:menus > ul > li > a .title .icon.caret,
-details .lot\:menus > ul > li > summary .title .icon.caret,
 .lot\:menus > ul > li > [role=link] .title .icon.caret {
   fill: var(--color-menus-caret, var(--color-caret, var(--color, currentColor)));
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
 .lot\:menus > ul > li > a .title .status,
-details .lot\:menus > ul > li > summary .title .status,
 .lot\:menus > ul > li > [role=link] .title .status {
   background: var(--fill-menus-status, var(--fill-status, var(--fill, none)));
   border-radius: var(--arc-menus-status, var(--arc-status, var(--arc, 0)));
@@ -3111,25 +3100,21 @@ details .lot\:menus > ul > li > summary .title .status,
   padding: 0 calc(var(--x) / 4);
 }
 .lot\:menus > ul > li > a:hover,
-details .lot\:menus > ul > li > summary:hover,
 .lot\:menus > ul > li > [role=link]:hover {
   background: var(--fill-menus-link--hover, var(--fill-menus-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
   color: var(--color-menus-link--hover, var(--color-menus-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menus > ul > li > a:focus,
-details .lot\:menus > ul > li > summary:focus,
 .lot\:menus > ul > li > [role=link]:focus {
   background: var(--fill-menus-link--focus, var(--fill-menus-link, var(--fill-link--focus, var(--fill-link, var(--fill, none)))));
   color: var(--color-menus-link--focus, var(--color-menus-link, var(--color-link--focus, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menus > ul > li > a:active,
-details .lot\:menus > ul > li > summary:active,
 .lot\:menus > ul > li > [role=link]:active {
   background: var(--fill-menus-link--active, var(--fill-menus-link, var(--fill-link--active, var(--fill-link, var(--fill, none)))));
   color: var(--color-menus-link--active, var(--color-menus-link, var(--color-link--active, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menus > ul > li > a:focus + ul,
-details .lot\:menus > ul > li > summary:focus + ul,
 .lot\:menus > ul > li > [role=link]:focus + ul {
   display: block;
 }
@@ -3145,13 +3130,11 @@ details .lot\:menus > ul > li > summary:focus + ul,
   display: none;
 }
 .lot\:menus > ul > li.is\:current > a,
-details .lot\:menus > ul > li.is\:current > summary,
 .lot\:menus > ul > li.is\:current > [role=link] {
   background: var(--fill-menus-link--current, var(--fill-menus-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
   color: var(--color-menus-link--current, var(--color-menus-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
 }
 .lot\:menus > ul > li.not\:active > a,
-details .lot\:menus > ul > li.not\:active > summary,
 .lot\:menus > ul > li.not\:active > [role=link] {
   background: var(--fill-menus-link--disabled, var(--fill-menus-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
   color: var(--color-menus-link--disabled, var(--color-menus-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
@@ -3252,7 +3235,6 @@ details .lot\:menus > ul > li.not\:active > summary,
   gap: calc(var(--x) / 4);
 }
 .lot\:pager > span > a,
-details .lot\:pager > span > summary,
 .lot\:pager > span > [role=link],
 .lot\:pager > span > span {
   background: var(--fill-button, var(--fill, none));
@@ -3265,7 +3247,6 @@ details .lot\:pager > span > summary,
   padding: 0 calc(var(--x) / 4);
 }
 .lot\:pager > span > a:hover,
-details .lot\:pager > span > summary:hover,
 .lot\:pager > span > [role=link]:hover {
   background: var(--fill-button--hover, var(--fill-button, var(--fill, none)));
   border-color: var(--stroke-button--hover, var(--stroke-button, var(--stroke, transparent)));
@@ -3273,7 +3254,6 @@ details .lot\:pager > span > summary:hover,
   color: var(--color-button--hover, var(--color-button, var(--color, inherit)));
 }
 .lot\:pager > span > a:focus,
-details .lot\:pager > span > summary:focus,
 .lot\:pager > span > [role=link]:focus {
   background: var(--fill-button--focus, var(--fill-button, var(--fill, none)));
   border-color: var(--stroke-button--focus, var(--stroke-button, var(--stroke, transparent)));
@@ -3281,7 +3261,6 @@ details .lot\:pager > span > summary:focus,
   color: var(--color-button--focus, var(--color-button, var(--color, inherit)));
 }
 .lot\:pager > span > a:active,
-details .lot\:pager > span > summary:active,
 .lot\:pager > span > [role=link]:active {
   background: var(--fill-button--active, var(--fill-button, var(--fill, none)));
   border-color: var(--stroke-button--active, var(--stroke-button, var(--stroke, transparent)));
@@ -3289,10 +3268,8 @@ details .lot\:pager > span > summary:active,
   color: var(--color-button--active, var(--color-button, var(--color, inherit)));
 }
 .lot\:pager > span > a[aria-current=page],
-details .lot\:pager > span > summary[aria-current=page],
 .lot\:pager > span > [aria-current=page][role=link],
 .lot\:pager > span > a[aria-disabled=true],
-details .lot\:pager > span > summary[aria-disabled=true],
 .lot\:pager > span > [aria-disabled=true][role=link],
 .lot\:pager > span > span {
   background: none;
@@ -3387,12 +3364,11 @@ details .lot\:pager > span > summary[aria-disabled=true],
   color: var(--color-stack, var(--color, inherit));
   display: block;
   font: inherit;
-  margin-bottom: 0;
 }
 .lot\:stack > .title > a,
 .content\:stack > .title > a,
-details .lot\:stack > .title > summary,
-details .content\:stack > .title > summary,
+.lot\:stack > details.title > summary,
+.content\:stack > details.title > summary,
 .lot\:stack > .title > [role=link],
 .content\:stack > .title > [role=link] {
   color: inherit;
@@ -3402,32 +3378,32 @@ details .content\:stack > .title > summary,
 }
 .lot\:stack > .title > a:hover,
 .content\:stack > .title > a:hover,
-details .lot\:stack > .title > summary:hover,
-details .content\:stack > .title > summary:hover,
+.lot\:stack > details.title > summary:hover,
+.content\:stack > details.title > summary:hover,
 .lot\:stack > .title > [role=link]:hover,
 .content\:stack > .title > [role=link]:hover {
   color: var(--color-stack--hover, var(--color-stack, var(--color--hover, var(--color, inherit))));
 }
 .lot\:stack > .title > a:focus,
 .content\:stack > .title > a:focus,
-details .lot\:stack > .title > summary:focus,
-details .content\:stack > .title > summary:focus,
+.lot\:stack > details.title > summary:focus,
+.content\:stack > details.title > summary:focus,
 .lot\:stack > .title > [role=link]:focus,
 .content\:stack > .title > [role=link]:focus {
   color: var(--color-stack--focus, var(--color-stack, var(--color--focus, var(--color, inherit))));
 }
 .lot\:stack > .title > a:active,
 .content\:stack > .title > a:active,
-details .lot\:stack > .title > summary:active,
-details .content\:stack > .title > summary:active,
+.lot\:stack > details.title > summary:active,
+.content\:stack > details.title > summary:active,
 .lot\:stack > .title > [role=link]:active,
 .content\:stack > .title > [role=link]:active {
   color: var(--color-stack--active, var(--color-stack, var(--color--active, var(--color, inherit))));
 }
 .lot\:stack > .title > a .title,
 .content\:stack > .title > a .title,
-details .lot\:stack > .title > summary .title,
-details .content\:stack > .title > summary .title,
+.lot\:stack > details.title > summary .title,
+.content\:stack > details.title > summary .title,
 .lot\:stack > .title > [role=link] .title,
 .content\:stack > .title > [role=link] .title {
   display: flex;
@@ -3435,32 +3411,32 @@ details .content\:stack > .title > summary .title,
 }
 .lot\:stack > .title > a .title .icon,
 .content\:stack > .title > a .title .icon,
-details .lot\:stack > .title > summary .title .icon,
-details .content\:stack > .title > summary .title .icon,
+.lot\:stack > details.title > summary .title .icon,
+.content\:stack > details.title > summary .title .icon,
 .lot\:stack > .title > [role=link] .title .icon,
 .content\:stack > .title > [role=link] .title .icon {
   margin: 0 calc(var(--z) / -4);
 }
 .lot\:stack > .title > a .title .icon:first-child,
 .content\:stack > .title > a .title .icon:first-child,
-details .lot\:stack > .title > summary .title .icon:first-child,
-details .content\:stack > .title > summary .title .icon:first-child,
+.lot\:stack > details.title > summary .title .icon:first-child,
+.content\:stack > details.title > summary .title .icon:first-child,
 .lot\:stack > .title > [role=link] .title .icon:first-child,
 .content\:stack > .title > [role=link] .title .icon:first-child {
   margin-right: calc(var(--z) / 4);
 }
 .lot\:stack > .title > a .title .icon:last-child,
 .content\:stack > .title > a .title .icon:last-child,
-details .lot\:stack > .title > summary .title .icon:last-child,
-details .content\:stack > .title > summary .title .icon:last-child,
+.lot\:stack > details.title > summary .title .icon:last-child,
+.content\:stack > details.title > summary .title .icon:last-child,
 .lot\:stack > .title > [role=link] .title .icon:last-child,
 .content\:stack > .title > [role=link] .title .icon:last-child {
   margin-left: calc(var(--z) / 4);
 }
 .lot\:stack > .title > a .title .icon:only-child,
 .content\:stack > .title > a .title .icon:only-child,
-details .lot\:stack > .title > summary .title .icon:only-child,
-details .content\:stack > .title > summary .title .icon:only-child,
+.lot\:stack > details.title > summary .title .icon:only-child,
+.content\:stack > details.title > summary .title .icon:only-child,
 .lot\:stack > .title > [role=link] .title .icon:only-child,
 .content\:stack > .title > [role=link] .title .icon:only-child {
   margin-left: calc(var(--z) / -4);
@@ -3498,7 +3474,7 @@ details .content\:stack > .title > summary .title .icon:only-child,
 .lot\:stack > .lot,
 .content\:stack > .lot {
   display: none;
-  margin-bottom: 0;
+  margin: 0;
   padding: calc(var(--y) - (var(--h) - var(--z)) / 2) var(--x);
 }
 .lot\:stack.has\:link,
@@ -3513,24 +3489,24 @@ details .content\:stack > .title > summary .title .icon:only-child,
 }
 .lot\:stack.has\:link > .title > a:hover,
 .has\:link.content\:stack > .title > a:hover,
-details .lot\:stack.has\:link > .title > summary:hover,
-details .has\:link.content\:stack > .title > summary:hover,
+.lot\:stack.has\:link > details.title > summary:hover,
+.has\:link.content\:stack > details.title > summary:hover,
 .lot\:stack.has\:link > .title > [role=link]:hover,
 .has\:link.content\:stack > .title > [role=link]:hover {
   color: var(--color-stack-link--hover, var(--color-stack-link, var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit))))));
 }
 .lot\:stack.has\:link > .title > a:focus,
 .has\:link.content\:stack > .title > a:focus,
-details .lot\:stack.has\:link > .title > summary:focus,
-details .has\:link.content\:stack > .title > summary:focus,
+.lot\:stack.has\:link > details.title > summary:focus,
+.has\:link.content\:stack > details.title > summary:focus,
 .lot\:stack.has\:link > .title > [role=link]:focus,
 .has\:link.content\:stack > .title > [role=link]:focus {
   color: var(--color-stack-link--focus, var(--color-stack-link, var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit))))));
 }
 .lot\:stack.has\:link > .title > a:active,
 .has\:link.content\:stack > .title > a:active,
-details .lot\:stack.has\:link > .title > summary:active,
-details .has\:link.content\:stack > .title > summary:active,
+.lot\:stack.has\:link > details.title > summary:active,
+.has\:link.content\:stack > details.title > summary:active,
 .lot\:stack.has\:link > .title > [role=link]:active,
 .has\:link.content\:stack > .title > [role=link]:active {
   color: var(--color-stack-link--active, var(--color-stack-link, var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit))))));
@@ -3554,16 +3530,16 @@ details .has\:link.content\:stack > .title > summary:active,
 }
 .lot\:stack.is\:current:not(.can\:toggle) > .title > a,
 .is\:current.content\:stack:not(.can\:toggle) > .title > a,
-details .lot\:stack.is\:current:not(.can\:toggle) > .title > summary,
-details .is\:current.content\:stack:not(.can\:toggle) > .title > summary,
+.lot\:stack.is\:current:not(.can\:toggle) > details.title > summary,
+.is\:current.content\:stack:not(.can\:toggle) > details.title > summary,
 .lot\:stack.is\:current:not(.can\:toggle) > .title > [role=link],
 .is\:current.content\:stack:not(.can\:toggle) > .title > [role=link] {
   cursor: inherit;
 }
 .lot\:stack.not\:active > .title > a,
 .not\:active.content\:stack > .title > a,
-details .lot\:stack.not\:active > .title > summary,
-details .not\:active.content\:stack > .title > summary,
+.lot\:stack.not\:active > details.title > summary,
+.not\:active.content\:stack > details.title > summary,
 .lot\:stack.not\:active > .title > [role=link],
 .not\:active.content\:stack > .title > [role=link] {
   color: var(--color-stack--disabled, var(--color-stack, var(--color--disabled, var(--color, inherit))));
@@ -3609,16 +3585,13 @@ details .not\:active.content\:stack > .title > summary,
 .lot\:tab,
 .content\:tab {
   display: none;
-  margin-bottom: 0;
+  margin: 0;
 }
 .lot\:tab.is\:current,
 .is\:current.content\:tab {
   display: block;
 }
 
-.lot\:tabs .lot\:links {
-  margin-bottom: 0;
-}
 .lot\:tabs .lot\:links li {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -3626,27 +3599,23 @@ details .not\:active.content\:stack > .title > summary,
   color: var(--color-tab, var(--color, inherit));
 }
 .lot\:tabs .lot\:links li a,
-.lot\:tabs .lot\:links li details summary,
-details .lot\:tabs .lot\:links li summary,
+.lot\:tabs .lot\:links li details > summary,
 .lot\:tabs .lot\:links li [role=link] {
   color: inherit;
   display: flex;
 }
 .lot\:tabs .lot\:links li a:hover,
-.lot\:tabs .lot\:links li details summary:hover,
-details .lot\:tabs .lot\:links li summary:hover,
+.lot\:tabs .lot\:links li details > summary:hover,
 .lot\:tabs .lot\:links li [role=link]:hover {
   color: var(--color-tab--hover, var(--color-tab, var(--color, inherit)));
 }
 .lot\:tabs .lot\:links li a:focus,
-.lot\:tabs .lot\:links li details summary:focus,
-details .lot\:tabs .lot\:links li summary:focus,
+.lot\:tabs .lot\:links li details > summary:focus,
 .lot\:tabs .lot\:links li [role=link]:focus {
   color: var(--color-tab--focus, var(--color-tab, var(--color, inherit)));
 }
 .lot\:tabs .lot\:links li a:active,
-.lot\:tabs .lot\:links li details summary:active,
-details .lot\:tabs .lot\:links li summary:active,
+.lot\:tabs .lot\:links li details > summary:active,
 .lot\:tabs .lot\:links li [role=link]:active {
   color: var(--color-tab--active, var(--color-tab, var(--color, inherit)));
 }
@@ -3654,20 +3623,14 @@ details .lot\:tabs .lot\:links li summary:active,
   color: var(--color-tab-link, var(--color-tab, var(--color-link, var(--color, inherit))));
 }
 .lot\:tabs .lot\:links li.has\:link > a:hover,
-.lot\:tabs .lot\:links details li.has\:link > summary:hover,
-details .lot\:tabs .lot\:links li.has\:link > summary:hover,
 .lot\:tabs .lot\:links li.has\:link > [role=link]:hover {
   color: var(--color-tab-link--hover, var(--color-tab-link, var(--color-tab--hover, var(--color-tab, var(--color-link--hover, var(--color-link, var(--color, inherit)))))));
 }
 .lot\:tabs .lot\:links li.has\:link > a:focus,
-.lot\:tabs .lot\:links details li.has\:link > summary:focus,
-details .lot\:tabs .lot\:links li.has\:link > summary:focus,
 .lot\:tabs .lot\:links li.has\:link > [role=link]:focus {
   color: var(--color-tab-link--focus, var(--color-tab-link, var(--color-tab--focus, var(--color-tab, var(--color-link--focus, var(--color-link, var(--color, inherit)))))));
 }
 .lot\:tabs .lot\:links li.has\:link > a:active,
-.lot\:tabs .lot\:links details li.has\:link > summary:active,
-details .lot\:tabs .lot\:links li.has\:link > summary:active,
 .lot\:tabs .lot\:links li.has\:link > [role=link]:active {
   color: var(--color-tab-link--active, var(--color-tab-link, var(--color-tab--active, var(--color-tab, var(--color-link--active, var(--color-link, var(--color, inherit)))))));
 }
@@ -3678,20 +3641,14 @@ details .lot\:tabs .lot\:links li.has\:link > summary:active,
   color: var(--color-tab--disabled, var(--color-tab, var(--color, inherit)));
 }
 .lot\:tabs .lot\:links li.not\:active > a:hover,
-.lot\:tabs .lot\:links details li.not\:active > summary:hover,
-details .lot\:tabs .lot\:links li.not\:active > summary:hover,
 .lot\:tabs .lot\:links li.not\:active > [role=link]:hover {
   color: inherit;
 }
 .lot\:tabs .lot\:links li.not\:active > a:focus,
-.lot\:tabs .lot\:links details li.not\:active > summary:focus,
-details .lot\:tabs .lot\:links li.not\:active > summary:focus,
 .lot\:tabs .lot\:links li.not\:active > [role=link]:focus {
   color: inherit;
 }
 .lot\:tabs .lot\:links li.not\:active > a:active,
-.lot\:tabs .lot\:links details li.not\:active > summary:active,
-details .lot\:tabs .lot\:links li.not\:active > summary:active,
 .lot\:tabs .lot\:links li.not\:active > [role=link]:active {
   color: inherit;
 }
@@ -3732,69 +3689,55 @@ details .lot\:tabs .lot\:links li.not\:active > summary:active,
   margin-right: 0;
 }
 
-body > .lot {
-  margin-bottom: 0;
-}
-body > .lot > .lot\:bar {
-  margin-bottom: 0;
-}
-body > .lot > .lot\:desk {
-  margin-bottom: 0;
-}
-
-form[name=set] {
-  margin-bottom: 0;
-}
-
 .siema div {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .a,
 a,
-details summary,
+details > summary,
 [role=link] {
   color: inherit;
 }
 .a:where(:any-link),
 a:where(:any-link),
 [role=link]:where(:any-link),
-details summary,
-details summary[role=link] {
+details > summary,
+details > summary[role=link] {
   background: var(--fill-link, var(--fill, none));
   color: var(--color-link, var(--color, inherit));
 }
 .a:where(:any-link):hover,
 a:where(:any-link):hover,
 [role=link]:where(:any-link):hover,
-details summary:hover {
+details > summary:hover {
   background: var(--fill-link--hover, var(--fill-link, var(--fill--hover, var(--fill, none))));
   color: var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit))));
 }
 .a:where(:any-link):focus,
 a:where(:any-link):focus,
 [role=link]:where(:any-link):focus,
-details summary:focus {
+details > summary:focus {
   background: var(--fill-link--focus, var(--fill-link, var(--fill--focus, var(--fill, none))));
   color: var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit))));
 }
 .a:where(:any-link):active,
 a:where(:any-link):active,
 [role=link]:where(:any-link):active,
-details summary:active {
+details > summary:active {
   background: var(--fill-link--active, var(--fill-link, var(--fill--active, var(--fill, none))));
   color: var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit))));
 }
 .a:where([aria-disabled=true]:not([class])),
 a:where([aria-disabled=true]:not([class])),
-details summary:where([aria-disabled=true]:not([class])),
+details > summary:where([aria-disabled=true]:not([class])),
 [role=link]:where([aria-disabled=true]:not([class])) {
   background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
   color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
 }
 .a.not\:active,
 a.not\:active,
-details summary.not\:active,
+details > summary.not\:active,
 .not\:active[role=link] {
   background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
   color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
@@ -4029,8 +3972,7 @@ u,
     border-color: var(--stroke-tab--disabled, var(--stroke-tab, var(--stroke--disabled, var(--stroke, transparent))));
   }
   .lot\:tabs .lot\:links a,
-  .lot\:tabs .lot\:links details summary,
-  details .lot\:tabs .lot\:links summary,
+  .lot\:tabs .lot\:links details > summary,
   .lot\:tabs .lot\:links [role=link] {
     padding: 0 calc(var(--z) * 1.25);
   }
@@ -4107,10 +4049,13 @@ u,
     text-align: inherit;
     width: auto;
   }
-  .lot\:page > div:last-child {
+  .lot\:page > div:first-child + div + div {
     flex-basis: 100%;
     margin: 0 0 0 calc(var(--x) * 2.75);
     min-height: 0;
+  }
+  .lot\:page > div:first-child[hidden] + div + div {
+    margin-left: 0;
   }
   .lot\:pager > span:first-child,
   .lot\:pager > span:last-child {
@@ -4128,11 +4073,18 @@ u,
   }
   .lot\:tabs .lot\:links li [role=link],
   .lot\:tabs .lot\:links li a:any-link,
-  .lot\:tabs .lot\:links li details summary:any-link,
-  details .lot\:tabs .lot\:links li summary:any-link {
+  .lot\:tabs .lot\:links li details > summary:any-link {
     color: inherit;
   }
   .lot\:tabs .lot\:links .title svg {
     display: none;
+  }
+}
+@media (max-width: 340px) {
+  .lot\:page > div:first-child {
+    display: none;
+  }
+  .lot\:page > div:first-child + div + div {
+    margin-left: 0;
   }
 }

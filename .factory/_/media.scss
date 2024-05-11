@@ -160,10 +160,21 @@
     }
   }
   .lot\:page {
-    > div:last-child {
-      flex-basis: 100%;
-      margin: 0 0 0 calc(var(--x) * 2.75);
-      min-height: 0;
+    > div:first-child {
+      + div {
+        + div {
+          flex-basis: 100%;
+          margin: 0 0 0 calc(var(--x) * 2.75);
+          min-height: 0;
+        }
+      }
+      &[hidden] {
+        + div {
+          + div {
+            margin-left: 0;
+          }
+        }
+      }
     }
   }
   .lot\:pager {
@@ -193,6 +204,19 @@
       .title {
         svg {
           display: none;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 340px) {
+  .lot\:page {
+    > div:first-child {
+      display: none;
+      + div {
+        + div {
+          margin-left: 0;
         }
       }
     }

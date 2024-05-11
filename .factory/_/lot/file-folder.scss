@@ -39,7 +39,7 @@
     width: var(--x);
   }
   > .lot\:tasks {
-    margin-right: calc(var(--x) / -4);
+    margin: 0 calc(var(--x) / -4) 0 0;
   }
   &.not\:active {
     opacity: 0.5;

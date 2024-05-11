@@ -3,7 +3,6 @@ $name: option-picker;
 .#{$name} {
   height: calc(var(--y) * 1.5);
   line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `input`
-  margin: 0;
   padding: calc(var(--y) / 4) calc(var(--x) / 2);
   width: var(--width-input);
   &::after {
@@ -51,7 +50,6 @@ $name: option-picker;
   }
   &__input,
   &__values {
-    margin: 0;
     padding: {
       left: 0;
       right: 0;

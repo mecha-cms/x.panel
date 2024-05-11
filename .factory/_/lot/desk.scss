@@ -1,5 +1,6 @@
 .lot\:desk {
   display: block;
+  margin-top: 0;
   outline-offset: calc(var(--y) * -1);
   padding: var(--y) var(--x);
   position: relative;
