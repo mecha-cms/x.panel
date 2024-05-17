@@ -49,7 +49,7 @@ foreach (glob(LOT . D . 'y' . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $layout) {
 // Sanitize the form data
 if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     // Update current layout
-    if (isset($_POST['y']) && is_string($y = $_POST['y'])) {
+    if (isset($_POST['y']) && is_string($y = $_POST['y']) && $_['token'] === ($_POST['token'] ?? 0)) {
         $folder_y = LOT . D . 'y' . D . $y;
         if ($layouts_current !== $y && (is_file($folder_y . D . '.index.php') || is_file($folder_y . D . 'index.php'))) {
             foreach (glob(dirname($folder_y) . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $layout) {
