@@ -15,6 +15,9 @@
     var isInstance = function isInstance(x, of) {
         return x && isSet(of) && x instanceof of ;
     };
+    var isInteger = function isInteger(x) {
+        return isNumber(x) && 0 === x % 1;
+    };
     var isNull = function isNull(x) {
         return null === x;
     };
@@ -460,14 +463,11 @@
         return node.classList.toggle(name, force), node;
     };
     var event = function event(name, options, cache) {
-        if (cache && isSet(events[name])) {
-            return events[name];
-        }
-        return events[name] = new Event(name, options);
+        return events$1[name] = new Event(name, options);
     };
-    var events = {};
+    var events$1 = {};
     var fireEvent = function fireEvent(name, node, options, cache) {
-        node.dispatchEvent(event(name, options, cache));
+        node.dispatchEvent(event(name, options));
     };
     var offEvent = function offEvent(name, node, then) {
         node.removeEventListener(name, then);
@@ -742,7 +742,7 @@
     };
 
     function Dialog(init) {
-        1 === init && (W._.dialog = setDialog);
+        (W._.dialog = setDialog);
     }
     var debounce = function debounce(then, time) {
         var timer;
@@ -848,7 +848,7 @@
         $.on = on;
         return $;
     }
-    var name$2 = 'OP',
+    var name$3 = 'OP',
         PROP_INDEX = 'i',
         PROP_SOURCE = '$',
         PROP_VALUE = 'v';
@@ -880,8 +880,8 @@
             return $;
         }
         // Already instantiated, skip!
-        if (source[name$2]) {
-            return source[name$2];
+        if (source[name$3]) {
+            return source[name$3];
         }
         // Return new instance if `OP` was called without the `new` operator
         if (!isInstance($, OP)) {
@@ -896,7 +896,7 @@
         // Store current instance to `OP.instances`
         OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $;
         // Mark current DOM as active option picker to prevent duplicate instance
-        source[name$2] = $;
+        source[name$3] = $;
 
         function getLot() {
             return [toValue(getValue()), $.options];
@@ -1529,10 +1529,10 @@
             return parseValue ? toValue(value) : value;
         };
         $.pop = function () {
-            if (!source[name$2]) {
+            if (!source[name$3]) {
                 return $; // Already ejected
             }
-            delete source[name$2];
+            delete source[name$3];
             offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
             offEvent('click', selectBoxParent, onSelectBoxParentClick);
             offEvent('focus', selectBox, onSelectBoxFocus);
@@ -1616,7 +1616,7 @@
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
     var x = "!$^*()+=[]{}|:<>,.?/-";
-    var name$1 = 'TP';
+    var name$2 = 'TP';
     var KEY_A = 'a';
     var KEY_ARROW_LEFT = 'ArrowLeft';
     var KEY_ARROW_RIGHT = 'ArrowRight';
@@ -1636,8 +1636,8 @@
             return $;
         }
         // Already instantiated, skip!
-        if (source[name$1]) {
-            return source[name$1];
+        if (source[name$2]) {
+            return source[name$2];
         }
         // Return new instance if `TP` was called without the `new` operator
         if (!isInstance($, TP)) {
@@ -1661,7 +1661,7 @@
         // Store current instance to `TP.instances`
         TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $;
         // Mark current DOM as active tag picker to prevent duplicate instance
-        source[name$1] = $;
+        source[name$2] = $;
         var classNameB = state['class'],
             classNameE = classNameB + '__',
             classNameM = classNameB + '--',
@@ -1814,7 +1814,7 @@
 
         function letTextCopy(selectTextInput) {
             letElement(textCopy);
-            if (selectTextInput) {
+            {
                 setValue("", 1);
             }
         }
@@ -1822,7 +1822,7 @@
         function setTextCopy(selectTextCopy) {
             setChildLast(self, textCopy);
             textCopy.value = $.tags.join(state.join);
-            if (selectTextCopy) {
+            {
                 textCopy.focus();
                 textCopy.select();
             }
@@ -2007,17 +2007,17 @@
             var type = e.type;
             if ('copy' === type) {
                 delay(function () {
-                    return letTextCopy(1);
+                    return letTextCopy();
                 }, 1)();
             } else if ('cut' === type) {
                 !sourceIsReadOnly() && setTags("");
                 delay(function () {
-                    return letTextCopy(1);
+                    return letTextCopy();
                 }, 1)();
             } else if ('paste' === type) {
                 delay(function () {
                     !sourceIsReadOnly() && setTags(textCopy.value);
-                    letTextCopy(1);
+                    letTextCopy();
                 }, 1)();
             }
             delay(function () {
@@ -2121,7 +2121,7 @@
             }
             // Select all tag(s) with `Ctrl+A` key
             if (KEY_A === key) {
-                setTextCopy(1);
+                setTextCopy();
                 doFocusTags(), setCurrentTags(), offEventDefault(e);
             }
         }
@@ -2179,7 +2179,7 @@
             }
             // Select all tag(s) with `Ctrl+A` key
             if (keyIsCtrl && "" === theValue && KEY_A === key) {
-                setTextCopy(1);
+                setTextCopy();
                 doFocusTags(), setCurrentTags(), offEventDefault(e);
                 return;
             }
@@ -2316,10 +2316,10 @@
             return $;
         };
         $.pop = function () {
-            if (!source[name$1]) {
+            if (!source[name$2]) {
                 return $; // Already ejected!
             }
-            delete source[name$1];
+            delete source[name$2];
             var tags = $.tags;
             letClass(source, classNameE + 'source');
             offEvent('blur', self, onBlurSelf);
@@ -2400,518 +2400,796 @@
         1 === init && W._.on('change', onChange$a);
     }
     W.TP = TP;
-    var name = 'TE';
+    var events = {
+        blur: 0,
+        click: 0,
+        copy: 0,
+        cut: 0,
+        focus: 0,
+        input: 0,
+        keydown: 'key.down',
+        keyup: 'key.up',
+        mousedown: 'mouse.down',
+        mouseenter: 'mouse.enter',
+        mouseleave: 'mouse.exit',
+        mousemove: 'mouse.move',
+        mouseup: 'mouse.up',
+        paste: 0,
+        scroll: 0,
+        touchend: 'mouse.up',
+        touchmove: 'mouse.move',
+        touchstart: 'mouse.down',
+        wheel: 'scroll'
+    };
+
+    function isDisabled(self) {
+        return self.disabled;
+    }
+
+    function isReadOnly(self) {
+        return self.readOnly;
+    }
+
+    function theValue(self) {
+        return self.value.replace(/\r/g, "");
+    }
 
     function trim(str, dir) {
         return (str || "")['trim' + (-1 === dir ? 'Left' : 1 === dir ? 'Right' : "")]();
     }
 
-    function TE(source, state) {
-        if (state === void 0) {
-            state = {};
-        }
+    function TextEditor(self, state) {
         var $ = this;
-        if (!source) {
+        if (!self) {
             return $;
         }
-        // Already instantiated, skip!
-        if (source[name]) {
-            return source[name];
+        // Return new instance if `TextEditor` was called without the `new` operator
+        if (!isInstance($, TextEditor)) {
+            return new TextEditor(self, state);
         }
-        // Return new instance if `TE` was called without the `new` operator
-        if (!isInstance($, TE)) {
-            return new TE(source, state);
-        }
-        $.state = state = fromStates({}, TE.state, isString(state) ? {
+        self['_' + TextEditor.name] = hook($, TextEditor.prototype);
+        return $.attach(self, fromStates({}, TextEditor.state, isInteger(state) || isString(state) ? {
             tab: state
-        } : state || {});
-        // The `<textarea>` element
-        $.self = $.source = source;
-        // Store current instance to `TE.instances`
-        TE.instances[source.id || source.name || toObjectCount(TE.instances)] = $;
-        // Mark current DOM as active text editor to prevent duplicate instance
-        source[name] = $;
-        var any = /^([\s\S]*?)$/,
-            // Any character(s)
-            sourceIsDisabled = function sourceIsDisabled() {
-                return source.disabled;
-            },
-            sourceIsReadOnly = function sourceIsReadOnly() {
-                return source.readOnly;
-            },
-            sourceValue = function sourceValue() {
-                return source.value.replace(/\r/g, "");
-            };
-        // The initial value
-        $.value = sourceValue();
-        // Get value
-        $.get = function () {
-            return !sourceIsDisabled() && trim(sourceValue()) || null;
-        };
-        // Reset to the initial value
-        $.let = function () {
-            return source.value = $.value, $;
-        };
-        // Set value
-        $.set = function (value) {
-            if (sourceIsDisabled() || sourceIsReadOnly()) {
-                return $;
-            }
-            return source.value = value, $;
-        };
-        // Get selection
-        $.$ = function () {
-            return new TE.S(source.selectionStart, source.selectionEnd, sourceValue());
-        };
-        $.focus = function (mode) {
-            var x, y;
-            if (-1 === mode) {
-                x = y = 0; // Put caret at the start of the editor, scroll to the start of the editor
-            } else if (1 === mode) {
-                x = toCount(sourceValue()); // Put caret at the end of the editor
-                y = source.scrollHeight; // Scroll to the end of the editor
-            }
-            if (isSet(x) && isSet(y)) {
-                source.selectionStart = source.selectionEnd = x;
-                source.scrollTop = y;
-            }
-            return source.focus(), $;
-        };
-        // Blur from the editor
-        $.blur = function () {
-            return source.blur(), $;
-        };
-        // Select value
-        $.select = function () {
-            if (sourceIsDisabled() || sourceIsReadOnly()) {
-                return source.focus(), $;
-            }
-            for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-                lot[_key] = arguments[_key];
-            }
-            var count = toCount(lot),
-                _$$$ = $.$(),
-                start = _$$$.start,
-                end = _$$$.end,
-                x,
-                y,
-                X,
-                Y;
-            x = W.pageXOffset || R.scrollLeft || B.scrollLeft;
-            y = W.pageYOffset || R.scrollTop || B.scrollTop;
-            X = source.scrollLeft;
-            Y = source.scrollTop;
-            if (0 === count) {
-                // Restore selection with `$.select()`
-                lot[0] = start;
-                lot[1] = end;
-            } else if (1 === count) {
-                // Move caret position with `$.select(7)`
-                if (true === lot[0]) {
-                    // Select all with `$.select(true)`
-                    return source.focus(), source.select(), $;
-                }
-                lot[1] = lot[0];
-            }
-            source.focus();
-            // Default `$.select(7, 100)`
-            source.selectionStart = lot[0];
-            source.selectionEnd = lot[1];
-            source.scrollLeft = X;
-            source.scrollTop = Y;
-            return W.scroll(x, y), $;
-        };
-        // Match at selection
-        $.match = function (pattern, then) {
-            var _$$$2 = $.$(),
-                after = _$$$2.after,
-                before = _$$$2.before,
-                value = _$$$2.value;
-            if (isArray(pattern)) {
-                var _m = [before.match(pattern[0]), value.match(pattern[1]), after.match(pattern[2])];
-                return isFunction(then) ? then.call($, _m[0] || [], _m[1] || [], _m[2] || []) : [!!_m[0], !!_m[1], !!_m[2]];
-            }
-            var m = value.match(pattern);
-            return isFunction(then) ? then.call($, m || []) : !!m;
-        };
-        // Replace at selection
-        $.replace = function (from, to, mode) {
-            var _$$$3 = $.$(),
-                after = _$$$3.after,
-                before = _$$$3.before,
-                value = _$$$3.value;
-            if (-1 === mode) {
-                // Replace before
-                before = before.replace(from, to);
-            } else if (1 === mode) {
-                // Replace after
-                after = after.replace(from, to);
-            } else {
-                // Replace value
-                value = value.replace(from, to);
-            }
-            return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
-        };
-        // Insert/replace at caret
-        $.insert = function (value, mode, clear) {
-            var from = any;
-            if (clear) {
-                $.replace(from, ""); // Force to delete selection on insert before/after?
-            }
-            if (-1 === mode) {
-                // Insert before
-                from = /$/;
-            } else if (1 === mode) {
-                // Insert after
-                from = /^/;
-            }
-            return $.replace(from, value, mode);
-        };
-        // Wrap current selection
-        $.wrap = function (open, close, wrap) {
-            var _$$$4 = $.$(),
-                after = _$$$4.after,
-                before = _$$$4.before,
-                value = _$$$4.value;
-            if (wrap) {
-                return $.replace(any, open + '$1' + close);
-            }
-            return $.set(before + open + value + close + after).select(before = toCount(before + open), before + toCount(value));
-        };
-        // Unwrap current selection
-        $.peel = function (open, close, wrap) {
-            var _$$$5 = $.$(),
-                after = _$$$5.after,
-                before = _$$$5.before,
-                value = _$$$5.value;
-            open = esc(open);
-            close = esc(close);
-            var openPattern = toPattern(open + '$', ""),
-                closePattern = toPattern('^' + close, "");
-            if (wrap) {
-                return $.replace(toPattern('^' + open + '([\\s\\S]*?)' + close + '$', ""), '$1');
-            }
-            if (openPattern.test(before) && closePattern.test(after)) {
-                before = before.replace(openPattern, "");
-                after = after.replace(closePattern, "");
-                return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
-            }
-            return $.select();
-        };
-        $.pull = function (by, includeEmptyLines) {
-            if (includeEmptyLines === void 0) {
-                includeEmptyLines = true;
-            }
-            var _$$$6 = $.$(),
-                length = _$$$6.length,
-                value = _$$$6.value;
-            by = esc(isSet(by) ? by : state.tab);
-            if (length) {
-                if (includeEmptyLines) {
-                    return $.replace(toPattern('^' + by, 'gm'), "");
-                }
-                return $.insert(value.split('\n').map(function (v) {
-                    if (toPattern('^(' + by + ')*$', "").test(v)) {
-                        return v;
-                    }
-                    return v.replace(toPattern('^' + by, ""), "");
-                }).join('\n'));
-            }
-            return $.replace(toPattern(by + '$', ""), "", -1);
-        };
-        $.push = function (by, includeEmptyLines) {
-            if (includeEmptyLines === void 0) {
-                includeEmptyLines = false;
-            }
-            var _$$$7 = $.$(),
-                length = _$$$7.length;
-            by = isSet(by) ? by : state.tab;
-            if (length) {
-                return $.replace(toPattern('^' + (includeEmptyLines ? "" : '(?!$)'), 'gm'), by);
-            }
-            return $.insert(by, -1);
-        };
-        $.trim = function (open, close, start, end, tidy) {
-            if (tidy === void 0) {
-                tidy = true;
-            }
-            if (null !== open && false !== open) {
-                open = open || "";
-            }
-            if (null !== close && false !== close) {
-                close = close || "";
-            }
-            if (null !== start && false !== start) {
-                start = start || "";
-            }
-            if (null !== end && false !== end) {
-                end = end || "";
-            }
-            var _$$$8 = $.$(),
-                before = _$$$8.before,
-                value = _$$$8.value,
-                after = _$$$8.after,
-                beforeClean = trim(before, 1),
-                afterClean = trim(after, -1);
-            before = false !== open ? trim(before, 1) + (beforeClean || !tidy ? open : "") : before;
-            after = false !== close ? (afterClean || !tidy ? close : "") + trim(after, -1) : after;
-            if (false !== start) value = trim(value, -1);
-            if (false !== end) value = trim(value, 1);
-            return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
-        };
-        // Destructor
-        $.pop = function () {
-            if (!source[name]) {
-                return $; // Already ejected!
-            }
-            return delete source[name], $;
-        };
-        // Return the text editor state
-        $.state = state;
-        return $;
+        } : state || {}));
     }
-    TE.esc = esc;
-    TE.instances = {};
-    TE.state = {
-        'tab': '\t'
+    TextEditor.esc = esc;
+    TextEditor.state = {
+        'tab': '\t',
+        'with': []
     };
-    TE.S = function (a, b, c) {
-        var t = this,
-            d = c.slice(a, b);
-        t.after = c.slice(b);
-        t.before = c.slice(0, a);
-        t.end = b;
-        t.length = toCount(d);
-        t.start = a;
-        t.value = d;
-        t.toString = function () {
-            return d;
+    TextEditor.S = function (start, end, value) {
+        var $ = this,
+            current = value.slice(start, end);
+        $.after = value.slice(end);
+        $.before = value.slice(0, start);
+        $.end = end;
+        $.length = toCount(current);
+        $.start = start;
+        $.value = current;
+        $.toString = function () {
+            return current;
         };
     };
-    TE.version = '3.3.14';
-    TE.x = x;
-    var that$1 = {};
-    that$1._history = [];
-    that$1._historyState = -1;
-    // Get history data
-    that$1.history = function (index) {
-        var t = this;
-        if (!isSet(index)) {
-            return t._history;
-        }
-        return isSet(t._history[index]) ? t._history[index] : null;
-    };
-    // Remove state from history
-    that$1.loss = function (index) {
-        var t = this,
-            current;
-        if (true === index) {
-            t._history = [];
-            t._historyState = -1;
-            return [];
-        }
-        current = t._history.splice(isSet(index) ? index : t._historyState, 1);
-        t._historyState = toEdge(t._historyState - 1, [-1]);
-        return current;
-    };
-    // Save current state to history
-    that$1.record = function (index) {
-        var t = this,
-            _t$$ = t.$(),
-            end = _t$$.end,
-            start = _t$$.start,
-            current = t._history[t._historyState] || [],
-            next = [t.self.value, start, end];
-        if (next[0] === current[0] && next[1] === current[1] && next[2] === current[2]) {
-            return t; // Do not save duplicate
-        }
-        ++t._historyState;
-        return t._history[isSet(index) ? index : t._historyState] = next, t;
-    };
-    // Redo previous state
-    that$1.redo = function () {
-        var t = this,
-            state;
-        t._historyState = toEdge(t._historyState + 1, [0, toCount(t._history) - 1]);
-        state = t._history[t._historyState];
-        return t.set(state[0]).select(state[1], state[2]);
-    };
-    // Undo current state
-    that$1.undo = function () {
-        var t = this,
-            state;
-        t._historyState = toEdge(t._historyState - 1, [0, toCount(t._history) - 1]);
-        state = t._history[t._historyState];
-        return t.set(state[0]).select(state[1], state[2]);
-    };
-    var pairs = {
-        '`': '`',
-        '(': ')',
-        '{': '}',
-        '[': ']',
-        '"': '"',
-        "'": "'",
-        '<': '>'
-    };
-
-    function promisify(type, lot) {
-        return new Promise(function (resolve, reject) {
-            var r = W[type].apply(W, lot);
-            return r ? resolve(r) : reject(r);
-        });
-    }
-    var defaults = {
-        source: {
-            pairs: pairs,
-            type: null
-        }
-    };
-    ['alert', 'confirm', 'prompt'].forEach(function (type) {
-        defaults.source[type] = function () {
-            for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
-                lot[_key] = arguments[_key];
-            }
-            return promisify(type, lot);
-        };
+    TextEditor.version = '4.1.3';
+    TextEditor.x = x;
+    Object.defineProperty(TextEditor, 'name', {
+        value: 'TextEditor'
     });
-    var that = {};
-    that.toggle = function (open, close, wrap, tidy) {
-        if (tidy === void 0) {
-            tidy = false;
-        }
-        if (!close && "" !== close) {
-            close = open;
-        }
-        var t = this,
-            _t$$ = t.$(),
-            after = _t$$.after,
-            before = _t$$.before,
-            value = _t$$.value,
-            closeCount = toCount(close),
-            openCount = toCount(open);
-        if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === after.slice(0, closeCount) && open === before.slice(-openCount)) {
-            return t.peel(open, close, wrap);
-        }
-        if (false !== tidy) {
-            if (isString(tidy)) {
-                tidy = [tidy, tidy];
-            } else if (!isArray(tidy)) {
-                tidy = ["", ""];
-            }
-            if (!isSet(tidy[1])) {
-                tidy[1] = tidy[0];
-            }
-            t.trim(tidy[0], tidy[1]);
-        }
-        return t.wrap(open, close, wrap);
-    };
-    var CTRL_PREFIX = 'Control-';
-    var SHIFT_PREFIX = 'Shift-';
+    var theValuePrevious;
 
-    function canKeyDown(map, of) {
-        var charAfter,
-            charBefore,
-            charIndent = of.state.source.tab || of.state.tab || '\t',
-            charPairs = of.state.source.pairs || {},
-            charPairsValues = toObjectValues(charPairs),
-            key = map.key,
-            queue = map.queue,
-            keyValue = map + "";
-        // Do nothing
-        if (queue.Alt || queue.Control) {
-            return true;
+    function theEvent(e) {
+        var self = this,
+            $ = self['_' + TextEditor.name],
+            type = e.type,
+            value = theValue(self);
+        if (value !== theValuePrevious) {
+            theValuePrevious = value;
+            $.fire('change', [e]);
         }
-        if (' ' === keyValue) {
-            var _of$$ = of.$(),
-                _after = _of$$.after,
-                _before = _of$$.before,
-                _value = _of$$.value;
-            charAfter = charPairs[charBefore = _before.slice(-1)];
-            if (!_value && charAfter && charBefore && charAfter === _after[0]) {
-                of.wrap(' ', ' ');
+        $.fire(events[type] || type, [e]);
+    }
+    var $$$1 = TextEditor.prototype;
+    $$$1.$ = function () {
+        var self = this.self;
+        return new TextEditor.S(self.selectionStart, self.selectionEnd, theValue(self));
+    };
+    $$$1.attach = function (self, state) {
+        var $ = this;
+        self = self || $.self;
+        state = state || $.state;
+        $._active = true;
+        $._value = theValue(self);
+        $.self = self;
+        $.state = state;
+        // Attach event(s)
+        for (var event in events) {
+            onEvent(event, self, theEvent);
+        }
+        // Attach extension(s)
+        if (isSet(state) && isArray(state.with)) {
+            for (var i = 0, j = toCount(state.with); i < j; ++i) {
+                var value = state.with[i];
+                if (isString(value)) {
+                    value = TextEditor[value];
+                }
+                // `const Extension = function (self, state = {}) {}`
+                if (isFunction(value)) {
+                    value.call($, self, state);
+                    continue;
+                }
+                // `const Extension = {attach: function (self, state = {}) {}, detach: function (self, state = {}) {}}`
+                if (isObject(value) && isFunction(value.attach)) {
+                    value.attach.call($, self, state);
+                    continue;
+                }
+            }
+        }
+        return $;
+    };
+    $$$1.blur = function () {
+        var $ = this,
+            _active = $._active,
+            self = $.self;
+        if (!_active) {
+            return $;
+        }
+        return self.blur(), $;
+    };
+    $$$1.detach = function () {
+        var $ = this,
+            self = $.self,
+            state = $.state;
+        $._active = false;
+        // Detach event(s)
+        for (var event in events) {
+            offEvent(event, self, theEvent);
+        }
+        // Detach extension(s)
+        if (isArray(state.with)) {
+            for (var i = 0, j = toCount(state.with); i < j; ++i) {
+                var value = state.with[i];
+                if (isString(value)) {
+                    value = TextEditor[value];
+                }
+                if (isObject(value) && isFunction(value.detach)) {
+                    value.detach.call($, self, state);
+                    continue;
+                }
+            }
+        }
+        return $;
+    };
+    $$$1.focus = function (mode) {
+        var $ = this,
+            _active = $._active,
+            self = $.self,
+            x,
+            y;
+        if (!_active) {
+            return $;
+        }
+        if (-1 === mode) {
+            x = y = 0; // Put caret at the start of the editor, scroll to the start of the editor
+        } else if (1 === mode) {
+            x = toCount(theValue(self)); // Put caret at the end of the editor
+            y = self.scrollHeight; // Scroll to the end of the editor
+        }
+        if (isSet(x) && isSet(y)) {
+            self.selectionStart = self.selectionEnd = x;
+            self.scrollTop = y;
+        }
+        return self.focus(), $;
+    };
+    $$$1.get = function () {
+        var $ = this,
+            _active = $._active,
+            self = $.self;
+        if (!_active) {
+            return false;
+        }
+        return !isDisabled(self) && theValue(self) || null;
+    };
+    $$$1.insert = function (value, mode, clear) {
+        var $ = this,
+            from = /^[\s\S]*?$/;
+        if (!$._active) {
+            return $;
+        }
+        if (clear) {
+            $.replace(from, ""); // Force to delete selection on insert before/after?
+        }
+        if (-1 === mode) {
+            // Insert before
+            from = /$/;
+        } else if (1 === mode) {
+            // Insert after
+            from = /^/;
+        }
+        return $.replace(from, value, mode);
+    };
+    $$$1.let = function () {
+        var $ = this,
+            _active = $._active,
+            self = $.self;
+        if (!_active) {
+            return $;
+        }
+        return self.value = $._value, $;
+    };
+    $$$1.match = function (pattern, then) {
+        var $ = this,
+            _$$$ = $.$(),
+            after = _$$$.after,
+            before = _$$$.before,
+            value = _$$$.value;
+        if (isArray(pattern)) {
+            var _m = [before.match(pattern[0]), value.match(pattern[1]), after.match(pattern[2])];
+            return isFunction(then) ? then.call($, _m[0] || [], _m[1] || [], _m[2] || []) : [!!_m[0], !!_m[1], !!_m[2]];
+        }
+        var m = value.match(pattern);
+        return isFunction(then) ? then.call($, m || []) : !!m;
+    };
+    $$$1.peel = function (open, close, wrap) {
+        var $ = this,
+            _$$$2 = $.$(),
+            after = _$$$2.after,
+            before = _$$$2.before,
+            value = _$$$2.value;
+        open = esc(open);
+        close = esc(close);
+        var openPattern = toPattern(open + '$', ""),
+            closePattern = toPattern('^' + close, "");
+        if (wrap) {
+            return $.replace(toPattern('^' + open + '([\\s\\S]*?)' + close + '$', ""), '$1');
+        }
+        if (openPattern.test(before) && closePattern.test(after)) {
+            before = before.replace(openPattern, "");
+            after = after.replace(closePattern, "");
+            return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
+        }
+        return $.select();
+    };
+    $$$1.pull = function (by, withEmptyLines) {
+        if (withEmptyLines === void 0) {
+            withEmptyLines = true;
+        }
+        var $ = this,
+            state = $.state,
+            _$$$3 = $.$(),
+            before = _$$$3.before,
+            end = _$$$3.end,
+            length = _$$$3.length,
+            start = _$$$3.start,
+            value = _$$$3.value;
+        if (isInteger(by = isSet(by) ? by : state.tab)) {
+            by = ' '.repeat(by);
+        }
+        if ("" !== before && '\n' !== before.slice(-1) && by !== before.slice(-toCount(by))) {
+            // Move cursor to the start of the line
+            $.select(start = start - toCount(before.split('\n').pop()), length ? end : start);
+        }
+        by = esc(by);
+        if (length) {
+            if (withEmptyLines) {
+                return $.replace(toPattern('^' + by, 'gm'), "");
+            }
+            return $.insert(value.split('\n').map(function (v) {
+                if (toPattern('^(' + by + ')*$', "").test(v)) {
+                    return v;
+                }
+                return v.replace(toPattern('^' + by, ""), "");
+            }).join('\n'));
+        }
+        return $.replace(toPattern(by + '$', ""), "", -1);
+    };
+    $$$1.push = function (by, withEmptyLines) {
+        if (withEmptyLines === void 0) {
+            withEmptyLines = false;
+        }
+        var $ = this,
+            state = $.state,
+            _$$$4 = $.$(),
+            before = _$$$4.before,
+            end = _$$$4.end,
+            length = _$$$4.length,
+            start = _$$$4.start;
+        if (isInteger(by = isSet(by) ? by : state.tab)) {
+            by = ' '.repeat(by);
+        }
+        if ("" !== before && '\n' !== before.slice(-1) && by !== before.slice(-toCount(by))) {
+            // Move cursor to the start of the line
+            $.select(start = start - toCount(before.split('\n').pop()), length ? end : start);
+        }
+        if (length) {
+            return $.replace(toPattern('^' + (withEmptyLines ? "" : '(?!$)'), 'gm'), by);
+        }
+        return $.insert(by, -1);
+    };
+    $$$1.replace = function (from, to, mode) {
+        var $ = this,
+            _$$$5 = $.$(),
+            after = _$$$5.after,
+            before = _$$$5.before,
+            value = _$$$5.value;
+        if (-1 === mode) {
+            // Replace before
+            before = before.replace(from, to);
+        } else if (1 === mode) {
+            // Replace after
+            after = after.replace(from, to);
+        } else {
+            // Replace value
+            value = value.replace(from, to);
+        }
+        return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
+    };
+    $$$1.select = function () {
+        var $ = this,
+            _active = $._active,
+            self = $.self;
+        if (!_active) {
+            return $;
+        }
+        if (isDisabled(self) || isReadOnly(self)) {
+            return self.focus(), $;
+        }
+        for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
+            lot[_key] = arguments[_key];
+        }
+        var count = toCount(lot),
+            _$$$6 = $.$(),
+            start = _$$$6.start,
+            end = _$$$6.end,
+            x,
+            y,
+            X,
+            Y;
+        x = W.pageXOffset || R.scrollLeft || B.scrollLeft;
+        y = W.pageYOffset || R.scrollTop || B.scrollTop;
+        X = self.scrollLeft;
+        Y = self.scrollTop;
+        if (0 === count) {
+            // Restore selection with `$.select()`
+            lot[0] = start;
+            lot[1] = end;
+        } else if (1 === count) {
+            // Move caret position with `$.select(7)`
+            if (true === lot[0]) {
+                // Select all with `$.select(true)`
+                return self.focus(), self.select(), $;
+            }
+            lot[1] = lot[0];
+        }
+        self.focus();
+        // Default `$.select(7, 100)`
+        self.selectionStart = lot[0];
+        self.selectionEnd = lot[1];
+        self.scrollLeft = X;
+        self.scrollTop = Y;
+        return W.scroll(x, y), $;
+    };
+    $$$1.set = function (value) {
+        var $ = this,
+            _active = $._active,
+            self = $.self;
+        if (!_active) {
+            return $;
+        }
+        if (isDisabled(self) || isReadOnly(self)) {
+            return $;
+        }
+        return self.value = value, $;
+    };
+    $$$1.trim = function (open, close, start, end, tidy) {
+        if (tidy === void 0) {
+            tidy = true;
+        }
+        if (null !== open && false !== open) {
+            open = open || "";
+        }
+        if (null !== close && false !== close) {
+            close = close || "";
+        }
+        if (null !== start && false !== start) {
+            start = start || "";
+        }
+        if (null !== end && false !== end) {
+            end = end || "";
+        }
+        var $ = this,
+            _$$$7 = $.$(),
+            after = _$$$7.after,
+            before = _$$$7.before,
+            value = _$$$7.value,
+            afterClean = trim(after, -1),
+            beforeClean = trim(before, 1);
+        after = false !== close ? (afterClean || !tidy ? close : "") + trim(after, -1) : after;
+        before = false !== open ? trim(before, 1) + (beforeClean || !tidy ? open : "") : before;
+        if (false !== end) value = trim(value, 1);
+        if (false !== start) value = trim(value, -1);
+        return $.set(before + value + after).select(before = toCount(before), before + toCount(value));
+    };
+    $$$1.wrap = function (open, close, wrap) {
+        var $ = this,
+            _$$$8 = $.$(),
+            after = _$$$8.after,
+            before = _$$$8.before,
+            value = _$$$8.value;
+        if (wrap) {
+            return $.replace(/^[\s\S]*?$/, open + '$&' + close);
+        }
+        return $.set(before + open + value + close + after).select(before = toCount(before + open), before + toCount(value));
+    };
+    Object.defineProperty($$$1, 'value', {
+        get: function get() {
+            return this.self.value;
+        },
+        set: function set(value) {
+            this.self.value = value;
+        }
+    });
+
+    function History() {
+        var $ = this;
+        var $$ = $.constructor.prototype;
+        $._history = [];
+        $._historyState = -1;
+        !isFunction($$.history) && ($$.history = function (of) {
+            var $ = this,
+                _active = $._active,
+                _history = $._history;
+            if (!_active) {
                 return false;
             }
-            return true;
+            if (!isSet(of)) {
+                return _history;
+            }
+            return isSet(_history[of]) ? _history[of] : null;
+        });
+        !isFunction($$.loss) && ($$.loss = function (of) {
+            var $ = this,
+                current,
+                _active = $._active;
+            $._history;
+            var _historyState = $._historyState;
+            if (!_active) {
+                return false;
+            }
+            if (true === of) {
+                $._history = [];
+                $._historyState = -1;
+                return null;
+            }
+            current = $._history.splice(isSet(of) ? of : _historyState, 1);
+            $._historyState = toEdge(_historyState - 1, [-1]);
+            return current;
+        });
+        !isFunction($$.record) && ($$.record = function (of) {
+            var $ = this,
+                current,
+                next,
+                _$$$ = $.$(),
+                end = _$$$.end,
+                start = _$$$.start,
+                _active = $._active,
+                _history = $._history,
+                _historyState = $._historyState;
+            if (!_active) {
+                return $;
+            }
+            current = _history[_historyState] || [];
+            next = [$.get(), [start, end], Date.now()];
+            if (next[0] === current[0] && next[1][0] === current[1][0] && next[1][1] === current[1][1]) {
+                return $; // Do not save duplicate
+            }
+            ++_historyState;
+            $._history[isSet(of) ? of : _historyState] = next;
+            $._historyState = _historyState;
+            return $;
+        });
+        !isFunction($$.redo) && ($$.redo = function () {
+            var $ = this,
+                state,
+                _active = $._active,
+                _history = $._history,
+                _historyState = $._historyState;
+            if (!_active) {
+                return $;
+            }
+            state = _history[$._historyState = toEdge(_historyState + 1, [0, toCount(_history) - 1])];
+            return state ? $.set(state[0]).select(state[1][0], state[1][1]) : $;
+        });
+        !isFunction($$.undo) && ($$.undo = function () {
+            var $ = this,
+                state,
+                _active = $._active,
+                _history = $._history,
+                _historyState = $._historyState;
+            if (!_active) {
+                return $;
+            }
+            state = _history[$._historyState = toEdge(_historyState - 1, [0, toCount(_history) - 1])];
+            return state ? $.set(state[0]).select(state[1][0], state[1][1]) : $;
+        });
+        return $;
+    }
+    Object.defineProperty(History, 'name', {
+        value: 'TextEditor.History'
+    });
+
+    function Key(self) {
+        var $ = this;
+        $.commands = {};
+        $.key = null;
+        $.keys = {};
+        $.queue = {};
+        $.self = self || $;
+        return $;
+    }
+    var $$ = Key.prototype;
+    $$.command = function (v) {
+        var $ = this;
+        if (isString(v)) {
+            return v === $.toString();
         }
-        if ('Enter' === keyValue || SHIFT_PREFIX + 'Enter' === keyValue) {
-            var _of$$2 = of.$(),
-                _after2 = _of$$2.after,
-                _before2 = _of$$2.before,
-                _value2 = _of$$2.value,
-                lineBefore = _before2.split('\n').pop(),
-                lineMatch = lineBefore.match(/^(\s+)/),
-                lineMatchIndent = lineMatch && lineMatch[1] || "";
-            if (!_value2) {
-                if (_after2 && _before2 && (charAfter = charPairs[charBefore = _before2.slice(-1)]) && charAfter === _after2[0]) {
-                    of.wrap('\n' + lineMatchIndent + (charBefore !== charAfter ? charIndent : ""), '\n' + lineMatchIndent).record();
-                    return false;
-                }
-                if (lineMatchIndent) {
-                    of.insert('\n' + lineMatchIndent, -1).record();
-                    return false;
+        var command = $.keys[$.toString()];
+        return isSet(command) ? command : false;
+    };
+    $$.fire = function (command) {
+        var $ = this;
+        var self = $.self || $,
+            value,
+            exist;
+        if (isFunction(command)) {
+            value = command.call(self);
+            exist = true;
+        } else if (isString(command) && (command = $.commands[command])) {
+            value = command.call(self);
+            exist = true;
+        } else if (isArray(command)) {
+            var data = command[1] || [];
+            if (command = $.commands[command[0]]) {
+                value = command.apply(self, data);
+                exist = true;
+            }
+        }
+        return exist ? isSet(value) ? value : true : null;
+    };
+    $$.pull = function (key) {
+        var $ = this;
+        $.key = null;
+        if (!isSet(key)) {
+            return $.queue = {}, $;
+        }
+        return delete $.queue[key], $;
+    };
+    $$.push = function (key) {
+        var $ = this;
+        return $.queue[$.key = key] = 1, $;
+    };
+    $$.toString = function () {
+        return toObjectKeys(this.queue).join('-');
+    };
+    Object.defineProperty(Key, 'name', {
+        value: 'Key'
+    });
+    var bounce$2 = debounce(function (map) {
+        return map.pull();
+    }, 1000);
+    var name$1 = 'TextEditor.Key';
+    var id = '_Key';
+
+    function onBlur(e) {
+        var $ = this;
+        $._event = e;
+        $[id].pull(); // Reset all key(s)
+    }
+
+    function onInput(e) {
+        onBlur.call(this, e);
+    }
+
+    function onKeyDown$1(e) {
+        var $ = this;
+        var command,
+            map = $[id],
+            v;
+        map.push(e.key); // Add current key to the queue
+        $._event = e;
+        if (command = map.command()) {
+            v = map.fire(command);
+            if (false === v) {
+                offEventDefault(e);
+                offEventPropagation(e);
+            } else if (null === v) {
+                console.warn('Unknown command: `' + command + '`');
+            }
+        }
+        bounce$2(map); // Reset all key(s) after 1 second idle
+    }
+
+    function onKeyUp(e) {
+        var $ = this;
+        $._event = e;
+        $[id].pull(e.key); // Reset current key
+    }
+
+    function attach$1() {
+        var $ = this;
+        var $$ = $.constructor.prototype;
+        var map = new Key($);
+        $.commands = fromStates($.commands = map.commands, $.state.commands || {});
+        $.keys = fromStates($.keys = map.keys, $.state.keys || {});
+        !isFunction($$.command) && ($$.command = function (command, of) {
+            var $ = this;
+            return $.commands[command] = of, $;
+        });
+        !isFunction($$.k) && ($$.k = function (join) {
+            var $ = this,
+                key = $[id] + "",
+                keys;
+            if (isSet(join) && '-' !== join) {
+                keys = "" !== key ? key.split(/-(?!$)/) : [];
+                if (false !== join) {
+                    return keys.join(join);
                 }
             }
-            return true;
+            if (false === join) {
+                if ('-' === key) {
+                    return [key];
+                }
+                return keys;
+            }
+            return key;
+        });
+        !isFunction($$.key) && ($$.key = function (key, of) {
+            var $ = this;
+            return $.keys[key] = of, $;
+        });
+        $.on('blur', onBlur);
+        $.on('input', onInput);
+        $.on('key.down', onKeyDown$1);
+        $.on('key.up', onKeyUp);
+        return $[id] = map, $;
+    }
+
+    function detach$1() {
+        var $ = this;
+        $[id].pull();
+        $.off('blur', onBlur);
+        $.off('input', onInput);
+        $.off('key.down', onKeyDown$1);
+        $.off('key.up', onKeyUp);
+        delete $[id];
+        return $;
+    }
+    var TextEditorKey = {
+        attach: attach$1,
+        detach: detach$1,
+        name: name$1
+    };
+    var ALT_PREFIX = 'Alt-';
+    var CTRL_PREFIX = 'Control-';
+    var SHIFT_PREFIX = 'Shift-';
+    var bounce$1 = debounce(function ($) {
+        return $.record();
+    }, 10);
+    var name = 'TextEditor.Source';
+
+    function onKeyDown(e) {
+        var $ = this,
+            key = $.k(false).pop(),
+            // Capture the last key
+            keys = $.k();
+        bounce$1($);
+        if (e.defaultPrevented || $.keys[keys]) {
+            return;
         }
-        if ('Backspace' === keyValue) {
-            var _of$$3 = of.$(),
-                _after3 = _of$$3.after,
-                _before3 = _of$$3.before,
-                _value3 = _of$$3.value;
-            _after3.split('\n')[0];
-            var _lineBefore = _before3.split('\n').pop(),
-                _lineMatch = _lineBefore.match(/^(\s+)/),
-                _lineMatchIndent = _lineMatch && _lineMatch[1] || "";
-            charAfter = charPairs[charBefore = _before3.slice(-1)];
+        var charAfter,
+            charBefore,
+            charIndent = $.state.tab || '\t',
+            charPairs = $.state.pairs || {},
+            charPairsValues = toObjectValues(charPairs);
+        if (isInteger(charIndent)) {
+            charIndent = ' '.repeat(charIndent);
+        }
+        var _$$$ = $.$(),
+            after = _$$$.after,
+            before = _$$$.before,
+            end = _$$$.end,
+            start = _$$$.start,
+            value = _$$$.value,
+            lineAfter = after.split('\n').shift(),
+            lineBefore = before.split('\n').pop(),
+            lineMatch = /^\s+/.exec(lineBefore),
+            lineMatchIndent = lineMatch && lineMatch[0] || "";
+        if (CTRL_PREFIX + SHIFT_PREFIX + 'Enter' === keys) {
+            if (before || after) {
+                // Insert line above with `⎈⇧↵`
+                offEventDefault(e);
+                return $.select(start - toCount(lineBefore)).wrap(lineMatchIndent, '\n').insert(value).record(), false;
+            }
+            return;
+        }
+        if (CTRL_PREFIX + 'Enter' === keys) {
+            if (before || after) {
+                // Insert line below with `⎈↵`
+                offEventDefault(e);
+                return $.select(end + toCount(lineAfter)).wrap('\n' + lineMatchIndent, "").insert(value).record(), false;
+            }
+        }
+        // Do nothing
+        if (ALT_PREFIX === keys + '-' || CTRL_PREFIX === keys + '-') {
+            offEventDefault(e);
+            return;
+        }
+        if (' ' === keys) {
+            charAfter = charPairs[charBefore = before.slice(-1)];
+            if (!value && charAfter && charBefore && charAfter === after[0]) {
+                offEventDefault(e);
+                return $.wrap(' ', ' ');
+            }
+            return;
+        }
+        if ('Backspace' === keys || 'Delete' === keys) {
+            charAfter = charPairs[charBefore = before.slice(-1)];
             // Do nothing on escape
             if ('\\' === charBefore) {
-                return true;
+                return;
             }
-            if (_value3) {
-                if (_after3 && _before3 && charAfter && charAfter === _after3[0] && !_before3.endsWith('\\' + charBefore)) {
-                    of.record().peel(charBefore, charAfter).record();
-                    return false;
+            if (value) {
+                if (after && before && charAfter && charAfter === after[0] && !before.endsWith('\\' + charBefore)) {
+                    offEventDefault(e);
+                    return $.record().peel(charBefore, charAfter).record();
                 }
-                return true;
+                return;
             }
-            charAfter = charPairs[charBefore = _before3.trim().slice(-1)];
+            charAfter = charPairs[charBefore = before.trim().slice(-1)];
             if (charAfter && charBefore) {
-                if (_after3.startsWith(' ' + charAfter) && _before3.endsWith(charBefore + ' ') || _after3.startsWith('\n' + _lineMatchIndent + charAfter) && _before3.endsWith(charBefore + '\n' + _lineMatchIndent)) {
+                if (after.startsWith(' ' + charAfter) && before.endsWith(charBefore + ' ') || after.startsWith('\n' + lineMatchIndent + charAfter) && before.endsWith(charBefore + '\n' + lineMatchIndent)) {
                     // Collapse bracket(s)
-                    of.trim("", "").record();
-                    return false;
+                    offEventDefault(e);
+                    return $.trim("", "").record();
                 }
             }
             // Outdent
-            if (_lineBefore.endsWith(charIndent)) {
-                of.pull(charIndent).record();
-                return false;
+            if ('Delete' !== keys && lineBefore.endsWith(charIndent)) {
+                offEventDefault(e);
+                return $.pull(charIndent).record();
             }
-            if (_after3 && _before3 && !_before3.endsWith('\\' + charBefore)) {
-                if (charAfter === _after3[0] && charBefore === _before3.slice(-1)) {
+            if (after && before && !before.endsWith('\\' + charBefore)) {
+                if (charAfter === after[0] && charBefore === before.slice(-1)) {
                     // Peel pair
-                    of.peel(charBefore, charAfter).record();
-                    return false;
+                    offEventDefault(e);
+                    return $.peel(charBefore, charAfter).record();
                 }
             }
-            return true;
+            return;
         }
-        var _of$$4 = of.$(),
-            after = _of$$4.after,
-            before = _of$$4.before,
-            start = _of$$4.start,
-            value = _of$$4.value;
+        if ('Enter' === keys || SHIFT_PREFIX + 'Enter' === keys) {
+            if (!value) {
+                if (after && before && (charAfter = charPairs[charBefore = before.slice(-1)]) && charAfter === after[0]) {
+                    offEventDefault(e);
+                    return $.wrap('\n' + lineMatchIndent + (charBefore !== charAfter ? charIndent : ""), '\n' + lineMatchIndent).record();
+                }
+                if (lineMatchIndent) {
+                    offEventDefault(e);
+                    return $.insert('\n' + lineMatchIndent, -1).record();
+                }
+            }
+            return;
+        }
         // Do nothing on escape
         if ('\\' === (charBefore = before.slice(-1))) {
-            return true;
+            return;
         }
         charAfter = hasValue(after[0], charPairsValues) ? after[0] : charPairs[charBefore];
         // `|}`
         if (!value && after && before && charAfter && key === charAfter) {
             // Move to the next character
             // `}|`
-            of.select(start + 1).record();
-            return false;
+            offEventDefault(e);
+            return $.select(start + 1).record();
         }
         for (charBefore in charPairs) {
             charAfter = charPairs[charBefore];
@@ -2919,290 +3197,297 @@
             if (key === charBefore && charAfter) {
                 // Wrap pair or selection
                 // `{|}` `{|aaa|}`
-                of.wrap(charBefore, charAfter).record();
-                return false;
+                offEventDefault(e);
+                return $.wrap(charBefore, charAfter).record();
             }
             // `|}`
             if (key === charAfter) {
                 if (value) {
                     // Wrap selection
                     // `{|aaa|}`
-                    of.record().wrap(charBefore, charAfter).record();
-                    return false;
+                    offEventDefault(e);
+                    return $.record().wrap(charBefore, charAfter).record();
                 }
                 break;
             }
         }
-        return true;
-    }
-
-    function canKeyDownDent(map, of) {
-        var charIndent = of.state.source.tab || of.state.tab || '\t';
-        map.key;
-        map.queue;
-        var keyValue = map + "";
-        // Indent with `⎈]`
-        if (CTRL_PREFIX + ']' === keyValue) {
-            of.push(charIndent).record();
-            return false;
-        }
-        // Outdent with `⎈[`
-        if (CTRL_PREFIX + '[' === keyValue) {
-            of.pull(charIndent).record();
-            return false;
-        }
-        return true;
-    }
-
-    function canKeyDownEnter(map, of) {
-        map.key;
-        var queue = map.queue;
-        if (queue.Control && queue.Enter) {
-            var _of$$5 = of.$(),
-                after = _of$$5.after,
-                before = _of$$5.before,
-                end = _of$$5.end,
-                start = _of$$5.start,
-                value = _of$$5.value,
-                lineAfter = after.split('\n').shift(),
-                lineBefore = before.split('\n').pop(),
-                lineMatch = lineBefore.match(/^(\s+)/),
-                lineMatchIndent = lineMatch && lineMatch[1] || "";
-            if (before || after) {
-                if (queue.Shift) {
-                    // Insert line above with `⎈⇧↵`
-                    return of.select(start - toCount(lineBefore)).wrap(lineMatchIndent, '\n').insert(value).record(), false;
-                }
-                // Insert line below with `⎈↵`
-                return of.select(end + toCount(lineAfter)).wrap('\n' + lineMatchIndent, "").insert(value).record(), false;
-            }
-        }
-        return true;
-    }
-
-    function canKeyDownHistory(map, of) {
-        var keyValue = map + "";
-        // Redo with `⎈y`
-        if (CTRL_PREFIX + 'y' === keyValue) {
-            return of.redo(), false;
-        }
-        // Undo with `⎈z`
-        if (CTRL_PREFIX + 'z' === keyValue) {
-            return of.undo(), false;
-        }
-        return true;
-    }
-
-    function canKeyDownMove(map, of) {
-        map.key;
-        var queue = map.queue,
-            keyValue = map + "";
-        if (!queue.Control) {
-            return true;
-        }
-        var _of$$6 = of.$(),
-            after = _of$$6.after,
-            before = _of$$6.before,
-            end = _of$$6.end,
-            start = _of$$6.start,
-            value = _of$$6.value,
-            charPair,
+        var charPair,
             charPairValue,
-            charPairs = of.state.source.pairs || {},
-            boundaries = [],
-            m;
+            m,
+            tokens = [];
         if (value) {
             for (charPair in charPairs) {
                 if (!(charPairValue = charPairs[charPair])) {
                     continue;
                 }
-                boundaries.push('(?:\\' + charPair + '(?:\\\\.|[^\\' + charPair + (charPairValue !== charPair ? '\\' + charPairValue : "") + '])*\\' + charPairValue + ')');
+                tokens.push('(?:\\' + charPair + '(?:\\\\.|[^\\' + charPair + (charPairValue !== charPair ? '\\' + charPairValue : "") + '])*\\' + charPairValue + ')');
             }
-            boundaries.push('\\w+'); // Word(s)
-            boundaries.push('\\s+'); // White-space(s)
-            boundaries.push('[\\s\\S]'); // Last try!
-            if (CTRL_PREFIX + 'ArrowLeft' === keyValue) {
-                if (m = before.match(toPattern('(' + boundaries.join('|') + ')$', ""))) {
-                    of.insert("").select(start - toCount(m[0])).insert(value);
-                    return of.record(), false;
+            tokens.push('\\w+'); // Word(s)
+            tokens.push('\\s+'); // White-space(s)
+            tokens.push('[\\s\\S]'); // Last try!
+            if (CTRL_PREFIX + 'ArrowLeft' === keys) {
+                offEventDefault(e);
+                if (m = toPattern('(' + tokens.join('|') + ')$', "").exec(before)) {
+                    return $.insert("").select(start - toCount(m[0])).insert(value).record();
                 }
-                return of.select(), false;
+                return $.select();
             }
-            if (CTRL_PREFIX + 'ArrowRight' === keyValue) {
-                if (m = after.match(toPattern('^(' + boundaries.join('|') + ')', ""))) {
-                    of.insert("").select(end + toCount(m[0]) - toCount(value)).insert(value);
-                    return of.record(), false;
+            if (CTRL_PREFIX + 'ArrowRight' === keys) {
+                offEventDefault(e);
+                if (m = after.match(toPattern('^(' + tokens.join('|') + ')', ""))) {
+                    return $.insert("").select(end + toCount(m[0]) - toCount(value)).insert(value).record();
                 }
-                return of.select(), false;
+                return $.select();
             }
         }
-        var lineAfter = after.split('\n').shift(),
-            lineBefore = before.split('\n').pop(),
-            lineMatch = lineBefore.match(/^(\s+)/);
-        lineMatch && lineMatch[1] || "";
         // Force to select the current line if there is no selection
         end += toCount(lineAfter);
         start -= toCount(lineBefore);
         value = lineBefore + value + lineAfter;
-        if (CTRL_PREFIX + 'ArrowUp' === keyValue) {
+        if (CTRL_PREFIX + 'ArrowUp' === keys) {
+            offEventDefault(e);
             if (!hasValue('\n', before)) {
-                return of.select(), false;
+                return $.select();
             }
-            of.insert("");
-            of.replace(/^([^\n]*?)(\n|$)/, '$2', 1);
-            of.replace(/(^|\n)([^\n]*?)$/, "", -1);
-            var $ = of.$();
-            before = $.before;
-            start = $.start;
+            $.insert("");
+            $.replace(/^([^\n]*?)(\n|$)/, '$2', 1);
+            $.replace(/(^|\n)([^\n]*?)$/, "", -1);
+            var s = $.$();
+            before = s.before;
+            start = s.start;
             lineBefore = before.split('\n').pop();
-            of.select(start = start - toCount(lineBefore)).wrap(value, '\n');
-            of.select(start, start + toCount(value));
-            return of.record(), false;
+            $.select(start = start - toCount(lineBefore)).wrap(value, '\n');
+            $.select(start, start + toCount(value));
+            return $.record();
         }
-        if (CTRL_PREFIX + 'ArrowDown' === keyValue) {
+        if (CTRL_PREFIX + 'ArrowDown' === keys) {
+            offEventDefault(e);
             if (!hasValue('\n', after)) {
-                return of.select(), false;
+                return $.select();
             }
-            of.insert("");
-            of.replace(/^([^\n]*?)(\n|$)/, "", 1);
-            of.replace(/(^|\n)([^\n]*?)$/, '$1', -1);
-            var _$ = of.$();
-            after = _$.after;
-            end = _$.end;
+            $.insert("");
+            $.replace(/^([^\n]*?)(\n|$)/, "", 1);
+            $.replace(/(^|\n)([^\n]*?)$/, '$1', -1);
+            var _s = $.$();
+            after = _s.after;
+            end = _s.end;
             lineAfter = after.split('\n').shift();
-            of.select(end = end + toCount(lineAfter)).wrap('\n', value);
+            $.select(end = end + toCount(lineAfter)).wrap('\n', value);
             end += 1;
-            of.select(end, end + toCount(value));
-            return of.record(), false;
+            $.select(end, end + toCount(value));
+            return $.record();
         }
-        return true;
-    }
-    var bounce$2 = debounce(function (of) {
-        return of.record();
-    }, 100);
-
-    function canKeyUp(map, of) {
-        return bounce$2(of), true;
-    }
-    var state = defaults;
-    Object.assign(TE.prototype, that$1, that);
-    TE.state = fromStates({}, TE.state, state);
-    // Be sure to remove the default source type
-    delete TE.state.source.type;
-    var bounce$1 = debounce(function (map) {
-        return map.pull();
-    }, 1000);
-
-    function _onBlurSource(e) {
-        this.K.pull();
+        return;
     }
 
-    function _onInputSource(e) {
-        this.K.pull();
-    }
-
-    function _onKeyDownSource(e) {
-        var editor = this.TE,
-            map = this.K,
-            key = e.key;
-        editor.state.source.type;
-        var command,
-            value;
-        offEventPropagation(e);
-        map.push(key);
-        if (command = map.command()) {
-            value = map.fire(command);
-            if (false === value) {
-                offEventDefault(e);
-            } else if (null === value) {
-                console.error('Unknown command:', command);
+    function attach() {
+        var $ = this;
+        var $$ = $.constructor.prototype;
+        $.state = fromStates({
+            pairs: {
+                '`': '`',
+                '(': ')',
+                '{': '}',
+                '[': ']',
+                '"': '"',
+                "'": "'",
+                '<': '>'
             }
-        } else {
-            if (canKeyDown(map, editor) && canKeyDownDent(map, editor) && canKeyDownEnter(map, editor) && canKeyDownHistory(map, editor) && canKeyDownMove(map, editor));
-            else {
-                offEventDefault(e);
+        }, $.state);
+        !isFunction($$.alert) && ($$.alert = function (hint, then) {
+            W.alert && W.alert(hint);
+            return isFunction(then) && then.call(this, true);
+        });
+        !isFunction($$.confirm) && ($$.confirm = function (hint, then) {
+            return isFunction(then) && then.call(this, W.confirm && W.confirm(hint));
+        });
+        !isFunction($$.insertBlock) && ($$.insertBlock = function (value, mode) {
+            var $ = this;
+            var _$$$2 = $.$(),
+                after = _$$$2.after,
+                before = _$$$2.before,
+                end = _$$$2.end,
+                start = _$$$2.start,
+                lineAfter = after.split('\n').shift(),
+                lineAfterCount = toCount(lineAfter),
+                lineBefore = before.split('\n').pop(),
+                lineBeforeCount = toCount(lineBefore),
+                lineMatch = /^\s+/.exec(lineBefore),
+                lineMatchIndent = lineMatch && lineMatch[0] || "";
+            if (-1 === mode) {
+                return $.select(start - lineBeforeCount).insert('\n', 1).push(lineMatchIndent).insert(value, 1, false);
             }
-        }
-        bounce$1(map);
+            if (1 === mode) {
+                return $.select(end + lineAfterCount).insert('\n', -1).push(lineMatchIndent).insert(value, 1, false);
+            }
+            return $.select(start - lineBeforeCount, end + lineAfterCount).insert(value, mode, true).wrap(lineMatchIndent, "");
+        });
+        !isFunction($$.peelBlock) && ($$.peelBlock = function (open, close, wrap) {
+            var $ = this;
+            var _$$$3 = $.$(),
+                after = _$$$3.after,
+                before = _$$$3.before,
+                end = _$$$3.end,
+                start = _$$$3.start,
+                value = _$$$3.value,
+                closeCount = toCount(close),
+                lineAfter = after.split('\n').shift(),
+                lineAfterCount = toCount(lineAfter),
+                lineBefore = before.split('\n').pop(),
+                lineBeforeCount = toCount(lineBefore),
+                openCount = toCount(open);
+            if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === lineAfter.slice(-closeCount) && open === lineBefore.slice(0, openCount)) {
+                return $.select(start - lineBeforeCount + (wrap ? 0 : openCount), end + lineAfterCount - (wrap ? 0 : closeCount)).peel(open, close, wrap);
+            }
+            return $.select(start, end);
+        });
+        !isFunction($$.prompt) && ($$.prompt = function (hint, value, then) {
+            return isFunction(then) && then.call(this, W.prompt ? W.prompt(hint, value) : false);
+        });
+        !isFunction($$.selectBlock) && ($$.selectBlock = function (withSpaces) {
+            if (withSpaces === void 0) {
+                withSpaces = true;
+            }
+            var $ = this;
+            var _$$$4 = $.$(),
+                after = _$$$4.after,
+                before = _$$$4.before,
+                end = _$$$4.end,
+                start = _$$$4.start,
+                value = _$$$4.value,
+                lineAfter = after.split('\n').shift(),
+                lineAfterCount = toCount(lineAfter),
+                lineBefore = before.split('\n').pop(),
+                lineBeforeCount = toCount(lineBefore);
+            if (!withSpaces) {
+                var lineAfterSpaces = /\s+$/.exec(lineAfter),
+                    lineBeforeSpaces = /^\s+/.exec(lineBefore);
+                if (lineAfterSpaces) {
+                    lineAfterCount -= toCount(lineAfterSpaces[0]);
+                }
+                if (lineBeforeSpaces) {
+                    lineBeforeCount -= toCount(lineBeforeSpaces[0]);
+                }
+            }
+            $.select(start - lineBeforeCount, end + lineAfterCount);
+            if (!withSpaces) {
+                var s = $.$(),
+                    m;
+                end = s.end;
+                start = s.start;
+                value = s.value;
+                if (m = /^(\s+)?[\s\S]+?(\s+)?$/.exec(value)) {
+                    return $.select(start + toCount(m[1] || ""), end - toCount(m[2] || ""));
+                }
+            }
+            return $;
+        });
+        !isFunction($$.toggle) && ($$.toggle = function (open, close, wrap) {
+            var $ = this;
+            var _$$$5 = $.$(),
+                after = _$$$5.after,
+                before = _$$$5.before,
+                value = _$$$5.value,
+                closeCount = toCount(close),
+                openCount = toCount(open);
+            if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === after.slice(0, closeCount) && open === before.slice(-openCount)) {
+                return $.peel(open, close, wrap);
+            }
+            return $.wrap(open, close, wrap);
+        });
+        !isFunction($$.toggleBlock) && ($$.toggleBlock = function (open, close, wrap) {
+            var $ = this;
+            var _$$$6 = $.$(),
+                after = _$$$6.after,
+                before = _$$$6.before,
+                value = _$$$6.value,
+                closeCount = toCount(close),
+                lineAfter = after.split('\n').shift(),
+                lineBefore = before.split('\n').pop(),
+                openCount = toCount(open);
+            if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === lineAfter.slice(-closeCount) && open === lineBefore.slice(0, openCount)) {
+                return $.peelBlock(open, close, wrap);
+            }
+            return $.wrapBlock(open, close, wrap);
+        });
+        !isFunction($$.wrapBlock) && ($$.wrapBlock = function (open, close, wrap) {
+            var $ = this;
+            var _$$$7 = $.$(),
+                after = _$$$7.after,
+                before = _$$$7.before,
+                end = _$$$7.end,
+                start = _$$$7.start,
+                lineAfter = after.split('\n').shift(),
+                lineAfterCount = toCount(lineAfter),
+                lineBefore = before.split('\n').pop(),
+                lineBeforeCount = toCount(lineBefore);
+            return $.select(start - lineBeforeCount, end + lineAfterCount).wrap(open, close, wrap);
+        });
+        return $.on('key.down', onKeyDown).record();
     }
 
-    function _onKeyUpSource(e) {
-        var editor = this.TE,
-            map = this.K,
-            key = e.key;
-        canKeyUp(map, editor);
-        map.pull(key);
+    function detach() {
+        return this.off('key.down', onKeyDown);
     }
-
-    function _letEditorSource(self) {
-        offEvent('blur', self, _onBlurSource);
-        offEvent('input', self, _onInputSource);
-        offEvent('keydown', self, _onKeyDownSource);
-        offEvent('keyup', self, _onKeyUpSource);
-    }
-
-    function _setEditorSource(self) {
-        onEvent('blur', self, _onBlurSource);
-        onEvent('input', self, _onInputSource);
-        onEvent('keydown', self, _onKeyDownSource);
-        onEvent('keyup', self, _onKeyUpSource);
-        self.TE.record();
-    }
+    var TextEditorSource = {
+        attach: attach,
+        detach: detach,
+        name: name
+    };
+    TextEditor.instances = [];
+    TextEditor.state.with.push(History);
+    TextEditor.state.with.push(TextEditorKey);
+    TextEditor.state.with.push(TextEditorSource);
 
     function onChange$9(init) {
-        // Destroy!
-        var $;
-        for (var key in TE.instances) {
-            $ = TE.instances[key];
-            $.loss().pop();
-            delete $.self.K;
-            delete TE.instances[key];
-            _letEditorSource($.self);
+        var instance;
+        while (instance = TextEditor.instances.pop()) {
+            instance.detach();
         }
         var sources = getElements('.lot\\:field.type\\:source .textarea'),
             editor,
-            map,
             state,
             type;
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
-            editor = new TE(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
-            state = editor.state;
-            type = state.source.type;
-            // Get it from `window` context as this `K` object already defined in `./.factory/index.js.mjs` globally
-            map = new W.K(editor);
-            map.keys['Escape'] = function () {
-                var parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
+            editor = new TextEditor(source, state = (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
+            editor.key('Escape', function () {
+                var parent = getParent(this.self, '[tabindex]:not(.not\\:active)');
                 if (parent) {
-                    return parent.focus(), false;
+                    return parent.focus({
+                        // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
+                        focusVisible: true
+                    }), false;
                 }
                 return true;
-            };
-            if ('HTML' === type) {
-                map.commands = commandsSourceHTML;
-                map.keys['Control-Shift-"'] = 'quote';
-                map.keys['Control-\''] = 'quote';
-                map.keys['Control-b'] = 'bold';
-                map.keys['Control-e'] = 'code';
-                map.keys['Control-h'] = 'blocks';
-                map.keys['Control-i'] = 'italic';
-                map.keys['Control-l'] = 'link';
-                map.keys['Control-o'] = 'image';
-                map.keys['Control-u'] = 'underline';
+            });
+            type = state.type || source.form.elements['data[type]'] || source.form.elements['page[type]'] || source.form.elements['file[type]'] || 'text/plain';
+            if ('HTML' === type || 'text/html' === type) {
+                editor.command('blocks', function () {});
+                editor.command('bold', function () {});
+                editor.command('code', function () {});
+                editor.command('image', function () {});
+                editor.command('italic', function () {});
+                editor.command('link', function () {});
+                editor.command('quote', function () {});
+                editor.command('underline', function () {});
+                editor.key('Control-Shift-"', 'quote');
+                editor.key('Control-\'', 'quote');
+                editor.key('Control-b', 'bold');
+                editor.key('Control-e', 'code');
+                editor.key('Control-h', 'blocks');
+                editor.key('Control-i', 'italic');
+                editor.key('Control-l', 'link');
+                editor.key('Control-o', 'image');
+                editor.key('Control-u', 'underline');
             }
-            state.commands = map.commands;
-            state.keys = map.keys;
-            source.K = map;
-            _setEditorSource(source);
+            TextEditor.instances.push(editor);
         });
         if (1 === init) {
             W._.on('change', onChange$9);
-            ['alert', 'confirm', 'prompt'].forEach(function (type) {
-                W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
-            });
         }
     }
-    W.TE = TE;
+    W.TextEditor = TextEditor;
 
     function Fields() {
         onChange$b(1);
@@ -4138,6 +4423,7 @@
     }(siema_min));
     var siema_minExports = siema_min.exports;
     var Siema = /*@__PURE__*/ getDefaultExportFromCjs(siema_minExports);
+    Siema.instances = [];
 
     function onChange$3(init) {
         var siemas = getElements('.siema');
@@ -4156,9 +4442,10 @@
             onEvent('touchstart', siema, function () {
                 return W.clearInterval(interval);
             });
+            Siema.instances.push(slider);
         });
         // Re-calculate the Siema dimension!
-        if (1 === init) {
+        {
             _.on('change.stack', function () {
                 return fireEvent('resize', W);
             });
@@ -4167,6 +4454,7 @@
             });
         }
     }
+    W.Siema = Siema;
     var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
 
     function fireFocus$2(node) {
@@ -4676,66 +4964,19 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-
-    function K(source) {
-        if (source === void 0) {
-            source = {};
-        }
-        var $ = this;
-        $.command = function (v) {
-            if (isString(v)) {
-                return v === $.toString();
-            }
-            var command = $.keys[$.toString()];
-            return isSet(command) ? command : false;
-        };
-        $.commands = {};
-        $.fire = function (command) {
-            var context = $.source,
-                value,
-                exist;
-            if (isFunction(command)) {
-                value = command.call(context);
-                exist = true;
-            } else if (isString(command) && (command = $.commands[command])) {
-                value = command.call(context);
-                exist = true;
-            } else if (isArray(command)) {
-                var data = command[1] || [];
-                if (command = $.commands[command[0]]) {
-                    value = command.apply(context, data);
-                    exist = true;
-                }
-            }
-            return exist ? isSet(value) ? value : true : null;
-        };
-        $.key = null;
-        $.keys = {};
-        $.pull = function (key) {
-            $.key = null;
-            if (!isSet(key)) {
-                return $.queue = {}, $;
-            }
-            return delete $.queue[key], $;
-        };
-        $.push = function (key) {
-            return $.queue[$.key = key] = 1, $;
-        };
-        $.queue = {};
-        $.source = source;
-        $.toString = function () {
-            return toObjectKeys($.queue).join('-');
-        };
-        return $;
-    }
+    Key.instances = [];
     var bounce = debounce(function (map) {
         return map.pull();
     }, 1000);
-    var map = new K(W);
+    var map = new Key(W);
+    Key.instances.push(map);
     map.keys['Escape'] = function () {
         var current = D.activeElement,
             parent = current && getParent(getParent(current), '[tabindex]:not(.not\\:active)');
-        parent && parent.focus();
+        parent && parent.focus({
+            // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
+            focusVisible: true
+        });
         return !parent;
     };
     map.keys['F3'] = function () {
@@ -4758,15 +4999,17 @@
         return false;
     };
     onEvent('blur', W, function (e) {
-        return map.pull();
+        this._event = e, map.pull();
     });
     onEvent('keydown', W, function (e) {
+        this._event = e;
         map.push(e.key);
         var command = map.command();
         if (command) {
             var value = map.fire(command);
             if (false === value) {
                 offEventDefault(e);
+                offEventPropagation(e);
             } else if (null === value) {
                 console.error('Unknown command:', command);
             }
@@ -4774,7 +5017,7 @@
         bounce(map);
     });
     onEvent('keyup', W, function (e) {
-        return map.pull(e.key);
+        this._event = e, map.pull(e.key);
     });
     var _$1 = {
         commands: map.commands,
@@ -4785,7 +5028,7 @@
     _hook.hooks;
     _hook.off;
     _hook.on;
-    W.K = K;
+    W.Key = Key;
     W._ = _$1;
     onEvent('beforeload', D, function () {
         return fire('let');
@@ -4797,14 +5040,14 @@
         return fire('set');
     });
     onChange$c(1);
-    Dialog(1);
+    Dialog();
     Fields();
     onChange$8(1);
     onChange$7(1);
     onChange$6(1);
     onChange$5(1);
     onChange$4(1);
-    onChange$3(1);
+    onChange$3();
     onChange$2(1);
     onChange$1(1);
     onChange(1);

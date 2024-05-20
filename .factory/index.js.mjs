@@ -27,6 +27,7 @@ import {
 import {
     fireEvent,
     offEventDefault,
+    offEventPropagation,
     onEvent
 } from '@taufik-nurrohman/event';
 
@@ -38,8 +39,6 @@ import {
     isFunction
 } from '@taufik-nurrohman/is';
 
-import K from '@taufik-nurrohman/key';
-
 import {
     debounce
 } from '@taufik-nurrohman/tick';
@@ -48,13 +47,22 @@ import {
     toValue
 } from '@taufik-nurrohman/to';
 
+import Key from '@taufik-nurrohman/key';
+
+Key.instances = [];
+
 const bounce = debounce(map => map.pull(), 1000);
-const map = new K(W);
+const map = new Key(W);
+
+Key.instances.push(map);
 
 map.keys['Escape'] = function () {
     let current = D.activeElement,
         parent = current && getParent(getParent(current), '[tabindex]:not(.not\\:active)');
-    parent && parent.focus();
+    parent && parent.focus({
+        // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
+        focusVisible: true
+    });
     return !parent;
 };
 
@@ -78,15 +86,19 @@ map.keys['F10'] = function () {
     return false;
 };
 
-onEvent('blur', W, e => map.pull());
+onEvent('blur', W, function (e) {
+    (this._event = e), map.pull();
+});
 
-onEvent('keydown', W, e => {
+onEvent('keydown', W, function (e) {
+    this._event = e;
     map.push(e.key);
     let command = map.command();
     if (command) {
         let value = map.fire(command);
         if (false === value) {
             offEventDefault(e);
+            offEventPropagation(e);
         } else if (null === value) {
             console.error('Unknown command:', command);
         }
@@ -94,7 +106,9 @@ onEvent('keydown', W, e => {
     bounce(map);
 });
 
-onEvent('keyup', W, e => map.pull(e.key));
+onEvent('keyup', W, function (e) {
+    (this._event = e), map.pull(e.key);
+});
 
 const _ = {
     commands: map.commands,
@@ -103,7 +117,7 @@ const _ = {
 
 const {fire, hooks, off, on} = hook(_);
 
-W.K = K;
+W.Key = Key;
 W._ = _;
 
 onEvent('beforeload', D, () => fire('let'));

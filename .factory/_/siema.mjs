@@ -14,6 +14,8 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
+Siema.instances = [];
+
 function onChange(init) {
     let siemas = getElements('.siema');
     siemas && toCount(siemas) && siemas.forEach(siema => {
@@ -25,6 +27,7 @@ function onChange(init) {
         let interval = W.setInterval(() => slider.next(), 5000);
         onEvent('mousedown', siema, () => W.clearInterval(interval));
         onEvent('touchstart', siema, () => W.clearInterval(interval));
+        Siema.instances.push(slider);
     });
     // Re-calculate the Siema dimension!
     if (1 === init) {
@@ -32,5 +35,7 @@ function onChange(init) {
         _.on('change.tab', () => fireEvent('resize', W));
     }
 }
+
+W.Siema = Siema;
 
 export default onChange;

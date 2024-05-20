@@ -24,143 +24,66 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-import TE from '@taufik-nurrohman/text-editor';
+import TextEditor from '@taufik-nurrohman/text-editor';
+import TextEditorHistory from '@taufik-nurrohman/text-editor.history';
+import TextEditorKey from '@taufik-nurrohman/text-editor.key';
+import TextEditorSource from '@taufik-nurrohman/text-editor.source';
 
-import {
-    that as thatHistory
-} from '@taufik-nurrohman/text-editor.history';
+TextEditor.instances = [];
 
-import {
-    canKeyDown as canKeyDownSource,
-    canKeyDownDent as canKeyDownDentSource,
-    canKeyDownEnter as canKeyDownEnterSource,
-    canKeyDownHistory as canKeyDownHistorySource,
-    canKeyDownMove as canKeyDownMoveSource,
-    canKeyUp as canKeyUpSource,
-    state as stateSource,
-    that as thatSource
-} from '@taufik-nurrohman/text-editor.source';
-
-Object.assign(TE.prototype, thatHistory, thatSource);
-
-TE.state = fromStates({}, TE.state, stateSource);
-
-// Be sure to remove the default source type
-delete TE.state.source.type;
+TextEditor.state.with.push(TextEditorHistory);
+TextEditor.state.with.push(TextEditorKey);
+TextEditor.state.with.push(TextEditorSource);
 
 const bounce = debounce(map => map.pull(), 1000);
 
-function _onBlurSource(e) {
-    this.K.pull();
-}
-
-function _onInputSource(e) {
-    this.K.pull();
-}
-
-function _onKeyDownSource(e) {
-    let editor = this.TE,
-        map = this.K,
-        key = e.key,
-        type = editor.state.source.type,
-        command, value;
-    offEventPropagation(e);
-    map.push(key);
-    if (command = map.command()) {
-        value = map.fire(command);
-        if (false === value) {
-            offEventDefault(e);
-        } else if (null === value) {
-            console.error('Unknown command:', command);
-        }
-    } else {
-        if (
-            canKeyDownSource(map, editor) &&
-            canKeyDownDentSource(map, editor) &&
-            canKeyDownEnterSource(map, editor) &&
-            canKeyDownHistorySource(map, editor) &&
-            canKeyDownMoveSource(map, editor)
-        ) {} else {
-            offEventDefault(e);
-        }
-    }
-    bounce(map);
-}
-
-function _onKeyUpSource(e) {
-    let editor = this.TE,
-        map = this.K,
-        key = e.key;
-    canKeyUpSource(map, editor) || offEventDefault(e);
-    map.pull(key);
-}
-
-function _letEditorSource(self) {
-    offEvent('blur', self, _onBlurSource);
-    offEvent('input', self, _onInputSource);
-    offEvent('keydown', self, _onKeyDownSource);
-    offEvent('keyup', self, _onKeyUpSource);
-}
-
-function _setEditorSource(self) {
-    onEvent('blur', self, _onBlurSource);
-    onEvent('input', self, _onInputSource);
-    onEvent('keydown', self, _onKeyDownSource);
-    onEvent('keyup', self, _onKeyUpSource);
-    self.TE.record();
-}
-
 function onChange(init) {
-    // Destroy!
-    let $;
-    for (let key in TE.instances) {
-        $ = TE.instances[key];
-        $.loss().pop();
-        delete $.self.K;
-        delete TE.instances[key];
-        _letEditorSource($.self);
+    let instance;
+    while (instance = TextEditor.instances.pop()) {
+        instance.detach();
     }
-    let sources = getElements('.lot\\:field.type\\:source .textarea'), editor, map, state, type;
+    let sources = getElements('.lot\\:field.type\\:source .textarea'), editor, state, type;
     sources && toCount(sources) && sources.forEach(source => {
-        editor = new TE(source, getDatum(source, 'state') ?? {});
-        state = editor.state;
-        type = state.source.type;
-        // Get it from `window` context as this `K` object already defined in `./.factory/index.js.mjs` globally
-        map = new W.K(editor);
-        map.keys['Escape'] = function () {
-            let parent = getParent(this.source, '[tabindex]:not(.not\\:active)');
+        editor = new TextEditor(source, state = getDatum(source, 'state') ?? {});
+        editor.key('Escape', function () {
+            let parent = getParent(this.self, '[tabindex]:not(.not\\:active)');
             if (parent) {
-                return parent.focus(), false;
+                return parent.focus({
+                    // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
+                    focusVisible: true
+                }), false;
             }
             return true;
-        };
-        if ('HTML' === type) {
-            map.commands = commandsSourceHTML;
-            map.keys['Control-Shift-"'] = 'quote';
-            map.keys['Control-\''] = 'quote';
-            map.keys['Control-b'] = 'bold';
-            map.keys['Control-e'] = 'code';
-            map.keys['Control-h'] = 'blocks';
-            map.keys['Control-i'] = 'italic';
-            map.keys['Control-l'] = 'link';
-            map.keys['Control-o'] = 'image';
-            map.keys['Control-u'] = 'underline';
-        } else if ('Markdown' === type) {
+        });
+        type = state.type || source.form.elements['data[type]'] || source.form.elements['page[type]'] || source.form.elements['file[type]'] || 'text/plain';
+        if ('HTML' === type || 'text/html' === type) {
+            editor.command('blocks', function () {});
+            editor.command('bold', function () {});
+            editor.command('code', function () {});
+            editor.command('image', function () {});
+            editor.command('italic', function () {});
+            editor.command('link', function () {});
+            editor.command('quote', function () {});
+            editor.command('underline', function () {});
+            editor.key('Control-Shift-"', 'quote');
+            editor.key('Control-\'', 'quote');
+            editor.key('Control-b', 'bold');
+            editor.key('Control-e', 'code');
+            editor.key('Control-h', 'blocks');
+            editor.key('Control-i', 'italic');
+            editor.key('Control-l', 'link');
+            editor.key('Control-o', 'image');
+            editor.key('Control-u', 'underline');
+        } else if ('Markdown' === type || 'text/markdown' === type || 'text/x-markdown' === type) {
             // TODO
         }
-        state.commands = map.commands;
-        state.keys = map.keys;
-        source.K = map;
-        _setEditorSource(source);
+        TextEditor.instances.push(editor);
     });
     if (1 === init) {
         W._.on('change', onChange);
-        ['alert', 'confirm', 'prompt'].forEach(type => {
-            W._.dialog[type] && (TE.state.source[type] = W._.dialog[type]);
-        });
     }
 }
 
-W.TE = TE;
+W.TextEditor = TextEditor;
 
 export default onChange;

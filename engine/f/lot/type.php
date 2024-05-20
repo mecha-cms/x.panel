@@ -415,8 +415,8 @@ function fields($value, $key) {
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
     $value[2] = $value[2] ?? [];
-    $bottom = "";
     $count = 0;
+    $fields = "";
     if ($description = \x\panel\to\description($value['description'] ?? "")) {
         ++$count;
     }
@@ -435,19 +435,19 @@ function fields($value, $key) {
             $v = \x\panel\lot\_value_set($v, $k);
             $type = \strtolower(\f2p(\strtr($v['type'] ?? "", '-', '_')));
             if ("" !== $type && \function_exists($fn = __NAMESPACE__ . "\\" . $type)) {
-                if ('field/hidden' !== $type) {
+                if ("field\\hidden" !== $type) {
                     $value[1] .= \call_user_func($fn, $v, $k);
                     ++$count;
                 } else {
-                    $bottom .= \x\panel\lot\type\field\hidden($v, $k);
+                    $fields .= \x\panel\lot\type\field\hidden($v, $k);
                 }
             } else {
-                $bottom .= \x\panel\_abort($value, $key, $fn);
+                $fields .= \x\panel\_abort($value, $key, $fn);
             }
             unset($v);
         }
         // Put all hidden field(s) at the bottom
-        $value[1] .= $bottom;
+        $value[1] .= $fields;
     }
     $value['tags'] = \array_replace([
         'count:' . $count => true,

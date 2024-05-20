@@ -97,7 +97,6 @@ return x\panel\type\file(array_replace_recursive($_, [
                                                 'fields' => [
                                                     'lot' => [
                                                         'content' => [
-                                                            '2' => ['data-file-type' => $type],
                                                             'skip' => !$editable,
                                                             'value' => $content
                                                         ],
@@ -134,7 +133,16 @@ return x\panel\type\file(array_replace_recursive($_, [
                             ]
                         ]
                     ],
-                    'values' => ['trash' => $trash]
+                    'values' => [
+                        'file' => [
+                            // The value of this hidden field is not used by PHP for form processing, but can be used by
+                            // a third-party editor as an indicator to activate certain features based on a file type,
+                            // for example, a “CodeMirror” editor can dynamically load syntax features based on the
+                            // value of this hidden field.
+                            'type' => $type
+                        ],
+                        'trash' => $trash
+                    ]
                 ]
             ]
         ]

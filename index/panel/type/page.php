@@ -204,13 +204,7 @@ return x\panel\type\page(array_replace_recursive($_, [
                                                     'lot' => [
                                                         'title' => ['value' => $page['title']],
                                                         'name' => ['value' => $page->name],
-                                                        'content' => [
-                                                            '2' => [
-                                                                'data-file-type' => $file->type,
-                                                                'data-page-type' => $page_type
-                                                            ],
-                                                            'value' => $page['content']
-                                                        ],
+                                                        'content' => ['value' => $page['content']],
                                                         'description' => ['value' => $page['description']],
                                                         'author' => ['value' => $page['author'] ?? $user->user],
                                                         'type' => [
@@ -253,7 +247,16 @@ return x\panel\type\page(array_replace_recursive($_, [
                             ]
                         ]
                     ],
-                    'values' => ['trash' => $trash]
+                    'values' => [
+                        'file' => [
+                            // The value of this hidden field is not used by PHP for form processing, but can be used by
+                            // a third-party editor as an indicator to activate certain features based on a file type,
+                            // for example, a “CodeMirror” editor can dynamically load syntax features based on the
+                            // value of this hidden field.
+                            'type' => $file->type
+                        ],
+                        'trash' => $trash
+                    ]
                 ]
             ]
         ]

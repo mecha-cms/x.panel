@@ -504,7 +504,7 @@ function set($value, $key) {
 
 function source($value, $key) {
     $value['hint'] = $value['hint'] ?? 'Content goes here...';
-    $value['state'] = \array_replace(['tab' => '  '], $value['state'] ?? []);
+    $value['state'] = \array_replace(['tab' => 4], $value['state'] ?? []);
     $out = \x\panel\to\field($value, $key);
     $value['tags']['code'] = $value['tags']['code'] ?? true;
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
