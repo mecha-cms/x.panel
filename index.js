@@ -3451,6 +3451,14 @@
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             editor = new TextEditor(source, state = (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
+            editor.command('pull', function () {
+                return this.pull(), false;
+            });
+            editor.command('push', function () {
+                return this.push(), false;
+            });
+            editor.key('Control-[', 'pull');
+            editor.key('Control-]', 'push');
             editor.key('Escape', function () {
                 var parent = getParent(this.self, '[tabindex]:not(.not\\:active)');
                 if (parent) {
@@ -4426,23 +4434,27 @@
     Siema.instances = [];
 
     function onChange$3(init) {
-        var siemas = getElements('.siema');
-        siemas && toCount(siemas) && siemas.forEach(function (siema) {
-            var slider = new Siema({
+        var instance;
+        while (instance = Siema.instances.pop()) {
+            instance.destroy();
+        }
+        var sources = getElements('.siema');
+        sources && toCount(sources) && sources.forEach(function (source) {
+            var siema = new Siema({
                 duration: 600,
                 loop: true,
-                selector: siema
+                selector: source
             });
             var interval = W.setInterval(function () {
-                return slider.next();
+                return siema.next();
             }, 5000);
-            onEvent('mousedown', siema, function () {
+            onEvent('mousedown', source, function () {
                 return W.clearInterval(interval);
             });
-            onEvent('touchstart', siema, function () {
+            onEvent('touchstart', source, function () {
                 return W.clearInterval(interval);
             });
-            Siema.instances.push(slider);
+            Siema.instances.push(siema);
         });
         // Re-calculate the Siema dimension!
         {

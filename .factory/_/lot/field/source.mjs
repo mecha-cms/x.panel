@@ -45,6 +45,14 @@ function onChange(init) {
     let sources = getElements('.lot\\:field.type\\:source .textarea'), editor, state, type;
     sources && toCount(sources) && sources.forEach(source => {
         editor = new TextEditor(source, state = getDatum(source, 'state') ?? {});
+        editor.command('pull', function () {
+            return this.pull(), false;
+        });
+        editor.command('push', function () {
+            return this.push(), false;
+        });
+        editor.key('Control-[', 'pull');
+        editor.key('Control-]', 'push');
         editor.key('Escape', function () {
             let parent = getParent(this.self, '[tabindex]:not(.not\\:active)');
             if (parent) {

@@ -17,17 +17,21 @@ import {
 Siema.instances = [];
 
 function onChange(init) {
-    let siemas = getElements('.siema');
-    siemas && toCount(siemas) && siemas.forEach(siema => {
-        let slider = new Siema({
+    let instance;
+    while (instance = Siema.instances.pop()) {
+        instance.destroy();
+    }
+    let sources = getElements('.siema');
+    sources && toCount(sources) && sources.forEach(source => {
+        let siema = new Siema({
                 duration: 600,
                 loop: true,
-                selector: siema
+                selector: source
             });
-        let interval = W.setInterval(() => slider.next(), 5000);
-        onEvent('mousedown', siema, () => W.clearInterval(interval));
-        onEvent('touchstart', siema, () => W.clearInterval(interval));
-        Siema.instances.push(slider);
+        let interval = W.setInterval(() => siema.next(), 5000);
+        onEvent('mousedown', source, () => W.clearInterval(interval));
+        onEvent('touchstart', source, () => W.clearInterval(interval));
+        Siema.instances.push(siema);
     });
     // Re-calculate the Siema dimension!
     if (1 === init) {
