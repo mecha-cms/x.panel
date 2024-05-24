@@ -69,11 +69,15 @@ $test = \preg_match('/^' . \x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $pat
 $f = $part = 0;
 if ($test) {
     if (!$f = \stream_resolve_include_path(\LOT . \D . $m[2])) {
-        if (\preg_match('/^(.*)\/([1-9]\d*)$/', $m[2], $mm)) {
-            $f = \stream_resolve_include_path(\LOT . \D . $mm[1]);
-            $part = (int) $mm[2];
-            $m[2] = $mm[1]; // Path without the numeric suffix
+        if (\preg_match('/^(.*)\/([1-9]\d*)$/', $m[2], $n)) {
+            $f = \stream_resolve_include_path(\LOT . \D . $n[1]);
+            $part = (int) $n[2];
+            $m[2] = $n[1]; // Path without the numeric suffix
         }
+    } else {
+        $f = \dirname($f);
+        $part = (int) \basename($m[2]);
+        $m[2] = \dirname($m[2]);
     }
 }
 
