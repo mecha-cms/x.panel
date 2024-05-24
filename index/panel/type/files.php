@@ -69,7 +69,9 @@ foreach ($files as $k => $v) {
                 'url' => [
                     'part' => 0,
                     'path' => $path,
-                    'query' => x\panel\_query_set(),
+                    'query' => x\panel\_query_set([
+                        'type' => '0' !== ($n[0] ?? '0') && strspn($n, '0123456789') === strlen($n) ? (0 === $v ? 'folder' : 'file') : null
+                    ]),
                     'task' => 'get'
                 ]
             ],
@@ -83,7 +85,8 @@ foreach ($files as $k => $v) {
                     'path' => $path,
                     'query' => x\panel\_query_set([
                         'token' => $token,
-                        'trash' => $trash
+                        'trash' => $trash,
+                        'type' => '0' !== ($n[0] ?? '0') && strspn($n, '0123456789') === strlen($n) ? (0 === $v ? 'folder' : 'file') : null
                     ]),
                     'task' => 'let'
                 ]

@@ -62,22 +62,38 @@ $query = \From::query($url->query ?? "");
 
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
-$test = \preg_match('/^' . \x($route) . '\/(fire\/[^\/]+|[gls]et)\/(.+)$/', $path, $m);
 
-// File/folder path is taken from the current path or from the current path without the numeric suffix which is
-// commonly used to indicate current pagination offset.
+if (0 === \strpos($path, $v = $route . '/fire/')) {
+    $exist = \substr(\strstr($v = \substr($path, \strlen($v)), '/') ?: "", 1);
+    $task = 'fire/' . \strstr($v, '/', true);
+} else if (0 === \strpos($path, $v = $route . '/get/')) {
+    $exist = \substr($path, \strlen($v));
+    $task = 'get';
+} else if (0 === \strpos($path, $v = $route . '/let/')) {
+    $exist = \substr($path, \strlen($v));
+    $task = 'let';
+} else if (0 === \strpos($path, $v = $route . '/set/')) {
+    $exist = \substr($path, \strlen($v));
+    $task = 'set';
+} else {
+    $exist = $task = null;
+}
+
 $f = $part = 0;
-if ($test) {
-    if (!$f = \stream_resolve_include_path(\LOT . \D . $m[2])) {
-        if (\preg_match('/^(.*)\/([1-9]\d*)$/', $m[2], $n)) {
-            $f = \stream_resolve_include_path(\LOT . \D . $n[1]);
-            $part = (int) $n[2];
-            $m[2] = $n[1]; // Path without the numeric suffix
+if ($exist) {
+    $n = \basename($exist);
+    $n = '0' !== ($n[0] ?? '0') && \strspn($n, '0123456789') === \strlen($n) ? $n : false;
+    if (!$f = \stream_resolve_include_path(\LOT . \D . $exist)) {
+        if ($n) {
+            $f = \stream_resolve_include_path(\LOT . \D . ($exist = \dirname($exist)));
+            $part = (int) $n;
         }
-    } else {
-        $f = \dirname($f);
-        $part = (int) \basename($m[2]);
-        $m[2] = \dirname($m[2]);
+    } else if (!\array_key_exists('type', $_GET)) {
+        if ($n) {
+            $f = \dirname($f);
+            $part = (int) \basename($exist);
+            $exist = \dirname($exist);
+        }
     }
 }
 
@@ -108,11 +124,11 @@ if ($test) {
     'not' => (array) ($state->not ?? []), // Inherit to the front-end state(s)
     'of' => [],
     'part' => (int) $part,
-    'path' => $test ? $m[2] : null,
+    'path' => $exist,
     'query' => $query,
     'sort' => $query['sort'] ?? null, // Default is `[1, 'path']`
     'status' => $f ? 200 : 404,
-    'task' => \lot('_' . $r)['task'] ?? ($test ? $m[1] : null),
+    'task' => \lot('_' . $r)['task'] ?? $task,
     'title' => null,
     'token' => $user->token ?? null,
     'type' => \lot('_' . $r)['type'] ?? null,
@@ -133,6 +149,6 @@ if ('GET' === $r && !\array_key_exists('kick', $_GET)) {
 }
 
 // Load the panel interface only if current location path is at least started with `http://127.0.0.1/panel/`
-if (!empty($user->exist) && 0 === \strpos($path . '/', $route . '/') && $test) {
+if ($exist && !empty($user->exist) && 0 === \strpos($path . '/', $route . '/')) {
     require __DIR__ . \D . 'index' . \D . 'panel.php';
 }
