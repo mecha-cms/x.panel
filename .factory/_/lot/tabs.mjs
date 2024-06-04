@@ -14,6 +14,8 @@ import {
     setChildLast,
     setClass,
     setElement,
+    theHistory,
+    theLocation,
     toggleClass
 } from '@taufik-nurrohman/document';
 
@@ -26,11 +28,17 @@ import {
 } from '@taufik-nurrohman/event';
 
 import {
+    fromQuery,
+    fromStates
+} from '@taufik-nurrohman/from';
+
+import {
     isFunction
 } from '@taufik-nurrohman/is';
 
 import {
-    toCount
+    toCount,
+    toQuery
 } from '@taufik-nurrohman/to';
 
 const targets = 'a[target^="tab:"]:not(.not\\:active)';
@@ -43,6 +51,7 @@ function onChange(init) {
     let sources = getElements('.lot\\:tabs[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let panes = [].slice.call(getChildren(source)),
+            tabCurrent,
             tabs = [].slice.call(getElements(targets, panes.shift())),
             input = setElement('input'), name, value;
         input.type = 'hidden';
@@ -80,6 +89,13 @@ function onChange(init) {
                     input.value = value = current ? getDatum(t, 'value') : null;
                     toggleClass(pane, 'is:current', current);
                     toggleClass(self, 'has:current', current);
+                    let {pathname, search} = theLocation;
+                    let query = fromQuery(search);
+                    let q = fromQuery(name + '=' + value);
+                    if (null === value) {
+                        console.log('TODO: Remove query: `' + name + '`');
+                    }
+                    theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
                     W._.fire.apply(pane, ['change.tab', [value, name]]);
                 }
                 offEventDefault(e);
@@ -90,7 +106,7 @@ function onChange(init) {
             onEvent('click', tab, onClick);
             onEvent('keydown', tab, onKeyDownTab);
         });
-        let tabCurrent = tabs.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
+        tabCurrent = tabs.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
         if (tabCurrent) {
             input.value = getDatum(tabCurrent, 'value');
         }

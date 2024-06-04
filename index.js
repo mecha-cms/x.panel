@@ -90,6 +90,40 @@
     var toObjectValues = function toObjectValues(x) {
         return Object.values(x);
     };
+
+    function _toQueryDeep(query, key) {
+        var out = {},
+            suffix = key ? '%5D' : "",
+            i,
+            k,
+            v;
+        for (i in query) {
+            k = toURL(i);
+            v = query[i];
+            if (isObject(v)) {
+                out = fromStates({}, out, _toQueryDeep(v, key + k + suffix + '%5B'));
+            } else {
+                out[key + k + suffix] = v;
+            }
+        }
+        return out;
+    }
+    var toQuery = function toQuery(x) {
+        var list = [],
+            query = _toQueryDeep(x, ""),
+            k,
+            v;
+        for (k in query) {
+            v = query[k];
+            // `{"a":"true","b":true}` â†’ `a=true&b`
+            v = true !== v ? '=' + toURL(fromValue(v)) : "";
+            list.push(k + v);
+        }
+        return toCount(list) ? '?' + list.join('&') : null;
+    };
+    var toURL = function toURL(x) {
+        return encodeURIComponent(x);
+    };
     var toValue = function toValue(x) {
         if (isArray(x)) {
             return x.map(function (v) {
@@ -123,6 +157,47 @@
         } catch (e) {}
         return value;
     };
+
+    function _fromQueryDeep(o, props, value) {
+        var prop = props.split('['),
+            i,
+            j = toCount(prop),
+            k;
+        for (i = 0; i < j - 1; ++i) {
+            k = ']' === prop[i].slice(-1) ? prop[i].slice(0, -1) : prop[i];
+            k = "" === k ? toObjectCount(k) : k;
+            o = o[k] || (o[k] = {});
+        }
+        k = ']' === prop[i].slice(-1) ? prop[i].slice(0, -1) : prop[i];
+        o["" === k ? toObjectCount(o) : k] = value;
+    }
+    var fromQuery = function fromQuery(x, parseValue, defaultValue) {
+        if (parseValue === void 0) {
+            parseValue = true;
+        }
+        if (defaultValue === void 0) {
+            defaultValue = true;
+        }
+        var out = {},
+            q = x && '?' === x[0] ? x.slice(1) : x;
+        if ("" === q) {
+            return out;
+        }
+        q.split('&').forEach(function (v) {
+            var a = v.split('='),
+                key = fromURL(a[0]),
+                value = isSet(a[1]) ? fromURL(a[1]) : defaultValue;
+            value = parseValue ? toValue(value) : value;
+            // `a[b]=c`
+            if (']' === key.slice(-1)) {
+                _fromQueryDeep(out, key, value);
+                // `a=b`
+            } else {
+                out[key] = value;
+            }
+        });
+        return out;
+    };
     var fromStates = function fromStates() {
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
             lot[_key] = arguments[_key];
@@ -154,6 +229,9 @@
             }
         }
         return out;
+    };
+    var fromURL = function fromURL(x) {
+        return decodeURIComponent(x);
     };
     var fromValue = function fromValue(x) {
         if (isArray(x)) {
@@ -462,6 +540,8 @@
     var toggleClass = function toggleClass(node, name, force) {
         return node.classList.toggle(name, force), node;
     };
+    var theHistory = W.history;
+    var theLocation = W.location;
     var event = function event(name, options, cache) {
         return events$1[name] = new Event(name, options);
     };
@@ -4476,7 +4556,8 @@
     function onChange$2(init) {
         var sources = getElements('.lot\\:stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
-            var stacks = [].slice.call(getChildren(source)),
+            var stackCurrent,
+                stacks = [].slice.call(getChildren(source)),
                 input = setElement('input'),
                 name,
                 value;
@@ -4509,6 +4590,14 @@
                     current = hasClass(t, 'is:current');
                     input.value = value = current ? getDatum(parent, 'value') : null;
                     toggleClass(self, 'has:current', current);
+                    var pathname = theLocation.pathname,
+                        search = theLocation.search;
+                    var query = fromQuery(search);
+                    var q = fromQuery(name + '=' + value);
+                    if (null === value) {
+                        console.log('TODO: Remove query: `' + name + '`');
+                    }
+                    theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
                     W._.fire.apply(parent, ['change.stack', [value, name]]);
                     offEventDefault(e);
                 }
@@ -4518,7 +4607,7 @@
                 onEvent('click', target, onClick);
                 onEvent('keydown', target, onKeyDownStack);
             });
-            var stackCurrent = stacks.find(function (value, key) {
+            stackCurrent = stacks.find(function (value, key) {
                 return 0 !== key && hasClass(value, 'is:current');
             });
             if (stackCurrent) {
@@ -4656,6 +4745,7 @@
         var sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var panes = [].slice.call(getChildren(source)),
+                tabCurrent,
                 tabs = [].slice.call(getElements(targets$1, panes.shift())),
                 input = setElement('input'),
                 name,
@@ -4697,6 +4787,14 @@
                         input.value = value = current ? getDatum(t, 'value') : null;
                         toggleClass(pane, 'is:current', current);
                         toggleClass(self, 'has:current', current);
+                        var pathname = theLocation.pathname,
+                            search = theLocation.search;
+                        var query = fromQuery(search);
+                        var q = fromQuery(name + '=' + value);
+                        if (null === value) {
+                            console.log('TODO: Remove query: `' + name + '`');
+                        }
+                        theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
                         W._.fire.apply(pane, ['change.tab', [value, name]]);
                     }
                     offEventDefault(e);
@@ -4707,7 +4805,7 @@
                 onEvent('click', tab, onClick);
                 onEvent('keydown', tab, onKeyDownTab);
             });
-            var tabCurrent = tabs.find(function (value, key) {
+            tabCurrent = tabs.find(function (value, key) {
                 return 0 !== key && hasClass(getParent(value), 'is:current');
             });
             if (tabCurrent) {

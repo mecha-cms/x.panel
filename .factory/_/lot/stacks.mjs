@@ -15,6 +15,8 @@ import {
     setChildLast,
     setClass,
     setElement,
+    theHistory,
+    theLocation,
     toggleClass
 } from '@taufik-nurrohman/document';
 
@@ -26,11 +28,17 @@ import {
 } from '@taufik-nurrohman/event';
 
 import {
+    fromQuery,
+    fromStates
+} from '@taufik-nurrohman/from';
+
+import {
     isFunction
 } from '@taufik-nurrohman/is';
 
 import {
-    toCount
+    toCount,
+    toQuery
 } from '@taufik-nurrohman/to';
 
 const targets = 'a[target^="stack:"]:not(.not\\:active)';
@@ -42,7 +50,8 @@ function fireFocus(node) {
 function onChange(init) {
     let sources = getElements('.lot\\:stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        let stacks = [].slice.call(getChildren(source)),
+        let stackCurrent,
+            stacks = [].slice.call(getChildren(source)),
             input = setElement('input'), name, value;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
@@ -71,6 +80,13 @@ function onChange(init) {
                 current = hasClass(t, 'is:current');
                 input.value = value = current ? getDatum(parent, 'value') : null;
                 toggleClass(self, 'has:current', current);
+                let {pathname, search} = theLocation;
+                let query = fromQuery(search);
+                let q = fromQuery(name + '=' + value);
+                if (null === value) {
+                    console.log('TODO: Remove query: `' + name + '`');
+                }
+                theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
                 W._.fire.apply(parent, ['change.stack', [value, name]]);
                 offEventDefault(e);
             }
@@ -80,7 +96,7 @@ function onChange(init) {
             onEvent('click', target, onClick);
             onEvent('keydown', target, onKeyDownStack);
         });
-        let stackCurrent = stacks.find((value, key) => 0 !== key && hasClass(value, 'is:current'));
+        stackCurrent = stacks.find((value, key) => 0 !== key && hasClass(value, 'is:current'));
         if (stackCurrent) {
             input.value = getDatum(stackCurrent, 'value');
         }
