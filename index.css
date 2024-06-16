@@ -2579,6 +2579,7 @@ label .input[type=radio] + span {
 }
 .option-picker__options {
   line-height: var(--h);
+  margin: 0;
 }
 .option-picker__options .option-picker__option {
   padding: 0 calc(var(--x) / 2);

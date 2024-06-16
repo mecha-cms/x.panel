@@ -24,6 +24,7 @@ $name: option-picker;
   }
   &__options {
     line-height: var(--h);
+    margin: 0;
     .#{$name}__option {
       padding: 0 calc(var(--x) / 2);
       &-group {
