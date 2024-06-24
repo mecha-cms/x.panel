@@ -105,9 +105,8 @@ function field($value, $key, $type = 'textarea') {
     $state = $value['state'] ?? [];
     unset($value['tags']);
     $out = \fire("\\x\\panel\\lot\\type\\" . $type, [$value, $key]);
-    unset($value[2]['accept'], $value[2]['autocapitalize']);
     $out['data-state'] = $state ? \json_encode($state) : null;
-    $value['field'] = [$out[0], $out[1], $out[2]]; // Extract!
+    $value['field'] = \array_replace_recursive([$out[0], $out[1], $out[2]], (array) ($value['field'] ?? [])); // Extract!
     return $value;
 }
 
