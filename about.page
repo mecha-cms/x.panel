@@ -6,7 +6,7 @@ color: '#84336f'
 image: /lot/x/panel/index.png
 author: Taufik Nurrohman
 type: Markdown
-version: 3.0.0
+version: 3.0.1
 price: [25, USD]
 prices:
 - for: Free to use for your own purposes or for the benefit of others who do not pay for your work.

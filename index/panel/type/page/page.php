@@ -2,7 +2,7 @@
 
 if ('POST' === $_SERVER['REQUEST_METHOD']) {
     $chunk = $_POST['data']['chunk'] ?? $_POST['page']['chunk'] ?? null;
-    $x = $_POST['page']['x'] ?? 'page';
+    $x = basename(strip_tags($_POST['page']['x'] ?? 'page'));
     // Having chunk value less than `1` will not create a `chunk.data` file. Instead, it will create a placeholder page
     // to hide the pages.
     if (is_int($chunk) && $chunk < 1 && is_dir($folder)) {

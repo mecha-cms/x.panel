@@ -10,8 +10,8 @@ if (\is_file($log = $prefix . '-x') || \is_file($log = $prefix . '-y')) {
                 $stuck[] = $v;
             }
         }
-        // TODO: Attempt to revert to the previous state if recent update(s) are not compatible with other extension(s)
-        // and layout(s) in the current system set up.
+        // TODO: Attempt to revert to the previous state if recent update is not compatible with other extension(s) and
+        // layout(s) in the current system set up.
         // // \test($stuck);
         // // exit;
     }

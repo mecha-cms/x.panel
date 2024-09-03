@@ -50,7 +50,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $_POST['page']['title'] = To::description($_POST['page']['title'], 255);
     }
     // Make sure to have a file extension
-    $_POST['page']['x'] = strip_tags($_POST['page']['x'] ?? 'page');
+    $_POST['page']['x'] = basename(strip_tags($_POST['page']['x'] ?? 'page'));
     // Make sure to have a file name
     if (empty($_POST['page']['name'])) {
         $name = To::kebab($_POST['page']['title'] ?? "");
