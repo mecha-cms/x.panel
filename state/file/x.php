@@ -90,5 +90,7 @@ return [
     'woff' => 1,
     'woff2' => 1,
     'xml' => 1,
+    'yaml' => 1,
+    'yml' => 1,
     'zip' => 1
 ];
