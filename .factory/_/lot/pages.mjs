@@ -10,6 +10,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
+    offEvent,
     offEventDefault,
     offEventPropagation,
     onEvent
@@ -29,22 +30,24 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements('.lot\\:pages[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let pages = getElements(targets, source);
         pages.forEach(page => {
-            onEvent('keydown', page, onKeyDownPage);
+            onEventOnly('keydown', page, onKeyDownPage);
         });
-        onEvent('keydown', source, onKeyDownPages);
+        onEventOnly('keydown', source, onKeyDownPages);
     });
     1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownPage(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         any, current, parent, next, prev, stop;
@@ -77,9 +80,6 @@ function onKeyDownPage(e) {
 }
 
 function onKeyDownPages(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,

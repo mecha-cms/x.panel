@@ -29,6 +29,11 @@ import {
     toValue
 } from '@taufik-nurrohman/to';
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 let dialog = setElement('dialog'),
     dialogForm = setElement('form', "", {
         method: 'dialog'
@@ -85,9 +90,9 @@ function setDialog(content, then) {
         dialog.c = then; // `c` for call-back
         dialog.v = yay; // `v` for check-mark
         dialog.x = nay; // `x` for cross-mark
-        onEvent('cancel', dialog, onDialogCancel);
-        onEvent('close', dialog, onDialogClose);
-        onEvent('submit', dialog, onDialogSubmit);
+        onEventOnly('cancel', dialog, onDialogCancel);
+        onEventOnly('close', dialog, onDialogClose);
+        onEventOnly('submit', dialog, onDialogSubmit);
     });
 }
 
@@ -120,8 +125,8 @@ let dialogAlertDescription = setElement('p'),
         'value': 'true'
     });
 
-onEvent('keydown', dialogAlertTaskOkay, onDialogTaskKeyDown);
-onEvent('click', dialogAlertTaskOkay, onDialogTaskClick);
+onEventOnly('keydown', dialogAlertTaskOkay, onDialogTaskKeyDown);
+onEventOnly('click', dialogAlertTaskOkay, onDialogTaskClick);
 
 setChildLast(dialogAlertTasks, dialogAlertTaskOkay);
 
@@ -146,10 +151,10 @@ let dialogConfirmDescription = setElement('p'),
         'value': 'false'
     });
 
-onEvent('click', dialogConfirmTaskCancel, onDialogTaskClick);
-onEvent('click', dialogConfirmTaskOkay, onDialogTaskClick);
-onEvent('keydown', dialogConfirmTaskCancel, onDialogTaskKeyDown);
-onEvent('keydown', dialogConfirmTaskOkay, onDialogTaskKeyDown);
+onEventOnly('click', dialogConfirmTaskCancel, onDialogTaskClick);
+onEventOnly('click', dialogConfirmTaskOkay, onDialogTaskClick);
+onEventOnly('keydown', dialogConfirmTaskCancel, onDialogTaskKeyDown);
+onEventOnly('keydown', dialogConfirmTaskOkay, onDialogTaskKeyDown);
 
 setChildLast(dialogConfirmTasks, dialogConfirmTaskOkay);
 setChildLast(dialogConfirmTasks, dialogConfirmTaskCancel);
@@ -184,12 +189,12 @@ function onDialogPromptValueInput() {
     dialogPromptTaskOkay.value = this.value;
 }
 
-onEvent('click', dialogPromptTaskCancel, onDialogTaskClick);
-onEvent('click', dialogPromptTaskOkay, onDialogTaskClick);
-onEvent('input', dialogPromptValue, onDialogPromptValueInput);
-onEvent('keydown', dialogPromptTaskCancel, onDialogTaskKeyDown);
-onEvent('keydown', dialogPromptTaskOkay, onDialogTaskKeyDown);
-onEvent('keyup', dialogPromptValue, onDialogPromptValueInput);
+onEventOnly('click', dialogPromptTaskCancel, onDialogTaskClick);
+onEventOnly('click', dialogPromptTaskOkay, onDialogTaskClick);
+onEventOnly('input', dialogPromptValue, onDialogPromptValueInput);
+onEventOnly('keydown', dialogPromptTaskCancel, onDialogTaskKeyDown);
+onEventOnly('keydown', dialogPromptTaskOkay, onDialogTaskKeyDown);
+onEventOnly('keyup', dialogPromptValue, onDialogPromptValueInput);
 
 setChildLast(dialogPromptTasks, dialogPromptTaskOkay);
 setChildLast(dialogPromptTasks, dialogPromptTaskCancel);

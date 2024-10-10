@@ -338,7 +338,7 @@
         return getParent(node, state);
     };
     var getPrev = function getPrev(node, anyNode) {
-        return node['previous' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
+        return node['previous' + ('Element') + 'Sibling'] || null;
     };
     var getStyle = function getStyle(node, style, parseValue) {
         if (parseValue === void 0) {
@@ -583,22 +583,24 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$a(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$c(init) {
         var sources = getElements('.lot\\:bar[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var items = getElements(targets$8, source);
             items.forEach(function (item) {
-                onEvent('keydown', item, onKeyDownBarItem);
+                onEventOnly$a('keydown', item, onKeyDownBarItem);
             });
-            onEvent('keydown', source, onKeyDownBar);
+            onEventOnly$a('keydown', source, onKeyDownBar);
         });
         1 === init && W._.on('change', onChange$c);
     }
 
     function onKeyDownBar(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -623,9 +625,6 @@
     }
 
     function onKeyDownBarItem(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             any,
@@ -658,6 +657,11 @@
             stop = true;
         }
         stop && (offEventDefault(e), offEventPropagation(e));
+    }
+
+    function onEventOnly$9(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
     }
     var dialog = setElement('dialog'),
         dialogForm = setElement('form', "", {
@@ -714,9 +718,9 @@
             dialog.c = then; // `c` for call-back
             dialog.v = yay; // `v` for check-mark
             dialog.x = nay; // `x` for cross-mark
-            onEvent('cancel', dialog, onDialogCancel);
-            onEvent('close', dialog, onDialogClose);
-            onEvent('submit', dialog, onDialogSubmit);
+            onEventOnly$9('cancel', dialog, onDialogCancel);
+            onEventOnly$9('close', dialog, onDialogClose);
+            onEventOnly$9('submit', dialog, onDialogSubmit);
         });
     }
 
@@ -750,8 +754,8 @@
             'type': 'submit',
             'value': 'true'
         });
-    onEvent('keydown', dialogAlertTaskOkay, onDialogTaskKeyDown);
-    onEvent('click', dialogAlertTaskOkay, onDialogTaskClick);
+    onEventOnly$9('keydown', dialogAlertTaskOkay, onDialogTaskKeyDown);
+    onEventOnly$9('click', dialogAlertTaskOkay, onDialogTaskClick);
     setChildLast(dialogAlertTasks, dialogAlertTaskOkay);
     setDialog.alert = function (description) {
         setHTML(dialogAlertDescription, description);
@@ -772,10 +776,10 @@
             'type': 'reset',
             'value': 'false'
         });
-    onEvent('click', dialogConfirmTaskCancel, onDialogTaskClick);
-    onEvent('click', dialogConfirmTaskOkay, onDialogTaskClick);
-    onEvent('keydown', dialogConfirmTaskCancel, onDialogTaskKeyDown);
-    onEvent('keydown', dialogConfirmTaskOkay, onDialogTaskKeyDown);
+    onEventOnly$9('click', dialogConfirmTaskCancel, onDialogTaskClick);
+    onEventOnly$9('click', dialogConfirmTaskOkay, onDialogTaskClick);
+    onEventOnly$9('keydown', dialogConfirmTaskCancel, onDialogTaskKeyDown);
+    onEventOnly$9('keydown', dialogConfirmTaskOkay, onDialogTaskKeyDown);
     setChildLast(dialogConfirmTasks, dialogConfirmTaskOkay);
     setChildLast(dialogConfirmTasks, dialogConfirmTaskCancel);
     setDialog.confirm = function (description) {
@@ -806,12 +810,12 @@
     function onDialogPromptValueInput() {
         dialogPromptTaskOkay.value = this.value;
     }
-    onEvent('click', dialogPromptTaskCancel, onDialogTaskClick);
-    onEvent('click', dialogPromptTaskOkay, onDialogTaskClick);
-    onEvent('input', dialogPromptValue, onDialogPromptValueInput);
-    onEvent('keydown', dialogPromptTaskCancel, onDialogTaskKeyDown);
-    onEvent('keydown', dialogPromptTaskOkay, onDialogTaskKeyDown);
-    onEvent('keyup', dialogPromptValue, onDialogPromptValueInput);
+    onEventOnly$9('click', dialogPromptTaskCancel, onDialogTaskClick);
+    onEventOnly$9('click', dialogPromptTaskOkay, onDialogTaskClick);
+    onEventOnly$9('input', dialogPromptValue, onDialogPromptValueInput);
+    onEventOnly$9('keydown', dialogPromptTaskCancel, onDialogTaskKeyDown);
+    onEventOnly$9('keydown', dialogPromptTaskOkay, onDialogTaskKeyDown);
+    onEventOnly$9('keyup', dialogPromptValue, onDialogPromptValueInput);
     setChildLast(dialogPromptTasks, dialogPromptTaskOkay);
     setChildLast(dialogPromptTasks, dialogPromptTaskCancel);
     setChildLast(dialogPromptValueP, dialogPromptValue);
@@ -3588,22 +3592,24 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$8(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$8(init) {
         var sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var files = getElements(targets$7, source);
             files.forEach(function (file) {
-                onEvent('keydown', file, onKeyDownFile);
+                onEventOnly$8('keydown', file, onKeyDownFile);
             });
-            onEvent('keydown', source, onKeyDownFiles);
+            onEventOnly$8('keydown', source, onKeyDownFiles);
         });
         1 === init && W._.on('change', onChange$8);
     }
 
     function onKeyDownFile(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             any,
@@ -3639,9 +3645,6 @@
     }
 
     function onKeyDownFiles(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -3670,22 +3673,24 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$7(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$7(init) {
         var sources = getElements('.lot\\:links[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var links = getElements(targets$6, source);
             links && toCount(links) && links.forEach(function (link) {
-                onEvent('keydown', link, onKeyDownLink);
+                onEventOnly$7('keydown', link, onKeyDownLink);
             });
-            onEvent('keydown', source, onKeyDownLinks);
+            onEventOnly$7('keydown', source, onKeyDownLinks);
         });
         1 === init && W._.on('change', onChange$7);
     }
 
     function onKeyDownLink(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -3734,9 +3739,6 @@
     }
 
     function onKeyDownLinks(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -3767,6 +3769,11 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$6(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function doHideMenus(but, trigger) {
         getElements('.lot\\:menu[tabindex].is\\:enter').forEach(function (node) {
             if (but !== node) {
@@ -3789,20 +3796,20 @@
                 var menu = getElement('.lot\\:menu[tabindex]', menuParent),
                     a = getPrev(menu);
                 if (menu && a) {
-                    onEvent('click', a, onClickMenuShow);
-                    onEvent('keydown', a, onKeyDownMenuToggle);
+                    onEventOnly$6('click', a, onClickMenuShow);
+                    onEventOnly$6('keydown', a, onKeyDownMenuToggle);
                 }
             });
-            onEvent('click', D, onClickDocument);
+            onEventOnly$6('click', D, onClickDocument);
         }
         if (menuLinks && toCount(menuLinks)) {
             menuLinks.forEach(function (menuLink) {
-                onEvent('keydown', menuLink, onKeyDownMenu$1);
+                onEventOnly$6('keydown', menuLink, onKeyDownMenu$1);
             });
         }
         var sources = getElements('.lot\\:menu[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
-            onEvent('keydown', source, onKeyDownMenus$1);
+            onEventOnly$6('keydown', source, onKeyDownMenus$1);
         });
         1 === init && W._.on('change', onChange$6);
     }
@@ -3812,9 +3819,8 @@
     }
 
     function onClickMenuShow(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
+        offEventDefault(e);
+        offEventPropagation(e);
         var t = this,
             current = getNext(t);
         doHideMenus(current, t);
@@ -3824,14 +3830,9 @@
             toggleClass(t, 'is:active');
             setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
         }, 1);
-        offEventDefault(e);
-        offEventPropagation(e);
     }
 
     function onKeyDownMenu$1(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             any,
@@ -3918,9 +3919,6 @@
     }
 
     function onKeyDownMenus$1(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -3945,9 +3943,6 @@
     }
 
     function onKeyDownMenuToggle(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             next = getNext(t),
@@ -3986,22 +3981,24 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$5(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$5(init) {
         var sources = getElements('.lot\\:menus[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var menus = getElements(targets$4, source);
             menus && toCount(menus) && menus.forEach(function (menu) {
-                onEvent('keydown', menu, onKeyDownMenu);
+                onEventOnly$5('keydown', menu, onKeyDownMenu);
             });
-            onEvent('keydown', source, onKeyDownMenus);
+            onEventOnly$5('keydown', source, onKeyDownMenus);
         });
         1 === init && W._.on('change', onChange$5);
     }
 
     function onKeyDownMenu(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4050,9 +4047,6 @@
     }
 
     function onKeyDownMenus(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4083,22 +4077,24 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$4(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$4(init) {
         var sources = getElements('.lot\\:pages[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var pages = getElements(targets$3, source);
             pages.forEach(function (page) {
-                onEvent('keydown', page, onKeyDownPage);
+                onEventOnly$4('keydown', page, onKeyDownPage);
             });
-            onEvent('keydown', source, onKeyDownPages);
+            onEventOnly$4('keydown', source, onKeyDownPages);
         });
         1 === init && W._.on('change', onChange$4);
     }
 
     function onKeyDownPage(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             any,
@@ -4134,9 +4130,6 @@
     }
 
     function onKeyDownPages(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4513,6 +4506,11 @@
     var Siema = /*@__PURE__*/ getDefaultExportFromCjs(siema_minExports);
     Siema.instances = [];
 
+    function onEventOnly$3(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$3(init) {
         var instance;
         while (instance = Siema.instances.pop()) {
@@ -4525,15 +4523,11 @@
                 loop: true,
                 selector: source
             });
-            var interval = W.setInterval(function () {
+            source._siemaInterval = W.setInterval(function () {
                 return siema.next();
             }, 5000);
-            onEvent('mousedown', source, function () {
-                return W.clearInterval(interval);
-            });
-            onEvent('touchstart', source, function () {
-                return W.clearInterval(interval);
-            });
+            onEventOnly$3('mousedown', source, onMouseDownSiema);
+            onEventOnly$3('touchstart', source, onTouchStartSiema);
             Siema.instances.push(siema);
         });
         // Re-calculate the Siema dimension!
@@ -4546,11 +4540,24 @@
             });
         }
     }
+
+    function onMouseDownSiema() {
+        W.clearInterval(this._siemaInterval);
+    }
+
+    function onTouchStartSiema() {
+        onMouseDownSiema.call(this);
+    }
     W.Siema = Siema;
     var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
 
     function fireFocus$2(node) {
         node && isFunction(node.focus) && node.focus();
+    }
+
+    function onEventOnly$2(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
     }
 
     function onChange$2(init) {
@@ -4561,53 +4568,16 @@
                     return hasClass(v, 'lot:stack');
                 }),
                 input = setElement('input'),
-                name,
-                value;
+                name;
             input.type = 'hidden';
             input.name = name = getDatum(source, 'name');
             name && setChildLast(source, input);
-
-            function onClick(e) {
-                var t = this,
-                    parent = getParent(getParent(t)),
-                    self = getParent(parent, '.lot\\:stacks'),
-                    current;
-                if (!hasClass(parent, 'has:link')) {
-                    stacks.forEach(function (stack) {
-                        if (stack !== parent) {
-                            letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
-                            letClass(stack, 'is:current');
-                            setAttribute(current, 'aria-expanded', 'false');
-                        }
-                    });
-                    if (hasClass(parent, 'can:toggle')) {
-                        setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
-                        toggleClass(parent, 'is:current');
-                        toggleClass(t, 'is:current');
-                    } else {
-                        setAttribute(t, 'aria-expanded', 'true');
-                        setClass(parent, 'is:current');
-                        setClass(t, 'is:current');
-                    }
-                    current = hasClass(t, 'is:current');
-                    input.value = value = current ? getDatum(parent, 'value') : null;
-                    toggleClass(self, 'has:current', current);
-                    var pathname = theLocation.pathname,
-                        search = theLocation.search;
-                    var query = fromQuery(search);
-                    var q = fromQuery(name + '=' + value);
-                    if (null === value) {
-                        console.log('TODO: Remove query: `' + name + '`');
-                    }
-                    theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
-                    W._.fire.apply(parent, ['change.stack', [value, name]]);
-                    offEventDefault(e);
-                }
-            }
             stacks.forEach(function (stack) {
                 var target = getElement(targets$2, stack);
-                onEvent('click', target, onClick);
-                onEvent('keydown', target, onKeyDownStack);
+                target._input = input;
+                target._stacks = stacks;
+                onEventOnly$2('click', target, onClickStack);
+                onEventOnly$2('keydown', target, onKeyDownStack);
             });
             stackCurrent = stacks.find(function (value, key) {
                 return 0 !== key && hasClass(value, 'is:current');
@@ -4615,15 +4585,52 @@
             if (stackCurrent) {
                 input.value = getDatum(stackCurrent, 'value');
             }
-            onEvent('keydown', source, onKeyDownStacks);
+            onEventOnly$2('keydown', source, onKeyDownStacks);
         });
         1 === init && W._.on('change', onChange$2);
     }
 
-    function onKeyDownStack(e) {
-        if (e.defaultPrevented) {
-            return;
+    function onClickStack(e) {
+        var t = this,
+            parent = getParent(getParent(t)),
+            self = getParent(parent, '.lot\\:stacks'),
+            current,
+            value;
+        var name = t._input.name;
+        if (!hasClass(parent, 'has:link')) {
+            t._stacks.forEach(function (stack) {
+                if (stack !== parent) {
+                    letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
+                    letClass(stack, 'is:current');
+                    setAttribute(current, 'aria-expanded', 'false');
+                }
+            });
+            if (hasClass(parent, 'can:toggle')) {
+                setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
+                toggleClass(parent, 'is:current');
+                toggleClass(t, 'is:current');
+            } else {
+                setAttribute(t, 'aria-expanded', 'true');
+                setClass(parent, 'is:current');
+                setClass(t, 'is:current');
+            }
+            current = hasClass(t, 'is:current');
+            t._input.value = value = current ? getDatum(parent, 'value') : null;
+            toggleClass(self, 'has:current', current);
+            var pathname = theLocation.pathname,
+                search = theLocation.search;
+            var query = fromQuery(search);
+            var q = fromQuery(name + '=' + value);
+            if (null === value) {
+                console.log('TODO: Remove query: `' + name + '`');
+            }
+            theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+            W._.fire.apply(parent, ['change.stack', [value, name]]);
+            offEventDefault(e);
         }
+    }
+
+    function onKeyDownStack(e) {
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4689,9 +4696,6 @@
     }
 
     function onKeyDownStacks(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4743,6 +4747,11 @@
         node && isFunction(node.focus) && node.focus();
     }
 
+    function onEventOnly$1(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange$1(init) {
         var sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
@@ -4750,62 +4759,17 @@
                 tabCurrent,
                 tabs = [].slice.call(getElements(targets$1, panes.shift())),
                 input = setElement('input'),
-                name,
-                value;
+                name;
             input.type = 'hidden';
             input.name = name = getDatum(source, 'name');
             name && setChildLast(source, input);
-
-            function onClick(e) {
-                var t = this,
-                    pane = panes[t._tabIndex],
-                    parent = getParent(t),
-                    self = getParent(parent, '.lot\\:tabs'),
-                    current;
-                if (!hasClass(parent, 'has:link')) {
-                    tabs.forEach(function (tab) {
-                        if (tab !== t) {
-                            letClass(getParent(tab), 'is:current');
-                            letClass(tab, 'is:current');
-                            setAttribute(tab, 'aria-selected', 'false');
-                            setAttribute(tab, 'tabindex', '-1');
-                            var _pane = panes[tab._tabIndex];
-                            _pane && letClass(_pane, 'is:current');
-                        }
-                    });
-                    if (hasClass(parent, 'can:toggle')) {
-                        toggleClass(parent, 'is:current');
-                        toggleClass(t, 'is:current');
-                        setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
-                        setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
-                    } else {
-                        setClass(parent, 'is:current');
-                        setClass(t, 'is:current');
-                        setAttribute(t, 'aria-selected', 'true');
-                        setAttribute(t, 'tabindex', '0');
-                    }
-                    current = hasClass(t, 'is:current');
-                    if (pane) {
-                        input.value = value = current ? getDatum(t, 'value') : null;
-                        toggleClass(pane, 'is:current', current);
-                        toggleClass(self, 'has:current', current);
-                        var pathname = theLocation.pathname,
-                            search = theLocation.search;
-                        var query = fromQuery(search);
-                        var q = fromQuery(name + '=' + value);
-                        if (null === value) {
-                            console.log('TODO: Remove query: `' + name + '`');
-                        }
-                        theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
-                        W._.fire.apply(pane, ['change.tab', [value, name]]);
-                    }
-                    offEventDefault(e);
-                }
-            }
             tabs.forEach(function (tab, index) {
-                tab._tabIndex = index;
-                onEvent('click', tab, onClick);
-                onEvent('keydown', tab, onKeyDownTab);
+                tab._input = input;
+                tab._of = index;
+                tab._panes = panes;
+                tab._tabs = tabs;
+                onEventOnly$1('click', tab, onClickTab);
+                onEventOnly$1('keydown', tab, onKeyDownTab);
             });
             tabCurrent = tabs.find(function (value, key) {
                 return 0 !== key && hasClass(getParent(value), 'is:current');
@@ -4813,15 +4777,61 @@
             if (tabCurrent) {
                 input.value = getDatum(tabCurrent, 'value');
             }
-            onEvent('keydown', source, onKeyDownTabs);
+            onEventOnly$1('keydown', source, onKeyDownTabs);
         });
         1 === init && W._.on('change', onChange$1);
     }
 
-    function onKeyDownTab(e) {
-        if (e.defaultPrevented) {
-            return;
+    function onClickTab(e) {
+        var t = this,
+            pane = t._panes[t._of],
+            parent = getParent(t),
+            self = getParent(parent, '.lot\\:tabs'),
+            current,
+            value;
+        var name = t._input.name;
+        if (!hasClass(parent, 'has:link')) {
+            t._tabs.forEach(function (tab) {
+                if (tab !== t) {
+                    letClass(getParent(tab), 'is:current');
+                    letClass(tab, 'is:current');
+                    setAttribute(tab, 'aria-selected', 'false');
+                    setAttribute(tab, 'tabindex', '-1');
+                    var _pane = t._panes[tab._of];
+                    _pane && letClass(_pane, 'is:current');
+                }
+            });
+            if (hasClass(parent, 'can:toggle')) {
+                toggleClass(parent, 'is:current');
+                toggleClass(t, 'is:current');
+                setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
+                setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
+            } else {
+                setClass(parent, 'is:current');
+                setClass(t, 'is:current');
+                setAttribute(t, 'aria-selected', 'true');
+                setAttribute(t, 'tabindex', '0');
+            }
+            current = hasClass(t, 'is:current');
+            if (pane) {
+                t._input.value = value = current ? getDatum(t, 'value') : null;
+                toggleClass(pane, 'is:current', current);
+                toggleClass(self, 'has:current', current);
+                var pathname = theLocation.pathname,
+                    search = theLocation.search;
+                var query = fromQuery(search);
+                var q = fromQuery(name + '=' + value);
+                if (null === value) {
+                    console.log('TODO: Remove query: `' + name + '`');
+                }
+                theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+                W._.fire.apply(pane, ['change.tab', [value, name]]);
+            }
+            offEventDefault(e);
         }
+    }
+
+    function onKeyDownTab(e) {
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4913,9 +4923,6 @@
     }
 
     function onKeyDownTabs(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -4981,22 +4988,24 @@
         node && isFunction(node.select) && node.select();
     }
 
+    function onEventOnly(event, node, then) {
+        offEvent(event, node, then);
+        return onEvent(event, node, then);
+    }
+
     function onChange(init) {
         var sources = getElements('.lot\\:tasks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var tasks = getElements(targets, source);
             tasks && toCount(tasks) && tasks.forEach(function (task) {
-                onEvent('keydown', task, onKeyDownTask);
+                onEventOnly('keydown', task, onKeyDownTask);
             });
-            onEvent('keydown', source, onKeyDownTasks);
+            onEventOnly('keydown', source, onKeyDownTasks);
         });
         1 === init && W._.on('change', onChange);
     }
 
     function onKeyDownTask(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,
@@ -5046,9 +5055,6 @@
     }
 
     function onKeyDownTasks(e) {
-        if (e.defaultPrevented) {
-            return;
-        }
         var t = this,
             key = e.key,
             keyIsAlt = e.altKey,

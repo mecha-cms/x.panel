@@ -7,6 +7,7 @@ import {
 
 import {
     fireEvent,
+    offEvent,
     onEvent
 } from '@taufik-nurrohman/event';
 
@@ -15,6 +16,11 @@ import {
 } from '@taufik-nurrohman/to';
 
 Siema.instances = [];
+
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
 
 function onChange(init) {
     let instance;
@@ -28,9 +34,9 @@ function onChange(init) {
                 loop: true,
                 selector: source
             });
-        let interval = W.setInterval(() => siema.next(), 5000);
-        onEvent('mousedown', source, () => W.clearInterval(interval));
-        onEvent('touchstart', source, () => W.clearInterval(interval));
+        source._siemaInterval = W.setInterval(() => siema.next(), 5000);
+        onEventOnly('mousedown', source, onMouseDownSiema);
+        onEventOnly('touchstart', source, onTouchStartSiema);
         Siema.instances.push(siema);
     });
     // Re-calculate the Siema dimension!
@@ -38,6 +44,14 @@ function onChange(init) {
         _.on('change.stack', () => fireEvent('resize', W));
         _.on('change.tab', () => fireEvent('resize', W));
     }
+}
+
+function onMouseDownSiema() {
+    W.clearInterval(this._siemaInterval);
+}
+
+function onTouchStartSiema() {
+    onMouseDownSiema.call(this);
 }
 
 W.Siema = Siema;

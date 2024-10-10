@@ -10,6 +10,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
+    offEvent,
     offEventDefault,
     offEventPropagation,
     onEvent
@@ -29,22 +30,24 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let files = getElements(targets, source);
         files.forEach(file => {
-            onEvent('keydown', file, onKeyDownFile);
+            onEventOnly('keydown', file, onKeyDownFile);
         });
-        onEvent('keydown', source, onKeyDownFiles);
+        onEventOnly('keydown', source, onKeyDownFiles);
     });
     1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownFile(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         any, current, parent, next, prev, stop;
@@ -77,9 +80,6 @@ function onKeyDownFile(e) {
 }
 
 function onKeyDownFiles(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,

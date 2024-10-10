@@ -36,22 +36,24 @@ function fireSelect(node) {
     node && isFunction(node.select) && node.select();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements('.lot\\:tasks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let tasks = getElements(targets, source);
         tasks && toCount(tasks) && tasks.forEach(task => {
-            onEvent('keydown', task, onKeyDownTask);
+            onEventOnly('keydown', task, onKeyDownTask);
         });
-        onEvent('keydown', source, onKeyDownTasks);
+        onEventOnly('keydown', source, onKeyDownTasks);
     });
     1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownTask(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -96,9 +98,6 @@ function onKeyDownTask(e) {
 }
 
 function onKeyDownTasks(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,

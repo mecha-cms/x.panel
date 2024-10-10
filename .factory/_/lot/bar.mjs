@@ -10,6 +10,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
+    offEvent,
     offEventDefault,
     offEventPropagation,
     onEvent
@@ -29,22 +30,24 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements('.lot\\:bar[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let items = getElements(targets, source);
         items.forEach(item => {
-            onEvent('keydown', item, onKeyDownBarItem);
+            onEventOnly('keydown', item, onKeyDownBarItem);
         });
-        onEvent('keydown', source, onKeyDownBar);
+        onEventOnly('keydown', source, onKeyDownBar);
     });
     1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownBar(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -68,9 +71,6 @@ function onKeyDownBar(e) {
 }
 
 function onKeyDownBarItem(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         any, current, parent, next, prev, stop;

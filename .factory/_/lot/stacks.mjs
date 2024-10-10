@@ -22,6 +22,7 @@ import {
 
 import {
     fireEvent,
+    offEvent,
     offEventDefault,
     offEventPropagation,
     onEvent
@@ -47,68 +48,74 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements('.lot\\:stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let stackCurrent,
             stacks = [].slice.call(getChildren(source)).filter(v => hasClass(v, 'lot:stack')),
-            input = setElement('input'), name, value;
+            input = setElement('input'), name;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
         name && setChildLast(source, input);
-        function onClick(e) {
-            let t = this,
-                parent = getParent(getParent(t)),
-                self = getParent(parent, '.lot\\:stacks'), current;
-            if (!hasClass(parent, 'has:link')) {
-                stacks.forEach(stack => {
-                    if (stack !== parent) {
-                        letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
-                        letClass(stack, 'is:current');
-                        setAttribute(current, 'aria-expanded', 'false');
-                    }
-                });
-                if (hasClass(parent, 'can:toggle')) {
-                    setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
-                    toggleClass(parent, 'is:current');
-                    toggleClass(t, 'is:current');
-                } else {
-                    setAttribute(t, 'aria-expanded', 'true');
-                    setClass(parent, 'is:current');
-                    setClass(t, 'is:current');
-                }
-                current = hasClass(t, 'is:current');
-                input.value = value = current ? getDatum(parent, 'value') : null;
-                toggleClass(self, 'has:current', current);
-                let {pathname, search} = theLocation;
-                let query = fromQuery(search);
-                let q = fromQuery(name + '=' + value);
-                if (null === value) {
-                    console.log('TODO: Remove query: `' + name + '`');
-                }
-                theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
-                W._.fire.apply(parent, ['change.stack', [value, name]]);
-                offEventDefault(e);
-            }
-        }
         stacks.forEach(stack => {
             let target = getElement(targets, stack);
-            onEvent('click', target, onClick);
-            onEvent('keydown', target, onKeyDownStack);
+            target._input = input;
+            target._stacks = stacks;
+            onEventOnly('click', target, onClickStack);
+            onEventOnly('keydown', target, onKeyDownStack);
         });
         stackCurrent = stacks.find((value, key) => 0 !== key && hasClass(value, 'is:current'));
         if (stackCurrent) {
             input.value = getDatum(stackCurrent, 'value');
         }
-        onEvent('keydown', source, onKeyDownStacks);
+        onEventOnly('keydown', source, onKeyDownStacks);
     });
     1 === init && W._.on('change', onChange);
 }
 
-function onKeyDownStack(e) {
-    if (e.defaultPrevented) {
-        return;
+function onClickStack(e) {
+    let t = this,
+        parent = getParent(getParent(t)),
+        self = getParent(parent, '.lot\\:stacks'), current, value;
+    let name = t._input.name;
+    if (!hasClass(parent, 'has:link')) {
+        t._stacks.forEach(stack => {
+            if (stack !== parent) {
+                letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
+                letClass(stack, 'is:current');
+                setAttribute(current, 'aria-expanded', 'false');
+            }
+        });
+        if (hasClass(parent, 'can:toggle')) {
+            setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
+            toggleClass(parent, 'is:current');
+            toggleClass(t, 'is:current');
+        } else {
+            setAttribute(t, 'aria-expanded', 'true');
+            setClass(parent, 'is:current');
+            setClass(t, 'is:current');
+        }
+        current = hasClass(t, 'is:current');
+        t._input.value = value = current ? getDatum(parent, 'value') : null;
+        toggleClass(self, 'has:current', current);
+        let {pathname, search} = theLocation;
+        let query = fromQuery(search);
+        let q = fromQuery(name + '=' + value);
+        if (null === value) {
+            console.log('TODO: Remove query: `' + name + '`');
+        }
+        theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+        W._.fire.apply(parent, ['change.stack', [value, name]]);
+        offEventDefault(e);
     }
+}
+
+function onKeyDownStack(e) {
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -175,9 +182,6 @@ function onKeyDownStack(e) {
 }
 
 function onKeyDownStacks(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,

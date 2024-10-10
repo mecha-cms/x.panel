@@ -36,6 +36,11 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function doHideMenus(but, trigger) {
     getElements('.lot\\:menu[tabindex].is\\:enter').forEach(node => {
         if (but !== node) {
@@ -58,20 +63,20 @@ function onChange(init) {
             let menu = getElement('.lot\\:menu[tabindex]', menuParent),
                 a = getPrev(menu);
             if (menu && a) {
-                onEvent('click', a, onClickMenuShow);
-                onEvent('keydown', a, onKeyDownMenuToggle);
+                onEventOnly('click', a, onClickMenuShow);
+                onEventOnly('keydown', a, onKeyDownMenuToggle);
             }
         });
-        onEvent('click', D, onClickDocument);
+        onEventOnly('click', D, onClickDocument);
     }
     if (menuLinks && toCount(menuLinks)) {
         menuLinks.forEach(menuLink => {
-            onEvent('keydown', menuLink, onKeyDownMenu);
+            onEventOnly('keydown', menuLink, onKeyDownMenu);
         });
     }
     let sources = getElements('.lot\\:menu[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
-        onEvent('keydown', source, onKeyDownMenus);
+        onEventOnly('keydown', source, onKeyDownMenus);
     });
     1 === init && W._.on('change', onChange);
 }
@@ -81,9 +86,8 @@ function onClickDocument() {
 }
 
 function onClickMenuShow(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
+    offEventDefault(e);
+    offEventPropagation(e);
     let t = this,
         current = getNext(t), next;
     doHideMenus(current, t);
@@ -93,14 +97,9 @@ function onClickMenuShow(e) {
         toggleClass(t, 'is:active');
         setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
     }, 1);
-    offEventDefault(e);
-    offEventPropagation(e);
 }
 
 function onKeyDownMenu(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         any, current, parent, next, prev, stop;
@@ -182,9 +181,6 @@ function onKeyDownMenu(e) {
 }
 
 function onKeyDownMenus(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -208,9 +204,6 @@ function onKeyDownMenus(e) {
 }
 
 function onKeyDownMenuToggle(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         current,

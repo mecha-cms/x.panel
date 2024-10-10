@@ -13,6 +13,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
+    offEvent,
     offEventDefault,
     offEventPropagation,
     onEvent
@@ -32,22 +33,24 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements('.lot\\:links[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let links = getElements(targets, source);
         links && toCount(links) && links.forEach(link => {
-            onEvent('keydown', link, onKeyDownLink);
+            onEventOnly('keydown', link, onKeyDownLink);
         });
-        onEvent('keydown', source, onKeyDownLinks);
+        onEventOnly('keydown', source, onKeyDownLinks);
     });
     1 === init && W._.on('change', onChange);
 }
 
 function onKeyDownLink(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -91,9 +94,6 @@ function onKeyDownLink(e) {
 }
 
 function onKeyDownLinks(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,

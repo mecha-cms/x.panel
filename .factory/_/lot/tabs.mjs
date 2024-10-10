@@ -47,78 +47,85 @@ function fireFocus(node) {
     node && isFunction(node.focus) && node.focus();
 }
 
+function onEventOnly(event, node, then) {
+    offEvent(event, node, then);
+    return onEvent(event, node, then);
+}
+
 function onChange(init) {
     let sources = getElements('.lot\\:tabs[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let panes = [].slice.call(getChildren(source)),
             tabCurrent,
             tabs = [].slice.call(getElements(targets, panes.shift())),
-            input = setElement('input'), name, value;
+            input = setElement('input'), name;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
         name && setChildLast(source, input);
-        function onClick(e) {
-            let t = this,
-                pane = panes[t._tabIndex],
-                parent = getParent(t),
-                self = getParent(parent, '.lot\\:tabs'), current;
-            if (!hasClass(parent, 'has:link')) {
-                tabs.forEach(tab => {
-                    if (tab !== t) {
-                        letClass(getParent(tab), 'is:current');
-                        letClass(tab, 'is:current');
-                        setAttribute(tab, 'aria-selected', 'false');
-                        setAttribute(tab, 'tabindex', '-1');
-                        let pane = panes[tab._tabIndex];
-                        pane && letClass(pane, 'is:current');
-                    }
-                });
-                if (hasClass(parent, 'can:toggle')) {
-                    toggleClass(parent, 'is:current');
-                    toggleClass(t, 'is:current');
-                    setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
-                    setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
-                } else {
-                    setClass(parent, 'is:current');
-                    setClass(t, 'is:current');
-                    setAttribute(t, 'aria-selected', 'true');
-                    setAttribute(t, 'tabindex', '0');
-                }
-                current = hasClass(t, 'is:current');
-                if (pane) {
-                    input.value = value = current ? getDatum(t, 'value') : null;
-                    toggleClass(pane, 'is:current', current);
-                    toggleClass(self, 'has:current', current);
-                    let {pathname, search} = theLocation;
-                    let query = fromQuery(search);
-                    let q = fromQuery(name + '=' + value);
-                    if (null === value) {
-                        console.log('TODO: Remove query: `' + name + '`');
-                    }
-                    theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
-                    W._.fire.apply(pane, ['change.tab', [value, name]]);
-                }
-                offEventDefault(e);
-            }
-        }
         tabs.forEach((tab, index) => {
-            tab._tabIndex = index;
-            onEvent('click', tab, onClick);
-            onEvent('keydown', tab, onKeyDownTab);
+            tab._input = input;
+            tab._of = index;
+            tab._panes = panes;
+            tab._tabs = tabs;
+            onEventOnly('click', tab, onClickTab);
+            onEventOnly('keydown', tab, onKeyDownTab);
         });
         tabCurrent = tabs.find((value, key) => 0 !== key && hasClass(getParent(value), 'is:current'));
         if (tabCurrent) {
             input.value = getDatum(tabCurrent, 'value');
         }
-        onEvent('keydown', source, onKeyDownTabs);
+        onEventOnly('keydown', source, onKeyDownTabs);
     });
     1 === init && W._.on('change', onChange);
 }
 
-function onKeyDownTab(e) {
-    if (e.defaultPrevented) {
-        return;
+function onClickTab(e) {
+    let t = this,
+        pane = t._panes[t._of],
+        parent = getParent(t),
+        self = getParent(parent, '.lot\\:tabs'), current, value;
+    let name = t._input.name;
+    if (!hasClass(parent, 'has:link')) {
+        t._tabs.forEach(tab => {
+            if (tab !== t) {
+                letClass(getParent(tab), 'is:current');
+                letClass(tab, 'is:current');
+                setAttribute(tab, 'aria-selected', 'false');
+                setAttribute(tab, 'tabindex', '-1');
+                let pane = t._panes[tab._of];
+                pane && letClass(pane, 'is:current');
+            }
+        });
+        if (hasClass(parent, 'can:toggle')) {
+            toggleClass(parent, 'is:current');
+            toggleClass(t, 'is:current');
+            setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
+            setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
+        } else {
+            setClass(parent, 'is:current');
+            setClass(t, 'is:current');
+            setAttribute(t, 'aria-selected', 'true');
+            setAttribute(t, 'tabindex', '0');
+        }
+        current = hasClass(t, 'is:current');
+        if (pane) {
+            t._input.value = value = current ? getDatum(t, 'value') : null;
+            toggleClass(pane, 'is:current', current);
+            toggleClass(self, 'has:current', current);
+            let {pathname, search} = theLocation;
+            let query = fromQuery(search);
+            let q = fromQuery(name + '=' + value);
+            if (null === value) {
+                console.log('TODO: Remove query: `' + name + '`');
+            }
+            theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+            W._.fire.apply(pane, ['change.tab', [value, name]]);
+        }
+        offEventDefault(e);
     }
+}
+
+function onKeyDownTab(e) {
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
@@ -205,9 +212,6 @@ function onKeyDownTab(e) {
 }
 
 function onKeyDownTabs(e) {
-    if (e.defaultPrevented) {
-        return;
-    }
     let t = this,
         key = e.key,
         keyIsAlt = e.altKey,
