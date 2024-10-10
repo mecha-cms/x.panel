@@ -83,6 +83,14 @@
         display: block;
       }
     }
+    > .lot\:tasks {
+      border-top: 1px dashed;
+      border-top-color: inherit;
+      display: flex;
+      &.count\:0 {
+        display: none;
+      }
+    }
     &:not(.can\:toggle) {
       > .title {
         > a {
