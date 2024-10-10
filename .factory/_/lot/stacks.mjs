@@ -51,7 +51,7 @@ function onChange(init) {
     let sources = getElements('.lot\\:stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let stackCurrent,
-            stacks = [].slice.call(getChildren(source)),
+            stacks = [].slice.call(getChildren(source)).filter(v => hasClass(v, 'lot:stack')),
             input = setElement('input'), name, value;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');

@@ -4557,7 +4557,9 @@
         var sources = getElements('.lot\\:stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var stackCurrent,
-                stacks = [].slice.call(getChildren(source)),
+                stacks = [].slice.call(getChildren(source)).filter(function (v) {
+                    return hasClass(v, 'lot:stack');
+                }),
                 input = setElement('input'),
                 name,
                 value;
