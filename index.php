@@ -97,6 +97,14 @@ if ($exist) {
     }
 }
 
+foreach ([
+    '%s goes here...' => "%s goes here\u{2026}",
+    'Content goes here...' => "Content goes here\u{2026}",
+    'Description goes here...' => "Description goes here\u{2026}"
+] as $k => $v) {
+    \lot('I')[$k] = \lot('I')[$k] ?? $v;
+}
+
 \lot('_', $_ = \array_replace_recursive([
     '0' => null,
     '1' => null,
