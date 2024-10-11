@@ -33,11 +33,14 @@ import {
 } from '@taufik-nurrohman/from';
 
 import {
-    isFunction
+    isArray,
+    isFunction,
+    isObject
 } from '@taufik-nurrohman/is';
 
 import {
     toCount,
+    toObjectCount,
     toQuery
 } from '@taufik-nurrohman/to';
 
@@ -52,6 +55,45 @@ function onEventOnly(event, node, then) {
     return onEvent(event, node, then);
 }
 
+function removeNull(object) {
+    if (isArray(object)) {
+        let out = [];
+        for (let i = 0, j = toCount(object); i < j; ++i) {
+            if (null === object[i]) {
+                continue;
+            }
+            if (isArray(object[i])) {
+                if (null === (object[i] = removeNull(object[i])) || 0 === object[i].length) {
+                    continue;
+                }
+            } else if (isObject(object[i])) {
+                if (null === (object[i] = removeNull(object[i])) || 0 === toObjectCount(object[i])) {
+                    continue;
+                }
+            }
+            out.push(object[i]);
+        }
+        return 0 !== toCount(out) ? out : null;
+    }
+    for (let k in object) {
+        if (null === object[k]) {
+            delete object[k];
+            continue;
+        }
+        if (isArray(object[k]) || isObject(object[k])) {
+            if (null === (object[k] = removeNull(object[k])) || 0 === toObjectCount(object[k])) {
+                delete object[k];
+            }
+        }
+    }
+    return 0 !== toObjectCount(object) ? object : null;
+}
+
+const TAB_INPUT = 0;
+const TAB_OF = 1;
+const TAB_PANES = 2;
+const TAB_TABS = 3;
+
 function onChange(init) {
     let sources = getElements('.lot\\:tabs[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
@@ -63,10 +105,11 @@ function onChange(init) {
         input.name = name = getDatum(source, 'name');
         name && setChildLast(source, input);
         tabs.forEach((tab, index) => {
-            tab._input = input;
-            tab._of = index;
-            tab._panes = panes;
-            tab._tabs = tabs;
+            tab._ = tab._ || {};
+            tab._[TAB_INPUT] = input;
+            tab._[TAB_OF] = index;
+            tab._[TAB_PANES] = panes;
+            tab._[TAB_TABS] = tabs;
             onEventOnly('click', tab, onClickTab);
             onEventOnly('keydown', tab, onKeyDownTab);
         });
@@ -81,18 +124,18 @@ function onChange(init) {
 
 function onClickTab(e) {
     let t = this,
-        pane = t._panes[t._of],
+        pane = t._[TAB_PANES][t._[TAB_OF]],
         parent = getParent(t),
         self = getParent(parent, '.lot\\:tabs'), current, value;
-    let name = t._input.name;
+    let name = t._[TAB_INPUT].name;
     if (!hasClass(parent, 'has:link')) {
-        t._tabs.forEach(tab => {
+        t._[TAB_TABS].forEach(tab => {
             if (tab !== t) {
                 letClass(getParent(tab), 'is:current');
                 letClass(tab, 'is:current');
                 setAttribute(tab, 'aria-selected', 'false');
                 setAttribute(tab, 'tabindex', '-1');
-                let pane = t._panes[tab._of];
+                let pane = t._[TAB_PANES][tab._[TAB_OF]];
                 pane && letClass(pane, 'is:current');
             }
         });
@@ -109,16 +152,17 @@ function onClickTab(e) {
         }
         current = hasClass(t, 'is:current');
         if (pane) {
-            t._input.value = value = current ? getDatum(t, 'value') : null;
+            t._[TAB_INPUT].value = value = current ? getDatum(t, 'value') : null;
             toggleClass(pane, 'is:current', current);
             toggleClass(self, 'has:current', current);
             let {pathname, search} = theLocation;
             let query = fromQuery(search);
             let q = fromQuery(name + '=' + value);
+            query = fromStates(query, q.query || {});
             if (null === value) {
-                console.log('TODO: Remove query: `' + name + '`');
+                query = removeNull(query);
             }
-            theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+            theHistory.replaceState({}, "", pathname + (null !== query ? toQuery(query) : ""));
             W._.fire.apply(pane, ['change.tab', [value, name]]);
         }
         offEventDefault(e);

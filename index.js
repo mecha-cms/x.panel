@@ -4510,6 +4510,7 @@
         offEvent(event, node, then);
         return onEvent(event, node, then);
     }
+    var SIEMA_INTERVAL = 0;
 
     function onChange$3(init) {
         var instance;
@@ -4523,7 +4524,8 @@
                 loop: true,
                 selector: source
             });
-            source._siemaInterval = W.setInterval(function () {
+            source._ = source._ || {};
+            source._[SIEMA_INTERVAL] = W.setInterval(function () {
                 return siema.next();
             }, 5000);
             onEventOnly$3('mousedown', source, onMouseDownSiema);
@@ -4542,7 +4544,7 @@
     }
 
     function onMouseDownSiema() {
-        W.clearInterval(this._siemaInterval);
+        W.clearInterval(this._[SIEMA_INTERVAL]);
     }
 
     function onTouchStartSiema() {
@@ -4560,6 +4562,43 @@
         return onEvent(event, node, then);
     }
 
+    function removeNull$1(object) {
+        if (isArray(object)) {
+            var out = [];
+            for (var i = 0, j = toCount(object); i < j; ++i) {
+                if (null === object[i]) {
+                    continue;
+                }
+                if (isArray(object[i])) {
+                    if (null === (object[i] = removeNull$1(object[i])) || 0 === object[i].length) {
+                        continue;
+                    }
+                } else if (isObject(object[i])) {
+                    if (null === (object[i] = removeNull$1(object[i])) || 0 === toObjectCount(object[i])) {
+                        continue;
+                    }
+                }
+                out.push(object[i]);
+            }
+            return 0 !== toCount(out) ? out : null;
+        }
+        for (var k in object) {
+            if (null === object[k]) {
+                delete object[k];
+                continue;
+            }
+            if (isArray(object[k]) || isObject(object[k])) {
+                if (null === (object[k] = removeNull$1(object[k])) || 0 === toObjectCount(object[k])) {
+                    delete object[k];
+                }
+            }
+        }
+        return 0 !== toObjectCount(object) ? object : null;
+    }
+    var STACK_INPUT = 0;
+    var STACK_OF = 1;
+    var STACK_STACKS = 2;
+
     function onChange$2(init) {
         var sources = getElements('.lot\\:stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
@@ -4568,14 +4607,19 @@
                     return hasClass(v, 'lot:stack');
                 }),
                 input = setElement('input'),
-                name;
+                name,
+                target;
             input.type = 'hidden';
             input.name = name = getDatum(source, 'name');
             name && setChildLast(source, input);
-            stacks.forEach(function (stack) {
-                var target = getElement(targets$2, stack);
-                target._input = input;
-                target._stacks = stacks;
+            stacks.forEach(function (stack, index) {
+                if (!(target = getElement(targets$2, stack))) {
+                    return;
+                }
+                target._ = target._ || {};
+                target._[STACK_INPUT] = input;
+                target._[STACK_OF] = index;
+                target._[STACK_STACKS] = stacks;
                 onEventOnly$2('click', target, onClickStack);
                 onEventOnly$2('keydown', target, onKeyDownStack);
             });
@@ -4596,9 +4640,9 @@
             self = getParent(parent, '.lot\\:stacks'),
             current,
             value;
-        var name = t._input.name;
+        var name = t._[STACK_INPUT].name;
         if (!hasClass(parent, 'has:link')) {
-            t._stacks.forEach(function (stack) {
+            t._[STACK_STACKS].forEach(function (stack) {
                 if (stack !== parent) {
                     letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
                     letClass(stack, 'is:current');
@@ -4615,16 +4659,17 @@
                 setClass(t, 'is:current');
             }
             current = hasClass(t, 'is:current');
-            t._input.value = value = current ? getDatum(parent, 'value') : null;
+            t._[STACK_INPUT].value = value = current ? getDatum(parent, 'value') : null;
             toggleClass(self, 'has:current', current);
             var pathname = theLocation.pathname,
                 search = theLocation.search;
             var query = fromQuery(search);
             var q = fromQuery(name + '=' + value);
+            query = fromStates(query, q.query || {});
             if (null === value) {
-                console.log('TODO: Remove query: `' + name + '`');
+                query = removeNull$1(query);
             }
-            theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+            theHistory.replaceState({}, "", pathname + (null !== query ? toQuery(query) : ""));
             W._.fire.apply(parent, ['change.stack', [value, name]]);
             offEventDefault(e);
         }
@@ -4752,6 +4797,44 @@
         return onEvent(event, node, then);
     }
 
+    function removeNull(object) {
+        if (isArray(object)) {
+            var out = [];
+            for (var i = 0, j = toCount(object); i < j; ++i) {
+                if (null === object[i]) {
+                    continue;
+                }
+                if (isArray(object[i])) {
+                    if (null === (object[i] = removeNull(object[i])) || 0 === object[i].length) {
+                        continue;
+                    }
+                } else if (isObject(object[i])) {
+                    if (null === (object[i] = removeNull(object[i])) || 0 === toObjectCount(object[i])) {
+                        continue;
+                    }
+                }
+                out.push(object[i]);
+            }
+            return 0 !== toCount(out) ? out : null;
+        }
+        for (var k in object) {
+            if (null === object[k]) {
+                delete object[k];
+                continue;
+            }
+            if (isArray(object[k]) || isObject(object[k])) {
+                if (null === (object[k] = removeNull(object[k])) || 0 === toObjectCount(object[k])) {
+                    delete object[k];
+                }
+            }
+        }
+        return 0 !== toObjectCount(object) ? object : null;
+    }
+    var TAB_INPUT = 0;
+    var TAB_OF = 1;
+    var TAB_PANES = 2;
+    var TAB_TABS = 3;
+
     function onChange$1(init) {
         var sources = getElements('.lot\\:tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
@@ -4764,10 +4847,11 @@
             input.name = name = getDatum(source, 'name');
             name && setChildLast(source, input);
             tabs.forEach(function (tab, index) {
-                tab._input = input;
-                tab._of = index;
-                tab._panes = panes;
-                tab._tabs = tabs;
+                tab._ = tab._ || {};
+                tab._[TAB_INPUT] = input;
+                tab._[TAB_OF] = index;
+                tab._[TAB_PANES] = panes;
+                tab._[TAB_TABS] = tabs;
                 onEventOnly$1('click', tab, onClickTab);
                 onEventOnly$1('keydown', tab, onKeyDownTab);
             });
@@ -4784,20 +4868,20 @@
 
     function onClickTab(e) {
         var t = this,
-            pane = t._panes[t._of],
+            pane = t._[TAB_PANES][t._[TAB_OF]],
             parent = getParent(t),
             self = getParent(parent, '.lot\\:tabs'),
             current,
             value;
-        var name = t._input.name;
+        var name = t._[TAB_INPUT].name;
         if (!hasClass(parent, 'has:link')) {
-            t._tabs.forEach(function (tab) {
+            t._[TAB_TABS].forEach(function (tab) {
                 if (tab !== t) {
                     letClass(getParent(tab), 'is:current');
                     letClass(tab, 'is:current');
                     setAttribute(tab, 'aria-selected', 'false');
                     setAttribute(tab, 'tabindex', '-1');
-                    var _pane = t._panes[tab._of];
+                    var _pane = t._[TAB_PANES][tab._[TAB_OF]];
                     _pane && letClass(_pane, 'is:current');
                 }
             });
@@ -4814,17 +4898,18 @@
             }
             current = hasClass(t, 'is:current');
             if (pane) {
-                t._input.value = value = current ? getDatum(t, 'value') : null;
+                t._[TAB_INPUT].value = value = current ? getDatum(t, 'value') : null;
                 toggleClass(pane, 'is:current', current);
                 toggleClass(self, 'has:current', current);
                 var pathname = theLocation.pathname,
                     search = theLocation.search;
                 var query = fromQuery(search);
                 var q = fromQuery(name + '=' + value);
+                query = fromStates(query, q.query || {});
                 if (null === value) {
-                    console.log('TODO: Remove query: `' + name + '`');
+                    query = removeNull(query);
                 }
-                theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+                theHistory.replaceState({}, "", pathname + (null !== query ? toQuery(query) : ""));
                 W._.fire.apply(pane, ['change.tab', [value, name]]);
             }
             offEventDefault(e);

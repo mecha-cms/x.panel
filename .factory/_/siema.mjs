@@ -22,6 +22,8 @@ function onEventOnly(event, node, then) {
     return onEvent(event, node, then);
 }
 
+const SIEMA_INTERVAL = 0;
+
 function onChange(init) {
     let instance;
     while (instance = Siema.instances.pop()) {
@@ -34,7 +36,8 @@ function onChange(init) {
                 loop: true,
                 selector: source
             });
-        source._siemaInterval = W.setInterval(() => siema.next(), 5000);
+        source._ = source._ || {};
+        source._[SIEMA_INTERVAL] = W.setInterval(() => siema.next(), 5000);
         onEventOnly('mousedown', source, onMouseDownSiema);
         onEventOnly('touchstart', source, onTouchStartSiema);
         Siema.instances.push(siema);
@@ -47,7 +50,7 @@ function onChange(init) {
 }
 
 function onMouseDownSiema() {
-    W.clearInterval(this._siemaInterval);
+    W.clearInterval(this._[SIEMA_INTERVAL]);
 }
 
 function onTouchStartSiema() {

@@ -34,11 +34,14 @@ import {
 } from '@taufik-nurrohman/from';
 
 import {
-    isFunction
+    isArray,
+    isFunction,
+    isObject
 } from '@taufik-nurrohman/is';
 
 import {
     toCount,
+    toObjectCount,
     toQuery
 } from '@taufik-nurrohman/to';
 
@@ -53,19 +56,61 @@ function onEventOnly(event, node, then) {
     return onEvent(event, node, then);
 }
 
+function removeNull(object) {
+    if (isArray(object)) {
+        let out = [];
+        for (let i = 0, j = toCount(object); i < j; ++i) {
+            if (null === object[i]) {
+                continue;
+            }
+            if (isArray(object[i])) {
+                if (null === (object[i] = removeNull(object[i])) || 0 === object[i].length) {
+                    continue;
+                }
+            } else if (isObject(object[i])) {
+                if (null === (object[i] = removeNull(object[i])) || 0 === toObjectCount(object[i])) {
+                    continue;
+                }
+            }
+            out.push(object[i]);
+        }
+        return 0 !== toCount(out) ? out : null;
+    }
+    for (let k in object) {
+        if (null === object[k]) {
+            delete object[k];
+            continue;
+        }
+        if (isArray(object[k]) || isObject(object[k])) {
+            if (null === (object[k] = removeNull(object[k])) || 0 === toObjectCount(object[k])) {
+                delete object[k];
+            }
+        }
+    }
+    return 0 !== toObjectCount(object) ? object : null;
+}
+
+const STACK_INPUT = 0;
+const STACK_OF = 1;
+const STACK_STACKS = 2;
+
 function onChange(init) {
     let sources = getElements('.lot\\:stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let stackCurrent,
             stacks = [].slice.call(getChildren(source)).filter(v => hasClass(v, 'lot:stack')),
-            input = setElement('input'), name;
+            input = setElement('input'), name, target;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
         name && setChildLast(source, input);
-        stacks.forEach(stack => {
-            let target = getElement(targets, stack);
-            target._input = input;
-            target._stacks = stacks;
+        stacks.forEach((stack, index) => {
+            if (!(target = getElement(targets, stack))) {
+                return;
+            }
+            target._ = target._ || {};
+            target._[STACK_INPUT] = input;
+            target._[STACK_OF] = index;
+            target._[STACK_STACKS] = stacks;
             onEventOnly('click', target, onClickStack);
             onEventOnly('keydown', target, onKeyDownStack);
         });
@@ -82,9 +127,9 @@ function onClickStack(e) {
     let t = this,
         parent = getParent(getParent(t)),
         self = getParent(parent, '.lot\\:stacks'), current, value;
-    let name = t._input.name;
+    let name = t._[STACK_INPUT].name;
     if (!hasClass(parent, 'has:link')) {
-        t._stacks.forEach(stack => {
+        t._[STACK_STACKS].forEach(stack => {
             if (stack !== parent) {
                 letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
                 letClass(stack, 'is:current');
@@ -101,15 +146,16 @@ function onClickStack(e) {
             setClass(t, 'is:current');
         }
         current = hasClass(t, 'is:current');
-        t._input.value = value = current ? getDatum(parent, 'value') : null;
+        t._[STACK_INPUT].value = value = current ? getDatum(parent, 'value') : null;
         toggleClass(self, 'has:current', current);
         let {pathname, search} = theLocation;
         let query = fromQuery(search);
         let q = fromQuery(name + '=' + value);
+        query = fromStates(query, q.query || {});
         if (null === value) {
-            console.log('TODO: Remove query: `' + name + '`');
+            query = removeNull(query);
         }
-        theHistory.replaceState({}, "", pathname + toQuery(fromStates(query, q.query || {})));
+        theHistory.replaceState({}, "", pathname + (null !== query ? toQuery(query) : ""));
         W._.fire.apply(parent, ['change.stack', [value, name]]);
         offEventDefault(e);
     }
