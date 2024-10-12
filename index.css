@@ -3482,8 +3482,9 @@ label .input[type=radio] + span {
 .content\:stack > .content\:stacks,
 .lot\:stack > .lot\:stacks,
 .content\:stack > .lot\:stacks {
-  border-top: 1px solid;
-  border-top-color: inherit;
+  border: 0 solid;
+  border-color: inherit;
+  border-top-width: 1px;
   display: block;
   padding: calc(var(--y) / 2) calc(var(--x) / 2);
 }
@@ -3491,7 +3492,9 @@ label .input[type=radio] + span {
 .content\:stack > .content\:stacks.count\:0,
 .lot\:stack > .lot\:stacks.count\:0,
 .content\:stack > .lot\:stacks.count\:0 {
-  display: none;
+  border-top-width: 0;
+  display: block;
+  padding: 0;
 }
 .lot\:stack.has\:link,
 .has\:link.content\:stack {

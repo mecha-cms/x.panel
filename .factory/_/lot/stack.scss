@@ -56,12 +56,15 @@
     margin: 0;
     padding: calc(var(--y) - ((var(--h) - var(--z)) / 2)) var(--x);
     &\:stacks {
-      border-top: 1px solid;
-      border-top-color: inherit;
+      border: 0 solid;
+      border-color: inherit;
+      border-top-width: 1px;
       display: block;
       padding: calc(var(--y) / 2) calc(var(--x) / 2);
       &.count\:0 {
-        display: none;
+        border-top-width: 0;
+        display: block;
+        padding: 0;
       }
     }
   }
