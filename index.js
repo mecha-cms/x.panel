@@ -1670,7 +1670,7 @@
             $.pop();
             delete OP.instances[key];
         }
-        var sources = getElements('.input[list]:not([type="hidden"]),.select');
+        var sources = getElements('input[list]:not([type="hidden"]),select');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             letClass(source, 'input');
@@ -2473,7 +2473,7 @@
             $.pop();
             delete TP.instances[key];
         }
-        var sources = getElements('.lot\\:field.type\\:query .input:not([type="hidden"])');
+        var sources = getElements('.lot\\:field.type\\:query input:not([type="hidden"])');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             letClass(source, 'input');
@@ -3528,7 +3528,7 @@
         while (instance = TextEditor.instances.pop()) {
             instance.detach();
         }
-        var sources = getElements('.lot\\:field.type\\:source .textarea'),
+        var sources = getElements('.lot\\:field.type\\:source textarea'),
             editor,
             state,
             type;
@@ -4611,7 +4611,12 @@
                 target;
             input.type = 'hidden';
             input.name = name = getDatum(source, 'name');
-            name && setChildLast(source, input);
+            if (name) {
+                getElements('input[name="' + name + '"]', source).forEach(function (v) {
+                    return letElement(v);
+                });
+                setChildLast(source, input);
+            }
             stacks.forEach(function (stack, index) {
                 if (!(target = getElement(targets$2, stack))) {
                     return;
@@ -4845,7 +4850,12 @@
                 name;
             input.type = 'hidden';
             input.name = name = getDatum(source, 'name');
-            name && setChildLast(source, input);
+            if (name) {
+                getElements('input[name="' + name + '"]', source).forEach(function (v) {
+                    return letElement(v);
+                });
+                setChildLast(source, input);
+            }
             tabs.forEach(function (tab, index) {
                 tab._ = tab._ || {};
                 tab._[TAB_INPUT] = input;

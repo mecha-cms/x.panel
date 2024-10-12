@@ -21,7 +21,7 @@ function onChange(init) {
         $.pop();
         delete TP.instances[key];
     }
-    let sources = getElements('.lot\\:field.type\\:query .input:not([type="hidden"])');
+    let sources = getElements('.lot\\:field.type\\:query input:not([type="hidden"])');
     sources && toCount(sources) && sources.forEach(source => {
         letClass(source, 'input');
         let c = getClasses(source);

@@ -3478,6 +3478,21 @@ label .input[type=radio] + span {
   margin: 0;
   padding: calc(var(--y) - (var(--h) - var(--z)) / 2) var(--x);
 }
+.lot\:stack > .content\:stacks,
+.content\:stack > .content\:stacks,
+.lot\:stack > .lot\:stacks,
+.content\:stack > .lot\:stacks {
+  border-top: 1px solid;
+  border-top-color: inherit;
+  display: block;
+  padding: calc(var(--y) / 2) calc(var(--x) / 2);
+}
+.lot\:stack > .content\:stacks.count\:0,
+.content\:stack > .content\:stacks.count\:0,
+.lot\:stack > .lot\:stacks.count\:0,
+.content\:stack > .lot\:stacks.count\:0 {
+  display: none;
+}
 .lot\:stack.has\:link,
 .has\:link.content\:stack {
   border-color: var(--stroke-stack-link, var(--stroke-stack, var(--stroke-link, var(--stroke, transparent))));

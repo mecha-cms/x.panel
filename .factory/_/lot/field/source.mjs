@@ -42,7 +42,7 @@ function onChange(init) {
     while (instance = TextEditor.instances.pop()) {
         instance.detach();
     }
-    let sources = getElements('.lot\\:field.type\\:source .textarea'), editor, state, type;
+    let sources = getElements('.lot\\:field.type\\:source textarea'), editor, state, type;
     sources && toCount(sources) && sources.forEach(source => {
         editor = new TextEditor(source, state = getDatum(source, 'state') ?? {});
         editor.command('pull', function () {

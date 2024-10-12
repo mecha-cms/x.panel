@@ -10,6 +10,7 @@ import {
     getPrev,
     hasClass,
     letClass,
+    letElement,
     setAttribute,
     setChildLast,
     setClass,
@@ -103,7 +104,10 @@ function onChange(init) {
             input = setElement('input'), name;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
-        name && setChildLast(source, input);
+        if (name) {
+            getElements('input[name="' + name + '"]', source).forEach(v => letElement(v));
+            setChildLast(source, input);
+        }
         tabs.forEach((tab, index) => {
             tab._ = tab._ || {};
             tab._[TAB_INPUT] = input;

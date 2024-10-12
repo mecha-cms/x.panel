@@ -55,6 +55,15 @@
     display: none;
     margin: 0;
     padding: calc(var(--y) - ((var(--h) - var(--z)) / 2)) var(--x);
+    &\:stacks {
+      border-top: 1px solid;
+      border-top-color: inherit;
+      display: block;
+      padding: calc(var(--y) / 2) calc(var(--x) / 2);
+      &.count\:0 {
+        display: none;
+      }
+    }
   }
   &.has\:link {
     border-color: var(--stroke-stack-link, var(--stroke-stack, var(--stroke-link, var(--stroke, transparent))));
