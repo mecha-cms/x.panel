@@ -18,12 +18,18 @@ if (\is_file($log = $prefix . '-x') || \is_file($log = $prefix . '-y')) {
 }
 
 if (!isset($state->x->user)) {
-    \abort(\i('Missing %s extension.', ['<a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a>']));
+    if (\function_exists("\\abort")) {
+        \abort(\i('Missing %s extension.', '<a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a>'));
+    }
+    exit(\i('Missing %s extension.', 'user'));
 }
 
 // Someone just tried to replace you!
 if (!empty($user) && !($user instanceof \User)) {
-    \abort(\i('%s must be an instance of %s.', ['<code>$user</code>', '<code>User</code>']));
+    if (\function_exists("\\abort")) {
+        \abort(\i('%s must be an instance of %s.', ['<code>$user</code>', '<code>User</code>']));
+    }
+    exit(\i('%s must be an instance of %s.', ['`$user`', '`User`']));
 }
 
 // Set proper redirect target for non super user
