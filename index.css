@@ -3553,6 +3553,7 @@ label .input[type=radio] + span {
   border-top: 1px dashed;
   border-top-color: inherit;
   display: flex;
+  padding: calc(var(--y) / 2) calc(var(--x) / 2);
 }
 .lot\:stack.is\:current > .lot\:tasks.count\:0,
 .is\:current.content\:stack > .lot\:tasks.count\:0 {
