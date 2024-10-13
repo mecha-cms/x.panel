@@ -3533,6 +3533,7 @@ label .input[type=radio] + span {
 .lot\:stack.is\:current,
 .is\:current.content\:stack {
   border-color: var(--stroke-stack--current, var(--stroke-stack, var(--stroke--current, var(--stroke, transparent))));
+  z-index: 1;
 }
 .lot\:stack.is\:current > .title,
 .is\:current.content\:stack > .title {
@@ -3708,7 +3709,7 @@ label .input[type=radio] + span {
   gap: calc(var(--y) / 4) calc(var(--x) / 4);
 }
 .lot\:tasks.are\:links {
-  gap: calc(var(--y) / 2) calc(var(--x) / 2);
+  gap: calc(var(--y) / 1.5) calc(var(--x) / 1.5);
 }
 .lot\:tasks.are\:links .title {
   gap: calc(var(--y) / 8) calc(var(--x) / 8);

@@ -85,6 +85,7 @@
   }
   &.is\:current {
     border-color: var(--stroke-stack--current, var(--stroke-stack, var(--stroke--current, var(--stroke, transparent))));
+    z-index: 1;
     > .title {
       background: var(--fill-stack--current, var(--fill-stack, var(--fill--current, var(--fill, none))));
       box-shadow: var(--shadow-stack--current, var(--shadow-stack, var(--shadow--current, var(--shadow, none))));
