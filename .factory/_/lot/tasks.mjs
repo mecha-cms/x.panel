@@ -1,4 +1,10 @@
 import {
+    fireFocus,
+    fireSelect,
+    onEventOnly
+} from '../../_.mjs';
+
+import {
     D,
     W,
     getChildFirst,
@@ -8,38 +14,20 @@ import {
     getParent,
     getPrev,
     hasClass,
+    hasState,
     setClass
 } from '@taufik-nurrohman/document';
 
 import {
-    offEvent,
     offEventDefault,
-    offEventPropagation,
-    onEvent
+    offEventPropagation
 } from '@taufik-nurrohman/event';
-
-import {
-    isFunction
-} from '@taufik-nurrohman/is';
 
 import {
     toCount
 } from '@taufik-nurrohman/to';
 
 const targets = ':scope>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
-
-function fireFocus(node) {
-    node && isFunction(node.focus) && node.focus();
-}
-
-function fireSelect(node) {
-    node && isFunction(node.select) && node.select();
-}
-
-function onEventOnly(event, node, then) {
-    offEvent(event, node, then);
-    return onEvent(event, node, then);
-}
 
 function onChange(init) {
     let sources = getElements('.lot\\:tasks[tabindex]');
@@ -70,15 +58,15 @@ function onKeyDownTask(e) {
             prev = getPrev(prev);
         }
         if ('ArrowLeft' === key) {
-            if (stop = !('selectionStart' in t && 0 !== t.selectionStart)) {
+            if (stop = !(hasState(t, 'selectionStart') && 0 !== t.selectionStart)) {
                 fireFocus(prev), fireSelect(prev);
             }
         } else if ('ArrowRight' === key) {
-            if (stop = !('selectionEnd' in t && t.selectionEnd < toCount(t.value || ""))) {
+            if (stop = !(hasState(t, 'selectionEnd') && t.selectionEnd < toCount(t.value || ""))) {
                 fireFocus(next), fireSelect(next);
             }
         } else if ('End' === key) {
-            stop = !('selectionEnd' in t && toCount(t.value || ""));
+            stop = !(hasState(t, 'selectionEnd') && toCount(t.value || ""));
             if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
@@ -86,7 +74,7 @@ function onKeyDownTask(e) {
                 }
             }
         } else if ('Home' === key) {
-            stop = !('selectionStart' in t && toCount(t.value || ""));
+            stop = !(hasState(t, 'selectionStart') && toCount(t.value || ""));
             if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
                 if (current = getElement(targets, parent)) {
                     fireFocus(current), fireSelect(current);

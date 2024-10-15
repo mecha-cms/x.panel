@@ -294,6 +294,10 @@ function items($value, $key) {
         $a = [];
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
+        if ($can_sort = $value['can']['sort'] ?? false) {
+            $value['tags']['can:sort'] = $value['tags']['can:sort'] ?? $can_sort;
+            unset($value['can']['sort']);
+        }
         $is_active_all = !isset($value['active']) || $value['active'];
         foreach ($value['lot'] as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {

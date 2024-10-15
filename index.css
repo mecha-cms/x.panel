@@ -3724,6 +3724,22 @@ label .input[type=radio] + span {
   margin: 0;
 }
 
+.can\:sort .sortable-ghost {
+  visibility: hidden;
+}
+.can\:sort.content\:fields > .content\:field > label[for],
+.can\:sort.content\:fields > .lot\:field > label[for],
+.can\:sort.lot\:fields > .content\:field > label[for],
+.can\:sort.lot\:fields > .lot\:field > label[for] {
+  cursor: move;
+}
+.can\:sort.with\:options[role=group][aria-orientation=vertical] {
+  flex-basis: 0;
+}
+.can\:sort.with\:options[role=group][aria-orientation=vertical] br {
+  display: none;
+}
+
 .a,
 a,
 details > summary,

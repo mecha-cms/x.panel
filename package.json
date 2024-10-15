@@ -14,7 +14,8 @@
     "@taufik-nurrohman/text-editor.source": "*",
     "@taufik-nurrohman/tick": "*",
     "@taufik-nurrohman/to": "*",
-    "siema": "^1.5.1"
+    "siema": "^1.5.1",
+    "sortablejs": "^1.15.3"
   },
   "devDependencies": {
     "@taufik-nurrohman/factory": "*"

@@ -1,3 +1,7 @@
+import {
+    onEventOnly
+} from '../_.mjs';
+
 import Siema from 'siema';
 
 import {
@@ -6,9 +10,7 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
-    fireEvent,
-    offEvent,
-    onEvent
+    fireEvent
 } from '@taufik-nurrohman/event';
 
 import {
@@ -16,11 +18,6 @@ import {
 } from '@taufik-nurrohman/to';
 
 Siema.instances = [];
-
-function onEventOnly(event, node, then) {
-    offEvent(event, node, then);
-    return onEvent(event, node, then);
-}
 
 const SIEMA_INTERVAL = 0;
 

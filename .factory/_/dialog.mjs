@@ -1,4 +1,10 @@
 import {
+    fireFocus,
+    fireSelect,
+    onEventOnly
+} from '../_.mjs';
+
+import {
     B,
     W,
     getChildFirst,
@@ -16,8 +22,7 @@ import {
 import {
     fireEvent,
     offEvent,
-    offEventDefault,
-    onEvent
+    offEventDefault
 } from '@taufik-nurrohman/event';
 
 import {
@@ -28,11 +33,6 @@ import {
 import {
     toValue
 } from '@taufik-nurrohman/to';
-
-function onEventOnly(event, node, then) {
-    offEvent(event, node, then);
-    return onEvent(event, node, then);
-}
 
 let dialog = setElement('dialog'),
     dialogForm = setElement('form', "", {
@@ -82,10 +82,7 @@ function setDialog(content, then) {
     dialog.returnValue = null;
     isFunction(then) && then.apply(dialog, [dialog.open]);
     let target = getElement('[autofocus]', dialogForm);
-    if (target) {
-        isFunction(target.focus) && target.focus();
-        isFunction(target.select) && target.select(); // `<input>`
-    }
+    target && (fireFocus(target), fireSelect(target));
     return new Promise((yay, nay) => {
         dialog.c = then; // `c` for call-back
         dialog.v = yay; // `v` for check-mark
@@ -107,10 +104,10 @@ function onDialogTaskClick() {
 function onDialogTaskKeyDown(e) {
     let key = e.key, next, prev, t = this;
     if ('ArrowLeft' === key || 'ArrowUp' === key) {
-        (prev = getPrev(t)) && prev.focus();
+        (prev = getPrev(t)) && fireFocus(prev);
         offEventDefault(e);
     } else if ('ArrowDown' === key || 'ArrowRight' === key) {
-        (next = getNext(t)) && next.focus();
+        (next = getNext(t)) && fireFocus(next);
         offEventDefault(e);
     }
 }

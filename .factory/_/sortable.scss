@@ -1,0 +1,24 @@
+.can\:sort {
+  .sortable-ghost {
+    visibility: hidden;
+  }
+  &.content\:fields,
+  &.lot\:fields {
+    > .content\:field,
+    > .lot\:field {
+      > label[for] {
+        cursor: move;
+      }
+    }
+  }
+  &.with\:options {
+    &[role='group'] {
+      &[aria-orientation='vertical'] {
+        flex-basis: 0;
+        br {
+          display: none;
+        }
+      }
+    }
+  }
+}

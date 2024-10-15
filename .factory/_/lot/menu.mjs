@@ -1,4 +1,9 @@
 import {
+    fireFocus,
+    onEventOnly
+} from '../../_.mjs';
+
+import {
     D,
     W,
     getChildFirst,
@@ -16,30 +21,15 @@ import {
 
 import {
     fireEvent,
-    offEvent,
     offEventDefault,
-    offEventPropagation,
-    onEvent
+    offEventPropagation
 } from '@taufik-nurrohman/event';
-
-import {
-    isFunction
-} from '@taufik-nurrohman/is';
 
 import {
     toCount
 } from '@taufik-nurrohman/to';
 
 const targets = ':where(a,[tabindex]):not(.not\\:active)';
-
-function fireFocus(node) {
-    node && isFunction(node.focus) && node.focus();
-}
-
-function onEventOnly(event, node, then) {
-    offEvent(event, node, then);
-    return onEvent(event, node, then);
-}
 
 function doHideMenus(but, trigger) {
     getElements('.lot\\:menu[tabindex].is\\:enter').forEach(node => {
@@ -55,7 +45,6 @@ function doHideMenus(but, trigger) {
 }
 
 function onChange(init) {
-    offEvent('click', D, onClickDocument);
     let menuParents = getElements('.has\\:menu'),
         menuLinks = getElements('.lot\\:menu[tabindex]>ul>li>' + targets);
     if (menuParents && toCount(menuParents)) {

@@ -9,6 +9,7 @@ import Menus from './_/lot/menus.mjs';
 import Pages from './_/lot/pages.mjs';
 import Rows from './_/lot/rows.mjs';
 import Siema from './_/siema.mjs';
+import Sortable from './_/sortable.mjs';
 import Stacks from './_/lot/stacks.mjs';
 import Tabs from './_/lot/tabs.mjs';
 import Tasks from './_/lot/tasks.mjs';
@@ -25,7 +26,6 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
-    fireEvent,
     offEventDefault,
     offEventPropagation,
     onEvent
@@ -135,6 +135,7 @@ Menus(1);
 Pages(1);
 Rows(1);
 Siema(1);
+Sortable(1);
 Stacks(1);
 Tabs(1);
 Tasks(1);

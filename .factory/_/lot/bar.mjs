@@ -1,4 +1,9 @@
 import {
+    fireFocus,
+    onEventOnly
+} from '../../_.mjs';
+
+import {
     W,
     getElement,
     getElements,
@@ -10,30 +15,15 @@ import {
 } from '@taufik-nurrohman/document';
 
 import {
-    offEvent,
     offEventDefault,
-    offEventPropagation,
-    onEvent
+    offEventPropagation
 } from '@taufik-nurrohman/event';
-
-import {
-    isFunction
-} from '@taufik-nurrohman/is';
 
 import {
     toCount
 } from '@taufik-nurrohman/to';
 
 const targets = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not\\:active)';
-
-function fireFocus(node) {
-    node && isFunction(node.focus) && node.focus();
-}
-
-function onEventOnly(event, node, then) {
-    offEvent(event, node, then);
-    return onEvent(event, node, then);
-}
 
 function onChange(init) {
     let sources = getElements('.lot\\:bar[tabindex]');
