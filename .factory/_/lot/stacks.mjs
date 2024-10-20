@@ -114,7 +114,7 @@ function onClickStack(e) {
             query = removeNull(query);
         }
         theHistory.replaceState({}, "", pathname + (false !== query ? toQuery(query) : ""));
-        W._.fire.apply(parent, ['change.stack', [value, name]]);
+        W._.fire('change.stack', [value, name, parent]);
         offEventDefault(e);
     }
 }

@@ -115,14 +115,14 @@ const _ = {
     keys: map.keys
 };
 
-const {fire, hooks, off, on} = hook(_);
+hook(_);
 
 W.Key = Key;
 W._ = _;
 
-onEvent('beforeload', D, () => fire('let'));
-onEvent('load', D, () => fire('get'));
-onEvent('DOMContentLoaded', D, () => fire('set'));
+onEvent('beforeload', D, () => _.fire('let'));
+onEvent('load', D, () => _.fire('get'));
+onEvent('DOMContentLoaded', D, () => _.fire('set'));
 
 Bar(1);
 Columns(1);

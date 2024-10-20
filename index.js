@@ -911,10 +911,11 @@
         return node;
     };
 
-    function hook($) {
-        var hooks = {};
-
-        function fire(name, data) {
+    function hook($, $$) {
+        $$ = $$ || $;
+        $$.fire = function (name, data) {
+            var $ = this,
+                hooks = $.hooks;
             if (!isSet(hooks[name])) {
                 return $;
             }
@@ -922,32 +923,36 @@
                 return then.apply($, data);
             });
             return $;
-        }
-
-        function off(name, then) {
+        };
+        $$.off = function (name, then) {
+            var $ = this,
+                hooks = $.hooks;
             if (!isSet(name)) {
                 return hooks = {}, $;
             }
             if (isSet(hooks[name])) {
                 if (isSet(then)) {
-                    for (var i = 0, _j = hooks[name].length; i < _j; ++i) {
-                        if (then === hooks[name][i]) {
-                            hooks[name].splice(i, 1);
-                            break;
-                        }
-                    }
+                    var j = hooks[name].length;
                     // Clean-up empty hook(s)
                     if (0 === j) {
                         delete hooks[name];
+                    } else {
+                        for (var i = 0; i < j; ++i) {
+                            if (then === hooks[name][i]) {
+                                hooks[name].splice(i, 1);
+                                break;
+                            }
+                        }
                     }
                 } else {
                     delete hooks[name];
                 }
             }
             return $;
-        }
-
-        function on(name, then) {
+        };
+        $$.on = function (name, then) {
+            var $ = this,
+                hooks = $.hooks;
             if (!isSet(hooks[name])) {
                 hooks[name] = [];
             }
@@ -955,14 +960,10 @@
                 hooks[name].push(then);
             }
             return $;
-        }
-        $.hooks = hooks;
-        $.fire = fire;
-        $.off = off;
-        $.on = on;
-        return $;
+        };
+        return $.hooks = {}, $;
     }
-    var name$3 = 'OP',
+    var name$4 = 'OP',
         PROP_INDEX = 'i',
         PROP_SOURCE = '$',
         PROP_VALUE = 'v';
@@ -994,8 +995,8 @@
             return $;
         }
         // Already instantiated, skip!
-        if (source[name$3]) {
-            return source[name$3];
+        if (source[name$4]) {
+            return source[name$4];
         }
         // Return new instance if `OP` was called without the `new` operator
         if (!isInstance($, OP)) {
@@ -1010,7 +1011,7 @@
         // Store current instance to `OP.instances`
         OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $;
         // Mark current DOM as active option picker to prevent duplicate instance
-        source[name$3] = $;
+        source[name$4] = $;
 
         function getLot() {
             return [toValue(getValue()), $.options];
@@ -1643,10 +1644,10 @@
             return parseValue ? toValue(value) : value;
         };
         $.pop = function () {
-            if (!source[name$3]) {
+            if (!source[name$4]) {
                 return $; // Already ejected
             }
-            delete source[name$3];
+            delete source[name$4];
             offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
             offEvent('click', selectBoxParent, onSelectBoxParentClick);
             offEvent('focus', selectBox, onSelectBoxFocus);
@@ -1730,7 +1731,7 @@
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
     var x = "!$^*()+=[]{}|:<>,.?/-";
-    var name$2 = 'TP';
+    var name$3 = 'TP';
     var KEY_A = 'a';
     var KEY_ARROW_LEFT = 'ArrowLeft';
     var KEY_ARROW_RIGHT = 'ArrowRight';
@@ -1750,8 +1751,8 @@
             return $;
         }
         // Already instantiated, skip!
-        if (source[name$2]) {
-            return source[name$2];
+        if (source[name$3]) {
+            return source[name$3];
         }
         // Return new instance if `TP` was called without the `new` operator
         if (!isInstance($, TP)) {
@@ -1775,7 +1776,7 @@
         // Store current instance to `TP.instances`
         TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $;
         // Mark current DOM as active tag picker to prevent duplicate instance
-        source[name$2] = $;
+        source[name$3] = $;
         var classNameB = state['class'],
             classNameE = classNameB + '__',
             classNameM = classNameB + '--',
@@ -2430,10 +2431,10 @@
             return $;
         };
         $.pop = function () {
-            if (!source[name$2]) {
+            if (!source[name$3]) {
                 return $; // Already ejected!
             }
-            delete source[name$2];
+            delete source[name$3];
             var tags = $.tags;
             letClass(source, classNameE + 'source');
             offEvent('blur', self, onBlurSelf);
@@ -2535,6 +2536,11 @@
         touchstart: 'mouse.down',
         wheel: 'scroll'
     };
+    var name$2 = 'TextEditor';
+
+    function getValue(self) {
+        return (self.value || getAttribute(self, 'value') || "").replace(/\r/g, "");
+    }
 
     function isDisabled(self) {
         return self.disabled;
@@ -2542,10 +2548,6 @@
 
     function isReadOnly(self) {
         return self.readOnly;
-    }
-
-    function theValue(self) {
-        return self.value.replace(/\r/g, "");
     }
 
     function trim(str, dir) {
@@ -2561,13 +2563,14 @@
         if (!isInstance($, TextEditor)) {
             return new TextEditor(self, state);
         }
-        self['_' + TextEditor.name] = hook($, TextEditor.prototype);
+        self['_' + name$2] = hook($, TextEditor.prototype);
         return $.attach(self, fromStates({}, TextEditor.state, isInteger(state) || isString(state) ? {
             tab: state
         } : state || {}));
     }
     TextEditor.esc = esc;
     TextEditor.state = {
+        'n': 'text-editor',
         'tab': '\t',
         'with': []
     };
@@ -2584,41 +2587,50 @@
             return current;
         };
     };
-    TextEditor.version = '4.1.3';
+    TextEditor.version = '4.1.5';
     TextEditor.x = x;
     Object.defineProperty(TextEditor, 'name', {
-        value: 'TextEditor'
+        value: name$2
     });
     var theValuePrevious;
 
     function theEvent(e) {
         var self = this,
-            $ = self['_' + TextEditor.name],
+            $ = self['_' + name$2],
             type = e.type,
-            value = theValue(self);
+            value = getValue(self);
         if (value !== theValuePrevious) {
             theValuePrevious = value;
-            $.fire('change', [e]);
+            $.fire('change');
         }
         $.fire(events[type] || type, [e]);
     }
     var $$$1 = TextEditor.prototype;
     $$$1.$ = function () {
         var self = this.self;
-        return new TextEditor.S(self.selectionStart, self.selectionEnd, theValue(self));
+        return new TextEditor.S(self.selectionStart, self.selectionEnd, getValue(self));
     };
     $$$1.attach = function (self, state) {
         var $ = this;
         self = self || $.self;
-        state = state || $.state;
-        $._active = true;
-        $._value = theValue(self);
+        if (state && (isInteger(state) || isString(state))) {
+            state = {
+                tab: state
+            };
+        }
+        state = fromStates({}, $.state, state || {});
+        if (hasClass(self, state.n + '__self')) {
+            return $;
+        }
+        $._active = !isDisabled(self) && !isReadOnly(self);
+        $._value = getValue(self);
         $.self = self;
         $.state = state;
         // Attach event(s)
         for (var event in events) {
             onEvent(event, self, theEvent);
         }
+        setClass(self, state.n + '__self');
         // Attach extension(s)
         if (isSet(state) && isArray(state.with)) {
             for (var i = 0, j = toCount(state.with); i < j; ++i) {
@@ -2641,23 +2653,21 @@
         return $;
     };
     $$$1.blur = function () {
-        var $ = this,
-            _active = $._active,
-            self = $.self;
-        if (!_active) {
-            return $;
-        }
-        return self.blur(), $;
+        return this.self.blur();
     };
     $$$1.detach = function () {
         var $ = this,
             self = $.self,
             state = $.state;
+        if (!hasClass(self, state.n + '__self')) {
+            return $;
+        }
         $._active = false;
         // Detach event(s)
         for (var event in events) {
             offEvent(event, self, theEvent);
         }
+        letClass(self, state.n + '__self');
         // Detach extension(s)
         if (isArray(state.with)) {
             for (var i = 0, j = toCount(state.with); i < j; ++i) {
@@ -2680,12 +2690,12 @@
             x,
             y;
         if (!_active) {
-            return $;
+            return self.focus(), $;
         }
         if (-1 === mode) {
             x = y = 0; // Put caret at the start of the editor, scroll to the start of the editor
         } else if (1 === mode) {
-            x = toCount(theValue(self)); // Put caret at the end of the editor
+            x = toCount(getValue(self)); // Put caret at the end of the editor
             y = self.scrollHeight; // Scroll to the end of the editor
         }
         if (isSet(x) && isSet(y)) {
@@ -2701,7 +2711,7 @@
         if (!_active) {
             return false;
         }
-        return !isDisabled(self) && theValue(self) || null;
+        return !isDisabled(self) && getValue(self) || null;
     };
     $$$1.insert = function (value, mode, clear) {
         var $ = this,
@@ -2842,9 +2852,6 @@
             _active = $._active,
             self = $.self;
         if (!_active) {
-            return $;
-        }
-        if (isDisabled(self) || isReadOnly(self)) {
             return self.focus(), $;
         }
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -2887,9 +2894,6 @@
             _active = $._active,
             self = $.self;
         if (!_active) {
-            return $;
-        }
-        if (isDisabled(self) || isReadOnly(self)) {
             return $;
         }
         return self.value = value, $;
@@ -7866,7 +7870,7 @@
                 query = removeNull(query);
             }
             theHistory.replaceState({}, "", pathname + (false !== query ? toQuery(query) : ""));
-            W._.fire.apply(parent, ['change.stack', [value, name]]);
+            W._.fire('change.stack', [value, name, parent]);
             offEventDefault(e);
         }
     }
@@ -8068,7 +8072,7 @@
                     query = removeNull(query);
                 }
                 theHistory.replaceState({}, "", pathname + (false !== query ? toQuery(query) : ""));
-                W._.fire.apply(pane, ['change.tab', [value, name]]);
+                W._.fire('change.tab', [value, name, pane]);
             }
             offEventDefault(e);
         }
@@ -8371,21 +8375,17 @@
         commands: map.commands,
         keys: map.keys
     };
-    var _hook = hook(_$1),
-        fire = _hook.fire;
-    _hook.hooks;
-    _hook.off;
-    _hook.on;
+    hook(_$1);
     W.Key = Key;
     W._ = _$1;
     onEvent('beforeload', D, function () {
-        return fire('let');
+        return _$1.fire('let');
     });
     onEvent('load', D, function () {
-        return fire('get');
+        return _$1.fire('get');
     });
     onEvent('DOMContentLoaded', D, function () {
-        return fire('set');
+        return _$1.fire('set');
     });
     onChange$d(1);
     Dialog();

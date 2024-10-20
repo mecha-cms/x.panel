@@ -121,7 +121,7 @@ function onClickTab(e) {
                 query = removeNull(query);
             }
             theHistory.replaceState({}, "", pathname + (false !== query ? toQuery(query) : ""));
-            W._.fire.apply(pane, ['change.tab', [value, name]]);
+            W._.fire('change.tab', [value, name, pane]);
         }
         offEventDefault(e);
     }
