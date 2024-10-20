@@ -40,6 +40,7 @@ function doHideMenus(but, trigger) {
             if (trigger) {
                 setAttribute(trigger, 'aria-expanded', 'false');
             }
+            W._.fire('menu.exit', [], node);
         }
     });
 }
@@ -85,6 +86,7 @@ function onClickMenuShow(e) {
         toggleClass(getParent(t), 'is:active');
         toggleClass(t, 'is:active');
         setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
+        W._.fire('menu.enter', [], current);
     }, 1);
 }
 
