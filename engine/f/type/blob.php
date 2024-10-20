@@ -2,7 +2,7 @@
 
 function x(array $_ = []) {
     $content  = '<p>' . \i('Make sure that the extension package you want to upload is structured like this:') . '</p>';
-    $content .= '<pre><code class="txt">' . \i('extension') . '.zip
+    $content .= '<pre><code class="txt">' . \To::kebab(\i('extension')) . '.zip
 ├── about.page
 ├── index.php
 └── …</code></pre>';
@@ -74,7 +74,7 @@ function x(array $_ = []) {
 
 function y(array $_ = []) {
     $content  = '<p>' . \i('Make sure that the layout package you want to upload is structured like this:') . '</p>';
-    $content .= '<pre><code class="txt">' . \i('layout') . '.zip
+    $content .= '<pre><code class="txt">' . \To::kebab(\i('layout')) . '.zip
 ├── about.page
 ├── index.php
 └── …</code></pre>';
