@@ -1,0 +1,21 @@
+@mixin siema {
+  .siema {
+    @extend .figure;
+    &.figure {
+      padding: 0;
+    }
+    > div {
+      align-items: center;
+      display: flex;
+      margin: 0;
+      > div {
+        padding: var(--x) var(--y);
+      }
+      &::after {
+        clear: both;
+        content: "";
+        display: table;
+      }
+    }
+  }
+}

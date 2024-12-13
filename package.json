@@ -15,7 +15,7 @@
     "@taufik-nurrohman/tick": "*",
     "@taufik-nurrohman/to": "*",
     "siema": "^1.5.1",
-    "sortablejs": "^1.15.3"
+    "sortablejs": "^1.15.6"
   },
   "devDependencies": {
     "@taufik-nurrohman/factory": "*"

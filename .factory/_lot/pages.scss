@@ -1,0 +1,5 @@
+@mixin pages {
+  .lot\:pages {
+    @extend .lot\:files;
+  }
+}

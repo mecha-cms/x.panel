@@ -1,0 +1,39 @@
+@mixin files {
+  .lot\:files {
+    display: block;
+    list-style: none;
+    margin: {
+      left: 0;
+      right: 0;
+    }
+    .description {
+      margin: 0;
+      padding: 0;
+    }
+    .title {
+      font: inherit;
+      margin: 0;
+      padding: 0;
+    }
+    .title {
+      flex: 1;
+      a {
+        &.not\:active {
+          opacity: 1;
+        }
+      }
+      .title {
+        display: inline-flex;
+        vertical-align: middle;
+        > span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+    &.count\:0 {
+      display: none;
+    }
+  }
+}

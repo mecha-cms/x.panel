@@ -1,0 +1,40 @@
+@use '_content/any' as *;
+@use '_content/at-media' as *;
+@use '_content/column' as *;
+@use '_content/columns' as *;
+@use '_content/link' as *;
+@use '_content/links' as *;
+@use '_content/row' as *;
+@use '_content/rows' as *;
+@use '_content/section' as *;
+@use '_content/siema' as *;
+@use '_content/sortable' as *;
+@use '_content/stack' as *;
+@use '_content/stacks' as *;
+@use '_content/tab' as *;
+@use '_content/tabs' as *;
+@use '_content/task' as *;
+@use '_content/tasks' as *;
+@use '_content/type' as *;
+
+@mixin self {
+  @include any;
+  @include column;
+  @include columns;
+  @include link;
+  @include links;
+  @include row;
+  @include rows;
+  @include section;
+  @include siema;
+  @include sortable;
+  @include stack;
+  @include stacks;
+  @include tab;
+  @include tabs;
+  @include task;
+  @include tasks;
+  @include type;
+  // Place `@media` query in the last block
+  @include at-media;
+}

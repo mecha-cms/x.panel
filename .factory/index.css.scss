@@ -1,34 +1,9 @@
-@use 'sass:math';
+@use 'content';
+@use 'lot';
+@use 'x';
 
-@mixin appearance($appearance: none) {
-  -webkit-appearance: $appearance;
-  -moz-appearance: $appearance;
-  appearance: $appearance;
-}
-
-@mixin placeholder($opacity: 1, $color: inherit) {
-  color: $color;
-  opacity: $opacity;
-}
-
-@mixin transform($value) {
-  -webkit-transform: $value;
-  -moz-transform: $value;
-  transform: $value;
-}
-
-@mixin user-select($select: normal) {
-  -webkit-user-select: $select;
-  -moz-user-select: $select;
-  user-select: $select;
-}
-
-@import '../node_modules/@taufik-nurrohman/option-picker/index.scss';
-@import '../node_modules/@taufik-nurrohman/tag-picker/index.scss';
-
-.tag-picker__tag:focus {
-  outline: 0;
-}
+/// fetch('../node_modules/@taufik-nurrohman/option-picker/index.scss');
+/// fetch('../node_modules/@taufik-nurrohman/tag-picker/index.scss');
 
 :root {
   // Gap
@@ -219,14 +194,8 @@
   }
 }
 
-@import './_/alert.scss';
-@import './_/base.scss';
-@import './_/content.scss';
-@import './_/form.scss';
-@import './_/icon.scss';
-@import './_/lot.scss';
-@import './_/siema.scss';
-@import './_/sortable.scss';
-@import './_/type.scss';
+@include content.self;
+@include lot.self;
 
-@import './_/media.scss';
+@include x.alert;
+@include x.markdown;

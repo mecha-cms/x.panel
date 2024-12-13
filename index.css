@@ -1,4 +1,3 @@
-@charset "UTF-8";
 :root {
   --color-option-picker--disabled: #666;
   --color-option-picker: #000;
@@ -596,10 +595,6 @@
   color: var(--color-tag-picker__tag--disabled, var(--color-tag-picker__tag));
 }
 
-.tag-picker__tag:focus {
-  outline: 0;
-}
-
 :root {
   --x: 24px;
   --y: 24px;
@@ -820,24 +815,6 @@
   --stroke-tag-picker--disabled: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
 }
 
-[role=alert] {
-  background: var(--fill-alert, var(--fill, none));
-  border: 0 solid;
-  border-color: var(--stroke-alert, var(--stroke, transparent));
-  border-radius: var(--arc-alert, var(--arc, 0));
-  box-shadow: var(--shadow-alert, var(--shadow, none));
-  color: var(--color-alert, var(--color, inherit));
-  padding: calc(var(--z) * 0.75) calc(var(--z) * 1.25);
-}
-[role=alert] > [role=group] {
-  display: flex;
-}
-[role=alert] > [role=group] .lot\:tasks {
-  gap: calc(var(--y) / 6) calc(var(--x) / 6);
-  margin-left: auto;
-  margin-right: calc(var(--x) / -4);
-}
-
 *,
 ::after,
 ::before {
@@ -1025,6 +1002,13 @@ pre code {
   color: var(--color-code-block, var(--color-code, var(--color, inherit)));
   display: block;
   padding: calc(var(--y) - var(--z)) calc(var(--x) / 2);
+}
+pre.is\:text code {
+  background: none;
+  border-style: dotted;
+  border-width: 1px;
+  color: inherit;
+  display: inline-block;
 }
 
 ::-moz-color-swatch {
@@ -1251,6 +1235,10 @@ input[role=button]:not(:any-link)::file-selector-button {
   color: var(--color-input__file-selector-button--disabled, var(--color-input__file-selector-button, var(--color-button--disabled, var(--color-button, var(--color-link--disabled, var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit)))))))));
 }
 
+[hidden] {
+  display: none !important;
+}
+
 [role=switch],
 button,
 [role=button],
@@ -1401,6 +1389,7 @@ hr {
 .siema > div {
   align-items: center;
   display: flex;
+  margin: 0;
 }
 .siema > div > div {
   padding: var(--x) var(--y);
@@ -1411,17 +1400,110 @@ hr {
   display: table;
 }
 
-pre.is\:text code {
-  background: none;
-  border-style: dotted;
-  border-width: 1px;
-  color: inherit;
-  display: inline-block;
+.can\:sort .sortable-ghost {
+  visibility: hidden;
+}
+.can\:sort.content\:fields > .content\:field > label[for],
+.can\:sort.content\:fields > .lot\:field > label[for],
+.can\:sort.lot\:fields > .content\:field > label[for],
+.can\:sort.lot\:fields > .lot\:field > label[for] {
+  cursor: move;
+}
+.can\:sort.with\:options[role=group][aria-orientation=vertical] {
+  flex-basis: 0;
+}
+.can\:sort.with\:options[role=group][aria-orientation=vertical] br {
+  display: none;
 }
 
-[role=doc-endnotes] {
-  color: var(--color-description);
-  margin-top: calc(var(--y) * 1);
+.a,
+a,
+details > summary,
+[role=link] {
+  color: inherit;
+}
+.a:where(:any-link),
+a:where(:any-link),
+[role=link]:where(:any-link),
+details > summary,
+details > summary[role=link] {
+  background: var(--fill-link, var(--fill, none));
+  color: var(--color-link, var(--color, inherit));
+}
+.a:where(:any-link):hover,
+a:where(:any-link):hover,
+[role=link]:where(:any-link):hover,
+details > summary:hover {
+  background: var(--fill-link--hover, var(--fill-link, var(--fill--hover, var(--fill, none))));
+  color: var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit))));
+}
+.a:where(:any-link):focus,
+a:where(:any-link):focus,
+[role=link]:where(:any-link):focus,
+details > summary:focus {
+  background: var(--fill-link--focus, var(--fill-link, var(--fill--focus, var(--fill, none))));
+  color: var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit))));
+}
+.a:where(:any-link):active,
+a:where(:any-link):active,
+[role=link]:where(:any-link):active,
+details > summary:active {
+  background: var(--fill-link--active, var(--fill-link, var(--fill--active, var(--fill, none))));
+  color: var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit))));
+}
+.a:where([aria-disabled=true]:not([class])),
+a:where([aria-disabled=true]:not([class])),
+details > summary:where([aria-disabled=true]:not([class])),
+[role=link]:where([aria-disabled=true]:not([class])) {
+  background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
+  color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
+}
+.a.not\:active,
+a.not\:active,
+details > summary.not\:active,
+.not\:active[role=link] {
+  background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
+  color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
+}
+
+.b,
+b,
+dt,
+legend,
+strong,
+th {
+  font-weight: bolder;
+}
+
+.code,
+code {
+  color: var(--color-code, var(--color, inherit));
+  font-family: var(--font-face-mono);
+  font-size: 90%;
+}
+
+.description {
+  font-weight: 300;
+}
+
+.figure,
+.siema {
+  background: var(--fill-figure, var(--fill, none));
+  padding: var(--x) var(--y);
+}
+.figure [role=img],
+.siema [role=img],
+.figure img,
+.siema img {
+  box-shadow: var(--shadow-dialog, var(--shadow, none));
+}
+.figure figcaption + *,
+.siema figcaption + * {
+  margin-top: var(--y);
+}
+.figure * + figcaption,
+.siema * + figcaption {
+  margin-top: var(--y);
 }
 
 .button,
@@ -1674,6 +1756,8 @@ pre.is\:text code {
 }
 
 .select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   background: var(--fill-input, var(--fill, none));
   border-color: var(--stroke-input, var(--stroke, transparent));
@@ -1909,6 +1993,8 @@ label .input[type=radio] + span {
 }
 .input[type=range]::-webkit-slider-runnable-track {
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: var(--stroke-input, var(--stroke, transparent));
   border: 0;
   height: 2px;
@@ -1916,6 +2002,8 @@ label .input[type=radio] + span {
 }
 .input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: var(--fill-button, var(--fill, none));
   border-color: var(--stroke-button, var(--stroke, transparent));
   border-radius: var(--arc-button, var(--arc, 0));
@@ -2023,6 +2111,24 @@ label .input[type=radio] + span {
   color: var(--color-button--disabled, var(--color-button, var(--color, inherit)));
 }
 
+.has\:height {
+  display: flex;
+  height: 100%;
+}
+
+.has\:width {
+  display: flex;
+  width: 100%;
+}
+
+.i,
+dfn,
+em,
+i,
+var {
+  font-style: italic;
+}
+
 .icon {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -2060,6 +2166,366 @@ label .input[type=radio] + span {
   flex: 1;
 }
 
+.image,
+.img,
+img,
+[role=img] {
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.is\:fix {
+  cursor: default;
+}
+
+.not\:active {
+  color: var(--color--disabled, var(--color, inherit));
+  cursor: not-allowed;
+}
+
+.small,
+[role=doc-endnotes],
+.lot\:menus > hgroup > .description,
+.lot\:menu > hgroup > .description,
+.lot\:links > hgroup > .description,
+.content\:links > hgroup > .description,
+.lot\:field .description,
+kbd,
+small,
+sub,
+sup {
+  font-size: calc(var(--z) * 0.75);
+}
+
+.s,
+del,
+s,
+[role=deletion] {
+  text-decoration: line-through;
+}
+
+.table,
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.table caption,
+table caption {
+  caption-side: bottom;
+  margin-top: calc(var(--y) / 2);
+}
+.table th,
+table th,
+.table td,
+table td {
+  border: 1px solid;
+  border-color: var(--stroke, transparent);
+  padding: calc(var(--y) / 4) calc(var(--x) / 2);
+  text-align: inherit;
+  vertical-align: top;
+}
+
+.title .status {
+  display: inline-block;
+  margin-left: calc(var(--x) / 4);
+  vertical-align: middle;
+}
+
+.u,
+ins,
+u,
+[role=insertion] {
+  text-decoration: underline;
+}
+
+.type\:void {
+  align-content: center;
+  align-items: center;
+  border-top-width: 4px;
+  display: flex;
+  text-align: center;
+}
+.type\:void > * {
+  flex: 1;
+}
+.type\:void > * .title {
+  display: inline-flex;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+}
+@media (min-width: 720px) {
+  .can\:flex {
+    display: flex;
+  }
+  .can\:flex.has\:gap {
+    gap: calc(var(--y) + var(--h) - var(--z)) calc(var(--x) + var(--h) - var(--z));
+  }
+  .can\:flex > * {
+    flex: 1;
+    margin: 0;
+    min-width: 0;
+  }
+  .lot\:fields.can\:flex.has\:gap {
+    gap: var(--y) var(--x);
+  }
+  .lot\:tabs .lot\:links,
+  .content\:tabs .lot\:links,
+  .lot\:tabs .content\:links,
+  .content\:tabs .content\:links {
+    border: 0 solid;
+    border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
+    border-width: 0 0 1px;
+    line-height: calc(var(--y) * 2);
+  }
+  .lot\:tabs .lot\:links li,
+  .content\:tabs .lot\:links li,
+  .lot\:tabs .content\:links li,
+  .content\:tabs .content\:links li {
+    background: var(--fill-tab, var(--fill, none));
+    border-radius: var(--arc-tab, var(--arc, 0));
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid;
+    border-color: var(--stroke-tab, var(--stroke, transparent));
+    border-bottom-width: 0;
+    box-shadow: var(--shadow-tab, var(--shadow, none));
+  }
+  .lot\:tabs .lot\:links li + li,
+  .content\:tabs .lot\:links li + li,
+  .lot\:tabs .content\:links li + li,
+  .content\:tabs .content\:links li + li {
+    margin-left: -1px;
+  }
+  .lot\:tabs .lot\:links li.has\:link,
+  .content\:tabs .lot\:links li.has\:link,
+  .lot\:tabs .content\:links li.has\:link,
+  .content\:tabs .content\:links li.has\:link {
+    background: var(--fill-tab-link, var(--fill-tab, var(--fill-link, var(--fill, none))));
+    border-color: var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link, var(--stroke, transparent))));
+    box-shadow: var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link, var(--shadow, none))));
+  }
+  .lot\:tabs .lot\:links li.has\:link:hover,
+  .content\:tabs .lot\:links li.has\:link:hover,
+  .lot\:tabs .content\:links li.has\:link:hover,
+  .content\:tabs .content\:links li.has\:link:hover {
+    background: var(--fill-tab-link--hover, var(--fill-tab-link, var(--fill-tab, var(--fill-link--hover, var(--fill-link, var(--fill--hover, var(--fill, none)))))));
+    border-color: var(--stroke-tab-link--hover, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--hover, var(--stroke-link, var(--stroke--hover, var(--stroke, transparent)))))));
+    box-shadow: var(--shadow-tab-link--hover, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--hover, var(--shadow-link, var(--shadow--hover, var(--shadow, none)))))));
+  }
+  .lot\:tabs .lot\:links li.has\:link:focus,
+  .content\:tabs .lot\:links li.has\:link:focus,
+  .lot\:tabs .content\:links li.has\:link:focus,
+  .content\:tabs .content\:links li.has\:link:focus {
+    background: var(--fill-tab-link--focus, var(--fill-tab-link, var(--fill-tab, var(--fill-link--focus, var(--fill-link, var(--fill--focus, var(--fill, none)))))));
+    border-color: var(--stroke-tab-link--focus, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--focus, var(--stroke-link, var(--stroke--focus, var(--stroke, transparent)))))));
+    box-shadow: var(--shadow-tab-link--focus, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--focus, var(--shadow-link, var(--shadow--focus, var(--shadow, none)))))));
+  }
+  .lot\:tabs .lot\:links li.has\:link:active,
+  .content\:tabs .lot\:links li.has\:link:active,
+  .lot\:tabs .content\:links li.has\:link:active,
+  .content\:tabs .content\:links li.has\:link:active {
+    background: var(--fill-tab-link--active, var(--fill-tab-link, var(--fill-tab, var(--fill-link--active, var(--fill-link, var(--fill--active, var(--fill, none)))))));
+    border-color: var(--stroke-tab-link--active, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--active, var(--stroke-link, var(--stroke--active, var(--stroke, transparent)))))));
+    box-shadow: var(--shadow-tab-link--active, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--active, var(--shadow-link, var(--shadow--active, var(--shadow, none)))))));
+  }
+  .lot\:tabs .lot\:links li.is\:current,
+  .content\:tabs .lot\:links li.is\:current,
+  .lot\:tabs .content\:links li.is\:current,
+  .content\:tabs .content\:links li.is\:current {
+    background: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
+    border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
+    box-shadow: var(--shadow-tab--current, var(--shadow-tab, var(--shadow--current, var(--shadow, none))));
+    z-index: 1;
+  }
+  .lot\:tabs .lot\:links li.is\:current::after,
+  .content\:tabs .lot\:links li.is\:current::after,
+  .lot\:tabs .content\:links li.is\:current::after,
+  .content\:tabs .content\:links li.is\:current::after {
+    border: 0 solid;
+    border-color: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
+    border-width: 0 0 1px;
+    bottom: -1px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: auto;
+  }
+  .lot\:tabs .lot\:links li.not\:active,
+  .content\:tabs .lot\:links li.not\:active,
+  .lot\:tabs .content\:links li.not\:active,
+  .content\:tabs .content\:links li.not\:active {
+    background: var(--fill-tab--disabled, var(--fill-tab, var(--fill--disabled, var(--fill, none))));
+    border-color: var(--stroke-tab--disabled, var(--stroke-tab, var(--stroke--disabled, var(--stroke, transparent))));
+  }
+  .lot\:tabs .lot\:links a,
+  .content\:tabs .lot\:links a,
+  .lot\:tabs .content\:links a,
+  .content\:tabs .content\:links a,
+  .lot\:tabs .lot\:links details > summary,
+  .content\:tabs .lot\:links details > summary,
+  .lot\:tabs .content\:links details > summary,
+  .content\:tabs .content\:links details > summary,
+  .lot\:tabs .lot\:links [role=link],
+  .content\:tabs .lot\:links [role=link],
+  .lot\:tabs .content\:links [role=link],
+  .content\:tabs .content\:links [role=link] {
+    padding: 0 calc(var(--z) * 1.25);
+  }
+  .lot\:tabs.has\:gap .content\:tab,
+  .has\:gap.content\:tabs .content\:tab,
+  .lot\:tabs.has\:gap .lot\:tab,
+  .has\:gap.content\:tabs .lot\:tab {
+    background: var(--fill-tab, var(--fill, none));
+    border: 1px solid;
+    border-color: var(--stroke-tab, var(--stroke, transparent));
+    border-top-width: 0;
+    padding: var(--y) var(--x);
+  }
+  .lot\:tabs.has\:gap .content\:tab.is\:current,
+  .has\:gap.content\:tabs .content\:tab.is\:current,
+  .lot\:tabs.has\:gap .lot\:tab.is\:current,
+  .has\:gap.content\:tabs .lot\:tab.is\:current {
+    background: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
+    border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
+  }
+  .lot\:tabs.has\:gap:not(.count\:1) .content\:tab,
+  .has\:gap.content\:tabs:not(.count\:1) .content\:tab,
+  .lot\:tabs.has\:gap:not(.count\:1) .lot\:tab,
+  .has\:gap.content\:tabs:not(.count\:1) .lot\:tab {
+    margin-top: 0;
+  }
+  .lot\:tabs:not(.count\:1) .content\:tab,
+  .content\:tabs:not(.count\:1) .content\:tab,
+  .lot\:tabs:not(.count\:1) .lot\:tab,
+  .content\:tabs:not(.count\:1) .lot\:tab {
+    margin-top: var(--y);
+  }
+  .lot\:tabs:not(.has\:current) .lot\:links,
+  .content\:tabs:not(.has\:current) .lot\:links,
+  .lot\:tabs:not(.has\:current) .content\:links,
+  .content\:tabs:not(.has\:current) .content\:links {
+    border-color: var(--stroke-tab, var(--stroke, transparent));
+  }
+}
+@media (max-width: 720px) {
+  .lot\:bar .lot\:links.of\:lot,
+  .lot\:bar .of\:lot.content\:links {
+    flex: 1;
+    min-width: 100%;
+    width: 100%;
+  }
+  .lot\:bar .has\:form {
+    flex: 1;
+  }
+  .lot\:bar .has\:form .lot\:field .with\:fields {
+    display: flex;
+  }
+  .lot\:bar .has\:form .lot\:field .with\:fields input {
+    flex: 1;
+  }
+  .lot\:bar .has\:menu ul ul {
+    left: 25%;
+  }
+  .lot\:desk,
+  .lot\:section,
+  .content\:section {
+    padding: calc(var(--y) / 2) calc(var(--x) / 2);
+  }
+  .lot\:field,
+  .lot\:field.type\:items,
+  .lot\:field.type\:colors,
+  .lot\:field.type\:blobs {
+    flex-direction: column;
+    width: auto;
+  }
+  .lot\:field > * + *,
+  .lot\:field.type\:items > * + *,
+  .lot\:field.type\:colors > * + *,
+  .lot\:field.type\:blobs > * + * {
+    margin-top: calc(var(--y) / 3);
+  }
+  .lot\:field > label,
+  .lot\:field.type\:items > label,
+  .lot\:field.type\:colors > label,
+  .lot\:field.type\:blobs > label {
+    padding: 0;
+    text-align: inherit;
+    width: auto;
+  }
+  .lot\:field > label + div,
+  .lot\:field.type\:items > label + div,
+  .lot\:field.type\:colors > label + div,
+  .lot\:field.type\:blobs > label + div {
+    padding: 0;
+    text-align: inherit;
+    width: auto;
+  }
+  .lot\:page > div:first-child + div + div {
+    flex-basis: 100%;
+    margin: 0 0 0 calc(var(--x) * 2.75);
+    min-height: 0;
+  }
+  .lot\:page > div:first-child[hidden] + div + div {
+    margin-left: 0;
+  }
+  .lot\:pager > span:first-child,
+  .lot\:pager > span:last-child {
+    display: none;
+  }
+  .lot\:tabs .lot\:links ul,
+  .content\:tabs .lot\:links ul,
+  .lot\:tabs .content\:links ul,
+  .content\:tabs .content\:links ul {
+    gap: 0 var(--x);
+    margin-bottom: var(--y);
+  }
+  .lot\:tabs .lot\:links li,
+  .content\:tabs .lot\:links li,
+  .lot\:tabs .content\:links li,
+  .content\:tabs .content\:links li {
+    color: var(--color--disabled, var(--color, inherit));
+  }
+  .lot\:tabs .lot\:links li.is\:current,
+  .content\:tabs .lot\:links li.is\:current,
+  .lot\:tabs .content\:links li.is\:current,
+  .content\:tabs .content\:links li.is\:current {
+    color: var(--color--current, var(--color, inherit));
+  }
+  .lot\:tabs .lot\:links li [role=link],
+  .content\:tabs .lot\:links li [role=link],
+  .lot\:tabs .content\:links li [role=link],
+  .content\:tabs .content\:links li [role=link],
+  .lot\:tabs .lot\:links li a:any-link,
+  .content\:tabs .lot\:links li a:any-link,
+  .lot\:tabs .content\:links li a:any-link,
+  .content\:tabs .content\:links li a:any-link,
+  .lot\:tabs .lot\:links li details > summary:any-link,
+  .content\:tabs .lot\:links li details > summary:any-link,
+  .lot\:tabs .content\:links li details > summary:any-link,
+  .content\:tabs .content\:links li details > summary:any-link {
+    color: inherit;
+  }
+  .lot\:tabs .lot\:links .title svg,
+  .content\:tabs .lot\:links .title svg,
+  .lot\:tabs .content\:links .title svg,
+  .content\:tabs .content\:links .title svg {
+    display: none;
+  }
+}
+@media (max-width: 340px) {
+  .lot\:page > div:first-child {
+    display: none;
+  }
+  .lot\:page > div:first-child + div + div {
+    margin-left: 0;
+  }
+}
 .lot\:bar {
   background: var(--fill-bar, var(--fill, none));
   border: 0 solid;
@@ -2075,23 +2541,29 @@ label .input[type=radio] + span {
 .lot\:bar.is\:flex {
   flex-direction: row;
 }
-.lot\:bar .lot\:links {
+.lot\:bar .lot\:links,
+.lot\:bar .content\:links {
   margin: 0;
 }
 .lot\:bar .lot\:links > ul,
-.lot\:bar .lot\:links > ul > li {
+.lot\:bar .content\:links > ul,
+.lot\:bar .lot\:links > ul > li,
+.lot\:bar .content\:links > ul > li {
   height: inherit;
   list-style: none;
   margin: 0;
   padding: 0;
   width: auto;
 }
-.lot\:bar .lot\:links > ul {
+.lot\:bar .lot\:links > ul,
+.lot\:bar .content\:links > ul {
   display: flex;
   height: calc(var(--y) * 2);
 }
 .lot\:bar .lot\:links > ul > li > a,
-.lot\:bar .lot\:links > ul > li > [role=link] {
+.lot\:bar .content\:links > ul > li > a,
+.lot\:bar .lot\:links > ul > li > [role=link],
+.lot\:bar .content\:links > ul > li > [role=link] {
   background: var(--fill-bar-link, var(--fill-link, var(--fill, none)));
   color: var(--color-bar-link, var(--color-link, var(--color, inherit)));
   display: flex;
@@ -2101,21 +2573,29 @@ label .input[type=radio] + span {
   position: relative;
 }
 .lot\:bar .lot\:links > ul > li > a .title .icon:first-child,
-.lot\:bar .lot\:links > ul > li > [role=link] .title .icon:first-child {
+.lot\:bar .content\:links > ul > li > a .title .icon:first-child,
+.lot\:bar .lot\:links > ul > li > [role=link] .title .icon:first-child,
+.lot\:bar .content\:links > ul > li > [role=link] .title .icon:first-child {
   margin-left: calc(var(--x) / -4);
 }
 .lot\:bar .lot\:links > ul > li > a .title .icon:last-child,
-.lot\:bar .lot\:links > ul > li > [role=link] .title .icon:last-child {
+.lot\:bar .content\:links > ul > li > a .title .icon:last-child,
+.lot\:bar .lot\:links > ul > li > [role=link] .title .icon:last-child,
+.lot\:bar .content\:links > ul > li > [role=link] .title .icon:last-child {
   margin-right: calc(var(--x) / -4);
 }
 .lot\:bar .lot\:links > ul > li > a .title .icon.caret,
-.lot\:bar .lot\:links > ul > li > [role=link] .title .icon.caret {
+.lot\:bar .content\:links > ul > li > a .title .icon.caret,
+.lot\:bar .lot\:links > ul > li > [role=link] .title .icon.caret,
+.lot\:bar .content\:links > ul > li > [role=link] .title .icon.caret {
   fill: var(--color-bar-caret, var(--color-caret, var(--color, currentColor)));
   margin-left: calc(var(--x) / -4);
   margin-right: calc(var(--x) / -4);
 }
 .lot\:bar .lot\:links > ul > li > a .title .status,
-.lot\:bar .lot\:links > ul > li > [role=link] .title .status {
+.lot\:bar .content\:links > ul > li > a .title .status,
+.lot\:bar .lot\:links > ul > li > [role=link] .title .status,
+.lot\:bar .content\:links > ul > li > [role=link] .title .status {
   background: var(--fill-bar-status, var(--fill-status, var(--fill, none)));
   border-radius: var(--arc-bar-status, var(--arc-status, var(--arc, 0)));
   box-shadow: var(--shadow-bar-status, var(--shadow-status, var(--shadow, none)));
@@ -2126,21 +2606,28 @@ label .input[type=radio] + span {
   padding: 0 calc(var(--x) / 4);
 }
 .lot\:bar .lot\:links > ul > li > a:hover,
-.lot\:bar .lot\:links > ul > li > [role=link]:hover {
+.lot\:bar .content\:links > ul > li > a:hover,
+.lot\:bar .lot\:links > ul > li > [role=link]:hover,
+.lot\:bar .content\:links > ul > li > [role=link]:hover {
   background: var(--fill-bar-link--hover, var(--fill-bar-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--hover, var(--color-bar-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
 }
 .lot\:bar .lot\:links > ul > li > a:focus,
-.lot\:bar .lot\:links > ul > li > [role=link]:focus {
+.lot\:bar .content\:links > ul > li > a:focus,
+.lot\:bar .lot\:links > ul > li > [role=link]:focus,
+.lot\:bar .content\:links > ul > li > [role=link]:focus {
   background: var(--fill-bar-link--focus, var(--fill-bar-link, var(--fill-link--focus, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--focus, var(--color-bar-link, var(--color-link--focus, var(--color-link, var(--color, inherit)))));
 }
 .lot\:bar .lot\:links > ul > li > a:active,
-.lot\:bar .lot\:links > ul > li > [role=link]:active {
+.lot\:bar .content\:links > ul > li > a:active,
+.lot\:bar .lot\:links > ul > li > [role=link]:active,
+.lot\:bar .content\:links > ul > li > [role=link]:active {
   background: var(--fill-bar-link--active, var(--fill-bar-link, var(--fill-link--active, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--active, var(--color-bar-link, var(--color-link--active, var(--color-link, var(--color, inherit)))));
 }
-.lot\:bar .lot\:links > ul > li.as\:separator {
+.lot\:bar .lot\:links > ul > li.as\:separator,
+.lot\:bar .content\:links > ul > li.as\:separator {
   background: var(--stroke);
   height: var(--y);
   margin: calc(var(--y) / 2) 0;
@@ -2148,20 +2635,27 @@ label .input[type=radio] + span {
   width: 1px;
 }
 .lot\:bar .lot\:links > ul > li.as\:separator:first-child,
-.lot\:bar .lot\:links > ul > li.as\:separator:last-child {
+.lot\:bar .content\:links > ul > li.as\:separator:first-child,
+.lot\:bar .lot\:links > ul > li.as\:separator:last-child,
+.lot\:bar .content\:links > ul > li.as\:separator:last-child {
   display: none;
 }
 .lot\:bar .lot\:links > ul > li.is\:current > a,
-.lot\:bar .lot\:links > ul > li.is\:current > [role=link] {
+.lot\:bar .content\:links > ul > li.is\:current > a,
+.lot\:bar .lot\:links > ul > li.is\:current > [role=link],
+.lot\:bar .content\:links > ul > li.is\:current > [role=link] {
   background: var(--fill-bar-link--current, var(--fill-bar-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--current, var(--color-bar-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
 }
 .lot\:bar .lot\:links > ul > li.not\:active > a,
-.lot\:bar .lot\:links > ul > li.not\:active > [role=link] {
+.lot\:bar .content\:links > ul > li.not\:active > a,
+.lot\:bar .lot\:links > ul > li.not\:active > [role=link],
+.lot\:bar .content\:links > ul > li.not\:active > [role=link] {
   background: var(--fill-bar-link--disabled, var(--fill-bar-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
   color: var(--color-bar-link--disabled, var(--color-bar-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
 }
-.lot\:bar .lot\:links.of\:links {
+.lot\:bar .lot\:links.of\:links,
+.lot\:bar .of\:links.content\:links {
   flex: 1;
 }
 .lot\:bar .lot\:field {
@@ -2351,7 +2845,8 @@ label .input[type=radio] + span {
 .lot\:field > label + div .with\:fields.has\:height {
   height: auto;
 }
-.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks {
+.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks,
+.lot\:field > label + div .with\:fields.has\:tasks .content\:tasks {
   background: var(--fill-input);
   background-clip: padding-box;
   border: 1px solid transparent;
@@ -2363,11 +2858,13 @@ label .input[type=radio] + span {
   top: 0;
   z-index: 2;
 }
-.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks > * {
+.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks > *,
+.lot\:field > label + div .with\:fields.has\:tasks .content\:tasks > * {
   padding: 0 calc(var(--x) / 6 + 1px);
   position: relative;
 }
-.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks > * + *::after {
+.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks > * + *::after,
+.lot\:field > label + div .with\:fields.has\:tasks .content\:tasks > * + *::after {
   border: 1px solid;
   border-color: var(--stroke-input);
   border-width: 0 0 0 1px;
@@ -2378,13 +2875,16 @@ label .input[type=radio] + span {
   right: 100%;
   top: 0;
 }
-.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks .title span {
+.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks .title span,
+.lot\:field > label + div .with\:fields.has\:tasks .content\:tasks .title span {
   padding: 0 calc(var(--x) / 6);
 }
-.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks .title svg + span {
+.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks .title svg + span,
+.lot\:field > label + div .with\:fields.has\:tasks .content\:tasks .title svg + span {
   padding-left: 0;
 }
-.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks::after {
+.lot\:field > label + div .with\:fields.has\:tasks .lot\:tasks::after,
+.lot\:field > label + div .with\:fields.has\:tasks .content\:tasks::after {
   border: 1px solid;
   border-color: var(--stroke-input);
   border-width: 0 0 0 1px;
@@ -2395,54 +2895,69 @@ label .input[type=radio] + span {
   right: 100%;
   top: 0;
 }
-.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks {
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks,
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .content\:tasks {
   background: var(--fill-input--focus, var(--fill-input));
   background-clip: padding-box;
 }
-.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks > *::after {
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks > *::after,
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .content\:tasks > *::after {
   border-color: var(--stroke-input--focus, var(--stroke-input));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks::after {
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .lot\:tasks::after,
+.lot\:field > label + div .with\:fields.has\:tasks :focus + .content\:tasks::after {
   border-color: var(--stroke-input--focus, var(--stroke-input));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .lot\:tasks {
+.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .lot\:tasks,
+.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .content\:tasks {
   background: var(--fill-input--in-range, var(--fill-input--focus, var(--fill-input)));
   background-clip: padding-box;
 }
-.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .lot\:tasks > *::after {
+.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .lot\:tasks > *::after,
+.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .content\:tasks > *::after {
   border-color: var(--stroke-input--in-range, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .lot\:tasks::after {
+.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .lot\:tasks::after,
+.lot\:field > label + div .with\:fields.has\:tasks :in-range:focus + .content\:tasks::after {
   border-color: var(--stroke-input--in-range, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .lot\:tasks {
+.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .lot\:tasks,
+.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .content\:tasks {
   background: var(--fill-input--invalid, var(--fill-input--focus, var(--fill-input)));
   background-clip: padding-box;
 }
-.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .lot\:tasks > *::after {
+.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .lot\:tasks > *::after,
+.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .content\:tasks > *::after {
   border-color: var(--stroke-input--invalid, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .lot\:tasks::after {
+.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .lot\:tasks::after,
+.lot\:field > label + div .with\:fields.has\:tasks :invalid:focus + .content\:tasks::after {
   border-color: var(--stroke-input--invalid, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .lot\:tasks {
+.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .lot\:tasks,
+.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .content\:tasks {
   background: var(--fill-input--out-of-range, var(--fill-input--focus, var(--fill-input)));
   background-clip: padding-box;
 }
-.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .lot\:tasks > *::after {
+.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .lot\:tasks > *::after,
+.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .content\:tasks > *::after {
   border-color: var(--stroke-input--out-of-range, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .lot\:tasks::after {
+.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .lot\:tasks::after,
+.lot\:field > label + div .with\:fields.has\:tasks :out-of-range:focus + .content\:tasks::after {
   border-color: var(--stroke-input--out-of-range, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .lot\:tasks {
+.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .lot\:tasks,
+.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .content\:tasks {
   background: var(--fill-input--valid, var(--fill-input--focus, var(--fill-input)));
   background-clip: padding-box;
 }
-.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .lot\:tasks > *::after {
+.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .lot\:tasks > *::after,
+.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .content\:tasks > *::after {
   border-color: var(--stroke-input--valid, var(--stroke-input--focus, var(--stroke-input)));
 }
-.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .lot\:tasks::after {
+.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .lot\:tasks::after,
+.lot\:field > label + div .with\:fields.has\:tasks :valid:focus + .content\:tasks::after {
   border-color: var(--stroke-input--valid, var(--stroke-input--focus, var(--stroke-input)));
 }
 .lot\:field > label + div .with\:fields > * + * {
@@ -2638,6 +3153,9 @@ label .input[type=radio] + span {
 .tag-picker__tag-x:any-link:active {
   color: var(--color-tag-picker__tag-x--active, var(--color-tag-picker__tag-x, var(--color--active, var(--color, inherit))));
 }
+.tag-picker__tag:focus {
+  outline: 0;
+}
 .tag-picker__source {
   position: fixed;
 }
@@ -2716,7 +3234,10 @@ label .input[type=radio] + span {
 }
 .lot\:file > .lot\:tasks,
 .lot\:page > .lot\:tasks,
-.lot\:folder > .lot\:tasks {
+.lot\:folder > .lot\:tasks,
+.lot\:file > .content\:tasks,
+.lot\:page > .content\:tasks,
+.lot\:folder > .content\:tasks {
   margin: 0 calc(var(--x) / -4) 0 0;
 }
 .lot\:file.not\:active,
@@ -2725,38 +3246,9 @@ label .input[type=radio] + span {
   opacity: 0.5;
 }
 
-.lot\:folder {
-  background: var(--fill-folder, var(--fill, none));
-  border-color: var(--stroke-folder, var(--stroke, transparent));
-  border-radius: var(--arc-folder, var(--arc, 0));
-  box-shadow: var(--shadow-folder, var(--shadow, none));
-}
-.lot\:folder:focus {
-  background: var(--fill-folder--focus, var(--fill-folder, var(--fill, none)));
-  border-color: var(--stroke-folder--focus, var(--stroke-folder, var(--stroke, transparent)));
-  box-shadow: var(--shadow-folder--focus, var(--shadow-folder, var(--shadow, none)));
-}
-.lot\:folder:hover {
-  background: var(--fill-folder--hover, var(--fill-folder, var(--fill, none)));
-  border-color: var(--stroke-folder--hover, var(--stroke-folder, var(--stroke, transparent)));
-  box-shadow: var(--shadow-folder--hover, var(--shadow-folder, var(--shadow, none)));
-}
-.lot\:folder:active {
-  background: var(--fill-folder--active, var(--fill-folder, var(--fill, none)));
-  border-color: var(--stroke-folder--active, var(--stroke-folder, var(--stroke, transparent)));
-  box-shadow: var(--shadow-folder--active, var(--shadow-folder, var(--shadow, none)));
-}
-.lot\:folder.is\:current {
-  background: var(--fill-folder--current, var(--fill-folder, var(--fill, none)));
-  border-color: var(--stroke-folder--current, var(--stroke-folder, var(--stroke, transparent)));
-  box-shadow: var(--shadow-folder--current, var(--shadow-folder, var(--shadow, none)));
-}
-
-.is\:file,
-.is\:folder {
+.is\:file {
   padding-left: calc(var(--x) * 1.75);
 }
-
 .is\:file::before {
   background: var(--fill-file-icon, var(--fill, none));
   border: 1px solid;
@@ -2771,20 +3263,6 @@ label .input[type=radio] + span {
   height: 0;
   left: 20px;
   width: 0;
-}
-
-.is\:folder::before {
-  background: var(--fill-folder-icon, var(--fill, none));
-  border: 1px solid;
-  border-color: var(--stroke-folder-icon, var(--stroke, transparent));
-  height: 18px;
-  top: 11px;
-}
-.is\:folder::after {
-  background: var(--stroke-folder-icon, var(--stroke, transparent));
-  height: 3px;
-  top: 7px;
-  width: 12px;
 }
 
 .lot\:files,
@@ -2843,42 +3321,96 @@ label .input[type=radio] + span {
   display: none;
 }
 
+.lot\:folder {
+  background: var(--fill-folder, var(--fill, none));
+  border-color: var(--stroke-folder, var(--stroke, transparent));
+  border-radius: var(--arc-folder, var(--arc, 0));
+  box-shadow: var(--shadow-folder, var(--shadow, none));
+}
+.lot\:folder:focus {
+  background: var(--fill-folder--focus, var(--fill-folder, var(--fill, none)));
+  border-color: var(--stroke-folder--focus, var(--stroke-folder, var(--stroke, transparent)));
+  box-shadow: var(--shadow-folder--focus, var(--shadow-folder, var(--shadow, none)));
+}
+.lot\:folder:hover {
+  background: var(--fill-folder--hover, var(--fill-folder, var(--fill, none)));
+  border-color: var(--stroke-folder--hover, var(--stroke-folder, var(--stroke, transparent)));
+  box-shadow: var(--shadow-folder--hover, var(--shadow-folder, var(--shadow, none)));
+}
+.lot\:folder:active {
+  background: var(--fill-folder--active, var(--fill-folder, var(--fill, none)));
+  border-color: var(--stroke-folder--active, var(--stroke-folder, var(--stroke, transparent)));
+  box-shadow: var(--shadow-folder--active, var(--shadow-folder, var(--shadow, none)));
+}
+.lot\:folder.is\:current {
+  background: var(--fill-folder--current, var(--fill-folder, var(--fill, none)));
+  border-color: var(--stroke-folder--current, var(--stroke-folder, var(--stroke, transparent)));
+  box-shadow: var(--shadow-folder--current, var(--shadow-folder, var(--shadow, none)));
+}
+
+.is\:folder {
+  padding-left: calc(var(--x) * 1.75);
+}
+.is\:folder::before {
+  background: var(--fill-folder-icon, var(--fill, none));
+  border: 1px solid;
+  border-color: var(--stroke-folder-icon, var(--stroke, transparent));
+  height: 18px;
+  top: 11px;
+}
+.is\:folder::after {
+  background: var(--stroke-folder-icon, var(--stroke, transparent));
+  height: 3px;
+  top: 7px;
+  width: 12px;
+}
+
 .lot\:links > ul,
-.lot\:links > ul > li {
+.content\:links > ul,
+.lot\:links > ul > li,
+.content\:links > ul > li {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.lot\:links > ul {
+.lot\:links > ul,
+.content\:links > ul {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
 }
-.lot\:links > ul > li {
+.lot\:links > ul > li,
+.content\:links > ul > li {
   display: flex;
   position: relative;
 }
-.lot\:links > hgroup {
+.lot\:links > hgroup,
+.content\:links > hgroup {
   margin: 0;
 }
-.lot\:links > hgroup > .description {
+.lot\:links > hgroup > .description,
+.content\:links > hgroup > .description {
   line-height: calc(var(--y) / 1.5);
   margin: calc(var(--y) / -2) 0 0;
   padding: calc(var(--y) / 2) 0;
 }
-.lot\:links > hgroup > .title {
+.lot\:links > hgroup > .title,
+.content\:links > hgroup > .title {
   font-size: 100%;
   line-height: inherit;
   margin: 0;
   padding: calc(var(--y) / 4) 0;
 }
-.lot\:links.has\:gap > ul {
+.lot\:links.has\:gap > ul,
+.has\:gap.content\:links > ul {
   gap: calc(var(--y) / 2) calc(var(--x) / 2);
 }
-.lot\:links.is\:flex > ul {
+.lot\:links.is\:flex > ul,
+.is\:flex.content\:links > ul {
   flex-direction: row;
 }
-.lot\:links.is\:flex > ul > li > form {
+.lot\:links.is\:flex > ul > li > form,
+.is\:flex.content\:links > ul > li > form {
   margin-top: 0;
 }
 
@@ -3549,14 +4081,18 @@ label .input[type=radio] + span {
   display: block;
 }
 .lot\:stack.is\:current > .lot\:tasks,
-.is\:current.content\:stack > .lot\:tasks {
+.is\:current.content\:stack > .lot\:tasks,
+.lot\:stack.is\:current > .content\:tasks,
+.is\:current.content\:stack > .content\:tasks {
   border-top: 1px dashed;
   border-top-color: inherit;
   display: flex;
   padding: calc(var(--y) / 2) calc(var(--x) / 2);
 }
 .lot\:stack.is\:current > .lot\:tasks.count\:0,
-.is\:current.content\:stack > .lot\:tasks.count\:0 {
+.is\:current.content\:stack > .lot\:tasks.count\:0,
+.lot\:stack.is\:current > .count\:0.content\:tasks,
+.is\:current.content\:stack > .count\:0.content\:tasks {
   display: none;
 }
 .lot\:stack.is\:current:not(.can\:toggle) > .title > a,
@@ -3606,10 +4142,12 @@ label .input[type=radio] + span {
   margin-top: calc(var(--y) / 2);
 }
 
-.lot\:stacks {
+.lot\:stacks,
+.content\:stacks {
   display: block;
 }
-.lot\:stacks.count\:0 {
+.lot\:stacks.count\:0,
+.count\:0.content\:stacks {
   display: none;
 }
 
@@ -3623,519 +4161,227 @@ label .input[type=radio] + span {
   display: block;
 }
 
-.lot\:tabs .lot\:links li {
+.lot\:tabs .lot\:links li,
+.content\:tabs .lot\:links li,
+.lot\:tabs .content\:links li,
+.content\:tabs .content\:links li {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
   color: var(--color-tab, var(--color, inherit));
 }
 .lot\:tabs .lot\:links li a,
+.content\:tabs .lot\:links li a,
+.lot\:tabs .content\:links li a,
+.content\:tabs .content\:links li a,
 .lot\:tabs .lot\:links li details > summary,
-.lot\:tabs .lot\:links li [role=link] {
+.content\:tabs .lot\:links li details > summary,
+.lot\:tabs .content\:links li details > summary,
+.content\:tabs .content\:links li details > summary,
+.lot\:tabs .lot\:links li [role=link],
+.content\:tabs .lot\:links li [role=link],
+.lot\:tabs .content\:links li [role=link],
+.content\:tabs .content\:links li [role=link] {
   color: inherit;
   display: flex;
 }
 .lot\:tabs .lot\:links li a:hover,
+.content\:tabs .lot\:links li a:hover,
+.lot\:tabs .content\:links li a:hover,
+.content\:tabs .content\:links li a:hover,
 .lot\:tabs .lot\:links li details > summary:hover,
-.lot\:tabs .lot\:links li [role=link]:hover {
+.content\:tabs .lot\:links li details > summary:hover,
+.lot\:tabs .content\:links li details > summary:hover,
+.content\:tabs .content\:links li details > summary:hover,
+.lot\:tabs .lot\:links li [role=link]:hover,
+.content\:tabs .lot\:links li [role=link]:hover,
+.lot\:tabs .content\:links li [role=link]:hover,
+.content\:tabs .content\:links li [role=link]:hover {
   color: var(--color-tab--hover, var(--color-tab, var(--color, inherit)));
 }
 .lot\:tabs .lot\:links li a:focus,
+.content\:tabs .lot\:links li a:focus,
+.lot\:tabs .content\:links li a:focus,
+.content\:tabs .content\:links li a:focus,
 .lot\:tabs .lot\:links li details > summary:focus,
-.lot\:tabs .lot\:links li [role=link]:focus {
+.content\:tabs .lot\:links li details > summary:focus,
+.lot\:tabs .content\:links li details > summary:focus,
+.content\:tabs .content\:links li details > summary:focus,
+.lot\:tabs .lot\:links li [role=link]:focus,
+.content\:tabs .lot\:links li [role=link]:focus,
+.lot\:tabs .content\:links li [role=link]:focus,
+.content\:tabs .content\:links li [role=link]:focus {
   color: var(--color-tab--focus, var(--color-tab, var(--color, inherit)));
 }
 .lot\:tabs .lot\:links li a:active,
+.content\:tabs .lot\:links li a:active,
+.lot\:tabs .content\:links li a:active,
+.content\:tabs .content\:links li a:active,
 .lot\:tabs .lot\:links li details > summary:active,
-.lot\:tabs .lot\:links li [role=link]:active {
+.content\:tabs .lot\:links li details > summary:active,
+.lot\:tabs .content\:links li details > summary:active,
+.content\:tabs .content\:links li details > summary:active,
+.lot\:tabs .lot\:links li [role=link]:active,
+.content\:tabs .lot\:links li [role=link]:active,
+.lot\:tabs .content\:links li [role=link]:active,
+.content\:tabs .content\:links li [role=link]:active {
   color: var(--color-tab--active, var(--color-tab, var(--color, inherit)));
 }
-.lot\:tabs .lot\:links li.has\:link {
+.lot\:tabs .lot\:links li.has\:link,
+.content\:tabs .lot\:links li.has\:link,
+.lot\:tabs .content\:links li.has\:link,
+.content\:tabs .content\:links li.has\:link {
   color: var(--color-tab-link, var(--color-tab, var(--color-link, var(--color, inherit))));
 }
 .lot\:tabs .lot\:links li.has\:link > a:hover,
-.lot\:tabs .lot\:links li.has\:link > [role=link]:hover {
+.content\:tabs .lot\:links li.has\:link > a:hover,
+.lot\:tabs .content\:links li.has\:link > a:hover,
+.content\:tabs .content\:links li.has\:link > a:hover,
+.lot\:tabs .lot\:links li.has\:link > [role=link]:hover,
+.content\:tabs .lot\:links li.has\:link > [role=link]:hover,
+.lot\:tabs .content\:links li.has\:link > [role=link]:hover,
+.content\:tabs .content\:links li.has\:link > [role=link]:hover {
   color: var(--color-tab-link--hover, var(--color-tab-link, var(--color-tab--hover, var(--color-tab, var(--color-link--hover, var(--color-link, var(--color, inherit)))))));
 }
 .lot\:tabs .lot\:links li.has\:link > a:focus,
-.lot\:tabs .lot\:links li.has\:link > [role=link]:focus {
+.content\:tabs .lot\:links li.has\:link > a:focus,
+.lot\:tabs .content\:links li.has\:link > a:focus,
+.content\:tabs .content\:links li.has\:link > a:focus,
+.lot\:tabs .lot\:links li.has\:link > [role=link]:focus,
+.content\:tabs .lot\:links li.has\:link > [role=link]:focus,
+.lot\:tabs .content\:links li.has\:link > [role=link]:focus,
+.content\:tabs .content\:links li.has\:link > [role=link]:focus {
   color: var(--color-tab-link--focus, var(--color-tab-link, var(--color-tab--focus, var(--color-tab, var(--color-link--focus, var(--color-link, var(--color, inherit)))))));
 }
 .lot\:tabs .lot\:links li.has\:link > a:active,
-.lot\:tabs .lot\:links li.has\:link > [role=link]:active {
+.content\:tabs .lot\:links li.has\:link > a:active,
+.lot\:tabs .content\:links li.has\:link > a:active,
+.content\:tabs .content\:links li.has\:link > a:active,
+.lot\:tabs .lot\:links li.has\:link > [role=link]:active,
+.content\:tabs .lot\:links li.has\:link > [role=link]:active,
+.lot\:tabs .content\:links li.has\:link > [role=link]:active,
+.content\:tabs .content\:links li.has\:link > [role=link]:active {
   color: var(--color-tab-link--active, var(--color-tab-link, var(--color-tab--active, var(--color-tab, var(--color-link--active, var(--color-link, var(--color, inherit)))))));
 }
-.lot\:tabs .lot\:links li.is\:current {
+.lot\:tabs .lot\:links li.is\:current,
+.content\:tabs .lot\:links li.is\:current,
+.lot\:tabs .content\:links li.is\:current,
+.content\:tabs .content\:links li.is\:current {
   color: var(--color-tab--current, var(--color-tab, var(--color, inherit)));
 }
-.lot\:tabs .lot\:links li.not\:active {
+.lot\:tabs .lot\:links li.not\:active,
+.content\:tabs .lot\:links li.not\:active,
+.lot\:tabs .content\:links li.not\:active,
+.content\:tabs .content\:links li.not\:active {
   color: var(--color-tab--disabled, var(--color-tab, var(--color, inherit)));
 }
 .lot\:tabs .lot\:links li.not\:active > a:hover,
-.lot\:tabs .lot\:links li.not\:active > [role=link]:hover {
+.content\:tabs .lot\:links li.not\:active > a:hover,
+.lot\:tabs .content\:links li.not\:active > a:hover,
+.content\:tabs .content\:links li.not\:active > a:hover,
+.lot\:tabs .lot\:links li.not\:active > [role=link]:hover,
+.content\:tabs .lot\:links li.not\:active > [role=link]:hover,
+.lot\:tabs .content\:links li.not\:active > [role=link]:hover,
+.content\:tabs .content\:links li.not\:active > [role=link]:hover {
   color: inherit;
 }
 .lot\:tabs .lot\:links li.not\:active > a:focus,
-.lot\:tabs .lot\:links li.not\:active > [role=link]:focus {
+.content\:tabs .lot\:links li.not\:active > a:focus,
+.lot\:tabs .content\:links li.not\:active > a:focus,
+.content\:tabs .content\:links li.not\:active > a:focus,
+.lot\:tabs .lot\:links li.not\:active > [role=link]:focus,
+.content\:tabs .lot\:links li.not\:active > [role=link]:focus,
+.lot\:tabs .content\:links li.not\:active > [role=link]:focus,
+.content\:tabs .content\:links li.not\:active > [role=link]:focus {
   color: inherit;
 }
 .lot\:tabs .lot\:links li.not\:active > a:active,
-.lot\:tabs .lot\:links li.not\:active > [role=link]:active {
+.content\:tabs .lot\:links li.not\:active > a:active,
+.lot\:tabs .content\:links li.not\:active > a:active,
+.content\:tabs .content\:links li.not\:active > a:active,
+.lot\:tabs .lot\:links li.not\:active > [role=link]:active,
+.content\:tabs .lot\:links li.not\:active > [role=link]:active,
+.lot\:tabs .content\:links li.not\:active > [role=link]:active,
+.content\:tabs .content\:links li.not\:active > [role=link]:active {
   color: inherit;
 }
-.lot\:tabs .lot\:links .title .icon {
+.lot\:tabs .lot\:links .title .icon,
+.content\:tabs .lot\:links .title .icon,
+.lot\:tabs .content\:links .title .icon,
+.content\:tabs .content\:links .title .icon {
   margin: 0 calc(var(--z) / -2);
 }
-.lot\:tabs .lot\:links .title .icon:first-child {
+.lot\:tabs .lot\:links .title .icon:first-child,
+.content\:tabs .lot\:links .title .icon:first-child,
+.lot\:tabs .content\:links .title .icon:first-child,
+.content\:tabs .content\:links .title .icon:first-child {
   margin-right: calc(var(--z) / 4);
 }
-.lot\:tabs .lot\:links .title .icon:last-child {
+.lot\:tabs .lot\:links .title .icon:last-child,
+.content\:tabs .lot\:links .title .icon:last-child,
+.lot\:tabs .content\:links .title .icon:last-child,
+.content\:tabs .content\:links .title .icon:last-child {
   margin-left: calc(var(--z) / 4);
 }
-.lot\:tabs .lot\:links .title .icon:only-child {
+.lot\:tabs .lot\:links .title .icon:only-child,
+.content\:tabs .lot\:links .title .icon:only-child,
+.lot\:tabs .content\:links .title .icon:only-child,
+.content\:tabs .content\:links .title .icon:only-child {
   margin-left: calc(var(--z) / -2);
   margin-right: calc(var(--z) / -2);
 }
-.lot\:tabs.count\:0 {
+.lot\:tabs.count\:0,
+.count\:0.content\:tabs {
   display: none;
 }
-.lot\:tabs.count\:1 .lot\:links {
+.lot\:tabs.count\:1 .lot\:links,
+.count\:1.content\:tabs .lot\:links,
+.lot\:tabs.count\:1 .content\:links,
+.count\:1.content\:tabs .content\:links {
   display: none;
 }
 
-.lot\:tasks {
+.lot\:tasks,
+.content\:tasks {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--y) / 4) calc(var(--x) / 4);
 }
-.lot\:tasks.are\:links {
+.lot\:tasks.are\:links,
+.are\:links.content\:tasks {
   gap: calc(var(--y) / 1.5) calc(var(--x) / 1.5);
 }
-.lot\:tasks.are\:links .title {
+.lot\:tasks.are\:links .title,
+.are\:links.content\:tasks .title {
   gap: calc(var(--y) / 8) calc(var(--x) / 8);
 }
-.lot\:tasks.are\:links .title > .icon {
+.lot\:tasks.are\:links .title > .icon,
+.are\:links.content\:tasks .title > .icon {
   margin-left: 0;
   margin-right: 0;
 }
 
-.siema div {
-  margin: 0;
+[role=alert] {
+  background: var(--fill-alert, var(--fill, none));
+  border: 0 solid;
+  border-color: var(--stroke-alert, var(--stroke, transparent));
+  border-radius: var(--arc-alert, var(--arc, 0));
+  box-shadow: var(--shadow-alert, var(--shadow, none));
+  color: var(--color-alert, var(--color, inherit));
+  padding: calc(var(--z) * 0.75) calc(var(--z) * 1.25);
 }
-
-.can\:sort .sortable-ghost {
-  visibility: hidden;
-}
-.can\:sort.content\:fields > .content\:field > label[for],
-.can\:sort.content\:fields > .lot\:field > label[for],
-.can\:sort.lot\:fields > .content\:field > label[for],
-.can\:sort.lot\:fields > .lot\:field > label[for] {
-  cursor: move;
-}
-.can\:sort.with\:options[role=group][aria-orientation=vertical] {
-  flex-basis: 0;
-}
-.can\:sort.with\:options[role=group][aria-orientation=vertical] br {
-  display: none;
-}
-
-.a,
-a,
-details > summary,
-[role=link] {
-  color: inherit;
-}
-.a:where(:any-link),
-a:where(:any-link),
-[role=link]:where(:any-link),
-details > summary,
-details > summary[role=link] {
-  background: var(--fill-link, var(--fill, none));
-  color: var(--color-link, var(--color, inherit));
-}
-.a:where(:any-link):hover,
-a:where(:any-link):hover,
-[role=link]:where(:any-link):hover,
-details > summary:hover {
-  background: var(--fill-link--hover, var(--fill-link, var(--fill--hover, var(--fill, none))));
-  color: var(--color-link--hover, var(--color-link, var(--color--hover, var(--color, inherit))));
-}
-.a:where(:any-link):focus,
-a:where(:any-link):focus,
-[role=link]:where(:any-link):focus,
-details > summary:focus {
-  background: var(--fill-link--focus, var(--fill-link, var(--fill--focus, var(--fill, none))));
-  color: var(--color-link--focus, var(--color-link, var(--color--focus, var(--color, inherit))));
-}
-.a:where(:any-link):active,
-a:where(:any-link):active,
-[role=link]:where(:any-link):active,
-details > summary:active {
-  background: var(--fill-link--active, var(--fill-link, var(--fill--active, var(--fill, none))));
-  color: var(--color-link--active, var(--color-link, var(--color--active, var(--color, inherit))));
-}
-.a:where([aria-disabled=true]:not([class])),
-a:where([aria-disabled=true]:not([class])),
-details > summary:where([aria-disabled=true]:not([class])),
-[role=link]:where([aria-disabled=true]:not([class])) {
-  background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
-  color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
-}
-.a.not\:active,
-a.not\:active,
-details > summary.not\:active,
-.not\:active[role=link] {
-  background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
-  color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
-}
-
-.b,
-b,
-dt,
-legend,
-strong,
-th {
-  font-weight: bolder;
-}
-
-.code,
-code {
-  color: var(--color-code, var(--color, inherit));
-  font-family: var(--font-face-mono);
-  font-size: 90%;
-}
-
-.description {
-  font-weight: 300;
-}
-
-.figure,
-.siema {
-  background: var(--fill-figure, var(--fill, none));
-  padding: var(--x) var(--y);
-}
-.figure [role=img],
-.siema [role=img],
-.figure img,
-.siema img {
-  box-shadow: var(--shadow-dialog, var(--shadow, none));
-}
-.figure figcaption + *,
-.siema figcaption + * {
-  margin-top: var(--y);
-}
-.figure * + figcaption,
-.siema * + figcaption {
-  margin-top: var(--y);
-}
-
-.has\:height {
+[role=alert] > [role=group] {
   display: flex;
-  height: 100%;
+}
+[role=alert] > [role=group] .lot\:tasks,
+[role=alert] > [role=group] .content\:tasks {
+  gap: calc(var(--y) / 6) calc(var(--x) / 6);
+  margin-left: auto;
+  margin-right: calc(var(--x) / -4);
 }
 
-.has\:width {
-  display: flex;
-  width: 100%;
-}
-
-.i,
-dfn,
-em,
-i,
-var {
-  font-style: italic;
-}
-
-.image,
-.img,
-img,
-[role=img] {
-  height: auto;
-  max-width: 100%;
-  object-fit: cover;
-}
-
-.is\:fix {
-  cursor: default;
-}
-
-.not\:active {
-  color: var(--color--disabled, var(--color, inherit));
-  cursor: not-allowed;
-}
-
-.small,
-kbd,
-small,
-sub,
-sup,
-[role=doc-endnotes],
-.lot\:field .description,
-.lot\:links > hgroup > .description,
-.lot\:menu > hgroup > .description,
-.lot\:menus > hgroup > .description {
-  font-size: calc(var(--z) * 0.75);
-}
-
-.s,
-del,
-s,
-[role=deletion] {
-  text-decoration: line-through;
-}
-
-.table,
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-.table caption,
-table caption {
-  caption-side: bottom;
-  margin-top: calc(var(--y) / 2);
-}
-.table th,
-table th,
-.table td,
-table td {
-  border: 1px solid;
-  border-color: var(--stroke, transparent);
-  padding: calc(var(--y) / 4) calc(var(--x) / 2);
-  text-align: inherit;
-  vertical-align: top;
-}
-
-.title .status {
-  display: inline-block;
-  margin-left: calc(var(--x) / 4);
-  vertical-align: middle;
-}
-
-.u,
-ins,
-u,
-[role=insertion] {
-  text-decoration: underline;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-.type\:void {
-  align-content: center;
-  align-items: center;
-  border-top-width: 4px;
-  display: flex;
-  text-align: center;
-}
-.type\:void > * {
-  flex: 1;
-}
-.type\:void > * .title {
-  display: inline-flex;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    scroll-behavior: auto;
-  }
-}
-@media (min-width: 720px) {
-  .can\:flex {
-    display: flex;
-  }
-  .can\:flex.has\:gap {
-    gap: calc(var(--y) + var(--h) - var(--z)) calc(var(--x) + var(--h) - var(--z));
-  }
-  .can\:flex > * {
-    flex: 1;
-    margin: 0;
-    min-width: 0;
-  }
-  .lot\:fields.can\:flex.has\:gap {
-    gap: var(--y) var(--x);
-  }
-  .lot\:tabs .lot\:links {
-    border: 0 solid;
-    border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
-    border-width: 0 0 1px;
-    line-height: calc(var(--y) * 2);
-  }
-  .lot\:tabs .lot\:links li {
-    background: var(--fill-tab, var(--fill, none));
-    border-radius: var(--arc-tab, var(--arc, 0));
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border: 1px solid;
-    border-color: var(--stroke-tab, var(--stroke, transparent));
-    border-bottom-width: 0;
-    box-shadow: var(--shadow-tab, var(--shadow, none));
-  }
-  .lot\:tabs .lot\:links li + li {
-    margin-left: -1px;
-  }
-  .lot\:tabs .lot\:links li.has\:link {
-    background: var(--fill-tab-link, var(--fill-tab, var(--fill-link, var(--fill, none))));
-    border-color: var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link, var(--stroke, transparent))));
-    box-shadow: var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link, var(--shadow, none))));
-  }
-  .lot\:tabs .lot\:links li.has\:link:hover {
-    background: var(--fill-tab-link--hover, var(--fill-tab-link, var(--fill-tab, var(--fill-link--hover, var(--fill-link, var(--fill--hover, var(--fill, none)))))));
-    border-color: var(--stroke-tab-link--hover, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--hover, var(--stroke-link, var(--stroke--hover, var(--stroke, transparent)))))));
-    box-shadow: var(--shadow-tab-link--hover, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--hover, var(--shadow-link, var(--shadow--hover, var(--shadow, none)))))));
-  }
-  .lot\:tabs .lot\:links li.has\:link:focus {
-    background: var(--fill-tab-link--focus, var(--fill-tab-link, var(--fill-tab, var(--fill-link--focus, var(--fill-link, var(--fill--focus, var(--fill, none)))))));
-    border-color: var(--stroke-tab-link--focus, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--focus, var(--stroke-link, var(--stroke--focus, var(--stroke, transparent)))))));
-    box-shadow: var(--shadow-tab-link--focus, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--focus, var(--shadow-link, var(--shadow--focus, var(--shadow, none)))))));
-  }
-  .lot\:tabs .lot\:links li.has\:link:active {
-    background: var(--fill-tab-link--active, var(--fill-tab-link, var(--fill-tab, var(--fill-link--active, var(--fill-link, var(--fill--active, var(--fill, none)))))));
-    border-color: var(--stroke-tab-link--active, var(--stroke-tab-link, var(--stroke-tab, var(--stroke-link--active, var(--stroke-link, var(--stroke--active, var(--stroke, transparent)))))));
-    box-shadow: var(--shadow-tab-link--active, var(--shadow-tab-link, var(--shadow-tab, var(--shadow-link--active, var(--shadow-link, var(--shadow--active, var(--shadow, none)))))));
-  }
-  .lot\:tabs .lot\:links li.is\:current {
-    background: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
-    border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
-    box-shadow: var(--shadow-tab--current, var(--shadow-tab, var(--shadow--current, var(--shadow, none))));
-    z-index: 1;
-  }
-  .lot\:tabs .lot\:links li.is\:current::after {
-    border: 0 solid;
-    border-color: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
-    border-width: 0 0 1px;
-    bottom: -1px;
-    content: "";
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: auto;
-  }
-  .lot\:tabs .lot\:links li.not\:active {
-    background: var(--fill-tab--disabled, var(--fill-tab, var(--fill--disabled, var(--fill, none))));
-    border-color: var(--stroke-tab--disabled, var(--stroke-tab, var(--stroke--disabled, var(--stroke, transparent))));
-  }
-  .lot\:tabs .lot\:links a,
-  .lot\:tabs .lot\:links details > summary,
-  .lot\:tabs .lot\:links [role=link] {
-    padding: 0 calc(var(--z) * 1.25);
-  }
-  .lot\:tabs.has\:gap .content\:tab,
-  .lot\:tabs.has\:gap .lot\:tab {
-    background: var(--fill-tab, var(--fill, none));
-    border: 1px solid;
-    border-color: var(--stroke-tab, var(--stroke, transparent));
-    border-top-width: 0;
-    padding: var(--y) var(--x);
-  }
-  .lot\:tabs.has\:gap .content\:tab.is\:current,
-  .lot\:tabs.has\:gap .lot\:tab.is\:current {
-    background: var(--fill-tab--current, var(--fill-tab, var(--fill--current, var(--fill, none))));
-    border-color: var(--stroke-tab--current, var(--stroke-tab, var(--stroke--current, var(--stroke, transparent))));
-  }
-  .lot\:tabs.has\:gap:not(.count\:1) .content\:tab,
-  .lot\:tabs.has\:gap:not(.count\:1) .lot\:tab {
-    margin-top: 0;
-  }
-  .lot\:tabs:not(.count\:1) .content\:tab,
-  .lot\:tabs:not(.count\:1) .lot\:tab {
-    margin-top: var(--y);
-  }
-  .lot\:tabs:not(.has\:current) .lot\:links {
-    border-color: var(--stroke-tab, var(--stroke, transparent));
-  }
-}
-@media (max-width: 720px) {
-  .lot\:bar .lot\:links.of\:lot {
-    flex: 1;
-    min-width: 100%;
-    width: 100%;
-  }
-  .lot\:bar .has\:form {
-    flex: 1;
-  }
-  .lot\:bar .has\:form .lot\:field .with\:fields {
-    display: flex;
-  }
-  .lot\:bar .has\:form .lot\:field .with\:fields input {
-    flex: 1;
-  }
-  .lot\:bar .has\:menu ul ul {
-    left: 25%;
-  }
-  .lot\:desk,
-  .lot\:section,
-  .content\:section {
-    padding: calc(var(--y) / 2) calc(var(--x) / 2);
-  }
-  .lot\:field,
-  .lot\:field.type\:blobs,
-  .lot\:field.type\:colors,
-  .lot\:field.type\:items {
-    flex-direction: column;
-    width: auto;
-  }
-  .lot\:field > * + *,
-  .lot\:field.type\:blobs > * + *,
-  .lot\:field.type\:colors > * + *,
-  .lot\:field.type\:items > * + * {
-    margin-top: calc(var(--y) / 3);
-  }
-  .lot\:field > label,
-  .lot\:field.type\:blobs > label,
-  .lot\:field.type\:colors > label,
-  .lot\:field.type\:items > label {
-    padding: 0;
-    text-align: inherit;
-    width: auto;
-  }
-  .lot\:field > label + div,
-  .lot\:field.type\:blobs > label + div,
-  .lot\:field.type\:colors > label + div,
-  .lot\:field.type\:items > label + div {
-    padding: 0;
-    text-align: inherit;
-    width: auto;
-  }
-  .lot\:page > div:first-child + div + div {
-    flex-basis: 100%;
-    margin: 0 0 0 calc(var(--x) * 2.75);
-    min-height: 0;
-  }
-  .lot\:page > div:first-child[hidden] + div + div {
-    margin-left: 0;
-  }
-  .lot\:pager > span:first-child,
-  .lot\:pager > span:last-child {
-    display: none;
-  }
-  .lot\:tabs .lot\:links ul {
-    gap: 0 var(--x);
-    margin-bottom: var(--y);
-  }
-  .lot\:tabs .lot\:links li {
-    color: var(--color--disabled, var(--color, inherit));
-  }
-  .lot\:tabs .lot\:links li.is\:current {
-    color: var(--color--current, var(--color, inherit));
-  }
-  .lot\:tabs .lot\:links li [role=link],
-  .lot\:tabs .lot\:links li a:any-link,
-  .lot\:tabs .lot\:links li details > summary:any-link {
-    color: inherit;
-  }
-  .lot\:tabs .lot\:links .title svg {
-    display: none;
-  }
-}
-@media (max-width: 340px) {
-  .lot\:page > div:first-child {
-    display: none;
-  }
-  .lot\:page > div:first-child + div + div {
-    margin-left: 0;
-  }
+[role=doc-endnotes] {
+  color: var(--color-description);
+  margin-top: calc(var(--y) * 1);
 }

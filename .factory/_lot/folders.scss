@@ -1,0 +1,5 @@
+@mixin folders {
+  .lot\:folders {
+    @extend .lot\:files;
+  }
+}

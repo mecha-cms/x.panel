@@ -1,0 +1,19 @@
+@mixin section {
+  .lot\:section {
+    padding: var(--y) var(--x);
+    &:where([role='none']) {
+      margin: 0 auto;
+    }
+    &:where(:not([role='none'])) {
+      background: var(--fill-section, var(--fill, none));
+      border: 0 solid;
+      border-color: var(--stroke-section, var(--stroke, transparent));
+      border-radius: var(--arc-section, var(--arc, 0));
+      box-shadow: var(--shadow-section, var(--shadow, none));
+      color: var(--color-section, var(--color, inherit));
+    }
+    &.count\:0 {
+      display: none;
+    }
+  }
+}
