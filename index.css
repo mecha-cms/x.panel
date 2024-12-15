@@ -1392,6 +1392,7 @@ hr {
   margin: 0;
 }
 .siema > div > div {
+  margin: 0;
   padding: var(--x) var(--y);
 }
 .siema > div::after {
