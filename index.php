@@ -164,5 +164,6 @@ if ('GET' === $r && !\array_key_exists('kick', $_GET)) {
 
 // Load the panel interface only if current location path is at least started with `http://127.0.0.1/panel/`
 if ($exist && !empty($user->exist) && 0 === \strpos($path . '/', $route . '/')) {
+    \State::set('is.panel', true);
     require __DIR__ . \D . 'index' . \D . 'panel.php';
 }
