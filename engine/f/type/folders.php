@@ -1,1 +1,0 @@
-<?php namespace x\panel\type\folders;

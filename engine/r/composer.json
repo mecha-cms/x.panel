@@ -1,9 +1,0 @@
-{
-  "config": {
-    "lock": false,
-    "sort-packages": true
-  },
-  "require": {
-    "maennchen/zipstream-php": "^2.1"
-  }
-}

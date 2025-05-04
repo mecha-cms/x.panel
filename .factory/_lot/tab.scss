@@ -1,9 +1,0 @@
-@mixin tab {
-  .lot\:tab {
-    display: none;
-    margin: 0;
-    &.is\:current {
-      display: block;
-    }
-  }
-}
