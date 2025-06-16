@@ -77,6 +77,7 @@ return x\panel\type\page\page(array_replace_recursive($_, [
                                                     'lot' => [
                                                         'layout' => [
                                                             'lot' => $layouts,
+                                                            'skip' => !$layouts_active,
                                                             'value' => $page['layout'] ?? ""
                                                         ]
                                                     ]
