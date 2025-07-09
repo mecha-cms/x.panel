@@ -1,0 +1,149 @@
+@use '../_content/any' as *;
+
+@mixin stack {
+  .lot\:stack {
+    border: 1px solid;
+    border-color: var(--stroke-stack, var(--stroke, transparent));
+    border-radius: var(--arc-stack, var(--arc, 0));
+    margin: 0;
+    position: relative;
+    > .title {
+      @include user-select(none);
+      background: var(--fill-stack, var(--fill, none));
+      border-radius: inherit;
+      box-shadow: var(--shadow-stack, var(--shadow, none));
+      color: var(--color-stack, var(--color, inherit));
+      display: block;
+      font: inherit;
+      > a {
+        color: inherit;
+        cursor: pointer;
+        display: block;
+        position: relative;
+        @each $v in (hover, focus, active) {
+          &:#{$v} {
+            color: var(--color-stack--#{$v}, var(--color-stack, var(--color--#{$v}, var(--color, inherit))));
+          }
+        }
+        .title {
+          display: flex;
+          padding: calc((var(--y) / 2) - ((var(--h) - var(--z)) / 2)) calc(var(--y) / 2);
+          .icon {
+            margin: 0 calc(var(--z) / -4);
+            &:first-child {
+              margin-right: calc(var(--z) / 4);
+            }
+            &:last-child {
+              margin-left: calc(var(--z) / 4);
+            }
+            &:only-child {
+              margin-left: calc(var(--z) / -4);
+              margin-right: calc(var(--z) / -4);
+            }
+          }
+        }
+      }
+    }
+    @each $v in (hover, focus, active) {
+      &:#{$v} {
+        border-color: var(--stroke-stack--#{$v}, var(--stroke-stack, var(--stroke--#{$v}, var(--stroke, transparent))));
+        > .title {
+          background: var(--fill-stack--#{$v}, var(--fill-stack, var(--fill--#{$v}, var(--fill, none))));
+          box-shadow: var(--shadow-stack--#{$v}, var(--shadow-stack, var(--shadow--#{$v}, var(--shadow, none))));
+        }
+      }
+    }
+    > .content,
+    > .lot {
+      display: none;
+      margin: 0;
+      padding: calc(var(--y) - ((var(--h) - var(--z)) / 2)) var(--x);
+      &\:stacks {
+        border: 0 solid;
+        border-color: inherit;
+        border-top-width: 1px;
+        display: block;
+        padding: calc(var(--y) / 2) calc(var(--x) / 2);
+        &.count\:0 {
+          border-top-width: 0;
+          display: block;
+          padding: 0;
+        }
+      }
+    }
+    &.has\:link {
+      border-color: var(--stroke-stack-link, var(--stroke-stack, var(--stroke-link, var(--stroke, transparent))));
+      > .title {
+        background: var(--fill-stack-link, var(--fill-stack, var(--fill-link, var(--fill, none))));
+        box-shadow: var(--shadow-stack-link, var(--shadow-stack, var(--shadow-link, var(--shadow, none))));
+        color: var(--color-stack-link, var(--color-stack, var(--color-link, var(--color, inherit))));
+        > a {
+          @each $v in (hover, focus, active) {
+            &:#{$v} {
+              color: var(--color-stack-link--#{$v}, var(--color-stack-link, var(--color-link--#{$v}, var(--color-link, var(--color--#{$v}, var(--color, inherit))))));
+            }
+          }
+        }
+      }
+    }
+    &.is\:current {
+      border-color: var(--stroke-stack--current, var(--stroke-stack, var(--stroke--current, var(--stroke, transparent))));
+      z-index: 1;
+      > .title {
+        background: var(--fill-stack--current, var(--fill-stack, var(--fill--current, var(--fill, none))));
+        box-shadow: var(--shadow-stack--current, var(--shadow-stack, var(--shadow--current, var(--shadow, none))));
+        + .content,
+        + .lot {
+          border-top: 1px dashed;
+          border-top-color: inherit;
+          display: block;
+        }
+      }
+      > .lot\:tasks {
+        border-top: 1px dashed;
+        border-top-color: inherit;
+        display: flex;
+        padding: calc(var(--y) / 2) calc(var(--x) / 2);
+        &.count\:0 {
+          display: none;
+        }
+      }
+      &:not(.can\:toggle) {
+        > .title {
+          > a {
+            cursor: inherit;
+          }
+        }
+      }
+    }
+    &.not\:active {
+      > .title {
+        > a {
+          color: var(--color-stack--disabled, var(--color-stack, var(--color--disabled, var(--color, inherit))));
+          cursor: not-allowed;
+        }
+      }
+    }
+    &:first-of-type {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    &:last-of-type {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    + .lot\:stack {
+      margin-top: -1px;
+      &:not(:last-of-type) {
+        border-radius: 0;
+      }
+    }
+  }
+  .has\:gap {
+    .lot\:stack {
+      + .lot\:stack {
+        margin-top: calc(var(--y) / 2);
+      }
+    }
+  }
+}

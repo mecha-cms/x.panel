@@ -1,0 +1,126 @@
+@use 'form' as *;
+@use 'icon' as *;
+
+@mixin type {
+  .a {
+    color: inherit;
+    &:where(:any-link) {
+      background: var(--fill-link, var(--fill, none));
+      color: var(--color-link, var(--color, inherit));
+      @each $v in (hover, focus, active) {
+        &:#{$v} {
+          background: var(--fill-link--#{$v}, var(--fill-link, var(--fill--#{$v}, var(--fill, none))));
+          color: var(--color-link--#{$v}, var(--color-link, var(--color--#{$v}, var(--color, inherit))));
+        }
+      }
+    }
+    &:where([aria-disabled='true']:not([class])) {
+      background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
+      color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
+    }
+    &.not\:active {
+      background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
+      color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
+    }
+  }
+  .b {
+    font-weight: bolder;
+  }
+  .code {
+    color: var(--color-code, var(--color, inherit));
+    font-family: var(--font-face-mono);
+    font-size: 90%; // Magic :(
+  }
+  .description {
+    font-weight: 300;
+  }
+  .figure {
+    background: var(--fill-figure, var(--fill, none));
+    padding: var(--x) var(--y);
+    [role='img'],
+    img {
+      box-shadow: var(--shadow-dialog, var(--shadow, none));
+    }
+    figcaption {
+      + * {
+        margin-top: var(--y);
+      }
+    }
+    * {
+      + figcaption {
+        margin-top: var(--y);
+      }
+    }
+  }
+  @include form;
+  .has\:height {
+    display: flex;
+    height: 100%;
+  }
+  .has\:width {
+    display: flex;
+    width: 100%;
+  }
+  .i {
+    font-style: italic;
+  }
+  @include icon;
+  .image,
+  .img {
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+  }
+  .is\:fix {
+    cursor: default;
+  }
+  .not\:active {
+    color: var(--color--disabled, var(--color, inherit));
+    cursor: not-allowed;
+  }
+  .small {
+    font-size: calc(var(--z) * 0.75);
+  }
+  .s {
+    text-decoration: line-through;
+  }
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    caption {
+      caption-side: bottom;
+      margin-top: calc(var(--y) / 2);
+    }
+    th,
+    td {
+      border: 1px solid;
+      border-color: var(--stroke, transparent);
+      padding: calc(var(--y) / 4) calc(var(--x) / 2);
+      text-align: inherit;
+      vertical-align: top;
+    }
+  }
+  .title {
+    .status {
+      display: inline-block;
+      margin-left: calc(var(--x) / 4);
+      vertical-align: middle;
+    }
+  }
+  .u {
+    text-decoration: underline;
+  }
+  .type\:void {
+    align-content: center;
+    align-items: center;
+    border-top-width: 4px;
+    display: flex;
+    text-align: center;
+    > * {
+      flex: 1;
+      .title {
+        display: inline-flex;
+      }
+    }
+  }
+}

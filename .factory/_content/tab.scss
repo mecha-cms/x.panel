@@ -1,0 +1,5 @@
+@mixin tab {
+  .content\:tab {
+    @extend .lot\:tab;
+  }
+}

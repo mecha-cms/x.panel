@@ -1,0 +1,15 @@
+@use 'sass:math';
+
+@mixin row($max: 6) {
+  .lot\:row {
+    flex: 1;
+    margin: 0;
+    min-height: 0;
+    width: 100%;
+    @for $i from 1 through $max {
+      &.size\:#{$i}\/#{$max} {
+        max-height: math.percentage(math.div($i, $max));
+      }
+    }
+  }
+}

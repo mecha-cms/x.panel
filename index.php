@@ -1,5 +1,68 @@
 <?php namespace x\panel;
 
+$prefix = \ENGINE . \D . 'log' . \D . 'error';
+if (\is_file($log = $prefix . '-x') || \is_file($log = $prefix . '-y')) {
+    $log = \file_get_contents($log);
+    if (\preg_match_all('/' . \x(\LOT . \D . '[xy]' . \D) . '[^' . \x(\D) . ']+/', $log, $m)) {
+        $stuck = [];
+        foreach ($m[0] as $v) {
+            if (\is_file($v . \D . '.index.php')) {
+                $stuck[] = $v;
+            }
+        }
+        // TODO: Attempt to revert to the previous state if recent update is not compatible with other extension(s) and
+        // layout(s) in the current system set up.
+        // // \test($stuck);
+        // // exit;
+    }
+}
+
+if (!isset($state->x->user)) {
+    if (\function_exists("\\abort")) {
+        \abort(\i('Missing %s extension.', '<a href="https://github.com/mecha-cms/x.user" rel="nofollow" target="_blank">user</a>'));
+    }
+    exit(\i('Missing %s extension.', 'user'));
+}
+
+// Someone just tried to replace you!
+if (!empty($user) && !($user instanceof \User)) {
+    if (\function_exists("\\abort")) {
+        \abort(\i('%s must be an instance of %s.', ['<code>$user</code>', '<code>User</code>']));
+    }
+    exit(\i('%s must be an instance of %s.', ['`$user`', '`User`']));
+}
+
+// Set proper redirect target for non super user
+function on__user__enter($file) {
+    \extract(\lot(), \EXTR_SKIP);
+    $user = new \User($file);
+    $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
+    $status = $user->status ?? 0;
+    // If current user is not super user
+    if (1 !== $status) {
+        // And if current user is not an editor
+        if (2 !== $status) {
+            // Redirect to the user page
+            \kick('/' . $route . '/get/user/' . $user->name(true));
+        }
+        // Else, redirect to the default page
+        $kick = \trim($state->x->panel->kick ?? 'get/asset/1', '/');
+        // Redirect target without `/` prefix will be resolved relative to the panel base URL
+        if (0 !== \strpos($kick, '/') && false === \strpos($kick, '://')) {
+            $kick = '/' . $route . '/' . $kick;
+        }
+        \kick($kick);
+    }
+}
+
+// Clear file and folder marker(s)
+function on__user__exit() {
+    unset($_SESSION['_']);
+}
+
+\Hook::set('on.user.enter', __NAMESPACE__ . "\\on__user__enter");
+\Hook::set('on.user.exit', __NAMESPACE__ . "\\on__user__exit");
+
 $path = \trim($url->path ?? "", '/');
 $query = \From::query($url->query ?? "");
 
@@ -24,10 +87,18 @@ if (0 === \strpos($path, $v = $route . '/fire/')) {
 
 $f = $part = 0;
 if ($exist) {
-    $part = \x\page\n($exist);
+    $n = \basename($exist);
+    $n = '0' !== ($n[0] ?? '0') && \strspn($n, '0123456789') === \strlen($n) ? $n : false;
     if (!$f = \stream_resolve_include_path(\LOT . \D . $exist)) {
-        if (null !== $part) {
-            $f = \stream_resolve_include_path(\LOT . \D . \substr($exist, \strlen('/' . $part)));
+        if ($n) {
+            $f = \stream_resolve_include_path(\LOT . \D . ($exist = \dirname($exist)));
+            $part = (int) $n;
+        }
+    } else if (!\array_key_exists('type', $_GET)) {
+        if ($n) {
+            $f = \dirname($f);
+            $part = (int) \basename($exist);
+            $exist = \dirname($exist);
         }
     }
 }
@@ -44,10 +115,10 @@ foreach ([
     '0' => null,
     '1' => null,
     '2' => [],
-    'alerts' => [],
+    'alert' => [],
     'are' => (array) ($state->are ?? []), // Inherit to the front-end state(s)
     'as' => [],
-    'assets' => [],
+    'asset' => [],
     'author' => $user->user ?? null,
     'base' => $url . '/' . $route,
     'can' => (array) ($state->can ?? []), // Inherit to the front-end state(s)
@@ -60,7 +131,7 @@ foreach ([
     'folder' => $f && \is_dir($f) ? $f : null,
     'has' => (array) ($state->has ?? []), // Inherit to the front-end state(s)
     'hash' => $url['hash'],
-    'icons' => [],
+    'icon' => [],
     'is' => \array_replace((array) ($state->is ?? []), ['error' => false]), // Inherit to the front-end state(s)
     'kick' => null,
     'lot' => [],
@@ -91,73 +162,8 @@ if ('GET' === $r && !\array_key_exists('kick', $_GET)) {
     }
 }
 
-function get() {
-    // Capture all asset(s) data previously added by the extension(s) and layout you use, then mark them as ignored
-    // asset(s) so you can preserve the asset(s) data but won’t make it load into the panel interface unless you
-    // explicitly change the `skip` property value to `false`.
-    $_['assets'] = [];
-    foreach (\Asset::get() as $k => $v) {
-        foreach ($v as $kk => $vv) {
-            $_['assets'][$kk] = [
-                '0' => null,
-                '1' => null,
-                '2' => (array) ($vv[2] ?? []),
-                'link' => $vv['link'] ?? null,
-                'path' => $vv['path'] ?? null,
-                'skip' => true,
-                'stack' => $vv['stack'],
-                'url' => $vv['url'] ?? null
-            ];
-        }
-    }
-    $folder = \stream_resolve_include_path(__DIR__);
-    $z = \defined("\\TEST") && \TEST ? '.' : '.min.';
-    $_['assets'][$folder . \D . 'index' . $z . 'css'] = ['stack' => 20];
-    $_['assets'][$folder . \D . 'index' . $z . 'js'] = ['stack' => 20];
-    // Remove front-end asset(s)
-    \Asset::let();
-    // Extend current asset(s) data with user-defined asset(s) data
-    if (!empty($_['assets'])) {
-        foreach ((new \Anemone((array) $_['assets']))->sort([1, 'stack', 10], true)->get() as $k => $v) {
-            if (false === $v || null === $v || !empty($v['skip'])) {
-                continue;
-            }
-            $path = (string) ($v['path'] ?? $v['link'] ?? $v['url'] ?? $k);
-            $stack = (float) ($v['stack'] ?? 10);
-            if (!\is_numeric($k) && (!empty($v['link']) || !empty($v['path']) || !empty($v['url']))) {
-                $v[2]['id'] = $k;
-            }
-            if (isset($v['id'])) {
-                $v[2]['id'] = $v['id'];
-            }
-            \Asset::set($path, $stack, (array) ($v[2] ?? []));
-        }
-    }
+// Load the panel interface only if current location path is at least started with `http://127.0.0.1/panel/`
+if ($exist && !empty($user->exist) && 0 === \strpos($path . '/', $route . '/')) {
+    \State::set('is.panel', true);
+    require __DIR__ . \D . 'index' . \D . 'panel.php';
 }
-
-function route() {
-    $content = "";
-    $type = \trim('panel/type/' . ($_GET['type'] ?? 'blank'), '/' . "\\");
-    foreach (\step(\f2c($type), "\\") as $c) {
-        try {
-            $c = (new \ReflectionClass($c))->newInstance([
-                'lot' => [
-                    'field' => ['type' => 'field', 'content' => 'a field', 'stack' => 10],
-                    'fields' => ['type' => 'fields', 'content' => 'a fields', 'stack' => 11],
-                ]
-            ], 0);
-            if (\is_string($v = $c->type ?? 0)) {
-                \status(200);
-                \type($v);
-            }
-            $content = $c;
-            break;
-        } catch (\Throwable $e) {
-            $content = $e;
-        }
-    }
-    return (string) $content;
-}
-
-\Hook::set('get', __NAMESPACE__ . "\\get", 0);
-\Hook::set('route', __NAMESPACE__ . "\\route", 0);

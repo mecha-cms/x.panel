@@ -1,0 +1,5 @@
+@mixin row {
+  .content\:row {
+    @extend .lot\:row;
+  }
+}

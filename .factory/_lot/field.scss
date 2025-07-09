@@ -1,0 +1,385 @@
+@use '../_content/any' as *;
+
+@mixin field {
+  .lot\:field {
+    display: flex;
+    gap: 0 var(--x);
+    .description {
+      @extend .small;
+      display: block;
+      font-size: calc(var(--z) * 0.75);
+      line-height: calc(var(--y) / 1.5);
+      margin: calc(var(--y) / 3) 0 0;
+      code {
+        font-size: calc(var(--z) * 0.65);
+      }
+    }
+    &.not\:active {
+      .description {
+        color: inherit;
+      }
+    }
+    > label {
+      display: block;
+      overflow: hidden;
+      padding: calc(var(--y) / 4) 0;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: calc(var(--x) * 5);
+      + div {
+        display: block;
+        flex: 1;
+        min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
+        position: relative;
+        .with\:fields {
+          display: inline-flex;
+          position: relative;
+          vertical-align: middle;
+          a {
+            &:where(:any-link) {
+              .fix {
+                cursor: pointer;
+              }
+            }
+          }
+          &.has\:height,
+          &.has\:width {
+            display: flex;
+            flex-direction: row;
+          }
+          &.has\:height {
+            // This prevents `.lot:field.type:content`’s description from being pushed down due to the 100% height of its
+            // previous container (this very container) that has a `.has:height` class on it. The default `.has:height`
+            // class gives the element’s height to be 100%
+            height: auto;
+          }
+          &.has\:tasks {
+            .lot\:tasks {
+              background: var(--fill-input);
+              background-clip: padding-box;
+              border: 1px solid transparent;
+              bottom: 0;
+              gap: 1px; // border-x-width
+              margin: 0;
+              position: absolute;
+              right: 0;
+              top: 0;
+              z-index: 2;
+              > * {
+                padding: 0 calc((var(--x) / 6) + 1px); // 0 (($x / 6) + border-x-width)
+                position: relative;
+                + * {
+                  &::after {
+                    border: 1px solid;
+                    border-color: var(--stroke-input);
+                    border-width: 0 0 0 1px;
+                    bottom: 0;
+                    content: "";
+                    opacity: 0.5;
+                    position: absolute;
+                    right: 100%;
+                    top: 0;
+                  }
+                }
+              }
+              .title {
+                span {
+                  padding: 0 calc(var(--x) / 6);
+                }
+                svg {
+                  + span {
+                    padding-left: 0;
+                  }
+                }
+              }
+              &::after {
+                border: 1px solid;
+                border-color: var(--stroke-input);
+                border-width: 0 0 0 1px;
+                bottom: 0;
+                content: "";
+                opacity: 0.5;
+                position: absolute;
+                right: 100%;
+                top: 0;
+              }
+            }
+            :focus {
+              + .lot\:tasks {
+                background: var(--fill-input--focus, var(--fill-input));
+                background-clip: padding-box;
+                > * {
+                  &::after {
+                    border-color: var(--stroke-input--focus, var(--stroke-input));
+                  }
+                }
+                &::after {
+                  border-color: var(--stroke-input--focus, var(--stroke-input));
+                }
+              }
+            }
+            @each $v in (in-range, invalid, out-of-range, valid) {
+              :#{$v}:focus {
+                + .lot\:tasks {
+                  background: var(--fill-input--#{$v}, var(--fill-input--focus, var(--fill-input)));
+                  background-clip: padding-box;
+                  > * {
+                    &::after {
+                      border-color: var(--stroke-input--#{$v}, var(--stroke-input--focus, var(--stroke-input)));
+                    }
+                  }
+                  &::after {
+                    border-color: var(--stroke-input--#{$v}, var(--stroke-input--focus, var(--stroke-input)));
+                  }
+                }
+              }
+            }
+          }
+          > * {
+            + * {
+              margin-left: -1px;
+            }
+          }
+          > .has\:width {
+            flex: 1;
+            min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
+            width: auto;
+          }
+          .fix {
+            @include user-select(none);
+            background: var(--fill-fix, var(--fill-input, var(--fill, none)));
+            border: 1px solid;
+            border-color: var(--stroke-fix, var(--stroke-input, var(--stroke, transparent)));
+            color: var(--color-fix, var(--color-output, var(--color, inherit)));
+            cursor: default;
+            height: calc(var(--y) * 1.5);
+            line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px);
+            max-width: 50%;
+            min-width: 0;
+            overflow: hidden;
+            padding: calc(var(--y) / 4) calc(var(--x) / 2);
+            position: relative;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: auto;
+            &.icon {
+              min-width: calc(var(--x) * 1.5);
+              padding: calc((var(--y) / 6) + 1px) 0; // (($y / 6) + border-y-width) 0
+              width: calc(var(--x) * 1.5);
+            }
+          }
+        }
+        .with\:options {
+          display: block;
+          padding: calc(var(--y) / 4) 0;
+        }
+      }
+    }
+  }
+}
+
+@mixin field-blob {
+  .lot\:field.type\:blob {
+    > label {
+      + div {
+        .input {
+          border: 1px dashed;
+          border-color: var(--stroke, transparent);
+          height: auto;
+          line-height: normal;
+          padding: var(--y) var(--x);
+          @each $v in (hover, focus, active, disabled) {
+            &:#{$v} {
+              border-color: var(--stroke--#{$v}, var(--stroke, transparent));
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin field-blobs {
+  .lot\:field.type\:blobs {
+    @extend .lot\:field, .type\:blob;
+  }
+}
+
+@mixin field-buttons {
+  .lot\:field.type\:buttons {
+    > label {
+      + div {
+        .with\:options {
+          padding: {
+            bottom: 0;
+            top: 0;
+          }
+          &.has\:gap {
+            gap: calc(var(--y) / 4) calc(var(--x) / 4);
+          }
+          &.is\:flex {
+            display: inline-flex;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin field-colors {
+  .lot\:field.type\:colors {
+    @extend .lot\:field, .type\:item;
+    > label {
+      + div {
+        .with\:options {
+          padding: {
+            bottom: 0;
+            top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin field-item {
+  .lot\:field.type\:item {
+    .with\:options {
+      height: auto;
+      max-height: 100%;
+      &.has\:gap {
+        gap: 0 var(--x);
+      }
+      &.is\:flex {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      > label {
+        align-items: center;
+        display: inline-flex;
+        gap: 0 calc(var(--x) / 3);
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+@mixin field-items {
+  .lot\:field.type\:items {
+    @extend .lot\:field, .type\:item;
+  }
+}
+
+@mixin field-option {
+  $name: option-picker;
+  .#{$name} {
+    height: calc(var(--y) * 1.5);
+    line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `input`
+    padding: calc(var(--y) / 4) calc(var(--x) / 2);
+    width: var(--width-input);
+    &::after {
+      right: calc(var(--x) / 2);
+    }
+    &--focus {
+      @extend :focus-visible;
+      background: var(--fill-#{$name}--focus, var(--fill-#{$name}, var(--fill--focus, var(--fill, none))));
+      border-color: var(--stroke-#{$name}--focus, var(--stroke-#{$name}, var(--stroke--focus, var(--stroke, transparent))));
+      box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}, var(--shadow--focus, var(--shadow, none))));
+      z-index: 9999;
+    }
+    &.has\:width {
+      display: flex;
+      width: 100%;
+      .#{$name}__input {
+        flex: 1;
+      }
+    }
+    &__options {
+      line-height: var(--h);
+      margin: 0;
+      .#{$name}__option {
+        padding: 0 calc(var(--x) / 2);
+        &-group {
+          padding: 0 calc(var(--x) / 2);
+          .#{$name}__option {
+            margin: 0 calc(var(--x) / -2);
+            padding-left: var(--x);
+          }
+        }
+      }
+    }
+    &__source {
+      + .#{$name} {
+        margin-left: 0 !important;
+      }
+      &:not([multiple]) {
+        + .#{$name} {
+          padding: {
+            bottom: calc(var(--y) / 4);
+            top: calc(var(--y) / 4);
+          }
+        }
+      }
+    }
+    &__input,
+    &__values {
+      padding: {
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+}
+
+@mixin field-query {
+  $name: tag-picker;
+  .#{$name} {
+    height: auto;
+    min-height: calc(var(--y) * 1.5);
+    padding: calc(var(--y) / 12) calc(var(--x) / 12);
+    width: var(--width-input);
+    &--focus {
+      @extend :focus-visible;
+      background: var(--fill-#{$name}--focus, var(--fill-#{$name}, var(--fill--focus, var(--fill, none))));
+      border-color: var(--stroke-#{$name}--focus, var(--stroke-#{$name}, var(--stroke--focus, var(--stroke, transparent))));
+      box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}, var(--shadow--focus, var(--shadow, none))));
+    }
+    &.has\:width {
+      display: flex;
+      width: 100%;
+    }
+    &__input {
+      span {
+        min-height: var(--y);
+      }
+    }
+    &__tag {
+      margin: calc(var(--y) / 12) calc(var(--x) / 12);
+      padding: 0 calc(var(--z) / 2);
+      // Fix link color specifity
+      &-x:any-link {
+        color: var(--color-#{$name}__tag-x, var(--color, inherit));
+        @each $v in (hover, focus, active) {
+          &:#{$v} {
+            color: var(--color-#{$name}__tag-x--#{$v}, var(--color-#{$name}__tag-x, var(--color--#{$v}, var(--color, inherit))));
+          }
+        }
+      }
+      &:focus {
+        outline: 0;
+      }
+    }
+    &__source {
+      position: fixed;
+      + .#{$name} {
+        margin-left: 0 !important;
+        .#{$name}__tag {
+          border: 1px solid transparent;
+          line-height: calc(var(--y) - 2px);
+        }
+      }
+    }
+  }
+}

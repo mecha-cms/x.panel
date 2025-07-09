@@ -1,0 +1,20 @@
+@mixin tasks {
+  .lot\:tasks {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--y) / 4) calc(var(--x) / 4);
+    &.are\:links {
+      gap: calc(var(--y) / 1.5) calc(var(--x) / 1.5);
+      .title {
+        gap: calc(var(--y) / 8) calc(var(--x) / 8);
+        > .icon {
+          margin: {
+            left: 0;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+}

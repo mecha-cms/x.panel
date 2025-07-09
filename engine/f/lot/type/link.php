@@ -1,0 +1,1 @@
+<?php namespace x\panel\lot\type\link;

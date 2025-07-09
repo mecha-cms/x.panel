@@ -1,0 +1,1 @@
+<?php namespace x\panel\type\state;

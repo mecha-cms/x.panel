@@ -1,0 +1,38 @@
+@use 'any' as *;
+
+@mixin icon {
+  .icon {
+    @include user-select(none);
+    border-color: inherit;
+    display: inline-block;
+    fill: currentColor;
+    font-style: normal;
+    font-weight: normal;
+    height: var(--y);
+    max-height: 100%;
+    max-width: 100%;
+    min-height: var(--y);
+    min-width: var(--x);
+    overflow: hidden;
+    position: relative;
+    text-indent: -9999px;
+    vertical-align: top;
+    width: var(--x);
+    &[display='none'] {
+      display: none;
+    }
+  }
+  .title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 calc(var(--x) / 4);
+    .icon {}
+    .status {
+      color: var(--color-status, var(--color, inherit));
+    }
+    > span {
+      flex: 1;
+    }
+  }
+}
