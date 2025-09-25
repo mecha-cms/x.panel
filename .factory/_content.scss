@@ -8,7 +8,6 @@
 @use '_content/rows' as *;
 @use '_content/section' as *;
 @use '_content/siema' as *;
-@use '_content/sortable' as *;
 @use '_content/stack' as *;
 @use '_content/stacks' as *;
 @use '_content/tab' as *;
@@ -27,7 +26,6 @@
   @include rows;
   @include section;
   @include siema;
-  @include sortable;
   @include stack;
   @include stacks;
   @include tab;

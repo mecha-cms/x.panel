@@ -275,60 +275,108 @@
 @mixin field-option {
   $name: option-picker;
   .#{$name} {
-    height: calc(var(--y) * 1.5);
-    line-height: calc((var(--y) * 1.5) - (var(--y) / 2) - 2px); // See `input`
-    padding: calc(var(--y) / 4) calc(var(--x) / 2);
-    width: var(--width-input);
-    &::after {
-      right: calc(var(--x) / 2);
+    background: var(--fill-option-picker);
+    border-color: var(--stroke-option-picker);
+    border-radius: var(--arc-option-picker);
+    box-shadow: var(--shadow-option-picker);
+    color: var(--color-option-picker);
+    display: flex;
+    &:hover {
+      background: var(--fill-option-picker--hover, var(--fill-option-picker));
+      border-color: var(--stroke-option-picker--hover, var(--stroke-option-picker));
+      color: var(--color-option-picker--hover, var(--color-option-picker));
     }
-    &--focus {
+    &:focus,
+    &:focus-within {
       @extend :focus-visible;
-      background: var(--fill-#{$name}--focus, var(--fill-#{$name}, var(--fill--focus, var(--fill, none))));
-      border-color: var(--stroke-#{$name}--focus, var(--stroke-#{$name}, var(--stroke--focus, var(--stroke, transparent))));
-      box-shadow: var(--shadow-#{$name}--focus, var(--shadow-#{$name}, var(--shadow--focus, var(--shadow, none))));
-      z-index: 9999;
+      background: var(--fill-option-picker--focus, var(--fill-option-picker));
+      border-color: var(--stroke-option-picker--focus, var(--stroke-option-picker));
+      color: var(--color-option-picker--focus, var(--color-option-picker));
     }
-    &.has\:width {
-      display: flex;
-      width: 100%;
-      .#{$name}__input {
-        flex: 1;
+    &:active {
+      background: var(--fill-option-picker--active, var(--fill-option-picker));
+      border-color: var(--stroke-option-picker--active, var(--stroke-option-picker));
+      color: var(--color-option-picker--active, var(--color-option-picker));
+    }
+    &[aria-readonly] {
+      background: var(--fill-option-picker--read-only, var(--fill-option-picker));
+      border-color: var(--stroke-option-picker--read-only, var(--stroke-option-picker));
+      color: var(--color-option-picker--read-only, var(--color-option-picker));
+    }
+    &[aria-disabled] {
+      background: var(--fill-option-picker--disabled, var(--fill-option-picker));
+      border-color: var(--stroke-option-picker--disabled, var(--stroke-option-picker));
+      color: var(--color-option-picker--disabled, var(--color-option-picker));
+    }
+    &__arrow,
+    &__arrow:focus {
+      border-width: 0;
+      outline: 0;
+      padding: 0;
+    }
+    &__flex {
+      gap: 0;
+      padding: 0;
+    }
+    &__option {
+      background: var(--fill-option-picker__option);
+      border-color: var(--stroke-option-picker__option);
+      color: var(--color-option-picker__option);
+      padding: 0 calc(var(--x) / 2);
+      &,
+      &:hover,
+      &:focus {
+        border: 0;
+        outline: 0;
+      }
+      &[aria-selected],
+      &[aria-selected]:focus:not(:hover),
+      &[aria-selected]:focus-within:not(:hover) {
+        background: var(--fill-option-picker__option--selected, var(--fill-option-picker__option));
+        border-color: var(--stroke-option-picker__option--selected, var(--stroke-option-picker__option));
+        color: var(--color-option-picker__option--selected, var(--color-option-picker__option));
+      }
+      &:hover {
+        background: var(--fill-option-picker__option--hover, var(--fill-option-picker__option));
+        border-color: var(--stroke-option-picker__option--hover, var(--stroke-option-picker__option));
+        color: var(--color-option-picker__option--hover, var(--color-option-picker__option));
+      }
+      &:focus,
+      &:focus-within {
+        background: var(--fill-option-picker__option--focus, var(--fill-option-picker__option));
+        border-color: var(--stroke-option-picker__option--focus, var(--stroke-option-picker__option));
+        color: var(--color-option-picker__option--focus, var(--color-option-picker__option));
+      }
+      &:active {
+        background: var(--fill-option-picker__option--active, var(--fill-option-picker__option));
+        border-color: var(--stroke-option-picker__option--active, var(--stroke-option-picker__option));
+        color: var(--color-option-picker__option--active, var(--color-option-picker__option));
+      }
+      &[aria-disabled] {
+        background: var(--fill-option-picker__option--disabled, var(--fill-option-picker__option));
+        border-color: var(--stroke-option-picker__option--disabled, var(--stroke-option-picker__option));
+        color: var(--color-option-picker__option--disabled, var(--color-option-picker__option));
       }
     }
     &__options {
+      background: inherit;
+      border-color: inherit;
+      box-shadow: var(--shadow-option-picker__options);
+      color: inherit;
+      gap: 0;
       line-height: var(--h);
-      margin: 0;
-      .#{$name}__option {
-        padding: 0 calc(var(--x) / 2);
-        &-group {
-          padding: 0 calc(var(--x) / 2);
-          .#{$name}__option {
-            margin: 0 calc(var(--x) / -2);
-            padding-left: var(--x);
-          }
-        }
+      padding: 0;
+      &-lot {
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 0;
       }
     }
-    &__source {
-      + .#{$name} {
-        margin-left: 0 !important;
-      }
-      &:not([multiple]) {
-        + .#{$name} {
-          padding: {
-            bottom: calc(var(--y) / 4);
-            top: calc(var(--y) / 4);
-          }
-        }
-      }
-    }
-    &__input,
-    &__values {
-      padding: {
-        left: 0;
-        right: 0;
-      }
+    &__value,
+    &__value:focus {
+      border: 0;
+      outline: 0;
+      padding: 0;
     }
   }
 }

@@ -3,7 +3,7 @@ import {
     getClasses,
     getDatum,
     getElements,
-    letClass,
+    letClasses,
     setClasses
 } from '@taufik-nurrohman/document';
 
@@ -16,10 +16,10 @@ import TagPicker from '@taufik-nurrohman/tag-picker';
 function onChange(init) {
     let sources = getElements('.lot\\:field.type\\:query input:not([type=hidden])');
     sources && toCount(sources) && sources.forEach(source => {
-        letClass(source, 'input');
         let c = getClasses(source);
+        letClasses(source);
         let $ = new TagPicker(source, getDatum(source, 'state') ?? {});
-        setClasses($.self, c);
+        setClasses($.mask, c);
     });
     1 === init && W._.on('change', onChange);
 }

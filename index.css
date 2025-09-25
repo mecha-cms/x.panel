@@ -595,6 +595,14 @@
   --fill-option-picker--active: var(--fill-input--active, var(--fill-input, var(--fill--active, var(--fill, none))));
   --shadow-option-picker--active: var(--shadow-input--active, var(--shadow-input, var(--shadow--active, var(--shadow, none))));
   --stroke-option-picker--active: var(--stroke-input--active, var(--stroke-input, var(--stroke--active, var(--stroke, transparent))));
+  --color-option-picker--read-only: var(--color-input--read-only, var(--color-input, var(--color--read-only, var(--color, inherit))));
+  --fill-option-picker--read-only: var(--fill-input--read-only, var(--fill-input, var(--fill--read-only, var(--fill, none))));
+  --shadow-option-picker--read-only: var(--shadow-input--read-only, var(--shadow-input, var(--shadow--read-only, var(--shadow, none))));
+  --stroke-option-picker--read-only: var(--stroke-input--read-only, var(--stroke-input, var(--stroke--read-only, var(--stroke, transparent))));
+  --color-option-picker--disabled: var(--color-input--disabled, var(--color-input, var(--color--disabled, var(--color, inherit))));
+  --fill-option-picker--disabled: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
+  --shadow-option-picker--disabled: var(--shadow-input--disabled, var(--shadow-input, var(--shadow--disabled, var(--shadow, none))));
+  --stroke-option-picker--disabled: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
   --arc-tag-picker: var(--arc-input, var(--arc, 0));
   --color-tag-picker: var(--color-input, var(--color, inherit));
   --fill-tag-picker: var(--fill-input, var(--fill, none));
@@ -619,34 +627,10 @@
   --fill-tag-picker--active: var(--fill-input--active, var(--fill-input, var(--fill--active, var(--fill, none))));
   --shadow-tag-picker--active: var(--shadow-input--active, var(--shadow-input, var(--shadow--active, var(--shadow, none))));
   --stroke-tag-picker--active: var(--stroke-input--active, var(--stroke-input, var(--stroke--active, var(--stroke, transparent))));
-}
-:root .option-picker::after {
-  --stroke-option-picker--open: var(--color-option-picker, var(--color, inherit));
-  --stroke-option-picker: var(--color-option-picker, var(--color, inherit));
-}
-:root .option-picker__source:read-only + .option-picker {
-  --color-option-picker--read-only: var(--color-input--read-only, var(--color-input, var(--color--read-only, var(--color, inherit))));
-  --fill-option-picker--read-only: var(--fill-input--read-only, var(--fill-input, var(--fill--read-only, var(--fill, none))));
-  --shadow-option-picker--read-only: var(--shadow-input--read-only, var(--shadow-input, var(--shadow--read-only, var(--shadow, none))));
-  --stroke-option-picker--read-only: var(--stroke-input--read-only, var(--stroke-input, var(--stroke--read-only, var(--stroke, transparent))));
-}
-:root .option-picker__source:disabled + .option-picker,
-:root .option-picker__source.button.not\:active + .option-picker,
-:root .option-picker__source[role=button]:not(:any-link) + .option-picker {
-  --color-option-picker--disabled: var(--color-input--disabled, var(--color-input, var(--color--disabled, var(--color, inherit))));
-  --fill-option-picker--disabled: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
-  --shadow-option-picker--disabled: var(--shadow-input--disabled, var(--shadow-input, var(--shadow--disabled, var(--shadow, none))));
-  --stroke-option-picker--disabled: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
-}
-:root .tag-picker__source:read-only + .tag-picker {
   --color-tag-picker--read-only: var(--color-input--read-only, var(--color-input, var(--color--read-only, var(--color, inherit))));
   --fill-tag-picker--read-only: var(--fill-input--read-only, var(--fill-input, var(--fill--read-only, var(--fill, none))));
   --shadow-tag-picker--read-only: var(--shadow-input--read-only, var(--shadow-input, var(--shadow--read-only, var(--shadow, none))));
   --stroke-tag-picker--read-only: var(--stroke-input--read-only, var(--stroke-input, var(--stroke--read-only, var(--stroke, transparent))));
-}
-:root .tag-picker__source:disabled + .tag-picker,
-:root .tag-picker__source.button.not\:active + .tag-picker,
-:root .tag-picker__source[role=button]:not(:any-link) + .tag-picker {
   --color-tag-picker--disabled: var(--color-input--disabled, var(--color-input, var(--color--disabled, var(--color, inherit))));
   --fill-tag-picker--disabled: var(--fill-input--disabled, var(--fill-input, var(--fill--disabled, var(--fill, none))));
   --shadow-tag-picker--disabled: var(--shadow-input--disabled, var(--shadow-input, var(--shadow--disabled, var(--shadow, none))));
@@ -687,7 +671,8 @@
 
 :focus-visible,
 .tag-picker--focus,
-.option-picker--focus,
+.option-picker:focus,
+.option-picker:focus-within,
 .button:focus,
 .input:focus,
 .output:focus,
@@ -1237,22 +1222,6 @@ hr {
   clear: both;
   content: "";
   display: table;
-}
-
-.can\:sort .sortable-ghost {
-  visibility: hidden;
-}
-.can\:sort.content\:fields > .content\:field > label[for],
-.can\:sort.content\:fields > .lot\:field > label[for],
-.can\:sort.lot\:fields > .content\:field > label[for],
-.can\:sort.lot\:fields > .lot\:field > label[for] {
-  cursor: move;
-}
-.can\:sort.with\:options[role=group][aria-orientation=vertical] {
-  flex-basis: 0;
-}
-.can\:sort.with\:options[role=group][aria-orientation=vertical] br {
-  display: none;
 }
 
 .a,
@@ -2910,52 +2879,108 @@ u,
 }
 
 .option-picker {
-  height: calc(var(--y) * 1.5);
-  line-height: calc(var(--y) * 1.5 - var(--y) / 2 - 2px);
-  padding: calc(var(--y) / 4) calc(var(--x) / 2);
-  width: var(--width-input);
-}
-.option-picker::after {
-  right: calc(var(--x) / 2);
-}
-.option-picker--focus {
-  background: var(--fill-option-picker--focus, var(--fill-option-picker, var(--fill--focus, var(--fill, none))));
-  border-color: var(--stroke-option-picker--focus, var(--stroke-option-picker, var(--stroke--focus, var(--stroke, transparent))));
-  box-shadow: var(--shadow-option-picker--focus, var(--shadow-option-picker, var(--shadow--focus, var(--shadow, none))));
-  z-index: 9999;
-}
-.option-picker.has\:width {
+  background: var(--fill-option-picker);
+  border-color: var(--stroke-option-picker);
+  border-radius: var(--arc-option-picker);
+  box-shadow: var(--shadow-option-picker);
+  color: var(--color-option-picker);
   display: flex;
-  width: 100%;
 }
-.option-picker.has\:width .option-picker__input {
-  flex: 1;
+.option-picker:hover {
+  background: var(--fill-option-picker--hover, var(--fill-option-picker));
+  border-color: var(--stroke-option-picker--hover, var(--stroke-option-picker));
+  color: var(--color-option-picker--hover, var(--color-option-picker));
+}
+.option-picker:focus,
+.option-picker:focus-within {
+  background: var(--fill-option-picker--focus, var(--fill-option-picker));
+  border-color: var(--stroke-option-picker--focus, var(--stroke-option-picker));
+  color: var(--color-option-picker--focus, var(--color-option-picker));
+}
+.option-picker:active {
+  background: var(--fill-option-picker--active, var(--fill-option-picker));
+  border-color: var(--stroke-option-picker--active, var(--stroke-option-picker));
+  color: var(--color-option-picker--active, var(--color-option-picker));
+}
+.option-picker[aria-readonly] {
+  background: var(--fill-option-picker--read-only, var(--fill-option-picker));
+  border-color: var(--stroke-option-picker--read-only, var(--stroke-option-picker));
+  color: var(--color-option-picker--read-only, var(--color-option-picker));
+}
+.option-picker[aria-disabled] {
+  background: var(--fill-option-picker--disabled, var(--fill-option-picker));
+  border-color: var(--stroke-option-picker--disabled, var(--stroke-option-picker));
+  color: var(--color-option-picker--disabled, var(--color-option-picker));
+}
+.option-picker__arrow,
+.option-picker__arrow:focus {
+  border-width: 0;
+  outline: 0;
+  padding: 0;
+}
+.option-picker__flex {
+  gap: 0;
+  padding: 0;
+}
+.option-picker__option {
+  background: var(--fill-option-picker__option);
+  border-color: var(--stroke-option-picker__option);
+  color: var(--color-option-picker__option);
+  padding: 0 calc(var(--x) / 2);
+}
+.option-picker__option,
+.option-picker__option:hover,
+.option-picker__option:focus {
+  border: 0;
+  outline: 0;
+}
+.option-picker__option[aria-selected],
+.option-picker__option[aria-selected]:focus:not(:hover),
+.option-picker__option[aria-selected]:focus-within:not(:hover) {
+  background: var(--fill-option-picker__option--selected, var(--fill-option-picker__option));
+  border-color: var(--stroke-option-picker__option--selected, var(--stroke-option-picker__option));
+  color: var(--color-option-picker__option--selected, var(--color-option-picker__option));
+}
+.option-picker__option:hover {
+  background: var(--fill-option-picker__option--hover, var(--fill-option-picker__option));
+  border-color: var(--stroke-option-picker__option--hover, var(--stroke-option-picker__option));
+  color: var(--color-option-picker__option--hover, var(--color-option-picker__option));
+}
+.option-picker__option:focus,
+.option-picker__option:focus-within {
+  background: var(--fill-option-picker__option--focus, var(--fill-option-picker__option));
+  border-color: var(--stroke-option-picker__option--focus, var(--stroke-option-picker__option));
+  color: var(--color-option-picker__option--focus, var(--color-option-picker__option));
+}
+.option-picker__option:active {
+  background: var(--fill-option-picker__option--active, var(--fill-option-picker__option));
+  border-color: var(--stroke-option-picker__option--active, var(--stroke-option-picker__option));
+  color: var(--color-option-picker__option--active, var(--color-option-picker__option));
+}
+.option-picker__option[aria-disabled] {
+  background: var(--fill-option-picker__option--disabled, var(--fill-option-picker__option));
+  border-color: var(--stroke-option-picker__option--disabled, var(--stroke-option-picker__option));
+  color: var(--color-option-picker__option--disabled, var(--color-option-picker__option));
 }
 .option-picker__options {
+  background: inherit;
+  border-color: inherit;
+  box-shadow: var(--shadow-option-picker__options);
+  color: inherit;
+  gap: 0;
   line-height: var(--h);
-  margin: 0;
+  padding: 0;
 }
-.option-picker__options .option-picker__option {
-  padding: 0 calc(var(--x) / 2);
+.option-picker__options-lot {
+  flex-wrap: nowrap;
+  gap: 0;
+  padding: 0;
 }
-.option-picker__options .option-picker__option-group {
-  padding: 0 calc(var(--x) / 2);
-}
-.option-picker__options .option-picker__option-group .option-picker__option {
-  margin: 0 calc(var(--x) / -2);
-  padding-left: var(--x);
-}
-.option-picker__source + .option-picker {
-  margin-left: 0 !important;
-}
-.option-picker__source:not([multiple]) + .option-picker {
-  padding-bottom: calc(var(--y) / 4);
-  padding-top: calc(var(--y) / 4);
-}
-.option-picker__input,
-.option-picker__values {
-  padding-left: 0;
-  padding-right: 0;
+.option-picker__value,
+.option-picker__value:focus {
+  border: 0;
+  outline: 0;
+  padding: 0;
 }
 
 .tag-picker {
@@ -4223,37 +4248,4 @@ u,
 [role=doc-endnotes] {
   color: var(--color-description);
   margin-top: calc(var(--y) * 1);
-}
-
-.option-picker {
-  background: var(--fill-option-picker);
-  border-color: var(--stroke-option-picker);
-  gap: 0;
-  padding: 0;
-}
-
-.option-picker:focus,
-.option-picker:focus-within {
-  background: var(--fill-option-picker--focus);
-  border-color: var(--stroke-option-picker--focus);
-}
-
-.option-picker__flex {
-  margin: 0;
-  padding: 0;
-  gap: 0;
-}
-
-.option-picker__arrow,
-.option-picker__value {
-  padding: calc(var(--y) / 4) calc(var(--x) / 2);
-  border-width: 0;
-}
-
-.option-picker__options {
-  background: var(--fill-option-picker);
-}
-
-.option-picker__options-lot {
-  flex-wrap: nowrap;
 }
