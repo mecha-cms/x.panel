@@ -1,16 +1,91 @@
 (function () {
     'use strict';
+
+    function _arrayLikeToArray(r, a) {
+        (null == a || a > r.length) && (a = r.length);
+        for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e];
+        return n;
+    }
+
+    function _arrayWithHoles(r) {
+        if (Array.isArray(r)) return r;
+    }
+
+    function _iterableToArrayLimit(r, l) {
+        var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+        if (null != t) {
+            var e,
+                n,
+                i,
+                u,
+                a = [],
+                f = true,
+                o = false;
+            try {
+                if (i = (t = t.call(r)).next, 0 === l) {
+                    if (Object(t) !== t) return;
+                    f = !1;
+                } else
+                    for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+            } catch (r) {
+                o = true, n = r;
+            } finally {
+                try {
+                    if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return;
+                } finally {
+                    if (o) throw n;
+                }
+            }
+            return a;
+        }
+    }
+
+    function _maybeArrayLike(r, a, e) {
+        if (a && !Array.isArray(a) && "number" == typeof a.length) {
+            var y = a.length;
+            return _arrayLikeToArray(a, void 0 !== e && e < y ? e : y);
+        }
+        return r(a, e);
+    }
+
+    function _nonIterableRest() {
+        throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+    }
+
+    function _slicedToArray(r, e) {
+        return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
+    }
+
+    function _unsupportedIterableToArray(r, a) {
+        if (r) {
+            if ("string" == typeof r) return _arrayLikeToArray(r, a);
+            var t = {}.toString.call(r).slice(8, -1);
+            return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0;
+        }
+    }
     var isArray = function isArray(x) {
         return Array.isArray(x);
+    };
+    var isBoolean = function isBoolean(x) {
+        return false === x || true === x;
     };
     var isDefined = function isDefined(x) {
         return 'undefined' !== typeof x;
     };
+    var isFloat = function isFloat(x) {
+        return isNumber(x) && 0 !== x % 1;
+    };
     var isFunction = function isFunction(x) {
         return 'function' === typeof x;
     };
-    var isInstance = function isInstance(x, of) {
-        return x && isSet(of) && x instanceof of ;
+    var isInstance = function isInstance(x, of, exact) {
+        if (!x || 'object' !== typeof x) {
+            return false;
+        }
+        if (exact) {
+            return isSet(of) && isSet(x.constructor) && of === x.constructor;
+        }
+        return isSet(of) && x instanceof of ;
     };
     var isInteger = function isInteger(x) {
         return isNumber(x) && 0 === x % 1;
@@ -19,19 +94,19 @@
         return null === x;
     };
     var isNumber = function isNumber(x) {
-        return 'number' === typeof x;
+        return 'number' === typeof x && !Number.isNaN(x);
     };
     var isNumeric = function isNumeric(x) {
-        return /^-?(?:\d*.)?\d+$/.test(x + "");
+        return /^[+-]?(?:\d*\.)?\d+$/.test(x + "");
     };
     var isObject = function isObject(x, isPlain) {
         if (isPlain === void 0) {
             isPlain = true;
         }
-        if ('object' !== typeof x) {
+        if (!x || 'object' !== typeof x) {
             return false;
         }
-        return isPlain ? isInstance(x, Object) : true;
+        return isPlain ? isInstance(x, Object, 1) : true;
     };
     var isSet = function isSet(x) {
         return isDefined(x) && !isNull(x);
@@ -55,24 +130,11 @@
     var offEventPropagation = function offEventPropagation(e) {
         return e && e.stopPropagation();
     };
-    var offEvents = function offEvents(names, node, then) {
-        names.forEach(function (name) {
-            return offEvent(name, node, then);
-        });
-    };
     var onEvent = function onEvent(name, node, then, options) {
         if (options === void 0) {
             options = false;
         }
         node.addEventListener(name, then, options);
-    };
-    var onEvents = function onEvents(names, node, then, options) {
-        if (options === void 0) {
-            options = false;
-        }
-        names.forEach(function (name) {
-            return onEvent(name, node, then, options);
-        });
     };
     var hasValue = function hasValue(x, data) {
         return -1 !== data.indexOf(x);
@@ -114,7 +176,7 @@
             var a = v.split('='),
                 key = fromURL(a[0]),
                 value = isSet(a[1]) ? fromURL(a[1]) : defaultValue;
-            value = parseValue ? toValue(value) : value;
+            value = parseValue ? _toValue(value) : value;
             // `a[b]=c`
             if (']' === key.slice(-1)) {
                 _fromQueryDeep(out, key, value);
@@ -125,7 +187,7 @@
         });
         return out;
     };
-    var fromStates = function fromStates() {
+    var _fromStates = function fromStates() {
         for (var _len = arguments.length, lot = new Array(_len), _key = 0; _key < _len; _key++) {
             lot[_key] = arguments[_key];
         }
@@ -147,7 +209,7 @@
                     }
                     // Merge object recursive
                 } else if (isObject(out[k]) && isObject(lot[i][k])) {
-                    out[k] = fromStates({
+                    out[k] = _fromStates({
                         /* Clone! */ }, out[k], lot[i][k]);
                     // Replace value
                 } else {
@@ -160,15 +222,15 @@
     var fromURL = function fromURL(x) {
         return decodeURIComponent(x);
     };
-    var fromValue = function fromValue(x) {
+    var _fromValue = function fromValue(x) {
         if (isArray(x)) {
             return x.map(function (v) {
-                return fromValue(x);
+                return _fromValue(x);
             });
         }
         if (isObject(x)) {
             for (var k in x) {
-                x[k] = fromValue(x[k]);
+                x[k] = _fromValue(x[k]);
             }
             return x;
         }
@@ -182,13 +244,6 @@
             return 'true';
         }
         return "" + x;
-    };
-    var toArray = function toArray(x) {
-        return isArray(x) ? x : [x];
-    };
-    var toArrayKey = function toArrayKey(x, data) {
-        var i = data.indexOf(x);
-        return -1 !== i ? i : null;
     };
     var toCaseCamel = function toCaseCamel(x) {
         return x.replace(/[-_.](\w)/g, function (m0, m1) {
@@ -216,6 +271,9 @@
     var toJSON = function toJSON(x) {
         return JSON.stringify(x);
     };
+    var toMapCount = function toMapCount(x) {
+        return x.size;
+    };
     var toNumber = function toNumber(x, base) {
         if (base === void 0) {
             base = 10;
@@ -242,7 +300,7 @@
             k = toURL(i);
             v = query[i];
             if (isObject(v)) {
-                out = fromStates({}, out, _toQueryDeep(v, key + k + suffix + '%5B'));
+                out = _fromStates({}, out, _toQueryDeep(v, key + k + suffix + '%5B'));
             } else {
                 out[key + k + suffix] = v;
             }
@@ -257,28 +315,37 @@
         for (k in query) {
             v = query[k];
             // `{"a":"true","b":true}` â†’ `a=true&b`
-            v = true !== v ? '=' + toURL(fromValue(v)) : "";
+            v = true !== v ? '=' + toURL(_fromValue(v)) : "";
             list.push(k + v);
         }
         return toCount(list) ? '?' + list.join('&') : null;
     };
+    var toSetCount = function toSetCount(x) {
+        return x.size;
+    };
+    var toString = function toString(x, base) {
+        return isNumber(x) ? x.toString(base) : "" + x;
+    };
     var toURL = function toURL(x) {
         return encodeURIComponent(x);
     };
-    var toValue = function toValue(x) {
+    var _toValue = function toValue(x) {
         if (isArray(x)) {
             return x.map(function (v) {
-                return toValue(v);
+                return _toValue(v);
             });
-        }
-        if (isNumeric(x)) {
-            return toNumber(x);
         }
         if (isObject(x)) {
             for (var k in x) {
-                x[k] = toValue(x[k]);
+                x[k] = _toValue(x[k]);
             }
             return x;
+        }
+        if (isString(x) && isNumeric(x)) {
+            if ('0' === x[0] && -1 === x.indexOf('.')) {
+                return x;
+            }
+            return toNumber(x);
         }
         if ('false' === x) {
             return false;
@@ -338,10 +405,148 @@
         }
         return 0 !== toObjectCount(object) ? object : false;
     }
+
+    function _toIterator(v) {
+        return v[Symbol.iterator]();
+    }
+    var forEachArray = function forEachArray(array, at) {
+        for (var i = 0, j = toCount(array), v; i < j; ++i) {
+            v = at.call(array, array[i], i);
+            if (-1 === v) {
+                array.splice(i, 1);
+                continue;
+            }
+            if (0 === v) {
+                break;
+            }
+            if (1 === v) {
+                continue;
+            }
+        }
+        return array;
+    };
+    var forEachMap = function forEachMap(map, at) {
+        var items = _toIterator(map),
+            item = items.next();
+        while (!item.done) {
+            var _item$value = _maybeArrayLike(_slicedToArray, item.value, 2),
+                k = _item$value[0],
+                v = _item$value[1];
+            v = at.call(map, v, k);
+            if (-1 === v) {
+                letValueInMap(k, map);
+            } else if (0 === v) {
+                break;
+            }
+            item = items.next();
+        }
+        return map;
+    };
+    var forEachObject = function forEachObject(object, at) {
+        var v;
+        for (var k in object) {
+            v = at.call(object, object[k], k);
+            if (-1 === v) {
+                delete object[k];
+                continue;
+            }
+            if (0 === v) {
+                break;
+            }
+            if (1 === v) {
+                continue;
+            }
+        }
+        return object;
+    };
+    var forEachSet = function forEachSet(set, at) {
+        var items = _toIterator(set),
+            item = items.next();
+        while (!item.done) {
+            var k = void 0,
+                v = item.value;
+            v = at.call(set, v, k = v);
+            if (-1 === v) {
+                letValueInMap(k, set);
+            } else if (0 === v) {
+                break;
+            }
+            item = items.next();
+        }
+        return set;
+    };
+    var getPrototype = function getPrototype(of) {
+        return of.prototype;
+    };
+    var getReference$2 = function getReference(key) {
+        return getValueInMap$1(key, references$2) || null;
+    };
+    var getValueInMap$1 = function getValueInMap(k, map) {
+        return map.get(k);
+    };
+    var hasKeyInMap = function hasKeyInMap(k, map) {
+        return map.has(k);
+    };
+    var letReference$1 = function letReference(k) {
+        return letValueInMap(k, references$2);
+    };
+    var letValueInMap = function letValueInMap(k, map) {
+        return map.delete(k);
+    };
+    var onAnimationsEnd = function onAnimationsEnd(node, task) {
+        return isFunction(node.getAnimations) ? Promise.all(node.getAnimations().map(function (v) {
+            return v.finished;
+        })).then(task) : task(), node;
+    };
+    var setObjectAttributes = function setObjectAttributes(of, attributes, asStaticAttributes) {
+        if (!asStaticAttributes) {
+            of = getPrototype(of);
+        }
+        return forEachObject(attributes, function (v, k) {
+            Object.defineProperty(of, k, v);
+        }), of;
+    };
+    var setObjectMethods = function setObjectMethods(of, methods, asStaticMethods) {
+        {
+            of = getPrototype(of);
+        }
+        return forEachObject(methods, function (v, k) {
+            of [k] = v;
+        }), of;
+    };
+    var setReference$2 = function setReference(key, value) {
+        return setValueInMap$1(key, value, references$2);
+    };
+    var setValueInMap$1 = function setValueInMap(k, v, map) {
+        return map.set(k, v);
+    };
+    var toValueFirstFromMap = function toValueFirstFromMap(map) {
+        return toValuesFromMap(map).shift();
+    };
+    var toValueLastFromMap = function toValueLastFromMap(map) {
+        return toValuesFromMap(map).pop();
+    };
+    var toValuesFromMap = function toValuesFromMap(map) {
+        var r = [];
+        return forEachMap(map, function (v) {
+            r.push(v);
+        }), r;
+    };
+    var references$2 = new WeakMap();
+
+    function _toArray$1(iterable) {
+        return Array.from(iterable);
+    }
     var D = document;
     var W = window;
     var B = D.body;
     var R = D.documentElement;
+    var getAria = function getAria(node, aria, parseValue) {
+        if (parseValue === void 0) {
+            parseValue = true;
+        }
+        return getAttribute(node, 'aria-' + aria, parseValue);
+    };
     var getAttribute = function getAttribute(node, attribute, parseValue) {
         if (parseValue === void 0) {
             parseValue = true;
@@ -350,14 +555,30 @@
             return null;
         }
         var value = node.getAttribute(attribute);
-        return parseValue ? toValue(value) : value;
+        return parseValue ? _toValue(value) : value;
     };
-    var getChildFirst = function getChildFirst(parent) {
-        return parent.firstElementChild || null;
+    var getAttributes = function getAttributes(node, parseValue) {
+        if (parseValue === void 0) {
+            parseValue = true;
+        }
+        var attributes = node.attributes,
+            values = {};
+        forEachArray(attributes, function (v) {
+            var name = v.name,
+                value = v.value;
+            values[name] = parseValue ? _toValue(value) : value;
+        });
+        return values;
     };
-    var getChildren = function getChildren(parent, index) {
-        var children = parent.children;
-        return isNumber(index) ? children[index] || null : children || [];
+    var getChildFirst = function getChildFirst(parent, anyNode) {
+        return parent['first' + (anyNode ? "" : 'Element') + 'Child'] || null;
+    };
+    var getChildLast = function getChildLast(parent, anyNode) {
+        return parent['last' + (anyNode ? "" : 'Element') + 'Child'] || null;
+    };
+    var getChildren = function getChildren(parent, index, anyNode) {
+        var children = _toArray$1(parent['child' + (anyNode ? 'Nodes' : 'ren')]);
+        return isNumber(index) ? children[index] || null : children;
     };
     var getClasses = function getClasses(node, toArray) {
         if (toArray === void 0) {
@@ -382,8 +603,18 @@
     var getElement = function getElement(query, scope) {
         return (scope || D).querySelector(query);
     };
+    var getElementIndex = function getElementIndex(node, anyNode) {
+        if (!node || !getParent(node)) {
+            return -1;
+        }
+        var index = 0;
+        while (node = getPrev(node, anyNode)) {
+            ++index;
+        }
+        return index;
+    };
     var getElements = function getElements(query, scope) {
-        return (scope || D).querySelectorAll(query);
+        return _toArray$1((scope || D).querySelectorAll(query));
     };
     var getFormElement = function getFormElement(nameOrIndex) {
         return D.forms[nameOrIndex] || null;
@@ -399,6 +630,18 @@
         var content = node[state];
         content = trim ? content.trim() : content;
         return "" !== content ? content : null;
+    };
+    var getID = function getID(node, batch) {
+        if (batch === void 0) {
+            batch = 'e:';
+        }
+        if (hasID(node)) {
+            return getAttribute(node, 'id');
+        }
+        if (!isSet(theID[batch])) {
+            theID[batch] = 0;
+        }
+        return batch + toString(Date.now() + (theID[batch] += 1), 16);
     };
     var getName = function getName(node) {
         return toCaseLower(node && node.nodeName || "") || null;
@@ -422,14 +665,11 @@
     var getPrev = function getPrev(node, anyNode) {
         return node['previous' + (anyNode ? "" : 'Element') + 'Sibling'] || null;
     };
+    var getRole = function getRole(node) {
+        return getAttribute(node, 'role');
+    };
     var getStyle = function getStyle(node, style, parseValue) {
-        if (parseValue === void 0) {
-            parseValue = true;
-        }
         var value = W.getComputedStyle(node).getPropertyValue(style);
-        if (parseValue) {
-            value = toValue(value);
-        }
         return value || "" === value || 0 === value ? value : null;
     };
     var getState = function getState(node, state) {
@@ -447,23 +687,43 @@
         content = trim ? content.trim() : content;
         return "" !== content ? content : null;
     };
+    var getType = function getType(node) {
+        return node && node.nodeType || null;
+    };
+    var getValue$1 = function getValue(node, parseValue) {
+        var value = (node.value || "").replace(/\r?\n|\r/g, '\n');
+        value = parseValue ? _toValue(value) : value;
+        return "" !== value ? value : null;
+    };
     var hasAttribute = function hasAttribute(node, attribute) {
         return node.hasAttribute(attribute);
     };
     var hasClass = function hasClass(node, value) {
         return node.classList.contains(value);
     };
-    var hasParent = function hasParent(node, query) {
-        return null !== getParent(node, query);
+    var hasID = function hasID(node) {
+        return hasAttribute(node, 'id');
     };
     var hasState = function hasState(node, state) {
         return state in node;
     };
+    var isDisabled$1 = function isDisabled(node) {
+        return node.disabled;
+    };
     var isNode = function isNode(node) {
         return isInstance(node, Node);
     };
+    var isReadOnly$1 = function isReadOnly(node) {
+        return node.readOnly;
+    };
+    var isRequired = function isRequired(node) {
+        return node.required;
+    };
     var isWindow = function isWindow(node) {
         return node === W;
+    };
+    var letAria = function letAria(node, aria) {
+        return letAttribute(node, 'aria-' + aria);
     };
     var letAttribute = function letAttribute(node, attribute) {
         return node.removeAttribute(attribute), node;
@@ -473,15 +733,16 @@
     };
     var letClasses = function letClasses(node, classes) {
         if (isArray(classes)) {
-            return classes.forEach(function (name) {
-                return node.classList.remove(name);
+            return forEachArray(classes, function (k) {
+                return letClass(node, k);
             }), node;
         }
         if (isObject(classes)) {
-            for (var name in classes) {
-                classes[name] && node.classList.remove(name);
-            }
-            return node;
+            return forEachObject(function (classes) {
+                return function (v, k) {
+                    return v && letClass(node, k);
+                };
+            }), node;
         }
         return node.className = "", node;
     };
@@ -492,30 +753,46 @@
         var parent = getParent(node);
         return node.remove(), parent;
     };
+    var letHTML = function letHTML(node) {
+        var state = 'innerHTML';
+        return hasState(node, state) && (node[state] = ""), node;
+    };
+    var letID = function letID(node) {
+        return letAttribute(node, 'id');
+    };
     var letStyle = function letStyle(node, style) {
         return node.style[toCaseCamel(style)] = null, node;
     };
-    var letText = function letText(node) {
-        var state = 'textContent';
-        return hasState(node, state) && (node[state] = ""), node;
+    var setAria = function setAria(node, aria, value) {
+        return setAttribute(node, 'aria-' + aria, true === value ? 'true' : value);
+    };
+    var setArias = function setArias(node, data) {
+        return forEachObject(data, function (v, k) {
+            v || "" === v || 0 === v ? setAria(node, k, v) : letAria(node, k);
+        }), node;
     };
     var setAttribute = function setAttribute(node, attribute, value) {
         if (true === value) {
             value = attribute;
         }
-        return node.setAttribute(attribute, fromValue(value)), node;
+        return node.setAttribute(attribute, _fromValue(value)), node;
     };
     var setAttributes = function setAttributes(node, attributes) {
-        var value;
-        for (var attribute in attributes) {
-            value = attributes[attribute];
-            if (value || "" === value || 0 === value) {
-                setAttribute(node, attribute, value);
-            } else {
-                letAttribute(node, attribute);
+        return forEachObject(attributes, function (v, k) {
+            if ('aria' === k && isObject(v)) {
+                return setArias(node, v), 1;
             }
-        }
-        return node;
+            if ('class' === k) {
+                return setClasses(node, v), 1;
+            }
+            if ('data' === k && isObject(v)) {
+                return setData(node, v), 1;
+            }
+            if ('style' === k && isObject(v)) {
+                return setStyles(node, v), 1;
+            }
+            v || "" === v || 0 === v ? setAttribute(node, k, v) : letAttribute(node, k);
+        }), node;
     };
     var setChildLast = function setChildLast(parent, node) {
         return parent.append(node), node;
@@ -525,45 +802,38 @@
     };
     var setClasses = function setClasses(node, classes) {
         if (isArray(classes)) {
-            return classes.forEach(function (name) {
-                return node.classList.add(name);
+            return forEachArray(classes, function (k) {
+                return setClass(node, k);
             }), node;
         }
         if (isObject(classes)) {
-            for (var name in classes) {
-                if (classes[name]) {
-                    node.classList.add(name);
-                } else {
-                    node.classList.remove(name);
-                }
-            }
+            return forEachObject(classes, function (v, k) {
+                return v ? setClass(node, k) : letClass(node, k);
+            }), node;
         }
-        // if (isString(classes)) {
-        node.className = classes;
-        // }
-        return node;
+        return node.className = classes, node;
     };
     var setData = function setData(node, data) {
-        var value;
-        for (var datum in data) {
-            value = data[datum];
-            if (value || "" === value || 0 === value) {
-                setDatum(node, datum, value);
-            } else {
-                letDatum(node, datum);
-            }
-        }
-        return node;
+        return forEachObject(data, function (v, k) {
+            v || "" === v || 0 === v ? setDatum(node, k, v) : letDatum(node, k);
+        }), node;
     };
     var setDatum = function setDatum(node, datum, value) {
         if (isArray(value) || isObject(value)) {
             value = toJSON(value);
         }
-        return setAttribute(node, 'data-' + datum, value);
+        return setAttribute(node, 'data-' + datum, true === value ? 'true' : value);
     };
-    var setElement = function setElement(node, content, attributes) {
-        node = isString(node) ? D.createElement(node) : node;
-        if (isObject(content)) {
+    var setElement = function setElement(node, content, attributes, options) {
+        node = isString(node) ? D.createElement(node, isString(options) ? {
+            is: options
+        } : options) : node;
+        if (isArray(content) && toCount(content)) {
+            letHTML(node);
+            forEachArray(content, function (v) {
+                return setChildLast(isString(v) ? setElementText(v) : v);
+            });
+        } else if (isObject(content)) {
             attributes = content;
             content = false;
         }
@@ -571,9 +841,12 @@
             setHTML(node, content);
         }
         if (isObject(attributes)) {
-            setAttributes(node, attributes);
+            return setAttributes(node, attributes), node;
         }
         return node;
+    };
+    var setElementText = function setElementText(text) {
+        return isString(text) ? text = D.createTextNode(text) : text, text;
     };
     var setHTML = function setHTML(node, content, trim) {
         if (trim === void 0) {
@@ -585,29 +858,28 @@
         var state = 'innerHTML';
         return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
     };
+    var setID = function setID(node, value, batch) {
+        if (batch === void 0) {
+            batch = 'e:';
+        }
+        return setAttribute(node, 'id', isSet(value) ? value : getID(node, batch));
+    };
     var setNext = function setNext(current, node) {
-        return getParent(current).insertBefore(node, getNext(current, true)), node;
+        return current.after(node), node;
     };
     var setPrev = function setPrev(current, node) {
-        return getParent(current).insertBefore(node, current), node;
+        return current.before(node), node;
     };
     var setStyle = function setStyle(node, style, value) {
         if (isNumber(value)) {
             value += 'px';
         }
-        return node.style[toCaseCamel(style)] = fromValue(value), node;
+        return node.style[toCaseCamel(style)] = _fromValue(value), node;
     };
     var setStyles = function setStyles(node, styles) {
-        var value;
-        for (var style in styles) {
-            value = styles[style];
-            if (value || "" === value || 0 === value) {
-                setStyle(node, style, value);
-            } else {
-                letStyle(node, style);
-            }
-        }
-        return node;
+        return forEachObject(styles, function (v, k) {
+            v || "" === v || 0 === v ? setStyle(node, k, v) : letStyle(node, k);
+        }), node;
     };
     var setText = function setText(node, content, trim) {
         if (trim === void 0) {
@@ -619,14 +891,21 @@
         var state = 'textContent';
         return hasState(node, state) && (node[state] = trim ? content.trim() : content), node;
     };
-    var toggleClass$1 = function toggleClass(node, name, force) {
+    var setValue$1 = function setValue(node, value) {
+        if (null === value) {
+            return letAttribute(node, 'value');
+        }
+        return node.value = _fromValue(value), node;
+    };
+    var toggleClass = function toggleClass(node, name, force) {
         return node.classList.toggle(name, force), node;
     };
     var theHistory = W.history;
+    var theID = {};
     var theLocation = W.location;
     var targets$8 = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not\\:active)';
 
-    function onChange$d(init) {
+    function onChange$c(init) {
         var sources = getElements('.lot\\:bar[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var items = getElements(targets$8, source);
@@ -635,7 +914,7 @@
             });
             onEventOnly('keydown', source, onKeyDownBar);
         });
-        1 === init && W._.on('change', onChange$d);
+        1 === init && W._.on('change', onChange$c);
     }
 
     function onKeyDownBar(e) {
@@ -709,7 +988,7 @@
         offEvent('cancel', t, onDialogCancel);
         offEvent('close', t, onDialogClose);
         offEvent('submit', t, onDialogSubmit);
-        t.x(toValue(t.returnValue));
+        t.x(_toValue(t.returnValue));
         isFunction(t.c) && t.c.apply(t, [t.open]);
     }
 
@@ -718,7 +997,7 @@
         offEvent('cancel', t, onDialogCancel);
         offEvent('close', t, onDialogClose);
         offEvent('submit', t, onDialogSubmit);
-        t.v(toValue(t.returnValue));
+        t.v(_toValue(t.returnValue));
         isFunction(t.c) && t.c.apply(t, [t.open]);
     }
 
@@ -858,30 +1137,228 @@
     function Dialog(init) {
         (W._.dialog = setDialog);
     }
-    var debounce = function debounce(then, time) {
-        var timer;
-        return function () {
-            var _arguments = arguments,
-                _this = this;
+    var now = Date.now;
+    var history = new WeakMap();
+    var historyIndex = new WeakMap();
+    var _getSelection = function _getSelection() {
+        return D.getSelection();
+    };
+    var _setRange = function _setRange() {
+        return D.createRange();
+    };
+    var getCharBeforeCaret = function getCharBeforeCaret(node, n, selection) {
+        selection = selection || _getSelection();
+        if (!hasSelection(node, selection)) {
+            return null;
+        }
+        var range = selection.getRangeAt(0).cloneRange();
+        range.collapse(true);
+        range.setStart(node, 0);
+        return (range + "").slice(-1);
+    };
+    // The `node` parameter is currently not in use
+    var hasSelection = function hasSelection(node, selection) {
+        return (selection || _getSelection()).rangeCount > 0;
+    };
+    // <https://stackoverflow.com/a/6691294/1163000>
+    // The `node` parameter is currently not in use
+    var insertAtSelection = function insertAtSelection(node, content, mode, selection) {
+        selection = selection || _getSelection();
+        var from, range, to;
+        if (!hasSelection(node, selection)) {
+            return false;
+        }
+        range = selection.getRangeAt(0);
+        range.deleteContents();
+        to = D.createDocumentFragment();
+        var nodeCurrent, nodeFirst, nodeLast;
+        if (isString(content)) {
+            from = setElement('div');
+            setHTML(from, content);
+            while (nodeCurrent = getChildFirst(from, 1)) {
+                nodeLast = setChildLast(to, nodeCurrent);
+            }
+        } else if (isArray(content)) {
+            forEachArray(content, function (v) {
+                return nodeLast = setChildLast(to, v);
+            });
+        } else {
+            nodeLast = setChildLast(to, content);
+        }
+        nodeFirst = getChildFirst(to, 1);
+        range.insertNode(to);
+        if (nodeLast) {
+            range = range.cloneRange();
+            range.setStartAfter(nodeLast);
+            range.setStartBefore(nodeFirst);
+            {
+                range.collapse();
+            }
+            setSelection(node, range, selectToNone(node, selection));
+        }
+        return selection;
+    };
+    // The `node` parameter is currently not in use
+    var letSelection = function letSelection(node, selection) {
+        selection = selection || _getSelection();
+        return selection.empty(), selection;
+    };
+    var redoState = function redoState(node, selection) {
+        var _getValueInMap, _getValueInMap2;
+        var h = (_getValueInMap = getValueInMap$1(node, history)) != null ? _getValueInMap : [],
+            i = (_getValueInMap2 = getValueInMap$1(node, historyIndex)) != null ? _getValueInMap2 : toCount(h) - 1,
+            j;
+        if (!(j = h[i + 1])) {
+            return restoreSelection(node, h[i][1], selection);
+        }
+        i++;
+        setValueInMap$1(node, i, historyIndex);
+        return setHTML(node, j[0]), restoreSelection(node, j[1], selection);
+    };
+    var resetState = function resetState(node, selection) {
+        letValueInMap(node, history);
+        letValueInMap(node, historyIndex);
+        return saveState(node, selection);
+    };
+    // <https://stackoverflow.com/a/13950376/1163000>
+    var restoreSelection = function restoreSelection(node, store, selection) {
+        var index = 0,
+            range = _setRange();
+        range.setStart(node, 0);
+        range.collapse(true);
+        var exit,
+            hasStart,
+            nodeCurrent,
+            nodeStack = [node];
+        while (!exit && (nodeCurrent = nodeStack.pop())) {
+            if (3 === getType(nodeCurrent)) {
+                var indexNext = index + toCount(nodeCurrent);
+                if (!hasStart && store[0] >= index && store[0] <= indexNext) {
+                    range.setStart(nodeCurrent, store[0] - index);
+                    hasStart = true;
+                }
+                if (hasStart && store[1] >= index && store[1] <= indexNext) {
+                    exit = true;
+                    range.setEnd(nodeCurrent, store[1] - index);
+                }
+                index = indexNext;
+            } else {
+                forEachArray(getChildren(nodeCurrent, null, 1), function (v) {
+                    return nodeStack.push(v);
+                });
+            }
+        }
+        return setSelection(node, range, letSelection(node, selection));
+    };
+    // <https://stackoverflow.com/a/13950376/1163000>
+    var saveSelection = function saveSelection(node, selection) {
+        var range = (_getSelection()).getRangeAt(0),
+            rangeClone = range.cloneRange();
+        rangeClone.selectNodeContents(node);
+        rangeClone.setEnd(range.startContainer, range.startOffset);
+        var start = toCount(rangeClone + "");
+        return [start, start + toCount(range + "")];
+    };
+    var saveState = function saveState(node, selection) {
+        var _getValueInMap3, _getValueInMap4, _getHTML;
+        var h = (_getValueInMap3 = getValueInMap$1(node, history)) != null ? _getValueInMap3 : [],
+            i = (_getValueInMap4 = getValueInMap$1(node, historyIndex)) != null ? _getValueInMap4 : toCount(h) - 1,
+            j,
+            v = (_getHTML = getHTML(node)) != null ? _getHTML : "";
+        j = hasSelection(node, selection) ? saveSelection(node) : [];
+        if (h[i] && v === h[i][0] && j[0] === h[i][1][0] && j[1] === h[i][1][1]) {
+            return node; // No change
+        }
+        // Trim future history if `undoState()` was used
+        if (i < toCount(h) - 1) {
+            h.splice(i + 1);
+        }
+        h.push([v, j, now()]);
+        setValueInMap$1(node, h, history);
+        setValueInMap$1(node, ++i, historyIndex);
+        return node;
+    };
+    var selectTo = function selectTo(node, mode, selection) {
+        selection = selection || _getSelection();
+        letSelection(node, selection);
+        var range = _setRange();
+        range.selectNodeContents(node);
+        selection = setSelection(node, range, selection);
+        if (1 === mode) {
+            selection.collapseToEnd();
+        } else if (-1 === mode) {
+            selection.collapseToStart();
+        } else;
+    };
+    // The `node` parameter is currently not in use
+    var selectToNone = function selectToNone(node, selection) {
+        selection = selection || _getSelection();
+        // selection.removeAllRanges();
+        if (selection.rangeCount) {
+            selection.removeRange(selection.getRangeAt(0));
+        }
+        return selection;
+    };
+    // The `node` parameter is currently not in use
+    var setSelection = function setSelection(node, range, selection) {
+        selection = selection || _getSelection();
+        if (isArray(range)) {
+            return restoreSelection(node, range, selection);
+        }
+        return selection.addRange(range), selection;
+    };
+    var undoState = function undoState(node, selection) {
+        var _getValueInMap5, _getValueInMap6;
+        var h = (_getValueInMap5 = getValueInMap$1(node, history)) != null ? _getValueInMap5 : [],
+            i = (_getValueInMap6 = getValueInMap$1(node, historyIndex)) != null ? _getValueInMap6 : toCount(h) - 1,
+            j;
+        if (!(j = h[i - 1])) {
+            return restoreSelection(node, h[i][1], selection);
+        }
+        i--;
+        setValueInMap$1(node, i, historyIndex);
+        return setHTML(node, j[0]), restoreSelection(node, j[1], selection);
+    };
+
+    function _toArray(iterable) {
+        return Array.from(iterable);
+    }
+    var clearTimeout = W.clearTimeout,
+        setTimeout = W.setTimeout; // For better minification
+    var debounce = function debounce(task, time) {
+        var stickyTime = isInteger(time) && time >= 0,
+            timer;
+        return [function () {
+            var _this = this;
             timer && clearTimeout(timer);
+            var lot = _toArray(arguments);
+            if (!stickyTime) {
+                time = lot.shift();
+            }
             timer = setTimeout(function () {
-                return then.apply(_this, _arguments);
+                return task.apply(_this, lot);
             }, time);
-        };
+        }, function () {
+            timer = clearTimeout(timer);
+        }];
     };
-    var delay = function delay(then, time) {
-        return function () {
-            var _arguments2 = arguments,
-                _this2 = this;
-            setTimeout(function () {
-                return then.apply(_this2, _arguments2);
+    var delay = function delay(task, time) {
+        var stickyTime = isInteger(time) && time >= 0,
+            timer;
+        return [function () {
+            var _this2 = this;
+            var lot = _toArray(arguments);
+            if (!stickyTime) {
+                time = lot.shift();
+            }
+            timer = setTimeout(function () {
+                return task.apply(_this2, lot);
             }, time);
-        };
+        }, function () {
+            timer && clearTimeout(timer);
+        }];
     };
-    var getOffset = function getOffset(node) {
-        return [node.offsetLeft, node.offsetTop];
-    };
-    var getRect$1 = function getRect(node) {
+    var getRect = function getRect(node) {
         var h, rect, w, x, y, X, Y;
         if (isWindow(node)) {
             x = node.pageXOffset || R.scrollLeft || B.scrollLeft;
@@ -898,9 +1375,6 @@
             Y = rect.bottom;
         }
         return [x, y, w, h, X, Y];
-    };
-    var getSize = function getSize(node) {
-        return isWindow(node) ? [node.innerWidth, node.innerHeight] : [node.offsetWidth, node.offsetHeight];
     };
     var getScroll = function getScroll(node) {
         return [node.scrollLeft, node.scrollTop];
@@ -919,26 +1393,25 @@
             if (!isSet(hooks[event])) {
                 return $;
             }
-            hooks[event].forEach(function (then) {
-                return then.apply(that || $, data);
-            });
-            return $;
+            return forEachArray(hooks[event], function (v) {
+                v.apply(that || $, data);
+            }), $;
         };
-        $$.off = function (event, then) {
+        $$.off = function (event, task) {
             var $ = this,
                 hooks = $.hooks;
             if (!isSet(event)) {
                 return hooks = {}, $;
             }
             if (isSet(hooks[event])) {
-                if (isSet(then)) {
-                    var j = hooks[event].length;
+                if (isSet(task)) {
+                    var j = toCount(hooks[event]);
                     // Clean-up empty hook(s)
                     if (0 === j) {
                         delete hooks[event];
                     } else {
                         for (var i = 0; i < j; ++i) {
-                            if (then === hooks[event][i]) {
+                            if (task === hooks[event][i]) {
                                 hooks[event].splice(i, 1);
                                 break;
                             }
@@ -950,769 +1423,19 @@
             }
             return $;
         };
-        $$.on = function (event, then) {
+        $$.on = function (event, task) {
             var $ = this,
                 hooks = $.hooks;
             if (!isSet(hooks[event])) {
                 hooks[event] = [];
             }
-            if (isSet(then)) {
-                hooks[event].push(then);
+            if (isSet(task)) {
+                hooks[event].push(task);
             }
             return $;
         };
         return $.hooks = {}, $;
     }
-    var name$4 = 'OP',
-        PROP_INDEX = 'i',
-        PROP_SOURCE = '$',
-        PROP_VALUE = 'v';
-    var KEY_ARROW_DOWN = 'ArrowDown';
-    var KEY_ARROW_LEFT$1 = 'ArrowLeft';
-    var KEY_ARROW_RIGHT$1 = 'ArrowRight';
-    var KEY_ARROW_UP = 'ArrowUp';
-    var KEY_END$1 = 'End';
-    var KEY_ENTER$1 = 'Enter';
-    var KEY_ESCAPE = 'Escape';
-    var KEY_START = 'Home';
-    var KEY_TAB$1 = 'Tab';
-    var ZERO_WIDTH_SPACE = "\u200C";
-
-    function selectElementContents(node) {
-        var range = D.createRange();
-        range.selectNodeContents(node);
-        var selection = W.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-
-    function OP(source, state) {
-        if (state === void 0) {
-            state = {};
-        }
-        var $ = this;
-        if (!source) {
-            return $;
-        }
-        // Already instantiated, skip!
-        if (source[name$4]) {
-            return source[name$4];
-        }
-        // Return new instance if `OP` was called without the `new` operator
-        if (!isInstance($, OP)) {
-            return new OP(source, state);
-        }
-        var _hook = hook($),
-            fire = _hook.fire;
-        _hook.hooks;
-        $.state = state = fromStates({}, OP.state, state);
-        $.options = {};
-        $.source = source;
-        // Store current instance to `OP.instances`
-        OP.instances[source.id || source.name || toObjectCount(OP.instances)] = $;
-        // Mark current DOM as active option picker to prevent duplicate instance
-        source[name$4] = $;
-
-        function getLot() {
-            return [toValue(getValue()), $.options];
-        }
-
-        function getValue() {
-            if (selectBoxMultiple) {
-                var values = [];
-                for (var i = 0, _j = toCount(selectBoxOptions); i < _j; ++i) {
-                    if (getOptionSelected(selectBoxOptions[i])) {
-                        values.push(getOptionValue(selectBoxOptions[i]));
-                    }
-                }
-                return values;
-            }
-            var value = source.value;
-            return "" !== value ? value : null;
-        }
-
-        function getOptionValue(selectBoxOption) {
-            var value = selectBoxOption.value || getText(selectBoxOption);
-            return "" !== value ? value : null;
-        }
-
-        function getOptionSelected(selectBoxOption) {
-            return hasAttribute(selectBoxOption, 'selected');
-        }
-
-        function getOptionFakeSelected(selectBoxFakeOption) {
-            return hasClass(selectBoxFakeOption, classNameOptionM + 'selected');
-        }
-
-        function letOptionSelected(selectBoxOption) {
-            letAttribute(selectBoxOption, 'selected');
-            selectBoxOption.selected = false;
-        }
-
-        function letOptionFakeSelected(selectBoxFakeOption) {
-            letClass(selectBoxFakeOption, classNameOptionM + 'selected');
-        }
-
-        function setOptionSelected(selectBoxOption) {
-            setAttribute(selectBoxOption, 'selected', true);
-            selectBoxOption.selected = true;
-        }
-
-        function setOptionFakeSelected(selectBoxFakeOption) {
-            setClass(selectBoxFakeOption, classNameOptionM + 'selected');
-        }
-
-        function setLabelContent(content) {
-            content = content || ZERO_WIDTH_SPACE;
-            selectBoxFakeLabel.title = content.replace(/<.*?>/g, "");
-            setHTML(selectBoxFakeLabel, content);
-        }
-
-        function setValue(value) {
-            if (selectBoxMultiple) {
-                var values = toArray(_value),
-                    _value;
-                for (var i = 0, _j2 = toCount(selectBoxOptions); i < _j2; ++i) {
-                    _value = getOptionValue(selectBoxOptions[i]);
-                    if (values.includes(toValue(_value))) {
-                        setOptionSelected(selectBoxOptions[i]);
-                    } else {
-                        letOptionSelected(selectBoxOptions[i]);
-                    }
-                }
-            } else {
-                source.value = value;
-            }
-        }
-        var classNameB = state['class'],
-            classNameE = classNameB + '__',
-            classNameM = classNameB + '--',
-            classNameInputB = classNameE + 'input',
-            classNameOptionB = classNameE + 'option',
-            classNameOptionM = classNameOptionB + '--',
-            classNameOptionsB = classNameE + 'options',
-            classNameValueB = classNameE + 'value',
-            classNameValuesB = classNameE + 'values',
-            selectBox = setElement(source, {
-                'class': classNameE + 'source',
-                'tabindex': -1
-            }),
-            selectBoxFakeInput = 'input' === getName(selectBox) ? setElement('span', "", {
-                'class': classNameInputB
-            }) : null,
-            selectBoxPlaceholder = selectBoxFakeInput ? source.placeholder : "",
-            selectBoxFakeInputPlaceholder = setElement('span', selectBoxPlaceholder),
-            selectBoxFakeInputValue = setElement('span', "", {
-                'contenteditable': "",
-                'tabindex': 0
-            }),
-            selectBoxIsDisabled = function selectBoxIsDisabled() {
-                return selectBox.disabled;
-            },
-            selectBoxItems = getChildren(selectBox),
-            selectBoxMultiple = selectBox.multiple,
-            selectBoxOptionIndex = 0,
-            selectBoxOptions = selectBox.options,
-            selectBoxParent = state.parent || D,
-            selectBoxSize = 'input' === getName(selectBox) ? 0 : selectBox.size,
-            selectBoxTitle = selectBox.title,
-            selectBoxValue = getValue(),
-            selectBoxFake = setElement('div', {
-                'class': classNameB,
-                'tabindex': selectBoxFakeInput || selectBoxIsDisabled() ? false : 0,
-                'title': selectBoxTitle
-            }),
-            selectBoxFakeLabel = setElement('div', ZERO_WIDTH_SPACE, {
-                'class': classNameValuesB
-            }),
-            selectBoxList = selectBox.list,
-            selectBoxFakeBorderBottomWidth = 0,
-            selectBoxFakeBorderTopWidth = 0,
-            selectBoxFakeDropDown = setElement('div', {
-                'class': classNameOptionsB,
-                'tabindex': -1
-            }),
-            selectBoxFakeOptions = [],
-            _keyIsCtrl = false,
-            _keyIsShift = false;
-        if (selectBoxMultiple && !selectBoxSize) {
-            selectBox.size = selectBoxSize = state.size;
-        }
-        if (selectBoxFakeInput && selectBoxList) {
-            selectBoxItems = getChildren(selectBoxList);
-            selectBoxOptions = selectBoxList.options;
-            selectBoxSize = null;
-            if (selectBoxValue) {
-                setHTML(selectBoxFakeInputPlaceholder, ZERO_WIDTH_SPACE);
-                setText(selectBoxFakeInputValue, selectBoxValue);
-            }
-        }
-        if (selectBoxFakeInput) {
-            setChildLast(selectBoxFakeInput, selectBoxFakeInputValue);
-            setChildLast(selectBoxFakeInput, selectBoxFakeInputPlaceholder);
-        }
-        setChildLast(selectBoxFake, selectBoxFakeInput || selectBoxFakeLabel);
-        setNext(selectBox, selectBoxFake);
-
-        function doBlur() {
-            letClass(selectBoxFake, classNameM + 'focus');
-            fire('blur', getLot());
-        }
-
-        function doFocus() {
-            setClass(selectBoxFake, classNameM + 'focus');
-            fire('focus', getLot());
-        }
-
-        function doEnter() {
-            setClass(selectBoxFake, classNameM + 'open');
-            fire('enter', getLot());
-        }
-
-        function doExit() {
-            if (selectBoxMultiple || selectBoxSize) {
-                return;
-            }
-            letClass(selectBoxFake, classNameM + 'open');
-            fire('exit', getLot());
-        }
-
-        function doFit() {
-            selectBoxFakeBorderBottomWidth = toNumber(getStyle(selectBoxFake, 'border-bottom-width'));
-            selectBoxFakeBorderTopWidth = toNumber(getStyle(selectBoxFake, 'border-top-width'));
-            setSelectBoxFakeOptionsPosition(selectBoxFake);
-        }
-
-        function doToggle(force) {
-            toggleClass$1(selectBoxFake, classNameM + 'open', force);
-            var isOpen = isEnter();
-            fire(isOpen ? 'enter' : 'exit', getLot());
-            return isOpen;
-        }
-
-        function doValue(content, index, value, classNames) {
-            return setElement('span', content, {
-                'class': classNameValueB + ' ' + classNames,
-                'data-index': index,
-                'data-value': value
-            }).outerHTML;
-        }
-
-        function isEnter() {
-            return hasClass(selectBoxFake, classNameM + 'open');
-        }
-
-        function onSelectBoxFocus() {
-            (selectBoxFakeInput ? selectBoxFakeInputValue : selectBoxFake).focus();
-        }
-
-        function onSelectBoxFakeOptionClick(e) {
-            if (!selectBoxOptions || selectBoxIsDisabled()) {
-                return;
-            }
-            var selectBoxFakeLabelContent = [],
-                content,
-                index,
-                value,
-                selectBoxFakeOption = this,
-                selectBoxOption = selectBoxFakeOption[PROP_SOURCE],
-                selectBoxValuePrevious = selectBoxValue;
-            selectBoxOptionIndex = selectBoxFakeOption[PROP_INDEX];
-            selectBoxValue = selectBoxFakeOption[PROP_VALUE];
-            e && e.isTrusted && onSelectBoxFocus();
-            offEventDefault(e);
-            if (selectBoxMultiple && (_keyIsCtrl || _keyIsShift)) {
-                if (getOptionFakeSelected(selectBoxFakeOption)) {
-                    letOptionSelected(selectBoxOption);
-                    letOptionFakeSelected(selectBoxFakeOption);
-                } else {
-                    setOptionSelected(selectBoxOption);
-                    setOptionFakeSelected(selectBoxFakeOption);
-                }
-                for (var i = 0, _j3 = toCount(selectBoxOptions), v; i < _j3; ++i) {
-                    if (getOptionSelected(selectBoxOptions[i])) {
-                        content = getText(v = selectBoxFakeOptions[i]);
-                        index = v[PROP_INDEX];
-                        value = v[PROP_VALUE];
-                        selectBoxFakeLabelContent.push(doValue(content, index, value, getClasses(v, false)));
-                    }
-                }
-                setLabelContent(selectBoxFakeLabelContent.join('<span>' + state.join + '</span>'));
-                fire('change', getLot());
-                return;
-            }
-            content = getText(selectBoxFakeOption);
-            index = selectBoxFakeOption[PROP_INDEX];
-            value = selectBoxFakeOption[PROP_VALUE];
-            if (content && selectBoxFakeInput) {
-                setHTML(selectBoxFakeInputPlaceholder, ZERO_WIDTH_SPACE);
-                setText(selectBoxFakeInputValue, content);
-            }
-            setLabelContent(doValue(content, index, value, getClasses(selectBoxFakeOption, false)));
-            if (selectBoxFakeInput) {
-                selectElementContents(selectBoxFakeInputValue), setValue(content);
-            }
-            selectBoxFakeOptions.forEach(function (selectBoxFakeOption) {
-                if (selectBoxValue === selectBoxFakeOption[PROP_VALUE]) {
-                    setOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
-                    setOptionFakeSelected(selectBoxFakeOption);
-                } else {
-                    letOptionSelected(selectBoxFakeOption[PROP_SOURCE]);
-                    letOptionFakeSelected(selectBoxFakeOption);
-                }
-            });
-            if (selectBoxValue !== selectBoxValuePrevious) {
-                fire('change', getLot());
-            }
-        }
-
-        function onSelectBoxFakeBlur(e) {
-            doBlur();
-        }
-
-        function onSelectBoxFakeClick(e) {
-            if (selectBoxIsDisabled()) {
-                return;
-            }
-            selectBoxOptionIndex = selectBox.selectedIndex;
-            if (selectBoxSize) {
-                return doEnter();
-            }
-            if (selectBoxFakeInput) {
-                selectBoxFakeInputValue.focus();
-            } else {
-                doToggle() && doFit();
-            }
-        }
-
-        function onSelectBoxFakeFocus(e) {
-            selectBoxOptionIndex = selectBox.selectedIndex;
-            doFocus();
-        }
-
-        function onSelectBoxFakeKeyDown(e) {
-            if (!selectBoxOptions) {
-                return;
-            }
-            _keyIsCtrl = e.ctrlKey;
-            _keyIsShift = e.shiftKey;
-            var key = e.key,
-                selectBoxOptionIndexCurrent = selectBoxOptionIndex,
-                selectBoxFakeOption = selectBoxFakeOptions[selectBoxOptionIndexCurrent],
-                selectBoxFakeOptionIsDisabled = function selectBoxFakeOptionIsDisabled(selectBoxFakeOption) {
-                    return hasClass(selectBoxFakeOption, classNameOptionM + 'disabled');
-                },
-                doClick = function doClick(selectBoxFakeOption) {
-                    return onSelectBoxFakeOptionClick.call(selectBoxFakeOption);
-                },
-                isOpen = isEnter(); // Cache the enter state
-            if (KEY_ARROW_DOWN === key) {
-                // Continue walking down until it finds an option that is not disabled and not hidden
-                while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
-                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption) && !selectBoxFakeOption.hidden) {
-                        break;
-                    }
-                }
-                if (selectBoxFakeOption) {
-                    doClick(selectBoxFakeOption), doToggle(isOpen);
-                }
-                offEventDefault(e);
-            } else if (KEY_ARROW_UP === key) {
-                // Continue walking up until it finds an option that is not disabled and not hidden
-                while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
-                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption) && !selectBoxFakeOption.hidden) {
-                        break;
-                    }
-                }
-                if (selectBoxFakeOption) {
-                    doClick(selectBoxFakeOption), doToggle(isOpen);
-                }
-                offEventDefault(e);
-            } else if (KEY_END$1 === key) {
-                // Start from the last option position + 1
-                selectBoxOptionIndexCurrent = toCount(selectBoxOptions);
-                // Continue walking up until it finds an option that is not disabled and not hidden
-                while (selectBoxFakeOption = selectBoxFakeOptions[--selectBoxOptionIndexCurrent]) {
-                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption) && !selectBoxFakeOption.hidden) {
-                        break;
-                    }
-                }
-                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
-                offEventDefault(e);
-            } else if (KEY_ENTER$1 === key) {
-                selectBoxFakeOption && doClick(selectBoxFakeOption);
-                doToggle(), offEventDefault(e);
-            } else if (KEY_ESCAPE === key) {
-                !selectBoxSize && doExit();
-                // offEventDefault(e);
-            } else if (KEY_START === key) {
-                // Start from the first option position - 1
-                selectBoxOptionIndexCurrent = -1;
-                // Continue walking up until it finds an option that is not disabled and not hidden
-                while (selectBoxFakeOption = selectBoxFakeOptions[++selectBoxOptionIndexCurrent]) {
-                    if (!selectBoxFakeOptionIsDisabled(selectBoxFakeOption) && !selectBoxFakeOption.hidden) {
-                        break;
-                    }
-                }
-                selectBoxFakeOption && (doClick(selectBoxFakeOption), doToggle(isOpen));
-                offEventDefault(e);
-            } else if (KEY_TAB$1 === key) {
-                !selectBoxFakeInput && selectBoxFakeOption && doClick(selectBoxFakeOption);
-                !selectBoxSize && doExit();
-                // offEventDefault(e);
-            }
-            isEnter() && !_keyIsCtrl && !_keyIsShift && doFit();
-        }
-
-        function onSelectBoxFakeKeyUp() {
-            _keyIsCtrl = _keyIsShift = false;
-        }
-
-        function onSelectBoxFakeInputValueBlur() {
-            var value = getText(selectBoxFakeInputValue);
-            if (null !== value) {
-                setValue(fromValue(value));
-            }
-            doBlur();
-        }
-
-        function onSelectBoxFakeInputValueFocus() {
-            if (!selectBoxOptions) {
-                return;
-            }
-            var t = this,
-                value = getText(t),
-                selectBoxOption,
-                selectBoxFakeOption;
-            selectBoxOptionIndex = -1; // `<input>` does not have `selectedIndex` property!
-            selectElementContents(t);
-            for (var i = 0, _j4 = toCount(selectBoxOptions); i < _j4; ++i) {
-                selectBoxOption = selectBoxOptions[i];
-                selectBoxFakeOption = selectBoxFakeOptions[i];
-                if (value === getText(selectBoxOption)) {
-                    selectBoxOptionIndex = i;
-                    setOptionSelected(selectBoxOption);
-                    setOptionFakeSelected(selectBoxFakeOption);
-                } else {
-                    letOptionSelected(selectBoxOption);
-                    letOptionFakeSelected(selectBoxFakeOption);
-                }
-            }
-            doFocus(), doToggle() && doFit();
-        }
-        var bounce = debounce(function (self, key, valuePrev) {
-            var value = getText(self),
-                first,
-                selectBoxFakeOption;
-            if (null === value) {
-                setHTML(selectBoxFakeInputPlaceholder, selectBoxPlaceholder);
-                selectBoxFakeDropDown.hidden = false;
-                for (var i = 0, _j5 = toCount(selectBoxFakeOptions); i < _j5; ++i) {
-                    setHTML(selectBoxFakeOption = selectBoxFakeOptions[i], getText(selectBoxFakeOption));
-                    selectBoxFakeOption.hidden = false;
-                }
-            } else {
-                setHTML(selectBoxFakeInputPlaceholder, ZERO_WIDTH_SPACE);
-                if (valuePrev !== (value = toCaseLower(value)) && KEY_ARROW_DOWN !== key && KEY_ARROW_LEFT$1 !== key && KEY_ARROW_RIGHT$1 !== key && KEY_ARROW_UP !== key && KEY_ENTER$1 !== key) {
-                    for (var _i = 0, _j6 = toCount(selectBoxFakeOptions), v; _i < _j6; ++_i) {
-                        letOptionSelected((selectBoxFakeOption = selectBoxFakeOptions[_i])[PROP_SOURCE]);
-                        letOptionFakeSelected(selectBoxFakeOption);
-                        v = getText(selectBoxFakeOption);
-                        if (v && toCaseLower(v).includes(value)) {
-                            !first && (first = selectBoxFakeOption);
-                            setHTML(selectBoxFakeOption, v.replace(new RegExp(value.replace(/[!$^*()+=[]{}|:<>,.?\/-]/g, '\\$&'), 'gi'), function ($0) {
-                                return '<mark>' + $0 + '</mark>';
-                            }));
-                            selectBoxFakeOption.hidden = false;
-                        } else {
-                            setHTML(selectBoxFakeOption, v);
-                            selectBoxFakeOption.hidden = true;
-                        }
-                    }
-                    // Always select the first match, but do not update the value
-                    if (first) {
-                        selectBoxOptionIndex = first[PROP_INDEX];
-                        setOptionSelected(first[PROP_SOURCE]);
-                        setOptionFakeSelected(first);
-                        selectBoxFakeDropDown.hidden = false;
-                        // No match!
-                    } else {
-                        selectBoxFakeDropDown.hidden = true;
-                    }
-                    valuePrev = value;
-                } else {
-                    var marked = 0;
-                    for (var _i2 = 0, _j7 = toCount(selectBoxFakeOptions), _v; _i2 < _j7; ++_i2) {
-                        selectBoxFakeOption = selectBoxFakeOptions[_i2];
-                        _v = getHTML(selectBoxFakeOption);
-                        if (hasValue('</mark>', _v)) {
-                            ++marked;
-                        }
-                    }
-                    // Reset all filter(s) if there is only one or none option marked
-                    if (marked <= 1) {
-                        for (var _i3 = 0, _j8 = toCount(selectBoxFakeOptions), _v2; _i3 < _j8; ++_i3) {
-                            selectBoxFakeOption = selectBoxFakeOptions[_i3];
-                            _v2 = getText(selectBoxFakeOption);
-                            setHTML(selectBoxFakeOption, _v2);
-                            selectBoxFakeOption.hidden = false;
-                        }
-                    }
-                }
-            }
-            if (KEY_ENTER$1 !== key && KEY_ESCAPE !== key && KEY_TAB$1 !== key) {
-                doEnter(), doFit();
-            }
-        }, 1);
-
-        function onSelectBoxFakeInputValueKeyDown(e) {
-            var t = this,
-                key = e.key;
-            onSelectBoxFakeKeyDown.call(t, e), bounce(t, key, getText(t));
-        }
-
-        function onSelectBoxFakeInputValueKeyUp() {
-            onSelectBoxFakeKeyUp();
-        }
-        var waitForPaste = delay(function (input, placeholder) {
-            var value = getText(input);
-            setHTML(placeholder, null !== value ? ZERO_WIDTH_SPACE : selectBoxPlaceholder);
-            setText(input, value);
-            selectElementContents(input);
-        }, 1);
-
-        function onSelectBoxFakeInputValuePaste() {
-            waitForPaste(selectBoxFakeInputValue, selectBoxFakeInputPlaceholder);
-        }
-
-        function onSelectBoxParentClick(e) {
-            var target = e.target;
-            if (target !== selectBoxFake) {
-                while (target = getParent(target)) {
-                    if (selectBoxFake === target) {
-                        break;
-                    }
-                }
-            }
-            selectBoxFake !== target && doExit();
-        }
-
-        function onSelectBoxWindow() {
-            isEnter() && setSelectBoxFakeOptionsPosition(selectBoxFake, 1);
-        }
-
-        function setSelectBoxFakeOptions(selectBoxItem, parent) {
-            if ('optgroup' === getName(selectBoxItem)) {
-                var selectBoxFakeOptionGroup = setElement('span', {
-                        'class': classNameOptionB + '-group' + (selectBoxItem.disabled ? ' ' + classNameOptionM + 'disabled' : "")
-                    }),
-                    _selectBoxItems = getChildren(selectBoxItem);
-                selectBoxFakeOptionGroup.title = selectBoxItem.label;
-                for (var i = 0, _j9 = toCount(_selectBoxItems); i < _j9; ++i) {
-                    setSelectBoxFakeOptions(_selectBoxItems[i], selectBoxFakeOptionGroup);
-                }
-                setChildLast(parent, selectBoxFakeOptionGroup);
-                return;
-            }
-            var selectBoxOptionValue = getAttribute(selectBoxItem, 'value', false),
-                selectBoxOptionValueReal = selectBoxOptionValue,
-                selectBoxOptionText = getText(selectBoxItem),
-                selectBoxOptionTitle = selectBoxItem.title,
-                selectBoxFakeOption = setElement('a', selectBoxOptionText, {
-                    'class': classNameOptionB,
-                    'title': selectBoxOptionTitle || selectBoxOptionText
-                });
-            selectBoxOptionValue = selectBoxOptionValue || selectBoxOptionText;
-            selectBoxFakeOption[PROP_INDEX] = selectBoxOptionIndex;
-            selectBoxFakeOption[PROP_SOURCE] = selectBoxItem;
-            selectBoxFakeOption[PROP_VALUE] = selectBoxOptionValue;
-            setData(selectBoxFakeOption, {
-                index: selectBoxOptionIndex,
-                value: selectBoxOptionValueReal
-            });
-            $.options[selectBoxOptionValue] = selectBoxOptionText;
-            var selectBoxOptionIsDisabled = selectBoxItem.disabled;
-            if (selectBoxOptionIsDisabled) {
-                setClass(selectBoxFakeOption, classNameOptionM + 'disabled');
-            } else {
-                onEvent('click', selectBoxFakeOption, onSelectBoxFakeOptionClick);
-            }
-            setChildLast(parent, selectBoxFakeOption);
-            selectBoxFakeOptions.push(selectBoxFakeOption);
-            if ("" === selectBoxOptionValueReal) {
-                selectBoxOptionValue = null;
-            }
-            if (isArray(selectBoxValue) && hasValue(selectBoxOptionValue, selectBoxValue) || selectBoxOptionValue === selectBoxValue) {
-                setClass(selectBoxFakeOption, classNameOptionM + 'selected');
-                setLabelContent(doValue(selectBoxOptionText, selectBoxOptionIndex, selectBoxOptionValueReal, getClasses(selectBoxFakeOption, false)));
-                setOptionSelected(selectBoxItem);
-            } else {
-                letOptionSelected(selectBoxItem);
-            }
-            ++selectBoxOptionIndex;
-        }
-
-        function setSelectBoxFakeOptionsPosition(selectBoxFake, useEvent) {
-            if (!selectBoxSize) {
-                var _getRect = getRect$1(selectBoxFake),
-                    left = _getRect[0],
-                    top = _getRect[1],
-                    width = _getRect[2],
-                    height = _getRect[3],
-                    heightWindow = getSize(W)[1],
-                    heightMax = heightWindow - top - height;
-                setStyles(selectBoxFakeDropDown, {
-                    'bottom': "",
-                    'left': left,
-                    'max-height': heightMax,
-                    'top': top + height - selectBoxFakeBorderTopWidth,
-                    'width': width
-                });
-                if (heightMax < (heightWindow - height) / 2) {
-                    heightMax = top;
-                    setStyles(selectBoxFakeDropDown, {
-                        'top': "",
-                        'bottom': heightWindow - top - selectBoxFakeBorderBottomWidth,
-                        'max-height': heightMax + selectBoxFakeBorderTopWidth
-                    });
-                    letClass(selectBoxFake, classNameM + 'down');
-                    setClass(selectBoxFake, classNameM + 'up');
-                } else {
-                    letClass(selectBoxFake, classNameM + 'up');
-                    setClass(selectBoxFake, classNameM + 'down');
-                }
-            }
-            if (!useEvent) {
-                var selectBoxFakeOption = selectBoxFakeOptions.find(function (selectBoxFakeOption) {
-                    return hasClass(selectBoxFakeOption, classNameOptionM + 'selected');
-                });
-                if (selectBoxFakeOption) {
-                    var _height = getSize(selectBoxFakeOption)[1],
-                        heightParent = getSize(selectBoxFakeDropDown)[1],
-                        _getOffset = getOffset(selectBoxFakeOption),
-                        _left = _getOffset[0],
-                        _top = _getOffset[1],
-                        topScroll = getScroll(selectBoxFakeDropDown)[1];
-                    if (_top < topScroll) {
-                        setScroll(selectBoxFakeDropDown, [_left, _top]);
-                    } else if (_top + _height - heightParent > topScroll) {
-                        setScroll(selectBoxFakeDropDown, [_left, _top + _height - heightParent]);
-                    }
-                }
-            }
-            fire('fit', getLot());
-        }
-        onEvents(['resize', 'scroll'], W, onSelectBoxWindow);
-        onEvent('click', selectBoxParent, onSelectBoxParentClick);
-        onEvent('focus', selectBox, onSelectBoxFocus);
-        onEvent('click', selectBoxFake, onSelectBoxFakeClick);
-        if (selectBoxFakeInput) {
-            onEvent('blur', selectBoxFakeInputValue, onSelectBoxFakeInputValueBlur);
-            onEvent('focus', selectBoxFakeInputValue, onSelectBoxFakeInputValueFocus);
-            onEvent('keydown', selectBoxFakeInputValue, onSelectBoxFakeInputValueKeyDown);
-            onEvent('keyup', selectBoxFakeInputValue, onSelectBoxFakeInputValueKeyUp);
-            onEvent('paste', selectBoxFakeInputValue, onSelectBoxFakeInputValuePaste);
-        } else {
-            onEvent('blur', selectBoxFake, onSelectBoxFakeBlur);
-            onEvent('focus', selectBoxFake, onSelectBoxFakeFocus);
-            onEvent('keydown', selectBoxFake, onSelectBoxFakeKeyDown);
-            onEvent('keyup', selectBoxFake, onSelectBoxFakeKeyUp);
-        }
-        var j = toCount(selectBoxItems);
-        if (j) {
-            setChildLast(selectBoxFake, selectBoxFakeDropDown);
-            for (var i = 0; i < j; ++i) {
-                setSelectBoxFakeOptions(selectBoxItems[i], selectBoxFakeDropDown);
-            }
-            if (selectBoxSize) {
-                var selectBoxFakeOption = selectBoxFakeOptions[0],
-                    selectBoxFakeOptionSize = getSize(selectBoxFakeOption),
-                    heightMax = selectBoxFakeOptionSize[1] * selectBoxSize;
-                setStyle(selectBoxFakeDropDown, 'max-height', heightMax);
-            }
-        }
-        if (selectBoxSize) {
-            // Force `down` and `open` class
-            setClass(selectBoxFake, classNameM + 'down');
-            setClass(selectBoxFake, classNameM + 'open');
-        }
-        $.get = function (parseValue) {
-            if (parseValue === void 0) {
-                parseValue = true;
-            }
-            var value = getValue();
-            return parseValue ? toValue(value) : value;
-        };
-        $.pop = function () {
-            if (!source[name$4]) {
-                return $; // Already ejected
-            }
-            delete source[name$4];
-            offEvents(['resize', 'scroll'], W, onSelectBoxWindow);
-            offEvent('click', selectBoxParent, onSelectBoxParentClick);
-            offEvent('focus', selectBox, onSelectBoxFocus);
-            letClass(selectBox, classNameE + 'source');
-            offEvent('click', selectBoxFake, onSelectBoxFakeClick);
-            if (selectBoxFakeInput) {
-                offEvent('blur', selectBoxFakeInputValue, onSelectBoxFakeInputValueBlur);
-                offEvent('focus', selectBoxFakeInputValue, onSelectBoxFakeInputValueFocus);
-                offEvent('keydown', selectBoxFakeInputValue, onSelectBoxFakeInputValueKeyDown);
-                offEvent('keyup', selectBoxFakeInputValue, onSelectBoxFakeInputValueKeyUp);
-                offEvent('paste', selectBoxFakeInputValue, onSelectBoxFakeInputValuePaste);
-            } else {
-                offEvent('blur', selectBoxFake, onSelectBoxFakeBlur);
-                offEvent('focus', selectBoxFake, onSelectBoxFakeFocus);
-                offEvent('keydown', selectBoxFake, onSelectBoxFakeKeyDown);
-                offEvent('keyup', selectBoxFake, onSelectBoxFakeKeyUp);
-            }
-            letText(selectBoxFake);
-            letElement(selectBoxFake);
-            return fire('pop', getLot());
-        };
-        $.set = function (value) {
-            if (!selectBoxOptions) {
-                return $;
-            }
-            setValue(fromValue(value));
-            selectBoxFakeOptions.forEach(function (selectBoxFakeOption, index) {
-                var selectBoxOption = selectBoxOptions[index];
-                toggleClass$1(selectBoxFakeOption, classNameOptionM + 'selected', selectBoxOption && getOptionSelected(selectBoxOption));
-            });
-            fire('change', getLot());
-            return $;
-        };
-        $.self = selectBoxFake;
-        return $;
-    }
-    OP.instances = {};
-    OP.state = {
-        'class': 'option-picker',
-        'join': ', ',
-        'parent': null,
-        'size': 5
-    };
-    OP.version = '1.3.10';
-
-    function onChange$c(init) {
-        // Destroy!
-        var $;
-        for (var key in OP.instances) {
-            $ = OP.instances[key];
-            $.pop();
-            delete OP.instances[key];
-        }
-        var sources = getElements('input[list]:not([type=hidden]),select');
-        sources && toCount(sources) && sources.forEach(function (source) {
-            var _getDatum;
-            letClass(source, 'input');
-            letClass(source, 'select');
-            var c = getClasses(source);
-            var $ = new OP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
-            setClasses($.self, c);
-        });
-        1 === init && W._.on('change', onChange$c);
-    }
-    W.OP = OP;
     var esc = function esc(pattern, extra) {
         if (extra === void 0) {
             extra = "";
@@ -1726,820 +1449,3739 @@
         if (isPattern(pattern)) {
             return pattern;
         }
-        // No need to escape `/` in the pattern string
-        pattern = pattern.replace(/\//g, '\\/');
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
     var x = "!$^*()+=[]{}|:<>,.?/-";
-    var name$3 = 'TP';
-    var KEY_A = 'a';
-    var KEY_ARROW_LEFT = 'ArrowLeft';
-    var KEY_ARROW_RIGHT = 'ArrowRight';
-    var KEY_BEGIN = 'Home';
-    var KEY_DELETE_LEFT = 'Backspace';
-    var KEY_DELETE_RIGHT = 'Delete';
-    var KEY_END = 'End';
-    var KEY_ENTER = 'Enter';
-    var KEY_TAB = 'Tab';
-
-    function TP(source, state) {
-        if (state === void 0) {
-            state = {};
-        }
-        var $ = this;
-        if (!source) {
-            return $;
-        }
-        // Already instantiated, skip!
-        if (source[name$3]) {
-            return source[name$3];
-        }
-        // Return new instance if `TP` was called without the `new` operator
-        if (!isInstance($, TP)) {
-            return new TP(source, state);
-        }
-        var sourceIsDisabled = function sourceIsDisabled() {
-                return source.disabled;
-            },
-            sourceIsReadOnly = function sourceIsReadOnly() {
-                return source.readOnly;
-            },
-            thePlaceholder = getAttribute(source, 'placeholder'),
-            theTabIndex = getAttribute(source, 'tabindex');
-        var _hook = hook($);
-        _hook.hooks;
-        var fire = _hook.fire;
-        $.state = state = fromStates({}, TP.state, isString(state) ? {
-            join: state
-        } : state || {});
-        $.source = source;
-        // Store current instance to `TP.instances`
-        TP.instances[source.id || source.name || toObjectCount(TP.instances)] = $;
-        // Mark current DOM as active tag picker to prevent duplicate instance
-        source[name$3] = $;
-        var classNameB = state['class'],
-            classNameE = classNameB + '__',
-            classNameM = classNameB + '--',
-            form = getParentForm(source),
-            // Capture the closest `<form>` element
-            self = setElement('div', {
-                'class': classNameB,
-                'tabindex': sourceIsDisabled() ? false : -1
-            }),
-            text = setElement('span', {
-                'class': classNameE + 'tag ' + classNameE + 'input'
-            }),
-            textCopy = setElement('input', {
-                'class': classNameE + 'copy',
-                'tabindex': -1,
-                'type': 'text'
-            }),
-            textInput = setElement('span', {
-                'contenteditable': sourceIsDisabled() ? false : 'true',
-                'spellcheck': 'false',
-                'style': 'white-space:pre;'
-            }),
-            textInputHint = setElement('span'),
-            textOutput = setElement('span', {
-                'class': classNameE + 'tags'
-            });
-        var currentTagIndex = 0,
-            currentTags = {};
-        var _keyIsCtrl, _keyIsShift, _keyIsTab;
-
-        function getCharBeforeCaret(container) {
-            var range,
-                selection = W.getSelection();
-            if (selection.rangeCount > 0) {
-                range = selection.getRangeAt(0).cloneRange();
-                range.collapse(true);
-                range.setStart(container, 0);
-                return (range + "").slice(-1);
-            }
-        }
-
-        function getCurrentTags() {
-            return currentTags;
-        }
-
-        function getTag(tag, fireHooks) {
-            var index = toArrayKey(tag, $.tags);
-            fireHooks && fire('get.tag', [tag, index]);
-            return isNumber(index) ? tag : null;
-        }
-
-        function setCurrentTags() {
-            currentTags = {}; // Reset!
-            var i,
-                items = getChildren(textOutput),
-                j = toCount(items) - 1; // Minus 1 to skip the tag editor element
-            for (i = 0; i < j; ++i) {
-                if (hasClass(items[i], classNameE + 'tag--selected')) {
-                    currentTags[i] = items[i];
+    var EVENT_DOWN$1 = 'down';
+    var EVENT_MOVE = 'move';
+    var EVENT_UP$1 = 'up';
+    var EVENT_BLUR$1 = 'blur';
+    var EVENT_CUT$1 = 'cut';
+    var EVENT_FOCUS$1 = 'focus';
+    var EVENT_INPUT$1 = 'input';
+    var EVENT_INVALID$1 = 'invalid';
+    var EVENT_KEY$1 = 'key';
+    var EVENT_KEY_DOWN$1 = EVENT_KEY$1 + EVENT_DOWN$1;
+    var EVENT_MOUSE$1 = 'mouse';
+    var EVENT_MOUSE_DOWN$1 = EVENT_MOUSE$1 + EVENT_DOWN$1;
+    var EVENT_MOUSE_MOVE = EVENT_MOUSE$1 + EVENT_MOVE;
+    var EVENT_MOUSE_UP = EVENT_MOUSE$1 + EVENT_UP$1;
+    var EVENT_PASTE$1 = 'paste';
+    var EVENT_RESET$1 = 'reset';
+    var EVENT_RESIZE = 'resize';
+    var EVENT_SCROLL = 'scroll';
+    var EVENT_SUBMIT$1 = 'submit';
+    var EVENT_TOUCH$1 = 'touch';
+    var EVENT_TOUCH_END = EVENT_TOUCH$1 + 'end';
+    var EVENT_TOUCH_MOVE = EVENT_TOUCH$1 + EVENT_MOVE;
+    var EVENT_TOUCH_START$1 = EVENT_TOUCH$1 + 'start';
+    var EVENT_WHEEL = 'wheel';
+    var KEY_DOWN = 'Down';
+    var KEY_LEFT$1 = 'Left';
+    var KEY_RIGHT$1 = 'Right';
+    var KEY_UP = 'Up';
+    var KEY_ARROW$1 = 'Arrow';
+    var KEY_ARROW_DOWN$1 = KEY_ARROW$1 + KEY_DOWN;
+    var KEY_ARROW_LEFT$2 = KEY_ARROW$1 + KEY_LEFT$1;
+    var KEY_ARROW_RIGHT$2 = KEY_ARROW$1 + KEY_RIGHT$1;
+    var KEY_ARROW_UP$1 = KEY_ARROW$1 + KEY_UP;
+    var KEY_BEGIN$1 = 'Home';
+    var KEY_DELETE_LEFT$2 = 'Backspace';
+    var KEY_DELETE_RIGHT$2 = 'Delete';
+    var KEY_END$1 = 'End';
+    var KEY_ENTER$2 = 'Enter';
+    var KEY_ESCAPE$1 = 'Escape';
+    var KEY_PAGE = 'Page';
+    var KEY_PAGE_DOWN = KEY_PAGE + KEY_DOWN;
+    var KEY_PAGE_UP = KEY_PAGE + KEY_UP;
+    var KEY_TAB$1 = 'Tab';
+    var KEY_Y$1 = 'y';
+    var KEY_Z$1 = 'z';
+    var OPTION_SELF = 0;
+    var OPTION_TEXT = 1;
+    var TOKEN_CONTENTEDITABLE$1 = 'contenteditable';
+    var TOKEN_DISABLED$1 = 'disabled';
+    var TOKEN_FALSE$1 = 'false';
+    var TOKEN_GROUP = 'group';
+    var TOKEN_INVALID$1 = 'invalid';
+    var TOKEN_OPTGROUP = 'opt' + TOKEN_GROUP;
+    var TOKEN_READONLY$1 = 'readonly';
+    var TOKEN_READ_ONLY$1 = 'readOnly';
+    var TOKEN_REQUIRED$1 = 'required';
+    var TOKEN_SELECTED = 'selected';
+    var TOKEN_TABINDEX$1 = 'tabindex';
+    var TOKEN_TAB_INDEX$1 = 'tabIndex';
+    var TOKEN_TEXT = 'text';
+    var TOKEN_TRUE$1 = 'true';
+    var TOKEN_VALUE$1 = 'value';
+    var TOKEN_VALUES$1 = TOKEN_VALUE$1 + 's';
+    var TOKEN_VISIBILITY$1 = 'visibility';
+    var VALUE_SELF = 0;
+    var VALUE_TEXT = 1;
+    var VALUE_X = 2;
+    var filter = debounce(function ($, input, _options, selectOnly) {
+        var query = isString(input) ? input : getText(input) || "",
+            q = toCaseLower(query),
+            _mask = $._mask,
+            mask = $.mask,
+            self = $.self,
+            state = $.state,
+            options = _mask.options,
+            pattern = self.pattern,
+            strict = state.strict,
+            option;
+        var count = _options.count();
+        if (selectOnly) {
+            forEachMap(_options, function (v) {
+                if ("" !== q && (q === toCaseLower(getText(v[2]).replace(/\u200C/g, "")).slice(0, toCount(q)) || q === toCaseLower(getOptionValue(v[2])).slice(0, toCount(q))) && !getAria(v[2], TOKEN_DISABLED$1)) {
+                    selectToOption(v[2], $);
+                    return 0;
                 }
-            }
-        }
-
-        function setTag(tag, index) {
-            if (isNumber(index)) {
-                index = index < 0 ? 0 : index;
-                $.tags.splice(index, 0, tag);
-            } else {
-                $.tags.push(tag);
-            }
-            source.value = $.tags.join(state.join);
-        }
-
-        function setTagElement(tag, index) {
-            var element = setElement('span', {
-                'class': classNameE + 'tag',
-                'tabindex': sourceIsDisabled() || sourceIsReadOnly() ? false : 0,
-                'title': tag
+                --count;
             });
-            var x = setElement('a', {
-                'class': classNameE + 'tag-x',
-                'href': "",
-                'tabindex': -1,
-                'target': '_top'
-            });
-            onEvent('click', x, onClickTagX);
-            setChildLast(element, x);
-            onEvent('click', element, onClickTag);
-            onEvents(['blur', 'focus'], element, onBlurFocusTag);
-            if (hasParent(textOutput)) {
-                if (isNumber(index) && $.tags[index]) {
-                    setPrev(getChildren(textOutput, index), element);
+        } else {
+            forEachMap(_options, function (v) {
+                if ("" === q || hasValue(q, toCaseLower(getText(v[2]).replace(/\u200C/g, "") + '\t' + getOptionValue(v[2])))) {
+                    v[2].hidden = false;
                 } else {
-                    setPrev(text, element);
+                    v[2].hidden = true;
+                    --count;
                 }
-            }
-        }
-
-        function setTags(values) {
-            values = values ? values.split(state.join) : [];
-            // Remove all tag(s) …
-            if (hasParent(self)) {
-                var theTagPrev, theTagPrevIndex, theTagPrevTitle;
-                while (theTagPrev = getPrev(text)) {
-                    letTagElement(theTagPrevTitle = theTagPrev.title);
-                    if (!hasValue(theTagPrevTitle, values)) {
-                        theTagPrevIndex = toArrayKey(theTagPrevTitle, $.tags);
-                        fire('change', [theTagPrevTitle, theTagPrevIndex]);
-                        fire('let.tag', [theTagPrevTitle, theTagPrevIndex]);
-                    }
-                }
-            }
-            $.tags = [];
-            source.value = "";
-            // … then add tag(s)
-            for (var i = 0, theTagsMax = state.max, value; i < theTagsMax; ++i) {
-                if (!values[i]) {
-                    break;
-                }
-                if ("" !== (value = doValidTag(values[i]))) {
-                    setTagElement(value), setTag(value);
-                    fire('change', [value, i]);
-                    fire('set.tag', [value, i]);
-                }
-            }
-        }
-
-        function letTag(tag) {
-            var index = toArrayKey(tag, $.tags);
-            if (isNumber(index) && index >= 0) {
-                $.tags.splice(index, 1);
-                source.value = $.tags.join(state.join);
-            }
-        }
-
-        function letTagElement(tag) {
-            var index = toArrayKey(tag, $.tags),
-                element;
-            if (isNumber(index) && index >= 0 && (element = getChildren(textOutput, index))) {
-                offEvent('click', element, onClickTag);
-                offEvents(['blur', 'focus'], element, onBlurFocusTag);
-                var x = getChildFirst(element);
-                if (x) {
-                    offEvent('click', x, onClickTagX);
-                    letElement(x);
-                }
-                letElement(element);
-            }
-        }
-
-        function letTextCopy(selectTextInput) {
-            letElement(textCopy);
-            {
-                setValue("", 1);
-            }
-        }
-
-        function setTextCopy(selectTextCopy) {
-            setChildLast(self, textCopy);
-            textCopy.value = $.tags.join(state.join);
-            {
-                textCopy.focus();
-                textCopy.select();
-            }
-        }
-
-        function setValue(value, fireFocus) {
-            setText(textInput, value);
-            setText(textInputHint, value ? "" : thePlaceholder);
-            if (fireFocus) {
-                textInput.focus();
-                // Move caret to the end!
-                var range = D.createRange(),
-                    selection = W.getSelection();
-                range.selectNodeContents(textInput);
-                range.collapse(false);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }
-        setValue("");
-
-        function doBlurTags(exceptThisTag) {
-            doToTags(exceptThisTag, function () {
-                letClass(this, classNameE + 'tag--selected');
             });
-        }
-
-        function doFocusTags(exceptThisTag) {
-            doToTags(exceptThisTag, function () {
-                setClass(this, classNameE + 'tag--selected');
-            });
-        }
-
-        function doInput() {
-            if (sourceIsDisabled() || sourceIsReadOnly()) {
-                return;
-            }
-            var tag = doValidTagChar(getText(textInput)).trim(),
-                pattern = state.pattern;
-            if (pattern && tag) {
-                if (!toPattern(pattern, "").test(tag)) {
-                    fire('not.tag', [tag, -1]);
-                    setValue(tag, 1);
-                    return;
-                }
-            }
-            setValue("");
-            if (tag = doValidTag(tag)) {
-                if (!getTag(tag)) {
-                    setTagElement(tag), setTag(tag);
-                    var index = toCount($.tags);
-                    fire('change', [tag, index]);
-                    fire('set.tag', [tag, index]);
+            options.hidden = !count;
+            selectToOptionsNone($);
+            if (strict) {
+                // Silently select the first option without affecting the currently typed query and focus/select state
+                if (count && "" !== q && (option = goToOptionFirst($))) {
+                    letAria(mask, TOKEN_INVALID$1);
+                    setAria(option, TOKEN_SELECTED, true);
+                    option.$[OPTION_SELF][TOKEN_SELECTED] = true;
+                    setValue$1(self, getOptionValue(option));
                 } else {
-                    fire('has.tag', [tag, toArrayKey(tag, $.tags)]);
-                }
-            }
-        }
-
-        function doSubmitTry() {
-            onSubmitForm() && form && form.dispatchEvent(new Event('submit', {
-                cancelable: true
-            }));
-        }
-
-        function doToTags(exceptThisTag, then) {
-            var i,
-                items = getChildren(textOutput),
-                j = toCount(items) - 1; // Minus 1 to skip the tag editor element
-            for (i = 0; i < j; ++i) {
-                if (exceptThisTag === items[i]) {
-                    continue;
-                }
-                then.call(items[i], i);
-            }
-        }
-
-        function doValidTag(v) {
-            return doValidTagChar($.f(v)).trim();
-        }
-
-        function doValidTagChar(v) {
-            v = v || "";
-            state.escape.forEach(function (char) {
-                v = v.split(char).join("");
-            });
-            return v;
-        }
-
-        function onBlurFocusTextCopy(e) {
-            var type = e.type;
-            if ('blur' === type) {
-                doBlurTags();
-                letClasses(self, [classNameM + 'focus', classNameM + 'focus-self']);
-            } else {
-                setClasses(self, [classNameM + 'focus', classNameM + 'focus-self']);
-            }
-        }
-
-        function onBlurFocusTag(e) {
-            if (sourceIsReadOnly()) {
-                return;
-            }
-            currentTags = {}; // Reset!
-            var t = this,
-                type = e.type,
-                tag = t.title,
-                tags = $.tags,
-                index = toArrayKey(tag, tags),
-                classNameTagM = classNameE + 'tag--';
-            if ('blur' === type) {
-                if (!_keyIsCtrl && !_keyIsShift || _keyIsShift && _keyIsTab // Do not do multiple selection on Shift+Tab
-                ) {
-                    doBlurTags(t);
-                    letClass(t, classNameTagM + 'selected');
-                    letClasses(self, [classNameM + 'focus', classNameM + 'focus-tag']);
-                }
-            } else {
-                setClass(t, classNameTagM + 'selected');
-                setClasses(self, [classNameM + 'focus', classNameM + 'focus-tag']);
-                currentTagIndex = index;
-                currentTags[index] = t;
-            }
-            fire(type + '.tag', [tag, index]);
-        }
-
-        function onBlurFocusText(e) {
-            var tags = $.tags,
-                type = e.type,
-                classNameTextM = classNameE + 'text--';
-            letClass(self, classNameM + 'focus-tag');
-            if ('blur' === type) {
-                letClass(text, classNameTextM + 'focus');
-                letClasses(self, [classNameM + 'focus', classNameM + 'focus-input']);
-                doInput();
-            } else {
-                setClass(text, classNameTextM + 'focus');
-                setClasses(self, [classNameM + 'focus', classNameM + 'focus-input']);
-                doBlurTags(text);
-            }
-            fire(type, [tags, toCount(tags)]);
-        }
-
-        function onBlurFocusSelf(e) {
-            var type = e.type;
-            if ('blur' === type) {
-                letClass(self, classNameM + 'focus');
-            } else {
-                setClass(self, classNameM + 'focus');
-            }
-        }
-
-        function onClickSelf(e) {
-            if (e && self === e.target) {
-                textInput.focus();
-            }
-            var tags = $.tags;
-            fire('click', [tags, toCount(tags)]);
-        }
-
-        function onClickTag() {
-            var t = this,
-                tag = t.title,
-                tags = $.tags;
-            fire('click.tag', [tag, toArrayKey(tag, tags)]);
-        }
-
-        function onClickTagX(e) {
-            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                var t = this,
-                    tag = getParent(t).title,
-                    index = toArrayKey(tag, $.tags);
-                letTagElement(tag), letTag(tag), setValue("", 1);
-                fire('change', [tag, index]);
-                fire('click.tag', [tag, index]);
-                fire('let.tag', [tag, index]);
-            }
-            offEventDefault(e);
-        }
-
-        function onCopyCutPasteTextCopy(e) {
-            var type = e.type;
-            if ('copy' === type) {
-                delay(function () {
-                    return letTextCopy();
-                }, 1)();
-            } else if ('cut' === type) {
-                !sourceIsReadOnly() && setTags("");
-                delay(function () {
-                    return letTextCopy();
-                }, 1)();
-            } else if ('paste' === type) {
-                delay(function () {
-                    !sourceIsReadOnly() && setTags(textCopy.value);
-                    letTextCopy();
-                }, 1)();
-            }
-            delay(function () {
-                var tags = $.tags;
-                fire(type, [tags, toCount(tags)]);
-            }, 1)();
-        }
-
-        function onBlurSelf() {
-            doBlurTags(), letClass(self, classNameM + 'focus-self');
-        }
-
-        function onFocusSource() {
-            textInput.focus();
-        }
-
-        function onKeyDownSelf(e) {
-            if (sourceIsDisabled() || sourceIsReadOnly()) {
-                return;
-            }
-            $.tags;
-            var key = e.key,
-                keyIsCtrl = _keyIsCtrl = e.ctrlKey,
-                keyIsShift = _keyIsShift = e.shiftKey,
-                classNameTagM = classNameE + 'tag--';
-            _keyIsTab = KEY_TAB === key;
-            var theTag, theTagIndex, theTagNext, theTagPrev, theTagTitle, theTags;
-            if (!keyIsCtrl) {
-                // Remove tag(s) with `Backspace` or `Delete` key
-                if (!keyIsShift && (KEY_DELETE_LEFT === key || KEY_DELETE_RIGHT === key)) {
-                    setCurrentTags();
-                    theTags = getCurrentTags();
-                    var isBackspace = KEY_DELETE_LEFT === key;
-                    for (theTagIndex in theTags) {
-                        theTag = theTags[theTagIndex];
-                        letTagElement(theTagTitle = theTag.title), letTag(theTagTitle);
-                    }
-                    currentTagIndex = +(toObjectKeys(theTags)[0] || 0);
-                    if (theTag = getChildren(textOutput, isBackspace ? currentTagIndex - 1 : currentTagIndex)) {
-                        if (text === theTag) {
-                            setValue("", 1);
-                        } else {
-                            theTag.focus();
-                        }
+                    // No other option(s) are available to query
+                    if ("" !== q) {
+                        setAria(mask, TOKEN_INVALID$1, true);
                     } else {
-                        setValue("", 1);
+                        letAria(mask, TOKEN_INVALID$1);
                     }
-                    offEventDefault(e);
-                    return;
+                    setValue$1(self, "");
                 }
-                // Focus to the first tag
-                if (KEY_BEGIN === key) {
-                    if (theTag = getChildren(textOutput, 0)) {
-                        theTag.focus(), offEventDefault(e);
-                    }
-                    return;
-                }
-                // Focus to the last tag
-                if (KEY_END === key) {
-                    if (theTag = getChildren(textOutput, toCount($.tags) - 1)) {
-                        theTag.focus(), offEventDefault(e);
-                        return;
+            } else {
+                letAria(mask, TOKEN_INVALID$1);
+                setValue$1(self, query);
+                if (pattern) {
+                    if (!count && "" !== q && !toPattern('^' + pattern + '$', "").test(query)) {
+                        setAria(mask, TOKEN_INVALID$1, true);
                     }
                 }
-                // Focus to the previous tag
-                if (KEY_ARROW_LEFT === key) {
-                    if (theTag = getChildren(textOutput, currentTagIndex - 1)) {
-                        var theTagWasFocus = hasClass(theTag, classNameTagM + 'selected');
-                        theTag.focus(), offEventDefault(e);
-                        if (keyIsShift) {
-                            theTagNext = getNext(theTag);
-                            if (theTagWasFocus) {
-                                letClass(theTagNext, classNameTagM + 'selected');
-                            }
-                            return;
-                        }
-                        doBlurTags(theTag);
-                        return;
-                    }
-                    if (!keyIsShift) {
-                        doBlurTags(getChildren(textOutput, 0));
-                        return;
-                    }
-                }
-                // Focus to the next tag or to the tag editor
-                if (KEY_ARROW_RIGHT === key) {
-                    if (theTag = getChildren(textOutput, currentTagIndex + 1)) {
-                        var _theTagWasFocus = hasClass(theTag, classNameTagM + 'selected');
-                        text === theTag && !keyIsShift ? setValue("", 1) : theTag.focus(), offEventDefault(e);
-                        if (keyIsShift) {
-                            theTagPrev = getPrev(theTag);
-                            if (_theTagWasFocus) {
-                                letClass(theTagPrev, classNameTagM + 'selected');
-                            }
-                            return;
-                        }
-                        doBlurTags(theTag);
-                        return;
-                    }
-                }
-            }
-            // Select all tag(s) with `Ctrl+A` key
-            if (KEY_A === key) {
-                setTextCopy();
-                doFocusTags(), setCurrentTags(), offEventDefault(e);
             }
         }
+        $.fire('search', [query = "" !== query ? query : null]);
+        var call = state.options;
+        // Only fetch when no other option(s) are available to query, or when the current search query is empty
+        if ((0 === count || "" === q) && isFunction(call)) {
+            setAria(mask, 'busy', true);
+            call = call.call($, query);
+            if (isInstance(call, Promise)) {
+                call.then(function (v) {
+                    createOptions($, v);
+                    letAria(mask, 'busy');
+                    $.fire('load', [query, $[TOKEN_VALUES$1]])[goToOptionFirst($) ? 'enter' : 'exit']().fit();
+                });
+            } else {
+                createOptions($, call);
+            }
+        }
+    })[0];
+    var _delay$1 = delay(function (picker) {
+            letAria(picker.mask, TOKEN_INVALID$1);
+        }),
+        _delay2$1 = _maybeArrayLike(_slicedToArray, _delay$1, 2),
+        letError$1 = _delay2$1[0],
+        letErrorAbort$1 = _delay2$1[1];
+    var setError$1 = function setError(picker) {
+        var mask = picker.mask,
+            state = picker.state,
+            time = state.time,
+            error = time.error;
+        if (isInteger(error) && error > 0) {
+            setAria(mask, TOKEN_INVALID$1, true);
+        }
+    };
+    var _delay3$1 = delay(function ($) {
+            saveState($);
+        }, 1),
+        _delay4$1 = _maybeArrayLike(_slicedToArray, _delay3$1, 1),
+        saveStateLazy$1 = _delay4$1[0];
+    var _delay5$1 = delay(function (picker) {
+            var _mask = picker._mask,
+                input = _mask.input;
+            toggleHintByValue$1(picker, getText(input, 0));
+        }),
+        _delay6$1 = _maybeArrayLike(_slicedToArray, _delay5$1, 1),
+        toggleHint$1 = _delay6$1[0];
+    var toggleHintByValue$1 = function toggleHintByValue(picker, value) {
+        var _mask = picker._mask,
+            hint = _mask.hint;
+        value ? setStyle(hint, TOKEN_VISIBILITY$1, 'hidden') : letStyle(hint, TOKEN_VISIBILITY$1);
+    };
+    var name$4 = 'OptionPicker';
 
-        function onKeyDownText(e) {
-            offEventPropagation(e);
-            if (sourceIsReadOnly() && KEY_TAB !== e.key) {
-                offEventDefault(e);
-            }
-            var escapes = state.escape,
-                theTag,
-                theTagLast = getPrev(text),
-                theTagsCount = toCount($.tags),
-                theTagsMax = state.max,
-                theValue = getText(textInput) || "",
-                key = e.key,
-                keyIsCtrl = _keyIsCtrl = e.ctrlKey,
-                keyIsEnter = KEY_ENTER === key;
-            _keyIsShift = e.shiftKey;
-            var keyIsTab = _keyIsTab = KEY_TAB === key;
-            if (keyIsEnter) {
-                key = '\n';
-            }
-            if (keyIsTab) {
-                key = '\t';
-            }
-            delay(function () {
-                theValue = getText(textInput) || "";
-                setText(textInputHint, theValue ? "" : thePlaceholder);
-                // Try to add support for browser(s) without `KeyboardEvent.prototype.key` feature
-                if (hasValue(getCharBeforeCaret(textInput), escapes)) {
-                    if (theTagsCount < theTagsMax) {
-                        // Add the tag name found in the tag editor
-                        doInput();
-                    } else {
-                        setValue("");
-                        fire('max.tags', [theTagsMax]);
-                    }
-                    offEventDefault(e);
-                }
-            }, 1)();
-            // Focus to the first tag
-            if ("" === theValue && KEY_BEGIN === key) {
-                if (theTag = getChildren(textOutput, 0)) {
-                    theTag.focus(), offEventDefault(e);
-                    return;
-                }
-            }
-            // Focus to the last tag
-            if ("" === theValue && KEY_END === key) {
-                if (theTag = getChildren(textOutput, toCount($.tags) - 1)) {
-                    theTag.focus(), offEventDefault(e);
-                    return;
-                }
-            }
-            // Select all tag(s) with `Ctrl+A` key
-            if (keyIsCtrl && "" === theValue && KEY_A === key) {
-                setTextCopy();
-                doFocusTags(), setCurrentTags(), offEventDefault(e);
-                return;
-            }
-            if (hasValue(key, escapes)) {
-                if (theTagsCount < theTagsMax) {
-                    // Add the tag name found in the tag editor
-                    doInput();
+    function createOptions($, options) {
+        var map = isInstance(options, Map) ? options : new Map();
+        if (isArray(options)) {
+            forEachArray(options, function (option) {
+                if (isArray(option)) {
+                    var _option$, _option$2, _option$1$TOKEN_VALUE;
+                    option[0] = (_option$ = option[0]) != null ? _option$ : "";
+                    option[1] = (_option$2 = option[1]) != null ? _option$2 : {};
+                    setValueInMap$1(_toValue((_option$1$TOKEN_VALUE = option[1][TOKEN_VALUE$1]) != null ? _option$1$TOKEN_VALUE : option[0]), option, map);
                 } else {
-                    setValue("");
-                    fire('max.tags', [theTagsMax]);
+                    setValueInMap$1(_toValue(option), [option, {}], map);
                 }
-                offEventDefault(e);
-                return;
-            }
-            // Skip `Tab` key
-            if (keyIsTab) {
-                return; // :)
-            }
-            // Submit the closest `<form>` element with `Enter` key
-            if (!keyIsCtrl && keyIsEnter) {
-                doSubmitTry(), offEventDefault(e);
-                return;
-            }
-            if (theTagLast && "" === theValue && !sourceIsReadOnly()) {
-                if (KEY_DELETE_LEFT === key) {
-                    theTag = $.tags[theTagsCount - 1];
-                    letTagElement(theTag), letTag(theTag);
-                    fire('change', [theTag, theTagsCount - 1]);
-                    fire('let.tag', [theTag, theTagsCount - 1]);
-                    offEventDefault(e);
-                    return;
+            });
+        } else if (isObject(options, 0)) {
+            forEachObject(options, function (v, k) {
+                if (isArray(v)) {
+                    var _v$, _v$2, _v$1$TOKEN_VALUE;
+                    options[k][0] = (_v$ = v[0]) != null ? _v$ : "";
+                    options[k][1] = (_v$2 = v[1]) != null ? _v$2 : {};
+                    setValueInMap$1(_toValue((_v$1$TOKEN_VALUE = v[1][TOKEN_VALUE$1]) != null ? _v$1$TOKEN_VALUE : k), v, map);
+                } else {
+                    setValueInMap$1(_toValue(k), [v, {}], map);
                 }
-                if (KEY_ARROW_LEFT === key) {
-                    theTagLast.focus(); // Focus to the last tag
-                    return;
-                }
+            });
+        }
+        var _options = $._options,
+            self = $.self,
+            state = $.state;
+        state.n;
+        var r = [],
+            value = getValue$1(self);
+        // Reset the option(s) data, but leave the typed query in place, and do not fire the `let.options` hook
+        _options.let(null, 0, 0);
+        forEachMap(map, function (v, k) {
+            var _v$1$TOKEN_VALUE3;
+            if (isArray(v) && v[1] && (!getState(v[1], 'active') || v[1].active) && v[1].mark) {
+                var _v$1$TOKEN_VALUE2;
+                r.push((_v$1$TOKEN_VALUE2 = v[1][TOKEN_VALUE$1]) != null ? _v$1$TOKEN_VALUE2 : k);
             }
-        }
-
-        function onKeyUpSelf() {
-            _keyIsCtrl = _keyIsShift = false;
-        }
-
-        function onPasteText() {
-            delay(function () {
-                if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                    getText(textInput).split(state.join).forEach(function (v) {
-                        if (!hasValue(v, $.tags)) {
-                            setTagElement(v), setTag(v);
-                        }
-                    });
-                }
-                setValue("");
-            }, 1)();
-        }
-
-        function onSubmitForm(e) {
-            if (sourceIsDisabled()) {
-                return;
-            }
-            var theTagsMin = state.min;
-            doInput(); // Force to add the tag name found in the tag editor
-            if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-                setValue("", 1);
-                fire('min.tags', [theTagsMin]);
-                offEventDefault(e);
-                return;
-            }
-            // Do normal `submit` event
-            return 1;
-        }
-        setChildLast(self, textOutput);
-        setChildLast(text, textInput);
-        setChildLast(text, textInputHint);
-        setChildLast(textOutput, text);
-        setClass(source, classNameE + 'source');
-        setNext(source, self);
-        setElement(source, {
-            'tabindex': -1
+            // Set the option data, but do not fire the `set.option` hook
+            _options.set(_toValue(isArray(v) && v[1] ? (_v$1$TOKEN_VALUE3 = v[1][TOKEN_VALUE$1]) != null ? _v$1$TOKEN_VALUE3 : k : k), v, 0);
         });
-        onEvent('blur', self, onBlurSelf);
-        onEvent('click', self, onClickSelf);
-        onEvent('focus', source, onFocusSource);
-        onEvent('keydown', self, onKeyDownSelf);
-        onEvent('keydown', textInput, onKeyDownText);
-        onEvent('keyup', self, onKeyUpSelf);
-        onEvent('paste', textInput, onPasteText);
-        onEvents(['blur', 'focus'], self, onBlurFocusSelf);
-        onEvents(['blur', 'focus'], textCopy, onBlurFocusTextCopy);
-        onEvents(['blur', 'focus'], textInput, onBlurFocusText);
-        onEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
-        form && onEvent('submit', form, onSubmitForm);
-        $.blur = function () {
-            return !sourceIsDisabled() && textInput.blur(), $;
-        };
-        $.click = function () {
-            return self.click(), onClickSelf(), $;
-        };
-        // Default filter for the tag name
-        $.f = function (v) {
-            return toCaseLower(v || "").replace(/[^ a-z\d-]/g, "").trim();
-        };
-        $.focus = function () {
-            if (!sourceIsDisabled()) {
-                setValue(getText(textInput), 1);
+        if (!isFunction(state.options)) {
+            state.options = map;
+        }
+        if (0 === toCount(r)) {
+            // If there is no selected option(s), get it from the current value
+            if (hasKeyInMap(_toValue(value), map)) {
+                return [value];
             }
-            return $;
-        };
-        $.get = function (tag) {
-            return sourceIsDisabled() ? null : getTag(tag, 1);
-        };
-        $.input = textInput;
-        $.let = function (tag) {
-            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                var theTagsMin = state.min;
-                if (!tag) {
-                    setTags("");
-                } else if (isArray(tag)) {
-                    tag.forEach(function (v) {
-                        if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-                            fire('min.tags', [theTagsMin]);
-                            return $;
+            // Or get it from the first option
+            if (value = getOptionSelected($)) {
+                return [getOptionValue(value)];
+            }
+        }
+        return r;
+    }
+
+    function focusTo$1(node) {
+        return node.focus(), node;
+    }
+
+    function focusToOption(option, picker) {
+        if (option) {
+            return focusTo$1(option), option;
+        }
+    }
+
+    function focusToOptionFirst(picker, k) {
+        var option;
+        if (option = goToOptionFirst(picker, k)) {
+            return focusToOption(option);
+        }
+    }
+
+    function focusToOptionLast(picker) {
+        return focusToOptionFirst(picker, 'Last');
+    }
+
+    function getOptionNext(option) {
+        var optionNext = getNext(option),
+            optionParent;
+        // Skip disabled and hidden option(s)…
+        while (optionNext && (getAria(optionNext, TOKEN_DISABLED$1) || optionNext.hidden)) {
+            optionNext = getNext(optionNext);
+        }
+        if (optionNext) {
+            // Next option is a group?
+            if (TOKEN_GROUP === getRole(optionNext)) {
+                optionNext = getChildFirst(optionNext);
+            }
+            // Is the last option?
+        } else {
+            // Is in a group?
+            if ((optionParent = getParent(option)) && TOKEN_GROUP === getRole(optionParent)) {
+                optionNext = getNext(optionParent);
+            }
+            // Next option is a group?
+            if (optionNext && TOKEN_GROUP === getRole(optionNext)) {
+                optionNext = getChildFirst(optionNext);
+            }
+        }
+        // Skip disabled and hidden option(s)…
+        while (optionNext && (getAria(optionNext, TOKEN_DISABLED$1) || optionNext.hidden)) {
+            optionNext = getNext(optionNext);
+        }
+        return optionNext;
+    }
+
+    function getOptionPrev(option) {
+        var optionParent,
+            optionPrev = getPrev(option);
+        // Skip disabled and hidden option(s)…
+        while (optionPrev && (getAria(optionPrev, TOKEN_DISABLED$1) || optionPrev.hidden)) {
+            optionPrev = getPrev(optionPrev);
+        }
+        if (optionPrev) {
+            // Previous option is a group?
+            if (TOKEN_GROUP === getRole(optionPrev)) {
+                optionPrev = getChildLast(optionPrev);
+            }
+            // Is the first option?
+        } else {
+            // Is in a group?
+            if ((optionParent = getParent(option)) && TOKEN_GROUP === getRole(optionParent)) {
+                optionPrev = getPrev(optionParent);
+            }
+            // Previous option is a group?
+            if (optionPrev && TOKEN_GROUP === getRole(optionPrev)) {
+                optionPrev = getChildLast(optionPrev);
+            }
+        }
+        // Skip disabled and hidden option(s)…
+        while (optionPrev && (getAria(optionPrev, TOKEN_DISABLED$1) || optionPrev.hidden)) {
+            optionPrev = getPrev(optionPrev);
+        }
+        return optionPrev;
+    }
+
+    function getOptionSelected($, strict) {
+        var _options = $._options,
+            self = $.self,
+            selected;
+        forEachMap(_options, function (v, k) {
+            if (isArray(v) && v[2] && !getAria(v[2], TOKEN_DISABLED$1) && getAria(v[2], TOKEN_SELECTED)) {
+                return selected = v[2], 0;
+            }
+        });
+        if (!isSet(selected) && (strict || !isInput(self))) {
+            // Select the first option
+            forEachMap(_options, function (v, k) {
+                return selected = v[2], 0;
+            });
+        }
+        return selected;
+    }
+
+    function getOptionValue(option, parseValue) {
+        return getValue$1(option, parseValue);
+    }
+
+    function getOptions(self) {
+        var map = new Map();
+        var item,
+            items,
+            itemsParent,
+            selected = [],
+            value = getValue$1(self);
+        if (isInput(self)) {
+            items = (itemsParent = self.list) ? getChildren(itemsParent) : [];
+        } else {
+            items = getChildren(itemsParent = self);
+        }
+        forEachArray(items, function (v, k) {
+            var attributes = getAttributes(v);
+            attributes.active = true;
+            attributes.mark = false;
+            if (hasState(attributes, TOKEN_DISABLED$1)) {
+                attributes.active = "" === attributes[TOKEN_DISABLED$1] ? false : !!attributes[TOKEN_DISABLED$1];
+                delete attributes[TOKEN_DISABLED$1];
+            } else if (hasState(attributes, TOKEN_SELECTED)) {
+                attributes.mark = "" === attributes[TOKEN_SELECTED] ? true : !!attributes[TOKEN_SELECTED];
+                delete attributes[TOKEN_SELECTED];
+            }
+            if (TOKEN_OPTGROUP === getName(v)) {
+                forEachMap(getOptions(v), function (vv, kk) {
+                    vv[1]['&'] = v.label;
+                    setValueInMap$1(_toValue(kk), vv, map);
+                });
+            } else {
+                setValueInMap$1(_toValue(v[TOKEN_VALUE$1]), [getText(v) || v[TOKEN_VALUE$1], attributes, null, v], map);
+            }
+        });
+        // If there is no selected option(s), get it from the current value
+        if (0 === toCount(selected) && (item = getValueInMap$1(value = _toValue(value), map))) {
+            item[1].mark = true;
+            setValueInMap$1(value, item, map);
+        }
+        return map;
+    }
+
+    function getOptionsValues(options, parseValue) {
+        return options.map(function (v) {
+            return getOptionValue(v, parseValue);
+        });
+    }
+
+    function getOptionsSelected($) {
+        var _options = $._options,
+            selected = [];
+        return forEachMap(_options, function (v, k) {
+            if (isArray(v) && v[2] && !getAria(v[2], TOKEN_DISABLED$1) && getAria(v[2], TOKEN_SELECTED)) {
+                selected.push(v[2]);
+            }
+        }), selected;
+    }
+
+    function goToOptionFirst(picker, k) {
+        var _options = picker._options,
+            option;
+        if (option = toValuesFromMap(_options)['find' + (k || "")](function (v) {
+                return !getAria(v[2], TOKEN_DISABLED$1) && !v[2].hidden;
+            })) {
+            return option[2];
+        }
+    }
+
+    function goToOptionLast(picker) {
+        return goToOptionFirst(picker, 'Last');
+    }
+
+    function isInput(self) {
+        return 'input' === getName(self);
+    }
+
+    function onBlurTextInput$1() {
+        var $ = this,
+            picker = getReference$2($),
+            _mask = picker._mask,
+            mask = picker.mask,
+            state = picker.state,
+            options = _mask.options,
+            strict = state.strict,
+            time = state.time,
+            error = time.error,
+            option;
+        onEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
+        onEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+        if (strict) {
+            if (!options.hidden && (option = getOptionSelected(picker, 1))) {
+                selectToOption(option, picker);
+            } else {
+                letError$1(isInteger(error) && error > 0 ? error : 0, picker);
+                options.hidden = false;
+                selectToOptionsNone(picker, 1);
+            }
+        }
+    }
+
+    function onCutTextInput$1() {
+        var $ = this,
+            picker = getReference$2($),
+            self = picker.self,
+            state = picker.state,
+            strict = state.strict;
+        delay(function () {
+            if (!strict) {
+                setValue$1(self, getText($));
+            }
+        })[0](1);
+        saveState($), toggleHint$1(1, picker), saveStateLazy$1($);
+    }
+
+    function onFocusOption() {
+        selectToNone();
+    }
+    // Focus on the “visually hidden” self will move its focus to the mask, maintains the natural flow of the tab(s)!
+    function onFocusSelf$1() {
+        focusTo$1(getReference$2(this));
+    }
+
+    function onFocusTextInput$1() {
+        letErrorAbort$1();
+        var $ = this,
+            picker = getReference$2($),
+            mask = picker.mask,
+            options = picker.options;
+        if (options.open) {
+            offEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
+            offEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+            return;
+        }
+        getText($, 0) ? selectTo($) : picker.enter().fit();
+    }
+
+    function onInvalidSelf$1(e) {
+        e && offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            state = picker.state,
+            time = state.time,
+            error = time.error;
+        letError$1(isInteger(error) && error > 0 ? error : 0, picker), setError$1(picker);
+    }
+    var searchQuery = "";
+
+    function onInputTextInput$1(e) {
+        var $ = this,
+            inputType = e.inputType,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return offEventDefault(e);
+        }
+        if ('deleteContent' === inputType.slice(0, 13) && !getText($, 0)) {
+            toggleHintByValue$1(picker, 0), saveStateLazy$1($);
+        } else if ('insertText' === inputType) {
+            toggleHintByValue$1(picker, 1), saveStateLazy$1($);
+        }
+    }
+
+    function onKeyDownArrow(e) {
+        var $ = this,
+            picker = getReference$2($),
+            options = picker.options,
+            key = e.key,
+            exit;
+        if (KEY_ENTER$2 === key || ' ' === key) {
+            picker[options.open ? 'exit' : 'enter'](!(exit = true)).fit();
+        } else if (KEY_ESCAPE$1 === key) {
+            picker.exit(exit = true);
+        } else if (KEY_ARROW_DOWN$1 === key || KEY_ARROW_UP$1 === key || KEY_TAB$1 === key) {
+            picker.enter(exit = true);
+        }
+        exit && offEventDefault(e);
+    }
+
+    function onKeyDownTextInput$1(e) {
+        var $ = this,
+            exit,
+            key = e.key,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return;
+        }
+        var _options = picker._options,
+            mask = picker.mask,
+            self = picker.self,
+            state = picker.state,
+            strict = state.strict,
+            time = state.time,
+            error = time.error,
+            search = time.search;
+        if (KEY_DELETE_LEFT$2 === key || KEY_DELETE_RIGHT$2 === key || 1 === toCount(key) && !keyIsCtrl) {
+            picker.enter().fit();
+            searchQuery = 0; // This will make a difference and force the filter to execute
+        }
+        if (KEY_ARROW_DOWN$1 === key || KEY_ARROW_UP$1 === key || KEY_ENTER$2 === key) {
+            var currentOption = _options.at(getValue$1(self));
+            currentOption = currentOption ? currentOption[2] : 0;
+            if (!currentOption || currentOption.hidden) {
+                currentOption = toValueFirstFromMap(_options);
+                currentOption = currentOption ? currentOption[2] : 0;
+                while (currentOption && (getAria(currentOption, TOKEN_DISABLED$1) || currentOption.hidden)) {
+                    currentOption = getNext(currentOption);
+                }
+            }
+            exit = true;
+            if (!getAria(mask, 'expanded')) {
+                picker.enter(false).fit();
+                currentOption && focusTo$1(currentOption);
+            } else if (strict && KEY_ENTER$2 === key) {
+                // Automatically select the first option!
+                selectToOptionFirst(picker) && picker.exit(exit);
+            } else {
+                currentOption && focusTo$1(currentOption);
+            }
+        } else if (KEY_TAB$1 === key) {
+            letError$1(isInteger(error) && error > 0 ? error : 0, picker);
+            selectToNone(), picker.exit();
+        } else if (keyIsCtrl) {
+            if (!keyIsShift && KEY_Z$1 === toCaseLower(key)) {
+                exit = true;
+                undoState($);
+            } else if (keyIsShift && KEY_Z$1 === toCaseLower(key) || KEY_Y$1 === toCaseLower(key)) {
+                exit = true;
+                redoState($);
+            }
+        } else {
+            delay(function () {
+                // Only execute the filter if the previous search query is different from the current search query
+                if ("" === searchQuery || searchQuery !== getText($) + "") {
+                    filter(search[0], picker, $, _options);
+                    searchQuery = getText($) + "";
+                }
+            })[0](1);
+        }
+        exit && offEventDefault(e);
+    }
+    var searchTerm = "",
+        searchTermClear = debounce(function () {
+            return searchTerm = "";
+        })[0];
+
+    function onKeyDownOption(e) {
+        var $ = this,
+            exit,
+            key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            keyIsShift = e.shiftKey,
+            picker = getReference$2($),
+            _mask = picker._mask,
+            max = picker.max,
+            self = picker.self,
+            value = _mask.value,
+            optionNext,
+            optionParent,
+            optionPrev,
+            valueCurrent;
+        if (KEY_DELETE_LEFT$2 === key || KEY_DELETE_RIGHT$2 === key) {
+            exit = true;
+            if (value && (valueCurrent = getElement('[value="' + (getOptionValue($) + "").replace(/"/g, '\\"') + '"]', getParent(value)))) {
+                focusTo$1(valueCurrent);
+            } else {
+                picker.exit(exit);
+            }
+        } else if (KEY_ENTER$2 === key || KEY_ESCAPE$1 === key || KEY_TAB$1 === key || ' ' === key) {
+            if (max > 1) {
+                if (KEY_ESCAPE$1 === key) {
+                    picker.exit(exit = true);
+                } else if (KEY_TAB$1 === key) {
+                    picker.exit(exit = false);
+                } else {
+                    exit = true;
+                    toggleToOption($, picker);
+                }
+            } else {
+                if (KEY_ESCAPE$1 !== key) {
+                    selectToOption($, picker);
+                }
+                picker.exit(exit = KEY_TAB$1 !== key);
+            }
+        } else if (KEY_ARROW_DOWN$1 === key || KEY_PAGE_DOWN === key) {
+            exit = true;
+            if (KEY_PAGE_DOWN === key && TOKEN_GROUP === getRole(optionParent = getParent($))) {
+                optionNext = getOptionNext(optionParent);
+            } else {
+                optionNext = getOptionNext($);
+            }
+            optionNext ? focusToOption(optionNext) : focusToOptionFirst(picker);
+        } else if (KEY_ARROW_UP$1 === key || KEY_PAGE_UP === key) {
+            exit = true;
+            if (KEY_PAGE_UP === key && TOKEN_GROUP === getRole(optionParent = getParent($))) {
+                optionPrev = getOptionPrev(optionParent);
+            } else {
+                optionPrev = getOptionPrev($);
+            }
+            optionPrev ? focusToOption(optionPrev) : focusToOptionLast(picker);
+        } else if (KEY_BEGIN$1 === key) {
+            exit = true;
+            focusToOptionFirst(picker);
+        } else if (KEY_END$1 === key) {
+            exit = true;
+            focusToOptionLast(picker);
+        } else {
+            if (!keyIsCtrl) {
+                if (1 === toCount(key) && !keyIsAlt) {
+                    if (isInput(self)) {
+                        toggleHintByValue$1(picker, key);
+                    } else {
+                        searchTerm += key; // Initialize search term, right before exit
+                    }
+                }!keyIsShift && picker.exit(!(exit = false));
+            }
+        }
+        exit && offEventDefault(e);
+    }
+
+    function onKeyDownValue(e) {
+        var $ = this,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return;
+        }
+        var key = e.key,
+            keyIsAlt = e.altKey,
+            keyIsCtrl = e.ctrlKey,
+            _mask = picker._mask,
+            _options = picker._options,
+            max = picker.max,
+            min = picker.min,
+            self = picker.self,
+            state = picker.state,
+            arrow = _mask.arrow,
+            options = _mask.options,
+            values = _mask.values,
+            time = state.time,
+            search = time.search,
+            exit,
+            valueCurrent,
+            valueNext,
+            valuePrev;
+        searchTermClear(search[1]);
+        if (KEY_ARROW_DOWN$1 === key || KEY_ARROW_UP$1 === key || KEY_ENTER$2 === key || KEY_PAGE_DOWN === key || KEY_PAGE_UP === key || "" === searchTerm && ' ' === key) {
+            var focus = exit = true;
+            if (KEY_ENTER$2 === key || ' ' === key) {
+                if (valueCurrent = _options.at(getOptionValue($))) {
+                    focus = false;
+                    onAnimationsEnd(options, function () {
+                        return focusTo$1(valueCurrent[2]);
+                    }, scrollTo(valueCurrent[2]));
+                }
+            }
+            if (picker.size < 2) {
+                setStyle(options, 'max-height', 0);
+            }
+            picker.enter(focus).fit();
+        } else if (KEY_ARROW_LEFT$2 === key) {
+            exit = true;
+            if ((valuePrev = getPrev($)) && hasKeyInMap(valuePrev, values)) {
+                focusTo$1(valuePrev);
+            }
+        } else if (KEY_ARROW_RIGHT$2 === key) {
+            exit = true;
+            if ((valueNext = getNext($)) && hasKeyInMap(valueNext, values)) {
+                focusTo$1(valueNext);
+            }
+        } else if (KEY_BEGIN$1 === key) {
+            exit = true;
+            forEachSet(values, function (v) {
+                valueCurrent = v;
+                return 0; // Break
+            });
+            valueCurrent && focusTo$1(valueCurrent);
+        } else if (KEY_DELETE_LEFT$2 === key) {
+            exit = true;
+            searchTerm = "";
+            var countValues = toSetCount(values);
+            if (min >= countValues) {
+                onInvalidSelf$1.call(self);
+                picker.fire('min.options', [countValues, min]);
+            } else if (valueCurrent = _options.at(getOptionValue($))) {
+                letAria(valueCurrent[2], TOKEN_SELECTED);
+                valueCurrent[3][TOKEN_SELECTED] = false;
+                if ((valuePrev = getPrev($)) && hasKeyInMap(valuePrev, values) || (valueNext = getNext($)) && hasKeyInMap(valueNext, values)) {
+                    focusTo$1(_mask[TOKEN_VALUE$1] = valuePrev || valueNext);
+                    offEvent(EVENT_KEY_DOWN$1, $, onKeyDownValue);
+                    offEvent(EVENT_MOUSE_DOWN$1, $, onPointerDownValue);
+                    offEvent(EVENT_MOUSE_DOWN$1, $.$[VALUE_X], onPointerDownValueX);
+                    offEvent(EVENT_TOUCH_START$1, $, onPointerDownValue);
+                    offEvent(EVENT_TOUCH_START$1, $.$[VALUE_X], onPointerDownValueX);
+                    letValueInMap($, values), letElement($);
+                    // Do not remove the only option value
+                } else {
+                    letAttribute(_mask[TOKEN_VALUE$1] = $, TOKEN_VALUE$1);
+                    setHTML($.$[VALUE_TEXT], "");
+                    // No option(s) selected
+                    if (0 === min) {
+                        selectToOptionsNone(picker, 1);
+                    }
+                }
+                if (max !== Infinity && max > countValues) {
+                    forEachMap(_options, function (v, k) {
+                        if (!v[3][TOKEN_DISABLED$1]) {
+                            letAria(v[2], TOKEN_DISABLED$1);
+                            setAttribute(v[2], TOKEN_TABINDEX$1, 0);
                         }
-                        letTagElement(v), letTag(v);
+                    });
+                }
+            }
+        } else if (KEY_DELETE_RIGHT$2 === key) {
+            exit = true;
+            searchTerm = "";
+            var _countValues = toSetCount(values);
+            if (min >= _countValues) {
+                onInvalidSelf$1.call(self);
+                picker.fire('min.options', [_countValues, min]);
+            } else if (valueCurrent = _options.at(getOptionValue($))) {
+                letAria(valueCurrent[2], TOKEN_SELECTED);
+                valueCurrent[3][TOKEN_SELECTED] = false;
+                if ((valueNext = getNext($)) && hasKeyInMap(valueNext, values) || (valuePrev = getPrev($)) && hasKeyInMap(valuePrev, values)) {
+                    focusTo$1(_mask[TOKEN_VALUE$1] = valueNext && valueNext !== arrow ? valueNext : valuePrev);
+                    offEvent(EVENT_KEY_DOWN$1, $, onKeyDownValue);
+                    offEvent(EVENT_MOUSE_DOWN$1, $, onPointerDownValue);
+                    offEvent(EVENT_MOUSE_DOWN$1, $.$[VALUE_X], onPointerDownValueX);
+                    offEvent(EVENT_TOUCH_START$1, $, onPointerDownValue);
+                    offEvent(EVENT_TOUCH_START$1, $.$[VALUE_X], onPointerDownValueX);
+                    letValueInMap($, values), letElement($);
+                    // Do not remove the only option value
+                } else {
+                    letAttribute(_mask[TOKEN_VALUE$1] = $, TOKEN_VALUE$1);
+                    setHTML($.$[VALUE_TEXT], "");
+                    // No option(s) selected
+                    if (0 === min) {
+                        selectToOptionsNone(picker, 1);
+                    }
+                }
+                if (max !== Infinity && max > _countValues) {
+                    forEachMap(_options, function (v, k) {
+                        if (!v[3][TOKEN_DISABLED$1]) {
+                            letAria(v[2], TOKEN_DISABLED$1);
+                            setAttribute(v[2], TOKEN_TABINDEX$1, -1);
+                        }
+                    });
+                }
+            }
+        } else if (KEY_END$1 === key) {
+            exit = true;
+            forEachSet(values, function (v) {
+                return valueCurrent = v;
+            });
+            valueCurrent && focusTo$1(valueCurrent);
+        } else if (KEY_ESCAPE$1 === key) {
+            searchTerm = "";
+            picker.exit(exit = true);
+        } else if (KEY_TAB$1 === key) {
+            searchTerm = "";
+            picker.exit(exit = false);
+        } else if (1 === toCount(key) && !keyIsAlt) {
+            if (keyIsCtrl);
+            else {
+                exit = true;
+                searchTerm += key;
+            }
+        }
+        if ("" !== searchTerm) {
+            filter(search[0], picker, searchTerm, _options, true);
+        }
+        exit && offEventDefault(e);
+    }
+
+    function onPointerDownValue(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _mask = picker._mask,
+            _options = picker._options,
+            options = _mask.options,
+            option;
+        if (_options.open) {
+            focusTo$1($);
+        } else {
+            if (option = _options.at(getOptionValue($))) {
+                onAnimationsEnd(options, function () {
+                    return delay(function () {
+                        return focusTo$1(option[2]), scrollTo(option[2]);
+                    })[0](1);
+                });
+            }
+        }
+    }
+
+    function onPointerDownValueX(e) {
+        var $ = this,
+            value = getParent($),
+            picker = getReference$2(value),
+            _options = picker._options,
+            option = _options.at(getOptionValue(value))[2];
+        option && toggleToOption(option, picker);
+        picker.enter(true).fit(), offEventDefault(e), offEventPropagation(e);
+    }
+
+    function onPasteTextInput$1(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            self = picker.self,
+            state = picker.state,
+            strict = state.strict;
+        delay(function () {
+            if (!strict) {
+                setValue$1(self, getText($));
+            }
+        })[0](1);
+        saveState($), toggleHint$1(1, picker), insertAtSelection($, e.clipboardData.getData('text/plain')), saveStateLazy$1($);
+    }
+    // The default state is `0`. When the pointer is pressed on the option mask, its value will become `1`. This check is
+    // done to distinguish between a “touch only” and a “touch move” on touch device(s). It is also checked on pointer
+    // device(s) and should not give a wrong result.
+    var currentPointerState = 0,
+        touchTop = false,
+        touchTopCurrent = false;
+
+    function onPointerDownMask$1(e) {
+        // This is necessary for device(s) that support both pointer and touch control so that they will not execute both
+        // `mousedown` and `touchstart` event(s), causing the option picker’s option(s) to open and then close immediately.
+        // Note that this will also disable the native pane scrolling feature on touch device(s).
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (_fix) {
+            return focusTo$1(picker);
+        }
+        if (!_active || getDatum($, 'size')) {
+            return;
+        }
+        var _mask = picker._mask,
+            _options = picker._options,
+            max = picker.max,
+            self = picker.self,
+            arrow = _mask.arrow,
+            options = _mask.options,
+            target = e.target,
+            focusToArrow;
+        if (arrow === target) {
+            focusToArrow = 1;
+        }
+        // The user is likely browsing through the available option(s) by dragging the scroll bar
+        if (options === target) {
+            return;
+        }
+        while ($ !== target) {
+            target = getParent(target);
+            if (arrow === target) {
+                focusToArrow = 1;
+                break;
+            }
+            if (!target || options === target) {
+                return;
+            }
+        }
+        forEachMap(_options, function (v) {
+            return v[2].hidden = false;
+        });
+        if (getReference$2(R) !== picker) {
+            if (picker.size < 2) {
+                setStyle(options, 'max-height', 0);
+            }
+            picker.enter(!focusToArrow).fit();
+            if (focusToArrow) {
+                focusTo$1(arrow);
+            }
+        } else {
+            picker.exit(!focusToArrow ? 1 === max || isInput(self) : 0);
+            if (focusToArrow) {
+                focusTo$1(arrow);
+            }
+        }
+    }
+
+    function onPointerDownOption(e) {
+        var $ = this;
+        // Add an “active” effect on `touchstart` to indicate which option is about to be selected. We don’t need this
+        // indication on `mousedown` because pointer device(s) already have a hover state that is clear enough to indicate
+        // which option is about to be selected.
+        if (EVENT_TOUCH_START$1 === e.type && !getAria($, TOKEN_DISABLED$1)) {
+            setAria($, TOKEN_SELECTED, true);
+        }
+        currentPointerState = 1; // Pointer is “down”
+    }
+
+    function onPointerDownRoot(e) {
+        if (EVENT_TOUCH_START$1 === e.type) {
+            touchTop = e.touches[0].clientY;
+        }
+        var $ = this,
+            picker = getReference$2($);
+        if (!picker) {
+            return;
+        }
+        var mask = picker.mask,
+            state = picker.state,
+            n = state.n,
+            target = e.target;
+        if (mask !== target && mask !== getParent(target, '.' + n)) {
+            picker.exit();
+        }
+    }
+
+    function onPointerMoveRoot(e) {
+        touchTopCurrent = EVENT_TOUCH_MOVE === e.type ? e.touches[0].clientY : false;
+        var $ = this,
+            picker = getReference$2($);
+        if (!picker) {
+            return;
+        }
+        var _mask = picker._mask,
+            lot = _mask.lot,
+            v;
+        if (false !== touchTop && false !== touchTopCurrent) {
+            if (1 === currentPointerState && touchTop !== touchTopCurrent) {
+                ++currentPointerState;
+            }
+            // Programmatically re-enable the swipe feature in the option(s) list because the default `touchstart` event
+            // has been disabled. It does not have the innertia effect as in the native after-swipe reaction, but it is
+            // still better than doing nothing :\
+            v = getScroll(lot);
+            v[1] -= touchTopCurrent - touchTop;
+            setScroll(lot, v);
+            touchTop = touchTopCurrent;
+        }
+    }
+    // The actual option selection happens when the pointer is released, to clearly identify whether we want to select an
+    // option or just want to scroll through the option(s) list by swiping over the option on touch device(s).
+    function onPointerUpOption() {
+        var $ = this,
+            picker = getReference$2($);
+        // A “touch only” event is valid only if the pointer has not been “move(d)” up to this event
+        if (1 === currentPointerState) {
+            if (!getAria($, TOKEN_DISABLED$1)) {
+                if (picker.max > 1) {
+                    toggleToOption($, picker), focusTo$1($);
+                } else {
+                    selectToOption($, picker), picker.size < 2 ? picker.exit(true) : focusTo$1($);
+                }
+            }
+        } else {
+            // Remove the “active” effect that was previously added on `touchstart`
+            letAria($, TOKEN_SELECTED);
+        }
+        currentPointerState = 0; // Reset current pointer state
+    }
+
+    function onPointerUpRoot() {
+        currentPointerState = 0; // Reset current pointer state
+        touchTop = false;
+    }
+
+    function onResetForm$1() {
+        forEachSet(getReference$2(this), function ($) {
+            return $.reset();
+        });
+    }
+
+    function onSubmitForm$1(e) {
+        forEachSet(getReference$2(this), function (picker) {
+            var max = picker.max,
+                min = picker.min,
+                self = picker.self,
+                count = toCount(getOptionsSelected(picker)),
+                exit;
+            if (count < min) {
+                exit = true;
+                picker.fire('min.options', [count, min]);
+            } else if (count > max) {
+                exit = true;
+                picker.fire('max.options', [count, max]);
+            }
+            exit && (onInvalidSelf$1.call(self), offEventDefault(e));
+        });
+    }
+
+    function onResizeWindow() {
+        var picker = getReference$2(R),
+            tick;
+        if (picker) {
+            if (!tick) {
+                W.requestAnimationFrame(function () {
+                    picker.fit(), tick = 0;
+                }), tick = 1;
+            }
+        }
+    }
+
+    function onScrollWindow() {
+        onResizeWindow.call(this);
+    }
+
+    function onWheelMask(e) {
+        var $ = this,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix,
+            max = picker.max;
+        if (!_active || _fix || max > 1) {
+            return;
+        }
+        var _mask = picker._mask,
+            options = _mask.options,
+            deltaY = e.deltaY,
+            target = e.target,
+            optionCurrent,
+            optionNext,
+            optionPrev;
+        if (options === target) {
+            return;
+        }
+        while ($ !== target) {
+            target = getParent(target);
+            if (options === target) {
+                return;
+            }
+        }
+        if (!(optionCurrent = getOptionSelected(picker) || goToOptionFirst(picker))) {
+            return;
+        }
+        offEventDefault(e);
+        if (deltaY < 0) {
+            if (optionPrev = getOptionPrev(optionCurrent)) {
+                focusTo$1(selectToOption(optionPrev, picker));
+            } else {
+                focusTo$1(selectToOptionLast(picker));
+            }
+        } else {
+            if (optionNext = getOptionNext(optionCurrent)) {
+                focusTo$1(selectToOption(optionNext, picker));
+            } else {
+                focusTo$1(selectToOptionFirst(picker));
+            }
+        }
+    }
+
+    function scrollTo(node) {
+        node.scrollIntoView({
+            block: 'nearest'
+        });
+    }
+
+    function selectToOption(option, picker) {
+        var _mask = picker._mask,
+            mask = picker.mask,
+            self = picker.self,
+            input = _mask.input,
+            value = _mask.value,
+            optionReal,
+            v;
+        if (option) {
+            optionReal = option.$[OPTION_SELF];
+            selectToOptionsNone(picker);
+            optionReal[TOKEN_SELECTED] = true;
+            setAria(option, TOKEN_SELECTED, true);
+            setValue$1(self, v = getOptionValue(option));
+            if (isInput(self)) {
+                letAria(mask, TOKEN_INVALID$1);
+                setAria(input, 'activedescendant', getID(option));
+                setText(input, getText(option.$[OPTION_TEXT]));
+                toggleHintByValue$1(picker, 1);
+            } else {
+                setHTML(value.$[VALUE_TEXT], getHTML(option.$[OPTION_TEXT]));
+                setValue$1(value, v);
+            }
+            return picker.fire('change', ["" !== v ? v : null]), option;
+        }
+    }
+
+    function selectToOptionFirst(picker) {
+        var option;
+        if (option = goToOptionFirst(picker)) {
+            return selectToOption(option, picker);
+        }
+    }
+
+    function selectToOptionLast(picker) {
+        var option;
+        if (option = goToOptionLast(picker)) {
+            return selectToOption(option, picker);
+        }
+    }
+
+    function selectToOptionsNone(picker, fireValue) {
+        var _mask = picker._mask,
+            _options = picker._options,
+            self = picker.self,
+            input = _mask.input,
+            value = _mask.value,
+            v;
+        forEachMap(_options, function (v) {
+            letAria(v[2], TOKEN_SELECTED);
+            v[3][TOKEN_SELECTED] = false;
+        });
+        if (fireValue) {
+            setValue$1(self, v = "");
+            if (isInput(self)) {
+                letAria(input, 'activedescendant');
+                setText(input, "");
+                toggleHintByValue$1(picker, 0);
+            } else {
+                letAttribute(value, TOKEN_VALUE$1);
+                setHTML(value.$[VALUE_TEXT], v);
+                if (v = value.$[VALUE_X]) {
+                    letElement(v);
+                }
+            }
+        }
+    }
+
+    function toggleToOption(option, picker) {
+        var _mask = picker._mask,
+            _options = picker._options,
+            max = picker.max,
+            min = picker.min,
+            self = picker.self,
+            state = picker.state,
+            value = _mask.value,
+            values = _mask.values,
+            n = state.n,
+            selected,
+            selectedFirst,
+            valueCurrent,
+            valueNext,
+            valueNextX;
+        if (option) {
+            var optionReal = option.$[OPTION_SELF],
+                a = getOptionsValues(getOptionsSelected(picker)),
+                b,
+                c;
+            if (getAria(option, TOKEN_SELECTED) && optionReal[TOKEN_SELECTED]) {
+                if (min > 0 && (c = toCount(a)) <= min) {
+                    onInvalidSelf$1.call(self);
+                    picker.fire('min.options', [c, min]);
+                } else {
+                    letAria(option, TOKEN_SELECTED);
+                    optionReal[TOKEN_SELECTED] = false;
+                }
+            } else {
+                setAria(option, TOKEN_SELECTED, true);
+                optionReal[TOKEN_SELECTED] = true;
+            }
+            if (!isInput(self)) {
+                b = getOptionsValues(getOptionsSelected(picker));
+                if (max !== Infinity && (c = toCount(b)) === max) {
+                    forEachMap(_options, function (v, k) {
+                        if (!getAria(v[2], TOKEN_SELECTED)) {
+                            letAttribute(v[2], TOKEN_TABINDEX$1);
+                            setAria(v[2], TOKEN_DISABLED$1, true);
+                        }
+                    });
+                } else if (c > max) {
+                    letAria(option, TOKEN_SELECTED);
+                    optionReal[TOKEN_SELECTED] = false;
+                    forEachMap(_options, function (v, k) {
+                        if (!getAria(v[2], TOKEN_SELECTED)) {
+                            letAttribute(v[2], TOKEN_TABINDEX$1);
+                            setAria(v[2], TOKEN_DISABLED$1, true);
+                        }
+                    });
+                    onInvalidSelf$1.call(self);
+                    picker.fire('max.options', [c, max]);
+                } else {
+                    forEachMap(_options, function (v, k) {
+                        if (!v[3][TOKEN_DISABLED$1]) {
+                            letAria(v[2], TOKEN_DISABLED$1);
+                            setAttribute(v[2], TOKEN_TABINDEX$1, -1);
+                        }
+                    });
+                }
+                selected = getOptionsSelected(picker);
+                selectedFirst = selected.shift();
+                if (selectedFirst) {
+                    setChildLast(value, value.$[VALUE_X]);
+                    setHTML(value.$[VALUE_TEXT], getHTML(selectedFirst.$[OPTION_TEXT]));
+                    setValue$1(value, getOptionValue(selectedFirst));
+                    letValueInMap(value, values);
+                    forEachSet(values, function (v) {
+                        offEvent(EVENT_KEY_DOWN$1, v, onKeyDownValue);
+                        offEvent(EVENT_MOUSE_DOWN$1, v, onPointerDownValue);
+                        offEvent(EVENT_MOUSE_DOWN$1, v.$[VALUE_X], onPointerDownValueX);
+                        offEvent(EVENT_TOUCH_START$1, v, onPointerDownValue);
+                        offEvent(EVENT_TOUCH_START$1, v.$[VALUE_X], onPointerDownValueX);
+                        letReference$1(v), letElement(v);
+                        return -1; // Remove
+                    });
+                    values.add(valueCurrent = value); // Add the only value to the set
+                    forEachArray(selected, function (v, k) {
+                        valueNext = setID(letID(value.cloneNode(true)));
+                        valueNext[TOKEN_TAB_INDEX$1] = -1;
+                        valueNext.$ = {};
+                        valueNext.$[VALUE_SELF] = null;
+                        valueNext.$[VALUE_TEXT] = getElement('.' + n + '__v', valueNext);
+                        valueNext.$[VALUE_X] = valueNextX = getElement('.' + n + '__x', valueNext);
+                        onEvent(EVENT_KEY_DOWN$1, valueNext, onKeyDownValue);
+                        onEvent(EVENT_MOUSE_DOWN$1, valueNext, onPointerDownValue);
+                        onEvent(EVENT_MOUSE_DOWN$1, valueNextX, onPointerDownValueX);
+                        onEvent(EVENT_TOUCH_START$1, valueNext, onPointerDownValue);
+                        onEvent(EVENT_TOUCH_START$1, valueNextX, onPointerDownValueX);
+                        setHTML(valueNext.$[VALUE_TEXT], getHTML(v.$[OPTION_TEXT]));
+                        setReference$2(valueNext, picker), values.add(setNext(valueCurrent, valueNext));
+                        setValue$1(valueNext, getOptionValue(v));
+                        valueCurrent = valueNext;
                     });
                 } else {
-                    if (theTagsMin > 0 && toCount($.tags) < theTagsMin) {
-                        fire('min.tags', [theTagsMin]);
-                        return $;
-                    }
-                    letTagElement(tag), letTag(tag);
+                    selectToOptionsNone(picker, 1);
                 }
             }
+            return picker.fire('change', [b]), option;
+        }
+    }
+
+    function OptionPicker(self, state) {
+        var $ = this;
+        if (!self) {
             return $;
-        };
-        $.pop = function () {
-            if (!source[name$3]) {
-                return $; // Already ejected!
-            }
-            delete source[name$3];
-            var tags = $.tags;
-            letClass(source, classNameE + 'source');
-            offEvent('blur', self, onBlurSelf);
-            offEvent('click', self, onClickSelf);
-            offEvent('focus', source, onFocusSource);
-            offEvent('keydown', self, onKeyDownSelf);
-            offEvent('keydown', textInput, onKeyDownText);
-            offEvent('keyup', self, onKeyUpSelf);
-            offEvent('paste', textInput, onPasteText);
-            offEvents(['blur', 'focus'], self, onBlurFocusSelf);
-            offEvents(['blur', 'focus'], textCopy, onBlurFocusTextCopy);
-            offEvents(['blur', 'focus'], textInput, onBlurFocusText);
-            offEvents(['copy', 'cut', 'paste'], textCopy, onCopyCutPasteTextCopy);
-            form && offEvent('submit', form, onSubmitForm);
-            tags.forEach(letTagElement);
-            setElement(source, {
-                'tabindex': theTabIndex
-            });
-            return letElement(self), fire('pop', [tags]);
-        };
-        $.self = self;
-        $.set = function (tag, index) {
-            if (!tag) {
-                return $;
-            }
-            if (!sourceIsDisabled() && !sourceIsReadOnly()) {
-                if (isArray(tag)) {
-                    setTags(tag.join(state.join));
-                } else {
-                    var tags = $.tags,
-                        theTagsMax = state.max;
-                    if (!getTag(tag)) {
-                        if (toCount(tags) < theTagsMax) {
-                            setTagElement(tag, index), setTag(tag, index);
-                        } else {
-                            fire('max.tags', [theTagsMax]);
-                        }
-                    } else {
-                        fire('has.tag', [tag, toArrayKey(tag, tags)]);
-                    }
-                }
-            }
-            return $;
-        };
-        $.source = $.output = source;
-        $.state = state;
-        $.tags = [];
-        setTags(source.value); // Fill value(s)
+        }
+        // Return new instance if `OptionPicker` was called without the `new` operator
+        if (!isInstance($, OptionPicker)) {
+            return new OptionPicker(self, state);
+        }
+        setReference$2(self, hook($, OptionPicker._));
+        return $.attach(self, _fromStates({}, OptionPicker.state, isBoolean(state) ? {
+            strict: state
+        } : state || {}));
+    }
+
+    function OptionPickerOptions(of, options) {
+        var $ = this;
+        // Return new instance if `OptionPickerOptions` was called without the `new` operator
+        if (!isInstance($, OptionPickerOptions)) {
+            return new OptionPickerOptions(of, options);
+        }
+        $.of = of;
+        $[TOKEN_VALUES$1] = new Map();
+        if (options) {
+            createOptions(of, options);
+        }
         return $;
     }
-    TP.instances = {};
-    TP.state = {
-        'class': 'tag-picker',
-        'escape': [','],
-        'join': ', ',
-        'max': 9999,
-        'min': 0,
-        'pattern': null
+    OptionPicker.from = function (self, state) {
+        return new OptionPicker(self, state);
     };
-    TP.version = '3.4.18';
+    OptionPicker.of = getReference$2;
+    OptionPicker.state = {
+        'max': null,
+        'min': null,
+        'n': 'option-picker',
+        'options': null,
+        'size': null,
+        'strict': false,
+        'time': {
+            'error': 1000,
+            'search': [10, 500]
+        },
+        'with': []
+    };
+    OptionPicker.version = '2.2.10';
+    setObjectAttributes(OptionPicker, {
+        name: {
+            value: name$4
+        }
+    }, 1);
+    setObjectAttributes(OptionPicker, {
+        active: {
+            get: function get() {
+                return this._active;
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    _mask = $._mask,
+                    mask = $.mask,
+                    self = $.self,
+                    input = _mask.input,
+                    inputReadOnly = _mask.value,
+                    v = !!value;
+                self[TOKEN_DISABLED$1] = !($._active = v);
+                if (v) {
+                    letAria(mask, TOKEN_DISABLED$1);
+                    if (input) {
+                        letAria(input, TOKEN_DISABLED$1);
+                        setAttribute(input, TOKEN_CONTENTEDITABLE$1, "");
+                    } else if (inputReadOnly) {
+                        setAttribute(inputReadOnly, TOKEN_TABINDEX$1, 0);
+                    }
+                } else {
+                    setAria(mask, TOKEN_DISABLED$1, true);
+                    if (input) {
+                        setAria(input, TOKEN_DISABLED$1, true);
+                        letAttribute(input, TOKEN_CONTENTEDITABLE$1);
+                    } else if (inputReadOnly) {
+                        letAttribute(inputReadOnly, TOKEN_TABINDEX$1);
+                    }
+                }
+                return $;
+            }
+        },
+        fix: {
+            get: function get() {
+                return this._fix;
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    _mask = $._mask,
+                    mask = $.mask,
+                    self = $.self,
+                    input = _mask.input,
+                    v = !!value;
+                $._fix = v;
+                if (!isInput(self)) {
+                    return $;
+                }
+                self[TOKEN_READ_ONLY$1] = v;
+                if (v) {
+                    letAttribute(input, TOKEN_CONTENTEDITABLE$1);
+                    setAria(input, TOKEN_READONLY$1, true);
+                    setAria(mask, TOKEN_READONLY$1, true);
+                    setAttribute(input, TOKEN_TABINDEX$1, 0);
+                } else {
+                    letAria(input, TOKEN_READONLY$1);
+                    letAria(mask, TOKEN_READONLY$1);
+                    letAttribute(input, TOKEN_TABINDEX$1);
+                    setAttribute(input, TOKEN_CONTENTEDITABLE$1, "");
+                }
+                return $;
+            }
+        },
+        max: {
+            get: function get() {
+                var $ = this,
+                    state = $.state,
+                    max = state.max;
+                return Infinity === max || isInteger(max) && max > 0 ? max : 1;
+            },
+            set: function set(value) {
+                var $ = this,
+                    self = $.self;
+                if (isInput(self)) {
+                    return $;
+                }
+                var mask = $.mask,
+                    state = $.state;
+                value = (Infinity === value || isInteger(value)) && value > 0 ? value : 0;
+                self.multiple = value > 1;
+                state.max = value;
+                value > 1 ? setAria(mask, 'multiselectable', true) : letAria(mask, 'multiselectable');
+                return $;
+            }
+        },
+        min: {
+            get: function get() {
+                var $ = this,
+                    state = $.state,
+                    min = state.min;
+                return !isInteger(min) || min < 0 ? 0 : min;
+            },
+            set: function set(value) {
+                var $ = this,
+                    state = $.state;
+                state.min = isInteger(value) && value > 0 ? value : 0;
+                return $;
+            }
+        },
+        options: {
+            get: function get() {
+                return this._options;
+            },
+            set: function set(options) {
+                selectToNone();
+                var $ = this,
+                    _active = $._active,
+                    _fix = $._fix;
+                if (!_active || _fix) {
+                    return $;
+                }
+                var max = $.max,
+                    selected;
+                if (isFloat(options) || isInteger(options) || isString(options)) {
+                    options = [options];
+                }
+                if (toCount(selected = createOptions($, options))) {
+                    var isMultipleSelect = max > 1;
+                    $[TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = $['_' + TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = isMultipleSelect ? selected : selected[0];
+                }
+                var optionsValues = [];
+                forEachMap($._options, function (v) {
+                    return optionsValues.push(getOptionValue(v[2], 1));
+                });
+                return $.fire('set.options', [optionsValues]);
+            }
+        },
+        size: {
+            get: function get() {
+                var _self$size;
+                var $ = this,
+                    self = $.self,
+                    state = $.state,
+                    size;
+                if (isInput(self)) {
+                    return null;
+                }
+                size = (_self$size = self.size) != null ? _self$size : state.size || 1;
+                return !isInteger(size) || size < 1 ? 1 : size; // <https://html.spec.whatwg.org#attr-select-size>
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    self = $.self;
+                if (isInput(self)) {
+                    return $;
+                }
+                var _active = $._active,
+                    _mask = $._mask,
+                    mask = $.mask,
+                    state = $.state,
+                    options = _mask.options,
+                    size = !isInteger(value) || value < 1 ? 1 : value;
+                self.size = state.size = size;
+                if (1 === size) {
+                    letDatum(mask, 'size');
+                    letStyle(options, 'max-height');
+                    _active && letReference$1(R);
+                } else {
+                    var option = goToOptionFirst($);
+                    if (option) {
+                        var _ref, _getStyle;
+                        var optionsBorderBottom = getStyle(options, 'border-bottom-width'),
+                            optionsBorderTop = getStyle(options, 'border-top-width'),
+                            optionsGap = getStyle(options, 'gap'),
+                            optionHeight = (_ref = (_getStyle = getStyle(option, 'height')) != null ? _getStyle : getStyle(option, 'min-height')) != null ? _ref : getStyle(option, 'line-height');
+                        setDatum(mask, 'size', size);
+                        setStyle(options, 'max-height', 'calc(' + optionsBorderTop + ' + ' + optionsBorderBottom + ' + (' + optionHeight + '*' + size + ') + calc(' + optionsGap + '*' + size + '))');
+                        _active && setReference$2(R, $);
+                    }
+                }
+                return $;
+            }
+        },
+        text: {
+            get: function get() {
+                var $ = this,
+                    _mask = $._mask,
+                    input = _mask.input,
+                    text = _mask.text;
+                return text ? getText(input) : null;
+            },
+            set: function set(value) {
+                var $ = this,
+                    _active = $._active,
+                    _fix = $._fix;
+                if (!_active || _fix) {
+                    return $;
+                }
+                var _mask = $._mask,
+                    text = _mask.text;
+                if (!text) {
+                    return $;
+                }
+                var input = _mask.input,
+                    v;
+                return setText(input, v = _fromValue(value)), toggleHintByValue$1($, v), $;
+            }
+        },
+        value: {
+            get: function get() {
+                var value = getValue$1(this.self);
+                return "" !== value ? value : null;
+            },
+            set: function set(value) {
+                var $ = this,
+                    _active = $._active,
+                    self = $.self;
+                if (!_active) {
+                    return $;
+                }
+                var _options = $._options,
+                    option;
+                if (option = _options.at(value)) {
+                    selectToOption(option[2], $);
+                } else if (isInput(self) && null === value) {
+                    selectToOptionsNone($, 1);
+                }
+                return $;
+            }
+        },
+        values: {
+            get: function get() {
+                return getOptionsValues(getOptionsSelected(this));
+            },
+            set: function set(values) {
+                var $ = this,
+                    _active = $._active;
+                if (!_active || $.max < 2) {
+                    return $;
+                }
+                selectToOptionsNone($);
+                var _options = $._options,
+                    option;
+                if (isFloat(values) || isInteger(values) || isString(values)) {
+                    values = [values];
+                }
+                if (isArray(values)) {
+                    forEachArray(values, function (v) {
+                        if (option = _options.at(v)) {
+                            toggleToOption(option[2], $);
+                        }
+                    });
+                }
+                return $;
+            }
+        },
+        vital: {
+            get: function get() {
+                return this._vital;
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    _mask = $._mask,
+                    mask = $.mask,
+                    min = $.min,
+                    self = $.self,
+                    input = _mask.input,
+                    v = !!value;
+                self[TOKEN_REQUIRED$1] = v;
+                if (v) {
+                    if (0 === min) {
+                        $.min = 1;
+                    }
+                    input && setAria(input, TOKEN_REQUIRED$1, true);
+                    setAria(mask, TOKEN_REQUIRED$1, true);
+                } else {
+                    $.min = 0;
+                    input && letAria(input, TOKEN_REQUIRED$1);
+                    letAria(mask, TOKEN_REQUIRED$1);
+                }
+                return $;
+            }
+        }
+    });
+    OptionPicker._ = setObjectMethods(OptionPicker, {
+        attach: function attach(self, state) {
+            var _state$size;
+            var $ = this;
+            self = self || $.self;
+            state = state || $.state;
+            $._options = new OptionPickerOptions($);
+            $._value = null;
+            $._values = [];
+            $.self = self;
+            $.state = state;
+            var _state = state,
+                max = _state.max,
+                min = _state.min,
+                n = _state.n,
+                isDisabledSelf = isDisabled$1(self),
+                isInputSelf = isInput(self),
+                isMultipleSelect = max && max > 1 || !isInputSelf && self.multiple,
+                isReadOnlySelf = isReadOnly$1(self),
+                isRequiredSelf = isRequired(self),
+                theInputID = self.id,
+                theInputName = self.name,
+                theInputPlaceholder = self.placeholder;
+            $._active = !isDisabledSelf;
+            $._fix = isInputSelf && isReadOnlySelf;
+            $._vital = isRequiredSelf;
+            if (isRequiredSelf && min < 1) {
+                state.min = min = 1; // Force minimum option(s) to select to be `1`
+            }
+            var arrow = setElement('span', {
+                'aria': {
+                    'hidden': TOKEN_TRUE$1
+                },
+                'class': n + '__arrow',
+                'tabindex': -1
+            });
+            var form = getParentForm(self);
+            var mask = setElement('div', {
+                'aria': {
+                    'disabled': isDisabledSelf ? TOKEN_TRUE$1 : false,
+                    'expanded': TOKEN_FALSE$1,
+                    'haspopup': 'listbox',
+                    'multiselectable': isMultipleSelect ? TOKEN_TRUE$1 : false,
+                    'readonly': isInputSelf && isReadOnlySelf ? TOKEN_TRUE$1 : false,
+                    'required': isRequiredSelf ? TOKEN_TRUE$1 : false
+                },
+                'class': n,
+                'role': 'combobox'
+            });
+            $.mask = mask;
+            var maskFlex = setElement('div', {
+                'class': n + '__flex',
+                'role': TOKEN_GROUP
+            });
+            var maskOptions = setElement('div', {
+                'class': n + '__options',
+                'role': 'listbox'
+            });
+            var maskOptionsLot = setElement('div', {
+                'class': n + '__options-lot',
+                'role': 'none'
+            });
+            var textOrValue = setElement(isInputSelf ? 'span' : 'data', {
+                'class': n + '__' + (isInputSelf ? TOKEN_TEXT : TOKEN_VALUE$1),
+                'tabindex': isInputSelf ? false : 0
+            });
+            var textInput = setElement('span', {
+                'aria': {
+                    'autocomplete': 'list',
+                    'disabled': isDisabledSelf ? TOKEN_TRUE$1 : false,
+                    'multiline': TOKEN_FALSE$1,
+                    'placeholder': isInputSelf ? theInputPlaceholder : false,
+                    'readonly': isReadOnlySelf ? TOKEN_TRUE$1 : false,
+                    'required': isRequiredSelf ? TOKEN_TRUE$1 : false
+                },
+                'autocapitalize': 'off',
+                'contenteditable': isDisabledSelf || isReadOnlySelf || !isInputSelf ? false : "",
+                'role': 'searchbox',
+                'spellcheck': !isInputSelf ? false : TOKEN_FALSE$1,
+                'tabindex': isReadOnlySelf && isInputSelf ? 0 : false
+            });
+            var textInputHint = setElement('span', isInputSelf ? theInputPlaceholder + "" : "", {
+                'aria': {
+                    'hidden': TOKEN_TRUE$1
+                }
+            });
+            var valueX = setElement('span', {
+                'aria': {
+                    'hidden': TOKEN_TRUE$1
+                },
+                'class': n + '__x',
+                'tabindex': -1
+            });
+            setChildLast(mask, maskFlex);
+            setChildLast(mask, maskOptions);
+            setChildLast(maskOptions, maskOptionsLot);
+            setChildLast(maskFlex, textOrValue);
+            setChildLast(maskFlex, arrow);
+            if (isInputSelf) {
+                onEvent(EVENT_BLUR$1, textInput, onBlurTextInput$1);
+                onEvent(EVENT_CUT$1, textInput, onCutTextInput$1);
+                onEvent(EVENT_FOCUS$1, textInput, onFocusTextInput$1);
+                onEvent(EVENT_INPUT$1, textInput, onInputTextInput$1);
+                onEvent(EVENT_KEY_DOWN$1, textInput, onKeyDownTextInput$1);
+                onEvent(EVENT_PASTE$1, textInput, onPasteTextInput$1);
+                setChildLast(textOrValue, textInput);
+                setChildLast(textOrValue, textInputHint);
+                setReference$2(textInput, $);
+            } else {
+                onEvent(EVENT_KEY_DOWN$1, textOrValue, onKeyDownValue);
+                onEvent(EVENT_MOUSE_DOWN$1, textOrValue, onPointerDownValue);
+                onEvent(EVENT_TOUCH_START$1, textOrValue, onPointerDownValue);
+                setReference$2(textOrValue, $);
+            }
+            setClass(self, n + '__self');
+            setNext(self, mask);
+            setChildLast(mask, self);
+            if (form) {
+                var set = getReference$2(form) || new Set();
+                set.add($);
+                onEvent(EVENT_RESET$1, form, onResetForm$1);
+                onEvent(EVENT_SUBMIT$1, form, onSubmitForm$1);
+                setID(form);
+                setReference$2(form, set);
+            }
+            onEvent(EVENT_FOCUS$1, self, onFocusSelf$1);
+            onEvent(EVENT_INVALID$1, self, onInvalidSelf$1);
+            onEvent(EVENT_KEY_DOWN$1, arrow, onKeyDownArrow);
+            onEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
+            onEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+            onEvent(EVENT_WHEEL, mask, onWheelMask);
+            self[TOKEN_TAB_INDEX$1] = -1;
+            setReference$2(arrow, $);
+            setReference$2(mask, $);
+            var _mask = {
+                arrow: arrow,
+                flex: maskFlex,
+                hint: isInputSelf ? textInputHint : null,
+                input: isInputSelf ? textInput : null,
+                lot: maskOptionsLot,
+                of: self,
+                options: maskOptions,
+                self: mask,
+                values: new Set()
+            };
+            _mask[isInputSelf ? TOKEN_TEXT : TOKEN_VALUE$1] = textOrValue;
+            // Re-assign some state value(s) using the setter to either normalize or reject the initial value
+            $.max = max = isMultipleSelect ? max != null ? max : Infinity : 1;
+            $.min = min = isInputSelf ? 0 : min != null ? min : 1;
+            if (!isInputSelf) {
+                textOrValue.$ = {};
+                textOrValue.$[VALUE_SELF] = null;
+                setChildLast(textOrValue, textOrValue.$[VALUE_TEXT] = setID(setElement('span', {
+                    'class': n + '__v',
+                    'role': 'none'
+                })));
+                if (max > 1) {
+                    onEvent(EVENT_MOUSE_DOWN$1, valueX, onPointerDownValueX);
+                    onEvent(EVENT_TOUCH_START$1, valueX, onPointerDownValueX);
+                    setChildLast(textOrValue, textOrValue.$[VALUE_X] = valueX);
+                }
+                _mask[TOKEN_VALUES$1].add(textOrValue); // Add the only value to the set
+            }
+            $._mask = _mask;
+            var _active = $._active,
+                _state2 = state,
+                options = _state2.options,
+                selected;
+            // Force the `this._active` value to `true` to set the initial value
+            $._active = true;
+            if (isFunction(options)) {
+                setAria(mask, 'busy', true);
+                options = options.call($, null);
+                if (isInstance(options, Promise)) {
+                    options.then(function (options) {
+                        letAria(mask, 'busy');
+                        if (toCount(selected = createOptions($, options))) {
+                            $[TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = $['_' + TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = isMultipleSelect ? selected : selected[0];
+                        } else if (selected = getOptionSelected($, 1)) {
+                            selected = getOptionValue(selected);
+                            $[TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = $['_' + TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = isMultipleSelect ? [selected] : selected;
+                        }
+                        $.fire('load', [null, $[TOKEN_VALUES$1]])[$.options.open ? 'enter' : 'exit']().fit();
+                    });
+                } else {
+                    if (toCount(selected = createOptions($, options))) {
+                        $[TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = $['_' + TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = isMultipleSelect ? selected : selected[0];
+                    }
+                }
+            } else {
+                if (toCount(selected = createOptions($, options || getOptions(self)))) {
+                    $[TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = $['_' + TOKEN_VALUE$1 + (isMultipleSelect ? 's' : "")] = isMultipleSelect ? selected : selected[0];
+                }
+            }
+            // After the initial value has been set, restore the previous `this._active` value
+            $._active = _active;
+            // Has to be set after the option(s) are set, because from that point on we want to get the computed size of the
+            // option to set the correct height for the option(s) based on the `size` attribute value.
+            $.size = (_state$size = state.size) != null ? _state$size : isInputSelf ? 1 : self.size;
+            // Force `id` attribute(s)
+            setAria(mask, 'controls', getID(setID(maskOptions)));
+            setAria(mask, 'labelledby', getID(setID(textOrValue)));
+            setAria(self, 'hidden', true);
+            setAria(textInput, 'controls', getID(maskOptions));
+            setID(arrow);
+            setID(mask);
+            setID(maskFlex);
+            setID(maskOptionsLot);
+            setID(self);
+            setID(textInput);
+            setID(textInputHint);
+            setID(valueX);
+            theInputID && setDatum(mask, 'id', theInputID);
+            theInputName && setDatum(mask, 'name', theInputName);
+            // Attach extension(s)
+            if (isSet(state) && isArray(state.with)) {
+                forEachArray(state.with, function (v, k) {
+                    if (isString(v)) {
+                        v = OptionPicker[v];
+                    }
+                    // `const Extension = function (self, state = {}) {}`
+                    if (isFunction(v)) {
+                        v.call($, self, state);
+                        // `const Extension = {attach: function (self, state = {}) {}, detach: function (self, state = {}) {}}`
+                    } else if (isObject(v) && isFunction(v.attach)) {
+                        v.attach.call($, self, state);
+                    }
+                });
+            }
+            return resetState(textInput), $;
+        },
+        blur: function blur() {
+            var $ = this,
+                _mask = $._mask,
+                mask = $.mask,
+                input = _mask.input;
+            if (input) {
+                selectToNone();
+            }
+            return (input || mask).blur(), $.exit();
+        },
+        detach: function detach() {
+            var $ = this,
+                _mask = $._mask,
+                mask = $.mask,
+                self = $.self,
+                state = $.state,
+                arrow = _mask.arrow,
+                input = _mask.input,
+                value = _mask.value;
+            $.exit();
+            var form = getParentForm(self);
+            $._active = false;
+            $._options = new OptionPickerOptions($);
+            $._value = null;
+            $._values = [];
+            if (form) {
+                offEvent(EVENT_RESET$1, form, onResetForm$1);
+                offEvent(EVENT_SUBMIT$1, form, onSubmitForm$1);
+            }
+            if (input) {
+                offEvent(EVENT_BLUR$1, input, onBlurTextInput$1);
+                offEvent(EVENT_CUT$1, input, onCutTextInput$1);
+                offEvent(EVENT_FOCUS$1, input, onFocusTextInput$1);
+                offEvent(EVENT_INPUT$1, input, onInputTextInput$1);
+                offEvent(EVENT_KEY_DOWN$1, input, onKeyDownTextInput$1);
+                offEvent(EVENT_PASTE$1, input, onPasteTextInput$1);
+            }
+            if (value) {
+                offEvent(EVENT_KEY_DOWN$1, value, onKeyDownValue);
+                offEvent(EVENT_MOUSE_DOWN$1, value, onPointerDownValue);
+                offEvent(EVENT_TOUCH_START$1, value, onPointerDownValue);
+                var valueX = value.$[VALUE_X];
+                if (valueX) {
+                    offEvent(EVENT_MOUSE_DOWN$1, valueX, onPointerDownValueX);
+                    offEvent(EVENT_TOUCH_START$1, valueX, onPointerDownValueX);
+                }
+            }
+            offEvent(EVENT_FOCUS$1, self, onFocusSelf$1);
+            offEvent(EVENT_INVALID$1, self, onInvalidSelf$1);
+            offEvent(EVENT_KEY_DOWN$1, arrow, onKeyDownArrow);
+            offEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
+            offEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+            offEvent(EVENT_WHEEL, mask, onWheelMask);
+            // Detach extension(s)
+            if (isArray(state.with)) {
+                forEachArray(state.with, function (v, k) {
+                    if (isString(v)) {
+                        v = OptionPicker[v];
+                    }
+                    if (isObject(v) && isFunction(v.detach)) {
+                        v.detach.call($, self, state);
+                    }
+                });
+            }
+            self[TOKEN_TAB_INDEX$1] = null;
+            letAria(self, 'hidden');
+            letClass(self, state.n + '__self');
+            setNext(mask, self);
+            letElement(mask);
+            $._mask = {
+                of: self
+            };
+            $.mask = null;
+            return $;
+        },
+        enter: function enter(focus, mode) {
+            var $ = this,
+                _active = $._active,
+                _fix = $._fix,
+                _mask = $._mask,
+                self = $.self,
+                input = _mask.input,
+                isInputSelf = isInput(self);
+            if (_fix && focus && isInputSelf) {
+                return focusTo$1(input), selectTo(input, mode), $;
+            }
+            if (!_active || _fix) {
+                return $;
+            }
+            var _options = $._options,
+                mask = $.mask,
+                lot = _mask.lot,
+                options = _mask.options,
+                value = _mask.value,
+                option;
+            setAria(mask, 'expanded', toCount(getChildren(lot)) > 0);
+            var theRootReference = getReference$2(R);
+            if (theRootReference && $ !== theRootReference) {
+                theRootReference.exit(); // Exit other(s)
+            }
+            setReference$2(R, $); // Link current picker to the root target
+            $.fire('enter');
+            if (focus) {
+                if (isInputSelf) {
+                    focusTo$1(input), selectTo(input, mode);
+                } else if (option = _options.at(getValue$1(self))) {
+                    onAnimationsEnd(options, function () {
+                        return focusTo$1(option[2]);
+                    }, scrollTo(option[2]));
+                } else if (option = goToOptionFirst($)) {
+                    onAnimationsEnd(options, function () {
+                        return focusTo$1(option);
+                    }, scrollTo(option));
+                } else {
+                    focusTo$1(value);
+                }
+            }
+            onEvent(EVENT_MOUSE_DOWN$1, R, onPointerDownRoot);
+            onEvent(EVENT_MOUSE_MOVE, R, onPointerMoveRoot);
+            onEvent(EVENT_MOUSE_UP, R, onPointerUpRoot);
+            onEvent(EVENT_RESIZE, W, onResizeWindow, {
+                passive: true
+            });
+            onEvent(EVENT_SCROLL, W, onScrollWindow, {
+                passive: true
+            });
+            onEvent(EVENT_TOUCH_END, R, onPointerUpRoot);
+            onEvent(EVENT_TOUCH_MOVE, R, onPointerMoveRoot, {
+                passive: true
+            });
+            onEvent(EVENT_TOUCH_START$1, R, onPointerDownRoot);
+            return $;
+        },
+        exit: function exit(focus, mode) {
+            var $ = this,
+                _active = $._active,
+                _fix = $._fix,
+                _mask = $._mask,
+                self = $.self,
+                input = _mask.input,
+                isInputSelf = isInput(self);
+            if (_fix && focus && isInputSelf) {
+                return focusTo$1(input), selectTo(input, mode), $;
+            }
+            if (!_active || _fix) {
+                return $;
+            }
+            var _options = $._options,
+                mask = $.mask,
+                value = _mask.value;
+            forEachMap(_options, function (v) {
+                return v[2].hidden = false;
+            });
+            setAria(mask, 'expanded', false);
+            letReference$1(R);
+            $.fire('exit');
+            if (focus) {
+                if (isInputSelf) {
+                    focusTo$1(input), selectTo(input, mode);
+                } else {
+                    focusTo$1(value);
+                }
+            }
+            offEvent(EVENT_MOUSE_DOWN$1, R, onPointerDownRoot);
+            offEvent(EVENT_MOUSE_MOVE, R, onPointerMoveRoot);
+            offEvent(EVENT_MOUSE_UP, R, onPointerUpRoot);
+            offEvent(EVENT_RESIZE, W, onResizeWindow);
+            offEvent(EVENT_SCROLL, W, onScrollWindow);
+            offEvent(EVENT_TOUCH_END, R, onPointerUpRoot);
+            offEvent(EVENT_TOUCH_MOVE, R, onPointerMoveRoot);
+            offEvent(EVENT_TOUCH_START$1, R, onPointerDownRoot);
+            return $;
+        },
+        fit: function fit() {
+            var $ = this,
+                _active = $._active,
+                _fix = $._fix,
+                mask = $.mask;
+            if (!_active || _fix || !getAria(mask, 'expanded') || getDatum(mask, 'size')) {
+                return $;
+            }
+            var _mask = $._mask,
+                options = _mask.options;
+            setStyle(options, 'max-height', 0);
+            var borderMaskBottom = getStyle(mask, 'border-bottom-width'),
+                borderMaskTop = getStyle(mask, 'border-top-width'),
+                rectMask = getRect(mask),
+                rectWindow = getRect(W);
+            if (rectMask[1] + rectMask[3] / 2 > rectWindow[3] / 2) {
+                setStyles(options, {
+                    'bottom': '100%',
+                    'max-height': 'calc(' + rectMask[1] + 'px + ' + borderMaskBottom + ')',
+                    'top': 'auto'
+                });
+            } else {
+                setStyles(options, {
+                    'bottom': 'auto',
+                    'max-height': 'calc(' + (rectWindow[3] - rectMask[1] - rectMask[3]) + 'px + ' + borderMaskTop + ')',
+                    'top': '100%'
+                });
+            }
+            return $.fire('fit');
+        },
+        focus: function focus(mode) {
+            var $ = this,
+                _active = $._active;
+            if (!_active) {
+                return $;
+            }
+            var _mask = $._mask,
+                input = _mask.input,
+                value = _mask.value;
+            if (input) {
+                focusTo$1(input), selectTo(input, mode);
+            } else {
+                focusTo$1(value);
+            }
+            return $;
+        },
+        reset: function reset(focus, mode) {
+            var $ = this,
+                _active = $._active;
+            if (!_active) {
+                return $;
+            }
+            var _value = $._value,
+                _values = $._values,
+                max = $.max;
+            if (max > 1) {
+                $[TOKEN_VALUES$1] = _values;
+            } else {
+                $[TOKEN_VALUE$1] = _value;
+            }
+            return focus ? $.focus(mode) : $;
+        }
+    });
+    setObjectAttributes(OptionPickerOptions, {
+        name: {
+            value: name$4 + 'Options'
+        }
+    }, 1);
+    setObjectAttributes(OptionPickerOptions, {
+        open: {
+            get: function get() {
+                var $ = this,
+                    of = $.of,
+                    mask = of.mask;
+                return getAria(mask, 'expanded');
+            }
+        }
+    });
+    OptionPickerOptions._ = setObjectMethods(OptionPickerOptions, {
+        at: function at(key) {
+            return getValueInMap$1(_toValue(key), this[TOKEN_VALUES$1]);
+        },
+        count: function count() {
+            return toMapCount(this[TOKEN_VALUES$1]);
+        },
+        // To be used by the `letValueInMap()` function
+        delete: function _delete(key, _fireHook, _fireValue) {
+            if (_fireHook === void 0) {
+                _fireHook = 1;
+            }
+            if (_fireValue === void 0) {
+                _fireValue = 1;
+            }
+            var $ = this,
+                of = $.of,
+                values = $.values,
+                _active = of._active;
+            if (!_active) {
+                return false;
+            }
+            var _mask = of._mask,
+                self = of.self,
+                state = of.state,
+                lot = _mask.lot,
+                options = _mask.options,
+                r;
+            if (!isSet(key)) {
+                forEachMap(values, function (v, k) {
+                    return $.let(k, 0, 0);
+                });
+                selectToOptionsNone(of, _fireValue);
+                options.hidden = true;
+                return _fireHook && of.fire('let.options', [
+                    []
+                ]), 0 === $.count();
+            }
+            if (!(r = getValueInMap$1(key = _toValue(key), values))) {
+                return _fireHook && of.fire('not.option', [key]), false;
+            }
+            var parent = getParent(r[2]),
+                parentReal = getParent(r[3]),
+                value = getOptionValue(r[2]),
+                valueReal = of [TOKEN_VALUE$1];
+            offEvent(EVENT_FOCUS$1, r[2], onFocusOption);
+            offEvent(EVENT_KEY_DOWN$1, r[2], onKeyDownOption);
+            offEvent(EVENT_MOUSE_DOWN$1, r[2], onPointerDownOption);
+            offEvent(EVENT_MOUSE_UP, r[2], onPointerUpOption);
+            offEvent(EVENT_TOUCH_END, r[2], onPointerUpOption);
+            offEvent(EVENT_TOUCH_START$1, r[2], onPointerDownOption);
+            letElement(r[2]), letElement(r[3]);
+            r = letValueInMap(key, values);
+            // Remove empty group(s)
+            parent && TOKEN_GROUP === getRole(parent) && 0 === toCount(getChildren(parent)) && letElement(parent);
+            parentReal && TOKEN_OPTGROUP === getName(parentReal) && 0 === toCount(getChildren(parentReal)) && letElement(parentReal);
+            // Clear value if there are no option(s)
+            if (0 === toCount(getChildren(lot))) {
+                selectToOptionsNone(of, !isInput(self));
+                options.hidden = true;
+                // Reset value to the first option if removed option is the selected option
+            } else {
+                value === valueReal && selectToOptionFirst(of);
+            }
+            if (!isFunction(state.options)) {
+                state.options = values;
+            }
+            return _fireHook && of.fire('let.option', [key]), r;
+        },
+        get: function get(key) {
+            var $ = this,
+                values = $.values,
+                value = getValueInMap$1(_toValue(key), values),
+                parent;
+            if (value && (parent = getParent(value[2])) && TOKEN_GROUP === getRole(parent)) {
+                return [getElementIndex(value[2]), getElementIndex(parent)];
+            }
+            return value ? getElementIndex(value[2]) : -1;
+        },
+        has: function has(key) {
+            return hasKeyInMap(_toValue(key), this[TOKEN_VALUES$1]);
+        },
+        let: function _let(key, _fireHook, _fireValue) {
+            if (_fireHook === void 0) {
+                _fireHook = 1;
+            }
+            if (_fireValue === void 0) {
+                _fireValue = 1;
+            }
+            return this.delete(key, _fireHook, _fireValue);
+        },
+        set: function set(key, value, _fireHook) {
+            var _getState3, _getState4, _getState5;
+            if (_fireHook === void 0) {
+                _fireHook = 1;
+            }
+            var $ = this,
+                of = $.of,
+                values = $.values,
+                _active = of._active;
+            if (!_active) {
+                return false;
+            }
+            if ($.has(key = _toValue(key))) {
+                return _fireHook && of.fire('has.option', [key]), false;
+            }
+            var _mask = of._mask,
+                self = of.self,
+                state = of.state,
+                lot = _mask.lot,
+                options = _mask.options,
+                n = state.n,
+                itemsParent,
+                option,
+                optionGroup,
+                optionGroupReal,
+                optionReal,
+                optionText;
+            if (isInput(self)) {
+                (itemsParent = self.list) ? getChildren(itemsParent): [];
+            } else {
+                getChildren(itemsParent = self);
+            }
+            options.hidden = false;
+            // Force `id` attribute(s)
+            setID(itemsParent);
+            // `picker.options.set('asdf')`
+            if (!isSet(value)) {
+                value = [key, {}];
+                // `picker.options.set('asdf', 'asdf')`
+            } else if (isFloat(value) || isInteger(value) || isString(value)) {
+                value = [value, {}];
+                // `picker.options.set('asdf', [ … ])`
+            } else;
+            if (hasState(value[1], '&')) {
+                var _getState;
+                optionGroup = getElement('.' + n + '__options-batch[value="' + _fromValue(value[1]['&']).replace(/"/g, '\\"') + '"]', lot);
+                optionGroupReal = getElement(TOKEN_OPTGROUP + '[label="' + _fromValue(value[1]['&']).replace(/"/g, '\\"') + '"]', self) || setElement(TOKEN_OPTGROUP, {
+                    'label': value[1]['&'],
+                    'title': (_getState = getState(value[1], 'title')) != null ? _getState : false
+                });
+                if (!optionGroup || getOptionValue(optionGroup) !== value[1]['&']) {
+                    var _getState2;
+                    setChildLast(lot, optionGroup = setElement('data', {
+                        'class': n + '__options-batch',
+                        'role': TOKEN_GROUP,
+                        'title': (_getState2 = getState(value[1], 'title')) != null ? _getState2 : false,
+                        'value': value[1]['&']
+                    }));
+                    setChildLast(itemsParent, optionGroupReal);
+                    // Force `id` attribute(s)
+                    setID(optionGroup);
+                    setID(optionGroupReal);
+                }
+            } else {
+                optionGroup = optionGroupReal = false;
+            }
+            var _value$ = value[1],
+                active = _value$.active,
+                mark = _value$.mark,
+                v = _value$.value;
+            if (!isSet(active)) {
+                active = true;
+            }
+            v = _fromValue(v || key);
+            option = value[2] || setElement('data', {
+                'aria': {
+                    'disabled': active ? false : TOKEN_TRUE$1,
+                    'selected': mark ? TOKEN_TRUE$1 : false
+                },
+                'class': n + '__option',
+                'data': {
+                    'batch': (_getState3 = getState(value[1], '&')) != null ? _getState3 : false
+                },
+                'role': 'option',
+                'tabindex': active ? -1 : false,
+                'title': (_getState4 = getState(value[1], 'title')) != null ? _getState4 : false,
+                'value': v
+            });
+            optionReal = value[3] || setElement('option', _fromValue(value[0]), {
+                'disabled': active ? false : "",
+                'selected': mark ? "" : false,
+                'title': (_getState5 = getState(value[1], 'title')) != null ? _getState5 : false,
+                'value': v
+            });
+            optionText = value[2] ? value[2].$[OPTION_TEXT] : setElement('span', _fromValue(value[0]), {
+                'class': n + '__v',
+                'role': 'none'
+            });
+            // Force `id` attribute(s)
+            setID(option);
+            setID(optionReal);
+            setID(optionText);
+            option.$ = {};
+            option.$[OPTION_SELF] = optionReal;
+            option.$[OPTION_TEXT] = optionText;
+            if (active && !value[2]) {
+                onEvent(EVENT_FOCUS$1, option, onFocusOption);
+                onEvent(EVENT_KEY_DOWN$1, option, onKeyDownOption);
+                onEvent(EVENT_MOUSE_DOWN$1, option, onPointerDownOption);
+                onEvent(EVENT_MOUSE_UP, option, onPointerUpOption);
+                onEvent(EVENT_TOUCH_END, option, onPointerUpOption);
+                onEvent(EVENT_TOUCH_START$1, option, onPointerDownOption);
+            }
+            setChildLast(option, optionText);
+            setChildLast(optionGroup || lot, option);
+            setChildLast(optionGroupReal || itemsParent, optionReal);
+            setReference$2(option, of);
+            value[2] = option;
+            value[3] = optionReal;
+            _fireHook && of.fire('is.option', [key]);
+            setValueInMap$1(key, value, values);
+            if (!isFunction(state.options)) {
+                state.options = values;
+            }
+            return _fireHook && of.fire('set.option', [key]), true;
+        }
+    });
+    // In order for an object to be iterable, it must have a `Symbol.iterator` key
+    getPrototype(OptionPickerOptions)[Symbol.iterator] = function () {
+        return this[TOKEN_VALUES$1][Symbol.iterator]();
+    };
+    OptionPicker.Options = OptionPickerOptions;
 
     function onChange$b(init) {
-        // Destroy!
-        var $;
-        for (var key in TP.instances) {
-            $ = TP.instances[key];
-            $.pop();
-            delete TP.instances[key];
-        }
-        var sources = getElements('.lot\\:field.type\\:query input:not([type=hidden])');
+        var sources = getElements('input[list]:not([type=hidden]),select');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
-            letClass(source, 'input');
             var c = getClasses(source);
-            var $ = new TP(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
-            setClasses($.self, c);
+            letClasses(source);
+            var $ = new OptionPicker(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
+            setClasses($.mask, c);
         });
         1 === init && W._.on('change', onChange$b);
     }
-    W.TP = TP;
+    W.OP = W.OptionPicker = OptionPicker;
+    var EVENT_DOWN = 'down';
+    var EVENT_UP = 'up';
+    var EVENT_BLUR = 'blur';
+    var EVENT_COPY = 'copy';
+    var EVENT_CUT = 'cut';
+    var EVENT_FOCUS = 'focus';
+    var EVENT_INPUT = 'input';
+    var EVENT_INPUT_START = 'before' + EVENT_INPUT;
+    var EVENT_INVALID = 'invalid';
+    var EVENT_KEY = 'key';
+    var EVENT_KEY_DOWN = EVENT_KEY + EVENT_DOWN;
+    var EVENT_KEY_UP = EVENT_KEY + EVENT_UP;
+    var EVENT_MOUSE = 'mouse';
+    var EVENT_MOUSE_DOWN = EVENT_MOUSE + EVENT_DOWN;
+    var EVENT_PASTE = 'paste';
+    var EVENT_RESET = 'reset';
+    var EVENT_SUBMIT = 'submit';
+    var EVENT_TOUCH = 'touch';
+    var EVENT_TOUCH_START = EVENT_TOUCH + 'start';
+    var KEY_LEFT = 'Left';
+    var KEY_RIGHT = 'Right';
+    var KEY_A = 'a';
+    var KEY_ARROW = 'Arrow';
+    var KEY_ARROW_LEFT$1 = KEY_ARROW + KEY_LEFT;
+    var KEY_ARROW_RIGHT$1 = KEY_ARROW + KEY_RIGHT;
+    var KEY_BEGIN = 'Home';
+    var KEY_DELETE_LEFT$1 = 'Backspace';
+    var KEY_DELETE_RIGHT$1 = 'Delete';
+    var KEY_END = 'End';
+    var KEY_ENTER$1 = 'Enter';
+    var KEY_ESCAPE = 'Escape';
+    var KEY_TAB = 'Tab';
+    var KEY_Y = 'y';
+    var KEY_Z = 'z';
+    var TOKEN_CONTENTEDITABLE = 'contenteditable';
+    var TOKEN_DISABLED = 'disabled';
+    var TOKEN_FALSE = 'false';
+    var TOKEN_INVALID = EVENT_INVALID;
+    var TOKEN_PRESSED = 'pressed';
+    var TOKEN_READONLY = 'readonly';
+    var TOKEN_READ_ONLY = 'readOnly';
+    var TOKEN_REQUIRED = 'required';
+    var TOKEN_TABINDEX = 'tabindex';
+    var TOKEN_TAB_INDEX = 'tabIndex';
+    var TOKEN_TRUE = 'true';
+    var TOKEN_VALUE = 'value';
+    var TOKEN_VALUES = TOKEN_VALUE + 's';
+    var TOKEN_VISIBILITY = 'visibility';
+    var _delay = delay(function (picker) {
+            letAria(picker.mask, TOKEN_INVALID);
+        }),
+        _delay2 = _maybeArrayLike(_slicedToArray, _delay, 2),
+        letError = _delay2[0],
+        letErrorAbort = _delay2[1];
+    var setError = function setError(picker) {
+        var mask = picker.mask,
+            state = picker.state,
+            time = state.time,
+            error = time.error;
+        if (isInteger(error) && error > 0) {
+            setAria(mask, TOKEN_INVALID, true);
+        }
+    };
+    var _delay3 = delay(function ($) {
+            saveState($);
+        }, 1),
+        _delay4 = _maybeArrayLike(_slicedToArray, _delay3, 1),
+        saveStateLazy = _delay4[0];
+    var _delay5 = delay(function (picker) {
+            var _mask = picker._mask,
+                input = _mask.input;
+            toggleHintByValue(picker, getText(input, 0));
+        }),
+        _delay6 = _maybeArrayLike(_slicedToArray, _delay5, 1),
+        toggleHint = _delay6[0];
+    var toggleHintByValue = function toggleHintByValue(picker, value) {
+        var _mask = picker._mask,
+            hint = _mask.hint;
+        value ? setStyle(hint, TOKEN_VISIBILITY, 'hidden') : letStyle(hint, TOKEN_VISIBILITY);
+    };
+    var name$3 = 'TagPicker';
+    var _keyIsCtrl, _keyIsShift, _keyOverTag;
+
+    function createTags($, tags) {
+        var map = isInstance(tags, Map) ? tags : new Map();
+        if (isArray(tags)) {
+            forEachArray(tags, function (tag) {
+                if (isArray(tag)) {
+                    var _tag$, _tag$2, _tag$1$TOKEN_VALUE;
+                    tag[0] = (_tag$ = tag[0]) != null ? _tag$ : "";
+                    tag[1] = (_tag$2 = tag[1]) != null ? _tag$2 : {};
+                    setValueInMap$1(_toValue((_tag$1$TOKEN_VALUE = tag[1][TOKEN_VALUE]) != null ? _tag$1$TOKEN_VALUE : tag[0]), tag, map);
+                } else {
+                    setValueInMap$1(_toValue(tag), [tag, {}], map);
+                }
+            });
+        } else if (isObject(tags, 0)) {
+            forEachObject(tags, function (v, k) {
+                if (isArray(v)) {
+                    var _v$, _v$2, _v$1$TOKEN_VALUE;
+                    tags[k][0] = (_v$ = v[0]) != null ? _v$ : "";
+                    tags[k][1] = (_v$2 = v[1]) != null ? _v$2 : {};
+                    setValueInMap$1(_toValue((_v$1$TOKEN_VALUE = v[1][TOKEN_VALUE]) != null ? _v$1$TOKEN_VALUE : k), v, map);
+                } else {
+                    setValueInMap$1(_toValue(k), [v, {}], map);
+                }
+            });
+        }
+        var _tags = $._tags,
+            r = [];
+        // Reset the tag(s) data, but do not fire the `let.tags` hook
+        _tags.let(null, 0);
+        forEachMap(map, function (v, k) {
+            var _v$1$TOKEN_VALUE3;
+            if (isArray(v) && v[1]) {
+                var _v$1$TOKEN_VALUE2;
+                r.push((_v$1$TOKEN_VALUE2 = v[1][TOKEN_VALUE]) != null ? _v$1$TOKEN_VALUE2 : k);
+            }
+            // Set the tag data, but do not fire the `set.tag` hook
+            _tags.set(_toValue(isArray(v) && v[1] ? (_v$1$TOKEN_VALUE3 = v[1][TOKEN_VALUE]) != null ? _v$1$TOKEN_VALUE3 : k : k), v, 0);
+        });
+        return r;
+    }
+
+    function focusTo(node) {
+        return node.focus(), node;
+    }
+
+    function getTagValue(tag, parseValue) {
+        return getValue$1(tag, parseValue);
+    }
+    // Do not allow user(s) to edit the tag text
+    function onBeforeInputTag(e) {
+        offEventDefault(e);
+    }
+    // Better mobile support
+    function onBeforeInputTextInput(e) {
+        var $ = this,
+            data = e.data,
+            inputType = e.inputType,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return offEventDefault(e);
+        }
+        var _tags = picker._tags,
+            state = picker.state,
+            escape = state.escape,
+            exit,
+            key,
+            tagLast,
+            v;
+        key = isString(data) && 1 === toCount(data) ? data : 0;
+        if (KEY_ENTER$1 === key && (hasValue('\n', escape) || hasValue(13, escape)) || KEY_TAB === key && (hasValue('\t', escape) || hasValue(9, escape)) || 0 !== key && hasValue(key, escape)) {
+            exit = true;
+            setValueInMap$1(_toValue(v = getText($)), v, _tags);
+            focusTo(picker).text = "";
+        } else if ('deleteContentBackward' === inputType && !getText($, 0)) {
+            if (tagLast = toValueLastFromMap(_tags)) {
+                exit = true;
+                letValueInMap(getTagValue(tagLast[2]), _tags);
+            }
+        }
+        exit && offEventDefault(e);
+    }
+
+    function onBlurTag() {
+        var $ = this,
+            picker = getReference$2($),
+            _tags = picker._tags;
+        if (!_keyIsCtrl && !_keyIsShift) {
+            forEachMap(_tags, function (v) {
+                return letAria(v[2], TOKEN_PRESSED);
+            });
+        }
+    }
+
+    function onBlurTextInput() {
+        var $ = this,
+            picker = getReference$2($),
+            mask = picker.mask,
+            state = picker.state,
+            time = state.time,
+            error = time.error;
+        letError(isInteger(error) && error > 0 ? error : 0, picker);
+        onEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
+        onEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+    }
+
+    function onCopyTag(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _tags = picker._tags,
+            state = picker.state,
+            join = state.join,
+            selected = [];
+        setAria($, TOKEN_PRESSED, true);
+        forEachMap(_tags, function (v) {
+            if (getAria(v[2], TOKEN_PRESSED)) {
+                selected.push(getTagValue(v[2]));
+            }
+        });
+        e.clipboardData.setData('text/plain', selected.join(join));
+        if (EVENT_CUT !== e.type && toCount(selected) < 2) {
+            letAria($, TOKEN_PRESSED);
+        }
+    }
+
+    function onCutTag(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _tags = picker._tags;
+        onCopyTag.call($, e);
+        forEachMap(_tags, function (v) {
+            if (getAria(v[2], TOKEN_PRESSED)) {
+                letValueInMap(getTagValue(v[2]), _tags);
+            }
+        });
+        focusTo(picker.fire('change', [picker[TOKEN_VALUE]]));
+    }
+
+    function onCutTextInput() {
+        var $ = this;
+        saveState($), toggleHint(1, getReference$2($)), saveStateLazy($);
+    }
+
+    function onFocusSelf() {
+        focusTo(getReference$2(this));
+    }
+    // Select the tag text on focus to hide the text cursor
+    function onFocusTag() {
+        selectTo(this);
+    }
+
+    function onFocusTextInput() {
+        var $ = this,
+            picker = getReference$2($),
+            mask = picker.mask,
+            state = picker.state,
+            pattern = state.pattern,
+            value = getText($);
+        if (value && isString(pattern) && !toPattern(pattern).test(value)) {
+            letErrorAbort(), setError(picker);
+        }
+        selectTo($);
+        offEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
+        offEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+    }
+    // Better mobile support
+    function onInputTextInput(e) {
+        var $ = this,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return offEventDefault(e);
+        }
+        var state = picker.state,
+            pattern = state.pattern,
+            inputType = e.inputType,
+            v = getText($, 0);
+        if ('deleteContent' === inputType.slice(0, 13) && !v) {
+            toggleHintByValue(picker, 0), saveStateLazy($);
+        } else if ('insertText' === inputType) {
+            toggleHintByValue(picker, 1), saveStateLazy($);
+        }
+        if (isString(pattern) && !toPattern(pattern).test(v)) {
+            letErrorAbort(), setError(picker);
+        } else {
+            letError(0, picker);
+        }
+    }
+
+    function onInvalidSelf(e) {
+        e && offEventDefault(e);
+        var $ = this;
+        onBlurTextInput.call($), setError(getReference$2($));
+    }
+
+    function onKeyDownTag(e) {
+        var $ = _keyOverTag = this,
+            key = e.key,
+            keyIsCtrl = _keyIsCtrl = e.ctrlKey,
+            keyIsShift = _keyIsShift = e.shiftKey,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return offEventDefault(e);
+        }
+        var _mask = picker._mask,
+            _tags = picker._tags,
+            text = _mask.text,
+            exit,
+            tagFirst,
+            tagLast,
+            tagNext,
+            tagPrev;
+        if (keyIsShift) {
+            exit = true;
+            setAria($, TOKEN_PRESSED, true);
+            if (KEY_ARROW_LEFT$1 === key) {
+                if (tagPrev = getPrev($)) {
+                    if (getAria(tagPrev, TOKEN_PRESSED)) {
+                        letAria($, TOKEN_PRESSED);
+                    } else {
+                        setAria(tagPrev, TOKEN_PRESSED, true);
+                    }
+                    focusTo(tagPrev);
+                }
+            } else if (KEY_ARROW_RIGHT$1 === key) {
+                if ((tagNext = getNext($)) && tagNext !== text) {
+                    if (getAria(tagNext, TOKEN_PRESSED)) {
+                        letAria($, TOKEN_PRESSED);
+                    } else {
+                        setAria(tagNext, TOKEN_PRESSED, true);
+                    }
+                    focusTo(tagNext);
+                }
+            } else if (KEY_TAB === key) {
+                selectToNone();
+            }
+        } else if (keyIsCtrl) {
+            if (KEY_A === key) {
+                exit = true;
+                forEachMap(_tags, function (v) {
+                    return setAria(v[2], TOKEN_PRESSED, true), focusTo(v[2]), selectTo(v[2]);
+                });
+            } else if (KEY_ARROW_LEFT$1 === key) {
+                exit = true;
+                if (tagPrev = getPrev($)) {
+                    focusTo(tagPrev);
+                }
+            } else if (KEY_ARROW_RIGHT$1 === key) {
+                exit = true;
+                if ((tagNext = getNext($)) && tagNext !== text) {
+                    focusTo(tagNext);
+                }
+            } else if (KEY_BEGIN === key) {
+                exit = true;
+                tagFirst = toValueFirstFromMap(_tags);
+                tagFirst && focusTo(tagFirst[2]);
+            } else if (KEY_END === key) {
+                exit = true;
+                tagLast = toValueLastFromMap(_tags);
+                tagLast && focusTo(tagLast[2]);
+            } else if (KEY_ENTER$1 === key || ' ' === key) {
+                exit = true;
+                getAria($, TOKEN_PRESSED) ? letAria($, TOKEN_PRESSED) : setAria($, TOKEN_PRESSED, true);
+            } else {
+                setAria($, TOKEN_PRESSED, true);
+            }
+        } else {
+            if (KEY_ARROW_LEFT$1 === key) {
+                exit = true;
+                if (tagPrev = getPrev($)) {
+                    focusTo(tagPrev);
+                }
+            } else if (KEY_ARROW_RIGHT$1 === key) {
+                exit = true;
+                focusTo((tagNext = getNext($)) && tagNext !== text ? tagNext : picker);
+            } else if (KEY_BEGIN === key) {
+                exit = true;
+                tagFirst = toValueFirstFromMap(_tags);
+                tagFirst && focusTo(tagFirst[2]);
+            } else if (KEY_END === key) {
+                exit = true;
+                tagLast = toValueLastFromMap(_tags);
+                tagLast && focusTo(tagLast[2]);
+            } else if (KEY_DELETE_LEFT$1 === key) {
+                exit = true;
+                tagPrev = getPrev($);
+                letValueInMap(getTagValue($), _tags);
+                forEachMap(_tags, function (v) {
+                    if (getAria(v[2], TOKEN_PRESSED)) {
+                        tagPrev = getPrev(v[2]);
+                        letValueInMap(getTagValue(v[2]), _tags);
+                    }
+                });
+                focusTo(tagPrev || picker), picker.fire('change', [picker[TOKEN_VALUE]]);
+            } else if (KEY_DELETE_RIGHT$1 === key) {
+                exit = true;
+                tagNext = getNext($);
+                letValueInMap(getTagValue($), _tags);
+                forEachMap(_tags, function (v) {
+                    if (getAria(v[2], TOKEN_PRESSED)) {
+                        tagNext = getNext(v[2]);
+                        letValueInMap(getTagValue(v[2]), _tags);
+                    }
+                });
+                focusTo(tagNext && tagNext !== text ? tagNext : picker), picker.fire('change', [picker[TOKEN_VALUE]]);
+            } else if (KEY_ENTER$1 === key || ' ' === key) {
+                exit = true;
+                getAria($, TOKEN_PRESSED) ? letAria($, TOKEN_PRESSED) : setAria($, TOKEN_PRESSED, true);
+            } else if (KEY_ESCAPE === key || KEY_TAB === key) {
+                exit = true;
+                selectToNone(), focusTo(picker);
+                // Any type-able key
+            } else if (1 === toCount(key)) {
+                forEachMap(_tags, function (v) {
+                    if (getAria(v[2], TOKEN_PRESSED)) {
+                        letValueInMap(getTagValue(v[2]), _tags);
+                    }
+                });
+                selectToNone(), focusTo(picker).fire('change', [picker[TOKEN_VALUE]]);
+            }
+        }
+        exit && offEventDefault(e);
+    }
+
+    function onKeyDownTextInput(e) {
+        var $ = this,
+            key = e.key,
+            keyCode = e.keyCode,
+            keyIsCtrl = _keyIsCtrl = e.ctrlKey,
+            keyIsShift = _keyIsShift = e.shiftKey,
+            picker = getReference$2($),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return;
+        }
+        var _tags = picker._tags,
+            self = picker.self,
+            state = picker.state,
+            escape = state.escape,
+            exit,
+            form,
+            submit,
+            v;
+        if (KEY_ENTER$1 === key && (hasValue('\n', escape) || hasValue(13, escape)) || KEY_TAB === key && (hasValue('\t', escape) || hasValue(9, escape)) || hasValue(key, escape) || hasValue(keyCode, escape)) {
+            setValueInMap$1(_toValue(v = getText($)), v, _tags);
+            return focusTo(picker).text = "", offEventDefault(e);
+        }
+        toggleHint(1, picker);
+        var caretIsToTheFirst = "" === getCharBeforeCaret($),
+            tagFirst,
+            tagLast,
+            textIsVoid = !getText($, 0);
+        if (keyIsShift) {
+            if (KEY_ARROW_LEFT$1 === key) {
+                if (caretIsToTheFirst || textIsVoid) {
+                    exit = true;
+                    selectToNone();
+                    tagLast = toValueLastFromMap(_tags);
+                    tagLast && focusTo(tagLast[2]) && setAria(tagLast[2], TOKEN_PRESSED, true);
+                }
+            } else if (KEY_ENTER$1 === key) {
+                exit = true;
+            } else if (KEY_TAB === key) {
+                selectToNone();
+            }
+        } else if (keyIsCtrl) {
+            if (KEY_A === toCaseLower(key) && textIsVoid && _tags.count()) {
+                exit = true;
+                forEachMap(_tags, function (v) {
+                    return setAria(v[2], TOKEN_PRESSED, true), focusTo(v[2]), selectTo(v[2]);
+                });
+            } else if (KEY_ARROW_LEFT$1 === key) {
+                exit = true;
+                tagLast = toValueLastFromMap(_tags);
+                tagLast && focusTo(tagLast[2]);
+            } else if (KEY_BEGIN === key) {
+                exit = true;
+                tagFirst = toValueFirstFromMap(_tags);
+                tagFirst && focusTo(tagFirst[2]);
+            } else if (KEY_ENTER$1 === key) {
+                exit = true;
+            } else if (!keyIsShift && KEY_Z === toCaseLower(key)) {
+                exit = true;
+                undoState($);
+            } else if (keyIsShift && KEY_Z === toCaseLower(key) || KEY_Y === toCaseLower(key)) {
+                exit = true;
+                redoState($);
+            }
+        } else {
+            if (KEY_BEGIN === key) {
+                exit = true;
+                tagFirst = toValueFirstFromMap(_tags);
+                tagFirst && focusTo(tagFirst[2]);
+            } else if (KEY_ENTER$1 === key) {
+                exit = true;
+                if ((form = getParentForm(self)) && isFunction(form.requestSubmit)) {
+                    // <https://developer.mozilla.org/en-US/docs/Glossary/Submit_button>
+                    submit = getElement('button:not([type]),button[type=submit],input[type=image],input[type=submit]', form);
+                    submit ? form.requestSubmit(submit) : form.requestSubmit();
+                }
+            } else if (KEY_TAB === key) {
+                selectToNone();
+            } else if (caretIsToTheFirst || textIsVoid) {
+                if (KEY_ARROW_LEFT$1 === key) {
+                    exit = true;
+                    selectToNone();
+                    tagLast = toValueLastFromMap(_tags);
+                    tagLast && focusTo(tagLast[2]);
+                } else if (KEY_DELETE_LEFT$1 === key) {
+                    if (textIsVoid) {
+                        exit = true;
+                        tagLast = toValueLastFromMap(_tags);
+                        tagLast && letValueInMap(getTagValue(tagLast[2]), _tags);
+                    }
+                }
+            }
+        }
+        exit && offEventDefault(e);
+    }
+
+    function onKeyUpTag(e) {
+        _keyOverTag = 0;
+        var $ = this,
+            key = e.key,
+            picker = getReference$2($),
+            _tags = picker._tags,
+            selected = 0;
+        forEachMap(_tags, function (v) {
+            if (getAria(v[2], TOKEN_PRESSED)) {
+                ++selected;
+            }
+        });
+        _keyIsCtrl = e.ctrlKey;
+        _keyIsShift = e.shiftKey;
+        if (selected < 2 && !_keyIsCtrl && !_keyIsShift && KEY_ENTER$1 !== key && ' ' !== key) {
+            letAria($, TOKEN_PRESSED);
+        }
+    }
+
+    function onKeyUpTextInput(e) {
+        _keyIsCtrl = e.ctrlKey;
+        _keyIsShift = e.shiftKey;
+    }
+
+    function onPasteTag(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _tags = picker._tags,
+            state = picker.state,
+            join = state.join;
+        forEachArray(e.clipboardData.getData('text/plain').split(join), function (v) {
+            if (!hasKeyInMap(v = _toValue(v.trim()), _tags)) {
+                setValueInMap$1(v, v, _tags);
+            }
+        });
+        forEachMap(_tags, function (v) {
+            return letAria(v[2], TOKEN_PRESSED);
+        });
+        focusTo(picker.fire('change', [picker[TOKEN_VALUE]]));
+    }
+
+    function onPasteTextInput(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _tags = picker._tags,
+            self = picker.self,
+            state = picker.state,
+            join = state.join,
+            v;
+        saveState($), toggleHint(1, picker), insertAtSelection($, v = e.clipboardData.getData('text/plain')), saveStateLazy($);
+        if (v !== getText($));
+        else {
+            forEachArray((getText($) + "").split(join), function (v) {
+                if (!hasKeyInMap(v = _toValue(v.trim()), _tags)) {
+                    setValueInMap$1(v, v, _tags);
+                } else {
+                    onInvalidSelf.call(self);
+                    picker.fire('has.tag', [_toValue(v)]);
+                }
+            });
+            forEachMap(_tags, function (v) {
+                return letAria(v[2], TOKEN_PRESSED);
+            });
+            picker.fire('change', [picker[TOKEN_VALUE]]).text = "";
+        }
+    }
+
+    function onPointerDownMask(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            target = e.target;
+        // Is it focused on a tag mask?
+        if (target && 'option' === getRole(target)) {
+            return; // Yes it is!
+        }
+        // Is it focused on a node in the tag mask?
+        while (target && $ !== target) {
+            target = getParent(target);
+            if (target && 'option' === getRole(target)) {
+                return; // Yes it is!
+            }
+        }
+        // It focuses on something else in the root mask. The default is to execute `picker.focus()`
+        focusTo(picker);
+    }
+
+    function onPointerDownTag(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _tags = picker._tags;
+        focusTo($), selectTo($);
+        if (!_keyIsCtrl) {
+            forEachMap(_tags, function (v) {
+                return letAria(v[2], TOKEN_PRESSED);
+            });
+        }
+        if (_keyIsCtrl) {
+            setAria($, TOKEN_PRESSED, true);
+        } else if (_keyIsShift && _keyOverTag) {
+            var tagEndIndex = getElementIndex($),
+                tagStartIndex = getElementIndex(_keyOverTag),
+                tagCurrent = _keyOverTag,
+                tagNext,
+                tagPrev;
+            setAria($, TOKEN_PRESSED, true);
+            setAria(_keyOverTag, TOKEN_PRESSED, true);
+            // Select to the right
+            if (tagEndIndex > tagStartIndex) {
+                while (tagNext = getNext(tagCurrent)) {
+                    if ($ === tagNext) {
+                        break;
+                    }
+                    setAria(tagCurrent = tagNext, TOKEN_PRESSED, true);
+                }
+                // Select to the left
+            } else if (tagEndIndex < tagStartIndex) {
+                while (tagPrev = getPrev(tagCurrent)) {
+                    if ($ === tagPrev) {
+                        break;
+                    }
+                    setAria(tagCurrent = tagPrev, TOKEN_PRESSED, true);
+                }
+            }
+        }
+    }
+
+    function onPointerDownTagX(e) {
+        offEventDefault(e);
+        var $ = this,
+            tag = getParent($),
+            picker = getReference$2(tag),
+            _active = picker._active,
+            _fix = picker._fix;
+        if (!_active || _fix) {
+            return focusTo(picker);
+        }
+        var _tags = picker._tags;
+        letValueInMap(getTagValue(tag), _tags);
+        focusTo(picker);
+    }
+
+    function onResetForm() {
+        forEachSet(getReference$2(this), function ($) {
+            return $.reset();
+        });
+    }
+
+    function onSubmitForm(e) {
+        forEachSet(getReference$2(this), function (picker) {
+            var _tags = picker._tags,
+                max = picker.max,
+                min = picker.min,
+                self = picker.self,
+                count = _tags.count(),
+                exit;
+            if (count > max) {
+                exit = true;
+                focusTo(picker.fire('max.tags', [count, max]));
+            } else if (count < min) {
+                exit = true;
+                focusTo(picker.fire('min.tags', [count, min]));
+            }
+            exit && (onInvalidSelf.call(self), offEventDefault(e));
+        });
+    }
+
+    function TagPicker(self, state) {
+        var $ = this;
+        if (!self) {
+            return $;
+        }
+        // Return new instance if `TagPicker` was called without the `new` operator
+        if (!isInstance($, TagPicker)) {
+            return new TagPicker(self, state);
+        }
+        setReference$2(self, hook($, TagPicker._));
+        var newState = _fromStates({}, TagPicker.state, isString(state) ? {
+            join: state
+        } : state || {});
+        // Special case for `state.escape`: replace instead of join the value(s)
+        if (isObject(state) && state.escape) {
+            newState.escape = state.escape;
+        }
+        return $.attach(self, newState);
+    }
+
+    function TagPickerTags(of, tags) {
+        var $ = this;
+        // Return new instance if `TagPickerTags` was called without the `new` operator
+        if (!isInstance($, TagPickerTags)) {
+            return new TagPickerTags(of, tags);
+        }
+        $.of = of;
+        $[TOKEN_VALUES] = new Map();
+        if (tags) {
+            createTags(of, tags);
+        }
+        return $;
+    }
+    TagPicker.from = function (self, state) {
+        return new TagPicker(self, state);
+    };
+    TagPicker.of = getReference$2;
+    TagPicker.state = {
+        'escape': [','],
+        'join': ', ',
+        'max': Infinity,
+        'min': 0,
+        'n': 'tag-picker',
+        'pattern': null,
+        'time': {
+            'error': 1000
+        },
+        'with': []
+    };
+    TagPicker.version = '4.2.8';
+    setObjectAttributes(TagPicker, {
+        name: {
+            value: name$3
+        }
+    }, 1);
+    setObjectAttributes(TagPicker, {
+        active: {
+            get: function get() {
+                return this._active;
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    _mask = $._mask,
+                    _tags = $._tags,
+                    mask = $.mask,
+                    self = $.self,
+                    input = _mask.input,
+                    v = !!value;
+                self[TOKEN_DISABLED] = !($._active = v);
+                if (v) {
+                    letAria(input, TOKEN_DISABLED);
+                    letAria(mask, TOKEN_DISABLED);
+                    setAttribute(input, TOKEN_CONTENTEDITABLE, "");
+                    forEachMap(_tags, function (v) {
+                        setAttribute(v[2], TOKEN_CONTENTEDITABLE, "");
+                        setAttribute(v[2], TOKEN_TABINDEX, -1);
+                    });
+                } else {
+                    letAttribute(input, TOKEN_CONTENTEDITABLE);
+                    setAria(input, TOKEN_DISABLED, true);
+                    setAria(mask, TOKEN_DISABLED, true);
+                    forEachMap(_tags, function (v) {
+                        letAttribute(v[2], TOKEN_CONTENTEDITABLE);
+                        letAttribute(v[2], TOKEN_TABINDEX);
+                    });
+                }
+                return $;
+            }
+        },
+        fix: {
+            get: function get() {
+                return this._fix;
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    _mask = $._mask,
+                    _tags = $._tags,
+                    mask = $.mask,
+                    self = $.self,
+                    input = _mask.input,
+                    v = !!value;
+                self[TOKEN_READ_ONLY] = $._fix = v;
+                if (v) {
+                    letAttribute(input, TOKEN_CONTENTEDITABLE);
+                    setAria(input, TOKEN_READONLY, true);
+                    setAria(mask, TOKEN_READONLY, true);
+                    setAttribute(input, TOKEN_TABINDEX, 0);
+                    forEachMap(_tags, function (v) {
+                        letAttribute(v[2], TOKEN_CONTENTEDITABLE);
+                        letAttribute(v[2], TOKEN_TABINDEX);
+                    });
+                } else {
+                    letAria(input, TOKEN_READONLY);
+                    letAria(mask, TOKEN_READONLY);
+                    letAttribute(input, TOKEN_TABINDEX);
+                    setAttribute(input, TOKEN_CONTENTEDITABLE, "");
+                    forEachMap(_tags, function (v) {
+                        setAttribute(v[2], TOKEN_CONTENTEDITABLE, "");
+                        setAttribute(v[2], TOKEN_TABINDEX, -1);
+                    });
+                }
+                return $;
+            }
+        },
+        max: {
+            get: function get() {
+                var max = this.state.max;
+                return Infinity === max || isInteger(max) && max >= 0 ? max : Infinity;
+            },
+            set: function set(value) {
+                var $ = this;
+                return $.state.max = isInteger(value) && value >= 0 ? value : Infinity, $;
+            }
+        },
+        min: {
+            get: function get() {
+                var min = this.state.min;
+                return isInteger(min) && min >= 0 ? min : 0;
+            },
+            set: function set(value) {
+                var $ = this;
+                return $.state.min = isInteger(value) && value >= 0 ? value : 0, $;
+            }
+        },
+        tags: {
+            get: function get() {
+                return this._tags;
+            },
+            set: function set(tags) {
+                selectToNone();
+                var $ = this,
+                    tagsValues = [];
+                createTags($, tags);
+                forEachMap($._tags, function (v) {
+                    return tagsValues.push(getTagValue(v[2], 1));
+                });
+                return $.fire('set.tags', [tagsValues]);
+            }
+        },
+        text: {
+            get: function get() {
+                return getText(this._mask.input);
+            },
+            set: function set(value) {
+                var $ = this,
+                    _active = $._active,
+                    _fix = $._fix;
+                if (!_active || _fix) {
+                    return $;
+                }
+                var _mask = $._mask,
+                    input = _mask.input,
+                    v;
+                return setText(input, v = _fromValue(value)), toggleHintByValue($, v), resetState(input), $;
+            }
+        },
+        value: {
+            get: function get() {
+                var value = getValue$1(this.self);
+                return "" !== value ? value : null;
+            },
+            set: function set(value) {
+                var $ = this,
+                    _active = $._active;
+                if (!_active) {
+                    return $;
+                }
+                var _tags = $._tags,
+                    state = $.state,
+                    join = state.join;
+                $[TOKEN_VALUE] && forEachArray($[TOKEN_VALUE].split(join), function (v) {
+                    return letValueInMap(v, _tags);
+                });
+                value && forEachArray(value.split(join), function (v) {
+                    return setValueInMap$1(v, v, _tags);
+                });
+                return $.fire('change', [$[TOKEN_VALUE]]);
+            }
+        },
+        vital: {
+            get: function get() {
+                return this._vital;
+            },
+            set: function set(value) {
+                selectToNone();
+                var $ = this,
+                    _mask = $._mask,
+                    mask = $.mask,
+                    min = $.min,
+                    self = $.self,
+                    input = _mask.input,
+                    v = !!value;
+                self[TOKEN_REQUIRED] = $._vital = v;
+                if (v) {
+                    if (0 === min) {
+                        $.min = 1;
+                    }
+                    setAria(input, TOKEN_REQUIRED, true);
+                    setAria(mask, TOKEN_REQUIRED, true);
+                } else {
+                    $.min = 0;
+                    letAria(input, TOKEN_REQUIRED);
+                    letAria(mask, TOKEN_REQUIRED);
+                }
+                return $;
+            }
+        }
+    });
+    TagPicker._ = setObjectMethods(TagPicker, {
+        attach: function attach(self, state) {
+            var $ = this;
+            self = self || $.self;
+            if (state && isString(state)) {
+                state = {
+                    join: state
+                };
+            }
+            state = _fromStates({}, $.state, state || {});
+            $._tags = new TagPickerTags($);
+            $.self = self;
+            $.state = state;
+            var _state = state,
+                max = _state.max,
+                min = _state.min,
+                n = _state.n,
+                isDisabledSelf = isDisabled$1(self),
+                isReadOnlySelf = isReadOnly$1(self),
+                isRequiredSelf = isRequired(self),
+                theInputID = self.id,
+                theInputName = self.name,
+                theInputPlaceholder = self.placeholder,
+                theInputValue = getValue$1(self);
+            $._active = !isDisabledSelf;
+            $._fix = isReadOnlySelf;
+            $._vital = isRequiredSelf;
+            if (isRequiredSelf && min < 1) {
+                state.min = min = 1; // Force minimum tag(s) to insert to be `1`
+            }
+            var form = getParentForm(self);
+            var mask = setElement('div', {
+                'aria': {
+                    'disabled': isDisabledSelf ? TOKEN_TRUE : false,
+                    'multiselectable': TOKEN_TRUE,
+                    'readonly': isReadOnlySelf ? TOKEN_TRUE : false,
+                    'required': isRequiredSelf ? TOKEN_TRUE : false
+                },
+                'class': n,
+                'role': 'listbox'
+            });
+            $.mask = mask;
+            var maskFlex = setElement('span', {
+                'class': n + '__flex',
+                'role': 'none'
+            });
+            var text = setElement('span', {
+                'class': n + '__text',
+                'role': 'none'
+            });
+            var textInput = setElement('span', {
+                'aria': {
+                    'disabled': isDisabledSelf ? TOKEN_TRUE : false,
+                    'multiline': TOKEN_FALSE,
+                    'placeholder': theInputPlaceholder,
+                    'readonly': isReadOnlySelf ? TOKEN_TRUE : false,
+                    'required': isRequiredSelf ? TOKEN_TRUE : false
+                },
+                'autocapitalize': 'off',
+                'contenteditable': isDisabledSelf || isReadOnlySelf ? false : "",
+                'role': 'textbox',
+                'spellcheck': TOKEN_FALSE,
+                'tabindex': isReadOnlySelf ? 0 : false
+            });
+            var textInputHint = setElement('span', theInputPlaceholder + "", {
+                'aria': {
+                    'hidden': TOKEN_TRUE
+                }
+            });
+            setChildLast(mask, maskFlex);
+            setChildLast(maskFlex, text);
+            setChildLast(text, textInput);
+            setChildLast(text, textInputHint);
+            setAria(self, 'hidden', true);
+            setClass(self, n + '__self');
+            setReference$2(textInput, $);
+            setNext(self, mask);
+            setChildLast(mask, self);
+            if (form) {
+                var set = getReference$2(form) || new Set();
+                set.add($);
+                onEvent(EVENT_RESET, form, onResetForm);
+                onEvent(EVENT_SUBMIT, form, onSubmitForm);
+                setID(form);
+                setReference$2(form, set);
+            }
+            onEvent(EVENT_BLUR, textInput, onBlurTextInput);
+            onEvent(EVENT_CUT, textInput, onCutTextInput);
+            onEvent(EVENT_FOCUS, self, onFocusSelf);
+            onEvent(EVENT_FOCUS, textInput, onFocusTextInput);
+            onEvent(EVENT_INPUT, textInput, onInputTextInput);
+            onEvent(EVENT_INPUT_START, textInput, onBeforeInputTextInput);
+            onEvent(EVENT_INVALID, self, onInvalidSelf);
+            onEvent(EVENT_KEY_DOWN, textInput, onKeyDownTextInput);
+            onEvent(EVENT_KEY_UP, textInput, onKeyUpTextInput);
+            onEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
+            onEvent(EVENT_PASTE, textInput, onPasteTextInput);
+            onEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+            self[TOKEN_TAB_INDEX] = -1;
+            setReference$2(mask, $);
+            $._mask = {
+                flex: maskFlex,
+                hint: textInputHint,
+                input: textInput,
+                of: self,
+                self: mask,
+                text: text
+            };
+            // Re-assign some state value(s) using the setter to either normalize or reject the initial value
+            $.max = max = Infinity === max || isInteger(max) && max >= 0 ? max : Infinity;
+            $.min = min = isInteger(min) && min >= 0 ? min : 0;
+            var _active = $._active,
+                _state2 = state,
+                join = _state2.join,
+                tagsValues;
+            // Force the `this._active` value to `true` to set the initial value
+            $._active = true;
+            // Attach the current tag(s)
+            tagsValues = createTags($, theInputValue ? theInputValue.split(join) : []);
+            $['_' + TOKEN_VALUE] = tagsValues.join(join);
+            // After the initial value has been set, restore the previous `this._active` value
+            $._active = _active;
+            // Force `id` attribute(s)
+            setAria(textInput, 'controls', getID(setID(maskFlex)));
+            setID(mask);
+            setID(self);
+            setID(textInput);
+            setID(textInputHint);
+            theInputID && setDatum(mask, 'id', theInputID);
+            theInputName && setDatum(mask, 'name', theInputName);
+            // Attach extension(s)
+            if (isSet(state) && isArray(state.with)) {
+                forEachArray(state.with, function (v, k) {
+                    if (isString(v)) {
+                        v = TagPicker[v];
+                    }
+                    // `const Extension = function (self, state = {}) {}`
+                    if (isFunction(v)) {
+                        v.call($, self, state);
+                        // `const Extension = {attach: function (self, state = {}) {}, detach: function (self, state = {}) {}}`
+                    } else if (isObject(v) && isFunction(v.attach)) {
+                        v.attach.call($, self, state);
+                    }
+                });
+            }
+            return resetState(textInput), $;
+        },
+        blur: function blur() {
+            selectToNone();
+            var $ = this,
+                _mask = $._mask,
+                _tags = $._tags,
+                input = _mask.input;
+            forEachMap(_tags, function (v) {
+                return v[2].blur();
+            });
+            return input.blur(), $;
+        },
+        detach: function detach() {
+            var $ = this,
+                _mask = $._mask,
+                mask = $.mask,
+                self = $.self,
+                state = $.state,
+                input = _mask.input;
+            var form = getParentForm(self);
+            $._active = false;
+            $._tags = new TagPickerTags($);
+            $['_' + TOKEN_VALUE] = null;
+            if (form) {
+                offEvent(EVENT_RESET, form, onResetForm);
+                offEvent(EVENT_SUBMIT, form, onSubmitForm);
+            }
+            offEvent(EVENT_BLUR, input, onBlurTextInput);
+            offEvent(EVENT_CUT, input, onCutTextInput);
+            offEvent(EVENT_FOCUS, input, onFocusTextInput);
+            offEvent(EVENT_FOCUS, self, onFocusSelf);
+            offEvent(EVENT_INPUT, input, onInputTextInput);
+            offEvent(EVENT_INPUT_START, input, onBeforeInputTextInput);
+            offEvent(EVENT_INVALID, self, onInvalidSelf);
+            offEvent(EVENT_KEY_DOWN, input, onKeyDownTextInput);
+            offEvent(EVENT_KEY_UP, input, onKeyUpTextInput);
+            offEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
+            offEvent(EVENT_PASTE, input, onPasteTextInput);
+            offEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+            // Detach extension(s)
+            if (isArray(state.with)) {
+                forEachArray(state.with, function (v, k) {
+                    if (isString(v)) {
+                        v = TagPicker[v];
+                    }
+                    if (isObject(v) && isFunction(v.detach)) {
+                        v.detach.call($, self, state);
+                    }
+                });
+            }
+            self[TOKEN_TAB_INDEX] = null;
+            letAria(self, 'hidden');
+            letClass(self, state.n + '__self');
+            setNext(mask, self);
+            letElement(mask);
+            $._mask = {
+                of: self
+            };
+            $.mask = null;
+            return $;
+        },
+        focus: function focus(mode) {
+            var $ = this,
+                _active = $._active;
+            if (!_active) {
+                return $;
+            }
+            var _mask = $._mask,
+                input = _mask.input;
+            return focusTo(input), selectTo(input, mode), $;
+        },
+        reset: function reset(focus, mode) {
+            var $ = this,
+                _active = $._active;
+            if (!_active) {
+                return $;
+            }
+            $[TOKEN_VALUE] = ""; // Clear before reset
+            $[TOKEN_VALUE] = $['_' + TOKEN_VALUE];
+            return focus ? $.focus(mode) : $;
+        }
+    });
+    setObjectAttributes(TagPickerTags, {
+        name: {
+            value: name$3 + 'Tags'
+        }
+    }, 1);
+    TagPickerTags._ = setObjectMethods(TagPickerTags, {
+        at: function at(key) {
+            return getValueInMap$1(_toValue(key), this[TOKEN_VALUES]);
+        },
+        count: function count() {
+            return toMapCount(this[TOKEN_VALUES]);
+        },
+        // To be used by the `letValueInMap()` function
+        delete: function _delete(key, _fireHook) {
+            if (_fireHook === void 0) {
+                _fireHook = 1;
+            }
+            var $ = this,
+                of = $.of,
+                values = $.values,
+                _active = of._active;
+            if (!_active) {
+                return false;
+            }
+            var min = of.min,
+                self = of.self,
+                state = of.state,
+                join = state.join,
+                n = state.n,
+                count,
+                r,
+                tagsValues = [];
+            if ((count = $.count()) <= min) {
+                _fireHook && onInvalidSelf.call(self);
+                return _fireHook && of.fire('min.tags', [count, min]), false;
+            }
+            if (!isSet(key)) {
+                forEachMap(values, function (v, k) {
+                    return $.let(k, 0);
+                });
+                return _fireHook && of.fire('let.tags', [
+                    []
+                ]).fire('change', [null]), 0 === $.count();
+            }
+            if (!(r = getValueInMap$1(key = _toValue(key), values))) {
+                onInvalidSelf.call(self);
+                return _fireHook && of.fire('not.tag', [key]), false;
+            }
+            var tag = r[2],
+                tagX = getElement('.' + n + '__x', tag);
+            offEvent(EVENT_BLUR, tag, onBlurTag);
+            offEvent(EVENT_COPY, tag, onCopyTag);
+            offEvent(EVENT_CUT, tag, onCutTag);
+            offEvent(EVENT_FOCUS, tag, onFocusTag);
+            offEvent(EVENT_INPUT_START, tag, onBeforeInputTag);
+            offEvent(EVENT_KEY_DOWN, tag, onKeyDownTag);
+            offEvent(EVENT_KEY_UP, tag, onKeyUpTag);
+            offEvent(EVENT_MOUSE_DOWN, tag, onPointerDownTag);
+            offEvent(EVENT_MOUSE_DOWN, tagX, onPointerDownTagX);
+            offEvent(EVENT_PASTE, tag, onPasteTag);
+            offEvent(EVENT_TOUCH_START, tag, onPointerDownTag);
+            offEvent(EVENT_TOUCH_START, tagX, onPointerDownTagX);
+            letElement(tagX), letElement(tag);
+            r = letValueInMap(key, values);
+            forEachMap(values, function (v, k) {
+                return tagsValues.push(_fromValue(k));
+            });
+            setValue$1(self, tagsValues = tagsValues.join(join));
+            return _fireHook && of.fire('let.tag', [key]).fire('change', ["" !== tagsValues ? tagsValues : null]), r;
+        },
+        get: function get(key) {
+            var $ = this,
+                values = $.values,
+                value = getValueInMap$1(_toValue(key), values);
+            return value ? getElementIndex(value[2]) : -1;
+        },
+        has: function has(key) {
+            return hasKeyInMap(_toValue(key), this[TOKEN_VALUES]);
+        },
+        let: function _let(key, _fireHook) {
+            if (_fireHook === void 0) {
+                _fireHook = 1;
+            }
+            return this.delete(key, _fireHook);
+        },
+        set: function set(key, value, _fireHook) {
+            var _value$1$active, _value$1$mark, _getState;
+            if (_fireHook === void 0) {
+                _fireHook = 1;
+            }
+            var $ = this,
+                of = $.of,
+                values = $.values,
+                _active = of._active;
+            if (!_active) {
+                return false;
+            }
+            var _fix = of._fix,
+                _mask = of._mask,
+                max = of.max,
+                self = of.self,
+                state = of.state,
+                text = _mask.text,
+                join = state.join,
+                n = state.n,
+                pattern = state.pattern,
+                count,
+                r,
+                tag,
+                tagText,
+                tagX,
+                tagsValues = [];
+            if ((count = $.count()) >= max) {
+                _fireHook && onInvalidSelf.call(self);
+                return _fireHook && of.fire('max.tags', [count, max]), false;
+            }
+            // `picker.tags.set('asdf')`
+            if (!isSet(value)) {
+                value = [key, {
+                    active: true,
+                    mark: false
+                }];
+                // `picker.tags.set('asdf', 'asdf')`
+            } else if (isFloat(value) || isInteger(value) || isString(value)) {
+                value = [value, {
+                    active: true,
+                    mark: false
+                }];
+                // `picker.tags.set('asdf', [ … ])`
+            } else;
+            // All tag(s) act as selected option(s) that complement the mask root. The mask root functions as a `listbox`
+            // with active `aria-multiselectable` attribute. For visually impaired user(s), this element should be described
+            // as a multiple selection control with all option(s) selected. There is no point in having a way to disable a
+            // tag to exclude it from the selection. The best strategy is to simply remove the tag. That’s why the `active`
+            // option is always `true` and every tag has an active `aria-selected` attribute.
+            value[1].active = (_value$1$active = value[1].active) != null ? _value$1$active : true;
+            // This `mark` option is used to determine the state of the `aria-pressed` attribute.
+            value[1].mark = (_value$1$mark = value[1].mark) != null ? _value$1$mark : false;
+            var _value$ = value[1],
+                mark = _value$.mark,
+                v = _value$.value;
+            if (null === key || "" === (v = _fromValue(v || key).trim()) || isString(pattern) && !toPattern(pattern).test(v)) {
+                onInvalidSelf.call(self);
+                return _fireHook && of.fire('not.tag', [key]), false;
+            }
+            if (isFunction(pattern)) {
+                if (isArray(r = pattern.call(of, v))) {
+                    var _r$1$TOKEN_VALUE;
+                    key = v = r[1] ? (_r$1$TOKEN_VALUE = r[1][TOKEN_VALUE]) != null ? _r$1$TOKEN_VALUE : r[0] : r[0];
+                    value = r;
+                } else if (isString(r)) {
+                    key = v = r;
+                    value[0] = r;
+                }
+            }
+            if ($.has(key = _toValue(key))) {
+                onInvalidSelf.call(self);
+                return _fireHook && of.fire('has.tag', [key]), false;
+            }
+            tag = value[2] || setElement('data', {
+                'aria': {
+                    'pressed': mark ? TOKEN_TRUE : false,
+                    'selected': TOKEN_TRUE
+                },
+                'class': n + '__tag',
+                // Make the tag “content editable”, so that the “Cut” option is available in the context menu, but do not
+                // allow user(s) to edit the tag text. We just want to make sure that the “Cut” option is available.
+                'contenteditable': TOKEN_TRUE,
+                // <https://html.spec.whatwg.org/multipage/interaction.html#attr-inputmode-keyword-none>
+                'inputmode': 'none',
+                'role': 'option',
+                'spellcheck': TOKEN_FALSE,
+                'tabindex': -1,
+                'title': (_getState = getState(value[1], 'title')) != null ? _getState : false,
+                'value': v,
+                // <https://www.w3.org/TR/virtual-keyboard#dom-elementcontenteditable-virtualkeyboardpolicy>
+                'virtualkeyboardpolicy': 'manual'
+            });
+            // Disable focus on “read-only” tag picker
+            if (_fix) {
+                letAttribute(tag, TOKEN_CONTENTEDITABLE);
+                letAttribute(tag, TOKEN_TABINDEX);
+            }
+            tagText = value[2] ? getElement('.' + n + '__v', value[2]) : setElement('span', _fromValue(value[0]), {
+                'class': n + '__v',
+                'role': 'none'
+            });
+            n += '__x';
+            tagX = value[2] ? getElement('.' + n, value[2]) : setElement('span', {
+                'aria': {
+                    'hidden': TOKEN_TRUE
+                },
+                'class': n,
+                'tabindex': -1
+            });
+            // Force `id` attribute(s)
+            setID(tagText);
+            setID(tagX);
+            setAria(tagX, 'controls', getID(setID(tag)));
+            if (!value[2]) {
+                onEvent(EVENT_BLUR, tag, onBlurTag);
+                onEvent(EVENT_COPY, tag, onCopyTag);
+                onEvent(EVENT_CUT, tag, onCutTag);
+                onEvent(EVENT_FOCUS, tag, onFocusTag);
+                onEvent(EVENT_INPUT_START, tag, onBeforeInputTag);
+                onEvent(EVENT_KEY_DOWN, tag, onKeyDownTag);
+                onEvent(EVENT_KEY_UP, tag, onKeyUpTag);
+                onEvent(EVENT_MOUSE_DOWN, tag, onPointerDownTag);
+                onEvent(EVENT_MOUSE_DOWN, tagX, onPointerDownTagX);
+                onEvent(EVENT_PASTE, tag, onPasteTag);
+                onEvent(EVENT_TOUCH_START, tag, onPointerDownTag);
+                onEvent(EVENT_TOUCH_START, tagX, onPointerDownTagX);
+            }
+            setChildLast(tag, tagText);
+            setChildLast(tag, tagX);
+            setPrev(text, tag);
+            setReference$2(tag, of);
+            value[2] = tag;
+            _fireHook && of.fire('is.tag', [key]);
+            setValueInMap$1(key, value, values);
+            forEachMap(values, function (v, k) {
+                return tagsValues.push(_fromValue(k));
+            });
+            setValue$1(self, tagsValues = tagsValues.join(join));
+            return _fireHook && of.fire('set.tag', [key]).fire('change', ["" !== tagsValues ? tagsValues : null]), true;
+        }
+    });
+    // In order for an object to be iterable, it must have a `Symbol.iterator` key
+    getPrototype(TagPickerTags)[Symbol.iterator] = function () {
+        return this[TOKEN_VALUES][Symbol.iterator]();
+    };
+    TagPicker.Tags = TagPickerTags;
+
+    function onChange$a(init) {
+        var sources = getElements('.lot\\:field.type\\:query input:not([type=hidden])');
+        sources && toCount(sources) && sources.forEach(function (source) {
+            var _getDatum;
+            var c = getClasses(source);
+            letClasses(source);
+            var $ = new TagPicker(source, (_getDatum = getDatum(source, 'state')) != null ? _getDatum : {});
+            setClasses($.mask, c);
+        });
+        1 === init && W._.on('change', onChange$a);
+    }
+    W.TP = W.TagPicker = TagPicker;
     var events = {
+        beforeinput: 'put.down',
         blur: 0,
         click: 0,
         copy: 0,
         cut: 0,
         focus: 0,
-        input: 0,
+        input: 'put.up',
         keydown: 'key.down',
         keyup: 'key.up',
-        mousedown: 'mouse.down',
-        mouseenter: 'mouse.enter',
-        mouseleave: 'mouse.exit',
-        mousemove: 'mouse.move',
-        mouseup: 'mouse.up',
+        mousedown: 'caret.down',
+        mouseenter: 'caret.enter',
+        mouseleave: 'caret.exit',
+        mousemove: 'caret.move',
+        mouseup: 'caret.up',
         paste: 0,
         scroll: 0,
-        touchend: 'mouse.up',
-        touchmove: 'mouse.move',
-        touchstart: 'mouse.down',
+        select: 0,
+        touchend: 'caret.up',
+        touchmove: 'caret.move',
+        touchstart: 'caret.down',
         wheel: 'scroll'
     };
     var name$2 = 'TextEditor';
+    var references$1 = new WeakMap();
+
+    function getReference$1(key) {
+        return getValueInMap(key, references$1) || null;
+    }
 
     function getValue(self) {
-        return (self.value || getAttribute(self, 'value') || "").replace(/\r/g, "");
+        return (self.value || "").replace(/\r/g, "");
+    }
+
+    function getValueInMap(k, map) {
+        return map.get(k);
     }
 
     function isDisabled(self) {
@@ -2548,6 +5190,18 @@
 
     function isReadOnly(self) {
         return self.readOnly;
+    }
+
+    function setReference$1(key, value) {
+        return setValueInMap(key, value, references$1);
+    }
+
+    function setValue(self, value) {
+        self.value = value;
+    }
+
+    function setValueInMap(k, v, map) {
+        return map.set(k, v);
     }
 
     function trim(str, dir) {
@@ -2563,18 +5217,24 @@
         if (!isInstance($, TextEditor)) {
             return new TextEditor(self, state);
         }
-        self['_' + name$2] = hook($, TextEditor.prototype);
-        return $.attach(self, fromStates({}, TextEditor.state, isInteger(state) || isString(state) ? {
+        setReference$1(self, hook($, TextEditor._));
+        return $.attach(self, _fromStates({}, TextEditor.state, isInteger(state) || isString(state) ? {
             tab: state
         } : state || {}));
     }
     TextEditor.esc = esc;
+    TextEditor.from = function (self, state) {
+        return new TextEditor(self, state);
+    };
+    TextEditor.of = getReference$1;
     TextEditor.state = {
         'n': 'text-editor',
         'tab': '\t',
         'with': []
     };
-    TextEditor.S = function (start, end, value) {
+    TextEditor.version = '4.2.9';
+    TextEditor.x = x;
+    var S = function S(start, end, value) {
         var $ = this,
             current = value.slice(start, end);
         $.after = value.slice(end);
@@ -2583,12 +5243,11 @@
         $.length = toCount(current);
         $.start = start;
         $.value = current;
-        $.toString = function () {
-            return current;
-        };
     };
-    TextEditor.version = '4.1.5';
-    TextEditor.x = x;
+    S.prototype.toString = function () {
+        return this.value;
+    };
+    TextEditor.S = S;
     Object.defineProperty(TextEditor, 'name', {
         value: name$2
     });
@@ -2596,19 +5255,21 @@
 
     function theEvent(e) {
         var self = this,
-            $ = self['_' + name$2],
-            type = e.type,
+            $ = getReference$1(self),
             value = getValue(self);
+        e.data;
+        var type = e.type;
+        $._event = e;
         if (value !== theValuePrevious) {
+            isString(theValuePrevious) && $.fire('change', [e]);
             theValuePrevious = value;
-            $.fire('change');
         }
         $.fire(events[type] || type, [e]);
     }
-    var $$$1 = TextEditor.prototype;
+    var $$$1 = TextEditor._ = TextEditor.prototype;
     $$$1.$ = function () {
         var self = this.self;
-        return new TextEditor.S(self.selectionStart, self.selectionEnd, getValue(self));
+        return new S(self.selectionStart, self.selectionEnd, getValue(self));
     };
     $$$1.attach = function (self, state) {
         var $ = this;
@@ -2618,11 +5279,12 @@
                 tab: state
             };
         }
-        state = fromStates({}, $.state, state || {});
+        state = _fromStates({}, $.state, state || {});
         if (hasClass(self, state.n + '__self')) {
             return $;
         }
         $._active = !isDisabled(self) && !isReadOnly(self);
+        $._event = null;
         $._value = getValue(self);
         $.self = self;
         $.state = state;
@@ -2738,7 +5400,7 @@
         if (!_active) {
             return $;
         }
-        return self.value = $._value, $;
+        return setValue(self, $._value), $;
     };
     $$$1.match = function (pattern, then) {
         var $ = this,
@@ -2896,7 +5558,7 @@
         if (!_active) {
             return $;
         }
-        return self.value = value, $;
+        return setValue(self, value), $;
     };
     $$$1.trim = function (open, close, start, end, tidy) {
         if (tidy === void 0) {
@@ -2940,16 +5602,16 @@
     };
     Object.defineProperty($$$1, 'value', {
         get: function get() {
-            return this.self.value;
+            return getValue(this.self);
         },
         set: function set(value) {
-            this.self.value = value;
+            setValue(this.self, value);
         }
     });
 
     function History() {
         var $ = this;
-        var $$ = $.constructor.prototype;
+        var $$ = $.constructor._;
         $._history = [];
         $._historyState = -1;
         !isFunction($$.history) && ($$.history = function (of) {
@@ -3040,8 +5702,8 @@
         $.commands = {};
         $.key = null;
         $.keys = {};
-        $.queue = {};
         $.self = self || $;
+        $.set = new Set();
         return $;
     }
     var $$ = Key.prototype;
@@ -3053,19 +5715,24 @@
         var command = $.keys[$.toString()];
         return isSet(command) ? command : false;
     };
-    $$.fire = function (command) {
+    $$.fire = function (command, data) {
         var $ = this;
         var self = $.self || $,
             value,
             exist;
+        data = data || [];
         if (isFunction(command)) {
-            value = command.call(self);
+            value = command.apply(self, data);
             exist = true;
         } else if (isString(command) && (command = $.commands[command])) {
-            value = command.call(self);
+            value = command.apply(self, data);
             exist = true;
         } else if (isArray(command)) {
-            var data = command[1] || [];
+            if (isArray(command[1])) {
+                command[1].forEach(function (v, k) {
+                    return isSet(v) && (data[k] = v);
+                });
+            }
             if (command = $.commands[command[0]]) {
                 value = command.apply(self, data);
                 exist = true;
@@ -3077,109 +5744,173 @@
         var $ = this;
         $.key = null;
         if (!isSet(key)) {
-            return $.queue = {}, $;
+            return $.set = new Set(), $;
         }
-        return delete $.queue[key], $;
+        return $.set.delete(key), $;
     };
     $$.push = function (key) {
         var $ = this;
-        return $.queue[$.key = key] = 1, $;
+        return $.set.add($.key = key, 1), $;
+    };
+    $$.toArray = function () {
+        return Array.from(this.set);
     };
     $$.toString = function () {
-        return toObjectKeys(this.queue).join('-');
+        return this.toArray().join('-');
     };
     Object.defineProperty(Key, 'name', {
         value: 'Key'
     });
-    var bounce$2 = debounce(function (map) {
-        return map.pull();
+    var bounce$2 = debounce(function (map, e) {
+        // Remove all key(s)
+        map.pull();
+        // Make the `Alt`, `Control`, `Meta`, and `Shift` key(s) sticky (does not require the user to release all key(s) first to repeat or change the current key combination).
+        e.altKey && map.push('Alt');
+        e.ctrlKey && map.push('Control');
+        e.metaKey && map.push('Meta');
+        e.shiftKey && map.push('Shift');
     }, 1000);
     var name$1 = 'TextEditor.Key';
-    var id = '_Key';
+    var references = new WeakMap();
 
-    function onBlur(e) {
-        var $ = this;
-        $._event = e;
-        $[id].pull(); // Reset all key(s)
+    function getReference(key) {
+        return references.get(key) || null;
     }
 
-    function onInput(e) {
+    function letReference(key) {
+        return references.delete(key);
+    }
+
+    function onBlur(e) {
+        var $ = this,
+            map = getReference($);
+        map.pull(); // Reset all key(s)
+    }
+
+    function onFocus(e) {
         onBlur.call(this, e);
     }
 
-    function onKeyDown$1(e) {
-        var $ = this;
-        var command,
-            map = $[id],
-            v;
-        map.push(e.key); // Add current key to the queue
-        $._event = e;
+    function onKeyDownOrPutDown(e) {
+        var map = getReference(this),
+            command,
+            v,
+            data = e.data,
+            inputType = e.inputType,
+            key = e.key,
+            type = e.type;
+        if ('keydown' === type) {
+            // Make the `Alt`, `Control`, `Meta`, and `Shift` key(s) sticky (does not require the user to release all key(s) first to repeat or change the current key combination).
+            map[e.altKey ? 'push' : 'pull']('Alt');
+            map[e.ctrlKey ? 'push' : 'pull']('Control');
+            map[e.metaKey ? 'push' : 'pull']('Meta');
+            map[e.shiftKey ? 'push' : 'pull']('Shift');
+            // Add the actual key to the queue. Don’t worry, this will not mistakenly add a key that already exists in the queue.
+            key && map.push(key);
+        } else {
+            if ('deleteContentBackward' === inputType) {
+                map.pull().push('Backspace'); // Simulate `Backspace` key
+            } else if ('deleteContentForward' === inputType) {
+                map.pull().push('Delete'); // Simulate `Delete` key
+            } else if ('deleteWordBackward' === inputType) {
+                map.pull().push('Control').push('Backspace'); // Simulate `Control-Backspace` keys
+            } else if ('deleteWordForward' === inputType) {
+                map.pull().push('Control').push('Delete'); // Simulate `Control-Delete` keys
+            } else if ('insertLineBreak' === inputType) {
+                map.pull().push('Enter'); // Simulate `Enter` key
+            } else if ('insertText' === inputType && data) {
+                // One character at a time
+                map.toArray().forEach(function (key) {
+                    return 1 === toCount(key) && map.pull(key);
+                });
+                map.push(data);
+            }
+        }
         if (command = map.command()) {
             v = map.fire(command);
             if (false === v) {
                 offEventDefault(e);
                 offEventPropagation(e);
             } else if (null === v) {
-                console.warn('Unknown command: `' + command + '`');
+                console.warn('Unknown command:', command);
             }
         }
-        bounce$2(map); // Reset all key(s) after 1 second idle
+        bounce$2(map, e); // Reset all key(s) after 1 second idle.
     }
 
-    function onKeyUp(e) {
-        var $ = this;
-        $._event = e;
-        $[id].pull(e.key); // Reset current key
+    function onKeyUpOrPutUp(e) {
+        var map = getReference(this),
+            data = e.data,
+            inputType = e.inputType,
+            key = e.key,
+            type = e.type;
+        if ('keyup' === type) {
+            map[e.altKey ? 'push' : 'pull']('Alt');
+            map[e.ctrlKey ? 'push' : 'pull']('Control');
+            map[e.metaKey ? 'push' : 'pull']('Meta');
+            map[e.shiftKey ? 'push' : 'pull']('Shift');
+            key && map.pull(key);
+        } else {
+            if ('deleteContentBackward' === inputType) {
+                map.pull('Backspace');
+            } else if ('deleteContentForward' === inputType) {
+                map.pull('Delete');
+            } else if ('deleteWordBackward' === inputType) {
+                map.pull('Control').pull('Backspace');
+            } else if ('deleteWordForward' === inputType) {
+                map.pull('Control').pull('Delete');
+            } else if ('insertLineBreak' === inputType) {
+                map.pull('Enter');
+            } else if ('insertText' === inputType && data) {
+                map.pull(data);
+            }
+        }
+    }
+
+    function setReference(key, value) {
+        return references.set(key, value);
     }
 
     function attach$1() {
         var $ = this;
-        var $$ = $.constructor.prototype;
+        var $$ = $.constructor._;
         var map = new Key($);
-        $.commands = fromStates($.commands = map.commands, $.state.commands || {});
-        $.keys = fromStates($.keys = map.keys, $.state.keys || {});
+        $.commands = _fromStates($.commands = map.commands, $.state.commands || {});
+        $.keys = _fromStates($.keys = map.keys, $.state.keys || {});
         !isFunction($$.command) && ($$.command = function (command, of) {
             var $ = this;
             return $.commands[command] = of, $;
         });
         !isFunction($$.k) && ($$.k = function (join) {
             var $ = this,
-                key = $[id] + "",
-                keys;
-            if (isSet(join) && '-' !== join) {
-                keys = "" !== key ? key.split(/-(?!$)/) : [];
-                if (false !== join) {
-                    return keys.join(join);
-                }
-            }
-            if (false === join) {
-                if ('-' === key) {
-                    return [key];
-                }
-                return keys;
-            }
-            return key;
+                map = getReference($),
+                keys = map.toArray();
+            return false === join ? keys : keys.join(join || '-');
         });
         !isFunction($$.key) && ($$.key = function (key, of) {
             var $ = this;
             return $.keys[key] = of, $;
         });
         $.on('blur', onBlur);
-        $.on('input', onInput);
-        $.on('key.down', onKeyDown$1);
-        $.on('key.up', onKeyUp);
-        return $[id] = map, $;
+        $.on('focus', onFocus);
+        $.on('key.down', onKeyDownOrPutDown);
+        $.on('key.up', onKeyUpOrPutUp);
+        $.on('put.down', onKeyDownOrPutDown);
+        $.on('put.up', onKeyUpOrPutUp);
+        return setReference($, map), $;
     }
 
     function detach$1() {
-        var $ = this;
-        $[id].pull();
+        var $ = this,
+            map = getReference($);
+        map.pull();
         $.off('blur', onBlur);
-        $.off('input', onInput);
-        $.off('key.down', onKeyDown$1);
-        $.off('key.up', onKeyUp);
-        delete $[id];
-        return $;
+        $.off('focus', onFocus);
+        $.off('key.down', onKeyDownOrPutDown);
+        $.off('key.up', onKeyUpOrPutUp);
+        $.off('put.down', onKeyDownOrPutDown);
+        $.off('put.up', onKeyUpOrPutUp);
+        return letReference($), $;
     }
     var TextEditorKey = {
         attach: attach$1,
@@ -3189,6 +5920,13 @@
     var ALT_PREFIX = 'Alt-';
     var CTRL_PREFIX = 'Control-';
     var SHIFT_PREFIX = 'Shift-';
+    var KEY_ARROW_DOWN = 'ArrowDown';
+    var KEY_ARROW_LEFT = 'ArrowLeft';
+    var KEY_ARROW_RIGHT = 'ArrowRight';
+    var KEY_ARROW_UP = 'ArrowUp';
+    var KEY_DELETE_LEFT = 'Backspace';
+    var KEY_DELETE_RIGHT = 'Delete';
+    var KEY_ENTER = 'Enter';
     var bounce$1 = debounce(function ($) {
         return $.record();
     }, 10);
@@ -3221,7 +5959,7 @@
             lineBefore = before.split('\n').pop(),
             lineMatch = /^\s+/.exec(lineBefore),
             lineMatchIndent = lineMatch && lineMatch[0] || "";
-        if (CTRL_PREFIX + SHIFT_PREFIX + 'Enter' === keys) {
+        if (CTRL_PREFIX + SHIFT_PREFIX + KEY_ENTER === keys) {
             if (before || after) {
                 // Insert line above with `⎈⇧↵`
                 offEventDefault(e);
@@ -3229,7 +5967,7 @@
             }
             return;
         }
-        if (CTRL_PREFIX + 'Enter' === keys) {
+        if (CTRL_PREFIX + KEY_ENTER === keys) {
             if (before || after) {
                 // Insert line below with `⎈↵`
                 offEventDefault(e);
@@ -3249,7 +5987,7 @@
             }
             return;
         }
-        if ('Backspace' === keys || 'Delete' === keys) {
+        if (KEY_DELETE_LEFT === keys || KEY_DELETE_RIGHT === keys) {
             charAfter = charPairs[charBefore = before.slice(-1)];
             // Do nothing on escape
             if ('\\' === charBefore) {
@@ -3271,7 +6009,7 @@
                 }
             }
             // Outdent
-            if ('Delete' !== keys && lineBefore.endsWith(charIndent)) {
+            if (KEY_DELETE_RIGHT !== keys && lineBefore.endsWith(charIndent)) {
                 offEventDefault(e);
                 return $.pull(charIndent).record();
             }
@@ -3284,7 +6022,7 @@
             }
             return;
         }
-        if ('Enter' === keys || SHIFT_PREFIX + 'Enter' === keys) {
+        if (KEY_ENTER === keys || SHIFT_PREFIX + KEY_ENTER === keys) {
             if (!value) {
                 if (after && before && (charAfter = charPairs[charBefore = before.slice(-1)]) && charAfter === after[0]) {
                     offEventDefault(e);
@@ -3343,14 +6081,14 @@
             tokens.push('\\w+'); // Word(s)
             tokens.push('\\s+'); // White-space(s)
             tokens.push('[\\s\\S]'); // Last try!
-            if (CTRL_PREFIX + 'ArrowLeft' === keys) {
+            if (CTRL_PREFIX + KEY_ARROW_LEFT === keys) {
                 offEventDefault(e);
                 if (m = toPattern('(' + tokens.join('|') + ')$', "").exec(before)) {
                     return $.insert("").select(start - toCount(m[0])).insert(value).record();
                 }
                 return $.select();
             }
-            if (CTRL_PREFIX + 'ArrowRight' === keys) {
+            if (CTRL_PREFIX + KEY_ARROW_RIGHT === keys) {
                 offEventDefault(e);
                 if (m = after.match(toPattern('^(' + tokens.join('|') + ')', ""))) {
                     return $.insert("").select(end + toCount(m[0]) - toCount(value)).insert(value).record();
@@ -3362,7 +6100,7 @@
         end += toCount(lineAfter);
         start -= toCount(lineBefore);
         value = lineBefore + value + lineAfter;
-        if (CTRL_PREFIX + 'ArrowUp' === keys) {
+        if (CTRL_PREFIX + KEY_ARROW_UP === keys) {
             offEventDefault(e);
             if (!hasValue('\n', before)) {
                 return $.select();
@@ -3378,7 +6116,7 @@
             $.select(start, start + toCount(value));
             return $.record();
         }
-        if (CTRL_PREFIX + 'ArrowDown' === keys) {
+        if (CTRL_PREFIX + KEY_ARROW_DOWN === keys) {
             offEventDefault(e);
             if (!hasValue('\n', after)) {
                 return $.select();
@@ -3397,11 +6135,15 @@
         }
         return;
     }
+    // Partial mobile support
+    function onPutDown(e) {
+        onKeyDown.call(this, e);
+    }
 
     function attach() {
         var $ = this;
-        var $$ = $.constructor.prototype;
-        $.state = fromStates({
+        var $$ = $.constructor._;
+        $.state = _fromStates({
             pairs: {
                 '`': '`',
                 '(': ')',
@@ -3419,9 +6161,9 @@
         !isFunction($$.confirm) && ($$.confirm = function (hint, then) {
             return isFunction(then) && then.call(this, W.confirm && W.confirm(hint));
         });
-        !isFunction($$.insertBlock) && ($$.insertBlock = function (value, mode) {
-            var $ = this;
-            var _$$$2 = $.$(),
+        !isFunction($$.insertLine) && ($$.insertLine = function (value, mode) {
+            var $ = this,
+                _$$$2 = $.$(),
                 after = _$$$2.after,
                 before = _$$$2.before,
                 end = _$$$2.end,
@@ -3440,69 +6182,45 @@
             }
             return $.select(start - lineBeforeCount, end + lineAfterCount).insert(value, mode, true).wrap(lineMatchIndent, "");
         });
-        !isFunction($$.peelBlock) && ($$.peelBlock = function (open, close, wrap) {
-            var $ = this;
-            var _$$$3 = $.$(),
-                after = _$$$3.after,
-                before = _$$$3.before,
-                end = _$$$3.end,
-                start = _$$$3.start,
-                value = _$$$3.value,
-                closeCount = toCount(close),
-                lineAfter = after.split('\n').shift(),
-                lineAfterCount = toCount(lineAfter),
-                lineBefore = before.split('\n').pop(),
-                lineBeforeCount = toCount(lineBefore),
-                openCount = toCount(open);
-            if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === lineAfter.slice(-closeCount) && open === lineBefore.slice(0, openCount)) {
-                return $.select(start - lineBeforeCount + (wrap ? 0 : openCount), end + lineAfterCount - (wrap ? 0 : closeCount)).peel(open, close, wrap);
+        !isFunction($$.peelLine) && ($$.peelLine = function (open, close, wrap, withSpaces) {
+            if (withSpaces === void 0) {
+                withSpaces = false;
             }
-            return $.select(start, end);
+            return this.selectLine(withSpaces).peel(open, close, wrap);
         });
         !isFunction($$.prompt) && ($$.prompt = function (hint, value, then) {
             return isFunction(then) && then.call(this, W.prompt ? W.prompt(hint, value) : false);
         });
-        !isFunction($$.selectBlock) && ($$.selectBlock = function (withSpaces) {
+        !isFunction($$.selectLine) && ($$.selectLine = function (withSpaces) {
             if (withSpaces === void 0) {
                 withSpaces = true;
             }
-            var $ = this;
-            var _$$$4 = $.$(),
-                after = _$$$4.after,
-                before = _$$$4.before,
-                end = _$$$4.end,
-                start = _$$$4.start,
-                value = _$$$4.value,
+            var $ = this,
+                m,
+                _$$$3 = $.$(),
+                after = _$$$3.after,
+                before = _$$$3.before,
+                end = _$$$3.end,
+                start = _$$$3.start,
                 lineAfter = after.split('\n').shift(),
                 lineAfterCount = toCount(lineAfter),
                 lineBefore = before.split('\n').pop(),
                 lineBeforeCount = toCount(lineBefore);
-            if (!withSpaces) {
-                var lineAfterSpaces = /\s+$/.exec(lineAfter),
-                    lineBeforeSpaces = /^\s+/.exec(lineBefore);
-                if (lineAfterSpaces) {
-                    lineAfterCount -= toCount(lineAfterSpaces[0]);
-                }
-                if (lineBeforeSpaces) {
-                    lineBeforeCount -= toCount(lineBeforeSpaces[0]);
-                }
-            }
             $.select(start - lineBeforeCount, end + lineAfterCount);
             if (!withSpaces) {
-                var s = $.$(),
-                    m;
-                end = s.end;
-                start = s.start;
-                value = s.value;
-                if (m = /^(\s+)?[\s\S]+?(\s+)?$/.exec(value)) {
-                    return $.select(start + toCount(m[1] || ""), end - toCount(m[2] || ""));
+                var _$$$4 = $.$(),
+                    _end = _$$$4.end,
+                    _start = _$$$4.start,
+                    value = _$$$4.value;
+                if (m = /^(\s+)?[\s\S]*?(\s+)?$/.exec(value)) {
+                    return $.select(_start + toCount(m[1] || ""), _end - toCount(m[2] || ""));
                 }
             }
             return $;
         });
         !isFunction($$.toggle) && ($$.toggle = function (open, close, wrap) {
-            var $ = this;
-            var _$$$5 = $.$(),
+            var $ = this,
+                _$$$5 = $.$(),
                 after = _$$$5.after,
                 before = _$$$5.before,
                 value = _$$$5.value,
@@ -3513,39 +6231,36 @@
             }
             return $.wrap(open, close, wrap);
         });
-        !isFunction($$.toggleBlock) && ($$.toggleBlock = function (open, close, wrap) {
-            var $ = this;
-            var _$$$6 = $.$(),
-                after = _$$$6.after,
-                before = _$$$6.before,
-                value = _$$$6.value,
-                closeCount = toCount(close),
-                lineAfter = after.split('\n').shift(),
-                lineBefore = before.split('\n').pop(),
-                openCount = toCount(open);
-            if (wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount) || close === lineAfter.slice(-closeCount) && open === lineBefore.slice(0, openCount)) {
-                return $.peelBlock(open, close, wrap);
+        !isFunction($$.toggleLine) && ($$.toggleLine = function (open, close, wrap, withSpaces) {
+            if (withSpaces === void 0) {
+                withSpaces = false;
             }
-            return $.wrapBlock(open, close, wrap);
+            var $ = this.selectLine(withSpaces),
+                _$$$6 = $.$();
+            _$$$6.after;
+            _$$$6.before;
+            var value = _$$$6.value,
+                closeCount = toCount(close),
+                openCount = toCount(open);
+            if (!wrap && close === value.slice(-closeCount) && open === value.slice(0, openCount)) {
+                var _$$$7 = $.$(),
+                    end = _$$$7.end,
+                    start = _$$$7.start;
+                $.select(start + openCount, end - closeCount);
+            }
+            return $.toggle(open, close, wrap);
         });
-        !isFunction($$.wrapBlock) && ($$.wrapBlock = function (open, close, wrap) {
-            var $ = this;
-            var _$$$7 = $.$(),
-                after = _$$$7.after,
-                before = _$$$7.before,
-                end = _$$$7.end,
-                start = _$$$7.start,
-                lineAfter = after.split('\n').shift(),
-                lineAfterCount = toCount(lineAfter),
-                lineBefore = before.split('\n').pop(),
-                lineBeforeCount = toCount(lineBefore);
-            return $.select(start - lineBeforeCount, end + lineAfterCount).wrap(open, close, wrap);
+        !isFunction($$.wrapLine) && ($$.wrapLine = function (open, close, wrap, withSpaces) {
+            if (withSpaces === void 0) {
+                withSpaces = false;
+            }
+            return this.selectLine(withSpaces).wrap(open, close, wrap);
         });
-        return $.on('key.down', onKeyDown).record();
+        return $.on('key.down', onKeyDown).on('put.down', onPutDown).record();
     }
 
     function detach() {
-        return this.off('key.down', onKeyDown);
+        return this.off('key.down', onKeyDown).off('put.down', onPutDown);
     }
     var TextEditorSource = {
         attach: attach,
@@ -3557,7 +6272,7 @@
     TextEditor.state.with.push(TextEditorKey);
     TextEditor.state.with.push(TextEditorSource);
 
-    function onChange$a(init) {
+    function onChange$9(init) {
         var instance;
         while (instance = TextEditor.instances.pop()) {
             instance.detach();
@@ -3610,19 +6325,19 @@
             TextEditor.instances.push(editor);
         });
         if (1 === init) {
-            W._.on('change', onChange$a);
+            W._.on('change', onChange$9);
         }
     }
     W.TextEditor = TextEditor;
 
     function Fields() {
-        onChange$c(1);
         onChange$b(1);
         onChange$a(1);
+        onChange$9(1);
     }
     var targets$7 = ':scope>:where(.lot\\:file[tabindex],.lot\\:folder[tabindex]):not([tabindex="-1"]):not(.not\\:active)';
 
-    function onChange$9(init) {
+    function onChange$8(init) {
         var sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var files = getElements(targets$7, source);
@@ -3631,7 +6346,7 @@
             });
             onEventOnly('keydown', source, onKeyDownFiles);
         });
-        1 === init && W._.on('change', onChange$9);
+        1 === init && W._.on('change', onChange$8);
     }
 
     function onKeyDownFile(e) {
@@ -3694,7 +6409,7 @@
     }
     var targets$6 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
 
-    function onChange$8(init) {
+    function onChange$7(init) {
         var sources = getElements('.lot\\:links[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var links = getElements(targets$6, source);
@@ -3703,7 +6418,7 @@
             });
             onEventOnly('keydown', source, onKeyDownLinks);
         });
-        1 === init && W._.on('change', onChange$8);
+        1 === init && W._.on('change', onChange$7);
     }
 
     function onKeyDownLink(e) {
@@ -3795,7 +6510,7 @@
         });
     }
 
-    function onChange$7(init) {
+    function onChange$6(init) {
         var menuParents = getElements('.has\\:menu'),
             menuLinks = getElements('.lot\\:menu[tabindex]>ul>li>' + targets$5);
         if (menuParents && toCount(menuParents)) {
@@ -3818,7 +6533,7 @@
         sources && toCount(sources) && sources.forEach(function (source) {
             onEventOnly('keydown', source, onKeyDownMenus$1);
         });
-        1 === init && W._.on('change', onChange$7);
+        1 === init && W._.on('change', onChange$6);
     }
 
     function onClickDocument() {
@@ -3832,9 +6547,9 @@
             current = getNext(t);
         doHideMenus(current, t);
         W.setTimeout(function () {
-            toggleClass$1(current, 'is:enter');
-            toggleClass$1(getParent(t), 'is:active');
-            toggleClass$1(t, 'is:active');
+            toggleClass(current, 'is:enter');
+            toggleClass(getParent(t), 'is:active');
+            toggleClass(t, 'is:active');
             setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
             W._.fire('menu.enter', [], current);
         }, 1);
@@ -3985,7 +6700,7 @@
     }
     var targets$4 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
 
-    function onChange$6(init) {
+    function onChange$5(init) {
         var sources = getElements('.lot\\:menus[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var menus = getElements(targets$4, source);
@@ -3994,7 +6709,7 @@
             });
             onEventOnly('keydown', source, onKeyDownMenus);
         });
-        1 === init && W._.on('change', onChange$6);
+        1 === init && W._.on('change', onChange$5);
     }
 
     function onKeyDownMenu(e) {
@@ -4072,7 +6787,7 @@
     }
     var targets$3 = ':scope>.lot\\:page[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
 
-    function onChange$5(init) {
+    function onChange$4(init) {
         var sources = getElements('.lot\\:pages[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var pages = getElements(targets$3, source);
@@ -4081,7 +6796,7 @@
             });
             onEventOnly('keydown', source, onKeyDownPages);
         });
-        1 === init && W._.on('change', onChange$5);
+        1 === init && W._.on('change', onChange$4);
     }
 
     function onKeyDownPage(e) {
@@ -4142,362 +6857,369 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
     function getDefaultExportFromCjs(x) {
         return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
     }
-    var siema_min = {
+    var siema_min$1 = {
         exports: {}
     };
-    (function (module, exports) {
-        ! function (e, t) {
-            module.exports = t();
-        }("undefined" != typeof self ? self : commonjsGlobal, function () {
-            return function (e) {
-                function t(r) {
-                    if (i[r]) return i[r].exports;
-                    var n = i[r] = {
-                        i: r,
-                        l: !1,
-                        exports: {}
-                    };
-                    return e[r].call(n.exports, n, n.exports, t), n.l = !0, n.exports;
-                }
-                var i = {};
-                return t.m = e, t.c = i, t.d = function (e, i, r) {
-                    t.o(e, i) || Object.defineProperty(e, i, {
-                        configurable: !1,
-                        enumerable: !0,
-                        get: r
-                    });
-                }, t.n = function (e) {
-                    var i = e && e.__esModule ? function () {
-                        return e.default;
-                    } : function () {
-                        return e;
-                    };
-                    return t.d(i, "a", i), i;
-                }, t.o = function (e, t) {
-                    return Object.prototype.hasOwnProperty.call(e, t);
-                }, t.p = "", t(t.s = 0);
-            }([function (e, t, i) {
-                function r(e, t) {
-                    if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
-                }
-                Object.defineProperty(t, "__esModule", {
-                    value: !0
-                });
-                var n = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (e) {
-                        return typeof e;
-                    } : function (e) {
-                        return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-                    },
-                    s = function () {
-                        function e(e, t) {
-                            for (var i = 0; i < t.length; i++) {
-                                var r = t[i];
-                                r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
-                            }
-                        }
-                        return function (t, i, r) {
-                            return i && e(t.prototype, i), r && e(t, r), t;
+    var siema_min = siema_min$1.exports;
+    var hasRequiredSiema_min;
+
+    function requireSiema_min() {
+        if (hasRequiredSiema_min) return siema_min$1.exports;
+        hasRequiredSiema_min = 1;
+        (function (module, exports) {
+            ! function (e, t) {
+                module.exports = t();
+            }("undefined" != typeof self ? self : siema_min, function () {
+                return function (e) {
+                    function t(r) {
+                        if (i[r]) return i[r].exports;
+                        var n = i[r] = {
+                            i: r,
+                            l: false,
+                            exports: {}
                         };
-                    }(),
-                    l = function () {
-                        function e(t) {
-                            var i = this;
-                            if (r(this, e), this.config = e.mergeSettings(t), this.selector = "string" == typeof this.config.selector ? document.querySelector(this.config.selector) : this.config.selector, null === this.selector) throw new Error("Something wrong with your selector 😭");
-                            this.resolveSlidesNumber(), this.selectorWidth = this.selector.offsetWidth, this.innerElements = [].slice.call(this.selector.children), this.currentSlide = this.config.loop ? this.config.startIndex % this.innerElements.length : Math.max(0, Math.min(this.config.startIndex, this.innerElements.length - this.perPage)), this.transformProperty = e.webkitOrNot(), ["resizeHandler", "touchstartHandler", "touchendHandler", "touchmoveHandler", "mousedownHandler", "mouseupHandler", "mouseleaveHandler", "mousemoveHandler", "clickHandler"].forEach(function (e) {
-                                i[e] = i[e].bind(i);
-                            }), this.init();
-                        }
-                        return s(e, [{
-                            key: "attachEvents",
-                            value: function value() {
-                                window.addEventListener("resize", this.resizeHandler), this.config.draggable && (this.pointerDown = !1, this.drag = {
-                                    startX: 0,
-                                    endX: 0,
-                                    startY: 0,
-                                    letItGo: null,
-                                    preventClick: !1
-                                }, this.selector.addEventListener("touchstart", this.touchstartHandler), this.selector.addEventListener("touchend", this.touchendHandler), this.selector.addEventListener("touchmove", this.touchmoveHandler), this.selector.addEventListener("mousedown", this.mousedownHandler), this.selector.addEventListener("mouseup", this.mouseupHandler), this.selector.addEventListener("mouseleave", this.mouseleaveHandler), this.selector.addEventListener("mousemove", this.mousemoveHandler), this.selector.addEventListener("click", this.clickHandler));
+                        return e[r].call(n.exports, n, n.exports, t), n.l = true, n.exports;
+                    }
+                    var i = {};
+                    return t.m = e, t.c = i, t.d = function (e, i, r) {
+                        t.o(e, i) || Object.defineProperty(e, i, {
+                            configurable: false,
+                            enumerable: true,
+                            get: r
+                        });
+                    }, t.n = function (e) {
+                        var i = e && e.__esModule ? function () {
+                            return e.default;
+                        } : function () {
+                            return e;
+                        };
+                        return t.d(i, "a", i), i;
+                    }, t.o = function (e, t) {
+                        return Object.prototype.hasOwnProperty.call(e, t);
+                    }, t.p = "", t(t.s = 0);
+                }([function (e, t, i) {
+                    function r(e, t) {
+                        if (!(e instanceof t)) throw new TypeError("Cannot call a class as a function");
+                    }
+                    Object.defineProperty(t, "__esModule", {
+                        value: true
+                    });
+                    var n = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (e) {
+                            return typeof e;
+                        } : function (e) {
+                            return e && "function" == typeof Symbol && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
+                        },
+                        s = function () {
+                            function e(e, t) {
+                                for (var i = 0; i < t.length; i++) {
+                                    var r = t[i];
+                                    r.enumerable = r.enumerable || false, r.configurable = true, "value" in r && (r.writable = true), Object.defineProperty(e, r.key, r);
+                                }
                             }
-                        }, {
-                            key: "detachEvents",
-                            value: function value() {
-                                window.removeEventListener("resize", this.resizeHandler), this.selector.removeEventListener("touchstart", this.touchstartHandler), this.selector.removeEventListener("touchend", this.touchendHandler), this.selector.removeEventListener("touchmove", this.touchmoveHandler), this.selector.removeEventListener("mousedown", this.mousedownHandler), this.selector.removeEventListener("mouseup", this.mouseupHandler), this.selector.removeEventListener("mouseleave", this.mouseleaveHandler), this.selector.removeEventListener("mousemove", this.mousemoveHandler), this.selector.removeEventListener("click", this.clickHandler);
+                            return function (t, i, r) {
+                                return i && e(t.prototype, i), r && e(t, r), t;
+                            };
+                        }(),
+                        l = function () {
+                            function e(t) {
+                                var i = this;
+                                if (r(this, e), this.config = e.mergeSettings(t), this.selector = "string" == typeof this.config.selector ? document.querySelector(this.config.selector) : this.config.selector, null === this.selector) throw new Error("Something wrong with your selector 😭");
+                                this.resolveSlidesNumber(), this.selectorWidth = this.selector.offsetWidth, this.innerElements = [].slice.call(this.selector.children), this.currentSlide = this.config.loop ? this.config.startIndex % this.innerElements.length : Math.max(0, Math.min(this.config.startIndex, this.innerElements.length - this.perPage)), this.transformProperty = e.webkitOrNot(), ["resizeHandler", "touchstartHandler", "touchendHandler", "touchmoveHandler", "mousedownHandler", "mouseupHandler", "mouseleaveHandler", "mousemoveHandler", "clickHandler"].forEach(function (e) {
+                                    i[e] = i[e].bind(i);
+                                }), this.init();
                             }
-                        }, {
-                            key: "init",
-                            value: function value() {
-                                this.attachEvents(), this.selector.style.overflow = "hidden", this.selector.style.direction = this.config.rtl ? "rtl" : "ltr", this.buildSliderFrame(), this.config.onInit.call(this);
-                            }
-                        }, {
-                            key: "buildSliderFrame",
-                            value: function value() {
-                                var e = this.selectorWidth / this.perPage,
-                                    t = this.config.loop ? this.innerElements.length + 2 * this.perPage : this.innerElements.length;
-                                this.sliderFrame = document.createElement("div"), this.sliderFrame.style.width = e * t + "px", this.enableTransition(), this.config.draggable && (this.selector.style.cursor = "-webkit-grab");
-                                var i = document.createDocumentFragment();
-                                if (this.config.loop)
-                                    for (var r = this.innerElements.length - this.perPage; r < this.innerElements.length; r++) {
-                                        var n = this.buildSliderFrameItem(this.innerElements[r].cloneNode(!0));
-                                        i.appendChild(n);
+                            return s(e, [{
+                                key: "attachEvents",
+                                value: function value() {
+                                    window.addEventListener("resize", this.resizeHandler), this.config.draggable && (this.pointerDown = false, this.drag = {
+                                        startX: 0,
+                                        endX: 0,
+                                        startY: 0,
+                                        letItGo: null,
+                                        preventClick: false
+                                    }, this.selector.addEventListener("touchstart", this.touchstartHandler), this.selector.addEventListener("touchend", this.touchendHandler), this.selector.addEventListener("touchmove", this.touchmoveHandler), this.selector.addEventListener("mousedown", this.mousedownHandler), this.selector.addEventListener("mouseup", this.mouseupHandler), this.selector.addEventListener("mouseleave", this.mouseleaveHandler), this.selector.addEventListener("mousemove", this.mousemoveHandler), this.selector.addEventListener("click", this.clickHandler));
+                                }
+                            }, {
+                                key: "detachEvents",
+                                value: function value() {
+                                    window.removeEventListener("resize", this.resizeHandler), this.selector.removeEventListener("touchstart", this.touchstartHandler), this.selector.removeEventListener("touchend", this.touchendHandler), this.selector.removeEventListener("touchmove", this.touchmoveHandler), this.selector.removeEventListener("mousedown", this.mousedownHandler), this.selector.removeEventListener("mouseup", this.mouseupHandler), this.selector.removeEventListener("mouseleave", this.mouseleaveHandler), this.selector.removeEventListener("mousemove", this.mousemoveHandler), this.selector.removeEventListener("click", this.clickHandler);
+                                }
+                            }, {
+                                key: "init",
+                                value: function value() {
+                                    this.attachEvents(), this.selector.style.overflow = "hidden", this.selector.style.direction = this.config.rtl ? "rtl" : "ltr", this.buildSliderFrame(), this.config.onInit.call(this);
+                                }
+                            }, {
+                                key: "buildSliderFrame",
+                                value: function value() {
+                                    var e = this.selectorWidth / this.perPage,
+                                        t = this.config.loop ? this.innerElements.length + 2 * this.perPage : this.innerElements.length;
+                                    this.sliderFrame = document.createElement("div"), this.sliderFrame.style.width = e * t + "px", this.enableTransition(), this.config.draggable && (this.selector.style.cursor = "-webkit-grab");
+                                    var i = document.createDocumentFragment();
+                                    if (this.config.loop)
+                                        for (var r = this.innerElements.length - this.perPage; r < this.innerElements.length; r++) {
+                                            var n = this.buildSliderFrameItem(this.innerElements[r].cloneNode(true));
+                                            i.appendChild(n);
+                                        }
+                                    for (var s = 0; s < this.innerElements.length; s++) {
+                                        var l = this.buildSliderFrameItem(this.innerElements[s]);
+                                        i.appendChild(l);
                                     }
-                                for (var s = 0; s < this.innerElements.length; s++) {
-                                    var l = this.buildSliderFrameItem(this.innerElements[s]);
-                                    i.appendChild(l);
+                                    if (this.config.loop)
+                                        for (var o = 0; o < this.perPage; o++) {
+                                            var a = this.buildSliderFrameItem(this.innerElements[o].cloneNode(true));
+                                            i.appendChild(a);
+                                        }
+                                    this.sliderFrame.appendChild(i), this.selector.innerHTML = "", this.selector.appendChild(this.sliderFrame), this.slideToCurrent();
                                 }
-                                if (this.config.loop)
-                                    for (var o = 0; o < this.perPage; o++) {
-                                        var a = this.buildSliderFrameItem(this.innerElements[o].cloneNode(!0));
-                                        i.appendChild(a);
+                            }, {
+                                key: "buildSliderFrameItem",
+                                value: function value(e) {
+                                    var t = document.createElement("div");
+                                    return t.style.cssFloat = this.config.rtl ? "right" : "left", t.style.float = this.config.rtl ? "right" : "left", t.style.width = (this.config.loop ? 100 / (this.innerElements.length + 2 * this.perPage) : 100 / this.innerElements.length) + "%", t.appendChild(e), t;
+                                }
+                            }, {
+                                key: "resolveSlidesNumber",
+                                value: function value() {
+                                    if ("number" == typeof this.config.perPage) this.perPage = this.config.perPage;
+                                    else if ("object" === n(this.config.perPage)) {
+                                        this.perPage = 1;
+                                        for (var e in this.config.perPage) window.innerWidth >= e && (this.perPage = this.config.perPage[e]);
                                     }
-                                this.sliderFrame.appendChild(i), this.selector.innerHTML = "", this.selector.appendChild(this.sliderFrame), this.slideToCurrent();
-                            }
-                        }, {
-                            key: "buildSliderFrameItem",
-                            value: function value(e) {
-                                var t = document.createElement("div");
-                                return t.style.cssFloat = this.config.rtl ? "right" : "left", t.style.float = this.config.rtl ? "right" : "left", t.style.width = (this.config.loop ? 100 / (this.innerElements.length + 2 * this.perPage) : 100 / this.innerElements.length) + "%", t.appendChild(e), t;
-                            }
-                        }, {
-                            key: "resolveSlidesNumber",
-                            value: function value() {
-                                if ("number" == typeof this.config.perPage) this.perPage = this.config.perPage;
-                                else if ("object" === n(this.config.perPage)) {
-                                    this.perPage = 1;
-                                    for (var e in this.config.perPage) window.innerWidth >= e && (this.perPage = this.config.perPage[e]);
                                 }
-                            }
-                        }, {
-                            key: "prev",
-                            value: function value() {
-                                var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
-                                    t = arguments[1];
-                                if (!(this.innerElements.length <= this.perPage)) {
-                                    var i = this.currentSlide;
-                                    if (this.config.loop) {
-                                        if (this.currentSlide - e < 0) {
-                                            this.disableTransition();
-                                            var r = this.currentSlide + this.innerElements.length,
-                                                n = this.perPage,
-                                                s = r + n,
-                                                l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / this.perPage),
-                                                o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
-                                            this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l + o) + "px, 0, 0)", this.currentSlide = r - e;
-                                        } else this.currentSlide = this.currentSlide - e;
-                                    } else this.currentSlide = Math.max(this.currentSlide - e, 0);
-                                    i !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t && t.call(this));
+                            }, {
+                                key: "prev",
+                                value: function value() {
+                                    var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
+                                        t = arguments[1];
+                                    if (!(this.innerElements.length <= this.perPage)) {
+                                        var i = this.currentSlide;
+                                        if (this.config.loop) {
+                                            if (this.currentSlide - e < 0) {
+                                                this.disableTransition();
+                                                var r = this.currentSlide + this.innerElements.length,
+                                                    n = this.perPage,
+                                                    s = r + n,
+                                                    l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / this.perPage),
+                                                    o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
+                                                this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l + o) + "px, 0, 0)", this.currentSlide = r - e;
+                                            } else this.currentSlide = this.currentSlide - e;
+                                        } else this.currentSlide = Math.max(this.currentSlide - e, 0);
+                                        i !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t && t.call(this));
+                                    }
                                 }
-                            }
-                        }, {
-                            key: "next",
-                            value: function value() {
-                                var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
-                                    t = arguments[1];
-                                if (!(this.innerElements.length <= this.perPage)) {
-                                    var i = this.currentSlide;
-                                    if (this.config.loop) {
-                                        if (this.currentSlide + e > this.innerElements.length - this.perPage) {
-                                            this.disableTransition();
-                                            var r = this.currentSlide - this.innerElements.length,
-                                                n = this.perPage,
-                                                s = r + n,
-                                                l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / this.perPage),
-                                                o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
-                                            this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l + o) + "px, 0, 0)", this.currentSlide = r + e;
-                                        } else this.currentSlide = this.currentSlide + e;
-                                    } else this.currentSlide = Math.min(this.currentSlide + e, this.innerElements.length - this.perPage);
-                                    i !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t && t.call(this));
+                            }, {
+                                key: "next",
+                                value: function value() {
+                                    var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 1,
+                                        t = arguments[1];
+                                    if (!(this.innerElements.length <= this.perPage)) {
+                                        var i = this.currentSlide;
+                                        if (this.config.loop) {
+                                            if (this.currentSlide + e > this.innerElements.length - this.perPage) {
+                                                this.disableTransition();
+                                                var r = this.currentSlide - this.innerElements.length,
+                                                    n = this.perPage,
+                                                    s = r + n,
+                                                    l = (this.config.rtl ? 1 : -1) * s * (this.selectorWidth / this.perPage),
+                                                    o = this.config.draggable ? this.drag.endX - this.drag.startX : 0;
+                                                this.sliderFrame.style[this.transformProperty] = "translate3d(" + (l + o) + "px, 0, 0)", this.currentSlide = r + e;
+                                            } else this.currentSlide = this.currentSlide + e;
+                                        } else this.currentSlide = Math.min(this.currentSlide + e, this.innerElements.length - this.perPage);
+                                        i !== this.currentSlide && (this.slideToCurrent(this.config.loop), this.config.onChange.call(this), t && t.call(this));
+                                    }
                                 }
-                            }
-                        }, {
-                            key: "disableTransition",
-                            value: function value() {
-                                this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
-                            }
-                        }, {
-                            key: "enableTransition",
-                            value: function value() {
-                                this.sliderFrame.style.webkitTransition = "all " + this.config.duration + "ms " + this.config.easing, this.sliderFrame.style.transition = "all " + this.config.duration + "ms " + this.config.easing;
-                            }
-                        }, {
-                            key: "goTo",
-                            value: function value(e, t) {
-                                if (!(this.innerElements.length <= this.perPage)) {
-                                    var i = this.currentSlide;
-                                    this.currentSlide = this.config.loop ? e % this.innerElements.length : Math.min(Math.max(e, 0), this.innerElements.length - this.perPage), i !== this.currentSlide && (this.slideToCurrent(), this.config.onChange.call(this), t && t.call(this));
+                            }, {
+                                key: "disableTransition",
+                                value: function value() {
+                                    this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
                                 }
-                            }
-                        }, {
-                            key: "slideToCurrent",
-                            value: function value(e) {
-                                var t = this,
-                                    i = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
-                                    r = (this.config.rtl ? 1 : -1) * i * (this.selectorWidth / this.perPage);
-                                e ? requestAnimationFrame(function () {
-                                    requestAnimationFrame(function () {
-                                        t.enableTransition(), t.sliderFrame.style[t.transformProperty] = "translate3d(" + r + "px, 0, 0)";
-                                    });
-                                }) : this.sliderFrame.style[this.transformProperty] = "translate3d(" + r + "px, 0, 0)";
-                            }
-                        }, {
-                            key: "updateAfterDrag",
-                            value: function value() {
-                                var e = (this.config.rtl ? -1 : 1) * (this.drag.endX - this.drag.startX),
-                                    t = Math.abs(e),
-                                    i = this.config.multipleDrag ? Math.ceil(t / (this.selectorWidth / this.perPage)) : 1,
-                                    r = e > 0 && this.currentSlide - i < 0,
-                                    n = e < 0 && this.currentSlide + i > this.innerElements.length - this.perPage;
-                                e > 0 && t > this.config.threshold && this.innerElements.length > this.perPage ? this.prev(i) : e < 0 && t > this.config.threshold && this.innerElements.length > this.perPage && this.next(i), this.slideToCurrent(r || n);
-                            }
-                        }, {
-                            key: "resizeHandler",
-                            value: function value() {
-                                this.resolveSlidesNumber(), this.currentSlide + this.perPage > this.innerElements.length && (this.currentSlide = this.innerElements.length <= this.perPage ? 0 : this.innerElements.length - this.perPage), this.selectorWidth = this.selector.offsetWidth, this.buildSliderFrame();
-                            }
-                        }, {
-                            key: "clearDrag",
-                            value: function value() {
-                                this.drag = {
-                                    startX: 0,
-                                    endX: 0,
-                                    startY: 0,
-                                    letItGo: null,
-                                    preventClick: this.drag.preventClick
-                                };
-                            }
-                        }, {
-                            key: "touchstartHandler",
-                            value: function value(e) {
-                                -1 !== ["TEXTAREA", "OPTION", "INPUT", "SELECT"].indexOf(e.target.nodeName) || (e.stopPropagation(), this.pointerDown = !0, this.drag.startX = e.touches[0].pageX, this.drag.startY = e.touches[0].pageY);
-                            }
-                        }, {
-                            key: "touchendHandler",
-                            value: function value(e) {
-                                e.stopPropagation(), this.pointerDown = !1, this.enableTransition(), this.drag.endX && this.updateAfterDrag(), this.clearDrag();
-                            }
-                        }, {
-                            key: "touchmoveHandler",
-                            value: function value(e) {
-                                if (e.stopPropagation(), null === this.drag.letItGo && (this.drag.letItGo = Math.abs(this.drag.startY - e.touches[0].pageY) < Math.abs(this.drag.startX - e.touches[0].pageX)), this.pointerDown && this.drag.letItGo) {
-                                    e.preventDefault(), this.drag.endX = e.touches[0].pageX, this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
-                                    var t = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
-                                        i = t * (this.selectorWidth / this.perPage),
-                                        r = this.drag.endX - this.drag.startX,
-                                        n = this.config.rtl ? i + r : i - r;
-                                    this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n + "px, 0, 0)";
+                            }, {
+                                key: "enableTransition",
+                                value: function value() {
+                                    this.sliderFrame.style.webkitTransition = "all " + this.config.duration + "ms " + this.config.easing, this.sliderFrame.style.transition = "all " + this.config.duration + "ms " + this.config.easing;
                                 }
-                            }
-                        }, {
-                            key: "mousedownHandler",
-                            value: function value(e) {
-                                -1 !== ["TEXTAREA", "OPTION", "INPUT", "SELECT"].indexOf(e.target.nodeName) || (e.preventDefault(), e.stopPropagation(), this.pointerDown = !0, this.drag.startX = e.pageX);
-                            }
-                        }, {
-                            key: "mouseupHandler",
-                            value: function value(e) {
-                                e.stopPropagation(), this.pointerDown = !1, this.selector.style.cursor = "-webkit-grab", this.enableTransition(), this.drag.endX && this.updateAfterDrag(), this.clearDrag();
-                            }
-                        }, {
-                            key: "mousemoveHandler",
-                            value: function value(e) {
-                                if (e.preventDefault(), this.pointerDown) {
-                                    "A" === e.target.nodeName && (this.drag.preventClick = !0), this.drag.endX = e.pageX, this.selector.style.cursor = "-webkit-grabbing", this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
-                                    var t = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
-                                        i = t * (this.selectorWidth / this.perPage),
-                                        r = this.drag.endX - this.drag.startX,
-                                        n = this.config.rtl ? i + r : i - r;
-                                    this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n + "px, 0, 0)";
+                            }, {
+                                key: "goTo",
+                                value: function value(e, t) {
+                                    if (!(this.innerElements.length <= this.perPage)) {
+                                        var i = this.currentSlide;
+                                        this.currentSlide = this.config.loop ? e % this.innerElements.length : Math.min(Math.max(e, 0), this.innerElements.length - this.perPage), i !== this.currentSlide && (this.slideToCurrent(), this.config.onChange.call(this), t && t.call(this));
+                                    }
                                 }
-                            }
-                        }, {
-                            key: "mouseleaveHandler",
-                            value: function value(e) {
-                                this.pointerDown && (this.pointerDown = !1, this.selector.style.cursor = "-webkit-grab", this.drag.endX = e.pageX, this.drag.preventClick = !1, this.enableTransition(), this.updateAfterDrag(), this.clearDrag());
-                            }
-                        }, {
-                            key: "clickHandler",
-                            value: function value(e) {
-                                this.drag.preventClick && e.preventDefault(), this.drag.preventClick = !1;
-                            }
-                        }, {
-                            key: "remove",
-                            value: function value(e, t) {
-                                if (e < 0 || e >= this.innerElements.length) throw new Error("Item to remove doesn't exist 😭");
-                                var i = e < this.currentSlide,
-                                    r = this.currentSlide + this.perPage - 1 === e;
-                                (i || r) && this.currentSlide--, this.innerElements.splice(e, 1), this.buildSliderFrame(), t && t.call(this);
-                            }
-                        }, {
-                            key: "insert",
-                            value: function value(e, t, i) {
-                                if (t < 0 || t > this.innerElements.length + 1) throw new Error("Unable to inset it at this index 😭");
-                                if (-1 !== this.innerElements.indexOf(e)) throw new Error("The same item in a carousel? Really? Nope 😭");
-                                var r = t <= this.currentSlide > 0 && this.innerElements.length;
-                                this.currentSlide = r ? this.currentSlide + 1 : this.currentSlide, this.innerElements.splice(t, 0, e), this.buildSliderFrame(), i && i.call(this);
-                            }
-                        }, {
-                            key: "prepend",
-                            value: function value(e, t) {
-                                this.insert(e, 0), t && t.call(this);
-                            }
-                        }, {
-                            key: "append",
-                            value: function value(e, t) {
-                                this.insert(e, this.innerElements.length + 1), t && t.call(this);
-                            }
-                        }, {
-                            key: "destroy",
-                            value: function value() {
-                                var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0],
-                                    t = arguments[1];
-                                if (this.detachEvents(), this.selector.style.cursor = "auto", e) {
-                                    for (var i = document.createDocumentFragment(), r = 0; r < this.innerElements.length; r++) i.appendChild(this.innerElements[r]);
-                                    this.selector.innerHTML = "", this.selector.appendChild(i), this.selector.removeAttribute("style");
+                            }, {
+                                key: "slideToCurrent",
+                                value: function value(e) {
+                                    var t = this,
+                                        i = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
+                                        r = (this.config.rtl ? 1 : -1) * i * (this.selectorWidth / this.perPage);
+                                    e ? requestAnimationFrame(function () {
+                                        requestAnimationFrame(function () {
+                                            t.enableTransition(), t.sliderFrame.style[t.transformProperty] = "translate3d(" + r + "px, 0, 0)";
+                                        });
+                                    }) : this.sliderFrame.style[this.transformProperty] = "translate3d(" + r + "px, 0, 0)";
                                 }
-                                t && t.call(this);
-                            }
-                        }], [{
-                            key: "mergeSettings",
-                            value: function value(e) {
-                                var t = {
-                                        selector: ".siema",
-                                        duration: 200,
-                                        easing: "ease-out",
-                                        perPage: 1,
-                                        startIndex: 0,
-                                        draggable: !0,
-                                        multipleDrag: !0,
-                                        threshold: 20,
-                                        loop: !1,
-                                        rtl: !1,
-                                        onInit: function onInit() {},
-                                        onChange: function onChange() {}
-                                    },
-                                    i = e;
-                                for (var r in i) t[r] = i[r];
-                                return t;
-                            }
-                        }, {
-                            key: "webkitOrNot",
-                            value: function value() {
-                                return "string" == typeof document.documentElement.style.transform ? "transform" : "WebkitTransform";
-                            }
-                        }]), e;
-                    }();
-                t.default = l, e.exports = t.default;
-            }]);
-        });
-    }(siema_min));
-    var siema_minExports = siema_min.exports;
+                            }, {
+                                key: "updateAfterDrag",
+                                value: function value() {
+                                    var e = (this.config.rtl ? -1 : 1) * (this.drag.endX - this.drag.startX),
+                                        t = Math.abs(e),
+                                        i = this.config.multipleDrag ? Math.ceil(t / (this.selectorWidth / this.perPage)) : 1,
+                                        r = e > 0 && this.currentSlide - i < 0,
+                                        n = e < 0 && this.currentSlide + i > this.innerElements.length - this.perPage;
+                                    e > 0 && t > this.config.threshold && this.innerElements.length > this.perPage ? this.prev(i) : e < 0 && t > this.config.threshold && this.innerElements.length > this.perPage && this.next(i), this.slideToCurrent(r || n);
+                                }
+                            }, {
+                                key: "resizeHandler",
+                                value: function value() {
+                                    this.resolveSlidesNumber(), this.currentSlide + this.perPage > this.innerElements.length && (this.currentSlide = this.innerElements.length <= this.perPage ? 0 : this.innerElements.length - this.perPage), this.selectorWidth = this.selector.offsetWidth, this.buildSliderFrame();
+                                }
+                            }, {
+                                key: "clearDrag",
+                                value: function value() {
+                                    this.drag = {
+                                        startX: 0,
+                                        endX: 0,
+                                        startY: 0,
+                                        letItGo: null,
+                                        preventClick: this.drag.preventClick
+                                    };
+                                }
+                            }, {
+                                key: "touchstartHandler",
+                                value: function value(e) {
+                                    -1 !== ["TEXTAREA", "OPTION", "INPUT", "SELECT"].indexOf(e.target.nodeName) || (e.stopPropagation(), this.pointerDown = true, this.drag.startX = e.touches[0].pageX, this.drag.startY = e.touches[0].pageY);
+                                }
+                            }, {
+                                key: "touchendHandler",
+                                value: function value(e) {
+                                    e.stopPropagation(), this.pointerDown = false, this.enableTransition(), this.drag.endX && this.updateAfterDrag(), this.clearDrag();
+                                }
+                            }, {
+                                key: "touchmoveHandler",
+                                value: function value(e) {
+                                    if (e.stopPropagation(), null === this.drag.letItGo && (this.drag.letItGo = Math.abs(this.drag.startY - e.touches[0].pageY) < Math.abs(this.drag.startX - e.touches[0].pageX)), this.pointerDown && this.drag.letItGo) {
+                                        e.preventDefault(), this.drag.endX = e.touches[0].pageX, this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
+                                        var t = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
+                                            i = t * (this.selectorWidth / this.perPage),
+                                            r = this.drag.endX - this.drag.startX,
+                                            n = this.config.rtl ? i + r : i - r;
+                                        this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n + "px, 0, 0)";
+                                    }
+                                }
+                            }, {
+                                key: "mousedownHandler",
+                                value: function value(e) {
+                                    -1 !== ["TEXTAREA", "OPTION", "INPUT", "SELECT"].indexOf(e.target.nodeName) || (e.preventDefault(), e.stopPropagation(), this.pointerDown = true, this.drag.startX = e.pageX);
+                                }
+                            }, {
+                                key: "mouseupHandler",
+                                value: function value(e) {
+                                    e.stopPropagation(), this.pointerDown = false, this.selector.style.cursor = "-webkit-grab", this.enableTransition(), this.drag.endX && this.updateAfterDrag(), this.clearDrag();
+                                }
+                            }, {
+                                key: "mousemoveHandler",
+                                value: function value(e) {
+                                    if (e.preventDefault(), this.pointerDown) {
+                                        "A" === e.target.nodeName && (this.drag.preventClick = true), this.drag.endX = e.pageX, this.selector.style.cursor = "-webkit-grabbing", this.sliderFrame.style.webkitTransition = "all 0ms " + this.config.easing, this.sliderFrame.style.transition = "all 0ms " + this.config.easing;
+                                        var t = this.config.loop ? this.currentSlide + this.perPage : this.currentSlide,
+                                            i = t * (this.selectorWidth / this.perPage),
+                                            r = this.drag.endX - this.drag.startX,
+                                            n = this.config.rtl ? i + r : i - r;
+                                        this.sliderFrame.style[this.transformProperty] = "translate3d(" + (this.config.rtl ? 1 : -1) * n + "px, 0, 0)";
+                                    }
+                                }
+                            }, {
+                                key: "mouseleaveHandler",
+                                value: function value(e) {
+                                    this.pointerDown && (this.pointerDown = false, this.selector.style.cursor = "-webkit-grab", this.drag.endX = e.pageX, this.drag.preventClick = false, this.enableTransition(), this.updateAfterDrag(), this.clearDrag());
+                                }
+                            }, {
+                                key: "clickHandler",
+                                value: function value(e) {
+                                    this.drag.preventClick && e.preventDefault(), this.drag.preventClick = false;
+                                }
+                            }, {
+                                key: "remove",
+                                value: function value(e, t) {
+                                    if (e < 0 || e >= this.innerElements.length) throw new Error("Item to remove doesn't exist 😭");
+                                    var i = e < this.currentSlide,
+                                        r = this.currentSlide + this.perPage - 1 === e;
+                                    (i || r) && this.currentSlide--, this.innerElements.splice(e, 1), this.buildSliderFrame(), t && t.call(this);
+                                }
+                            }, {
+                                key: "insert",
+                                value: function value(e, t, i) {
+                                    if (t < 0 || t > this.innerElements.length + 1) throw new Error("Unable to inset it at this index 😭");
+                                    if (-1 !== this.innerElements.indexOf(e)) throw new Error("The same item in a carousel? Really? Nope 😭");
+                                    var r = t <= this.currentSlide > 0 && this.innerElements.length;
+                                    this.currentSlide = r ? this.currentSlide + 1 : this.currentSlide, this.innerElements.splice(t, 0, e), this.buildSliderFrame(), i && i.call(this);
+                                }
+                            }, {
+                                key: "prepend",
+                                value: function value(e, t) {
+                                    this.insert(e, 0), t && t.call(this);
+                                }
+                            }, {
+                                key: "append",
+                                value: function value(e, t) {
+                                    this.insert(e, this.innerElements.length + 1), t && t.call(this);
+                                }
+                            }, {
+                                key: "destroy",
+                                value: function value() {
+                                    var e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0],
+                                        t = arguments[1];
+                                    if (this.detachEvents(), this.selector.style.cursor = "auto", e) {
+                                        for (var i = document.createDocumentFragment(), r = 0; r < this.innerElements.length; r++) i.appendChild(this.innerElements[r]);
+                                        this.selector.innerHTML = "", this.selector.appendChild(i), this.selector.removeAttribute("style");
+                                    }
+                                    t && t.call(this);
+                                }
+                            }], [{
+                                key: "mergeSettings",
+                                value: function value(e) {
+                                    var t = {
+                                            selector: ".siema",
+                                            duration: 200,
+                                            easing: "ease-out",
+                                            perPage: 1,
+                                            startIndex: 0,
+                                            draggable: true,
+                                            multipleDrag: true,
+                                            threshold: 20,
+                                            loop: false,
+                                            rtl: false,
+                                            onInit: function onInit() {},
+                                            onChange: function onChange() {}
+                                        },
+                                        i = e;
+                                    for (var r in i) t[r] = i[r];
+                                    return t;
+                                }
+                            }, {
+                                key: "webkitOrNot",
+                                value: function value() {
+                                    return "string" == typeof document.documentElement.style.transform ? "transform" : "WebkitTransform";
+                                }
+                            }]), e;
+                        }();
+                    t.default = l, e.exports = t.default;
+                }]);
+            });
+        }(siema_min$1));
+        return siema_min$1.exports;
+    }
+    var siema_minExports = requireSiema_min();
     var Siema = /*@__PURE__*/ getDefaultExportFromCjs(siema_minExports);
     Siema.instances = [];
     var SIEMA_INTERVAL = 0;
 
-    function onChange$4(init) {
+    function onChange$3(init) {
         var instance;
         while (instance = Siema.instances.pop()) {
             instance.destroy();
@@ -4536,3261 +7258,6 @@
         onMouseDownSiema.call(this);
     }
     W.Siema = Siema;
-    /**!
-     * Sortable 1.15.3
-     * @author	RubaXa   <trash@rubaxa.org>
-     * @author	owenm    <owen23355@gmail.com>
-     * @license MIT
-     */
-    function ownKeys(object, enumerableOnly) {
-        var keys = Object.keys(object);
-        if (Object.getOwnPropertySymbols) {
-            var symbols = Object.getOwnPropertySymbols(object);
-            if (enumerableOnly) {
-                symbols = symbols.filter(function (sym) {
-                    return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-                });
-            }
-            keys.push.apply(keys, symbols);
-        }
-        return keys;
-    }
-
-    function _objectSpread2(target) {
-        for (var i = 1; i < arguments.length; i++) {
-            var source = arguments[i] != null ? arguments[i] : {};
-            if (i % 2) {
-                ownKeys(Object(source), true).forEach(function (key) {
-                    _defineProperty(target, key, source[key]);
-                });
-            } else if (Object.getOwnPropertyDescriptors) {
-                Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-            } else {
-                ownKeys(Object(source)).forEach(function (key) {
-                    Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-                });
-            }
-        }
-        return target;
-    }
-
-    function _typeof(obj) {
-        "@babel/helpers - typeof";
-        if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-            _typeof = function _typeof(obj) {
-                return typeof obj;
-            };
-        } else {
-            _typeof = function _typeof(obj) {
-                return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-            };
-        }
-        return _typeof(obj);
-    }
-
-    function _defineProperty(obj, key, value) {
-        if (key in obj) {
-            Object.defineProperty(obj, key, {
-                value: value,
-                enumerable: true,
-                configurable: true,
-                writable: true
-            });
-        } else {
-            obj[key] = value;
-        }
-        return obj;
-    }
-
-    function _extends() {
-        _extends = Object.assign || function (target) {
-            for (var i = 1; i < arguments.length; i++) {
-                var source = arguments[i];
-                for (var key in source) {
-                    if (Object.prototype.hasOwnProperty.call(source, key)) {
-                        target[key] = source[key];
-                    }
-                }
-            }
-            return target;
-        };
-        return _extends.apply(this, arguments);
-    }
-
-    function _objectWithoutPropertiesLoose(source, excluded) {
-        if (source == null) return {};
-        var target = {};
-        var sourceKeys = Object.keys(source);
-        var key, i;
-        for (i = 0; i < sourceKeys.length; i++) {
-            key = sourceKeys[i];
-            if (excluded.indexOf(key) >= 0) continue;
-            target[key] = source[key];
-        }
-        return target;
-    }
-
-    function _objectWithoutProperties(source, excluded) {
-        if (source == null) return {};
-        var target = _objectWithoutPropertiesLoose(source, excluded);
-        var key, i;
-        if (Object.getOwnPropertySymbols) {
-            var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-            for (i = 0; i < sourceSymbolKeys.length; i++) {
-                key = sourceSymbolKeys[i];
-                if (excluded.indexOf(key) >= 0) continue;
-                if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-                target[key] = source[key];
-            }
-        }
-        return target;
-    }
-
-    function _toConsumableArray(arr) {
-        return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-    }
-
-    function _arrayWithoutHoles(arr) {
-        if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-    }
-
-    function _iterableToArray(iter) {
-        if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-    }
-
-    function _unsupportedIterableToArray(o, minLen) {
-        if (!o) return;
-        if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-        var n = Object.prototype.toString.call(o).slice(8, -1);
-        if (n === "Object" && o.constructor) n = o.constructor.name;
-        if (n === "Map" || n === "Set") return Array.from(o);
-        if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-    }
-
-    function _arrayLikeToArray(arr, len) {
-        if (len == null || len > arr.length) len = arr.length;
-        for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-        return arr2;
-    }
-
-    function _nonIterableSpread() {
-        throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-    }
-    var version = "1.15.3";
-
-    function userAgent(pattern) {
-        if (typeof window !== 'undefined' && window.navigator) {
-            return !! /*@__PURE__*/ navigator.userAgent.match(pattern);
-        }
-    }
-    var IE11OrLess = userAgent(/(?:Trident.*rv[ :]?11\.|msie|iemobile|Windows Phone)/i);
-    var Edge = userAgent(/Edge/i);
-    var FireFox = userAgent(/firefox/i);
-    var Safari = userAgent(/safari/i) && !userAgent(/chrome/i) && !userAgent(/android/i);
-    var IOS = userAgent(/iP(ad|od|hone)/i);
-    var ChromeForAndroid = userAgent(/chrome/i) && userAgent(/android/i);
-    var captureMode = {
-        capture: false,
-        passive: false
-    };
-
-    function on(el, event, fn) {
-        el.addEventListener(event, fn, !IE11OrLess && captureMode);
-    }
-
-    function off(el, event, fn) {
-        el.removeEventListener(event, fn, !IE11OrLess && captureMode);
-    }
-
-    function matches( /**HTMLElement*/ el, /**String*/ selector) {
-        if (!selector) return;
-        selector[0] === '>' && (selector = selector.substring(1));
-        if (el) {
-            try {
-                if (el.matches) {
-                    return el.matches(selector);
-                } else if (el.msMatchesSelector) {
-                    return el.msMatchesSelector(selector);
-                } else if (el.webkitMatchesSelector) {
-                    return el.webkitMatchesSelector(selector);
-                }
-            } catch (_) {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    function getParentOrHost(el) {
-        return el.host && el !== document && el.host.nodeType ? el.host : el.parentNode;
-    }
-
-    function closest( /**HTMLElement*/ el, /**String*/ selector, /**HTMLElement*/ ctx, includeCTX) {
-        if (el) {
-            ctx = ctx || document;
-            do {
-                if (selector != null && (selector[0] === '>' ? el.parentNode === ctx && matches(el, selector) : matches(el, selector)) || includeCTX && el === ctx) {
-                    return el;
-                }
-                if (el === ctx) break;
-                /* jshint boss:true */
-            } while (el = getParentOrHost(el));
-        }
-        return null;
-    }
-    var R_SPACE = /\s+/g;
-
-    function toggleClass(el, name, state) {
-        if (el && name) {
-            if (el.classList) {
-                el.classList[state ? 'add' : 'remove'](name);
-            } else {
-                var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
-                el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
-            }
-        }
-    }
-
-    function css(el, prop, val) {
-        var style = el && el.style;
-        if (style) {
-            if (val === void 0) {
-                if (document.defaultView && document.defaultView.getComputedStyle) {
-                    val = document.defaultView.getComputedStyle(el, '');
-                } else if (el.currentStyle) {
-                    val = el.currentStyle;
-                }
-                return prop === void 0 ? val : val[prop];
-            } else {
-                if (!(prop in style) && prop.indexOf('webkit') === -1) {
-                    prop = '-webkit-' + prop;
-                }
-                style[prop] = val + (typeof val === 'string' ? '' : 'px');
-            }
-        }
-    }
-
-    function matrix(el, selfOnly) {
-        var appliedTransforms = '';
-        if (typeof el === 'string') {
-            appliedTransforms = el;
-        } else {
-            do {
-                var transform = css(el, 'transform');
-                if (transform && transform !== 'none') {
-                    appliedTransforms = transform + ' ' + appliedTransforms;
-                }
-                /* jshint boss:true */
-            } while (!selfOnly && (el = el.parentNode));
-        }
-        var matrixFn = window.DOMMatrix || window.WebKitCSSMatrix || window.CSSMatrix || window.MSCSSMatrix;
-        /*jshint -W056 */
-        return matrixFn && new matrixFn(appliedTransforms);
-    }
-
-    function find(ctx, tagName, iterator) {
-        if (ctx) {
-            var list = ctx.getElementsByTagName(tagName),
-                i = 0,
-                n = list.length;
-            if (iterator) {
-                for (; i < n; i++) {
-                    iterator(list[i], i);
-                }
-            }
-            return list;
-        }
-        return [];
-    }
-
-    function getWindowScrollingElement() {
-        var scrollingElement = document.scrollingElement;
-        if (scrollingElement) {
-            return scrollingElement;
-        } else {
-            return document.documentElement;
-        }
-    }
-    /**
-     * Returns the "bounding client rect" of given element
-     * @param  {HTMLElement} el                       The element whose boundingClientRect is wanted
-     * @param  {[Boolean]} relativeToContainingBlock  Whether the rect should be relative to the containing block of (including) the container
-     * @param  {[Boolean]} relativeToNonStaticParent  Whether the rect should be relative to the relative parent of (including) the contaienr
-     * @param  {[Boolean]} undoScale                  Whether the container's scale() should be undone
-     * @param  {[HTMLElement]} container              The parent the element will be placed in
-     * @return {Object}                               The boundingClientRect of el, with specified adjustments
-     */
-    function getRect(el, relativeToContainingBlock, relativeToNonStaticParent, undoScale, container) {
-        if (!el.getBoundingClientRect && el !== window) return;
-        var elRect, top, left, bottom, right, height, width;
-        if (el !== window && el.parentNode && el !== getWindowScrollingElement()) {
-            elRect = el.getBoundingClientRect();
-            top = elRect.top;
-            left = elRect.left;
-            bottom = elRect.bottom;
-            right = elRect.right;
-            height = elRect.height;
-            width = elRect.width;
-        } else {
-            top = 0;
-            left = 0;
-            bottom = window.innerHeight;
-            right = window.innerWidth;
-            height = window.innerHeight;
-            width = window.innerWidth;
-        }
-        if ((relativeToContainingBlock || relativeToNonStaticParent) && el !== window) {
-            // Adjust for translate()
-            container = container || el.parentNode;
-            // solves #1123 (see: https://stackoverflow.com/a/37953806/6088312)
-            // Not needed on <= IE11
-            if (!IE11OrLess) {
-                do {
-                    if (container && container.getBoundingClientRect && (css(container, 'transform') !== 'none' || relativeToNonStaticParent && css(container, 'position') !== 'static')) {
-                        var containerRect = container.getBoundingClientRect();
-                        // Set relative to edges of padding box of container
-                        top -= containerRect.top + parseInt(css(container, 'border-top-width'));
-                        left -= containerRect.left + parseInt(css(container, 'border-left-width'));
-                        bottom = top + elRect.height;
-                        right = left + elRect.width;
-                        break;
-                    }
-                    /* jshint boss:true */
-                } while (container = container.parentNode);
-            }
-        }
-        if (undoScale && el !== window) {
-            // Adjust for scale()
-            var elMatrix = matrix(container || el),
-                scaleX = elMatrix && elMatrix.a,
-                scaleY = elMatrix && elMatrix.d;
-            if (elMatrix) {
-                top /= scaleY;
-                left /= scaleX;
-                width /= scaleX;
-                height /= scaleY;
-                bottom = top + height;
-                right = left + width;
-            }
-        }
-        return {
-            top: top,
-            left: left,
-            bottom: bottom,
-            right: right,
-            width: width,
-            height: height
-        };
-    }
-    /**
-     * Checks if a side of an element is scrolled past a side of its parents
-     * @param  {HTMLElement}  el           The element who's side being scrolled out of view is in question
-     * @param  {String}       elSide       Side of the element in question ('top', 'left', 'right', 'bottom')
-     * @param  {String}       parentSide   Side of the parent in question ('top', 'left', 'right', 'bottom')
-     * @return {HTMLElement}               The parent scroll element that the el's side is scrolled past, or null if there is no such element
-     */
-    function isScrolledPast(el, elSide, parentSide) {
-        var parent = getParentAutoScrollElement(el, true),
-            elSideVal = getRect(el)[elSide];
-        /* jshint boss:true */
-        while (parent) {
-            var parentSideVal = getRect(parent)[parentSide],
-                visible = void 0;
-            {
-                visible = elSideVal >= parentSideVal;
-            }
-            if (!visible) return parent;
-            if (parent === getWindowScrollingElement()) break;
-            parent = getParentAutoScrollElement(parent, false);
-        }
-        return false;
-    }
-    /**
-     * Gets nth child of el, ignoring hidden children, sortable's elements (does not ignore clone if it's visible)
-     * and non-draggable elements
-     * @param  {HTMLElement} el       The parent element
-     * @param  {Number} childNum      The index of the child
-     * @param  {Object} options       Parent Sortable's options
-     * @return {HTMLElement}          The child at index childNum, or null if not found
-     */
-    function getChild(el, childNum, options, includeDragEl) {
-        var currentChild = 0,
-            i = 0,
-            children = el.children;
-        while (i < children.length) {
-            if (children[i].style.display !== 'none' && children[i] !== Sortable.ghost && (includeDragEl || children[i] !== Sortable.dragged) && closest(children[i], options.draggable, el, false)) {
-                if (currentChild === childNum) {
-                    return children[i];
-                }
-                currentChild++;
-            }
-            i++;
-        }
-        return null;
-    }
-    /**
-     * Gets the last child in the el, ignoring ghostEl or invisible elements (clones)
-     * @param  {HTMLElement} el       Parent element
-     * @param  {selector} selector    Any other elements that should be ignored
-     * @return {HTMLElement}          The last child, ignoring ghostEl
-     */
-    function lastChild(el, selector) {
-        var last = el.lastElementChild;
-        while (last && (last === Sortable.ghost || css(last, 'display') === 'none' || selector && !matches(last, selector))) {
-            last = last.previousElementSibling;
-        }
-        return last || null;
-    }
-    /**
-     * Returns the index of an element within its parent for a selected set of
-     * elements
-     * @param  {HTMLElement} el
-     * @param  {selector} selector
-     * @return {number}
-     */
-    function index(el, selector) {
-        var index = 0;
-        if (!el || !el.parentNode) {
-            return -1;
-        }
-        /* jshint boss:true */
-        while (el = el.previousElementSibling) {
-            if (el.nodeName.toUpperCase() !== 'TEMPLATE' && el !== Sortable.clone && (!selector || matches(el, selector))) {
-                index++;
-            }
-        }
-        return index;
-    }
-    /**
-     * Returns the scroll offset of the given element, added with all the scroll offsets of parent elements.
-     * The value is returned in real pixels.
-     * @param  {HTMLElement} el
-     * @return {Array}             Offsets in the format of [left, top]
-     */
-    function getRelativeScrollOffset(el) {
-        var offsetLeft = 0,
-            offsetTop = 0,
-            winScroller = getWindowScrollingElement();
-        if (el) {
-            do {
-                var elMatrix = matrix(el),
-                    scaleX = elMatrix.a,
-                    scaleY = elMatrix.d;
-                offsetLeft += el.scrollLeft * scaleX;
-                offsetTop += el.scrollTop * scaleY;
-            } while (el !== winScroller && (el = el.parentNode));
-        }
-        return [offsetLeft, offsetTop];
-    }
-    /**
-     * Returns the index of the object within the given array
-     * @param  {Array} arr   Array that may or may not hold the object
-     * @param  {Object} obj  An object that has a key-value pair unique to and identical to a key-value pair in the object you want to find
-     * @return {Number}      The index of the object in the array, or -1
-     */
-    function indexOfObject(arr, obj) {
-        for (var i in arr) {
-            if (!arr.hasOwnProperty(i)) continue;
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key) && obj[key] === arr[i][key]) return Number(i);
-            }
-        }
-        return -1;
-    }
-
-    function getParentAutoScrollElement(el, includeSelf) {
-        // skip to window
-        if (!el || !el.getBoundingClientRect) return getWindowScrollingElement();
-        var elem = el;
-        var gotSelf = false;
-        do {
-            // we don't need to get elem css if it isn't even overflowing in the first place (performance)
-            if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
-                var elemCSS = css(elem);
-                if (elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == 'auto' || elemCSS.overflowX == 'scroll') || elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == 'auto' || elemCSS.overflowY == 'scroll')) {
-                    if (!elem.getBoundingClientRect || elem === document.body) return getWindowScrollingElement();
-                    if (gotSelf || includeSelf) return elem;
-                    gotSelf = true;
-                }
-            }
-            /* jshint boss:true */
-        } while (elem = elem.parentNode);
-        return getWindowScrollingElement();
-    }
-
-    function extend(dst, src) {
-        if (dst && src) {
-            for (var key in src) {
-                if (src.hasOwnProperty(key)) {
-                    dst[key] = src[key];
-                }
-            }
-        }
-        return dst;
-    }
-
-    function isRectEqual(rect1, rect2) {
-        return Math.round(rect1.top) === Math.round(rect2.top) && Math.round(rect1.left) === Math.round(rect2.left) && Math.round(rect1.height) === Math.round(rect2.height) && Math.round(rect1.width) === Math.round(rect2.width);
-    }
-    var _throttleTimeout;
-
-    function throttle(callback, ms) {
-        return function () {
-            if (!_throttleTimeout) {
-                var args = arguments,
-                    _this = this;
-                if (args.length === 1) {
-                    callback.call(_this, args[0]);
-                } else {
-                    callback.apply(_this, args);
-                }
-                _throttleTimeout = setTimeout(function () {
-                    _throttleTimeout = void 0;
-                }, ms);
-            }
-        };
-    }
-
-    function cancelThrottle() {
-        clearTimeout(_throttleTimeout);
-        _throttleTimeout = void 0;
-    }
-
-    function scrollBy(el, x, y) {
-        el.scrollLeft += x;
-        el.scrollTop += y;
-    }
-
-    function clone(el) {
-        var Polymer = window.Polymer;
-        var $ = window.jQuery || window.Zepto;
-        if (Polymer && Polymer.dom) {
-            return Polymer.dom(el).cloneNode(true);
-        } else if ($) {
-            return $(el).clone(true)[0];
-        } else {
-            return el.cloneNode(true);
-        }
-    }
-
-    function setRect(el, rect) {
-        css(el, 'position', 'absolute');
-        css(el, 'top', rect.top);
-        css(el, 'left', rect.left);
-        css(el, 'width', rect.width);
-        css(el, 'height', rect.height);
-    }
-
-    function unsetRect(el) {
-        css(el, 'position', '');
-        css(el, 'top', '');
-        css(el, 'left', '');
-        css(el, 'width', '');
-        css(el, 'height', '');
-    }
-
-    function getChildContainingRectFromElement(container, options, ghostEl) {
-        var rect = {};
-        Array.from(container.children).forEach(function (child) {
-            var _rect$left, _rect$top, _rect$right, _rect$bottom;
-            if (!closest(child, options.draggable, container, false) || child.animated || child === ghostEl) return;
-            var childRect = getRect(child);
-            rect.left = Math.min((_rect$left = rect.left) !== null && _rect$left !== void 0 ? _rect$left : Infinity, childRect.left);
-            rect.top = Math.min((_rect$top = rect.top) !== null && _rect$top !== void 0 ? _rect$top : Infinity, childRect.top);
-            rect.right = Math.max((_rect$right = rect.right) !== null && _rect$right !== void 0 ? _rect$right : -Infinity, childRect.right);
-            rect.bottom = Math.max((_rect$bottom = rect.bottom) !== null && _rect$bottom !== void 0 ? _rect$bottom : -Infinity, childRect.bottom);
-        });
-        rect.width = rect.right - rect.left;
-        rect.height = rect.bottom - rect.top;
-        rect.x = rect.left;
-        rect.y = rect.top;
-        return rect;
-    }
-    var expando = 'Sortable' + new Date().getTime();
-
-    function AnimationStateManager() {
-        var animationStates = [],
-            animationCallbackId;
-        return {
-            captureAnimationState: function captureAnimationState() {
-                animationStates = [];
-                if (!this.options.animation) return;
-                var children = [].slice.call(this.el.children);
-                children.forEach(function (child) {
-                    if (css(child, 'display') === 'none' || child === Sortable.ghost) return;
-                    animationStates.push({
-                        target: child,
-                        rect: getRect(child)
-                    });
-                    var fromRect = _objectSpread2({}, animationStates[animationStates.length - 1].rect);
-                    // If animating: compensate for current animation
-                    if (child.thisAnimationDuration) {
-                        var childMatrix = matrix(child, true);
-                        if (childMatrix) {
-                            fromRect.top -= childMatrix.f;
-                            fromRect.left -= childMatrix.e;
-                        }
-                    }
-                    child.fromRect = fromRect;
-                });
-            },
-            addAnimationState: function addAnimationState(state) {
-                animationStates.push(state);
-            },
-            removeAnimationState: function removeAnimationState(target) {
-                animationStates.splice(indexOfObject(animationStates, {
-                    target: target
-                }), 1);
-            },
-            animateAll: function animateAll(callback) {
-                var _this = this;
-                if (!this.options.animation) {
-                    clearTimeout(animationCallbackId);
-                    if (typeof callback === 'function') callback();
-                    return;
-                }
-                var animating = false,
-                    animationTime = 0;
-                animationStates.forEach(function (state) {
-                    var time = 0,
-                        target = state.target,
-                        fromRect = target.fromRect,
-                        toRect = getRect(target),
-                        prevFromRect = target.prevFromRect,
-                        prevToRect = target.prevToRect,
-                        animatingRect = state.rect,
-                        targetMatrix = matrix(target, true);
-                    if (targetMatrix) {
-                        // Compensate for current animation
-                        toRect.top -= targetMatrix.f;
-                        toRect.left -= targetMatrix.e;
-                    }
-                    target.toRect = toRect;
-                    if (target.thisAnimationDuration) {
-                        // Could also check if animatingRect is between fromRect and toRect
-                        if (isRectEqual(prevFromRect, toRect) && !isRectEqual(fromRect, toRect) &&
-                            // Make sure animatingRect is on line between toRect & fromRect
-                            (animatingRect.top - toRect.top) / (animatingRect.left - toRect.left) === (fromRect.top - toRect.top) / (fromRect.left - toRect.left)) {
-                            // If returning to same place as started from animation and on same axis
-                            time = calculateRealTime(animatingRect, prevFromRect, prevToRect, _this.options);
-                        }
-                    }
-                    // if fromRect != toRect: animate
-                    if (!isRectEqual(toRect, fromRect)) {
-                        target.prevFromRect = fromRect;
-                        target.prevToRect = toRect;
-                        if (!time) {
-                            time = _this.options.animation;
-                        }
-                        _this.animate(target, animatingRect, toRect, time);
-                    }
-                    if (time) {
-                        animating = true;
-                        animationTime = Math.max(animationTime, time);
-                        clearTimeout(target.animationResetTimer);
-                        target.animationResetTimer = setTimeout(function () {
-                            target.animationTime = 0;
-                            target.prevFromRect = null;
-                            target.fromRect = null;
-                            target.prevToRect = null;
-                            target.thisAnimationDuration = null;
-                        }, time);
-                        target.thisAnimationDuration = time;
-                    }
-                });
-                clearTimeout(animationCallbackId);
-                if (!animating) {
-                    if (typeof callback === 'function') callback();
-                } else {
-                    animationCallbackId = setTimeout(function () {
-                        if (typeof callback === 'function') callback();
-                    }, animationTime);
-                }
-                animationStates = [];
-            },
-            animate: function animate(target, currentRect, toRect, duration) {
-                if (duration) {
-                    css(target, 'transition', '');
-                    css(target, 'transform', '');
-                    var elMatrix = matrix(this.el),
-                        scaleX = elMatrix && elMatrix.a,
-                        scaleY = elMatrix && elMatrix.d,
-                        translateX = (currentRect.left - toRect.left) / (scaleX || 1),
-                        translateY = (currentRect.top - toRect.top) / (scaleY || 1);
-                    target.animatingX = !!translateX;
-                    target.animatingY = !!translateY;
-                    css(target, 'transform', 'translate3d(' + translateX + 'px,' + translateY + 'px,0)');
-                    this.forRepaintDummy = repaint(target); // repaint
-                    css(target, 'transition', 'transform ' + duration + 'ms' + (this.options.easing ? ' ' + this.options.easing : ''));
-                    css(target, 'transform', 'translate3d(0,0,0)');
-                    typeof target.animated === 'number' && clearTimeout(target.animated);
-                    target.animated = setTimeout(function () {
-                        css(target, 'transition', '');
-                        css(target, 'transform', '');
-                        target.animated = false;
-                        target.animatingX = false;
-                        target.animatingY = false;
-                    }, duration);
-                }
-            }
-        };
-    }
-
-    function repaint(target) {
-        return target.offsetWidth;
-    }
-
-    function calculateRealTime(animatingRect, fromRect, toRect, options) {
-        return Math.sqrt(Math.pow(fromRect.top - animatingRect.top, 2) + Math.pow(fromRect.left - animatingRect.left, 2)) / Math.sqrt(Math.pow(fromRect.top - toRect.top, 2) + Math.pow(fromRect.left - toRect.left, 2)) * options.animation;
-    }
-    var plugins = [];
-    var defaults = {
-        initializeByDefault: true
-    };
-    var PluginManager = {
-        mount: function mount(plugin) {
-            // Set default static properties
-            for (var option in defaults) {
-                if (defaults.hasOwnProperty(option) && !(option in plugin)) {
-                    plugin[option] = defaults[option];
-                }
-            }
-            plugins.forEach(function (p) {
-                if (p.pluginName === plugin.pluginName) {
-                    throw "Sortable: Cannot mount plugin ".concat(plugin.pluginName, " more than once");
-                }
-            });
-            plugins.push(plugin);
-        },
-        pluginEvent: function pluginEvent(eventName, sortable, evt) {
-            var _this = this;
-            this.eventCanceled = false;
-            evt.cancel = function () {
-                _this.eventCanceled = true;
-            };
-            var eventNameGlobal = eventName + 'Global';
-            plugins.forEach(function (plugin) {
-                if (!sortable[plugin.pluginName]) return;
-                // Fire global events if it exists in this sortable
-                if (sortable[plugin.pluginName][eventNameGlobal]) {
-                    sortable[plugin.pluginName][eventNameGlobal](_objectSpread2({
-                        sortable: sortable
-                    }, evt));
-                }
-                // Only fire plugin event if plugin is enabled in this sortable,
-                // and plugin has event defined
-                if (sortable.options[plugin.pluginName] && sortable[plugin.pluginName][eventName]) {
-                    sortable[plugin.pluginName][eventName](_objectSpread2({
-                        sortable: sortable
-                    }, evt));
-                }
-            });
-        },
-        initializePlugins: function initializePlugins(sortable, el, defaults, options) {
-            plugins.forEach(function (plugin) {
-                var pluginName = plugin.pluginName;
-                if (!sortable.options[pluginName] && !plugin.initializeByDefault) return;
-                var initialized = new plugin(sortable, el, sortable.options);
-                initialized.sortable = sortable;
-                initialized.options = sortable.options;
-                sortable[pluginName] = initialized;
-                // Add default options from plugin
-                _extends(defaults, initialized.defaults);
-            });
-            for (var option in sortable.options) {
-                if (!sortable.options.hasOwnProperty(option)) continue;
-                var modified = this.modifyOption(sortable, option, sortable.options[option]);
-                if (typeof modified !== 'undefined') {
-                    sortable.options[option] = modified;
-                }
-            }
-        },
-        getEventProperties: function getEventProperties(name, sortable) {
-            var eventProperties = {};
-            plugins.forEach(function (plugin) {
-                if (typeof plugin.eventProperties !== 'function') return;
-                _extends(eventProperties, plugin.eventProperties.call(sortable[plugin.pluginName], name));
-            });
-            return eventProperties;
-        },
-        modifyOption: function modifyOption(sortable, name, value) {
-            var modifiedValue;
-            plugins.forEach(function (plugin) {
-                // Plugin must exist on the Sortable
-                if (!sortable[plugin.pluginName]) return;
-                // If static option listener exists for this option, call in the context of the Sortable's instance of this plugin
-                if (plugin.optionListeners && typeof plugin.optionListeners[name] === 'function') {
-                    modifiedValue = plugin.optionListeners[name].call(sortable[plugin.pluginName], value);
-                }
-            });
-            return modifiedValue;
-        }
-    };
-
-    function dispatchEvent(_ref) {
-        var sortable = _ref.sortable,
-            rootEl = _ref.rootEl,
-            name = _ref.name,
-            targetEl = _ref.targetEl,
-            cloneEl = _ref.cloneEl,
-            toEl = _ref.toEl,
-            fromEl = _ref.fromEl,
-            oldIndex = _ref.oldIndex,
-            newIndex = _ref.newIndex,
-            oldDraggableIndex = _ref.oldDraggableIndex,
-            newDraggableIndex = _ref.newDraggableIndex,
-            originalEvent = _ref.originalEvent,
-            putSortable = _ref.putSortable,
-            extraEventProperties = _ref.extraEventProperties;
-        sortable = sortable || rootEl && rootEl[expando];
-        if (!sortable) return;
-        var evt,
-            options = sortable.options,
-            onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
-        // Support for new CustomEvent feature
-        if (window.CustomEvent && !IE11OrLess && !Edge) {
-            evt = new CustomEvent(name, {
-                bubbles: true,
-                cancelable: true
-            });
-        } else {
-            evt = document.createEvent('Event');
-            evt.initEvent(name, true, true);
-        }
-        evt.to = toEl || rootEl;
-        evt.from = fromEl || rootEl;
-        evt.item = targetEl || rootEl;
-        evt.clone = cloneEl;
-        evt.oldIndex = oldIndex;
-        evt.newIndex = newIndex;
-        evt.oldDraggableIndex = oldDraggableIndex;
-        evt.newDraggableIndex = newDraggableIndex;
-        evt.originalEvent = originalEvent;
-        evt.pullMode = putSortable ? putSortable.lastPutMode : undefined;
-        var allEventProperties = _objectSpread2(_objectSpread2({}, extraEventProperties), PluginManager.getEventProperties(name, sortable));
-        for (var option in allEventProperties) {
-            evt[option] = allEventProperties[option];
-        }
-        if (rootEl) {
-            rootEl.dispatchEvent(evt);
-        }
-        if (options[onName]) {
-            options[onName].call(sortable, evt);
-        }
-    }
-    var _excluded = ["evt"];
-    var pluginEvent = function pluginEvent(eventName, sortable) {
-        var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-            originalEvent = _ref.evt,
-            data = _objectWithoutProperties(_ref, _excluded);
-        PluginManager.pluginEvent.bind(Sortable)(eventName, sortable, _objectSpread2({
-            dragEl: dragEl,
-            parentEl: parentEl,
-            ghostEl: ghostEl,
-            rootEl: rootEl,
-            nextEl: nextEl,
-            lastDownEl: lastDownEl,
-            cloneEl: cloneEl,
-            cloneHidden: cloneHidden,
-            dragStarted: moved,
-            putSortable: putSortable,
-            activeSortable: Sortable.active,
-            originalEvent: originalEvent,
-            oldIndex: oldIndex,
-            oldDraggableIndex: oldDraggableIndex,
-            newIndex: newIndex,
-            newDraggableIndex: newDraggableIndex,
-            hideGhostForTarget: _hideGhostForTarget,
-            unhideGhostForTarget: _unhideGhostForTarget,
-            cloneNowHidden: function cloneNowHidden() {
-                cloneHidden = true;
-            },
-            cloneNowShown: function cloneNowShown() {
-                cloneHidden = false;
-            },
-            dispatchSortableEvent: function dispatchSortableEvent(name) {
-                _dispatchEvent({
-                    sortable: sortable,
-                    name: name,
-                    originalEvent: originalEvent
-                });
-            }
-        }, data));
-    };
-
-    function _dispatchEvent(info) {
-        dispatchEvent(_objectSpread2({
-            putSortable: putSortable,
-            cloneEl: cloneEl,
-            targetEl: dragEl,
-            rootEl: rootEl,
-            oldIndex: oldIndex,
-            oldDraggableIndex: oldDraggableIndex,
-            newIndex: newIndex,
-            newDraggableIndex: newDraggableIndex
-        }, info));
-    }
-    var dragEl,
-        parentEl,
-        ghostEl,
-        rootEl,
-        nextEl,
-        lastDownEl,
-        cloneEl,
-        cloneHidden,
-        oldIndex,
-        newIndex,
-        oldDraggableIndex,
-        newDraggableIndex,
-        activeGroup,
-        putSortable,
-        awaitingDragStarted = false,
-        ignoreNextClick = false,
-        sortables = [],
-        tapEvt,
-        touchEvt,
-        lastDx,
-        lastDy,
-        tapDistanceLeft,
-        tapDistanceTop,
-        moved,
-        lastTarget,
-        lastDirection,
-        pastFirstInvertThresh = false,
-        isCircumstantialInvert = false,
-        targetMoveDistance,
-        // For positioning ghost absolutely
-        ghostRelativeParent,
-        ghostRelativeParentInitialScroll = [],
-        // (left, top)
-        _silent = false,
-        savedInputChecked = [];
-    /** @const */
-    var documentExists = typeof document !== 'undefined',
-        PositionGhostAbsolutely = IOS,
-        CSSFloatProperty = Edge || IE11OrLess ? 'cssFloat' : 'float',
-        // This will not pass for IE9, because IE9 DnD only works on anchors
-        supportDraggable = documentExists && !ChromeForAndroid && !IOS && 'draggable' in document.createElement('div'),
-        supportCssPointerEvents = function () {
-            if (!documentExists) return;
-            // false when <= IE11
-            if (IE11OrLess) {
-                return false;
-            }
-            var el = document.createElement('x');
-            el.style.cssText = 'pointer-events:auto';
-            return el.style.pointerEvents === 'auto';
-        }(),
-        _detectDirection = function _detectDirection(el, options) {
-            var elCSS = css(el),
-                elWidth = parseInt(elCSS.width) - parseInt(elCSS.paddingLeft) - parseInt(elCSS.paddingRight) - parseInt(elCSS.borderLeftWidth) - parseInt(elCSS.borderRightWidth),
-                child1 = getChild(el, 0, options),
-                child2 = getChild(el, 1, options),
-                firstChildCSS = child1 && css(child1),
-                secondChildCSS = child2 && css(child2),
-                firstChildWidth = firstChildCSS && parseInt(firstChildCSS.marginLeft) + parseInt(firstChildCSS.marginRight) + getRect(child1).width,
-                secondChildWidth = secondChildCSS && parseInt(secondChildCSS.marginLeft) + parseInt(secondChildCSS.marginRight) + getRect(child2).width;
-            if (elCSS.display === 'flex') {
-                return elCSS.flexDirection === 'column' || elCSS.flexDirection === 'column-reverse' ? 'vertical' : 'horizontal';
-            }
-            if (elCSS.display === 'grid') {
-                return elCSS.gridTemplateColumns.split(' ').length <= 1 ? 'vertical' : 'horizontal';
-            }
-            if (child1 && firstChildCSS["float"] && firstChildCSS["float"] !== 'none') {
-                var touchingSideChild2 = firstChildCSS["float"] === 'left' ? 'left' : 'right';
-                return child2 && (secondChildCSS.clear === 'both' || secondChildCSS.clear === touchingSideChild2) ? 'vertical' : 'horizontal';
-            }
-            return child1 && (firstChildCSS.display === 'block' || firstChildCSS.display === 'flex' || firstChildCSS.display === 'table' || firstChildCSS.display === 'grid' || firstChildWidth >= elWidth && elCSS[CSSFloatProperty] === 'none' || child2 && elCSS[CSSFloatProperty] === 'none' && firstChildWidth + secondChildWidth > elWidth) ? 'vertical' : 'horizontal';
-        },
-        _dragElInRowColumn = function _dragElInRowColumn(dragRect, targetRect, vertical) {
-            var dragElS1Opp = vertical ? dragRect.left : dragRect.top,
-                dragElS2Opp = vertical ? dragRect.right : dragRect.bottom,
-                dragElOppLength = vertical ? dragRect.width : dragRect.height,
-                targetS1Opp = vertical ? targetRect.left : targetRect.top,
-                targetS2Opp = vertical ? targetRect.right : targetRect.bottom,
-                targetOppLength = vertical ? targetRect.width : targetRect.height;
-            return dragElS1Opp === targetS1Opp || dragElS2Opp === targetS2Opp || dragElS1Opp + dragElOppLength / 2 === targetS1Opp + targetOppLength / 2;
-        },
-        /**
-         * Detects first nearest empty sortable to X and Y position using emptyInsertThreshold.
-         * @param  {Number} x      X position
-         * @param  {Number} y      Y position
-         * @return {HTMLElement}   Element of the first found nearest Sortable
-         */
-        _detectNearestEmptySortable = function _detectNearestEmptySortable(x, y) {
-            var ret;
-            sortables.some(function (sortable) {
-                var threshold = sortable[expando].options.emptyInsertThreshold;
-                if (!threshold || lastChild(sortable)) return;
-                var rect = getRect(sortable),
-                    insideHorizontally = x >= rect.left - threshold && x <= rect.right + threshold,
-                    insideVertically = y >= rect.top - threshold && y <= rect.bottom + threshold;
-                if (insideHorizontally && insideVertically) {
-                    return ret = sortable;
-                }
-            });
-            return ret;
-        },
-        _prepareGroup = function _prepareGroup(options) {
-            function toFn(value, pull) {
-                return function (to, from, dragEl, evt) {
-                    var sameGroup = to.options.group.name && from.options.group.name && to.options.group.name === from.options.group.name;
-                    if (value == null && (pull || sameGroup)) {
-                        // Default pull value
-                        // Default pull and put value if same group
-                        return true;
-                    } else if (value == null || value === false) {
-                        return false;
-                    } else if (pull && value === 'clone') {
-                        return value;
-                    } else if (typeof value === 'function') {
-                        return toFn(value(to, from, dragEl, evt), pull)(to, from, dragEl, evt);
-                    } else {
-                        var otherGroup = (pull ? to : from).options.group.name;
-                        return value === true || typeof value === 'string' && value === otherGroup || value.join && value.indexOf(otherGroup) > -1;
-                    }
-                };
-            }
-            var group = {};
-            var originalGroup = options.group;
-            if (!originalGroup || _typeof(originalGroup) != 'object') {
-                originalGroup = {
-                    name: originalGroup
-                };
-            }
-            group.name = originalGroup.name;
-            group.checkPull = toFn(originalGroup.pull, true);
-            group.checkPut = toFn(originalGroup.put);
-            group.revertClone = originalGroup.revertClone;
-            options.group = group;
-        },
-        _hideGhostForTarget = function _hideGhostForTarget() {
-            if (!supportCssPointerEvents && ghostEl) {
-                css(ghostEl, 'display', 'none');
-            }
-        },
-        _unhideGhostForTarget = function _unhideGhostForTarget() {
-            if (!supportCssPointerEvents && ghostEl) {
-                css(ghostEl, 'display', '');
-            }
-        };
-    // #1184 fix - Prevent click event on fallback if dragged but item not changed position
-    if (documentExists && !ChromeForAndroid) {
-        document.addEventListener('click', function (evt) {
-            if (ignoreNextClick) {
-                evt.preventDefault();
-                evt.stopPropagation && evt.stopPropagation();
-                evt.stopImmediatePropagation && evt.stopImmediatePropagation();
-                ignoreNextClick = false;
-                return false;
-            }
-        }, true);
-    }
-    var nearestEmptyInsertDetectEvent = function nearestEmptyInsertDetectEvent(evt) {
-        if (dragEl) {
-            evt = evt.touches ? evt.touches[0] : evt;
-            var nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
-            if (nearest) {
-                // Create imitation event
-                var event = {};
-                for (var i in evt) {
-                    if (evt.hasOwnProperty(i)) {
-                        event[i] = evt[i];
-                    }
-                }
-                event.target = event.rootEl = nearest;
-                event.preventDefault = void 0;
-                event.stopPropagation = void 0;
-                nearest[expando]._onDragOver(event);
-            }
-        }
-    };
-    var _checkOutsideTargetEl = function _checkOutsideTargetEl(evt) {
-        if (dragEl) {
-            dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
-        }
-    };
-    /**
-     * @class  Sortable
-     * @param  {HTMLElement}  el
-     * @param  {Object}       [options]
-     */
-    function Sortable(el, options) {
-        if (!(el && el.nodeType && el.nodeType === 1)) {
-            throw "Sortable: `el` must be an HTMLElement, not ".concat({}.toString.call(el));
-        }
-        this.el = el; // root element
-        this.options = options = _extends({}, options);
-        // Export instance
-        el[expando] = this;
-        var defaults = {
-            group: null,
-            sort: true,
-            disabled: false,
-            store: null,
-            handle: null,
-            draggable: /^[uo]l$/i.test(el.nodeName) ? '>li' : '>*',
-            swapThreshold: 1,
-            // percentage; 0 <= x <= 1
-            invertSwap: false,
-            // invert always
-            invertedSwapThreshold: null,
-            // will be set to same as swapThreshold if default
-            removeCloneOnHide: true,
-            direction: function direction() {
-                return _detectDirection(el, this.options);
-            },
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen',
-            dragClass: 'sortable-drag',
-            ignore: 'a, img',
-            filter: null,
-            preventOnFilter: true,
-            animation: 0,
-            easing: null,
-            setData: function setData(dataTransfer, dragEl) {
-                dataTransfer.setData('Text', dragEl.textContent);
-            },
-            dropBubble: false,
-            dragoverBubble: false,
-            dataIdAttr: 'data-id',
-            delay: 0,
-            delayOnTouchOnly: false,
-            touchStartThreshold: (Number.parseInt ? Number : window).parseInt(window.devicePixelRatio, 10) || 1,
-            forceFallback: false,
-            fallbackClass: 'sortable-fallback',
-            fallbackOnBody: false,
-            fallbackTolerance: 0,
-            fallbackOffset: {
-                x: 0,
-                y: 0
-            },
-            supportPointer: Sortable.supportPointer !== false && 'PointerEvent' in window && !Safari,
-            emptyInsertThreshold: 5
-        };
-        PluginManager.initializePlugins(this, el, defaults);
-        // Set default options
-        for (var name in defaults) {
-            !(name in options) && (options[name] = defaults[name]);
-        }
-        _prepareGroup(options);
-        // Bind all private methods
-        for (var fn in this) {
-            if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-                this[fn] = this[fn].bind(this);
-            }
-        }
-        // Setup drag mode
-        this.nativeDraggable = options.forceFallback ? false : supportDraggable;
-        if (this.nativeDraggable) {
-            // Touch start threshold cannot be greater than the native dragstart threshold
-            this.options.touchStartThreshold = 1;
-        }
-        // Bind events
-        if (options.supportPointer) {
-            on(el, 'pointerdown', this._onTapStart);
-        } else {
-            on(el, 'mousedown', this._onTapStart);
-            on(el, 'touchstart', this._onTapStart);
-        }
-        if (this.nativeDraggable) {
-            on(el, 'dragover', this);
-            on(el, 'dragenter', this);
-        }
-        sortables.push(this.el);
-        // Restore sorting
-        options.store && options.store.get && this.sort(options.store.get(this) || []);
-        // Add animation state manager
-        _extends(this, AnimationStateManager());
-    }
-    Sortable.prototype = /** @lends Sortable.prototype */ {
-        constructor: Sortable,
-        _isOutsideThisEl: function _isOutsideThisEl(target) {
-            if (!this.el.contains(target) && target !== this.el) {
-                lastTarget = null;
-            }
-        },
-        _getDirection: function _getDirection(evt, target) {
-            return typeof this.options.direction === 'function' ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
-        },
-        _onTapStart: function _onTapStart( /** Event|TouchEvent */ evt) {
-            if (!evt.cancelable) return;
-            var _this = this,
-                el = this.el,
-                options = this.options,
-                preventOnFilter = options.preventOnFilter,
-                type = evt.type,
-                touch = evt.touches && evt.touches[0] || evt.pointerType && evt.pointerType === 'touch' && evt,
-                target = (touch || evt).target,
-                originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0] || evt.composedPath && evt.composedPath()[0]) || target,
-                filter = options.filter;
-            _saveInputCheckedState(el);
-            // Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
-            if (dragEl) {
-                return;
-            }
-            if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
-                return; // only left button and enabled
-            }
-            // cancel dnd if original target is content editable
-            if (originalTarget.isContentEditable) {
-                return;
-            }
-            // Safari ignores further event handling after mousedown
-            if (!this.nativeDraggable && Safari && target && target.tagName.toUpperCase() === 'SELECT') {
-                return;
-            }
-            target = closest(target, options.draggable, el, false);
-            if (target && target.animated) {
-                return;
-            }
-            if (lastDownEl === target) {
-                // Ignoring duplicate `down`
-                return;
-            }
-            // Get the index of the dragged element within its parent
-            oldIndex = index(target);
-            oldDraggableIndex = index(target, options.draggable);
-            // Check filter
-            if (typeof filter === 'function') {
-                if (filter.call(this, evt, target, this)) {
-                    _dispatchEvent({
-                        sortable: _this,
-                        rootEl: originalTarget,
-                        name: 'filter',
-                        targetEl: target,
-                        toEl: el,
-                        fromEl: el
-                    });
-                    pluginEvent('filter', _this, {
-                        evt: evt
-                    });
-                    preventOnFilter && evt.cancelable && evt.preventDefault();
-                    return; // cancel dnd
-                }
-            } else if (filter) {
-                filter = filter.split(',').some(function (criteria) {
-                    criteria = closest(originalTarget, criteria.trim(), el, false);
-                    if (criteria) {
-                        _dispatchEvent({
-                            sortable: _this,
-                            rootEl: criteria,
-                            name: 'filter',
-                            targetEl: target,
-                            fromEl: el,
-                            toEl: el
-                        });
-                        pluginEvent('filter', _this, {
-                            evt: evt
-                        });
-                        return true;
-                    }
-                });
-                if (filter) {
-                    preventOnFilter && evt.cancelable && evt.preventDefault();
-                    return; // cancel dnd
-                }
-            }
-            if (options.handle && !closest(originalTarget, options.handle, el, false)) {
-                return;
-            }
-            // Prepare `dragstart`
-            this._prepareDragStart(evt, touch, target);
-        },
-        _prepareDragStart: function _prepareDragStart( /** Event */ evt, /** Touch */ touch, /** HTMLElement */ target) {
-            var _this = this,
-                el = _this.el,
-                options = _this.options,
-                ownerDocument = el.ownerDocument,
-                dragStartFn;
-            if (target && !dragEl && target.parentNode === el) {
-                var dragRect = getRect(target);
-                rootEl = el;
-                dragEl = target;
-                parentEl = dragEl.parentNode;
-                nextEl = dragEl.nextSibling;
-                lastDownEl = target;
-                activeGroup = options.group;
-                Sortable.dragged = dragEl;
-                tapEvt = {
-                    target: dragEl,
-                    clientX: (touch || evt).clientX,
-                    clientY: (touch || evt).clientY
-                };
-                tapDistanceLeft = tapEvt.clientX - dragRect.left;
-                tapDistanceTop = tapEvt.clientY - dragRect.top;
-                this._lastX = (touch || evt).clientX;
-                this._lastY = (touch || evt).clientY;
-                dragEl.style['will-change'] = 'all';
-                dragStartFn = function dragStartFn() {
-                    pluginEvent('delayEnded', _this, {
-                        evt: evt
-                    });
-                    if (Sortable.eventCanceled) {
-                        _this._onDrop();
-                        return;
-                    }
-                    // Delayed drag has been triggered
-                    // we can re-enable the events: touchmove/mousemove
-                    _this._disableDelayedDragEvents();
-                    if (!FireFox && _this.nativeDraggable) {
-                        dragEl.draggable = true;
-                    }
-                    // Bind the events: dragstart/dragend
-                    _this._triggerDragStart(evt, touch);
-                    // Drag start event
-                    _dispatchEvent({
-                        sortable: _this,
-                        name: 'choose',
-                        originalEvent: evt
-                    });
-                    // Chosen item
-                    toggleClass(dragEl, options.chosenClass, true);
-                };
-                // Disable "draggable"
-                options.ignore.split(',').forEach(function (criteria) {
-                    find(dragEl, criteria.trim(), _disableDraggable);
-                });
-                on(ownerDocument, 'dragover', nearestEmptyInsertDetectEvent);
-                on(ownerDocument, 'mousemove', nearestEmptyInsertDetectEvent);
-                on(ownerDocument, 'touchmove', nearestEmptyInsertDetectEvent);
-                on(ownerDocument, 'mouseup', _this._onDrop);
-                on(ownerDocument, 'touchend', _this._onDrop);
-                on(ownerDocument, 'touchcancel', _this._onDrop);
-                // Make dragEl draggable (must be before delay for FireFox)
-                if (FireFox && this.nativeDraggable) {
-                    this.options.touchStartThreshold = 4;
-                    dragEl.draggable = true;
-                }
-                pluginEvent('delayStart', this, {
-                    evt: evt
-                });
-                // Delay is impossible for native DnD in Edge or IE
-                if (options.delay && (!options.delayOnTouchOnly || touch) && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
-                    if (Sortable.eventCanceled) {
-                        this._onDrop();
-                        return;
-                    }
-                    // If the user moves the pointer or let go the click or touch
-                    // before the delay has been reached:
-                    // disable the delayed drag
-                    on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
-                    on(ownerDocument, 'touchend', _this._disableDelayedDrag);
-                    on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
-                    on(ownerDocument, 'mousemove', _this._delayedDragTouchMoveHandler);
-                    on(ownerDocument, 'touchmove', _this._delayedDragTouchMoveHandler);
-                    options.supportPointer && on(ownerDocument, 'pointermove', _this._delayedDragTouchMoveHandler);
-                    _this._dragStartTimer = setTimeout(dragStartFn, options.delay);
-                } else {
-                    dragStartFn();
-                }
-            }
-        },
-        _delayedDragTouchMoveHandler: function _delayedDragTouchMoveHandler( /** TouchEvent|PointerEvent **/ e) {
-            var touch = e.touches ? e.touches[0] : e;
-            if (Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) >= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))) {
-                this._disableDelayedDrag();
-            }
-        },
-        _disableDelayedDrag: function _disableDelayedDrag() {
-            dragEl && _disableDraggable(dragEl);
-            clearTimeout(this._dragStartTimer);
-            this._disableDelayedDragEvents();
-        },
-        _disableDelayedDragEvents: function _disableDelayedDragEvents() {
-            var ownerDocument = this.el.ownerDocument;
-            off(ownerDocument, 'mouseup', this._disableDelayedDrag);
-            off(ownerDocument, 'touchend', this._disableDelayedDrag);
-            off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
-            off(ownerDocument, 'mousemove', this._delayedDragTouchMoveHandler);
-            off(ownerDocument, 'touchmove', this._delayedDragTouchMoveHandler);
-            off(ownerDocument, 'pointermove', this._delayedDragTouchMoveHandler);
-        },
-        _triggerDragStart: function _triggerDragStart( /** Event */ evt, /** Touch */ touch) {
-            touch = touch || evt.pointerType == 'touch' && evt;
-            if (!this.nativeDraggable || touch) {
-                if (this.options.supportPointer) {
-                    on(document, 'pointermove', this._onTouchMove);
-                } else if (touch) {
-                    on(document, 'touchmove', this._onTouchMove);
-                } else {
-                    on(document, 'mousemove', this._onTouchMove);
-                }
-            } else {
-                on(dragEl, 'dragend', this);
-                on(rootEl, 'dragstart', this._onDragStart);
-            }
-            try {
-                if (document.selection) {
-                    // Timeout neccessary for IE9
-                    _nextTick(function () {
-                        document.selection.empty();
-                    });
-                } else {
-                    window.getSelection().removeAllRanges();
-                }
-            } catch (err) {}
-        },
-        _dragStarted: function _dragStarted(fallback, evt) {
-            awaitingDragStarted = false;
-            if (rootEl && dragEl) {
-                pluginEvent('dragStarted', this, {
-                    evt: evt
-                });
-                if (this.nativeDraggable) {
-                    on(document, 'dragover', _checkOutsideTargetEl);
-                }
-                var options = this.options;
-                // Apply effect
-                !fallback && toggleClass(dragEl, options.dragClass, false);
-                toggleClass(dragEl, options.ghostClass, true);
-                Sortable.active = this;
-                fallback && this._appendGhost();
-                // Drag start event
-                _dispatchEvent({
-                    sortable: this,
-                    name: 'start',
-                    originalEvent: evt
-                });
-            } else {
-                this._nulling();
-            }
-        },
-        _emulateDragOver: function _emulateDragOver() {
-            if (touchEvt) {
-                this._lastX = touchEvt.clientX;
-                this._lastY = touchEvt.clientY;
-                _hideGhostForTarget();
-                var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-                var parent = target;
-                while (target && target.shadowRoot) {
-                    target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
-                    if (target === parent) break;
-                    parent = target;
-                }
-                dragEl.parentNode[expando]._isOutsideThisEl(target);
-                if (parent) {
-                    do {
-                        if (parent[expando]) {
-                            var inserted = void 0;
-                            inserted = parent[expando]._onDragOver({
-                                clientX: touchEvt.clientX,
-                                clientY: touchEvt.clientY,
-                                target: target,
-                                rootEl: parent
-                            });
-                            if (inserted && !this.options.dragoverBubble) {
-                                break;
-                            }
-                        }
-                        target = parent; // store last element
-                    }
-                    /* jshint boss:true */
-                    while (parent = getParentOrHost(parent));
-                }
-                _unhideGhostForTarget();
-            }
-        },
-        _onTouchMove: function _onTouchMove( /**TouchEvent*/ evt) {
-            if (tapEvt) {
-                var options = this.options,
-                    fallbackTolerance = options.fallbackTolerance,
-                    fallbackOffset = options.fallbackOffset,
-                    touch = evt.touches ? evt.touches[0] : evt,
-                    ghostMatrix = ghostEl && matrix(ghostEl, true),
-                    scaleX = ghostEl && ghostMatrix && ghostMatrix.a,
-                    scaleY = ghostEl && ghostMatrix && ghostMatrix.d,
-                    relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && getRelativeScrollOffset(ghostRelativeParent),
-                    dx = (touch.clientX - tapEvt.clientX + fallbackOffset.x) / (scaleX || 1) + (relativeScrollOffset ? relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0] : 0) / (scaleX || 1),
-                    dy = (touch.clientY - tapEvt.clientY + fallbackOffset.y) / (scaleY || 1) + (relativeScrollOffset ? relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1] : 0) / (scaleY || 1);
-                // only set the status to dragging, when we are actually dragging
-                if (!Sortable.active && !awaitingDragStarted) {
-                    if (fallbackTolerance && Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY)) < fallbackTolerance) {
-                        return;
-                    }
-                    this._onDragStart(evt, true);
-                }
-                if (ghostEl) {
-                    if (ghostMatrix) {
-                        ghostMatrix.e += dx - (lastDx || 0);
-                        ghostMatrix.f += dy - (lastDy || 0);
-                    } else {
-                        ghostMatrix = {
-                            a: 1,
-                            b: 0,
-                            c: 0,
-                            d: 1,
-                            e: dx,
-                            f: dy
-                        };
-                    }
-                    var cssMatrix = "matrix(".concat(ghostMatrix.a, ",").concat(ghostMatrix.b, ",").concat(ghostMatrix.c, ",").concat(ghostMatrix.d, ",").concat(ghostMatrix.e, ",").concat(ghostMatrix.f, ")");
-                    css(ghostEl, 'webkitTransform', cssMatrix);
-                    css(ghostEl, 'mozTransform', cssMatrix);
-                    css(ghostEl, 'msTransform', cssMatrix);
-                    css(ghostEl, 'transform', cssMatrix);
-                    lastDx = dx;
-                    lastDy = dy;
-                    touchEvt = touch;
-                }
-                evt.cancelable && evt.preventDefault();
-            }
-        },
-        _appendGhost: function _appendGhost() {
-            // Bug if using scale(): https://stackoverflow.com/questions/2637058
-            // Not being adjusted for
-            if (!ghostEl) {
-                var container = this.options.fallbackOnBody ? document.body : rootEl,
-                    rect = getRect(dragEl, true, PositionGhostAbsolutely, true, container),
-                    options = this.options;
-                // Position absolutely
-                if (PositionGhostAbsolutely) {
-                    // Get relatively positioned parent
-                    ghostRelativeParent = container;
-                    while (css(ghostRelativeParent, 'position') === 'static' && css(ghostRelativeParent, 'transform') === 'none' && ghostRelativeParent !== document) {
-                        ghostRelativeParent = ghostRelativeParent.parentNode;
-                    }
-                    if (ghostRelativeParent !== document.body && ghostRelativeParent !== document.documentElement) {
-                        if (ghostRelativeParent === document) ghostRelativeParent = getWindowScrollingElement();
-                        rect.top += ghostRelativeParent.scrollTop;
-                        rect.left += ghostRelativeParent.scrollLeft;
-                    } else {
-                        ghostRelativeParent = getWindowScrollingElement();
-                    }
-                    ghostRelativeParentInitialScroll = getRelativeScrollOffset(ghostRelativeParent);
-                }
-                ghostEl = dragEl.cloneNode(true);
-                toggleClass(ghostEl, options.ghostClass, false);
-                toggleClass(ghostEl, options.fallbackClass, true);
-                toggleClass(ghostEl, options.dragClass, true);
-                css(ghostEl, 'transition', '');
-                css(ghostEl, 'transform', '');
-                css(ghostEl, 'box-sizing', 'border-box');
-                css(ghostEl, 'margin', 0);
-                css(ghostEl, 'top', rect.top);
-                css(ghostEl, 'left', rect.left);
-                css(ghostEl, 'width', rect.width);
-                css(ghostEl, 'height', rect.height);
-                css(ghostEl, 'opacity', '0.8');
-                css(ghostEl, 'position', PositionGhostAbsolutely ? 'absolute' : 'fixed');
-                css(ghostEl, 'zIndex', '100000');
-                css(ghostEl, 'pointerEvents', 'none');
-                Sortable.ghost = ghostEl;
-                container.appendChild(ghostEl);
-                // Set transform-origin
-                css(ghostEl, 'transform-origin', tapDistanceLeft / parseInt(ghostEl.style.width) * 100 + '% ' + tapDistanceTop / parseInt(ghostEl.style.height) * 100 + '%');
-            }
-        },
-        _onDragStart: function _onDragStart( /**Event*/ evt, /**boolean*/ fallback) {
-            var _this = this;
-            var dataTransfer = evt.dataTransfer;
-            var options = _this.options;
-            pluginEvent('dragStart', this, {
-                evt: evt
-            });
-            if (Sortable.eventCanceled) {
-                this._onDrop();
-                return;
-            }
-            pluginEvent('setupClone', this);
-            if (!Sortable.eventCanceled) {
-                cloneEl = clone(dragEl);
-                cloneEl.removeAttribute("id");
-                cloneEl.draggable = false;
-                cloneEl.style['will-change'] = '';
-                this._hideClone();
-                toggleClass(cloneEl, this.options.chosenClass, false);
-                Sortable.clone = cloneEl;
-            }
-            // #1143: IFrame support workaround
-            _this.cloneId = _nextTick(function () {
-                pluginEvent('clone', _this);
-                if (Sortable.eventCanceled) return;
-                if (!_this.options.removeCloneOnHide) {
-                    rootEl.insertBefore(cloneEl, dragEl);
-                }
-                _this._hideClone();
-                _dispatchEvent({
-                    sortable: _this,
-                    name: 'clone'
-                });
-            });
-            !fallback && toggleClass(dragEl, options.dragClass, true);
-            // Set proper drop events
-            if (fallback) {
-                ignoreNextClick = true;
-                _this._loopId = setInterval(_this._emulateDragOver, 50);
-            } else {
-                // Undo what was set in _prepareDragStart before drag started
-                off(document, 'mouseup', _this._onDrop);
-                off(document, 'touchend', _this._onDrop);
-                off(document, 'touchcancel', _this._onDrop);
-                if (dataTransfer) {
-                    dataTransfer.effectAllowed = 'move';
-                    options.setData && options.setData.call(_this, dataTransfer, dragEl);
-                }
-                on(document, 'drop', _this);
-                // #1276 fix:
-                css(dragEl, 'transform', 'translateZ(0)');
-            }
-            awaitingDragStarted = true;
-            _this._dragStartId = _nextTick(_this._dragStarted.bind(_this, fallback, evt));
-            on(document, 'selectstart', _this);
-            moved = true;
-            if (Safari) {
-                css(document.body, 'user-select', 'none');
-            }
-        },
-        // Returns true - if no further action is needed (either inserted or another condition)
-        _onDragOver: function _onDragOver( /**Event*/ evt) {
-            var el = this.el,
-                target = evt.target,
-                dragRect,
-                targetRect,
-                revert,
-                options = this.options,
-                group = options.group,
-                activeSortable = Sortable.active,
-                isOwner = activeGroup === group,
-                canSort = options.sort,
-                fromSortable = putSortable || activeSortable,
-                vertical,
-                _this = this,
-                completedFired = false;
-            if (_silent) return;
-
-            function dragOverEvent(name, extra) {
-                pluginEvent(name, _this, _objectSpread2({
-                    evt: evt,
-                    isOwner: isOwner,
-                    axis: vertical ? 'vertical' : 'horizontal',
-                    revert: revert,
-                    dragRect: dragRect,
-                    targetRect: targetRect,
-                    canSort: canSort,
-                    fromSortable: fromSortable,
-                    target: target,
-                    completed: completed,
-                    onMove: function onMove(target, after) {
-                        return _onMove(rootEl, el, dragEl, dragRect, target, getRect(target), evt, after);
-                    },
-                    changed: changed
-                }, extra));
-            }
-            // Capture animation state
-            function capture() {
-                dragOverEvent('dragOverAnimationCapture');
-                _this.captureAnimationState();
-                if (_this !== fromSortable) {
-                    fromSortable.captureAnimationState();
-                }
-            }
-            // Return invocation when dragEl is inserted (or completed)
-            function completed(insertion) {
-                dragOverEvent('dragOverCompleted', {
-                    insertion: insertion
-                });
-                if (insertion) {
-                    // Clones must be hidden before folding animation to capture dragRectAbsolute properly
-                    if (isOwner) {
-                        activeSortable._hideClone();
-                    } else {
-                        activeSortable._showClone(_this);
-                    }
-                    if (_this !== fromSortable) {
-                        // Set ghost class to new sortable's ghost class
-                        toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : activeSortable.options.ghostClass, false);
-                        toggleClass(dragEl, options.ghostClass, true);
-                    }
-                    if (putSortable !== _this && _this !== Sortable.active) {
-                        putSortable = _this;
-                    } else if (_this === Sortable.active && putSortable) {
-                        putSortable = null;
-                    }
-                    // Animation
-                    if (fromSortable === _this) {
-                        _this._ignoreWhileAnimating = target;
-                    }
-                    _this.animateAll(function () {
-                        dragOverEvent('dragOverAnimationComplete');
-                        _this._ignoreWhileAnimating = null;
-                    });
-                    if (_this !== fromSortable) {
-                        fromSortable.animateAll();
-                        fromSortable._ignoreWhileAnimating = null;
-                    }
-                }
-                // Null lastTarget if it is not inside a previously swapped element
-                if (target === dragEl && !dragEl.animated || target === el && !target.animated) {
-                    lastTarget = null;
-                }
-                // no bubbling and not fallback
-                if (!options.dragoverBubble && !evt.rootEl && target !== document) {
-                    dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
-                    // Do not detect for empty insert if already inserted
-                    !insertion && nearestEmptyInsertDetectEvent(evt);
-                }!options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
-                return completedFired = true;
-            }
-            // Call when dragEl has been inserted
-            function changed() {
-                newIndex = index(dragEl);
-                newDraggableIndex = index(dragEl, options.draggable);
-                _dispatchEvent({
-                    sortable: _this,
-                    name: 'change',
-                    toEl: el,
-                    newIndex: newIndex,
-                    newDraggableIndex: newDraggableIndex,
-                    originalEvent: evt
-                });
-            }
-            if (evt.preventDefault !== void 0) {
-                evt.cancelable && evt.preventDefault();
-            }
-            target = closest(target, options.draggable, el, true);
-            dragOverEvent('dragOver');
-            if (Sortable.eventCanceled) return completedFired;
-            if (dragEl.contains(evt.target) || target.animated && target.animatingX && target.animatingY || _this._ignoreWhileAnimating === target) {
-                return completed(false);
-            }
-            ignoreNextClick = false;
-            if (activeSortable && !options.disabled && (isOwner ? canSort || (revert = parentEl !== rootEl) // Reverting item into the original list
-                    : putSortable === this || (this.lastPutMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) && group.checkPut(this, activeSortable, dragEl, evt))) {
-                vertical = this._getDirection(evt, target) === 'vertical';
-                dragRect = getRect(dragEl);
-                dragOverEvent('dragOverValid');
-                if (Sortable.eventCanceled) return completedFired;
-                if (revert) {
-                    parentEl = rootEl; // actualization
-                    capture();
-                    this._hideClone();
-                    dragOverEvent('revert');
-                    if (!Sortable.eventCanceled) {
-                        if (nextEl) {
-                            rootEl.insertBefore(dragEl, nextEl);
-                        } else {
-                            rootEl.appendChild(dragEl);
-                        }
-                    }
-                    return completed(true);
-                }
-                var elLastChild = lastChild(el, options.draggable);
-                if (!elLastChild || _ghostIsLast(evt, vertical, this) && !elLastChild.animated) {
-                    // Insert to end of list
-                    // If already at end of list: Do not insert
-                    if (elLastChild === dragEl) {
-                        return completed(false);
-                    }
-                    // if there is a last element, it is the target
-                    if (elLastChild && el === evt.target) {
-                        target = elLastChild;
-                    }
-                    if (target) {
-                        targetRect = getRect(target);
-                    }
-                    if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
-                        capture();
-                        if (elLastChild && elLastChild.nextSibling) {
-                            // the last draggable element is not the last node
-                            el.insertBefore(dragEl, elLastChild.nextSibling);
-                        } else {
-                            el.appendChild(dragEl);
-                        }
-                        parentEl = el; // actualization
-                        changed();
-                        return completed(true);
-                    }
-                } else if (elLastChild && _ghostIsFirst(evt, vertical, this)) {
-                    // Insert to start of list
-                    var firstChild = getChild(el, 0, options, true);
-                    if (firstChild === dragEl) {
-                        return completed(false);
-                    }
-                    target = firstChild;
-                    targetRect = getRect(target);
-                    if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, false) !== false) {
-                        capture();
-                        el.insertBefore(dragEl, firstChild);
-                        parentEl = el; // actualization
-                        changed();
-                        return completed(true);
-                    }
-                } else if (target.parentNode === el) {
-                    targetRect = getRect(target);
-                    var direction = 0,
-                        targetBeforeFirstSwap,
-                        differentLevel = dragEl.parentNode !== el,
-                        differentRowCol = !_dragElInRowColumn(dragEl.animated && dragEl.toRect || dragRect, target.animated && target.toRect || targetRect, vertical),
-                        side1 = vertical ? 'top' : 'left',
-                        scrolledPastTop = isScrolledPast(target, 'top', 'top') || isScrolledPast(dragEl, 'top', 'top'),
-                        scrollBefore = scrolledPastTop ? scrolledPastTop.scrollTop : void 0;
-                    if (lastTarget !== target) {
-                        targetBeforeFirstSwap = targetRect[side1];
-                        pastFirstInvertThresh = false;
-                        isCircumstantialInvert = !differentRowCol && options.invertSwap || differentLevel;
-                    }
-                    direction = _getSwapDirection(evt, target, targetRect, vertical, differentRowCol ? 1 : options.swapThreshold, options.invertedSwapThreshold == null ? options.swapThreshold : options.invertedSwapThreshold, isCircumstantialInvert, lastTarget === target);
-                    var sibling;
-                    if (direction !== 0) {
-                        // Check if target is beside dragEl in respective direction (ignoring hidden elements)
-                        var dragIndex = index(dragEl);
-                        do {
-                            dragIndex -= direction;
-                            sibling = parentEl.children[dragIndex];
-                        } while (sibling && (css(sibling, 'display') === 'none' || sibling === ghostEl));
-                    }
-                    // If dragEl is already beside target: Do not insert
-                    if (direction === 0 || sibling === target) {
-                        return completed(false);
-                    }
-                    lastTarget = target;
-                    lastDirection = direction;
-                    var nextSibling = target.nextElementSibling,
-                        after = false;
-                    after = direction === 1;
-                    var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
-                    if (moveVector !== false) {
-                        if (moveVector === 1 || moveVector === -1) {
-                            after = moveVector === 1;
-                        }
-                        _silent = true;
-                        setTimeout(_unsilent, 30);
-                        capture();
-                        if (after && !nextSibling) {
-                            el.appendChild(dragEl);
-                        } else {
-                            target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
-                        }
-                        // Undo chrome's scroll adjustment (has no effect on other browsers)
-                        if (scrolledPastTop) {
-                            scrollBy(scrolledPastTop, 0, scrollBefore - scrolledPastTop.scrollTop);
-                        }
-                        parentEl = dragEl.parentNode; // actualization
-                        // must be done before animation
-                        if (targetBeforeFirstSwap !== undefined && !isCircumstantialInvert) {
-                            targetMoveDistance = Math.abs(targetBeforeFirstSwap - getRect(target)[side1]);
-                        }
-                        changed();
-                        return completed(true);
-                    }
-                }
-                if (el.contains(dragEl)) {
-                    return completed(false);
-                }
-            }
-            return false;
-        },
-        _ignoreWhileAnimating: null,
-        _offMoveEvents: function _offMoveEvents() {
-            off(document, 'mousemove', this._onTouchMove);
-            off(document, 'touchmove', this._onTouchMove);
-            off(document, 'pointermove', this._onTouchMove);
-            off(document, 'dragover', nearestEmptyInsertDetectEvent);
-            off(document, 'mousemove', nearestEmptyInsertDetectEvent);
-            off(document, 'touchmove', nearestEmptyInsertDetectEvent);
-        },
-        _offUpEvents: function _offUpEvents() {
-            var ownerDocument = this.el.ownerDocument;
-            off(ownerDocument, 'mouseup', this._onDrop);
-            off(ownerDocument, 'touchend', this._onDrop);
-            off(ownerDocument, 'pointerup', this._onDrop);
-            off(ownerDocument, 'touchcancel', this._onDrop);
-            off(document, 'selectstart', this);
-        },
-        _onDrop: function _onDrop( /**Event*/ evt) {
-            var el = this.el,
-                options = this.options;
-            // Get the index of the dragged element within its parent
-            newIndex = index(dragEl);
-            newDraggableIndex = index(dragEl, options.draggable);
-            pluginEvent('drop', this, {
-                evt: evt
-            });
-            parentEl = dragEl && dragEl.parentNode;
-            // Get again after plugin event
-            newIndex = index(dragEl);
-            newDraggableIndex = index(dragEl, options.draggable);
-            if (Sortable.eventCanceled) {
-                this._nulling();
-                return;
-            }
-            awaitingDragStarted = false;
-            isCircumstantialInvert = false;
-            pastFirstInvertThresh = false;
-            clearInterval(this._loopId);
-            clearTimeout(this._dragStartTimer);
-            _cancelNextTick(this.cloneId);
-            _cancelNextTick(this._dragStartId);
-            // Unbind events
-            if (this.nativeDraggable) {
-                off(document, 'drop', this);
-                off(el, 'dragstart', this._onDragStart);
-            }
-            this._offMoveEvents();
-            this._offUpEvents();
-            if (Safari) {
-                css(document.body, 'user-select', '');
-            }
-            css(dragEl, 'transform', '');
-            if (evt) {
-                if (moved) {
-                    evt.cancelable && evt.preventDefault();
-                    !options.dropBubble && evt.stopPropagation();
-                }
-                ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
-                if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== 'clone') {
-                    // Remove clone(s)
-                    cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
-                }
-                if (dragEl) {
-                    if (this.nativeDraggable) {
-                        off(dragEl, 'dragend', this);
-                    }
-                    _disableDraggable(dragEl);
-                    dragEl.style['will-change'] = '';
-                    // Remove classes
-                    // ghostClass is added in dragStarted
-                    if (moved && !awaitingDragStarted) {
-                        toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : this.options.ghostClass, false);
-                    }
-                    toggleClass(dragEl, this.options.chosenClass, false);
-                    // Drag stop event
-                    _dispatchEvent({
-                        sortable: this,
-                        name: 'unchoose',
-                        toEl: parentEl,
-                        newIndex: null,
-                        newDraggableIndex: null,
-                        originalEvent: evt
-                    });
-                    if (rootEl !== parentEl) {
-                        if (newIndex >= 0) {
-                            // Add event
-                            _dispatchEvent({
-                                rootEl: parentEl,
-                                name: 'add',
-                                toEl: parentEl,
-                                fromEl: rootEl,
-                                originalEvent: evt
-                            });
-                            // Remove event
-                            _dispatchEvent({
-                                sortable: this,
-                                name: 'remove',
-                                toEl: parentEl,
-                                originalEvent: evt
-                            });
-                            // drag from one list and drop into another
-                            _dispatchEvent({
-                                rootEl: parentEl,
-                                name: 'sort',
-                                toEl: parentEl,
-                                fromEl: rootEl,
-                                originalEvent: evt
-                            });
-                            _dispatchEvent({
-                                sortable: this,
-                                name: 'sort',
-                                toEl: parentEl,
-                                originalEvent: evt
-                            });
-                        }
-                        putSortable && putSortable.save();
-                    } else {
-                        if (newIndex !== oldIndex) {
-                            if (newIndex >= 0) {
-                                // drag & drop within the same list
-                                _dispatchEvent({
-                                    sortable: this,
-                                    name: 'update',
-                                    toEl: parentEl,
-                                    originalEvent: evt
-                                });
-                                _dispatchEvent({
-                                    sortable: this,
-                                    name: 'sort',
-                                    toEl: parentEl,
-                                    originalEvent: evt
-                                });
-                            }
-                        }
-                    }
-                    if (Sortable.active) {
-                        /* jshint eqnull:true */
-                        if (newIndex == null || newIndex === -1) {
-                            newIndex = oldIndex;
-                            newDraggableIndex = oldDraggableIndex;
-                        }
-                        _dispatchEvent({
-                            sortable: this,
-                            name: 'end',
-                            toEl: parentEl,
-                            originalEvent: evt
-                        });
-                        // Save sorting
-                        this.save();
-                    }
-                }
-            }
-            this._nulling();
-        },
-        _nulling: function _nulling() {
-            pluginEvent('nulling', this);
-            rootEl = dragEl = parentEl = ghostEl = nextEl = cloneEl = lastDownEl = cloneHidden = tapEvt = touchEvt = moved = newIndex = newDraggableIndex = oldIndex = oldDraggableIndex = lastTarget = lastDirection = putSortable = activeGroup = Sortable.dragged = Sortable.ghost = Sortable.clone = Sortable.active = null;
-            savedInputChecked.forEach(function (el) {
-                el.checked = true;
-            });
-            savedInputChecked.length = lastDx = lastDy = 0;
-        },
-        handleEvent: function handleEvent( /**Event*/ evt) {
-            switch (evt.type) {
-                case 'drop':
-                case 'dragend':
-                    this._onDrop(evt);
-                    break;
-                case 'dragenter':
-                case 'dragover':
-                    if (dragEl) {
-                        this._onDragOver(evt);
-                        _globalDragOver(evt);
-                    }
-                    break;
-                case 'selectstart':
-                    evt.preventDefault();
-                    break;
-            }
-        },
-        /**
-         * Serializes the item into an array of string.
-         * @returns {String[]}
-         */
-        toArray: function toArray() {
-            var order = [],
-                el,
-                children = this.el.children,
-                i = 0,
-                n = children.length,
-                options = this.options;
-            for (; i < n; i++) {
-                el = children[i];
-                if (closest(el, options.draggable, this.el, false)) {
-                    order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
-                }
-            }
-            return order;
-        },
-        /**
-         * Sorts the elements according to the array.
-         * @param  {String[]}  order  order of the items
-         */
-        sort: function sort(order, useAnimation) {
-            var items = {},
-                rootEl = this.el;
-            this.toArray().forEach(function (id, i) {
-                var el = rootEl.children[i];
-                if (closest(el, this.options.draggable, rootEl, false)) {
-                    items[id] = el;
-                }
-            }, this);
-            useAnimation && this.captureAnimationState();
-            order.forEach(function (id) {
-                if (items[id]) {
-                    rootEl.removeChild(items[id]);
-                    rootEl.appendChild(items[id]);
-                }
-            });
-            useAnimation && this.animateAll();
-        },
-        /**
-         * Save the current sorting
-         */
-        save: function save() {
-            var store = this.options.store;
-            store && store.set && store.set(this);
-        },
-        /**
-         * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
-         * @param   {HTMLElement}  el
-         * @param   {String}       [selector]  default: `options.draggable`
-         * @returns {HTMLElement|null}
-         */
-        closest: function closest$1(el, selector) {
-            return closest(el, selector || this.options.draggable, this.el, false);
-        },
-        /**
-         * Set/get option
-         * @param   {string} name
-         * @param   {*}      [value]
-         * @returns {*}
-         */
-        option: function option(name, value) {
-            var options = this.options;
-            if (value === void 0) {
-                return options[name];
-            } else {
-                var modifiedValue = PluginManager.modifyOption(this, name, value);
-                if (typeof modifiedValue !== 'undefined') {
-                    options[name] = modifiedValue;
-                } else {
-                    options[name] = value;
-                }
-                if (name === 'group') {
-                    _prepareGroup(options);
-                }
-            }
-        },
-        /**
-         * Destroy
-         */
-        destroy: function destroy() {
-            pluginEvent('destroy', this);
-            var el = this.el;
-            el[expando] = null;
-            off(el, 'mousedown', this._onTapStart);
-            off(el, 'touchstart', this._onTapStart);
-            off(el, 'pointerdown', this._onTapStart);
-            if (this.nativeDraggable) {
-                off(el, 'dragover', this);
-                off(el, 'dragenter', this);
-            }
-            // Remove draggable attributes
-            Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
-                el.removeAttribute('draggable');
-            });
-            this._onDrop();
-            this._disableDelayedDragEvents();
-            sortables.splice(sortables.indexOf(this.el), 1);
-            this.el = el = null;
-        },
-        _hideClone: function _hideClone() {
-            if (!cloneHidden) {
-                pluginEvent('hideClone', this);
-                if (Sortable.eventCanceled) return;
-                css(cloneEl, 'display', 'none');
-                if (this.options.removeCloneOnHide && cloneEl.parentNode) {
-                    cloneEl.parentNode.removeChild(cloneEl);
-                }
-                cloneHidden = true;
-            }
-        },
-        _showClone: function _showClone(putSortable) {
-            if (putSortable.lastPutMode !== 'clone') {
-                this._hideClone();
-                return;
-            }
-            if (cloneHidden) {
-                pluginEvent('showClone', this);
-                if (Sortable.eventCanceled) return;
-                // show clone at dragEl or original position
-                if (dragEl.parentNode == rootEl && !this.options.group.revertClone) {
-                    rootEl.insertBefore(cloneEl, dragEl);
-                } else if (nextEl) {
-                    rootEl.insertBefore(cloneEl, nextEl);
-                } else {
-                    rootEl.appendChild(cloneEl);
-                }
-                if (this.options.group.revertClone) {
-                    this.animate(dragEl, cloneEl);
-                }
-                css(cloneEl, 'display', '');
-                cloneHidden = false;
-            }
-        }
-    };
-
-    function _globalDragOver( /**Event*/ evt) {
-        if (evt.dataTransfer) {
-            evt.dataTransfer.dropEffect = 'move';
-        }
-        evt.cancelable && evt.preventDefault();
-    }
-
-    function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvent, willInsertAfter) {
-        var evt,
-            sortable = fromEl[expando],
-            onMoveFn = sortable.options.onMove,
-            retVal;
-        // Support for new CustomEvent feature
-        if (window.CustomEvent && !IE11OrLess && !Edge) {
-            evt = new CustomEvent('move', {
-                bubbles: true,
-                cancelable: true
-            });
-        } else {
-            evt = document.createEvent('Event');
-            evt.initEvent('move', true, true);
-        }
-        evt.to = toEl;
-        evt.from = fromEl;
-        evt.dragged = dragEl;
-        evt.draggedRect = dragRect;
-        evt.related = targetEl || toEl;
-        evt.relatedRect = targetRect || getRect(toEl);
-        evt.willInsertAfter = willInsertAfter;
-        evt.originalEvent = originalEvent;
-        fromEl.dispatchEvent(evt);
-        if (onMoveFn) {
-            retVal = onMoveFn.call(sortable, evt, originalEvent);
-        }
-        return retVal;
-    }
-
-    function _disableDraggable(el) {
-        el.draggable = false;
-    }
-
-    function _unsilent() {
-        _silent = false;
-    }
-
-    function _ghostIsFirst(evt, vertical, sortable) {
-        var firstElRect = getRect(getChild(sortable.el, 0, sortable.options, true));
-        var childContainingRect = getChildContainingRectFromElement(sortable.el, sortable.options, ghostEl);
-        var spacer = 10;
-        return vertical ? evt.clientX < childContainingRect.left - spacer || evt.clientY < firstElRect.top && evt.clientX < firstElRect.right : evt.clientY < childContainingRect.top - spacer || evt.clientY < firstElRect.bottom && evt.clientX < firstElRect.left;
-    }
-
-    function _ghostIsLast(evt, vertical, sortable) {
-        var lastElRect = getRect(lastChild(sortable.el, sortable.options.draggable));
-        var childContainingRect = getChildContainingRectFromElement(sortable.el, sortable.options, ghostEl);
-        var spacer = 10;
-        return vertical ? evt.clientX > childContainingRect.right + spacer || evt.clientY > lastElRect.bottom && evt.clientX > lastElRect.left : evt.clientY > childContainingRect.bottom + spacer || evt.clientX > lastElRect.right && evt.clientY > lastElRect.top;
-    }
-
-    function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
-        var mouseOnAxis = vertical ? evt.clientY : evt.clientX,
-            targetLength = vertical ? targetRect.height : targetRect.width,
-            targetS1 = vertical ? targetRect.top : targetRect.left,
-            targetS2 = vertical ? targetRect.bottom : targetRect.right,
-            invert = false;
-        if (!invertSwap) {
-            // Never invert or create dragEl shadow when target movemenet causes mouse to move past the end of regular swapThreshold
-            if (isLastTarget && targetMoveDistance < targetLength * swapThreshold) {
-                // multiplied only by swapThreshold because mouse will already be inside target by (1 - threshold) * targetLength / 2
-                // check if past first invert threshold on side opposite of lastDirection
-                if (!pastFirstInvertThresh && (lastDirection === 1 ? mouseOnAxis > targetS1 + targetLength * invertedSwapThreshold / 2 : mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2)) {
-                    // past first invert threshold, do not restrict inverted threshold to dragEl shadow
-                    pastFirstInvertThresh = true;
-                }
-                if (!pastFirstInvertThresh) {
-                    // dragEl shadow (target move distance shadow)
-                    if (lastDirection === 1 ? mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
-                        : mouseOnAxis > targetS2 - targetMoveDistance) {
-                        return -lastDirection;
-                    }
-                } else {
-                    invert = true;
-                }
-            } else {
-                // Regular
-                if (mouseOnAxis > targetS1 + targetLength * (1 - swapThreshold) / 2 && mouseOnAxis < targetS2 - targetLength * (1 - swapThreshold) / 2) {
-                    return _getInsertDirection(target);
-                }
-            }
-        }
-        invert = invert || invertSwap;
-        if (invert) {
-            // Invert of regular
-            if (mouseOnAxis < targetS1 + targetLength * invertedSwapThreshold / 2 || mouseOnAxis > targetS2 - targetLength * invertedSwapThreshold / 2) {
-                return mouseOnAxis > targetS1 + targetLength / 2 ? 1 : -1;
-            }
-        }
-        return 0;
-    }
-    /**
-     * Gets the direction dragEl must be swapped relative to target in order to make it
-     * seem that dragEl has been "inserted" into that element's position
-     * @param  {HTMLElement} target       The target whose position dragEl is being inserted at
-     * @return {Number}                   Direction dragEl must be swapped
-     */
-    function _getInsertDirection(target) {
-        if (index(dragEl) < index(target)) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-    /**
-     * Generate id
-     * @param   {HTMLElement} el
-     * @returns {String}
-     * @private
-     */
-    function _generateId(el) {
-        var str = el.tagName + el.className + el.src + el.href + el.textContent,
-            i = str.length,
-            sum = 0;
-        while (i--) {
-            sum += str.charCodeAt(i);
-        }
-        return sum.toString(36);
-    }
-
-    function _saveInputCheckedState(root) {
-        savedInputChecked.length = 0;
-        var inputs = root.getElementsByTagName('input');
-        var idx = inputs.length;
-        while (idx--) {
-            var el = inputs[idx];
-            el.checked && savedInputChecked.push(el);
-        }
-    }
-
-    function _nextTick(fn) {
-        return setTimeout(fn, 0);
-    }
-
-    function _cancelNextTick(id) {
-        return clearTimeout(id);
-    }
-    // Fixed #973:
-    if (documentExists) {
-        on(document, 'touchmove', function (evt) {
-            if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
-                evt.preventDefault();
-            }
-        });
-    }
-    // Export utils
-    Sortable.utils = {
-        on: on,
-        off: off,
-        css: css,
-        find: find,
-        is: function is(el, selector) {
-            return !!closest(el, selector, el, false);
-        },
-        extend: extend,
-        throttle: throttle,
-        closest: closest,
-        toggleClass: toggleClass,
-        clone: clone,
-        index: index,
-        nextTick: _nextTick,
-        cancelNextTick: _cancelNextTick,
-        detectDirection: _detectDirection,
-        getChild: getChild,
-        expando: expando
-    };
-    /**
-     * Get the Sortable instance of an element
-     * @param  {HTMLElement} element The element
-     * @return {Sortable|undefined}         The instance of Sortable
-     */
-    Sortable.get = function (element) {
-        return element[expando];
-    };
-    /**
-     * Mount a plugin to Sortable
-     * @param  {...SortablePlugin|SortablePlugin[]} plugins       Plugins being mounted
-     */
-    Sortable.mount = function () {
-        for (var _len = arguments.length, plugins = new Array(_len), _key = 0; _key < _len; _key++) {
-            plugins[_key] = arguments[_key];
-        }
-        if (plugins[0].constructor === Array) plugins = plugins[0];
-        plugins.forEach(function (plugin) {
-            if (!plugin.prototype || !plugin.prototype.constructor) {
-                throw "Sortable: Mounted plugin must be a constructor function, not ".concat({}.toString.call(plugin));
-            }
-            if (plugin.utils) Sortable.utils = _objectSpread2(_objectSpread2({}, Sortable.utils), plugin.utils);
-            PluginManager.mount(plugin);
-        });
-    };
-    /**
-     * Create sortable instance
-     * @param {HTMLElement}  el
-     * @param {Object}      [options]
-     */
-    Sortable.create = function (el, options) {
-        return new Sortable(el, options);
-    };
-    // Export
-    Sortable.version = version;
-    var autoScrolls = [],
-        scrollEl,
-        scrollRootEl,
-        scrolling = false,
-        lastAutoScrollX,
-        lastAutoScrollY,
-        touchEvt$1,
-        pointerElemChangedInterval;
-
-    function AutoScrollPlugin() {
-        function AutoScroll() {
-            this.defaults = {
-                scroll: true,
-                forceAutoScrollFallback: false,
-                scrollSensitivity: 30,
-                scrollSpeed: 10,
-                bubbleScroll: true
-            };
-            // Bind all private methods
-            for (var fn in this) {
-                if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-                    this[fn] = this[fn].bind(this);
-                }
-            }
-        }
-        AutoScroll.prototype = {
-            dragStarted: function dragStarted(_ref) {
-                var originalEvent = _ref.originalEvent;
-                if (this.sortable.nativeDraggable) {
-                    on(document, 'dragover', this._handleAutoScroll);
-                } else {
-                    if (this.options.supportPointer) {
-                        on(document, 'pointermove', this._handleFallbackAutoScroll);
-                    } else if (originalEvent.touches) {
-                        on(document, 'touchmove', this._handleFallbackAutoScroll);
-                    } else {
-                        on(document, 'mousemove', this._handleFallbackAutoScroll);
-                    }
-                }
-            },
-            dragOverCompleted: function dragOverCompleted(_ref2) {
-                var originalEvent = _ref2.originalEvent;
-                // For when bubbling is canceled and using fallback (fallback 'touchmove' always reached)
-                if (!this.options.dragOverBubble && !originalEvent.rootEl) {
-                    this._handleAutoScroll(originalEvent);
-                }
-            },
-            drop: function drop() {
-                if (this.sortable.nativeDraggable) {
-                    off(document, 'dragover', this._handleAutoScroll);
-                } else {
-                    off(document, 'pointermove', this._handleFallbackAutoScroll);
-                    off(document, 'touchmove', this._handleFallbackAutoScroll);
-                    off(document, 'mousemove', this._handleFallbackAutoScroll);
-                }
-                clearPointerElemChangedInterval();
-                clearAutoScrolls();
-                cancelThrottle();
-            },
-            nulling: function nulling() {
-                touchEvt$1 = scrollRootEl = scrollEl = scrolling = pointerElemChangedInterval = lastAutoScrollX = lastAutoScrollY = null;
-                autoScrolls.length = 0;
-            },
-            _handleFallbackAutoScroll: function _handleFallbackAutoScroll(evt) {
-                this._handleAutoScroll(evt, true);
-            },
-            _handleAutoScroll: function _handleAutoScroll(evt, fallback) {
-                var _this = this;
-                var x = (evt.touches ? evt.touches[0] : evt).clientX,
-                    y = (evt.touches ? evt.touches[0] : evt).clientY,
-                    elem = document.elementFromPoint(x, y);
-                touchEvt$1 = evt;
-                // IE does not seem to have native autoscroll,
-                // Edge's autoscroll seems too conditional,
-                // MACOS Safari does not have autoscroll,
-                // Firefox and Chrome are good
-                if (fallback || this.options.forceAutoScrollFallback || Edge || IE11OrLess || Safari) {
-                    autoScroll(evt, this.options, elem, fallback);
-                    // Listener for pointer element change
-                    var ogElemScroller = getParentAutoScrollElement(elem, true);
-                    if (scrolling && (!pointerElemChangedInterval || x !== lastAutoScrollX || y !== lastAutoScrollY)) {
-                        pointerElemChangedInterval && clearPointerElemChangedInterval();
-                        // Detect for pointer elem change, emulating native DnD behaviour
-                        pointerElemChangedInterval = setInterval(function () {
-                            var newElem = getParentAutoScrollElement(document.elementFromPoint(x, y), true);
-                            if (newElem !== ogElemScroller) {
-                                ogElemScroller = newElem;
-                                clearAutoScrolls();
-                            }
-                            autoScroll(evt, _this.options, newElem, fallback);
-                        }, 10);
-                        lastAutoScrollX = x;
-                        lastAutoScrollY = y;
-                    }
-                } else {
-                    // if DnD is enabled (and browser has good autoscrolling), first autoscroll will already scroll, so get parent autoscroll of first autoscroll
-                    if (!this.options.bubbleScroll || getParentAutoScrollElement(elem, true) === getWindowScrollingElement()) {
-                        clearAutoScrolls();
-                        return;
-                    }
-                    autoScroll(evt, this.options, getParentAutoScrollElement(elem, false), false);
-                }
-            }
-        };
-        return _extends(AutoScroll, {
-            pluginName: 'scroll',
-            initializeByDefault: true
-        });
-    }
-
-    function clearAutoScrolls() {
-        autoScrolls.forEach(function (autoScroll) {
-            clearInterval(autoScroll.pid);
-        });
-        autoScrolls = [];
-    }
-
-    function clearPointerElemChangedInterval() {
-        clearInterval(pointerElemChangedInterval);
-    }
-    var autoScroll = throttle(function (evt, options, rootEl, isFallback) {
-        // Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
-        if (!options.scroll) return;
-        var x = (evt.touches ? evt.touches[0] : evt).clientX,
-            y = (evt.touches ? evt.touches[0] : evt).clientY,
-            sens = options.scrollSensitivity,
-            speed = options.scrollSpeed,
-            winScroller = getWindowScrollingElement();
-        var scrollThisInstance = false,
-            scrollCustomFn;
-        // New scroll root, set scrollEl
-        if (scrollRootEl !== rootEl) {
-            scrollRootEl = rootEl;
-            clearAutoScrolls();
-            scrollEl = options.scroll;
-            scrollCustomFn = options.scrollFn;
-            if (scrollEl === true) {
-                scrollEl = getParentAutoScrollElement(rootEl, true);
-            }
-        }
-        var layersOut = 0;
-        var currentParent = scrollEl;
-        do {
-            var el = currentParent,
-                rect = getRect(el),
-                top = rect.top,
-                bottom = rect.bottom,
-                left = rect.left,
-                right = rect.right,
-                width = rect.width,
-                height = rect.height,
-                canScrollX = void 0,
-                canScrollY = void 0,
-                scrollWidth = el.scrollWidth,
-                scrollHeight = el.scrollHeight,
-                elCSS = css(el),
-                scrollPosX = el.scrollLeft,
-                scrollPosY = el.scrollTop;
-            if (el === winScroller) {
-                canScrollX = width < scrollWidth && (elCSS.overflowX === 'auto' || elCSS.overflowX === 'scroll' || elCSS.overflowX === 'visible');
-                canScrollY = height < scrollHeight && (elCSS.overflowY === 'auto' || elCSS.overflowY === 'scroll' || elCSS.overflowY === 'visible');
-            } else {
-                canScrollX = width < scrollWidth && (elCSS.overflowX === 'auto' || elCSS.overflowX === 'scroll');
-                canScrollY = height < scrollHeight && (elCSS.overflowY === 'auto' || elCSS.overflowY === 'scroll');
-            }
-            var vx = canScrollX && (Math.abs(right - x) <= sens && scrollPosX + width < scrollWidth) - (Math.abs(left - x) <= sens && !!scrollPosX);
-            var vy = canScrollY && (Math.abs(bottom - y) <= sens && scrollPosY + height < scrollHeight) - (Math.abs(top - y) <= sens && !!scrollPosY);
-            if (!autoScrolls[layersOut]) {
-                for (var i = 0; i <= layersOut; i++) {
-                    if (!autoScrolls[i]) {
-                        autoScrolls[i] = {};
-                    }
-                }
-            }
-            if (autoScrolls[layersOut].vx != vx || autoScrolls[layersOut].vy != vy || autoScrolls[layersOut].el !== el) {
-                autoScrolls[layersOut].el = el;
-                autoScrolls[layersOut].vx = vx;
-                autoScrolls[layersOut].vy = vy;
-                clearInterval(autoScrolls[layersOut].pid);
-                if (vx != 0 || vy != 0) {
-                    scrollThisInstance = true;
-                    /* jshint loopfunc:true */
-                    autoScrolls[layersOut].pid = setInterval(function () {
-                        // emulate drag over during autoscroll (fallback), emulating native DnD behaviour
-                        if (isFallback && this.layer === 0) {
-                            Sortable.active._onTouchMove(touchEvt$1); // To move ghost if it is positioned absolutely
-                        }
-                        var scrollOffsetY = autoScrolls[this.layer].vy ? autoScrolls[this.layer].vy * speed : 0;
-                        var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
-                        if (typeof scrollCustomFn === 'function') {
-                            if (scrollCustomFn.call(Sortable.dragged.parentNode[expando], scrollOffsetX, scrollOffsetY, evt, touchEvt$1, autoScrolls[this.layer].el) !== 'continue') {
-                                return;
-                            }
-                        }
-                        scrollBy(autoScrolls[this.layer].el, scrollOffsetX, scrollOffsetY);
-                    }.bind({
-                        layer: layersOut
-                    }), 24);
-                }
-            }
-            layersOut++;
-        } while (options.bubbleScroll && currentParent !== winScroller && (currentParent = getParentAutoScrollElement(currentParent, false)));
-        scrolling = scrollThisInstance; // in case another function catches scrolling as false in between when it is not
-    }, 30);
-    var drop = function drop(_ref) {
-        var originalEvent = _ref.originalEvent,
-            putSortable = _ref.putSortable,
-            dragEl = _ref.dragEl,
-            activeSortable = _ref.activeSortable,
-            dispatchSortableEvent = _ref.dispatchSortableEvent,
-            hideGhostForTarget = _ref.hideGhostForTarget,
-            unhideGhostForTarget = _ref.unhideGhostForTarget;
-        if (!originalEvent) return;
-        var toSortable = putSortable || activeSortable;
-        hideGhostForTarget();
-        var touch = originalEvent.changedTouches && originalEvent.changedTouches.length ? originalEvent.changedTouches[0] : originalEvent;
-        var target = document.elementFromPoint(touch.clientX, touch.clientY);
-        unhideGhostForTarget();
-        if (toSortable && !toSortable.el.contains(target)) {
-            dispatchSortableEvent('spill');
-            this.onSpill({
-                dragEl: dragEl,
-                putSortable: putSortable
-            });
-        }
-    };
-
-    function Revert() {}
-    Revert.prototype = {
-        startIndex: null,
-        dragStart: function dragStart(_ref2) {
-            var oldDraggableIndex = _ref2.oldDraggableIndex;
-            this.startIndex = oldDraggableIndex;
-        },
-        onSpill: function onSpill(_ref3) {
-            var dragEl = _ref3.dragEl,
-                putSortable = _ref3.putSortable;
-            this.sortable.captureAnimationState();
-            if (putSortable) {
-                putSortable.captureAnimationState();
-            }
-            var nextSibling = getChild(this.sortable.el, this.startIndex, this.options);
-            if (nextSibling) {
-                this.sortable.el.insertBefore(dragEl, nextSibling);
-            } else {
-                this.sortable.el.appendChild(dragEl);
-            }
-            this.sortable.animateAll();
-            if (putSortable) {
-                putSortable.animateAll();
-            }
-        },
-        drop: drop
-    };
-    _extends(Revert, {
-        pluginName: 'revertOnSpill'
-    });
-
-    function Remove() {}
-    Remove.prototype = {
-        onSpill: function onSpill(_ref4) {
-            var dragEl = _ref4.dragEl,
-                putSortable = _ref4.putSortable;
-            var parentSortable = putSortable || this.sortable;
-            parentSortable.captureAnimationState();
-            dragEl.parentNode && dragEl.parentNode.removeChild(dragEl);
-            parentSortable.animateAll();
-        },
-        drop: drop
-    };
-    _extends(Remove, {
-        pluginName: 'removeOnSpill'
-    });
-    var multiDragElements = [],
-        multiDragClones = [],
-        lastMultiDragSelect,
-        // for selection with modifier key down (SHIFT)
-        multiDragSortable,
-        initialFolding = false,
-        // Initial multi-drag fold when drag started
-        folding = false,
-        // Folding any other time
-        dragStarted = false,
-        dragEl$1,
-        clonesFromRect,
-        clonesHidden;
-
-    function MultiDragPlugin() {
-        function MultiDrag(sortable) {
-            // Bind all private methods
-            for (var fn in this) {
-                if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
-                    this[fn] = this[fn].bind(this);
-                }
-            }
-            if (!sortable.options.avoidImplicitDeselect) {
-                if (sortable.options.supportPointer) {
-                    on(document, 'pointerup', this._deselectMultiDrag);
-                } else {
-                    on(document, 'mouseup', this._deselectMultiDrag);
-                    on(document, 'touchend', this._deselectMultiDrag);
-                }
-            }
-            on(document, 'keydown', this._checkKeyDown);
-            on(document, 'keyup', this._checkKeyUp);
-            this.defaults = {
-                selectedClass: 'sortable-selected',
-                multiDragKey: null,
-                avoidImplicitDeselect: false,
-                setData: function setData(dataTransfer, dragEl) {
-                    var data = '';
-                    if (multiDragElements.length && multiDragSortable === sortable) {
-                        multiDragElements.forEach(function (multiDragElement, i) {
-                            data += (!i ? '' : ', ') + multiDragElement.textContent;
-                        });
-                    } else {
-                        data = dragEl.textContent;
-                    }
-                    dataTransfer.setData('Text', data);
-                }
-            };
-        }
-        MultiDrag.prototype = {
-            multiDragKeyDown: false,
-            isMultiDrag: false,
-            delayStartGlobal: function delayStartGlobal(_ref) {
-                var dragged = _ref.dragEl;
-                dragEl$1 = dragged;
-            },
-            delayEnded: function delayEnded() {
-                this.isMultiDrag = ~multiDragElements.indexOf(dragEl$1);
-            },
-            setupClone: function setupClone(_ref2) {
-                var sortable = _ref2.sortable,
-                    cancel = _ref2.cancel;
-                if (!this.isMultiDrag) return;
-                for (var i = 0; i < multiDragElements.length; i++) {
-                    multiDragClones.push(clone(multiDragElements[i]));
-                    multiDragClones[i].sortableIndex = multiDragElements[i].sortableIndex;
-                    multiDragClones[i].draggable = false;
-                    multiDragClones[i].style['will-change'] = '';
-                    toggleClass(multiDragClones[i], this.options.selectedClass, false);
-                    multiDragElements[i] === dragEl$1 && toggleClass(multiDragClones[i], this.options.chosenClass, false);
-                }
-                sortable._hideClone();
-                cancel();
-            },
-            clone: function clone(_ref3) {
-                var sortable = _ref3.sortable,
-                    rootEl = _ref3.rootEl,
-                    dispatchSortableEvent = _ref3.dispatchSortableEvent,
-                    cancel = _ref3.cancel;
-                if (!this.isMultiDrag) return;
-                if (!this.options.removeCloneOnHide) {
-                    if (multiDragElements.length && multiDragSortable === sortable) {
-                        insertMultiDragClones(true, rootEl);
-                        dispatchSortableEvent('clone');
-                        cancel();
-                    }
-                }
-            },
-            showClone: function showClone(_ref4) {
-                var cloneNowShown = _ref4.cloneNowShown,
-                    rootEl = _ref4.rootEl,
-                    cancel = _ref4.cancel;
-                if (!this.isMultiDrag) return;
-                insertMultiDragClones(false, rootEl);
-                multiDragClones.forEach(function (clone) {
-                    css(clone, 'display', '');
-                });
-                cloneNowShown();
-                clonesHidden = false;
-                cancel();
-            },
-            hideClone: function hideClone(_ref5) {
-                var _this = this;
-                _ref5.sortable;
-                var cloneNowHidden = _ref5.cloneNowHidden,
-                    cancel = _ref5.cancel;
-                if (!this.isMultiDrag) return;
-                multiDragClones.forEach(function (clone) {
-                    css(clone, 'display', 'none');
-                    if (_this.options.removeCloneOnHide && clone.parentNode) {
-                        clone.parentNode.removeChild(clone);
-                    }
-                });
-                cloneNowHidden();
-                clonesHidden = true;
-                cancel();
-            },
-            dragStartGlobal: function dragStartGlobal(_ref6) {
-                _ref6.sortable;
-                if (!this.isMultiDrag && multiDragSortable) {
-                    multiDragSortable.multiDrag._deselectMultiDrag();
-                }
-                multiDragElements.forEach(function (multiDragElement) {
-                    multiDragElement.sortableIndex = index(multiDragElement);
-                });
-                // Sort multi-drag elements
-                multiDragElements = multiDragElements.sort(function (a, b) {
-                    return a.sortableIndex - b.sortableIndex;
-                });
-                dragStarted = true;
-            },
-            dragStarted: function dragStarted(_ref7) {
-                var _this2 = this;
-                var sortable = _ref7.sortable;
-                if (!this.isMultiDrag) return;
-                if (this.options.sort) {
-                    // Capture rects,
-                    // hide multi drag elements (by positioning them absolute),
-                    // set multi drag elements rects to dragRect,
-                    // show multi drag elements,
-                    // animate to rects,
-                    // unset rects & remove from DOM
-                    sortable.captureAnimationState();
-                    if (this.options.animation) {
-                        multiDragElements.forEach(function (multiDragElement) {
-                            if (multiDragElement === dragEl$1) return;
-                            css(multiDragElement, 'position', 'absolute');
-                        });
-                        var dragRect = getRect(dragEl$1, false, true, true);
-                        multiDragElements.forEach(function (multiDragElement) {
-                            if (multiDragElement === dragEl$1) return;
-                            setRect(multiDragElement, dragRect);
-                        });
-                        folding = true;
-                        initialFolding = true;
-                    }
-                }
-                sortable.animateAll(function () {
-                    folding = false;
-                    initialFolding = false;
-                    if (_this2.options.animation) {
-                        multiDragElements.forEach(function (multiDragElement) {
-                            unsetRect(multiDragElement);
-                        });
-                    }
-                    // Remove all auxiliary multidrag items from el, if sorting enabled
-                    if (_this2.options.sort) {
-                        removeMultiDragElements();
-                    }
-                });
-            },
-            dragOver: function dragOver(_ref8) {
-                var target = _ref8.target,
-                    completed = _ref8.completed,
-                    cancel = _ref8.cancel;
-                if (folding && ~multiDragElements.indexOf(target)) {
-                    completed(false);
-                    cancel();
-                }
-            },
-            revert: function revert(_ref9) {
-                var fromSortable = _ref9.fromSortable,
-                    rootEl = _ref9.rootEl,
-                    sortable = _ref9.sortable,
-                    dragRect = _ref9.dragRect;
-                if (multiDragElements.length > 1) {
-                    // Setup unfold animation
-                    multiDragElements.forEach(function (multiDragElement) {
-                        sortable.addAnimationState({
-                            target: multiDragElement,
-                            rect: folding ? getRect(multiDragElement) : dragRect
-                        });
-                        unsetRect(multiDragElement);
-                        multiDragElement.fromRect = dragRect;
-                        fromSortable.removeAnimationState(multiDragElement);
-                    });
-                    folding = false;
-                    insertMultiDragElements(!this.options.removeCloneOnHide, rootEl);
-                }
-            },
-            dragOverCompleted: function dragOverCompleted(_ref10) {
-                var sortable = _ref10.sortable,
-                    isOwner = _ref10.isOwner,
-                    insertion = _ref10.insertion,
-                    activeSortable = _ref10.activeSortable,
-                    parentEl = _ref10.parentEl,
-                    putSortable = _ref10.putSortable;
-                var options = this.options;
-                if (insertion) {
-                    // Clones must be hidden before folding animation to capture dragRectAbsolute properly
-                    if (isOwner) {
-                        activeSortable._hideClone();
-                    }
-                    initialFolding = false;
-                    // If leaving sort:false root, or already folding - Fold to new location
-                    if (options.animation && multiDragElements.length > 1 && (folding || !isOwner && !activeSortable.options.sort && !putSortable)) {
-                        // Fold: Set all multi drag elements's rects to dragEl's rect when multi-drag elements are invisible
-                        var dragRectAbsolute = getRect(dragEl$1, false, true, true);
-                        multiDragElements.forEach(function (multiDragElement) {
-                            if (multiDragElement === dragEl$1) return;
-                            setRect(multiDragElement, dragRectAbsolute);
-                            // Move element(s) to end of parentEl so that it does not interfere with multi-drag clones insertion if they are inserted
-                            // while folding, and so that we can capture them again because old sortable will no longer be fromSortable
-                            parentEl.appendChild(multiDragElement);
-                        });
-                        folding = true;
-                    }
-                    // Clones must be shown (and check to remove multi drags) after folding when interfering multiDragElements are moved out
-                    if (!isOwner) {
-                        // Only remove if not folding (folding will remove them anyways)
-                        if (!folding) {
-                            removeMultiDragElements();
-                        }
-                        if (multiDragElements.length > 1) {
-                            var clonesHiddenBefore = clonesHidden;
-                            activeSortable._showClone(sortable);
-                            // Unfold animation for clones if showing from hidden
-                            if (activeSortable.options.animation && !clonesHidden && clonesHiddenBefore) {
-                                multiDragClones.forEach(function (clone) {
-                                    activeSortable.addAnimationState({
-                                        target: clone,
-                                        rect: clonesFromRect
-                                    });
-                                    clone.fromRect = clonesFromRect;
-                                    clone.thisAnimationDuration = null;
-                                });
-                            }
-                        } else {
-                            activeSortable._showClone(sortable);
-                        }
-                    }
-                }
-            },
-            dragOverAnimationCapture: function dragOverAnimationCapture(_ref11) {
-                var dragRect = _ref11.dragRect,
-                    isOwner = _ref11.isOwner,
-                    activeSortable = _ref11.activeSortable;
-                multiDragElements.forEach(function (multiDragElement) {
-                    multiDragElement.thisAnimationDuration = null;
-                });
-                if (activeSortable.options.animation && !isOwner && activeSortable.multiDrag.isMultiDrag) {
-                    clonesFromRect = _extends({}, dragRect);
-                    var dragMatrix = matrix(dragEl$1, true);
-                    clonesFromRect.top -= dragMatrix.f;
-                    clonesFromRect.left -= dragMatrix.e;
-                }
-            },
-            dragOverAnimationComplete: function dragOverAnimationComplete() {
-                if (folding) {
-                    folding = false;
-                    removeMultiDragElements();
-                }
-            },
-            drop: function drop(_ref12) {
-                var evt = _ref12.originalEvent,
-                    rootEl = _ref12.rootEl,
-                    parentEl = _ref12.parentEl,
-                    sortable = _ref12.sortable,
-                    dispatchSortableEvent = _ref12.dispatchSortableEvent,
-                    oldIndex = _ref12.oldIndex,
-                    putSortable = _ref12.putSortable;
-                var toSortable = putSortable || this.sortable;
-                if (!evt) return;
-                var options = this.options,
-                    children = parentEl.children;
-                // Multi-drag selection
-                if (!dragStarted) {
-                    if (options.multiDragKey && !this.multiDragKeyDown) {
-                        this._deselectMultiDrag();
-                    }
-                    toggleClass(dragEl$1, options.selectedClass, !~multiDragElements.indexOf(dragEl$1));
-                    if (!~multiDragElements.indexOf(dragEl$1)) {
-                        multiDragElements.push(dragEl$1);
-                        dispatchEvent({
-                            sortable: sortable,
-                            rootEl: rootEl,
-                            name: 'select',
-                            targetEl: dragEl$1,
-                            originalEvent: evt
-                        });
-                        // Modifier activated, select from last to dragEl
-                        if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
-                            var lastIndex = index(lastMultiDragSelect),
-                                currentIndex = index(dragEl$1);
-                            if (~lastIndex && ~currentIndex && lastIndex !== currentIndex) {
-                                // Must include lastMultiDragSelect (select it), in case modified selection from no selection
-                                // (but previous selection existed)
-                                var n, i;
-                                if (currentIndex > lastIndex) {
-                                    i = lastIndex;
-                                    n = currentIndex;
-                                } else {
-                                    i = currentIndex;
-                                    n = lastIndex + 1;
-                                }
-                                for (; i < n; i++) {
-                                    if (~multiDragElements.indexOf(children[i])) continue;
-                                    toggleClass(children[i], options.selectedClass, true);
-                                    multiDragElements.push(children[i]);
-                                    dispatchEvent({
-                                        sortable: sortable,
-                                        rootEl: rootEl,
-                                        name: 'select',
-                                        targetEl: children[i],
-                                        originalEvent: evt
-                                    });
-                                }
-                            }
-                        } else {
-                            lastMultiDragSelect = dragEl$1;
-                        }
-                        multiDragSortable = toSortable;
-                    } else {
-                        multiDragElements.splice(multiDragElements.indexOf(dragEl$1), 1);
-                        lastMultiDragSelect = null;
-                        dispatchEvent({
-                            sortable: sortable,
-                            rootEl: rootEl,
-                            name: 'deselect',
-                            targetEl: dragEl$1,
-                            originalEvent: evt
-                        });
-                    }
-                }
-                // Multi-drag drop
-                if (dragStarted && this.isMultiDrag) {
-                    folding = false;
-                    // Do not "unfold" after around dragEl if reverted
-                    if ((parentEl[expando].options.sort || parentEl !== rootEl) && multiDragElements.length > 1) {
-                        var dragRect = getRect(dragEl$1),
-                            multiDragIndex = index(dragEl$1, ':not(.' + this.options.selectedClass + ')');
-                        if (!initialFolding && options.animation) dragEl$1.thisAnimationDuration = null;
-                        toSortable.captureAnimationState();
-                        if (!initialFolding) {
-                            if (options.animation) {
-                                dragEl$1.fromRect = dragRect;
-                                multiDragElements.forEach(function (multiDragElement) {
-                                    multiDragElement.thisAnimationDuration = null;
-                                    if (multiDragElement !== dragEl$1) {
-                                        var rect = folding ? getRect(multiDragElement) : dragRect;
-                                        multiDragElement.fromRect = rect;
-                                        // Prepare unfold animation
-                                        toSortable.addAnimationState({
-                                            target: multiDragElement,
-                                            rect: rect
-                                        });
-                                    }
-                                });
-                            }
-                            // Multi drag elements are not necessarily removed from the DOM on drop, so to reinsert
-                            // properly they must all be removed
-                            removeMultiDragElements();
-                            multiDragElements.forEach(function (multiDragElement) {
-                                if (children[multiDragIndex]) {
-                                    parentEl.insertBefore(multiDragElement, children[multiDragIndex]);
-                                } else {
-                                    parentEl.appendChild(multiDragElement);
-                                }
-                                multiDragIndex++;
-                            });
-                            // If initial folding is done, the elements may have changed position because they are now
-                            // unfolding around dragEl, even though dragEl may not have his index changed, so update event
-                            // must be fired here as Sortable will not.
-                            if (oldIndex === index(dragEl$1)) {
-                                var update = false;
-                                multiDragElements.forEach(function (multiDragElement) {
-                                    if (multiDragElement.sortableIndex !== index(multiDragElement)) {
-                                        update = true;
-                                        return;
-                                    }
-                                });
-                                if (update) {
-                                    dispatchSortableEvent('update');
-                                    dispatchSortableEvent('sort');
-                                }
-                            }
-                        }
-                        // Must be done after capturing individual rects (scroll bar)
-                        multiDragElements.forEach(function (multiDragElement) {
-                            unsetRect(multiDragElement);
-                        });
-                        toSortable.animateAll();
-                    }
-                    multiDragSortable = toSortable;
-                }
-                // Remove clones if necessary
-                if (rootEl === parentEl || putSortable && putSortable.lastPutMode !== 'clone') {
-                    multiDragClones.forEach(function (clone) {
-                        clone.parentNode && clone.parentNode.removeChild(clone);
-                    });
-                }
-            },
-            nullingGlobal: function nullingGlobal() {
-                this.isMultiDrag = dragStarted = false;
-                multiDragClones.length = 0;
-            },
-            destroyGlobal: function destroyGlobal() {
-                this._deselectMultiDrag();
-                off(document, 'pointerup', this._deselectMultiDrag);
-                off(document, 'mouseup', this._deselectMultiDrag);
-                off(document, 'touchend', this._deselectMultiDrag);
-                off(document, 'keydown', this._checkKeyDown);
-                off(document, 'keyup', this._checkKeyUp);
-            },
-            _deselectMultiDrag: function _deselectMultiDrag(evt) {
-                if (typeof dragStarted !== "undefined" && dragStarted) return;
-                // Only deselect if selection is in this sortable
-                if (multiDragSortable !== this.sortable) return;
-                // Only deselect if target is not item in this sortable
-                if (evt && closest(evt.target, this.options.draggable, this.sortable.el, false)) return;
-                // Only deselect if left click
-                if (evt && evt.button !== 0) return;
-                while (multiDragElements.length) {
-                    var el = multiDragElements[0];
-                    toggleClass(el, this.options.selectedClass, false);
-                    multiDragElements.shift();
-                    dispatchEvent({
-                        sortable: this.sortable,
-                        rootEl: this.sortable.el,
-                        name: 'deselect',
-                        targetEl: el,
-                        originalEvent: evt
-                    });
-                }
-            },
-            _checkKeyDown: function _checkKeyDown(evt) {
-                if (evt.key === this.options.multiDragKey) {
-                    this.multiDragKeyDown = true;
-                }
-            },
-            _checkKeyUp: function _checkKeyUp(evt) {
-                if (evt.key === this.options.multiDragKey) {
-                    this.multiDragKeyDown = false;
-                }
-            }
-        };
-        return _extends(MultiDrag, {
-            // Static methods & properties
-            pluginName: 'multiDrag',
-            utils: {
-                /**
-                 * Selects the provided multi-drag item
-                 * @param  {HTMLElement} el    The element to be selected
-                 */
-                select: function select(el) {
-                    var sortable = el.parentNode[expando];
-                    if (!sortable || !sortable.options.multiDrag || ~multiDragElements.indexOf(el)) return;
-                    if (multiDragSortable && multiDragSortable !== sortable) {
-                        multiDragSortable.multiDrag._deselectMultiDrag();
-                        multiDragSortable = sortable;
-                    }
-                    toggleClass(el, sortable.options.selectedClass, true);
-                    multiDragElements.push(el);
-                },
-                /**
-                 * Deselects the provided multi-drag item
-                 * @param  {HTMLElement} el    The element to be deselected
-                 */
-                deselect: function deselect(el) {
-                    var sortable = el.parentNode[expando],
-                        index = multiDragElements.indexOf(el);
-                    if (!sortable || !sortable.options.multiDrag || !~index) return;
-                    toggleClass(el, sortable.options.selectedClass, false);
-                    multiDragElements.splice(index, 1);
-                }
-            },
-            eventProperties: function eventProperties() {
-                var _this3 = this;
-                var oldIndicies = [],
-                    newIndicies = [];
-                multiDragElements.forEach(function (multiDragElement) {
-                    oldIndicies.push({
-                        multiDragElement: multiDragElement,
-                        index: multiDragElement.sortableIndex
-                    });
-                    // multiDragElements will already be sorted if folding
-                    var newIndex;
-                    if (folding && multiDragElement !== dragEl$1) {
-                        newIndex = -1;
-                    } else if (folding) {
-                        newIndex = index(multiDragElement, ':not(.' + _this3.options.selectedClass + ')');
-                    } else {
-                        newIndex = index(multiDragElement);
-                    }
-                    newIndicies.push({
-                        multiDragElement: multiDragElement,
-                        index: newIndex
-                    });
-                });
-                return {
-                    items: _toConsumableArray(multiDragElements),
-                    clones: [].concat(multiDragClones),
-                    oldIndicies: oldIndicies,
-                    newIndicies: newIndicies
-                };
-            },
-            optionListeners: {
-                multiDragKey: function multiDragKey(key) {
-                    key = key.toLowerCase();
-                    if (key === 'ctrl') {
-                        key = 'Control';
-                    } else if (key.length > 1) {
-                        key = key.charAt(0).toUpperCase() + key.substr(1);
-                    }
-                    return key;
-                }
-            }
-        });
-    }
-
-    function insertMultiDragElements(clonesInserted, rootEl) {
-        multiDragElements.forEach(function (multiDragElement, i) {
-            var target = rootEl.children[multiDragElement.sortableIndex + (clonesInserted ? Number(i) : 0)];
-            if (target) {
-                rootEl.insertBefore(multiDragElement, target);
-            } else {
-                rootEl.appendChild(multiDragElement);
-            }
-        });
-    }
-    /**
-     * Insert multi-drag clones
-     * @param  {[Boolean]} elementsInserted  Whether the multi-drag elements are inserted
-     * @param  {HTMLElement} rootEl
-     */
-    function insertMultiDragClones(elementsInserted, rootEl) {
-        multiDragClones.forEach(function (clone, i) {
-            var target = rootEl.children[clone.sortableIndex + (elementsInserted ? Number(i) : 0)];
-            if (target) {
-                rootEl.insertBefore(clone, target);
-            } else {
-                rootEl.appendChild(clone);
-            }
-        });
-    }
-
-    function removeMultiDragElements() {
-        multiDragElements.forEach(function (multiDragElement) {
-            if (multiDragElement === dragEl$1) return;
-            multiDragElement.parentNode && multiDragElement.parentNode.removeChild(multiDragElement);
-        });
-    }
-    Sortable.mount(new AutoScrollPlugin());
-    Sortable.mount(Remove, Revert);
-    Sortable.instances = [];
-    Sortable.mount(new MultiDragPlugin());
-
-    function onChange$3(init) {
-        var instance;
-        while (instance = Sortable.instances.pop()) {
-            instance.destroy();
-        }
-        var sources = getElements('.can\\:sort:not(.not\\:active)');
-        sources && toCount(sources) && sources.forEach(function (source) {
-            var batch = getDatum(source, 'batch'),
-                handle;
-            if (hasClass(source, 'content:columns') || hasClass(source, 'lot:columns'));
-            if (hasClass(source, 'content:fields') || hasClass(source, 'lot:fields')) {
-                handle = 'label[for]';
-            }
-            if (hasClass(source, 'content:files') || hasClass(source, 'lot:files'));
-            if (hasClass(source, 'content:folders') || hasClass(source, 'lot:folders'));
-            if (hasClass(source, 'content:pages') || hasClass(source, 'lot:pages'));
-            if (hasClass(source, 'content:rows') || hasClass(source, 'lot:rows'));
-            if (hasClass(source, 'content:stacks') || hasClass(source, 'lot:stacks'));
-            if (hasClass(source, 'content:tabs') || hasClass(source, 'lot:tabs'));
-            var sortable = new Sortable(source, {
-                animation: 150,
-                avoidImplicitDeselect: false,
-                dataIdAttr: 'data-value',
-                emptyInsertThreshold: 5,
-                fallbackOnBody: true,
-                fallbackTolerance: 3,
-                filter: '.not\\:active,:disabled,[aria-disabled=true],[disabled],input[type=hidden]',
-                group: batch,
-                handle: handle,
-                // multiDrag: true,
-                onSort: onSort,
-                swapThreshold: 0.5
-            });
-            Sortable.instances.push(sortable);
-        });
-        1 === init && W._.on('change', onChange$3);
-    }
-
-    function onSort(e) {
-        var t = e.item;
-        W._.fire.apply(t, ['sort', [getDatum(t, 'value'), getDatum(t, 'name')]]);
-    }
-    W.Sortable = Sortable;
     var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
     var STACK_INPUT = 0;
     var STACK_OF = 1;
@@ -7853,8 +7320,8 @@
             });
             if (hasClass(parent, 'can:toggle')) {
                 setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
-                toggleClass$1(parent, 'is:current');
-                toggleClass$1(t, 'is:current');
+                toggleClass(parent, 'is:current');
+                toggleClass(t, 'is:current');
             } else {
                 setAttribute(t, 'aria-expanded', 'true');
                 setClass(parent, 'is:current');
@@ -7862,12 +7329,12 @@
             }
             current = hasClass(t, 'is:current');
             t._[STACK_INPUT].value = value = current ? getDatum(parent, 'value') : null;
-            toggleClass$1(self, 'has:current', current);
+            toggleClass(self, 'has:current', current);
             var pathname = theLocation.pathname,
                 search = theLocation.search;
             var query = fromQuery(search);
             var q = fromQuery(name + '=' + value);
-            query = fromStates(query, q.query || {});
+            query = _fromStates(query, q.query || {});
             if (null === value) {
                 query = removeNull(query);
             }
@@ -8050,8 +7517,8 @@
                 }
             });
             if (hasClass(parent, 'can:toggle')) {
-                toggleClass$1(parent, 'is:current');
-                toggleClass$1(t, 'is:current');
+                toggleClass(parent, 'is:current');
+                toggleClass(t, 'is:current');
                 setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
                 setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
             } else {
@@ -8063,13 +7530,13 @@
             current = hasClass(t, 'is:current');
             if (pane) {
                 t._[TAB_INPUT].value = value = current ? getDatum(t, 'value') : null;
-                toggleClass$1(pane, 'is:current', current);
-                toggleClass$1(self, 'has:current', current);
+                toggleClass(pane, 'is:current', current);
+                toggleClass(self, 'has:current', current);
                 var pathname = theLocation.pathname,
                     search = theLocation.search;
                 var query = fromQuery(search);
                 var q = fromQuery(name + '=' + value);
-                query = fromStates(query, q.query || {});
+                query = _fromStates(query, q.query || {});
                 if (null === value) {
                     query = removeNull(query);
                 }
@@ -8319,9 +7786,11 @@
         stop && (offEventDefault(e), offEventPropagation(e));
     }
     Key.instances = [];
-    var bounce = debounce(function (map) {
-        return map.pull();
-    }, 1000);
+    var _debounce = debounce(function (map) {
+            return map.pull();
+        }, 1000),
+        _debounce2 = _maybeArrayLike(_slicedToArray, _debounce, 1),
+        bounce = _debounce2[0];
     var map = new Key(W);
     Key.instances.push(map);
     map.keys['Escape'] = function () {
@@ -8389,16 +7858,15 @@
     onEvent('DOMContentLoaded', D, function () {
         return _$1.fire('set');
     });
-    onChange$d(1);
+    onChange$c(1);
     Dialog();
     Fields();
-    onChange$9(1);
     onChange$8(1);
     onChange$7(1);
     onChange$6(1);
     onChange$5(1);
-    onChange$4();
-    onChange$3(1);
+    onChange$4(1);
+    onChange$3();
     onChange$2(1);
     onChange$1(1);
     onChange(1);

@@ -434,15 +434,15 @@ function fields($value, $key) {
             }
             $v = \x\panel\lot\_value_set($v, $k);
             $type = \strtolower(\f2p(\strtr($v['type'] ?? "", '-', '_')));
-            if ("" !== $type && \function_exists($fn = __NAMESPACE__ . "\\" . $type)) {
+            if ("" !== $type && \function_exists($task = __NAMESPACE__ . "\\" . $type)) {
                 if ("field\\hidden" !== $type) {
-                    $value[1] .= \call_user_func($fn, $v, $k);
+                    $value[1] .= \call_user_func($task, $v, $k);
                     ++$count;
                 } else {
                     $fields .= \x\panel\lot\type\field\hidden($v, $k);
                 }
             } else {
-                $fields .= \x\panel\_abort($value, $key, $fn);
+                $fields .= \x\panel\_abort($value, $key, $task);
             }
             unset($v);
         }

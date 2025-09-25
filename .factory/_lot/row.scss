@@ -8,7 +8,7 @@
     width: 100%;
     @for $i from 1 through $max {
       &.size\:#{$i}\/#{$max} {
-        max-height: percentage(math.div($i, $max));
+        max-height: math.percentage(math.div($i, $max));
       }
     }
   }

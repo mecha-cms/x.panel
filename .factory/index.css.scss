@@ -159,10 +159,6 @@
         --color-#{$name}__option--#{$v}: var(--color-button--#{$v}, var(--color-button, var(--color--#{$v}, var(--color, inherit))));
         --fill-#{$name}__option--#{$v}: var(--fill-button--#{$v}, var(--fill-button, var(--fill--#{$v}, var(--fill, none))));
       }
-      .#{$name}::after {
-        --stroke-#{$name}--open: var(--color-#{$name}, var(--color, inherit));
-        --stroke-#{$name}: var(--color-#{$name}, var(--color, inherit));
-      }
     }
     @if tag-picker == $name {
       --color-#{$name}__tag-x: #fff;
@@ -173,23 +169,11 @@
       --fill-#{$name}__tag--selected: #c00;
       --fill-#{$name}__tag: #f00;
     }
-    @each $v in (hover, focus, active) {
+    @each $v in (hover, focus, active, read-only, disabled) {
       --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input, var(--color--#{$v}, var(--color, inherit))));
       --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input, var(--fill--#{$v}, var(--fill, none))));
       --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input, var(--shadow--#{$v}, var(--shadow, none))));
       --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input, var(--stroke--#{$v}, var(--stroke, transparent))));
-    }
-    .#{$name}__source {
-      @each $v in (read-only, disabled) {
-        &:#{$v} {
-          + .#{$name} {
-            --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input, var(--color--#{$v}, var(--color, inherit))));
-            --fill-#{$name}--#{$v}: var(--fill-input--#{$v}, var(--fill-input, var(--fill--#{$v}, var(--fill, none))));
-            --shadow-#{$name}--#{$v}: var(--shadow-input--#{$v}, var(--shadow-input, var(--shadow--#{$v}, var(--shadow, none))));
-            --stroke-#{$name}--#{$v}: var(--stroke-input--#{$v}, var(--stroke-input, var(--stroke--#{$v}, var(--stroke, transparent))));
-          }
-        }
-      }
     }
   }
 }

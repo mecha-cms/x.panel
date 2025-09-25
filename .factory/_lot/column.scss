@@ -7,7 +7,7 @@
     min-width: 0;
     @for $i from 1 through $max {
       &.size\:#{$i}\/#{$max} {
-        max-width: percentage(math.div($i, $max));
+        max-width: math.percentage(math.div($i, $max));
       }
     }
   }

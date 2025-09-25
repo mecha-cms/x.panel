@@ -1,8 +1,8 @@
 <?php namespace x\panel;
 
-function _abort($value, $key, $fn) {
+function _abort($value, $key, $name) {
     if (\defined("\\TEST") && \TEST) {
-        \abort('Unable to convert data:<br><br><code style="word-wrap:break-word;">' . \strtr(\htmlspecialchars(\json_encode($value, \JSON_PRETTY_PRINT)), [' ' => '&nbsp;', "\n" => '<br>']) . '</code><br><br>Function <code>' . $fn . '(array $value, int|string $key)</code> does not exist.');
+        \abort('Unable to convert data:<br><br><code style="word-wrap:break-word;">' . \strtr(\htmlspecialchars(\json_encode($value, \JSON_PRETTY_PRINT)), [' ' => '&nbsp;', "\n" => '<br>']) . '</code><br><br>Function <code>' . $name . '(array $value, int|string $key)</code> does not exist.');
     }
 }
 

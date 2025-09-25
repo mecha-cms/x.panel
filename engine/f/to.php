@@ -165,7 +165,7 @@ function lot($lot, &$count = 0, $sort = true) {
 }
 
 // TODO: Convert to recursive `HTML` content
-function pager(int $current, int $count, int $chunk, int $peek, callable $fn, string $first = 'First', string $prev = 'Previous', string $next = 'Next', string $last = 'Last') {
+function pager(int $current, int $count, int $chunk, int $peek, callable $to, string $first = 'First', string $prev = 'Previous', string $next = 'Next', string $last = 'Last') {
     $start = 1;
     $end = (int) \ceil($count / $chunk);
     $out = "";
@@ -187,14 +187,14 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
         if ($current === $start) {
             $out .= '<a aria-disabled="true" title="' . \i('Go to the %s page', [\l($prev)]) . '">' . $prev . '</a>';
         } else {
-            $out .= '<a href="' . \call_user_func($fn, $current - 1) . '" rel="prev" title="' . \i('Go to the %s page', [\l($prev)]) . '">' . $prev . '</a>';
+            $out .= '<a href="' . \call_user_func($to, $current - 1) . '" rel="prev" title="' . \i('Go to the %s page', [\l($prev)]) . '">' . $prev . '</a>';
         }
         $out .= '</span>';
     }
     if (($first = \i($first)) && ($last = \i($last))) {
         $out .= '<span>';
         if ($min > $start) {
-            $out .= '<a href="' . \call_user_func($fn, $start) . '" rel="prev" title="' . \i('Go to the %s page', [\l($first)]) . '">' . $start . '</a>';
+            $out .= '<a href="' . \call_user_func($to, $start) . '" rel="prev" title="' . \i('Go to the %s page', [\l($first)]) . '">' . $start . '</a>';
             if ($min > $start + 1) {
                 $out .= '<span aria-hidden="true">&#x2026;</span>';
             }
@@ -203,14 +203,14 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
             if ($current === $i) {
                 $out .= '<a aria-current="page" title="' . \i('Go to page %d (you are here)', [$i]) . '">' . $i . '</a>';
             } else {
-                $out .= '<a href="' . \call_user_func($fn, $i) . '" rel="' . ($current >= $i ? 'prev' : 'next') . '" title="' . \i('Go to page %d', [$i]) . '">' . $i . '</a>';
+                $out .= '<a href="' . \call_user_func($to, $i) . '" rel="' . ($current >= $i ? 'prev' : 'next') . '" title="' . \i('Go to page %d', [$i]) . '">' . $i . '</a>';
             }
         }
         if ($max < $end) {
             if ($max < $end - 1) {
                 $out .= '<span aria-hidden="true">&#x2026;</span>';
             }
-            $out .= '<a href="' . \call_user_func($fn, $end) . '" rel="next" title="' . \i('Go to the %s page', [\l($last)]) . '">' . $end . '</a>';
+            $out .= '<a href="' . \call_user_func($to, $end) . '" rel="next" title="' . \i('Go to the %s page', [\l($last)]) . '">' . $end . '</a>';
         }
         $out .= '</span>';
     }
@@ -219,7 +219,7 @@ function pager(int $current, int $count, int $chunk, int $peek, callable $fn, st
         if ($current === $end) {
             $out .= '<a aria-disabled="true" title="' . \i('Go to the %s page', [\l($next)]) . '">' . $next . '</a>';
         } else {
-            $out .= '<a href="' . \call_user_func($fn, $current + 1) . '" rel="next" title="' . \i('Go to the %s page', [\l($next)]) . '">' . $next . '</a>';
+            $out .= '<a href="' . \call_user_func($to, $current + 1) . '" rel="next" title="' . \i('Go to the %s page', [\l($next)]) . '">' . $next . '</a>';
         }
         $out .= '</span>';
     }

@@ -133,11 +133,11 @@ function type($value, $key) {
     if ($type = \strtolower(\f2p(\strtr($value['type'] ?? "", '-', '_')) ?? "")) {
         $type_exist = false;
         foreach (\array_values(\step($type, "\\")) as $v) {
-            if ("" !== $v && \function_exists($fn = __NAMESPACE__ . "\\type\\" . $v)) {
+            if ("" !== $v && \function_exists($task = __NAMESPACE__ . "\\type\\" . $v)) {
                 $type_exist = true;
-                if ($v = \call_user_func($fn, $value, $key)) {
+                if ($v = \call_user_func($task, $value, $key)) {
                     if (\is_array($v)) {
-                        \x\panel\_abort($value, $key, $fn);
+                        \x\panel\_abort($value, $key, $task);
                     } else {
                         $out .= $v;
                     }
@@ -146,7 +146,7 @@ function type($value, $key) {
             }
         }
         if (!$type_exist) {
-            \x\panel\_abort($value, $key, $fn);
+            \x\panel\_abort($value, $key, $task);
         }
     } else {
         // Automatically form an interface without `type` property based on the presence of `content` or `lot` property

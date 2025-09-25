@@ -1,24 +1,23 @@
 {
   "dependencies": {
-    "@taufik-nurrohman/document": "*",
-    "@taufik-nurrohman/event": "*",
-    "@taufik-nurrohman/from": "*",
-    "@taufik-nurrohman/hook": "*",
-    "@taufik-nurrohman/is": "*",
-    "@taufik-nurrohman/key": "*",
-    "@taufik-nurrohman/option-picker": "*",
-    "@taufik-nurrohman/tag-picker": "*",
-    "@taufik-nurrohman/text-editor": "*",
-    "@taufik-nurrohman/text-editor.history": "*",
-    "@taufik-nurrohman/text-editor.key": "*",
-    "@taufik-nurrohman/text-editor.source": "*",
-    "@taufik-nurrohman/tick": "*",
-    "@taufik-nurrohman/to": "*",
-    "siema": "^1.5.1",
-    "sortablejs": "^1.15.6"
+    "@taufik-nurrohman/document": "^1.5.3",
+    "@taufik-nurrohman/event": "^1.0.1",
+    "@taufik-nurrohman/from": "^1.1.0",
+    "@taufik-nurrohman/hook": "^1.2.2",
+    "@taufik-nurrohman/is": "^1.0.5",
+    "@taufik-nurrohman/key": "^3.1.4",
+    "@taufik-nurrohman/option-picker": "^2.2.10",
+    "@taufik-nurrohman/tag-picker": "^4.2.8",
+    "@taufik-nurrohman/text-editor": "^4.2.9",
+    "@taufik-nurrohman/text-editor.history": "^4.1.5",
+    "@taufik-nurrohman/text-editor.key": "^1.0.12",
+    "@taufik-nurrohman/text-editor.source": "^3.0.5",
+    "@taufik-nurrohman/tick": "^2.1.1",
+    "@taufik-nurrohman/to": "^1.2.0",
+    "siema": "^1.5.1"
   },
   "devDependencies": {
-    "@taufik-nurrohman/factory": "*"
+    "@taufik-nurrohman/factory": "^2.3.1"
   },
   "private": true,
   "scripts": {
