@@ -8,7 +8,7 @@ function detach($_) {
     $n = \dirname($_['path']);
     $name = \basename($folder = \LOT . \D . $_['path']);
     $title = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : 'Folder');
-    if (\is_file($file = $folder . \D . 'index.x')) {
+    if (\is_file($file = $folder . \D . '.index.php')) {
         $_['alert']['info'][$file] = ['%s %s already detached.', [$title, '<code>' . $name . '</code>']];
     } else if (\is_file($file = $folder . \D . 'index.php')) {
         if (\rename($file, $folder . \D . '.index.php')) {

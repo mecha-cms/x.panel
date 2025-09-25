@@ -47,6 +47,7 @@ foreach (array_reverse(step(strtr($_['type'] ?? 'void', '/', D), D)) as $v) {
 $_ = lot('_');
 
 // Run the task(s) to `do.*.*` hook after panel type is set
+$r = []; // Mark duplicate(s)
 $tasks = array_reverse(step(trim(strtr($_['task'] ?? 'get', '/', D), D), D));
 $type = strtr(strtr($_['type'] ?? P, "\\", '/'), '/', D);
 foreach ($tasks as $task) {
@@ -63,6 +64,10 @@ foreach ($tasks as $task) {
             // For route `/panel/fire/123/foo/bar/1`, you can have function named `_123()` instead of `123()`.
             is_callable($f = strtr($f, ["\\task\\fire\\" => "\\task\\fire\\_"]))
         ) {
+            if (isset($r[$f])) {
+                continue;
+            }
+            $r[$f] = 1;
             Hook::set(strtr('do.' . $type . '.' . $task, D, '/'), $f, 10);
         }
     }
