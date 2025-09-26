@@ -69,16 +69,10 @@ foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files
             }
             if (false === strpos($v['title'], '/')) {
                 if (1 === $stats[1]) {
-                    $g = g($k, 1, true);
-                    // To get the first element of a `RecursiveIteratorIterator` instance, a rewind is needed, somehow.
-                    $g->rewind(); // This should execute the `RecursiveIteratorIterator::beginIteration()` method.
-                    $v['title'] = S . basename($g->key() ?? "") . S;
+                    $v['title'] = S . basename(g($k, 1, true)->key() ?? "") . S;
                     $v['type'] = 'file';
                 } else {
-                    $g = g($k, 0, true);
-                    // To get the first element of a `RecursiveIteratorIterator` instance, a rewind is needed, somehow.
-                    $g->rewind(); // This should execute the `RecursiveIteratorIterator::beginIteration()` method.
-                    $v['title'] = S . basename($g->key() ?? "") . S;
+                    $v['title'] = S . basename(g($k, 0, true)->key() ?? "") . S;
                 }
             }
             $v['tasks']['recover'] = [
