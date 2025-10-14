@@ -161,8 +161,8 @@
       }
     }
     @if tag-picker == $name {
-      --color-#{$name}__tag-x: #fff;
       --color-#{$name}__tag: #000;
+      --color-#{$name}__x: #fff;
       --fill-#{$name}__tag--disabled: #f66;
       --fill-#{$name}__tag--focus: #c00;
       --fill-#{$name}__tag--read-only: #f66;

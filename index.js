@@ -1440,7 +1440,7 @@
         if (extra === void 0) {
             extra = "";
         }
-        return pattern.replace(toPattern('[' + extra + x.replace(/./g, '\\$&') + ']'), '\\$&');
+        return pattern.replace(toPattern('[' + extra + x$1.replace(/./g, '\\$&') + ']'), '\\$&');
     };
     var isPattern = function isPattern(pattern) {
         return isInstance(pattern, RegExp);
@@ -1451,30 +1451,30 @@
         }
         return new RegExp(pattern, isSet(opt) ? opt : 'g');
     };
-    var x = "!$^*()+=[]{}|:<>,.?/-";
-    var EVENT_DOWN$1 = 'down';
-    var EVENT_MOVE = 'move';
-    var EVENT_UP$1 = 'up';
+    var x$1 = "!$^*()+=[]{}|:<>,.?/-";
+    var EVENT_DOWN$2 = 'down';
+    var EVENT_MOVE$1 = 'move';
+    var EVENT_UP$2 = 'up';
     var EVENT_BLUR$1 = 'blur';
     var EVENT_CUT$1 = 'cut';
     var EVENT_FOCUS$1 = 'focus';
     var EVENT_INPUT$1 = 'input';
     var EVENT_INVALID$1 = 'invalid';
     var EVENT_KEY$1 = 'key';
-    var EVENT_KEY_DOWN$1 = EVENT_KEY$1 + EVENT_DOWN$1;
-    var EVENT_MOUSE$1 = 'mouse';
-    var EVENT_MOUSE_DOWN$1 = EVENT_MOUSE$1 + EVENT_DOWN$1;
-    var EVENT_MOUSE_MOVE = EVENT_MOUSE$1 + EVENT_MOVE;
-    var EVENT_MOUSE_UP = EVENT_MOUSE$1 + EVENT_UP$1;
+    var EVENT_KEY_DOWN$1 = EVENT_KEY$1 + EVENT_DOWN$2;
+    var EVENT_MOUSE$2 = 'mouse';
+    var EVENT_MOUSE_DOWN$2 = EVENT_MOUSE$2 + EVENT_DOWN$2;
+    var EVENT_MOUSE_MOVE$1 = EVENT_MOUSE$2 + EVENT_MOVE$1;
+    var EVENT_MOUSE_UP$1 = EVENT_MOUSE$2 + EVENT_UP$2;
     var EVENT_PASTE$1 = 'paste';
     var EVENT_RESET$1 = 'reset';
     var EVENT_RESIZE = 'resize';
     var EVENT_SCROLL = 'scroll';
     var EVENT_SUBMIT$1 = 'submit';
-    var EVENT_TOUCH$1 = 'touch';
-    var EVENT_TOUCH_END = EVENT_TOUCH$1 + 'end';
-    var EVENT_TOUCH_MOVE = EVENT_TOUCH$1 + EVENT_MOVE;
-    var EVENT_TOUCH_START$1 = EVENT_TOUCH$1 + 'start';
+    var EVENT_TOUCH$2 = 'touch';
+    var EVENT_TOUCH_END$1 = EVENT_TOUCH$2 + 'end';
+    var EVENT_TOUCH_MOVE$1 = EVENT_TOUCH$2 + EVENT_MOVE$1;
+    var EVENT_TOUCH_START$2 = EVENT_TOUCH$2 + 'start';
     var EVENT_WHEEL = 'wheel';
     var KEY_DOWN = 'Down';
     var KEY_LEFT$1 = 'Left';
@@ -1625,7 +1625,7 @@
             hint = _mask.hint;
         value ? setStyle(hint, TOKEN_VISIBILITY$1, 'hidden') : letStyle(hint, TOKEN_VISIBILITY$1);
     };
-    var name$4 = 'OptionPicker';
+    var name$5 = 'OptionPicker';
 
     function createOptions($, options) {
         var map = isInstance(options, Map) ? options : new Map();
@@ -1873,8 +1873,8 @@
             time = state.time,
             error = time.error,
             option;
-        onEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
-        onEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+        onEvent(EVENT_MOUSE_DOWN$2, mask, onPointerDownMask$1);
+        onEvent(EVENT_TOUCH_START$2, mask, onPointerDownMask$1);
         if (strict) {
             if (!options.hidden && (option = getOptionSelected(picker, 1))) {
                 selectToOption(option, picker);
@@ -1915,8 +1915,8 @@
             mask = picker.mask,
             options = picker.options;
         if (options.open) {
-            offEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
-            offEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+            offEvent(EVENT_MOUSE_DOWN$2, mask, onPointerDownMask$1);
+            offEvent(EVENT_TOUCH_START$2, mask, onPointerDownMask$1);
             return;
         }
         getText($, 0) ? selectTo($) : picker.enter().fit();
@@ -2182,10 +2182,10 @@
                 if ((valuePrev = getPrev($)) && hasKeyInMap(valuePrev, values) || (valueNext = getNext($)) && hasKeyInMap(valueNext, values)) {
                     focusTo$1(_mask[TOKEN_VALUE$1] = valuePrev || valueNext);
                     offEvent(EVENT_KEY_DOWN$1, $, onKeyDownValue);
-                    offEvent(EVENT_MOUSE_DOWN$1, $, onPointerDownValue);
-                    offEvent(EVENT_MOUSE_DOWN$1, $.$[VALUE_X], onPointerDownValueX);
-                    offEvent(EVENT_TOUCH_START$1, $, onPointerDownValue);
-                    offEvent(EVENT_TOUCH_START$1, $.$[VALUE_X], onPointerDownValueX);
+                    offEvent(EVENT_MOUSE_DOWN$2, $, onPointerDownValue);
+                    offEvent(EVENT_MOUSE_DOWN$2, $.$[VALUE_X], onPointerDownValueX);
+                    offEvent(EVENT_TOUCH_START$2, $, onPointerDownValue);
+                    offEvent(EVENT_TOUCH_START$2, $.$[VALUE_X], onPointerDownValueX);
                     letValueInMap($, values), letElement($);
                     // Do not remove the only option value
                 } else {
@@ -2218,10 +2218,10 @@
                 if ((valueNext = getNext($)) && hasKeyInMap(valueNext, values) || (valuePrev = getPrev($)) && hasKeyInMap(valuePrev, values)) {
                     focusTo$1(_mask[TOKEN_VALUE$1] = valueNext && valueNext !== arrow ? valueNext : valuePrev);
                     offEvent(EVENT_KEY_DOWN$1, $, onKeyDownValue);
-                    offEvent(EVENT_MOUSE_DOWN$1, $, onPointerDownValue);
-                    offEvent(EVENT_MOUSE_DOWN$1, $.$[VALUE_X], onPointerDownValueX);
-                    offEvent(EVENT_TOUCH_START$1, $, onPointerDownValue);
-                    offEvent(EVENT_TOUCH_START$1, $.$[VALUE_X], onPointerDownValueX);
+                    offEvent(EVENT_MOUSE_DOWN$2, $, onPointerDownValue);
+                    offEvent(EVENT_MOUSE_DOWN$2, $.$[VALUE_X], onPointerDownValueX);
+                    offEvent(EVENT_TOUCH_START$2, $, onPointerDownValue);
+                    offEvent(EVENT_TOUCH_START$2, $.$[VALUE_X], onPointerDownValueX);
                     letValueInMap($, values), letElement($);
                     // Do not remove the only option value
                 } else {
@@ -2382,14 +2382,14 @@
         // Add an “active” effect on `touchstart` to indicate which option is about to be selected. We don’t need this
         // indication on `mousedown` because pointer device(s) already have a hover state that is clear enough to indicate
         // which option is about to be selected.
-        if (EVENT_TOUCH_START$1 === e.type && !getAria($, TOKEN_DISABLED$1)) {
+        if (EVENT_TOUCH_START$2 === e.type && !getAria($, TOKEN_DISABLED$1)) {
             setAria($, TOKEN_SELECTED, true);
         }
         currentPointerState = 1; // Pointer is “down”
     }
 
     function onPointerDownRoot(e) {
-        if (EVENT_TOUCH_START$1 === e.type) {
+        if (EVENT_TOUCH_START$2 === e.type) {
             touchTop = e.touches[0].clientY;
         }
         var $ = this,
@@ -2407,7 +2407,7 @@
     }
 
     function onPointerMoveRoot(e) {
-        touchTopCurrent = EVENT_TOUCH_MOVE === e.type ? e.touches[0].clientY : false;
+        touchTopCurrent = EVENT_TOUCH_MOVE$1 === e.type ? e.touches[0].clientY : false;
         var $ = this,
             picker = getReference$2($);
         if (!picker) {
@@ -2682,10 +2682,10 @@
                     letValueInMap(value, values);
                     forEachSet(values, function (v) {
                         offEvent(EVENT_KEY_DOWN$1, v, onKeyDownValue);
-                        offEvent(EVENT_MOUSE_DOWN$1, v, onPointerDownValue);
-                        offEvent(EVENT_MOUSE_DOWN$1, v.$[VALUE_X], onPointerDownValueX);
-                        offEvent(EVENT_TOUCH_START$1, v, onPointerDownValue);
-                        offEvent(EVENT_TOUCH_START$1, v.$[VALUE_X], onPointerDownValueX);
+                        offEvent(EVENT_MOUSE_DOWN$2, v, onPointerDownValue);
+                        offEvent(EVENT_MOUSE_DOWN$2, v.$[VALUE_X], onPointerDownValueX);
+                        offEvent(EVENT_TOUCH_START$2, v, onPointerDownValue);
+                        offEvent(EVENT_TOUCH_START$2, v.$[VALUE_X], onPointerDownValueX);
                         letReference$1(v), letElement(v);
                         return -1; // Remove
                     });
@@ -2698,10 +2698,10 @@
                         valueNext.$[VALUE_TEXT] = getElement('.' + n + '__v', valueNext);
                         valueNext.$[VALUE_X] = valueNextX = getElement('.' + n + '__x', valueNext);
                         onEvent(EVENT_KEY_DOWN$1, valueNext, onKeyDownValue);
-                        onEvent(EVENT_MOUSE_DOWN$1, valueNext, onPointerDownValue);
-                        onEvent(EVENT_MOUSE_DOWN$1, valueNextX, onPointerDownValueX);
-                        onEvent(EVENT_TOUCH_START$1, valueNext, onPointerDownValue);
-                        onEvent(EVENT_TOUCH_START$1, valueNextX, onPointerDownValueX);
+                        onEvent(EVENT_MOUSE_DOWN$2, valueNext, onPointerDownValue);
+                        onEvent(EVENT_MOUSE_DOWN$2, valueNextX, onPointerDownValueX);
+                        onEvent(EVENT_TOUCH_START$2, valueNext, onPointerDownValue);
+                        onEvent(EVENT_TOUCH_START$2, valueNextX, onPointerDownValueX);
                         setHTML(valueNext.$[VALUE_TEXT], getHTML(v.$[OPTION_TEXT]));
                         setReference$2(valueNext, picker), values.add(setNext(valueCurrent, valueNext));
                         setValue$1(valueNext, getOptionValue(v));
@@ -2763,7 +2763,7 @@
     OptionPicker.version = '2.2.10';
     setObjectAttributes(OptionPicker, {
         name: {
-            value: name$4
+            value: name$5
         }
     }, 1);
     setObjectAttributes(OptionPicker, {
@@ -3155,8 +3155,8 @@
                 setReference$2(textInput, $);
             } else {
                 onEvent(EVENT_KEY_DOWN$1, textOrValue, onKeyDownValue);
-                onEvent(EVENT_MOUSE_DOWN$1, textOrValue, onPointerDownValue);
-                onEvent(EVENT_TOUCH_START$1, textOrValue, onPointerDownValue);
+                onEvent(EVENT_MOUSE_DOWN$2, textOrValue, onPointerDownValue);
+                onEvent(EVENT_TOUCH_START$2, textOrValue, onPointerDownValue);
                 setReference$2(textOrValue, $);
             }
             setClass(self, n + '__self');
@@ -3173,8 +3173,8 @@
             onEvent(EVENT_FOCUS$1, self, onFocusSelf$1);
             onEvent(EVENT_INVALID$1, self, onInvalidSelf$1);
             onEvent(EVENT_KEY_DOWN$1, arrow, onKeyDownArrow);
-            onEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
-            onEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+            onEvent(EVENT_MOUSE_DOWN$2, mask, onPointerDownMask$1);
+            onEvent(EVENT_TOUCH_START$2, mask, onPointerDownMask$1);
             onEvent(EVENT_WHEEL, mask, onWheelMask);
             self[TOKEN_TAB_INDEX$1] = -1;
             setReference$2(arrow, $);
@@ -3202,8 +3202,8 @@
                     'role': 'none'
                 })));
                 if (max > 1) {
-                    onEvent(EVENT_MOUSE_DOWN$1, valueX, onPointerDownValueX);
-                    onEvent(EVENT_TOUCH_START$1, valueX, onPointerDownValueX);
+                    onEvent(EVENT_MOUSE_DOWN$2, valueX, onPointerDownValueX);
+                    onEvent(EVENT_TOUCH_START$2, valueX, onPointerDownValueX);
                     setChildLast(textOrValue, textOrValue.$[VALUE_X] = valueX);
                 }
                 _mask[TOKEN_VALUES$1].add(textOrValue); // Add the only value to the set
@@ -3315,19 +3315,19 @@
             }
             if (value) {
                 offEvent(EVENT_KEY_DOWN$1, value, onKeyDownValue);
-                offEvent(EVENT_MOUSE_DOWN$1, value, onPointerDownValue);
-                offEvent(EVENT_TOUCH_START$1, value, onPointerDownValue);
+                offEvent(EVENT_MOUSE_DOWN$2, value, onPointerDownValue);
+                offEvent(EVENT_TOUCH_START$2, value, onPointerDownValue);
                 var valueX = value.$[VALUE_X];
                 if (valueX) {
-                    offEvent(EVENT_MOUSE_DOWN$1, valueX, onPointerDownValueX);
-                    offEvent(EVENT_TOUCH_START$1, valueX, onPointerDownValueX);
+                    offEvent(EVENT_MOUSE_DOWN$2, valueX, onPointerDownValueX);
+                    offEvent(EVENT_TOUCH_START$2, valueX, onPointerDownValueX);
                 }
             }
             offEvent(EVENT_FOCUS$1, self, onFocusSelf$1);
             offEvent(EVENT_INVALID$1, self, onInvalidSelf$1);
             offEvent(EVENT_KEY_DOWN$1, arrow, onKeyDownArrow);
-            offEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask$1);
-            offEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask$1);
+            offEvent(EVENT_MOUSE_DOWN$2, mask, onPointerDownMask$1);
+            offEvent(EVENT_TOUCH_START$2, mask, onPointerDownMask$1);
             offEvent(EVENT_WHEEL, mask, onWheelMask);
             // Detach extension(s)
             if (isArray(state.with)) {
@@ -3393,20 +3393,20 @@
                     focusTo$1(value);
                 }
             }
-            onEvent(EVENT_MOUSE_DOWN$1, R, onPointerDownRoot);
-            onEvent(EVENT_MOUSE_MOVE, R, onPointerMoveRoot);
-            onEvent(EVENT_MOUSE_UP, R, onPointerUpRoot);
+            onEvent(EVENT_MOUSE_DOWN$2, R, onPointerDownRoot);
+            onEvent(EVENT_MOUSE_MOVE$1, R, onPointerMoveRoot);
+            onEvent(EVENT_MOUSE_UP$1, R, onPointerUpRoot);
             onEvent(EVENT_RESIZE, W, onResizeWindow, {
                 passive: true
             });
             onEvent(EVENT_SCROLL, W, onScrollWindow, {
                 passive: true
             });
-            onEvent(EVENT_TOUCH_END, R, onPointerUpRoot);
-            onEvent(EVENT_TOUCH_MOVE, R, onPointerMoveRoot, {
+            onEvent(EVENT_TOUCH_END$1, R, onPointerUpRoot);
+            onEvent(EVENT_TOUCH_MOVE$1, R, onPointerMoveRoot, {
                 passive: true
             });
-            onEvent(EVENT_TOUCH_START$1, R, onPointerDownRoot);
+            onEvent(EVENT_TOUCH_START$2, R, onPointerDownRoot);
             return $;
         },
         exit: function exit(focus, mode) {
@@ -3439,14 +3439,14 @@
                     focusTo$1(value);
                 }
             }
-            offEvent(EVENT_MOUSE_DOWN$1, R, onPointerDownRoot);
-            offEvent(EVENT_MOUSE_MOVE, R, onPointerMoveRoot);
-            offEvent(EVENT_MOUSE_UP, R, onPointerUpRoot);
+            offEvent(EVENT_MOUSE_DOWN$2, R, onPointerDownRoot);
+            offEvent(EVENT_MOUSE_MOVE$1, R, onPointerMoveRoot);
+            offEvent(EVENT_MOUSE_UP$1, R, onPointerUpRoot);
             offEvent(EVENT_RESIZE, W, onResizeWindow);
             offEvent(EVENT_SCROLL, W, onScrollWindow);
-            offEvent(EVENT_TOUCH_END, R, onPointerUpRoot);
-            offEvent(EVENT_TOUCH_MOVE, R, onPointerMoveRoot);
-            offEvent(EVENT_TOUCH_START$1, R, onPointerDownRoot);
+            offEvent(EVENT_TOUCH_END$1, R, onPointerUpRoot);
+            offEvent(EVENT_TOUCH_MOVE$1, R, onPointerMoveRoot);
+            offEvent(EVENT_TOUCH_START$2, R, onPointerDownRoot);
             return $;
         },
         fit: function fit() {
@@ -3514,7 +3514,7 @@
     });
     setObjectAttributes(OptionPickerOptions, {
         name: {
-            value: name$4 + 'Options'
+            value: name$5 + 'Options'
         }
     }, 1);
     setObjectAttributes(OptionPickerOptions, {
@@ -3574,10 +3574,10 @@
                 valueReal = of [TOKEN_VALUE$1];
             offEvent(EVENT_FOCUS$1, r[2], onFocusOption);
             offEvent(EVENT_KEY_DOWN$1, r[2], onKeyDownOption);
-            offEvent(EVENT_MOUSE_DOWN$1, r[2], onPointerDownOption);
-            offEvent(EVENT_MOUSE_UP, r[2], onPointerUpOption);
-            offEvent(EVENT_TOUCH_END, r[2], onPointerUpOption);
-            offEvent(EVENT_TOUCH_START$1, r[2], onPointerDownOption);
+            offEvent(EVENT_MOUSE_DOWN$2, r[2], onPointerDownOption);
+            offEvent(EVENT_MOUSE_UP$1, r[2], onPointerUpOption);
+            offEvent(EVENT_TOUCH_END$1, r[2], onPointerUpOption);
+            offEvent(EVENT_TOUCH_START$2, r[2], onPointerDownOption);
             letElement(r[2]), letElement(r[3]);
             r = letValueInMap(key, values);
             // Remove empty group(s)
@@ -3726,10 +3726,10 @@
             if (active && !value[2]) {
                 onEvent(EVENT_FOCUS$1, option, onFocusOption);
                 onEvent(EVENT_KEY_DOWN$1, option, onKeyDownOption);
-                onEvent(EVENT_MOUSE_DOWN$1, option, onPointerDownOption);
-                onEvent(EVENT_MOUSE_UP, option, onPointerUpOption);
-                onEvent(EVENT_TOUCH_END, option, onPointerUpOption);
-                onEvent(EVENT_TOUCH_START$1, option, onPointerDownOption);
+                onEvent(EVENT_MOUSE_DOWN$2, option, onPointerDownOption);
+                onEvent(EVENT_MOUSE_UP$1, option, onPointerUpOption);
+                onEvent(EVENT_TOUCH_END$1, option, onPointerUpOption);
+                onEvent(EVENT_TOUCH_START$2, option, onPointerDownOption);
             }
             setChildLast(option, optionText);
             setChildLast(optionGroup || lot, option);
@@ -3763,8 +3763,8 @@
         1 === init && W._.on('change', onChange$b);
     }
     W.OP = W.OptionPicker = OptionPicker;
-    var EVENT_DOWN = 'down';
-    var EVENT_UP = 'up';
+    var EVENT_DOWN$1 = 'down';
+    var EVENT_UP$1 = 'up';
     var EVENT_BLUR = 'blur';
     var EVENT_COPY = 'copy';
     var EVENT_CUT = 'cut';
@@ -3773,15 +3773,15 @@
     var EVENT_INPUT_START = 'before' + EVENT_INPUT;
     var EVENT_INVALID = 'invalid';
     var EVENT_KEY = 'key';
-    var EVENT_KEY_DOWN = EVENT_KEY + EVENT_DOWN;
-    var EVENT_KEY_UP = EVENT_KEY + EVENT_UP;
-    var EVENT_MOUSE = 'mouse';
-    var EVENT_MOUSE_DOWN = EVENT_MOUSE + EVENT_DOWN;
+    var EVENT_KEY_DOWN = EVENT_KEY + EVENT_DOWN$1;
+    var EVENT_KEY_UP = EVENT_KEY + EVENT_UP$1;
+    var EVENT_MOUSE$1 = 'mouse';
+    var EVENT_MOUSE_DOWN$1 = EVENT_MOUSE$1 + EVENT_DOWN$1;
     var EVENT_PASTE = 'paste';
     var EVENT_RESET = 'reset';
     var EVENT_SUBMIT = 'submit';
-    var EVENT_TOUCH = 'touch';
-    var EVENT_TOUCH_START = EVENT_TOUCH + 'start';
+    var EVENT_TOUCH$1 = 'touch';
+    var EVENT_TOUCH_START$1 = EVENT_TOUCH$1 + 'start';
     var KEY_LEFT = 'Left';
     var KEY_RIGHT = 'Right';
     var KEY_A = 'a';
@@ -3843,7 +3843,7 @@
             hint = _mask.hint;
         value ? setStyle(hint, TOKEN_VISIBILITY, 'hidden') : letStyle(hint, TOKEN_VISIBILITY);
     };
-    var name$3 = 'TagPicker';
+    var name$4 = 'TagPicker';
     var _keyIsCtrl, _keyIsShift, _keyOverTag;
 
     function createTags($, tags) {
@@ -3949,8 +3949,8 @@
             time = state.time,
             error = time.error;
         letError(isInteger(error) && error > 0 ? error : 0, picker);
-        onEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
-        onEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+        onEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask);
+        onEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask);
     }
 
     function onCopyTag(e) {
@@ -4011,8 +4011,8 @@
             letErrorAbort(), setError(picker);
         }
         selectTo($);
-        offEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
-        offEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+        offEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask);
+        offEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask);
     }
     // Better mobile support
     function onInputTextInput(e) {
@@ -4362,7 +4362,7 @@
         focusTo(picker);
     }
 
-    function onPointerDownTag(e) {
+    function onPointerDownTag$1(e) {
         offEventDefault(e);
         var $ = this,
             picker = getReference$2($),
@@ -4495,7 +4495,7 @@
     TagPicker.version = '4.2.8';
     setObjectAttributes(TagPicker, {
         name: {
-            value: name$3
+            value: name$4
         }
     }, 1);
     setObjectAttributes(TagPicker, {
@@ -4768,9 +4768,9 @@
             onEvent(EVENT_INVALID, self, onInvalidSelf);
             onEvent(EVENT_KEY_DOWN, textInput, onKeyDownTextInput);
             onEvent(EVENT_KEY_UP, textInput, onKeyUpTextInput);
-            onEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
+            onEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask);
             onEvent(EVENT_PASTE, textInput, onPasteTextInput);
-            onEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+            onEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask);
             self[TOKEN_TAB_INDEX] = -1;
             setReference$2(mask, $);
             $._mask = {
@@ -4855,9 +4855,9 @@
             offEvent(EVENT_INVALID, self, onInvalidSelf);
             offEvent(EVENT_KEY_DOWN, input, onKeyDownTextInput);
             offEvent(EVENT_KEY_UP, input, onKeyUpTextInput);
-            offEvent(EVENT_MOUSE_DOWN, mask, onPointerDownMask);
+            offEvent(EVENT_MOUSE_DOWN$1, mask, onPointerDownMask);
             offEvent(EVENT_PASTE, input, onPasteTextInput);
-            offEvent(EVENT_TOUCH_START, mask, onPointerDownMask);
+            offEvent(EVENT_TOUCH_START$1, mask, onPointerDownMask);
             // Detach extension(s)
             if (isArray(state.with)) {
                 forEachArray(state.with, function (v, k) {
@@ -4903,7 +4903,7 @@
     });
     setObjectAttributes(TagPickerTags, {
         name: {
-            value: name$3 + 'Tags'
+            value: name$4 + 'Tags'
         }
     }, 1);
     TagPickerTags._ = setObjectMethods(TagPickerTags, {
@@ -4958,11 +4958,11 @@
             offEvent(EVENT_INPUT_START, tag, onBeforeInputTag);
             offEvent(EVENT_KEY_DOWN, tag, onKeyDownTag);
             offEvent(EVENT_KEY_UP, tag, onKeyUpTag);
-            offEvent(EVENT_MOUSE_DOWN, tag, onPointerDownTag);
-            offEvent(EVENT_MOUSE_DOWN, tagX, onPointerDownTagX);
+            offEvent(EVENT_MOUSE_DOWN$1, tag, onPointerDownTag$1);
+            offEvent(EVENT_MOUSE_DOWN$1, tagX, onPointerDownTagX);
             offEvent(EVENT_PASTE, tag, onPasteTag);
-            offEvent(EVENT_TOUCH_START, tag, onPointerDownTag);
-            offEvent(EVENT_TOUCH_START, tagX, onPointerDownTagX);
+            offEvent(EVENT_TOUCH_START$1, tag, onPointerDownTag$1);
+            offEvent(EVENT_TOUCH_START$1, tagX, onPointerDownTagX);
             letElement(tagX), letElement(tag);
             r = letValueInMap(key, values);
             forEachMap(values, function (v, k) {
@@ -5108,11 +5108,11 @@
                 onEvent(EVENT_INPUT_START, tag, onBeforeInputTag);
                 onEvent(EVENT_KEY_DOWN, tag, onKeyDownTag);
                 onEvent(EVENT_KEY_UP, tag, onKeyUpTag);
-                onEvent(EVENT_MOUSE_DOWN, tag, onPointerDownTag);
-                onEvent(EVENT_MOUSE_DOWN, tagX, onPointerDownTagX);
+                onEvent(EVENT_MOUSE_DOWN$1, tag, onPointerDownTag$1);
+                onEvent(EVENT_MOUSE_DOWN$1, tagX, onPointerDownTagX);
                 onEvent(EVENT_PASTE, tag, onPasteTag);
-                onEvent(EVENT_TOUCH_START, tag, onPointerDownTag);
-                onEvent(EVENT_TOUCH_START, tagX, onPointerDownTagX);
+                onEvent(EVENT_TOUCH_START$1, tag, onPointerDownTag$1);
+                onEvent(EVENT_TOUCH_START$1, tagX, onPointerDownTagX);
             }
             setChildLast(tag, tagText);
             setChildLast(tag, tagX);
@@ -5133,6 +5133,249 @@
         return this[TOKEN_VALUES][Symbol.iterator]();
     };
     TagPicker.Tags = TagPickerTags;
+    var name$3 = 'TagPicker.Sort';
+    var EVENT_DOWN = 'down';
+    var EVENT_MOVE = 'move';
+    var EVENT_UP = 'up';
+    var EVENT_MOUSE = 'mouse';
+    var EVENT_MOUSE_DOWN = EVENT_MOUSE + EVENT_DOWN;
+    var EVENT_MOUSE_MOVE = EVENT_MOUSE + EVENT_MOVE;
+    var EVENT_MOUSE_UP = EVENT_MOUSE + EVENT_UP;
+    var EVENT_TOUCH = 'touch';
+    var EVENT_TOUCH_END = EVENT_TOUCH + 'end';
+    var EVENT_TOUCH_MOVE = EVENT_TOUCH + EVENT_MOVE;
+    var EVENT_TOUCH_START = EVENT_TOUCH + 'start';
+
+    function attach$2(self, state) {
+        var $ = this,
+            $$ = $.constructor._,
+            _tags = $._tags;
+        forEachMap(_tags, function (v) {
+            v = v[2];
+            onEvent(EVENT_MOUSE_DOWN, v, onPointerDownTag);
+            onEvent(EVENT_TOUCH_START, v, onPointerDownTag);
+            setReference$2(v, $);
+        });
+        !isFunction($$.reverse) && ($$.reverse = function () {
+            var $ = this,
+                state = $.state,
+                value = $.value,
+                join = state.join;
+            if (value) {
+                value = value.split(join).reverse();
+                $.value = value.join(join);
+                return $.fire('sort.tags', [value]);
+            }
+            return $;
+        });
+        !isFunction($$.sort) && ($$.sort = function (method) {
+            var $ = this,
+                state = $.state,
+                value = $.value,
+                join = state.join,
+                v;
+            method = (method || function (a, b) {
+                return a.localeCompare(b, undefined, {
+                    numeric: true,
+                    sensitivity: 'base'
+                });
+            }).bind($);
+            if (v = value) {
+                value = value.split(join).sort(method);
+                if (v !== value.join(join)) {
+                    $.value = value.join(join);
+                    return $.fire('sort.tags', [value]);
+                }
+            }
+            return $;
+        });
+        return $.on('let.tag', onLetTag).on('set.tag', onSetTag);
+    }
+
+    function detach$2() {
+        var $ = this,
+            $$ = $.constructor._,
+            _tags = $._tags;
+        forEachMap(_tags, function (v) {
+            v = v[2];
+            letReference$1(v);
+            offEvent(EVENT_MOUSE_DOWN, v, onPointerDownTag);
+            offEvent(EVENT_TOUCH_START, v, onPointerDownTag);
+        });
+        delete $$.reverse;
+        delete $$.sort;
+        return $.off('let.tag', onLetTag).off('set.tag', onSetTag);
+    }
+    var copy,
+        left,
+        rect,
+        top,
+        x = 0,
+        y = 0;
+
+    function isBefore(a, b) {
+        var c;
+        for (c = getPrev(a, 1); c; c = getPrev(c, 1)) {
+            if (c === b) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    function onPointerDownTag(e) {
+        offEventDefault(e);
+        var $ = this,
+            picker = getReference$2($),
+            _mask = picker._mask,
+            state = picker.state,
+            flex = _mask.flex,
+            n = state.n,
+            _e = e,
+            target = _e.target,
+            type = _e.type;
+        if (hasClass(target, n + '__x') || getParent(target, '.' + n + '__x')) {
+            return;
+        }
+        $.blur();
+        onEvent(EVENT_MOUSE_MOVE, D, onPointerMoveDocument);
+        onEvent(EVENT_MOUSE_UP, D, onPointerUpDocument);
+        onEvent(EVENT_TOUCH_END, D, onPointerUpDocument);
+        onEvent(EVENT_TOUCH_MOVE, D, onPointerMoveDocument);
+        if (EVENT_TOUCH_START === type) {
+            e = e.touches[0];
+        }
+        left = e.clientX - x;
+        top = e.clientY - y;
+        letID(copy = $.cloneNode(true));
+        rect = getRect($);
+        setReference$2(copy, $);
+        setStyle($, 'visibility', 'hidden');
+        setStyles(copy, {
+            'height': rect[3],
+            'left': rect[0],
+            'pointer-events': 'none',
+            'position': 'fixed',
+            'top': rect[1],
+            'transform': false,
+            'transition': false,
+            'width': rect[2],
+            'z-index': 9999
+        });
+        setChildLast(flex, copy);
+        var current = $,
+            parent;
+        while (parent = getParent(current)) {
+            setStyle(current = parent, 'cursor', 'move');
+            if (B === current) {
+                break;
+            }
+        }
+    }
+
+    function onPointerMoveDocument(e) {
+        offEventDefault(e);
+        if (!copy) {
+            return;
+        }
+        var copyOf = getReference$2(copy),
+            picker = getReference$2(copyOf),
+            _mask = picker._mask,
+            state = picker.state,
+            flex = _mask.flex,
+            n = state.n,
+            current,
+            parent;
+        if (EVENT_TOUCH_MOVE === e.type) {
+            e = e.touches[0];
+        }
+        x = e.clientX - left;
+        y = e.clientY - top;
+        current = D.elementFromPoint(e.clientX, e.clientY);
+        if (hasClass(current, n + '__tag'));
+        else if (parent = getParent(current, '.' + n + '__tag')) {
+            current = parent;
+        } else {
+            current = 0;
+        }
+        translate(copy, x, y);
+        if (current && current !== copyOf && flex === getParent(current)) {
+            isBefore(copyOf, current) ? setNext(copyOf, current) : setPrev(copyOf, current);
+        }
+    }
+
+    function onPointerUpDocument(e) {
+        offEvent(EVENT_MOUSE_MOVE, D, onPointerMoveDocument);
+        offEvent(EVENT_MOUSE_UP, D, onPointerUpDocument);
+        offEvent(EVENT_TOUCH_END, D, onPointerUpDocument);
+        offEvent(EVENT_TOUCH_MOVE, D, onPointerMoveDocument);
+        if (copy) {
+            var current, parent, picker, value;
+            letStyle(current = getReference$2(copy), 'visibility');
+            picker = getReference$2(current);
+            value = current.value;
+            if (EVENT_TOUCH_END !== e.type) {
+                current.focus();
+            }
+            while (parent = getParent(current)) {
+                letStyle(current = parent, 'cursor');
+                if (B === current) {
+                    break;
+                }
+            }
+            letReference$1(copy), letElement(copy);
+            if (picker) {
+                var map = new Map(),
+                    _picker = picker,
+                    _mask = _picker._mask,
+                    _tags = _picker._tags,
+                    self = _picker.self,
+                    state = _picker.state,
+                    flex = _mask.flex,
+                    join = state.join,
+                    key,
+                    values = [];
+                forEachArray(getElements('data[value]', flex), function (v) {
+                    setValueInMap$1(key = v.value, _tags.at(key), map);
+                    values.push(key);
+                });
+                setValue$1(self, values.join(join));
+                _tags.values = map;
+                picker.fire('sort.tag', [value]);
+            }
+        }
+        copy = x = y = 0;
+    }
+
+    function onLetTag(name) {
+        var $ = this,
+            at = $.tags.at(name);
+        if (at = at && at[2]) {
+            letReference$1(at);
+            offEvent(EVENT_MOUSE_DOWN, at, onPointerDownTag);
+            offEvent(EVENT_TOUCH_START, at, onPointerDownTag);
+        }
+    }
+
+    function onSetTag(name) {
+        var $ = this,
+            at = $.tags.at(name);
+        if (at = at && at[2]) {
+            onEvent(EVENT_MOUSE_DOWN, at, onPointerDownTag);
+            onEvent(EVENT_TOUCH_START, at, onPointerDownTag);
+            setReference$2(at, $);
+        }
+    }
+
+    function translate(node, x, y) {
+        setStyle(node, 'transform', 'translate(' + x + 'px,' + y + 'px)');
+    }
+    var TagPickerSort = {
+        attach: attach$2,
+        detach: detach$2,
+        name: name$3
+    };
+    TagPicker.state.with.push(TagPickerSort);
 
     function onChange$a(init) {
         var sources = getElements('.lot\\:field.type\\:query input:not([type=hidden])');
@@ -5233,7 +5476,7 @@
         'with': []
     };
     TextEditor.version = '4.2.9';
-    TextEditor.x = x;
+    TextEditor.x = x$1;
     var S = function S(start, end, value) {
         var $ = this,
             current = value.slice(start, end);

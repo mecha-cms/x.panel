@@ -12,6 +12,9 @@ import {
 } from '@taufik-nurrohman/to';
 
 import TagPicker from '@taufik-nurrohman/tag-picker';
+import TagPickerSort from '@taufik-nurrohman/tag-picker.sort';
+
+TagPicker.state.with.push(TagPickerSort);
 
 function onChange(init) {
     let sources = getElements('.lot\\:field.type\\:query input:not([type=hidden])');
