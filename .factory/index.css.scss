@@ -171,6 +171,9 @@
       --stroke-#{$name}__tag--focus: var(--stroke-input--focus, var(--stroke-input, var(--stroke--focus, var(--stroke, transparent))));
       --stroke-#{$name}__tag--selected: transparent;
       --stroke-#{$name}__tag: transparent;
+      .#{$name}__tag[aria-selected]:focus {
+        --stroke-#{$name}__tag--selected: var(--stroke-#{$name}__tag--focus);
+      }
     }
     @each $v in (hover, focus, active, read-only, disabled) {
       --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input, var(--color--#{$v}, var(--color, inherit))));

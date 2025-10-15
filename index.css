@@ -646,6 +646,9 @@
   --shadow-tag-picker--disabled: var(--shadow-input--disabled, var(--shadow-input, var(--shadow--disabled, var(--shadow, none))));
   --stroke-tag-picker--disabled: var(--stroke-input--disabled, var(--stroke-input, var(--stroke--disabled, var(--stroke, transparent))));
 }
+:root .tag-picker__tag[aria-selected]:focus {
+  --stroke-tag-picker__tag--selected: var(--stroke-tag-picker__tag--focus);
+}
 
 *,
 ::after,
