@@ -463,17 +463,15 @@
       box-shadow: var(--shadow-tag-picker__tag);
       gap: calc(var(--x) / 6);
       &:focus {
-        background: var(--fill-tag-picker__tag--focus);
-        border-color: var(--stroke-tag-picker__tag--focus);
-        border-radius: var(--arc-tag-picker__tag--focus);
-        box-shadow: var(--shadow-tag-picker__tag--focus);
+        background: var(--fill-tag-picker__tag--focus, var(--fill-tag-picker__tag));
+        border-color: var(--stroke-tag-picker__tag--focus, var(--stroke-tag-picker__tag));
+        box-shadow: var(--shadow-tag-picker__tag--focus, var(--shadow-tag-picker__tag));
         outline: 0;
       }
       &[aria-pressed] {
-        background: var(--fill-tag-picker__tag--selected);
-        border-color: var(--stroke-tag-picker__tag--selected);
-        border-radius: var(--arc-tag-picker__tag--selected);
-        box-shadow: var(--shadow-tag-picker__tag--selected);
+        background: var(--fill-tag-picker__tag--selected, var(--fill-tag-picker__tag));
+        border-color: var(--stroke-tag-picker__tag--selected, var(--stroke-tag-picker__tag));
+        box-shadow: var(--shadow-tag-picker__tag--selected, var(--shadow-tag-picker__tag));
         outline: 0;
       }
     }
