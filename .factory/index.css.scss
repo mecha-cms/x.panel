@@ -164,10 +164,13 @@
       --color-#{$name}__tag: #000;
       --color-#{$name}__x: #fff;
       --fill-#{$name}__tag--disabled: #f66;
-      --fill-#{$name}__tag--focus: #c00;
+      --fill-#{$name}__tag--focus: #f00;
       --fill-#{$name}__tag--read-only: #f66;
       --fill-#{$name}__tag--selected: #c00;
       --fill-#{$name}__tag: #f00;
+      --stroke-#{$name}__tag--focus: var(--stroke-input--focus, var(--stroke-input, var(--stroke--focus, var(--stroke, transparent))));
+      --stroke-#{$name}__tag--selected: transparent;
+      --stroke-#{$name}__tag: transparent;
     }
     @each $v in (hover, focus, active, read-only, disabled) {
       --color-#{$name}--#{$v}: var(--color-input--#{$v}, var(--color-input, var(--color--#{$v}, var(--color, inherit))));

@@ -618,10 +618,13 @@
   --color-tag-picker__tag: #000;
   --color-tag-picker__x: #fff;
   --fill-tag-picker__tag--disabled: #f66;
-  --fill-tag-picker__tag--focus: #c00;
+  --fill-tag-picker__tag--focus: #f00;
   --fill-tag-picker__tag--read-only: #f66;
   --fill-tag-picker__tag--selected: #c00;
   --fill-tag-picker__tag: #f00;
+  --stroke-tag-picker__tag--focus: var(--stroke-input--focus, var(--stroke-input, var(--stroke--focus, var(--stroke, transparent))));
+  --stroke-tag-picker__tag--selected: transparent;
+  --stroke-tag-picker__tag: transparent;
   --color-tag-picker--hover: var(--color-input--hover, var(--color-input, var(--color--hover, var(--color, inherit))));
   --fill-tag-picker--hover: var(--fill-input--hover, var(--fill-input, var(--fill--hover, var(--fill, none))));
   --shadow-tag-picker--hover: var(--shadow-input--hover, var(--shadow-input, var(--shadow--hover, var(--shadow, none))));
@@ -3040,12 +3043,13 @@ u,
 }
 .tag-picker__flex {
   gap: calc(var(--x) / 6);
+  overflow: visible;
   padding: 0;
 }
 .tag-picker__tag,
 .tag-picker__text {
-  border-width: 0;
-  padding: 0 calc(var(--x) / 3);
+  border-color: transparent;
+  padding: 0 calc(var(--x) / 3 - 1px);
 }
 .tag-picker__tag {
   background: var(--fill-tag-picker__tag);
@@ -3054,7 +3058,13 @@ u,
   box-shadow: var(--shadow-tag-picker__tag);
   gap: calc(var(--x) / 6);
 }
-.tag-picker__tag:focus,
+.tag-picker__tag:focus {
+  background: var(--fill-tag-picker__tag--focus);
+  border-color: var(--stroke-tag-picker__tag--focus);
+  border-radius: var(--arc-tag-picker__tag--focus);
+  box-shadow: var(--shadow-tag-picker__tag--focus);
+  outline: 0;
+}
 .tag-picker__tag[aria-pressed] {
   background: var(--fill-tag-picker__tag--selected);
   border-color: var(--stroke-tag-picker__tag--selected);
