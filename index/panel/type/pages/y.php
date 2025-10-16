@@ -89,7 +89,7 @@ foreach ($pages as $k => $v) {
         'icon' => $icon,
         'image' => $image,
         'tags' => [
-            'type:' . c2f($type) => !empty($type),
+            'type-' . c2f($type) => !empty($type),
             'x:' . $x => true
         ],
         'tasks' => [

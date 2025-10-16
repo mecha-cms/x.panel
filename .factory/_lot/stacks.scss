@@ -1,7 +1,7 @@
 @mixin stacks {
-  .lot\:stacks {
+  .lot-stacks {
     display: block;
-    &.count\:0 {
+    &.count-0 {
       display: none;
     }
   }

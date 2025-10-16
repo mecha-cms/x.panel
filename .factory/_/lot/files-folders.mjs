@@ -23,10 +23,10 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>:where(.lot\\:file[tabindex],.lot\\:folder[tabindex]):not([tabindex="-1"]):not(.not\\:active)';
+const targets = ':scope>:where(.lot-file[tabindex],.lot-folder[tabindex]):not([tabindex="-1"]):not(.not-active)';
 
 function onChange(init) {
-    let sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
+    let sources = getElements(':where(.lot-files,.lot-folders)[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let files = getElements(targets, source);
         files.forEach(file => {
@@ -45,11 +45,11 @@ function onKeyDownFile(e) {
         return;
     }
     next = getNext(t);
-    while (next && hasClass(next, 'not:active')) {
+    while (next && hasClass(next, 'not-active')) {
         next = getNext(next);
     }
     prev = getPrev(t);
-    while (prev && hasClass(prev, 'not:active')) {
+    while (prev && hasClass(prev, 'not-active')) {
         prev = getPrev(prev);
     }
     if ('ArrowDown' === key) {

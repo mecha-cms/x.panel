@@ -48,7 +48,7 @@ function _tag_set(array $attr, array $value = []) {
     foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with'] as $v) {
         if (!empty($value[$v])) {
             foreach ($value[$v] as $kk => $vv) {
-                $tags[$v . ':' . $kk] = $vv;
+                $tags[$v . '-' . $kk] = $vv;
             }
         }
     }

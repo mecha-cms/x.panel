@@ -1,7 +1,7 @@
 @use '../_content/any' as *;
 
 @mixin stack {
-  .lot\:stack {
+  .lot-stack {
     border: 1px solid;
     border-color: var(--stroke-stack, var(--stroke, transparent));
     border-radius: var(--arc-stack, var(--arc, 0));
@@ -58,20 +58,20 @@
       display: none;
       margin: 0;
       padding: calc(var(--y) - ((var(--h) - var(--z)) / 2)) var(--x);
-      &\:stacks {
+      &-stacks {
         border: 0 solid;
         border-color: inherit;
         border-top-width: 1px;
         display: block;
         padding: calc(var(--y) / 2) calc(var(--x) / 2);
-        &.count\:0 {
+        &.count-0 {
           border-top-width: 0;
           display: block;
           padding: 0;
         }
       }
     }
-    &.has\:link {
+    &.has-link {
       border-color: var(--stroke-stack-link, var(--stroke-stack, var(--stroke-link, var(--stroke, transparent))));
       > .title {
         background: var(--fill-stack-link, var(--fill-stack, var(--fill-link, var(--fill, none))));
@@ -86,7 +86,7 @@
         }
       }
     }
-    &.is\:current {
+    &.is-current {
       border-color: var(--stroke-stack--current, var(--stroke-stack, var(--stroke--current, var(--stroke, transparent))));
       z-index: 1;
       > .title {
@@ -99,16 +99,16 @@
           display: block;
         }
       }
-      > .lot\:tasks {
+      > .lot-tasks {
         border-top: 1px dashed;
         border-top-color: inherit;
         display: flex;
         padding: calc(var(--y) / 2) calc(var(--x) / 2);
-        &.count\:0 {
+        &.count-0 {
           display: none;
         }
       }
-      &:not(.can\:toggle) {
+      &:not(.can-toggle) {
         > .title {
           > a {
             cursor: inherit;
@@ -116,7 +116,7 @@
         }
       }
     }
-    &.not\:active {
+    &.not-active {
       > .title {
         > a {
           color: var(--color-stack--disabled, var(--color-stack, var(--color--disabled, var(--color, inherit))));
@@ -132,16 +132,16 @@
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
-    + .lot\:stack {
+    + .lot-stack {
       margin-top: -1px;
       &:not(:last-of-type) {
         border-radius: 0;
       }
     }
   }
-  .has\:gap {
-    .lot\:stack {
-      + .lot\:stack {
+  .has-gap {
+    .lot-stack {
+      + .lot-stack {
         margin-top: calc(var(--y) / 2);
       }
     }

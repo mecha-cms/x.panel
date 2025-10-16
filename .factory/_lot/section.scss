@@ -1,5 +1,5 @@
 @mixin section {
-  .lot\:section {
+  .lot-section {
     padding: var(--y) var(--x);
     &:where([role='none']) {
       margin: 0 auto;
@@ -12,7 +12,7 @@
       box-shadow: var(--shadow-section, var(--shadow, none));
       color: var(--color-section, var(--color, inherit));
     }
-    &.count\:0 {
+    &.count-0 {
       display: none;
     }
   }

@@ -1,10 +1,10 @@
 @mixin rows {
-  .lot\:rows {
+  .lot-rows {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
-    &.has\:gap {
+    &.has-gap {
       gap: var(--y) var(--x);
     }
   }

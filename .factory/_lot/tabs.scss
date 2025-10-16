@@ -1,8 +1,8 @@
 @use '../_content/any' as *;
 
 @mixin tabs {
-  .lot\:tabs {
-    .lot\:links {
+  .lot-tabs {
+    .lot-links {
       li {
         @include user-select(none);
         color: var(--color-tab, var(--color, inherit));
@@ -15,7 +15,7 @@
             }
           }
         }
-        &.has\:link {
+        &.has-link {
           color: var(--color-tab-link, var(--color-tab, var(--color-link, var(--color, inherit))));
           > a {
             @each $v in (hover, focus, active) {
@@ -25,10 +25,10 @@
             }
           }
         }
-        &.is\:current {
+        &.is-current {
           color: var(--color-tab--current, var(--color-tab, var(--color, inherit)));
         }
-        &.not\:active {
+        &.not-active {
           color: var(--color-tab--disabled, var(--color-tab, var(--color, inherit)));
           > a {
             @each $v in (hover, focus, active) {
@@ -55,11 +55,11 @@
         }
       }
     }
-    &.count\:0 {
+    &.count-0 {
       display: none;
     }
-    &.count\:1 {
-      .lot\:links {
+    &.count-1 {
+      .lot-links {
         display: none;
       }
     }

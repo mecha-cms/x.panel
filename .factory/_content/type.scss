@@ -18,7 +18,7 @@
       background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
       color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
     }
-    &.not\:active {
+    &.not-active {
       background: var(--fill-link--disabled, var(--fill-link, var(--fill--disabled, var(--fill, none))));
       color: var(--color-link--disabled, var(--color-link, var(--color--disabled, var(--color, inherit))));
     }
@@ -53,11 +53,11 @@
     }
   }
   @include form;
-  .has\:height {
+  .has-height {
     display: flex;
     height: 100%;
   }
-  .has\:width {
+  .has-width {
     display: flex;
     width: 100%;
   }
@@ -71,10 +71,10 @@
     max-width: 100%;
     object-fit: cover;
   }
-  .is\:fix {
+  .is-fix {
     cursor: default;
   }
-  .not\:active {
+  .not-active {
     color: var(--color--disabled, var(--color, inherit));
     cursor: not-allowed;
   }
@@ -110,7 +110,7 @@
   .u {
     text-decoration: underline;
   }
-  .type\:void {
+  .type-void {
     align-content: center;
     align-items: center;
     border-top-width: 4px;

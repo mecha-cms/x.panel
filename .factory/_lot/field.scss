@@ -1,7 +1,7 @@
 @use '../_content/any' as *;
 
 @mixin field {
-  .lot\:field {
+  .lot-field {
     display: flex;
     gap: 0 var(--x);
     .description {
@@ -14,7 +14,7 @@
         font-size: calc(var(--z) * 0.65);
       }
     }
-    &.not\:active {
+    &.not-active {
       .description {
         color: inherit;
       }
@@ -32,7 +32,7 @@
         flex: 1;
         min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
         position: relative;
-        .with\:fields {
+        .with-fields {
           display: inline-flex;
           position: relative;
           vertical-align: middle;
@@ -43,19 +43,19 @@
               }
             }
           }
-          &.has\:height,
-          &.has\:width {
+          &.has-height,
+          &.has-width {
             display: flex;
             flex-direction: row;
           }
-          &.has\:height {
-            // This prevents `.lot:field.type:content`’s description from being pushed down due to the 100% height of its
-            // previous container (this very container) that has a `.has:height` class on it. The default `.has:height`
-            // class gives the element’s height to be 100%
+          &.has-height {
+            // This prevents `.lot-field.type-content`’s description from being pushed down due to the 100% height of
+            // its previous container (this very container) that has a `.has-height` class on it. The default
+            // `.has-height` class gives the element’s height to be 100%
             height: auto;
           }
-          &.has\:tasks {
-            .lot\:tasks {
+          &.has-tasks {
+            .lot-tasks {
               background: var(--fill-input);
               background-clip: padding-box;
               border: 1px solid transparent;
@@ -106,7 +106,7 @@
               }
             }
             :focus {
-              + .lot\:tasks {
+              + .lot-tasks {
                 background: var(--fill-input--focus, var(--fill-input));
                 background-clip: padding-box;
                 > * {
@@ -121,7 +121,7 @@
             }
             @each $v in (in-range, invalid, out-of-range, valid) {
               :#{$v}:focus {
-                + .lot\:tasks {
+                + .lot-tasks {
                   background: var(--fill-input--#{$v}, var(--fill-input--focus, var(--fill-input)));
                   background-clip: padding-box;
                   > * {
@@ -141,7 +141,7 @@
               margin-left: -1px;
             }
           }
-          > .has\:width {
+          > .has-width {
             flex: 1;
             min-width: 0; // <https://stackoverflow.com/a/66689926/1163000>
             width: auto;
@@ -171,7 +171,7 @@
             }
           }
         }
-        .with\:options {
+        .with-options {
           display: block;
           padding: calc(var(--y) / 4) 0;
         }
@@ -181,7 +181,7 @@
 }
 
 @mixin field-blob {
-  .lot\:field.type\:blob {
+  .lot-field.type-blob {
     > label {
       + div {
         .input {
@@ -202,24 +202,24 @@
 }
 
 @mixin field-blobs {
-  .lot\:field.type\:blobs {
-    @extend .lot\:field, .type\:blob;
+  .lot-field.type-blobs {
+    @extend .lot-field, .type-blob;
   }
 }
 
 @mixin field-buttons {
-  .lot\:field.type\:buttons {
+  .lot-field.type-buttons {
     > label {
       + div {
-        .with\:options {
+        .with-options {
           padding: {
             bottom: 0;
             top: 0;
           }
-          &.has\:gap {
+          &.has-gap {
             gap: calc(var(--y) / 4) calc(var(--x) / 4);
           }
-          &.is\:flex {
+          &.is-flex {
             display: inline-flex;
           }
         }
@@ -229,11 +229,11 @@
 }
 
 @mixin field-colors {
-  .lot\:field.type\:colors {
-    @extend .lot\:field, .type\:item;
+  .lot-field.type-colors {
+    @extend .lot-field, .type-item;
     > label {
       + div {
-        .with\:options {
+        .with-options {
           padding: {
             bottom: 0;
             top: 0;
@@ -245,14 +245,14 @@
 }
 
 @mixin field-item {
-  .lot\:field.type\:item {
-    .with\:options {
+  .lot-field.type-item {
+    .with-options {
       height: auto;
       max-height: 100%;
-      &.has\:gap {
+      &.has-gap {
         gap: 0 var(--x);
       }
-      &.is\:flex {
+      &.is-flex {
         display: flex;
         flex-wrap: wrap;
       }
@@ -267,8 +267,8 @@
 }
 
 @mixin field-items {
-  .lot\:field.type\:items {
-    @extend .lot\:field, .type\:item;
+  .lot-field.type-items {
+    @extend .lot-field, .type-item;
   }
 }
 
@@ -281,7 +281,7 @@
     box-shadow: var(--shadow-option-picker);
     color: var(--color-option-picker);
     display: inline-flex;
-    &.has\:width {
+    &.has-width {
       display: flex;
     }
     &:hover {
@@ -416,7 +416,7 @@
     height: auto;
     min-height: calc(var(--h) + var(--y) / 2);
     padding: calc(var(--y) / 6);
-    &.has\:width {
+    &.has-width {
       display: flex;
     }
     &:hover {

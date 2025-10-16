@@ -1,8 +1,8 @@
 @mixin tab {
-  .lot\:tab {
+  .lot-tab {
     display: none;
     margin: 0;
-    &.is\:current {
+    &.is-current {
       display: block;
     }
   }

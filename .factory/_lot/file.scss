@@ -1,5 +1,5 @@
 @mixin file {
-  .lot\:file {
+  .lot-file {
     background: var(--fill-file, var(--fill, none));
     border: 0 solid;
     border-color: var(--stroke-file, var(--stroke, transparent));
@@ -24,7 +24,7 @@
         box-shadow: var(--shadow-file--#{$v}, var(--shadow-file, var(--shadow, none)));
       }
     }
-    &.is\:current {
+    &.is-current {
       background: var(--fill-file--current, var(--fill-file, var(--fill, none)));
       border-color: var(--stroke-file--current, var(--stroke-file, var(--stroke, transparent)));
       box-shadow: var(--shadow-file--current, var(--shadow-file, var(--shadow, none)));
@@ -39,14 +39,14 @@
       top: calc(var(--y) / 4);
       width: var(--x);
     }
-    > .lot\:tasks {
+    > .lot-tasks {
       margin: 0 calc(var(--x) / -4) 0 0;
     }
-    &.not\:active {
+    &.not-active {
       opacity: 0.5;
     }
   }
-  .is\:file {
+  .is-file {
     padding-left: calc(var(--x) * 1.75);
     &::before {
       background: var(--fill-file-icon, var(--fill, none));

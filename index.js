@@ -903,10 +903,10 @@
     var theHistory = W.history;
     var theID = {};
     var theLocation = W.location;
-    var targets$8 = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not\\:active)';
+    var targets$8 = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not-active)';
 
     function onChange$c(init) {
-        var sources = getElements('.lot\\:bar[tabindex]');
+        var sources = getElements('.lot-bar[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var items = getElements(targets$8, source);
             items.forEach(function (item) {
@@ -952,11 +952,11 @@
             return;
         }
         next = getNext(t);
-        while (next && hasClass(next, 'not:active')) {
+        while (next && hasClass(next, 'not-active')) {
             next = getNext(next);
         }
         prev = getPrev(t);
-        while (prev && hasClass(prev, 'not:active')) {
+        while (prev && hasClass(prev, 'not-active')) {
             prev = getPrev(prev);
         }
         if ('ArrowLeft' === key) {
@@ -5388,7 +5388,7 @@
     TagPicker.state.with.push(TagPickerSort);
 
     function onChange$a(init) {
-        var sources = getElements('.lot\\:field.type\\:query input:not([type=hidden])');
+        var sources = getElements('.lot-field.type-query input:not([type=hidden])');
         sources && toCount(sources) && sources.forEach(function (source) {
             var _getDatum;
             var c = getClasses(source);
@@ -6530,7 +6530,7 @@
         while (instance = TextEditor.instances.pop()) {
             instance.detach();
         }
-        var sources = getElements('.lot\\:field.type\\:source textarea'),
+        var sources = getElements('.lot-field.type-source textarea'),
             editor,
             state,
             type;
@@ -6546,7 +6546,7 @@
             editor.key('Control-[', 'pull');
             editor.key('Control-]', 'push');
             editor.key('Escape', function () {
-                var parent = getParent(this.self, '[tabindex]:not(.not\\:active)');
+                var parent = getParent(this.self, '[tabindex]:not(.not-active)');
                 if (parent) {
                     return parent.focus({
                         // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
@@ -6588,10 +6588,10 @@
         onChange$a(1);
         onChange$9(1);
     }
-    var targets$7 = ':scope>:where(.lot\\:file[tabindex],.lot\\:folder[tabindex]):not([tabindex="-1"]):not(.not\\:active)';
+    var targets$7 = ':scope>:where(.lot-file[tabindex],.lot-folder[tabindex]):not([tabindex="-1"]):not(.not-active)';
 
     function onChange$8(init) {
-        var sources = getElements(':where(.lot\\:files,.lot\\:folders)[tabindex]');
+        var sources = getElements(':where(.lot-files,.lot-folders)[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var files = getElements(targets$7, source);
             files.forEach(function (file) {
@@ -6613,11 +6613,11 @@
             return;
         }
         next = getNext(t);
-        while (next && hasClass(next, 'not:active')) {
+        while (next && hasClass(next, 'not-active')) {
             next = getNext(next);
         }
         prev = getPrev(t);
-        while (prev && hasClass(prev, 'not:active')) {
+        while (prev && hasClass(prev, 'not-active')) {
             prev = getPrev(prev);
         }
         if ('ArrowDown' === key) {
@@ -6660,10 +6660,10 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$6 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
+    var targets$6 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not-active)';
 
     function onChange$7(init) {
-        var sources = getElements('.lot\\:links[tabindex]');
+        var sources = getElements('.lot-links[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var links = getElements(targets$6, source);
             links && toCount(links) && links.forEach(function (link) {
@@ -6692,11 +6692,11 @@
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             if (parent = getParent(t)) {
                 next = getNext(parent);
-                while (next && (hasClass(next, 'as:separator') || hasClass(next, 'not:active'))) {
+                while (next && (hasClass(next, 'as-separator') || hasClass(next, 'not-active'))) {
                     next = getNext(next);
                 }
                 prev = getPrev(parent);
-                while (prev && (hasClass(prev, 'as:separator') || hasClass(prev, 'not:active'))) {
+                while (prev && (hasClass(prev, 'as-separator') || hasClass(prev, 'not-active'))) {
                     prev = getPrev(prev);
                 }
             }
@@ -6707,13 +6707,13 @@
                 fireFocus(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
-                if (parent = getParent(t, '.lot\\:links[tabindex]')) {
+                if (parent = getParent(t, '.lot-links[tabindex]')) {
                     any = [].slice.call(getElements(targets$6, parent));
                     fireFocus(any.pop());
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = getParent(t, '.lot\\:links[tabindex]')) {
+                if (parent = getParent(t, '.lot-links[tabindex]')) {
                     fireFocus(getElement(targets$6, parent));
                 }
                 stop = true;
@@ -6747,14 +6747,14 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$5 = ':where(a,[tabindex]):not(.not\\:active)';
+    var targets$5 = ':where(a,[tabindex]):not(.not-active)';
 
     function doHideMenus(but, trigger) {
-        getElements('.lot\\:menu[tabindex].is\\:enter').forEach(function (node) {
+        getElements('.lot-menu[tabindex].is-enter').forEach(function (node) {
             if (but !== node) {
-                letClass(getParent(node), 'is:active');
-                letClass(getPrev(node), 'is:active');
-                letClass(node, 'is:enter');
+                letClass(getParent(node), 'is-active');
+                letClass(getPrev(node), 'is-active');
+                letClass(node, 'is-enter');
                 if (trigger) {
                     setAttribute(trigger, 'aria-expanded', 'false');
                 }
@@ -6764,11 +6764,11 @@
     }
 
     function onChange$6(init) {
-        var menuParents = getElements('.has\\:menu'),
-            menuLinks = getElements('.lot\\:menu[tabindex]>ul>li>' + targets$5);
+        var menuParents = getElements('.has-menu'),
+            menuLinks = getElements('.lot-menu[tabindex]>ul>li>' + targets$5);
         if (menuParents && toCount(menuParents)) {
             menuParents.forEach(function (menuParent) {
-                var menu = getElement('.lot\\:menu[tabindex]', menuParent),
+                var menu = getElement('.lot-menu[tabindex]', menuParent),
                     a = getPrev(menu);
                 if (menu && a) {
                     onEventOnly('click', a, onClickMenuShow);
@@ -6782,7 +6782,7 @@
                 onEventOnly('keydown', menuLink, onKeyDownMenu$1);
             });
         }
-        var sources = getElements('.lot\\:menu[tabindex]');
+        var sources = getElements('.lot-menu[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             onEventOnly('keydown', source, onKeyDownMenus$1);
         });
@@ -6800,10 +6800,10 @@
             current = getNext(t);
         doHideMenus(current, t);
         W.setTimeout(function () {
-            toggleClass(current, 'is:enter');
-            toggleClass(getParent(t), 'is:active');
-            toggleClass(t, 'is:active');
-            setAttribute(t, 'aria-expanded', hasClass(t, 'is:active') ? 'true' : 'false');
+            toggleClass(current, 'is-enter');
+            toggleClass(getParent(t), 'is-active');
+            toggleClass(t, 'is-active');
+            setAttribute(t, 'aria-expanded', hasClass(t, 'is-active') ? 'true' : 'false');
             W._.fire('menu.enter', [], current);
         }, 1);
     }
@@ -6819,11 +6819,11 @@
             stop;
         if (parent = getParent(t)) {
             next = getNext(parent);
-            while (next && (hasClass(next, 'as:separator') || hasClass(next, 'not:active'))) {
+            while (next && (hasClass(next, 'as-separator') || hasClass(next, 'not-active'))) {
                 next = getNext(next);
             }
             prev = getPrev(parent);
-            while (prev && (hasClass(prev, 'as:separator') || hasClass(prev, 'not:active'))) {
+            while (prev && (hasClass(prev, 'as-separator') || hasClass(prev, 'not-active'))) {
                 prev = getPrev(prev);
             }
         }
@@ -6832,26 +6832,26 @@
             stop = true;
         } else if ('ArrowLeft' === key || 'Escape' === key || 'Tab' === key) {
             // Hide menu then focus to the parent menu link
-            if (parent = getParent(t, '.lot\\:menu[tabindex].is\\:enter')) {
-                letClass(getParent(t), 'is:active');
-                letClass(parent, 'is:enter');
-                letClass(t, 'is:active');
+            if (parent = getParent(t, '.lot-menu[tabindex].is-enter')) {
+                letClass(getParent(t), 'is-active');
+                letClass(parent, 'is-enter');
+                letClass(t, 'is-active');
                 setAttribute(getPrev(parent), 'aria-expanded', 'false');
                 if ('Tab' !== key) {
                     fireFocus(getPrev(parent));
                 }
                 // Focus to the self menu
             } else if ('Escape' === key) {
-                fireFocus(getParent(t, '.lot\\:menu[tabindex]'));
+                fireFocus(getParent(t, '.lot-menu[tabindex]'));
             }
             stop = 'Tab' !== key;
         } else if ('ArrowRight' === key) {
             next = getNext(t);
-            if (next && hasClass(next, 'lot:menu')) {
+            if (next && hasClass(next, 'lot-menu')) {
                 setAttribute(t, 'aria-expanded', 'true');
-                setClass(getParent(t), 'is:active');
-                setClass(next, 'is:enter');
-                setClass(t, 'is:active');
+                setClass(getParent(t), 'is-active');
+                setClass(next, 'is-enter');
+                setClass(t, 'is-active');
                 W.setTimeout(function () {
                     // Focus to the first link of child menu
                     fireFocus(getElement(targets$5, next));
@@ -6862,14 +6862,14 @@
             if (current = prev && getChildFirst(prev)) {
                 fireFocus(current);
             } else {
-                if (current = getParent(t, '.lot\\:menu[tabindex].is\\:enter')) {
+                if (current = getParent(t, '.lot-menu[tabindex].is-enter')) {
                     // Apply only to the first level drop-down menu
-                    if (hasClass(current, 'level:1')) {
+                    if (hasClass(current, 'level-1')) {
                         // Hide menu then focus to the parent menu link
-                        letClass(current, 'is:enter');
+                        letClass(current, 'is-enter');
                         if (current = getPrev(current)) {
-                            letClass(current, 'is:active');
-                            letClass(getParent(current), 'is:active');
+                            letClass(current, 'is-active');
+                            letClass(getParent(current), 'is-active');
                             setAttribute(current, 'aria-expanded', 'false');
                             W.setTimeout(function () {
                                 fireFocus(current);
@@ -6880,13 +6880,13 @@
             }
             stop = true;
         } else if ('End' === key) {
-            if (parent = getParent(t, '.lot\\:menu[tabindex]')) {
+            if (parent = getParent(t, '.lot-menu[tabindex]')) {
                 any = [].slice.call(getElements(targets$5, parent));
                 fireFocus(any.pop());
             }
             stop = true;
         } else if ('Home' === key) {
-            if (parent = getParent(t, '.lot\\:menu[tabindex]')) {
+            if (parent = getParent(t, '.lot-menu[tabindex]')) {
                 fireFocus(getElement(targets$5, parent));
             }
             stop = true;
@@ -6924,10 +6924,10 @@
             next = getNext(t),
             parent = getParent(t),
             stop;
-        if (next && parent && hasClass(next, 'lot:menu')) {
+        if (next && parent && hasClass(next, 'lot-menu')) {
             if (' ' === key || 'Enter' === key || 'Tab' === key) {
                 if ('Tab' === key) {
-                    hasClass(next, 'is:enter') && fireEvent('click', t);
+                    hasClass(next, 'is-enter') && fireEvent('click', t);
                 } else {
                     fireEvent('click', t);
                     W.setTimeout(function () {
@@ -6937,11 +6937,11 @@
                     stop = true;
                 }
                 // Apply only to the first level drop-down menu
-            } else if ('ArrowDown' === key && hasClass(next, 'level:1')) {
+            } else if ('ArrowDown' === key && hasClass(next, 'level-1')) {
                 setAttribute(t, 'aria-expanded', 'true');
-                setClass(getParent(t), 'is:active');
-                setClass(next, 'is:enter');
-                setClass(t, 'is:active');
+                setClass(getParent(t), 'is-active');
+                setClass(next, 'is-enter');
+                setClass(t, 'is-active');
                 W.setTimeout(function () {
                     // Focus to the first link of child menu
                     fireFocus(getElement(targets$5, next));
@@ -6951,10 +6951,10 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$4 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
+    var targets$4 = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not-active)';
 
     function onChange$5(init) {
-        var sources = getElements('.lot\\:menus[tabindex]');
+        var sources = getElements('.lot-menus[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var menus = getElements(targets$4, source);
             menus && toCount(menus) && menus.forEach(function (menu) {
@@ -6983,11 +6983,11 @@
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             if (parent = getParent(t)) {
                 next = getNext(parent);
-                while (next && (hasClass(next, 'as:separator') || hasClass(next, 'not:active'))) {
+                while (next && (hasClass(next, 'as-separator') || hasClass(next, 'not-active'))) {
                     next = getNext(next);
                 }
                 prev = getPrev(parent);
-                while (prev && (hasClass(prev, 'as:separator') || hasClass(prev, 'not:active'))) {
+                while (prev && (hasClass(prev, 'as-separator') || hasClass(prev, 'not-active'))) {
                     prev = getPrev(prev);
                 }
             }
@@ -6998,13 +6998,13 @@
                 fireFocus(next && getChildFirst(next));
                 stop = true;
             } else if ('End' === key) {
-                if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
+                if (parent = getParent(t, '.lot-menus[tabindex]')) {
                     any = [].slice.call(getElements(targets$4, parent));
                     fireFocus(any.pop());
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
+                if (parent = getParent(t, '.lot-menus[tabindex]')) {
                     fireFocus(getElement(targets$4, parent));
                 }
                 stop = true;
@@ -7038,10 +7038,10 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$3 = ':scope>.lot\\:page[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
+    var targets$3 = ':scope>.lot-page[tabindex]:not([tabindex="-1"]):not(.not-active)';
 
     function onChange$4(init) {
-        var sources = getElements('.lot\\:pages[tabindex]');
+        var sources = getElements('.lot-pages[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var pages = getElements(targets$3, source);
             pages.forEach(function (page) {
@@ -7063,11 +7063,11 @@
             return;
         }
         next = getNext(t);
-        while (next && hasClass(next, 'not:active')) {
+        while (next && hasClass(next, 'not-active')) {
             next = getNext(next);
         }
         prev = getPrev(t);
-        while (prev && hasClass(prev, 'not:active')) {
+        while (prev && hasClass(prev, 'not-active')) {
             prev = getPrev(prev);
         }
         if ('ArrowDown' === key) {
@@ -7511,17 +7511,17 @@
         onMouseDownSiema.call(this);
     }
     W.Siema = Siema;
-    var targets$2 = 'a[target^="stack:"]:not(.not\\:active)';
+    var targets$2 = 'a[target^="stack:"]:not(.not-active)';
     var STACK_INPUT = 0;
     var STACK_OF = 1;
     var STACK_STACKS = 2;
 
     function onChange$2(init) {
-        var sources = getElements('.lot\\:stacks[tabindex]');
+        var sources = getElements('.lot-stacks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var stackCurrent,
                 stacks = [].slice.call(getChildren(source)).filter(function (v) {
-                    return hasClass(v, 'lot:stack');
+                    return hasClass(v, 'lot-stack');
                 }),
                 input = setElement('input'),
                 name,
@@ -7546,7 +7546,7 @@
                 onEventOnly('keydown', target, onKeyDownStack);
             });
             stackCurrent = stacks.find(function (value, key) {
-                return 0 !== key && hasClass(value, 'is:current');
+                return 0 !== key && hasClass(value, 'is-current');
             });
             if (stackCurrent) {
                 input.value = getDatum(stackCurrent, 'value');
@@ -7559,30 +7559,30 @@
     function onClickStack(e) {
         var t = this,
             parent = getParent(getParent(t)),
-            self = getParent(parent, '.lot\\:stacks'),
+            self = getParent(parent, '.lot-stacks'),
             current,
             value;
         var name = t._[STACK_INPUT].name;
-        if (!hasClass(parent, 'has:link')) {
+        if (!hasClass(parent, 'has-link')) {
             t._[STACK_STACKS].forEach(function (stack) {
                 if (stack !== parent) {
-                    letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
-                    letClass(stack, 'is:current');
+                    letClass(current = getElement('a[target^="stack:"]', stack), 'is-current');
+                    letClass(stack, 'is-current');
                     setAttribute(current, 'aria-expanded', 'false');
                 }
             });
-            if (hasClass(parent, 'can:toggle')) {
+            if (hasClass(parent, 'can-toggle')) {
                 setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
-                toggleClass(parent, 'is:current');
-                toggleClass(t, 'is:current');
+                toggleClass(parent, 'is-current');
+                toggleClass(t, 'is-current');
             } else {
                 setAttribute(t, 'aria-expanded', 'true');
-                setClass(parent, 'is:current');
-                setClass(t, 'is:current');
+                setClass(parent, 'is-current');
+                setClass(t, 'is-current');
             }
-            current = hasClass(t, 'is:current');
+            current = hasClass(t, 'is-current');
             t._[STACK_INPUT].value = value = current ? getDatum(parent, 'value') : null;
-            toggleClass(self, 'has:current', current);
+            toggleClass(self, 'has-current', current);
             var pathname = theLocation.pathname,
                 search = theLocation.search;
             var query = fromQuery(search);
@@ -7612,12 +7612,12 @@
             if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
                 if (parent = getParent(getParent(t))) {
                     next = getNext(parent);
-                    while (next && hasClass(next, 'not:active')) {
+                    while (next && hasClass(next, 'not-active')) {
                         next = getNext(next);
                     }
                 }
                 if (current = next && getChildFirst(next)) {
-                    if ('ArrowRight' !== key || !hasClass(getParent(current), 'can:toggle')) {
+                    if ('ArrowRight' !== key || !hasClass(getParent(current), 'can-toggle')) {
                         fireEvent('click', getChildFirst(current));
                     }
                     fireFocus(getChildFirst(current));
@@ -7626,24 +7626,24 @@
             } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
                 if (parent = getParent(getParent(t))) {
                     prev = getPrev(parent);
-                    while (prev && hasClass(prev, 'not:active')) {
+                    while (prev && hasClass(prev, 'not-active')) {
                         prev = getPrev(prev);
                     }
                 }
                 if (current = prev && getChildFirst(prev)) {
-                    if ('ArrowLeft' !== key || !hasClass(getParent(current), 'can:toggle')) {
+                    if ('ArrowLeft' !== key || !hasClass(getParent(current), 'can-toggle')) {
                         fireEvent('click', getChildFirst(current));
                     }
                     fireFocus(getChildFirst(current));
                 }
                 stop = true;
             } else if (' ' === key || 'Enter' === key) {
-                if (hasClass(getParent(getParent(t)), 'can:toggle')) {
+                if (hasClass(getParent(getParent(t)), 'can-toggle')) {
                     fireEvent('click', t), fireFocus(t);
                 }
                 stop = true;
             } else if ('End' === key) {
-                if (parent = getParent(t, '.lot\\:stacks[tabindex]')) {
+                if (parent = getParent(t, '.lot-stacks[tabindex]')) {
                     any = [].slice.call(getElements(targets$2, parent));
                     if (current = any.pop()) {
                         fireEvent('click', current), fireFocus(current);
@@ -7651,7 +7651,7 @@
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = getParent(t, '.lot\\:stacks[tabindex]')) {
+                if (parent = getParent(t, '.lot-stacks[tabindex]')) {
                     if (current = getElement(targets$2, parent)) {
                         fireEvent('click', current), fireFocus(current);
                     }
@@ -7674,7 +7674,7 @@
             prev,
             stop;
         if (keyIsAlt && keyIsCtrl && !keyIsShift) {
-            current = getElement(targets$2 + '.is\\:current', t);
+            current = getElement(targets$2 + '.is-current', t);
             current = current && getParent(getParent(current));
             if ('PageDown' === key) {
                 next = current && getNext(current);
@@ -7708,14 +7708,14 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets$1 = 'a[target^="tab:"]:not(.not\\:active)';
+    var targets$1 = 'a[target^="tab:"]:not(.not-active)';
     var TAB_INPUT = 0;
     var TAB_OF = 1;
     var TAB_PANES = 2;
     var TAB_TABS = 3;
 
     function onChange$1(init) {
-        var sources = getElements('.lot\\:tabs[tabindex]');
+        var sources = getElements('.lot-tabs[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var panes = [].slice.call(getChildren(source)),
                 tabCurrent,
@@ -7740,7 +7740,7 @@
                 onEventOnly('keydown', tab, onKeyDownTab);
             });
             tabCurrent = tabs.find(function (value, key) {
-                return 0 !== key && hasClass(getParent(value), 'is:current');
+                return 0 !== key && hasClass(getParent(value), 'is-current');
             });
             if (tabCurrent) {
                 input.value = getDatum(tabCurrent, 'value');
@@ -7754,37 +7754,37 @@
         var t = this,
             pane = t._[TAB_PANES][t._[TAB_OF]],
             parent = getParent(t),
-            self = getParent(parent, '.lot\\:tabs'),
+            self = getParent(parent, '.lot-tabs'),
             current,
             value;
         var name = t._[TAB_INPUT].name;
-        if (!hasClass(parent, 'has:link')) {
+        if (!hasClass(parent, 'has-link')) {
             t._[TAB_TABS].forEach(function (tab) {
                 if (tab !== t) {
-                    letClass(getParent(tab), 'is:current');
-                    letClass(tab, 'is:current');
+                    letClass(getParent(tab), 'is-current');
+                    letClass(tab, 'is-current');
                     setAttribute(tab, 'aria-selected', 'false');
                     setAttribute(tab, 'tabindex', '-1');
                     var _pane = t._[TAB_PANES][tab._[TAB_OF]];
-                    _pane && letClass(_pane, 'is:current');
+                    _pane && letClass(_pane, 'is-current');
                 }
             });
-            if (hasClass(parent, 'can:toggle')) {
-                toggleClass(parent, 'is:current');
-                toggleClass(t, 'is:current');
-                setAttribute(t, 'aria-selected', hasClass(t, 'is:current') ? 'true' : 'false');
-                setAttribute(t, 'tabindex', hasClass(t, 'is:current') ? '0' : '-1');
+            if (hasClass(parent, 'can-toggle')) {
+                toggleClass(parent, 'is-current');
+                toggleClass(t, 'is-current');
+                setAttribute(t, 'aria-selected', hasClass(t, 'is-current') ? 'true' : 'false');
+                setAttribute(t, 'tabindex', hasClass(t, 'is-current') ? '0' : '-1');
             } else {
-                setClass(parent, 'is:current');
-                setClass(t, 'is:current');
+                setClass(parent, 'is-current');
+                setClass(t, 'is-current');
                 setAttribute(t, 'aria-selected', 'true');
                 setAttribute(t, 'tabindex', '0');
             }
-            current = hasClass(t, 'is:current');
+            current = hasClass(t, 'is-current');
             if (pane) {
                 t._[TAB_INPUT].value = value = current ? getDatum(t, 'value') : null;
-                toggleClass(pane, 'is:current', current);
-                toggleClass(self, 'has:current', current);
+                toggleClass(pane, 'is-current', current);
+                toggleClass(self, 'has-current', current);
                 var pathname = theLocation.pathname,
                     search = theLocation.search;
                 var query = fromQuery(search);
@@ -7813,12 +7813,12 @@
             stop;
         if (!keyIsAlt && !keyIsCtrl) {
             if ('ArrowDown' === key) {
-                if (hasClass(t, 'can:toggle') && !hasClass(t, 'is:current')) {
+                if (hasClass(t, 'can-toggle') && !hasClass(t, 'is-current')) {
                     current = t;
                 } else {
                     if (parent = getParent(t)) {
                         next = getNext(parent);
-                        while (next && hasClass(next, 'not:active')) {
+                        while (next && hasClass(next, 'not-active')) {
                             next = getNext(next);
                         }
                     }
@@ -7831,7 +7831,7 @@
             } else if ('ArrowLeft' === key || 'PageUp' === key) {
                 if (parent = getParent(t)) {
                     prev = getPrev(parent);
-                    while (prev && hasClass(prev, 'not:active')) {
+                    while (prev && hasClass(prev, 'not-active')) {
                         prev = getPrev(prev);
                     }
                 }
@@ -7842,7 +7842,7 @@
             } else if ('ArrowRight' === key || 'PageDown' === key) {
                 if (parent = getParent(t)) {
                     next = getNext(parent);
-                    while (next && hasClass(next, 'not:active')) {
+                    while (next && hasClass(next, 'not-active')) {
                         next = getNext(next);
                     }
                 }
@@ -7851,12 +7851,12 @@
                 }
                 stop = true;
             } else if ('ArrowUp' === key) {
-                if (hasClass(t, 'can:toggle') && hasClass(t, 'is:current')) {
+                if (hasClass(t, 'can-toggle') && hasClass(t, 'is-current')) {
                     current = t;
                 } else {
                     if (parent = getParent(t)) {
                         prev = getPrev(parent);
-                        while (prev && hasClass(prev, 'not:active')) {
+                        while (prev && hasClass(prev, 'not-active')) {
                             prev = getPrev(prev);
                         }
                     }
@@ -7867,12 +7867,12 @@
                 }
                 stop = true;
             } else if (' ' === key || 'Enter' === key) {
-                if (hasClass(t, 'can:toggle')) {
+                if (hasClass(t, 'can-toggle')) {
                     fireEvent('click', t), fireFocus(t);
                 }
                 stop = true;
             } else if ('End' === key) {
-                if (parent = getParent(t, '.lot\\:tabs[tabindex]')) {
+                if (parent = getParent(t, '.lot-tabs[tabindex]')) {
                     any = [].slice.call(getElements(targets$1, parent));
                     if (current = any.pop()) {
                         fireEvent('click', current), fireFocus(current);
@@ -7880,7 +7880,7 @@
                 }
                 stop = true;
             } else if ('Home' === key) {
-                if (parent = getParent(t, '.lot\\:tabs[tabindex]')) {
+                if (parent = getParent(t, '.lot-tabs[tabindex]')) {
                     if (current = getElement(targets$1, parent)) {
                         fireEvent('click', current), fireFocus(current);
                     }
@@ -7903,7 +7903,7 @@
             prev,
             stop;
         if (keyIsAlt && keyIsCtrl && !keyIsShift) {
-            current = getElement(targets$1 + '.is\\:current', t);
+            current = getElement(targets$1 + '.is-current', t);
             current = current && getParent(current);
             if ('PageDown' === key) {
                 next = current && getNext(current);
@@ -7923,12 +7923,12 @@
                 return;
             }
             if ('ArrowDown' === key || 'ArrowRight' === key || 'PageDown' === key) {
-                if (current = getElement(targets$1 + '.is\\:current', t)) {
+                if (current = getElement(targets$1 + '.is-current', t)) {
                     fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
             } else if ('ArrowUp' === key || 'ArrowLeft' === key || 'PageUp' === key) {
-                if (current = getElement(targets$1 + '.is\\:current', t)) {
+                if (current = getElement(targets$1 + '.is-current', t)) {
                     fireEvent('click', current), fireFocus(current);
                 }
                 stop = true;
@@ -7947,10 +7947,10 @@
         }
         stop && (offEventDefault(e), offEventPropagation(e));
     }
-    var targets = ':scope>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
+    var targets = ':scope>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not-active)';
 
     function onChange(init) {
-        var sources = getElements('.lot\\:tasks[tabindex]');
+        var sources = getElements('.lot-tasks[tabindex]');
         sources && toCount(sources) && sources.forEach(function (source) {
             var tasks = getElements(targets, source);
             tasks && toCount(tasks) && tasks.forEach(function (task) {
@@ -7975,11 +7975,11 @@
             stop;
         if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
             next = getNext(t);
-            while (next && hasClass(next, 'not:active')) {
+            while (next && hasClass(next, 'not-active')) {
                 next = getNext(next);
             }
             prev = getPrev(t);
-            while (prev && hasClass(prev, 'not:active')) {
+            while (prev && hasClass(prev, 'not-active')) {
                 prev = getPrev(prev);
             }
             if ('ArrowLeft' === key) {
@@ -7992,7 +7992,7 @@
                 }
             } else if ('End' === key) {
                 stop = !(hasState(t, 'selectionEnd') && toCount(t.value || ""));
-                if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
+                if (stop && (parent = getParent(t, '.lot-tasks[tabindex]'))) {
                     any = [].slice.call(getElements(targets, parent));
                     if (current = any.pop()) {
                         fireFocus(current), fireSelect(current);
@@ -8000,7 +8000,7 @@
                 }
             } else if ('Home' === key) {
                 stop = !(hasState(t, 'selectionStart') && toCount(t.value || ""));
-                if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
+                if (stop && (parent = getParent(t, '.lot-tasks[tabindex]'))) {
                     if (current = getElement(targets, parent)) {
                         fireFocus(current), fireSelect(current);
                     }
@@ -8048,7 +8048,7 @@
     Key.instances.push(map);
     map.keys['Escape'] = function () {
         var current = D.activeElement,
-            parent = current && getParent(getParent(current), '[tabindex]:not(.not\\:active)');
+            parent = current && getParent(getParent(current), '[tabindex]:not(.not-active)');
         parent && parent.focus({
             // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
             focusVisible: true
@@ -8062,12 +8062,12 @@
         return false;
     };
     map.keys['F10'] = function () {
-        var firstBarFocusable = getElement('.lot\\:bar a:any-link'),
+        var firstBarFocusable = getElement('.lot-bar a:any-link'),
             parent;
         if (firstBarFocusable) {
             firstBarFocusable.focus();
             if (parent = getParent(firstBarFocusable)) {
-                if (hasClass(parent, 'has:menu')) {
+                if (hasClass(parent, 'has-menu')) {
                     firstBarFocusable.click(); // Open main menu!
                 }
             }

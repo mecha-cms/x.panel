@@ -101,10 +101,10 @@ function content($value, $key) {
         $value[1] .= ("" !== ($v = $title . $description) ? '<hgroup>' . $v . '</hgroup>' : "") . \x\panel\to\content($value['content']);
         ++$count;
     }
-    $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+    $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     if ($type = $value['type'] ?? "") {
         foreach (\step($type, '/') as $v) {
-            $tags['content:' . $v] = true;
+            $tags['content-' . $v] = true;
         }
     }
     $value['tags'] = $tags;
@@ -170,7 +170,7 @@ function desk($value, $key) {
 function field($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:field' => true
+        'lot-field' => true
     ], $value['tags'] ?? []);
     $has_description = !empty($value['description']);
     $has_pattern = !empty($value['pattern']);
@@ -195,7 +195,7 @@ function field($value, $key) {
     $value[1] = $value[1] ?? [];
     if ($type = $value['type'] ?? "") {
         if (0 === \strpos($type, 'field/')) {
-            $tags['type:' . \substr($type, 6)] = true;
+            $tags['type-' . \substr($type, 6)] = true;
         }
     }
     $id = $value['id'] ?? 'f:' . \substr(\uniqid(), 6);
@@ -215,7 +215,7 @@ function field($value, $key) {
             0 => 'label',
             1 => $title,
             2 => [
-                'class' => 'count:' . ("" === \trim(\strip_tags($title ?? "")) ? '0' : '1'),
+                'class' => 'count-' . ("" === \trim(\strip_tags($title ?? "")) ? '0' : '1'),
                 'for' => $id
             ]
         ];
@@ -315,7 +315,7 @@ function field($value, $key) {
         if (\is_array($value['field'])) {
             $value['field'][2] = \x\panel\lot\_decor_set($value['field'][2] ?? [], ['decors' => $decors_field]);
             $has = $value['has'] ?? [];
-            // Valid `has:*` class(es) for field target are `has:height`, `has:pattern`, `has:value`, `has:values`, and `has:width`
+            // Valid `has-*` class(es) for field target are `has-height`, `has-pattern`, `has-value`, `has-values`, and `has-width`
             foreach ($has as $k => $v) {
                 if (false === \strpos(',height,pattern,value,values,width,', ',' . $k . ',')) {
                     unset($has[$k]);
@@ -343,11 +343,11 @@ function field($value, $key) {
             ],
             2 => [
                 'class' => \implode(' ', \array_keys(\array_filter([
-                    'count:' . ("" === $content ? '0' : '1') => true,
-                    'has:height' => !empty($value['height']),
-                    'has:tasks' => "" !== $tasks,
-                    'has:width' => !empty($value['width']),
-                    'with:fields' => true
+                    'count-' . ("" === $content ? '0' : '1') => true,
+                    'has-height' => !empty($value['height']),
+                    'has-tasks' => "" !== $tasks,
+                    'has-width' => !empty($value['width']),
+                    'with-fields' => true
                 ]))),
                 'role' => 'group'
             ]
@@ -366,7 +366,7 @@ function field($value, $key) {
                 ')' => $icon[1] ?? $unit[1] ?? ""
             ],
             2 => [
-                'class' => 'content count:' . ("" === $content ? '0' : '1')
+                'class' => 'content count-' . ("" === $content ? '0' : '1')
             ]
         ];
     } else if (isset($value['lot'])) {
@@ -376,7 +376,7 @@ function field($value, $key) {
             0 => 'div',
             1 => $content,
             2 => [
-                'class' => 'count:' . $count . ' lot'
+                'class' => 'count-' . $count . ' lot'
             ]
         ];
     }
@@ -450,9 +450,9 @@ function fields($value, $key) {
         $value[1] .= $fields;
     }
     $value['tags'] = \array_replace([
-        'count:' . $count => true,
+        'count-' . $count => true,
         'lot' => true,
-        'lot:fields' => true
+        'lot-fields' => true
     ], $value['tags'] ?? []);
     $value[1] = ("" !== ($v = $title . $description) ? '<hgroup>' . $v . '</hgroup>' : "") . $value[1];
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
@@ -475,7 +475,7 @@ function file($value, $key) {
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
     $value['tags'] = \array_replace([
         'lot' => true,
-        'lot:file' => true
+        'lot-file' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'li';
     $value[1] = $value[1] ?? "";
@@ -544,10 +544,10 @@ function files($value, $key) {
         unset($lot);
     }
     $value['tags'] = \array_replace([
-        'count:' . $count => true,
+        'count-' . $count => true,
         'lot' => true,
-        'lot:files' => !!$count_files,
-        'lot:folders' => !!$count_folders
+        'lot-files' => !!$count_files,
+        'lot-folders' => !!$count_folders
     ], $value['tags'] ?? []);
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);
@@ -602,7 +602,7 @@ function folder($value, $key) {
     $value['not']['active'] = $value['not']['active'] ?? !$is_active;
     $value['tags'] = \array_replace([
         'lot' => true,
-        'lot:folder' => true
+        'lot-folder' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'li';
     $value[1] = $value[1] ?? "";
@@ -630,8 +630,8 @@ function folder($value, $key) {
 
 // NOTE: `folders` is actually just an alias for `files`. Thus, declaring a `folders` block would not give
 // any difference from `files`. It’s just that the default value of item’s `type` will be automatically set to
-// `folder` instead of `file`. Otherwise, they will be treated the same. Both will get a class `lot:files`
-// and/or `lot:folders`, according to the available item(s). Use those class(es) to detect whether this block
+// `folder` instead of `file`. Otherwise, they will be treated the same. Both will get a class `lot-files`
+// and/or `lot-folders`, according to the available item(s). Use those class(es) to detect whether this block
 // contains only file(s) or only folder(s), or if both are present.
 function folders($value, $key) {
     if (isset($value['lot'])) {
@@ -836,8 +836,8 @@ function link($value, $key) {
 function links($value, $key) {
     $value['has']['gap'] = $value['has']['gap'] ?? ($value['gap'] ?? true);
     $value['is']['flex'] = $value['is']['flex'] ?? ($value['flex'] ?? true);
-    $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? true;
-    $value['tags']['lot:menu'] = $value['tags']['lot:menu'] ?? false;
+    $value['tags']['lot-links'] = $value['tags']['lot-links'] ?? true;
+    $value['tags']['lot-menu'] = $value['tags']['lot-menu'] ?? false;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     return \x\panel\lot\type\menu(\x\panel\lot\_value_set($value), $key, -2);
 }
@@ -861,10 +861,10 @@ function lot($value, $key) {
         // Add `description` and `title` only if `lot` exists
         $value[1] .= ("" !== ($v = $title . $description) ? '<hgroup>' . $v . '</hgroup>' : "") . \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
     }
-    $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+    $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     if ($type = $value['type'] ?? null) {
         foreach (\step($type, '/') as $v) {
-            $tags['lot:' . $v] = true;
+            $tags['lot-' . $v] = true;
         }
     }
     $value['tags'] = $tags;
@@ -875,9 +875,9 @@ function lot($value, $key) {
 
 function menu($value, $key, int $i = 0) {
     $tags = \array_replace([
-        'level:' . ($i + 2) => true,
+        'level-' . ($i + 2) => true,
         'lot' => true,
-        'lot:menu' => true
+        'lot-menu' => true
     ], $value['tags'] ?? []);
     $value['is']['flex'] = $is_flex = $value['is']['flex'] ?? ($value['flex'] ?? false);
     if (isset($value['width']) && false !== $value['width']) {
@@ -936,7 +936,7 @@ function menu($value, $key, int $i = 0) {
         ++$count_parent;
     }
     if (isset($value['content'])) {
-        $tags['count:' . ($c = $count_parent + 1)] = $tags['count:' . $c] ?? true;
+        $tags['count-' . ($c = $count_parent + 1)] = $tags['count-' . $c] ?? true;
         $value[1] .= \x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
         $count = 0;
@@ -1032,13 +1032,13 @@ function menu($value, $key, int $i = 0) {
             }
             ++$count;
         }
-        $tags['count:' . ($c = $count_parent + ($count ? 1 : 0))] = $tags['count:' . $c] ?? true;
+        $tags['count-' . ($c = $count_parent + ($count ? 1 : 0))] = $tags['count-' . $c] ?? true;
     }
     $value['tags'] = $tags;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);
     if ("" !== $value[1]) {
-        $value[1] = '<ul class="count:' . $count . '" role="' . ($value[3]['role'] ?? 'menu' . ($i < -1 ? 'bar' : "")) . '">' . $value[1] . '</ul>';
+        $value[1] = '<ul class="count-' . $count . '" role="' . ($value[3]['role'] ?? 'menu' . ($i < -1 ? 'bar' : "")) . '">' . $value[1] . '</ul>';
     }
     $value[1] = ("" !== ($v = $title . $description) ? '<hgroup>' . $v . '</hgroup>' : "") . $value[1];
     return new \HTML($value);
@@ -1046,8 +1046,8 @@ function menu($value, $key, int $i = 0) {
 
 function menus($value, $key) {
     $value['has']['gap'] = $value['has']['gap'] ?? ($value['gap'] ?? false);
-    $value['tags']['lot:links'] = $value['tags']['lot:links'] ?? false;
-    $value['tags']['lot:menus'] = $value['tags']['lot:menus'] ?? true;
+    $value['tags']['lot-links'] = $value['tags']['lot-links'] ?? false;
+    $value['tags']['lot-menus'] = $value['tags']['lot-menus'] ?? true;
     $value[2]['tabindex'] = $value[2]['tabindex'] ?? -1;
     return \x\panel\lot\type\links(\x\panel\lot\_value_set($value), $key);
 }
@@ -1055,7 +1055,7 @@ function menus($value, $key) {
 function page($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:page' => true
+        'lot-page' => true
     ], $value['tags'] ?? []);
     $has_description = !empty($value['description']);
     $has_icon = !empty($value['icon']);
@@ -1149,7 +1149,7 @@ function pager($value, $key) {
 function pages($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:pages' => true
+        'lot-pages' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'ul';
     $value[1] = $value[1] ?? "";
@@ -1179,7 +1179,7 @@ function pages($value, $key) {
         ++$count;
     }
     unset($lot);
-    $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+    $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     $value['tags'] = $tags;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);
@@ -1348,7 +1348,7 @@ function separator($value, $key) {
 function stack($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:stack' => true
+        'lot-stack' => true
     ], $value['tags'] ?? []);
     $id = \substr(\uniqid(), 6);
     $can_toggle = !empty($value['toggle']);
@@ -1390,7 +1390,7 @@ function stack($value, $key) {
             'id' => 'c:' . $id,
             'role' => 'region'
         ]]);
-        $tags['count:' . ($count = 2)] = $tags['count:' . $count] ?? true;
+        $tags['count-' . ($count = 2)] = $tags['count-' . $count] ?? true;
     } else if (isset($value['lot'])) {
         $value[1] .= new \HTML(['div', \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true), [
             'aria-labelledby' => 's:' . $id,
@@ -1398,7 +1398,7 @@ function stack($value, $key) {
             'id' => 'c:' . $id,
             'role' => 'region'
         ]]);
-        $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+        $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     }
     $value[1] .= \x\panel\lot\type\tasks\link(\x\panel\lot\_value_set([
         '0' => 'p',
@@ -1416,7 +1416,7 @@ function stack($value, $key) {
 function stacks($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:stacks' => true
+        'lot-stacks' => true
     ], $value['tags'] ?? []);
     $has_current = false;
     $has_gap = !empty($value['gap']);
@@ -1473,7 +1473,7 @@ function stacks($value, $key) {
     }
     unset($lot);
     $value['has']['current'] = $value['has']['current'] ?? $has_current;
-    $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+    $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     $value['tags'] = $tags;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);
@@ -1491,7 +1491,7 @@ function tab($value, $key) {
 function tabs($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:tabs' => true
+        'lot-tabs' => true
     ], $value['tags'] ?? []);
     $has_current = false;
     $has_gap = !isset($value['gap']) || $value['gap'];
@@ -1597,7 +1597,7 @@ function tabs($value, $key) {
         unset($value[2]['tabindex']);
     }
     $value['has']['current'] = $has_current;
-    $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+    $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     $value['tags'] = $tags;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);
@@ -1607,7 +1607,7 @@ function tabs($value, $key) {
 function tasks($value, $key) {
     $tags = \array_replace([
         'lot' => true,
-        'lot:tasks' => true
+        'lot-tasks' => true
     ], $value['tags'] ?? []);
     $value[0] = $value[0] ?? 'div';
     $value[1] = $value[1] ?? "";
@@ -1617,10 +1617,10 @@ function tasks($value, $key) {
     $count = 0;
     if (isset($value['content'])) {
         $value[1] .= \x\panel\to\content($value['content']);
-        $tags['count:' . ($count = 1)] = $tags['count:' . $count] ?? true;
+        $tags['count-' . ($count = 1)] = $tags['count-' . $count] ?? true;
     } else if (isset($value['lot'])) {
         $value[1] .= \x\panel\to\lot($value['lot'], $count, $value['sort'] ?? true);
-        $tags['count:' . $count] = $tags['count:' . $count] ?? true;
+        $tags['count-' . $count] = $tags['count-' . $count] ?? true;
     }
     $value['tags'] = $tags;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
@@ -1691,7 +1691,7 @@ function title($value, $key) {
     $value['has']['icon'] = $value['has']['icon'] ?? !!($icon[0] || $icon[1]);
     $value['has']['status'] = $value['has']['status'] ?? !!$status;
     $value['has']['title'] = $value['has']['title'] ?? !!$title;
-    $value['tags']['level:' . $level] = $value['tags']['level:' . $level] ?? $level >= 0;
+    $value['tags']['level-' . $level] = $value['tags']['level-' . $level] ?? $level >= 0;
     $value['tags']['title'] = $value['tags']['title'] ?? true;
     $value[2] = \x\panel\lot\_decor_set($value[2], $value);
     $value[2] = \x\panel\lot\_tag_set($value[2], $value);

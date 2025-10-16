@@ -23,10 +23,10 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not\\:active)';
+const targets = ':scope>:where([tabindex]):not([tabindex="-1"]):not(.not-active)';
 
 function onChange(init) {
-    let sources = getElements('.lot\\:bar[tabindex]');
+    let sources = getElements('.lot-bar[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let items = getElements(targets, source);
         items.forEach(item => {
@@ -68,11 +68,11 @@ function onKeyDownBarItem(e) {
         return;
     }
     next = getNext(t);
-    while (next && hasClass(next, 'not:active')) {
+    while (next && hasClass(next, 'not-active')) {
         next = getNext(next);
     }
     prev = getPrev(t);
-    while (prev && hasClass(prev, 'not:active')) {
+    while (prev && hasClass(prev, 'not-active')) {
         prev = getPrev(prev);
     }
     if ('ArrowLeft' === key) {

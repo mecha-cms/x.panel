@@ -1,10 +1,10 @@
 @mixin tasks {
-  .lot\:tasks {
+  .lot-tasks {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     gap: calc(var(--y) / 4) calc(var(--x) / 4);
-    &.are\:links {
+    &.are-links {
       gap: calc(var(--y) / 1.5) calc(var(--x) / 1.5);
       .title {
         gap: calc(var(--y) / 8) calc(var(--x) / 8);

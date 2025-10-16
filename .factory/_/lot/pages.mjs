@@ -23,10 +23,10 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>.lot\\:page[tabindex]:not([tabindex="-1"]):not(.not\\:active)';
+const targets = ':scope>.lot-page[tabindex]:not([tabindex="-1"]):not(.not-active)';
 
 function onChange(init) {
-    let sources = getElements('.lot\\:pages[tabindex]');
+    let sources = getElements('.lot-pages[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let pages = getElements(targets, source);
         pages.forEach(page => {
@@ -45,11 +45,11 @@ function onKeyDownPage(e) {
         return;
     }
     next = getNext(t);
-    while (next && hasClass(next, 'not:active')) {
+    while (next && hasClass(next, 'not-active')) {
         next = getNext(next);
     }
     prev = getPrev(t);
-    while (prev && hasClass(prev, 'not:active')) {
+    while (prev && hasClass(prev, 'not-active')) {
         prev = getPrev(prev);
     }
     if ('ArrowDown' === key) {

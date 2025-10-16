@@ -1,5 +1,5 @@
 @mixin bar {
-  .lot\:bar {
+  .lot-bar {
     background: var(--fill-bar, var(--fill, none));
     border: 0 solid;
     border-color: var(--stroke-bar, var(--stroke, transparent));
@@ -10,10 +10,10 @@
     flex-direction: column;
     flex-wrap: wrap;
     line-height: calc(var(--y) * 2);
-    &.is\:flex {
+    &.is-flex {
       flex-direction: row;
     }
-    .lot\:links {
+    .lot-links {
       margin: 0;
       > ul,
       > ul > li {
@@ -69,7 +69,7 @@
               }
             }
           }
-          &.as\:separator {
+          &.as-separator {
             background: var(--stroke);
             height: var(--y);
             margin: calc(var(--y) / 2) 0;
@@ -80,13 +80,13 @@
               display: none;
             }
           }
-          &.is\:current {
+          &.is-current {
             > a {
               background: var(--fill-bar-link--current, var(--fill-bar-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
               color: var(--color-bar-link--current, var(--color-bar-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
             }
           }
-          &.not\:active {
+          &.not-active {
             > a {
               background: var(--fill-bar-link--disabled, var(--fill-bar-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
               color: var(--color-bar-link--disabled, var(--color-bar-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
@@ -94,11 +94,11 @@
           }
         }
       }
-      &.of\:links {
+      &.of-links {
         flex: 1;
       }
     }
-    .lot\:field {
+    .lot-field {
       height: inherit;
       margin: 0;
       padding: 0;

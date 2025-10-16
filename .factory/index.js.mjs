@@ -57,7 +57,7 @@ Key.instances.push(map);
 
 map.keys['Escape'] = function () {
     let current = D.activeElement,
-        parent = current && getParent(getParent(current), '[tabindex]:not(.not\\:active)');
+        parent = current && getParent(getParent(current), '[tabindex]:not(.not-active)');
     parent && parent.focus({
         // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>
         focusVisible: true
@@ -73,11 +73,11 @@ map.keys['F3'] = function () {
 };
 
 map.keys['F10'] = function () {
-    let current, firstBarFocusable = getElement('.lot\\:bar a:any-link'), parent;
+    let current, firstBarFocusable = getElement('.lot-bar a:any-link'), parent;
     if (firstBarFocusable) {
         firstBarFocusable.focus();
         if (parent = getParent(firstBarFocusable)) {
-            if (hasClass(parent, 'has:menu')) {
+            if (hasClass(parent, 'has-menu')) {
                 firstBarFocusable.click(); // Open main menu!
             }
         }

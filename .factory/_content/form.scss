@@ -55,7 +55,7 @@
         }
       }
     }
-    &.not\:active {
+    &.not-active {
       @extend :disabled;
     }
     .title {
@@ -223,10 +223,10 @@
     min-height: calc(var(--y) * 3.75);
     overflow: auto;
     resize: vertical;
-    &.has\:height {
+    &.has-height {
       height: calc(var(--y) * 10.75);
     }
-    &.has\:width {
+    &.has-width {
       display: flex;
       width: 100%;
     }

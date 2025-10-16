@@ -1,6 +1,6 @@
 @mixin page {
-  .lot\:page {
-    @extend .lot\:file;
+  .lot-page {
+    @extend .lot-file;
     background: var(--fill-page, var(--fill-file, var(--fill, none)));
     border-color: var(--stroke-page, var(--stroke-file, var(--stroke, transparent)));
     border-radius: var(--arc-page, var(--arc-file, var(--arc, 0)));
@@ -14,7 +14,7 @@
         box-shadow: var(--shadow-page--#{$v}, var(--shadow-page, var(--shadow-file--#{$v}, var(--shadow-file, var(--shadow, none)))));
       }
     }
-    &.is\:current {
+    &.is-current {
       background: var(--fill-page--current, var(--fill-page, var(--fill-file--current, var(--fill-file, var(--fill, none)))));
       border-color: var(--stroke-page--current, var(--stroke-page, var(--stroke-file--current, var(--stroke-file, var(--stroke, transparent)))));
       box-shadow: var(--shadow-page--current, var(--shadow-page, var(--shadow-file--current, var(--shadow-file, var(--shadow, none)))));
@@ -52,8 +52,8 @@
         top: 50%;
       }
     }
-    &.is\:file,
-    &.is\:folder {
+    &.is-file,
+    &.is-folder {
       padding-left: calc(var(--x) / 2);
       &::before,
       &::after {

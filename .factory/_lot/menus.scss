@@ -1,5 +1,5 @@
 @mixin menus {
-  .lot\:menus {
+  .lot-menus {
     background: var(--fill-menus, var(--fill, none));
     border-radius: var(--arc-menus, var(--arc, 0));
     box-shadow: var(--shadow-menus, var(--shadow, none));
@@ -13,17 +13,17 @@
       padding: 0;
     }
     > ul {
-      > .has\:menu {
+      > .has-menu {
         display: flex;
         position: relative;
-        > .lot\:menu {
+        > .lot-menu {
           display: none;
           left: 0;
           margin: 0;
           position: absolute;
           top: 100%;
           z-index: 9998;
-          &.is\:enter {
+          &.is-enter {
             display: block;
           }
         }
@@ -80,7 +80,7 @@
             }
           }
         }
-        &.as\:separator {
+        &.as-separator {
           background: var(--stroke);
           height: var(--y);
           margin: calc(var(--y) / 4);
@@ -91,13 +91,13 @@
             display: none;
           }
         }
-        &.is\:current {
+        &.is-current {
           > a {
             background: var(--fill-menus-link--current, var(--fill-menus-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
             color: var(--color-menus-link--current, var(--color-menus-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
           }
         }
-        &.not\:active {
+        &.not-active {
           > a {
             background: var(--fill-menus-link--disabled, var(--fill-menus-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
             color: var(--color-menus-link--disabled, var(--color-menus-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
@@ -120,7 +120,7 @@
         padding: calc(var(--y) / 4) calc(var(--x) / 2);
       }
     }
-    &.is\:flex {
+    &.is-flex {
       > ul {
         display: flex;
       }

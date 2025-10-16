@@ -9,7 +9,7 @@
     padding: calc(var(--z) * .75) calc(var(--z) * 1.25);
     > [role='group'] {
       display: flex;
-      .lot\:tasks {
+      .lot-tasks {
         gap: calc(var(--y) / 6) calc(var(--x) / 6);
         margin: {
           left: auto;

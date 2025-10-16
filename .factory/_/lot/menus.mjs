@@ -26,10 +26,10 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
+const targets = ':scope>ul>li>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not-active)';
 
 function onChange(init) {
-    let sources = getElements('.lot\\:menus[tabindex]');
+    let sources = getElements('.lot-menus[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let menus = getElements(targets, source);
         menus && toCount(menus) && menus.forEach(menu => {
@@ -53,11 +53,11 @@ function onKeyDownMenu(e) {
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         if (parent = getParent(t)) {
             next = getNext(parent);
-            while (next && (hasClass(next, 'as:separator') || hasClass(next, 'not:active'))) {
+            while (next && (hasClass(next, 'as-separator') || hasClass(next, 'not-active'))) {
                 next = getNext(next);
             }
             prev = getPrev(parent);
-            while (prev && (hasClass(prev, 'as:separator') || hasClass(prev, 'not:active'))) {
+            while (prev && (hasClass(prev, 'as-separator') || hasClass(prev, 'not-active'))) {
                 prev = getPrev(prev);
             }
         }
@@ -68,13 +68,13 @@ function onKeyDownMenu(e) {
             fireFocus(next && getChildFirst(next));
             stop = true;
         } else if ('End' === key) {
-            if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
+            if (parent = getParent(t, '.lot-menus[tabindex]')) {
                 any = [].slice.call(getElements(targets, parent));
                 fireFocus(any.pop());
             }
             stop = true;
         } else if ('Home' === key) {
-            if (parent = getParent(t, '.lot\\:menus[tabindex]')) {
+            if (parent = getParent(t, '.lot-menus[tabindex]')) {
                 fireFocus(getElement(targets, parent));
             }
             stop = true;

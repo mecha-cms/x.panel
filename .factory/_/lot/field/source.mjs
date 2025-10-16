@@ -42,7 +42,7 @@ function onChange(init) {
     while (instance = TextEditor.instances.pop()) {
         instance.detach();
     }
-    let sources = getElements('.lot\\:field.type\\:source textarea'), editor, state, type;
+    let sources = getElements('.lot-field.type-source textarea'), editor, state, type;
     sources && toCount(sources) && sources.forEach(source => {
         editor = new TextEditor(source, state = getDatum(source, 'state') ?? {});
         editor.command('pull', function () {
@@ -54,7 +54,7 @@ function onChange(init) {
         editor.key('Control-[', 'pull');
         editor.key('Control-]', 'push');
         editor.key('Escape', function () {
-            let parent = getParent(this.self, '[tabindex]:not(.not\\:active)');
+            let parent = getParent(this.self, '[tabindex]:not(.not-active)');
             if (parent) {
                 return parent.focus({
                     // <https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus#focusvisible>

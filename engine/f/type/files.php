@@ -145,7 +145,7 @@ function x(array $_ = []) {
                                                 'lot' => [
                                                     0 => [
                                                         // `content`
-                                                        'content' => '<pre class="is:text"><code class="txt">' . \preg_replace('/&lt;(https?:\/\/\S+?)&gt;/', '&lt;<a href="$1" rel="nofollow" target="_blank">$1</a>&gt;', \htmlspecialchars(\file_get_contents(__DIR__ . \D . 'LICENSE.txt'))) . '</code></pre>',
+                                                        'content' => '<pre class="is-text"><code class="txt">' . \preg_replace('/&lt;(https?:\/\/\S+?)&gt;/', '&lt;<a href="$1" rel="nofollow" target="_blank">$1</a>&gt;', \htmlspecialchars(\file_get_contents(__DIR__ . \D . 'LICENSE.txt'))) . '</code></pre>',
                                                         'stack' => 10,
                                                         'type' => 'content'
                                                     ]

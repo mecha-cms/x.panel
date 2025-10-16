@@ -1,5 +1,5 @@
 @mixin desk {
-  .lot\:desk {
+  .lot-desk {
     display: block;
     margin-top: 0;
     outline-offset: calc(var(--y) * -1);
@@ -12,7 +12,7 @@
       }
       max-width: calc(var(--x) * 36);
     }
-    &.has\:width {
+    &.has-width {
       display: block;
       > * {
         max-width: 100%;

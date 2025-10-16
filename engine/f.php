@@ -196,7 +196,7 @@ function _state_set() {
         $_['is']['error'] = $_['status'];
     }
     if (null !== $_['type']) {
-        $_['[y]']['type:' . $_['type']] = true;
+        $_['[y]']['type-' . $_['type']] = true;
     }
     foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with', '[y]'] as $v) {
         if (isset($_[$v]) && \is_array($_[$v])) {

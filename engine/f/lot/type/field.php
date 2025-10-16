@@ -78,7 +78,7 @@ function buttons($value, $key) {
     $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
     $value['is']['flex'] = $value['is']['flex'] ?? $is_flex;
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
-    $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    $value['tags']['count-' . $count] = $value['tags']['count-' . $count] ?? true;
     $value['tags']['textarea'] = false;
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
@@ -146,7 +146,7 @@ function colors($value, $key) {
     $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
     $value['is']['flex'] = $is_flex;
     $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
-    $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+    $value['tags']['count-' . $count] = $value['tags']['count-' . $count] ?? true;
     $value['tags']['textarea'] = false;
     $value['with']['options'] = $value['with']['options'] ?? true;
     $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
@@ -273,7 +273,7 @@ function item($value, $key) {
         $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
         $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
         $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
-        $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+        $value['tags']['count-' . $count] = $value['tags']['count-' . $count] ?? true;
         $value['tags']['textarea'] = false;
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);
@@ -295,7 +295,7 @@ function items($value, $key) {
         $count = 0;
         $sort = !isset($value['sort']) || $value['sort'];
         if ($can_sort = $value['can']['sort'] ?? false) {
-            $value['tags']['can:sort'] = $value['tags']['can:sort'] ?? $can_sort;
+            $value['tags']['can-sort'] = $value['tags']['can-sort'] ?? $can_sort;
             unset($value['can']['sort']);
         }
         $is_active_all = !isset($value['active']) || $value['active'];
@@ -363,7 +363,7 @@ function items($value, $key) {
         $value['is']['active'] = $value['is']['fix'] = $value['is']['vital'] = false; // Remove class
         $value['is']['flex'] = $value['is']['flex'] ?? "" === $flex;
         $value['not']['active'] = $value['not']['fix'] = $value['not']['vital'] = false; // Remove class
-        $value['tags']['count:' . $count] = $value['tags']['count:' . $count] ?? true;
+        $value['tags']['count-' . $count] = $value['tags']['count-' . $count] ?? true;
         $value['tags']['textarea'] = false;
         $value['with']['options'] = $value['with']['options'] ?? true;
         $out['field'][2] = \x\panel\lot\_tag_set($out['field'][2], $value);

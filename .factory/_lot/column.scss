@@ -1,12 +1,12 @@
 @use 'sass:math';
 
 @mixin column($max: 12) {
-  .lot\:column {
+  .lot-column {
     flex: 1;
     margin: 0;
     min-width: 0;
     @for $i from 1 through $max {
-      &.size\:#{$i}\/#{$max} {
+      &.size-#{$i}\/#{$max} {
         max-width: math.percentage(math.div($i, $max));
       }
     }

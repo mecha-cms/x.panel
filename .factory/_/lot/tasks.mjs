@@ -27,10 +27,10 @@ import {
     toCount
 } from '@taufik-nurrohman/to';
 
-const targets = ':scope>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not\\:active)';
+const targets = ':scope>:where(a,button,input,select,textarea,[tabindex]):not(:disabled):not([tabindex="-1"]):not(.not-active)';
 
 function onChange(init) {
-    let sources = getElements('.lot\\:tasks[tabindex]');
+    let sources = getElements('.lot-tasks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let tasks = getElements(targets, source);
         tasks && toCount(tasks) && tasks.forEach(task => {
@@ -50,11 +50,11 @@ function onKeyDownTask(e) {
         any, current, parent, next, prev, stop;
     if (!keyIsAlt && !keyIsCtrl && !keyIsShift) {
         next = getNext(t);
-        while (next && hasClass(next, 'not:active')) {
+        while (next && hasClass(next, 'not-active')) {
             next = getNext(next);
         }
         prev = getPrev(t);
-        while (prev && hasClass(prev, 'not:active')) {
+        while (prev && hasClass(prev, 'not-active')) {
             prev = getPrev(prev);
         }
         if ('ArrowLeft' === key) {
@@ -67,7 +67,7 @@ function onKeyDownTask(e) {
             }
         } else if ('End' === key) {
             stop = !(hasState(t, 'selectionEnd') && toCount(t.value || ""));
-            if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
+            if (stop && (parent = getParent(t, '.lot-tasks[tabindex]'))) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     fireFocus(current), fireSelect(current);
@@ -75,7 +75,7 @@ function onKeyDownTask(e) {
             }
         } else if ('Home' === key) {
             stop = !(hasState(t, 'selectionStart') && toCount(t.value || ""));
-            if (stop && (parent = getParent(t, '.lot\\:tasks[tabindex]'))) {
+            if (stop && (parent = getParent(t, '.lot-tasks[tabindex]'))) {
                 if (current = getElement(targets, parent)) {
                     fireFocus(current), fireSelect(current);
                 }

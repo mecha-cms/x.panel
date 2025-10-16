@@ -1,5 +1,5 @@
 @mixin links {
-  .lot\:links {
+  .lot-links {
     > ul,
     > ul > li {
       list-style: none;
@@ -30,12 +30,12 @@
         padding: calc(var(--y) / 4) 0;
       }
     }
-    &.has\:gap {
+    &.has-gap {
       > ul {
         gap: calc(var(--y) / 2) calc(var(--x) / 2);
       }
     }
-    &.is\:flex {
+    &.is-flex {
       > ul {
         flex-direction: row;
         > li {

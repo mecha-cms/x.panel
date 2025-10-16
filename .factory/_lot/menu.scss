@@ -1,13 +1,13 @@
 @mixin menu {
-  .has\:menu {
+  .has-menu {
     position: relative;
-    .lot\:menu {
+    .lot-menu {
       left: 0;
       margin: 0;
       top: 100%;
     }
   }
-  .lot\:menu {
+  .lot-menu {
     background: var(--fill-menu, var(--fill, none));
     border-radius: var(--arc-menu, var(--arc, 0));
     box-shadow: var(--shadow-menu, var(--shadow, none));
@@ -19,10 +19,10 @@
     position: absolute;
     width: var(--width-menu);
     z-index: 9998;
-    .has\:menu {
+    .has-menu {
       display: flex;
       position: relative;
-      .lot\:menu {
+      .lot-menu {
         left: 100%;
         top: 0;
       }
@@ -42,7 +42,7 @@
             background: var(--fill-menu-link--hover, var(--fill-menu-link, var(--fill-link--hover, var(--fill-link, var(--fill, none)))));
             color: var(--color-menu-link--hover, var(--color-menu-link, var(--color-link--hover, var(--color-link, var(--color, inherit)))));
           }
-          > .lot\:menu {
+          > .lot-menu {
             display: block;
           }
         }
@@ -89,7 +89,7 @@
             }
           }
         }
-        &.as\:separator {
+        &.as-separator {
           background: var(--stroke);
           height: 1px;
           overflow: hidden;
@@ -99,13 +99,13 @@
             display: none;
           }
         }
-        &.is\:current {
+        &.is-current {
           > a {
             background: var(--fill-menu-link--current, var(--fill-menu-link, var(--fill-link--current, var(--fill-link, var(--fill, none)))));
             color: var(--color-menu-link--current, var(--color-menu-link, var(--color-link--current, var(--color-link, var(--color, inherit)))));
           }
         }
-        &.not\:active {
+        &.not-active {
           > a {
             background: var(--fill-menu-link--disabled, var(--fill-menu-link, var(--fill-link--disabled, var(--fill-link, var(--fill, none)))));
             color: var(--color-menu-link--disabled, var(--color-menu-link, var(--color-link--disabled, var(--color-link, var(--color, inherit)))));
@@ -128,10 +128,10 @@
         padding: calc(var(--y) / 4) calc(var(--x) / 2);
       }
     }
-    &.has\:width {
+    &.has-width {
       display: none;
     }
-    &.is\:enter {
+    &.is-enter {
       display: block;
     }
   }

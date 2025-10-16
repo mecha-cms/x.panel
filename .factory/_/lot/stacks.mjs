@@ -43,17 +43,17 @@ import {
     toQuery
 } from '@taufik-nurrohman/to';
 
-const targets = 'a[target^="stack:"]:not(.not\\:active)';
+const targets = 'a[target^="stack:"]:not(.not-active)';
 
 const STACK_INPUT = 0;
 const STACK_OF = 1;
 const STACK_STACKS = 2;
 
 function onChange(init) {
-    let sources = getElements('.lot\\:stacks[tabindex]');
+    let sources = getElements('.lot-stacks[tabindex]');
     sources && toCount(sources) && sources.forEach(source => {
         let stackCurrent,
-            stacks = [].slice.call(getChildren(source)).filter(v => hasClass(v, 'lot:stack')),
+            stacks = [].slice.call(getChildren(source)).filter(v => hasClass(v, 'lot-stack')),
             input = setElement('input'), name, target;
         input.type = 'hidden';
         input.name = name = getDatum(source, 'name');
@@ -72,7 +72,7 @@ function onChange(init) {
             onEventOnly('click', target, onClickStack);
             onEventOnly('keydown', target, onKeyDownStack);
         });
-        stackCurrent = stacks.find((value, key) => 0 !== key && hasClass(value, 'is:current'));
+        stackCurrent = stacks.find((value, key) => 0 !== key && hasClass(value, 'is-current'));
         if (stackCurrent) {
             input.value = getDatum(stackCurrent, 'value');
         }
@@ -84,28 +84,28 @@ function onChange(init) {
 function onClickStack(e) {
     let t = this,
         parent = getParent(getParent(t)),
-        self = getParent(parent, '.lot\\:stacks'), current, value;
+        self = getParent(parent, '.lot-stacks'), current, value;
     let name = t._[STACK_INPUT].name;
-    if (!hasClass(parent, 'has:link')) {
+    if (!hasClass(parent, 'has-link')) {
         t._[STACK_STACKS].forEach(stack => {
             if (stack !== parent) {
-                letClass(current = getElement('a[target^="stack:"]', stack), 'is:current');
-                letClass(stack, 'is:current');
+                letClass(current = getElement('a[target^="stack:"]', stack), 'is-current');
+                letClass(stack, 'is-current');
                 setAttribute(current, 'aria-expanded', 'false');
             }
         });
-        if (hasClass(parent, 'can:toggle')) {
+        if (hasClass(parent, 'can-toggle')) {
             setAttribute(t, 'aria-expanded', getAttribute(t, 'aria-expanded') ? 'false' : 'true');
-            toggleClass(parent, 'is:current');
-            toggleClass(t, 'is:current');
+            toggleClass(parent, 'is-current');
+            toggleClass(t, 'is-current');
         } else {
             setAttribute(t, 'aria-expanded', 'true');
-            setClass(parent, 'is:current');
-            setClass(t, 'is:current');
+            setClass(parent, 'is-current');
+            setClass(t, 'is-current');
         }
-        current = hasClass(t, 'is:current');
+        current = hasClass(t, 'is-current');
         t._[STACK_INPUT].value = value = current ? getDatum(parent, 'value') : null;
-        toggleClass(self, 'has:current', current);
+        toggleClass(self, 'has-current', current);
         let {pathname, search} = theLocation;
         let query = fromQuery(search);
         let q = fromQuery(name + '=' + value);
@@ -132,12 +132,12 @@ function onKeyDownStack(e) {
             }
             if (parent = getParent(getParent(t))) {
                 next = getNext(parent);
-                while (next && hasClass(next, 'not:active')) {
+                while (next && hasClass(next, 'not-active')) {
                     next = getNext(next);
                 }
             }
             if (current = next && getChildFirst(next)) {
-                if ('ArrowRight' !== key || !hasClass(getParent(current), 'can:toggle')) {
+                if ('ArrowRight' !== key || !hasClass(getParent(current), 'can-toggle')) {
                     fireEvent('click', getChildFirst(current));
                 }
                 fireFocus(getChildFirst(current));
@@ -149,24 +149,24 @@ function onKeyDownStack(e) {
             }
             if (parent = getParent(getParent(t))) {
                 prev = getPrev(parent);
-                while (prev && hasClass(prev, 'not:active')) {
+                while (prev && hasClass(prev, 'not-active')) {
                     prev = getPrev(prev);
                 }
             }
             if (current = prev && getChildFirst(prev)) {
-                if ('ArrowLeft' !== key || !hasClass(getParent(current), 'can:toggle')) {
+                if ('ArrowLeft' !== key || !hasClass(getParent(current), 'can-toggle')) {
                     fireEvent('click', getChildFirst(current));
                 }
                 fireFocus(getChildFirst(current));
             }
             stop = true;
         } else if (' ' === key || 'Enter' === key) {
-            if (hasClass(getParent(getParent(t)), 'can:toggle')) {
+            if (hasClass(getParent(getParent(t)), 'can-toggle')) {
                 fireEvent('click', t), fireFocus(t);
             }
             stop = true;
         } else if ('End' === key) {
-            if (parent = getParent(t, '.lot\\:stacks[tabindex]')) {
+            if (parent = getParent(t, '.lot-stacks[tabindex]')) {
                 any = [].slice.call(getElements(targets, parent));
                 if (current = any.pop()) {
                     fireEvent('click', current), fireFocus(current);
@@ -174,7 +174,7 @@ function onKeyDownStack(e) {
             }
             stop = true;
         } else if ('Home' === key) {
-            if (parent = getParent(t, '.lot\\:stacks[tabindex]')) {
+            if (parent = getParent(t, '.lot-stacks[tabindex]')) {
                 if (current = getElement(targets, parent)) {
                     fireEvent('click', current), fireFocus(current);
                 }
@@ -193,7 +193,7 @@ function onKeyDownStacks(e) {
         keyIsShift = e.shiftKey,
         any, current, next, prev, stop;
     if (keyIsAlt && keyIsCtrl && !keyIsShift) {
-        current = getElement(targets + '.is\\:current', t);
+        current = getElement(targets + '.is-current', t);
         current = current && getParent(getParent(current));
         if ('PageDown' === key) {
             next = current && getNext(current);
