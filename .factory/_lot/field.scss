@@ -362,6 +362,25 @@
       gap: 0;
       line-height: var(--h);
       padding: 0;
+      &-batch {
+        border-width: 0;
+        gap: 0;
+        padding: 0;
+        &::before {
+          border: {
+            style: dotted;
+            width: 0 0 1px;
+          }
+          font-size: calc(var(--z) * 0.75);
+          padding: 0 calc(var(--x) / 2);
+        }
+        &:not(:last-child) {
+          border: {
+            bottom: 1px solid;
+            color: inherit;
+          }
+        }
+      }
       &-lot {
         flex-wrap: nowrap;
         gap: 0;

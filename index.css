@@ -2980,6 +2980,21 @@ u,
   line-height: var(--h);
   padding: 0;
 }
+.option-picker__options-batch {
+  border-width: 0;
+  gap: 0;
+  padding: 0;
+}
+.option-picker__options-batch::before {
+  border-style: dotted;
+  border-width: 0 0 1px;
+  font-size: calc(var(--z) * 0.75);
+  padding: 0 calc(var(--x) / 2);
+}
+.option-picker__options-batch:not(:last-child) {
+  border-bottom: 1px solid;
+  border-color: inherit;
+}
 .option-picker__options-lot {
   flex-wrap: nowrap;
   gap: 0;

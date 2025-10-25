@@ -132,8 +132,21 @@ foreach (glob(LOT . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
     $panels['get/' . $n . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
 }
 
+$routes['item'] = [
+    'lot' => [],
+    'title' => 'Item'
+];
+
+$routes['items'] = [
+    'lot' => [],
+    'title' => 'Items'
+];
+
 foreach (glob(LOT . D . 'page' . D . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
-    $routes['/' . pathinfo($path, PATHINFO_FILENAME)] = S . (new Page($path))->title . S;
+    $routes['item']['lot'][$k = '/' . pathinfo($path, PATHINFO_FILENAME)] = $v = S . (new Page($path))->title . S;
+    if (glob(dirname($path) . $k . D . '*.page', GLOB_NOSORT)) {
+        $routes['items']['lot'][$k . '/1'] = $v;
+    }
 }
 
 asort($layouts);
