@@ -4138,7 +4138,8 @@
             } else if (KEY_DELETE_LEFT$1 === key) {
                 exit = true;
                 tagPrev = getPrev($);
-                var hasPressed = 0;
+                var hasPressed = 0,
+                    v;
                 forEachMap(_tags, function (v) {
                     if (getAria(v[2], TOKEN_PRESSED)) {
                         hasPressed = 1;
@@ -4148,13 +4149,14 @@
                 });
                 if (!getAria($, TOKEN_PRESSED) && hasPressed);
                 else {
-                    letValueInMap(getTagValue($), _tags);
+                    getValueInMap$1(v = getTagValue($), _tags) >= 0 && letValueInMap(v, _tags);
                 }
                 focusTo(tagPrev || picker), picker.fire('change', [picker[TOKEN_VALUE]]);
             } else if (KEY_DELETE_RIGHT$1 === key) {
                 exit = true;
                 tagNext = getNext($);
-                var _hasPressed = 0;
+                var _hasPressed = 0,
+                    _v;
                 forEachMap(_tags, function (v) {
                     if (getAria(v[2], TOKEN_PRESSED)) {
                         _hasPressed = 1;
@@ -4164,7 +4166,7 @@
                 });
                 if (!getAria($, TOKEN_PRESSED) && _hasPressed);
                 else {
-                    letValueInMap(getTagValue($), _tags);
+                    getValueInMap$1(_v = getTagValue($), _tags) >= 0 && letValueInMap(_v, _tags);
                 }
                 focusTo(tagNext && tagNext !== text ? tagNext : picker), picker.fire('change', [picker[TOKEN_VALUE]]);
             } else if (KEY_ENTER$1 === key || ' ' === key) {
@@ -4502,7 +4504,7 @@
         },
         'with': []
     };
-    TagPicker.version = '4.2.9';
+    TagPicker.version = '4.2.10';
     setObjectAttributes(TagPicker, {
         name: {
             value: name$4
