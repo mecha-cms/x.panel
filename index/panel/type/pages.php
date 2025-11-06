@@ -69,7 +69,7 @@ $x = $_['x'] ?? 'archive,draft,page';
 
 $files = $pages = [];
 
-foreach ($query ? k($folder, $x, $deep, preg_split('/\s+/', $query)) : g($folder, $x, $deep) as $k => $v) {
+foreach ($query ? k($folder, $x, $deep, true, preg_split('/\s+/', $query)) : g($folder, $x, $deep) as $k => $v) {
     if (false !== strpos(',.archive,.draft,.page,', basename($k)) || isset($pages[$k])) {
         continue; // Skip placeholder page(s)
     }
