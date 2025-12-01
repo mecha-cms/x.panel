@@ -52,7 +52,7 @@ foreach ($query ? k($folder, 'page', 1, preg_split('/\s+/', $query)) : g($folder
 
 $pages = new Anemone($pages);
 $sort && $pages->sort($sort, true);
-$pages = $pages->chunk($chunk, $part - 1, true)->get();
+$pages = y($pages->chunk($chunk, $part - 1, true)->get());
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
 
 foreach ($pages as $k => $v) {
