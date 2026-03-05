@@ -74,12 +74,12 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
             'view' => [
                 'current' => false,
                 'icon' => 'M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z',
-                'link' => (string) $url,
+                'link' => $link->base,
                 'stack' => 20
             ]
         ],
         'stack' => 10,
-        'url' => (string) $url
+        'url' => $link->base
     ];
     $_['lot']['bar']['lot'][2]['lot']['user'] = [
         '3' => ['target' => '_top'],
@@ -88,7 +88,7 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
         'icon' => 'M19,21V19H15V17H19V15L22,18L19,21M10,4A4,4 0 0,1 14,8A4,4 0 0,1 10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,14C11.15,14 12.25,14.12 13.24,14.34C12.46,15.35 12,16.62 12,18C12,18.7 12.12,19.37 12.34,20H2V18C2,15.79 5.58,14 10,14Z',
         'stack' => 10,
         'title' => false,
-        'url' => $url . '/' . trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/') . '/' . $user->name . '?exit=' . $_['token']
+        'url' => $link->base . '/' . trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/') . '/' . $user->name . '?exit=' . $_['token']
     ];
     $_['lot']['desk']['lot']['form']['lot']['alert']['skip'] = 0 === \count($_SESSION['alert'] ?? []);
     return $_;
@@ -259,10 +259,10 @@ function route__panel($content, $path, $query, $hash) {
     }
     $js = [];
     if (isset($_['file'])) {
-        $js['file'] = \To::URL($_['file']);
+        $js['file'] = \To::link($_['file']);
     }
     if (isset($_['folder'])) {
-        $js['folder'] = \To::URL($_['folder']);
+        $js['folder'] = \To::link($_['folder']);
     }
     foreach ([
         'are',

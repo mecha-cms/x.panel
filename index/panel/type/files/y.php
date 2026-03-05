@@ -46,7 +46,7 @@ if (is_file($file = $folder . D . 'about.page')) {
     // Make URL example(s) in content usable
     $page_content = strtr($page_content ?? "", [
         '://127.0.0.1/panel/' => strstr($_['base'], ':') . '/',
-        '://127.0.0.1' => strstr((string) $url, ':')
+        '://127.0.0.1' => strstr((string) $link, ':')
     ]);
     $page_content_enter = $page_content_exit = "";
     if ($page_images) {

@@ -74,7 +74,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
 
 $session = $_SESSION['_']['files'] ?? [];
 
-Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
+Hook::set('_', function ($_) use ($page, $session, $trash) {
     $apart = [];
     // Collect form name(s) from the hidden field(s)
     if (!empty($_['lot']['desk']['lot']['form']['values'])) {
@@ -107,13 +107,18 @@ Hook::set('_', function ($_) use ($page, $session, $trash, $url) {
         $files = [];
         $token = $_['token'] ?? null;
         if ($page->exist) {
-            $apart = array_replace(From::page(file_get_contents($path = $page->path)), $apart);
-            foreach (g(dirname($path) . D . pathinfo($path, PATHINFO_FILENAME), 'data') as $k => $v) {
+            $path = $page->path;
+            if (function_exists($task = "x\\page\\from\\x\\" . $page->x)) {
+                $apart = array_replace($task(file_get_contents($path)), $apart);
+            } else {
+                $apart = array_replace(From::page(file_get_contents($path), true), $apart);
+            }
+            foreach (g(dirname($path) . D . pathinfo($path, PATHINFO_FILENAME) . '+', x\page\x()) as $k => $v) {
                 $p = strtr($k, [
                     LOT . D => "",
                     D => '/'
                 ]);
-                if (!$skip = isset($apart[basename($k, '.data')])) {
+                if (!$skip = isset($apart[pathinfo($k, PATHINFO_FILENAME)])) {
                     ++$count;
                 }
                 $files[$k] = [

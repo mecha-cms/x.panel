@@ -47,7 +47,7 @@ function on__user__enter($file) {
         }
         // Else, redirect to the default page
         $kick = \trim($state->x->panel->kick ?? 'get/asset/1', '/');
-        // Redirect target without `/` prefix will be resolved relative to the panel base URL
+        // Redirect target without `/` prefix will be resolved relative to the panel base link
         if (0 !== \strpos($kick, '/') && false === \strpos($kick, '://')) {
             $kick = '/' . $route . '/' . $kick;
         }
@@ -63,8 +63,8 @@ function on__user__exit() {
 \Hook::set('on.user.enter', __NAMESPACE__ . "\\on__user__enter");
 \Hook::set('on.user.exit', __NAMESPACE__ . "\\on__user__exit");
 
-$path = \trim($url->path ?? "", '/');
-$query = \From::query($url->query ?? "");
+$path = \trim($link->path ?? "", '/');
+$query = \From::query($link->query ?? "");
 
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
@@ -120,7 +120,7 @@ foreach ([
     'as' => [],
     'asset' => [],
     'author' => $user->user ?? null,
-    'base' => $url . '/' . $route,
+    'base' => $link->base('/' . $route),
     'can' => (array) ($state->can ?? []), // Inherit to the front-end state(s)
     'chunk' => $query['chunk'] ?? 20,
     'content' => null,
@@ -130,7 +130,7 @@ foreach ([
     'file' => $f && \is_file($f) ? $f : null,
     'folder' => $f && \is_dir($f) ? $f : null,
     'has' => (array) ($state->has ?? []), // Inherit to the front-end state(s)
-    'hash' => $url['hash'],
+    'hash' => $link['hash'],
     'icon' => [],
     'is' => \array_replace((array) ($state->is ?? []), ['error' => false]), // Inherit to the front-end state(s)
     'kick' => null,
@@ -154,7 +154,7 @@ foreach ([
 if ('GET' === $r && !\array_key_exists('kick', $_GET)) {
     if (!\is_dir(\LOT . \D . 'user') || $path === \trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/')) {
         $kick = \trim($state->x->panel->kick ?? 'get/asset/1', '/');
-        // Redirect target without `/` prefix will be resolved relative to the panel base URL
+        // Redirect target without `/` prefix will be resolved relative to the panel base link
         if (0 !== \strpos($kick, '/') && false === \strpos($kick, '://')) {
             $kick = '/' . $route . '/' . $kick;
         }

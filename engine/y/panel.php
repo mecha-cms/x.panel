@@ -8,8 +8,8 @@
     <title>
       <?= w($title); ?>
     </title>
-    <link href="<?= eat($url->current(false, false)); ?>" rel="canonical">
-    <link href="<?= eat($url . '/favicon.ico'); ?>" rel="icon">
+    <link href="<?= eat($link->base('/favicon.ico')); ?>" rel="icon">
+    <link href="<?= eat($link->current(false, false)); ?>" rel="canonical">
   </head>
   <body spellcheck="false">
     <?= $content; ?>

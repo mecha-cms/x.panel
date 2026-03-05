@@ -40,7 +40,7 @@ if (defined('TEST') && TEST) {
             'part' => 0,
             'path' => $v,
             'query' => x\panel\_query_set([
-                'kick' => short($url->current),
+                'kick' => short($link->current),
                 'token' => $_['token']
             ]),
             'task' => 'fire/fix'

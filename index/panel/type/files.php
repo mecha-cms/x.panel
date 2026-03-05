@@ -58,7 +58,7 @@ foreach ($files as $k => $v) {
     $files[$k] = [
         'current' => !empty($_SESSION['_'][0 === $v ? 'folders' : 'files'][$k]),
         'description' => 0 === $v ? ['Open %s', 'Folder'] : S . size(filesize($k)) . S,
-        'link' => 1 === $v ? To::URL($k) : null,
+        'link' => 1 === $v ? To::link($k) : null,
         'tags' => ['x:' . pathinfo($n, PATHINFO_EXTENSION) => 1 === $v],
         'tasks' => [
             'get' => [

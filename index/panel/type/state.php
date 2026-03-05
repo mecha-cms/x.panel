@@ -122,11 +122,11 @@ if ($file->exist && empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tab
 $back = trim(dirname($_['path'] ?? ""), '.');
 $kick = $state->x->panel->kick ?? 'get/asset/1';
 
-// Check if the redirect target is relative to the panel base URL
+// Check if the redirect target is relative to the panel base link
 if (0 !== strpos($kick, '/')) {
     // Remove task part from redirect target path
     $kick = preg_replace('/^(?:[gls]et|fire\/[^\/]+)\//', '/', $kick);
-// The redirect target is a full URL
+// The redirect target is a full link
 } else if (false !== strpos($kick, '://')) {
     // Set to default
     $kick = 'asset/1';

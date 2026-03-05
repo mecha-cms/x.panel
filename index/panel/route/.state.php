@@ -39,7 +39,7 @@ foreach (glob(LOT . D . 'y' . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $layout) {
     if (false !== strpos('._', $n[0])) {
         continue;
     }
-    $about = new Page(is_file($f = $layout . D . 'about.page') ? $f : null);
+    $about = new Page($f = exist($layout . D . 'index.{' . x\page\x() . '}', 1) ?: null);
     $layouts[$n] = $about->title ?? x\panel\from\path($layout);
     if (null === $layouts_current) {
         $layouts_current = is_file($layout . D . 'index.php') ? $n : null;
@@ -83,12 +83,12 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     }
     if ($route_panel === ($state_r['x']['panel']['route'] ?? $state_panel['route'])) {
         if (!empty($route_panel_reset) && !empty($state_r['x']['panel']['route'])) {
-            $_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
+            $_['alert']['info'][] = ['Your panel base link has been restored to %s', '<code>' . $link . $state_panel['route'] . '</code>'];
         }
     } else if (empty($route_panel_reset)) {
-        $_['alert']['info'][] = ['Your panel base URL has been changed to %s', '<code>' . $url . $route_panel . '</code>'];
+        $_['alert']['info'][] = ['Your panel base link has been changed to %s', '<code>' . $link . $route_panel . '</code>'];
     } else {
-        $_['alert']['info'][] = ['Your panel base URL has been restored to %s', '<code>' . $url . $state_panel['route'] . '</code>'];
+        $_['alert']['info'][] = ['Your panel base link has been restored to %s', '<code>' . $link . $state_panel['route'] . '</code>'];
     }
     if (!empty($_POST['state']['x']['user']['guard']['route'])) {
         if ($v = To::kebab(trim($_POST['state']['x']['user']['guard']['route'], '/'))) {
@@ -102,18 +102,18 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     }
     if ($route_user === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
         if (!empty($route_user_reset) && !empty($state_r['x']['user']['guard']['route'])) {
-            $_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
+            $_['alert']['info'][] = ['Your user log-in link has been restored to %s', '<code>' . $link . $state_user['route'] . '</code>'];
         }
     } else if (empty($route_user_reset)) {
-        $_['alert']['info'][] = ['Your user log-in URL has been changed to %s', '<code>' . $url . $route_user . '</code>'];
+        $_['alert']['info'][] = ['Your user log-in link has been changed to %s', '<code>' . $link . $route_user . '</code>'];
     } else {
-        $_['alert']['info'][] = ['Your user log-in URL has been restored to %s', '<code>' . $url . $state_user['route'] . '</code>'];
+        $_['alert']['info'][] = ['Your user log-in link has been restored to %s', '<code>' . $link . $state_user['route'] . '</code>'];
     }
     x\panel\_cache_let($file->path);
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = [
-        'base' => $url . $route_panel,
+        'base' => $link . $route_panel,
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
@@ -142,9 +142,9 @@ $routes['items'] = [
     'title' => 'Items'
 ];
 
-foreach (glob(LOT . D . 'page' . D . '*.{archive,page}', GLOB_NOSORT | GLOB_BRACE) as $path) {
+foreach (glob(LOT . D . 'page' . D . '*.{' . x\page\x() . '}', GLOB_BRACE | GLOB_NOSORT) as $path) {
     $routes['item']['lot'][$k = '/' . pathinfo($path, PATHINFO_FILENAME)] = $v = S . (new Page($path))->title . S;
-    if (glob(dirname($path) . $k . D . '*.page', GLOB_NOSORT)) {
+    if (glob(dirname($path) . $k . D . '*.{' . x\page\x() . '}', GLOB_BRACE | GLOB_NOSORT)) {
         $routes['items']['lot'][$k . '/1'] = $v;
     }
 }

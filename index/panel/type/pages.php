@@ -50,11 +50,7 @@ if (!is_dir($folder = $_['folder'] ?? P)) {
     return $_;
 }
 
-$page = new Page(exist([
-    $folder . '.archive',
-    $folder . '.draft',
-    $folder . '.page'
-], 1) ?: null);
+$page = new Page(exist($folder . '.{' . x\page\x() . '}', 1) ?: null);
 
 $author = $user->user;
 $chunk = $page->chunk ?? $_['chunk'] ?? 20;
@@ -65,12 +61,12 @@ $query = strtolower(s($_['query']['query'] ?? ""));
 $sort = array_replace((array) ($page->sort ?? []), (array) ($_['sort'] ?? []));
 $super = 1 === $user->status;
 $token = $_['token'] ?? null;
-$x = $_['x'] ?? 'archive,draft,page';
+$x = $_['x'] ?? x\page\x();
 
 $files = $pages = [];
 
 foreach ($query ? k($folder, $x, $deep, true, preg_split('/\s+/', $query)) : g($folder, $x, $deep) as $k => $v) {
-    if (false !== strpos(',.archive,.draft,.page,', basename($k)) || isset($pages[$k])) {
+    if ("" === pathinfo($k, PATHINFO_FILENAME)) {
         continue; // Skip placeholder page(s)
     }
     $p = new Page($k);
@@ -86,7 +82,7 @@ foreach ($query ? k($folder, $x, $deep, true, preg_split('/\s+/', $query)) : g($
 
 $pages = new Anemone($pages);
 $sort && $pages->sort($sort, true);
-$pages = y($pages->chunk($chunk, $part - 1, true)->get());
+$pages = $pages->chunk($chunk, $part - 1, true);
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : false;
 foreach ($pages as $k => $v) {
     $path = strtr($k, [
@@ -94,7 +90,7 @@ foreach ($pages as $k => $v) {
         D => '/'
     ]);
     $has_folder = is_dir($d = dirname($k) . D . pathinfo($k, PATHINFO_FILENAME));
-    $can_set = $has_folder && q(g($d, 'archive,draft,page')) > 0;
+    $can_set = $has_folder && q(g($d, x\page\x())) > 0;
     $p = $v['page'];
     $description = To::description(x\panel\to\w($p->description ?? ""));
     $icon = $p->icon ?? null;
@@ -110,7 +106,7 @@ foreach ($pages as $k => $v) {
         'description' => $description ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($description)) : $description) . S : null,
         'icon' => $icon,
         'image' => $image,
-        'link' => 'draft' === $x ? null : $p->url . ($can_set ? '/1' : ""),
+        'link' => 'draft' === $x ? null : $p->link . ($can_set ? '/1' : ""),
         'tags' => [
             'type-' . c2f($type) => !empty($type),
             'x:' . $x => true
@@ -186,7 +182,7 @@ if (
     isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['type']) &&
     0 === strpos($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['data']['lot']['data']['type'] . '/', 'files/')
 ) {
-    foreach (g($folder, 'data') as $k => $v) {
+    foreach (g($folder . D . '+', x\page\x()) as $k => $v) {
         $path = strtr($k, [
             LOT . D => "",
             D => '/'

@@ -38,7 +38,7 @@ if (!empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['pag
         $page = new User($v['path'] ?? $k);
         $v['description'] = S . $page->user . S;
         $v['image'] = $page->avatar(72, 72, 100) ?? null;
-        $v['link'] = 'draft' !== $page->x ? $page->url : false;
+        $v['link'] = 'draft' !== $page->x ? $page->link : false;
         $v['tags']['status:' . $page->status] = true;
         $v['title'] = S . $page . S;
         // Disable page children feature
