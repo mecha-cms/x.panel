@@ -111,7 +111,7 @@ function field($value, $key, $type = 'textarea') {
 }
 
 function icon($value) {
-    // Maybe an `Anemone`
+    // Maybe a `Batch`
     if ($value instanceof \Traversable) {
         $value = \iterator_to_array($value);
     }
@@ -149,7 +149,7 @@ function lot($lot, &$count = 0, $sort = true) {
         if (true === $sort) {
             $sort = [1, 'stack', 10];
         }
-        $lot = (new \Anemone($lot))->sort($sort, true);
+        $lot = (new \Batch($lot))->sort($sort, true);
     }
     $values = [];
     foreach ($lot as $k => $v) {
@@ -161,7 +161,7 @@ function lot($lot, &$count = 0, $sort = true) {
             ++$count;
         }
     }
-    return new \Anemone($values, "");
+    return new \Batch($values, "");
 }
 
 // TODO: Convert to recursive `HTML` content
@@ -244,7 +244,7 @@ function title($value, $level = -1) {
 }
 
 function unit($value) {
-    // Maybe an `Anemone`
+    // Maybe a `Batch`
     if ($value instanceof \Traversable) {
         $value = \iterator_to_array($value);
     }

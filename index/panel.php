@@ -35,7 +35,7 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
     }
     $list = [];
     $stack = 10;
-    foreach ((new \Anemone($folders))->sort([1, 'title'], true) as $k => $v) {
+    foreach ((new \Batch($folders))->sort([1, 'title'], true) as $k => $v) {
         $v['stack'] = $stack;
         $stack += 10;
         $list[$k] = $v;
@@ -154,7 +154,7 @@ function route($content, $path, $query, $hash) {
                 $_['alert'][$k][$kk] = $vv;
                 $stack += 0.01;
             }
-            foreach ((new \Anemone($_['alert'][$k]))->sort([1, 'stack', 10], true)->get() as $kk => $vv) {
+            foreach ((new \Batch($_['alert'][$k]))->sort([1, 'stack', 10], true)->get() as $kk => $vv) {
                 if (false === $vv || null === $vv || !empty($vv['skip'])) {
                     continue;
                 }

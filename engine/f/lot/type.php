@@ -428,7 +428,7 @@ function fields($value, $key) {
         ++$count;
     } else if (isset($value['lot'])) {
         $value['lot'] = \x\panel\lot\_type_parent_set($value['lot'], 'field');
-        foreach ((new \Anemone($value['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
+        foreach ((new \Batch($value['lot']))->sort([1, 'stack', 10], true) as $k => &$v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
@@ -522,7 +522,7 @@ function files($value, $key) {
             if (true === $sort) {
                 $sort = [1, 'stack', 10];
             }
-            $lot = (new \Anemone($lot))->sort($sort)->get();
+            $lot = (new \Batch($lot))->sort($sort)->get();
         }
         $count = 0;
         $count_files = 0;
@@ -689,7 +689,7 @@ function icon($value, $key) {
     // Maybe a `HTML`
     if (isset($value['content'])) {
         $icons[0] = \x\panel\to\content($value['content']);
-    // Maybe an `Anemone`
+    // Maybe a `Batch`
     } else if (isset($value['lot'])) {
         $v = \x\panel\to\lot($value['lot']);
         $icons[0] = $v[0] ?? null;
@@ -766,7 +766,7 @@ function icon($value, $key) {
         }
         $icons[$k] = $v;
     }
-    return new \Anemone($icons, "");
+    return new \Batch($icons, "");
 }
 
 function input($value, $key) {
@@ -940,7 +940,7 @@ function menu($value, $key, int $i = 0) {
         $value[1] .= \x\panel\to\content($value['content']);
     } else if (isset($value['lot'])) {
         $count = 0;
-        foreach ((new \Anemone($value['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
+        foreach ((new \Batch($value['lot']))->sort([1, 'stack', 10], true) as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
                 continue;
             }
@@ -1167,7 +1167,7 @@ function pages($value, $key) {
             if (true === $sort) {
                 $sort = [1, 'stack', 10];
             }
-            $lot = (new \Anemone($lot))->sort($sort)->get();
+            $lot = (new \Batch($lot))->sort($sort)->get();
         }
     }
     $count = 0;
@@ -1460,7 +1460,7 @@ function stacks($value, $key) {
             if (true === $sort) {
                 $sort = [1, 'stack', 10];
             }
-            $lot = (new \Anemone($lot))->sort($sort)->get();
+            $lot = (new \Batch($lot))->sort($sort)->get();
         }
     }
     $count = 0;
@@ -1509,7 +1509,7 @@ function tabs($value, $key) {
         if (true === $sort) {
             $sort = [1, 'stack', 10];
         }
-        $lot = (new \Anemone($value['lot']))->sort($sort, true)->get();
+        $lot = (new \Batch($value['lot']))->sort($sort, true)->get();
         $count = 0;
         foreach ($lot as $k => $v) {
             if (false === $v || null === $v || !empty($v['skip'])) {
@@ -1703,7 +1703,7 @@ function unit($value, $key) {
     // Maybe a `HTML`
     if (isset($value['content'])) {
         $units[0] = \x\panel\to\content($value['content']);
-    // Maybe an `Anemone`
+    // Maybe a `Batch`
     } else if (isset($value['lot'])) {
         $v = \x\panel\to\lot($value['lot']);
         $units[0] = $v[0] ?? null;
@@ -1743,7 +1743,7 @@ function unit($value, $key) {
         }
         $units[$k] = $v;
     }
-    return new \Anemone($units, "");
+    return new \Batch($units, "");
 }
 
 require __DIR__ . \D . 'type' . \D . 'button.php';
