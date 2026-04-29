@@ -113,7 +113,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = [
-        'base' => $link . $route_panel,
+        'base' => $link->base($route_panel),
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',

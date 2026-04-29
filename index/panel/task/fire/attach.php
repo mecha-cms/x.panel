@@ -30,7 +30,7 @@ function attach($_) {
         $_['alert']['error'][$file] = ['%s %s could not be attached.', [$title, '<code>' . $name . '</code>']];
     }
     $_['kick'] = $_REQUEST['kick'] ?? [
-        'path' => $n,
+        'path' => \strtr(\rawurlencode($n), ['%2F' => '/']),
         'query' => \x\panel\_query_set(['radio' => null]),
         'task' => 'get'
     ];

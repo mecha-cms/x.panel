@@ -68,7 +68,7 @@ foreach ($files as $k => $v) {
                 'title' => 'Edit',
                 'url' => [
                     'part' => 0,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'type' => '0' !== ($n[0] ?? '0') && strspn($n, '0123456789') === strlen($n) ? (0 === $v ? 'folder' : 'file') : null
                     ]),
@@ -82,7 +82,7 @@ foreach ($files as $k => $v) {
                 'title' => 'Delete',
                 'url' => [
                     'part' => 0,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'token' => $token,
                         'trash' => $trash,
@@ -96,7 +96,7 @@ foreach ($files as $k => $v) {
         'type' => 0 === $v ? 'folder' : 'file',
         'url' => 0 === $v ? [
             'part' => 1,
-            'path' => $path,
+            'path' => strtr(rawurlencode($path), ['%2F' => '/']),
             'query' => x\panel\_query_set(),
             'task' => 'get'
         ] : null
@@ -117,7 +117,7 @@ if (substr_count($p, '/') > 0 && $part <= 1) {
                 'title' => 'Edit',
                 'url' => [
                     'part' => 0,
-                    'path' => $p,
+                    'path' => strtr(rawurlencode($p), ['%2F' => '/']),
                     'query' => x\panel\_query_set(),
                     'task' => 'get'
                 ]
@@ -129,7 +129,7 @@ if (substr_count($p, '/') > 0 && $part <= 1) {
                 'title' => 'Delete',
                 'url' => [
                     'part' => 0,
-                    'path' => $p,
+                    'path' => strtr(rawurlencode($p), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'token' => $token,
                         'trash' => $trash
@@ -142,7 +142,7 @@ if (substr_count($p, '/') > 0 && $part <= 1) {
         'type' => 'folder',
         'url' => [
             'part' => 1,
-            'path' => dirname($p),
+            'path' => strtr(rawurlencode(dirname($p)), ['%2F' => '/']),
             'query' => x\panel\_query_set(),
             'task' => 'get'
         ]

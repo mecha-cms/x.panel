@@ -12,7 +12,7 @@ function pull($_) {
     $_['kick'] = $_REQUEST['kick'] ?? [
         'hash' => null,
         'part' => 0,
-        'path' => "" !== $key ? $key . '/1' : 'asset/1',
+        'path' => \strtr(\rawurlencode("" !== $key ? $key . '/1' : 'asset/1'), ['%2F' => '/']),
         'query' => \x\panel\_query_set([
             'keep' => null,
             'minify' => null,

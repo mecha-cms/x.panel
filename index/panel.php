@@ -24,7 +24,7 @@ require __DIR__ . \D . '..' . \D . 'engine' . \D . 'fire.php';
             'title' => 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : \To::title($n)),
             'url' => [
                 'part' => 1,
-                'path' => $n,
+                'path' => \strtr(\rawurlencode($n), ['%2F' => '/']),
                 'query' => \x\panel\_query_set(),
                 'task' => 'get'
             ]

@@ -63,7 +63,7 @@ function on__user__exit() {
 \Hook::set('on.user.enter', __NAMESPACE__ . "\\on__user__enter");
 \Hook::set('on.user.exit', __NAMESPACE__ . "\\on__user__exit");
 
-$path = \trim($link->path ?? "", '/');
+$path = \trim(\rawurldecode($link->path ?? ""), '/');
 $query = \From::query($link->query ?? "");
 
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -87,7 +87,7 @@ if (0 === \strpos($path, $v = $route . '/fire/')) {
 
 $f = $part = 0;
 if ($exist) {
-    $n = \basename($exist);
+    $n = \basename($exist = \rawurldecode($exist));
     $n = '0' !== ($n[0] ?? '0') && \strspn($n, '0123456789') === \strlen($n) ? $n : false;
     if (!$f = \stream_resolve_include_path(\LOT . \D . $exist)) {
         if ($n) {

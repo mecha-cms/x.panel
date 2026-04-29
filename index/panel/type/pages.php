@@ -120,7 +120,7 @@ foreach ($pages as $k => $v) {
                 'title' => 'Enter',
                 'url' => [
                     'part' => 1,
-                    'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
+                    'path' => strtr(rawurlencode(dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME)), ['%2F' => '/']),
                     'query' => x\panel\_query_set(),
                     'task' => 'get'
                 ]
@@ -134,7 +134,7 @@ foreach ($pages as $k => $v) {
                 'title' => 'Add',
                 'url' => $has_folder ? [
                     'part' => 0,
-                    'path' => dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME),
+                    'path' => strtr(rawurlencode(dirname($path) . '/' . pathinfo($path, PATHINFO_FILENAME)), ['%2F' => '/']),
                     'query' => x\panel\_query_set(['type' => 'page']),
                     'task' => 'set'
                 ] : null
@@ -146,7 +146,7 @@ foreach ($pages as $k => $v) {
                 'title' => 'Edit',
                 'url' => [
                     'part' => 0,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set(),
                     'task' => 'get'
                 ]
@@ -158,7 +158,7 @@ foreach ($pages as $k => $v) {
                 'title' => 'Delete',
                 'url' => [
                     'part' => 0,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'token' => $_['token'],
                         'trash' => $trash
@@ -199,7 +199,7 @@ if (
                     'title' => 'Edit',
                     'url' => [
                         'part' => 0,
-                        'path' => $path,
+                        'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                         'query' => x\panel\_query_set(),
                         'task' => 'get'
                     ]
@@ -211,7 +211,7 @@ if (
                     'title' => 'Delete',
                     'url' => [
                         'part' => 0,
-                        'path' => $path,
+                        'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                         'query' => x\panel\_query_set([
                             'tab' => ['data'],
                             'token' => $token,
@@ -225,7 +225,7 @@ if (
             'type' => 'file',
             'url' => [
                 'part' => 0,
-                'path' => $path,
+                'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                 'query' => x\panel\_query_set(),
                 'task' => 'get'
             ]

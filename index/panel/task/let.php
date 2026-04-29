@@ -33,7 +33,7 @@ function data($_) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
-            'path' => \dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
+            'path' => \strtr(\rawurlencode(\dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION)), ['%2F' => '/']),
             'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],
@@ -85,7 +85,7 @@ function file($_) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
-            'path' => \dirname($_['path']),
+            'path' => \strtr(\rawurlencode(\dirname($_['path'])), ['%2F' => '/']),
             'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],
@@ -154,7 +154,7 @@ function folder($_) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 1,
-            'path' => \dirname($_['path']),
+            'path' => \strtr(\rawurlencode(\dirname($_['path'])), ['%2F' => '/']),
             'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],

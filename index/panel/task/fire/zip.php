@@ -14,7 +14,7 @@ function zip($_) {
     $file_zip = $file && \is_file($file) && 'zip' === \pathinfo($file, \PATHINFO_EXTENSION);
     $kick = [
         'part' => $file_zip ? 1 : 0,
-        'path' => $file_zip ? \dirname($_['path']) : $_['path'],
+        'path' => \strtr(\rawurlencode($file_zip ? \dirname($_['path']) : $_['path']), ['%2F' => '/']),
         'query' => \x\panel\_query_set(),
         'task' => 'get'
     ];

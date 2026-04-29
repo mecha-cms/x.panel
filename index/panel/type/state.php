@@ -146,7 +146,7 @@ return x\panel\type\state(array_replace_recursive($_, [
                         'link' => [
                             'url' => [
                                 'part' => $has_part ? 0 : 1,
-                                'path' => 'get' === $_['task'] ? trim("" !== $back ? $back : $kick, '/') : $_['path']
+                                'path' => strtr(rawurlencode('get' === $_['task'] ? trim("" !== $back ? $back : $kick, '/') : $_['path']), ['%2F' => '/'])
                             ]
                         ],
                         'folder' => ['skip' => true]

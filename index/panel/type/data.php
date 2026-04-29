@@ -35,7 +35,7 @@ return x\panel\type\data(array_replace_recursive($_, [
                         'link' => [
                             'url' => [
                                 'part' => $x ? 0 : 1,
-                                'path' => ('get' === $_['task'] ? dirname($_['path']) : $_['path']) . $x
+                                'path' => strtr(rawurlencode(('get' === $_['task'] ? dirname($_['path']) : $_['path']) . $x), ['%2F' => '/'])
                             ]
                         ]
                     ]

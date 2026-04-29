@@ -137,7 +137,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash) {
                             'title' => 'Edit',
                             'url' => [
                                 'part' => 0,
-                                'path' => $p,
+                                'path' => strtr(rawurlencode($p), ['%2F' => '/']),
                                 'query' => x\panel\_query_set(),
                                 'task' => 'get'
                             ]
@@ -149,7 +149,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash) {
                             'icon' => 'M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z',
                             'url' => [
                                 'part' => 0,
-                                'path' => $p,
+                                'path' => strtr(rawurlencode($p), ['%2F' => '/']),
                                 'query' => x\panel\_query_set([
                                     'tab' => ['data'],
                                     'token' => $token,
@@ -163,7 +163,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash) {
                     'type' => 'file',
                     'url' => [
                         'part' => 0,
-                        'path' => $p,
+                        'path' => strtr(rawurlencode($p), ['%2F' => '/']),
                         'query' => x\panel\_query_set(),
                         'task' => 'get'
                     ]

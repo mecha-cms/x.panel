@@ -166,7 +166,7 @@ function data($_) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
-            'path' => $_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION),
+            'path' => \strtr(\rawurlencode($_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION)), ['%2F' => '/']),
             'query' => \x\panel\_query_set($_POST['query'] ?? []),
             'task' => 'get'
         ];
@@ -277,10 +277,10 @@ function folder($_) {
             $_['kick'] = $_POST['kick'] ?? [
                 'hash' => $_POST['hash'] ?? null,
                 'part' => 1,
-                'path' => \strtr($self, [
+                'path' => \strtr(\rawurlencode(\strtr($self, [
                     \LOT . \D => "",
                     \D => '/'
-                ]),
+                ])), ['%2F' => '/']),
                 'query' => \x\panel\_query_set($_POST['query'] ?? []),
                 'task' => 'get'
             ];
