@@ -195,13 +195,13 @@ function _state_set() {
     if ($_['status'] >= 400) {
         $_['is']['error'] = $_['status'];
     }
-    if (null !== $_['type']) {
-        $_['[y]']['type-' . $_['type']] = true;
-    }
-    foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with', '[y]'] as $v) {
+    foreach (['are', 'as', 'can', 'has', 'is', 'not', 'of', 'with'] as $v) {
         if (isset($_[$v]) && \is_array($_[$v])) {
             \State::set($v, $_[$v]);
         }
+    }
+    if (null !== $_['type']) {
+        \State::set('q.state.type-' . $_['type'], true);
     }
     \lot('_', $_);
 }
@@ -292,7 +292,7 @@ function type(array $_ = []) {
                                 'type' => 'form/get',
                                 'url' => [
                                     'part' => $part,
-                                    'path' => $part <= 0 && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode($part <= 0 && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => ['query' => null],
                                     'task' => 'get'
                                 ]
@@ -370,7 +370,7 @@ function type(array $_ = []) {
                         'url' => [
                             'hash' => $hash,
                             'part' => $part,
-                            'path' => $path,
+                            'path' => $path ? \strtr(\rawurlencode($path), ['%2F' => '/']) : null,
                             'query' => $query,
                             'task' => $task
                         ]

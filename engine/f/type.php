@@ -37,7 +37,7 @@ function blob(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(),
                                     'task' => 'get'
                                 ]
@@ -170,7 +170,7 @@ function data(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(['tab' => ['data']]),
                                     'task' => 'get'
                                 ]
@@ -183,7 +183,7 @@ function data(array $_ = []) {
                                 'title' => false,
                                 'url' => [
                                     'part' => 0,
-                                    'path' => $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode($path ? \dirname($path) : ""), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(['type' => $type]),
                                     'task' => 'set'
                                 ]
@@ -316,7 +316,7 @@ function file(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(),
                                     'task' => 'get'
                                 ]
@@ -329,7 +329,7 @@ function file(array $_ = []) {
                                 'title' => false,
                                 'url' => [
                                     'part' => 0,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(['type' => $type]),
                                     'task' => 'set'
                                 ]
@@ -564,7 +564,7 @@ function folder(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(),
                                     'task' => 'get'
                                 ]
@@ -695,11 +695,12 @@ function folders(array $_ = []) {
 
 function page(array $_ = []) {
     $path = $_['path'] ?? null;
+    $path_name = $path ? \pathinfo($path, \PATHINFO_FILENAME) : null;
+    $path_x = $path ? \pathinfo($path, \PATHINFO_EXTENSION) : null;
     $query = (array) ($_['query'] ?? []);
     $task = $_['task'] ?? 'set';
     $token = $_['token'] ?? null;
     $type = $_['type'] ?? 'page';
-    $x = $path ? \pathinfo($path, \PATHINFO_EXTENSION) : null;
     return \x\panel\type(\array_replace_recursive([
         'lot' => [
             'bar' => [
@@ -713,7 +714,7 @@ function page(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(),
                                     'task' => 'get'
                                 ]
@@ -725,7 +726,7 @@ function page(array $_ = []) {
                                 'stack' => 10.5,
                                 'title' => false,
                                 'url' => [
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(['type' => $type]),
                                     'task' => 'set'
                                 ]
@@ -846,7 +847,7 @@ function page(array $_ = []) {
                                                                                 'title' => 'Data',
                                                                                 'url' => [
                                                                                     'part' => 0,
-                                                                                    'path' => $path ? \dirname($path) . '/' . \pathinfo($path, \PATHINFO_FILENAME) : $path,
+                                                                                    'path' => \strtr(\rawurlencode($path ? \dirname($path) . '/' . \pathinfo($path, \PATHINFO_FILENAME) : ""), ['%2F' => '/']),
                                                                                     'query' => \x\panel\_query_set(['type' => 'data']),
                                                                                     'task' => 'set'
                                                                                 ]
@@ -885,39 +886,39 @@ function page(array $_ = []) {
                                                         // `tasks/button`
                                                         'lot' => [
                                                             'set' => [
-                                                                'description' => $x ? ['Update as %s', ucfirst($x)] : null,
-                                                                'name' => 'page[x]',
+                                                                'description' => $path_name ? ['Update as %s', '#' === $path_name[0] ? 'Archive' : ('~' === $path_name[0] ? 'Draft' : 'Page')] : null,
+                                                                'name' => 'page[name-prefix]',
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 10,
                                                                 'title' => 'Update',
                                                                 'type' => 'submit',
-                                                                'value' => $x
+                                                                'value' => false !== \strpos('#~', $path_name[0] ?? \P) ? $path_name[0] : ""
                                                             ],
                                                             'page' => [
-                                                                'name' => 'page[x]',
-                                                                'skip' => 'page' === $x,
+                                                                'name' => 'page[name-prefix]',
+                                                                'skip' => !('set' === $task || false !== \strpos('#~', $path_name[0] ?? \P)),
                                                                 'stack' => 20,
                                                                 'title' => 'Publish',
                                                                 'type' => 'submit',
-                                                                'value' => 'page'
+                                                                'value' => ""
                                                             ],
                                                             'draft' => [
-                                                                'description' => $x ? ['Save as %s', 'Draft'] : null,
-                                                                'name' => 'page[x]',
-                                                                'skip' => 'draft' === $x,
+                                                                'description' => $path_name ? ['Save as %s', 'Draft'] : null,
+                                                                'name' => 'page[name-prefix]',
+                                                                'skip' => 0 === \strpos($path_name, '~'),
                                                                 'stack' => 30,
                                                                 'title' => 'Save',
                                                                 'type' => 'submit',
-                                                                'value' => 'draft'
+                                                                'value' => '~'
                                                             ],
                                                             'archive' => [
-                                                                'description' => $x ? ['Save as %s', 'Archive'] : null,
-                                                                'name' => 'page[x]',
-                                                                'skip' => 'archive' === $x || 'set' === $task,
+                                                                'description' => $path_name ? ['Save as %s', 'Archive'] : null,
+                                                                'name' => 'page[name-prefix]',
+                                                                'skip' => 0 === \strpos($path_name, '#') || 'set' === $task,
                                                                 'stack' => 40,
                                                                 'title' => 'Archive',
                                                                 'type' => 'submit',
-                                                                'value' => 'archive'
+                                                                'value' => '#'
                                                             ],
                                                             'let' => [
                                                                 'name' => 'task',
@@ -944,6 +945,7 @@ function page(array $_ = []) {
                         'values' => [
                             'file' => ['seal' => '0600'],
                             'kick' => $query['kick'] ?? null,
+                            'page' => ['x' => $path_x],
                             'token' => $token,
                             'type' => $type
                         ]
@@ -990,7 +992,7 @@ function pages(array $_ = []) {
                                                 'type' => 'link',
                                                 'url' => [
                                                     'part' => 1,
-                                                    'path' => $path ? \dirname($path) : $path,
+                                                    'path' => \strtr(\rawurlencode($path ? \dirname($path) : ""), ['%2F' => '/']),
                                                     'query' => \x\panel\_query_set(),
                                                     'task' => 'get'
                                                 ]
@@ -1110,7 +1112,7 @@ function state(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => 'get' === $task && $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set()
                                 ]
                             ],

@@ -19,7 +19,7 @@ function data($_) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
-    $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? ""), '.@_~'));
+    $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? ""), '#.@_~'));
     $_POST['file']['content'] = $_POST['data']['content'] ?? "";
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
@@ -49,7 +49,7 @@ function file($_) {
         return $_;
     }
     $base = \basename((string) ($file = $_['file'])); // Old file name
-    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? ""), '.@_~'));
+    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? ""), '#.@_~'));
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     if ("" === $name) {
         $_['alert']['error'][$file] = ['Please fill out the %s field.', 'Name'];
@@ -217,11 +217,12 @@ function page($_) {
     }
     $base = \basename((string) ($file = $_['file'])); // Old file name
     $name = (string) \To::kebab($_POST['page']['name'] ?? $_POST['page']['title'] ?? "");
+    $name_prefix = \trim(\basename($_POST['page']['name-prefix'] ?? ""), '.');
     $x = $_POST['page']['x'] ?? \pathinfo($name, \PATHINFO_EXTENSION);
     if ("" === $name) {
         $name = \date('Y-m-d-H-i-s');
     }
-    unset($_POST['page']['name'], $_POST['page']['x']);
+    unset($_POST['page']['name'], $_POST['page']['name-prefix'], $_POST['page']['x']);
     $page = [];
     $p = (array) ($state->x->page->page ?? []);
     foreach ($_POST['page'] as $k => $v) {
@@ -244,8 +245,8 @@ function page($_) {
             $page[$k] = $v;
         }
     }
-    $_POST['file']['content'] = \To::page($page);
-    $_POST['file']['name'] = $name . '.' . $x;
+    $_POST['file']['content'] = \To::page($page, 2);
+    $_POST['file']['name'] = $name_prefix . $name . '.' . $x;
     $_ = file($_); // Move to `file`
     $self = $_['file']; // Get new file name
     if (empty($_['alert']['error'])) {
@@ -256,11 +257,14 @@ function page($_) {
             \rename($d, $folder);
         }
         if (isset($_POST['data'])) {
+            if (!\is_dir($folder .= \D . '+')) {
+                \mkdir($folder, 0755, true);
+            }
             foreach ((array) $_POST['data'] as $k => $v) {
-                $f = $folder . \D . $k . '.data';
+                $f = $folder . \D . $k . '.json';
                 if ((\is_array($v) && $v = \drop($v)) || "" !== \trim((string) $v)) {
                     if (!\stream_resolve_include_path($f) || \is_writable($f)) {
-                        \file_put_contents($f, \is_array($v) ? \json_encode($v) : \s($v));
+                        \file_put_contents($f, \json_encode($v));
                         \chmod($f, 0600);
                     } else {
                         $_['alert']['error'][$f] = ['File %s is not writable.', '<code>' . \x\panel\from\path($f) . '</code>'];
@@ -281,16 +285,16 @@ function page($_) {
             'File %s successfully updated.' => ['%s %s successfully updated.', [$key, $path]]
         ];
         $x = \pathinfo($self, \PATHINFO_EXTENSION);
-        if ('archive' === $x) {
+        if ('#' === $name_prefix) {
             $alter['File %s successfully renamed.'] = ['%s %s successfully converted to archive.', [$key, $path]];
-        } else if ('draft' === $x) {
+        } else if ('~' === $name_prefix) {
             $alter['File %s successfully renamed.'] = ['%s %s successfully reverted to draft.', [$key, $path]];
-        } else if ('page' === $x && 'page' !== \pathinfo($p, \PATHINFO_EXTENSION)) {
+        } else if ("" === $name_prefix) {
             $alter['File %s successfully renamed.'] = ['%s %s successfully published.', [$key, $path]];
         }
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
-                if (\is_string($kk) && \is_file($kk) && false === \strpos(',archive,draft,page,', ',' . \pathinfo($kk, \PATHINFO_EXTENSION) . ',')) {
+                if (\is_string($kk) && \is_file($kk) && false === \strpos(',' . \x\page\x() . ',', ',' . \pathinfo($kk, \PATHINFO_EXTENSION) . ',')) {
                     continue;
                 }
                 if (\is_array($vv)) {

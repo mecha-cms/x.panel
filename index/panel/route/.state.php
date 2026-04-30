@@ -129,7 +129,7 @@ foreach (glob(LOT . D . '*', GLOB_NOSORT | GLOB_ONLYDIR) as $panel) {
     if (false !== strpos('._', $n[0])) {
         continue;
     }
-    $panels['get/' . $n . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
+    $panels['get/' . rawurlencode($n) . '/1'] = 'x' === $n ? 'Extension' : ('y' === $n ? 'Layout' : To::title($n));
 }
 
 $routes['item'] = [
@@ -143,7 +143,8 @@ $routes['items'] = [
 ];
 
 foreach (glob(LOT . D . 'page' . D . '*.{' . x\page\x() . '}', GLOB_BRACE | GLOB_NOSORT) as $path) {
-    $routes['item']['lot'][$k = '/' . pathinfo($path, PATHINFO_FILENAME)] = $v = S . (new Page($path))->title . S;
+    $n = pathinfo($path, PATHINFO_FILENAME);
+    $routes['item']['lot'][$k = '/' . (0 === strpos($n, '#') ? substr($n, 1) : $n)] = $v = S . (new Page($path))->title . S;
     if (glob(dirname($path) . $k . D . '*.{' . x\page\x() . '}', GLOB_BRACE | GLOB_NOSORT)) {
         $routes['items']['lot'][$k . '/1'] = $v;
     }

@@ -399,7 +399,7 @@ function name($value, $key) {
     $value['hint'] = $value['hint'] ?? ("" !== $v ? $v : 'foo-bar' . ($x ? '.' . (false === \strpos($x, '|') ? \substr($x, 3, -1) : 'baz') : ""));
     $value['max'] = $value['max'] ?? 255; // <https://serverfault.com/a/9548>
     $value['min'] = $value['min'] ?? $x ? 2 : 1;
-    $value['pattern'] = $value['pattern'] ?? "([_.]?[a-z\\d" . \x($keep) . "]+([_.\\-][a-z\\d" . \x($keep) . "]+)*)?" . $x;
+    $value['pattern'] = $value['pattern'] ?? "([#.@_~]?[a-z\\d" . \x($keep) . "]+([_.\\-][a-z\\d" . \x($keep) . "]+)*)?" . $x;
     return \x\panel\lot\type\field\text($value, $key);
 }
 

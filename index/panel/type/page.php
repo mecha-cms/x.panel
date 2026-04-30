@@ -185,7 +185,12 @@ Hook::set('_', function ($_) use ($page, $session, $trash) {
 
 lot('page', $page);
 
+$page_name = $page->file->name;
 $page_type = 'text/html' === $page->type ? 'HTML' : $page->type;
+
+if (false !== strpos('#~', $page_name[0] ?? P)) {
+    $page_name = substr($page_name, 1);
+}
 
 return x\panel\type\page(array_replace_recursive($_, [
     'lot' => [
@@ -208,7 +213,7 @@ return x\panel\type\page(array_replace_recursive($_, [
                                                     // `fields`
                                                     'lot' => [
                                                         'title' => ['value' => $page['title']],
-                                                        'name' => ['value' => $page->name],
+                                                        'name' => ['value' => $page_name],
                                                         'content' => ['value' => $page['content']],
                                                         'description' => ['value' => $page['description']],
                                                         'author' => ['value' => $page['author'] ?? $user->user],

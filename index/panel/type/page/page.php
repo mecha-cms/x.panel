@@ -93,7 +93,7 @@ return x\panel\type\page\page(array_replace_recursive($_, [
                                                         'chunk' => [
                                                             'active' => $count > 0, // Disable this field if child page(s) count is `0`
                                                             'hint' => $chunk,
-                                                            'value' => is_file($folder . D . '.archive') || is_file($folder . D . '.page') ? 0 : ($page_chunk === $chunk ? null : $page_chunk)
+                                                            'value' => exist($folder . D . '.{' . x\page\x() . '}', 1) ? 0 : ($page_chunk === $chunk ? null : $page_chunk)
                                                         ],
                                                         'deep' => [
                                                             'active' => $count > 0,

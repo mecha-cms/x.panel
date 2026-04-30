@@ -4,7 +4,7 @@ if (!$file->exist && 'get' === $_['task']) {
     $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file->path ?? $folder->path ?? P) . '</code>', 'file']];
     $_['kick'] = [
         'part' => 1,
-        'path' => dirname($_['path']),
+        'path' => strtr(rawurlencode(dirname($_['path'])), ['%2F' => '/']),
         'query' => x\panel\_query_set(),
         'task' => 'get'
     ];

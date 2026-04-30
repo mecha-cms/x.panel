@@ -81,7 +81,7 @@ foreach ($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['files
                 'stack' => 10,
                 'title' => 'Recover',
                 'url' => [
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set(['token' => $token]),
                     'task' => 'fire/recover'
                 ]

@@ -22,7 +22,7 @@ function blob($_) {
         if (!empty($v['status'])) {
             $_['alert']['error'][] = 'Failed to upload with status code: ' . $v['status'];
         } else {
-            $name = (string) (\To::file(\lcfirst($v['name']), '.@_~') ?? \uniqid());
+            $name = (string) (\To::file(\lcfirst($v['name']), '#.@_~') ?? \uniqid());
             if (\is_array($wrap = \s($_POST['options'][$k]['folder'] ?? $_POST['options']['folder'] ?? "")) || 'false' === $wrap || 'null' === $wrap) {
                 $wrap = "";
             } else if ('true' === $wrap) {
@@ -158,7 +158,7 @@ function data($_) {
     if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
-    $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? "")));
+    $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? ""), '#.@_~'));
     $_POST['file']['content'] = $_POST['data']['content'] ?? "";
     $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
     $_ = file($_); // Move to `file`
@@ -188,7 +188,7 @@ function file($_) {
         return $_;
     }
     $folder = isset($_POST['path']) && "" !== $_POST['path'] ? \LOT . \D . \trim(\strtr(\strip_tags((string) $_POST['path']), '/', \D), \D) : $_['folder'];
-    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? ""), '.@_~'));
+    $name = \basename((string) \To::file(\lcfirst($_POST['file']['name'] ?? ""), '#.@_~'));
     $x = \pathinfo($name, \PATHINFO_EXTENSION);
     if ("" === $name) {
         $_['alert']['error'][$folder] = ['Please fill out the %s field.', 'Name'];
@@ -318,13 +318,14 @@ function page($_) {
     }
     $file = $_['file'];
     $name = (string) \To::kebab($_POST['page']['name'] ?? $_POST['page']['title'] ?? "");
-    $x = $_POST['page']['x'] ?? 'page';
+    $name_prefix = \trim(\basename($_POST['page']['name-prefix'] ?? ""), '.');
+    $x = $_POST['page']['x'] ?? 'txt';
     if ("" === $name) {
         $name = \date('Y-m-d-H-i-s');
     }
-    unset($_POST['page']['name'], $_POST['page']['x']);
+    unset($_POST['page']['name'], $_POST['page']['name-prefix'], $_POST['page']['x']);
     $page = [];
-    $p = (array) ($state->x->page->page ?? []);
+    $p = (array) ($state->x->page->lot ?? []);
     foreach ($_POST['page'] as $k => $v) {
         if (
             // Skip `null` value
@@ -345,8 +346,8 @@ function page($_) {
             $page[$k] = $v;
         }
     }
-    $_POST['file']['content'] = \To::page($page);
-    $_POST['file']['name'] = $name . '.' . $x;
+    $_POST['file']['content'] = \To::page($page, 2);
+    $_POST['file']['name'] = $name_prefix . $name . '.' . $x;
     $_ = file($_); // Move to `file`
     $self = $_['file']; // Get file name
     if (empty($_['alert']['error'])) {
@@ -354,11 +355,14 @@ function page($_) {
             \mkdir($folder, 0755, true);
         }
         if (isset($_POST['data'])) {
+            if (!\is_dir($folder .= \D . '+')) {
+                \mkdir($folder, 0755, true);
+            }
             foreach ((array) $_POST['data'] as $k => $v) {
-                $f = $folder . \D . $k . '.data';
+                $f = $folder . \D . $k . '.json';
                 if ((\is_array($v) && $v = \drop($v)) || "" !== \trim((string) $v)) {
                     if (\is_writable($d = \dirname($f))) {
-                        \file_put_contents($f, \is_array($v) ? \json_encode($v) : \s($v));
+                        \file_put_contents($f, \json_encode($v));
                         \chmod($f, 0600);
                     } else {
                         $_['alert']['error'][$d] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($d) . '</code>']];
@@ -377,7 +381,7 @@ function page($_) {
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
-                if (\is_string($kk) && \is_file($kk) && false === \strpos(',archive,draft,page,', ',' . \pathinfo($kk, \PATHINFO_EXTENSION) . ',')) {
+                if (\is_string($kk) && \is_file($kk) && false === \strpos(',' . \x\page\x() . ',', ',' . \pathinfo($kk, \PATHINFO_EXTENSION) . ',')) {
                     continue;
                 }
                 if (\is_array($vv)) {

@@ -100,7 +100,7 @@ foreach ($pages as $k => $v) {
                 'title' => 'Edit',
                 'url' => [
                     'part' => 1,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set(['tab' => ['files']]),
                     'task' => 'get'
                 ]
@@ -120,7 +120,7 @@ foreach ($pages as $k => $v) {
                 'stack' => 20.1,
                 'title' => $is_active ? 'Detach' : 'Attach',
                 'url' => !empty($bound) && !is_file($d . D . '.index.php') ? null : [
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'radio' => $is_active ? null : 1,
                         'token' => $token
@@ -135,7 +135,7 @@ foreach ($pages as $k => $v) {
                 'title' => 'Delete',
                 'url' => !empty($bound) ? null : [
                     'part' => 0,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'token' => $token,
                         'trash' => $trash
@@ -148,7 +148,7 @@ foreach ($pages as $k => $v) {
         'title' => $title ? S . ("" !== $query ? preg_replace('/' . x($query) . '/i', '<mark>$0</mark>', strip_tags($title)) : $title) . S : null,
         'url' => [
             'part' => 1,
-            'path' => $path,
+            'path' => strtr(rawurlencode($path), ['%2F' => '/']),
             'query' => x\panel\_query_set(['tab' => ['info']]),
             'task' => 'get'
         ]
@@ -185,7 +185,7 @@ foreach (g($folder, 'zip') as $k => $v) {
                 'title' => 'Delete',
                 'url' => [
                     'part' => 0,
-                    'path' => $path,
+                    'path' => strtr(rawurlencode($path), ['%2F' => '/']),
                     'query' => x\panel\_query_set([
                         'token' => $token,
                         'trash' => $trash
@@ -199,7 +199,7 @@ foreach (g($folder, 'zip') as $k => $v) {
         'type' => 'file',
         'url' => [
             'part' => 0,
-            'path' => $path
+            'path' => strtr(rawurlencode($path), ['%2F' => '/'])
         ]
     ];
     if (isset($_SESSION['_']['files'][$k])) {

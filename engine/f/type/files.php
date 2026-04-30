@@ -105,7 +105,7 @@ function x(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => $path ? \dirname($path) : $path,
+                                    'path' => \strtr(\rawurlencode($path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(),
                                     'task' => 'get'
                                 ]
