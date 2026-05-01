@@ -17,7 +17,7 @@ $_ = x\panel\type\pages(array_replace_recursive($_, [
                                         'data' => [
                                             // `tab`
                                             'lot' => [],
-                                            'skip' => !$folder->exist || 0 === q(g($folder->path, 'data')) || false === strpos($_['path'], '/')
+                                            'skip' => !$folder->exist || 0 === q(g($folder->path . D . '+', x\page\x())) || false === strpos($_['path'], '/')
                                         ]
                                     ]
                                 ]

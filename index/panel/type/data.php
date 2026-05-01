@@ -4,7 +4,7 @@ if (!$file->exist && 'get' === $_['task']) {
     $_['alert']['error'][] = ['Path %s is not a %s.', ['<code>' . x\panel\from\path($file->path ?? $folder->path ?? P) . '</code>', 'file']];
     $_['kick'] = [
         'part' => 1,
-        'path' => dirname($_['path']),
+        'path' => strtr(rawurlencode(dirname($_['path'])), ['%2F' => '/']),
         'query' => x\panel\_query_set(),
         'task' => 'get'
     ];
@@ -19,8 +19,8 @@ if ($file->exist && 'set' === $_['task']) {
 $name = $file->name;
 $content = $name ? $file->content : null;
 
-$path = 'get' === $_['task'] ? $file->parent->path : $file->path;
-$x = glob($path . '.{archive,draft,page}', GLOB_BRACE | GLOB_NOSORT);
+$path = 'get' === $_['task'] ? $file->parent->parent->path : $file->path;
+$x = glob($path . '.{' . \x\page\x() . '}', GLOB_BRACE | GLOB_NOSORT);
 $x = $x ? '.' . pathinfo($x[0], PATHINFO_EXTENSION) : null;
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
@@ -35,7 +35,7 @@ return x\panel\type\data(array_replace_recursive($_, [
                         'link' => [
                             'url' => [
                                 'part' => $x ? 0 : 1,
-                                'path' => strtr(rawurlencode(('get' === $_['task'] ? dirname($_['path']) : $_['path']) . $x), ['%2F' => '/'])
+                                'path' => strtr(rawurlencode(dirname($_['path'], 'get' === $_['task'] ? 2 : 1) . $x), ['%2F' => '/'])
                             ]
                         ]
                     ]
@@ -60,6 +60,7 @@ return x\panel\type\data(array_replace_recursive($_, [
                                                 'fields' => [
                                                     // `fields`
                                                     'lot' => [
+                                                        'as' => ['value' => $file->x ?? 'json'],
                                                         'content' => ['value' => $content],
                                                         'name' => ['value' => $name]
                                                     ]

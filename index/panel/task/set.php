@@ -158,15 +158,23 @@ function data($_) {
     if (isset($_['kick']) || !empty($_['alert']['error']) || $_['status'] >= 400) {
         return $_;
     }
+    $content = $_POST['data']['content'] ?? "";
     $name = \basename((string) \To::file(\lcfirst($_POST['data']['name'] ?? ""), '#.@_~'));
-    $_POST['file']['content'] = $_POST['data']['content'] ?? "";
-    $_POST['file']['name'] = "" !== $name ? $name . '.data' : "";
+    $x = \trim(\basename($_POST['data']['x'] ?? 'txt'), '.');
+    // TODO: Validate content
+    if ('json' === $x) {
+
+    } else if ('yaml' === $x || 'yml' === $x) {
+
+    }
+    $_POST['file']['content'] = $content ?? "";
+    $_POST['file']['name'] = "" !== $name ? $name . '.' . $x : "";
     $_ = file($_); // Move to `file`
-    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
+    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file'], 2) . '.{' . \x\page\x() . '}', \GLOB_BRACE | \GLOB_NOSORT)) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
-            'path' => \strtr(\rawurlencode($_['path'] . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION)), ['%2F' => '/']),
+            'path' => \strtr(\rawurlencode(\dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION)), ['%2F' => '/']),
             'query' => \x\panel\_query_set($_POST['query'] ?? []),
             'task' => 'get'
         ];

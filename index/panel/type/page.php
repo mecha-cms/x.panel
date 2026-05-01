@@ -16,8 +16,8 @@ if ($file->exist && 'set' === $_['task']) {
     return $_;
 }
 
-$folder_parent = $file->exist ? $file->parent->path . D . $file->name : false;
-$has_folder = $file->exist ? is_dir($folder_parent) : false;
+$folder_data = $file->exist ? $file->parent->path . D . $file->name . D . '+' : false;
+$folder_data_exist = $file->exist ? is_dir($folder_data) : false;
 $page = $file->exist ? new Page($file->path) : new Page;
 $trash = !empty($state->x->panel->trash) ? date('Y-m-d-H-i-s') : null;
 
@@ -33,9 +33,12 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
         // Remove all HTML tag(s) from the `id` data if any
         $_POST['page']['id'] = strip_tags($_POST['page']['id']);
     }
-    if (isset($_POST['page']['link'])) {
-        // Remove all HTML tag(s) from the `link` data if any
-        $_POST['page']['link'] = strip_tags($_POST['page']['link']);
+    if (is_array($_POST['page']['links'] ?? 0)) {
+        // Remove all HTML tag(s) from the `links` data if any
+        foreach ($_POST['page']['links'] as &$v) {
+            $v = strip_tags($v);
+        }
+        unset($v);
     }
     if (isset($_POST['page']['description'])) {
         // Remove all block HTML tag(s) from the `description` data if any
@@ -231,7 +234,7 @@ return x\panel\type\page(array_replace_recursive($_, [
                                                 'fields' => [
                                                     // `fields`
                                                     'lot' => [
-                                                        'link' => ['value' => $page['link']],
+                                                        'links-0' => ['value' => $page['links'][0] ?? null],
                                                         'time' => ['value' => $page['time']],
                                                         'files' => [
                                                             // `field`
@@ -240,9 +243,9 @@ return x\panel\type\page(array_replace_recursive($_, [
                                                                     // `tasks/link`
                                                                     'lot' => [
                                                                         'set' => [
-                                                                            'active' => $has_folder,
-                                                                            'description' => $has_folder ? ['New %s', 'Data'] : ($folder_parent ? ['Missing folder %s', x\panel\from\path($folder_parent)] : null),
-                                                                            'url' => $has_folder ? [] : null
+                                                                            'active' => $folder_data_exist,
+                                                                            'description' => $folder_data_exist ? ['New %s', 'Data'] : ($folder_data ? ['Missing folder %s', x\panel\from\path($folder_data)] : null),
+                                                                            'url' => $folder_data_exist ? [] : null
                                                                         ]
                                                                     ]
                                                                 ]

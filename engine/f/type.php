@@ -170,7 +170,7 @@ function data(array $_ = []) {
                                 'skip' => false,
                                 'url' => [
                                     'part' => 1,
-                                    'path' => \strtr(\rawurlencode('get' === $task && $path ? \dirname($path) : ($path ?? "")), ['%2F' => '/']),
+                                    'path' => \strtr(\rawurlencode(\dirname($path ?? "", 'get' === $task && $path ? 2 : 1)), ['%2F' => '/']),
                                     'query' => \x\panel\_query_set(['tab' => ['data']]),
                                     'task' => 'get'
                                 ]
@@ -224,10 +224,21 @@ function data(array $_ = []) {
                                                                 'name' => 'data[name]',
                                                                 'stack' => 20,
                                                                 'type' => 'name',
-                                                                'unit' => '.data',
                                                                 'value' => null,
                                                                 'width' => true,
                                                                 'x' => false
+                                                            ],
+                                                            'as' => [
+                                                                'lot' => [
+                                                                    'txt' => ['description' => 'Save and read it as plain text.', 'title' => 'Default'],
+                                                                    'json' => ['description' => 'Save and read it as JSON.', 'title' => 'JSON'],
+                                                                    'yaml' => ['description' => 'Save and read it as YAML.', 'title' => 'YAML']
+                                                                ],
+                                                                'name' => 'data[x]',
+                                                                'sort' => false,
+                                                                'stack' => 30,
+                                                                'type' => 'item',
+                                                                'value' => 'json'
                                                             ]
                                                         ],
                                                         'stack' => 10,
@@ -813,9 +824,10 @@ function page(array $_ = []) {
                                                     'fields' => [
                                                         // `fields`
                                                         'lot' => [
-                                                            'link' => [
-                                                                'name' => 'page[link]',
+                                                            'links-0' => [
+                                                                'name' => 'page[links][0]',
                                                                 'stack' => 10,
+                                                                'title' => 'Link',
                                                                 'type' => 'link',
                                                                 'value' => null,
                                                                 'width' => true
@@ -847,7 +859,7 @@ function page(array $_ = []) {
                                                                                 'title' => 'Data',
                                                                                 'url' => [
                                                                                     'part' => 0,
-                                                                                    'path' => \strtr(\rawurlencode($path ? \dirname($path) . '/' . \pathinfo($path, \PATHINFO_FILENAME) : ""), ['%2F' => '/']),
+                                                                                    'path' => \strtr(\rawurlencode($path ? \dirname($path) . '/' . \pathinfo($path, \PATHINFO_FILENAME) . '/+' : ""), ['%2F' => '/']),
                                                                                     'query' => \x\panel\_query_set(['type' => 'data']),
                                                                                     'task' => 'set'
                                                                                 ]
@@ -945,7 +957,7 @@ function page(array $_ = []) {
                         'values' => [
                             'file' => ['seal' => '0600'],
                             'kick' => $query['kick'] ?? null,
-                            'page' => ['x' => $path_x],
+                            'page' => ['x' => $path_x ?? 'yaml'],
                             'token' => $token,
                             'type' => $type
                         ]
