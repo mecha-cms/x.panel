@@ -226,13 +226,13 @@ function page($_) {
     $base = \basename((string) ($file = $_['file'])); // Old file name
     $name = (string) \To::kebab($_POST['page']['name'] ?? $_POST['page']['title'] ?? "");
     $name_prefix = \trim(\basename($_POST['page']['name-prefix'] ?? ""), '.');
-    $x = $_POST['page']['x'] ?? \pathinfo($name, \PATHINFO_EXTENSION);
+    $x = $_POST['page']['x'] ?? (\pathinfo($name, \PATHINFO_EXTENSION) ?: 'yaml');
     if ("" === $name) {
         $name = \date('Y-m-d-H-i-s');
     }
     unset($_POST['page']['name'], $_POST['page']['name-prefix'], $_POST['page']['x']);
     $page = [];
-    $p = (array) ($state->x->page->page ?? []);
+    $p = (array) ($state->x->page->lot ?? []);
     foreach ($_POST['page'] as $k => $v) {
         if (
             // Skip `null` value
@@ -272,7 +272,7 @@ function page($_) {
                 $f = $folder . \D . $k . '.json';
                 if ((\is_array($v) && $v = \drop($v)) || "" !== \trim((string) $v)) {
                     if (!\stream_resolve_include_path($f) || \is_writable($f)) {
-                        \file_put_contents($f, \json_encode($v));
+                        \file_put_contents($f, \is_string($v) && \json_validate($v) ? $v : \json_encode($v));
                         \chmod($f, 0600);
                     } else {
                         $_['alert']['error'][$f] = ['File %s is not writable.', '<code>' . \x\panel\from\path($f) . '</code>'];

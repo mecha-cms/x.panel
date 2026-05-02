@@ -327,7 +327,7 @@ function page($_) {
     $file = $_['file'];
     $name = (string) \To::kebab($_POST['page']['name'] ?? $_POST['page']['title'] ?? "");
     $name_prefix = \trim(\basename($_POST['page']['name-prefix'] ?? ""), '.');
-    $x = $_POST['page']['x'] ?? 'txt';
+    $x = $_POST['page']['x'] ?? 'yaml';
     if ("" === $name) {
         $name = \date('Y-m-d-H-i-s');
     }
@@ -370,7 +370,7 @@ function page($_) {
                 $f = $folder . \D . $k . '.json';
                 if ((\is_array($v) && $v = \drop($v)) || "" !== \trim((string) $v)) {
                     if (\is_writable($d = \dirname($f))) {
-                        \file_put_contents($f, \json_encode($v));
+                        \file_put_contents($f, \is_string($v) && \json_validate($v) ? $v : \json_encode($v));
                         \chmod($f, 0600);
                     } else {
                         $_['alert']['error'][$d] = ['Folder %s is not writable.', ['<code>' . \x\panel\from\path($d) . '</code>']];

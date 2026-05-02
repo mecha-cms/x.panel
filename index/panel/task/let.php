@@ -226,7 +226,7 @@ function page($_) {
         ];
         foreach ($_['alert'] as $k => &$v) {
             foreach ($v as $kk => &$vv) {
-                if (\is_string($kk) && \is_file($kk) && false === \strpos(',archive,draft,page,', ',' . \pathinfo($kk, \PATHINFO_EXTENSION) . ',')) {
+                if (\is_string($kk) && \is_file($kk) && false === \strpos(',' . \x\page\x() . ',', ',' . \pathinfo($kk, \PATHINFO_EXTENSION) . ',')) {
                     continue;
                 }
                 if (\is_array($vv)) {

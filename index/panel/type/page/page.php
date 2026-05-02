@@ -1,9 +1,18 @@
 <?php
 
+$count = 0;
+foreach (g(dirname($f = $_['file']) . D . pathinfo($f, PATHINFO_FILENAME), x\page\x()) as $k => $v) {
+    if (0 !== strpos('#~', basename($k)[0] ?? P)) {
+        ++$count;
+    }
+}
+
+$folder = $f ? dirname($f) . D . pathinfo($f, PATHINFO_FILENAME) : P;
+
 if ('POST' === $_SERVER['REQUEST_METHOD']) {
     $chunk = $_POST['data']['chunk'] ?? $_POST['page']['chunk'] ?? null;
-    $x = basename(strip_tags($_POST['page']['x'] ?? 'page'));
-    // Having chunk value less than `1` will not create a `chunk.data` file. Instead, it will create a placeholder page
+    $x = trim(basename(strip_tags($_POST['page']['x'] ?? 'yaml')), '.') ?: 'yaml';
+    // Having chunk value less than `1` will not create a `chunk.json` file. Instead, it will create a placeholder page
     // to hide the pages.
     if (is_int($chunk) && $chunk < 1 && is_dir($folder)) {
         unset($_POST['data']['chunk'], $_POST['page']['chunk']);
@@ -13,9 +22,6 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
         unlink($ff);
     }
 }
-
-$count = ($f = $_['file']) ? q(g(dirname($f) . D . pathinfo($f, PATHINFO_FILENAME), 'page')) : 0;
-$folder = $f ? dirname($f) . D . pathinfo($f, PATHINFO_FILENAME) : P;
 
 $layouts = [];
 $layouts_active = !!array_filter(glob(LOT . D . 'y' . D . '*' . D . '{page,pages}', GLOB_BRACE | GLOB_ONLYDIR), function ($v) {
@@ -32,9 +38,9 @@ if ($layouts_active) {
     }
 }
 
-$chunk = $state->x->page->page->chunk ?? 5;
-$deep = $state->x->page->page->deep ?? 0;
-$sort = $state->x->page->page->sort ?? [1, 'path'];
+$chunk = $state->x->page->lot->chunk ?? 5;
+$deep = $state->x->page->lot->deep ?? 0;
+$sort = $state->x->page->lot->sort ?? [1, 'path'];
 
 $page_chunk = $page['chunk'] ?? null;
 $page_deep = $page['deep'] ?? null;
