@@ -36,7 +36,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
     if (is_array($_POST['page']['links'] ?? 0)) {
         // Remove all HTML tag(s) from the `links` data if any
         foreach ($_POST['page']['links'] as &$v) {
-            $v = strip_tags($v);
+            $v = is_string($v) ? strip_tags($v) : $v;
         }
         unset($v);
     }
@@ -53,7 +53,7 @@ if ('POST' === $_SERVER['REQUEST_METHOD']) {
         $_POST['page']['title'] = To::description($_POST['page']['title'], 255);
     }
     // Make sure to have a file extension
-    $_POST['page']['x'] = basename(strip_tags($_POST['page']['x'] ?? 'page'));
+    $_POST['page']['x'] = trim(basename(strip_tags($_POST['page']['x'] ?? 'yaml')), '.') ?: 'yaml';
     // Make sure to have a file name
     if (empty($_POST['page']['name'])) {
         $name = To::kebab($_POST['page']['title'] ?? "");
@@ -116,7 +116,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash) {
             } else {
                 $apart = array_replace(From::page(file_get_contents($path), true), $apart);
             }
-            foreach (g(dirname($path) . D . pathinfo($path, PATHINFO_FILENAME) . '+', x\page\x()) as $k => $v) {
+            foreach (g(dirname($path) . D . pathinfo($path, PATHINFO_FILENAME) . D . '+', x\page\x()) as $k => $v) {
                 $p = strtr($k, [
                     LOT . D => "",
                     D => '/'
@@ -129,9 +129,7 @@ Hook::set('_', function ($_) use ($page, $session, $trash) {
                     'description' => size(filesize($k)),
                     'path' => $k,
                     'skip' => $skip,
-                    'tags' => [
-                        'x:data' => true
-                    ],
+                    'tags' => ['x-' . pathinfo($k, PATHINFO_EXTENSION) => true],
                     'tasks' => [
                         'get' => [
                             'description' => 'Edit',

@@ -354,7 +354,7 @@ function page($_) {
             $page[$k] = $v;
         }
     }
-    $_POST['file']['content'] = \To::page($page, 2);
+    $_POST['file']['content'] = \function_exists($task = "\\x\\page\\to\\x\\" . $x) ? $task($page) : \To::page($page, 2);
     $_POST['file']['name'] = $name_prefix . $name . '.' . $x;
     $_ = file($_); // Move to `file`
     $self = $_['file']; // Get file name

@@ -109,7 +109,7 @@ foreach ($pages as $k => $v) {
         'link' => 'draft' === $x ? null : $p->link . ($can_set ? '/1' : ""),
         'tags' => [
             'type-' . c2f($type) => !empty($type),
-            'x:' . $x => true
+            'x-' . $x => true
         ],
         'tasks' => [
             'enter' => [

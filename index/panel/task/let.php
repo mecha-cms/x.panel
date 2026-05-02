@@ -29,11 +29,11 @@ function data($_) {
         return $_;
     }
     $_ = file($_); // Move to `file`
-    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file']) . '.{archive,draft,page}', \GLOB_BRACE | \GLOB_NOSORT)) {
+    if (empty($_['alert']['error']) && $parent = \glob(\dirname($_['file'], 2) . '.{' . \x\page\x() . '}', \GLOB_BRACE | \GLOB_NOSORT)) {
         $_['kick'] = $_POST['kick'] ?? [
             'hash' => $_POST['hash'] ?? null,
             'part' => 0,
-            'path' => \strtr(\rawurlencode(\dirname($_['path']) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION)), ['%2F' => '/']),
+            'path' => \strtr(\rawurlencode(\dirname($_['path'], 2) . '.' . \pathinfo($parent[0], \PATHINFO_EXTENSION)), ['%2F' => '/']),
             'query' => \x\panel\_query_set(\array_replace_recursive($_POST['query'] ?? [], [
                 'stack' => $_POST['stack'] ?? [],
                 'tab' => $_POST['tab'] ?? [],

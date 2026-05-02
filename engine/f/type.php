@@ -706,8 +706,12 @@ function folders(array $_ = []) {
 
 function page(array $_ = []) {
     $path = $_['path'] ?? null;
-    $path_name = $path ? \pathinfo($path, \PATHINFO_FILENAME) : null;
-    $path_x = $path ? \pathinfo($path, \PATHINFO_EXTENSION) : null;
+    if ("" === ($path_name = $path ? \pathinfo($path, \PATHINFO_FILENAME) : null)) {
+        $path_name = null;
+    }
+    if ("" === ($path_x = $path ? \pathinfo($path, \PATHINFO_EXTENSION) : null)) {
+        $path_x = null;
+    }
     $query = (array) ($_['query'] ?? []);
     $task = $_['task'] ?? 'set';
     $token = $_['token'] ?? null;
@@ -898,7 +902,6 @@ function page(array $_ = []) {
                                                         // `tasks/button`
                                                         'lot' => [
                                                             'set' => [
-                                                                'description' => $path_name ? ['Update as %s', '#' === $path_name[0] ? 'Archive' : ('~' === $path_name[0] ? 'Draft' : 'Page')] : null,
                                                                 'name' => 'page[name-prefix]',
                                                                 'skip' => 'set' === $task,
                                                                 'stack' => 10,
@@ -915,7 +918,6 @@ function page(array $_ = []) {
                                                                 'value' => ""
                                                             ],
                                                             'draft' => [
-                                                                'description' => $path_name ? ['Save as %s', 'Draft'] : null,
                                                                 'name' => 'page[name-prefix]',
                                                                 'skip' => 0 === \strpos($path_name, '~'),
                                                                 'stack' => 30,
@@ -924,7 +926,6 @@ function page(array $_ = []) {
                                                                 'value' => '~'
                                                             ],
                                                             'archive' => [
-                                                                'description' => $path_name ? ['Save as %s', 'Archive'] : null,
                                                                 'name' => 'page[name-prefix]',
                                                                 'skip' => 0 === \strpos($path_name, '#') || 'set' === $task,
                                                                 'stack' => 40,
