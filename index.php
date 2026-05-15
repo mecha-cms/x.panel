@@ -35,21 +35,21 @@ if (!empty($user) && !($user instanceof \User)) {
 // Set proper redirect target for non super user
 function on__user__enter($file) {
     \extract(\lot(), \EXTR_SKIP);
+    $sub = \trim($state->x->panel->sub ?? $state->x->user->guard->sub ?? $state->x->user->sub ?? 'user', '/');
     $user = new \User($file);
-    $route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
     $status = $user->status ?? 0;
     // If current user is not super user
     if (1 !== $status) {
         // And if current user is not an editor
         if (2 !== $status) {
             // Redirect to the user page
-            \kick('/' . $route . '/get/user/' . $user->name(true));
+            \kick('/' . $sub . '/get/user/' . $user->name(true));
         }
         // Else, redirect to the default page
         $kick = \trim($state->x->panel->kick ?? 'get/asset/1', '/');
         // Redirect target without `/` prefix will be resolved relative to the panel base link
         if (0 !== \strpos($kick, '/') && false === \strpos($kick, '://')) {
-            $kick = '/' . $route . '/' . $kick;
+            $kick = '/' . $sub . '/' . $kick;
         }
         \kick($kick);
     }
@@ -65,20 +65,19 @@ function on__user__exit() {
 
 $path = \trim(\rawurldecode($link->path ?? ""), '/');
 $query = \From::query($link->query ?? "");
-
 $r = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$route = \trim($state->x->panel->route ?? $state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/');
+$sub = \trim($state->x->panel->sub ?? $state->x->user->guard->sub ?? $state->x->user->sub ?? 'user', '/');
 
-if (0 === \strpos($path, $v = $route . '/fire/')) {
+if (0 === \strpos($path, $v = $sub . '/fire/')) {
     $exist = \substr(\strstr($v = \substr($path, \strlen($v)), '/') ?: "", 1);
     $task = 'fire/' . \strstr($v, '/', true);
-} else if (0 === \strpos($path, $v = $route . '/get/')) {
+} else if (0 === \strpos($path, $v = $sub . '/get/')) {
     $exist = \substr($path, \strlen($v));
     $task = 'get';
-} else if (0 === \strpos($path, $v = $route . '/let/')) {
+} else if (0 === \strpos($path, $v = $sub . '/let/')) {
     $exist = \substr($path, \strlen($v));
     $task = 'let';
-} else if (0 === \strpos($path, $v = $route . '/set/')) {
+} else if (0 === \strpos($path, $v = $sub . '/set/')) {
     $exist = \substr($path, \strlen($v));
     $task = 'set';
 } else {
@@ -120,7 +119,7 @@ foreach ([
     'as' => [],
     'asset' => [],
     'author' => $user->user ?? null,
-    'base' => $link->base('/' . $route),
+    'base' => $link->base('/' . $sub),
     'can' => (array) ($state->can ?? []), // Inherit to the front-end state(s)
     'chunk' => $query['chunk'] ?? 20,
     'content' => null,
@@ -152,18 +151,18 @@ foreach ([
 
 // Modify default log-in redirection to the panel page if it is not set
 if ('GET' === $r && !\array_key_exists('kick', $_GET)) {
-    if (!\is_dir(\LOT . \D . 'user') || $path === \trim($state->x->user->guard->route ?? $state->x->user->route ?? 'user', '/')) {
+    if (!\is_dir(\LOT . \D . 'user') || $path === \trim($state->x->user->guard->sub ?? $state->x->user->sub ?? 'user', '/')) {
         $kick = \trim($state->x->panel->kick ?? 'get/asset/1', '/');
         // Redirect target without `/` prefix will be resolved relative to the panel base link
         if (0 !== \strpos($kick, '/') && false === \strpos($kick, '://')) {
-            $kick = '/' . $route . '/' . $kick;
+            $kick = '/' . $sub . '/' . $kick;
         }
         $_GET['kick'] = $kick;
     }
 }
 
 // Load the panel interface only if current location path is at least started with `http://127.0.0.1/panel/`
-if ($exist && !empty($user->exist) && 0 === \strpos($path . '/', $route . '/')) {
+if ($exist && !empty($user->exist) && 0 === \strpos($path . '/', $sub . '/')) {
     \State::set('is.panel', true);
     require __DIR__ . \D . 'index' . \D . 'panel.php';
 }

@@ -67,53 +67,53 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['state'])) {
     $_POST['state']['description'] = x\panel\to\w($_POST['state']['description'] ?? "");
     $_POST['state']['email'] = x\panel\to\w($_POST['state']['email'] ?? "");
     $_POST['state']['title'] = x\panel\to\w($_POST['state']['title'] ?? "");
-    $route_panel = $state_r['x']['panel']['route'] ?? $state_panel['route'] ?? 'panel';
-    $route_user = $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'] ?? 'user';
-    $route_panel = '/' . trim($route_panel, '/');
-    $route_user = '/' . trim($route_user, '/');
-    if (!empty($_POST['state']['x']['panel']['route'])) {
-        if ($v = To::kebab(trim($_POST['state']['x']['panel']['route'], '/'))) {
-            $_POST['state']['x']['panel']['route'] = $route_panel = '/' . $v;
+    $sub_panel = $state_r['x']['panel']['sub'] ?? $state_panel['sub'] ?? 'panel';
+    $sub_user = $state_r['x']['user']['guard']['sub'] ?? $state_user['guard']['sub'] ?? $state_r['x']['user']['sub'] ?? $state_user['sub'] ?? 'user';
+    $sub_panel = '/' . trim($sub_panel, '/');
+    $sub_user = '/' . trim($sub_user, '/');
+    if (!empty($_POST['state']['x']['panel']['sub'])) {
+        if ($v = To::kebab(trim($_POST['state']['x']['panel']['sub'], '/'))) {
+            $_POST['state']['x']['panel']['sub'] = $sub_panel = '/' . $v;
         } else {
-            unset($_POST['state']['x']['panel']['route']);
+            unset($_POST['state']['x']['panel']['sub']);
         }
     } else {
-        $route_panel = $state_panel['route'] ?? '/panel';
-        $route_panel_reset = true;
+        $sub_panel = $state_panel['sub'] ?? '/panel';
+        $sub_panel_reset = true;
     }
-    if ($route_panel === ($state_r['x']['panel']['route'] ?? $state_panel['route'])) {
-        if (!empty($route_panel_reset) && !empty($state_r['x']['panel']['route'])) {
-            $_['alert']['info'][] = ['Your panel base link has been restored to %s', '<code>' . $link . $state_panel['route'] . '</code>'];
+    if ($sub_panel === ($state_r['x']['panel']['sub'] ?? $state_panel['sub'])) {
+        if (!empty($sub_panel_reset) && !empty($state_r['x']['panel']['sub'])) {
+            $_['alert']['info'][] = ['Your panel base link has been restored to %s', '<code>' . $link . $state_panel['sub'] . '</code>'];
         }
-    } else if (empty($route_panel_reset)) {
-        $_['alert']['info'][] = ['Your panel base link has been changed to %s', '<code>' . $link . $route_panel . '</code>'];
+    } else if (empty($sub_panel_reset)) {
+        $_['alert']['info'][] = ['Your panel base link has been changed to %s', '<code>' . $link . $sub_panel . '</code>'];
     } else {
-        $_['alert']['info'][] = ['Your panel base link has been restored to %s', '<code>' . $link . $state_panel['route'] . '</code>'];
+        $_['alert']['info'][] = ['Your panel base link has been restored to %s', '<code>' . $link . $state_panel['sub'] . '</code>'];
     }
-    if (!empty($_POST['state']['x']['user']['guard']['route'])) {
-        if ($v = To::kebab(trim($_POST['state']['x']['user']['guard']['route'], '/'))) {
-            $_POST['state']['x']['user']['guard']['route'] = $route_user = '/' . $v;
+    if (!empty($_POST['state']['x']['user']['guard']['sub'])) {
+        if ($v = To::kebab(trim($_POST['state']['x']['user']['guard']['sub'], '/'))) {
+            $_POST['state']['x']['user']['guard']['sub'] = $sub_user = '/' . $v;
         } else {
-            unset($_POST['state']['x']['user']['guard']['route']);
+            unset($_POST['state']['x']['user']['guard']['sub']);
         }
     } else {
-        $route_user = $state_user['guard']['route'] ?? $state_user['route'] ?? '/user';
-        $route_user_reset = true;
+        $sub_user = $state_user['guard']['sub'] ?? $state_user['sub'] ?? '/user';
+        $sub_user_reset = true;
     }
-    if ($route_user === ($state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? $state_r['x']['user']['route'] ?? $state_user['route'])) {
-        if (!empty($route_user_reset) && !empty($state_r['x']['user']['guard']['route'])) {
-            $_['alert']['info'][] = ['Your user log-in link has been restored to %s', '<code>' . $link . $state_user['route'] . '</code>'];
+    if ($sub_user === ($state_r['x']['user']['guard']['sub'] ?? $state_user['guard']['sub'] ?? $state_r['x']['user']['sub'] ?? $state_user['sub'])) {
+        if (!empty($sub_user_reset) && !empty($state_r['x']['user']['guard']['sub'])) {
+            $_['alert']['info'][] = ['Your user log-in link has been restored to %s', '<code>' . $link . $state_user['sub'] . '</code>'];
         }
-    } else if (empty($route_user_reset)) {
-        $_['alert']['info'][] = ['Your user log-in link has been changed to %s', '<code>' . $link . $route_user . '</code>'];
+    } else if (empty($sub_user_reset)) {
+        $_['alert']['info'][] = ['Your user log-in link has been changed to %s', '<code>' . $link . $sub_user . '</code>'];
     } else {
-        $_['alert']['info'][] = ['Your user log-in link has been restored to %s', '<code>' . $link . $state_user['route'] . '</code>'];
+        $_['alert']['info'][] = ['Your user log-in link has been restored to %s', '<code>' . $link . $state_user['sub'] . '</code>'];
     }
     x\panel\_cache_let($file->path);
     x\panel\_cache_let(LOT . D . 'x' . D . 'user' . D . 'state.php');
     x\panel\_cache_let(LOT . D . 'x' . D . 'panel' . D . 'state.php');
     $_POST['kick'] = [
-        'base' => $link->base($route_panel),
+        'base' => $link->base($sub_panel),
         'hash' => $_POST['hash'] ?? null,
         'part' => 0,
         'path' => '.state',
@@ -250,11 +250,11 @@ return array_replace_recursive($_, [
                                                         'route' => [
                                                             'description' => 'Choose default page that will open in the home page.',
                                                             'lot' => $routes,
-                                                            'name' => 'state[route]',
+                                                            'name' => 'state[home]',
                                                             'stack' => 50,
                                                             'title' => 'Home',
                                                             'type' => 'option',
-                                                            'value' => $state_r['route'] ?? null,
+                                                            'value' => $state_r['home'] ?? null,
                                                         ]
                                                     ]
                                                 ]
@@ -265,21 +265,21 @@ return array_replace_recursive($_, [
                                             'lot' => [
                                                 'fields' => [
                                                     'lot' => [
-                                                        'route' => [
+                                                        'sub' => [
                                                             'description' => 'Set custom panel base path.',
-                                                            'hint' => $state_panel['route'] ?? null,
-                                                            'name' => 'state[x][panel][route]',
+                                                            'hint' => $state_panel['sub'] ?? null,
+                                                            'name' => 'state[x][panel][sub]',
                                                             'stack' => 10,
                                                             'type' => 'route',
-                                                            'value' => $state_r['x']['panel']['route'] ?? null
+                                                            'value' => $state_r['x']['panel']['sub'] ?? null
                                                         ],
                                                         'user' => [
                                                             'description' => 'Set custom user log-in path.',
-                                                            'hint' => $state_user['guard']['route'] ?? $state_user['route'] ?? null,
-                                                            'name' => 'state[x][user][guard][route]',
+                                                            'hint' => $state_user['guard']['sub'] ?? $state_user['sub'] ?? null,
+                                                            'name' => 'state[x][user][guard][sub]',
                                                             'stack' => 20,
                                                             'type' => 'route',
-                                                            'value' => $state_r['x']['user']['guard']['route'] ?? $state_user['guard']['route'] ?? null
+                                                            'value' => $state_r['x']['user']['guard']['sub'] ?? $state_user['guard']['sub'] ?? null
                                                         ],
                                                         'kick' => [
                                                             'description' => 'Choose default page that will open after logged-in.',
